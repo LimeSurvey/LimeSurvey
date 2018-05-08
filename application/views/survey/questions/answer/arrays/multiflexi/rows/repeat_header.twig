@@ -1,4 +1,4 @@
-<?php
+{#
 /**
  * This view is used to repeat the headers of the table (question advanced attribute)
  *
@@ -8,7 +8,7 @@
  * @var $answerwidth
  * @var $textAlignment
  */
-?>
+#}
 
 <!-- repeat_header -->
 </tbody>
@@ -16,14 +16,14 @@
 <tbody>
     <tr class="ls-heading ls-repeat-heading hidden-xs" aria-hidden="true">
         <td></td>
-        <?php foreach ($labelans as $ld): ?>
+        {% for ld in labelans %}
             <th>
-                <?php echo $ld;?>
+                {{ ld }}
             </th>
-        <?php endforeach;?>
+        {% endfor %}
 
-        <?php if ($right_exists):?>
+        {% if right_exists %}
             <td></td>
-        <?php endif;?>
+        {% endif %}
     </tr>
 <!-- end of repeat header -->

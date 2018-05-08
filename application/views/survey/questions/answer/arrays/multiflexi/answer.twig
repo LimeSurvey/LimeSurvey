@@ -1,0 +1,50 @@
+{#
+/**
+ * Global container for the answer
+ *
+ * @var $sRows           : the rows, generated with the view rows/answer_row.php
+ * @var $answertypeclass
+ * @var $extraclass
+ * @var $answerwidth
+ * @var $labelans
+ * @var $cellwidth
+ * @var $right_exists
+ * @var $textAlignment
+ *
+ */
+#}
+<!-- answer -->
+<table class="{{ coreClass }} {{ extraclass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+
+    <colgroup class="col-responses">
+        <col class="answertext" style='width: {{ answerwidth }}%;'/>
+
+        {% for i, ld in labelans %}
+            <col class="{# // TODO: array2 alternation #}" style='width: {{ cellwidth }}%;'/> 
+        {% endfor %}
+
+        {% if right_exists %}
+            <col class="answertextright {# TODO: array2 alternation #}" style='width: {{ answerwidth }}%;' />
+        {% endif %}
+    </colgroup>
+
+    <thead aria-hidden="true">
+        <tr class="ls-heading">
+            <td></td>
+
+            {% for ld in labelans %}
+                <th>{{ ld }}</th>
+            {% endfor %}
+
+            {% if right_exists %}
+                <td></td>
+            {% endif %}
+        </tr>
+    </thead>
+
+    <tbody>
+            {# rows/answer_row.twig #}
+            {{ sAnswerRows }}
+    </tbody>
+</table>
+<!-- end of answer -->
