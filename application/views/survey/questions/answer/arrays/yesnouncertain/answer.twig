@@ -1,4 +1,4 @@
-<?php
+{#
 /**
  * yesnouncertain Html
  *
@@ -10,38 +10,33 @@
  * @var $answerwidth
  *
  */
-?>
+#}
 <!-- Yes/No/Uncertain-->
 <!-- answer -->
-<table class="<?php echo $coreClass; ?> table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-<?php echo $basename ?>">
+<table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
     <colgroup class="col-responses">
-        <col class="col-answers"  style='width: <?php echo $answerwidth; ?>%;' />
-        <?php
-            // columns/col.php
-            echo $sColumns;
-        ?>
+        <col class="col-answers"  style='width: {{ answerwidth }}%;' />
+            {# columns/col.twig #}
+            {{ sColumns }}
     </colgroup>
     <thead aria-hidden="true">
         <tr class="ls-heading">
-            <?php
-                // rows/cell/thead.php
-                echo $sHeaders;
-            ?>
+                {# rows/cell/thead.twig #}
+                {{ sHeaders }}
         </tr>
     </thead>
     <tbody>
-        <?php if($anscount==0):?>
+        {% if anscount==0 %}
             <tr>
                 <th class="answertext">
-                    <?php eT('Error: This question has no answers.');?>
+                    
+                    {{ gT('Error: This question has no answers.') }}
                 </th>
             </tr>
-        <?php endif; ?>
+        {% endif %}
 
-        <?php
-            // rows/answer_row.php
-            echo $sRows;
-        ?>
+            {# rows/answer_row.php #}
+            {{ sRows }}
     </tbody>
 </table>
 <!-- end of answer -->

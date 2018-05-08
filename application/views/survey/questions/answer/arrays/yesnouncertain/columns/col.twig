@@ -1,0 +1,11 @@
+{#
+/**
+ * Array yesnouncertain, column
+ *
+ * @var $odd_even
+ * @var $cellwidth
+ */
+#}
+<!-- col -->
+<col class="{{ odd_even }} {% if no_answer is not empty %}col-no-answer{% endif %}" style='width: {{ cellwidth }}%;' />
+<!-- end of col -->
