@@ -1,4 +1,4 @@
-<?php
+{#
 /**
  * Shortfreetext, location map service style, item Html
  *
@@ -16,63 +16,61 @@
  * @var $questionHelp
  * @var $question_text_help          $question_text['help']
  */
-?>
+#}
 
-<?php
-App()->getClientScript()->registerScript('MAP_VARS_'.$basename,  
+{{ registerScript('MAP_VARS_'~basename,  
     " var zoom = zoom || [];
-    zoom['".$name."'] = ".$location_mapzoom.";"
-    , LSYii_ClientScript::POS_END); 
-?>
+    zoom['"~name~"'] = "~location_mapzoom~";"
+    , LSYii_ClientScript.POS_END) }}
 
 
-<div class="<?php echo $coreClass; ?> <?php echo $extraclass;?>" row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
+<div class="{{ coreClass }} {{ extraclass }}" row" role="group" aria-labelledby="ls-question-text-{{ basename }}">
     <!-- Input Text Location -->
     <div class="col-sm-12" >
             <input
-                class="text location <?php echo $kpclass; ?>"
+                class="text location {{ kpclass }}"
                 type="text"
                 size="20"
-                name="<?php echo $name; ?>_c"
-                id="answer<?php echo $name; ?>_c"
-                value="<?php echo $currentLocation; ?>"
-                onchange="<?php echo $checkconditionFunction; ?>"
+                name="{{ name }}_c"
+                id="answer{{ name }}_c"
+                value="{{ currentLocation }}"
+                onchange="{{ checkconditionFunction }}"
                 />
     </div>
     <!-- Map -->
     <div
-        id="gmap_canvas_<?php echo $name; ?>_c"
+        id="gmap_canvas_{{ name }}_c"
         class='col-xs-12'
-        style='height: <?php echo $location_mapheight;?>px'>
+        style='height: {{ location_mapheight }}px'>
     </div>
 
     <!-- hidden input -->
     <input
         type="hidden"
-        name="boycott_<?php echo $name; ?>"
-        id="boycott_<?php echo $name; ?>"
-        value = "<?php echo $strBuild; ?>"
+        name="boycott_{{ name }}"
+        id="boycott_{{ name }}"
+        value = "{{ strBuild }}"
         />
 
     <input
         type="hidden"
-        name="mapservice_<?php echo $name; ?>"
-        id="mapservice_<?php echo $name; ?>"
+        name="mapservice_{{ name }}"
+        id="mapservice_{{ name }}"
         class="mapservice"
-        value = "<?php echo $location_mapservice;?>"
+        value = "{{ location_mapservice }}"
         />
 
     <input
         type="hidden"
-        name="<?php echo $name;?>"
-        id="<?php echo $freeTextId;?>"
-        value="<?php echo $value; ?>"
+        name="{{ name }}"
+        id="{{ freeTextId }}"
+        value="{{ value }}"
         />
 
-    <?php if($questionHelp):?>
+    {% if questionHelp %}
         <div class="questionhelp col-sm-12">
-            <?php echo $question_text_help; ?>
+            {{ question_text_help }}
         </div>
-    <?php endif;?>
+    {% endif %}
 
 </div>
