@@ -1,4 +1,4 @@
-<?php
+{#
 /**
  * This view is used to repeat the headers of the table (question advanced attribute)
  *
@@ -6,23 +6,21 @@
  * @var $labelans
  * @var $right_exists
  */
-?>
+#}
 </tbody>
 
 <tbody>
     <tr class="ls-heading ls-heading-repeat hidden-xs" aria-hidden="true">
         <td></td>
-        <?php foreach ($labelans as $i=>$ld):?>
+        {% for i, ld in labelans %}
             <th>
-                <?php echo $ld;?>
+                {{ ld }}
             </th>
-        <?php endforeach;?>
+        {% endfor %}
 
-        <?php if ($right_exists):?>
+        {% if right_exists %}
             <td></td>
-        <?php endif;?>
+        {% endif %}
 
-        <?php
-            echo $col_head; /* What is it ? */
-        ?>
+        {{ col_head }} {# What is it ? #}
     </tr>
