@@ -12,7 +12,7 @@
 *
 */
 namespace LimeSurvey\Helpers;
-use QuestionAttribute;
+
 /**
  * General helper class for question + question setting system
  */
@@ -1607,17 +1607,30 @@ class questionHelper
             self::$questionAttributesSettings[$sType] = array();
             self::getAttributesDefinitions(); /* we need to have self::$attributes */
             /* Filter to get this question type setting */
-            $aQuestionTypeAttribute = array_filter(self::$attributes, function($attribute) use ($sType) {
+            $aQuestionTypeAttribute = array_filter(self::$attributes, function($attribute) use ($sType)
+            {
                 return stripos($attribute['types'], $sType) !== false;
             });
 
+            $default = array(
+                "caption"=>'',
+                "inputtype"=>"text",
+                "options"=>'',
+                "category"=>gT("Plugins"),
+                "default"=>'',
+                "help"=>'',
+                "sortorder"=>1000,
+                "i18n"=>false,
+                "readonly"=>false,
+                "readonly_when_active"=>false,
+                "expression"=>null,
+            );
             foreach ($aQuestionTypeAttribute as $attribute=>$settings) {
-                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
-                      QuestionAttribute::getDefaultSettings(),
-                      array("category"=>gT("Plugins")),
-                      $aCustomAttribute,
-                      array("name"=>$attribute)
-                  );
+                self::$questionAttributesSettings[$sType][$attribute] = array_merge(
+                    $default,
+                    $settings,
+                    array("name"=>$attribute)
+                );
             }
         }
         return self::$questionAttributesSettings[$sType];
