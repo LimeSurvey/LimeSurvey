@@ -1,0 +1,26 @@
+{#
+/**
+ * Array, no drop down
+ * @var $label
+ * @var $ld
+ * @var $myfname
+ * @var $ld
+ * @var $CHECKED
+ * @var $checkconditionFunction
+ */
+#}
+
+<!-- answer_td -->
+<td class="answer_cell_{{ ld }}{% if ld=="" %} noanswer-item{% endif %} answer-item radio-item">
+    <input
+        type="radio"
+        name="{{ myfname }}"
+        value="{{ ld }}"
+        id="answer{{ myfname }}-{{ ld }}"
+        {{ CHECKED }}
+    />
+    <label for="answer{{ myfname }}-{{ ld }}" class="ls-label-xs-visibility">
+        {{ label }}
+    </label>
+</td>
+<!-- end of answer_td -->

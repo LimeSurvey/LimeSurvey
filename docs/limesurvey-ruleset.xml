@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<ruleset>
+
+  <description>Ruleset for LimeSurvey coding standard. Whoever has time to implement it fully, please do!</description>
+
+  <!-- Rues are imported individually to allow for easy configuration -->
+  <!-- Property names and values can be found here: http://phpmd.org/rules/index.html -->
+
+  <!-- ##Clean Code Rules. -->
+    <!-- <rule ref="rulesets/cleancode.xml/BooleanArgumentFlag" /> -->
+    <!-- <rule ref="rulesets/cleancode.xml/ElseExpression" /> -->
+    <!-- <rule ref="rulesets/cleancode.xml/StaticAccess" /> -->
+
+  <!-- ##Code Size Rules -->
+    <!-- <rule ref="rulesets/codesize.xml/CyclomaticComplexity" /> -->
+    <!-- <rule ref="rulesets/codesize.xml/NPathComplexity" /> -->
+    <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
+        <properties>
+        <property name="ignore-whitespace" value="true" />
+        <property name="minimum" value="150" />
+        </properties>
+    </rule>
+    <!-- <rule ref="rulesets/codesize.xml/ExcessiveClassLength"> -->
+    <!-- <rule ref="rulesets/codesize.xml/ExcessiveParameterList" /> -->
+    <!-- <rule ref="rulesets/codesize.xml/ExcessivePublicCount" /> -->
+    <!-- <rule ref="rulesets/codesize.xml/TooManyFields" /> -->
+    <!-- <rule ref="rulesets/codesize.xml/TooManyMethods" /> -->
+    <!-- <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity" /> -->
+
+  <!-- ##Controversial Rules -->
+    <rule ref="rulesets/controversial.xml/Superglobals" />
+    <rule ref="rulesets/controversial.xml/CamelCaseClassName" />
+    <rule ref="rulesets/controversial.xml/CamelCaseMethodName" />
+    <rule ref="rulesets/controversial.xml/CamelCasePropertyName" />
+    <rule ref="rulesets/controversial.xml/CamelCaseParameterName" />
+    <rule ref="rulesets/controversial.xml/CamelCaseVariableName" />
+
+  <!-- ##Design Rules -->
+    <rule ref="rulesets/design.xml/ExitExpression" />
+    <rule ref="rulesets/design.xml/EvalExpression" />
+    <rule ref="rulesets/design.xml/GotoStatement" />
+    <rule ref="rulesets/design.xml/NumberOfChildren" />
+    <rule ref="rulesets/design.xml/DepthOfInheritance" />
+    <rule ref="rulesets/design.xml/CouplingBetweenObjects">
+        <properties>
+        <property name="minimum" value="50" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/design.xml/DevelopmentCodeFragment" />
+
+  <!-- ## Naming Rules -->
+    <rule ref="rulesets/naming.xml/ShortVariable" >
+        <properties>
+            <property name="minimum" value="3" />
+            <property name="exceptions" value="db" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/LongVariable">
+        <properties>
+            <property name="maximum" value="40" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortMethodName">
+        <properties>
+            <property name="minimum" value="3" />
+            <property name="exceptions" value="gt" />
+            <property name="exceptions" value="et" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ConstructorWithNameAsEnclosingClass" />
+    <rule ref="rulesets/naming.xml/ConstantNamingConventions" />
+    <rule ref="rulesets/naming.xml/BooleanGetMethodName">
+        <properties>
+        <property name="checkParameterizedMethods" value="true" />
+        </properties>
+    </rule>
+  
+
+  <!-- ##Unused code -->
+    <rule ref="rulesets/unusedcode.xml/UnusedPrivateField" />
+    <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable" />
+    <rule ref="rulesets/unusedcode.xml/UnusedPrivateMethod" />
+    <rule ref="rulesets/unusedcode.xml/UnusedFormalParameter" />
+
+</ruleset>

@@ -1,0 +1,60 @@
+{#
+/**
+ * Numerical Html
+ *
+ * @var $extraclass
+ * @var $id          $ia[1]
+ * @var $prefix
+ * @var $answertypeclass
+ * @var $tiwidth
+ * @var $fValue
+ * @var $checkconditionFunction
+ * @var $integeronly
+ * @var $maxlength
+ * @var $suffix
+ */
+#}
+<!-- Numerical -->
+
+<!-- answer -->
+{% if withColumn %}
+<div class='{{ coreClass }} row'>
+    <div class="{{ extraclass }}">
+{% else %}
+<div class='{{ coreClass }} {{ extraclass }}'>
+{% endif %}
+    {% if prefix != '' or suffix != '' %}
+        <div class="ls-input-group">
+    {% endif %} 
+    <!-- Prefix -->
+    {% if prefix != '' %}
+        <div class='ls-input-group-extra prefix-text prefix'>{{ prefix }}</div>
+    {% endif %} 
+    
+    {# Want to use HTML5 number type? Think again: Doesn't work as we want with locale: http://stackoverflow.com/questions/13412204/localization-of-input-type-number #}
+    {# type=number is localized by default : broke API, (disable survey settings, but surely better) #}
+    {{ C.Html.textField(id,fValue,({
+        'id' : "answer"~id,
+        'class' : "form-control "~answertypeclass,
+        'title' : gT('Only numbers may be entered in this field.'),
+        'size' : (inputsize ? inputsize : null),
+        'maxlength' : (maxlength ? maxlength : null),
+        'data-number' : 1,
+        'data-integer' : integeronly,
+        'aria-labelledby' : "ls-question-text-"~basename
+    }))
+    }}
+    <!-- Suffix -->
+    {% if suffix != '' %}
+        <div class='ls-input-group-extra suffix-text suffix'>{{ suffix }}</div>
+    {% endif %} 
+    {% if prefix != '' or suffix != '' %}
+        </div>
+    {% endif %} 
+{% if withColumn %}
+    </div>
+</div>
+{% else %}
+</div>
+{% endif %} 
+<!-- end of answer -->

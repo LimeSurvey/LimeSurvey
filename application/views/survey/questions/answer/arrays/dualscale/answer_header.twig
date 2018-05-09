@@ -1,0 +1,39 @@
+{#
+
+/**
+ * Header row for dual-scale array
+ * @var $labelans0 - Labels for answers
+ * @var $labelans1
+ * @var $shownoanswer
+ * @var $rightexists
+ * @var $class - Extra class, like 'repeat headers'
+ */
+
+#}
+<tr class="ls-heading {{ class }}" aria-hidden="true">
+    <td></td>
+    {% if leftheader != '' or rightheader !='' %}
+        <td class="hidden"></td>
+    {% endif %}
+    {% for ld in labelans0 %}
+        <th class='answer-text'>{{ ld }}</th>
+    {% endfor %}
+    {% if labelans1|length > 0 %}
+        <td class="header_separator">
+            {% if shownoanswer %}
+                <div class="ls-js-hidden">{{ gT('No answer') }}</div>
+            {% endif %}</td>  <!-- Separator : and No answer for accessibility for first colgroup -->
+        {% if leftheader != '' or rightheader !='' %}
+            <td class="hidden"></td>
+        {% endif %}
+        {% for ld in labelans1 %}
+            <th class='answer-text'>{{ ld }}</th>
+        {% endfor %}
+    {% endif %}
+    {% if shownoanswer or rightexists %}
+        <td class="header_separator rigth_separator"></td>
+    {% endif %}
+    {% if shownoanswer %}
+        <th class="answer-text noanswer-text">{{ gT('No answer') }}</th>
+    {% endif %}
+</tr>

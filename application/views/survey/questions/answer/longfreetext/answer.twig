@@ -1,0 +1,39 @@
+{# 
+/**
+ * Lon free text question, item Html
+ *
+ * @var extraclass
+ * @var name
+ * @var drows
+ * @var tiwidth
+ * @var maxlength
+ * @var checkconditionFunction
+ * @var dispVal
+ */
+ #}
+<!-- Long Free Text -->
+
+<!-- answer -->
+{% if withColumn %}
+<div class='{{ coreClass }} row'>
+    <div class="{{ extraclass }}">
+{% else %}
+<div class='{{ coreClass }} {{ extraclass }}'>
+{%  endif %}
+    <textarea
+        class="form-control {{ kpclass }}"
+        name="{{ name }}"
+        id="answer{{ name }}"
+        rows="{{ drows }}"
+        {% if inputsize %} cols="{{ inputsize }}" {% endif %}
+        {% if maxlength %} maxlength="{{ maxlength }}" {% endif %}
+        aria-labelledby="ls-question-text-{{ basename }}"
+    >{{ dispVal }}</textarea>
+{% if withColumn %}
+    </div>
+</div>
+{% else %}
+</div>
+{% endif %}
+
+<!-- end of answer -->

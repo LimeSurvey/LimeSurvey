@@ -1,0 +1,36 @@
+{#
+/**
+ * List DropDown, Other Option
+ *
+ * @var $name           $ia[1]
+ * @var $display
+ * @var $value
+ * @var $checkconditionFunction
+ */
+#}
+<label for="othertext{{ name }}" class="sr-only">
+    {{ label }}
+</label>
+<div class="form-group text-item other-text-item">
+{{ C.Html.textField(name~"other",value,({
+    'id' : "othertext"~name,
+    'class':"form-control",
+    'aria-labelledby' : "answer"~name~"-oth-",
+}))
+}}
+</div>
+<script>
+if( $("#answer{{ name }}").val() != "-oth-" ){
+    $("#othertext{{ name }}").hide();
+}
+$(document).on("change","#answer{{ name }}", function(){
+    if($("#answer{{ name }}").val() != "-oth-"){
+        $("#othertext{{ name }}").hide();
+        $("#othertext{{ name }}").val("").trigger("keyup");
+    }else{
+        $("#othertext{{ name }}").show();
+        $("#othertext{{ name }}").focus();
+    }
+});
+</script>
+<!-- end of othertext -->

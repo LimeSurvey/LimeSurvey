@@ -93,7 +93,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
     }
 
     if (array_sum($gdata) > 0) {
-//Make sure that the percentages add up to more than 0
+        //Make sure that the percentages add up to more than 0
         $i = 0;
         foreach ($gdata as $data) {
             if ($data != 0) {
@@ -111,7 +111,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         }
 
         if (!$type) {
-// Bar chart
+            // Bar chart
             $DataSet = new pData;
             $counter = 0;
             $maxyvalue = 0;
@@ -135,7 +135,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
-//auto detect if english
+                        //auto detect if english
                         $lblout[] = $kkey.' ('.$kval.')';
                     } else {
                         $lblout[] = $Arabic->utf8Glyphs($kkey.' )'.$kval.'(');
@@ -224,7 +224,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
-//auto detect if english
+                        //auto detect if english
                         $lblout[] = $kkey.' ('.$kval.')';
                     } else {
                         $lblout[] = $Arabic->utf8Glyphs($kkey.' )'.$kval.'(');
@@ -367,7 +367,7 @@ function buildSelects($allfields, $surveyid, $language)
                 if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
                 $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
                 $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") {
-//pull out just the fieldnames
+                    //pull out just the fieldnames
                     //put together some SQL here
                     $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
 
@@ -627,7 +627,7 @@ class statistics_helper
 
         //S - Short Free Text and T - Long Free Text
         elseif ($firstletter == "T" || $firstletter == "S") {
-//Short and long text
+            //Short and long text
             //search for key
             $fld = substr($rt, 1, strlen($rt));
             $fielddata = $fieldmap[$fld];
@@ -711,7 +711,7 @@ class statistics_helper
                 $alist[] = array("$row[0]", flattenText($row[1]), $mfield);
             }
         } else if ($firstletter == "|") {
-// File Upload
+            // File Upload
 
             //get SGQ data
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
@@ -829,10 +829,10 @@ class statistics_helper
         //N = numerical input
         //K = multiple numerical input
         elseif ($firstletter == "N" || $firstletter == "K") {
-//NUMERICAL TYPE
+            //NUMERICAL TYPE
             //Zero handling
             if (!isset($excludezeros)) {
-//If this hasn't been set, set it to on as default:
+                //If this hasn't been set, set it to on as default:
                 $excludezeros = 1;
             }
             //check last character, greater/less/equals don't need special treatment
@@ -913,20 +913,20 @@ class statistics_helper
                 //other databases (MySQL, Postgres)
                 else {
                     //standard deviation
-                    $query = "SELECT STDDEV(".Yii::app()->db->quoteColumnName($fieldname).") as stdev";
+                    $query = "SELECT STDDEV(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DOUBLE)) as stdev";
                 }
 
                 //sum
-                $query .= ", SUM(".Yii::app()->db->quoteColumnName($fieldname)."*1) as sum";
+                $query .= ", SUM(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DOUBLE)*1) as sum";
 
                 //average
-                $query .= ", AVG(".Yii::app()->db->quoteColumnName($fieldname)."*1) as average";
+                $query .= ", AVG(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DOUBLE)*1) as average";
 
                 //min
-                $query .= ", MIN(".Yii::app()->db->quoteColumnName($fieldname)."*1) as minimum";
+                $query .= ", MIN(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DOUBLE)*1) as minimum";
 
                 //max
-                $query .= ", MAX(".Yii::app()->db->quoteColumnName($fieldname)."*1) as maximum";
+                $query .= ", MAX(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DOUBLE)*1) as maximum";
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
 
                 //special treatment for MS SQL databases
@@ -3097,6 +3097,8 @@ class statistics_helper
                 $stddevarray = array_slice($grawdata, 0, 5, true);
                 $am = 0;
 
+                $sumitems = $grawdata[0] + $grawdata[1] + $grawdata[2] + $grawdata[3] + $grawdata[4];
+                
                 //calculate arithmetic mean
                 if (isset($sumitems) && $sumitems > 0) {
 

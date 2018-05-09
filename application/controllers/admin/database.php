@@ -569,7 +569,7 @@ class database extends Survey_Common_Action
         $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
         foreach ($validAttributes as $validAttribute) {
             /* Readonly attribute : disable save */
-            if($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive()) ) {
+            if((isset($validAttribute['readonly']) && !empty($validAttribute['readonly'])) || (isset($validAttribute['readonly_when_active']) && !empty($validAttribute['readonly_when_active']) && Survey::model()->findByPk($iSurveyID)->getIsActive()) ) {
                 continue;
             }
             if ($validAttribute['i18n']) {
@@ -1042,7 +1042,7 @@ class database extends Survey_Common_Action
                         'updated'=> $updatedFields,
                         'DEBUG' => ['POST'=>$_POST,
                                     'reloaded'=>$oSurvey->attributes,
-                                    'aURLParams' => $aURLParams,
+                                    'aURLParams' => isset($aURLParams) ? $aURLParams : '',
                                     'initial'=>isset($aOldAttributes) ? $aOldAttributes : '',
                                     'afterApply'=>isset($aAfterApplyAttributes) ? $aAfterApplyAttributes : '']
                     ],

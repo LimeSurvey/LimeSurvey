@@ -1,0 +1,29 @@
+{#
+/**
+ * This view is used to repeat the headers of the table (question advanced attribute)
+ *
+ * @var $labelans
+ * @var $right_exists
+ * @var $cellwidth
+ * @var $answerwidth
+ * @var $textAlignment
+ */
+#}
+
+<!-- repeat_header -->
+</tbody>
+
+<tbody>
+    <tr class="ls-heading ls-repeat-heading hidden-xs" aria-hidden="true">
+        <td></td>
+        {% for ld in labelans %}
+            <th>
+                {{ ld }}
+            </th>
+        {% endfor %}
+
+        {% if right_exists %}
+            <td></td>
+        {% endif %}
+    </tr>
+<!-- end of repeat header -->

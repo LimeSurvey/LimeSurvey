@@ -35,6 +35,34 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.7.1 (build 180424) to 3.7.2 (build 180508) Mai 08, 2018
+-Fixed issue #13361: .twig files not accessible in Theme Editor when extending bootswatch (LouisGac)
+-Fixed issue #13634: Internal Server Error on CDbCommand when edit user (Denis Chenu)
+-Fixed issue #13638: Panel with user surveys doesn't load (Markus Flür)
+-Fixed issue #13639: Average Mean and Standard Deviation (Markus Flür)
+-Fixed issue #13651: Array (text) always shown as error in checkintergrity (Denis Chenu)
+-Fixed issue : Unabe to set default export by plugin (Denis Chenu)
+-Fixed issue : unable to save plugin settings or survey language with debug (Denis Chenu)
+-Fixed issue: Language changer not working in bootswatch (Markus Flür)
+-Fixed issue: Sending password reminder not working (Carsten Schmitz)
+-Fixed issue: Slider reset button not working as expected (Markus Flür)
+-Fixed issue: Theme editor doesn't use the screen layout as default file (LouisGac)
+-Fixed issue: accordion tripled content (Markus Flür)
+-New translation: Malayalam (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German (Informal) by boppy, c_schmitz
+#Updated translation: German by boppy, c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by c_schmitz, duristef, lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Malayalam by c_schmitz
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+
 Changes from 3.7.0 (build 180418) to 3.7.1 (build 180424) Apr 24, 2018
 -Fixed issue: [security] Password reset email doesn't always use the saved email. Found and reported by Hongkun Zeng from VULNSPY.com (https://blog.vulnspy.com/)'. Thank you!
 -Fixed issue #13497: Editor screen loads without CSS when creating/updating custom CSS (LouisGac)
