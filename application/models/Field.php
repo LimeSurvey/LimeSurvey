@@ -57,17 +57,12 @@ class Field extends CModel
     public function getType()
     {
         if (!empty($this->question)) {
-            return $this->typeForQuestion();
+            return $this->question->questionType->fieldType;
         } else {
-            // TODO
+            // TODO for non-question columns
+            throw new \Exception('unfinished method');
         }
     }
 
-    private function typeForQuestion()
-    {
-        switch ($this->question->fieldType) {
-            default:
-        }
-    }
 
 }
