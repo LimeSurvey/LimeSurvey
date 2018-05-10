@@ -413,7 +413,7 @@ class QuestionType extends StaticModel
 
 
     /**
-     * Get all type codes of that represent data in text (string longer than char)
+     * Get all type codes of that represent data in char (one-character-string)
      * @return string[]
      */
     public static function charCodes()
