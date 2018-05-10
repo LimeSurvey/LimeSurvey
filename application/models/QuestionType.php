@@ -6,8 +6,10 @@
  * @property string $fieldType The type of field question needs for storing data
  * @property string $fieldDataType numeric vs string types
  * @property boolean $isText Whether the type is text (string longer than char)
- * @property boolean $isChar Whether the type char (one-character-string)
- * @property boolean $isString Whether the type string (text or char)
+ * @property boolean $isChar Whether the type is char (one-character-string)
+ * @property boolean $isString Whether the type is string (text or char)
+ * @property boolean $isNumeric Whether the type numeric (integer, double)
+ * @property boolean $isInteger Whether the type integer
  *
  * {@inheritdoc}
  */
@@ -85,13 +87,6 @@ class QuestionType extends CModel
         ];
     }
 
-    /**
-     * @return bool
-     */
-    public function getIsText()
-    {
-        return in_array($this->code, self::textTypes());
-    }
 
 
     /**
@@ -115,6 +110,47 @@ class QuestionType extends CModel
         return array_merge(self::textTypes(), self::charCodes());
     }
 
+
+
+    /**
+     * Get all type codes of that represent data as integer
+     * @return string[]
+     */
+    public static function integerCodes()
+    {
+        return [
+            self::QT_VERTICAL_FILE_UPLOAD
+        ];
+
+    }
+
+    /**
+     * Get all type codes of that represent data as double
+     * @return string[]
+     */
+    public static function doubleCodes()
+    {
+        return [];
+
+    }
+
+    /**
+     * Get all type codes of that represent data as double
+     * @return string[]
+     */
+    public static function numericCodes()
+    {
+        return array_merge(self::integerCodes(), self::doubleCodes());
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsText()
+    {
+        return in_array($this->code, self::textTypes());
+    }
+
     /**
      * @return bool
      */
@@ -131,24 +167,53 @@ class QuestionType extends CModel
         return in_array($this->code, self::charCodes());
     }
 
+    /**
+     * @return bool
+     */
+    public function getIsInteger()
+    {
+        return in_array($this->code, self::integerCodes());
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsNumeric()
+    {
+        return in_array($this->code, self::numericCodes());
+    }
+
+
+    /**
+     * @return string
+     */
     public function getFieldType()
     {
+        if ($this->isString) {
+            if ($this->isChar) {
+                return Field::TYPE_CHAR;
+            } else {
+                return Field::TYPE_STRING;
+            }
+        }
+        return $this->getFieldDataType();
 
     }
 
+
+    /**
+     * @return string
+     */
     public function getFieldDataType()
     {
-        switch ($this->type) {
-            case "apple":
-                echo "i is apple";
-                break;
-            case "bar":
-                echo "i is bar";
-                break;
-            case "cake":
-                echo "i is cake";
-                break;
+        if ($this->isString) {
+            return Field::TYPE_STRING;
         }
+        if ($this->isInteger) {
+            return Field::TYPE_INTEGER;
+        }
+
+        throw new \Exception("Undefined field data type for QuestionType {$this->code}");
     }
 
 }
