@@ -5,6 +5,10 @@
  * @property Question $question
  * @property string $fieldType The type of field question needs for storing data
  * @property string $fieldDataType numeric vs string types
+ * @property boolean $isText Whether the type is text (string longer than char)
+ * @property boolean $isChar Whether the type char (one-character-string)
+ * @property boolean $isString Whether the type string (text or char)
+ *
  * {@inheritdoc}
  */
 class QuestionType extends CModel
@@ -40,6 +44,7 @@ class QuestionType extends CModel
     const QT_COLON_ARRAY_MULTI_FLEX_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT = ';';
 
+
     /** @var string $code */
     public $code;
 
@@ -67,7 +72,6 @@ class QuestionType extends CModel
     }
 
 
-
     /**
      * Get all type codes of that represent data in text (string longer than char)
      * @return string[]
@@ -81,16 +85,50 @@ class QuestionType extends CModel
         ];
     }
 
+    /**
+     * @return bool
+     */
+    public function getIsText()
+    {
+        return in_array($this->code, self::textTypes());
+    }
+
 
     /**
      * Get all type codes of that represent data in text (string longer than char)
      * @return string[]
      */
-    public static function charTypes()
+    public static function charCodes()
     {
         return [
-            self::QT_I_LANGUAGE, self::QT_S_SHORT_FREE_TEXT, self::QT_U_HUGE_FREE_TEXT,
+            self::QT_5_POINT_CHOICE, self::QT_G_GENDER_DROPDOWN, self::QT_Y_YES_NO_RADIO,
+            self::QT_X_BOILERPLATE_QUESTION
         ];
+    }
+
+    /**
+     * Get all type codes of that represent data in string (text and char)
+     * @return string[]
+     */
+    public static function stringCodes()
+    {
+        return array_merge(self::textTypes(), self::charCodes());
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsChar()
+    {
+        return in_array($this->code, self::charCodes());
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsString()
+    {
+        return in_array($this->code, self::charCodes());
     }
 
     public function getFieldType()
