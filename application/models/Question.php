@@ -443,6 +443,7 @@ class Question extends LSActiveRecord
      * @return string Question type name
      *
      * Maybe move class in typeList ?
+     * @deprecated use $this->>questionType->description instead
      */
     public static function getQuestionTypeName($sType)
     {

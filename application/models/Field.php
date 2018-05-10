@@ -37,6 +37,15 @@ class Field extends CModel
      */
     public function attributeNames()
     {
+        return ['name'];
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
         return [
             'name' => gT('Name'),
         ];

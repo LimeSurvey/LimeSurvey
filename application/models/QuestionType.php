@@ -50,8 +50,26 @@ class QuestionType extends StaticModel
     /** @var string $code */
     public $code;
 
-    /** @var string $label */
-    public $label;
+    /** @var string $description */
+    public $description;
+
+    /** @var string $group Group name*/
+    public $group;
+
+    /** @var integer $subquestions whether has subquestions //TODO make it boolean instead */
+    public $subquestions;
+
+    /** @var integer $assessable whether has subquestions //TODO make it boolean instead */
+    public $assessable;
+
+    /** @var integer $ahasdefaultvalues whether has subquestions //TODO make it boolean instead */
+    public $hasdefaultvalues;
+
+    /** @var integer $answerscales number of answer scales*/
+    public $answerscales;
+
+    /** @var string $class the css class for question (container??)*/
+    public $class;
 
     /**
      * @param Question $question
@@ -60,18 +78,28 @@ class QuestionType extends StaticModel
     {
         $this->question = $question;
     }
-
-
     /**
      * {@inheritdoc}
      */
     public function attributeNames()
     {
+        return ['code', 'description', 'group', 'ubquestions', 'assessable',
+            'hasdefaultvalues', 'answerscales', 'class'];
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
         return [
             'code' => gT("Code"),
-            'label' => gT("Label"),
+            'description' => gT("Description"),
+            'group' => gT("Group"),
         ];
     }
+
 
     public static function modelsAttributes()
     {
