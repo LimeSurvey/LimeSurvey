@@ -514,7 +514,7 @@ class remotecontrol_handle
                     $sLanguage = $oSurvey->language;
         }
 
-        $oAllQuestions = Question::model()->getQuestionList($iSurveyID, $sLanguage);
+        $oAllQuestions = Question::model()->getQuestionList($iSurveyID);
         if (!isset($oAllQuestions)) {
                     return array('status' => 'No available data');
         }
