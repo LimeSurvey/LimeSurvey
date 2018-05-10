@@ -73,6 +73,302 @@ class QuestionType extends StaticModel
         ];
     }
 
+    public static function modelsAttributes()
+    {
+        return [
+            self::QT_1_ARRAY_MULTISCALE => [
+                'code' => self::QT_1_ARRAY_MULTISCALE,
+                'description' => gT("Array dual scale"),
+                'group' => gT('Arrays'),
+                'subquestions' => 1,
+                'assessable' => 1,
+                'hasdefaultvalues' => 0,
+                'answerscales' => 2,
+                'class' => 'array-flexible-duel-scale',
+            ],
+            self::QT_5_POINT_CHOICE => [
+                'code' => self::QT_5_POINT_CHOICE,
+                'description' => gT("5 Point Choice"),
+                'group' => gT("Single choice questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 0,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => "choice-5-pt-radio"
+            ],
+            self::QT_A_ARRAY_5_CHOICE_QUESTIONS => [
+                'code' => self::QT_A_ARRAY_5_CHOICE_QUESTIONS,
+                'description' => gT("Array (5 Point Choice)"),
+                'group' => gT('Arrays'),
+                'subquestions' => 1,
+                'hasdefaultvalues' => 0,
+                'assessable' => 1,
+                'answerscales' => 0,
+                'class' => 'array-5-pt'
+            ],
+            self::QT_B_ARRAY_10_CHOICE_QUESTIONS => [
+                'code' => self::QT_B_ARRAY_10_CHOICE_QUESTIONS,
+                'description' => gT("Array (10 Point Choice)"),
+                'group' => gT('Arrays'),
+                'subquestions' => 1,
+                'hasdefaultvalues' => 0,
+                'assessable' => 1,
+                'answerscales' => 0,
+                'class' => 'array-10-pt'
+            ],
+            self::QT_C_ARRAY_YES_UNCERTAIN_NO => [
+                'code' => self::QT_C_ARRAY_YES_UNCERTAIN_NO,
+                'description' => gT("Array (Yes/No/Uncertain)"),
+                'group' => gT('Arrays'),
+                'subquestions' => 1,
+                'hasdefaultvalues' => 0,
+                'assessable' => 1,
+                'answerscales' => 0,
+                'class' => 'array-yes-uncertain-no'
+            ],
+            self::QT_D_DATE => [
+                'code' => self::QT_D_DATE,
+                'description' => gT("Date/Time"),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 1,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'date'
+            ],
+            self::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS => [
+                'code' => self::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS,
+                'description' => gT("Array (Increase/Same/Decrease)"),
+                'group' => gT('Arrays'),
+                'subquestions' => 1,
+                'hasdefaultvalues' => 0,
+                'assessable' => 1,
+                'answerscales' => 0,
+                'class' => 'array-increase-same-decrease'
+            ],
+            self::QT_F_ARRAY_FLEXIBLE_ROW => [
+                'code' => self::QT_F_ARRAY_FLEXIBLE_ROW,
+                'description' => gT("Array"),
+                'group' => gT('Arrays'),
+                'subquestions' => 1,
+                'hasdefaultvalues' => 0,
+                'assessable' => 1,
+                'answerscales' => 1,
+                'class' => 'array-flexible-row'
+            ],
+            self::QT_G_GENDER_DROPDOWN => [
+                'code' => self::QT_G_GENDER_DROPDOWN,
+                'description' => gT("Gender"),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 0,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'gender'
+            ],
+            self::QT_H_ARRAY_FLEXIBLE_COLUMN => [
+                'code' => self::QT_H_ARRAY_FLEXIBLE_COLUMN,
+                'description' => gT("Array by column"),
+                'group' => gT('Arrays'),
+                'hasdefaultvalues' => 0,
+                'subquestions' => 1,
+                'assessable' => 1,
+                'answerscales' => 1,
+                'class' => 'array-flexible-column'
+            ],
+            self::QT_I_LANGUAGE => [
+                'code' => self::QT_I_LANGUAGE,
+                'description' => gT("Language Switch"),
+                'group' => gT("Mask questions"),
+                'hasdefaultvalues' => 0,
+                'subquestions' => 0,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'language'
+            ],
+            self::QT_K_MULTIPLE_NUMERICAL_QUESTION => [
+                'code' => self::QT_K_MULTIPLE_NUMERICAL_QUESTION,
+                'description' => gT("Multiple Numerical Input"),
+                'group' => gT("Mask questions"),
+                'hasdefaultvalues' => 1,
+                'subquestions' => 1,
+                'assessable' => 1,
+                'answerscales' => 0,
+                'class' => 'numeric-multi'
+            ],
+            self::QT_L_LIST_DROPDOWN => [
+                'code' => self::QT_L_LIST_DROPDOWN,
+                'description' => gT("List (Radio)"),
+                'group' => gT("Single choice questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 1,
+                'assessable' => 1,
+                'answerscales' => 1,
+                'class' => 'list-radio'
+            ],
+            self::QT_M_MULTIPLE_CHOICE => [
+                'code' => self::QT_M_MULTIPLE_CHOICE,
+                'description' => gT("Multiple choice"),
+                'group' => gT("Multiple choice questions"),
+                'subquestions' => 1,
+                'hasdefaultvalues' => 1,
+                'assessable' => 1,
+                'answerscales' => 0,
+                'class' => 'multiple-opt'
+            ],
+            self::QT_N_NUMERICAL => [
+                'code' => self::QT_N_NUMERICAL,
+                'description' => gT("Numerical Input"),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 1,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'numeric'
+            ],
+            self::QT_O_LIST_WITH_COMMENT => [
+                'code' => self::QT_O_LIST_WITH_COMMENT,
+                'description' => gT("List with comment"),
+                'group' => gT("Single choice questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 1,
+                'assessable' => 1,
+                'answerscales' => 1,
+                'class' => 'list-with-comment'
+            ],
+            self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => [
+                'code' => self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
+                'description' => gT("Multiple choice with comments"),
+                'group' => gT("Multiple choice questions"),
+                'subquestions' => 1,
+                'hasdefaultvalues' => 1,
+                'assessable' => 1,
+                'answerscales' => 0,
+                'class' => 'multiple-opt-comments'
+            ],
+            self::QT_Q_MULTIPLE_SHORT_TEXT => [
+                'code' => self::QT_Q_MULTIPLE_SHORT_TEXT,
+                'description' => gT("Multiple Short Text"),
+                'group' => gT("Text questions"),
+                'subquestions' => 1,
+                'hasdefaultvalues' => 1,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'multiple-short-txt'
+            ],
+            self::QT_R_RANKING_STYLE => [
+                'code' => self::QT_R_RANKING_STYLE,
+                'description' => gT("Ranking"),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 0,
+                'assessable' => 1,
+                'answerscales' => 1,
+                'class' => 'ranking'
+            ],
+            self::QT_S_SHORT_FREE_TEXT => [
+                'code' => self::QT_S_SHORT_FREE_TEXT,
+                'description' => gT("Short Free Text"),
+                'group' => gT("Text questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 1,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'text-short'
+            ],
+            self::QT_T_LONG_FREE_TEXT => [
+                'code' => self::QT_T_LONG_FREE_TEXT,
+                'description' => gT("Long Free Text"),
+                'group' => gT("Text questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 1,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'text-long'
+            ],
+            self::QT_U_HUGE_FREE_TEXT => [
+                'code' => self::QT_U_HUGE_FREE_TEXT,
+                'description' => gT("Huge Free Text"),
+                'group' => gT("Text questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 1,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'text-huge'
+            ],
+            self::QT_X_BOILERPLATE_QUESTION => [
+                'code' => self::QT_X_BOILERPLATE_QUESTION,
+                'description' => gT("Text display"),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 0,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'boilerplate'
+            ],
+            self::QT_Y_YES_NO_RADIO => [
+                'code' => self::QT_Y_YES_NO_RADIO,
+                'description' => gT("Yes/No"),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 1,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'yes-no'
+            ],
+            self::QT_EXCLAMATION_LIST_DROPDOWN => [
+                'code' => self::QT_EXCLAMATION_LIST_DROPDOWN,
+                'description' => gT("List (Dropdown)"),
+                'group' => gT("Single choice questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 1,
+                'assessable' => 1,
+                'answerscales' => 1,
+                'class' => 'list-dropdown'
+            ],
+            self::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS => [
+                'code' => self::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
+                'description' => gT("Array (Numbers)"),
+                'group' => gT('Arrays'),
+                'subquestions' => 2,
+                'hasdefaultvalues' => 0,
+                'assessable' => 1,
+                'answerscales' => 0,
+                'class' => 'array-multi-flexi'
+            ],
+            self::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT => [
+                'code' => self::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
+                'description' => gT("Array (Texts)"),
+                'group' => gT('Arrays'),
+                'subquestions' => 2,
+                'hasdefaultvalues' => 0,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'array-multi-flexi-text'
+            ],
+            self::QT_VERTICAL_FILE_UPLOAD => [
+                'code' => self::QT_VERTICAL_FILE_UPLOAD,
+                'description' => gT("File upload"),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 0,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'upload-files'
+            ],
+            self::QT_ASTERISK_EQUATION => [
+                'code' => self::QT_ASTERISK_EQUATION,
+                'description' => gT("Equation"),
+                'group' => gT("Mask questions"),
+                'subquestions' => 0,
+                'hasdefaultvalues' => 0,
+                'assessable' => 0,
+                'answerscales' => 0,
+                'class' => 'equation'
+            ],
+        ];
+    }
+
 
     /**
      * Get all type codes of that represent data in text (string longer than char)
