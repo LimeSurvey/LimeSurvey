@@ -13,7 +13,7 @@
  *
  * {@inheritdoc}
  */
-class QuestionType extends CModel
+class QuestionType extends StaticModel
 {
     const QT_1_ARRAY_MULTISCALE = '1'; //ARRAY (Flexible Labels) multi scale
     const QT_5_POINT_CHOICE = '5';
