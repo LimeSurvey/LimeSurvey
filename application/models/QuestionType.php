@@ -46,6 +46,8 @@ class QuestionType extends StaticModel
     const QT_COLON_ARRAY_MULTI_FLEX_NUMBERS = ':';
     const QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT = ';';
 
+    /** @var Question */
+    public $question;
 
     /** @var string $code */
     public $code;
@@ -71,13 +73,7 @@ class QuestionType extends StaticModel
     /** @var string $class the css class for question (container??)*/
     public $class;
 
-    /**
-     * @param Question $question
-     */
-    public function __construct(Question $question)
-    {
-        $this->question = $question;
-    }
+
     /**
      * {@inheritdoc}
      */

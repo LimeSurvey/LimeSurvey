@@ -801,7 +801,11 @@ class Question extends LSActiveRecord
      */
     public function getQuestionType()
     {
-        return QuestionType::findOne($this->type);
+        $model = QuestionType::findOne($this->type);
+        if (!empty($model)) {
+            $model->question = $this;
+        }
+        return $model;
     }
 
 }

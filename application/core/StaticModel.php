@@ -30,10 +30,10 @@ class StaticModel extends CModel
      */
     public static function findOne($pk)
     {
-        $mdoelsAttributes = self::modelsAttributes();
-        if (isset($mdoelsAttributes[$pk])) {
+        $modelsAttributes = static::modelsAttributes();
+        if (isset($modelsAttributes[$pk])) {
             $model = new static();
-            $model->attributes = $mdoelsAttributes[$pk];
+            $model->attributes = $modelsAttributes[$pk];
             return $model;
         }
         return null;
