@@ -393,6 +393,19 @@ class QuestionType extends StaticModel
         ];
     }
 
+    /**
+     * Get all type codes of that can be used in Quotas
+     * @return string[]
+     */
+    public static function quotableCodes()
+    {
+        return [ self::QT_G_GENDER_DROPDOWN, self::QT_M_MULTIPLE_CHOICE, self::QT_Y_YES_NO_RADIO,
+            self::QT_A_ARRAY_5_CHOICE_QUESTIONS, self::QT_B_ARRAY_10_CHOICE_QUESTIONS,
+            self::QT_I_LANGUAGE, self::QT_L_LIST_DROPDOWN, self::QT_O_LIST_WITH_COMMENT,
+            self::QT_EXCLAMATION_LIST_DROPDOWN, self::QT_ASTERISK_EQUATION
+        ];
+    }
+
 
     /**
      * Get all type codes of that represent data in text (string longer than char)

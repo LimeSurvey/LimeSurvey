@@ -1758,7 +1758,7 @@ return $s->hasTokensTable; });
             't.sid' => $this->sid,
             'parent_qid' => 0,
         ));
-        $criteria->addInCondition('t.type', Question::getQuotableTypes());
+        $criteria->addInCondition('t.type', QuestionType::quotableCodes());
         /** @var Question[] $questions */
         $questions = Question::model()->findAll($criteria);
         return $questions;

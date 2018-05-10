@@ -712,11 +712,6 @@ class Question extends LSActiveRecord
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion, 'title', 'title'));
         Question::model()->deleteAll($criteria);
     }
-    /** @return string[] */
-    public static function getQuotableTypes()
-    {
-        return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!', '*');
-    }
 
 
     public function getBasicFieldName()
