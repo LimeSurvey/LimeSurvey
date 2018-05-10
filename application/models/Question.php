@@ -42,6 +42,7 @@ if (!defined('BASEPATH')) {
  * @property QuestionL10n[] $questionL10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
+ * @property QuestionType $questionType
  * @inheritdoc
  */
 class Question extends LSActiveRecord
@@ -450,12 +451,14 @@ class Question extends LSActiveRecord
         $typeList = self::typeList();
         return $typeList[$sType]['description'];
     }
+
     /**
      * This function return the class by question type
      * @param string question type
      * @return string Question class to be added to the container
      *
      * Maybe move class in typeList ?
+     * //TODO move to QuestionType
      */
     public static function getQuestionClass($sType)
     {
@@ -791,6 +794,14 @@ class Question extends LSActiveRecord
         $criteria->addCondition('qid=:qid');
         $criteria->params = [':qid'=>$this->qid];
         return QuestionAttribute::model()->findAll($criteria);
+    }
+
+    /**
+     * @return null|QuestionType
+     */
+    public function getQuestionType()
+    {
+        return QuestionType::findOne($this->type);
     }
 
 }
