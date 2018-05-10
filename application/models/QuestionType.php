@@ -402,7 +402,7 @@ class QuestionType extends StaticModel
      * Get all type codes of that represent data in text (string longer than char)
      * @return string[]
      */
-    public static function textTypes()
+    public static function textCodes()
     {
         return [
             self::QT_I_LANGUAGE, self::QT_S_SHORT_FREE_TEXT, self::QT_U_HUGE_FREE_TEXT,
@@ -410,7 +410,6 @@ class QuestionType extends StaticModel
             self::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
         ];
     }
-
 
 
     /**
@@ -431,7 +430,7 @@ class QuestionType extends StaticModel
      */
     public static function stringCodes()
     {
-        return array_merge(self::textTypes(), self::charCodes());
+        return array_merge(self::textCodes(), self::charCodes());
     }
 
 
@@ -472,7 +471,7 @@ class QuestionType extends StaticModel
      */
     public function getIsText()
     {
-        return in_array($this->code, self::textTypes());
+        return in_array($this->code, self::textCodes());
     }
 
     /**
