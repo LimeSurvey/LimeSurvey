@@ -798,7 +798,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         $aQuestionAttributes['fieldname'] = $fieldname;
-        $aQuestionAttributes['questionclass'] = Question::getQuestionClass($oQuestion->type);
+        $aQuestionAttributes['questionclass'] = $oQuestion->questionType->class;
 
         if ($oQuestion->scale_id == 1) {
             return  $aQuestionAttributes;

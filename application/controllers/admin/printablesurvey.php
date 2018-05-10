@@ -487,7 +487,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                             // id to be added to wrapping question div
                             'id' => $arQuestion['qid'],
                             // classes to be added to wrapping question div
-                            'class' => Question::getQuestionClass($arQuestion['type']),
+                            'class' => $arQuestion->questionType->class,
                             'type_help' => $qinfo['validTip'],       
                             // instructions on how to complete the question 
                             // prettyValidTip is too verbose; assuming printable surveys will use static values

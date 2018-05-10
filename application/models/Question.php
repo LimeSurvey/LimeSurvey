@@ -452,50 +452,6 @@ class Question extends LSActiveRecord
         return $typeList[$sType]['description'];
     }
 
-    /**
-     * This function return the class by question type
-     * @param string question type
-     * @return string Question class to be added to the container
-     *
-     * Maybe move class in typeList ?
-     * //TODO move to QuestionType
-     */
-    public static function getQuestionClass($sType)
-    {
-        switch ($sType) {
-            case Question::QT_1_ARRAY_MULTISCALE: return 'array-flexible-duel-scale';
-            case Question::QT_5_POINT_CHOICE: return 'choice-5-pt-radio';
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return 'array-5-pt';
-            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return 'array-10-pt';
-            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return 'array-yes-uncertain-no';
-            case Question::QT_D_DATE: return 'date';
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: return 'array-increase-same-decrease';
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW: return 'array-flexible-row';
-            case Question::QT_G_GENDER_DROPDOWN: return 'gender';
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: return 'array-flexible-column';
-            case Question::QT_I_LANGUAGE: return 'language';
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: return 'numeric-multi';
-            case Question::QT_L_LIST_DROPDOWN: return 'list-radio';
-            case Question::QT_M_MULTIPLE_CHOICE: return 'multiple-opt';
-            case Question::QT_N_NUMERICAL: return 'numeric';
-            case Question::QT_O_LIST_WITH_COMMENT: return 'list-with-comment';
-            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: return 'multiple-opt-comments';
-            case Question::QT_Q_MULTIPLE_SHORT_TEXT: return 'multiple-short-txt';
-            case Question::QT_R_RANKING_STYLE: return 'ranking';
-            case Question::QT_S_SHORT_FREE_TEXT: return 'text-short';
-            case Question::QT_T_LONG_FREE_TEXT: return 'text-long';
-            case Question::QT_U_HUGE_FREE_TEXT: return 'text-huge';
-            case Question::QT_X_BOILERPLATE_QUESTION: return 'boilerplate';
-            case Question::QT_Y_YES_NO_RADIO: return 'yes-no';
-            case Question::QT_Z_LIST_RADIO_FLEXIBLE: return 'list-radio-flexible';
-            case Question::QT_EXCLAMATION_LIST_DROPDOWN: return 'list-dropdown';
-            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: return 'array-multi-flexi';
-            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: return 'array-multi-flexi-text';
-            case Question::QT_VERTICAL_FILE_UPLOAD: return 'upload-files';
-            case Question::QT_ASTERISK_EQUATION: return 'equation';
-            default:  return 'generic_question'; // fallback
-        };
-    }
 
     /**
      * Return all group of the active survey

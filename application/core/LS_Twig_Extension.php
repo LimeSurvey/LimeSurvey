@@ -172,13 +172,13 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function getAllQuestionClasses($iQid)
     {
+        $oQuestion = Question::model()->findByPk($iQid);
 
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
-        $sType           = $lemQuestionInfo['info']['type'];
         $aSGQA           = explode('X', $lemQuestionInfo['sgqa']);
         $iSurveyId       = $aSGQA[0];
 
-        $aQuestionClass  = Question::getQuestionClass($sType);
+        $aQuestionClass  = $oQuestion->questionType->class;
 
         /* Add the relevance class */
         if (!$lemQuestionInfo['relevant']) {

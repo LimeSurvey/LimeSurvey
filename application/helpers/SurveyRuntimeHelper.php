@@ -1766,9 +1766,9 @@ class SurveyRuntimeHelper
      */
     public function getCurrentQuestionClasses($iQid)
     {
+        $oQuestion = Question::model()->findByPk($iQid);
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
-        $sType           = $lemQuestionInfo['info']['type'];
-        $aQuestionClass  = Question::getQuestionClass($sType);
+        $aQuestionClass  = $oQuestion->questionType->class;
 
         /* Add the relevance class */
         if (!$lemQuestionInfo['relevant']) {
