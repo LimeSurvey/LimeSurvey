@@ -42,6 +42,7 @@ if (!defined('BASEPATH')) {
  * @property QuestionL10n[] $questionL10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
+ * @property string $basicFieldName The basic fieldname foe question {SID}X{GID}X{QID} (Except for subquestions, which use the QID of parent)
  * @inheritdoc
  */
 class Question extends LSActiveRecord
@@ -391,7 +392,7 @@ class Question extends LSActiveRecord
     /**
      * @param integer $surveyid
      * @param string $language
-     * @return array
+     * @return Question[]
      */
     public function getQuestionList($surveyid)
     {
