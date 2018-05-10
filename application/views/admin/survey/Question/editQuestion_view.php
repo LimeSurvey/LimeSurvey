@@ -2,6 +2,7 @@
 /* @var $this AdminController */
 /* @var QuestionGroup $oQuestionGroup */
 /* @var Survey $oSurvey */
+/* @var Question $oQuestion */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('addQuestion');
@@ -174,7 +175,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                         <div class=" btn-group" id="question_type_button">
                                             <button type="button" class="btn btn-default " data-target="#selector__modal_select-question-type" data-toggle="modal" aria-haspopup="true" aria-expanded="false" >
                                                 <span class="buttontext" id="selector__editView_question_type_description">
-                                                    <?=Question::getQuestionTypeName($oQuestion->type); ?>
+                                                    <?= $oQuestion->questionType->description; ?>
                                                     <?php if(YII_DEBUG):?>
                                                         <em class="small">
                                                             Type code: <?php echo $oQuestion->type; ?>
@@ -218,7 +219,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                         <div class=" btn-group" id="question_type_button">
                                             <button type="button" class="btn btn-default" disabled  aria-haspopup="true" aria-expanded="false" >
                                                 <span class="buttontext" id="selector__editView_question_type_description">
-                                                    <?=Question::getQuestionTypeName($oQuestion->type); ?>
+                                                    <?= $oQuestion->questionType->description; ?>
                                                     <?php if(YII_DEBUG):?>
                                                         <em class="small">
                                                             Type code: <?php echo $oQuestion->type; ?>
@@ -332,7 +333,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
     <div class="modal fade" tabindex="-1" role="dialog" id="selector__modal_select-question-type" style="z-index: 1250">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <?php Yii::app()->getController()->renderPartial('/admin/survey/Question/question_subviews/_question_type_select', ['currentType' => $oQuestion->type, 'aQuestionTypeGroups' => $aQuestionTypeGroups]); ?>
+                <?php Yii::app()->getController()->renderPartial('/admin/survey/Question/question_subviews/_question_type_select', ['oQuestion' => $oQuestion, 'aQuestionTypeGroups' => $aQuestionTypeGroups]); ?>
             </div>
         </div>
     </div>

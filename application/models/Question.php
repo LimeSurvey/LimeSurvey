@@ -438,19 +438,6 @@ class Question extends LSActiveRecord
         return $questionTypes;
     }
 
-    /**
-     * This function return the name by question type
-     * @param string question type
-     * @return string Question type name
-     *
-     * Maybe move class in typeList ?
-     * @deprecated use $this->>questionType->description instead
-     */
-    public static function getQuestionTypeName($sType)
-    {
-        $typeList = self::typeList();
-        return $typeList[$sType]['description'];
-    }
 
 
     /**

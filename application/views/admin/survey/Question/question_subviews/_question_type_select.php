@@ -1,4 +1,11 @@
-  <div class="modal-header">
+<?php
+/** @var $this AdminController **/
+/** @var Question $oQuestion **/
+/** @var array $aQuestionTypeGroups**/
+
+?>
+
+<div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title"><?php eT("Select question type")?></h4>
   </div>
@@ -45,19 +52,19 @@
                     <div class="col-sm-12">
                         <h3> 
                         <b><?php eT("Selected: ")?></b><br/>
-                        <p id="selector__currentQuestionTypeTitle"><?php echo Question::getQuestionTypeName($currentType) ?></p>
+                        <p id="selector__currentQuestionTypeTitle"><?= $oQuestion->questionType->description?></p>
                         </h3>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12 currentQuestionTypeImageContainer" id="selector__currentQuestionTypeImage">
-                        <img src="<?php echo Yii::app()->getConfig('imageurl')?>/screenshots/<?php echo $currentType?>.png" />
+                        <img src="<?php echo Yii::app()->getConfig('imageurl')?>/screenshots/<?= $oQuestion->type ?>.png" />
                     </div>
                 </div>
             </div>
         </div>
       </div>
-      <input id="selector__selected_questiontype" value="<?php echo $currentType?>" type="hidden" />
+      <input id="selector__selected_questiontype" value="<?= $oQuestion->type?>" type="hidden" />
     </div>
   </div>
   <div class="modal-footer">
