@@ -3,6 +3,10 @@
 /* @var QuestionGroup $oQuestionGroup */
 /* @var Survey $oSurvey */
 /* @var Question $oQuestion */
+/* @var array $ajaxDatas */
+/* @var boolean $copying */
+/* @var boolean $adding */
+/* @var Question[] $aqresult */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('addQuestion');
@@ -58,7 +62,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                         'oSurvey'=>$oSurvey,
                         'oQuestion'=>$oQuestion,
                         'surveyid'=>$surveyid,
-                        'gid'=>$groupid, 'qid'=>NULL,
+                        'gid'=>$oQuestion->gid, 'qid'=>NULL,
                         'adding'=>$adding,
                         'aqresult'=>$aqresult,
                         'action'=>$action
@@ -72,7 +76,8 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                         'oSurvey'=>$oSurvey,
                         'oQuestion'=>$oQuestion,
                         'surveyid'=>$surveyid,
-                        'gid'=>$gid, 'qid'=>$qid,
+                        'gid'=>$oQuestion->gid,
+                        'qid'=>$qid,
                         'adding'=>$adding,
                         'aqresult'=>$aqresult,
                         'action'=>$action
@@ -166,7 +171,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                 <div  class="form-group">
                                     <input type="hidden" id="question_type" name="type" value="<?php echo $oQuestion->type; ?>" />
 
-                                    <?php if( $activated != "Y" && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
+                                    <?php if( !$oSurvey->isActive && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>" data-gethelp='{ "title":"Get help", "text" : "More on questions", "href":"https://manual.limesurvey.org/Questions_-_introduction" }' data-help="<?=gT("Select the question type here.")?>">
                                             <?php
                                             eT("Question type:");
@@ -186,7 +191,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                                 <i class="fa fa-folder-open"></i>                                       
                                             </button>
                                         </div>
-                                    <?php elseif($activated != "Y" && (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
+                                    <?php elseif(!$oSurvey->isActive && (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
                                         <label class=" control-label" for="question_type" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
@@ -236,10 +241,10 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                 <div  class="form-group">
                                     <label class=" control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
                                     <div class="">
-                                        <select name='gid' id='gid' class="form-control" <?php if ($activated == "Y"){echo " disabled ";} ?> >
+                                        <select name='gid' id='gid' class="form-control" <?php if ($oSurvey->isActive){echo " disabled ";} ?> >
                                             <?php echo getGroupList3($oQuestion->gid,$surveyid); ?>
                                         </select>
-                                        <?php if ($activated == "Y"): ?>
+                                        <?php if ($oSurvey->isActive): ?>
                                             <input type='hidden' name='gid' value='<?php echo $oQuestion->gid;?>' />
                                         <?php endif; ?>
                                     </div>
@@ -247,7 +252,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
 
                                 <div  class="form-group" id="OtherSelection">
                                     <label class=" control-label" title="<?php eT("Option 'Other':");?>"><?php eT("Option 'Other':"); ?></label>
-                                    <?php if ($activated != "Y"): ?>
+                                    <?php if ($oSurvey->isActive): ?>
                                         <div class="">
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $oQuestion->other === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                         </div>
@@ -324,12 +329,12 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
             <input type='submit'  class="hidden" value='<?php eT("Save and close"); ?>' />
         <?php endif; ?>
         <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
-        </form>
+        <?= CHtml::endForm() ?>
     </div>
 </div>
 
 
-<?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
+<?php if(isset($selectormodeclass) && $selectormodeclass != "none" && !$oSurvey->isActive): ?>
     <div class="modal fade" tabindex="-1" role="dialog" id="selector__modal_select-question-type" style="z-index: 1250">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
