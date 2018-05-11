@@ -389,11 +389,11 @@ class Question extends LSActiveRecord
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
 
 
-        self::deleteAll((new CDbCriteria())->addInCondition('parent_qid', $ids));
-        QuestionAttribute::deleteAll($qidsCriteria);
-        QuestionL10n::deleteAll($qidsCriteria);
-        DefaultValue::deleteAll($qidsCriteria);
-        QuotaMember::deleteAll($qidsCriteria);
+        self::model()->deleteAll((new CDbCriteria())->addInCondition('parent_qid', $ids));
+        QuestionAttribute::model()->deleteAll($qidsCriteria);
+        QuestionL10n::model()->deleteAll($qidsCriteria);
+        DefaultValue::model()->deleteAll($qidsCriteria);
+        QuotaMember::model()->deleteAll($qidsCriteria);
         $this->deleteAllAnswers();
         $this->removeFromLastVisited();
 
@@ -817,7 +817,7 @@ class Question extends LSActiveRecord
      */
     public function getAllGroups()
     {
-        return QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);
+        return QuestionGroup::model()->findAllByAttributes(['sid' => $this->sid]);
     }
 
     public function getbuttons()
@@ -1113,7 +1113,7 @@ class Question extends LSActiveRecord
     /**
      * @return array
      */
-    private function getAllSubQuestionIds()
+    public function getAllSubQuestionIds()
     {
         $result = [];
         if (!empty($this->subquestions)) {
