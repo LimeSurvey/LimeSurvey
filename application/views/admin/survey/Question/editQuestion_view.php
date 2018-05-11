@@ -252,7 +252,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
 
                                 <div  class="form-group" id="OtherSelection">
                                     <label class=" control-label" title="<?php eT("Option 'Other':");?>"><?php eT("Option 'Other':"); ?></label>
-                                    <?php if ($oSurvey->isActive): ?>
+                                    <?php if (!$oSurvey->isActive): ?>
                                         <div class="">
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $oQuestion->other === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                         </div>
