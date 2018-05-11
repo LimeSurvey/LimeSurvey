@@ -2,6 +2,7 @@
 /* @var $this AdminController */
 /* @var QuestionGroup $oQuestionGroup */
 /* @var Survey $oSurvey */
+/* @var Question $oQuestion */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('addQuestion');
@@ -207,8 +208,8 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                             } 
                                             ?>
                                         </select> 
-                                    <?php elseif($activated == "Y") : ?>
-                                        <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
+                                    <?php elseif($oSurvey->isActive) : ?>
+                                        <input type="hidden" id="question_type" name="type" value="<?php echo $oQuestion->type; ?>" />
                                         <!-- TODO : control if we can remove, disable update type must be done by PHP -->
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
