@@ -19,9 +19,9 @@ if (!defined('BASEPATH')) {
 /**
  * Class Question
  *
- * @property integer $qid Question ID. Note: Primary key is qid & language columns combined
+ * @property integer $qid Question ID.
  * @property integer $sid Survey ID
- * @property integer $gid QuestionGroup ID where question is diepolayed
+ * @property integer $gid QuestionGroup ID where question is displayed
  * @property string $type
  * @property string $title Question Code
  * @property string $preg
@@ -43,6 +43,7 @@ if (!defined('BASEPATH')) {
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
  * @property string $basicFieldName The basic fieldname foe question {SID}X{GID}X{QID} (Except for subquestions, which use the QID of parent)
+ * @property array $allSubQuestionIds QID-s of all question sub-questions, empty array returned if no sub-questions
  * @inheritdoc
  */
 class Question extends LSActiveRecord
@@ -375,6 +376,62 @@ class Question extends LSActiveRecord
         Yii::app()->db->createCommand()->delete(Question::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(DefaultValue::model()->tableName(), array('in', 'qid', $questionsIds));
         Yii::app()->db->createCommand()->delete(QuotaMember::model()->tableName(), array('in', 'qid', $questionsIds));
+    }
+
+    /**
+     * Deletes a question and ALL its relations (subquestions, answers, etc, etc)
+     * @return bool
+     * @throws CDbException
+     */
+    public function delete()
+    {
+        $ids = array_merge([$this->qid],$this->allSubQuestionIds);
+        $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
+
+
+        self::deleteAll((new CDbCriteria())->addInCondition('parent_qid', $ids));
+        QuestionAttribute::deleteAll($qidsCriteria);
+        QuestionL10n::deleteAll($qidsCriteria);
+        DefaultValue::deleteAll($qidsCriteria);
+        QuotaMember::deleteAll($qidsCriteria);
+        $this->deleteAllAnswers();
+        $this->removeFromLastVisited();
+
+        if (parent::delete()) {
+            Question::model()->updateQuestionOrder($this->gid, $this->sid);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * remove question from lastVisited
+     */
+    public function removeFromLastVisited(){
+        $oCriteria = new CDbCriteria();
+        $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
+        $oCriteria->compare('stg_value', $this->qid, false, 'AND');
+        SettingGlobal::model()->deleteAll($oCriteria);
+    }
+
+    /**
+     * Delete all question and its subQuestion Answers
+     */
+    private function deleteAllAnswers()
+    {
+        $ids = array_merge([$this->qid],$this->allSubQuestionIds);
+        $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
+
+        $answerIds = [];
+        $answers = Answer::model()->findAll($qidsCriteria);
+        if (!empty($answers)) {
+            foreach ($answers as $answer) {
+                $answerIds[] = $answer->aid;
+            }
+        }
+        $aidsCriteria = (new CDbCriteria())->addInCondition('aid', $answerIds);
+        AnswerL10n::model()->deleteAll($aidsCriteria);
+        Answer::model()->deleteAll($qidsCriteria);
     }
 
     /**
@@ -1051,6 +1108,20 @@ class Question extends LSActiveRecord
         $criteria->addCondition('qid=:qid');
         $criteria->params = [':qid'=>$this->qid];
         return QuestionAttribute::model()->findAll($criteria);
+    }
+
+    /**
+     * @return array
+     */
+    private function getAllSubQuestionIds()
+    {
+        $result = [];
+        if (!empty($this->subquestions)) {
+            foreach ($this->subquestions as $subquestion) {
+                $result[] = $subquestion->qid;
+            }
+        }
+        return $result;
     }
 
 }
