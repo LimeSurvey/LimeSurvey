@@ -44,7 +44,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
             eT("Copy question");
         } else {
             eT("Edit question");
-            echo ': <em>'.$oQuestion->title.'</em> (ID:'.$qid.')';
+            echo ': <em>'.$oQuestion->title.'</em> (ID:'.$oQuestion->qid.')';
         }
         ?>
     </div>
@@ -61,8 +61,9 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                     array(
                         'oSurvey'=>$oSurvey,
                         'oQuestion'=>$oQuestion,
-                        'surveyid'=>$surveyid,
-                        'gid'=>$oQuestion->gid, 'qid'=>NULL,
+                        'surveyid'=>$oSurvey->sid,
+                        'gid'=>$oQuestion->gid,
+                        'qid'=>NULL,
                         'adding'=>$adding,
                         'aqresult'=>$aqresult,
                         'action'=>$action
@@ -75,9 +76,9 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                     array(
                         'oSurvey'=>$oSurvey,
                         'oQuestion'=>$oQuestion,
-                        'surveyid'=>$surveyid,
+                        'surveyid'=>$oSurvey->sid,
                         'gid'=>$oQuestion->gid,
-                        'qid'=>$qid,
+                        'qid'=>$oQuestion->qid,
                         'adding'=>$adding,
                         'aqresult'=>$aqresult,
                         'action'=>$action
@@ -242,7 +243,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                     <label class=" control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
                                     <div class="">
                                         <select name='gid' id='gid' class="form-control" <?php if ($oSurvey->isActive){echo " disabled ";} ?> >
-                                            <?php echo getGroupList3($oQuestion->gid,$surveyid); ?>
+                                            <?php echo getGroupList3($oQuestion->gid,$oSurvey->sid); ?>
                                         </select>
                                         <?php if ($oSurvey->isActive): ?>
                                             <input type='hidden' name='gid' value='<?php echo $oQuestion->gid;?>' />
@@ -316,19 +317,19 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
 
         <?php if ($adding): ?>
             <input type='hidden' name='action' value='insertquestion' />
-            <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />
+            <input type='hidden' id='sid' name='sid' value='<?= $oSurvey->sid; ?>' />
             <p><input type='submit'  class="hidden" value='<?php eT("Add question"); ?>' /></p>
         <?php elseif ($copying): ?>
             <input type='hidden' name='action' value='copyquestion' />
-            <input type='hidden' id='oldqid' name='oldqid' value='<?php echo $qid; ?>' />
+            <input type='hidden' id='oldqid' name='oldqid' value='<?= $oQuestion->qid; ?>' />
             <p><input type='submit'  class="hidden" value='<?php eT("Copy question"); ?>' /></p>
         <?php else: ?>
             <input type='hidden' name='action' value='updatequestion' />
-            <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
+            <input type='hidden' id='qid' name='qid' value='<?= $oQuestion->qid; ?>' />
             <p><button type='submit' class="saveandreturn hidden" name="redirection" value="edit"><?php eT("Save") ?> </button></p>
             <input type='submit'  class="hidden" value='<?php eT("Save and close"); ?>' />
         <?php endif; ?>
-        <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
+        <input type='hidden' name='sid' value='<?= $oSurvey->sid; ?>' />
         <?= CHtml::endForm() ?>
     </div>
 </div>
