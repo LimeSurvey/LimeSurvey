@@ -378,6 +378,17 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Deletes a question and ALL its relations (subquestions, answers, etc, etc)
+     * @return bool
+     * @throws CDbException
+     */
+    public function delete()
+    {
+        return parent::delete();
+
+    }
+
+    /**
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
      * @param string $fields
      * @param mixed $condition
