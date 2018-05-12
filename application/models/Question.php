@@ -811,14 +811,6 @@ class Question extends LSActiveRecord
         };
     }
 
-    /**
-     * Return all group of the active survey
-     * Used to render group filter in questions list
-     */
-    public function getAllGroups()
-    {
-        return QuestionGroup::model()->findAllByAttributes(['sid' => $this->sid]);
-    }
 
     public function getbuttons()
     {

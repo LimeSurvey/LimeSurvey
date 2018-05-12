@@ -1,9 +1,10 @@
 <?php
 /**
  * Set question group and position modal body (parsed to massive action widget)
- * @var $model      The question model
- * @var $oSurvey    The survey object
  */
+
+/** @var AdminController $this */
+/** @var Question $model */
 ?>
 
 <?php eT("Set question group for those question"); ?>
@@ -14,9 +15,9 @@
         <label class="control-label col-sm-4" for="group_gid"><?php et('Group:'); ?></label>
         <div class="col-sm-8">
             <select name="group_gid" class="form-control custom-data" id="gid">
-                <?php foreach($model->AllGroups as $group): ?>
+                <?php foreach($model->survey->groups as $group): ?>
                     <option value="<?php echo $group->gid;?>">
-                        <?php echo flattenText($group->questionGroupL10ns[$baselang]->group_name);?>
+                        <?php echo flattenText($group->questionGroupL10ns[$model->survey->language]->group_name);?>
                     </option>
                 <?php endforeach?>
             </select>
@@ -29,7 +30,7 @@
     <!-- Position widget -->
     <?php $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
                 'display' => 'ajax_form_group',
-                'oSurvey' => $oSurvey,
+                'oSurvey' => $model->survey,
                 'classes' => 'custom-data'
         ));
     ?>

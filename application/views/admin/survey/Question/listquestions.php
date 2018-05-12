@@ -1,7 +1,14 @@
 <?php
-   /**
-    * This file render the list of groups
-    */
+/**
+ * This file render the list of groups
+ */
+
+/** @var AdminController $this */
+/** @var Survey $oSurvey */
+/** @var Question $model */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('listQuestions');
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
@@ -22,7 +29,7 @@
                     <div class="form  text-right">
                         <!-- Begin Form -->
                         <?php $form=$this->beginWidget('CActiveForm', array(
-                            'action' => Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid),
+                            'action' => Yii::app()->createUrl('admin/survey/sa/listquestions',['surbeyid'=>$oSurvey->primaryKey]),
                             'method' => 'get',
                                 'htmlOptions'=>array(
                                     'class'=>'form-inline',
@@ -40,9 +47,9 @@
                                 <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
                                     <select name="gid" class="form-control">
                                         <option value=""><?php eT('(Any group)');?></option>
-                                        <?php foreach($model->AllGroups as $group): ?>
+                                        <?php foreach($oSurvey->groups as $group): ?>
                                             <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->gid){echo 'selected';} ?>>
-                                                <?php echo flattenText($group->questionGroupL10ns[$baselang]->group_name);?>
+                                                <?php echo flattenText($group->questionGroupL10ns[$oSurvey->language]->group_name);?>
                                             </option>
                                         <?php endforeach?>
                                     </select>
@@ -86,7 +93,7 @@
                             array(
                                 'header' => gT('Question'),
                                 'name' => 'question',
-                                'value'=>'viewHelper::flatEllipsizeText($data->questionL10ns[$baselang]->question,true,0)',
+                                'value'=>'viewHelper::flatEllipsizeText($data->questionL10ns[$oSurvey->language]->question,true,0)',
                                 'htmlOptions' => array('class' => 'col-md-5'),
                             ),
                             array(
@@ -145,7 +152,7 @@
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-                                'columns' => $columns,
+                                //'columns' => $columns,
                                 'ajaxUpdate' => true,
                                 'afterAjaxUpdate' => "bindPageSizeChange"
                             ));
@@ -185,5 +192,5 @@
             $(document).trigger('actions-updated');            
         };
     ", LSYii_ClientScript::POS_BEGIN); ?>
-    
+
 <?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "bindPageSizeChange();", LSYii_ClientScript::POS_POSTSCRIPT); ?>
