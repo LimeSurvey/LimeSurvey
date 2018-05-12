@@ -8,7 +8,7 @@
 /** @var Question $model */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
-echo viewHelper::getViewTestTag('listQuestions');
+echo viewHelper::getViewTestTag('surveyListQuestions');
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
@@ -29,7 +29,7 @@ echo viewHelper::getViewTestTag('listQuestions');
                     <div class="form  text-right">
                         <!-- Begin Form -->
                         <?php $form=$this->beginWidget('CActiveForm', array(
-                            'action' => Yii::app()->createUrl('admin/survey/sa/listquestions',['surbeyid'=>$oSurvey->primaryKey]),
+                            'action' => Yii::app()->createUrl('admin/survey/sa/listquestions',['surveyid'=>$oSurvey->primaryKey]),
                             'method' => 'get',
                                 'htmlOptions'=>array(
                                     'class'=>'form-inline',
@@ -56,7 +56,7 @@ echo viewHelper::getViewTestTag('listQuestions');
                             </div>
 
                             <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('Reset');?></a>
+                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions',['surveyid'=>$oSurvey->primaryKey]);?>" class="btn btn-warning"><?php eT('Reset');?></a>
 
                         <?php $this->endWidget(); ?>
                     </div><!-- form -->
