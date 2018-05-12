@@ -229,7 +229,6 @@ class Question extends LSActiveRecord
     /**
      * Fix sort order for questions in a group
      * @param int $gid
-     * @param string $language
      * @param int $position
      */
     public function updateQuestionOrder($gid, $position = 0)
@@ -820,7 +819,7 @@ class Question extends LSActiveRecord
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
         $editurl     = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
-        $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
+        $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->survey->language.'" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Edit question").'" href="'.$editurl.'" role="button"><span class="fa fa-pencil" ></span></a>';

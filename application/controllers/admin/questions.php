@@ -1162,7 +1162,7 @@ class questions extends Survey_Common_Action
                 }
 
 
-
+                // FIXME this does not match the L10n logic
                 foreach ($questlangs as $key=>$value) {
                     if ($value != 99) {
                         $arQuestion = new Question;

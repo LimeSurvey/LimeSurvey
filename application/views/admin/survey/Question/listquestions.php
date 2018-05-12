@@ -9,6 +9,7 @@
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyListQuestions');
+$baseLanguage = $oSurvey->language;
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
@@ -93,7 +94,9 @@ echo viewHelper::getViewTestTag('surveyListQuestions');
                             array(
                                 'header' => gT('Question'),
                                 'name' => 'question',
-                                'value'=>'viewHelper::flatEllipsizeText($data->questionL10ns[$oSurvey->language]->question,true,0)',
+                                'value'=>function($data) use ($oSurvey) {
+                                        return viewHelper::flatEllipsizeText($data->questionL10ns[$oSurvey->language]->question,true,0);
+                                    },
                                 'htmlOptions' => array('class' => 'col-md-5'),
                             ),
                             array(
@@ -106,7 +109,9 @@ echo viewHelper::getViewTestTag('surveyListQuestions');
                             array(
                                 'header' => gT('Group'),
                                 'name' => 'group',
-                                'value'=>'$data->group->groupL10n[0]->group_name',
+                                'value'=>function($data) use ($oSurvey) {
+                                        return $data->group->questionGroupL10ns[$oSurvey->language]->group_name;
+                                    },
                             ),
                             array(
                                 'header' => gT('Mandatory'),
@@ -152,7 +157,7 @@ echo viewHelper::getViewTestTag('surveyListQuestions');
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-                                //'columns' => $columns,
+                                'columns' => $columns,
                                 'ajaxUpdate' => true,
                                 'afterAjaxUpdate' => "bindPageSizeChange"
                             ));
