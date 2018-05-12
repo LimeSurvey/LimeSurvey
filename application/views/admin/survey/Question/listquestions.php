@@ -1,7 +1,15 @@
 <?php
-   /**
-    * This file render the list of groups
-    */
+/**
+ * This file render the list of groups
+ */
+
+/** @var AdminController $this */
+/** @var Survey $oSurvey */
+/** @var Question $model */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyListQuestions');
+$baseLanguage = $oSurvey->language;
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
@@ -22,7 +30,7 @@
                     <div class="form  text-right">
                         <!-- Begin Form -->
                         <?php $form=$this->beginWidget('CActiveForm', array(
-                            'action' => Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid),
+                            'action' => Yii::app()->createUrl('admin/survey/sa/listquestions',['surveyid'=>$oSurvey->primaryKey]),
                             'method' => 'get',
                                 'htmlOptions'=>array(
                                     'class'=>'form-inline',
@@ -40,16 +48,16 @@
                                 <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
                                     <select name="gid" class="form-control">
                                         <option value=""><?php eT('(Any group)');?></option>
-                                        <?php foreach($model->AllGroups as $group): ?>
+                                        <?php foreach($oSurvey->groups as $group): ?>
                                             <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->gid){echo 'selected';} ?>>
-                                                <?php echo flattenText($group->questionGroupL10ns[$baselang]->group_name);?>
+                                                <?php echo flattenText($group->questionGroupL10ns[$oSurvey->language]->group_name);?>
                                             </option>
                                         <?php endforeach?>
                                     </select>
                             </div>
 
                             <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('Reset');?></a>
+                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions',['surveyid'=>$oSurvey->primaryKey]);?>" class="btn btn-warning"><?php eT('Reset');?></a>
 
                         <?php $this->endWidget(); ?>
                     </div><!-- form -->
@@ -86,7 +94,9 @@
                             array(
                                 'header' => gT('Question'),
                                 'name' => 'question',
-                                'value'=>'viewHelper::flatEllipsizeText($data->questionL10ns[$baselang]->question,true,0)',
+                                'value'=>function($data) use ($oSurvey) {
+                                        return viewHelper::flatEllipsizeText($data->questionL10ns[$oSurvey->language]->question,true,0);
+                                    },
                                 'htmlOptions' => array('class' => 'col-md-5'),
                             ),
                             array(
@@ -99,7 +109,9 @@
                             array(
                                 'header' => gT('Group'),
                                 'name' => 'group',
-                                'value'=>'$data->group->groupL10n[0]->group_name',
+                                'value'=>function($data) use ($oSurvey) {
+                                        return $data->group->questionGroupL10ns[$oSurvey->language]->group_name;
+                                    },
                             ),
                             array(
                                 'header' => gT('Mandatory'),
@@ -185,5 +197,5 @@
             $(document).trigger('actions-updated');            
         };
     ", LSYii_ClientScript::POS_BEGIN); ?>
-    
+
 <?php App()->getClientScript()->registerScript("ListQuestions-run-pagination", "bindPageSizeChange();", LSYii_ClientScript::POS_POSTSCRIPT); ?>
