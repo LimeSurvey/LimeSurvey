@@ -3438,6 +3438,8 @@ class statistics_helper {
                 $stddevarray = array_slice($grawdata,0,5,true);
                 $am = 0;
 
+                $sumitems = $grawdata[0] + $grawdata[1] + $grawdata[2] + $grawdata[3] + $grawdata[4];
+
                 //calculate arithmetic mean
                 if(isset($sumitems) && $sumitems > 0)
                 {
