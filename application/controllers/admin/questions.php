@@ -1162,7 +1162,7 @@ class questions extends Survey_Common_Action
                 }
 
 
-
+                // FIXME this does not match the L10n logic
                 foreach ($questlangs as $key=>$value) {
                     if ($value != 99) {
                         $arQuestion = new Question;
@@ -1325,6 +1325,7 @@ class questions extends Survey_Common_Action
     {
         $surveyid = sanitize_int($surveyid);
         $qid = (int) $qid;
+        $oQuestion = Question::model()->findByPk($qid);
         $rqid = $qid;
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
@@ -1350,34 +1351,9 @@ class questions extends Survey_Common_Action
                     return array('status'=>false, 'message'=>$sMessage);
                 }
             } else {
-                $row = Question::model()->findByAttributes(array('qid' => $qid))->attributes;
-                $gid = $row['gid'];
-
-                // See if there are any conditions/attributes/answers/defaultvalues for this question,
-                // and delete them now as well
-                Condition::model()->deleteAllByAttributes(array('qid' => $qid));
-                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $qid));
-                Answer::model()->deleteAllByAttributes(array('qid' => $qid));
-
-                $criteria = new CDbCriteria;
-                $criteria->addCondition('qid = :qid1 or parent_qid = :qid2');
-                $criteria->params[':qid1'] = $qid;
-                $criteria->params[':qid2'] = $qid;
-                Question::model()->deleteAll($criteria);
-
-                DefaultValue::model()->deleteAllByAttributes(array('qid' => $qid));
-                QuotaMember::model()->deleteAllByAttributes(array('qid' => $qid));
-
-                Question::model()->updateQuestionOrder($gid, $surveyid);
+                $oQuestion->delete();
+                $sMessage = gT("Question was successfully deleted.");
             }
-
-            $sMessage = gT("Question was successfully deleted.");
-
-            // remove question from lastVisited
-            $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
-            $oCriteria->compare('stg_value', $rqid, false, 'AND');
-            SettingGlobal::model()->deleteAll($oCriteria);
 
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;

@@ -805,6 +805,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         if ($aQuestionAttributes['questionclass'] === 'date') {
+            // FIXME Inexisting Question->language used here!
             $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge(self::$survey->attributes, $oQuestion->survey->languagesettings[$oQuestion->language]->attributes));
         }
 
