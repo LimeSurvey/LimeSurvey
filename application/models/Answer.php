@@ -16,6 +16,7 @@
 
 /**
  * Class Answer
+ * @property integer $aid PK
  * @property integer $qid Question id
  * @property string $code Answer code
  * @property string $answer Answer text
