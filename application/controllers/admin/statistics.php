@@ -663,7 +663,7 @@ class statistics extends Survey_Common_Action
             $summary[4] = "idL";
 
             // 1: Get list of questions from survey
-            $rows = Question::model()->getQuestionList($surveyid, $language);
+            $rows = Question::model()->getQuestionList($surveyid);
 
             //SORT IN NATURAL ORDER!
             usort($rows, 'groupOrderThenQuestionOrder');
