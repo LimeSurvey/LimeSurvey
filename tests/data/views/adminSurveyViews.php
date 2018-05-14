@@ -30,7 +30,7 @@ return [
     ['surveyEmailTemplates', ['route'=>'emailtemplates/sa/index/surveyid/{SID}']],
     ['surveyPanelIntegration', ['route'=>'survey/sa/rendersidemenulink/subaction/panelintegration/surveyid/{SID}']],
     ['surveyPlugins', ['route'=>'survey/sa/rendersidemenulink/subaction/plugins/surveyid/{SID}']],
-
+    ['surveyListQuestions', ['route'=>'survey/sa/listquestions/surveyid/{SID}']],
 
 
     // going deeper -------------------------------------
@@ -47,9 +47,7 @@ return [
     // open surveysummary again with new survey (triggers some needed session variables duh)
     ['surveySummary', ['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'496242']],
     ['editAnswerOptions', ['route'=>'questions/sa/answeroptions/surveyid/{SID}/gid/{GID}/qid/{QID}','questionType'=>Question::QT_L_LIST_DROPDOWN]],
-
-    // this seems to be a special case, opens in another tab
-    //['printableSurvey', ['route'=>'printablesurvey/sa/index/surveyid/{SID}']],
+    ['printableSurvey', ['route'=>'printablesurvey/sa/index/surveyid/{SID}']],
 
 
     // Below are views need an activated survey

@@ -514,7 +514,7 @@ class remotecontrol_handle
                     $sLanguage = $oSurvey->language;
         }
 
-        $oAllQuestions = Question::model()->getQuestionList($iSurveyID, $sLanguage);
+        $oAllQuestions = Question::model()->getQuestionList($iSurveyID);
         if (!isset($oAllQuestions)) {
                     return array('status' => 'No available data');
         }
@@ -1667,7 +1667,7 @@ class remotecontrol_handle
 
                     try {
                         $bSaveResult = $oQuestion->save(); // save the change to database
-                        Question::model()->updateQuestionOrder($oQuestion->gid, $oQuestion->language);
+                        Question::model()->updateQuestionOrder($oQuestion->gid);
                         $aResult[$sFieldName] = $bSaveResult;
                         //unset fields that failed
                         if (!$bSaveResult) {

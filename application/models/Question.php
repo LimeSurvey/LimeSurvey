@@ -19,9 +19,9 @@ if (!defined('BASEPATH')) {
 /**
  * Class Question
  *
- * @property integer $qid Question ID. Note: Primary key is qid & language columns combined
+ * @property integer $qid Question ID.
  * @property integer $sid Survey ID
- * @property integer $gid QuestionGroup ID where question is diepolayed
+ * @property integer $gid QuestionGroup ID where question is displayed
  * @property string $type
  * @property string $title Question Code
  * @property string $preg
@@ -43,6 +43,7 @@ if (!defined('BASEPATH')) {
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
  * @property QuestionType $questionType
+ * @property array $allSubQuestionIds QID-s of all question sub-questions, empty array returned if no sub-questions
  * @inheritdoc
  */
 class Question extends LSActiveRecord
@@ -228,7 +229,6 @@ class Question extends LSActiveRecord
     /**
      * Fix sort order for questions in a group
      * @param int $gid
-     * @param string $language
      * @param int $position
      */
     public function updateQuestionOrder($gid, $position = 0)
@@ -378,6 +378,62 @@ class Question extends LSActiveRecord
     }
 
     /**
+     * Deletes a question and ALL its relations (subquestions, answers, etc, etc)
+     * @return bool
+     * @throws CDbException
+     */
+    public function delete()
+    {
+        $ids = array_merge([$this->qid],$this->allSubQuestionIds);
+        $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
+
+
+        self::model()->deleteAll((new CDbCriteria())->addInCondition('parent_qid', $ids));
+        QuestionAttribute::model()->deleteAll($qidsCriteria);
+        QuestionL10n::model()->deleteAll($qidsCriteria);
+        DefaultValue::model()->deleteAll($qidsCriteria);
+        QuotaMember::model()->deleteAll($qidsCriteria);
+        $this->deleteAllAnswers();
+        $this->removeFromLastVisited();
+
+        if (parent::delete()) {
+            Question::model()->updateQuestionOrder($this->gid, $this->sid);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * remove question from lastVisited
+     */
+    public function removeFromLastVisited(){
+        $oCriteria = new CDbCriteria();
+        $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
+        $oCriteria->compare('stg_value', $this->qid, false, 'AND');
+        SettingGlobal::model()->deleteAll($oCriteria);
+    }
+
+    /**
+     * Delete all question and its subQuestion Answers
+     */
+    private function deleteAllAnswers()
+    {
+        $ids = array_merge([$this->qid],$this->allSubQuestionIds);
+        $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
+
+        $answerIds = [];
+        $answers = Answer::model()->findAll($qidsCriteria);
+        if (!empty($answers)) {
+            foreach ($answers as $answer) {
+                $answerIds[] = $answer->aid;
+            }
+        }
+        $aidsCriteria = (new CDbCriteria())->addInCondition('aid', $answerIds);
+        AnswerL10n::model()->deleteAll($aidsCriteria);
+        Answer::model()->deleteAll($qidsCriteria);
+    }
+
+    /**
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
      * @param string $fields
      * @param mixed $condition
@@ -392,7 +448,7 @@ class Question extends LSActiveRecord
     /**
      * @param integer $surveyid
      * @param string $language
-     * @return array
+     * @return Question[]
      */
     public function getQuestionList($surveyid)
     {
@@ -453,14 +509,6 @@ class Question extends LSActiveRecord
     }
 
 
-    /**
-     * Return all group of the active survey
-     * Used to render group filter in questions list
-     */
-    public function getAllGroups()
-    {
-        return QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);
-    }
 
     public function getbuttons()
     {
@@ -470,7 +518,7 @@ class Question extends LSActiveRecord
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
         $editurl     = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
-        $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
+        $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->survey->language.'" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Edit question").'" href="'.$editurl.'" role="button"><span class="fa fa-pencil" ></span></a>';
@@ -762,6 +810,20 @@ class Question extends LSActiveRecord
             $model->question = $this;
         }
         return $model;
+    }
+  
+    /**
+     * @return array
+     */
+    public function getAllSubQuestionIds()
+    {
+        $result = [];
+        if (!empty($this->subquestions)) {
+            foreach ($this->subquestions as $subquestion) {
+                $result[] = $subquestion->qid;
+            }
+        }
+        return $result;
     }
 
 }

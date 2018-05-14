@@ -24,7 +24,11 @@
         <title>{{print.sitename}} - {{ aSurveyInfo.surveyls_title }}</title>
     </head>
     <body>
-        <div id="limesurvey">
+
+    {# DO NOT REMOVE This is for automated testing to validate we see that page #}
+    <x-test id="action::printableSurvey"></x-test>
+
+    <div id="limesurvey">
             <h1>{{ aSurveyInfo.surveyls_title }}</h1>
 
             <div class="survey-description">{{ aSurveyInfo.surveyls_description }}</div>
