@@ -1640,6 +1640,7 @@ class questions extends Survey_Common_Action
         $surveyid           = (int) Yii::app()->request->getParam('sid', 0);
         $qid                = (int) Yii::app()->request->getParam('qid', 0);
         $type               = Yii::app()->request->getParam('question_type');
+        $question_template  = Yii::app()->request->getParam('question_template', '');
         $oSurvey = Survey::model()->findByPk($surveyid);
 
         if ($oSurvey === null) {
@@ -1652,11 +1653,37 @@ class questions extends Survey_Common_Action
             );
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
-        uasort($aAttributesWithValues, 'categorySort');
+        // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
+        if (!empty($question_template) && $question_template !== 'core') {
+                $questionTypeList = QuestionTemplate::getTypeToFolder();
+                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($question_template, $questionTypeList[$type]);
+                // CHECK TO SEE IF ARRAY CONTAINS INDEX 0, IF NOT - INDEX 0 WOULD BE CREATED ( OTHERWISE DATA MERGE WOULD FAIL IF INDEX ÍS MISSING )
+                if (!array_key_exists('0', $themeAttributes)){$themeTemp[0] = $themeAttributes; $themeAttributes = $themeTemp;}
+                
+                foreach ($themeAttributes as $key =>$attribute) {
+                    // INSERTING EACH OF THIS KEYS TO THE ARRAY IF KEYS ARE MISSING
+                    if (empty($attribute['name'])){$attribute['name'] = 'default_theme_attribute_name';}
+                    if (empty($attribute['readonly'])){$attribute['readonly'] = '';}
+                    if (empty($attribute['readonly_when_active'])){$attribute['readonly_when_active'] = '';}
+                    if (empty($attribute['value'])){$attribute['value'] = '';}
+                    if (empty($attribute['i18n'])){$attribute['i18n'] = '';}
+                    if (empty($attribute['category'])){$attribute['category'] = 'Display Theme Options';}
+                    if (empty($attribute['sortorder'])){$attribute['sortorder'] = '';}
+                    if (empty($attribute['help'])){$attribute['help'] = '';}
+                    if (empty($attribute['caption'])){$attribute['caption'] = '';}
+                    if (empty($attribute['inputtype'])){$attribute['inputtype'] = '';}
+                    $aAttributesWithValues[$attribute['name']] = $attribute;
+                }              
+        }
 
+        uasort($aAttributesWithValues, 'categorySort');
         $aAttributesPrepared = array();
         foreach ($aAttributesWithValues as $aAttribute) {
-            if ($aAttribute['i18n'] == false) {
+            // SET QUESTION TEMPLATE FORM ATTRIBUTES WHEN $question_template VARIABLE IS SET
+            if (!empty($question_template) && isset($aAttribute['name']) && $aAttribute['name'] == 'question_template') {
+                $aAttribute['value'] = $question_template;
+                $aAttributesPrepared[] = $aAttribute;
+            } elseif (isset($aAttribute['i18n']) && $aAttribute['i18n'] == false) {
                 $aAttributesPrepared[] = $aAttribute;
             } else {
                 foreach ($aLanguages as $sLanguage) {
@@ -1671,7 +1698,9 @@ class questions extends Survey_Common_Action
                     $aAttributesPrepared[] = $aAttributeModified;
                 }
             }
+
         }
+
         $aData = [];
         $aData['bIsActive'] = ($oSurvey->active == 'Y');
         $aData['attributedata'] = $aAttributesPrepared;

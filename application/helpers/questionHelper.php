@@ -13,6 +13,7 @@
 */
 namespace LimeSurvey\Helpers;
 use QuestionAttribute;
+use Yii;
 /**
  * General helper class for question + question setting system
  */
@@ -1620,6 +1621,21 @@ class questionHelper
             }
         }
         return self::$questionAttributesSettings[$sType];
+    }
+
+    /**
+     * Return the question Theme custom attributes values
+     * @param $sQuestionThemeName: question theme name
+     * @return array : the attribute settings for this question type
+     */
+    public static function getQuestionThemeAttributeValues($sQuestionThemeName = null, $question_template = null)
+    {
+        libxml_disable_entity_loader(false);
+
+        $xml_config = simplexml_load_file(Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml');
+        $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), TRUE);
+        libxml_disable_entity_loader(true); 
+        return $custom_attributes['attribute'];
     }
 
 }
