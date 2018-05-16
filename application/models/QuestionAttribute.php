@@ -313,4 +313,26 @@ class QuestionAttribute extends LSActiveRecord
     {
         return $this->question->survey;
     }
+
+    /**
+     * Get default settings for an attribut
+     * @return array
+     */
+    public static function getDefaultSettings()
+    {
+        return array(
+            "name" => null,
+            "caption" => '',
+            "inputtype" => "text",
+            "options" => null,
+            "category" => gT("Attribute"),
+            "default" => '',
+            "help" => '',
+            "sortorder" => 1000,
+            "i18n"=> false,
+            "readonly" => false,
+            "readonly_when_active" => false,
+            "expression"=> null,
+        );
+    }
 }

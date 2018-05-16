@@ -1,0 +1,69 @@
+{#
+
+/**
+ * Array by column
+ *
+ * @var $anscount
+ * @var $cellwidth
+ */
+ #}
+ <!-- Array by column -->
+
+ <!-- answer -->
+<table class="{{ coreClass }} table table-bordered table-col-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <colgroup>
+        <col class="col-answers" style='width: {{ answerwidth }}%;' />
+        {% for i, question in aQuestions %}
+            <col
+                class="answers-list radio-list {% if i % 2 %}ls-odd{% else %}ls-even{% endif %} {% if question.errormandatory %} ls-error-mandatory has-error{% endif %}"
+                style='width: {{ cellwidth }}%;'
+                role="radiogroup"
+                aria-labelledby="answertext{{ question.myfname }}"
+                >
+                <!-- @todo : control if radiogroup can be used in col : https://www.w3.org/TR/wai-aria/roles -->
+        {% endfor %}
+    </colgroup>
+    <thead><!-- The global concept is hard to understand : must control if aria-labelledby for radiogroup is OK and if we can add aria-hidden here -->
+        <tr class='ls-heading'><!-- unsure for ls-heading class here -->
+            <td></td>
+            {% for i, question in aQuestions %}
+                <th id="answertext{{ question.myfname }}" class="answertext control-label {% if question.errormandatory %} has-error error-mandatory{% endif %}">
+                    {{ question.question }}
+                </th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for ansrow in labels %}
+            <tr id="javatbd{{ ansrow.code }}" class="answers-list">
+                <th id="label-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} sr-only{% endif %}">
+                    {{ ansrow.answer }}
+                </th>
+                {% for i, ld in anscode %}
+                    <td class="answer_cell_{{ ld }} answer-item radio-item">
+                            <input
+                                type="radio"
+                                name="{{ aQuestions[i].myfname }}"
+                                value="{{ ansrow.code }}"
+                                id="answer{{ aQuestions[i].myfname }}-{{ ansrow.code }}"
+                                {{ checked[ansrow.code][ld] }}
+                                 />
+                                <label class="ls-label-xs-visibility " for="answer{{ aQuestions[i].myfname }}-{{ ansrow.code }}">
+                                    {{ aQuestions[i].question }}
+                                </label>
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% for i, ld in anscode %}
+    {{ C.Html.hiddenField("java"~aQuestions[i].myfname,aQuestions[i].myfname_value,({
+        'id' : "java"~aQuestions[i].myfname,
+        'disabled' : true,
+    }))
+    }}
+{% endfor %}
+
+<!-- end of answer -->

@@ -1,0 +1,18 @@
+{#
+/**
+ * Optional td item for total, grand total, etc
+ * Define the width
+ *
+ * @var $empty
+ */
+#}
+<!-- col_total -->
+<td class="total information-item">
+    {% if empty %}
+        &nbsp;
+    {% else %}
+        <label class="sr-only">{{ gT("Total") }}</label>
+        <input title="[[ROW_NAME]] total" size="{{ inputsize }}" value="" type="text" disabled="disabled" class="disabled form-control"  data-number='1' />
+    {% endif %}
+</td>
+

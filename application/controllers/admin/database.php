@@ -1046,7 +1046,7 @@ class database extends Survey_Common_Action
                         'updated'=> $updatedFields,
                         'DEBUG' => ['POST'=>$_POST,
                                     'reloaded'=>$oSurvey->attributes,
-                                    'aURLParams' => $aURLParams,
+                                    'aURLParams' => isset($aURLParams) ? $aURLParams : '',
                                     'initial'=>isset($aOldAttributes) ? $aOldAttributes : '',
                                     'afterApply'=>isset($aAfterApplyAttributes) ? $aAfterApplyAttributes : '']
                     ],

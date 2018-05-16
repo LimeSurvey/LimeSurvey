@@ -98,7 +98,7 @@ var LSSlider = function (options) {
             value = value || position;
             sliderObject.setValue(position, true, true);
             elementObject.val(value.toString().replace('.', separator)).trigger('keyup');
-            writeToRootElement(displayValue);
+            writeToRootElement(value);
             triggerChanges();
         },
 
@@ -119,7 +119,8 @@ var LSSlider = function (options) {
             return sliderSettings;
         },
         bindResetAction = function () {
-            $('#answer' + elementName + '_resetslider').on('click', function (e) {
+            console.ls.log('wiring reset slider:', '#answer' + rootElementName + '_resetslider');
+            $('#answer' + rootElementName + '_resetslider').on('click', function (e) {
                 e.preventDefault();
                 /* Position slider button at position */
                 listItemObject.find('.slider-container').removeClass('slider-touched').addClass('slider-reset');

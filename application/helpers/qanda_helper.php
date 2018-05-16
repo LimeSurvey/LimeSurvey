@@ -742,6 +742,7 @@ function do_boilerplate($ia)
 
     $answer .= doRender('/survey/questions/answer/boilerplate/answer', array(
         'ia'=>$ia,
+        'name'=>$ia[1],
         'basename'=>$ia[1], /* is this needed ? */
         'coreClass'=>'ls-answers hidden',
         ), true);

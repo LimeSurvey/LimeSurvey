@@ -1,0 +1,40 @@
+{#
+/**
+ * @var $myfname
+ * @var $answertext
+ * @var $value
+ * @var $error
+ * @var $checkconditions
+ * @var $options
+ * @var $thRight
+ * @var $tdRight
+ * @var $right_exists
+ * @var $answertextright
+ */
+#}
+<tr id="javatbd{{ myfname }}" class="question-item answer-item dropdown-item {% if odd %} ls-odd {% else %} ls-even{% endif %}{% if error %} ls-error-mandatory has-error{% endif %}" >
+    <th class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
+        <label for="answer{{ myfname }}">
+            {{ answertext }}
+        </label>
+        
+        {# Value for expression manager javascript (use id) ; no need to submit #}
+        {{ C.Html.hiddenField("java"~myfname,value,({
+            'id' : "java"~myfname,
+            'disabled' : true,
+        }))
+        }}
+    </th>
+    <td>
+        <select class="form-control" name="{{ myfname }}" id="answer{{ myfname }}">
+            {% for option in options %}
+                <option value="{{ option.value }}" {{ option.selected }}>
+                    {{ option.text }}
+                </option>
+            {% endfor %}
+        </select>
+    </td>
+    {% if right_exists %}
+        <th class='answertextright information-item'>{{ answertextright }}</th>
+    {% endif %}
+</tr>

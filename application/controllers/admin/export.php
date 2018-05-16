@@ -221,11 +221,14 @@ class export extends Survey_Common_Action
                 $exportData[$key] = array(
                     'onclick' => $event->get('onclick'),
                     'label'   => $event->get('label'),
-                    'checked' => $event->get('default', false),
                     'tooltip' => $event->get('tooltip', null)
-                    );
+                );
+                if($event->get('default', false)) {
+                    $default = $event->get('label');
+                }
             }
             $data['exports'] = $exportData; // Pass available exports
+            $data['defaultexport'] = $default;
             $data['headexports'] = array(
                 'code'=>array('label'=>gT("Question code"), 'help'=>null, 'checked'=>false),
                 'abbreviated'=>array('label'=>gT("Abbreviated question text"), 'help'=>null, 'checked'=>false),

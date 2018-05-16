@@ -1,0 +1,35 @@
+{#
+ * Answer cell
+ *
+ * @var $ld
+ * @var $myfname2
+ * @var $labelText $labelans[$thiskey]
+ * @var $kpclass
+ * @var $maxlength
+ * @var $inputwidth
+ * @var $value
+#}
+
+<!-- answer_td -->
+<td class="answer_cell_{{ ld }} answer-item text-item{% if error %} has-error{% endif %}">
+    <label class="ls-label-xs-visibility" for="answer{{ myfname2 }}">
+        {{ labelText }}
+    </label>
+    {# Value for expression manager javascript (use id) ; no need to submit #}
+    {{ C.Html.textField(myfname2,value,({
+        'id' : "answer"~myfname2,
+        'class' : "form-control "~kpclass,
+        'size' : (inputsize ? inputsize : null),
+        'maxlength' : (maxlength ? maxlength : null),
+        'data-number' : isNumber,
+        'data-integer' : isInteger,
+    }))
+    }}
+    {# Value for expression manager is needed here ? Unsure (20170518) #}
+    {{ C.Html.hiddenField("java"~myfname2,value,({
+        'id' : "java"~myfname2,
+        'disabled' : true,
+    }))
+    }}
+</td>
+<!-- end of answer_td -->

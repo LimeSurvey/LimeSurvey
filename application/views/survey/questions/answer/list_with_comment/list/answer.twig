@@ -1,0 +1,50 @@
+{#
+/**
+ * List with comment, list style, Html
+ *
+ * @var $sRows         : the list of radio, generated with the view answer_row.php
+ *
+ * @var $id
+ * @var $hint_comment
+ * @var $kpclass
+ * @var $name
+ * @var $tarows
+ * @var $has_comment_saved
+ * @var $comment_saved
+ * @var $java_name
+ * @var $java_id
+ * @var $java_value
+ */
+#}
+<!-- List with comment, list style, -->
+
+<!-- answer -->
+<div class="{{ coreClass }} row" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <div class="answers-list radio-list col-sm-6 col-xs-12">
+        <ul class="list-unstyled" role="radiogroup">
+                {# rows/row.php #}
+                {{ sRows }}
+        </ul>
+        {# Value for expression manager javascript (use id) ; no need to submit #}
+        {{ C.Html.hiddenField(java_name,java_value,({
+            'id' : java_id,
+            'disabled' : true,
+            }))
+        }}
+    </div>
+
+    <div class="form-group answer-item text-item col-sm-6 col-xs-12">
+        <label class="control-label" for="{{ id }}">
+            {{ hint_comment }}:
+        </label>
+        {{ C.Html.textArea(name,comment_saved,({
+            'id' : id,
+            'class' : "form-control"~kpclass,
+            'rows' : tarows
+        }))
+        }}
+    </div>
+</div>
+
+
+<!-- end of answer -->

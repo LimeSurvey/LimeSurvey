@@ -1,0 +1,27 @@
+{#
+/**
+ * Ranking question, item Html
+ * @var $value
+ * @var $selected
+ * @var $classes
+ * @var $id
+ * @var $optiontext
+ */
+#}
+
+<li class="select-item form-group">
+    <label for="answer{{ myfname }}" class="control-label col-sm-4">
+        {{ labeltext }}
+    </label>
+    <div class="col-sm-8">
+        <select  class='form-control' name="{{ myfname }}" id="answer{{ myfname }}">
+            {% for option in options %}
+                <option value="{{ option.value }}" {{ option.selected }} class='{{ option.classes }}'>
+                    {{ option.optiontext }}
+                </option>
+            {% endfor %}
+        </select>
+        <!-- Hidden form: maybe can be replaced with ranking.js -->
+        <input type="hidden" id="java{{ myfname }}" disabled="disabled" value="{{ thisvalue }}"/>
+    </div>
+</li>

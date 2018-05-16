@@ -305,11 +305,14 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                             </div>
                         </div>
                     </div>
+                    <hr/>
                     <?php if (!$copying): ?>
+                        <div id="container-advanced-question-settings" class="custom custom-margin top-5">
+                            <!-- Advanced settings -->
+                        </div>
                         <div class="loader-advancedquestionsettings text-center">
                             <span class="fa fa-refresh" style="font-size:3em;" aria-hidden='true'></span>
                         </div>
-                        <!-- Advanced settings -->
                     <?php endif; ?>
                 </div>
             </div>

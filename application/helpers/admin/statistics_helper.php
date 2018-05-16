@@ -914,20 +914,20 @@ class statistics_helper
                 //other databases (MySQL, Postgres)
                 else {
                     //standard deviation
-                    $query = "SELECT STDDEV(".Yii::app()->db->quoteColumnName($fieldname).") as stdev";
+                    $query = "SELECT STDDEV(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(10,6))) as stdev";
                 }
 
                 //sum
-                $query .= ", SUM(".Yii::app()->db->quoteColumnName($fieldname)."*1) as sum";
+                $query .= ", SUM(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(10,6))) as sum";
 
                 //average
-                $query .= ", AVG(".Yii::app()->db->quoteColumnName($fieldname)."*1) as average";
+                $query .= ", AVG(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(10,6))) as average";
 
                 //min
-                $query .= ", MIN(".Yii::app()->db->quoteColumnName($fieldname)."*1) as minimum";
+                $query .= ", MIN(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(10,6))) as minimum";
 
                 //max
-                $query .= ", MAX(".Yii::app()->db->quoteColumnName($fieldname)."*1) as maximum";
+                $query .= ", MAX(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(10,6))) as maximum";
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
 
                 //special treatment for MS SQL databases
@@ -3069,6 +3069,8 @@ class statistics_helper
                 $stddevarray = array_slice($grawdata, 0, 5, true);
                 $am = 0;
 
+                $sumitems = $grawdata[0] + $grawdata[1] + $grawdata[2] + $grawdata[3] + $grawdata[4];
+                
                 //calculate arithmetic mean
                 if (isset($sumitems) && $sumitems > 0) {
 

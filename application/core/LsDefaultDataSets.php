@@ -221,9 +221,9 @@ class LsDefaultDataSets
         $returnArray = [
             [
             'name' => 'default',
-            'title' => 'Default Survey Group',
+            'title' => 'Default',
             'template' =>  null,
-            'description' => 'LimeSurvey core default survey group',
+            'description' => 'Default survey group',
             'sortorder' => 0,
             'owner_uid' => 1,
             'parent_id' => null,

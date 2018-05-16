@@ -104,8 +104,10 @@ var QuestionFunctions = function () {
 
         init = function () {
 
-            updatequestionattributes();
-            $('#question_type').on('change', updatequestionattributes);
+            updatequestionattributes('');
+            $('#question_type').on('change', updatequestionattributes(''));
+            $(document).on('change', '#question_template', function(){updatequestionattributes($('#question_template').val());});
+
             if(selectormodeclass == 'default' || selectormodeclass == 'full'){
                 //bind advanced selector
                 $('#selector__modal_select-question-type').on('hide.bs.modal', updatequestionattributes);
@@ -159,7 +161,7 @@ $(document).on('ready  pjax:scriptcomplete', function () {
 });
 
 
-function updatequestionattributes() {
+function updatequestionattributes(question_template_name) {
     var type = $('#question_type').val();
     OtherSelection(type);
 
@@ -174,14 +176,47 @@ function updatequestionattributes() {
         'sid': $('input[name=sid]').val()
     };
 
+    if (Object.prototype.toString.call(question_template_name) == '[object String]'){
+        postData['question_template'] = question_template_name;
+    }
+
     $.ajax({
         url: attr_url,
         data: postData,
         method: 'POST',
         success: function (data) {
-            $('.loader-advancedquestionsettings').before(data);
+            $('#container-advanced-question-settings').html(data);
             $('.loader-advancedquestionsettings').addClass("hidden");
-            $('label[data-help]').limeHelper('init', {onHover: false, helpIcon: '<i class="fa fa-question-circle text-primary selector__lshelp lshelp-help-icon"></i>'});
+            if(question_template_name) {
+                $('#collapse-cat1').collapse('toggle');
+            }
+
+            $('label[title]').qtip({
+                style: {
+                    name: 'cream',
+                    tip: true,
+                    color: '#111111',
+                    border: {
+                        width: 1,
+                        radius: 5,
+                        color: '#EADF95'
+                    }
+                },
+                position: {
+                    adjust: {
+                        screen: true,
+                        scroll: true
+                    },
+                    corner: {
+                        target: 'bottomRight'
+                    }
+                },
+                show: {
+                    effect: {
+                        length: 50
+                    }
+                }
+            });
             renderBootstrapSwitch();
         }
     });

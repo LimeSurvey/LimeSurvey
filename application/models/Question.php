@@ -312,18 +312,13 @@ class Question extends LSActiveRecord
                 if ($oQuestionTemplate->bHasCustomAttributes) {
                     // Add the custom attributes to the list
                     foreach ($oQuestionTemplate->oConfig->custom_attributes->attribute as $oCustomAttribute) {
-
                         $sAttributeName = (string) $oCustomAttribute->name;
                         $aCustomAttribute = json_decode(json_encode((array) $oCustomAttribute), 1);
-
-                        if (!isset($aCustomAttribute['i18n'])) {
-                            $aCustomAttribute['i18n'] = false;
-                        }
-
-                        if (!isset($aCustomAttribute['readonly'])) {
-                            $aCustomAttribute['readonly'] = false;
-                        }
-
+                        $aCustomAttribute = array_merge(
+                            QuestionAttribute::getDefaultSettings(),
+                            array("category"=>gT("Template")),
+                            $aCustomAttribute
+                        );
                         $aAttributeNames[$sAttributeName] = $aCustomAttribute;
                     }
                 }
