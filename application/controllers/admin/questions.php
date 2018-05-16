@@ -1664,6 +1664,7 @@ class questions extends Survey_Common_Action
                     // INSERTING EACH OF THIS KEYS TO THE ARRAY IF KEYS ARE MISSING
                     if (empty($attribute['name'])){$attribute['name'] = 'default_theme_attribute_name';}
                     if (empty($attribute['readonly'])){$attribute['readonly'] = '';}
+                    if (empty($attribute['default'])){$attribute['default'] = '';}
                     if (empty($attribute['readonly_when_active'])){$attribute['readonly_when_active'] = '';}
                     if (empty($attribute['value'])){$attribute['value'] = '';}
                     if (empty($attribute['i18n'])){$attribute['i18n'] = '';}
