@@ -1055,6 +1055,9 @@ class questions extends Survey_Common_Action
         }
         $aData['eqrow'] = $eqrow;
         $aData['groupid'] = $eqrow['gid'];
+        $qid = null;
+        $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid)['question_template'];
+        $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
 
         $sumresult1 = Survey::model()->findByPk($surveyid);
         if (is_null($sumresult1)) {
