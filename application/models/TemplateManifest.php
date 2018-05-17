@@ -259,7 +259,6 @@ class TemplateManifest extends TemplateConfiguration
     public function getButtons()
     {
         $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->sTemplateName));
-        $sLoadUrl    = Yii::app()->getController()->createUrl('admin/themeoptions/sa/importmanifest/', array("templatename"=>$this->sTemplateName));
         $sDeleteUrl  = Yii::app()->getController()->createUrl('admin/themeoptions/sa/deleteTemplate/', array("templatename"=>$this->sTemplateName));
 
         // TODO: load to DB
@@ -275,13 +274,14 @@ class TemplateManifest extends TemplateConfiguration
 
         $sLoadLink = '';
 
-        $sLoadLink .= "<a
-                id='template_options_link_".$this->sTemplateName."'
-                href='".$sLoadUrl."'
+        $sLoadLink .= CHtml::form( array("/admin/themeoptions/sa/importmanifest/"), 'post',array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
+                "<input type='hidden' name='templatename' value='".$this->sTemplateName."'>
+                <button id='template_options_link_".$this->sTemplateName."'
                 class='btn btn-default btn-block'>
                     <span class='fa fa-download text-warning'></span>
                     ".gT('Install')."
-                </a>";
+                </button>
+                </form>";
 
         $sDeleteLink = "<a
                 id='template_options_link_".$this->sTemplateName."'
