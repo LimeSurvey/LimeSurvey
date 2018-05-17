@@ -111,6 +111,11 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         if (file_exists($requiredView.'.twig')) {
             // We're not using the Yii Theming system, so we don't use parent::renderFile
             // current controller properties will be accessible as {{ this.property }}
+            
+            //  aData and surveyInfo variables are accessible from question type twig files
+            $aData['aData'] = $aData;
+            $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
+            $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
             $aData['this'] = Yii::app()->getController();
             $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
             $template = $this->_twig->loadTemplate($sView.'.twig')->render($aData);
