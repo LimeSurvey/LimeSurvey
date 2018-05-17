@@ -110,7 +110,7 @@ var QuestionFunctions = function () {
 
             if(selectormodeclass == 'default' || selectormodeclass == 'full'){
                 //bind advanced selector
-                $('#selector__modal_select-question-type').on('hide.bs.modal', updatequestionattributes);
+                $('#selector__modal_select-question-type').on('hide.bs.modal', function(){updatequestionattributes(''); updateQuestionTemplateOptions();});
                 $('#selector__modal_select-question-type').on('show.bs.modal', function () {
                     var question_class = questionTypeArray[$('#question_type').val()].class;
                     $('#selector__question-type-select-modal_question-type-' + question_class).addClass('mark-as-selected').trigger('click').closest('div.panel-collapse').addClass('in');
@@ -218,6 +218,21 @@ function updatequestionattributes(question_template_name) {
                 }
             });
             renderBootstrapSwitch();
+        }
+    });
+}
+
+function updateQuestionTemplateOptions() {
+    var type = $('#question_type').val();
+    $.ajax({
+        url: get_question_template_options_url,
+        data: {'type': type},
+        method: 'POST',
+        success: function (data) {
+            $("#question_template").html(""); 
+            $.each(data, function (key, title) {
+                $("#question_template").append("<option value="+key+">"+title+"</option>");
+            });
         }
     });
 }

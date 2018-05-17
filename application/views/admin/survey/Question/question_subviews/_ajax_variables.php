@@ -5,6 +5,7 @@
 
 App()->getClientScript()->registerScript("EditQuestionView_basic_variables" ,"
     var attr_url = '".$this->createUrl('admin/questions', array('sa' => 'ajaxquestionattributes'))."';
+    var get_question_template_options_url = '".$this->createUrl('admin/questions', array('sa' => 'ajaxGetQuestionTemplateList'))."';
     var imgurl = '".Yii::app()->getConfig('imageurl')."';
     var validateUrl = '".$sValidateUrl."';
     var questionTypeArray = ".$qTypeOutput.";

@@ -1216,6 +1216,8 @@ class questions extends Survey_Common_Action
             $aData['oQuestion'] = $oQuestion;
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
+            $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid)['question_template'];
+            $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
 
             if (!$adding) {
                 $criteria = new CDbCriteria;
@@ -1570,6 +1572,7 @@ class questions extends Survey_Common_Action
                     // INSERTING EACH OF THIS KEYS TO THE ARRAY IF KEYS ARE MISSING
                     if (empty($attribute['name'])){$attribute['name'] = 'default_theme_attribute_name';}
                     if (empty($attribute['readonly'])){$attribute['readonly'] = '';}
+                    if (empty($attribute['default'])){$attribute['default'] = '';}
                     if (empty($attribute['readonly_when_active'])){$attribute['readonly_when_active'] = '';}
                     if (empty($attribute['value'])){$attribute['value'] = '';}
                     if (empty($attribute['i18n'])){$attribute['i18n'] = '';}
@@ -1581,8 +1584,8 @@ class questions extends Survey_Common_Action
                     $aAttributesWithValues[$attribute['name']] = $attribute;
                 }              
         }
-
         uasort($aAttributesWithValues, 'categorySort');
+        unset($aAttributesWithValues['question_template']);
         $aAttributesPrepared = array();
         foreach ($aAttributesWithValues as $aAttribute) {
             // SET QUESTION TEMPLATE FORM ATTRIBUTES WHEN $question_template VARIABLE IS SET
@@ -1757,7 +1760,7 @@ class questions extends Survey_Common_Action
         echo CJSON::encode($oQuestion->getErrors());
         Yii::app()->end();
     }
-    /**
+     /**
      * Todo : update whole view to use CActiveForm
      */
 #    protected function performAjaxValidation($model)
@@ -1767,7 +1770,22 @@ class questions extends Survey_Common_Action
 #            echo CActiveForm::validate($model);
 #            Yii::app()->end();
 #        }
-#    }
+#    }    
+
+    /**
+     * @param string $question_type
+     * @return string JSON data
+     */
+    public function ajaxGetQuestionTemplateList()
+    {
+        $type = Yii::app()->request->getParam('type');
+        $questionTemplateList = \QuestionTemplate::getQuestionTemplateList($type);
+        if (YII_DEBUG)
+        header('Content-type: application/json');
+        echo CJSON::encode($questionTemplateList);
+        Yii::app()->end();
+    }
+
     /**
      * Renders template(s) wrapped in header and footer
      *
