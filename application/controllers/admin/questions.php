@@ -1005,6 +1005,9 @@ class questions extends Survey_Common_Action
         }
         $aData['oQuestion'] = $oQuestion;
         $aData['groupid'] = $oQuestion->gid;
+        $qid = null;
+        $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid)['question_template'];
+        $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
 
         $sumresult1 = $survey;
         if (is_null($sumresult1)) {
