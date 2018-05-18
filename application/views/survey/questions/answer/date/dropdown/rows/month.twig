@@ -16,7 +16,7 @@
         {{ gT('Month') }}
     </option>
     {% for i in 1..12 %}
-        <option value="{{ sprintf('%02d', i) }}" {% if i is same as(currentmonth) %} 'selected' {% endif %} >
+        <option value="{{ sprintf('%02d', i) }}" {% if i is same as (intval(currentmonth)) %} selected {% endif %} >
             {{ montharray[(i-1)] }}
         </option>
     {% endfor %}
