@@ -71,7 +71,14 @@ class UserAction extends Survey_Common_Action
 
         $aData['title_bar']['title'] = gT('User administration');
         $model = new User();
+
+        // Search
+        if (isset($_GET['User']['searched_value'])){
+            $model->searched_value = $_GET['User']['searched_value'];
+        }
+
         $aData['model'] = $model;
+        $aData['formUrl'] = 'admin/user/sa/index';
         $this->_renderWrappedTemplate('user', 'editusers', $aData);
     }
 
