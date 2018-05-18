@@ -1006,8 +1006,8 @@ class questions extends Survey_Common_Action
         $aData['oQuestion'] = $oQuestion;
         $aData['groupid'] = $oQuestion->gid;
         $qid = null;
-        $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid)['question_template'];
-        $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
+        $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $oQuestion->type, $surveyid)['question_template'];
+        $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($oQuestion->type);
 
         $sumresult1 = $survey;
         if (is_null($sumresult1)) {
@@ -1200,9 +1200,9 @@ class questions extends Survey_Common_Action
 
             if ($adding) {
                 $oQuestion = new Question;
-//                $oQuestion->language'] = $baselang;
-    //               $oQuestion->question'] = '';
-    //               $oQuestion->help'] = '';
+                // $oQuestion->language'] = $baselang;
+                // $oQuestion->question'] = '';
+                // $oQuestion->help'] = '';
                 $oQuestion->type = 'T';
                 $oQuestion->lid = 0;
                 $oQuestion->lid1 = 0;
@@ -1211,16 +1211,15 @@ class questions extends Survey_Common_Action
                 $oQuestion->mandatory = 'N';
                 $oQuestion->preg = '';
                 $oQuestion->relevance = 1;
-                $oQuestion->group_name = '';                
+                $oQuestion->group_name = '';
             }
+
             $aData['conditioncount'] = Condition::Model()->count("qid=:qid", array('qid' => $qid));
-
-
             $aData['oQuestion'] = $oQuestion;
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
-            $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid)['question_template'];
-            $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
+            $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $oQuestion->type, $surveyid)['question_template'];
+            $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($oQuestion->type);
 
             if (!$adding) {
                 $criteria = new CDbCriteria;
