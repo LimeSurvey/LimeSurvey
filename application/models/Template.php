@@ -631,6 +631,28 @@ class Template extends LSActiveRecord
     }
 
     /**
+     * Retrieves a list of deprecated templates (the templates in upload/templates/)
+     */
+    static public function getDeprecatedTemplates()
+    {
+        $usertemplaterootdir     = Yii::app()->getConfig("uploaddir").DIRECTORY_SEPARATOR."templates";
+        $aTemplateList = array();
+
+        if ( (is_dir($usertemplaterootdir)) && $usertemplaterootdir && $handle = opendir($usertemplaterootdir)){
+            while (false !== ($file = readdir($handle))){
+                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn"){
+                    $aTemplateList[$file]['directory']  = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                    $aTemplateList[$file]['name']       = $file;
+                }
+            }
+            closedir($handle);
+        }
+        ksort($aTemplateList);
+
+        return $aTemplateList;
+    }
+
+    /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
