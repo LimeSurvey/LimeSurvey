@@ -35,6 +35,24 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.7.2 (build 180508) to 3.7.3 (build 180516) May 16, 2018
+-Fixed issue #13599: Table user_in_groups not cleaned (#1047) (Tõnis Ormisson)
+-Fixed issue: Postgres has no DOUBLE database type (Olle Haerstedt)
+-Fixed issue: Semicolon in twig statement (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han 
+#Updated translation: Dutch by Han 
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hungarian by kkd 
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by fermacedo, femariso, marciojv, holch, mauriciofurtado
+#Updated translation: Romanian by cdorin
+
 Changes from 3.7.1 (build 180424) to 3.7.2 (build 180508) Mai 08, 2018
 -Fixed issue #13361: .twig files not accessible in Theme Editor when extending bootswatch (LouisGac)
 -Fixed issue #13634: Internal Server Error on CDbCommand when edit user (Denis Chenu)

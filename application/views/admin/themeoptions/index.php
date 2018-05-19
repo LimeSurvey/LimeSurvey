@@ -68,6 +68,45 @@ $this->renderPartial('super/fullpagebar_view', array(
                         </div>
                     </div>
                 <?php endif;?>
+
+                <!-- Deprecated Themes -->
+                <?php $aDeprecatedThemes =  Template::getDeprecatedTemplates(); ?>
+                <?php if (count( $aDeprecatedThemes ) > 0 ):?>
+                    <h3><?php eT('Deprecated survey themes:'); ?></h3>
+                    <div class="row">
+                        <div class="col-sm-12 content-right">
+                            <div id="deprecatedThemes" class="grid-view">
+                                <table class="items table">
+                                    <thead>
+                                        <tr>
+                                            <th><?php eT('Name'); ?></th>
+                                            <th><?php eT('Export'); ?></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <?php foreach ($aDeprecatedThemes as $aDeprecatedTheme):?>
+                                            <tr class="odd">
+                                                <td class="col-md-10"><?php echo $aDeprecatedTheme['name']; ?></td>
+                                                <td class="col-md-2">
+                                                    <?php if(Permission::model()->hasGlobalPermission('templates','export') && function_exists("zip_open")):?>
+                                                        <a class="btn btn-default" id="button-export" href="<?php echo $this->createUrl('admin/themes/sa/deprecatedtemplatezip/templatename/' . $aDeprecatedTheme['name']) ?>" role="button">
+                                                            <span class="icon-export text-success"></span>
+                                                            <?php eT("Export"); ?>
+                                                        </a>
+                                                    <?php endif;?>
+                                                </td>
+                                            </tr>
+
+                                        <?php endforeach;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif;?>
+
+
             </div>
         </div>
         <div id="adminthemes" class="tab-pane">

@@ -1,0 +1,25 @@
+{#
+/**
+ * List radio Html : item 'no answer' row
+ *
+ * @var $name   $ia[1]
+ * @var $check_ans
+ * @var $checkconditionFunction
+ */
+#}
+
+<!-- answer_row_noanswer -->
+<li id='javatbd{{ name }}' class="form-group answer-item radio-item no-anwser-item">
+    <input
+    type="radio"
+    name="{{ name }}"
+    id="answer{{ name }}"
+    value=""
+    {{ check_ans }}
+    onclick="if (document.getElementById('answer{{ name }}othertext') != null) document.getElementById('answer{{ name }}othertext').value='';{{ checkconditionFunction }}(this.value, this.name, this.type)"
+    />
+    <label for="answer{{ name }}" class="control-label radio-label">
+        {{ gT('No answer') }}
+    </label>
+</li>
+<!-- endof answer_row_noanswer -->

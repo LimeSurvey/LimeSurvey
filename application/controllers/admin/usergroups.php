@@ -121,10 +121,9 @@ class Usergroups extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
             $ugid = Yii::app()->request->getPost("ugid");
             if (!empty($ugid) && ($ugid > -1)) {
-                $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
-                if ($result->count() > 0) {
-                    $delquery_result = UserGroup::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
-                    if ($delquery_result) {
+                $userGroup = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
+                if (!empty($userGroup)) {
+                    if ($userGroup->delete()) {
                         Yii::app()->user->setFlash("success", gT("Successfully deleted user group."));
                     } else {
                         Yii::app()->user->setFlash("notice", gT("Could not delete user group."));

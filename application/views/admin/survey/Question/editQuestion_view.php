@@ -231,6 +231,29 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                     <?php endif; ?>
                                 </div>
                                 <!-- Question selector end -->
+
+                               <div  class="form-group" id="QuestionTemplateSelection">
+                                    <label class=" control-label" for='gid' title="<?php eT("Use a customized question theme for this question");?>"><?php eT("Question theme:"); ?></label>
+                                    <div class="">
+                                        <select id="question_template" name="question_template" class="form-control">
+                                            <?php 
+                                            foreach ($aQuestionTemplateList as $code => $title) { 
+                                                    $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
+                                                    if(YII_DEBUG) {
+                                                        echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, $title, $code);
+                                                    } else {
+                                                        echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, $title);
+                                                    }
+
+                                            } 
+                                            ?>
+                                        </select> 
+                                        <?php if ($activated == "Y"): ?>
+                                            <input type='hidden' name='gid' value='<?php echo $eqrow['gid'];?>' />
+                                            <?php endif; ?>
+                                    </div>
+                                </div>
+
                                 <div  class="form-group">
                                     <label class=" control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
                                     <div class="">

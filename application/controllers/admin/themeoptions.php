@@ -241,9 +241,9 @@ class themeoptions  extends Survey_Common_Action
     }
 
 
-    public function importManifest($templatename)
+    public function importManifest()
     {
-        $templatename = sanitize_paranoid_string($templatename);
+        $templatename = Yii::app()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             TemplateManifest::importManifest($templatename);
             $this->getController()->redirect(array("admin/themeoptions"));
