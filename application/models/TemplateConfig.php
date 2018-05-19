@@ -533,8 +533,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
 
 
-        $aClassAndAttributes['attr']['navigatorcollbutton'] = '  type="submit" name="move" accesskey="p" ';
-        $aClassAndAttributes['attr']['navigatorcolrbutton'] = '  type="submit" name="move" value="confirmquota" accesskey="l"   ';
+        $aClassAndAttributes['attr']['navigatorcollbutton'] = '  type="submit" name="move" ';
+        $aClassAndAttributes['attr']['navigatorcolrbutton'] = '  type="submit" name="move" value="confirmquota" ';
         $aClassAndAttributes['attr']['completedwrapper'] = $aClassAndAttributes['attr']['completedtext'] = $aClassAndAttributes['attr']['quotamessage'] = $aClassAndAttributes['attr']['navigator'] = $aClassAndAttributes['attr']['navigatorcoll'] = $aClassAndAttributes['attr']['navigatorcolr'] = $aClassAndAttributes['attr']['completedquotaurl'] = '';
 
 
@@ -751,11 +751,11 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['loadbutton']            = ' ls-saveaction ls-loadall ';
         $aClassAndAttributes['class']['savebutton']            = ' ls-saveaction ls-loadall ';
 
-        $aClassAndAttributes['attr']['navigatorbuttonprev']   = ' id="ls-button-previous" type="submit" value="moveprev" name="move" accesskey="p" accesskey="n"';
-        $aClassAndAttributes['attr']['navigatorbuttonsubmit'] = ' id="ls-button-submit" type="submit" value="movesubmit" name="move" accesskey="l" ';
-        $aClassAndAttributes['attr']['navigatorbuttonnext']   = ' id="ls-button-submit" type="submit" value="movenext" name="move"  ';
-        $aClassAndAttributes['attr']['loadbutton']            = ' type="submit" value="loadall" name="loadall" accesskey="L"';
-        $aClassAndAttributes['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" accesskey="s" ';
+        $aClassAndAttributes['attr']['navigatorbuttonprev']   = ' id="ls-button-previous" type="submit" value="moveprev" name="move" ';
+        $aClassAndAttributes['attr']['navigatorbuttonsubmit'] = ' id="ls-button-submit" type="submit" value="movesubmit" name="move" ';
+        $aClassAndAttributes['attr']['navigatorbuttonnext']   = ' id="ls-button-submit" type="submit" value="movenext" name="move" ';
+        $aClassAndAttributes['attr']['loadbutton']            = ' type="submit" value="loadall" name="loadall" ';
+        $aClassAndAttributes['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" ';
 
         // Index Menu
         $aClassAndAttributes['class']['indexmenugli']     = ' ls-index-menu ls-no-js-hidden  ';
