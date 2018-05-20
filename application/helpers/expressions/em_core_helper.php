@@ -27,6 +27,32 @@
  * @author Thomas M. White (TMSWhite)
  */
 
+// prepare to extend LEM functions 
+// import ALL php and js files from subdirectories of application/extensions/emexpressions/
+// where the name of the subdir fits the name of the php and js file
+$emexDir = CFileHelper::findFiles(Yii::app()->basePath . "/extensions/emexpressions", array('fileTypes' => array('php')));
+
+// rover through all emexpression directories
+foreach($emexDir as $thisEmexDir)
+{
+	$splitDir = explode('/', rtrim(str_replace('\\', '/', $thisEmexDir))); // os independent
+			
+	// check if subpath (+ ".php" appended) fits filename
+	$emexName = $splitDir[count($splitDir)-2];
+	
+	if($splitDir[count($splitDir)-1] == $emexName.'.php')
+	{
+		// if so, import the php file
+		Yii::import('application.extensions.emexpressions.' . $emexName . "." . $emexName, true);
+	
+		// equivalent *.js file avaliable too?
+		if(in_array(Yii::app()->basePath . "/extensions/emexpressions/" . $emexName . "/" . $emexName . ".js", CFileHelper::findFiles(Yii::app()->basePath . "/extensions/emexpressions/" . $emexName, array('fileTypes' => array('js')))))
+		{
+			Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . "/application/extensions/emexpressions/" . $emexName . "/" . $emexName . ".js", CClientScript::POS_HEAD);
+		}
+	}
+}
+
 class ExpressionManager
 {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
@@ -246,6 +272,40 @@ class ExpressionManager
 'ucwords' => array('ucwords', 'ucwords', gT('Uppercase the first character of each word in a string'), 'string ucwords(string)', 'http://php.net/ucwords', 1),
 'unique' => array('exprmgr_unique', 'LEMunique', gT('Returns true if all non-empty responses are unique'), 'boolean unique(arg1, ..., argN)', '', -1),
         );
+        
+        // now add RDP_ValidFunctions from emexpressions subfolder/subfiles
+        // requires to read (again) the directory structure
+        $emexDir = CFileHelper::findFiles(Yii::app()->basePath . "/extensions/emexpressions", array('fileTypes' => array('php')));
+
+		// rover through all emexpression directories
+		foreach($emexDir as $thisEmexDir)
+		{
+			$splitDir = explode('/', rtrim(str_replace('\\', '/', $thisEmexDir))); // os independent
+					
+			// check if subpath (+ ".php" appended) fits filename => if so, import the definitions
+			if($splitDir[count($splitDir)-1] == $splitDir[count($splitDir)-2].'.php')
+			{
+				// get the name of the extension class. Class is called by its name in a variable!
+				// that's why directory, php-file and class share the same name
+				$emexClassName = $splitDir[count($splitDir)-2];
+				
+				// try to create an instance
+				try{
+					$emex = new $emexClassName();
+				
+					// get the RDP definitions and merge them to the existiong ones here
+					$this->RDP_ValidFunctions = array_merge($this->RDP_ValidFunctions, $emex->newRDP_ValidFunctions());
+					
+					//clear the object
+					$emex = NULL;
+					unset($emex);
+					
+				} catch (Exception $e) {
+					// TODO: some msg. for admin here?
+				}
+			}
+		} 
+        
         /* Reset the language */
         if ($baseLang) {
             Yii::app()->setLanguage($baseLang);
