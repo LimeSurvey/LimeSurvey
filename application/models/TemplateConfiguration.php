@@ -550,26 +550,6 @@ class TemplateConfiguration extends TemplateConfig
                 '.gT('Uninstall').'
             </a>';
 
-    /*   
-    javascript: copyprompt(
-        text => 'Please enter the name for the new template:', 
-        defvalue => 'extends_bootswatch', 
-        copydirectory => 'bootswatch', 
-        action=> 'copy'
-
-    function copyprompt(text, defvalue, copydirectory, action)
-     {
-         if (newtemplatename=window.prompt(text, defvalue))
-         {
-             sendPost(
-                 '<?php echo $this->createUrl('admin/themes/sa/template'); ?>'+action
-                 ,'',
-                 'action'         ,'newname'      ,'copydir'),
-                 'templatecopy',newtemplatename,copydirectory)
-                );
-         }
-     } 
-     */
 
          $sExtendLink = '<a
             id="extendthis_'.$this->template_name.'"
@@ -577,7 +557,7 @@ class TemplateConfiguration extends TemplateConfig
             data-post=\''
             .json_encode([
                 "copydir" => $this->template_name,
-                "action" => "templatecopy", 
+                "action" => "templatecopy",
                 "newname" => ["value"=> "extends_".$this->template_name, "type" => "text", "class" => "form-control col-sm-12"]
             ])
             .'\'
@@ -646,7 +626,7 @@ class TemplateConfiguration extends TemplateConfig
             $fileRoot = Yii::app()->getConfig("userthemerooturl").'/generalfiles';
         }
 
-        
+
         $checkImage = getimagesize($imagePath);
         if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]))) {
                 return ['filepath' => $fileRoot.'/'.$file['name'], 'filepathOptions' => $imagePath ,'filename'=>$file['name']];
@@ -827,7 +807,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Uninstall a theme and, display error message, and redirect to theme list
-     * @param string $sTemplateName     
+     * @param string $sTemplateName
      */
     protected function uninstallIncorectTheme($sTemplateName)
     {
