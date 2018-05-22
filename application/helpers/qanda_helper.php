@@ -1050,8 +1050,8 @@ function do_date($ia)
             'basename'               => $ia[1],
             'dateoutput'             => htmlspecialchars($dateoutput, ENT_QUOTES, 'utf-8'),
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-            'dateformatdetails'      => $dateformatdetails['jsdate'],
-            'dateformat'             => $dateformatdetails['jsdate'],
+            'dateformatdetails'      => 'YYYY-MM-DD',
+            'dateformat'             => 'YYYY-MM-DD',
             ), true);
 
         App()->getClientScript()->registerScript('doDropDownDate'.$ia[0], "doDropDownDate({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
