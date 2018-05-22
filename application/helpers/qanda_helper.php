@@ -2121,7 +2121,7 @@ function do_multiplechoice_withcomments($ia)
 /* old system or imported */
         $attributeLabelWidth = null;
     }
-    if (!$attributeInputContainerWidth !== null && !$attributeLabelWidth !== null) {
+    if ($attributeInputContainerWidth === null && $attributeLabelWidth === null) {
         $sInputContainerWidth = 8;
         $sLabelWidth = 4;
     } else {
