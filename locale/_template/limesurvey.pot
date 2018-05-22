@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-05-19 18:34:07+00:00\n"
+"POT-Creation-Date: 2018-05-22 10:20:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2958,7 +2958,7 @@ msgstr ""
 #: application/controllers/admin/participantsaction.php:741
 #: application/views/admin/participants/attributeMapToken_view.php:9
 #: application/views/admin/participants/attributeMap_view.php:18
-msgid "This list cannot accept token attributes."
+msgid "This list cannot accept survey participant attributes."
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:1175
@@ -14775,11 +14775,11 @@ msgid "Loading..."
 msgstr ""
 
 #: application/views/admin/participants/attributeMapToken_view.php:14
-msgid "Map your token attributes to an existing participant attribute or create a new one"
+msgid "Map your survey participant attributes to an existing participant attribute or create a new one"
 msgstr ""
 
 #: application/views/admin/participants/attributeMapToken_view.php:21
-msgid "Unmapped token attributes"
+msgid "Unmapped survey participant attributes"
 msgstr ""
 
 #: application/views/admin/participants/attributeMapToken_view.php:28
@@ -14814,7 +14814,7 @@ msgid "This attribute is automatically mapped"
 msgstr ""
 
 #: application/views/admin/participants/attributeMapToken_view.php:119
-msgid "Map token attributes"
+msgid "Map survey participant attributes"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:15
@@ -14838,11 +14838,11 @@ msgid "Unmapped participant attributes"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:60
-msgid "Token attributes to create"
+msgid "Survey participant attributes to create"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:71
-msgid "Existing token attributes"
+msgid "Existing survey participant attributes"
 msgstr ""
 
 #: application/views/admin/participants/attributeMap_view.php:112
