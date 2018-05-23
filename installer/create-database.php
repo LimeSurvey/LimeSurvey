@@ -789,7 +789,7 @@ function createDatabase($oDB){
             'htmleditormode' => "string(7) default 'default'",
             'templateeditormode' => "string(7) NOT NULL default 'default'",
             'questionselectormode' => "string(7) NOT NULL default 'default'",
-            'one_time_pw' => "binary",
+            'one_time_pw' => "text",
             'dateformat' => "integer NOT NULL DEFAULT 1",
             'created' => "datetime",
             'modified' => "datetime",

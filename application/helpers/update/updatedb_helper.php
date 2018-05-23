@@ -915,7 +915,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{conditions}}','value','string',false,'');
             alterColumn('{{participant_shares}}','can_edit',"string(5)",false);
 
-            alterColumn('{{users}}','password',"binary",false);
+             alterColumn('{{users}}','password',"binary",false);
             dropColumn('{{users}}','one_time_pw');
             addColumn('{{users}}','one_time_pw','binary');
 
@@ -2206,6 +2206,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addColumn('{{surveys}}', 'showsurveypolicynotice', 'integer DEFAULT 0');
 
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>348], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ($iOldDBVersion < 349) {
+            $oTransaction = $oDB->beginTransaction();
+            dropColumn('{{users}}','one_time_pw');
+            addColumn('{{users}}','one_time_pw','text');
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
