@@ -85,6 +85,7 @@ class ParticipantAttributeName extends LSActiveRecord
             'attribute_id' => gT('Attribute'),
             'attribute_type' => gT('Attribute type'),
             'visible' => gT('Visible'),
+            'defaultname' => gT('Default attribute name:'),
         );
     }
 
