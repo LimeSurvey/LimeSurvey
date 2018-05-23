@@ -393,7 +393,18 @@ class QuestionTemplate extends CFormModel
         $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestionthemerootdir");
         $aQuestionTemplates     = array();
 
-        $aQuestionTemplates['core'] = gT('Default');
+        if ($type == '*'){
+            $preview_filename = 'EQUATION.png';
+        } elseif ($type == ':'){
+            $preview_filename = 'COLON.png';
+        } elseif ($type == '|'){
+            $preview_filename = 'PIPE.png';
+        } else {
+            $preview_filename = $type.'.png';
+        }
+
+        $aQuestionTemplates['core']['title'] = gT('Default');
+        $aQuestionTemplates['core']['preview'] = Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
 
         $sFolderName = self::getFolderName($type);
 
@@ -411,8 +422,18 @@ class QuestionTemplate extends CFormModel
                         $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
 
                         if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template) {
-                            $templateName              = $file;
-                            $aQuestionTemplates[$file] = $templateName;
+                            if (!empty($oConfig->metadata->title)){
+                                $aQuestionTemplates[$file]['title'] = json_decode(json_encode($oConfig->metadata->title), TRUE)[0];
+                            } else {
+                                $templateName = $file;
+                                $aQuestionTemplates[$file]['title'] = $templateName;
+                            }
+
+                            if (!empty($oConfig->files->preview->filename)){
+                                $aQuestionTemplates[$file]['preview'] = json_decode(json_encode($oConfig->files->preview->filename), TRUE)[0];
+                            } else {
+                                $aQuestionTemplates[$file]['preview'] = Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
+                            }
                         }
                     }
                 }
@@ -429,7 +450,18 @@ class QuestionTemplate extends CFormModel
     static public function getQuestionTemplateCoreList($type)
     {
         $sCoreQTemplateRootDir  = Yii::app()->getConfig("corequestionthemerootdir");
+        $sCoreQTemplateRootUrl  = Yii::app()->getConfig("publicurl").'themes/question';
         $aQuestionTemplates     = array();
+
+        if ($type == '*'){
+            $preview_filename = 'EQUATION.png';
+        } elseif ($type == ':'){
+            $preview_filename = 'COLON.png';
+        } elseif ($type == '|'){
+            $preview_filename = 'PIPE.png';
+        } else {
+            $preview_filename = $type.'.png';
+        }
 
         $sFolderName = self::getFolderName($type);
 
@@ -442,13 +474,24 @@ class QuestionTemplate extends CFormModel
 
                         $sFullPathToQuestionTemplate = "$sCoreQTemplateRootDir/$file/survey/questions/answer/$sFolderName";
 
+
                         if (is_dir($sFullPathToQuestionTemplate)) {
                             // Get the config file and check if template is available
                             $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
 
                             if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template) {
-                                $templateName = $file;
-                                $aQuestionTemplates[$file] = $templateName;
+                                if (!empty($oConfig->metadata->title)){
+                                    $aQuestionTemplates[$file]['title'] = json_decode(json_encode($oConfig->metadata->title), TRUE)[0];
+                                } else {
+                                    $templateName = $file;
+                                    $aQuestionTemplates[$file]['title'] = $templateName;
+                                }
+
+                                if (!empty($oConfig->files->preview->filename)){
+                                    $aQuestionTemplates[$file]['preview'] = "$sCoreQTemplateRootUrl/$file/survey/questions/answer/$sFolderName/assets/".json_decode(json_encode($oConfig->files->preview->filename), TRUE)[0];
+                                } else {
+                                    $aQuestionTemplates[$file]['preview'] = Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
+                                }
                             }
                         }
                     }
