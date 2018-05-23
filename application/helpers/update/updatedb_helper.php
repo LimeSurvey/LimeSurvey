@@ -2248,6 +2248,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Survey::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
 
+    // Try to clear tmp/runtime (database cache files)
+    // Related to problems like https://bugs.limesurvey.org/view.php?id=13699.
+    Yii::app()->cache->flush();
+    Yii::app()->cache->gc();
+
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
     $currentDbVersion = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'DBVersion'))->queryRow();
