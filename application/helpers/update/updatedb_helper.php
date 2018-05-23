@@ -2248,10 +2248,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Survey::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
 
-    // Try to clear tmp/runtime (database cache files)
+    // Try to clear tmp/runtime (database cache files).
     // Related to problems like https://bugs.limesurvey.org/view.php?id=13699.
-    Yii::app()->cache->flush();
-    Yii::app()->cache->gc();
+    if (!(defined('YII_DEBUG') && YII_DEBUG)) {
+        Yii::app()->cache->flush();
+        // NB: CDummyCache does not have a gc method (used if debug > 0).
+        Yii::app()->cache->gc();
+    }
 
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
