@@ -2737,7 +2737,7 @@ class remotecontrol_handle
             }
         }
 
-        $aFieldMap = createFieldMap($iSurveyID, 'short', false, false, Yii::app()->getConfig('defaultlang'));
+        $aFieldMap = createFieldMap($oSurvey, 'short', false, false, Yii::app()->getConfig('defaultlang'));
         if (!isset($aFieldMap[$sFieldName])) {
             return array('status' => 'Can not obtain field map');
         }

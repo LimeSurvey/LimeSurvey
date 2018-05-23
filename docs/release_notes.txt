@@ -35,6 +35,29 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.7.3 (build 180516) to 3.8.0 (build 180522) May 22, 2018
+-New feature: List and download old 2.x survey templates (LouisGac)
+-Fixed issue #12653: Search users (Dominik Vitt)
+-Fixed issue #13515: Cannot have a null default value when creating custom attributes in a custom question theme (Dominik Vitt)
+-Fixed issue #13521: Access question and survey variables/data from within custom question theme Twig files (Dominik Vitt)
+-Fixed issue #13559: [security] CSRF -> Stored XSS in template installation (Dominik Vitt)
+-Fixed issue #13615: The month and year is not saved when advancing and returning in a survey (Dominik Vitt)
+-Fixed issue #13680: Question screen = AdminController cannot find the requested view "/survey/questions/answer/listradio/columns/column_header". (Dominik Vitt)
+-Fixed issue #13696: Error: Duplicate attributes accesskey for prev button (Denis Chenu)
+-Fixed issue #13696: Error: Duplicate attributes data-confirmedby for clear all button (Denis Chenu)
+-Fixed issue: HTML5 video editor plugin was disabled (Carsten Schmitz)
+-Fixed issue: Question theme dropdown on new question page doesn't work (Dominik Vitt)
+-Fixed issue: Remote upload_file does not work (Olle Haerstedt)
+#Updated translation: Arabic by LucaAzzalini
+#Updated translation: Basque by miturrib
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by b00z00
+#Updated translation: German by c_schmitz
+#Updated translation: Norwegian (Bokmål) by pmonsta
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Spanish (Argentina) (Informal) by Gustavo_Kremer
+
 Changes from 3.7.2 (build 180508) to 3.7.3 (build 180516) May 16, 2018
 -Fixed issue #13599: Table user_in_groups not cleaned (#1047) (Tõnis Ormisson)
 -Fixed issue: Postgres has no DOUBLE database type (Olle Haerstedt)

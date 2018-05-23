@@ -505,16 +505,11 @@ class TemplateConfiguration extends TemplateConfig
     public function getButtons()
     {
         $sEditorUrl = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->template_name));
-        if (App()->getController()->action->id == "surveysgroups") {
-            $gisd = Yii::app()->request->getQuery('id', null);
-            $sOptionUrl    = Yii::app()->getController()->createUrl('admin/themeoptions/sa/updatesurveygroup', array("id"=>$this->id, "gsid"=>$gisd));
-        } else {
-            $sOptionUrl    = Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id"=>$this->id));
-        }
-
         $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/');
-
-        $sExtendUrl = Yii::app()->getController()->createUrl('admin/themes/sa/templatecopy');
+        $sExtendUrl    = Yii::app()->getController()->createUrl('admin/themes/sa/templatecopy');
+        $sResetUrl     = Yii::app()->getController()->createUrl('admin/themeoptions/sa/reset/');
+        $gisd          = Yii::app()->request->getQuery('id', null);
+        $sOptionUrl    = (App()->getController()->action->id == "surveysgroups")?Yii::app()->getController()->createUrl('admin/themeoptions/sa/updatesurveygroup', array("id"=>$this->id, "gsid"=>$gisd)):Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id"=>$this->id));
 
         $sEditorLink = "<a
             id='template_editor_link_".$this->template_name."'
@@ -524,11 +519,7 @@ class TemplateConfiguration extends TemplateConfig
                 ".gT('Theme editor')."
             </a>";
 
-            //
-
-
         $OptionLink = '';
-
         if ($this->hasOptionPage) {
             $OptionLink .= "<a
                 id='template_options_link_".$this->template_name."'
@@ -543,33 +534,12 @@ class TemplateConfiguration extends TemplateConfig
             id="remove_fromdb_link_'.$this->template_name.'"
             href="'.$sUninstallUrl.'"
             data-post=\'{ "templatename": "'.$this->template_name.'" }\'
-            data-text="'.gT('This will delete all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
+            data-text="'.gT('This will reset all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
             title="'.gT('Uninstall this theme').'"
             class="btn btn-danger btn-block selector--ConfirmModal">
                 <span class="icon-trash"></span>
                 '.gT('Uninstall').'
             </a>';
-
-    /*   
-    javascript: copyprompt(
-        text => 'Please enter the name for the new template:', 
-        defvalue => 'extends_bootswatch', 
-        copydirectory => 'bootswatch', 
-        action=> 'copy'
-
-    function copyprompt(text, defvalue, copydirectory, action)
-     {
-         if (newtemplatename=window.prompt(text, defvalue))
-         {
-             sendPost(
-                 '<?php echo $this->createUrl('admin/themes/sa/template'); ?>'+action
-                 ,'',
-                 'action'         ,'newname'      ,'copydir'),
-                 'templatecopy',newtemplatename,copydirectory)
-                );
-         }
-     } 
-     */
 
          $sExtendLink = '<a
             id="extendthis_'.$this->template_name.'"
@@ -577,7 +547,7 @@ class TemplateConfiguration extends TemplateConfig
             data-post=\''
             .json_encode([
                 "copydir" => $this->template_name,
-                "action" => "templatecopy", 
+                "action" => "templatecopy",
                 "newname" => ["value"=> "extends_".$this->template_name, "type" => "text", "class" => "form-control col-sm-12"]
             ])
             .'\'
@@ -588,6 +558,16 @@ class TemplateConfiguration extends TemplateConfig
                 '.gT('Extend').'
             </a>';
 
+        $sResetLink = '<a
+                id="remove_fromdb_link_'.$this->template_name.'"
+                href="'.$sResetUrl.'"
+                data-post=\'{ "templatename": "'.$this->template_name.'" }\'
+                data-text="'.gT('This will reload the configuration file of this theme.').'<br>'.gT('Do you want to continue?').'"
+                title="'.gT('Reset this theme').'"
+                class="btn btn-warning btn-block selector--ConfirmModal">
+                    <span class="icon-trash"></span>
+                    '.gT('Reset').'
+            </a>';
 
         if (App()->getController()->action->id == "surveysgroups") {
             $sButtons = $OptionLink;
@@ -611,8 +591,7 @@ class TemplateConfiguration extends TemplateConfig
             }
         }
 
-
-
+        $sButtons .= $sResetLink;
 
 
         return $sButtons;
@@ -646,7 +625,7 @@ class TemplateConfiguration extends TemplateConfig
             $fileRoot = Yii::app()->getConfig("userthemerooturl").'/generalfiles';
         }
 
-        
+
         $checkImage = getimagesize($imagePath);
         if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]))) {
                 return ['filepath' => $fileRoot.'/'.$file['name'], 'filepathOptions' => $imagePath ,'filename'=>$file['name']];
@@ -827,7 +806,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Uninstall a theme and, display error message, and redirect to theme list
-     * @param string $sTemplateName     
+     * @param string $sTemplateName
      */
     protected function uninstallIncorectTheme($sTemplateName)
     {

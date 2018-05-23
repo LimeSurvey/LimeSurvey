@@ -135,8 +135,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $loader->setPaths(App()->getBasePath().'/views/'); // Core views path
 
         $oQuestionTemplate   = QuestionTemplate::getInstance(); // Question template instance has been created at top of qanda_helper::retrieveAnswers()
-        $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName(); // Get the name of the folder for that question type.
 
+        // check if this method is called from theme editor
+        if (empty($aData['bIsThemeEditor'])){
+            $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName(); // Get the name of the folder for that question type.
+        } else {
+            $sTemplateFolderName = null;
+        }
         // Check if question use a custom template and that it provides its own twig view
         if ($sTemplateFolderName) {
             $bTemplateHasThisView = $oQuestionTemplate->checkIfTemplateHasView($sView); // A template can change only one of the view of the question type. So other views should be rendered by core.
@@ -160,7 +165,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
             $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
             $aData['this'] = Yii::app()->getController();
-            $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+            
+            // check if this method is called from theme editor
+            if (empty($aData['bIsThemeEditor'])){
+                    $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+                } else {
+                    $aData['question_template_attribute'] = null;
+                }
             $template = $this->_twig->loadTemplate($sView.'.twig')->render($aData);
             return $template;
         } else {

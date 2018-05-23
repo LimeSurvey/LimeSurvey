@@ -1,5 +1,6 @@
 <?php
-App()->getController()->renderPartial('/survey/questions/answer/longfreetext/answer', array(
+echo App()->twigRenderer->renderQuestion('/survey/questions/answer/longfreetext/answer', array(
+        'bIsThemeEditor'         => true,
         'extraclass'             => 'col-sm-12',
         'coreClass'              =>"ls-answers answer-item text-item",
         'withColumn'             =>true,

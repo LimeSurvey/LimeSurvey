@@ -75,6 +75,50 @@ class themes extends Survey_Common_Action
         }
     }
 
+
+    /**
+    * Exports a deprecated template
+    *
+    * @access public
+    * @param string $templatename
+    * @return void
+    */
+    public function deprecatedtemplatezip($templatename)
+    {
+        //$oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        $templatename        = sanitize_dirname($templatename);
+        $usertemplaterootdir = Yii::app()->getConfig("uploaddir").DIRECTORY_SEPARATOR."templates";
+        $templatePath        = $usertemplaterootdir.DIRECTORY_SEPARATOR.$templatename;
+
+
+        if (!Permission::model()->hasGlobalPermission('templates','export')){
+            die('No permission');
+        }
+
+        $tempdir = Yii::app()->getConfig('tempdir');
+
+        $zipfile = "$tempdir/$templatename.zip";
+        Yii::app()->loadLibrary('admin.pclzip');
+        $zip = new PclZip($zipfile);
+        $zip->create($templatePath, PCLZIP_OPT_REMOVE_PATH, $templatePath);
+
+        if (is_file($zipfile)) {
+            // Send the file for download!
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Content-Type: application/force-download");
+            header("Content-Disposition: attachment; filename=$templatename.zip");
+            header("Content-Description: File Transfer");
+
+            @readfile($zipfile);
+
+            // Delete the temporary file
+            unlink($zipfile);
+        }
+    }
+
+
     /**
      * Retrieves a temporary template file from disk
      *
@@ -377,12 +421,9 @@ class themes extends Survey_Common_Action
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
-        try {
-            $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
-        } catch (Exception $ex) {
-            Yii::app()->user->setFlash('error', $ex->getMessage());
-            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=>getGlobalSetting('defaulttheme')));
-        }
+
+
+        $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap'] = $aBootstrapPackage;
@@ -1140,18 +1181,23 @@ class themes extends Survey_Common_Action
                 break;
         }
 
-        // NOTE: Twig already render return error, no try catch needed
+
         $thissurvey['include_content'] = $sContentFile;
 
-
-        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
-            $sLayoutFile,
-            array(
-                'aSurveyInfo' =>$thissurvey,
-                'print'       => $print  // Only used for PDF print layout.
-            ),
-            $oEditedTemplate
-        );
+        
+        try {
+            $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
+                $sLayoutFile,
+                array(
+                    'aSurveyInfo' =>$thissurvey,
+                    'print'       => $print  // Only used for PDF print layout.
+                ),
+                $oEditedTemplate
+            );
+        } catch (Exception $ex) {
+            $myoutput = "<h3>ERROR!</h3>";
+            $myoutput .= $ex->getMessage();
+        }
 
 
 
@@ -1191,6 +1237,7 @@ class themes extends Survey_Common_Action
             Yii::app()->clientScript->registerPackage($oEditedTemplate->sPackageName);
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
+
 
         return $aViewUrls;
     }

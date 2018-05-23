@@ -915,7 +915,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{conditions}}','value','string',false,'');
             alterColumn('{{participant_shares}}','can_edit',"string(5)",false);
 
-            alterColumn('{{users}}','password',"binary",false);
+             alterColumn('{{users}}','password',"binary",false);
             dropColumn('{{users}}','one_time_pw');
             addColumn('{{users}}','one_time_pw','binary');
 
@@ -2208,6 +2208,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>348], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        if ($iOldDBVersion < 349) {
+            $oTransaction = $oDB->beginTransaction();
+            dropColumn('{{users}}','one_time_pw');
+            addColumn('{{users}}','one_time_pw','text');
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
 
         
         if ($iOldDBVersion < 350) {
@@ -2403,6 +2410,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->db->schema->getTable('{{templates}}', true);
     Survey::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
+
+    // Try to clear tmp/runtime (database cache files).
+    // Related to problems like https://bugs.limesurvey.org/view.php?id=13699.
+    if (!(defined('YII_DEBUG') && YII_DEBUG)) {
+        Yii::app()->cache->flush();
+        // NB: CDummyCache does not have a gc method (used if debug > 0).
+        Yii::app()->cache->gc();
+    }
 
     // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
