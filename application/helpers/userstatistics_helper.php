@@ -1179,8 +1179,8 @@ class userstatistics_helper
                     }
 
                     //list IDs and answer codes in brackets
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1198,8 +1198,8 @@ class userstatistics_helper
                         $atext = flattenText($qrow[1]);
                     }
 
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";;
                     break;
 
 
@@ -1219,8 +1219,8 @@ class userstatistics_helper
                         $atext = flattenText($qrow[1]);
                     }
                     //output
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1237,8 +1237,8 @@ class userstatistics_helper
                         $alist[] = array("D", gT("Decrease"));
                         $atext = flattenText($qrow[1]);
                     }
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1259,8 +1259,8 @@ class userstatistics_helper
                         $atext = flattenText($qrow[1]);
                     }
 
-                    $qquestion .= $linefeed."[".$atext."] [".$ltext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."] [".$ltext."]";;
                     break;
 
                 case ":": //Array (Multiple Flexi) (Numbers)
@@ -1321,8 +1321,8 @@ class userstatistics_helper
                     }
 
                     //output
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
