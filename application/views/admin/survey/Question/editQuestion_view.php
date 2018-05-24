@@ -16,6 +16,7 @@ echo viewHelper::getViewTestTag('addQuestion');
 <?php
 $aQuestionTypeGroups = array();
 $aQuestionTypeList = Question::typeList();
+$question_template_preview = '';
 
 foreach ( $aQuestionTypeList as $key=> $questionType)
 {
@@ -245,12 +246,13 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                     <div class="">
                                         <select id="question_template" name="question_template" class="form-control">
                                             <?php 
-                                            foreach ($aQuestionTemplateList as $code => $title) { 
+                                            foreach ($aQuestionTemplateList as $code => $value) { 
                                                     $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
+                                                    $question_template_preview = $aQuestionTemplateAttributes['value'] == $code ? $value['preview'] : '';
                                                     if(YII_DEBUG) {
-                                                        echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, $title, $code);
+                                                        echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, $value['title'], $code);
                                                     } else {
-                                                        echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, $title);
+                                                        echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, $value['title']);
                                                     }
 
                                             } 
@@ -260,6 +262,13 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                             <input type='hidden' name='gid' value='<?php echo $eqrow['gid'];?>' />
                                             <?php endif; ?>
                                     </div>
+                                </div>
+
+                                <div  class="form-group" id="QuestionTemplatePreview">
+                                        <label class=" control-label" for='gid' title="<?php eT("Question theme preview");?>"><?php eT("Question theme preview:"); ?></label>
+                                        <div class="">
+                                            <img src="<?php echo $question_template_preview; ?>" style="border: 1px solid gray; padding: 10px; max-width: 100%;">
+                                        </div>
                                 </div>
 
                                 <div  class="form-group">

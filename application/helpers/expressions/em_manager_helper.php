@@ -5038,7 +5038,9 @@
             $LEM->indexGseq=array();
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
-            if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
+
+            // NOTE: now that we use a seed, count($_SESSION[$LEM->sessid]['startingValues']) start at 1
+            if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 1)
             {
                 foreach ($_SESSION[$LEM->sessid]['startingValues'] as $k=>$value)
                 {
