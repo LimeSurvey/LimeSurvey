@@ -327,7 +327,7 @@ class TestHelper extends TestCase
         $tempFolder = \Yii::app()->getBasePath() .'/../tests/tmp';
         $folder     = $tempFolder.'/screenshots/';
         $screenshot = $webDriver->takeScreenshot();
-        $filename   = $folder . $name . '_' . date('Ymd_His') . '.png';
+        $filename   = $folder . $name . '.png';
         $result     = file_put_contents($filename, $screenshot);
         $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
     }
