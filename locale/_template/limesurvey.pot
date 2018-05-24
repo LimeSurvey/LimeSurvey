@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-05-24 09:59:12+00:00\n"
+"POT-Creation-Date: 2018-05-24 10:34:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7696,7 +7696,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1509
 #: application/helpers/userstatistics_helper.php:1525
 #: application/views/admin/export/generatestats/_statisticsoutput_header.php:18
-msgid "Field summary for %s"
+msgid "Summary for %s"
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:798
