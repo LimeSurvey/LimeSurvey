@@ -393,18 +393,8 @@ class QuestionTemplate extends CFormModel
         $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestionthemerootdir");
         $aQuestionTemplates     = array();
 
-        if ($type == '*'){
-            $preview_filename = 'EQUATION.png';
-        } elseif ($type == ':'){
-            $preview_filename = 'COLON.png';
-        } elseif ($type == '|'){
-            $preview_filename = 'PIPE.png';
-        } else {
-            $preview_filename = $type.'.png';
-        }
-
         $aQuestionTemplates['core']['title'] = gT('Default');
-        $aQuestionTemplates['core']['preview'] = Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
+        $aQuestionTemplates['core']['preview'] = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($type);
 
         $sFolderName = self::getFolderName($type);
 
@@ -432,7 +422,7 @@ class QuestionTemplate extends CFormModel
                             if (!empty($oConfig->files->preview->filename)){
                                 $aQuestionTemplates[$file]['preview'] = json_decode(json_encode($oConfig->files->preview->filename), TRUE)[0];
                             } else {
-                                $aQuestionTemplates[$file]['preview'] = Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
+                                $aQuestionTemplates[$file]['preview'] = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($type);
                             }
                         }
                     }
@@ -452,16 +442,6 @@ class QuestionTemplate extends CFormModel
         $sCoreQTemplateRootDir  = Yii::app()->getConfig("corequestionthemerootdir");
         $sCoreQTemplateRootUrl  = Yii::app()->getConfig("publicurl").'themes/question';
         $aQuestionTemplates     = array();
-
-        if ($type == '*'){
-            $preview_filename = 'EQUATION.png';
-        } elseif ($type == ':'){
-            $preview_filename = 'COLON.png';
-        } elseif ($type == '|'){
-            $preview_filename = 'PIPE.png';
-        } else {
-            $preview_filename = $type.'.png';
-        }
 
         $sFolderName = self::getFolderName($type);
 
@@ -490,7 +470,7 @@ class QuestionTemplate extends CFormModel
                                 if (!empty($oConfig->files->preview->filename)){
                                     $aQuestionTemplates[$file]['preview'] = "$sCoreQTemplateRootUrl/$file/survey/questions/answer/$sFolderName/assets/".json_decode(json_encode($oConfig->files->preview->filename), TRUE)[0];
                                 } else {
-                                    $aQuestionTemplates[$file]['preview'] = Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
+                                    $aQuestionTemplates[$file]['preview'] = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($type);
                                 }
                             }
                         }

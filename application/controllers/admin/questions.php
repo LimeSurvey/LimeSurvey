@@ -1283,7 +1283,13 @@ class questions extends Survey_Common_Action
             $aData['eqrow'] = $eqrow;
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
-            $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid)['question_template'];
+            $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid);
+            if (!empty($questionTemplateAttributes['question_template'])){
+                $aData['aQuestionTemplateAttributes'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
+            } else {
+                $aData['aQuestionTemplateAttributes']['core'] = array('title'=>'Default', 'preview'=>\LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']));
+            }
+
             $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
 
             if (!$adding) {
@@ -1878,7 +1884,6 @@ class questions extends Survey_Common_Action
     {
         $type = Yii::app()->request->getParam('type');
         $questionTemplateList = \QuestionTemplate::getQuestionTemplateList($type);
-        if (YII_DEBUG)
         header('Content-type: application/json');
         echo CJSON::encode($questionTemplateList);
         Yii::app()->end();
