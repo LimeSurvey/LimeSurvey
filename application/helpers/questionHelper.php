@@ -1613,4 +1613,26 @@ class questionHelper
         return $custom_attributes['attribute'];
     }
 
+    /**
+     * Return the question Theme preview URL
+     * @param $sType: type pof question
+     * @return string : question theme preview URL
+     */
+    public static function getQuestionThemePreviewUrl($sType = null)
+    {
+        if ($sType == '*'){
+            $preview_filename = 'EQUATION.png';
+        } elseif ($sType == ':'){
+            $preview_filename = 'COLON.png';
+        } elseif ($sType == '|'){
+            $preview_filename = 'PIPE.png';
+        } elseif (!empty($sType)) {
+            $preview_filename = $sType.'.png';
+        } else {
+            $preview_filename = '.png';
+        }
+
+        return Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
+    }
+
 }

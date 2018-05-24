@@ -35,6 +35,36 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.8.0 (build 180522) to 3.8.1 (build 180524) May 24, 2018
+-Fixed issue #12520: Crash when trying to generate a PDF with Graphs from statistic page on PHP 7.1 or later (Carsten Schmitz)
+-Fixed issue #13607: Multiple_choice_with_comments - bug (Dominik Vitt)
+-Fixed issue #13623: Unable to update config of default theme (LouisGac)
+-Fixed issue #13633: Wrong data validation on dropdown boxes (Dominik Vitt)
+-Fixed issue #13676: Saving {{ : }} in a twig file crashes Theme Editor... (LouisGac)
+-Fixed issue #13689: Missing translation (Dominik Vitt)
+-Fixed issue #13690: Missing translations update/add survey group (Dominik Vitt)
+-Fixed issue #13691: Missing translation central databse (Dominik Vitt)
+-Fixed issue #13695: Error: CSS: width: only 0 can be a unit. You must put a unit after your number. (Dominik Vitt)
+-Fixed issue #13699: After latest update, editing questions results in an error (Olle Haerstedt)
+-Fixed issue #13700: SQL error when trying to change changing user password on MSSQL DB (Carsten Schmitz)
+-Fixed issue: Move subquestion text to top in statistics (Olle Haerstedt)
+-Fixed issue: Response created at welcome page (LouisGac)
+-Fixed issue: Wrong colors for front end statistics (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by b00z00
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonsta
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+
 Changes from 3.7.3 (build 180516) to 3.8.0 (build 180522) May 22, 2018
 -New feature: List and download old 2.x survey templates (LouisGac)
 -Fixed issue #12653: Search users (Dominik Vitt)

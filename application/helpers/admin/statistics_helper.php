@@ -787,7 +787,7 @@ class statistics_helper
             //outputting
             switch ($outputType) {
                 case 'xls':
-                    $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                    $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                     $xlsDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
                     $this->xlsRow++;
                     $this->xlsRow++;
@@ -808,7 +808,7 @@ class statistics_helper
 
                 case 'html':
                     $statisticsoutput .= "\n<table class='statisticstable table table-bordered >\n"
-                    ."\t<thead><tr class='success'><th style='text-align: center; '><strong>".sprintf(gT("Field summary for %s"), $qtitle).":</strong>"
+                    ."\t<thead><tr class='success'><th style='text-align: center; '><strong>".sprintf(gT("Summary for %s"), $qtitle).":</strong>"
                     ."</th></tr>\n"
                     ."\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
                     ."\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
@@ -857,7 +857,7 @@ class statistics_helper
                 //outputting
                 switch ($outputType) {
                     case 'xls':
-                        $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                        $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                         $xlsDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
                         $this->xlsRow++;
                         $this->xlsRow++;
@@ -877,7 +877,7 @@ class statistics_helper
                         $tablePDF = array();
                         $footPDF = array();
 
-                        $pdfTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                        $pdfTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                         $titleDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
 
                         $headPDF[] = array(gT("Calculation"), gT("Result"));
@@ -886,7 +886,7 @@ class statistics_helper
                     case 'html':
 
                         $statisticsoutput .= "\n<table class='statisticstable table table-bordered' >\n"
-                        ."\t<thead><tr  class='success'><th colspan='2' align='right'  class='success'><strong>".sprintf(gT("Field summary for %s"), $qtitle).":</strong>"
+                        ."\t<thead><tr  class='success'><th colspan='2' align='right'  class='success'><strong>".sprintf(gT("Summary for %s"), $qtitle).":</strong>"
                         ."</th></tr>\n"
                         ."\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
                         ."\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
@@ -1180,8 +1180,8 @@ class statistics_helper
                     }
 
                     //list IDs and answer codes in brackets
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1197,8 +1197,8 @@ class statistics_helper
                         $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
 
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "({$qanswer})";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "({$qanswer})"."[".$atext."]";
                     break;
 
 
@@ -1215,8 +1215,8 @@ class statistics_helper
                         $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
                     //output
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "({$qanswer})";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "({$qanswer})"."[".$atext."]";
                     break;
 
 
@@ -1231,8 +1231,8 @@ class statistics_helper
                         $alist[] = array("D", gT("Decrease"));
                         $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "({$qanswer})";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "({$qanswer})"."[".$atext."]";
                     break;
 
 
@@ -1249,8 +1249,8 @@ class statistics_helper
                         $atext = flattenText($qrow[1]);
                     }
 
-                    $qquestion .= $linefeed."[".$atext."] [".$ltext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."] [".$ltext."]";
                     break;
 
                 case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //Array (Multiple Flexi) (Numbers)
@@ -1305,8 +1305,8 @@ class statistics_helper
                     }
 
                     //output
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -2152,7 +2152,7 @@ class statistics_helper
         switch ($outputType) {
             case 'xls':
 
-                $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
+                $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
                 $xlsDesc = html_entity_decode($outputs['qquestion'], ENT_QUOTES, 'UTF-8');
 
                 $this->xlsRow++;
@@ -2168,7 +2168,7 @@ class statistics_helper
             case 'pdf':
 
                 $sPDFQuestion = flattenText($outputs['qquestion'], false, true);
-                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Field summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
+                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
                 $titleDesc = $sPDFQuestion;
 
                 $this->pdf->AddPage('P', 'A4');

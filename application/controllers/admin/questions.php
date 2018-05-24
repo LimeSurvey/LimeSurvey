@@ -1218,8 +1218,12 @@ class questions extends Survey_Common_Action
             $aData['oQuestion'] = $oQuestion;
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
-            $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $oQuestion->type, $surveyid)['question_template'];
-            $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($oQuestion->type);
+            $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid);
+                $aData['aQuestionTemplateAttributes'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
+            } else {
+                $aData['aQuestionTemplateAttributes']['core'] = array('title'=>'Default', 'preview'=>\LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']));
+            }
+
 
             if (!$adding) {
                 $criteria = new CDbCriteria;
@@ -1782,7 +1786,6 @@ class questions extends Survey_Common_Action
     {
         $type = Yii::app()->request->getParam('type');
         $questionTemplateList = \QuestionTemplate::getQuestionTemplateList($type);
-        if (YII_DEBUG)
         header('Content-type: application/json');
         echo CJSON::encode($questionTemplateList);
         Yii::app()->end();
