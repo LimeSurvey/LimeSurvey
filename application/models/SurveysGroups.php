@@ -254,9 +254,13 @@ class SurveysGroups extends LSActiveRecord
         return count($oSurveysGroups) + 1;
     }
 
-    public function getParentGroupOptions()
+    public function getParentGroupOptions($gsid = null)
     {
-        $oSurveysGroups = SurveysGroups::model()->findAll();
+        if (!empty($gsid)){
+            $oSurveysGroups = SurveysGroups::model()->findAll('gsid != :gsid', array(':gsid' => $gsid));
+        } else {
+            $oSurveysGroups = SurveysGroups::model()->findAll();
+        }
         $options = [
             '' => gT('No parent menu')
         ];
