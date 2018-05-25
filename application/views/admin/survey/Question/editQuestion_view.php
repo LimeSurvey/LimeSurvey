@@ -17,6 +17,7 @@ echo viewHelper::getViewTestTag('addQuestion');
 $aQuestionTypeGroups = array();
 $aQuestionTypeList = Question::typeList();
 $question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']);
+$selected = null;
 
 foreach ( $aQuestionTypeList as $key=> $questionType)
 {
@@ -245,10 +246,12 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                     <label class=" control-label" for='gid' title="<?php eT("Use a customized question theme for this question");?>"><?php eT("Question theme:"); ?></label>
                                     <div class="">
                                         <select id="question_template" name="question_template" class="form-control">
-                                            <?php
+                                            <?php 
                                             foreach ($aQuestionTemplateList as $code => $value) { 
-                                                    $selected = $aQuestionTemplateAttributes[$code] == $code ? 'selected' : '';
-                                                    $question_template_preview = $aQuestionTemplateAttributes[$code] == $code ? $value['preview'] : $question_template_preview;
+                                                    if (!empty($aQuestionTemplateAttributes)){
+                                                        $question_template_preview = $aQuestionTemplateAttributes['value'] == $code ? $value['preview'] : $question_template_preview;
+                                                        $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
+                                                    }
                                                     if(YII_DEBUG) {
                                                         echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, $value['title'], $code);
                                                     } else {
