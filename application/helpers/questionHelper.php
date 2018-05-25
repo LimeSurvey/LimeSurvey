@@ -11,8 +11,12 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+
+namespace LimeSurvey\Helpers;
 use QuestionAttribute;
 use Yii;
+use Question;
+
 /**
  * General helper class for question + question setting system
  */

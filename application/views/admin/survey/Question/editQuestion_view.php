@@ -16,14 +16,12 @@ echo viewHelper::getViewTestTag('addQuestion');
 <?php
 $aQuestionTypeGroups = array();
 $aQuestionTypeList = Question::typeList();
-$question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']);
+$question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($oQuestion->type);
 $selected = null;
 
-foreach ( $aQuestionTypeList as $key=> $questionType)
-{
+foreach ($aQuestionTypeList as $key=> $questionType) {
     $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
-    if (!isset($aQuestionTypeGroups[$htmlReadyGroup]))
-    {
+    if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
         $aQuestionTypeGroups[$htmlReadyGroup] = array(
             'questionGroupName' => $questionType['group']
         );
@@ -262,7 +260,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                             ?>
                                         </select> 
                                         <?php if ($activated == "Y"): ?>
-                                            <input type='hidden' name='gid' value='<?php echo $eqrow['gid'];?>' />
+                                            <input type='hidden' name='gid' value='<?php echo $oQuestion->gid;?>' />
                                             <?php endif; ?>
                                     </div>
                                 </div>

@@ -15,6 +15,7 @@ if (!defined('BASEPATH')) {
 *
 */
 
+use \LimeSurvey\Helpers\questionHelper;
 
 /**
  * Class Question
@@ -1109,5 +1110,4 @@ class Question extends LSActiveRecord
         }
         return $result;
     }
-
 }

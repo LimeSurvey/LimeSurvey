@@ -199,7 +199,7 @@ class QuestionAttribute extends LSActiveRecord
                 throw new \CException("Question is corrupt: no type defined for question ".$iQuestionID);
             }
 
-            $aAttributeNames = questionHelper::getQuestionAttributesSettings($sType);
+            $aAttributeNames = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sType);
 
             /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));

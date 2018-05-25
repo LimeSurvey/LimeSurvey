@@ -16,6 +16,8 @@ if (!defined('BASEPATH')) {
 *
 */
 
+use \LimeSurvey\Helpers\questionHelper;
+
 /**
 * question
 *
@@ -1218,12 +1220,10 @@ class questions extends Survey_Common_Action
             $aData['oQuestion'] = $oQuestion;
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
-            $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid);
-                $aData['aQuestionTemplateAttributes'] = $questionTemplateAttributes['question_template'];
-            } else {
-                $aData['aQuestionTemplateAttributes']['core'] = array('title'=>'Default', 'preview'=>\LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']));
-            }
-
+            $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $oQuestion->type, $surveyid);
+            $aData['aQuestionTemplateAttributes'] = $questionTemplateAttributes['question_template'];
+            $aData['aQuestionTemplateAttributes']['core'] = array('title'=>'Default', 'preview' => questionHelper::getQuestionThemePreviewUrl($oQuestion->type));
+            $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($oQuestion->type);
 
             if (!$adding) {
                 $criteria = new CDbCriteria;
@@ -1244,7 +1244,7 @@ class questions extends Survey_Common_Action
             if (Yii::app()->session['questionselectormode'] !== 'default') {
                 $selectormodeclass = Yii::app()->session['questionselectormode'];
             } else {
-                    $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
+                $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
             }
 
             $aData['selectormodeclass'] = $selectormodeclass;
@@ -1275,7 +1275,7 @@ class questions extends Survey_Common_Action
             $aViewUrls['editQuestion_view'][] = $aData;
             App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$gid.$qid, "OtherSelection('".$oQuestion->type."');", LSYii_ClientScript::POS_POSTSCRIPT);            
         } else {
-                    include('accessDenied.php');
+            include('accessDenied.php');
         }
 
         
@@ -1569,26 +1569,26 @@ class questions extends Survey_Common_Action
 
         // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
         if (!empty($question_template) && $question_template !== 'core') {
-                $questionTypeList = QuestionTemplate::getTypeToFolder();
-                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($question_template, $questionTypeList[$type]);
-                // CHECK TO SEE IF ARRAY CONTAINS INDEX 0, IF NOT - INDEX 0 WOULD BE CREATED ( OTHERWISE DATA MERGE WOULD FAIL IF INDEX ÍS MISSING )
-                if (!array_key_exists('0', $themeAttributes)){$themeTemp[0] = $themeAttributes; $themeAttributes = $themeTemp;}
-                
-                foreach ($themeAttributes as $key =>$attribute) {
-                    // INSERTING EACH OF THIS KEYS TO THE ARRAY IF KEYS ARE MISSING
-                    if (empty($attribute['name'])){$attribute['name'] = 'default_theme_attribute_name';}
-                    if (empty($attribute['readonly'])){$attribute['readonly'] = '';}
-                    if (empty($attribute['default'])){$attribute['default'] = '';}
-                    if (empty($attribute['readonly_when_active'])){$attribute['readonly_when_active'] = '';}
-                    if (empty($attribute['value'])){$attribute['value'] = '';}
-                    if (empty($attribute['i18n'])){$attribute['i18n'] = '';}
-                    if (empty($attribute['category'])){$attribute['category'] = 'Display Theme Options';}
-                    if (empty($attribute['sortorder'])){$attribute['sortorder'] = '';}
-                    if (empty($attribute['help'])){$attribute['help'] = '';}
-                    if (empty($attribute['caption'])){$attribute['caption'] = '';}
-                    if (empty($attribute['inputtype'])){$attribute['inputtype'] = '';}
-                    $aAttributesWithValues[$attribute['name']] = $attribute;
-                }              
+            $questionTypeList = QuestionTemplate::getTypeToFolder();
+            $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($question_template, $questionTypeList[$type]);
+            // CHECK TO SEE IF ARRAY CONTAINS INDEX 0, IF NOT - INDEX 0 WOULD BE CREATED ( OTHERWISE DATA MERGE WOULD FAIL IF INDEX ÍS MISSING )
+            if (!array_key_exists('0', $themeAttributes)){$themeTemp[0] = $themeAttributes; $themeAttributes = $themeTemp;}
+
+            foreach ($themeAttributes as $key => $attribute) {
+                // INSERTING EACH OF THIS KEYS TO THE ARRAY IF KEYS ARE MISSING
+                if (empty($attribute['name'])){$attribute['name'] = 'default_theme_attribute_name';}
+                if (empty($attribute['readonly'])){$attribute['readonly'] = '';}
+                if (empty($attribute['default'])){$attribute['default'] = '';}
+                if (empty($attribute['readonly_when_active'])){$attribute['readonly_when_active'] = '';}
+                if (empty($attribute['value'])){$attribute['value'] = '';}
+                if (empty($attribute['i18n'])){$attribute['i18n'] = '';}
+                if (empty($attribute['category'])){$attribute['category'] = 'Display Theme Options';}
+                if (empty($attribute['sortorder'])){$attribute['sortorder'] = '';}
+                if (empty($attribute['help'])){$attribute['help'] = '';}
+                if (empty($attribute['caption'])){$attribute['caption'] = '';}
+                if (empty($attribute['inputtype'])){$attribute['inputtype'] = '';}
+                $aAttributesWithValues[$attribute['name']] = $attribute;
+            }              
         }
         uasort($aAttributesWithValues, 'categorySort');
         unset($aAttributesWithValues['question_template']);
