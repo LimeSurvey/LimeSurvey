@@ -13,9 +13,12 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
+
+use \LimeSurvey\Helpers\questionHelper;
+
 /**
 * Database
-*g
+*
 * @package LimeSurvey
 * @author
 * @copyright 2011

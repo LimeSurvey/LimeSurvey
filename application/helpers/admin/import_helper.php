@@ -11,6 +11,8 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+use \LimeSurvey\Helpers\questionHelper;
+
 /**
 * This function imports a LimeSurvey .lsg question group XML file
 *
