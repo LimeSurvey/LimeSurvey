@@ -43,7 +43,7 @@ use \LimeSurvey\Helpers\questionHelper;
  * @property QuestionL10n[] $questionL10ns Question Languagesettings indexd by language code
  * @property string[] $quotableTypes Question types that can be used for quotas
  * @property Answer[] $answers
- * @property string $basicFieldName The basic fieldname foe question {SID}X{GID}X{QID} (Except for subquestions, which use the QID of parent)
+ * @property QuestionType $questionType
  * @property array $allSubQuestionIds QID-s of all question sub-questions, empty array returned if no sub-questions
  * @inheritdoc
  */
@@ -476,272 +476,12 @@ class Question extends LSActiveRecord
      * subquestions : 0= Does not support subquestions x=Number of subquestion scales
      * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
      * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
+     * @deprecated use QuestionType::modelsAttributes() instead
      */
     public static function typeList()
     {
-        $questionTypes = array(
-            Question::QT_1_ARRAY_MULTISCALE => array(
-                'description' => gT("Array dual scale"),
-                'group' => gT('Arrays'),
-                'subquestions' => 1,
-                'assessable' => 1,
-                'hasdefaultvalues' => 0,
-                'answerscales' => 2,
-                'class' => 'array-flexible-duel-scale',
-            ),
-            Question::QT_5_POINT_CHOICE => array(
-                'description' => gT("5 Point Choice"),
-                'group' => gT("Single choice questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 0,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => "choice-5-pt-radio"
-            ),
-            Question::QT_A_ARRAY_5_CHOICE_QUESTIONS => array(
-                'description' => gT("Array (5 Point Choice)"),
-                'group' => gT('Arrays'),
-                'subquestions' => 1,
-                'hasdefaultvalues' => 0,
-                'assessable' => 1,
-                'answerscales' => 0,
-                'class' => 'array-5-pt'
-            ),
-            Question::QT_B_ARRAY_10_CHOICE_QUESTIONS => array(
-                    'description' => gT("Array (10 Point Choice)"),
-                'group' => gT('Arrays'),
-                'subquestions' => 1,
-                'hasdefaultvalues' => 0,
-                'assessable' => 1,
-                'answerscales' => 0,
-                'class' => 'array-10-pt'
-            ),
-            Question::QT_C_ARRAY_YES_UNCERTAIN_NO => array(
-                'description' => gT("Array (Yes/No/Uncertain)"),
-                'group' => gT('Arrays'),
-                'subquestions' => 1,
-                'hasdefaultvalues' => 0,
-                'assessable' => 1,
-                'answerscales' => 0,
-                'class' => 'array-yes-uncertain-no'
-            ),
-            Question::QT_D_DATE => array(
-                'description' => gT("Date/Time"),
-                'group' => gT("Mask questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 1,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'date'
-            ),
-            Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS => array(
-                'description' => gT("Array (Increase/Same/Decrease)"),
-                'group' => gT('Arrays'),
-                'subquestions' => 1,
-                'hasdefaultvalues' => 0,
-                'assessable' => 1,
-                'answerscales' => 0,
-                'class' => 'array-increase-same-decrease'
-            ),
-            Question::QT_F_ARRAY_FLEXIBLE_ROW => array(
-                'description' => gT("Array"),
-                'group' => gT('Arrays'),
-                'subquestions' => 1,
-                'hasdefaultvalues' => 0,
-                'assessable' => 1,
-                'answerscales' => 1,
-                'class' => 'array-flexible-row'
-            ),
-            Question::QT_G_GENDER_DROPDOWN => array(
-                'description' => gT("Gender"),
-                'group' => gT("Mask questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 0,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'gender'
-            ),
-            Question::QT_H_ARRAY_FLEXIBLE_COLUMN => array(
-                'description' => gT("Array by column"),
-                'group' => gT('Arrays'),
-                'hasdefaultvalues' => 0,
-                'subquestions' => 1,
-                'assessable' => 1,
-                'answerscales' => 1,
-                'class' => 'array-flexible-column'
-            ),
-            Question::QT_I_LANGUAGE => array(
-                'description' => gT("Language Switch"),
-                'group' => gT("Mask questions"),
-                'hasdefaultvalues' => 0,
-                'subquestions' => 0,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'language'
-            ),
-            Question::QT_K_MULTIPLE_NUMERICAL_QUESTION => array(
-                'description' => gT("Multiple Numerical Input"),
-                'group' => gT("Mask questions"),
-                'hasdefaultvalues' => 1,
-                'subquestions' => 1,
-                'assessable' => 1,
-                'answerscales' => 0,
-                'class' => 'numeric-multi'
-            ),
-            Question::QT_L_LIST_DROPDOWN => array(
-                'description' => gT("List (Radio)"),
-                'group' => gT("Single choice questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 1,
-                'assessable' => 1,
-                'answerscales' => 1,
-                'class' => 'list-radio'
-            ),
-            Question::QT_M_MULTIPLE_CHOICE => array(
-                'description' => gT("Multiple choice"),
-                'group' => gT("Multiple choice questions"),
-                'subquestions' => 1,
-                'hasdefaultvalues' => 1,
-                'assessable' => 1,
-                'answerscales' => 0,
-                'class' => 'multiple-opt'
-            ),
-            Question::QT_N_NUMERICAL => array(
-                'description' => gT("Numerical Input"),
-                'group' => gT("Mask questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 1,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'numeric'
-            ),
-            Question::QT_O_LIST_WITH_COMMENT => array(
-                'description' => gT("List with comment"),
-                'group' => gT("Single choice questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 1,
-                'assessable' => 1,
-                'answerscales' => 1,
-                'class' => 'list-with-comment'
-            ),
-            Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => array(
-                'description' => gT("Multiple choice with comments"),
-                'group' => gT("Multiple choice questions"),
-                'subquestions' => 1,
-                'hasdefaultvalues' => 1,
-                'assessable' => 1,
-                'answerscales' => 0,
-                'class' => 'multiple-opt-comments'
-            ),
-            Question::QT_Q_MULTIPLE_SHORT_TEXT => array(
-                'description' => gT("Multiple Short Text"),
-                'group' => gT("Text questions"),
-                'subquestions' => 1,
-                'hasdefaultvalues' => 1,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'multiple-short-txt'
-            ),
-            Question::QT_R_RANKING_STYLE => array(
-                'description' => gT("Ranking"),
-                'group' => gT("Mask questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 0,
-                'assessable' => 1,
-                'answerscales' => 1,
-                'class' => 'ranking'
-            ),
-            Question::QT_S_SHORT_FREE_TEXT => array(
-                'description' => gT("Short Free Text"),
-                'group' => gT("Text questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 1,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'text-short'
-            ),
-            Question::QT_T_LONG_FREE_TEXT => array(
-                'description' => gT("Long Free Text"),
-                'group' => gT("Text questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 1,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'text-long'
-            ),
-            Question::QT_U_HUGE_FREE_TEXT => array(
-                'description' => gT("Huge Free Text"),
-                'group' => gT("Text questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 1,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'text-huge'
-            ),
-            Question::QT_X_BOILERPLATE_QUESTION => array(
-                'description' => gT("Text display"),
-                'group' => gT("Mask questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 0,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'boilerplate'
-            ),
-            Question::QT_Y_YES_NO_RADIO => array(
-                'description' => gT("Yes/No"),
-                'group' => gT("Mask questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 1,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'yes-no'
-            ),
-            Question::QT_EXCLAMATION_LIST_DROPDOWN => array(
-                'description' => gT("List (Dropdown)"),
-                'group' => gT("Single choice questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 1,
-                'assessable' => 1,
-                'answerscales' => 1,
-                'class' => 'list-dropdown'
-            ),
-            Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS => array(
-                'description' => gT("Array (Numbers)"),
-                'group' => gT('Arrays'),
-                'subquestions' => 2,
-                'hasdefaultvalues' => 0,
-                'assessable' => 1,
-                'answerscales' => 0,
-                'class' => 'array-multi-flexi'
-            ),
-            Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT => array(
-                'description' => gT("Array (Texts)"),
-                'group' => gT('Arrays'),
-                'subquestions' => 2,
-                'hasdefaultvalues' => 0,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'array-multi-flexi-text'
-            ),
-            Question::QT_VERTICAL_FILE_UPLOAD => array(
-                'description' => gT("File upload"),
-                'group' => gT("Mask questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 0,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'upload-files'
-            ),
-            Question::QT_ASTERISK_EQUATION => array(
-                'description' => gT("Equation"),
-                'group' => gT("Mask questions"),
-                'subquestions' => 0,
-                'hasdefaultvalues' => 0,
-                'assessable' => 0,
-                'answerscales' => 0,
-                'class' => 'equation'
-            ),
-        );
+        $questionTypes = QuestionType::modelsAttributes();
+
         /**
          * @todo Check if this actually does anything, since the values are arrays.
          */
@@ -756,18 +496,21 @@ class Question extends LSActiveRecord
      * @return string Question type name
      *
      * Maybe move class in typeList ?
+     * @deprecated use $this->>questionType->description instead
      */
     public static function getQuestionTypeName($sType)
     {
         $typeList = self::typeList();
         return $typeList[$sType]['description'];
     }
+
     /**
      * This function return the class by question type
      * @param string question type
      * @return string Question class to be added to the container
      *
      * Maybe move class in typeList ?
+     * //TODO move to QuestionType
      */
     public static function getQuestionClass($sType)
     {
@@ -1097,6 +840,18 @@ class Question extends LSActiveRecord
         return QuestionAttribute::model()->findAll($criteria);
     }
 
+    /**
+     * @return null|QuestionType
+     */
+    public function getQuestionType()
+    {
+        $model = QuestionType::findOne($this->type);
+        if (!empty($model)) {
+            $model->question = $this;
+        }
+        return $model;
+    }
+  
     /**
      * @return array
      */
