@@ -162,12 +162,16 @@ class TemplateManifest extends TemplateConfiguration
         if (!file_exists($this->path.$sFile) && !file_exists($this->viewPath.$sFile)) {
 
             // Copy file from mother template to local directory
-            $sRfilePath = $this->getFilePath($sFile, $this);
-            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath.$sFile : $this->path.$sFile;
-            copy($sRfilePath, $sLfilePath);
+            $sSourceFilePath = $this->getFilePath($sFile, $this);
+            $sDestinationFilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath.$sFile : $this->path.$sFile;
+            
+            //PHP 7 seems not to create the folder on copy automatically.
+            @mkdir(dirname($sDestinationFilePath), 0775, true);
+
+            copy($sSourceFilePath, $sDestinationFilePath);
 
             // If it's a css or js file from config... must update DB and XML too....
-            $sExt = pathinfo($sLfilePath, PATHINFO_EXTENSION);
+            $sExt = pathinfo($sDestinationFilePath, PATHINFO_EXTENSION);
             if ($sExt == "css" || $sExt == "js") {
 
                 // Check if that CSS/JS file is in DB/XML
