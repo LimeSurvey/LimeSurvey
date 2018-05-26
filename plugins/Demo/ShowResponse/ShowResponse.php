@@ -4,11 +4,8 @@ class ShowResponse extends PluginBase {
     static protected $description = 'Demo: handle a survey response';
     static protected $name = 'Show response';
     
-    public function __construct(PluginManager $manager, $id) 
+    public function init()
     {
-        parent::__construct($manager, $id);
-        
-        
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
