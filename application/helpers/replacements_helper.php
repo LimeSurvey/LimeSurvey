@@ -439,6 +439,7 @@ function getStandardsReplacementFields($thissurvey)
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
+    $coreReplacements['NUMBEROFQUESTIONS'] = $_SESSION['survey_'.$surveyid]['totalquestions'];
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['EXPIRY'] = $_dateoutput;
