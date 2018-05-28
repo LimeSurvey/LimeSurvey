@@ -431,11 +431,9 @@ function getStandardsReplacementFields($thissurvey)
     }
 
     $_assessment_current_total = '';
-    if (!empty($thissurvey['aAssessments'])) {
-        if (!empty($thissurvey['aAssessments']['total'])) {
-            $_assessment_current_total = $thissurvey['aAssessments']['total'];
-        }
-
+    if (!empty($thissurvey['assessments']) && $thissurvey['assessments']=="Y") {
+        $assessmentdata = doAssessment($surveyid, true);
+        $_assessment_current_total = (!empty($assessmentdata['datas']['total_score']))?$assessmentdata['datas']['total_score']:gT("unkown");
     }
 
 
