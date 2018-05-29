@@ -266,7 +266,8 @@ $internalConfig = array(
                 'getLanguageNameFromCode' => 'getLanguageNameFromCode',
                 'checkconditionFunction'  => 'checkconditionFunction',
                 'doRender'                => 'doRender',
-                'flattenText'             => 'flattenText'
+                'flattenText'             => 'flattenText',
+                'getEditor'               => 'getEditor'
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -367,7 +368,8 @@ $internalConfig = array(
                     'checkconditionFunction',
                     'doRender',
                     'flattenText',
-                    'range'
+                    'range',
+                    'getEditor'
                 ),
             ),
         ),

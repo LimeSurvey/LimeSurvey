@@ -415,8 +415,6 @@ class questiongroups extends Survey_Common_Action
                     $oQuestion->save(true);
                 }, $oQuestions);
             }
-            
-            Question::updateSortOrder($aQuestiongroup['gid'], $surveyid);
         }
 
         return Yii::app()->getController()->renderPartial(
