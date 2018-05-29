@@ -22,7 +22,9 @@ function triggerEmRelevance(){
 function triggerEmRelevanceQuestion(){
     /* Action on this question */
     $("[id^='question']").on('relevance:on',function(event,data) {
-        if(event.target != this) return; /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. Don't want to stop propagation. */
+        /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. 
+        Don't want to stop propagation. */
+        if(event.target != this) return; 
         $(this).removeClass("ls-irrelevant ls-hidden");
     });
     $("[id^='question']").on('relevance:off',function(event,data) {
@@ -59,7 +61,9 @@ function triggerEmRelevanceSubQuestion(){
         data = $.extend({style:'hidden'}, data);
         $(this).removeClass("ls-irrelevant ls-"+data.style);
         if(data.style=='disabled'){
-            $(event.target).find('input').prop("disabled", false );
+            $(event.target).find('input').each(function(itrt, item ){
+                $(item).prop("disabled", false );
+            });
         }
         if(data.style=='hidden'){
             updateLineClass($(this));
@@ -70,14 +74,22 @@ function triggerEmRelevanceSubQuestion(){
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
         $(this).addClass("ls-irrelevant ls-"+data.style);
+
         if(data.style=='disabled'){
-            $(event.target).find('input').prop("disabled", true );
+            $(event.target).find('input')
+            .each(function(itrt, item ){
+                if($(item).attr('type') == 'checkbox' && $(item).prop('checked')) {
+                    $(item).prop('checked', false).trigger('change');
+                }
+                $(item).prop("disabled", true );
+            });
         }
+
         if(data.style=='hidden'){
             updateLineClass($(this));
             updateRepeatHeading($(this).closest(".ls-answers"));
         }
-        $(this).find('input[disabled]').prop('checked', false);
+            
         console.ls.log($(this).find('input[disabled]'));
     });
 }
