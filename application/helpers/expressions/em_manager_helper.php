@@ -7805,10 +7805,16 @@
                     // {
                     //     $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     // }
-                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
-                    $qrelJS .= "  return;\n }\n";
+                    
+                    //Normally trigger reevaluation only for relevant questions except for equation questions
+                    if($arg['type'] != '*') {
+                        $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+                        $qrelJS .= "  return;\n }\n";
+                    }
+
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
+
                     $relEqns[] = $qrelJS;
 
                     $gseq_qidList[$arg['gseq']][$arg['qid']] = '1';   // means has an explicit LEMrel() function

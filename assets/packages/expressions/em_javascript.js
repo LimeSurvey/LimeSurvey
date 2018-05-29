@@ -807,16 +807,18 @@ function LEMval(alias)
                 }
                 return value;
             }
-            else {
+            else if(!isNaN(parseFloat(newval)) && isFinite(newval))
+            {
                 // If it's not a decimal number, just return value
                 try {
                     var decimal_safe = new Decimal(value);
-                    return pad(decimal_safe,value.length);
+                    return decimal_safe.toPrecision(value.length);
                 }
                 catch (ex) {
-                    return value;
                 }
             }
+
+            return value;
         }
         case 'rowdivid':
             if (typeof attr.rowdivid === 'undefined' || attr.rowdivid == '') {
@@ -828,17 +830,18 @@ function LEMval(alias)
     }
 }
 
+
 /** Display number with comma as radix separator, if needed
  */
 function LEMfixnum(value)
 {
     if (LEMradix===',') {
         var newval = String(value);
-        if (parseFloat(newval) != value) {
-            return value;   // unchanged
+        if (!isNaN(parseFloat(newval)) && isFinite(newval)) {
+            newval= newval.split('.').join(',');
+            return newval;
         }
-        newval= newval.split('.').join(',');
-        return newval;
+        return value;   // unchanged
     }
     return value;
 }
