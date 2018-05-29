@@ -32,15 +32,15 @@ echo viewHelper::getViewTestTag('editAnswerOptions');
                 }
 
             $aData = array(
-                                                    'language'  => $anslang,
-                                                    'question'  => $row->questionL10ns[$anslang]->question,
-                                                    'title'             => CHtml::encode($row->code),
+                'language'  => $anslang,
+                'question'  => $row->questionL10ns[$anslang]->question,
+                'title'             => CHtml::encode($row->code),
                 'surveyid' => $surveyid,
                 'gid' => $gid,
                 'qid' => $qid,
-                                                'assessment_value'  => CHtml::encode($row->assessment_value),
+                'assessment_value'  => CHtml::encode($row->assessment_value),
                 'scalecount' => $scalecount,
-                                                    'answer'            => CHtml::encode($row->answerL10ns[$anslang]->answer),
+                'answer'            => CHtml::encode($row->answerL10ns[$anslang]->answer),
                 'tableId' => $tableId,
                 'activated' => $activated,
                 'assessmentvisible' => (empty($assessmentvisible)) ? false : $assessmentvisible,
