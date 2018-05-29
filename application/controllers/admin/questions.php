@@ -992,7 +992,7 @@ class questions extends Survey_Common_Action
         }
 
         $html = '<!-- Inserted Row -->';
-        $html .= $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/'.$view, $aData, true, false);
+        $html .= App()->twigRenderer->renderAnswerOptions('/admin/survey/Question/subquestionsAndAnswers/'.$view, $aData);
         $html .= '<!-- end of Inserted Row -->';
         return $html;
     }
