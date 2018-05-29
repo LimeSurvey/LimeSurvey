@@ -62,7 +62,7 @@ class AutoCalcTest extends TestBaseClassWeb
             $bmiReport = self::$webDriver->findElement(WebDriverBy::id('ls-question-text-' . $sgqa));
             $bmi = $bmiReport->getText();
 
-            $this->assertEquals('Body Mass Index (BMI) is 25.308.', $bmi);
+            $this->assertEquals('Body Mass Index (BMI) is 25.308.', $bmi, $bmi);
 
             sleep(5);
 
