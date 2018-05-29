@@ -137,6 +137,61 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     }
 
     /**
+     * This method is used to render question's subquestions and answer options pages  .
+     * It first checks if the question use a template (set in display attributes)
+     * If it is the case, it will use the views of that template, else, it will render the core view.
+     *
+     * @param string   $sView           the view (layout) to render
+     * @param array    $aData          the datas needed for the view rendering
+     *
+     * @return  string the generated html
+     */
+    public function renderAnswerOptions($sView, $aData)
+    {
+        $this->_twig  = parent::getTwig(); // Twig object
+        $loader       = $this->_twig->getLoader(); // Twig Template loader
+        $requiredView = Yii::getPathOfAlias('application.views').$sView; // By default, the required view is the core view
+        $loader->setPaths(App()->getBasePath().'/views/'); // Core views path
+
+        $oQuestionTemplate   = QuestionTemplate::getInstance(); // Question template instance has been created at top of qanda_helper::retrieveAnswers()
+
+        // currently, question's subquestions and answer options pages are rendered only from core
+        $sTemplateFolderName = null;
+
+        // Check if question use a custom template and that it provides its own twig view
+        if ($sTemplateFolderName) {
+            $bTemplateHasThisView = $oQuestionTemplate->checkIfTemplateHasView($sView); // A template can change only one of the view of the question type. So other views should be rendered by core.
+
+            if ($bTemplateHasThisView) {
+                $sQTemplatePath = $oQuestionTemplate->getTemplatePath(); // Question template views path
+                $loader->setPaths($sQTemplatePath); // Loader path
+                $requiredView = $sQTemplatePath.ltrim($sView, '/'); // Complete path of the view
+            }
+        }
+
+        // We check if the file is a twig file or a php file
+        // This allow us to twig the view one by one, from PHP to twig.
+        // The check will be removed when 100% of the views will have been twig
+        if (file_exists($requiredView.'.twig')) {
+            // We're not using the Yii Theming system, so we don't use parent::renderFile
+            // current controller properties will be accessible as {{ this.property }}
+            
+            //  aData and surveyInfo variables are accessible from question type twig files
+            $aData['aData'] = $aData;
+            $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
+            $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+            $aData['this'] = Yii::app()->getController();
+            
+            $aData['question_template_attribute'] = null;
+
+            $template = $this->_twig->loadTemplate($sView.'.twig')->render($aData);
+            return $template;
+        } else {
+            return Yii::app()->getController()->renderPartial($sView, $aData, true);
+        }
+    }
+
+    /**
      * This method is called from Template Editor.
      * It returns the HTML string needed for the tmp file using the template twig file.
      * @param string   $sView           the view (layout) to render
