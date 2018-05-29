@@ -58,8 +58,8 @@
     <div class='col-sm-4'>
         <div id="newcreated" class="panel panel-primary <?php echo $columnstyle ?>">
             <div class="panel-heading"><?php eT("Survey participant attributes to create"); ?></div>
-            <div class='panel-body'>
-                <div class="newcreate" id="sortable" style ="">
+            <div class='panel-body' style="height:100%;">
+                <div class="newcreate" id="sortable" style ="height:100%;">
                 </div>
             </div>
         </div>
