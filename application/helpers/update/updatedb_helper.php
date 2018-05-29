@@ -705,16 +705,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             upgradeSurveys156();
 
             // If a survey has an deleted owner, re-own the survey to the superadmin
-            $oDB->schema->refresh();
-            Survey::model()->refreshMetaData();
-            $surveys = Survey::model();
-            $surveys = $surveys->with(array('owner'))->findAll();
-            foreach ($surveys as $row)
-            {
-                if (!isset($row->owner->attributes))
-                {
-                    Survey::model()->updateByPk($row->sid,array('owner_id'=>1));
-                }
+            $sSurveyQuery = "SELECT sid, uid  from {{surveys}} LEFT JOIN {{users}} ON uid=owner_id WHERE uid IS null";
+            $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
+            foreach ( $oSurveyResult as $row ) {
+                    $oDB->createCommand("UPDATE {{surveys}} SET owner_id=1 WHERE sid={$row['sid']}")->execute();
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
             $oTransaction->commit();
@@ -1342,7 +1336,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     $sSubstringCommand = 'substring';
             }
             $oDB->createCommand("UPDATE {{templates}} set folder={$sSubstringCommand}(folder,1,50)")->execute();
-            dropPrimaryKey('templates');
+            try { dropPrimaryKey('templates'); } catch(Exception $e){};
             alterColumn('{{templates}}', 'folder', "string(50)", false);
             addPrimaryKey('templates', 'folder');
             dropPrimaryKey('participant_attribute_names_lang');
@@ -3139,7 +3133,7 @@ function upgradeTokens176()
         if (tableExists($sTokenTableName))
         {                                        
             $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
-            $aAttributes = $arSurvey['tokenAttributes'];
+            $aAttributes = $arSurvey['attributedescriptions'];
             foreach($aColumnNamesIterator as $sColumnName)
             {
                 // Check if an old atttribute_cpdb column exists in that token table
@@ -3371,14 +3365,13 @@ function upgradeTokens148()
 
 function upgradeQuestionAttributes148()
 {
-    $sSurveyQuery = "SELECT sid FROM {{surveys}}";
+    $sSurveyQuery = "SELECT sid,language,additional_languages FROM {{surveys}}";
     $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
     $aAllAttributes=\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
     foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
         $iSurveyID=$aSurveyRow['sid'];
-        $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-
+        $aLanguages=array_merge(array($aSurveyRow['language']), explode(' ',$aSurveyRow['additional_languages']));
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
         $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
         foreach ( $oAttributeResult->readAll() as $aAttributeRow)
