@@ -64,8 +64,6 @@ class AutoCalcTest extends TestBaseClassWeb
 
             $this->assertEquals('Body Mass Index (BMI) is 25.308.', $bmi, $bmi);
 
-            sleep(5);
-
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
