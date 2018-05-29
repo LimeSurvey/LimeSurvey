@@ -35,6 +35,37 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.8.1 (build 180524) to 3.8.2 (build 180529) May 29, 2018
+-Fixed issue #12227: "Error: Failed to insert data" and corrupted quotas when i've tried to import old (v2.5.xx) surveys (Dominik Vitt)
+-Fixed issue #12950: Regression? {ASSESSMENT_CURRENT_TOTAL} no longer defined (LouisGac)
+-Fixed issue #13574: Some placeholders no longer available in 3.x (LouisGac)
+-Fixed issue #13588: User reported problem with Postgres and question reorder (Markus Flür)
+-Fixed issue #13598: Missing filter when selecting parent survey group (Dominik Vitt)
+-Fixed issue #13645: Error message Google Translate API (Dominik Vitt)
+-Fixed issue #13710: Media File in Question Group description is not displayed when taking survey if there is no proper text in description (Markus Flür)
+-Fixed issue #13712: Exclusive option does not exclude others (Markus Flür)
+-Fixed issue #13720: an icon is missing (Dominik Vitt)
+-Fixed issue: endless redirections in theme setting menu (#1080) (gekkedev)
+-Fixed issue: demo plugin broke page (Denis Chenu)
+-Fixed issue: PHP7 not creating folders automatically on copy (Markus Flür)
+-Fixed issue: Several database update problems when updating from 1.91 (Carsten Schmitz)
+-Fixed issue: Small nuisances in the cpdb (Markus Flür)
+-Fixed issue: equation question only dependant on another equation question not reevaluated (Markus Flür)
+-Fixed issue: question help hidden with only script tag in it (Markus Flür)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by b00z00
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Russian by smilez, c0der, quarrier, panch_evg, vipgroup
+#Updated translation: Spanish (Argentina) by aesteban, Dhel210, gabrieljenik
+                                                                        
 Changes from 3.8.0 (build 180522) to 3.8.1 (build 180524) May 24, 2018
 -Fixed issue #12520: Crash when trying to generate a PDF with Graphs from statistic page on PHP 7.1 or later (Carsten Schmitz)
 -Fixed issue #13607: Multiple_choice_with_comments - bug (Dominik Vitt)
