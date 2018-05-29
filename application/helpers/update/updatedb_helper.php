@@ -2236,6 +2236,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             .'</p><br />'
             . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
         );
+        // If we're debugging, re-throw the exception.
+        if (defined('YII_DEBUG') && YII_DEBUG) {
+            throw $e;
+        }
         return false;
     }
 
