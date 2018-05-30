@@ -253,6 +253,24 @@ class ExpressionManager
     }
 
     /**
+     * Since this class can be get by session, need to add a call the «start» event manually
+     * @return void
+     */
+    public function ExpressionManagerStartEvent()
+    {
+        $event = new \LimeSurvey\PluginManager\PluginEvent('newValidFunctions');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        $newValidFunctions = (array) $result->get('functions');
+        $newPackages = (array) $result->get('packages'); // package added to expression-extend['depends'] : maybe don't add it in event, but add an helper ?
+        $this->RegisterFunctions($newValidFunctions); // No validation : plugin dev can break all easily
+        foreach($newPackages as $name => $package) {
+            Yii::app()->clientScript->addPackage($name,$package);
+        }
+        Yii::app()->clientScript->addPackage('expression-extend',array(
+            'depends' => array_keys($newPackages)
+        ));
+    }
+    /**
      * Add an error to the error log
      *
      * @param string $errMsg
@@ -687,7 +705,6 @@ class ExpressionManager
         if (!$evalStatus) {
             return false;
         }
-
         while (++$this->RDP_pos < $this->RDP_count) {
             $token = $this->RDP_tokens[$this->RDP_pos];
             if ($token[2] == 'RP') {
@@ -1817,10 +1834,11 @@ class ExpressionManager
         if (!$this->RDP_isValidFunction($name)) {
             return false;
         }
+        
         $func = $this->RDP_ValidFunctions[$name];
         $funcName = $func[0];
         $result = 1; // default value for $this->RDP_onlyparse
-        if (function_exists($funcName)) {
+        if (is_callable($funcName)) {
             $numArgsAllowed = array_slice($func, 5); // get array of allowable argument counts from end of $func
             $argsPassed = is_array($params) ? count($params) : 0;
 
@@ -1839,7 +1857,7 @@ class ExpressionManager
                                 $result = call_user_func_array('sprintf', $params);
                                 break;
                             default:
-                                $result = $funcName($params);
+                                $result = call_user_func($funcName,$params);
                                 break;
                         }
                     }
@@ -1848,7 +1866,7 @@ class ExpressionManager
                     switch ($argsPassed) {
                         case 0:
                             if (!$this->RDP_onlyparse) {
-                                $result = $funcName();
+                                $result = call_user_func($funcName);
                             }
                             break;
                         case 1:
@@ -1870,7 +1888,7 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = $funcName($params[0]);
+                                        $result = call_user_func($funcName,$params[0]);
                                         break;
                                 }
                         }
@@ -1886,33 +1904,20 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = $funcName($params[0], $params[1]);
+                                        $result = call_user_func($funcName,[$params[0], $params[1]]);
                                             break;
                             }
                         }
                         break;
                         case 3:
                             if (!$this->RDP_onlyparse) {
-                                $result = $funcName($params[0], $params[1], $params[2]);
-                            }
-                            break;
-                        case 4:
-                            if (!$this->RDP_onlyparse) {
-                                $result = $funcName($params[0], $params[1], $params[2], $params[3]);
-                            }
-                            break;
-                        case 5:
-                            if (!$this->RDP_onlyparse) {
-                                $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4]);
-                            }
-                            break;
-                        case 6:
-                            if (!$this->RDP_onlyparse) {
-                                $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
+                                $result = call_user_func($funcName,[$params[0], $params[1], $params[2]]);
                             }
                             break;
                         default:
-                            $this->RDP_AddError(sprintf(self::gT("Unsupported number of arguments: %s"), $argsPassed), $funcNameToken);
+                            if (!$this->RDP_onlyparse) {
+                                $result = call_user_func($funcName,$params);
+                            }
                             return false;
                     }
 
@@ -1922,6 +1927,7 @@ class ExpressionManager
                     return false;
                 }
                 if (function_exists("geterrors_".$funcName)) {
+                    /* @todo allow adding it for plugin , if it work …*/
                     if ($sError = call_user_func_array("geterrors_".$funcName, $params)) {
                         $this->RDP_AddError($sError, $funcNameToken);
                         return false;

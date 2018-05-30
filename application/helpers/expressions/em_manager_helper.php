@@ -669,6 +669,7 @@
         {
             self::$instance =& $this;
             $this->em = new ExpressionManager();
+            $this->em->ExpressionManagerStartEvent();
             if (!isset($_SESSION['LEMlang'])) {
                 $_SESSION['LEMlang'] = 'en';    // so that there is a default
             }
@@ -689,6 +690,8 @@
             else if (!isset(self::$instance)) {
                     if (isset($_SESSION['LEMsingleton'])) {
                         self::$instance = unserialize($_SESSION['LEMsingleton']);
+                        /* Since we get it via session, need to launch core event again */
+                        self::$instance->em->ExpressionManagerStartEvent();
                     }
                     else {
                         $c = __CLASS__;
@@ -4330,7 +4333,6 @@
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
             $this->numQuestions = count($this->questionSeq2relevance);
             $this->numGroups = count($this->groupSeqInfo);
-
             return true;
         }
 
@@ -7239,6 +7241,7 @@
                 $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
                 $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
                 $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
+                App()->getClientScript()->registerPackage('expression-extend');
                 Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
                 $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
                 Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", CClientScript::POS_END);
