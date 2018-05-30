@@ -617,18 +617,15 @@ class TemplateConfiguration extends TemplateConfig
 
     private function _filterImages($file)
     {
-        if(file_exists($this->filesPath.$file['name'])) {
-            $imagePath = $this->filesPath.'/'.$file['name'];
-            $fileRoot = '/files';
-        } else {
-            $imagePath = $this->generalFilesPath.$file['name'] ;
-            $fileRoot = Yii::app()->getConfig("userthemerooturl").'/generalfiles';
-        }
+        $imagePath = (file_exists($this->filesPath.$file['name'])) 
+            ? $this->filesPath.'/'.$file['name']
+            : $this->generalFilesPath.$file['name'] ;
 
+        $filepath = App()->getAssetManager()->publish($imagePath);
 
         $checkImage = getimagesize($imagePath);
         if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]))) {
-                return ['filepath' => $fileRoot.'/'.$file['name'], 'filepathOptions' => $imagePath ,'filename'=>$file['name']];
+                return ['filepath' => $filepath, 'filepathOptions' => $imagePath ,'filename'=>$file['name']];
         }
     }
 
