@@ -544,10 +544,10 @@ class questions extends Survey_Common_Action
 
         Yii::app()->loadHelper('admin/htmleditor');
 
-        $row = Answer::model()->findByAttributes(array('qid' => $qid), array('order' => 'sortorder desc'));
+        $oAnswer = Answer::model()->findByAttributes(array('qid' => $qid), array('order' => 'sortorder desc'));
 
-        if (!is_null($row)) {
-                    $maxsortorder = $row->sortorder + 1;
+        if (!is_null($oAnswer)) {
+                    $maxsortorder = $oAnswer->sortorder + 1;
         } else {
                     $maxsortorder = 1;
         }
@@ -558,6 +558,7 @@ class questions extends Survey_Common_Action
         $aData['qid'] = $qid;
         $aData['anslangs'] = $anslangs;
         $aData['scalecount'] = $scalecount;
+        $aData['oAnswer'] = $oAnswer;
 
         // The following line decides if the assessment input fields are visible or not
         $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->together()->findByAttributes(array('sid' => $iSurveyID));
@@ -581,9 +582,12 @@ class questions extends Survey_Common_Action
                 $criteria->order = 'sortorder, code ASC';
                 $criteria->params = array(':qid' => $qid, ':scale_id' => $scale_id);
                 $results[$anslang][$scale_id] = Answer::model()->findAll($criteria);
-                $aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
+                //$aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
+                foreach ($results[$anslang][$scale_id] as &$row) {
+                    $row->code      = htmlspecialchars($row->code);
+                    //$row->answerL10ns[$anslang]->answer    = htmlspecialchars($row->answerL10ns[$anslang]->answer);
+                }
             }
-
         }
 
         $aData['results'] = $results;
@@ -591,6 +595,8 @@ class questions extends Survey_Common_Action
         $aData['formId'] = 'editanswersform';
         $aData['formName'] = 'editanswersform';
         $aData['pageTitle'] = gT('Edit answer options');
+        $aData['tableId'] = 'answer-option-table';
+
 
         $aViewUrls['_subQuestionsAndAnwsersJsVariables'][] = $aData;
         $aViewUrls['answerOptions_view'][] = $aData;

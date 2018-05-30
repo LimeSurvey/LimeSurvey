@@ -71,6 +71,7 @@ class Answer extends LSActiveRecord
                 'on' => 'questions.gid = group.gid'
             ),
             'answerL10ns' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
+            'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true)
             
         );
     }
