@@ -1884,14 +1884,20 @@ function checkCompletedQuota($surveyid, $return = false)
     $thissurvey['aQuotas']['sPluginBlocks']      = implode("\n", $blocks);
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
+    $thissurvey['active']                        = 'Y';
+    
 
-    $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="'.$thissurvey['sid'].'" />
+    $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="'.$surveyid.'" />
                                                    <input type="hidden" name="token"    value="'.$thissurvey['aQuotas']['sClientToken'].'" />
                                                    <input type="hidden" name="thisstep" value="'.$thissurvey['aQuotas']['sQuotaStep'].'" />';
 
-    foreach ($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post) {
-        $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="'.$field.'"   value="'.$post.'" />';
+
+    if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])){
+        foreach ($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post) {
+            $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="'.$field.'"   value="'.$post.'" />';
+        }
     }
+
 
     //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
 
