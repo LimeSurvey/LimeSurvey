@@ -1851,15 +1851,7 @@ class ExpressionManager
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
-                        switch ($funcName) {
-                            case 'sprintf':
-                                // PHP doesn't let you pass array of parameters to function, so must use call_user_func_array
-                                $result = call_user_func_array('sprintf', $params);
-                                break;
-                            default:
-                                $result = call_user_func($funcName,$params);
-                                break;
-                        }
+                        $result = call_user_func_array($funcName, $params);
                     }
                 // Call  function with the params passed
                 } elseif (in_array($argsPassed, $numArgsAllowed)) {
@@ -1891,7 +1883,7 @@ class ExpressionManager
                                         $result = call_user_func($funcName,$params[0]);
                                         break;
                                 }
-                        }
+                            }
                         break;
                         case 2:
                             if (!$this->RDP_onlyparse) {
@@ -1904,21 +1896,21 @@ class ExpressionManager
                                         }
                                         break;
                                     default:
-                                        $result = call_user_func($funcName,[$params[0], $params[1]]);
+                                        $result = call_user_func($funcName,$params[0], $params[1]);
                                             break;
+                                }
                             }
-                        }
                         break;
                         case 3:
                             if (!$this->RDP_onlyparse) {
-                                $result = call_user_func($funcName,[$params[0], $params[1], $params[2]]);
+                                $result = call_user_func($funcName,$params[0], $params[1], $params[2]);
                             }
                             break;
                         default:
                             if (!$this->RDP_onlyparse) {
-                                $result = call_user_func($funcName,$params);
+                                $result = call_user_func_array($funcName,$params);
                             }
-                            return false;
+                        return false;
                     }
 
                 } else {
