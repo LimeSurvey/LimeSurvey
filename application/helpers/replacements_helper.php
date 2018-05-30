@@ -438,6 +438,7 @@ function getStandardsReplacementFields($thissurvey)
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
+    $coreReplacements['FLASHMESSAGE'] = makeFlashMessage();
     $coreReplacements['NUMBEROFGROUPS'] = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
     $coreReplacements['NUMBEROFQUESTIONS'] = $_SESSION['survey_'.$surveyid]['totalquestions'];
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
@@ -473,6 +474,7 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
+    $coreReplacements['TEMPLATEURL'] = Template::model()->getInstance()->templateURL;
 
     return $coreReplacements;
 }

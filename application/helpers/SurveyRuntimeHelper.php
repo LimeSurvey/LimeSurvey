@@ -471,6 +471,9 @@ class SurveyRuntimeHelper
                         $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
                         $aStandardsReplacementFields['QID'] = $qid;
                         $aStandardsReplacementFields['SGQ'] = $qa[7];
+                        $aStandardsReplacementFields['GROUPNAME'] = $this->groupname;
+                        $aStandardsReplacementFields['QUESTION_CODE'] = $qa[0]['code'];
+                        $aStandardsReplacementFields['GID'] = $qinfo['info']['gid'];
                     }
 
                     // easier to understand for survey maker
