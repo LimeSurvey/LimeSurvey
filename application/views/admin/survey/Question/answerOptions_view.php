@@ -29,18 +29,22 @@ echo viewHelper::getViewTestTag('editAnswerOptions');
             <?php
                 foreach ($anslangs as $i => $anslang) {
                     $base_language[$i] = getLanguageNameFromCode($anslang, false).($anslang==Survey::model()->findByPk($surveyid)->language ? ' ('.gT("Base language").')':'');
-                }
+                };
+
+                //echo "<pre>"; var_dump($results); die;
 
             $aData = array(
-                'language'  => $anslang,
-                'question'  => $row->questionL10ns[$anslang]->question,
-                'title'             => CHtml::encode($row->code),
+                'anslangs'  => $anslangs,
+                'results'   => $results,
+                'question'  => $oAnswer->questionL10ns[$anslang]->question,
+                'title'     => CHtml::encode($oAnswer->code),
                 'surveyid' => $surveyid,
                 'gid' => $gid,
                 'qid' => $qid,
-                'assessment_value'  => CHtml::encode($row->assessment_value),
+                'viewType' => $viewType,
+                'assessment_value'  => CHtml::encode($oAnswer->assessment_value),
                 'scalecount' => $scalecount,
-                'answer'            => CHtml::encode($row->answerL10ns[$anslang]->answer),
+                'answer'     => CHtml::encode($oAnswer->answerL10ns[$anslang]->answer),
                 'tableId' => $tableId,
                 'activated' => $activated,
                 'assessmentvisible' => (empty($assessmentvisible)) ? false : $assessmentvisible,
@@ -48,6 +52,7 @@ echo viewHelper::getViewTestTag('editAnswerOptions');
                 'has_permissions' => Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create'),
                 'all_languages' => Survey::model()->findByPk($surveyid)->getAllLanguages()
             );
+
 
             echo App()->twigRenderer->renderAnswerOptions('/admin/survey/Question/answerOptionsEdit_view', $aData); ?> 
 
