@@ -284,6 +284,9 @@ $internalConfig = array(
                     'trim',
                     'json_encode',
                     'replace',
+                    'capitalize',
+                    'lower',
+                    'upper'
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox"),
