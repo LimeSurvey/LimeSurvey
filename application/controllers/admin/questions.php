@@ -1399,11 +1399,15 @@ class questions extends Survey_Common_Action
      * @param int $qid
      * @return array
      */
-    public function delete($surveyid, $qid, $ajax = false)
+    public function delete($surveyid, $qid, $ajax = false, $gid = 0)
     {
         $surveyid = sanitize_int($surveyid);
         $qid = (int) $qid;
         $rqid = $qid;
+        $gid_search = sanitize_int($gid); // gid from search filter
+        if ($gid_search == 0){
+            $gid_search = '';
+        }
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
             if ($qid == 0) {
@@ -1459,7 +1463,7 @@ class questions extends Survey_Common_Action
 
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
             } else {
                 return array('status'=>true, 'message'=>$sMessage);
             }
@@ -1467,7 +1471,7 @@ class questions extends Survey_Common_Action
             $sMessage = gT("You are not authorized to delete questions.");
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
             } else {
                 return array('status'=>false, 'message'=>$sMessage);
             }
