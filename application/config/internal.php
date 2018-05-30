@@ -294,7 +294,7 @@ $internalConfig = array(
                     'round',
                     'replace',
                     'last',
-                    'url_encode'
+                    'url_encode',
                     'capitalize',
                     'lower',
                     'upper'
