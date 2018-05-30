@@ -11,6 +11,7 @@
 # cd LimeSurvey/LimeSurvey
 # chmod +x tests/data/travis/travis_setup.sh
 # ./tests/data/travis/travis_setup.sh
+# find application/ -type function -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors'
 # sudo -u <your-web-user> DOMAIN=localhost phpunit
 # (You might want to use the switch --stop-on-failure.)
 

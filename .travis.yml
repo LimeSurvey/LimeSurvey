@@ -68,4 +68,7 @@ before_script:
     - java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
 
 script:
-    - DOMAIN=localhost phpunit --stop-on-failure # Stop so we can see errors.
+    # Check for syntax errors. This line will never halt the tests.
+    - find application/ -type function -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors'
+    # Run the tests.
+    - DOMAIN=localhost phpunit --stop-on-failure
