@@ -284,7 +284,7 @@ $internalConfig = array(
                     'trim',
                     'json_encode',
                     'replace',
-                    'last'
+                    'last',
                     'capitalize',
                     'lower',
                     'upper'
