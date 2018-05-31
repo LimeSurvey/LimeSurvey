@@ -9,7 +9,7 @@
     <h3><?php eT("Import a question"); ?></h3>
     <div class="row">
         <div class="col-lg-12">
-            <?php echo CHtml::form(array("admin/questions/sa/import"), 'post', array('id'=>'importquestion', 'class'=>'', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return validatefilename(this, '".gT("Please select a file to import!",'js')."');")); ?>
+            <?php echo CHtml::form(array("admin/questions/sa/import"), 'post', array('id'=>'importquestion', 'class'=>'', 'name'=>'importquestion', 'enctype'=>'multipart/form-data','onsubmit'=>"return window.LS.validatefilename(this, '".gT("Please select a file to import!",'js')."');")); ?>
                 <div class="form-group">
                     <label class=" control-label" for='the_file'><?php eT("Select question file (*.lsq):");
                     echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024);?>

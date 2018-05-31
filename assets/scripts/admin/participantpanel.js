@@ -463,7 +463,7 @@ LS.CPDB = (function() {
          */
         $('#export').click(function() { onClickExport(true); });
 
-        doToolTip();
+        window.LS.doToolTip();
         $(document).trigger('pjax:refresh');
     };
 
@@ -495,7 +495,7 @@ function rejectParticipantShareAjax(participant_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                notifyFader(result.successMessage, 'well-lg bg-primary text-center');
+                window.LS.notifyFader(result.successMessage, 'well-lg bg-primary text-center');
                 $.fn.yiiGridView.update('share_central_participants',{});
             }
         })
@@ -514,7 +514,7 @@ function deleteAttributeAjax(attribute_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                notifyFader(result.successMessage, 'well-lg bg-primary text-center');
+                window.LS.notifyFader(result.successMessage, 'well-lg bg-primary text-center');
                 $.fn.yiiGridView.update('list_attributes',{});
             }
         })

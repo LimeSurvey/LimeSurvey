@@ -50,15 +50,6 @@ $(document).on('ready pjax:scriptcomplete', function(){
     });
 
 
-
-    if($('#survey-grid').length>0)
-    {
-        $(document).on('click', '.has-link', function () {
-            $linkUrl = $(this).find('a').attr('href');
-            window.location.href=$linkUrl;
-        });
-    }
-
     /* Switch format group */
     if ($('#switchchangeformat').length>0){
         $('#switchchangeformat button').on('click', function(event, state) {
@@ -119,7 +110,6 @@ $(document).on('ready pjax:scriptcomplete', function(){
         expires: 5000
         });
     });
-
     /**
      * Confirmation modal
      *
@@ -272,10 +262,6 @@ function doToolTip()
     try{ $('[data-tooltip="true"]').tooltip('destroy'); } catch(e){}
 
     $('[data-tooltip="true"]').tooltip();
-    
-    try{ $('[data-tooltip="true"]').tooltip('destroy'); } catch(e){}
-    
-    $('[data-toggle="tooltip"]').tooltip();
 
     // ToolTip on menu
     $(".sf-menu li").each(function() {
@@ -304,6 +290,7 @@ function doToolTip()
 // If the length of the element's string is 0 then display helper message
 function isEmpty(elem, helperMsg)
 {
+    console.trace('isEmptyCalled', this);
     if($.trim(elem.value).length == 0){
         alert(helperMsg);
         elem.focus(); // set the focus to this input
@@ -312,8 +299,8 @@ function isEmpty(elem, helperMsg)
     return true;
 }
 
-
-function arrHasDupes( A ) {                          // finds any duplicate array elements using the fewest possible comparison
+// finds any duplicate array elements using the fewest possible comparison
+function arrHasDupes( A ) {  
     var i, j, n;
     n=A.length;
     // to ensure the fewest possible comparisons
@@ -635,9 +622,9 @@ if ('ab'.substr(-1) != 'b') {
         };
     }(String.prototype.substr);
 }
+//========================================================================================
 
-function linksInDialog()
-{
+function linksInDialog() {
     $(function () {
         var iframe = $('<iframe id="dialog" title='+$(this).attr("title")+' allowfullscreen></iframe>');
         var dialog = $("<div class='hidden'></div>").append(iframe).appendTo("#pjax-content").dialog({

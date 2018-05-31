@@ -466,10 +466,10 @@ function areCodesUnique(sNewValue)
         })
         if (sNewValue!='')
         {
-            codearray=codearray.filter( onlyUnique );
+            codearray=window.LS.getUnique(codearray);
             codearray.push(sNewValue);
         }
-        if (arrHasDupes(codearray))
+        if (window.LS.arrHasDupes(codearray))
             {
             dupefound=true;
             return;
@@ -873,7 +873,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
 function getlabel()
 {
     var answer_table = $(this).parent().children().eq(0);
-    scale_id=removechars($(this).attr('id'));
+    scale_id=window.LS.removechars($(this).attr('id'));
 
     //$('#saveaslabel').dialog('open');
     updaterowproperties();

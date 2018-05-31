@@ -81,7 +81,7 @@
                 value="{{ assessment_value }}"
                 maxlength='5'
                 size='5'
-                onkeypress="return goodchars(event,'-1234567890')"
+                onkeypress="returnwindow.LS.goodchars(event,'-1234567890')"
             />
         </td>
     {% elseif first %}
@@ -92,7 +92,7 @@
                 id='assessment_{{ position }}_{{ scale_id }}'
                 name='assessment_{{ position }}_{{ scale_id }}'
                 value="{{ assessment_value }}" maxlength='5' size='5'
-                onkeypress="return goodchars(event,'-1234567890')"
+                onkeypress="returnwindow.LS.goodchars(event,'-1234567890')"
             />
         </td>
     {% elseif assessmentvisible %}

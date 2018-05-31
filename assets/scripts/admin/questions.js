@@ -205,7 +205,7 @@ function updatequestionattributes(question_template_name = '', oldQuestionTempla
                     }
                 }
             });
-            renderBootstrapSwitch();
+            window.LS.renderBootstrapSwitch();
         }
     });
 }

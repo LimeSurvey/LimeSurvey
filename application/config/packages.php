@@ -184,7 +184,7 @@ return array(
         'js' => array(
             'js/confirmdeletemodal.js',
             'js/bootstrap-remote-modals.js',
-            'js/admin_core.js',
+            'build/adminbasics.js',
             'js/notifications.js',
         ),
         'depends' => array(
