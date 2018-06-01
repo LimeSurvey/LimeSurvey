@@ -132,6 +132,7 @@ class printablesurvey extends Survey_Common_Action
                 'sitename' => Yii::app()->getConfig("sitename"),
                 'therearexquestions' => 0,
                 'submit_text' => gT("Submit Your Survey."),
+                'end' => $end,
                 'submit_by' => $surveyexpirydate,
                 'thanks' => gT("Thank you for completing this survey."),
                 'privacy' => '',
