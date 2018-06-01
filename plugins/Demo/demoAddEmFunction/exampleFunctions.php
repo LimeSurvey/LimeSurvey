@@ -9,4 +9,20 @@ class exampleFunctions
     {
         return "Hello ".$message;
     }
+    public static function doHtmlList($elements)
+    {
+        if(!count($elements)) {
+            return "";
+        }
+        $returnHtml = "";
+        foreach($elements as $element) {
+            if(strval($element)) {
+                $returnHtml .= "<li>".$element."</li>";
+            }
+        }
+        if($returnHtml) {
+            $returnHtml = "<ul>".$returnHtml."</ul>";
+        }
+        return $returnHtml;
+    }
 }

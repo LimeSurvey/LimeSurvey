@@ -270,7 +270,12 @@ return array(
         'depends' => array(
             'adminbasics',
         )
-    )
-
+    ),
+    /* An empty package to be extended for EM (after core expressions) */
+    'expression-extend' =>array(
+        'depends' => array(
+            // Empty, 'expressions' for 4.0
+        )
+    ),
 
 );

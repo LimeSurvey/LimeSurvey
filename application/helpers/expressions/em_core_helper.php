@@ -263,13 +263,22 @@ class ExpressionManager
         $newValidFunctions = (array) $result->get('functions');
         $newPackages = (array) $result->get('packages'); // package added to expression-extend['depends'] : maybe don't add it in event, but add an helper ?
         $this->RegisterFunctions($newValidFunctions); // No validation : plugin dev can break all easily
-        foreach($newPackages as $name => $package) {
-            Yii::app()->clientScript->addPackage($name,$package);
+        foreach($newPackages as $name => $definition) {
+            $this->addPackageForExpressionManager($name,$definition);
         }
-        Yii::app()->clientScript->addPackage('expression-extend',array(
-            'depends' => array_keys($newPackages)
-        ));
     }
+
+    /**
+     * Add a package for expression
+     * @param string $name of package
+     * @param array $definition @see https://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
+     * @return void
+     */
+    public function addPackageForExpressionManager($name,$definition) {
+        Yii::app()->clientScript->addPackage($name,$definition);
+        array_push(Yii::app()->clientScript->packages['expression-extend']['depends'],$name);
+    }
+
     /**
      * Add an error to the error log
      *
@@ -1851,7 +1860,16 @@ class ExpressionManager
                         return false;
                     }
                     if (!$this->RDP_onlyparse) {
-                        $result = call_user_func_array($funcName, $params);
+                        switch ($funcName) {
+                            case 'sprintf':
+                                /* function with any number of params */
+                                $result = call_user_func_array('sprintf', $params);
+                                break;
+                            default:
+                                /* function with array as param*/
+                                $result = call_user_func($funcName, $params);
+                                break;
+                        }
                     }
                 // Call  function with the params passed
                 } elseif (in_array($argsPassed, $numArgsAllowed)) {
@@ -1906,7 +1924,11 @@ class ExpressionManager
                                 $result = call_user_func($funcName,$params[0], $params[1], $params[2]);
                             }
                             break;
+                        case 4:
+                        case 5:
+                        case 6:
                         default:
+                            /* We can accept any fixed numbers of params with call_user_func_array */
                             if (!$this->RDP_onlyparse) {
                                 $result = call_user_func_array($funcName,$params);
                             }
