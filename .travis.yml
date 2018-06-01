@@ -68,6 +68,6 @@ before_script:
 
 script:
     # Check for syntax errors.
-    - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors'
+    - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
     # Run tests.
     - DOMAIN=localhost phpunit
