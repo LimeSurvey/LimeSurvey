@@ -8839,6 +8839,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         ); // Seems to happen when admin make error on date format */
                                         $LEM->invalidAnswerString[$sq]=$message;
                                         $value = "INVALID"; // Test wait INVALID
+                                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid); /* @todo : test to reviewed : need to disable move */
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
                                         $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $newValue);
@@ -10369,7 +10370,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         /**
          * Add a flash message to state-key 'frontend{survey id}'
          * The flash messages are templatereplaced in startpage.tstpl, {FLASHMESSAGE}
-         *
+         * @todo : validate if it work : unsure it was shown always to user (nojs ?)
+         * 
          * @param string $type Yii type of flash: `error`, `notice`, 'success'
          * @param string $message
          * @param int $surveyid
