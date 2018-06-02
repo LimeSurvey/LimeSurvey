@@ -8818,12 +8818,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         switch($type) // fix value before set it in $_SESSION : the data is reset when show it again to user.trying to save in DB : date only, but think it must be leave like it and filter oinly when save in DB
                         {
                             case 'D': //DATE
-
+                                /* TODO : if value is empty : try $_SESSION[$LEM->sessid]['day'.$sq] etc … */
                                 // Handle Arabic numerals
                                 // TODO: Make a wrapper class around date converter, which constructor takes to-lang and from-lang
                                 $lang = $_SESSION['LEMlang'];
                                 $value = self::convertNonLatinNumerics($value, $lang);
-
                                 $value = trim($value);
                                 if ($value != "" && $value != "INVALID") {
                                     $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
@@ -8831,25 +8830,23 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         $aAttributes[$qid]=array();
                                     }
                                     $aDateFormatData = getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
-                                    // We don't really validate date here : if date is invalid : return 1999-12-01 00:00
-                                    // For an explanation of the exclamation mark, see this thread:
-                                    // http://stackoverflow.com/questions/43740037/datetime-converts-wrong-when-system-time-is-30-march
                                     $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
                                     if ($dateTime === false) {
                                         $message = sprintf(
                                             'Could not convert date %s to format %s. Please check your date format settings.',
-                                            trim($value),
+                                            htmlspecialchars(trim($value)),
                                             $aDateFormatData['phpdate']
-                                        );
-                                        $value = "INVALID"; // This don't disable submitting survey  … ("" neither)
-                                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
+                                        ); // Seems to happen when admin make error on date format */
+                                        $LEM->invalidAnswerString[$sq]=$message;
+                                        $value = null;
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
                                         $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $newValue);
                                         if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                             $value = $newValue;
                                         } else {
-                                            $value = "";// This don't disable submitting survey  … ("INVALID" neither)
+                                            $LEM->invalidAnswerString[$sq]=sprintf(gT("Date %s is invalid, review your answer"),htmlspecialchars($value));
+                                            $value = null;
                                         }
                                     }
                                 }
