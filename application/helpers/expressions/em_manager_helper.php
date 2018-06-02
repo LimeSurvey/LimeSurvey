@@ -8858,6 +8858,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         );
                                         $value = "INVALID"; // This don't disable submitting survey
                                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
+                                        $LEM->invalidAnswerString[$sq]=$message;
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
                                         $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $newValue);
