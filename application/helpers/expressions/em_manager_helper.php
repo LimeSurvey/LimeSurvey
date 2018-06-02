@@ -8838,7 +8838,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             $aDateFormatData['phpdate']
                                         ); // Seems to happen when admin make error on date format */
                                         $LEM->invalidAnswerString[$sq]=$message;
-                                        $value = null;
+                                        $value = "INVALID"; // Test wait INVALID
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
                                         $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $newValue);
