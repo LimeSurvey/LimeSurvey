@@ -15,6 +15,20 @@
  */
 //Ensure script is not run directly, avoid path disclosure
 //if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
+injectglobalsettings();
+
+
+function injectglobalsettings()
+{
+    $settings = SettingGlobal::model()->findAll();
+
+    //if ($dbvaluearray!==false)
+    if (count($settings) > 0) {
+        foreach ($settings as $setting) {
+            Yii::app()->setConfig($setting->getAttribute('stg_name'), $setting->getAttribute('stg_value'));
+        }
+    }
+}
 
 /**
  * Returns a global setting

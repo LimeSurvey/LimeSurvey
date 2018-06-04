@@ -510,22 +510,13 @@ class Template extends LSActiveRecord
     }
 
     /**
-     * Reset assets for this template
-     * Using DB only
-     * @return void
-     */
-    public function resetAsset()
-    {
-        AssetVersion::incrementAssetVersion(self::getTemplatePath($this->name));
-    }
-
-    /**
      * Return the standard template list
      * @return string[]
      * @throws Exception
      */
     public static function getStandardTemplateList()
     {
+
         $standardTemplates = array('vanilla', 'bootswatch', 'fruity');
         return $standardTemplates;
     }
