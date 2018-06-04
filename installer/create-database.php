@@ -811,11 +811,10 @@ function createDatabase($oDB){
 
         // asset version
         $oDB->createCommand()->createTable('{{asset_version}}',array(
-            'hash' => 'string(64)',
-            'path' => 'text',
+            'id' => 'pk',
+            'path' => 'text NOT NULL',
             'version' => 'integer NOT NULL',
         ));
-        $oDB->createCommand()->addPrimaryKey('{{asset_version_pk}}', '{{asset_version}}', ['hash']);
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);

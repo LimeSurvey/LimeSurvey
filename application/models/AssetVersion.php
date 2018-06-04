@@ -15,8 +15,8 @@
 /**
  * Class AssetVersion
  *
- * @property string $hash identifier of path
- * @property string $path for reminder
+ * @property integer $id pk
+ * @property string $path
  * @property integer $version number
  */
 class AssetVersion extends LSActiveRecord
@@ -44,17 +44,11 @@ class AssetVersion extends LSActiveRecord
     }
 
     /** @inheritdoc */
-    public function primaryKey()
-    {
-        return array('path');
-    }
-
-    /** @inheritdoc */
     public function rules()
     {
         return array(
-            array('hash', 'required'),
             array('path', 'required'),
+            array('path', 'unique'),
             array('version', 'required'),
             array('version', 'numerical', 'integerOnly'=>true),
         );
@@ -70,8 +64,7 @@ class AssetVersion extends LSActiveRecord
         if(Yii::app()->getConfig('DBVersion') < 349) {
             return 0;
         }
-        $hash = hash('sha256', $path);
-        $oAssetVersion = self::model()->findByPk($hash);
+        $oAssetVersion = self::model()->find('path = :path',array(":path"=>$path));
         if(!$oAssetVersion) {
             return 0;
         }
@@ -88,16 +81,28 @@ class AssetVersion extends LSActiveRecord
         if(Yii::app()->getConfig('DBVersion') < 349) {
             return 0;
         }
-        $hash = hash('sha256', $path);
-        $oAssetVersion = self::model()->findByPk($hash);
+        /* This increment case insensitivity , (extend_vanilla at same time than Extend_Vanilla) no real issue (update 2 assets in one) , but … */
+        $oAssetVersion = self::model()->find('path = :path',array(":path"=>$path));
         if(!$oAssetVersion) {
             $oAssetVersion = new self;
-            $oAssetVersion->hash = $hash;
             $oAssetVersion->path = $path;
             $oAssetVersion->version = 0;
         }
         $oAssetVersion->version++;
-        $oAssetVersion->save(); // Not need to test : can break rules. DB error can happen ?
+        $oAssetVersion->save(); // Not need to test : can not break rules. DB error can happen ?
         return $oAssetVersion->version;
+    }
+
+    /**
+     * delete assets version related to path
+     * @param string $path
+     * @return integer (0|1)
+     */
+    public static function deleteAssetVersion($path)
+    {
+        if(Yii::app()->getConfig('DBVersion') < 349) {
+            return 0;
+        }
+        return self::model()->deleteAll('path = :path',array(":path"=>$path));
     }
 }

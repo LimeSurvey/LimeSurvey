@@ -26,9 +26,9 @@ class LSYii_AssetManager extends CAssetManager
     protected function generatePath($file,$hashByName=false)
     {
         if (is_file($file)) {
-            $pathForHashing=$hashByName ? dirname($file) : dirname($file).filemtime($file).AssetVersion::getAssetVersion($file);
+            $pathForHashing=$hashByName ? dirname($file) : dirname($file).".".filemtime($file).".".AssetVersion::getAssetVersion($file);
         } else {
-            $pathForHashing=$hashByName ? $file : $file.filemtime($file).AssetVersion::getAssetVersion($file);
+            $pathForHashing=$hashByName ? $file : $file.".".filemtime($file).".".AssetVersion::getAssetVersion($file);
         }
         return $this->hash($pathForHashing);
     }

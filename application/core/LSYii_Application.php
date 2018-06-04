@@ -142,7 +142,7 @@ class LSYii_Application extends CWebApplication
             /* @todo : find when settings_global was created with stg_name and stg_value, maybe can Throw Exception ? */
             Yii::log("Table settings_global not found");// Log it as LEVEL_INFO , application category
         }
-        /* Add some specific config using existing other configs */
+        /* Add some specific config using exiting other configs */
         $this->setConfig('globalAssetsVersion', /* Or create a new var ? */
             $this->getConfig('assetsversionnumber',0).
             $this->getConfig('versionnumber',0).

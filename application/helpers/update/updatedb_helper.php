@@ -2203,8 +2203,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-
-
         if ($iOldDBVersion < 349) {
             $oTransaction = $oDB->beginTransaction();
             dropColumn('{{users}}','one_time_pw');
@@ -2212,19 +2210,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
+      
         /**
          * Adding asset version to allow to reset asset without write inside
          */
         if ($iOldDBVersion < 350) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable('{{asset_version}}',array(
-                'hash' => 'string(64)',
-                'path' => 'text',
+                'id' => 'pk',
+                'path' => 'text NOT NULL',
                 'version' => 'integer NOT NULL',
             ));
-            /* Create index on hash */
-            $oDB->createCommand()->addPrimaryKey('{{asset_version_pk}}', '{{asset_version}}', ['hash']);
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>350], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
