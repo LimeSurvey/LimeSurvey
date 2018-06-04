@@ -502,6 +502,7 @@ class RegisterController extends LSYii_Controller
         $this->aReplacementData['sMessage'] = $this->sMessage;
 
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
+        $aSurveyInfo  =  getsurveyinfo($iSurveyId);
 
         if ($iTokenId !== null) {
             $aData['aSurveyInfo'] = self::getRegisterSuccess($iSurveyId, $iTokenId);
@@ -514,6 +515,9 @@ class RegisterController extends LSYii_Controller
 
         $aData['aSurveyInfo']['registerform']['hiddeninputs'] = '<input value="'.$aData['aSurveyInfo']['sLanguage'].'"  type="hidden" name="lang" id="register_lang" /><input  value="true" type="hidden" name="register"id="register_register" />';
         $aData['aSurveyInfo']['include_content'] = 'register';
+
+        $aData['aSurveyInfo'] = array_merge($aSurveyInfo, $aData['aSurveyInfo']);
+
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
 
     }

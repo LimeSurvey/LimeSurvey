@@ -809,6 +809,13 @@ function createDatabase($oDB){
 
         $oDB->createCommand()->createIndex('{{idx1_user_groups}}', '{{user_groups}}', 'name', true);
 
+        // asset version
+        $oDB->createCommand()->createTable('{{asset_version}}',array(
+            'hash' => 'string(64)',
+            'path' => 'text',
+            'version' => 'integer NOT NULL',
+        ));
+        $oDB->createCommand()->addPrimaryKey('{{asset_version_pk}}', '{{asset_version}}', ['hash']);
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);

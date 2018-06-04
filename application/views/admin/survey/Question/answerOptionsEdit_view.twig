@@ -83,9 +83,11 @@
                                                     {{ gT("Subquestion") }}
                                                 </th>
                                                 {% if first %}
-                                                    <th id='rel-eq-th' class='col-md-1'>
-                                                        {{ gT("Relevance equation") }}
-                                                    </th>
+                                                    {% if scale_id == 0 %}
+                                                        <th id='rel-eq-th' class='col-md-1'>
+                                                            {{ gT("Relevance equation") }}
+                                                        </th>
+                                                    {% endif %}
                                                     <th class="col-md-1">
                                                         {{ gT("Action") }}
                                                     </th>

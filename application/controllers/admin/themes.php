@@ -698,7 +698,8 @@ class themes extends Survey_Common_Action
 
                         // If the file is an asset file, we refresh asset number
                         if (in_array($relativePathEditfile, $cssfiles) || in_array($relativePathEditfile, $jsfiles)){
-                            SettingGlobal::increaseCustomAssetsversionnumber();
+                            //SettingGlobal::increaseCustomAssetsversionnumber();
+                            Template::model()->findByPk($sTemplateName)->resetAsset();
                         }
 
                         fclose($handle);
