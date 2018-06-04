@@ -17524,8 +17524,16 @@ const AdminCore = function(){
             };
             const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_11__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_10__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_6__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */]);
             
+            /*
+            * Set the namespace to the global variable LS
+            */
             window.LS = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(window.LS, LsNameSpace, {ld: __WEBPACK_IMPORTED_MODULE_0_lodash___default.a});
             
+            /* Set a variable to test if browser have HTML5 form ability
+            * Need to be replaced by some polyfills see #8009
+            */
+            window.hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
+
         };
         setNameSpace();
         onLoadRegister();

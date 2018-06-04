@@ -87,8 +87,16 @@ const AdminCore = function(){
             };
             const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, AjaxHelper, notifyFader, subquestionAndAnswersGlobalMethods);
             
+            /*
+            * Set the namespace to the global variable LS
+            */
             window.LS = _.merge(window.LS, LsNameSpace, {ld: _});
             
+            /* Set a variable to test if browser have HTML5 form ability
+            * Need to be replaced by some polyfills see #8009
+            */
+            window.hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
+
         };
         setNameSpace();
         onLoadRegister();

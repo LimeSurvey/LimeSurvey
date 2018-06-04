@@ -7,4 +7,5 @@ $.fn.extend({
         }
         return true;
     }
-})
+});
+export {};
