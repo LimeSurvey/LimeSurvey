@@ -173,7 +173,8 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 }
                 $graph = new pChart(690 + $legendsize[0], $gheight);
                 $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'assets/styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
+                $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
+
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $graph->setGraphArea(50, 30, 500, $gheight - 60);
                 $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
@@ -782,7 +783,7 @@ class userstatistics_helper
             //outputting
             switch ($outputType) {
                 case 'xls':
-                    $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                    $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                     $xlsDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
                     $this->xlsRow++;
                     $this->xlsRow++;
@@ -803,7 +804,7 @@ class userstatistics_helper
 
                 case 'html':
                     $statisticsoutput .= "\n<table class='table table-striped statisticstable' >\n"
-                    ."\t<thead><tr><th colspan='2' class='text-center'><strong>".sprintf(gT("Field summary for %s"), $qtitle).":</strong>"
+                    ."\t<thead><tr><th colspan='2' class='text-center'><strong>".sprintf(gT("Summary for %s"), $qtitle).":</strong>"
                     ."</th></tr>\n"
                     ."\t<tr><th colspan='2' class='text-left'><strong>$qquestion</strong></th></tr>\n"
                     ."\t<tr>\n\t\t<th width='50%' class='text-right'><strong>"
@@ -852,7 +853,7 @@ class userstatistics_helper
                 //outputting
                 switch ($outputType) {
                     case 'xls':
-                        $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                        $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                         $xlsDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
                         $this->xlsRow++;
                         $this->xlsRow++;
@@ -872,7 +873,7 @@ class userstatistics_helper
                         $tablePDF = array();
                         $footPDF = array();
 
-                        $pdfTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                        $pdfTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                         $titleDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
 
                         $headPDF[] = array(gT("Calculation"), gT("Result"));
@@ -882,7 +883,7 @@ class userstatistics_helper
 
                         // Multiple numerical and numerical field summary
                         $statisticsoutput .= "\n<div class='well'><table class='table table-striped statisticstable' >\n"
-                        ."\t<thead><tr><th colspan='2' class='text-center'><strong>".sprintf(gT("Field summary for %s"), $qtitle).":</strong>"
+                        ."\t<thead><tr><th colspan='2' class='text-center'><strong>".sprintf(gT("Summary for %s"), $qtitle).":</strong>"
                         ."</th></tr>\n"
                         ."\t<tr><th colspan='2' class='text-center'><strong>$qquestion</strong></th></tr>\n"
                         ."\t<tr>\n\t\t<th width='50%' class='text-left'><strong>"
@@ -1178,8 +1179,8 @@ class userstatistics_helper
                     }
 
                     //list IDs and answer codes in brackets
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1197,8 +1198,8 @@ class userstatistics_helper
                         $atext = flattenText($qrow[1]);
                     }
 
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";;
                     break;
 
 
@@ -1218,8 +1219,8 @@ class userstatistics_helper
                         $atext = flattenText($qrow[1]);
                     }
                     //output
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1236,8 +1237,8 @@ class userstatistics_helper
                         $alist[] = array("D", gT("Decrease"));
                         $atext = flattenText($qrow[1]);
                     }
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1258,8 +1259,8 @@ class userstatistics_helper
                         $atext = flattenText($qrow[1]);
                     }
 
-                    $qquestion .= $linefeed."[".$atext."] [".$ltext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."] [".$ltext."]";;
                     break;
 
                 case ":": //Array (Multiple Flexi) (Numbers)
@@ -1320,8 +1321,8 @@ class userstatistics_helper
                     }
 
                     //output
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1489,7 +1490,7 @@ class userstatistics_helper
         switch ($outputType) {
             case 'xls':
 
-                $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
+                $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
                 $xlsDesc = html_entity_decode($outputs['qquestion'], ENT_QUOTES, 'UTF-8');
 
                 $this->xlsRow++;
@@ -1505,7 +1506,7 @@ class userstatistics_helper
             case 'pdf':
 
                 $sPDFQuestion = flattenText($outputs['qquestion'], false, true);
-                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Field summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
+                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
                 $titleDesc = $sPDFQuestion;
 
                 $this->pdf->AddPage('P', 'A4');
@@ -1521,7 +1522,7 @@ class userstatistics_helper
                 ."\t<thead><tr><th colspan='4' class='text-center'><strong>"
 
                 //headline
-                .sprintf(gT("Field summary for %s"), $outputs['qtitle'])."</strong>"
+                .sprintf(gT("Summary for %s"), $outputs['qtitle'])."</strong>"
                 ."</th></tr>\n"
                 ."\t<tr><th colspan='4' class='text-center'><strong>"
 

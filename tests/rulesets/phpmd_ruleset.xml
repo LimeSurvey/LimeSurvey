@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<ruleset name="LimeSurvey PHPMD Extension ruleset">
+    <rule ref="rulesets/unusedcode.xml" />
+
+    <!-- TODO: More customization might be necessary to make it usable. -->
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity" />
+    <rule ref="rulesets/codesize.xml/NPathComplexity" />
+    <rule ref="rulesets/codesize.xml/ExcessiveMethodLength" />
+    <rule ref="rulesets/codesize.xml/ExcessiveParameterList" />
+    <rule ref="rulesets/codesize.xml/ExcessivePublicCount" />
+    <rule ref="rulesets/codesize.xml/TooManyFields" />
+    <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity" />
+
+    <rule ref="rulesets/codesize.xml/ExcessiveClassLength">
+        <properties>
+            <!-- Set to 2000 -->
+            <property name="minimum" description="The class size reporting threshold" value="2000"/>
+        </properties>
+    </rule>
+</ruleset>

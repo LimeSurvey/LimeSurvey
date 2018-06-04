@@ -57,7 +57,7 @@
                 <!-- Get time statistics from these responses -->
                 <?php if ($thissurvey['savetimings'] == "Y"):?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/time/surveyid/$surveyid"); ?>' role="button">
-                        <span class="fa fa-time text-success"></span>
+                        <span class="fa fa-clock-o text-success"></span>
                         <?php eT("Timing statistics"); ?>
                     </a>
                 <?php endif;?>

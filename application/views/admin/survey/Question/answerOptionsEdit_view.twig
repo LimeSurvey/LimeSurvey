@@ -1,0 +1,234 @@
+
+                <input type='hidden' name='sid' value='{{ surveyid }}' />
+                <input type='hidden' name='gid' value='{{ gid }}' />
+                <input type='hidden' name='qid' value='{{ qid }}' />
+
+                {% if viewType=='subQuestions' %}
+                    <input type='hidden' id='action' name='action' value='updatesubquestions' />
+                {% elseif viewType=='answerOptions' %}
+                    <input type='hidden' name='action' value='updateansweroptions' />
+                {% endif %}
+
+                <input type='hidden' name='sortorder' value='' />
+                <input type='hidden' id='deletedqids' name='deletedqids' value='' />
+
+                {% set first=true %}
+
+                <!-- Tabs -->
+                <ul class="nav nav-tabs">
+                    {% for i, anslang in anslangs %}
+                        <li role="presentation" {% if i==0 %}class="active"{% endif %}>
+                            <a data-toggle="tab" href='#tabpage_{{ anslang }}'>
+                                {{ base_language[i] }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% set sortorderids='' %}
+                {% set codeids='' %}
+                {% set scale_id = 0 %}
+
+                <!-- Tab content -->
+                <div class="tab-content">
+                    {% for i, anslang in anslangs %}
+                        <div id='tabpage_{{ anslang }}' class='tab-page tab-pane fade in {% if i==0 %}active{% endif %}'>
+                            {% for scale_id in range(0,scalecount-1) %}
+                                 {% set result = results[anslang][scale_id] %}
+                                 {% set anscount = result|length %}
+                                {# TODO : check the rendering of XSCALES / Y SCALES #}
+
+                                {# For subQuestions #}
+                                {% if viewType=='subQuestions' %}
+                                    {% set position=0 %}
+                                    {% if scalecount>1 %}
+                                        {% if scale_id==0 %}
+                                            <div class='header ui-widget-header'>
+                                                {{ gT("Y-Scale") }}
+                                            </div>
+                                        {% else %}
+                                            <div class='header ui-widget-header'>
+                                                {{ gT("X-Scale") }}
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+
+                                {# For answers #}
+                                {% elseif viewType=='answerOptions' %}
+                                    {% set position=1 %}
+                                    {%  if scalecount>1 %}
+                                        <div class='header ui-widget-header' style='margin-top:5px;'>
+                                            {{ sprintf(gT("Answer scale %s"),scale_id+1) }}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+
+                                <!-- Answers/Subquestions Table -->
+                                <table class='answertable table table-responsive' id='{{ tableId[anslang][scale_id] }}' data-scaleid='{{ scale_id }}'>
+
+                                    <!-- Headers -->
+                                    <thead>
+                                        <tr>
+                                            <th class="col-md-1">
+                                                {% if first and activated != 'Y' %}
+                                                    {{ gT("Position") }}
+                                                {% else %}
+                                                    &nbsp;
+                                                {% endif %}
+                                            </th>
+                                            <th class='col-md-1'>{{ gT("Code") }}</th>
+
+                                            <!-- subQuestions headers -->
+                                            {% if viewType=='subQuestions' %}
+                                                <th>
+                                                    {{ gT("Subquestion") }}
+                                                </th>
+                                                {% if first %}
+                                                    {% if scale_id == 0 %}
+                                                        <th id='rel-eq-th' class='col-md-1'>
+                                                            {{ gT("Relevance equation") }}
+                                                        </th>
+                                                    {% endif %}
+                                                    <th class="col-md-1">
+                                                        {{ gT("Action") }}
+                                                    </th>
+                                                {% endif %}
+
+                                            <!-- answer Options header-->
+                                            {% elseif viewType=='answerOptions' %}
+                                                {% if assessmentvisible %}
+                                                    <th class='col-md-1'>
+                                                        {{ gT("Assessment value") }}
+                                                    </th>
+                                                {% else %}
+                                                    <th style='display:none;'>
+                                                        &nbsp;
+                                                    </th>
+                                                {% endif %}
+
+                                                <th class='col-md-8'>
+                                                    {{ gT("Answer option") }}
+                                                </th>
+
+                                                <th class='col-md-1'>
+                                                    {% if first %}
+                                                        {{ gT("Actions") }}
+                                                    {% endif %}
+                                                </th>
+                                            {% endif %}
+                                        </tr>
+                                    </thead>
+
+                                    <!-- Body -->
+                                    <tbody id="rowcontainer">
+                                        {% for row in result %}
+                                            <!-- Line tag -->
+                                            {% if viewType=='subQuestions' %}
+                                                {% include '/admin/survey/Question/subquestionsAndAnswers/_subquestion.twig' with {
+                                                    'position'  : position,
+                                                    'scale_id'  : scale_id,
+                                                    'activated' : activated,
+                                                    'first'     : first,
+                                                    'surveyid'  : surveyid,
+                                                    'gid'       : gid,
+                                                    'qid'       : row.qid,
+                                                    'language'  : row.language,
+                                                    'title'     : row.title,
+                                                    'question'  : row.question,
+                                                    'relevance' : row.relevance,
+                                                    'oldCode'   : true,
+                                                } %}
+
+                                            {% elseif viewType=='answerOptions' %}
+                                                {% include '/admin/survey/Question/subquestionsAndAnswers/_answer_option.twig' with {
+                                                    'position'          : position,
+                                                    'first'             : first,
+                                                    'assessmentvisible' : assessmentvisible,
+                                                    'scale_id'          : scale_id,
+                                                    'title'             : row.code,
+                                                    'surveyid'          : surveyid,
+                                                    'gid'               : gid,
+                                                    'qid'               : qid,
+                                                    'language'          : row.language,
+                                                    'assessment_value'  : row.assessment_value,
+                                                    'sortorder'         : row.sortorder,
+                                                    'answer'            : row.answer,
+                                                    'oldCode'   : true,
+                                                } %}
+
+                                            {% endif %}
+
+                                            {% set position = position + 1 %}
+
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+
+                                <div class="action-buttons">
+                                    {% if viewType=='subQuestions' %}
+                                        {% if activated == 'Y' %}
+                                            {% set disabled = 'disabled="disabled"' %}
+                                        {% else %}
+                                            {% set disabled = '' %}
+                                        {% endif %}
+                                    {% elseif viewType=='answerOptions' %}
+                                        {% if first %}
+                                            <input type='hidden' id='answercount_{{ scale_id }}' name='answercount_{{ scale_id }}' value='{{ anscount }}' />
+                                            {% set disabled="" %}
+                                        {% endif %}
+                                        <br/>
+                                    {% endif %}
+
+                                    <button {{ disabled }}  id='btnlsbrowser_{{ anslang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
+                                        {{ gT('Predefined label sets...') }}
+                                    </button>
+
+                                    <button {{ disabled }}  id='btnquickadd_{{ anslang }}_{{ scale_id }}' data-scale-id="{{ scale_id }}" class='btn btn-default btnquickadd' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="{{ scale_id }}">
+                                        {{ gT('Quick add...') }}
+                                    </button>
+
+
+                                    {% if has_permissions %}
+                                        <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_{{ scale_id }}' type='button' data-toggle="modal" data-target="#saveaslabelModal">
+                                            {{ gT('Save as label set') }}
+                                        </button>
+                                    {% endif %}
+
+                                </div>
+                                {% set position=sprintf("%05d", position) %}
+                            {% endfor %}
+                        </div>
+                        {% set first=false %}
+                    {% endfor %}
+
+                    <!--   Modals   -->
+                    {% include 'admin/survey/Question/question_subviews/_modals.twig' %}
+
+                    <p>
+                        <input type='submit' class="hidden" id='saveallbtn_{{ anslang }}' name='method' value='{{ gT("Save changes") }}' />
+                        <!-- For javascript -->
+                        <input
+                            type="hidden"
+                            id="add-input-javascript-datas"
+                            data-url="{{ createUrl('/admin/questions/sa/getSubquestionRowForAllLanguages/') }}"
+                            data-quickurl="{{ createUrl(
+                                '/admin/questions/',
+                                ({
+                                    'sa' : 'getSubquestionRowQuickAdd',
+                                    'surveyid' : surveyid,
+                                    'gid' : gid
+                                })
+                            ) }}"
+                            data-assessmentvisible="{% if assessmentvisible|length and assessmentvisible==true%}1{% else %}0{% endif %}"
+                            data-errormessage="An error occured while processing the ajax request."
+                            data-surveyid="{{ surveyid }}"
+                            data-languages='{{ json_encode(all_languages) }}'
+                            data-gid="{{ gid }}"
+                            data-qid="{{ qid }}"
+                            data-scale-id="{{ scale_id }}" {# -1 : because it's incremented via <  #}
+                        />
+                    </p>
+
+                </div>
+                <input type='hidden' id='bFullPOST' name='bFullPOST' value='1' />
+
+            

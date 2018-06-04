@@ -15,7 +15,7 @@
     var attributesMappedText = "<?php eT("All the attributes are automatically mapped") ?>";
     var mustPairAttributeText= "<?php eT("You have to pair it with one attribute of the survey participants table") ?>";
     var onlyOneAttributeMappedText="<?php eT("Only one central attribute is mapped with token attribute") ?>";
-    var cannotAcceptTokenAttributesText="<?php eT("This list cannot accept token attributes.") ?>";
+    var cannotAcceptTokenAttributesText="<?php eT("This list cannot accept survey participant attributes.") ?>";
 
 </script>
 
@@ -57,9 +57,9 @@
     </div>
     <div class='col-sm-4'>
         <div id="newcreated" class="panel panel-primary <?php echo $columnstyle ?>">
-            <div class="panel-heading"><?php eT("Token attributes to create"); ?></div>
-            <div class='panel-body'>
-                <div class="newcreate" id="sortable" style ="">
+            <div class="panel-heading"><?php eT("Survey participant attributes to create"); ?></div>
+            <div class='panel-body' style="height:100%;">
+                <div class="newcreate" id="sortable" style ="height:100%;">
                 </div>
             </div>
         </div>
@@ -68,7 +68,7 @@
         <div id='tokenattribute'>
             <div class='panel panel-primary'>
                 <div class="panel-heading">
-                    <?php eT("Existing token attributes"); ?>
+                    <?php eT("Existing survey participant attributes"); ?>
                 </div>
                 <div class='panel-body'>
                     <div class="tokenatt ui-sortable" style="min-height: 200px;">

@@ -992,7 +992,7 @@ class questions extends Survey_Common_Action
         }
 
         $html = '<!-- Inserted Row -->';
-        $html .= $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/'.$view, $aData, true, false);
+        $html .= App()->twigRenderer->renderAnswerOptions('/admin/survey/Question/subquestionsAndAnswers/'.$view, $aData);
         $html .= '<!-- end of Inserted Row -->';
         return $html;
     }
@@ -1283,7 +1283,13 @@ class questions extends Survey_Common_Action
             $aData['eqrow'] = $eqrow;
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
-            $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid)['question_template'];
+            $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid);
+            if (!empty($questionTemplateAttributes['question_template'])){
+                $aData['aQuestionTemplateAttributes'] = $questionTemplateAttributes['question_template'];
+            } else {
+                $aData['aQuestionTemplateAttributes']['core'] = array('title'=>'Default', 'preview'=>\LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']));
+            }
+
             $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
 
             if (!$adding) {
@@ -1393,11 +1399,15 @@ class questions extends Survey_Common_Action
      * @param int $qid
      * @return array
      */
-    public function delete($surveyid, $qid, $ajax = false)
+    public function delete($surveyid, $qid, $ajax = false, $gid = 0)
     {
         $surveyid = sanitize_int($surveyid);
         $qid = (int) $qid;
         $rqid = $qid;
+        $gid_search = sanitize_int($gid); // gid from search filter
+        if ($gid_search == 0){
+            $gid_search = '';
+        }
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
             if ($qid == 0) {
@@ -1453,7 +1463,7 @@ class questions extends Survey_Common_Action
 
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
             } else {
                 return array('status'=>true, 'message'=>$sMessage);
             }
@@ -1461,7 +1471,7 @@ class questions extends Survey_Common_Action
             $sMessage = gT("You are not authorized to delete questions.");
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
+                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
             } else {
                 return array('status'=>false, 'message'=>$sMessage);
             }
@@ -1878,7 +1888,6 @@ class questions extends Survey_Common_Action
     {
         $type = Yii::app()->request->getParam('type');
         $questionTemplateList = \QuestionTemplate::getQuestionTemplateList($type);
-        if (YII_DEBUG)
         header('Content-type: application/json');
         echo CJSON::encode($questionTemplateList);
         Yii::app()->end();

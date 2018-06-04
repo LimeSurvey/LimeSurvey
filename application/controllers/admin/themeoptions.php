@@ -116,7 +116,7 @@ class themeoptions  extends Survey_Common_Action
             $this->_updateCommon($model, $sid);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions/sa/updatesurvey", ['surveyid'=>$sid, 'sid'=>$sid]));
+            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$sid));
         }
     }
 
@@ -268,6 +268,19 @@ class themeoptions  extends Survey_Common_Action
         }
 
         $this->getController()->redirect(array("admin/themeoptions"));
+    }
+
+    public function reset()
+    {
+        $templatename = Yii::app()->request->getPost('templatename');
+        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
+            TemplateConfiguration::uninstall($templatename);
+            TemplateManifest::importManifest($templatename);
+            Yii::app()->setFlashMessage(sprintf(gT("The theme '%s' has been reset."), $templatename), 'success');
+            $this->getController()->redirect(array("admin/themeoptions"));
+        } else {
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+        }
     }
 
     /**

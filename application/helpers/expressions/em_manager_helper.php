@@ -5001,7 +5001,9 @@
             $LEM->indexGseq=array();
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
-            if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 0)
+
+            // NOTE: now that we use a seed, count($_SESSION[$LEM->sessid]['startingValues']) start at 1
+            if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 1)
             {
                 foreach ($_SESSION[$LEM->sessid]['startingValues'] as $k=>$value)
                 {
@@ -7780,10 +7782,16 @@
                     // {
                     //     $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     // }
-                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
-                    $qrelJS .= "  return;\n }\n";
+                    
+                    //Normally trigger reevaluation only for relevant questions except for equation questions
+                    if($arg['type'] != '*') {
+                        $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+                        $qrelJS .= "  return;\n }\n";
+                    }
+
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
+
                     $relEqns[] = $qrelJS;
 
                     $gseq_qidList[$arg['gseq']][$arg['qid']] = '1';   // means has an explicit LEMrel() function
@@ -8810,12 +8818,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         switch($type) // fix value before set it in $_SESSION : the data is reset when show it again to user.trying to save in DB : date only, but think it must be leave like it and filter oinly when save in DB
                         {
                             case 'D': //DATE
-
+                                /* TODO : if value is empty : try $_SESSION[$LEM->sessid]['day'.$sq] etc … */
                                 // Handle Arabic numerals
                                 // TODO: Make a wrapper class around date converter, which constructor takes to-lang and from-lang
                                 $lang = $_SESSION['LEMlang'];
                                 $value = self::convertNonLatinNumerics($value, $lang);
-
                                 $value = trim($value);
                                 if ($value != "" && $value != "INVALID") {
                                     $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
@@ -8823,25 +8830,24 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         $aAttributes[$qid]=array();
                                     }
                                     $aDateFormatData = getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
-                                    // We don't really validate date here : if date is invalid : return 1999-12-01 00:00
-                                    // For an explanation of the exclamation mark, see this thread:
-                                    // http://stackoverflow.com/questions/43740037/datetime-converts-wrong-when-system-time-is-30-march
                                     $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
                                     if ($dateTime === false) {
                                         $message = sprintf(
                                             'Could not convert date %s to format %s. Please check your date format settings.',
-                                            trim($value),
+                                            htmlspecialchars(trim($value)),
                                             $aDateFormatData['phpdate']
-                                        );
-                                        $value = "INVALID"; // This don't disable submitting survey  … ("" neither)
-                                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
+                                        ); // Seems to happen when admin make error on date format */
+                                        $LEM->invalidAnswerString[$sq]=$message;
+                                        $value = "INVALID"; // Test wait INVALID
+                                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid); /* @todo : test to reviewed : need to disable move */
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
                                         $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $newValue);
                                         if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                             $value = $newValue;
                                         } else {
-                                            $value = "";// This don't disable submitting survey  … ("INVALID" neither)
+                                            $LEM->invalidAnswerString[$sq]=sprintf(gT("Date %s is invalid, review your answer"),htmlspecialchars($value));
+                                            $value = null;
                                         }
                                     }
                                 }
@@ -10364,7 +10370,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         /**
          * Add a flash message to state-key 'frontend{survey id}'
          * The flash messages are templatereplaced in startpage.tstpl, {FLASHMESSAGE}
-         *
+         * @todo : validate if it work : unsure it was shown always to user (nojs ?)
+         * 
          * @param string $type Yii type of flash: `error`, `notice`, 'success'
          * @param string $message
          * @param int $surveyid

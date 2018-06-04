@@ -15,23 +15,26 @@
 <!-- Date, dropdown layout -->
 
 <!-- answer -->
-<div class="{{coreClass}} form-group form-inline" role="group" aria-labelledby="ls-question-text-{{name}}">
+<div class="{{coreClass}} ls-no-js-hidden form-group form-inline" role="group" aria-labelledby="ls-question-text-{{name}}">
         {# // rows/*.php #}
         {{sRows}}
 </div>
+<!-- answer fo nojs action and real value sent -->
+<div class='{{coreClass}} ls-js-hidden  form-group form-inline'>
+    <label for='answer{{name}}' class='sr-only control-label'>
+        {{ sprintf(gT('Date in the format: %s'), dateformatdetails) }}
+    </label>
+    <div id="answer{{name}}_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="{{name}}"><!-- data-basename used in js function -->
+        {{ C.Html.textField(name,dateoutput,{
+            'id' : "answer" ~ name,
+            'class' : "form-control date-control date",
+            'aria-describedby' : "ls-question-text-" ~ name,
+        }) }}
+    </div>
+    <p class="tip help-block">
+       {{ sprintf(gT('Format: %s'),dateformatdetails) }}
+    </p>
+</div>
 
-<!-- For Expression Manager ? -->
-<input
-        class="text"
-        type="text"
-        size="10"
-        name="{{name}}"
-        style="display: none"
-        id="answer{{name}}"
-        value="{{dateoutput}}"
-        maxlength="10"
-        onchange="{{checkconditionFunction}}"
-        title="{{ sprintf(gT('Date in the format : %s'), dateformat) }}"
-/>
 <input type="hidden" id="dateformat{{name}}" value="{{dateformatdetails}}"/>
 <!-- end of answer -->

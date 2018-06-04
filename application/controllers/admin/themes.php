@@ -422,12 +422,9 @@ class themes extends Survey_Common_Action
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
-        try {
-            $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
-        } catch (Exception $ex) {
-            Yii::app()->user->setFlash('error', $ex->getMessage());
-            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=>getGlobalSetting('defaulttheme')));
-        }
+
+
+        $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap'] = $aBootstrapPackage;
@@ -1187,18 +1184,23 @@ class themes extends Survey_Common_Action
                 break;
         }
 
-        // NOTE: Twig already render return error, no try catch needed
+
         $thissurvey['include_content'] = $sContentFile;
 
-
-        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
-            $sLayoutFile,
-            array(
-                'aSurveyInfo' =>$thissurvey,
-                'print'       => $print  // Only used for PDF print layout.
-            ),
-            $oEditedTemplate
-        );
+        
+        try {
+            $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
+                $sLayoutFile,
+                array(
+                    'aSurveyInfo' =>$thissurvey,
+                    'print'       => $print  // Only used for PDF print layout.
+                ),
+                $oEditedTemplate
+            );
+        } catch (Exception $ex) {
+            $myoutput = "<h3>ERROR!</h3>";
+            $myoutput .= $ex->getMessage();
+        }
 
 
 
@@ -1238,6 +1240,7 @@ class themes extends Survey_Common_Action
             Yii::app()->clientScript->registerPackage($oEditedTemplate->sPackageName);
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
+
 
         return $aViewUrls;
     }

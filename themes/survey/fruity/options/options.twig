@@ -857,7 +857,7 @@
             <div class='row action_hide_on_inherit'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>{{ gT("Fruity fonts") }}</div>
+                        <div class='panel-heading'>{{ sprintf( gT("%s fonts"), templateConfiguration.template_name)|capitalize }}</div>
                         <div class='panel-body'>
                             <div class='form-group row'>
                                 <label for='simple_edit_font' class='control-label'>{{ gT("Select font:") }}</label>
@@ -879,7 +879,7 @@
             <div class='row'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>{{ gT("Fruity variations") }} </div>
+                        <div class='panel-heading'>{{ sprintf( gT("%s variations"), templateConfiguration.template_name)|capitalize }} </div>
                         <div class='panel-body'>
                             <div class='form-group row'>
                                 <label for='simple_edit_add_css' class='control-label'>{{ gT("Select variation:") }}</label>

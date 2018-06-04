@@ -1363,7 +1363,7 @@
 
        if ( $LastXPos != -1 )
         {
-         $Points   = "";
+         $Points   = [];
          $Points[] = $LastXPos; $Points[] = $LastYPos1;
          $Points[] = $LastXPos; $Points[] = $LastYPos2;
          $Points[] = $XPos; $Points[] = $YPos2;
@@ -1502,7 +1502,7 @@
       {
        if ( $SerieName == "" || $SerieName == $ColName )
         {
-         $XIn = ""; $Yin = ""; $Yt = ""; $U = "";
+         $XIn = []; $Yin = []; $Yt = []; $U = [];
          $XIn[0] = 0; $YIn[0] = 0;
 
          $ID = 0;
@@ -1510,7 +1510,7 @@
           { if ( $keyI == $ColName ) { $ColorID = $ID; }; $ID++; }
 
          $Index = 1;
-         $XLast = -1; $Missing = "";
+         $XLast = -1; $Missing = [];
          foreach ( $Data as $Key => $Values )
           {
            if ( isset($Data[$Key][$ColName]) )
@@ -1602,7 +1602,7 @@
      $GraphID = 0;
      foreach ( $DataDescription["Values"] as $Key2 => $ColName )
       {
-       $XIn = ""; $Yin = ""; $Yt = ""; $U = "";
+       $XIn = []; $Yin = []; $Yt = []; $U = [];
        $XIn[0] = 0; $YIn[0] = 0;
 
        $ID = 0;
@@ -1610,7 +1610,7 @@
         { if ( $keyI == $ColName ) { $ColorID = $ID; }; $ID++; }
 
        $Index = 1;
-       $XLast = -1; $Missing = "";
+       $XLast = -1; $Missing = [];
        foreach ( $Data as $Key => $Values )
         {
          $Value = $Data[$Key][$ColName];
@@ -1640,7 +1640,7 @@
        for($k=$Index-1;$k>=1;$k--)
         $Yt[$k] = $Yt[$k] * $Yt[$k+1] + $U[$k];
 
-       $Points   = "";
+       $Points   = [];
        $Points[] = $this->GAreaXOffset;
        $Points[] = $LayerHeight;
 
@@ -1675,7 +1675,7 @@
 
          if ( $YLast != NULL && $AroundZero && !isset($Missing[floor($X)]) && !isset($Missing[floor($X+1)]))
           {
-           $aPoints   = "";
+           $aPoints   = [];
            $aPoints[] = $XLast;
            $aPoints[] = $YLast;
            $aPoints[] = $XPos;
@@ -1712,7 +1712,7 @@
 
          if ( $YLast != NULL && $AroundZero )
           {
-           $aPoints   = "";
+           $aPoints   = [];
            $aPoints[] = $XLast;
            $aPoints[] = $YLast;
            $aPoints[] = $LayerWidth-$this->GAreaXOffset;
@@ -1771,7 +1771,7 @@
        foreach ( $DataDescription["Description"] as $keyI => $ValueI )
         { if ( $keyI == $ColName ) { $ColorID = $ID; }; $ID++; }
 
-       $aPoints   = "";
+       $aPoints   = [];
        $aPoints[] = $this->GAreaXOffset;
        $aPoints[] = $LayerHeight;
 
@@ -1813,7 +1813,7 @@
 
            if ($YLast <> $Empty && $AroundZero)
             {
-             $Points   = "";
+             $Points   = [];
              $Points[] = $XLast; $Points[] = $YLast;
              $Points[] = $XPos;
              $Points[] = $YPos;
@@ -1978,7 +1978,7 @@
      $YZero  = $this->GArea_Y2 - ((0-$this->VMin) * $this->DivisionRatio);
      if ( $YZero > $this->GArea_Y2 ) { $YZero = $this->GArea_Y2; }
 
-     $SerieID = 0; $LastValue = "";
+     $SerieID = 0; $LastValue = [];
      foreach ( $DataDescription["Values"] as $Key2 => $ColName )
       {
        $ID = 0;
@@ -2116,7 +2116,7 @@
 
            if ( $t % 2 == 1 && $LastX1 != -1)
             {
-             $Plots   = "";
+             $Plots   = [];
              $Plots[] = $X1; $Plots[] = $Y1;
              $Plots[] = $X2; $Plots[] = $Y2;
              $Plots[] = $LastX2; $Plots[] = $LastY2;
@@ -2303,7 +2303,7 @@
 
        $Angle = -90;
        $XLast = -1;
-       $Plots = "";
+       $Plots = [];
        foreach ( $Data as $Key => $Values )
         {
          if ( isset($Data[$Key][$ColName]))
@@ -2378,7 +2378,7 @@
      $SplicePercent       = 100 / $PieSum;
 
      /* Calculate all polygons */
-     $Angle    = 0; $TopPlots = "";
+     $Angle    = 0; $TopPlots = [];
      foreach($iValues as $Key => $Value)
       {
        $TopPlots[$Key][] = $XPos;
@@ -2496,7 +2496,7 @@
      $SplicePercent = 100 / $PieSum;
 
      /* Calculate all polygons */
-     $Angle = 0; $TopPlots = "";
+     $Angle = 0; $TopPlots = [];
      foreach($iValues as $Key => $Value)
       {
        $XOffset = cos(($Angle+($Value/2*$SpliceRatio)) * 3.1418 / 180 ) * $SpliceDistance;
@@ -2624,8 +2624,8 @@
 
      /* Calculate all polygons */
      $Angle    = 0; $CDev = 5;
-     $TopPlots = ""; $BotPlots = "";
-     $aTopPlots = ""; $aBotPlots = "";
+     $TopPlots = []; $BotPlots = [];
+     $aTopPlots = []; $aBotPlots = [];
      foreach($iValues as $Key => $Value)
       {
        $XCenterPos = cos(($Angle-$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $XPos;
@@ -2707,7 +2707,7 @@
        foreach($iValues as $Key => $Value)
         {
          $C_GraphLo = $this->AllocateColor($this->Picture,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"],-10);
-         $Plots = ""; $Plot = 0;
+         $Plots = []; $Plot = 0;
          foreach($TopPlots[$Key] as $Key2 => $Value2)
           {
            $Plot++;

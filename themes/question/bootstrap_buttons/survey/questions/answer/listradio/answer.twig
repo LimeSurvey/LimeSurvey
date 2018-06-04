@@ -1,0 +1,42 @@
+{#
+/**
+ * Multiple Choice Html Html
+ *
+ * @var $name
+ * @var $value
+ */
+#}
+
+<!-- List Radio -->
+
+<!-- answer -->
+{{ sTimer }}
+
+<div class="ls-answers answers-list row" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}">
+    {# rows/answer_row.php #}
+    {{ sRows }}
+
+{# Value for expression manager javascript (use id) ; no need to submit #}
+{{ C.Html.hiddenField("java"~name,value,({
+    'id' : "java"~name,
+    'disabled' : true,
+}))
+}}
+</div>
+<div class="row {{ extraclass }} col-sm-4 hide" id="{{ name }}-div">
+    <label for="SOTH{{ name }}" class="control-label" id="label-id-{{ name }}">{{ othertext }}</label>
+    <!-- comment -->
+
+    {{ gT('Other:') }}
+    <input
+    type="text"
+    class="form-control {{ kpclass }} input-sm col-sm-4"
+    id="answer{{ name }}othertext"
+    name="{{ name }}other"
+    title="{{ gT('Other') }}"
+    onkeyup="checkconditions(this.value, this.name, this.type);"
+    aria-labelledby="label-id-{{ name }}"
+    >
+    </label>
+</div>
+<!-- end of answer -->
