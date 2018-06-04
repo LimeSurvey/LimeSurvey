@@ -639,6 +639,7 @@ class remotecontrol_handle
      *     * token_sent
      *     * token_opted_out
      *     * token_completed
+     *     * token_screenout
      * All available status can be sent using `all`
      *
      * Failure status : No available data, No such property, Invalid session key, No permission
@@ -659,7 +660,8 @@ class remotecontrol_handle
                 'token_invalid',
                 'token_sent',
                 'token_opted_out',
-                'token_completed'
+                'token_completed',
+                'token_screenout'
             );
             $aPermittedSurveyStats = array(
                 'completed_responses',
@@ -691,6 +693,7 @@ class remotecontrol_handle
                             $aSummary['token_sent'] = $aTokenSummary['sent'];
                             $aSummary['token_opted_out'] = $aTokenSummary['optout'];
                             $aSummary['token_completed'] = $aTokenSummary['completed'];
+                            $aSummary['token_screenout'] = $aTokenSummary['screenout'];
                         }
                     } elseif ($sStatName != 'all') {
                         return array('status' => 'No available data');
