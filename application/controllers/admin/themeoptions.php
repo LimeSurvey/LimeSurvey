@@ -80,7 +80,6 @@ class themeoptions  extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
             $model = $this->loadModel($id);
-
             if (isset($_POST['TemplateConfiguration'])) {
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
