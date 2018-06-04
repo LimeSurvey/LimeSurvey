@@ -31,7 +31,7 @@ function doRatingStar(qID) {
   var itemNoAnswer=$('#question'+qID).find('.noanswer-item').length >0;
 
   //Define stars-element container
-  var starsHtmlElement=$("<div class='stars-list answers-list noread' ></div>");
+  var starsHtmlElement=$("<div class='stars-list answers-list' aria-hidden='true'></div>");
 
   //Check if there is a given answer
   var openValue = null;
@@ -124,5 +124,5 @@ function doRatingStar(qID) {
     });
 
   //hide the standard-items
-  answersList.addClass("starred-list hide read");
+  answersList.addClass("starred-list sr-only");
 }
