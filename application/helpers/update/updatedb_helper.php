@@ -2225,10 +2225,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));
             /* Create index on hash */
             $oDB->createCommand()->addPrimaryKey('{{asset_version_pk}}', '{{asset_version}}', ['hash']);
-            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>350], "stg_name='DBVersion'");
             $oTransaction->commit();
-        }      
-      
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
