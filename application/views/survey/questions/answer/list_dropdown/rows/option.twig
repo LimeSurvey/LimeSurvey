@@ -1,0 +1,15 @@
+{#
+/**
+ * List DropDown Option Html
+ * @var $value          $ansrow['code'];
+ * @var $opt_select
+ * @var $answer         flattenText($_prefix.$ansrow['answer'])."
+ * @var $classes
+ */
+#}
+
+<!-- option -->
+<option value='{{ value }}' {{ opt_select }} {% if classes is not empty %} class="{{ classes }}" {% endif %} >
+    {{ answer }}
+</option>
+<!-- end of option -->

@@ -1,4 +1,4 @@
-{# <?php
+{#
 /**
  * Year dropdown Html
  * @var $yearId
@@ -8,21 +8,21 @@
  * @var $yearmin
  * @var $step
  */
-?> #}
+#}
 
 <!-- year -->
-<label for="year{{yearId}}" class="sr-only">
-    {{gT('Year')}}
+<label for="year{{ yearId }}" class="sr-only">
+    {{ gT('Year') }}
 </label>
 
-<select id="year{{yearId}}" name="year{{yearId}}" class="year form-control">
+<select id="year{{ yearId }}" name="year{{ yearId }}" class="year form-control">
     <option value="">
-        {{gT('Year')}}
+        {{ gT('Year') }}
     </option>
     {% for i in yearmin..(yearmax) %}
         {% if loop.index is divisible by(step) %}
-            <option value="{{i}}"{% if i is same as(currentyear) %} 'selected' {% endif %} >
-                {{i}}
+            <option value="{{ i }}"{% if i is same as(intval(currentyear)) %} selected {% endif %} >
+                {{ i }}
             </option>
         {% endif %}
     {% endfor %}

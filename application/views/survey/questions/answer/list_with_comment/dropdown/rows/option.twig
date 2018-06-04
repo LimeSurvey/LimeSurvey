@@ -1,0 +1,12 @@
+{#
+/**
+ * List with comment, dropdown style, item Html
+ * @var $value          $ansrow['code']
+ * @var $check_ans      $check_ans
+ * @var $option_text    $ansrow['answer']
+ * @var $classes
+ */
+#}
+    <option class="{% if classes is not empty %} {{ classes }}  {% endif %}" value="{{ value }}" {{ check_ans }}>
+        {{ option_text }}
+    </option>

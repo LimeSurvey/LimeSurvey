@@ -1,0 +1,118 @@
+{#
+/**
+ * Shortfreetext, location map service style, item 100 Html
+ *
+ * @var $extraclass
+ * @var $name                        $ia[1]
+ * @var $value                       $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] }}
+ * @var $strBuild
+ * @var $checkconditionFunction      $checkconditionFunction(this.value, this.name, this.type)
+ * @var $location_mapservice         $aQuestionAttributes['location_mapservice']
+ * @var $location_mapheight          $aQuestionAttributes['location_mapheight']
+ * @var $questionHelp
+ * @var $question_text_help          $question_text['help']
+ * @var $location_value          $currentLatLong[0], $currentLatLong[1] />
+ * @var $currentLat          $currentLatLong[0]
+ * @var $currentLong     $currentLatLong[1]
+ */
+#}
+
+<div class="{{ coreClass }} {{ extraclass }} row" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+
+    <div class="geoname_search col-sm-12 " >
+        <div class="input-group">
+            <div class="input-group-addon search-icon">
+                <span class="fa fa-search"></span>
+            </div>
+                <input
+                    id="searchbox_{{ name }}"
+                    placeholder="{{ gT("Search (3 characters minimum)") }}"
+                    class="form-control"
+                    type="text"
+                 />
+
+            <div class="input-group-addon checkbox-item">
+                <input
+                    type="checkbox"
+                    id="restrictToExtent_{{ name }}"
+                    />
+                    <label for="restrictToExtent_{{ name }}">
+                        {{ gT("Restrict search place to map extent") }}
+                    </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 form-inline">
+        <!-- No javascript need a way to answer -->
+        {# Where is the answer-item ? answer-item geoloc-item */ #}
+        <input
+            type="hidden"
+            name="{{ name }}"
+            id="answer{{ name }}"
+            value="{{ value }}"
+            >
+
+        <input
+            type="hidden"
+            class="location"
+            name="{{ name }}_c"
+            id="answer{{ name }}_c"
+            value="{{ location_value }}"
+            />
+                <!-- readonly untill update a value can update the coordinate -->
+                <div class="coordinate-item form-group">
+                    <label for="answer_lat{{ name }}_c" class="control-label">
+                        {{ gT("Latitude:") }}
+                    </label>
+                    <input
+                    class="coords text form-control"
+                    type="number"
+                    step="any"
+                    name="{{ name }}_c1"
+                    id="answer_lat{{ name }}_c"
+                    value="{{ currentLat }}"
+                    />
+                </div>
+
+                <div class="coordinate-item form-group">
+                    <label for="answer_lng{{ name }}_c" class="control-label">
+                        {{ gT("Longitude:") }}
+                    </label>
+                    <input
+                    class="coords text form-control"
+                    type="number"
+                    step="any"
+                    name="{{ name }}_c2"
+                    id="answer_lng{{ name }}_c"
+                    value="{{ currentLong }}"
+                    />
+                </div>
+
+            <input
+            type="hidden"
+            name="boycott_{{ name }}"
+            id="boycott_{{ name }}"
+            value = "{{ strBuild }}"
+            />
+
+            <input
+            type="hidden"
+            name="mapservice_{{ name }}"
+            id="mapservice_{{ name }}"
+            class="mapservice"
+            value="{{ location_mapservice }}"
+            />
+    </div>
+    <div class="col-sm-12">
+    <!-- Map -->
+        <div id="map_{{ name }}" style="width: 100%; height: {{ location_mapheight }}px;">
+    </div>
+    </div>
+
+    {% if questionHelp %}
+        <div class="questionhelp col-sm-12">
+            {{ question_text_help }}
+        </div>
+    {% endif %}
+</div>

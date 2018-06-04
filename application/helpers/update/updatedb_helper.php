@@ -705,16 +705,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             upgradeSurveys156();
 
             // If a survey has an deleted owner, re-own the survey to the superadmin
-            $oDB->schema->refresh();
-            Survey::model()->refreshMetaData();
-            $surveys = Survey::model();
-            $surveys = $surveys->with(array('owner'))->findAll();
-            foreach ($surveys as $row)
-            {
-                if (!isset($row->owner->attributes))
-                {
-                    Survey::model()->updateByPk($row->sid,array('owner_id'=>1));
-                }
+            $sSurveyQuery = "SELECT sid, uid  from {{surveys}} LEFT JOIN {{users}} ON uid=owner_id WHERE uid IS null";
+            $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
+            foreach ( $oSurveyResult as $row ) {
+                    $oDB->createCommand("UPDATE {{surveys}} SET owner_id=1 WHERE sid={$row['sid']}")->execute();
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
             $oTransaction->commit();
@@ -915,7 +909,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{conditions}}','value','string',false,'');
             alterColumn('{{participant_shares}}','can_edit',"string(5)",false);
 
-            alterColumn('{{users}}','password',"binary",false);
+             alterColumn('{{users}}','password',"binary",false);
             dropColumn('{{users}}','one_time_pw');
             addColumn('{{users}}','one_time_pw','binary');
 
@@ -1342,7 +1336,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     $sSubstringCommand = 'substring';
             }
             $oDB->createCommand("UPDATE {{templates}} set folder={$sSubstringCommand}(folder,1,50)")->execute();
-            dropPrimaryKey('templates');
+            try { dropPrimaryKey('templates'); } catch(Exception $e){};
             alterColumn('{{templates}}', 'folder', "string(50)", false);
             addPrimaryKey('templates', 'folder');
             dropPrimaryKey('participant_attribute_names_lang');
@@ -2208,10 +2202,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>348], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+
+
+        if ($iOldDBVersion < 349) {
+            $oTransaction = $oDB->beginTransaction();
+            dropColumn('{{users}}','one_time_pw');
+            addColumn('{{users}}','one_time_pw','text');
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
         /**
          * Adding asset version to allow to reset asset without write inside
          */
-        if ($iOldDBVersion < 349) {
+        if ($iOldDBVersion < 350) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable('{{asset_version}}',array(
                 'hash' => 'string(64)',
@@ -2222,7 +2227,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addPrimaryKey('{{asset_version_pk}}', '{{asset_version}}', ['hash']);
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
             $oTransaction->commit();
-        }
+        }      
+      
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -2243,6 +2249,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             .'</p><br />'
             . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
         );
+        // If we're debugging, re-throw the exception.
+        if (defined('YII_DEBUG') && YII_DEBUG) {
+            throw $e;
+        }
         return false;
     }
 
@@ -2261,6 +2271,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->db->schema->getTable('{{templates}}', true);
     Survey::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
+
+    // Try to clear tmp/runtime (database cache files).
+    // Related to problems like https://bugs.limesurvey.org/view.php?id=13699.
+    if (!(defined('YII_DEBUG') && YII_DEBUG)) {
+        Yii::app()->cache->flush();
+        // NB: CDummyCache does not have a gc method (used if debug > 0).
+        Yii::app()->cache->gc();
+    }
 
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
@@ -3134,7 +3152,7 @@ function upgradeTokens176()
         if (tableExists($sTokenTableName))
         {                                        
             $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
-            $aAttributes = $arSurvey['tokenAttributes'];
+            $aAttributes = $arSurvey['attributedescriptions'];
             foreach($aColumnNamesIterator as $sColumnName)
             {
                 // Check if an old atttribute_cpdb column exists in that token table
@@ -3366,14 +3384,13 @@ function upgradeTokens148()
 
 function upgradeQuestionAttributes148()
 {
-    $sSurveyQuery = "SELECT sid FROM {{surveys}}";
+    $sSurveyQuery = "SELECT sid,language,additional_languages FROM {{surveys}}";
     $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
     $aAllAttributes=\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
     foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
         $iSurveyID=$aSurveyRow['sid'];
-        $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-
+        $aLanguages=array_merge(array($aSurveyRow['language']), explode(' ',$aSurveyRow['additional_languages']));
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
         $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
         foreach ( $oAttributeResult->readAll() as $aAttributeRow)

@@ -743,6 +743,7 @@ function do_boilerplate($ia)
 
     $answer .= doRender('/survey/questions/answer/boilerplate/answer', array(
         'ia'=>$ia,
+        'name'=>$ia[1],
         'basename'=>$ia[1], /* is this needed ? */
         'coreClass'=>'ls-answers hidden',
         ), true);
@@ -1049,8 +1050,8 @@ function do_date($ia)
             'basename'               => $ia[1],
             'dateoutput'             => htmlspecialchars($dateoutput, ENT_QUOTES, 'utf-8'),
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-            'dateformatdetails'      => $dateformatdetails['jsdate'],
-            'dateformat'             => $dateformatdetails['jsdate'],
+            'dateformatdetails'      => 'YYYY-MM-DD',
+            'dateformat'             => 'YYYY-MM-DD',
             ), true);
 
         App()->getClientScript()->registerScript('doDropDownDate'.$ia[0], "doDropDownDate({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
@@ -2120,7 +2121,7 @@ function do_multiplechoice_withcomments($ia)
 /* old system or imported */
         $attributeLabelWidth = null;
     }
-    if (!$attributeInputContainerWidth !== null && !$attributeLabelWidth !== null) {
+    if ($attributeInputContainerWidth === null && $attributeLabelWidth === null) {
         $sInputContainerWidth = 8;
         $sLabelWidth = 4;
     } else {

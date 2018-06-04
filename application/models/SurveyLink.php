@@ -67,7 +67,7 @@ class SurveyLink extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'participant' => array(self::HAS_ONE, 'Particiant', 'participant_id'),
-            'survey' => array(self::HAS_ONE, 'Survey', array('survey_id'=>'sid'))
+            'survey' => array(self::HAS_ONE, 'Survey', array('sid'=>'survey_id'))
         );
     }
 

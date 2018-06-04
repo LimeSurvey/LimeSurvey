@@ -56,7 +56,7 @@ question_template_attribute.add_platform_info           : {{question_template_at
 
         <!-- Suffix -->
         {% if suffix is not empty %}
-            <div class='ls-input-group-extra suffix-text suffix'><?php echo $suffix; ?></div>
+            <div class='ls-input-group-extra suffix-text suffix'>{{ suffix }}</div>
         {% endif %}
     {% if prefix is not empty or suffix is not empty %}
         </div>

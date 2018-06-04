@@ -1,0 +1,33 @@
+{#
+/**
+ * List radio Html : item 'no answer' row
+ *
+ * @var $name   $ia[1]
+ * @var $check_ans
+ * @var $checkconditionFunction
+ */
+#}
+
+{% set button_size=question_template_attribute.button_size %}
+
+{% if button_size == 'default' %}
+    {% set button_size_class='' %}
+{% else %}
+    {% set button_size_class= "btn-"~button_size %}
+{% endif %}
+
+<!-- answer_row_noanswer -->
+<li id="javatbd{{ name }}F" class="button-item btn btn-primary {{ button_size_class }} {% if check_ans!='' %} active {% endif %}">
+    <input
+        class="radio bootstrap-radio"
+        type="radio"
+        name="{{ name }}"
+        id="answer{{ name }}"
+        value="{{ code }}"
+        {{ check_ans }}
+        />
+    <label for="answer{{ name }}">
+        <span class="" aria-hidden="true"></span> {{ gT('No answer') }}
+    </label>
+</li>
+<!-- endof answer_row_noanswer -->

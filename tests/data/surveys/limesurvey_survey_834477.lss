@@ -169,7 +169,7 @@
    <row>
     <sid><![CDATA[834477]]></sid>
     <admin><![CDATA[Paulo Oliveira]]></admin>
-    <adminemail><![CDATA[psoliveira@med.up.pt]]></adminemail>
+    <adminemail><![CDATA[]]></adminemail>
     <anonymized><![CDATA[N]]></anonymized>
     <faxto/>
     <format><![CDATA[G]]></format>
@@ -196,7 +196,7 @@
     <assessments><![CDATA[N]]></assessments>
     <usecaptcha><![CDATA[N]]></usecaptcha>
     <usetokens><![CDATA[N]]></usetokens>
-    <bounce_email><![CDATA[psoliveira@med.up.pt]]></bounce_email>
+    <bounce_email><![CDATA[]]></bounce_email>
     <emailresponseto/>
     <emailnotificationto/>
     <tokenlength><![CDATA[15]]></tokenlength>

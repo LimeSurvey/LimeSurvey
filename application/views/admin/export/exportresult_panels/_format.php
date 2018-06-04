@@ -17,7 +17,7 @@
             <?php if (!empty($info['label'])) { ?>
               <div class="ls-flex col-4 ls-space padding all-5">
                 <label>
-                  <input type="radio" name="type" id="<?php echo $key;?>" value="<?php echo $key;?>" <?php if($info[ 'label']=='CSV' ){ echo 'checked';}?>>
+                  <input type="radio" name="type" id="<?php echo $key;?>" value="<?php echo $key;?>" <?php if($info['label'] == $defaultexport ){ echo 'checked';}?>>
                   <?php echo $info['label'];?>
                 </label>
               </div>

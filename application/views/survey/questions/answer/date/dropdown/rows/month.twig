@@ -1,23 +1,23 @@
-{# <?php
+{#
 /**
  * Month dropdown Html
  * @var $monthId
  * @var $currentmonth
  * @var $montharray
  */
-?> #}
+#}
 
 <!-- month -->
-<label for="month{{monthId}}" class="sr-only">
-    {{gT('Month')}}
+<label for="month{{ monthId }}" class="sr-only">
+    {{ gT('Month') }}
 </label>
-<select id="month{{monthId}}" name="month{{monthId}}" class="month form-control">
+<select id="month{{ monthId }}" name="month{{ monthId }}" class="month form-control">
     <option value="">
-        {{gT('Month')}}
+        {{ gT('Month') }}
     </option>
     {% for i in 1..12 %}
-        <option value="{{sprintf('%02d', i)}}" {% if i is same as(currentmonth) %} 'selected' {% endif %} >
-            {{montharray[(i-1)]}}
+        <option value="{{ sprintf('%02d', i) }}" {% if i is same as (intval(currentmonth)) %} selected {% endif %} >
+            {{ montharray[(i-1)] }}
         </option>
     {% endfor %}
 </select>

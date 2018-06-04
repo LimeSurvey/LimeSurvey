@@ -1,0 +1,41 @@
+{#
+/**
+ * array 5 point choice Html : Header
+ *
+ * @var $sColumns   : the columns, generated with the view columns/col.php
+ * @var $sHeaders   : the headers, generated with the view rows/cell/thead.php
+ * @var $sRows      : the rows, generated with the view rows/answer_row.php
+ * @var $extraclass
+ */
+#}
+<!-- Array 5 point choice -->
+
+<!-- answer -->
+<table class="{{ coreClass }} table table-bordered table-hover table-5-point-array" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <!-- Columns -->
+    <colgroup class="col-responses">
+        <col class="col-answers" style='width: {{ answerwidth }}%;' />
+        
+            {# columns/col.php #}
+            {{ sColumns }}
+        
+    </colgroup>
+    <!-- Table headers -->
+    <thead aria-hidden="true">
+        <tr class="ls-heading"><!-- same class for repeat heading too -->
+            
+                {# rows/cell/thead.php #}
+                {{ sHeaders }}
+            
+        </tr>
+    </thead>
+    <!-- Table Body -->
+    <tbody>
+        
+            {#rows/answer_row.php #}
+            {{ sRows }}
+        
+    </tbody>
+</table>
+
+<!-- end of answer -->

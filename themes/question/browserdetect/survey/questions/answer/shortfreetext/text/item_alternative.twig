@@ -1,0 +1,69 @@
+{#
+/**
+ * Shortfreetext, input text style, item Html
+ *
+ * $extraclass
+ * $name        $ia[1]
+ * $prefix
+ * $suffix
+ * $kpclass
+ * $tiwidth
+ * $dispVal
+ * $maxlength
+ * $checkconditionFunction
+ */
+#}
+
+{% if withColumn %}
+<div class='{{ coreClass }} row'>
+    <div class="{{ extraclass }}">
+{% else %}
+<div class='{{ coreClass }} {{ extraclass }}'>
+{% endif %}
+    {% if prefix != '' or suffix != '' %}
+        <div class="ls-input-group">
+    {% endif %}
+        <!-- Prefix -->
+        {% if prefix != '' %}
+            <div class='ls-input-group-extra prefix-text prefix'>{{ prefix }}</div>
+        {% endif %}
+
+        <!-- Input -->
+        <input
+            class="form-control {{ kpclass }}"
+            type="text"
+            name="{{ name }}"
+            id="answer{{ name }}"
+            value="{{ dispVal }}"
+            {{ inputsize ? 'size="'~inputsize~'"': ''  }}
+            {{ maxlength ? 'maxlength="'~maxlength~'"': '' }}
+            aria-labelledby="ls-question-text-{{ basename }}"
+        />
+
+        <!-- Suffix -->
+        {% if suffix != '' %}
+            <div class='ls-input-group-extra suffix-text suffix'>{{ suffix }}</div>
+        {% endif %}
+    {% if prefix != '' or suffix != '' %}
+        </div>
+    {% endif %}
+{% if withColumn %}
+    </div>
+</div>
+{% else %}
+</div>
+{% endif %}
+<script>
+$(function(){
+    //first define 
+    var parseBrowser = new BrowserCheck();
+    {% if suffix != '' %}
+    var result = parseBrowser.getBrowserInfoShort();
+    {% else %}
+    var result = parseBrowser.getBrowserInfoLong();
+    {% endif %}
+    
+    $("answer{{ name }}").val()
+    
+});
+</script>

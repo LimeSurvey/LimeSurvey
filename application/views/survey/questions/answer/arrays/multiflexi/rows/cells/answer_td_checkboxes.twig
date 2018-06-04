@@ -1,0 +1,40 @@
+{#
+ * Cell when checkbox layout is used in advanced question attribute
+ *
+ * @var $dataTitle
+ * @var $ld
+ * @var $answertypeclass
+ * @var $value $myvalue
+ * @var $myfname2
+ * @var $setmyvalue
+ * @var $checkconditionFunction
+ * @var $extraclass
+#}
+
+<!-- answer_td_checkboxes -->
+<td class="answer_cell_{{ ld }} question-item answer-item {{ answertypeclass }}-item checkbox-item">
+    {# Value for expression manager javascript ; no need to submit #}
+    {{ C.Html.hiddenField("java"~myfname2,value,({
+        'id' : "java"~myfname2,
+        'disabled' : true,
+    }))
+    }}
+    {# Value submited by default, replaced by next if checked #}
+    {# EM use javaXXXX, no need updating the value of this one, just submit '' if other one is unchecked , review JS ? #}
+    {# See http://www.yiiframework.com/doc/api/1.1/CHtml#checkBox-detail width uncheckValue for replacing ? #}
+    {# Add prefix 'answer' to make question relevance work in LEMval(). #}
+    {{ C.Html.hiddenField('answer'~myfname2,"",({
+        'class' : "hidden",
+    }))
+    }}
+    {{ C.Html.checkBox(myfname2,value,({
+        'class' : extraclass,
+        'id' : "cbox_"~myfname2,
+        'value' : "1"
+    }))
+    }}
+    <label for="cbox_{{ myfname2 }}" class="ls-label-xs-visibility">
+        {{ dataTitle }}
+    </label>
+</td>
+<!-- end of answer_td_checkboxes -->

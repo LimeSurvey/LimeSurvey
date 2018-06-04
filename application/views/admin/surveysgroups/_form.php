@@ -54,7 +54,7 @@
     <!-- should be a selector based on group name -->
     <div class="row">
         <?php echo $form->labelEx($model,'parent_id'); ?>
-        <?php echo $form->dropDownList($model,'parent_id',$model->getParentGroupOptions()); ?>
+        <?php echo $form->dropDownList($model,'parent_id',$model->getParentGroupOptions($model->gsid)); ?>
         <?php echo $form->error($model,'parent_id'); ?>
     </div>
 

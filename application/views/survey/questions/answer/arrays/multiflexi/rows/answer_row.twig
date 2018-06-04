@@ -1,0 +1,38 @@
+{#
+/**
+ * Generate a row for the table
+ *
+ * @var $answer_tds      : the cells of each row, generated with the view rows/cells/*.php
+ * @var $sDisplayStyle
+ * @var $useAnswerWidth
+ * @var $answerwidth
+ * @var $myfname
+ * @var $error
+ * @var $row_value
+ * @var $answertext
+ * @var $answertextright
+ * @var $rightTd
+ */
+#}
+
+<!-- answer_row -->
+<tr id="javatbd{{ myfname }}" class="{{ coreRowClass }} {% if odd %}ls-odd{% else %}ls-even{% endif %}{% if error %} ls-error-mandatory{% endif %} {% if error and layout=="checkbox" %} has-error{% endif %}" role="group" aria-labelledby="answertext{{ myfname }}">
+    <th id="answertext{{ myfname }}" class="answertext control-label{% if error and layout!="checkbox" %} text-danger" {% endif %}{% if answerwidth==0 %} sr-only{% endif %}">
+        {{ answertext }}
+        {# Value for expression manager javascript ? Used ? #}
+        {{ C.Html.hiddenField("java"~myfname,row_value,({
+            'id' : "java"~myfname,
+            'disabled' : true,
+        }))
+        }}
+    </th>
+
+        {# Defined in answer_td view #}
+        {{ answer_tds }}
+    
+    <!-- right -->
+    {% if rightTd %}
+        <td class="answertextright">{{ answertextright }}</td>
+    {% endif %}
+</tr>
+<!-- end of answer_row -->

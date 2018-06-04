@@ -6,19 +6,19 @@
 
     /* LANGUAGE */
     var attributesMappedText = "<?php eT("There are no unmapped attributes") ?>";
-    var cannotAcceptTokenAttributesText="<?php eT("This list cannot accept token attributes.") ?>";
+    var cannotAcceptTokenAttributesText="<?php eT("This list cannot accept survey participant attributes.") ?>";
 
 </script>
 
 <div class='header ui-widget-header'>
-    <h3 class='pagetitle'><?php eT("Map your token attributes to an existing participant attribute or create a new one"); ?></h3>
+    <h3 class='pagetitle'><?php eT("Map your survey participant attributes to an existing participant attribute or create a new one"); ?></h3>
 </div>
 
 <div class="draggable-container">
     <div class='row'>
         <div class='col-sm-4'>
             <div id="tokenattribute" class="panel panel-primary attribute-column">
-                <div class="panel-heading"><?php eT("Unmapped token attributes") ?></div>
+                <div class="panel-heading"><?php eT("Unmapped survey participant attributes") ?></div>
                 <div id="tokenatt" class="tokenatt droppable">
                     <?php
                         if (!empty($tokenattribute))
@@ -116,7 +116,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><?php eT("Map token attributes"); ?></h4>
+                <h4 class="modal-title"><?php eT("Map survey participant attributes"); ?></h4>
             </div>
             <div class="modal-body">
             </div>

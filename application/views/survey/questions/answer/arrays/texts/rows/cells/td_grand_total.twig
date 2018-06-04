@@ -1,0 +1,19 @@
+
+{#
+/**
+ * Cell for Grand Total
+ *
+ * @var $empty
+ */
+#}
+
+<!-- td_grand_total -->
+{% if empty %}
+    <td>&nbsp;</td>
+
+{% else %}
+    <td class="total grand information-item">
+        <input type="text" {% if inputsize %}size="{{ inputsize }}" {% endif %} value="" disabled="disabled" class="disabled form-control" data-number='1' />
+    </td>
+{% endif %}
+<!-- end of td_grand_total -->

@@ -1,0 +1,15 @@
+{#
+/**
+ * @var $no_answer
+ */
+#}
+
+<!-- thead -->
+<td></td>
+<th class="answer-text">{{ gT("Increase") }}</th>
+<th class="answer-text">{{ gT("Same") }}</th>
+<th class="answer-text">{{ gT("Decrease") }}</th>
+{% if no_answer %}
+    <th class="answer-text noanswer-text" >{{ gT("No answer") }}</th>
+{% endif %}
+<!-- end of  thead -->

@@ -91,6 +91,7 @@
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_desc.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_name.twig</file>
                     <file type="view" role="subview">./subviews/survey/question.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_container.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/question_text_container.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/question_text_content.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/answers.twig</file>
@@ -117,10 +118,15 @@
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/firstpage.twig</file>
+                    <file type="view" role="subview">./subviews/header/head.twig</file>
+                    <file type="view" role="subview">./subviews/header/custom_header.twig</file>
+                    <file type="view" role="subview">./subviews/header/nav_bar.twig</file>
+                    <file type="view" role="subview">./subviews/header/progress_bar.twig</file>
                     <file type="view" role="subview">./subviews/messages/welcome.twig</file>
                     <file type="view" role="subview">./subviews/messages/warnings.twig</file>
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_first_page.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -198,10 +204,27 @@
                 </register>
 
                 <printanswers>
-                    <file type="view" role="layout">./subviews/content/printanswers.twig</file>
-                    <file type="view" role="layout">./subviews/printanswers/printanswers_question.twig</file>
-                    <file type="view" role="layout">./subviews/printanswers/printanswers_table.twig</file>
+                    <file type="view" role="layout">layout_printanswers.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/printanswers.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_question.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_table.twig</file>
                 </printanswers>
+
+                <pdf>
+                    <file type="view" role="layout">layout_print.twig</file>
+                </pdf>
+
+                <navigation>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="content">./subviews/content/main.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/ajax_indicator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/clearall_links.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_top_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/save_links.twig</file>
+                </navigation>
 
             </screens>
         </template_editor>

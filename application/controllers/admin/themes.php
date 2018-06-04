@@ -75,6 +75,50 @@ class themes extends Survey_Common_Action
         }
     }
 
+
+    /**
+    * Exports a deprecated template
+    *
+    * @access public
+    * @param string $templatename
+    * @return void
+    */
+    public function deprecatedtemplatezip($templatename)
+    {
+        //$oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        $templatename        = sanitize_dirname($templatename);
+        $usertemplaterootdir = Yii::app()->getConfig("uploaddir").DIRECTORY_SEPARATOR."templates";
+        $templatePath        = $usertemplaterootdir.DIRECTORY_SEPARATOR.$templatename;
+
+
+        if (!Permission::model()->hasGlobalPermission('templates','export')){
+            die('No permission');
+        }
+
+        $tempdir = Yii::app()->getConfig('tempdir');
+
+        $zipfile = "$tempdir/$templatename.zip";
+        Yii::app()->loadLibrary('admin.pclzip');
+        $zip = new PclZip($zipfile);
+        $zip->create($templatePath, PCLZIP_OPT_REMOVE_PATH, $templatePath);
+
+        if (is_file($zipfile)) {
+            // Send the file for download!
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Content-Type: application/force-download");
+            header("Content-Disposition: attachment; filename=$templatename.zip");
+            header("Content-Description: File Transfer");
+
+            @readfile($zipfile);
+
+            // Delete the temporary file
+            unlink($zipfile);
+        }
+    }
+
+
     /**
      * Retrieves a temporary template file from disk
      *
@@ -151,7 +195,7 @@ class themes extends Survey_Common_Action
                 if(Template::isStandardTemplate($oTemplateConfiguration->sTemplateName)){
                     $destdir = $oTemplateConfiguration->generalFilesPath;
                 }
-                
+
                 $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
                 $fullfilepath = $destdir.$filename;
                 $debug[] = $destdir;
@@ -377,12 +421,9 @@ class themes extends Survey_Common_Action
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
-        try {
-            $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
-        } catch (Exception $ex) {
-            Yii::app()->user->setFlash('error', $ex->getMessage());
-            $this->getController()->redirect(array('admin/themes/sa/view/', 'templatename'=>getGlobalSetting('defaulttheme')));
-        }
+
+
+        $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap'] = $aBootstrapPackage;
@@ -815,18 +856,17 @@ class themes extends Survey_Common_Action
             //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
-        $files    = $oEditedTemplate->getValidScreenFiles("view");
-        $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
 
-
-        if ($editfile == '' && $files) {
-            $editfile == $files[0];
-        }
+        $files        = $oEditedTemplate->getValidScreenFiles("view", $screenname);
+        $sLayoutFile  = $oEditedTemplate->getLayoutForScreen($screenname);
+        $sContentFile = $oEditedTemplate->getContentForScreen($screenname);
+        $cssfiles     = $oEditedTemplate->getValidScreenFiles("css");
+        $jsfiles     = $oEditedTemplate->getValidScreenFiles("js");
+        $editfile     = (empty($editfile) || ! ( in_array($editfile, $files) || in_array( $editfile ,$cssfiles) || in_array( $editfile ,$jsfiles)  )) ? $sLayoutFile : $editfile;
 
         // Standard screens
         // Only these may be viewed
         $screens = array();
-
 
         $screens['welcome']         = gT('Welcome', 'unescaped'); // first  page*
         $screens['question']        = gT('Question', 'unescaped'); // main
@@ -917,9 +957,6 @@ class themes extends Survey_Common_Action
         $aGlobalReplacements       = array();
         $myoutput[]                = "";
 
-        $files        = $oEditedTemplate->getValidScreenFiles("view", $screenname);
-        $sLayoutFile  = $oEditedTemplate->getLayoutForScreen($screenname);
-        $sContentFile = $oEditedTemplate->getContentForScreen($screenname);
 
         switch ($screenname) {
             case 'welcome':
@@ -1145,16 +1182,25 @@ class themes extends Survey_Common_Action
                 break;
         }
 
-        // NOTE: Twig already render return error, no try catch needed
+
         $thissurvey['include_content'] = $sContentFile;
-        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
-            $sLayoutFile,
-            array(
-                'aSurveyInfo' =>$thissurvey,
-                'print'       => $print  // Only used for PDF print layout.
-            ),
-            $oEditedTemplate
-        );
+
+        
+        try {
+            $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
+                $sLayoutFile,
+                array(
+                    'aSurveyInfo' =>$thissurvey,
+                    'print'       => $print  // Only used for PDF print layout.
+                ),
+                $oEditedTemplate
+            );
+        } catch (Exception $ex) {
+            $myoutput = "<h3>ERROR!</h3>";
+            $myoutput .= $ex->getMessage();
+        }
+
+
 
         $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles, $jsfiles);
@@ -1165,7 +1211,6 @@ class themes extends Survey_Common_Action
         }
 
         $otherfiles = $oEditedTemplate->getOtherFiles();
-        $editfile = (empty($editfile)) ? $sLayoutFile : $editfile;
         $sEditfile = $oEditedTemplate->getFilePathForEditing($editfile, array_merge($files, $aCssAndJsfiles));
 
         $extension = substr(strrchr($sEditfile, "."), 1);
@@ -1194,7 +1239,6 @@ class themes extends Survey_Common_Action
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
 
-        // App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'admin_core.js');
 
         return $aViewUrls;
     }

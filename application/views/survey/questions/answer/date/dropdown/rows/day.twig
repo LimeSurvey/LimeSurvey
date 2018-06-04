@@ -1,22 +1,22 @@
-{# <?php
+{#
 /**
  * Day dropdown Html
  * @var $dayId
  * @var $currentdate
  */
-?> #}
+#}
 
 <!-- day -->
-<label for="day{{dayId}}" class="sr-only">
-    {{gT('Day')}}
+<label for="day{{ dayId }}" class="sr-only">
+    {{ gT('Day') }}
 </label>
 <select id="day{{dayId}}" name="day{{dayId}}" class="form-control day">
     <option value="">
-        {{gT('Day')}}
+        {{ gT('Day') }}
     </option>
 
     {% for i in 1..31  %}
-        <option value="{{sprintf('%02d', i)}}" {{ (i == currentdate) ? 'selected' : '' }}>
+        <option value="{{ sprintf('%02d', i) }}" {% if i == intval(currentdate) %}selected{% endif %}>
             {{ sprintf('%02d', i) }}
         </option>
     {% endfor %}

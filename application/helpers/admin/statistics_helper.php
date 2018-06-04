@@ -93,7 +93,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
     }
 
     if (array_sum($gdata) > 0) {
-//Make sure that the percentages add up to more than 0
+        //Make sure that the percentages add up to more than 0
         $i = 0;
         foreach ($gdata as $data) {
             if ($data != 0) {
@@ -111,7 +111,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         }
 
         if (!$type) {
-// Bar chart
+            // Bar chart
             $DataSet = new pData;
             $counter = 0;
             $maxyvalue = 0;
@@ -135,7 +135,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
-//auto detect if english
+                        //auto detect if english
                         $lblout[] = $kkey.' ('.$kval.')';
                     } else {
                         $lblout[] = $Arabic->utf8Glyphs($kkey.' )'.$kval.'(');
@@ -224,7 +224,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
 
                 foreach ($lbl as $kkey => $kval) {
                     if (preg_match("^[A-Za-z]^", $kkey)) {
-//auto detect if english
+                        //auto detect if english
                         $lblout[] = $kkey.' ('.$kval.')';
                     } else {
                         $lblout[] = $Arabic->utf8Glyphs($kkey.' )'.$kval.'(');
@@ -367,7 +367,7 @@ function buildSelects($allfields, $surveyid, $language)
                 if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
                 $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" && $firstletter != "|" &&
                 $pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") {
-//pull out just the fieldnames
+                    //pull out just the fieldnames
                     //put together some SQL here
                     $thisquestion = Yii::app()->db->quoteColumnName($pv)." IN (";
 
@@ -627,7 +627,7 @@ class statistics_helper
 
         //S - Short Free Text and T - Long Free Text
         elseif ($firstletter == "T" || $firstletter == "S") {
-//Short and long text
+            //Short and long text
             //search for key
             $fld = substr($rt, 1, strlen($rt));
             $fielddata = $fieldmap[$fld];
@@ -711,7 +711,7 @@ class statistics_helper
                 $alist[] = array("$row[0]", flattenText($row[1]), $mfield);
             }
         } else if ($firstletter == "|") {
-// File Upload
+            // File Upload
 
             //get SGQ data
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
@@ -786,7 +786,7 @@ class statistics_helper
             //outputting
             switch ($outputType) {
                 case 'xls':
-                    $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                    $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                     $xlsDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
                     $this->xlsRow++;
                     $this->xlsRow++;
@@ -807,7 +807,7 @@ class statistics_helper
 
                 case 'html':
                     $statisticsoutput .= "\n<table class='statisticstable table table-bordered >\n"
-                    ."\t<thead><tr class='success'><th style='text-align: center; '><strong>".sprintf(gT("Field summary for %s"), $qtitle).":</strong>"
+                    ."\t<thead><tr class='success'><th style='text-align: center; '><strong>".sprintf(gT("Summary for %s"), $qtitle).":</strong>"
                     ."</th></tr>\n"
                     ."\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
                     ."\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
@@ -829,10 +829,10 @@ class statistics_helper
         //N = numerical input
         //K = multiple numerical input
         elseif ($firstletter == "N" || $firstletter == "K") {
-//NUMERICAL TYPE
+            //NUMERICAL TYPE
             //Zero handling
             if (!isset($excludezeros)) {
-//If this hasn't been set, set it to on as default:
+                //If this hasn't been set, set it to on as default:
                 $excludezeros = 1;
             }
             //check last character, greater/less/equals don't need special treatment
@@ -856,7 +856,7 @@ class statistics_helper
                 //outputting
                 switch ($outputType) {
                     case 'xls':
-                        $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                        $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                         $xlsDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
                         $this->xlsRow++;
                         $this->xlsRow++;
@@ -876,7 +876,7 @@ class statistics_helper
                         $tablePDF = array();
                         $footPDF = array();
 
-                        $pdfTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                        $pdfTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                         $titleDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
 
                         $headPDF[] = array(gT("Calculation"), gT("Result"));
@@ -885,7 +885,7 @@ class statistics_helper
                     case 'html':
 
                         $statisticsoutput .= "\n<table class='statisticstable table table-bordered' >\n"
-                        ."\t<thead><tr  class='success'><th colspan='2' align='right'  class='success'><strong>".sprintf(gT("Field summary for %s"), $qtitle).":</strong>"
+                        ."\t<thead><tr  class='success'><th colspan='2' align='right'  class='success'><strong>".sprintf(gT("Summary for %s"), $qtitle).":</strong>"
                         ."</th></tr>\n"
                         ."\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
                         ."\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
@@ -913,20 +913,20 @@ class statistics_helper
                 //other databases (MySQL, Postgres)
                 else {
                     //standard deviation
-                    $query = "SELECT STDDEV(".Yii::app()->db->quoteColumnName($fieldname).") as stdev";
+                    $query = "SELECT STDDEV(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(10,6))) as stdev";
                 }
 
                 //sum
-                $query .= ", SUM(".Yii::app()->db->quoteColumnName($fieldname)."*1) as sum";
+                $query .= ", SUM(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(10,6))) as sum";
 
                 //average
-                $query .= ", AVG(".Yii::app()->db->quoteColumnName($fieldname)."*1) as average";
+                $query .= ", AVG(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(10,6))) as average";
 
                 //min
-                $query .= ", MIN(".Yii::app()->db->quoteColumnName($fieldname)."*1) as minimum";
+                $query .= ", MIN(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(10,6))) as minimum";
 
                 //max
-                $query .= ", MAX(".Yii::app()->db->quoteColumnName($fieldname)."*1) as maximum";
+                $query .= ", MAX(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(10,6))) as maximum";
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
 
                 //special treatment for MS SQL databases
@@ -1187,8 +1187,8 @@ class statistics_helper
                     }
 
                     //list IDs and answer codes in brackets
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1206,8 +1206,8 @@ class statistics_helper
                         $atext = flattenText($qrow[1]);
                     }
 
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1227,8 +1227,8 @@ class statistics_helper
                         $atext = flattenText($qrow[1]);
                     }
                     //output
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1245,8 +1245,8 @@ class statistics_helper
                         $alist[] = array("D", gT("Decrease"));
                         $atext = flattenText($qrow[1]);
                     }
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1267,8 +1267,8 @@ class statistics_helper
                         $atext = flattenText($qrow[1]);
                     }
 
-                    $qquestion .= $linefeed."[".$atext."] [".$ltext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."] [".$ltext."]";
                     break;
 
                 case ":": //Array (Multiple Flexi) (Numbers)
@@ -1329,8 +1329,8 @@ class statistics_helper
                     }
 
                     //output
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -2180,7 +2180,7 @@ class statistics_helper
         switch ($outputType) {
             case 'xls':
 
-                $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
+                $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
                 $xlsDesc = html_entity_decode($outputs['qquestion'], ENT_QUOTES, 'UTF-8');
 
                 $this->xlsRow++;
@@ -2196,7 +2196,7 @@ class statistics_helper
             case 'pdf':
 
                 $sPDFQuestion = flattenText($outputs['qquestion'], false, true);
-                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Field summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
+                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
                 $titleDesc = $sPDFQuestion;
 
                 $this->pdf->AddPage('P', 'A4');
@@ -3097,6 +3097,8 @@ class statistics_helper
                 $stddevarray = array_slice($grawdata, 0, 5, true);
                 $am = 0;
 
+                $sumitems = $grawdata[0] + $grawdata[1] + $grawdata[2] + $grawdata[3] + $grawdata[4];
+                
                 //calculate arithmetic mean
                 if (isset($sumitems) && $sumitems > 0) {
 

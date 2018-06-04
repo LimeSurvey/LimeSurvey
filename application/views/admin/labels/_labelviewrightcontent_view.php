@@ -36,7 +36,7 @@
                   <!-- Export resources as ZIP archive -->
                   <li>
                     <label>&nbsp;</label>
-                    <input class="btn btn-default" type='button' <?php echo hasResources($lid, 'label')===f alse ? ' disabled="disabled"' : '' ?> onclick='window.open("
+                    <input class="btn btn-default" type='button' <?php echo hasResources($lid, 'label')===false ? ' disabled="disabled"' : '' ?> onclick='window.open("
                     <?php echo $this->createUrl("/admin/export/sa/resources/export/label/lid/$lid"); ?>", "_blank")' value="
                       <?php eT("Export resources as ZIP archive") ?>" />
                   </li>

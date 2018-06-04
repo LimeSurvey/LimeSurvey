@@ -11,6 +11,8 @@ echo viewHelper::getViewTestTag('addQuestion');
 <?php
 $aQuestionTypeGroups = array();
 $aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
+$question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']);
+$selected = null;
 
 foreach ( $aQuestionTypeList as $key=> $questionType)
 {
@@ -231,6 +233,39 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                     <?php endif; ?>
                                 </div>
                                 <!-- Question selector end -->
+
+                               <div  class="form-group" id="QuestionTemplateSelection">
+                                    <label class=" control-label" for='gid' title="<?php eT("Use a customized question theme for this question");?>"><?php eT("Question theme:"); ?></label>
+                                    <div class="">
+                                        <select id="question_template" name="question_template" class="form-control">
+                                            <?php 
+                                            foreach ($aQuestionTemplateList as $code => $value) { 
+                                                    if (!empty($aQuestionTemplateAttributes)){
+                                                        $question_template_preview = $aQuestionTemplateAttributes['value'] == $code ? $value['preview'] : $question_template_preview;
+                                                        $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
+                                                    }
+                                                    if(YII_DEBUG) {
+                                                        echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, $value['title'], $code);
+                                                    } else {
+                                                        echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, $value['title']);
+                                                    }
+
+                                            } 
+                                            ?>
+                                        </select> 
+                                        <?php if ($activated == "Y"): ?>
+                                            <input type='hidden' name='gid' value='<?php echo $eqrow['gid'];?>' />
+                                            <?php endif; ?>
+                                    </div>
+                                </div>
+
+                                <div  class="form-group" id="QuestionTemplatePreview">
+                                        <label class=" control-label" for='gid' title="<?php eT("Question theme preview");?>"><?php eT("Question theme preview:"); ?></label>
+                                        <div class="">
+                                            <img src="<?php echo $question_template_preview; ?>" style="border: 1px solid gray; padding: 10px; max-width: 100%;">
+                                        </div>
+                                </div>
+
                                 <div  class="form-group">
                                     <label class=" control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
                                     <div class="">
@@ -297,11 +332,14 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                             </div>
                         </div>
                     </div>
+                    <hr/>
                     <?php if (!$copying): ?>
+                        <div id="container-advanced-question-settings" class="custom custom-margin top-5">
+                            <!-- Advanced settings -->
+                        </div>
                         <div class="loader-advancedquestionsettings text-center">
                             <span class="fa fa-refresh" style="font-size:3em;" aria-hidden='true'></span>
                         </div>
-                            <!-- Advanced settings -->
                     <?php endif; ?>
                 </div>
             </div>

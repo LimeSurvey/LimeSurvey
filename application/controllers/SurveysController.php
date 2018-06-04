@@ -38,6 +38,7 @@
                     'sSiteAdminName'    => Yii::app()->getConfig("siteadminname"),
                     'sSiteAdminEmail'   => Yii::app()->getConfig("siteadminemail"),
                     'bShowClearAll'     => false,
+                    'surveyls_title'    => Yii::app()->getConfig('sitename')
                 );
 
             $aData['alanguageChanger']['show'] = false;

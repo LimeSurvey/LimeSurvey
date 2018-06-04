@@ -1,0 +1,44 @@
+{#
+/**
+ * List radio Html : item 'other' row
+ *
+ * @var $name
+ * @var $answer_other
+ * @var $sDisplayStyle
+ * @var $sDisable
+ * @var $myfname
+ * @var $othertext
+ * @var $checkedState
+ * @var $kpclass
+ * @var $sValue
+ * @var $oth_checkconditionFunction
+ * @var $checkconditionFunction
+ */
+#}
+
+{% set button_size=question_template_attribute.button_size %}
+
+{% if button_size == 'default' %}
+    {% set button_size_class='' %}
+{% else %}
+    {% set button_size_class= "btn-"~button_size %}
+{% endif %}
+
+<!-- answer_row_other -->
+<!-- Checkbox + label -->
+<li id="javatbd{{ name }}F" class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active focus {% endif %}"  {{ sDisplayStyle }}>
+    <input
+        class="radio bootstrap-radio"
+        type="radio"
+        value="-oth-"
+        name="{{ name }}"
+        id="SOTH{{ name }}"
+        {{ checkedState }}
+        />
+    <label for="answer{{ name }}">
+        <span class="" aria-hidden="true"></span> {{ gT('Other') }}
+    </label>
+</li>
+<input type="hidden" class="bootstrap-radio-value" {{ answer_other }} name="answer{{ name }}othervalue" data-name="{{ name }}" id="answer{{ name }}othervalue">
+<!-- end of answer_row_other -->
+

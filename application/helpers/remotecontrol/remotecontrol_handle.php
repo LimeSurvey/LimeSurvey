@@ -444,7 +444,7 @@ class remotecontrol_handle
      * Activate an existing survey
      *
      * Return the result of the activation
-     * Failure status : Invalid Survey ID, Activation Error, Invalid session key, No permission
+     * Failure status : Invalid Survey ID, Constistency check error, Activation Error, Invalid session key, No permission
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -459,8 +459,15 @@ class remotecontrol_handle
             if (is_null($oSurvey)) {
                 return array('status' => 'Error: Invalid survey ID');
             }
+            // Check consistency for groups and questions
+            Yii::app()->loadHelper('admin/activate');
+            $checkHasGroup = checkHasGroup($iSurveyID);
+            $checkGroup = checkGroup($iSurveyID);
+            if ($checkHasGroup !== false || $checkGroup !== false){
+                return array('status' => 'Error: Survey does not pass consistency check');
+            }
+
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
-                Yii::app()->loadHelper('admin/activate');
                 $aActivateResults = activateSurvey($iSurveyID);
                 if (isset($aActivateResults['error'])) {
                     return array('status' => 'Error: '.$aActivateResults['error']);
@@ -639,6 +646,7 @@ class remotecontrol_handle
      *     * token_sent
      *     * token_opted_out
      *     * token_completed
+     *     * token_screenout
      * All available status can be sent using `all`
      *
      * Failure status : No available data, No such property, Invalid session key, No permission
@@ -659,7 +667,8 @@ class remotecontrol_handle
                 'token_invalid',
                 'token_sent',
                 'token_opted_out',
-                'token_completed'
+                'token_completed',
+                'token_screenout'
             );
             $aPermittedSurveyStats = array(
                 'completed_responses',
@@ -691,6 +700,7 @@ class remotecontrol_handle
                             $aSummary['token_sent'] = $aTokenSummary['sent'];
                             $aSummary['token_opted_out'] = $aTokenSummary['optout'];
                             $aSummary['token_completed'] = $aTokenSummary['completed'];
+                            $aSummary['token_screenout'] = $aTokenSummary['screenout'];
                         }
                     } elseif ($sStatName != 'all') {
                         return array('status' => 'No available data');
@@ -2725,7 +2735,7 @@ class remotecontrol_handle
             }
         }
 
-        $aFieldMap = createFieldMap($iSurveyID, 'short', false, false, Yii::app()->getConfig('defaultlang'));
+        $aFieldMap = createFieldMap($oSurvey, 'short', false, false, Yii::app()->getConfig('defaultlang'));
         if (!isset($aFieldMap[$sFieldName])) {
             return array('status' => 'Can not obtain field map');
         }
