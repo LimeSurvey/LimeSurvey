@@ -19,6 +19,15 @@
 
 */
 
+//Check if we have to work on IE10 *sigh*
+var isIE10 = false;
+/*@cc_on
+    if (/^10/.test(@_jscript_version)) {
+        isIE10 = true;
+    }
+@*/
+console.ls.log("isIE10: ",isIE10);
+
 // Submit the form with Ajax
 var AjaxSubmitObject = function () {
     var activeSubmit = false;
@@ -74,20 +83,22 @@ var AjaxSubmitObject = function () {
 
     var bindActions = function () {
         var globalPjax = new Pjax({
-            elements: '#limesurvey', // default is "a[href], form[action]"
+            elements: ['form#limesurvey'], // default is "a[href], form[action]"
             selectors: ['#dynamicReloadContainer', '#beginScripts', '#bottomScripts'],
-            debug: window.debugState.frontend,
+            debug: true,
             forceRedirectOnFail: true,
             reRenderCSS : true,
-            logObject : console.ls ? (window.debugState.frontend ? console.ls : console.ls.silent) : console,
-            scriptloadtimeout: 1500
+            logObject : new ConsoleShim('PJAX-LOG'),
+            scriptloadtimeout: 1500,
         });
         // Always bind to document to not need to bind again
         $(document).on('click', '.ls-move-btn',function (e) {
-            e.preventDefault();    
             $('#limesurvey').append('<input name=\''+$(this).attr('name')+'\' value=\''+$(this).attr('value')+'\' type=\'hidden\' />');
-            $('#limesurvey').trigger('submit');
-            return false;
+            if(isIE10) {
+                e.preventDefault();    
+                $('#limesurvey').trigger('submit');
+                return false;
+            }
         });
 
         // If the user try to submit the form
