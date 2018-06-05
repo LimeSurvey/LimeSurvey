@@ -1932,7 +1932,7 @@ class ExpressionManager
                             if (!$this->RDP_onlyparse) {
                                 $result = call_user_func_array($funcName,$params);
                             }
-                        return false;
+                            break;
                     }
 
                 } else {
