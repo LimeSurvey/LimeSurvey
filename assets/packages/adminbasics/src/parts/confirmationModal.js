@@ -41,7 +41,7 @@ const ConfirmationModal = function(e){
             });
             return
         }
-        console.LS.error("Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).");
+        console.error("Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).");
         return;
     },
     //Set up an ajax call and regenerate a gridView on ok button click
@@ -80,7 +80,7 @@ const ConfirmationModal = function(e){
             _ajaxHandler();
             return;
         }
-        console.ls.error("Confirmation modal: Found neither data-href or data-onclick, nor ajax data.");
+        console.error("Confirmation modal: Found neither data-href or data-onclick, nor ajax data.");
     };
 
     //////RUN BINDINGS
@@ -98,4 +98,4 @@ const loadMethods = ()=>{
     });
 };
 
-export {loadMethods};
+export default loadMethods;

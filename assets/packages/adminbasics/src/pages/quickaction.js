@@ -14,8 +14,8 @@ const methods = {
             // html contains the buttons
             success : function(data, statut){
                 const newState = parseInt(data.newState);
-                console.ls.log('quickaction resolve', data);
-                console.ls.log('quickaction new state', newState);
+                console.log('quickaction resolve', data);
+                console.log('quickaction new state', newState);
                 $self.data('active', newState);
                 if(newState === 1){
                     $('#survey-action-container').slideDown(500);
@@ -26,7 +26,7 @@ const methods = {
                 
             },
             error :  function(html, statut){
-                console.ls.error('ERROR!', html, statut);
+                console.error('ERROR!', html, statut);
             }
         });
     },

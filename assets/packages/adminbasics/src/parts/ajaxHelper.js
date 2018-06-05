@@ -8,7 +8,7 @@ const onSuccess = (response) => {
     
     // Check type of response and take action accordingly
     if (response == '') {
-        console.ls.error('No response from server');
+        console.error('No response from server');
         notifyFader.create('No response from server', 'alert-danger');
         return false;
     }
@@ -81,7 +81,7 @@ const ajax = (options) => {
    options.error = (jqXHR, textStatus, errorThrown) => {
        $('#ls-loading').hide();
 
-       console.ls.error('AJAX CALL FAILED -> ', {
+       console.error('AJAX CALL FAILED -> ', {
             errorThrown: errorThrown,
             textStatus: textStatus,
             jqXHR: jqXHR,

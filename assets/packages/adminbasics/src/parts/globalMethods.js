@@ -75,7 +75,7 @@ const globalWindowMethods = {
         if(typeof content == 'string' && content != ''){
             try {
                 contentObject = _.merge(contentObject, JSON.parse(content));
-            } catch(e) { console.ls.error('JSON parse on sendPost failed!') }
+            } catch(e) { console.error('JSON parse on sendPost failed!') }
         }
         _.each(content, (value,key) => {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);

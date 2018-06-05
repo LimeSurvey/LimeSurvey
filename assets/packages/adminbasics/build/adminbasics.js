@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -17174,10 +17174,176 @@
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(6)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)(module)))
 
 /***/ }),
 /* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Check the browsers console capabilities and bundle them into general functions
+ * If the build environment was "production" only put out error messages.
+ */
+
+
+class ConsoleShim {
+    constructor(param='', silencer=false) {
+
+        this.param = param;
+        this.silencer = silencer;
+        this.collector = [];
+        this.currentGroupDescription = '';
+        this.activeGroups = 0;
+        this.timeHolder = null;
+        this.methods = [
+            'group', 'groupEnd', 'log', 'trace', 'time', 'timeEnd', 'error', 'warn'
+        ];
+
+        this.silent = {
+            group : ()=>{return;},
+            groupEnd : ()=>{return;},
+            log : ()=>{return;},
+            trace : ()=>{return;},
+            time : ()=>{return;},
+            timeEnd : ()=>{return;},
+            error : ()=>{return;},
+            err : ()=>{return;},
+            debug : ()=>{return;},
+            warn : ()=>{return;}
+        }
+    }
+
+    _generateError() {
+        try {
+            throw new Error();
+        } catch (err) {
+            return err;
+        }
+    }
+    _insertParamToArguments(rawArgs){
+        if(this.param !== ''){
+            let args = [...rawArgs];
+            args.unshift(this.param);
+            return args;
+        }
+        return Array.from(arguments);
+    }
+    setSilent(newValue = null){
+        this.silencer = newValue || !this.silencer;
+    }
+    //Start grouping logs
+    group() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.group === 'function') {
+            console.group.apply(console, args);
+            return;
+        }
+        const description = args[0] || 'GROUP';
+        this.currentGroupDescription = description;
+        this.activeGroups++;
+    }
+    //Stop grouping logs
+    groupEnd() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.groupEnd === 'function') {
+            console.groupEnd.apply(console, args);
+            return;
+        }
+        this.currentGroupDescription = '';
+        this.activeGroups--;
+        this.activeGroups = this.activeGroups === 0 ? 0 : this.activeGroups--;
+    }
+    //Simplest mechanism to log stuff
+    // Aware of the group shim
+    log() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.group === 'function') {
+            console.log.apply(console, args);
+            return;
+        }
+        args.shift();
+        args.unshift(' '.repeat(this.activeGroups * 2));
+        this.log.apply(this,args);
+    }
+    //Trace back the apply.
+    //Uses either the inbuilt function console trace or opens a shim to trace by calling this._insertParamToArguments(arguments).callee
+    trace() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);        
+        if (typeof console.trace === 'function') {
+            console.trace.apply(console, args);
+            return;
+        }
+        const artificialError = this._generateError();
+        if (artificialError.stack) {
+            this.log.apply(console, artificialError.stack);
+            return;
+        }
+
+        this.log(args);
+        if (arguments.callee != undefined) {
+            this.trace.apply(console, arguments.callee);
+        }
+    }
+
+    time() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);    
+        if (typeof console.time === 'function') {
+            console.time.apply(console, args);
+            return;
+        }
+
+        this.timeHolder = new Date();
+    }
+
+    timeEnd() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.timeEnd === 'function') {
+            console.timeEnd.apply(console, args);
+            return;
+        }
+        const diff = (new Date()) - this.timeHolder;
+        this.log(`Took ${Math.floor(diff/(1000*60*60))} hours, ${Math.floor(diff/(1000*60))} minutes and ${Math.floor(diff/(1000))} seconds ( ${diff} ms)`);
+        this.time = new Date();
+    }
+
+    error() {
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.error === 'function') {
+            console.error.apply(console,args);
+            return;
+        }
+
+        this.log('--- ERROR ---');
+        this.log(args);
+    }
+
+
+    warn() {
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.warn === 'function') {
+            console.warn.apply(console,args);
+            return;
+        }
+
+        this.log('--- WARN ---');
+        this.log(args);
+    }
+}
+
+const adminCoreLSConsole = new ConsoleShim('AdminCore');
+
+/* harmony default export */ __webpack_exports__["a"] = (adminCoreLSConsole);
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17260,7 +17426,7 @@ const globalWindowMethods = {
         if(typeof content == 'string' && content != ''){
             try {
                 contentObject = _.merge(contentObject, JSON.parse(content));
-            } catch(e) { console.ls.error('JSON parse on sendPost failed!') }
+            } catch(e) { console.error('JSON parse on sendPost failed!') }
         }
         _.each(content, (value,key) => {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
@@ -17306,7 +17472,7 @@ const globalStartUpMethods = {
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17409,501 +17575,13 @@ window.LS.LsGlobalNotifier = window.LS.LsGlobalNotifier || new NotifyFader();
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(4);
-
-
-/***/ }),
 /* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jqueryAdditions_center_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__jqueryAdditions_isEmpty_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__jqueryAdditions_isEmpty_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__jqueryAdditions_isEmpty_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__parts_prototypeDefinition__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_questionEditing__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_quickaction__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_subquestionandanswers__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_surveyGrid__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__parts_confirmationModal__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__parts_notifyFader__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__parts_ajaxHelper__ = __webpack_require__(15);
-/*
- * JavaScript functions for LimeSurvey administrator
- *
- * This file is part of LimeSurvey
- * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
-
-
-
-//Define LS Namespace
-window.LS = window.LS || {};
-
-//import lodash
-
-
-//import jquery additions and prototypes
-
-
-
-
-//import page wise functionality
-
-
-
-
-
-//import parts for globalscope
- 
-
-
-
-
-const AdminCore = function(){
-    //Singelton Pattern -> the AdminCore functions can only be nound once.
-    if(typeof window.LS.adminCore === 'object') {
-        window.LS.adminCore.refresh();
-        return;
-    }
-    
-    const eventsBound = {
-        document: []
-    };
-
-    const 
-        onLoadRegister = () => {
-            __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["a" /* globalStartUpMethods */].bootstrapping();
-            Object(__WEBPACK_IMPORTED_MODULE_7__pages_surveyGrid__["a" /* onExistBinding */])();
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_8__parts_confirmationModal__);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_4__pages_questionEditing__);
-        },
-        appendToLoad = (fn, event, root) => {
-            event = event || 'ready pjax:scriptcomplete';
-            root = root || 'document';
-            
-            eventsBound[root] = eventsBound[root] || [];
-            
-            if(__WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(eventsBound[root], {fn, event, root}) === undefined) {
-                eventsBound[root].push({fn, event, root});
-                $(root).on(event+'.admincore', fn);
-            }
-
-        },
-        refreshAdminCore = () => {
-            __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(eventsBound, (eventMap, root) => {
-                __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(eventMap, (evItem) => {
-                    $(evItem.root).off(evItem.event+'.admincore');
-                    $(evItem.root).on(evItem.event+'.admincore', evItem.fn);
-                });
-            });
-            Object(__WEBPACK_IMPORTED_MODULE_7__pages_surveyGrid__["a" /* onExistBinding */])();
-            console.ls.log("Refreshed Admin core methods");
-        },
-        setNameSpace = () => {
-            const BaseNameSpace = {
-                adminCore : {
-                    refresh: refreshAdminCore,
-                    onload: onLoadRegister,
-                    appendToLoad: appendToLoad
-                }
-            };
-            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_11__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_10__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_6__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */]);
-            
-            /*
-            * Set the namespace to the global variable LS
-            */
-            window.LS = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(window.LS, LsNameSpace, {ld: __WEBPACK_IMPORTED_MODULE_0_lodash___default.a});
-            
-            /* Set a variable to test if browser have HTML5 form ability
-            * Need to be replaced by some polyfills see #8009
-            */
-            window.hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
-
-        };
-        setNameSpace();
-        onLoadRegister();
-}
-
-AdminCore();
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-jQuery.fn.extend({
-    center : function() {
-        this.css("position","absolute");
-        this.css("top", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
-        this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
-        return this;
-    }
-});
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-$.fn.extend({
-    isEmpty: function(helperMsg){
-        if($.trim($(this).value).length == 0){
-            alert(helperMsg);
-            $(this).focus(); // set the focus to this input
-            return false;
-        }
-        return true;
-    }
-})
-
-/***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-String.prototype.splitCSV = function(sep) {
-    for (var foo = this.split(sep = sep || ","), x = foo.length - 1, tl; x >= 0; x--) {
-        if (foo[x].replace(/"\s+$/, '"').charAt(foo[x].length - 1) == '"') {
-            if ((tl = foo[x].replace(/^\s+"/, '"')).length > 1 && tl.charAt(0) == '"') {
-                foo[x] = foo[x].replace(/^\s*"|"\s*$/g, '').replace(/""/g, '"');
-            } else if (x) {
-                foo.splice(x - 1, 2, [foo[x - 1], foo[x]].join(sep));
-            } else foo = foo.shift().split(sep).concat(foo);
-        } else foo[x].replace(/""/g, '"');
-    }return foo;
-};
-
-
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bindAdvancedAttribute", function() { return bindAdvancedAttribute; });
-/**
- * Methods and bindings for the question edit page
- */
-
- const bindAdvancedAttribute = ()=>{
-    $('#showadvancedattributes').click(function(){
-        $('#showadvancedattributes').hide();
-        $('#hideadvancedattributes').show();
-        $('#advancedquestionsettingswrapper').animate({
-            "height": "toggle", "opacity": "toggle"
-        });
-
-    });
- }
-
- 
-
-/***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export bindings */
-/* unused harmony export methods */
-/**
- * Methods for the quickaction module
- * -> deprecated and stalled for now
- */
-
-const methods = {
-    surveyQuickActionTrigger : () => {
-        const $self = $(this);
-        $.ajax({
-            url : $self.data('url'),
-            type : 'GET',
-            dataType : 'json',
-            data: {currentState: $self.data('active')},
-            // html contains the buttons
-            success : function(data, statut){
-                const newState = parseInt(data.newState);
-                console.ls.log('quickaction resolve', data);
-                console.ls.log('quickaction new state', newState);
-                $self.data('active', newState);
-                if(newState === 1){
-                    $('#survey-action-container').slideDown(500);
-                } else {
-                    $('#survey-action-container').slideUp(500);
-                }
-                $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
-                
-            },
-            error :  function(html, statut){
-                console.ls.error('ERROR!', html, statut);
-            }
-        });
-    },
-}
-
-const bindings = ()=>{
-    $('#switchchangeformat button').on('click', function(event, state) {
-        $('#switchchangeformat button.active').removeClass('active');
-        $(this).addClass('active');
-
-        const value = $(this).data('value');
-        const url = $('#switch-url').attr('data-url')+'/format/'+value;
-
-        $.ajax({
-            url : url,
-            type : 'GET',
-            dataType : 'html',
-
-            // html contains the buttons
-            success : function(html, statut){
-            },
-            error :  function(html, statut){
-                alert('error');
-            }
-        });
-
-    });
-}
-
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return subquestionAndAnswersGlobalMethods; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/**
- * Methods loaded on subquestions and answers page
- */
-
-
-const subquestionAndAnswersGlobalMethods = {
-    removechars : (strtoconvert) => {
-        return strtoconvert.replace(/[-a-zA-Z_]/g,"");
-    },
-    getUnique : (array) => {
-        return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.uniq(array);
-    }
-};
-
- 
-
-/***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return onExistBinding; });
-/**
- * Methods to load when a the surveygrid is available
- *     if($('#survey-grid').length>0)
- */
-
-const onExistBinding = ()=>{
-        $(document).on('click', '.has-link', function () {
-            const linkUrl = $(this).find('a').attr('href');
-            window.location.href=linkUrl;
-        });
-}
-
-
-
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadMethods", function() { return loadMethods; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/**
- * Neccessary methods for the confirmation modal
- */
-
-
-const ConfirmationModal = function(e){
-    //////PREGENERATED VARIABLES
-    //Define the scope
-    const _this = this;
-    //Set everything to null on default
-    const optionsDefault = {
-        onclick     : null,
-        href        : null,
-        message     : null,
-        keepopen    : null,    
-        postDatas   : null,    
-        gridid      : null,
-        "ajax-url"  : null,
-    };
-
-    //////METHODS
-    //Parse available options from specific item.data settings, if not available load relatedTarget settings
-    const _parseOptions = (e) => {
-        return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.mergeWith(optionsDefault, $(_this).data(), (objValue, srcValue, key ) => {
-            return srcValue || $(e.relatedTarget).data(key) || null;
-        }); 
-    },
-    //Generate a simple link on the ok button
-    _basicLink = () => {
-        $(_this).find('.btn-ok').attr('href', options.href);
-    },
-    //Evaluate a function on ok button click
-    _onClickFunction = () => {
-        const onclick_fn = eval(options.onclick);
-        if (typeof onclick_fn == 'function') {
-            $(_this).find('.btn-ok').off('click');
-
-            $(_this).find('.btn-ok').on('click', function(ev) {
-                if(!options.keepopen ) { $('#confirmation-modal').modal('hide'); }
-                onclick_fn();
-            });
-            return
-        }
-        console.LS.error("Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).");
-        return;
-    },
-    //Set up an ajax call and regenerate a gridView on ok button click
-    _ajaxHandler = () => {
-        $(_this).find('.btn-ok').on('click', function(ev) {
-            $.ajax({
-                type: "POST",
-                url: options['ajax-url'],
-                data: options.postDatas,
-
-                success : function(html, statut)
-                {
-                    $.fn.yiiGridView.update(options.gridid);                   // Update the surveys list
-                    $('#confirmation-modal').modal('hide');
-                },
-                error :  function(html, statut){
-                    $('#confirmation-modal .modal-body-text').append(html.responseText);
-                }
-
-            });
-        });
-    },
-    _setTarget = () => {
-        //Set up normal href
-        if (!!options.href) {
-            _basicLink();
-            return;
-        }
-        //Set up a complete function
-        if (!!options.onclick) {
-            _onClickFunction();
-            return;
-        }
-        //Set up an ajax post
-        if (!!options['ajax-url']) {
-            _ajaxHandler();
-            return;
-        }
-        console.ls.error("Confirmation modal: Found neither data-href or data-onclick, nor ajax data.");
-    };
-
-    //////RUN BINDINGS
-    //Current options object
-    const options = _parseOptions(e);
-    //Set the message if available
-    $(this).find('.modal-body-text').html(options.message);
-    //Run setTarget to determine loading target
-    _setTarget();
-};
-
-const loadMethods = ()=>{
-    $('#confirmation-modal').on('show.bs.modal', function(e) {
-        ConfirmationModal.call(this,e);
-    });
-};
-
-
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalMethods__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__notifyFader__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalMethods__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__notifyFader__ = __webpack_require__(3);
 /**
  * Collection of ajax helper
  */
@@ -17914,7 +17592,7 @@ const onSuccess = (response) => {
     
     // Check type of response and take action accordingly
     if (response == '') {
-        console.ls.error('No response from server');
+        console.error('No response from server');
         __WEBPACK_IMPORTED_MODULE_1__notifyFader__["default"].create('No response from server', 'alert-danger');
         return false;
     }
@@ -17987,7 +17665,7 @@ const ajax = (options) => {
    options.error = (jqXHR, textStatus, errorThrown) => {
        $('#ls-loading').hide();
 
-       console.ls.error('AJAX CALL FAILED -> ', {
+       console.error('AJAX CALL FAILED -> ', {
             errorThrown: errorThrown,
             textStatus: textStatus,
             jqXHR: jqXHR,
@@ -18003,6 +17681,1238 @@ const ajax = (options) => {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (ajax);
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(6);
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jqueryAdditions_center_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__jqueryAdditions_isEmpty_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__parts_prototypeDefinition__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_bootstrap_remote_modals__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_bootstrap_remote_modals___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_bootstrap_remote_modals__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_quickaction__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_subquestionandanswers__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_surveyGrid__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__parts_confirmationModal__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__parts_notifyFader__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__parts_ajaxHelper__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__parts_save__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_confirmdeletemodal__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_panelclickable__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_panelsanimation__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_notifications__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_lslog__ = __webpack_require__(1);
+/*
+ * JavaScript functions for LimeSurvey administrator
+ *
+ * This file is part of LimeSurvey
+ * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
+
+
+
+//Define LS Namespace
+window.LS = window.LS || {};
+
+//import lodash
+
+
+//import jquery additions and prototypes
+
+
+
+
+
+
+//import page wise functionality
+
+
+
+
+
+//import parts for globalscope
+ 
+
+
+
+
+
+// import components
+
+
+
+
+
+
+const AdminCore = function(){
+    //Singelton Pattern -> the AdminCore functions can only be nound once.
+    if(typeof window.LS.adminCore === 'object') {
+        window.LS.adminCore.refresh();
+        return;
+    }
+    
+    const eventsBound = {
+        document: []
+    };
+
+    const 
+        onLoadRegister = () => {
+            __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["a" /* globalStartUpMethods */].bootstrapping();
+            Object(__WEBPACK_IMPORTED_MODULE_8__pages_surveyGrid__["a" /* onExistBinding */])();
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_9__parts_confirmationModal__["a" /* default */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__["a" /* default */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_14__components_confirmdeletemodal__["a" /* default */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_15__components_panelclickable__["a" /* default */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_16__components_panelsanimation__["a" /* default */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */].initNotification);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_13__parts_save__["a" /* default */]);
+        },
+        appendToLoad = (fn, event, root) => {
+            event = event || 'ready pjax:scriptcomplete';
+            root = root || 'document';
+            __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log('appendToLoad', {
+                'type' : typeof fn,
+                'fn' : fn
+            })
+            eventsBound[root] = eventsBound[root] || [];
+            
+            if(__WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(eventsBound[root], {fn, event, root}) === undefined) {
+                eventsBound[root].push({fn, event, root});
+                const events = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.map(event.split(' '), (event) => event+'.admincore');
+                if(root == 'document') {
+                    $(document).on(events.join(' '), fn);
+                } else {
+                    $(root).on(events.join(' '), fn);
+                }
+            }
+
+        },
+        refreshAdminCore = () => {
+            __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(eventsBound, (eventMap, root) => {
+                __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(eventMap, (evItem) => {
+                    const events = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.map(evItem.event.split(' '), (event) => event+'.admincore');
+                    $(evItem.root).off(events.join(' '));
+                    $(evItem.root).on(events.join(' '), evItem.fn);
+                });
+            });
+            Object(__WEBPACK_IMPORTED_MODULE_8__pages_surveyGrid__["a" /* onExistBinding */])();
+            __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log("Refreshed Admin core methods");
+        },
+        setNameSpace = () => {
+            const BaseNameSpace = {
+                adminCore : {
+                    refresh: refreshAdminCore,
+                    onload: onLoadRegister,
+                    appendToLoad: appendToLoad
+                }
+            };
+            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_12__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_11__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_7__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */]);
+            
+            /*
+            * Set the namespace to the global variable LS
+            */
+            window.LS = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(window.LS, LsNameSpace, {ld: __WEBPACK_IMPORTED_MODULE_0_lodash___default.a});
+            
+            /* Set a variable to test if browser have HTML5 form ability
+            * Need to be replaced by some polyfills see #8009
+            */
+            window.hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
+
+        };
+        setNameSpace();
+        onLoadRegister();
+        __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log("AdminCore", eventsBound);
+}
+
+AdminCore();
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+jQuery.fn.extend({
+    center : function() {
+        this.css("position","absolute");
+        this.css("top", ( $(window).height() - this.height() ) / 2+$(window).scrollTop() + "px");
+        this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
+        return this;
+    }
+});
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+$.fn.extend({
+    isEmpty: function(helperMsg){
+        if($.trim($(this).value).length == 0){
+            alert(helperMsg);
+            $(this).focus(); // set the focus to this input
+            return false;
+        }
+        return true;
+    }
+});
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+String.prototype.splitCSV = function(sep) {
+    for (var foo = this.split(sep = sep || ","), x = foo.length - 1, tl; x >= 0; x--) {
+        if (foo[x].replace(/"\s+$/, '"').charAt(foo[x].length - 1) == '"') {
+            if ((tl = foo[x].replace(/^\s+"/, '"')).length > 1 && tl.charAt(0) == '"') {
+                foo[x] = foo[x].replace(/^\s*"|"\s*$/g, '').replace(/""/g, '"');
+            } else if (x) {
+                foo.splice(x - 1, 2, [foo[x - 1], foo[x]].join(sep));
+            } else foo = foo.shift().split(sep).concat(foo);
+        } else foo[x].replace(/""/g, '"');
+    }return foo;
+};
+
+
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+/**
+ * Simple way to have remotely loaded modals withoud the need to have a perfect markup and replace everything.
+ */
+
+var BootstrapRemoteModal = function(presetOptions, templateOptions){
+    presetOptions = presetOptions || {};
+    templateOptions = templateOptions || {};
+    
+    "use strict";
+    var options = {
+        parentElement       : presetOptions.parentElement      || 'body',
+        header              : presetOptions.header             || true,
+        footer              : presetOptions.footer             || true,
+        saveButton          : presetOptions.saveButton         || false,
+        closeIcon           : presetOptions.closeIcon          || true,
+        modalTitle          : presetOptions.modalTitle         || '',
+        remoteLink          : presetOptions.remoteLink         || "",
+        fnOnShow            : presetOptions.fnOnShow           || null,
+        fnOnShown           : presetOptions.fnOnShown          || null,
+        fnOnHide            : presetOptions.fnOnHide           || null,
+        fnOnHidden          : presetOptions.fnOnHidden         || null,
+        fnOnLoaded          : presetOptions.fnOnLoaded         || null,
+        removeOnClose       : presetOptions.removeOnClose      || false,
+        parseScriptsOnLoad  : presetOptions.parseScriptsOnLoad || false,
+        blocking            : presetOptions.blocking           || false
+    }
+
+    var templateStrings = {
+        closeIcon   : templateOptions.closeIcon || '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+        closeButton : templateOptions.closeButton || '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+        saveButton  : templateOptions.saveButton || '<button type="button" class="btn btn-primary">Save changes</button>'
+    };
+
+    //Define all the blocks and combine them by jquery methods
+    var outerBlock      = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
+        innerBlock      = $('<div class="modal-dialog" role="document"></div>'),
+        contentBlock    = $('<div class="modal-content"></div>'),
+        headerBlock     = $('<div class="modal-header"></div>'),
+        headlineBlock   = $('<h4 class="modal-title"></h4>'),
+        bodyBlock       = $('<div class="modal-body"></div>'),
+        footerBlock     = $('<div class="modal-footer"></div>'),
+        closeIcon       = $(templateOptions.closeIcon),
+        closeButton     = $(templateOptions.closeButton),
+        saveButton      = $(templateOptions.saveButton);
+
+    var modalObject = null;
+    
+    var 
+    convertKebabCase = function(string){
+        return string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    },
+    parseOptions = function(){
+        var self=this;
+        $.each(options, function(key, option){
+            options[key] = self.data(convertKebabCase(key)) || options[key];
+        });
+    },
+    bindEvents = function(){
+        modalObject.on('show.bs.modal', function(){
+            loadRemote();
+            try{ options.fnOnShow } catch (e) {}
+        });
+        modalObject.on('shown.bs.modal', options.fnOnShown);
+        modalObject.on('hide.bs.modal', options.fnOnHide);
+        modalObject.on('hidden.bs.modal', function(){
+            if(options.removeOnClose === true){
+                modalObject.find('.modal-body').html(" ");
+            }
+            try{ options.fnOnHidden } catch (e) {}
+        });
+        modalObject.on('loaded.ls.remotemodal', options.fnOnLoaded);
+    },
+    loadRemote = function(){
+        var modal_body = modalObject.find('.modal-body')
+        $.ajax({
+            url : options.remoteLink,
+            method: 'GET', 
+            success: function(resolve){
+                modal_body.html(resolve);
+                modalObject.trigger('loaded.ls.remotemodal');
+            }
+        });
+    },
+    combineModal = function(){
+        var thisContent = contentBlock.clone();
+        
+        thisContent.append(bodyBlock.clone());
+
+        if(options.header === true){
+            var thisHeader = headerBlock.clone();
+            headlineBlock.text(options.modalTitle);
+            thisHeader.append(closeIcon.clone());
+            thisHeader.append(headlineBlock);
+            thisContent.prepend(thisHeader);   
+        }
+        if(options.footer === true){
+            var thisFooter = footerBlock.clone();
+            thisFooter.append(closeButton.clone());
+            
+            if(options.saveButton === true)
+                thisFooter.append(saveButton.clone());
+            
+            thisContent.append(thisFooter);   
+        }
+        modalObject = outerBlock.clone();
+        modalObject.append(innerBlock.clone().append(thisContent));
+    },
+    bindToElement = function(){
+        this.on('click.remotemodal', function(){
+            modalObject.modal('toggle');    
+        });
+    }, 
+    runPrepare = function(){
+        if(this.data('remote-modal-appended') == 'yes') {
+            return;
+        }
+        parseOptions.call(this);
+
+        combineModal();
+        modalObject.appendTo($(options.parentElement));
+        bindToElement.call(this);
+        bindEvents.call(this);
+        
+        this.data('remote-modal-appended', 'yes');
+    };
+    
+    
+    parseOptions.call(this);
+
+    combineModal();
+    modalObject.appendTo($(options.parentElement));
+
+    bindToElement.call(this);
+    bindEvents.call(this);
+};
+
+jQuery.fn.extend({
+    remoteModal : BootstrapRemoteModal
+});
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Methods and bindings for the question edit page
+ */
+
+ const bindAdvancedAttribute = ()=>{
+    
+    if ($('#advancedquestionsettingswrapper').length > 0) {
+        window.questionFunctions = window.questionFunctions || (new QuestionFunctions()) || null;
+        window.questionFunctions.updatequestionattributes();
+    }
+
+    $('#showadvancedattributes').click(function(){
+        $('#showadvancedattributes').hide();
+        $('#hideadvancedattributes').show();
+        $('#advancedquestionsettingswrapper').animate({
+            "height": "toggle", "opacity": "toggle"
+        });
+
+    });
+ }
+
+ /* harmony default export */ __webpack_exports__["a"] = (bindAdvancedAttribute);
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export bindings */
+/* unused harmony export methods */
+/**
+ * Methods for the quickaction module
+ * -> deprecated and stalled for now
+ */
+
+const methods = {
+    surveyQuickActionTrigger : () => {
+        const $self = $(this);
+        $.ajax({
+            url : $self.data('url'),
+            type : 'GET',
+            dataType : 'json',
+            data: {currentState: $self.data('active')},
+            // html contains the buttons
+            success : function(data, statut){
+                const newState = parseInt(data.newState);
+                console.log('quickaction resolve', data);
+                console.log('quickaction new state', newState);
+                $self.data('active', newState);
+                if(newState === 1){
+                    $('#survey-action-container').slideDown(500);
+                } else {
+                    $('#survey-action-container').slideUp(500);
+                }
+                $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+                
+            },
+            error :  function(html, statut){
+                console.error('ERROR!', html, statut);
+            }
+        });
+    },
+}
+
+const bindings = ()=>{
+    $('#switchchangeformat button').on('click', function(event, state) {
+        $('#switchchangeformat button.active').removeClass('active');
+        $(this).addClass('active');
+
+        const value = $(this).data('value');
+        const url = $('#switch-url').attr('data-url')+'/format/'+value;
+
+        $.ajax({
+            url : url,
+            type : 'GET',
+            dataType : 'html',
+
+            // html contains the buttons
+            success : function(html, statut){
+            },
+            error :  function(html, statut){
+                alert('error');
+            }
+        });
+
+    });
+}
+
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return subquestionAndAnswersGlobalMethods; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
+/**
+ * Methods loaded on subquestions and answers page
+ */
+
+
+const subquestionAndAnswersGlobalMethods = {
+    removechars : (strtoconvert) => {
+        return strtoconvert.replace(/[-a-zA-Z_]/g,"");
+    },
+    getUnique : (array) => {
+        return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.uniq(array);
+    }
+};
+
+ 
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return onExistBinding; });
+/**
+ * Methods to load when a the surveygrid is available
+ *     if($('#survey-grid').length>0)
+ */
+
+const onExistBinding = ()=>{
+        $(document).on('click', '.has-link', function () {
+            const linkUrl = $(this).find('a').attr('href');
+            window.location.href=linkUrl;
+        });
+}
+
+
+
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
+/**
+ * Neccessary methods for the confirmation modal
+ */
+
+
+const ConfirmationModal = function(e){
+    //////PREGENERATED VARIABLES
+    //Define the scope
+    const _this = this;
+    //Set everything to null on default
+    const optionsDefault = {
+        onclick     : null,
+        href        : null,
+        message     : null,
+        keepopen    : null,    
+        postDatas   : null,    
+        gridid      : null,
+        "ajax-url"  : null,
+    };
+
+    //////METHODS
+    //Parse available options from specific item.data settings, if not available load relatedTarget settings
+    const _parseOptions = (e) => {
+        return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.mergeWith(optionsDefault, $(_this).data(), (objValue, srcValue, key ) => {
+            return srcValue || $(e.relatedTarget).data(key) || null;
+        }); 
+    },
+    //Generate a simple link on the ok button
+    _basicLink = () => {
+        $(_this).find('.btn-ok').attr('href', options.href);
+    },
+    //Evaluate a function on ok button click
+    _onClickFunction = () => {
+        const onclick_fn = eval(options.onclick);
+        if (typeof onclick_fn == 'function') {
+            $(_this).find('.btn-ok').off('click');
+
+            $(_this).find('.btn-ok').on('click', function(ev) {
+                if(!options.keepopen ) { $('#confirmation-modal').modal('hide'); }
+                onclick_fn();
+            });
+            return
+        }
+        console.error("Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).");
+        return;
+    },
+    //Set up an ajax call and regenerate a gridView on ok button click
+    _ajaxHandler = () => {
+        $(_this).find('.btn-ok').on('click', function(ev) {
+            $.ajax({
+                type: "POST",
+                url: options['ajax-url'],
+                data: options.postDatas,
+
+                success : function(html, statut)
+                {
+                    $.fn.yiiGridView.update(options.gridid);                   // Update the surveys list
+                    $('#confirmation-modal').modal('hide');
+                },
+                error :  function(html, statut){
+                    $('#confirmation-modal .modal-body-text').append(html.responseText);
+                }
+
+            });
+        });
+    },
+    _setTarget = () => {
+        //Set up normal href
+        if (!!options.href) {
+            _basicLink();
+            return;
+        }
+        //Set up a complete function
+        if (!!options.onclick) {
+            _onClickFunction();
+            return;
+        }
+        //Set up an ajax post
+        if (!!options['ajax-url']) {
+            _ajaxHandler();
+            return;
+        }
+        console.error("Confirmation modal: Found neither data-href or data-onclick, nor ajax data.");
+    };
+
+    //////RUN BINDINGS
+    //Current options object
+    const options = _parseOptions(e);
+    //Set the message if available
+    $(this).find('.modal-body-text').html(options.message);
+    //Run setTarget to determine loading target
+    _setTarget();
+};
+
+const loadMethods = ()=>{
+    $('#confirmation-modal').on('show.bs.modal', function(e) {
+        ConfirmationModal.call(this,e);
+    });
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (loadMethods);
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_lslog__ = __webpack_require__(1);
+
+
+
+const SaveController = () => {
+    
+       let formSubmitting = false;
+
+        // Attach this <input> tag to form to check for closing after save
+        const closeAfterSaveInput = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "close-after-save");
+    
+
+
+    /**
+     * Helper function for save buttons onclick event
+     *
+     * @param {object} that - this from calling method
+     * @return {object} jQuery DOM form object
+     */
+    const getForm = (that) => {
+        let form;
+        if ($(that).attr('data-use-form-id') == 1) {
+            formId = '#' + $(that).attr('data-form-to-save');
+            form = [$(formId)];
+        } else {
+            form = $('#pjax-content').find('form');
+        }
+
+        if (form.length < 1)
+            throw "No form Found this can't be!";
+
+        return form;
+    },
+
+    //###########PRIVATE
+    checks = () => {
+        return {
+            _checkSaveButton: {
+                check: () => $('#save-button'),
+                run: function(ev) {
+                    ev.preventDefault();
+                    const $form = getForm(this);
+
+                    formSubmitting = true;
+                    for (let instanceName in CKEDITOR.instances) {
+                        CKEDITOR.instances[instanceName].updateElement();
+                    }
+
+                    $form.find('[type="submit"]').first().trigger('click');
+                },
+                on: 'click'
+            },
+            _checkSaveFormButton: {
+                check: () => $('#save-form-button'),
+                run: function(ev) {
+                    ev.preventDefault();
+                    const
+                        formid = '#' + $(this).attr('data-form-id'),
+                        $form = $(formid);
+                    //alert($form.find('[type="submit"]').attr('id'));
+                    $form.find('[type="submit"]').trigger('click');
+                    return false;
+                },
+                on: 'click'
+            },
+            _checkSaveAndNewButton: {
+                check: () => $('#save-and-new-button'),
+                run: function(ev) {
+                    ev.preventDefault();
+                    const $form = getForm(this);
+
+                    formSubmitting = true;
+                    $form.append('<input name="saveandnew" value="' + $('#save-and-new-button').attr('href') + '" />');
+
+                    for (let instanceName in CKEDITOR.instances) {
+                        CKEDITOR.instances[instanceName].updateElement();
+                    }
+
+                    $form.find('[type="submit"]').first().trigger('click');
+
+                },
+                on: 'click'
+            },
+            _checkSaveAndCloseButton: {
+                check: () => $('#save-and-close-button'),
+                run: function(ev) {
+                    ev.preventDefault();
+                    const $form = getForm(this);
+
+                    closeAfterSaveInput.val("true");
+                    $form.append(closeAfterSaveInput);
+                    formSubmitting = true;
+                    $form.find('[type="submit"]').first().trigger('click');
+                },
+                on: 'click'
+            },
+            _checkSaveAndCloseFormButton: {
+                check: () => $('#save-and-close-form-button'),
+                run: function(ev) {
+                    ev.preventDefault();
+                    const formid = '#' + $(this).attr('data-form-id'),
+                        $form = $(formid);
+
+                    // Add input to tell us to not redirect
+                    // TODO : change that
+                    $('<input type="hidden">').attr({
+                        name: 'saveandclose',
+                        value: '1'
+                    }).appendTo($form);
+
+
+                    $form.find('[type="submit"]').trigger('click');
+                    return false;
+                },
+                on: 'click'
+            },
+            _checkSaveAndNewQuestionButton: {
+                check: () => $('#save-and-new-question-button'),
+                run: function(ev) {
+                    ev.preventDefault();
+                    const $form = getForm(this);
+                    formSubmitting = true;
+                    $form.append('<input name="saveandnewquestion" value="' + $('#save-and-new-question-button').attr('href') + '" />');
+
+                    for (let instanceName in CKEDITOR.instances) {
+                        CKEDITOR.instances[instanceName].updateElement();
+                    }
+
+                    $form.find('[type="submit"]').first().trigger('click');
+                },
+                on: 'click'
+            },
+            _checkOpenPreview: {
+                check: () => $('.open-preview'),
+                run: function(ev) {
+                    const frameSrc = $(this).attr("aria-data-url");
+                    $('#frame-question-preview').attr('src', frameSrc);
+                    $('#question-preview').modal('show');
+                },
+                on: 'click'
+            }
+        }
+    };
+    //############PUBLIC
+    return () => {
+        __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(checks(), (checkItem) => {
+            let $item = checkItem.check();
+            $item.off(checkItem.on);
+
+            __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log('saveBindings', checkItem, $item);
+
+            if ($item.length > 0) {
+                $item.on(checkItem.on, checkItem.run);
+                __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log($item, 'on', checkItem.on, 'run', checkItem.run);
+            }
+        });
+    };
+
+};
+
+const saveController = SaveController();
+
+/* harmony default export */ __webpack_exports__["a"] = (saveController);
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = confirmDeletemodal;
+var ConfirmDeleteModal = function(options){
+    var $item = $(this);
+
+    options.fnOnShown     = options.fnOnShown     || function(){};
+    options.fnOnHide      = options.fnOnHide      || function(){};
+    options.removeOnClose = options.removeOnClose || function(){};
+    options.fnOnHidden    = options.fnOnHidden    || function(){};
+    options.fnOnLoaded    = options.fnOnLoaded    || function(){};
+
+    var postUrl       = options.postUrl       || $item.attr('href'),
+        confirmText   = options.confirmText   || $item.data('text')           || '',
+        confirmTitle  = options.confirmTitle  || $item.attr('title')          || '',
+        postObject    = options.postObject    || $item.data('post'),
+        buttonNo      = options.buttonNo      || $item.data('button-no')      || '<i class="fa fa-times"></i>',
+        buttonYes     = options.buttonYes     || $item.data('button-yes')     || '<i class="fa fa-check"></i>',
+        parentElement = options.parentElement || $item.data('parent-element') || 'body';
+
+    var closeIcon      = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+        closeButton    = '<button type="button" class="btn btn-default" data-dismiss="modal">'+buttonNo+'</button>',
+        confirmButton  = '<button type="button" class="btn btn-primary selector--button-confirm">'+buttonYes+'</button>';
+    
+
+    //Define all the blocks and combine them by jquery methods
+    var outerBlock      = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
+        innerBlock      = $('<div class="modal-dialog" role="document"></div>'),
+        contentBlock    = $('<div class="modal-content"></div>'),
+        headerBlock     = $('<div class="modal-header"></div>'),
+        headlineBlock   = $('<h4 class="modal-title"></h4>'),
+        bodyBlock       = $('<div class="modal-body"></div>'),
+        footerBlock     = $('<div class="modal-footer"></div>'),
+        closeIcon       = $(closeIcon),
+        closeButton     = $(closeButton),
+        confirmButton   = $(confirmButton);
+
+    var modalObject = null;
+
+    var combineModal = function(){
+        var thisContent = contentBlock.clone();
+        
+        thisContent.append(bodyBlock.clone());
+
+        if(confirmTitle !== ''){
+            var thisHeader = headerBlock.clone();
+            headlineBlock.text(confirmTitle);
+            thisHeader.append(closeIcon.clone());
+            thisHeader.append(headlineBlock);
+            thisContent.prepend(thisHeader);   
+        }
+        
+        var thisFooter = footerBlock.clone();
+        thisFooter.append(closeButton.clone());
+        thisFooter.append(confirmButton.clone());
+        thisContent.append(thisFooter);   
+
+        modalObject = outerBlock.clone();
+        modalObject.append(innerBlock.clone().append(thisContent));
+    }, 
+    addForm = function(){
+        var formObject = $('<form name="'+Math.round(Math.random()*1000)+'_'+confirmTitle.replace(/[^a-bA-B0-9]/g,'')+'" method="post" action="'+postUrl+'"></form>');
+        for(var key in postObject){
+            var type = 'hidden';
+            var value = postObject[key];
+            var htmlClass = '';
+
+            if(typeof postObject[key] == 'object') {
+                type = postObject[key].type;
+                value = postObject[key].value;
+                htmlClass = postObject[key].class
+            }
+
+            formObject.append('<input name="'+key+'" value="'+value+'" type="'+type+'" '+(htmlClass ? 'class="'+htmlClass+'"' : '')+ ' />');
+        }
+        formObject.append('<input name="YII_CSRF_TOKEN" value="'+LS.data.csrfToken+'" type="hidden" />');
+        modalObject.find('.modal-body').append(formObject)
+        modalObject.find('.modal-body').append('<p>'+confirmText+'</p>');
+    },
+    bindEvents = function(){
+        modalObject.on('show.bs.modal', function(){
+            addForm();
+            try{ options.fnOnShow } catch (e) {}
+        });
+        modalObject.on('shown.bs.modal', function(){
+            var self = this;
+            modalObject.find('.selector--button-confirm').on('click', function(e){
+                e.preventDefault();
+                modalObject.find('form').trigger('submit');
+                modalObject.modal('close');
+            });   
+            options.fnOnShown.call(this);
+        });
+        modalObject.on('hide.bs.modal', options.fnOnHide);
+        modalObject.on('hidden.bs.modal', function(){
+            if(options.removeOnClose === true){
+                modalObject.find('.modal-body').html(" ");
+            }
+            try{ options.fnOnHidden } catch (e) {}
+        });
+        modalObject.on('loaded.ls.remotemodal', options.fnOnLoaded);
+    },
+    bindToElement = function(){
+        $item.on('click.confirmmodal', function(){
+            modalObject.modal('toggle');    
+        });
+    }, 
+    runPrepare = function(){
+        if($item.data('confirm-modal-appended') == 'yes') {
+            return;
+        }
+        combineModal();
+        modalObject.appendTo($(parentElement));
+        bindToElement.call(this);
+        bindEvents.call(this);
+        
+        $item.data('confirm-modal-appended', 'yes');
+    };
+    
+    runPrepare();
+};
+
+jQuery.fn.extend({
+    confirmModal : ConfirmDeleteModal
+});
+
+function confirmDeletemodal() {
+    $(document).on('click.confirmModalSelector', 'a.selector--ConfirmModal', function(e){
+        e.preventDefault();
+        $(this).confirmModal({});
+        $(this).trigger('click.confirmmodal');
+    });
+};
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = panelClickable;
+/**
+ * Panel Clickable
+ * Like in front page, or quick actions
+ */
+function panelClickable () {
+    $(".panel-clickable").on('click',function(e){
+        $that = $(this);
+        if($that.data('url')!=''){
+        	if($that.data('target') === '_blank') {
+        		window.open($that.data('url'))
+            }
+            else {
+            	window.location.href = $that.data('url');
+            }
+        }
+    });
+};
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = panelsAnimation;
+/**
+ * Welcome page panels animations
+ */
+function panelsAnimation(){
+
+    /**
+     * Panel shown one by one
+     */
+    $('.panel').each(function(i){
+        $(this).delay((i++) * 200).animate({opacity: 1, top: '0px'}, 200);
+    });
+
+
+    /**
+     * Rotate last survey/question
+     */
+    function rotateLast(){
+       const $rotateShown = $('.rotateShown');
+       const $rotateHidden = $('.rotateHidden');
+       $rotateShown.hide('slide', { direction: 'left', easing: 'easeInOutQuint'}, 500, function(){
+           $rotateHidden.show('slide', { direction: 'right', easing: 'easeInOutQuint' }, 1000);
+       });
+
+       $rotateShown.removeClass('rotateShown').addClass('rotateHidden');
+       $rotateHidden.removeClass('rotateHidden').addClass('rotateShown');
+       window.setTimeout( rotateLast, 5000 );
+
+    }
+
+    if ( $( "#last_question" ).length ) {
+        $('.rotateHidden').hide();
+        window.setTimeout( rotateLast, 2000 );
+    }
+};
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lslog__ = __webpack_require__(1);
+/**
+ * Notifcation system for admin
+ *
+ * @since 2017-08-02
+ * @author Olle Haerstedt, Markus Flür
+ */
+
+
+
+
+const NotifcationSystem = function() {
+    //constructor(){}
+
+     /**
+     * Load widget HTML and inject it
+     * @param {string} URL to call
+     * @return
+     */
+    const __updateNotificationWidget = (updateUrl) => {
+        __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('updateNotificationWidget');
+        // Update notification widget
+        return __WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"].ajax({
+            url: updateUrl,
+            method: 'GET',
+            success: function (response) {
+                $('#notification-li').replaceWith(response);
+
+                // Re-bind onclick
+                initNotification();
+
+                // Adapt style to window size
+                styleNotificationMenu();
+            }
+        });
+    },
+    
+    /**
+     * Tell system that notification is read
+     * @param {object} that The notification link
+     * @return
+     */
+    __notificationIsRead = (that) => {
+        __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('notificationIsRead');
+        __WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"].ajax({
+            url: $(that).data('read-url'),
+            method: 'GET',
+        }).done(function(response) {
+            // Fetch new HTML for menu widget
+            __updateNotificationWidget($(that).data('update-url'));
+        });
+
+    },
+    
+    /**
+     * Fetch notification as JSON and show modal
+     * @param {object} that The notification link
+     * @param {url} URL to fetch notification as JSON
+     * @return
+     */
+    __showNotificationModal = (that, url) => {
+        __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('showNotificationModal');
+        __WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"].ajax({
+            url: url,
+            method: 'GET',
+        }).done((response) => {
+
+            let not = response.result;
+
+            $('#admin-notification-modal .modal-title').html(not.title);
+            $('#admin-notification-modal .modal-body-text').html(not.message);
+            $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
+            $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
+            $('#admin-notification-modal').modal();
+            
+            // TODO: Will this work in message includes a link that is clicked?
+            $('#admin-notification-modal').off('hidden.bs.modal');
+            $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
+                __notificationIsRead(that);
+                $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
+            });
+        });
+    },
+
+    /*##########PUBLIC##########*/
+    /**
+     * Bind onclick and stuff
+     * @return
+     */
+    initNotification = () => {
+        __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].group('initNotification');
+        $('.admin-notification-link').each((nr, that) => {
+            
+            __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('Number of Notification: ', nr);
+
+            const url = $(that).data('url');
+            const importance = $(that).data('importance');
+            const status = $(that).data('status');
+
+            // Important notifications are shown as pop-up on load
+            if (importance == 3 && status == 'new') {
+                __showNotificationModal(that, url);
+                __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('stoploop');
+                return false;  // Stop loop
+            }
+
+            // Bind click to notification in drop-down
+            $(that).off('click');
+            $(that).on('click', () => {
+                __showNotificationModal(that, url);
+            });
+
+        });
+        __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].groupEnd('initNotification');
+    },
+
+    /**
+     * Called from outside (update notifications when click
+     * @param {string} url
+     * @param {boolean} openAfter If notification widget should be opened after load; default to true
+     * @return
+     */
+    
+    updateNotificationWidget = (url, openAfter) =>  {
+        // Make sure menu is open after load
+        this.__updateNotificationWidget(url).then(() =>{
+            if (openAfter !== false) {
+                $('#notification-li').addClass('open');
+            }
+        });
+        // Only update once
+        $('#notification-li').off('click');
+    },
+
+    /**
+     * Apply styling
+     * @return
+     */
+    styleNotificationMenu = () => {
+        __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('styleNotificationMenu');
+        const height = window.innerHeight - 70;
+        $('#notification-outer-ul').css('height', height + 'px');
+        $('#notification-inner-ul').css('height', (height - 60) + 'px');
+        $('#notification-inner-li').css('height', (height - 60) + 'px');
+    },
+
+    deleteAllNotifications = (url, updateUrl) => {
+        return __WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"].ajax({
+            url: url,
+            method: 'GET',
+            success: function (response) {
+               __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('response', response);
+            }
+        }).then(() => {
+            updateNotificationWidget(updateUrl);
+        });
+    };
+
+    return {
+        initNotification,
+        updateNotificationWidget,
+        styleNotificationMenu,
+        deleteAllNotifications,
+    };
+}
+
+//########################################################################
+
+const notificationHelper = NotifcationSystem();
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    initNotification : notificationHelper.initNotification,
+    updateNotificationWidget : notificationHelper.updateNotificationWidget,
+    styleNotificationMenu : notificationHelper.styleNotificationMenu,
+    deleteAllNotifications : notificationHelper.deleteAllNotifications,
+});
+
 
 /***/ })
 /******/ ]);

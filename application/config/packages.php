@@ -182,14 +182,12 @@ return array(
             'css/displayParticipants.css',
         ),
         'js' => array(
-            'js/confirmdeletemodal.js',
-            'js/bootstrap-remote-modals.js',
             'build/adminbasics.js',
-            'js/notifications.js',
         ),
         'depends' => array(
             'jquery',
             'pjaxbackend',
+            'lslog',
         )
     ),
 
@@ -206,8 +204,7 @@ return array(
             'css/rtl/displayParticipants-rtl.css',
         ),
         'js' => array(
-            'js/admin_core.js',
-            'js/notifications.js',
+            'build/adminbasics.js',
         ),
         'depends' => array(
             'jquery',
@@ -220,14 +217,11 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'js' => array(
-            'js/notify.js',
-            'js/panelclickable.js',
-            'js/panelsanimation.js',
-            'js/save.js',
         ),
         'depends' => array(
             'jquery',
             'pjaxbackend',
+            'adminbasics'
         )
     ),
 

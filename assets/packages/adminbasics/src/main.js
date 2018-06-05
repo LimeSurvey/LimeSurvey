@@ -24,18 +24,28 @@ import _ from 'lodash';
 import './jqueryAdditions/center.js';
 import './jqueryAdditions/isEmpty.js';
 import './parts/prototypeDefinition';
+import './components/bootstrap-remote-modals';
+
 
 //import page wise functionality
-import * as questionEdit from './pages/questionEditing';
+import questionEdit from './pages/questionEditing';
 import * as quickAction from './pages/quickaction';
 import {subquestionAndAnswersGlobalMethods} from './pages/subquestionandanswers';
 import {onExistBinding as surveyGrid} from './pages/surveyGrid';
 
 //import parts for globalscope
-import * as confirmationModal from './parts/confirmationModal'; 
+import confirmationModal from './parts/confirmationModal'; 
 import {globalStartUpMethods, globalWindowMethods} from './parts/globalMethods';
 import * as notifyFader from './parts/notifyFader';
 import * as AjaxHelper from './parts/ajaxHelper';
+import saveBindings from './parts/save';
+
+// import components
+import confirmDeletemodal from './components/confirmdeletemodal';
+import panelClickable from './components/panelclickable';
+import panelsAnimation from './components/panelsanimation';
+import notificationSystem from './components/notifications';
+import LOG from './components/lslog';
 
 const AdminCore = function(){
     //Singelton Pattern -> the AdminCore functions can only be nound once.
@@ -54,28 +64,42 @@ const AdminCore = function(){
             surveyGrid();
             appendToLoad(confirmationModal);
             appendToLoad(questionEdit);
+            appendToLoad(confirmDeletemodal);
+            appendToLoad(panelClickable);
+            appendToLoad(panelsAnimation);
+            appendToLoad(notificationSystem.initNotification);
+            appendToLoad(saveBindings);
         },
         appendToLoad = (fn, event, root) => {
             event = event || 'ready pjax:scriptcomplete';
             root = root || 'document';
-            
+            LOG.log('appendToLoad', {
+                'type' : typeof fn,
+                'fn' : fn
+            })
             eventsBound[root] = eventsBound[root] || [];
             
             if(_.find(eventsBound[root], {fn, event, root}) === undefined) {
                 eventsBound[root].push({fn, event, root});
-                $(root).on(event+'.admincore', fn);
+                const events = _.map(event.split(' '), (event) => event+'.admincore');
+                if(root == 'document') {
+                    $(document).on(events.join(' '), fn);
+                } else {
+                    $(root).on(events.join(' '), fn);
+                }
             }
 
         },
         refreshAdminCore = () => {
             _.each(eventsBound, (eventMap, root) => {
                 _.each(eventMap, (evItem) => {
-                    $(evItem.root).off(evItem.event+'.admincore');
-                    $(evItem.root).on(evItem.event+'.admincore', evItem.fn);
+                    const events = _.map(evItem.event.split(' '), (event) => event+'.admincore');
+                    $(evItem.root).off(events.join(' '));
+                    $(evItem.root).on(events.join(' '), evItem.fn);
                 });
             });
             surveyGrid();
-            console.ls.log("Refreshed Admin core methods");
+            LOG.log("Refreshed Admin core methods");
         },
         setNameSpace = () => {
             const BaseNameSpace = {
@@ -85,7 +109,7 @@ const AdminCore = function(){
                     appendToLoad: appendToLoad
                 }
             };
-            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, AjaxHelper, notifyFader, subquestionAndAnswersGlobalMethods);
+            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, AjaxHelper, notifyFader, subquestionAndAnswersGlobalMethods, notificationSystem);
             
             /*
             * Set the namespace to the global variable LS
@@ -100,6 +124,7 @@ const AdminCore = function(){
         };
         setNameSpace();
         onLoadRegister();
+        LOG.log("AdminCore", eventsBound);
 }
 
 AdminCore();

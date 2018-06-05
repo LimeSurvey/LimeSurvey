@@ -3,6 +3,12 @@
  */
 
  const bindAdvancedAttribute = ()=>{
+    
+    if ($('#advancedquestionsettingswrapper').length > 0) {
+        window.questionFunctions = window.questionFunctions || (new QuestionFunctions()) || null;
+        window.questionFunctions.updatequestionattributes();
+    }
+
     $('#showadvancedattributes').click(function(){
         $('#showadvancedattributes').hide();
         $('#hideadvancedattributes').show();
@@ -13,4 +19,4 @@
     });
  }
 
- export {bindAdvancedAttribute};
+ export default bindAdvancedAttribute;
