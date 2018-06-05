@@ -5,8 +5,26 @@
  ?>
 
 
+<!-- Import Failed because of page reload -->
+<?php if (!isset($bFailed)):?>
+
+    <div class="jumbotron message-box message-box-error">
+        <h2 class="danger"><?php echo gT("Import survey data"); ?></h2>
+        <p class="lead danger">
+            <?php eT("Error"); ?>
+        </p>
+        <!-- error message -->
+        <p>
+        <?php echo eT('Import failed because of page reload.'); ?>
+        </p>
+        <!-- buttons -->
+        <p>
+            <input type='submit' class="btn btn-default btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/'); ?>', '_top')" />
+        </p>
+    </div>
+
 <!-- Import Failed -->
-<?php if ($bFailed):?>
+<?php elseif ($bFailed):?>
 
     <div class="jumbotron message-box message-box-error">
         <h2 class="danger"><?php echo $sHeader;?></h2>
