@@ -26,6 +26,25 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
     $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
 }
 ?>
+<?php
+    $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
+        'widgetsJsName' => "questionTypeSelector",
+        'renderType' => "group-modal",
+        'modalTitle' => "Select question type",
+        'groupTitleKey' => "questionGroupName",
+        'groupItemsKey' => "questionTypes",
+        'debugKeyCheck' => "Type: ",
+        'previewWindowTitle' => "Preview question type",
+        'groupStructureArray' => $aQuestionTypeGroups,
+        'value' => $eqrow['type'],
+        'debug' => true,
+        'currentSelected' => Question::getQuestionTypeName($eqrow['type']),
+        'optionArray' => [
+            'getImageUrl' => Yii::app()->getConfig('imageurl')
+        ]
+    ));
+?>
+<?=$oQuestionSelector->getModal();?>
 
 <?php PrepareEditorScript(true, $this); ?>
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
@@ -176,50 +195,14 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                         <div id="collapse-question" class="panel-collapse collapse <?php if (!$copying){echo ' in '; } ?>" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
                                 <!-- Question selector start -->
+                                        <?php //Question::getQuestionTypeName($eqrow['type']); ?>
+                                        <?php //elseif($activated != "Y" && (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
+
+
                                 <div  class="form-group">
                                     <?php if( $activated != "Y" && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
                                         <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
-                                            <?php
-                                            eT("Question type:");
-                                            ?>
-                                        </label>
-                                        <div class=" btn-group" id="question_type_button">
-                                            <button type="button" class="btn btn-default " data-target="#selector__modal_select-question-type" data-toggle="modal" aria-haspopup="true" aria-expanded="false" >
-                                                <span class="buttontext" id="selector__editView_question_type_description">
-                                                    <?=Question::getQuestionTypeName($eqrow['type']); ?>
-                                                    <?php if(YII_DEBUG):?>
-                                                        <em class="small">
-                                                            Type code: <?php echo $eqrow['type']; ?>
-                                                        </em>
-                                                    <?php  endif;?>
-                                                </span>
-                                                &nbsp;&nbsp;&nbsp;
-                                                <i class="fa fa-folder-open"></i>                                       
-                                            </button>
-                                        </div>
-                                    <?php elseif($activated != "Y" && (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
-                                        <label class=" control-label" for="question_type" title="<?php eT("Question type");?>">
-                                            <?php
-                                            eT("Question type:");
-                                            ?>
-                                        </label>                                       
-                                        <select id="question_type" name="type" class="form-control">
-                                            <?php 
-                                            foreach ($aQuestionTypeGroups as $sGroupHTMLConformString => $aQuestionTypeGroup) { 
-                                                echo sprintf("<optgroup label='%s'>", $aQuestionTypeGroup['questionGroupName']);
-                                                foreach ($aQuestionTypeGroup['questionTypes'] as $sQuestionTypeKey => $aQuestionType) {
-                                                    $selected = $eqrow['type'] == $sQuestionTypeKey ? 'selected' : '';
-                                                    if(YII_DEBUG) {
-                                                        echo sprintf("<option value='%s' %s>%s (%s)</option>", $sQuestionTypeKey, $selected, $aQuestionType['description'], $sQuestionTypeKey);
-                                                    } else {
-                                                        echo sprintf("<option value='%s' %s>%s</option>", $sQuestionTypeKey, $selected, $aQuestionType['description']);
-                                                    }
-                                                }
-                                                echo "</optgroup>"; 
-                                            } 
-                                            ?>
-                                        </select> 
+                                        <?=$oQuestionSelector->getButton();?>
                                     <?php elseif($activated == "Y") : ?>
                                         <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                         <!-- TODO : control if we can remove, disable update type must be done by PHP -->
@@ -244,6 +227,9 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                         </div>
                                     <?php endif; ?>
                                 </div>
+
+                                <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
+
                                 <!-- Question selector end -->
 
                                <div  class="form-group" id="QuestionTemplateSelection">
@@ -376,13 +362,3 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
     </div>
 </div>
 
-
-<?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
-    <div class="modal fade" tabindex="-1" role="dialog" id="selector__modal_select-question-type" style="z-index: 1250">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <?php Yii::app()->getController()->renderPartial('/admin/survey/Question/question_subviews/_question_type_select', ['currentType' => $eqrow['type'], 'aQuestionTypeGroups' => $aQuestionTypeGroups]); ?>
-        </div>
-    </div>
-    </div>
-<?php endif; ?>

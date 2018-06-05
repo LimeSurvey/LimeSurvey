@@ -1,0 +1,1 @@
+babel previewModalWidget.src.js --out-file previewModalWidget.dist.js
