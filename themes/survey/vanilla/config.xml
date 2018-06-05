@@ -88,6 +88,7 @@
             <screens>
                 <question>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
                     <file type="view" role="subview">./subviews/survey/group.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_container.twig</file>
@@ -108,6 +109,7 @@
 
                 <surveylist>
                     <file type="view" role="layout">layout_survey_list.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="css">./css/theme.css</file>
@@ -118,6 +120,7 @@
 
                 <welcome>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/firstpage.twig</file>
@@ -138,6 +141,7 @@
 
                 <completed>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/submit.twig</file>
@@ -149,6 +153,7 @@
 
                 <assessments>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/submit.twig</file>
@@ -161,10 +166,12 @@
 
                 <error>
                     <file type="view" role="layout">layout_errors.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                 </error>
 
                 <clearall>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/clearall.twig</file>
@@ -176,6 +183,7 @@
 
                 <load>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/load.twig</file>
@@ -187,6 +195,7 @@
 
                 <save>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/save.twig</file>
@@ -198,6 +207,7 @@
 
                 <register>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/register.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_error.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_head.twig</file>
@@ -220,6 +230,7 @@
 
                 <navigation>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
                     <file type="view" role="subview">./subviews/navigation/ajax_indicator.twig</file>
                     <file type="view" role="subview">./subviews/navigation/clearall_links.twig</file>
