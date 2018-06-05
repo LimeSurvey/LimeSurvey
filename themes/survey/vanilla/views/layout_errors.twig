@@ -48,7 +48,7 @@
     </head>
 
     <body  class="{{ aSurveyInfo.class.body }} lang-{{surveylanguage}} {{surveyformat}}" marginwidth="0" marginheight="0" {{ aSurveyInfo.attr.body }}>
-        <div id="block_error">
+        <article id="block_error">
             <div>
                 <h2>{{ aError.title }}</h2>
                 <p>
@@ -59,6 +59,9 @@
                     <a href='mailto:{{ aSurveyInfo.adminemail }}'>{{ aSurveyInfo.adminemail }}</a>
                 </p>
             </div>
-        </div>
+        </article>
+        {% block footer %}
+            {{ include('./subviews/footer/footer.twig') }}
+        {% endblock %}
     </body>
 </html>

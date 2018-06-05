@@ -615,6 +615,25 @@ class TemplateConfiguration extends TemplateConfig
         return true;
     }
 
+    /**
+     * Turn ON a given option at global setting level (survey level not affected)
+     * Will be used to turn ON ajax mode on update. 
+     */
+    public function setGlobalOptionOn($optionName="ajaxmode")
+    {
+
+        if ($this->options != 'inherit') {
+            $oOptions = json_decode($this->options);
+
+            if ($oOptions->$optionName === "off" && empty($this->sid)){
+                $oOptions->$optionName = "on";
+                $sOptions = json_encode($oOptions);
+                $this->options = $sOptions;
+                $this->save();
+            }
+        }
+    }
+
     private function _filterImages($file)
     {
         $imagePath = (file_exists($this->filesPath.$file['name'])) 
@@ -623,8 +642,9 @@ class TemplateConfiguration extends TemplateConfig
 
         $filepath = App()->getAssetManager()->publish($imagePath);
 
-        $checkImage = getimagesize($imagePath);
-        if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]))) {
+        Yii::import('application.helpers.common_helper', true);
+        $checkImage = validateImage($imagePath);
+        if (!$checkImage['check'] === false) {
                 return ['filepath' => $filepath, 'filepathOptions' => $imagePath ,'filename'=>$file['name']];
         }
     }

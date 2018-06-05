@@ -8876,7 +8876,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 {
                                     $json = $value;
                                     $aFiles = json_decode($json);
-                                    $iSize=count($aFiles);
+                                    $iSize=@count($aFiles);
                                     // if the files have not been saved already,
                                     // move the files from tmp to the files folder
 

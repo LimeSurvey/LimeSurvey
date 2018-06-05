@@ -130,7 +130,9 @@
             </div>
 
         </article>
-
+        {% block footer %}
+            {{ include('./subviews/footer/footer.twig') }}
+        {% endblock %}
         {% block pjaxend %}
             <div id="bottomScripts" class="script-container">
                 <###end###>

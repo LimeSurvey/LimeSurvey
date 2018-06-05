@@ -383,10 +383,30 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     {
         $oRTemplate   = $oTemplate;
         $loader       = $this->_twig->getLoader();
+        /* Event to add or replace twig views */
+        $oEvent = new PluginEvent('getPluginTwigPath');
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $configTwigExtendsAdd = (array) $oEvent->get("add");
+        $configTwigExtendsReplace = (array) $oEvent->get("replace");
+
+        /* Forced twig by plugins (used to replace vanilla or core template …  don't like to force on user template, but else can extend current core twig) */
+        foreach($configTwigExtendsReplace as $configTwigExtendReplace) {
+            if(is_string($configTwigExtendReplace)) { // Need more control ?
+                $loader->addPath($configTwigExtendReplace);
+            }
+        }
+        /* This template */
         $loader->addPath($oRTemplate->viewPath);
+        /* Parent template */
         while ($oRTemplate->oMotherTemplate instanceof TemplateConfiguration) {
             $oRTemplate = $oRTemplate->oMotherTemplate;
             $loader->addPath($oRTemplate->viewPath);
+        }
+        /* Added twig by plugins, replaced by any template file*/
+        foreach($configTwigExtendsAdd as $configTwigExtendAdd) {
+            if(is_string($configTwigExtendAdd)) {
+                $loader->addPath($configTwigExtendAdd);
+            }
         }
     }
 
@@ -490,4 +510,19 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             }
         }
     }
+
+    /**
+     * get a twig file and return html produced
+     * @param string $twigView twigfile to be used (without twig extension) (example ./subviews/ajax/messages)
+     * @param array $aData to be used
+     * @return string
+     */
+    public function renderPartial($twigView,$aData)
+    {
+        $oTemplate = Template::model()->getInstance();
+        $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
+        $this->addRecursiveTemplatesPath($oTemplate);
+        return $this->_twig->loadTemplate($twigView.'.twig')->render($aData);
+    }
+
 }
