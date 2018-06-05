@@ -2226,7 +2226,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
         
-        if ($iOldDBVersion < 350) {
+        if ($iOldDBVersion < 400) {
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
             
@@ -2340,7 +2340,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->dropPrimaryKey('{{defaultvalues_pk}}','{{defaultvalues}}');
             $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid']);
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>350), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>400), "stg_name='DBVersion'");
 
             $oTransaction->commit();
         }   
@@ -2348,24 +2348,24 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         /**
          * Add load_error and load_error_message to plugin system.
          */
-        if ($iOldDBVersion < 400) {
+        if ($iOldDBVersion < 401) {
             $oTransaction = $oDB->beginTransaction();
 
             $oDB->createCommand()->addColumn('{{plugins}}', 'load_error', 'int default 0');
             $oDB->createCommand()->addColumn('{{plugins}}', 'load_error_message', 'text');
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>400), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>401), "stg_name='DBVersion'");
 
             $oTransaction->commit();
         }
 
-        if ($iOldDBVersion < 401) {
+        if ($iOldDBVersion < 402) {
             $oTransaction = $oDB->beginTransaction();
 
             // Plugin type is either "core" or "user" (different folder locations).
             $oDB->createCommand()->addColumn('{{plugins}}', 'plugin_type', "string(4) default 'user'");
 
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>401), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>402), "stg_name='DBVersion'");
 
             $oTransaction->commit();
         }
@@ -2373,11 +2373,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         /**
          * Make tokens fit UUID 36 chars
          */
-        if ($iOldDBVersion < 402) {
+        if ($iOldDBVersion < 403) {
             $oTransaction = $oDB->beginTransaction();
             upgradeTokenTables402('utf8mb4_bin');
             upgradeSurveyTables402('utf8mb4_bin');
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>402),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>403),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
       
