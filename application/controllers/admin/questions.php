@@ -708,13 +708,10 @@ class questions extends Survey_Common_Action
             // Check that there are subquestions translations for every language supported by the survey
             foreach ($subquestiondata as $row) {
                 foreach ($aSurveyLanguages as $language) {
-                    $qrow = QuestionL10n::model()->count('
-                        qid = :qid AND
-                        language = :$language',
-                        array(
-                            ':qid' => $qid,
-                            ':language' => $language
-                    ));
+                    $qrow = QuestionL10n::model()->count(
+                        'qid = :qid',
+                        [':qid' => $qid]
+                    );
                     // Means that no record for the language exists in the questions table
                     if (empty($qrow)) {
                         $oQuestionL10n = new QuestionL10n;
