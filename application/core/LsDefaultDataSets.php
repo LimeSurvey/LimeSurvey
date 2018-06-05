@@ -42,17 +42,17 @@ class LsDefaultDataSets
             [2,null,14,'responses',gT('Responses','unescaped'),gT('Responses','unescaped'),gT('Responses','unescaped'),'icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,null,15,'statistics',gT('Statistics','unescaped'),gT('Statistics','unescaped'),gT('Statistics','unescaped'),'bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,null,16,'reorder',gT('Reorder questions/question groups','unescaped'),gT('Reorder questions/question groups','unescaped'),gT('Reorder questions/question groups','unescaped'),'icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [3,null,16,'plugins',gT('Simple plugin settings','unescaped'), gT('Simple plugins','unescaped'), gT('Edit simple plugin settings','unescaped'),'plug','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_plugins_panel','','surveysettings','read','{"render": {"link": {"data": {"surveyid": ["survey","sid"]}}}}','_pluginTabSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],      
+            [3,null,16,'plugins',gT('Simple plugin settings','unescaped'), gT('Simple plugins','unescaped'), gT('Edit simple plugin settings','unescaped'),'plug','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_plugins_panel','','surveysettings','read','{"render": {"link": {"data": {"surveyid": ["survey","sid"]}}}}','_pluginTabSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
         ];
         $returnArray = [];
-        
+
         foreach($basicMenues as $basicMenu) {
             $returnArray[] = array_combine($headerArray, $basicMenu);
         }
         App()->setLanguage($sOldLanguage);
         return $returnArray;
     }
-    
+
     public static function getTemplateDefaultTexts($mode, $language='en')
     {
 
@@ -74,23 +74,23 @@ class LsDefaultDataSets
             border-width: 1px;
             padding:0.1em 1em 0.1em 0.5em;
             }
-        
+
             .printouttable td:first-child {
             font-weight: 700;
             text-align: right;
             padding-right: 5px;
             padding-left: 5px;
-        
+
             }
             .printouttable .printanswersquestion td{
             background-color:#F7F8FF;
             }
-        
+
             .printouttable .printanswersquestionhead td{
             text-align: left;
             background-color:#ddf;
             }
-        
+
             .printouttable .printanswersgroup td{
             text-align: center;
             font-weight:bold;
@@ -111,7 +111,7 @@ class LsDefaultDataSets
             App()->setLanguage($sOldLanguage);
         return $returnArray;
     }
-    
+
     public static function getSurveyMenuData()
     {
         $headerArray = [
@@ -155,13 +155,13 @@ class LsDefaultDataSets
 
         App()->setLanguage($sOldLanguage);
         return $returnArray;
-        
+
     }
 
     public static function getTemplateConfigurationData()
     {
         $returnArray = [];
-        
+
         $returnArray[] = [
             'template_name'     =>  'vanilla',
             'sid'               =>  null,
@@ -170,7 +170,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png","font":"noto"}',
+            'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png","font":"noto"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -186,7 +186,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
             'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3"}',
+            'options'           => '{"ajaxmode":"on","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -202,7 +202,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
+            'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
             'cssframework_js'   => '',
@@ -213,8 +213,8 @@ class LsDefaultDataSets
 
         return $returnArray;
     }
-    
-    
+
+
     public static function getSurveygroupData()
     {
 
@@ -315,7 +315,7 @@ class LsDefaultDataSets
                 'keyboard' => false,
                 'orphan' => true,
                 'template' => ""
-                ."<div class='popover tour lstutorial__template--mainContainer'>" 
+                ."<div class='popover tour lstutorial__template--mainContainer'>"
                 ."<div class='arrow'></div>"
                 ."<button class='pull-right ls-space margin top-5 right-5 btn btn-warning btn-sm' data-role='end' data-toggle='tooltip' title='".gT('End tour','js')."'><i class='fa fa-close'></i></button>"
                 ."<h3 class='popover-title lstutorial__template--title'></h3>"
@@ -336,7 +336,7 @@ class LsDefaultDataSets
             'permission' => 'survey',
             'permission_grade' => 'create'
         ];
-        
+
         return $returnArray;
     }
 
