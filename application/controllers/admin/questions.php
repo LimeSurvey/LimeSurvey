@@ -577,10 +577,7 @@ class questions extends Survey_Common_Action
                 $criteria->order = 'sortorder, code ASC';
                 $criteria->params = array(':qid' => $qid, ':scale_id' => $scale_id);
                 $results[$anslang][$scale_id] = Answer::model()->findAll($criteria);
-                //$aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
-                foreach ($results[$anslang][$scale_id] as $row) {
-                    $aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
-                }
+                $aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
             }
         }
 
