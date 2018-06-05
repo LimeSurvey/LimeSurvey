@@ -4916,3 +4916,27 @@ function get_absolute_path($path)
     }
     return implode(DIRECTORY_SEPARATOR, $absolutes);
 }
+
+/**
+* A function to validate images
+*
+* @param mixed $path
+* @return array
+*/
+function validateImage($path)
+{
+    $result =[];
+    $checkImage = getimagesize($path);
+    $result['debug'] = $checkImage;
+    $result['uploadresult'] = '';
+    $checkSvg = mime_content_type($path);
+
+    if (!($checkImage !== false || $checkSvg === 'image/svg+xml')) {
+        $result['uploadresult'] = gT("This file is not a supported image - please only upload JPG,PNG,GIF or SVG type images.");
+        $result['check'] = false;
+    } else {
+        $result['check'] = true;
+    }
+
+    return $result;
+}

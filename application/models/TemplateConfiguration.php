@@ -642,8 +642,9 @@ class TemplateConfiguration extends TemplateConfig
 
         $filepath = App()->getAssetManager()->publish($imagePath);
 
-        $checkImage = getimagesize($imagePath);
-        if (!($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF]))) {
+        Yii::import('application.helpers.common_helper', true);
+        $checkImage = validateImage($imagePath);
+        if (!$checkImage['check'] === false) {
                 return ['filepath' => $filepath, 'filepathOptions' => $imagePath ,'filename'=>$file['name']];
         }
     }

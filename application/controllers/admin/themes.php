@@ -179,13 +179,12 @@ class themes extends Survey_Common_Action
                         false
                     );
                 }
-                $checkImage = getimagesize($_FILES["file"]["tmp_name"]);
-                $debug[] = $checkImage;
-                if ($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF])) {
-                    $uploadresult = gT("This file is not a supported image - please only upload JPG,PNG or GIF type images.");
+                Yii::import('application.helpers.common_helper', true);
+                $checkImage = validateImage($_FILES["file"]["tmp_name"]);
+                if ($checkImage['check'] === false) {
                     return Yii::app()->getController()->renderPartial(
                         '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+                        array('data' => ['success' => $success, 'message' => $checkImage['uploadresult'], 'debug' => $checkImage['debug']]),
                         false,
                         false
                     );
