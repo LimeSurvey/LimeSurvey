@@ -58,7 +58,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     try {
 
         // Version 1.80 had database version 132
-        // This is currently the oldest version we need support to update from 
+        // This is currently the oldest version we need support to update from
         if ($iOldDBVersion < 133)
         {
             $oTransaction = $oDB->beginTransaction();
@@ -215,7 +215,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 143)
         {
-            
+
             $oTransaction = $oDB->beginTransaction();
             addColumn('{{questions}}','parent_qid','integer NOT NULL default 0');
             addColumn('{{answers}}','scale_id','integer NOT NULL default 0');
@@ -613,7 +613,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createIndex('question_attributes_idx3','{{question_attributes}}','attribute');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>152),"stg_name='DBVersion'");
-            $oTransaction->commit();   
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 153)
@@ -680,7 +680,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             catch(Exception $e)
             {
                 // do nothing
-            }            
+            }
             if (Yii::app()->db->driverName=='mysql')
             {
                 $oDB->createCommand()->createTable('{{sessions}}',array(
@@ -963,7 +963,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
         if ($iOldDBVersion < 163) {
-            // Removed because it was obsolete template changes           
+            // Removed because it was obsolete template changes
         }
 
         if ($iOldDBVersion < 164)
@@ -1641,7 +1641,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 314) {
             $oTransaction = $oDB->beginTransaction();
 
-     
+
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>314), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -1717,7 +1717,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 321) {
             $oTransaction = $oDB->beginTransaction();
-        
+
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>321), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -1880,20 +1880,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>331), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
+
         if ($iOldDBVersion < 332) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>332), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
+
         if ($iOldDBVersion < 333) {
             $oTransaction = $oDB->beginTransaction();
             upgrade333($oDB);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>333), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
+
         if ($iOldDBVersion < 334) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->addColumn('{{tutorials}}', 'title', 'string(192)');
@@ -1920,7 +1920,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>337), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-      
+
         if ($iOldDBVersion < 338) {
             $oTransaction = $oDB->beginTransaction();
             $rowToRemove = $oDB->createCommand()->select("position, id")->from("{{boxes}}")->where('ico=:ico', [':ico' => 'templates'])->queryRow();
@@ -1945,7 +1945,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>338), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-      
+
         if ($iOldDBVersion < 339) {
             $oTransaction = $oDB->beginTransaction();
 
@@ -1967,11 +1967,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          */
         If ($iOldDBVersion < 341) {
             $oTransaction = $oDB->beginTransaction();
-            
+
             $oDB->createCommand()->truncateTable('{{tutorials}}');
             $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
             $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
-           
+
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>341), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -2202,11 +2202,26 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>348], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         if ($iOldDBVersion < 349) {
             $oTransaction = $oDB->beginTransaction();
             dropColumn('{{users}}','one_time_pw');
             addColumn('{{users}}','one_time_pw','text');
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+      
+        /**
+         * Adding asset version to allow to reset asset without write inside
+         */
+        if ($iOldDBVersion < 350) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->createTable('{{asset_version}}',array(
+                'id' => 'pk',
+                'path' => 'text NOT NULL',
+                'version' => 'integer NOT NULL',
+            ));
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>350], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -3357,7 +3372,7 @@ function upgradeTokens176()
     {
         $sTokenTableName='tokens_'.$arSurvey['sid'];
         if (tableExists($sTokenTableName))
-        {                                        
+        {
             $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
             $aAttributes = $arSurvey['attributedescriptions'];
             foreach($aColumnNamesIterator as $sColumnName)
@@ -3784,7 +3799,7 @@ function upgradeTables143()
     $answerresult = Yii::app()->getDb()->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
-        modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".dbQuoteAll($row['language']).",'',".dbQuoteAll($row['code']).")"); 
+        modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".dbQuoteAll($row['language']).",'',".dbQuoteAll($row['code']).")");
     }
 
     // Convert answers to subquestions
@@ -3820,17 +3835,17 @@ function upgradeTables143()
         }
         if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
         {
-            modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, sqid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},{$iSaveSQID},0,".dbQuoteAll($row['language']).",'','Y')"); 
+            modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, sqid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},{$iSaveSQID},0,".dbQuoteAll($row['language']).",'','Y')");
         }
     }
     // Sanitize data
     if (Yii::app()->db->driverName=='pgsql')
     {
-        modifyDatabase("","delete from {{answers}} USING {{questions}} WHERE {{answers}}.qid={{questions}}.qid AND {{questions}}.type in ('1','F','H','M','P','W','Z')"); 
+        modifyDatabase("","delete from {{answers}} USING {{questions}} WHERE {{answers}}.qid={{questions}}.qid AND {{questions}}.type in ('1','F','H','M','P','W','Z')");
     }
     else
     {
-        modifyDatabase("","delete {{answers}} from {{answers}} LEFT join {{questions}} ON {{answers}}.qid={{questions}}.qid where {{questions}}.type in ('1','F','H','M','P','W','Z')"); 
+        modifyDatabase("","delete {{answers}} from {{answers}} LEFT join {{questions}} ON {{answers}}.qid={{questions}}.qid where {{questions}}.type in ('1','F','H','M','P','W','Z')");
     }
 
     // Convert labels to answers
@@ -3842,7 +3857,7 @@ function upgradeTables143()
         $labelresult = Yii::app()->getDb()->createCommand($labelquery)->queryAll();
         foreach ( $labelresult as $lrow )
         {
-            modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",{$lrow['assessment_value']})"); 
+            modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",{$lrow['assessment_value']})");
             //$labelids[]
         }
         if ($row['type']=='1')
@@ -3851,7 +3866,7 @@ function upgradeTables143()
             $labelresult = Yii::app()->getDb()->createCommand($labelquery)->queryAll();
             foreach ( $labelresult as $lrow )
             {
-                modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, scale_id, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",1,{$lrow['assessment_value']})"); 
+                modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, scale_id, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",1,{$lrow['assessment_value']})");
             }
         }
     }
@@ -3891,9 +3906,9 @@ function upgradeTables143()
 
 
     $updatequery = "update {{questions}} set type='!' where type='W'";
-    modifyDatabase("",$updatequery); 
+    modifyDatabase("",$updatequery);
     $updatequery = "update {{questions}} set type='L' where type='Z'";
-    modifyDatabase("",$updatequery); 
+    modifyDatabase("",$updatequery);
 }
 
 
@@ -3908,7 +3923,7 @@ function upgradeQuestionAttributes142()
         {
             //Select all affected question attributes
             $attributevalues=Yii::app()->getDb()->createCommand("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid)->queryColumn();
-            modifyDatabase("","delete from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid); 
+            modifyDatabase("","delete from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid);
             $record['value']=implode(';',$attributevalues);
             $record['attribute']='exclude_all_other';
             $record['qid']=$questionid;
@@ -4197,7 +4212,7 @@ function dropColumn($sTableName, $sColumnName)
     } catch (Exception $e) {
        // If it cannot be dropped we assume it is already gone
     };
-        
+
 }
 
 

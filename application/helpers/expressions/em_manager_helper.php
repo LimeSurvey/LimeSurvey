@@ -8855,10 +8855,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             'Could not convert date %s to format %s. Please check your date format settings.',
                                             htmlspecialchars(trim($value)),
                                             $aDateFormatData['phpdate']
-                                        );
-                                        $value = "INVALID"; // This don't disable submitting survey
-                                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
+                                        ); // Seems to happen when admin make error on date format */
                                         $LEM->invalidAnswerString[$sq]=$message;
+                                        $value = "INVALID"; // Test wait INVALID
+                                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid); /* @todo : test to reviewed : need to disable move */
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
                                         $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $newValue);

@@ -9,18 +9,13 @@
         </div>
         <div class="panel-body">
             <div class="panel-body-ico">
-                <a href="<?php echo $url; ?>"<?php if ($external) {
-                    echo ' target="_blank"';
-                } ?>>
-		<span class="sr-only"><?php eT($title); ?></span>
+        		<span class="sr-only"><?php eT($title); ?></span>
                 <span class="icon-<?php echo $ico; ?>" style="font-size: 4em">
                 </span>
                 </a>
             </div>
             <div class="panel-body-link">
-                <a href="<?php echo $url; ?>"<?php if ($external) {
-                    echo ' target="_blank"';
-                } ?>><?php eT($description); ?></a>
+                <?php eT($description); ?>
             </div>
         </div>
     </div>

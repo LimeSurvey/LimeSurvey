@@ -35,6 +35,35 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.8.2 (build 180529) to 3.9.0 (build 180604) June 4, 2018
+-New feature #13732: Twig - add "striptags" allowed filters (LouisGac)
+-Fixed issue #13128: Vanilla theme error page admin-name missing (LouisGac)
+-Fixed issue #12097: Relevance equation is shown for X axis in array number : it don't work (Dominik Vitt)
+-Fixed issue #12215: Activate a survey without questions with API (Dominik Vitt)
+-Fixed issue #12357: Survey List page Variable token replacement (LouisGac)
+-Fixed issue #12406: Group filter selection gets lost after deleting a question from the question list (Dominik Vitt)
+-Fixed issue #12945: {PERC} not working (works now as in 2.x) (LouisGac)
+-Fixed issue #13490: GID placeholderfield missing sometimes (LouisGac)
+-Fixed issue #13514: Don't translate Theme name (Dominik Vitt)
+-Fixed issue #13535: title tag empty on demo.limesurvey.org (LouisGac)
+-Fixed issue #13570: Out of quota, user gets the following message at the end even though the survey is activated (LouisGac)
+-Fixed issue #13574: Some placeholders no longer available in 3.x (LouisGac)
+-Fixed issue #13705: End message is not printed (Dominik Vitt)
+-Fixed issue #13736: No javascript: bad date not saved but error not shown (Denis Chenu)
+-Fixed issue: Unable to answer to dropdown date without js (Denis Chenu)
+-Fixed issue: a11y on 5 point with star or slider (Denis Chenu)
+-Fixed issue: preview in theme options not working (Markus Flür)
+-Fixed issue: survey data not available on registration views (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: French (France) by arnaud21, b00z00
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+
 Changes from 3.8.1 (build 180524) to 3.8.2 (build 180529) May 29, 2018
 -Fixed issue #12227: "Error: Failed to insert data" and corrupted quotas when i've tried to import old (v2.5.xx) surveys (Dominik Vitt)
 -Fixed issue #12950: Regression? {ASSESSMENT_CURRENT_TOTAL} no longer defined (LouisGac)

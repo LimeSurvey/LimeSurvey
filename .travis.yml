@@ -70,5 +70,5 @@ before_script:
 script:
     # Check for syntax errors. This line will never halt the tests.
     - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
-    # Run the tests.
+    # Run tests.
     - DOMAIN=localhost phpunit --stop-on-failure

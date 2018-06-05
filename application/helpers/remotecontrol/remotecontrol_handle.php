@@ -444,7 +444,7 @@ class remotecontrol_handle
      * Activate an existing survey
      *
      * Return the result of the activation
-     * Failure status : Invalid Survey ID, Activation Error, Invalid session key, No permission
+     * Failure status : Invalid Survey ID, Constistency check error, Activation Error, Invalid session key, No permission
      *
      * @access public
      * @param string $sSessionKey Auth credentials
@@ -459,10 +459,21 @@ class remotecontrol_handle
             if (is_null($oSurvey)) {
                 return array('status' => 'Error: Invalid survey ID');
             }
+            // Check consistency for groups and questions
+            Yii::app()->loadHelper('admin/activate');
+            $checkHasGroup = checkHasGroup($iSurveyID);
+            $checkGroup = checkGroup($iSurveyID);
+
+            if ($checkHasGroup !== false || $checkGroup !== false){
+                return array('status' => 'Error: Survey does not pass consistency check');
+            }
+
+            $surveyActivator = new SurveyActivator($oSurvey);
+
+            
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
-                Yii::app()->loadHelper('admin/activate');
-                $surveyActivator = new SurveyActivator($oSurvey);
                 $aActivateResults = $surveyActivator->activate();
+
                 if (isset($aActivateResults['error'])) {
                     return array('status' => 'Error: '.$aActivateResults['error']);
                 } else {

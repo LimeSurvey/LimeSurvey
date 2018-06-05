@@ -110,7 +110,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             // Click on big "Create survey" button.
             $link = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#panel-1 .panel-body-link a')
+                    WebDriverBy::cssSelector('#panel-1[data-url]')
                 )
             );
             $link->click();
