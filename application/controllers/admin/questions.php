@@ -505,22 +505,17 @@ class questions extends Survey_Common_Action
             
         }
 
-
         // Check that there are answers for every language supported by the survey
-        for ($i = 0; $i < $scalecount; $i++) {
-            foreach ($oQuestion->answers as $oAnswer){
-                foreach ($oSurvey->allLanguages as $language) {
-                    if (!isset($oAnswer->answerL10ns[$language])) {
-                        $baseL10n = $oAnswer->answerL10ns[$oSurvey->language];
-                        $oAnswerL10n = new AnswerL10n();
-                        $oAnswerL10n->attributes = $baseL10n->attributes;
-                        $oAnswerL10n->language = $language;
-                        $oAnswerL10n->answer = "";
-                        $oAnswerL10n->save();
-                    }
-
+        foreach ($oQuestion->answers as $oAnswer){
+            foreach ($oSurvey->allLanguages as $language) {
+                if (!isset($oAnswer->answerL10ns[$language])) {
+                    $baseL10n = $oAnswer->answerL10ns[$oSurvey->language];
+                    $oAnswerL10n = new AnswerL10n();
+                    $oAnswerL10n->attributes = $baseL10n->attributes;
+                    $oAnswerL10n->language = $language;
+                    $oAnswerL10n->answer = "";
+                    $oAnswerL10n->save();
                 }
-
             }
         }
 
@@ -583,9 +578,8 @@ class questions extends Survey_Common_Action
                 $criteria->params = array(':qid' => $qid, ':scale_id' => $scale_id);
                 $results[$anslang][$scale_id] = Answer::model()->findAll($criteria);
                 //$aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
-                foreach ($results[$anslang][$scale_id] as &$row) {
-                    $row->code      = htmlspecialchars($row->code);
-                    //$row->answerL10ns[$anslang]->answer    = htmlspecialchars($row->answerL10ns[$anslang]->answer);
+                foreach ($results[$anslang][$scale_id] as $row) {
+                    $aData['tableId'][$anslang][$scale_id] = 'answers_'.$anslang.'_'.$scale_id;
                 }
             }
         }
@@ -595,8 +589,6 @@ class questions extends Survey_Common_Action
         $aData['formId'] = 'editanswersform';
         $aData['formName'] = 'editanswersform';
         $aData['pageTitle'] = gT('Edit answer options');
-        $aData['tableId'] = 'answer-option-table';
-
 
         $aViewUrls['_subQuestionsAndAnwsersJsVariables'][] = $aData;
         $aViewUrls['answerOptions_view'][] = $aData;

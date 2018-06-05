@@ -34,6 +34,23 @@ echo viewHelper::getViewTestTag('editAnswerOptions');
                 //echo "<pre>"; var_dump($results); die;
 
             $aData = array(
+                'surveyid' => $surveyid,
+                'gid' => $gid,
+                'qid' => $qid,
+                'viewType' => $viewType,
+                'anslangs' => $anslangs,
+                'scalecount' => $scalecount,
+                'results' => $results,
+                'tableId' => $tableId,
+                'activated' => $activated,
+                'assessmentvisible' => (empty($assessmentvisible)) ? false : $assessmentvisible,
+                'base_language' => $base_language,
+                'has_permissions' => Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create'),
+                'all_languages' => Survey::model()->findByPk($surveyid)->getAllLanguages()
+            );
+
+            /*
+            $aData = array(
                 'anslangs'  => $anslangs,
                 'results'   => $results,
                 'question'  => $oAnswer->questionL10ns[$anslang]->question,
@@ -52,7 +69,7 @@ echo viewHelper::getViewTestTag('editAnswerOptions');
                 'has_permissions' => Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create'),
                 'all_languages' => Survey::model()->findByPk($surveyid)->getAllLanguages()
             );
-
+             */
 
             echo App()->twigRenderer->renderAnswerOptions('/admin/survey/Question/answerOptionsEdit_view', $aData); ?> 
 
