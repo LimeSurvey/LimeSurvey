@@ -20,12 +20,11 @@
 */
 function stripTagsFull($string)
 {
-    $string = html_entity_decode($string, ENT_QUOTES, "UTF-8");
-    //combining these into one mb_ereg_replace call ought to speed things up
-    $string = str_replace(array("\r\n", "\r", "\n", '-oth-'), '', $string);
+    $string = flattenText($string,false,true); // stripo whole + html_entities
+    $string = str_replace('-oth', '', $string);// Why ?
     //The backslashes must be escaped twice, once for php, and again for the regexp
     $string = str_replace("'|\\\\'", "&apos;", $string);
-    return flattenText($string);
+    return $string;
 }
 
 /**
@@ -213,10 +212,10 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
                         $strTmp = mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
                         if (trim($strTmp) != '') {
                             if ($q == '\'') {
-                                $strTemp = str_replace(array("'", "\n", "\r"), array("''", ' ', ' '), trim($strTmp));
+                                $strTemp = str_replace("'", "''", trim($strTmp));
                             }
                             if ($q == '"') {
-                                $strTemp = str_replace(array('"', "\n", "\r"), array('""', ' ', ' '), trim($strTmp));
+                                $strTemp = str_replace('"', '""', trim($strTmp));
                             }
                             /*
                             * Temp quick fix for replacing decimal dots with comma's

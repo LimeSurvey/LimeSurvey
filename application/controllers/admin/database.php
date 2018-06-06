@@ -1353,6 +1353,18 @@ class database extends Survey_Common_Action
                             }
                         }
                     }
+                    if (returnGlobal('copydefaultanswers') == 1) {
+                        $aDefaultAnswers = DefaultValue::model()->findAll("qid=:qid", array("qid"=>returnGlobal('oldqid')));
+                        foreach ($aDefaultAnswers as $qr1) {
+                            DefaultValue::model()->insertRecords(array(
+                                'qid' => $this->iQuestionID,
+                                'scale_id' => $qr1['scale_id'],
+                                'language' => $qr1['language'],
+                                'specialtype' => $qr1['specialtype'],
+                                'defaultvalue' => $qr1['defaultvalue']
+                            ));
+                        }
+                    }
 
                     /**
                      * Copy attribute
