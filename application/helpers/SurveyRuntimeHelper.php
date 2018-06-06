@@ -1437,8 +1437,8 @@ class SurveyRuntimeHelper
                 $restartparam['token'] = Token::sanitizeToken($token);
             }
 
-            if (Yii::app()->request->getQuery('lang')) {
-                $restartparam['lang'] = sanitize_languagecode(Yii::app()->request->getQuery('lang'));
+            if (!empty(App()->getLanguage())) {
+                $restartparam['lang'] = sanitize_languagecode(App()->getLanguage());
             } else {
                 $s_lang = isset(Yii::app()->session['survey_'.$this->iSurveyid]['s_lang']) ? Yii::app()->session['survey_'.$this->iSurveyid]['s_lang'] : 'en';
                 $restartparam['lang'] = $s_lang;

@@ -2210,7 +2210,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-      
+
         /**
          * Adding asset version to allow to reset asset without write inside
          */
@@ -2224,6 +2224,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>350], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        /**
+         * Turning on ajax mode at global level for all themes (survey level not affected)
+         */
+        if ($iOldDBVersion < 351) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $aTHemes = TemplateConfiguration::model()->findAll();
+
+            foreach ($aTHemes as $oTheme){
+                $oTheme->setGlobalOptionOn("ajaxmode");
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>351], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
 
         
         if ($iOldDBVersion < 400) {

@@ -96,7 +96,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
             foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key) {
                 $url = $fieldsarray["{{$key}URL}"];
                 $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>".htmlspecialchars($url).'</a>';
-                $aBareboneURLs['@@'.$key.'URL@@'] = $fieldsarray["{{$key}URL}"];
+                $aBareboneURLs['@@'.$key.'URL@@'] = $url;
             }
         }
 
