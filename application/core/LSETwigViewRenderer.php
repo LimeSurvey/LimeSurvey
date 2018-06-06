@@ -329,14 +329,17 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         // Twig init
         $this->_twig = $twig = parent::getTwig();
 
-        // Get the additional infos for the view, such as language, direction, etc
-        $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
+        //Run theme related things only if a theme is provided!
+        if ($oTemplate !== null) {
+            // Get the additional infos for the view, such as language, direction, etc
+            $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
 
-        // Add to the loader the path of the template and its parents.
-        $this->addRecursiveTemplatesPath($oTemplate);
+            // Add to the loader the path of the template and its parents.
+            $this->addRecursiveTemplatesPath($oTemplate);
 
-        // Plugin for blocks replacement
-        list($sString, $aDatas) = $this->getPluginsData($sString, $aDatas);
+            // Plugin for blocks replacement
+            list($sString, $aDatas) = $this->getPluginsData($sString, $aDatas);
+        }
 
         // Twig rendering
         $oTwigTemplate = $twig->createTemplate($sString);
