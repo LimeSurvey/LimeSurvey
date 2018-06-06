@@ -130,6 +130,18 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                         </div>
                                     </div>
                                     <div  class="form-group">
+                                        <label class=" control-label" for='copydefaultanswers'><?php eT("Copy default answers?"); ?></label>
+                                        <div class="">
+                                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                'name' => 'copydefaultanswers',
+                                                'id' => 'copydefaultanswers',
+                                                'value' => 'Y',
+                                                'onLabel' => gT('Yes'),
+                                                'offLabel' => gT('No')));
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <div  class="form-group">
                                         <label class=" control-label" for='copyattributes'><?php eT("Copy advanced settings?"); ?></label>
                                         <div class="">
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
