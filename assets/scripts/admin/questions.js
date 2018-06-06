@@ -97,10 +97,20 @@ var QuestionFunctions = function () {
         init = function () {
 
             updatequestionattributes('');
-            $('#question_type').on('change', function(){updatequestionattributes('');  updateQuestionTemplatePreview();});
-            $(document).on('change', '#question_template', function(){updatequestionattributes($('#question_template').val());  updateQuestionTemplatePreview();});
+            $('#questionTypeSelector').on('change', function(){
+                $('#question_type').val($(this).val()).trigger('change')
+            });
 
-            $('#questionTypeSelector').on('change', function(){$('#question_type').val($(this).val()).trigger('change')});
+            $('#question_type').on('change', function(){
+                updatequestionattributes('');  
+                updateQuestionTemplatePreview();
+                OtherSelection(this.value);
+            });
+
+            $(document).on('change', '#question_template', function(){
+                updatequestionattributes($('#question_template').val());  
+                updateQuestionTemplatePreview();
+            });
 
             /**
              * Validate question object on blur on title element
@@ -120,10 +130,6 @@ var QuestionFunctions = function () {
                     validateQuestion($(this));
                     return false;
                 }
-            });
-
-            $("#question_type").on('change', function (event) {
-                OtherSelection(this.value);
             });
 
         };

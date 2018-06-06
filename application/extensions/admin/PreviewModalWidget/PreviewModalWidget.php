@@ -45,11 +45,19 @@ class PreviewModalWidget extends CWidget {
     
     
     public function getModal($return=false){
-        return $this->render($this->view, null, $return);
+        if(preg_match("/modal/",$this->renderType)){
+            return $this->render($this->view, null, $return);
+        }
+        echo "";
+        return;
     }
     
-    public function getButton($return=false){
-        return $this->render("open_modal_button", null, $return);
+    public function getButtonOrSelect($return=false){
+        if(preg_match("/modal/",$this->renderType)){
+            return $this->render("open_modal_button", null, $return);
+        }
+
+        return $this->render($this->view, null, $return);
     }
 
     public function getView(){
@@ -78,7 +86,8 @@ class PreviewModalWidget extends CWidget {
         .json_encode(array_merge($this->optionArray, [
             'value' => $this->value,
             'debugString' => $this->debugKeyCheck,
-            'debug' => $this->debug
+            'debug' => $this->debug,
+            'viewType' => $this->view
             ]))
         .'); 
         runner_'.$this->widgetsJsName.'.bind();', 

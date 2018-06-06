@@ -3,6 +3,8 @@
  * View for a selector modal with preview capabilities and a grouped structure
  */
 ?>
+<?php //The hidden input ?>
+<input id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" value="<?=$this->value?>" type="hidden" />
 <?php //The modal ?>
 <div class="modal fade previewModalWidget" tabindex="-1" role="dialog" id="selector__<?=$this->widgetsJsName?>-modal" style="z-index: 1250">
   <div class="modal-dialog modal-lg" role="document">
@@ -57,7 +59,6 @@
                 </div>
             </div>
           </div>
-          <input id="selector__<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" value="<?=$this->value?>" type="hidden" />
         </div>
       </div>
       <div class="modal-footer">

@@ -3,7 +3,7 @@
  * This view defines a simple select instead of a modal box
  */
 ?>
-<select id="selector__<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" class="form-control">
+<select id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" class="form-control">
     <?php 
     foreach ($this->itemArray as $sItemKey => $aItemContent) { 
         $selected = $this->value == $sItemKey ? 'selected' : '';

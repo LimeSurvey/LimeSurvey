@@ -14,7 +14,7 @@ $aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
 $question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']);
 $selected = null;
 
-foreach ( $aQuestionTypeList as $key=> $questionType)
+foreach ( $aQuestionTypeList as $key => $questionType)
 {
     $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
     if (!isset($aQuestionTypeGroups[$htmlReadyGroup]))
@@ -29,7 +29,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
 <?php
     $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
         'widgetsJsName' => "questionTypeSelector",
-        'renderType' => "group-modal",
+        'renderType' =>  (isset($selectormodeclass) && $selectormodeclass == "none") ? "group-simple" : "group-modal",
         'modalTitle' => "Select question type",
         'groupTitleKey' => "questionGroupName",
         'groupItemsKey' => "questionTypes",
@@ -37,10 +37,21 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
         'previewWindowTitle' => "Preview question type",
         'groupStructureArray' => $aQuestionTypeGroups,
         'value' => $eqrow['type'],
-        'debug' => true,
+        'debug' => YII_DEBUG,
         'currentSelected' => Question::getQuestionTypeName($eqrow['type']),
         'optionArray' => [
-            'getImageUrl' => Yii::app()->getConfig('imageurl')
+            'selectedClass' => Question::getQuestionClass($eqrow['type']),
+            'getImageUrl' => Yii::app()->getConfig('imageurl'),
+            'onGetImage' => [
+                'imageSrc', 
+                'itemData',
+                'var questioncode = itemData.key;
+                if (questioncode == "S") multiple = 2;
+                if (questioncode == ":") questioncode = "COLON";
+                else if (questioncode == "|") questioncode = "PIPE";
+                else if (questioncode == "*") questioncode = "EQUATION";
+                return imgurl + "/screenshots/" + questioncode + ".png";'
+            ],
         ]
     ));
 ?>
@@ -200,9 +211,9 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
 
 
                                 <div  class="form-group">
-                                    <?php if( $activated != "Y" && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
+                                    <?php if( $activated != "Y") : ?>
                                         <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                        <?=$oQuestionSelector->getButton();?>
+                                        <?=$oQuestionSelector->getButtonOrSelect();?>
                                     <?php elseif($activated == "Y") : ?>
                                         <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                         <!-- TODO : control if we can remove, disable update type must be done by PHP -->
@@ -238,7 +249,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                         <select id="question_template" name="question_template" class="form-control">
                                             <?php 
                                             foreach ($aQuestionTemplateList as $code => $value) { 
-                                                    if (!empty($aQuestionTemplateAttributes)){
+                                                    if (!empty($aQuestionTemplateAttributes) && isset($aQuestionTemplateAttributes['value'])){
                                                         $question_template_preview = $aQuestionTemplateAttributes['value'] == $code ? $value['preview'] : $question_template_preview;
                                                         $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
                                                     }

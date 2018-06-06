@@ -5,7 +5,7 @@
 ?>
 
 <?php //The modal ?>
-
+<input id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" value="<?=$this->value?>" type="hidden" />
 <div class="modal fade previewModalWidget" tabindex="-1" role="dialog" id="selector__<?=$this->widgetsJsName?>-modal">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -34,7 +34,7 @@
                             <a 
                               href="#" 
                               class="list-group-item selector__Item--select-<?=$this->widgetsJsName?>" 
-                              id="selector__<?=$this->widgetsJsName?>-Item--<?=$aItemContent['class']?>" 
+                              data-selector="<?=$aItemContent['class'] ? $aItemContent['class'] : $sItemKey ?>"
                               data-item-value='<?=json_encode([
                                     "key" => $sItemKey,
                                     "title" => htmlentities($aItemContent['description']),
@@ -74,7 +74,6 @@
                 </div>
             </div>
           </div>
-          <input id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" value="<?=$this->value?>" type="hidden" />
         </div>
       </div>
       <div class="modal-footer">
