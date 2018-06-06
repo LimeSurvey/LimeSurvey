@@ -321,10 +321,10 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      *
      * @param string $sString The string of HTML/Twig to convert
      * @param array $aDatas Array containing the datas needed to render the view ($thissurvey)
-     * @param TemplateConfiguration $oTemplate
+     * @param TemplateConfiguration|null $oTemplate
      * @return string
      */
-    public function convertTwigToHtml($sString, $aDatas, $oTemplate)
+    public function convertTwigToHtml($sString, $aDatas, $oTemplate = null)
     {
         // Twig init
         $this->_twig = $twig = parent::getTwig();
