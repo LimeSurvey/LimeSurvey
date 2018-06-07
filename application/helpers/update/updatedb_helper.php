@@ -2296,8 +2296,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
     $currentDbVersion = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'DBVersion'))->queryRow();
-    // Update the global config object because it is caching the old version
-    setGlobalSetting('DBVersion', $currentDbVersion['stg_value']);
+    // Update the global config object because it is static and set at start of App
+    Yii::app()->setConfig('DBVersion', $currentDbVersion['stg_value']);
 
     Notification::broadcast(array(
         'title' => gT('Database update'),
