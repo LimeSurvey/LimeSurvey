@@ -23,6 +23,22 @@ foreach ( $aQuestionTypeList as $key => $questionType)
             'questionGroupName' => $questionType['group']
         );
     }
+        $imageName = $key;
+        if ($imageName == ":") $imageName = "COLON";
+        else if ($imageName == "|") $imageName = "PIPE";
+        else if ($imageName == "*") $imageName = "EQUATION";
+
+    $questionType['detailpage'] = '
+    <div class="col-sm-12 currentImageContainer">
+        <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
+    </div>';
+    if ($imageName == 'S') {
+        $questionType['detailpage'] = '
+        <div class="col-sm-12 currentImageContainer">
+            <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
+            <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'2.png" />
+        </div>';
+    }
     $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
 }
 ?>
@@ -41,17 +57,11 @@ foreach ( $aQuestionTypeList as $key => $questionType)
         'currentSelected' => Question::getQuestionTypeName($eqrow['type']),
         'optionArray' => [
             'selectedClass' => Question::getQuestionClass($eqrow['type']),
-            'getImageUrl' => Yii::app()->getConfig('imageurl'),
-            'onGetImage' => [
-                'imageSrc', 
+            'onGetDetails' => [
+                'curPage',
                 'itemData',
-                'var questioncode = itemData.key;
-                if (questioncode == "S") multiple = 2;
-                if (questioncode == ":") questioncode = "COLON";
-                else if (questioncode == "|") questioncode = "PIPE";
-                else if (questioncode == "*") questioncode = "EQUATION";
-                return imgurl + "/screenshots/" + questioncode + ".png";'
-            ],
+                'console.ls.log(curPage); console.ls.log(itemData); return curPage;'
+            ]
         ]
     ));
 ?>

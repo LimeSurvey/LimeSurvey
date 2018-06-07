@@ -66,10 +66,7 @@
                             </h3>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12 currentImageContainer" id="selector__<?=$this->widgetsJsName?>-selectedImage">
-                            <img src="<?=Yii::app()->getConfig('imageurl')?>/screenshots/<?=$this->value?>.png" />
-                        </div>
+                    <div class="row" id="selector__<?=$this->widgetsJsName?>-detailPage">
                     </div>
                 </div>
             </div>

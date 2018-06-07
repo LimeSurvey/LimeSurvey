@@ -20,17 +20,16 @@ var PreviewModalScript = function () {
             onModalClose: function onModalClose() {},
             onModalOpen: function onModalOpen() {},
             dataFilter: function dataFilter() {},
-            onGetImage: function onGetImage(curImagePath, itemData) {
-                return curImagePath;
+            onGetDetails: function onGetDetails(curDetailPage, itemData) {
+                return curDetailPage;
             },
             value: '',
             selectedClass: '',
-            getImageUrl: '',
             debugString: 'Key: ',
             debug: false
         };
 
-        var toBeEvaluated = ['onUpdate', 'onReady', 'onModalClose', 'onModalOpen', 'dataFilter', 'onGetImage'];
+        var toBeEvaluated = ['onUpdate', 'onReady', 'onModalClose', 'onModalOpen', 'dataFilter', 'onGetDetails'];
         $.each(transOptions, function (key, val) {
             if (toBeEvaluated.indexOf(key) > -1) {
                 transOptions[key] = new (Function.prototype.bind.apply(Function, [null].concat(_toConsumableArray(transOptions[key]))))();
@@ -39,31 +38,15 @@ var PreviewModalScript = function () {
 
         this.options = $.extend({}, defaultSettings, transOptions);
     }
+
     /**
-     * Gets the image for the preview
-     * This is either done by an attribute of the items object, or by using a default path
-     * @param object itemData 
+     * Get the html snippet for the item data
+     * @param string key 
      */
 
 
     _createClass(PreviewModalScript, [{
-        key: 'getImage',
-        value: function getImage(itemData) {
-            var self = this;
-            if (itemData.itemArray.images) {
-                return $.map(itemData.itemArray.images, function (combined, itrt, image) {
-                    return '<img src="' + self.options.onGetImage(image, itemData) + '" />';
-                }).join('\n');
-            }
-            return '<img src="' + self.options.onGetImage(self.options.getImageUrl + '/screenshots/' + itemData.key + '.png', itemData) + '" />';
-        }
-    }, {
         key: 'getForDebug',
-
-        /**
-         * Get the html snippet for the item data
-         * @param string key 
-         */
         value: function getForDebug(key) {
             return this.options.debug ? '<em class="small">' + this.options.debugString + ' ' + key + ' </em>' : '';
         }
@@ -76,7 +59,7 @@ var PreviewModalScript = function () {
         value: function selectItem(itemData) {
             $('#selector__' + this.widgetsJsName + '-currentSelected').html(itemData.title);
             $('#selector__' + this.widgetsJsName + '--buttonText').html(itemData.title + ' ' + this.getForDebug(itemData.key));
-            $('#selector__' + this.widgetsJsName + '-selectedImage').html(this.getImage(itemData));
+            $('#selector__' + this.widgetsJsName + '-detailPage').html(this.options.onGetDetails(itemData.itemArray.detailpage, itemData));
             this.inputItem.val(itemData.key);
             this.inputItem.trigger('change');
             this.options.onUpdate(itemData.key);
