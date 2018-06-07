@@ -195,7 +195,7 @@ $surveyid = $oSurvey->sid;
                     <li class="list-group-item">
                         <div class="ls-flex-row col-12">
                             <div class="col-4">
-                                <?php eT("Survey policy notice error:");?>
+                                <?php eT("Survey data policy notice error:");?>
                             </div>
                             <div class="col-8">
                                 <?php
@@ -210,11 +210,11 @@ $surveyid = $oSurvey->sid;
                             </div>
                         </div>
                     </li>
-                    <!-- Survey policy notice label -->
+                    <!-- Survey data policy notice label -->
                     <li class="list-group-item">
                         <div class="ls-flex-row col-12">
                             <div class="col-4">
-                                <?php eT("Survey policy notice label:");?>
+                                <?php eT("Survey data policy notice label:");?>
                             </div>
                             <div class="col-8">
                                 <?php

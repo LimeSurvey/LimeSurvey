@@ -433,7 +433,7 @@ function getStandardsReplacementFields($thissurvey)
     $_assessment_current_total = '';
     if (!empty($thissurvey['assessments']) && $thissurvey['assessments']=="Y") {
         $assessmentdata = doAssessment($surveyid, true);
-        $_assessment_current_total = (!empty($assessmentdata['datas']['total_score']))?$assessmentdata['datas']['total_score']:gT("unkown");
+        $_assessment_current_total = (!empty($assessmentdata['datas']['total_score']))?$assessmentdata['datas']['total_score']:gT("Unkown");
     }
 
 
