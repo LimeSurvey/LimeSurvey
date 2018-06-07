@@ -7232,20 +7232,25 @@
          */
         public static function FinishProcessPublicPage()
         {
-            if(self::isInitialized()) {
-                $LEM =& LimeExpressionManager::singleton();
-                /* Replace FinishProcessingGroup directly : always needed (in all in one too, and needed at end only (after all html are processed for Expression)) */
-                $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
-                $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
-                $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
-                $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-                Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
-                $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
-                Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", CClientScript::POS_END);
-                Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", CClientScript::POS_END); /* Maybe only if we have mandatory error ?*/
-                $LEM->FinishProcessingPage();
-                return $sHiddenInputs;
+            if(!self::isInitialized()) {
+                $oldLEM = unserialize($_SESSION['LEMsingleton']);
+                if($oldLEM){
+                    self::StartProcessingPage($oldLEM->allOnOnePage, false);
+                }
             }
+
+            $LEM =& LimeExpressionManager::singleton();
+            /* Replace FinishProcessingGroup directly : always needed (in all in one too, and needed at end only (after all html are processed for Expression)) */
+            $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
+            $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
+            $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
+            $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
+            Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
+            $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
+            Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_POSTSCRIPT);
+            Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
+            $LEM->FinishProcessingPage();
+            return $sHiddenInputs;
         }
         /*
         * Generate JavaScript needed to do dynamic relevance and tailoring
@@ -7282,7 +7287,7 @@
                 $jsParts[] = "var LEMqid=" . $LEM->currentQID . ";\n";  // current group num so can compute isOnCurrentPage
             }
 
-            $jsParts[] = "window.ExprMgr_process_relevance_and_tailoring = function(evt_type,sgqa,type){\n";
+            $jsParts[] = "ExprMgr_process_relevance_and_tailoring = function(evt_type,sgqa,type){\n";
             $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\n}\n";
             $jsParts[] = "if (evt_type == 'onchange' && (typeof last_sgqa !== 'undefined' && sgqa==last_sgqa) && (typeof last_evt_type !== 'undefined' && last_evt_type == 'TAB' && type != 'checkbox')) {\n";
             $jsParts[] = "  last_evt_type='onchange';\n";

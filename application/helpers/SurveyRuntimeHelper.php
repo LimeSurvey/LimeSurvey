@@ -994,6 +994,23 @@ class SurveyRuntimeHelper
                 $oResponse           = SurveyDynamic::model($this->iSurveyid)->findByPk($iResponseID);
                 $oResponse->lastpage = $_SESSION[$this->LEMsessid]['step'];
                 $oResponse->save();
+
+                App()->clientScript->registerScript("saveflashmessage", "
+                    console.ls.log($('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']'));
+                    $('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']').popover({
+                        title: '".gT('Success')."',
+                        content: '<div>".gT("Your responses were successfully saved.", "js")."</div>',
+                        html: true,
+                        container: 'body',
+                        placement: 'bottom',
+                        delay: { 'show': 500, 'hide': 100 },
+                        trigger: 'click',
+                    }).popover('show');
+                    setTimeout(function(){ $('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']').popover('destroy');}, 3500);
+                    "
+                    , LSYii_ClientScript::POS_POSTSCRIPT
+                );
+                
             }
         }
     }
@@ -1018,9 +1035,8 @@ class SurveyRuntimeHelper
                 $aPopup  = $this->popup = array($aResult['message']);
             }
 
-            Yii::app()->clientScript->registerScript('startPopup', "LSvar.startPopups=".json_encode($aPopup).";", CClientScript::POS_BEGIN);
-            Yii::app()->clientScript->registerScript('showStartPopups', "window.templateCore.showStartPopups();", CClientScript::POS_END);
-
+            Yii::app()->clientScript->registerScript('startPopup', "LSvar.startPopups=".json_encode($aPopup).";", LSYii_ClientScript::POS_END);
+            Yii::app()->clientScript->registerScript('showStartPopups', "window.templateCore.showStartPopups();", LSYii_ClientScript::POS_POSTSCRIPT);
             // reshow the form if there is an error
             if (!empty($aResult['aSaveErrors'])) {
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);

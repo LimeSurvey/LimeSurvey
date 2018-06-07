@@ -18,8 +18,8 @@
 {% if(aSurveyInfo.jYesNo) %}
     {{ registerScript('activateConfirmLanguage',"$.extend(LSvar.lang," ~ aSurveyInfo.jYesNo ~ ")", "POS_BEGIN") }}
 {% endif %}
-{{ registerScript('activateActionLink',"activateActionLink();", "POS_END") }}
-{{ registerScript('activateConfirmButton',"activateConfirmButton();", "POS_END") }}
+{{ registerScript('activateActionLink',"activateActionLink();", "POS_POSTSCRIPT") }}
+{{ registerScript('activateConfirmButton',"activateConfirmButton();", "POS_POSTSCRIPT") }}
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -43,7 +43,7 @@
     {% if(aSurveyInfo.options.ajaxmode == "on") %}
         <script type="text/javascript">
             var ajaxHandler = new AjaxSubmitObject();
-            $(document).on('ready pjax:scriptcomplete', function () {
+            $(document).on('ready', function () {
                 ajaxHandler.bindActions();
             });
         </script>

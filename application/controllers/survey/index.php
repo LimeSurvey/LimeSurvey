@@ -601,10 +601,6 @@ class index extends CAction
         // } catch (WrongTemplateVersionException $ex) {
         //     echo $ex->getMessage();
         // }
-
-        if (App()->request->getPost('saveall')) {
-            App()->clientScript->registerScript("saveflashmessage", "alert('".gT("Your responses were successfully saved.", "js")."');", CClientScript::POS_READY);
-        }
     }
 
     private function _getParameters($args = array(), $post = array())
