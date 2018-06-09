@@ -70,7 +70,15 @@ class TemplateManifest extends TemplateConfiguration
             }
         }
 
+        $oEvent = new PluginEvent('getValidScreenFiles');
+        $oEvent->set('type', $sType);
+        $oEvent->set('screen',$sScreen);
+        //$oEvent->set('files',$aScreenFiles); // Not needed since we have remove and add event
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $aScreenFiles = array_values(array_diff($aScreenFiles, (array) $oEvent->get('remove')));
+        $aScreenFiles = array_merge($aScreenFiles, (array)$oEvent->get('add'));
         $aScreenFiles = array_unique($aScreenFiles);
+        return $aScreenFiles;
         return $aScreenFiles;
     }
 

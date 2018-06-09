@@ -213,6 +213,7 @@
                     <file type="view" role="subview">./subviews/registration/register_head.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_message.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_success.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_form.twig</file>
                     <file type="view" role="subview">./subviews/registration/required.twig</file>
                 </register>
 
