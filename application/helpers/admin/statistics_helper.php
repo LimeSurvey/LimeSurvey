@@ -3268,7 +3268,7 @@ class statistics_helper
                 }
 
                 if ($cachefilename || $outputType == 'html') {
-// Add the image only if constructed
+                    // Add the image only if constructed
                     //introduce new counter
                     if (!isset($ci)) {$ci = 0; }
 
