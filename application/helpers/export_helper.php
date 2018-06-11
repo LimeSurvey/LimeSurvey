@@ -288,7 +288,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
     if ($field['LStype'] == ':') {
         //Get the labels that could apply!
         if (is_null($qidattributes)) {
-            $qidattributes = getQuestionAttributeValues($field["qid"]);
+            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field["qid"]);
         }
 
         if ($qidattributes['multiflexible_checkbox']) {
