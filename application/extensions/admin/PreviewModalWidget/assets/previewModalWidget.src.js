@@ -5,7 +5,7 @@ class PreviewModalScript {
         this.inputItem = $(`#selector__${this.widgetsJsName}`);
         //Define default settings 
         const defaultSettings = {
-            onUpdate: (value)=>{},
+            onUpdate: (value, itemData)=>{},
             onReady: () => {},
             onModalClose: () => {},
             onModalOpen: () => {},
@@ -42,8 +42,7 @@ class PreviewModalScript {
         $(`#selector__${this.widgetsJsName}--buttonText`).html(`${itemData.title} ${this.getForDebug(itemData.key)}`);
         $(`#selector__${this.widgetsJsName}-detailPage`).html(this.options.onGetDetails(itemData.itemArray.detailpage, itemData));
         this.inputItem.val(itemData.key);
-        this.inputItem.trigger('change');
-        this.options.onUpdate(itemData.key);
+        this.options.value = itemData.key;
     };
     /**
      * triggered by clicking on an item in the selector
@@ -65,7 +64,7 @@ class PreviewModalScript {
         if(/[^~!@\$%\^&\*\( \)\+=,\.\/';:"\?><\[\]\\\{\}\|`#]/.test(value)){
             selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-selector=${value.trim()}]`);
         }
-        if(selectedItem === null || selectedItem.length !== 1) {
+        if((selectedItem === null || selectedItem.length !== 1) && this.options.selectedClass != '') {
             selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-selector=${this.options.selectedClass.trim()}]`);
         }
 
@@ -76,10 +75,12 @@ class PreviewModalScript {
      * event triggered when the modal opens
      */
     onModalShown (){
+
         const selectedItem = this.preSelectFromValue();
-        console.log(selectedItem);
-        $(selectedItem).trigger('click');
-        $(selectedItem).closest('div.panel-collapse').addClass('in');
+        if(selectedItem) {
+            $(selectedItem).trigger('click');
+            $(selectedItem).closest('div.panel-collapse').addClass('in');
+        }
         this.options.onModalOpen();
     };
     /**
@@ -97,7 +98,7 @@ class PreviewModalScript {
             $(this.modalItem).on('show.bs.modal', ()=>{this.onModalShown()});
             $(`.selector__Item--select-${this.widgetsJsName}`).on('click', (ev)=>{this.selectItemClick(ev)});
             $(`#selector__select-this-${this.widgetsJsName}`).on('click', () => {
-                this.options.onUpdate();
+                this.options.onUpdate(this.options.value);
                 this.modalItem.modal('hide');
             });
         }

@@ -22,8 +22,9 @@
                   <?php foreach ($this->itemArray as $sItemKey => $aItemContent) { ?>
                     <a 
                       href="#" 
-                      class="list-group-item selector__select-question-type" 
-                      id="selector__question-type-select-modal_question-type-<?=$aItemContent['class']?>" 
+                      class="list-group-item selector__Item--select-<?=$this->widgetsJsName?>" 
+                      data-selector="<?=$aItemContent['class'] ? $aItemContent['class'] : $sItemKey ?>"
+                      data-key="<?=$key?>"
                       data-item-value='<?=json_encode([
                             "key" => $sItemKey,
                             "title" => htmlentities($aItemContent['description']),

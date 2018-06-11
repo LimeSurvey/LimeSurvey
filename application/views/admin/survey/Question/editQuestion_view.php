@@ -57,11 +57,6 @@ foreach ( $aQuestionTypeList as $key => $questionType)
         'currentSelected' => Question::getQuestionTypeName($eqrow['type']),
         'optionArray' => [
             'selectedClass' => Question::getQuestionClass($eqrow['type']),
-            'onGetDetails' => [
-                'curPage',
-                'itemData',
-                'console.ls.log(curPage); console.ls.log(itemData); return curPage;'
-            ]
         ]
     ));
 ?>

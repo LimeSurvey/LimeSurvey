@@ -15,7 +15,7 @@ var PreviewModalScript = function () {
         this.inputItem = $('#selector__' + this.widgetsJsName);
         //Define default settings 
         var defaultSettings = {
-            onUpdate: function onUpdate(value) {},
+            onUpdate: function onUpdate(value, itemData) {},
             onReady: function onReady() {},
             onModalClose: function onModalClose() {},
             onModalOpen: function onModalOpen() {},
@@ -61,8 +61,7 @@ var PreviewModalScript = function () {
             $('#selector__' + this.widgetsJsName + '--buttonText').html(itemData.title + ' ' + this.getForDebug(itemData.key));
             $('#selector__' + this.widgetsJsName + '-detailPage').html(this.options.onGetDetails(itemData.itemArray.detailpage, itemData));
             this.inputItem.val(itemData.key);
-            this.inputItem.trigger('change');
-            this.options.onUpdate(itemData.key);
+            this.options.value = itemData.key;
         }
     }, {
         key: 'selectItemClick',
@@ -90,7 +89,7 @@ var PreviewModalScript = function () {
             if (/[^~!@\$%\^&\*\( \)\+=,\.\/';:"\?><\[\]\\\{\}\|`#]/.test(value)) {
                 selectedItem = $('.selector__Item--select-' + this.widgetsJsName + '[data-selector=' + value.trim() + ']');
             }
-            if (selectedItem === null || selectedItem.length !== 1) {
+            if ((selectedItem === null || selectedItem.length !== 1) && this.options.selectedClass != '') {
                 selectedItem = $('.selector__Item--select-' + this.widgetsJsName + '[data-selector=' + this.options.selectedClass.trim() + ']');
             }
 
@@ -104,10 +103,12 @@ var PreviewModalScript = function () {
     }, {
         key: 'onModalShown',
         value: function onModalShown() {
+
             var selectedItem = this.preSelectFromValue();
-            console.log(selectedItem);
-            $(selectedItem).trigger('click');
-            $(selectedItem).closest('div.panel-collapse').addClass('in');
+            if (selectedItem) {
+                $(selectedItem).trigger('click');
+                $(selectedItem).closest('div.panel-collapse').addClass('in');
+            }
             this.options.onModalOpen();
         }
     }, {
@@ -139,7 +140,7 @@ var PreviewModalScript = function () {
                     _this.selectItemClick(ev);
                 });
                 $('#selector__select-this-' + this.widgetsJsName).on('click', function () {
-                    _this.options.onUpdate();
+                    _this.options.onUpdate(_this.options.value);
                     _this.modalItem.modal('hide');
                 });
             }
