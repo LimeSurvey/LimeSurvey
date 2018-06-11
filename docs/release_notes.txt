@@ -35,6 +35,50 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.9.0 (build 180604) to 3.10.0 (build 180611) June 11, 2018
+-New feature: Allow plugin to add or replace twig file (#1082) (Denis Chenu)
+-Fixed issue #12032: Homepage boxes - external links opened twice when clicking icon (Dominik Vitt)
+-Fixed issue #12741: Setting condition where constant = 0 treated as "no answer" (Denis Chenu)
+-Fixed issue #12898: Repeat headers not working in array dual scale with dropdown layout (Dominik Vitt)
+-Fixed issue #12907: Resume later and load unfinished survey does not work in ajax-mode (Markus Flür)
+-Fixed issue #13466: Exit and clear in bilingual Survey - restarts in wrong language (Dominik Vitt)
+-Fixed issue #13497: Editor screen can be loaded without css after save (Denis Chenu)
+-Fixed issue #13553: Default value not copied when copy question (Dominik Vitt)
+-Fixed issue #13558: Authenticated remote code execution by unrestricted file uploads (Dominik Vitt)
+-Fixed issue #13596: template assets is not resetted when update config (Denis Chenu)
+-Fixed issue #13606: Unable to reset manually single asset (Denis Chenu)
+-Fixed issue #13688: privacy policy are hidden on the startpage of a survey, when the first action is a mouseover over the button \'Next\' (Markus Flür)
+-Fixed issue #13718: Reload page after import lss show error (Dominik Vitt)
+-Fixed issue #13738: RPC method  is not working. (Olle Haerstedt)
+-Fixed issue #13742: empty label for dual-scale question (Denis Chenu)
+-Fixed issue #13743: PHP notice when viewing question view in theme editor (Dominik Vitt)
+-Fixed issue #13744: unable to run db migration via command line (Denis Chenu)
+-Fixed issue #13748: PHP Warning in register form (Markus Flür)
+-Fixed issue: Changed the caption for repeat headers option (Dominik Vitt)
+-Fixed issue: Created "Copy default answers" switch option on Copy question page (Dominik Vitt)
+-Fixes issue: multiple issues with theme assets (#1048) (Denis Chenu)
+-Fixed issue: line feed stripped and not replaced in SPSS export (Denis Chenu)
+-Fixed issue: reset asset when upload or delete a template file (Denis Chenu)
+-Fixed issue: Ajax-Mode totally unfunctional (Markus Flür)
+-Fixed issue: EM not loaded correctly in Ajaxmode (Markus Flür)
+-Fixed issue: Support for both question text and question code in PDF graph output (Olle Haerstedt)
+-Fixed issue: ajax mode was forced off. (LouisGac)
+-Fixed issue: barebone URL not working from RPC (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Taiwan) (Traditional) by sylsylsylvie, imacat
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by b00z00
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Russian by vipgroup
+
 Changes from 3.8.2 (build 180529) to 3.9.0 (build 180604) June 4, 2018
 -New feature #13732: Twig - add "striptags" allowed filters (LouisGac)
 -Fixed issue #13128: Vanilla theme error page admin-name missing (LouisGac)
