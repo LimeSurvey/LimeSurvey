@@ -40,8 +40,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         if ($oLayoutTemplate) {
             $line       = file_get_contents($oLayoutTemplate->viewPath.$sLayout);
             $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
-            LimeExpressionManager::ApplyEMJavaScriptToPage();
-            $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(false);
+            $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if($sEmHiddenInputs) {
                 $sHtml = str_replace("<!-- emScriptsAndHiddenInputs -->","<!-- emScriptsAndHiddenInputs updated -->\n".$sEmHiddenInputs,$sHtml);
             }
