@@ -3264,7 +3264,36 @@ class statistics_helper
 
                 $cachefilename = '';
                 if ($outputType == 'xls' || $outputType == 'pdf') {
-                    $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                    // This takes care of graph_lables for PDF output (previous fix only supported HTML).
+                    $graphLbl = [];
+                    foreach ($outputs['alist'] as $al) {
+                        switch ($_POST['graph_labels']) {
+                            case 'qtext':
+                                $graphLbl[] = $al[1];
+                                break;
+                            case 'both':
+                                if (empty($al[0]) == "") {
+                                    $graphLbl[] =  gT("No answer") . ': ' . $al[1];
+                                } else {
+                                    $graphLbl[] = $al[0] . ': ' . $al[1];
+                                }
+                                break;
+                            default:
+                                if ($al[0] == "") {
+                                    $graphLbl[] =  gT("No answer");
+                                } else {
+                                    $graphLbl[] = $al[0];
+                                }
+                                break;
+                        }
+                    }
+                    // One extra label for "Not completed or not displayed".
+                    if (count($lbl) == count($outputs['alist']) + 1) {
+                        end($lbl);
+                        $graphLbl[] = key($lbl);
+                        reset($lbl);
+                    }
+                    $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $graphLbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 }
 
                 if ($cachefilename || $outputType == 'html') {
