@@ -52,6 +52,7 @@
     <options>
         <ajaxmode>on</ajaxmode>
         <animatebody>off</animatebody>
+        <hideprivacyinfo>off</hideprivacyinfo>
         <container>on</container>
         <bodyanimation>fadeInRight</bodyanimation>
         <brandlogo>on</brandlogo>

@@ -18,10 +18,10 @@
         <authorUrl>http://www.limesurvey.org</authorUrl>
         <copyright>Copyright (C) 2005 - 2016 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
         <license>GNU General Public License version 2 or later</license>
-        <version>3.0</version>
+        <version>3.0.1</version>
         <apiVersion>3</apiVersion>
         <description><![CDATA[<strong>LimeSurvey Fruity Theme</strong><br>A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.]]></description>
-        <last_update>2017-12-04 18:36:02</last_update>
+        <last_update>2018-06-12 16:26:42</last_update>
         <extends>vanilla</extends>
     </metadata>
 
@@ -42,6 +42,7 @@
             <add>scripts/theme.js</add>
             <add>scripts/ajaxify.js</add>
             <add>scripts/custom.js</add>
+            <add>scripts/sticky.min.js</add>
         </js>
         <print_css>
             <add>css/print_theme.css</add>
@@ -81,6 +82,10 @@
         <animateradio>on</animateradio>
         <radioanimation>zoomIn</radioanimation>
         <radioanimationduration>500</radioanimationduration>
+        <zebrastriping>off</zebrastriping>
+        <stickymatrixheaders>off</stickymatrixheaders>
+        <greyoutselected>off</greyoutselected>
+        <hideprivacyinfo>off</hideprivacyinfo>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->

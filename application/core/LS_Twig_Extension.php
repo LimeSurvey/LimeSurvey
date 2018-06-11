@@ -477,4 +477,29 @@ class LS_Twig_Extension extends Twig_Extension
         }
         return $sString;
     }
+
+    public static function darkencss($cssColor){
+
+        $aColors = str_split(substr($cssColor,1), 2);
+        $return = '#';
+        foreach ($aColors as $color) {
+            $decColor = hexdec($color);
+            $decColor = $decColor-10;
+            $decColor = $decColor<0 ? 0 : ($decColor>255 ? 255 : $decColor);
+            $return .= dechex($decColor);
+        }
+        return $return;
+    }
+    
+    public static function lightencss($cssColor){
+        $aColors = str_split(substr($cssColor,1), 2);
+        $return = '#';
+        foreach ($aColors as $color) {
+            $decColor = hexdec($color);
+            $decColor = $decColor+10;
+            $decColor = $decColor<0 ? 0 : ($decColor>255 ? 255 : $decColor);
+            $return .= dechex($decColor);
+        }
+        return $return;
+    }
 }

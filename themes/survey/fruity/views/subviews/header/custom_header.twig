@@ -166,6 +166,63 @@
         }
     {% endif %}
 
+    {% if (aSurveyInfo.options.zebrastriping == "on" ) %}
+    .question-container:nth-of-type(odd){
+        background-color: {{ darkencss(aSurveyInfo.options.questionbackgroundcolor)  }}
+    }
+    .question-container:nth-of-type(even){
+        background-color: {{ lightencss(aSurveyInfo.options.questionbackgroundcolor)  }}
+    }
+    {% endif %}
 
+    {% if (aSurveyInfo.options.stickymatrixheaders == "on" ) %}
+        .sticky .ls-heading.stickyBar {
+            background: white;
+            opacity: 1;
+        }
+        
+        .sticky .ls-heading:nth-child(n+2) {
+            display: none;
+            background: white;
+        }
+
+        .sticky tbody>.ls-heading-repeat:not(.stickyBar) {
+            display: none;
+        }
+    {% endif %}
+
+    {% if (aSurveyInfo.options.greyoutselected == "on" ) %}
+
+        tr.radio-list.selected{
+            opacity: 0.5;
+        }
+        tr.radio-list.selected:hover,
+        tr.radio-list.selected:active{
+            opacity: 1;
+        }
+    {% endif %}
 
 </style>
+
+
+{% if (aSurveyInfo.options.stickymatrixheaders == "on" ) %}
+    {{ registerScript("StickyMatrixHeaderScript", "
+        var stickyRows = new StickyTableRows();
+        $('thead>tr.ls-heading').each(function(itrt, item){
+            stickyRows.add(item);
+        });
+        stickyRows.init();
+    ", "POS_POSTSCRIPT") }}
+{% endif %}
+
+{% if (aSurveyInfo.options.greyoutselected == "on" ) %}
+    {{ registerScript("GreyOutSelectedScript", "
+    $('td.radio-item > input[type=radio]').on('click', function(){
+        if($(this).val() != '' ) {
+            $(this).closest('tr.radio-list').addClass('selected');
+        } else {
+            $(this).closest('tr.radio-list').removeClass('selected');
+        }
+    })
+    ", "POS_POSTSCRIPT") }}
+{% endif %}
