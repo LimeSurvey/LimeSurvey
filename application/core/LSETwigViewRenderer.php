@@ -157,13 +157,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             
             //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
-            $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
-            $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
-            $aData['this'] = Yii::app()->getController();
             
             // check if this method is called from theme editor
             if (empty($aData['bIsThemeEditor'])){
                     $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+                    $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
+                    $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+                    $aData['this'] = Yii::app()->getController();
                 } else {
                     $aData['question_template_attribute'] = null;
                 }
