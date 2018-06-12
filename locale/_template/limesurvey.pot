@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-06-12 11:19:59+00:00\n"
+"POT-Creation-Date: 2018-06-12 12:37:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12290,7 +12290,7 @@ msgstr ""
 msgid "Do you want to continue?"
 msgstr ""
 
-#: application/models/Template.php:186
+#: application/models/Template.php:187
 msgid "Default survey theme %s is not installed. Now %s is the new default survey theme"
 msgstr ""
 
