@@ -1967,6 +1967,14 @@ function tokensExport($iSurveyID)
         $oRecordSet->andWhere("lt.completed='N'");
         $oRecordSet->andWhere("ls.id IS NULL");    
     }
+    if ($iTokenStatus == 4 && $bIsNotAnonymous) {
+        $oRecordSet->selectDistinct('lt.tid, lt.firstname, lt.lastname, lt.email, lt.emailstatus, lt.token, lt.language, lt.sent, lt.remindersent, lt.remindercount, lt.completed, lt.usesleft, lt.validfrom, lt.validuntil, MAX(ls.startdate) as started');
+        $oRecordSet->join("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
+        $oRecordSet->andWhere("ls.submitdate IS NULL");
+        $oRecordSet->andWhere("ls.startdate IS NOT NULL");
+        $oRecordSet->andWhere("lt.completed='N'");
+        $oRecordSet->group('lt.tid, lt.firstname, lt.lastname, lt.email, lt.emailstatus, lt.token, lt.language, lt.sent, lt.remindersent, lt.remindercount, lt.completed, lt.usesleft, lt.validfrom, lt.validuntil');
+    }
         
     if ($iInvitationStatus == 1) {
         $oRecordSet->andWhere("lt.sent<>'N'");
@@ -1996,6 +2004,9 @@ function tokensExport($iSurveyID)
     // Export UTF8 WITH BOM
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
     $tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed,usesleft";
+    if ($iTokenStatus == 4 && $bIsNotAnonymous) {
+        $tokenoutput .= ',started';
+    }
     $attrfieldnames = getAttributeFieldNames($iSurveyID);
     $attrfielddescr = getTokenFieldsAndNames($iSurveyID, true);
     foreach ($attrfieldnames as $attr_name) {
@@ -2035,6 +2046,9 @@ function tokensExport($iSurveyID)
         $tokenoutput .= '"'.trim($brow['remindercount']).'",';
         $tokenoutput .= '"'.trim($brow['completed']).'",';
         $tokenoutput .= '"'.trim($brow['usesleft']).'",';
+        if ($iTokenStatus == 4 && $bIsNotAnonymous) {
+            $tokenoutput .= '"'.trim($brow['started']).'",';
+        }
         foreach ($attrfieldnames as $attr_name) {
             $tokenoutput .= '"'.trim($brow[$attr_name]).'",';
         }
