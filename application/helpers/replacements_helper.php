@@ -98,7 +98,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($thissurvey['templatedir'])) {
         $templatename = $thissurvey['templatedir'];
     } else {
-        $templatename = getGlobalSetting('defaulttheme');
+        $templatename = App()->getConfig('defaulttheme');
     }
     if (!isset($templateurl)) {
         $templateurl = getTemplateURL($templatename)."/";
@@ -250,7 +250,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_return_to_survey = "";
 
     if (isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999") {
-        $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
+        $_googleAnalyticsAPIKey = trim(App()->getConfig('googleanalyticsapikey'));
     } else if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '') {
         $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
     } else {
