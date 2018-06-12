@@ -1287,7 +1287,7 @@ class questions extends Survey_Common_Action
             if (!empty($questionTemplateAttributes['question_template'])){
                 $aData['aQuestionTemplateAttributes'] = $questionTemplateAttributes['question_template'];
             } else {
-                $aData['aQuestionTemplateAttributes']['core'] = array('title'=>'Default', 'preview'=>\LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']));
+                $aData['aQuestionTemplateAttributes']['value'] = 'core';
             }
 
             $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
