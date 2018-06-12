@@ -316,6 +316,12 @@ function OtherSelection(QuestionType) {
             document.getElementById('Validation').style.display = 'none';
             document.getElementById('MandatorySelection').style.display = '';
         }
+
+        if (QuestionType == 'H'){  // hide relevance equation input for array by column question type until it is fixed
+            document.getElementById('relevanceContainer').style.display = 'none';
+        } else {
+            document.getElementById('relevanceContainer').style.display = '';
+        }
     } catch(e) {
         if(window.debugState.backend) console.ls.error(e);
     }

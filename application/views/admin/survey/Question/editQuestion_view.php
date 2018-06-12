@@ -310,7 +310,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="relevanceContainer">
                                     <label class=" control-label" for='relevance' title="<?php eT("Relevance equation");?>"><?php eT("Relevance equation:"); ?></label>
                                     <div class="">
                                         <div class="input-group">
