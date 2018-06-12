@@ -179,8 +179,7 @@ class themes extends Survey_Common_Action
                         false
                     );
                 }
-                Yii::import('application.helpers.common_helper', true);
-                $checkImage = validateImage($_FILES["file"]["tmp_name"]);
+                $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]["tmp_name"]);
                 if ($checkImage['check'] === false) {
                     return Yii::app()->getController()->renderPartial(
                         '/admin/super/_renderJson',
