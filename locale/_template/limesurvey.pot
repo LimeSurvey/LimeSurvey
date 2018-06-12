@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-06-12 13:33:39+00:00\n"
+"POT-Creation-Date: 2018-06-12 13:38:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1720,7 +1720,12 @@ msgstr ""
 #: application/views/admin/token/tokenform.php:310
 #: application/views/admin/usergroup/usergroups_view.php:143
 #: application/views/survey/frontpage/clearallForm/form.php:11
-#: tmp/twig_translate.php:5
+#: tmp/twig_translate.php:5 tmp/twig_translate.php:12 tmp/twig_translate.php:15
+#: tmp/twig_translate.php:19 tmp/twig_translate.php:23
+#: tmp/twig_translate.php:27 tmp/twig_translate.php:35
+#: tmp/twig_translate.php:42 tmp/twig_translate.php:49
+#: tmp/twig_translate.php:55 tmp/twig_translate.php:61
+#: tmp/twig_translate.php:67 tmp/twig_translate.php:73
 msgid "Yes"
 msgstr ""
 
@@ -1874,6 +1879,12 @@ msgstr ""
 #: application/views/admin/token/tokenform.php:311
 #: application/views/survey/frontpage/clearallForm/form.php:14
 #: tmp/twig_translate.php:2 tmp/twig_translate.php:3 tmp/twig_translate.php:6
+#: tmp/twig_translate.php:13 tmp/twig_translate.php:16
+#: tmp/twig_translate.php:20 tmp/twig_translate.php:24
+#: tmp/twig_translate.php:28 tmp/twig_translate.php:36
+#: tmp/twig_translate.php:43 tmp/twig_translate.php:50
+#: tmp/twig_translate.php:56 tmp/twig_translate.php:62
+#: tmp/twig_translate.php:68 tmp/twig_translate.php:74
 msgid "No"
 msgstr ""
 
@@ -9302,7 +9313,7 @@ msgstr ""
 #: application/views/admin/themeoptions/update.php:150
 #: application/views/admin/themes/templatesummary_view.php:159
 #: application/views/admin/token/csvupload.php:122
-#: application/views/admin/token/ldapform.php:71
+#: application/views/admin/token/ldapform.php:71 tmp/twig_translate.php:9
 msgid "Upload"
 msgstr ""
 
@@ -20534,10 +20545,118 @@ msgstr ""
 msgid "Question index"
 msgstr ""
 
-#: tmp/twig_translate.php:4 tmp/twig_translate.php:7
+#: tmp/twig_translate.php:4 tmp/twig_translate.php:7 tmp/twig_translate.php:17
+#: tmp/twig_translate.php:21 tmp/twig_translate.php:25
+#: tmp/twig_translate.php:29 tmp/twig_translate.php:37
+#: tmp/twig_translate.php:39 tmp/twig_translate.php:44
+#: tmp/twig_translate.php:46 tmp/twig_translate.php:51
+#: tmp/twig_translate.php:57 tmp/twig_translate.php:63
+#: tmp/twig_translate.php:69 tmp/twig_translate.php:75
 msgid "Inherit"
 msgstr ""
 
-#: tmp/twig_translate.php:8
+#: tmp/twig_translate.php:8 tmp/twig_translate.php:40 tmp/twig_translate.php:47
 msgid "Preview Image"
+msgstr ""
+
+#: tmp/twig_translate.php:10
+msgid "Local Server"
+msgstr ""
+
+#: tmp/twig_translate.php:11
+msgid "User browser"
+msgstr ""
+
+#: tmp/twig_translate.php:14
+msgid "Ajax mode"
+msgstr ""
+
+#: tmp/twig_translate.php:18
+msgid "Survey container"
+msgstr ""
+
+#: tmp/twig_translate.php:22
+msgid "Question borders"
+msgstr ""
+
+#: tmp/twig_translate.php:26
+msgid "Question shadow"
+msgstr ""
+
+#: tmp/twig_translate.php:30
+msgid "Background color"
+msgstr ""
+
+#: tmp/twig_translate.php:31
+msgid "Font color"
+msgstr ""
+
+#: tmp/twig_translate.php:32
+msgid "Question background color"
+msgstr ""
+
+#: tmp/twig_translate.php:33
+msgid "Check icon"
+msgstr ""
+
+#: tmp/twig_translate.php:34
+msgid "Background image"
+msgstr ""
+
+#: tmp/twig_translate.php:38
+msgid "Background image file"
+msgstr ""
+
+#: tmp/twig_translate.php:41
+msgid "Logo"
+msgstr ""
+
+#: tmp/twig_translate.php:45
+msgid "Logo file"
+msgstr ""
+
+#: tmp/twig_translate.php:48
+msgid "Animate body"
+msgstr ""
+
+#: tmp/twig_translate.php:52
+msgid "Body animation"
+msgstr ""
+
+#: tmp/twig_translate.php:53 tmp/twig_translate.php:59
+#: tmp/twig_translate.php:65 tmp/twig_translate.php:71
+#: tmp/twig_translate.php:77
+msgid "Duration"
+msgstr ""
+
+#: tmp/twig_translate.php:54
+msgid "Animate question"
+msgstr ""
+
+#: tmp/twig_translate.php:58
+msgid "Question animation"
+msgstr ""
+
+#: tmp/twig_translate.php:60
+msgid "Animate alert"
+msgstr ""
+
+#: tmp/twig_translate.php:64 tmp/twig_translate.php:70
+msgid "Alert animation"
+msgstr ""
+
+#: tmp/twig_translate.php:66
+msgid "Animate checkbox"
+msgstr ""
+
+#: tmp/twig_translate.php:72
+msgid "Animate radio buttons"
+msgstr ""
+
+#: tmp/twig_translate.php:76
+msgid "Radio button animation"
+msgstr ""
+
+#: tmp/twig_translate.php:78
+msgid "%s fonts"
 msgstr ""
