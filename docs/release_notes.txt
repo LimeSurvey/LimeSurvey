@@ -35,6 +35,19 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.10.0 (build 180611) to 3.11.0 (build 180612) June 12, 2018
+#Updated translation: Catalan by c_schmitz
+#Updated translation: Chinese (Hong Kong) (Traditional) by LS_fan
+#Updated translation: Croatian by dominikvitt
+#Updated translation: German by c_schmitz
+-Fixed issue #13667: Beginner Tutorial only available to SuperAdmin (Dominik Vitt)
+-Fixed issue #13714: Token email does not fill in adminemail and adminname (Dominik Vitt)
+-Fixed issue #13739: Relevance equation broken for array by column (Dominik Vitt)
+-Fixed issue #13759: No admin name and admin email is set at Survey creation (Denis Chenu)
+-Fixed issue :  The table "{{asset_version}}" for active record class "AssetVersion" cannot be found in the database. (Denis Chenu)
+-Fixed issue#12435: Wrong exports (Dominik Vitt)
+-Fixed issue: deactivate reordering of question on the frontend (Markus Flür)
+
 Changes from 3.9.0 (build 180604) to 3.10.0 (build 180611) June 11, 2018
 -New feature: Allow plugin to add or replace twig file (#1082) (Denis Chenu)
 -Fixed issue #12032: Homepage boxes - external links opened twice when clicking icon (Dominik Vitt)
@@ -138,7 +151,7 @@ Changes from 3.8.1 (build 180524) to 3.8.2 (build 180529) May 29, 2018
 #Updated translation: Polish by elissa
 #Updated translation: Russian by smilez, c0der, quarrier, panch_evg, vipgroup
 #Updated translation: Spanish (Argentina) by aesteban, Dhel210, gabrieljenik
-                                                                        
+
 Changes from 3.8.0 (build 180522) to 3.8.1 (build 180524) May 24, 2018
 -Fixed issue #12520: Crash when trying to generate a PDF with Graphs from statistic page on PHP 7.1 or later (Carsten Schmitz)
 -Fixed issue #13607: Multiple_choice_with_comments - bug (Dominik Vitt)
@@ -197,10 +210,10 @@ Changes from 3.7.2 (build 180508) to 3.7.3 (build 180516) May 16, 2018
 -Fixed issue: Postgres has no DOUBLE database type (Olle Haerstedt)
 -Fixed issue: Semicolon in twig statement (LouisGac)
 #Updated translation: Catalan by qualitatuvic
-#Updated translation: Dutch (Informal) by Han 
-#Updated translation: Dutch by Han 
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
 #Updated translation: French (France) by arnaud21
-#Updated translation: Hungarian by kkd 
+#Updated translation: Hungarian by kkd
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Italian by lfanfoni
 #Updated translation: Japanese by nomoto
