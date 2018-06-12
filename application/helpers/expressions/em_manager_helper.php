@@ -822,7 +822,7 @@
             $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
             if(!is_array($releqns)) {
                 return NULL;
-            }    
+            }
             $num = count($releqns);
             if ($num == 0) {
                 return NULL;
@@ -830,7 +830,8 @@
 
             foreach ($releqns as $key=>$value) {
                 $query = "UPDATE {{questions}} SET relevance=1 WHERE qid=".$key;
-                dbExecuteAssoc($query);
+                //dbExecuteAssoc($query);
+                $data = Yii::app()->db->createCommand($query)->query();
             }
             return count($releqns);
         }
@@ -868,7 +869,7 @@
             $relevanceEqns = array();
             $scenarios = array();
             $relAndList = array();
-            $relOrList = array();   
+            $relOrList = array();
             foreach($aConditions as $row)
             {
                 $row['method']=trim($row['method']); //For Postgres
@@ -3976,7 +3977,7 @@
                 // Set $jsVarName_on (for on-page variables - e.g. answerSGQA) and $jsVarName (for off-page  variables; the primary name - e.g. javaSGQA)
                 $jsVarName = '';
                 $jsVarName_on = '';
-                
+
                 switch($type)
                 {
                     case 'R': //RANKING STYLE
@@ -5576,12 +5577,13 @@
                 if (isset($_SESSION[$this->sessid]['srid']) && $this->surveyOptions['active'])
                 {
                     $query .= $_SESSION[$this->sessid]['srid'];
-                    
+
                     //If the responses already have been submitted once they are marked as completed already, so they shouldn't be changed.
                     $oSurveyResponse = SurveyDynamic::model($this->sid)->findByAttributes(['id' => $_SESSION[$this->sessid]['srid']]);
                     $result = true;
                     if ($oSurveyResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
-                        $result = !dbExecuteAssoc($query);
+                        $result = !Yii::app()->db->createCommand($query)->query();
+                        //$result = !dbExecuteAssoc($query);
                     }
 
                     if ($result)
@@ -5644,7 +5646,8 @@
                                 $sQuery .= App()->db->quoteColumnName('submitdate') . "=" . App()->db->quoteValue(date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980)));
                             }
                             $sQuery .= " WHERE ID=".$_SESSION[$this->sessid]['srid'];
-                            dbExecuteAssoc($sQuery);   // Checked
+                            Yii::app()->db->createCommand($sQuery)->query();
+                            //dbExecuteAssoc($sQuery);   // Checked
                         }
                     }
 
@@ -7271,7 +7274,7 @@
             $now = microtime(true);
             $LEM =& LimeExpressionManager::singleton();
 
-            $jsParts = array();   
+            $jsParts = array();
             $inputParts = array();
             $allJsVarsUsed = array();
             $rowdividList = array();   // list of subquestions needing relevance entries
@@ -7795,7 +7798,7 @@
                     // {
                     //     $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     // }
-                    
+
                     //Normally trigger reevaluation only for relevant questions except for equation questions
                     if($arg['type'] != '*') {
                         $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
@@ -8710,8 +8713,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             .$lang
             ." ORDER BY a.qid, a.scale_id, a.sortorder";
 
-            $data = dbExecuteAssoc($query);
-
+            //$data = dbExecuteAssoc($query);
+            $data = Yii::app()->db->createCommand($query)->query();
             $qans = array();
 
             $useAssessments = ((isset($this->surveyOptions['assessments'])) ? $this->surveyOptions['assessments'] : false);
@@ -10014,7 +10017,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             // Export survey-level information
             $query = "select * from {{surveys}} where sid = " . $sid;
-            $data = dbExecuteAssoc($query);
+            //$data = dbExecuteAssoc($query);
+            $data = Yii::app()->db->createCommand($query)->query();
             foreach ($data->readAll() as $r)
             {
                 foreach ($r as $key=>$value)
@@ -10042,7 +10046,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             // Export survey language settings
             $query = "select * from {{surveys_languagesettings}} where surveyls_survey_id = " . $sid;
-            $data = dbExecuteAssoc($query);
+            //$data = dbExecuteAssoc($query);
+            $data = Yii::app()->db->createCommand($query)->query();
             foreach ($data->readAll() as $r)
             {
                 $_lang = $r['surveyls_language'];
@@ -10390,7 +10395,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
          * Add a flash message to state-key 'frontend{survey id}'
          * The flash messages are templatereplaced in startpage.tstpl, {FLASHMESSAGE}
          * @todo : validate if it work : unsure it was shown always to user (nojs ?)
-         * 
+         *
          * @param string $type Yii type of flash: `error`, `notice`, 'success'
          * @param string $message
          * @param int $surveyid
