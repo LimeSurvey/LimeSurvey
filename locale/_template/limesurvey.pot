@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-06-12 14:02:05+00:00\n"
+"POT-Creation-Date: 2018-06-12 14:16:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16378,7 +16378,7 @@ msgstr ""
 
 #: application/views/admin/survey/Question/importQuestion_view.php:54
 #: application/views/admin/survey/Question/import_view.php:11
-msgid "Import Question"
+msgid "Import question"
 msgstr ""
 
 #: application/views/admin/survey/Question/import_view.php:13
@@ -20606,7 +20606,7 @@ msgstr ""
 
 #: tmp/twig_translate.php:8 tmp/twig_translate.php:40 tmp/twig_translate.php:47
 #: tmp/twig_translate.php:95
-msgid "Preview Image"
+msgid "Preview image"
 msgstr ""
 
 #: tmp/twig_translate.php:10 tmp/twig_translate.php:82
