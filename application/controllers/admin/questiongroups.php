@@ -413,34 +413,49 @@ class questiongroups extends Survey_Common_Action
      */
     public function updateOrder($surveyid)
     {
-        $grouparray = Yii::app()->request->getPost('grouparray', []);
-        foreach ($grouparray as $aQuestiongroup) {
-            
-            //first set up the ordering for questiongroups
-            $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
-            array_map(function($oQuestiongroup) use ($aQuestiongroup)
-            {
-                $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
-                $oQuestiongroup->save();
-            }, $oQuestiongroups);
-
-            
-            foreach ($aQuestiongroup['questions'] as $aQuestion) {
-                $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]);
-                array_map(function($oQuestion) use ($aQuestion)
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if(!$oSurvey->isActive) {
+            $grouparray = Yii::app()->request->getPost('grouparray', []);
+            foreach ($grouparray as $aQuestiongroup) {
+                
+                //first set up the ordering for questiongroups
+                $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
+                array_map(function($oQuestiongroup) use ($aQuestiongroup)
                 {
-                    $oQuestion->question_order = $aQuestion['question_order'];
-                    $oQuestion->gid = $aQuestion['gid'];
-                    $oQuestion->save(true);
-                }, $oQuestions);
-            }
-        }
+                    $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
+                    $oQuestiongroup->save();
+                }, $oQuestiongroups);
 
+                
+                foreach ($aQuestiongroup['questions'] as $aQuestion) {
+                    $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]);
+                    array_map(function($oQuestion) use ($aQuestion)
+                    {
+                        $oQuestion->question_order = $aQuestion['question_order'];
+                        $oQuestion->gid = $aQuestion['gid'];
+                        $oQuestion->save(true);
+                    }, $oQuestions);
+                }
+            }
+
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => true,
+                        'DEBUG' => ['POST'=>$_POST, 'grouparray' => $grouparray]
+                    ],
+                ),
+                false,
+                false
+            );
+        }
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
                 'data' => [
-                    'success' => true,
+                    'success' => false,
+                    'message' => gT("You can't reorder in an active survey"),
                     'DEBUG' => ['POST'=>$_POST, 'grouparray' => $grouparray]
                 ],
             ),

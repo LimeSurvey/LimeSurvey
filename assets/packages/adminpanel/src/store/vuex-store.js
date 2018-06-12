@@ -38,6 +38,7 @@ const getAppState = function (userid) {
         sidemenus: null,
         topmenus: null,
         bottommenus: null,
+        surveyActiveState: false
     };
 
     return new Vuex.Store({
@@ -141,6 +142,9 @@ const getAppState = function (userid) {
             },
             updatePjax(state) {
                 $(document).trigger('pjax:refresh');           
+            },
+            setSurveyActiveState(state, surveyState) {
+                state.surveyActiveState = !!surveyState;
             }
         }
     });
