@@ -160,9 +160,9 @@ class InstallationControllerTest extends TestBaseClassWeb
              */
 
             // Reset urlManager to adapt to latest config.
-            // $config = require($configFile);
+            $config = require($configFile);
             $urlMan = \Yii::app()->urlManager;
-            $urlMan->setUrlFormat('get');
+            $urlMan->setUrlFormat($config['components']['urlManager']['urlFormat']);
 
             // Login.
             self::adminLogin($username, $password);
