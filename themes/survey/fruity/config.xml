@@ -86,6 +86,7 @@
         <stickymatrixheaders>off</stickymatrixheaders>
         <greyoutselected>off</greyoutselected>
         <hideprivacyinfo>off</hideprivacyinfo>
+        <crosshover>off</crosshover>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->

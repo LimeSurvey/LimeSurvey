@@ -429,7 +429,7 @@
             {# Second settings row #}
             <div class='row action_hide_on_inherit'>
                 {# zebrastriping #}
-                <div class='col-sm-12 col-md-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_zebrastriping' class='control-label'>{{ gT("Zebra-striped questions") }}</label>
                         <div class='col-sm-12'>
@@ -454,7 +454,7 @@
                     </div>
                 </div>
                 {# stickymatrixheaders #}
-                <div class='col-sm-12 col-md-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_stickymatrixheaders' class='control-label'>{{ gT("Sticky matrix headers") }}</label>
                         <div class='col-sm-12'>
@@ -479,7 +479,7 @@
                     </div>
                 </div>
                 {# greyoutselected #}
-                <div class='col-sm-12 col-md-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_greyoutselected' class='control-label'>{{ gT("Grey out selected array rows") }}</label>
                         <div class='col-sm-12'>
@@ -504,7 +504,7 @@
                     </div>
                 </div>
                 {# hideprivacyinfo #}
-                <div class='col-sm-12 col-md-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_hideprivacyinfo' class='control-label'>{{ gT("Hide privacy info") }}</label>
                         <div class='col-sm-12'>
@@ -521,6 +521,31 @@
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='hideprivacyinfo' value='inherit' class='selector_option_radio_field simple_edit_options_hideprivacyinfo ' data-id='hideprivacyinfo'/>
+                                        {{ gT("Inherit") }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# crosshover #}
+                <div class='col-sm-12 col-md-4 col-lg-2'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_crosshover' class='control-label'>{{ gT("Cross-hover in matrix questions") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='crosshover' value='on' class='selector_option_radio_field simple_edit_options_crosshover ' data-id='crosshover'/>
+                                    {{ gT("Yes") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='crosshover' value='off' class='selector_option_radio_field simple_edit_options_crosshover ' data-id='crosshover'/>
+                                    {{ gT("No") }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='crosshover' value='inherit' class='selector_option_radio_field simple_edit_options_crosshover ' data-id='crosshover'/>
                                         {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}

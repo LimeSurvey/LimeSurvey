@@ -180,6 +180,10 @@
             background: white;
             opacity: 1;
         }
+        .sticky .ls-heading.stickyBar>td, 
+        .sticky .ls-heading.stickyBar>th {
+            word-break: break-all;
+        }
         
         .sticky .ls-heading:nth-child(n+2) {
             display: none;
@@ -199,6 +203,32 @@
         tr.radio-list.selected:hover,
         tr.radio-list.selected:active{
             opacity: 1;
+        }
+    {% endif %}
+
+    {% if (aSurveyInfo.options.crosshover == "on" ) %}
+        table.ls-answers.table-hover
+         {
+            overflow: hidden;
+            }
+
+        table.ls-answers.table-hover>tbody>tr:hover td,
+        table.ls-answers.table-hover>tbody>tr:hover th {
+            background-color: {{ darkencss(aSurveyInfo.options.questionbackgroundcolor, 50, 0.2) }};
+        }
+
+        table.ls-answers.table-hover>tbody>tr>td, th {
+            position: relative;
+        }
+        table.ls-answers.table-hover>tbody>tr>td:hover::after {
+            content: "";
+            position: absolute;
+            background-color: {{ darkencss(aSurveyInfo.options.questionbackgroundcolor, 50, 0.2) }};
+            left: 0;
+            top: -5000px;
+            height: 10000px;
+            width: 100%;
+            z-index: 2;
         }
     {% endif %}
 
