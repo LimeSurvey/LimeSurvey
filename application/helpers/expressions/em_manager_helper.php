@@ -5612,8 +5612,6 @@
                     if ($response->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
 	                    $response->setAttributes($aResponseAttributes, false);
 	                    if (!$response->save())
-                        $result = !Yii::app()->db->createCommand($query)->query();
-                        //$result = !dbExecuteAssoc($query);
 	                    {
 	                        // @todo This kills the session if adminemail is defined, so the queries below won't work.
 	                        $message = submitfailed('', join("\n",$response->getErorrs()));  // TODO - report SQL error?
