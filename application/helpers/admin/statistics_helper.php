@@ -3272,7 +3272,7 @@ class statistics_helper
                                 $graphLbl[] = $al[1];
                                 break;
                             case 'both':
-                                if (empty($al[0]) == "") {
+                                if ($al[0] == "") {
                                     $graphLbl[] =  gT("No answer") . ': ' . $al[1];
                                 } else {
                                     $graphLbl[] = $al[0] . ': ' . $al[1];
