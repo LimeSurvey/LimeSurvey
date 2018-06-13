@@ -185,12 +185,16 @@
             word-break: break-all;
         }
         
+        .sticky .ls-heading.stickyBar>td:first-child {
+            visibility: hidden;
+        }
+        
         .sticky .ls-heading:nth-child(n+2) {
             display: none;
             background: white;
         }
 
-        .sticky tbody>.ls-heading-repeat:not(.stickyBar) {
+        tbody>.ls-heading-repeat:not(.stickyBar) {
             display: none;
         }
     {% endif %}
@@ -239,6 +243,9 @@
     {{ registerScript("StickyMatrixHeaderScript", "
         var stickyRows = new StickyTableRows();
         $('thead>tr.ls-heading').each(function(itrt, item){
+            if($(item).closest('div.question-container').hasClass('array-flexible-duel-scale')) {
+                return;
+            }
             stickyRows.add(item);
         });
         stickyRows.init();
