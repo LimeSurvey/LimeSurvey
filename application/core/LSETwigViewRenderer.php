@@ -104,7 +104,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         } else {
             throw new CException(
                 sprintf(
-                    gT("Can't render layout %s. Please check the view exists or contact your admin."),
+                    gT("Can't render layout %s. Please check that the view exists or contact your admin."),
                     $viewFile
                 )
             );
