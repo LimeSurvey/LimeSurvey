@@ -16,8 +16,11 @@
     $aExportItemsArray["surveystructure"] = [
         "key" => "surveystructure",
         "description" => "".gT("Survey structure (.lss)"),
-        "detailpage" => "<p>Export only the structure of your survey.</p>"
-                        ."<p>By exporting only the structure, you may pass your survey to a fellow coworker on another instance, or just save it to reuse it later. Also all LimeSurvey Versions are compatible to this kind of export.</p>",
+        "detailpage" => "<p>".gT("This export will dump all the groups, questions, answers and conditions for your survey into a .LSS file"
+        ."(which is basically an XML file). This dump file can be used with the 'Import survey' feature when creating a new survey.")."</p>"
+        ."<p>".gT("A survey which uses a custom theme will import fine, but the template it refers to will not exist on the new server."
+        ." In that case the system will use the global default theme.")."</p>"
+        ."<p><b>".gT("Please note: This file does not contain any collected responses.")."</b></p>",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/".$oSurvey->sid),
         "download" => true
     ];
@@ -26,15 +29,23 @@
         ? [
             "key" => "surveyarchive",
             "description" => "".gT("Survey archive (.lsa)"),
-            "detailpage" => "<p>Export the structure of your survey together with all collected responses.</p>"
-                            ."<p>The archive contains as well the structure of your survey, as also the collected responses. If you import this into another LimeSurvey instance you will be able to work on the same statistics as in this instance.</p>",
+            "detailpage" => "
+            <p>".gT("This export is intended to create a complete backup of an active survey for archival purposes.")."</p>
+            <p>".gT("It will include the following data in a ZIP file ending with '.lsa'.")."</p>
+            <ul>
+                <li>".gT("Survey structure")."</li>
+                <li>".gT("Response data (Files uploaded in a file upload question have to exported separately)")."</li>
+                <li>".gT("Token data (if activated)")."</li>
+                <li>".gT("Timings (if activated)")."</li>
+            </ul>
+            ",
             "href" => $this->createUrl("admin/export/sa/survey/action/exportarchive/surveyid/".$oSurvey->sid),
             "download" => true                              
         ]
         : [
             "key" => "surveyarchive",
-            "description" => "".gT("Survey archive (.lsa)"),
-            "detailpage" => "<p>This is only available in an activated survey.</p>",
+            "description" => "".gT("Survey archive - only in active surveys"),
+            "detailpage" => "",
             "href" => '#',
             "htmlclasses" => 'disabled',
             "extraAttributes" => 'disabled="disabled" onclick="return false;"',
@@ -46,8 +57,11 @@
     $aExportItemsArray["quexml"] = [
         "key" => "quexml",
         "description" => "".gT("queXML format (*.xml)"),
-        "detailpage" => "<p>Export the survey in the queXML format.</p>"
-                        ."<p>To get to know more about queXML check this page: <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au<i class=\"fa fa-link-external\"></i></a>.</p>",
+        "detailpage" => "
+        <p>".gT("queXML is an XML description of a questionnaire.")."</p>
+        <p>".gT("It is not suitable for backing up a LimeSurvey survey as it cannot export conditions, and isn't able to export all question types.")."</p>
+        <p>".gT("Exporting a questionnaire to queXML allows you to create PDF documents that can be printed, filled then scanned and processed using queXF software.")."</p>
+        <p>".gT("To get to know more about queXML check this page:")." <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au <i class=\"fa fa-external-link\"></i></a>.</p>",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/".$oSurvey->sid),
         "download" => true                            
     ];
@@ -55,8 +69,11 @@
     $aExportItemsArray["quexmlpdf"] =  [
         "key" => "quexmlpdf",
         "description" => "".gT("queXML PDF export"),
-        "detailpage" => "<p>Export the survey in the queXML format as a pdf.</p>"
-                        ."<p>To get to know more about queXML check this page: <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au<i class=\"fa fa-link-external\"></i></a>.</p>",
+        "detailpage" => "
+        <p>".gT("queXML is an XML description of a questionnaire.")."</p>
+        <p>".gT("On the following page you will be able to create a pdf that can be printed filled out and scanned again.")."</p>
+        <p>".gT("It is not suitable for backing up a LimeSurvey survey as it cannot export conditions, and isn't able to export all question types.")."</p>
+        <p>".gT("To get to know more about queXML check this page:")." <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au <i class=\"fa fa-external-link\"></i></a>.</p>",
         "href" => $this->createUrl("admin/export/sa/quexml/surveyid/".$oSurvey->sid),
         "download" => false
     ];
@@ -64,8 +81,13 @@
     $aExportItemsArray["tabseperated"] =  [
         "key" => "tabseperated",
         "description" => "".gT("Tab-separated-values format (*.txt)"),
-        "detailpage" => "<p>Export the survey structure in a tab-seperated value format.</p>
-                        .<p>This format is recognized by LimeSurvey and some third-party systems. We would recommend to export the survey as .lss to transfer it to another LimeSurvey instance.</p>",
+        "detailpage" => "
+        <p>".gT("This feature is designed to make it easy to use Excel to author and edit surveys.")."</p>
+        <p>".gT("It completely eliminates the dependence upon SGQA codes.")."</p>
+        <p>".gT("It also makes it easy to do bulk editing of your survey, such as find-replace, bulk-reordering, looping (repeating groups), "
+        ."and testing (such as temporarily disabling mandatory or validation criteria).")."</p>
+        <p><a href=\"https://manual.limesurvey.org/Excel_Survey_Structure\" target=\"_blank\" >".gT("Check out the dedicated documentation for this format.")." <i class=\"fa fa-external-link\"></i></a></p>
+        ",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/".$oSurvey->sid),
         "download" => true
     ];
@@ -73,17 +95,25 @@
     $aExportItemsArray["printablesurveyhtml"] = [
         "key" => "printablesurveyhtml",
         "description" => gT("Printable survey (*.html)"),
-        "detailpage" => "<p>Download the survey as a HTML-file to be printed out, or to be shown on a seperate device.</p>",
+        "detailpage" => "
+        <p>".gT("This will download a .zip file containing the survey in all languages.")."</p>
+        <p>".gT("It will also contain the necessary stylesheets to put it up on any HTML-ready devices or browsers")."</p>
+        <p>".gT("It will not contain any logic, or EM-functionalities, you will have to calculate that yourself.")."</p>
+        ",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/".$oSurvey->sid),
         "download" => true,
-        "external" => true
+        "downloadFilename" => $oSurvey->sid.'_'.strtolower(preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',$oSurvey->currentLanguageSettings->surveyls_title)).'.html'
     ];
     if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent', 'read')) {
         if ($onelanguage) {
             $aExportItemsArray["printablesurvey"] = [
                 "key" => "printablesurvey",
                 "description" => gT("Printable survey"),
-                "detailpage" => "<p>Open the survey to be printed out, or to be shown on a seperate device.</p>",
+                "detailpage" => "
+                <p>".gT("This will open the survey as a printable page in another window.")."</p>
+                <p>".gT("All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browsers menu.")."</p>
+                <p>".gT("It will not contain any logic, or EM-functionalities, you will have to calculate that yourself.")."</p>
+                ",
                 "href" => $this->createUrl("admin/printablesurvey/sa/index/surveyid/$oSurvey->sid"),
                 "download" => false,
                 "external" => true
@@ -104,11 +134,14 @@
                 $aExportItemsArray["printablesurvey_".$tmp_lang] = [
                     "key" => "printablesurvey_".$tmp_lang,
                     "description" => gT("Printable survey").' ('.getLanguageNameFromCode($tmp_lang, false).')',
-                    "detailpage" => "<p>Open the survey to be printed out, or to be shown on a seperate device.</p>"
-                                    ."<p>The opened survey will be in ".getLanguageNameFromCode($tmp_lang, false)."</p>",
+                    "detailpage" => "
+                    <p>".sprintf(gT("This will open the survey in %s as a printable page in another window."), getLanguageNameFromCode($tmp_lang, false))."</p>
+                    <p>".gT("All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browsers menu.")."</p>
+                    <p>".gT("It will not contain any logic, or EM-functionalities, you will have to calculate that yourself.")."</p>
+                    ",
                     "href" => $this->createUrl("admin/printablesurvey/sa/index/surveyid/".$oSurvey->sid."/lang/".$tmp_lang),
-                    "download" => false,
-                    "external" => true
+                    "external" => true,
+                    "downloadFilename" => $oSurvey->sid.'_'.strtolower(preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',$oSurvey->currentLanguageSettings->surveyls_title)).'.html'
                 ];
             }
         }
@@ -141,7 +174,14 @@
                     window.open(loadUrl, '_blank');
                 } else {
                     if(itemData.itemArray.download == true) {
-                        window.location.href=loadUrl;
+                        var link = document.createElement('a');
+                        link.setAttribute('href', loadUrl);
+                        link.setAttribute('download', itemData.downloadFilename ? itemData.downloadFilename : value);
+                        link.setAttribute('target', '_blank');
+                        link.style.display = 'none';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
                     } else {
                         $(document).trigger('pjax:load', {url: loadUrl});
                     }
@@ -149,15 +189,6 @@
                 $('#selector__exportTypeSelector--buttonText').html('".gT("Display/Export")."');
                 "
             ],
-            "onGetDetails" => [
-                "curDetailPage",
-                "itemData",
-                "if(itemData.itemArray.deactivated == true){
-                    return '';
-                }
-                return curDetailPage;
-                "
-            ]
         ]
     ));
 ?>
@@ -166,73 +197,3 @@
     <?=$oExportSelector->getButtonOrSelect(); ?>
 </div>
 <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
-<?php /*
-    <!-- Main dropdown -->
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="icon-display_export" ></span>
-      <?php eT("Display / Export"); ?> <span class="caret"></span>
-    </button>
-
-    <!-- dropdown -->
-    <ul class="dropdown-menu">
-
-        <!-- Export -->
-        <li class="dropdown-header"> <?php eT("Export..."); ?></li>
-
-        <!-- Survey structure -->
-        <li>
-            <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/$oSurvey->sid"); ?>' >
-                <span class="icon-export" ></span>
-                <?php eT("Survey structure (.lss)"); ?>
-            </a>
-        </li>
-
-        <?php if ($respstatsread && $surveyexport): ?>
-            <?php if ($oSurvey->isActive):?>
-
-                <!-- Survey archive -->
-                <li>
-                    <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportarchive/surveyid/$oSurvey->sid"); ?>' >
-                        <span class="icon-export" ></span>
-                        <?php eT("Survey archive (.lsa)"); ?>
-                    </a>
-                </li>
-            <?php else: ?>
-                <!-- Survey archive unactivated -->
-                <li>
-                    <a href="#" onclick="alert('<?php eT("You can only archive active surveys.", "js"); ?>');" >
-                        <span class="icon-export" ></span>
-                        <?php eT("Survey archive (.lsa)"); ?>
-                    </a>
-                </li>
-            <?php endif; ?>
-        <?php endif; ?>
-
-        <!-- queXML -->
-        <li>
-          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/$oSurvey->sid"); ?>' >
-              <span class="icon-export" ></span>
-              <?php eT("queXML format (*.xml)"); ?>
-          </a>
-        </li>
-
-        <!-- queXMLPDF -->
-        <li>
-          <a href='<?php echo $this->createUrl("admin/export/sa/quexml/surveyid/$oSurvey->sid"); ?>' >
-              <span class="icon-export" ></span>
-              <?php eT("queXML PDF export"); ?>
-          </a>
-        </li>
-
-
-        <!-- Tab-separated-values -->
-        <li>
-          <a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/$oSurvey->sid"); ?>' >
-              <span class="icon-export" ></span>
-              <?php eT("Tab-separated-values format (*.txt)"); ?>
-          </a>
-        </li>
-
-    </ul>
-</div>
-*/ ?>
