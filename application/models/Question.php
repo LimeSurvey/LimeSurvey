@@ -1090,4 +1090,20 @@ class Question extends LSActiveRecord
         return QuestionAttribute::model()->findAll($criteria);
     }
 
+    /**
+     * @param array $data
+     * @return boolean|null
+     */
+    public function insertRecords($data)
+    {
+        $oRecord = new self;
+        foreach ($data as $k => $v) {
+            $oRecord->$k = $v;
+        }
+        if ($oRecord->validate()) {
+            return $oRecord->save();
+        }
+        Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
+    }
+
 }
