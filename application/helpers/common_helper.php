@@ -1947,7 +1947,7 @@ function javascriptEscape($str, $strip_tags = false, $htmldecode = false)
 * @param mixed $attachments
 * @return bool If successful returns true
 */
-function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
+function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "", $cc = array(), $bcc = array())
 {
     global $maildebug, $maildebugbody;
     require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
@@ -1971,7 +1971,13 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         $to = array($to);
     }
 
+    if (!is_array($cc)) {
+        $cc = array($cc);
+    }
 
+    if (!is_array($bcc)) {
+        $bcc = array($bcc);
+    }
 
     if (!is_array($customheaders) && $customheaders == '') {
         $customheaders = array();
@@ -2042,15 +2048,37 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
 
     $mail->SetFrom($fromemail, $fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
-    foreach ($to as $singletoemail) {
-        if (strpos($singletoemail, '<')) {
-            $toemail = substr($singletoemail, strpos($singletoemail, '<') + 1, strpos($singletoemail, '>') - 1 - strpos($singletoemail, '<'));
-            $toname = trim(substr($singletoemail, 0, strpos($singletoemail, '<') - 1));
-            $mail->AddAddress($toemail, $toname);
+
+    foreach ($to as $recipient) {
+        if (strpos($recipient, '<')) {
+            $email = substr($recipient, strpos($recipient, '<') + 1, strpos($recipient, '>') - 1 - strpos($recipient, '<'));
+            $name = trim(substr($recipient, 0, strpos($recipient, '<') - 1));
+            $mail->AddAddress($email, $name);
         } else {
-            $mail->AddAddress($singletoemail);
+            $mail->AddAddress($recipient);
         }
     }
+
+    foreach ($cc as $recipient) {
+        if (strpos($recipient, '<')) {
+            $email = substr($recipient, strpos($recipient, '<') + 1, strpos($recipient, '>') - 1 - strpos($recipient, '<'));
+            $name = trim(substr($recipient, 0, strpos($recipient, '<') - 1));
+            $mail->addCC($email, $name);
+        } else {
+            $mail->addCC($recipient);
+        }
+    }
+
+    foreach ($bcc as $recipient) {
+        if (strpos($recipient, '<')) {
+            $email = substr($recipient, strpos($recipient, '<') + 1, strpos($recipient, '>') - 1 - strpos($recipient, '<'));
+            $name = trim(substr($recipient, 0, strpos($recipient, '<') - 1));
+            $mail->addBCC($email, $name);
+        } else {
+            $mail->addBCC($recipient);
+        }
+    }
+
     if (is_array($customheaders)) {
         foreach ($customheaders as $key=>$val) {
             $mail->AddCustomHeader($val);
