@@ -334,7 +334,7 @@
     }
     
     // ----- Look for default option values
-    @$this->privOptionDefaultThreshold($v_options);
+    $this->privOptionDefaultThreshold($v_options);
 
     // ----- Init
     $v_string_list = array();
@@ -521,7 +521,7 @@
     }
 
     // ----- Look for default option values
-    @$this->privOptionDefaultThreshold($v_options);
+    $this->privOptionDefaultThreshold($v_options);
 
     // ----- Init
     $v_string_list = array();
@@ -798,7 +798,7 @@
     }
 
     // ----- Look for default option values
-    @$this->privOptionDefaultThreshold($v_options);
+    $this->privOptionDefaultThreshold($v_options);
 
     // ----- Trace
 
@@ -973,7 +973,7 @@
     $v_options[PCLZIP_OPT_BY_INDEX] = $v_options_trick[PCLZIP_OPT_BY_INDEX];
 
     // ----- Look for default option values
-    @$this->privOptionDefaultThreshold($v_options);
+    $this->privOptionDefaultThreshold($v_options);
 
     // ----- Call the extracting fct
     if (($v_result = $this->privExtractByRule($p_list, $v_path, $v_remove_path, $v_remove_all_path, $v_options)) < 1) {
@@ -1839,14 +1839,14 @@
  
     if($last == 'g') {
         //$v_memory_limit = $v_memory_limit*1024*1024*1024;
-        $v_memory_limit = $v_memory_limit*1073741824;
+        $v_memory_limit = ((int) $v_memory_limit)*1073741824;
     }
     if($last == 'm') {
         //$v_memory_limit = $v_memory_limit*1024*1024;
         $v_memory_limit = ((int) $v_memory_limit) * 1048576;
     }
     if($last == 'k') {
-        $v_memory_limit = $v_memory_limit*1024;
+        $v_memory_limit = ((int) $v_memory_limit)*1024;
     }
             
     $p_options[PCLZIP_OPT_TEMP_FILE_THRESHOLD] = floor($v_memory_limit*PCLZIP_TEMPORARY_FILE_RATIO);
