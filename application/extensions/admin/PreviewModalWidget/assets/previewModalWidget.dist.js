@@ -136,7 +136,7 @@ var PreviewModalScript = function () {
                 $(this.modalItem).on('show.bs.modal', function () {
                     _this.onModalShown();
                 });
-                $('.selector__Item--select-' + this.widgetsJsName).on('click', function (ev) {
+                $('.selector__Item--select-' + this.widgetsJsName + ':not(.disabled)').on('click', function (ev) {
                     _this.selectItemClick(ev);
                 });
                 $('#selector__select-this-' + this.widgetsJsName).on('click', function () {

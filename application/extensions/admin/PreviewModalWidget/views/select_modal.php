@@ -6,7 +6,7 @@
 <?php //The hidden input ?>
 <input id="<?=$this->widgetsJsName?>" name="<?=$this->widgetsJsName?>" value="<?=$this->value?>" type="hidden" />
 <?php //The modal ?>
-<div class="modal fade previewModalWidget" tabindex="-1" role="dialog" id="selector__<?=$this->widgetsJsName?>-modal" style="z-index: 1250">
+<div class="modal fade previewModalWidget" tabindex="-1" role="dialog" id="selector__<?=$this->widgetsJsName?>-modal" data-backdrop="false">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -19,17 +19,18 @@
             <div class="col-xs-4 ls-ba">
               <div class="panel-body ls-space padding all-0">
                 <div class="list-group ls-space margin all-0">
-                  <?php foreach ($this->itemArray as $sItemKey => $aItemContent) { ?>
+                  <?php foreach ($this->itemsArray as $sItemKey => $aItemContent) { ?>
                     <a 
                       href="#" 
-                      class="list-group-item selector__Item--select-<?=$this->widgetsJsName?>" 
-                      data-selector="<?=$aItemContent['class'] ? $aItemContent['class'] : $sItemKey ?>"
-                      data-key="<?=$key?>"
+                      class="list-group-item selector__Item--select-<?=$this->widgetsJsName?> <?=@$aItemContent['htmlclasses']?>" 
+                      data-selector="<?=!empty($aItemContent['class']) ? $aItemContent['class'] : $sItemKey ?>"
+                      data-key="<?=$sItemKey?>"
                       data-item-value='<?=json_encode([
                             "key" => $sItemKey,
                             "title" => htmlentities($aItemContent['description']),
                             "itemArray" => $aItemContent
                         ]); ?>' 
+                      <?=@$aItemContent['extraAttributes']?>
                     >
                       <?=$aItemContent['description']?>
                         <?php if (YII_DEBUG) {

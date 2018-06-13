@@ -1428,16 +1428,17 @@ class printablesurvey extends Survey_Common_Action
         if (intval($labelBaseWidth) < 1 || intval($labelBaseWidth) > 12) {
             $labelBaseWidth = null;
         }
+        
         if (!$answerBaseWidth && !$labelBaseWidth) {
             $sInputContainerWidth = 8;
             $sLabelWidth = 4;
         } else {
             if ($answerBaseWidth) {
                 $sInputContainerWidth = $answerBaseWidth;
-            } elseif ($attributeLabelWidth == 12) {
+            } elseif ($labelBaseWidth == 12) {
                 $sInputContainerWidth = 12;
             } else {
-                $sInputContainerWidth = 12 - $attributeLabelWidth;
+                $sInputContainerWidth = 12 - $labelBaseWidth;
             }
             if ($labelBaseWidth) {
                 $sLabelWidth = $labelBaseWidth;

@@ -96,7 +96,7 @@ class PreviewModalScript {
         if(/modal/.test(this.options.viewType)){
             $(this.modalItem).on('hide.bs.modal', ()=>{this.onModalClosed()});
             $(this.modalItem).on('show.bs.modal', ()=>{this.onModalShown()});
-            $(`.selector__Item--select-${this.widgetsJsName}`).on('click', (ev)=>{this.selectItemClick(ev)});
+            $(`.selector__Item--select-${this.widgetsJsName}:not(.disabled)`).on('click', (ev)=>{this.selectItemClick(ev)});
             $(`#selector__select-this-${this.widgetsJsName}`).on('click', () => {
                 this.options.onUpdate(this.options.value);
                 this.modalItem.modal('hide');

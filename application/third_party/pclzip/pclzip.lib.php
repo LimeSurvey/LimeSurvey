@@ -334,7 +334,7 @@
     }
     
     // ----- Look for default option values
-    $this->privOptionDefaultThreshold($v_options);
+    @$this->privOptionDefaultThreshold($v_options);
 
     // ----- Init
     $v_string_list = array();
@@ -521,7 +521,7 @@
     }
 
     // ----- Look for default option values
-    $this->privOptionDefaultThreshold($v_options);
+    @$this->privOptionDefaultThreshold($v_options);
 
     // ----- Init
     $v_string_list = array();
@@ -798,7 +798,7 @@
     }
 
     // ----- Look for default option values
-    $this->privOptionDefaultThreshold($v_options);
+    @$this->privOptionDefaultThreshold($v_options);
 
     // ----- Trace
 
@@ -973,7 +973,7 @@
     $v_options[PCLZIP_OPT_BY_INDEX] = $v_options_trick[PCLZIP_OPT_BY_INDEX];
 
     // ----- Look for default option values
-    $this->privOptionDefaultThreshold($v_options);
+    @$this->privOptionDefaultThreshold($v_options);
 
     // ----- Call the extracting fct
     if (($v_result = $this->privExtractByRule($p_list, $v_path, $v_remove_path, $v_remove_all_path, $v_options)) < 1) {
