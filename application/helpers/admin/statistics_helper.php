@@ -3638,10 +3638,7 @@ class statistics_helper {
                 if($outputType == 'xls' || $outputType == 'pdf')
                 {
                     $graphLbl = [];
-                    //echo '<pre>'; var_dump($outputs); echo '</pre>';
                     foreach ($outputs['alist'] as $al) {
-                        //echo '<pre>'; var_dump($al); echo '</pre>';
-                        //die;
                         switch ($_POST['graph_labels']) {
                             case 'qtext':
                                 $graphLbl[] = $al[1];
