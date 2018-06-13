@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <p>
-                <input type='submit' class="hidden" value='<?php eT("Import Question"); ?>' />
+                <input type='submit' class="hidden" value='<?php eT("Import question"); ?>' />
                 <input type='hidden' name='action' value='importquestion' />
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
             </form>

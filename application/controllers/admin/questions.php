@@ -1215,7 +1215,7 @@ class questions extends Survey_Common_Action
             $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $oQuestion->type, $surveyid);
             $aData['aQuestionTemplateAttributes'] = $questionTemplateAttributes['question_template'];
             $aData['aQuestionTemplateAttributes']['core'] = array('title'=>'Default', 'preview' => questionHelper::getQuestionThemePreviewUrl($oQuestion->type));
-            $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($oQuestion->type);
+                $aData['aQuestionTemplateAttributes']['value'] = 'core';
 
             if (!$adding) {
                 $criteria = new CDbCriteria;

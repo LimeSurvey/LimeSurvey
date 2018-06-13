@@ -18,6 +18,8 @@
 
 /**
  * Returns a global setting
+ * @deprecated : use App()->getConfig($settingname)
+ * since all config are set at start of App : no need to read and test again 
  *
  * @param string $settingname
  * @return string
@@ -48,7 +50,11 @@ function getGlobalSetting($settingname)
 }
 
 /**
+ * Set a global setting after control (must be moved to rules or filter of SettingGlobal model)
+ * And save it in DB
  * @param string $settingname
+ * @param string $settingvalue
+ * @return void
  */
 function setGlobalSetting($settingname, $settingvalue)
 {

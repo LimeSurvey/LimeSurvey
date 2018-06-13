@@ -825,7 +825,7 @@
             $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
             if(!is_array($releqns)) {
                 return NULL;
-            }    
+            }
             $num = count($releqns);
             if ($num == 0) {
                 return NULL;
@@ -833,7 +833,8 @@
 
             foreach ($releqns as $key=>$value) {
                 $query = "UPDATE {{questions}} SET relevance=1 WHERE qid=".$key;
-                Yii::app()->db->createCommand($query)->execute();
+                //dbExecuteAssoc($query);
+                $data = Yii::app()->db->createCommand($query)->query();
             }
             return count($releqns);
         }
@@ -878,7 +879,7 @@
             $relevanceEqns = array();
             $scenarios = array();
             $relAndList = array();
-            $relOrList = array();   
+            $relOrList = array();
             foreach($aConditions as $row)
             {
                 $row['method']=trim($row['method']); //For Postgres
@@ -3990,7 +3991,7 @@
                 // Set $jsVarName_on (for on-page variables - e.g. answerSGQA) and $jsVarName (for off-page  variables; the primary name - e.g. javaSGQA)
                 $jsVarName = '';
                 $jsVarName_on = '';
-                
+
                 switch($type)
                 {
                     case Question::QT_R_RANKING_STYLE: //RANKING STYLE
@@ -5611,6 +5612,8 @@
                     if ($response->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
 	                    $response->setAttributes($aResponseAttributes, false);
 	                    if (!$response->save())
+                        $result = !Yii::app()->db->createCommand($query)->query();
+                        //$result = !dbExecuteAssoc($query);
 	                    {
 	                        // @todo This kills the session if adminemail is defined, so the queries below won't work.
 	                        $message = submitfailed('', join("\n",$response->getErorrs()));  // TODO - report SQL error?
@@ -5671,6 +5674,8 @@
                             $aResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
                             $aResponse->submitdate = $submitdate;
                             $aResponse->save();
+                            Yii::app()->db->createCommand($sQuery)->query();
+                            //dbExecuteAssoc($sQuery);   // Checked
                         }
                     }
 
@@ -7255,7 +7260,7 @@
          * @return string|null : hidden inputs needed for relevance
          * @todo : add directly hidden input in page without return it.
          */
-        public static function FinishProcessPublicPage()
+        public static function FinishProcessPublicPage($applyJavaScriptAnyway=false)
         {
             if(self::isInitialized()) {
                 $LEM =& LimeExpressionManager::singleton();
@@ -7263,15 +7268,28 @@
                 $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
                 $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
                 $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
+                
                 $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-                Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+                Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
+                Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_POSTSCRIPT);
+                Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/      
+                
                 $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
-                Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", CClientScript::POS_END);
-                Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", CClientScript::POS_END); /* Maybe only if we have mandatory error ?*/
                 $LEM->FinishProcessingPage();
+                
                 return $sHiddenInputs;
+            } else if($applyJavaScriptAnyway && !self::isInitialized()){
+                $LEM =& LimeExpressionManager::singleton();
+                $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
+                
+                $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
+                Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
+                Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_POSTSCRIPT);
+                Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/      
+                
             }
         }
+
         /*
         * Generate JavaScript needed to do dynamic relevance and tailoring
         * Also create list of variables that need to be declared
@@ -7283,7 +7301,7 @@
             $now = microtime(true);
             $LEM =& LimeExpressionManager::singleton();
 
-            $jsParts = array();   
+            $jsParts = array();
             $inputParts = array();
             $allJsVarsUsed = array();
             $rowdividList = array();   // list of subquestions needing relevance entries
@@ -7306,7 +7324,7 @@
                 $jsParts[] = "var LEMqid=" . $LEM->currentQID . ";\n";  // current group num so can compute isOnCurrentPage
             }
 
-            $jsParts[] = "window.ExprMgr_process_relevance_and_tailoring = function(evt_type,sgqa,type){\n";
+            $jsParts[] = "ExprMgr_process_relevance_and_tailoring = function(evt_type,sgqa,type){\n";
             $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\n}\n";
             $jsParts[] = "if (evt_type == 'onchange' && (typeof last_sgqa !== 'undefined' && sgqa==last_sgqa) && (typeof last_evt_type !== 'undefined' && last_evt_type == 'TAB' && type != 'checkbox')) {\n";
             $jsParts[] = "  last_evt_type='onchange';\n";
@@ -7805,7 +7823,7 @@
                     // {
                     //     $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     // }
-                    
+
                     //Normally trigger reevaluation only for relevant questions except for equation questions
                     if($arg['type'] != '*') {
                         $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
@@ -7827,119 +7845,122 @@
             }
             $jsParts[] = implode("",$relChangeVars);
 
-            // Process relevance for each group; and if group is relevant, process each contained question in order
-            foreach ($LEM->gRelInfo as $gr)
+            if (is_array($LEM->gRelInfo))
             {
-                if (!array_key_exists($gr['gseq'],$gseqList)) {
-                    continue;
-                }
-                if ($gr['relevancejs'] != '')
+                // Process relevance for each group; and if group is relevant, process each contained question in order
+                foreach ($LEM->gRelInfo as $gr)
                 {
-                    //                $jsParts[] = "\n// Process Relevance for Group " . $gr['gid'];
-                    //                $jsParts[] = ": { " . $gr['eqn'] . " }";
-                    $jsParts[] = "\nif (" . $gr['relevancejs'] . ") {\n";
-                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:on');\n";
-                    $jsParts[] = "  relChangeG" . $gr['gseq'] . "=true;\n";
-                    $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(1);\n";
-
-                    $qids = $gseq_qidList[$gr['gseq']];
-                    foreach ($qids as $_qid=>$_val)
+                    if (!array_key_exists($gr['gseq'],$gseqList)) {
+                        continue;
+                    }
+                    if ($gr['relevancejs'] != '')
                     {
-                        $qid2exclusiveAuto = (isset($LEM->qid2exclusiveAuto[$_qid]) ? $LEM->qid2exclusiveAuto[$_qid] : array());
-                        if ($_val==1)
+                        //                $jsParts[] = "\n// Process Relevance for Group " . $gr['gid'];
+                        //                $jsParts[] = ": { " . $gr['eqn'] . " }";
+                        $jsParts[] = "\nif (" . $gr['relevancejs'] . ") {\n";
+                        $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:on');\n";
+                        $jsParts[] = "  relChangeG" . $gr['gseq'] . "=true;\n";
+                        $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(1);\n";
+
+                        $qids = $gseq_qidList[$gr['gseq']];
+                        foreach ($qids as $_qid=>$_val)
                         {
-                            $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
-                            if (isset($LEM->qattr[$_qid]['exclude_all_others_auto']) && $LEM->qattr[$_qid]['exclude_all_others_auto'] == '1'
-                                && isset($qid2exclusiveAuto['js']) && strlen($qid2exclusiveAuto['js']) > 0)
+                            $qid2exclusiveAuto = (isset($LEM->qid2exclusiveAuto[$_qid]) ? $LEM->qid2exclusiveAuto[$_qid] : array());
+                            if ($_val==1)
                             {
-                                $jsParts[] = $qid2exclusiveAuto['js'];
-                                $vars = explode('|',$qid2exclusiveAuto['relevanceVars']);
-                                if (is_array($vars))
+                                $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                                if (isset($LEM->qattr[$_qid]['exclude_all_others_auto']) && $LEM->qattr[$_qid]['exclude_all_others_auto'] == '1'
+                                    && isset($qid2exclusiveAuto['js']) && strlen($qid2exclusiveAuto['js']) > 0)
                                 {
-                                    $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                                    $jsParts[] = $qid2exclusiveAuto['js'];
+                                    $vars = explode('|',$qid2exclusiveAuto['relevanceVars']);
+                                    if (is_array($vars))
+                                    {
+                                        $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                                    }
+                                    if (!isset($rowdividList[$qid2exclusiveAuto['rowdivid']]))
+                                    {
+                                        $rowdividList[$qid2exclusiveAuto['rowdivid']] = true;
+                                    }
                                 }
-                                if (!isset($rowdividList[$qid2exclusiveAuto['rowdivid']]))
+                                if (isset($LEM->qattr[$_qid]['exclude_all_others']))
                                 {
-                                    $rowdividList[$qid2exclusiveAuto['rowdivid']] = true;
+                                    foreach (explode(';',trim($LEM->qattr[$_qid]['exclude_all_others'])) as $eo)
+                                    {
+                                        // then need to call the function twice so that cascading of array filter onto an excluded option works
+                                        $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                                    }
                                 }
                             }
-                            if (isset($LEM->qattr[$_qid]['exclude_all_others']))
+                        }
+
+                        $jsParts[] = "}\nelse {\n";
+                        $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:off');\n";
+                        $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='1') { relChangeG" . $gr['gseq'] . "=true; }\n";
+                        $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
+                        $jsParts[] = "}\n";
+                    }
+                    else
+                    {
+                        $qids = $gseq_qidList[$gr['gseq']];
+                        foreach ($qids as $_qid=>$_val)
+                        {
+                            $qid2exclusiveAuto = (isset($LEM->qid2exclusiveAuto[$_qid]) ? $LEM->qid2exclusiveAuto[$_qid] : array());
+                            if ($_val == 1)
                             {
-                                foreach (explode(';',trim($LEM->qattr[$_qid]['exclude_all_others'])) as $eo)
+                                $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                                if (isset($LEM->qattr[$_qid]['exclude_all_others_auto']) && $LEM->qattr[$_qid]['exclude_all_others_auto'] == '1'
+                                    && isset($qid2exclusiveAuto['js']) && strlen($qid2exclusiveAuto['js']) > 0)
                                 {
-                                    // then need to call the function twice so that cascading of array filter onto an excluded option works
-                                    $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                                    $jsParts[] = $qid2exclusiveAuto['js'];
+                                    $vars = explode('|',$qid2exclusiveAuto['relevanceVars']);
+                                    if (is_array($vars))
+                                    {
+                                        $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                                    }
+                                    if (!isset($rowdividList[$qid2exclusiveAuto['rowdivid']]))
+                                    {
+                                        $rowdividList[$qid2exclusiveAuto['rowdivid']] = true;
+                                    }
+                                }
+                                if (isset($LEM->qattr[$_qid]['exclude_all_others']))
+                                {
+                                    foreach (explode(';',trim($LEM->qattr[$_qid]['exclude_all_others'])) as $eo)
+                                    {
+                                        // then need to call the function twice so that cascading of array filter onto an excluded option works
+                                        $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
+                                    }
                                 }
                             }
                         }
                     }
 
-                    $jsParts[] = "}\nelse {\n";
-                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:off');\n";
-                    $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='1') { relChangeG" . $gr['gseq'] . "=true; }\n";
-                    $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
-                    $jsParts[] = "}\n";
-                }
-                else
-                {
-                    $qids = $gseq_qidList[$gr['gseq']];
-                    foreach ($qids as $_qid=>$_val)
+                    // Add logic for all-in-one mode to show/hide groups as long as at there is at least one relevant question within the group
+                    // Only do this if there is no explicit group-level relevance equation, else may override group-level relevance
+                    $dynamicQidsInG = (isset($dynamicQinG[$gr['gseq']]) ? $dynamicQinG[$gr['gseq']] : array());
+                    $GalwaysVisible = (isset($GalwaysRelevant[$gr['gseq']]) ? $GalwaysRelevant[$gr['gseq']] : false);
+                    if ($LEM->surveyMode == 'survey' && !$GalwaysVisible && count($dynamicQidsInG) > 0 && strlen(trim($gr['relevancejs']))== 0)
                     {
-                        $qid2exclusiveAuto = (isset($LEM->qid2exclusiveAuto[$_qid]) ? $LEM->qid2exclusiveAuto[$_qid] : array());
-                        if ($_val == 1)
-                        {
-                            $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
-                            if (isset($LEM->qattr[$_qid]['exclude_all_others_auto']) && $LEM->qattr[$_qid]['exclude_all_others_auto'] == '1'
-                                && isset($qid2exclusiveAuto['js']) && strlen($qid2exclusiveAuto['js']) > 0)
-                            {
-                                $jsParts[] = $qid2exclusiveAuto['js'];
-                                $vars = explode('|',$qid2exclusiveAuto['relevanceVars']);
-                                if (is_array($vars))
-                                {
-                                    $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
-                                }
-                                if (!isset($rowdividList[$qid2exclusiveAuto['rowdivid']]))
-                                {
-                                    $rowdividList[$qid2exclusiveAuto['rowdivid']] = true;
-                                }
-                            }
-                            if (isset($LEM->qattr[$_qid]['exclude_all_others']))
-                            {
-                                foreach (explode(';',trim($LEM->qattr[$_qid]['exclude_all_others'])) as $eo)
-                                {
-                                    // then need to call the function twice so that cascading of array filter onto an excluded option works
-                                    $jsParts[] = "  LEMrel" . $_qid . "(sgqa);\n";
-                                }
-                            }
-                        }
+                        // check whether any dependent questions  have changed
+                        $relStatusTest = "($('#relevance" . implode("').val()=='1' || $('#relevance", array_keys($dynamicQidsInG)) . "').val()=='1')";
+
+                        $jsParts[] = "\nif (" . $relStatusTest . ") {\n";
+                        $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:on');\n";
+                        $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='0') { relChangeG" . $gr['gseq'] . "=true; }\n";
+                        $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(1);\n";
+                        $jsParts[] = "}\nelse {\n";
+                        $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:off');\n";
+                        $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='1') { relChangeG" . $gr['gseq'] . "=true; }\n";
+                        $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
+                        $jsParts[] = "}\n";
                     }
-                }
 
-                // Add logic for all-in-one mode to show/hide groups as long as at there is at least one relevant question within the group
-                // Only do this if there is no explicit group-level relevance equation, else may override group-level relevance
-                $dynamicQidsInG = (isset($dynamicQinG[$gr['gseq']]) ? $dynamicQinG[$gr['gseq']] : array());
-                $GalwaysVisible = (isset($GalwaysRelevant[$gr['gseq']]) ? $GalwaysRelevant[$gr['gseq']] : false);
-                if ($LEM->surveyMode == 'survey' && !$GalwaysVisible && count($dynamicQidsInG) > 0 && strlen(trim($gr['relevancejs']))== 0)
-                {
-                    // check whether any dependent questions  have changed
-                    $relStatusTest = "($('#relevance" . implode("').val()=='1' || $('#relevance", array_keys($dynamicQidsInG)) . "').val()=='1')";
-
-                    $jsParts[] = "\nif (" . $relStatusTest . ") {\n";
-                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:on');\n";
-                    $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='0') { relChangeG" . $gr['gseq'] . "=true; }\n";
-                    $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(1);\n";
-                    $jsParts[] = "}\nelse {\n";
-                    $jsParts[] = "  $('#group-" . $gr['gseq'] . "').trigger('relevance:off');\n";
-                    $jsParts[] = "  if ($('#relevanceG" . $gr['gseq'] . "').val()=='1') { relChangeG" . $gr['gseq'] . "=true; }\n";
-                    $jsParts[] = "  $('#relevanceG" . $gr['gseq'] . "').val(0);\n";
-                    $jsParts[] = "}\n";
-                }
-
-                // now make sure any needed variables are accessible
-                $vars = explode('|',$gr['relevanceVars']);
-                if (is_array($vars))
-                {
-                    $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                    // now make sure any needed variables are accessible
+                    $vars = explode('|',$gr['relevanceVars']);
+                    if (is_array($vars))
+                    {
+                        $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                    }
                 }
             }
 
@@ -8000,86 +8021,89 @@
             // Now figure out which variables have not been declared (those not on the current page)
             $undeclaredJsVars = array();
             $undeclaredVal = array();
-            if (!$LEM->allOnOnePage)
+            if ($LEM->knownVars)
             {
-                foreach ($LEM->knownVars as $key=>$knownVar)
+                if (!$LEM->allOnOnePage)
                 {
-                    if (!is_numeric($key[0])) {
-                        continue;
-                    }
-                    if ($knownVar['jsName'] == '') {
-                        continue;
-                    }
-                    foreach ($allJsVarsUsed as $jsVar)
+                    foreach ($LEM->knownVars as $key=>$knownVar)
                     {
-                        if ($jsVar == $knownVar['jsName'])
+                        if (!is_numeric($key[0])) {
+                            continue;
+                        }
+                        if ($knownVar['jsName'] == '') {
+                            continue;
+                        }
+                        foreach ($allJsVarsUsed as $jsVar)
                         {
-                            if ($LEM->surveyMode=='group' && $knownVar['gseq'] == $LEM->currentGroupSeq) {
+                            if ($jsVar == $knownVar['jsName'])
+                            {
+                                if ($LEM->surveyMode=='group' && $knownVar['gseq'] == $LEM->currentGroupSeq) {
                                 if ($knownVar['hidden'] && $knownVar['type'] != Question::QT_ASTERISK_EQUATION) {
-                                    ;   // need to  declare a hidden variable for non-equation hidden variables so can do dynamic lookup.
+                                        ;   // need to  declare a hidden variable for non-equation hidden variables so can do dynamic lookup.
+                                    }
+                                    else {
+                                        continue;
+                                    }
                                 }
-                                else {
+                                if ($LEM->surveyMode=='question' && $knownVar['qid'] == $LEM->currentQID) {
                                     continue;
                                 }
+                                $undeclaredJsVars[] = $jsVar;
+                                $sgqa = $knownVar['sgqa'];
+                                $codeValue = (isset($_SESSION[$LEM->sessid][$sgqa])) ? $_SESSION[$LEM->sessid][$sgqa] : '';
+                                $undeclaredVal[$jsVar] = $codeValue;
+
+                                if (isset($LEM->jsVar2qid[$jsVar])) {
+                                    $qidList[$LEM->jsVar2qid[$jsVar]] = $LEM->jsVar2qid[$jsVar];
+                                }
                             }
-                            if ($LEM->surveyMode=='question' && $knownVar['qid'] == $LEM->currentQID) {
-                                continue;
-                            }
+                        }
+                    }
+                    $undeclaredJsVars = array_unique($undeclaredJsVars);
+                    foreach ($undeclaredJsVars as $jsVar)
+                    {
+                        // TODO - is different type needed for text?  Or process value to striphtml?
+                        if ($jsVar == '') continue;
+                        $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+
+                        if ($bReturnArray){
+                            $inputParts[] = $sInput;
+                        }else{
+                            $jsParts[] = $sInput;
+                        }
+                    }
+                }
+                else
+                {
+                    // For all-in-one mode, declare the always-hidden variables, since qanda will not be called for them.
+                    foreach ($LEM->knownVars as $key=>$knownVar)
+                    {
+                        if (!is_numeric($key[0])) {
+                            continue;
+                        }
+                        if ($knownVar['jsName'] == '') {
+                            continue;
+                        }
+                        if ($knownVar['hidden'])
+                        {
+                            $jsVar = $knownVar['jsName'];
                             $undeclaredJsVars[] = $jsVar;
                             $sgqa = $knownVar['sgqa'];
                             $codeValue = (isset($_SESSION[$LEM->sessid][$sgqa])) ? $_SESSION[$LEM->sessid][$sgqa] : '';
                             $undeclaredVal[$jsVar] = $codeValue;
-
-                            if (isset($LEM->jsVar2qid[$jsVar])) {
-                                $qidList[$LEM->jsVar2qid[$jsVar]] = $LEM->jsVar2qid[$jsVar];
-                            }
                         }
                     }
-                }
-                $undeclaredJsVars = array_unique($undeclaredJsVars);
-                foreach ($undeclaredJsVars as $jsVar)
-                {
-                    // TODO - is different type needed for text?  Or process value to striphtml?
-                    if ($jsVar == '') continue;
-                    $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
 
-                    if ($bReturnArray){
-                        $inputParts[] = $sInput;
-                    }else{
-                        $jsParts[] = $sInput;
-                    }
-                }
-            }
-            else
-            {
-                // For all-in-one mode, declare the always-hidden variables, since qanda will not be called for them.
-                foreach ($LEM->knownVars as $key=>$knownVar)
-                {
-                    if (!is_numeric($key[0])) {
-                        continue;
-                    }
-                    if ($knownVar['jsName'] == '') {
-                        continue;
-                    }
-                    if ($knownVar['hidden'])
+                    $undeclaredJsVars = array_unique($undeclaredJsVars);
+                    foreach ($undeclaredJsVars as $jsVar)
                     {
-                        $jsVar = $knownVar['jsName'];
-                        $undeclaredJsVars[] = $jsVar;
-                        $sgqa = $knownVar['sgqa'];
-                        $codeValue = (isset($_SESSION[$LEM->sessid][$sgqa])) ? $_SESSION[$LEM->sessid][$sgqa] : '';
-                        $undeclaredVal[$jsVar] = $codeValue;
-                    }
-                }
-
-                $undeclaredJsVars = array_unique($undeclaredJsVars);
-                foreach ($undeclaredJsVars as $jsVar)
-                {
-                    if ($jsVar == '') continue;
-                    $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
-                    if ($bReturnArray){
-                        $inputParts[] = $sInput;
-                    }else{
-                        $jsParts[] = $sInput;
+                        if ($jsVar == '') continue;
+                        $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                        if ($bReturnArray){
+                            $inputParts[] = $sInput;
+                        }else{
+                            $jsParts[] = $sInput;
+                        }
                     }
                 }
             }
@@ -8712,8 +8736,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             ." WHERE ".$where
             ." ORDER BY a.qid, a.scale_id, a.sortorder";
 
+            //$data = dbExecuteAssoc($query);
             $data = Yii::app()->db->createCommand($sQuery)->query();
-
             $qans = array();
 
             $useAssessments = ((isset($this->surveyOptions['assessments'])) ? $this->surveyOptions['assessments'] : false);
@@ -8866,7 +8890,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             $value = $newValue;
                                         } else {
                                             $value = "";// This don't disable submitting survey
-                                            $LEM->invalidAnswerString[$sq]=sprintf(gT("Date %s is invalid, review your answer"),htmlspecialchars($value));
+                                            $LEM->invalidAnswerString[$sq]=sprintf(gT("Date %s is invalid, please review your answer."),htmlspecialchars($value));
                                         }
                                     }
                                 }
@@ -9456,21 +9480,21 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey data policy notice:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_policy_error'] != '')
                 {
                     $LEM->ProcessString($aSurveyInfo['surveyls_policy_error'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey data policy error:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_policy_notice_label'] != '')
                 {
                     $LEM->ProcessString($aSurveyInfo['surveyls_policy_notice_label'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Survey data policy label:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
             }
 
@@ -10013,6 +10037,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             // Export survey-level information
             $arSurveyData = Survey::model()->findByPk($sid);
+            //$data = dbExecuteAssoc($query);
+            $data = Yii::app()->db->createCommand($query)->query();
             foreach ($arSurveyData as $r)
             {
                 foreach ($r as $key=>$value)
@@ -10040,6 +10066,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             // Export survey language settings
             $arSurveyLanguageData = SurveyLanguageSetting::findAll("surveyls_survey_id = " . $sid);
+            //$data = dbExecuteAssoc($query);
+            $data = Yii::app()->db->createCommand($query)->query();
             foreach ($arSurveyLanguageData as $r)
             {
                 $_lang = $r['surveyls_language'];
@@ -10387,7 +10415,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
          * Add a flash message to state-key 'frontend{survey id}'
          * The flash messages are templatereplaced in startpage.tstpl, {FLASHMESSAGE}
          * @todo : validate if it work : unsure it was shown always to user (nojs ?)
-         * 
+         *
          * @param string $type Yii type of flash: `error`, `notice`, 'success'
          * @param string $message
          * @param int $surveyid

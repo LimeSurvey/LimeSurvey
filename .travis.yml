@@ -51,6 +51,9 @@ before_script:
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
 
+    # Check for syntax errors.
+    - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
+
     # Test server.
     - wget localhost
     - more localhost
@@ -68,7 +71,5 @@ before_script:
     - java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
 
 script:
-    # Check for syntax errors. This line will never halt the tests.
-    - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
     # Run tests.
     - DOMAIN=localhost phpunit --stop-on-failure

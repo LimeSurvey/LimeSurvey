@@ -1453,7 +1453,7 @@ function getNavigatorDatas()
     // SAVE BUTTON
     if ($thissurvey['allowsave'] == "Y") {
 
-        App()->getClientScript()->registerScript("activateActionLink", "activateActionLink();\n", CClientScript::POS_END);
+        App()->getClientScript()->registerScript("activateActionLink", "activateActionLink();\n", LSYii_ClientScript::POS_POSTSCRIPT);
 
         // Fill some test here, more clear ....
         $bTokenanswerspersistence   = $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);

@@ -103,7 +103,13 @@ var LSSlider = function (options) {
         },
 
         triggerChanges = function () {
-            ExprMgr_process_relevance_and_tailoring('keyup', rootElementName, 'change');
+            try{
+                ExprMgr_process_relevance_and_tailoring('keyup', rootElementName, 'change');
+            } catch(e) {
+                console.ls.warn(e);
+                rootElementObject.trigger('change');
+                rootElementObject.trigger('keyup');
+            }
             if (debugMode > 0) {
                 console.ls.log('sliderDebug triggered change', rootElementObject);
             }

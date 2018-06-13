@@ -532,4 +532,40 @@ class LS_Twig_Extension extends Twig_Extension
         }
         return $sString;
     }
+
+    public static function darkencss($cssColor, $grade=10, $alpha=1){
+
+        $aColors = str_split(substr($cssColor,1), 2);
+        $return = [];
+        foreach ($aColors as $color) {
+            $decColor = hexdec($color);
+            $decColor = $decColor-$grade;
+            $decColor = $decColor<0 ? 0 : ($decColor>255 ? 255 : $decColor);
+            $return[] = $decColor;
+        }
+        if($alpha === 1) {
+            return '#'.join('', array_map(function($val){ return dechex($val);}, $return));
+        }
+
+        return 'rgba('.join(', ', $return).','.$alpha.')';
+        
+
+
+    }
+    
+    public static function lightencss($cssColor, $grade=10, $alpha=1){
+        $aColors = str_split(substr($cssColor,1), 2);
+        $return = [];
+        foreach ($aColors as $color) {
+            $decColor = hexdec($color);
+            $decColor = $decColor+$grade;
+            $decColor = $decColor<0 ? 0 : ($decColor>255 ? 255 : $decColor);
+            $return[] = $decColor;
+        }
+        if($alpha === 1) {
+            return '#'.join('', array_map(function($val){ return dechex($val);}, $return));
+        }
+
+        return 'rgba('.join(', ', $return).','.$alpha.')';
+    }
 }

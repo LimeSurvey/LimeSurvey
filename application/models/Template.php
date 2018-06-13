@@ -101,7 +101,8 @@ class Template extends LSActiveRecord
 
     /**
      * @return array customized attribute labels (name=>label)
-     */
+    */
+
     public function attributeLabels()
     {
         return array(
@@ -151,7 +152,7 @@ class Template extends LSActiveRecord
         }
 
         $sRequestedTemplate = $sTemplateName;
-        $sDefaultTemplate = getGlobalSetting('defaulttheme');
+        $sDefaultTemplate = App()->getConfig('defaulttheme');
 
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
@@ -180,7 +181,7 @@ class Template extends LSActiveRecord
 
         if (!empty($sTemplateName)) {
             setGlobalSetting('defaulttheme', $sTemplateName);
-            $sDefaultTemplate = getGlobalSetting('defaulttheme');
+            $sDefaultTemplate = App()->getConfig('defaulttheme');
 
             if(method_exists(Yii::app(), 'setFlashMessage'))
                 Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
@@ -479,7 +480,7 @@ class Template extends LSActiveRecord
     {
         // The error page from default template can be called when no survey found with a specific ID.
         if ($sTemplateName === null && $iSurveyId === null) {
-            $sTemplateName = getGlobalSetting('defaulttheme');
+            $sTemplateName = App()->getConfig('defaulttheme');
         }
 
         if ($bForceXML === null) {

@@ -35,9 +35,11 @@
 
 
 ?>
+<script>console.log("Survey active?", "<?=(Survey::model()->findByPk($surveyid)->isActive ? 1 : 0)?>")</script>
 <sidebar
     :options="[]"
     surveyid = '<?=$surveyid?>'
+    is-active = <?=(Survey::model()->findByPk($surveyid)->isActive ? 1 : 0)?>
     get-questions-url="<?=$getQuestionsUrl ?>"
     get-menu-url="<?=$getMenuUrl ?>"
     create-question-group-link ="<?=$createQuestionGroupLink?>"

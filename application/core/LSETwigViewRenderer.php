@@ -45,7 +45,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         if ($oLayoutTemplate) {
             $line       = file_get_contents($oLayoutTemplate->viewPath.$sLayout);
             $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
-            $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage();
+            $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if($sEmHiddenInputs) {
                 $sHtml = str_replace("<!-- emScriptsAndHiddenInputs -->","<!-- emScriptsAndHiddenInputs updated -->\n".$sEmHiddenInputs,$sHtml);
             }
@@ -110,7 +110,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         } else {
             throw new CException(
                 sprintf(
-                    gT("Can't render layout %s. Please check the view exists or contact your admin."),
+                    gT("Can't render layout %s. Please check that the view exists or contact your admin."),
                     $viewFile
                 )
             );
@@ -162,13 +162,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             
             //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
-            $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
-            $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
-            $aData['this'] = Yii::app()->getController();
             
             // check if this method is called from theme editor
             if (empty($aData['bIsThemeEditor'])){
                     $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+                    $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
+                    $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+                    $aData['this'] = Yii::app()->getController();
                 } else {
                     $aData['question_template_attribute'] = null;
                 }

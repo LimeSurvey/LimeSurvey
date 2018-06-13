@@ -36652,7 +36652,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getMenuUrl: { type: String },
         createQuestionGroupLink: { type: String },
         createQuestionLink: { type: String },
-        updateOrderLink: { type: String }
+        updateOrderLink: { type: String },
+        isActive: { type: Number }
     },
     data: () => {
         return {
@@ -36661,7 +36662,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             openSubpanelId: 0,
             questiongroups: [],
             menues: [],
-            "$store.state.isCollapsed": false,
+            collapsed: false,
             sideBarWidth: "315",
             initialPos: { x: 0, y: 0 },
             isMouseDown: false,
@@ -36923,6 +36924,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created() {
         const self = this;
+        self.$store.commit('setSurveyActiveState', this.isActive !== "0");
         // self.$log.debug(this.$store.state);
         this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
@@ -37273,7 +37275,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  }), _vm._v(" " + _vm._s(_vm.translate.createQuestionGroup))]) : _vm._e(), _vm._v(" "), (_vm.createQuestionAllowed) ? _c('a', {
+  }), _vm._v(" \n            " + _vm._s(_vm.translate.createQuestionGroup) + "\n        ")]) : _vm._e(), _vm._v(" "), (_vm.createQuestionAllowed) ? _c('a', {
     staticClass: "btn btn-small btn-default ls-space margin right-10 pjax",
     attrs: {
       "id": "adminpanel__sidebar--selectorCreateQuestion",
@@ -37281,7 +37283,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-plus-circle"
-  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('div', {
+  }), _vm._v(" \n            " + _vm._s(_vm.translate.createQuestion) + "\n        ")]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "ls-flex-row ls-space padding all-0"
   }, [_c('ul', {
     staticClass: "list-group col-12",
@@ -37302,7 +37304,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('div', {
       staticClass: "col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5"
-    }, [_c('i', {
+    }, [(!_vm.$store.state.surveyActiveState) ? [_c('i', {
       staticClass: "fa fa-bars bigIcons dragPointer",
       attrs: {
         "draggable": "true"
@@ -37315,7 +37317,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.startDraggingGroup($event, questiongroup)
         }
       }
-    }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
+    }, [_vm._v("\n                             \n                        ")])] : _vm._e(), _vm._v(" "), _c('a', {
       staticClass: "col-12 pjax",
       attrs: {
         "href": questiongroup.link
@@ -37331,7 +37333,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       style: ({
         'max-width': _vm.itemWidth
       })
-    }, [_vm._v(" " + _vm._s(questiongroup.group_name) + " ")]), _vm._v(" "), _c('span', {
+    }, [_vm._v("\n                            " + _vm._s(questiongroup.group_name) + " \n                        ")]), _vm._v(" "), _c('span', {
       staticClass: "badge pull-right ls-space margin right-5"
     }, [_vm._v(_vm._s(questiongroup.questions.length))])]), _vm._v(" "), _c('i', {
       staticClass: "fa bigIcons",
@@ -37342,7 +37344,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.toggleActivation(questiongroup.gid)
         }
       }
-    }, [_vm._v(" ")])]), _vm._v(" "), _c('transition', {
+    }, [_vm._v(" ")])], 2), _vm._v(" "), _c('transition', {
       attrs: {
         "name": "slide-fade-down"
       }
@@ -37354,16 +37356,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, _vm._l((_vm.orderQuestions(questiongroup.questions)), function(question) {
-      return _c('li', {
+      return _c('a', {
         key: question.qid,
         staticClass: "list-group-item question-question-list-item ls-flex-row align-itmes-flex-between",
         class: _vm.questionItemClasses(question),
+        attrs: {
+          "data-toggle": "tootltip",
+          "href": question.link,
+          "title": question.question_flat
+        },
         on: {
           "dragenter": function($event) {
             _vm.dragoverQuestion($event, question, questiongroup)
           }
         }
-      }, [_c('i', {
+      }, [(!_vm.$store.state.surveyActiveState) ? [_c('i', {
         staticClass: "fa fa-bars margin-right bigIcons dragPointer",
         attrs: {
           "draggable": "true"
@@ -37376,13 +37383,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             _vm.startDraggingQuestion($event, question, questiongroup)
           }
         }
-      }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
+      }, [_vm._v("\n                                     \n                                ")])] : _vm._e(), _vm._v(" "), _c('span', {
         staticClass: "col-12 pjax question-question-list-item-link",
-        attrs: {
-          "href": question.link,
-          "data-toggle": "tootltip",
-          "title": question.question_flat
-        },
         on: {
           "click": function($event) {
             $event.preventDefault();
@@ -37394,7 +37396,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         style: ({
           width: _vm.itemWidth
         })
-      }, [_vm._v("\n                                    [" + _vm._s(question.title) + "] › " + _vm._s(question.question_flat) + " \n                                ")])])])
+      }, [_vm._v("\n                                    [" + _vm._s(question.title) + "] › " + _vm._s(question.question_flat) + " \n                                ")])])], 2)
     })) : _vm._e()])], 1)
   }))])])
 },staticRenderFns: []}
@@ -39485,6 +39487,7 @@ const getAppState = function (userid) {
         sidemenus: null,
         topmenus: null,
         bottommenus: null,
+        surveyActiveState: false
     };
 
     return new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
@@ -39588,6 +39591,9 @@ const getAppState = function (userid) {
             },
             updatePjax(state) {
                 $(document).trigger('pjax:refresh');           
+            },
+            setSurveyActiveState(state, surveyState) {
+                state.surveyActiveState = !!surveyState;
             }
         }
     });

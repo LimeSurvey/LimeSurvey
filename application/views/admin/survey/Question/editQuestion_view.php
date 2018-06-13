@@ -316,7 +316,7 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="relevanceContainer">
                                     <label class=" control-label" for='relevance' title="<?php eT("Relevance equation");?>" data-gethelp='{ "title":"Get help", "text" : "More on relevance and the EM", "href":"https://manual.limesurvey.org/Expression_Manager" }' data-help="<?=gT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")?>"><?php eT("Relevance equation:"); ?></label>
                                     <div class="">
                                         <div class="input-group">

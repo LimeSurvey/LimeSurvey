@@ -179,8 +179,7 @@ class themes extends Survey_Common_Action
                         false
                     );
                 }
-                Yii::import('application.helpers.common_helper', true);
-                $checkImage = validateImage($_FILES["file"]["tmp_name"]);
+                $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]["tmp_name"]);
                 if ($checkImage['check'] === false) {
                     return Yii::app()->getController()->renderPartial(
                         '/admin/super/_renderJson',
@@ -784,7 +783,7 @@ class themes extends Survey_Common_Action
             //App()->getClientScript()->reset();
             @fwrite($fnew, getHeader());
 
-            App()->getClientScript()->registerScript("activateActionLink", "activateActionLink();", CClientScript::POS_END); /* show the button if needed */
+            App()->getClientScript()->registerScript("activateActionLink", "activateActionLink();", LSYii_ClientScript::POS_POSTSCRIPT); /* show the button if needed */
 
             /* Must remove all exitsing scripts / css and js */
             App()->getClientScript()->unregisterPackage('admin-theme'); // We remove the admin package
