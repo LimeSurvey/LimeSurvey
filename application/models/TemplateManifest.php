@@ -626,7 +626,7 @@ class TemplateManifest extends TemplateConfiguration
         // If it is called for survey taking, a survey id will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
             /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
-            $sTemplateName = getGlobalSetting('defaulttheme');
+            $sTemplateName = App()->getConfig('defaulttheme');
         }
 
         $this->sTemplateName = $sTemplateName;
