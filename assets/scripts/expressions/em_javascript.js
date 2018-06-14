@@ -784,6 +784,9 @@ function LEMval(alias)
             else if (attr.type=='D')  {
                 // get date format pattern of referenced question
                 var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).val();
+                if (sdatetimePattern == ''){
+                    sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).text();
+                }
                 // if empty (eg., variable on a previous page), set default format yy-mm-dd HH:MM
                 sdatetimePattern = sdatetimePattern == ''? 'YYYY-MM-DD HH:mm': sdatetimePattern;
 
