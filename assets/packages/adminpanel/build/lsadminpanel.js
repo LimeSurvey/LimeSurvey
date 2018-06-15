@@ -36884,6 +36884,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         getQuestions() {
+            this.questiongroups = [];
             return this.get(this.getQuestionsUrl).then(result => {
                 this.$log.log("Questions", result);
                 this.questiongroups = result.data.groups;
@@ -36893,6 +36894,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         getSidemenus() {
+            this.sidemenus = [];
             return this.get(this.getMenuUrl, { position: "side" }).then(result => {
                 this.$log.log("sidemenues", result);
                 this.sidemenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
@@ -36904,6 +36906,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         getCollapsedmenus() {
+            this.collapsedmenus = [];
             return this.get(this.getMenuUrl, { position: "collapsed" }).then(result => {
                 this.$log.log("quickmenu", result);
                 this.collapsedmenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
@@ -36949,6 +36952,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
     },
+    created() {
+        const self = this;
+        //retrieve the current menues via ajax
+        this.getQuestions();
+        this.getSidemenus();
+        this.getCollapsedmenus();
+        this.getTopmenus();
+        this.getBottommenus();
+    },
     mounted() {
         const self = this;
 
@@ -36958,12 +36970,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         window.addEventListener("resize", () => {
             self.calculateHeight(self);
         });
-        //retrieve the current menues via ajax
-        this.getQuestions();
-        this.getSidemenus();
-        this.getCollapsedmenus();
-        this.getTopmenus();
-        this.getBottommenus();
 
         $(document).on("vue-sidemenu-update-link", () => {
             this.controlActiveLink();

@@ -18675,13 +18675,13 @@ function confirmDeletemodal() {
  */
 function panelClickable () {
     $(".panel-clickable").on('click',function(e){
-        $that = $(this);
-        if($that.data('url')!=''){
-        	if($that.data('target') === '_blank') {
-        		window.open($that.data('url'))
+        const self = $(this);
+        if(self.data('url')!=''){
+        	if(self.data('target') === '_blank') {
+        		window.open(self.data('url'))
             }
             else {
-            	window.location.href = $that.data('url');
+            	window.location.href = self.data('url');
             }
         }
     });
@@ -18747,48 +18747,47 @@ function panelsAnimation(){
 
 
 
-const NotifcationSystem = function() {
-    //constructor(){}
-
-     /**
+class NotifcationSystem {
+    
+    /**
      * Load widget HTML and inject it
      * @param {string} URL to call
      * @return
      */
-    const __updateNotificationWidget = (updateUrl) => {
+     __updateNotificationWidget(updateUrl) {
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('updateNotificationWidget');
         // Update notification widget
-        return __WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"].ajax({
+        return Object(__WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"])({
             url: updateUrl,
             method: 'GET',
-            success: function (response) {
+            success: (response) => {
                 $('#notification-li').replaceWith(response);
 
                 // Re-bind onclick
-                initNotification();
+                this.initNotification();
 
                 // Adapt style to window size
-                styleNotificationMenu();
+                this.styleNotificationMenu();
             }
         });
-    },
+    };
     
     /**
      * Tell system that notification is read
      * @param {object} that The notification link
      * @return
      */
-    __notificationIsRead = (that) => {
+    __notificationIsRead(that) {
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('notificationIsRead');
-        __WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"].ajax({
+        Object(__WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"])({
             url: $(that).data('read-url'),
             method: 'GET',
-        }).done(function(response) {
+        }).done((response) => {
             // Fetch new HTML for menu widget
-            __updateNotificationWidget($(that).data('update-url'));
+            this.__updateNotificationWidget($(that).data('update-url'));
         });
 
-    },
+    };
     
     /**
      * Fetch notification as JSON and show modal
@@ -18796,14 +18795,14 @@ const NotifcationSystem = function() {
      * @param {url} URL to fetch notification as JSON
      * @return
      */
-    __showNotificationModal = (that, url) => {
+    __showNotificationModal(that, url) {
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('showNotificationModal');
-        __WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"].ajax({
+        Object(__WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"])({
             url: url,
             method: 'GET',
         }).done((response) => {
 
-            let not = response.result;
+            const not = response.result;
 
             $('#admin-notification-modal .modal-title').html(not.title);
             $('#admin-notification-modal .modal-body-text').html(not.message);
@@ -18814,18 +18813,19 @@ const NotifcationSystem = function() {
             // TODO: Will this work in message includes a link that is clicked?
             $('#admin-notification-modal').off('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
-                __notificationIsRead(that);
+                this.__notificationIsRead(that);
                 $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
             });
         });
-    },
+    };
 
     /*##########PUBLIC##########*/
     /**
      * Bind onclick and stuff
      * @return
      */
-    initNotification = () => {
+    initNotification() {
+        // const self = this;
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].group('initNotification');
         $('.admin-notification-link').each((nr, that) => {
             
@@ -18837,7 +18837,7 @@ const NotifcationSystem = function() {
 
             // Important notifications are shown as pop-up on load
             if (importance == 3 && status == 'new') {
-                __showNotificationModal(that, url);
+                this.__showNotificationModal(that, url);
                 __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('stoploop');
                 return false;  // Stop loop
             }
@@ -18845,12 +18845,12 @@ const NotifcationSystem = function() {
             // Bind click to notification in drop-down
             $(that).off('click');
             $(that).on('click', () => {
-                __showNotificationModal(that, url);
+                this.__showNotificationModal(that, url);
             });
 
         });
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].groupEnd('initNotification');
-    },
+    };
 
     /**
      * Called from outside (update notifications when click
@@ -18859,7 +18859,7 @@ const NotifcationSystem = function() {
      * @return
      */
     
-    updateNotificationWidget = (url, openAfter) =>  {
+    updateNotificationWidget(url, openAfter) {
         // Make sure menu is open after load
         this.__updateNotificationWidget(url).then(() =>{
             if (openAfter !== false) {
@@ -18868,49 +18868,42 @@ const NotifcationSystem = function() {
         });
         // Only update once
         $('#notification-li').off('click');
-    },
+    };
 
     /**
      * Apply styling
      * @return
      */
-    styleNotificationMenu = () => {
+    styleNotificationMenu() {
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('styleNotificationMenu');
         const height = window.innerHeight - 70;
         $('#notification-outer-ul').css('height', height + 'px');
         $('#notification-inner-ul').css('height', (height - 60) + 'px');
         $('#notification-inner-li').css('height', (height - 60) + 'px');
-    },
+    };
 
-    deleteAllNotifications = (url, updateUrl) => {
-        return __WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"].ajax({
+    deleteAllNotifications(url, updateUrl) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"])({
             url: url,
             method: 'GET',
-            success: function (response) {
+            success: (response) => {
                __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('response', response);
             }
         }).then(() => {
-            updateNotificationWidget(updateUrl);
+            this.updateNotificationWidget(updateUrl);
         });
-    };
-
-    return {
-        initNotification,
-        updateNotificationWidget,
-        styleNotificationMenu,
-        deleteAllNotifications,
     };
 }
 
 //########################################################################
 
-const notificationHelper = NotifcationSystem();
+const notificationHelper = new NotifcationSystem();
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    initNotification : notificationHelper.initNotification,
-    updateNotificationWidget : notificationHelper.updateNotificationWidget,
-    styleNotificationMenu : notificationHelper.styleNotificationMenu,
-    deleteAllNotifications : notificationHelper.deleteAllNotifications,
+    initNotification : ()=> notificationHelper.initNotification.call(notificationHelper, arguments),
+    updateNotificationWidget : ()=> notificationHelper.updateNotificationWidget.call(notificationHelper, arguments),
+    styleNotificationMenu : ()=> notificationHelper.styleNotificationMenu.call(notificationHelper, arguments),
+    deleteAllNotifications : ()=> notificationHelper.deleteAllNotifications.call(notificationHelper, arguments),
 });
 
 

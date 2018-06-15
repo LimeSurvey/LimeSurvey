@@ -306,6 +306,7 @@ export default {
             }
         },
         getQuestions() {
+            this.questiongroups = [];
             return this.get(this.getQuestionsUrl).then(result => {
                 this.$log.log("Questions", result);
                 this.questiongroups = result.data.groups;
@@ -315,6 +316,7 @@ export default {
             });
         },
         getSidemenus() {
+            this.sidemenus = [];
             return this.get(this.getMenuUrl, { position: "side" }).then(
                 result => {
                     this.$log.log("sidemenues", result);
@@ -332,6 +334,7 @@ export default {
             );
         },
         getCollapsedmenus() {
+            this.collapsedmenus = [];
             return this.get(this.getMenuUrl, { position: "collapsed" }).then(
                 result => {
                     this.$log.log("quickmenu", result);
@@ -398,6 +401,15 @@ export default {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
     },
+    created() {
+        const self = this;
+        //retrieve the current menues via ajax
+        this.getQuestions();
+        this.getSidemenus();
+        this.getCollapsedmenus();
+        this.getTopmenus();
+        this.getBottommenus();
+    },
     mounted() {
         const self = this;
 
@@ -407,12 +419,7 @@ export default {
         window.addEventListener("resize", () => {
             self.calculateHeight(self);
         });
-        //retrieve the current menues via ajax
-        this.getQuestions();
-        this.getSidemenus();
-        this.getCollapsedmenus();
-        this.getTopmenus();
-        this.getBottommenus();
+        
 
         $(document).on("vue-sidemenu-update-link", () => {
             this.controlActiveLink();
