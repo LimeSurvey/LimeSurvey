@@ -35,6 +35,8 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.12.0 (build 180615) to 3.12.1 (build 180616) June 15, 2018
+-Fixed issue: question type selector not working (Markus Flür)
 Changes from 3.11.0 (build 180612) to 3.12.0 (build 180615) June 15, 2018
 -New feature: Added theme options zebrastriping and hide privacynotice (Markus Flür)
 -New feature: added crosshover functionality to fruity theme (Markus Flür)
