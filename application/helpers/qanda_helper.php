@@ -4648,7 +4648,6 @@ function do_array_texts($ia)
             } else {
                 $radix = 'X'; // to indicate that should not try to change entered values
             }
-            Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-totalsum.js");
         }
 
         $answer = doRender('/survey/questions/answer/arrays/texts/answer', array(

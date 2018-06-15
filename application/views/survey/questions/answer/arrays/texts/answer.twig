@@ -80,15 +80,16 @@
     </tbody>
 </table>
 
-
 {% if q_table_id is empty %}
-    <script type="text/javascript">
-    <!--
-        $('#question{{ name }} .question').on('blur keyup', 'input[type=text]:visible:enabled', function(event){
-            {{ checkconditionFunction }}($(this).val(), $(this).attr('name'), 'text');
-            return true;
-        })
-    // -->
-    </script>
+    {{ registerScript('ArrayTypeScript_' ~ name, "
+$('#question" ~ name ~ "').find('input[type=text]').on('blur keyup', function(event){
+    " ~ checkconditionFunction ~ "($(this).val(), $(this).attr('name'), 'text');
+    return true;
+})
+", "POS_POSTSCRIPT") }}
 {% endif %}
 <!-- end of answer -->
+
+{% if (showGrandTotal == true) or (showtotals == true) %}
+    {{ registerPackage('question-array-numeric') }}
+{% endif %}
