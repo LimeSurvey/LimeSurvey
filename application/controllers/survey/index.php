@@ -37,7 +37,6 @@ class index extends CAction
         }
 
         $this->_loadRequiredHelpersAndLibraries();
-
         $param       = $this->_getParameters(func_get_args(), $_POST);
         $surveyid    = $param['sid'];
         $thisstep    = $param['thisstep'];
@@ -58,6 +57,11 @@ class index extends CAction
         $loadname = $param['loadname'];
         $loadpass = $param['loadpass'];
         $sitename = Yii::app()->getConfig('sitename');
+
+        /* Launch beforeSurveyPage before all public action done */
+        $beforeSurveyPageEvent = new PluginEvent('beforeSurveyPage');
+        $beforeSurveyPageEvent->set('surveyId', $surveyid);
+        App()->getPluginManager()->dispatchEvent($beforeSurveyPageEvent);
 
         if (isset($param['newtest']) && $param['newtest'] == "Y") {
             killSurveySession($surveyid);
@@ -267,12 +271,8 @@ class index extends CAction
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $thissurvey = getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-
-        $event = new PluginEvent('beforeSurveyPage');
-        $event->set('surveyId', $surveyid);
-        App()->getPluginManager()->dispatchEvent($event);
-
-        if (!is_null($event->get('template'))) {
+        /* Unsure it still work, and surely better in afterFindSurvey */
+        if (!is_null($beforeSurveyPageEvent->get('template'))) {
             $thissurvey['templatedir'] = $event->get('template');
         }
 
