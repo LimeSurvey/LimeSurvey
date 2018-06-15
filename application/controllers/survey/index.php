@@ -273,7 +273,7 @@ class index extends CAction
         $thissurvey = getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
         /* Unsure it still work, and surely better in afterFindSurvey */
         if (!is_null($beforeSurveyPageEvent->get('template'))) {
-            $thissurvey['templatedir'] = $event->get('template');
+            $thissurvey['templatedir'] = $beforeSurveyPageEvent->get('template');
         }
 
         //SEE IF SURVEY USES TOKENS
