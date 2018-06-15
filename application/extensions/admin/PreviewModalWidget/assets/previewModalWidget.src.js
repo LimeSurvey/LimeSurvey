@@ -5,7 +5,7 @@ class PreviewModalScript {
         this.inputItem = $(`#selector__${this.widgetsJsName}`);
         //Define default settings 
         const defaultSettings = {
-            onUpdate: (value, itemData)=>{},
+            onUpdate: (value)=>{},
             onReady: () => {},
             onModalClose: () => {},
             onModalOpen: () => {},

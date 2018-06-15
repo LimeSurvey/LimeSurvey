@@ -35,7 +35,6 @@
 
 
 ?>
-<script>console.log("Survey active?", "<?=(Survey::model()->findByPk($surveyid)->isActive ? 1 : 0)?>")</script>
 <sidebar
     :options="[]"
     surveyid = '<?=$surveyid?>'

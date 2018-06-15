@@ -57,6 +57,10 @@ foreach ( $aQuestionTypeList as $key => $questionType)
         'currentSelected' => Question::getQuestionTypeName($eqrow['type']),
         'optionArray' => [
             'selectedClass' => Question::getQuestionClass($eqrow['type']),
+            'onUpdate' => [
+                'value',
+                "console.ls.log(value); $('#question_type').val(value);"
+            ]
         ]
     ));
 ?>

@@ -20,7 +20,7 @@ export default {
         createQuestionGroupLink: { type: String },
         createQuestionLink: { type: String },
         updateOrderLink: { type: String },
-        isActive: {type: Number},
+        isActive: {type: String},
     },
     data: () => {
         return {
