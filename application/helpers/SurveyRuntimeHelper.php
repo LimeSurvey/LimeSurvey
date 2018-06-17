@@ -877,7 +877,9 @@ class SurveyRuntimeHelper
 
             if (!$this->aMoveResult && !($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0)) {
                 // Just in case not set via any other means, but don't do this if it is the welcome page
-                $this->aMoveResult = LimeExpressionManager::GetLastMoveResult(true);
+                /* GetLastMoveResult reset substitutionNum in EM core if param is true, this break in all in one mode (see #13725) */
+                /* Then don't reset substitutionNum since seems some LimeExpressionManager::ProcessString already happen*/
+                $this->aMoveResult = LimeExpressionManager::GetLastMoveResult(false);
                 $this->LEMskipReprocessing = true;
             }
         }
