@@ -43,7 +43,7 @@ class LanguageChangerTest extends TestBaseClassWeb
             // Change to Deutsch.
             $web->changeLanguageSelect('de');
 
-            sleep(1);
+            sleep(2);
 
             // Check so that we see German text.
             $text = $web->findElement(
