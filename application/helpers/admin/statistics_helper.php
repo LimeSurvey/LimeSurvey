@@ -1101,9 +1101,7 @@ class statistics_helper
                         case 'html':
 
                             //output
-                            $statisticsoutput .= "\t<tr>\n"
-                            ."\t\t<td align='right'  colspan='4'>".gT("Not enough values for calculation")."</td>\n"
-                            ."\t</tr>\n</table><br />\n";
+                            $statisticsoutput .= "<p class='printable'>".gT("Not enough values for calculation")."</p>\n";
 
                             break;
                         default:
