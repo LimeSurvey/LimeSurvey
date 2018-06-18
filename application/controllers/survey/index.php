@@ -58,11 +58,6 @@ class index extends CAction
         $loadpass = $param['loadpass'];
         $sitename = Yii::app()->getConfig('sitename');
 
-        /* Launch beforeSurveyPage before all public action done */
-        $beforeSurveyPageEvent = new PluginEvent('beforeSurveyPage');
-        $beforeSurveyPageEvent->set('surveyId', $surveyid);
-        App()->getPluginManager()->dispatchEvent($beforeSurveyPageEvent);
-
         if (isset($param['newtest']) && $param['newtest'] == "Y") {
             killSurveySession($surveyid);
         }
@@ -94,6 +89,11 @@ class index extends CAction
         if ($surveyid && $surveyExists) {
             SetSurveyLanguage($surveyid, $sDisplayLanguage);
         }
+
+        /* Launch beforeSurveyPage before all renderExitMessage */
+        $beforeSurveyPageEvent = new PluginEvent('beforeSurveyPage');
+        $beforeSurveyPageEvent->set('surveyId', $surveyid);
+        App()->getPluginManager()->dispatchEvent($beforeSurveyPageEvent);
 
         if ($this->_isClientTokenDifferentFromSessionToken($clienttoken, $surveyid)) {
             $sReloadUrl = $this->getController()->createUrl("/survey/index/sid/{$surveyid}", array('token'=>$clienttoken, 'lang'=>App()->language, 'newtest'=>'Y'));
