@@ -54,6 +54,8 @@ class LanguageChangerTest extends TestBaseClassWeb
             // Click next.
             $web->next();
 
+            sleep(1);
+
             // Fill in first question.
             $web->answerTextQuestion($sgqa, 'This is an answer');
 
