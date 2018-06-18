@@ -43,6 +43,8 @@ class LanguageChangerTest extends TestBaseClassWeb
             // Change to Deutsch.
             $web->changeLanguageSelect('de');
 
+            sleep(1);
+
             // Check so that we see German text.
             $text = $web->findElement(
                 WebDriverBy::cssSelector('.question-count-text')
