@@ -177,7 +177,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             );
             $overview->click();
 
-            sleep(1);
+            sleep(2);
 
             // Click "Activate survey".
             $overview = self::$webDriver->findElement(WebDriverBy::id('ls-activate-survey'));
