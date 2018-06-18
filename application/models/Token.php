@@ -135,7 +135,7 @@ abstract class Token extends Dynamic
             'lastname' => 'string(150)',
             'email' => 'text',
             'emailstatus' => 'text',
-            'token' => "string(35) {$sCollation}",
+            'token' => "string(36) {$sCollation}",
             'language' => 'string(25)',
             'blacklisted' => 'string(17)',
             'sent' => "string(17) DEFAULT 'N'",
@@ -153,15 +153,15 @@ abstract class Token extends Dynamic
         }
 
         // create fields for the custom token attributes associated with this survey
-        $tokenattributefieldnames = Survey::model()->findByPk($surveyId)->getTokenAttributes();
-        foreach ($tokenattributefieldnames as $attrname=>$attrdetails) {
+        $oSurvey = Survey::model()->findByPk($surveyId);
+        foreach ($oSurvey->tokenAttributes as $attrname=>$attrdetails) {
             if (!isset($fields[$attrname])) {
                 $fields[$attrname] = 'text';
             }
         }
 
         $db = \Yii::app()->db;
-        $sTableName = "{{tokens_{$surveyId}}}";
+        $sTableName = $oSurvey->tokensTableName;
 
         $db->createCommand()->createTable($sTableName, $fields);
 

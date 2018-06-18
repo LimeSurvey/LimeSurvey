@@ -124,13 +124,15 @@
                     window.basicThemeScripts = new ThemeScripts(); 
                 } 
                 basicThemeScripts.initGlobal(); 
-                ", POS_END) }}
+                ", "POS_END") }}
 
             {% endblock %}
             </div>
 
         </article>
-
+        {% block footer %}
+            {{ include('./subviews/footer/footer.twig') }}
+        {% endblock %}
         {% block pjaxend %}
             <div id="bottomScripts" class="script-container">
                 <###end###>

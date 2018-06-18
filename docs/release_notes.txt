@@ -35,6 +35,63 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.10.0 (build 180611) to 3.11.0 (build 180612) June 12, 2018
+#Updated translation: Catalan by c_schmitz
+#Updated translation: Chinese (Hong Kong) (Traditional) by LS_fan
+#Updated translation: Croatian by dominikvitt
+#Updated translation: German by c_schmitz
+-Fixed issue #13667: Beginner Tutorial only available to SuperAdmin (Dominik Vitt)
+-Fixed issue #13714: Token email does not fill in adminemail and adminname (Dominik Vitt)
+-Fixed issue #13739: Relevance equation broken for array by column (Dominik Vitt)
+-Fixed issue #13759: No admin name and admin email is set at Survey creation (Denis Chenu)
+-Fixed issue :  The table "{{asset_version}}" for active record class "AssetVersion" cannot be found in the database. (Denis Chenu)
+-Fixed issue#12435: Wrong exports (Dominik Vitt)
+-Fixed issue: deactivate reordering of question on the frontend (Markus Flür)
+
+Changes from 3.9.0 (build 180604) to 3.10.0 (build 180611) June 11, 2018
+-New feature: Allow plugin to add or replace twig file (#1082) (Denis Chenu)
+-Fixed issue #12032: Homepage boxes - external links opened twice when clicking icon (Dominik Vitt)
+-Fixed issue #12741: Setting condition where constant = 0 treated as "no answer" (Denis Chenu)
+-Fixed issue #12898: Repeat headers not working in array dual scale with dropdown layout (Dominik Vitt)
+-Fixed issue #12907: Resume later and load unfinished survey does not work in ajax-mode (Markus Flür)
+-Fixed issue #13466: Exit and clear in bilingual Survey - restarts in wrong language (Dominik Vitt)
+-Fixed issue #13497: Editor screen can be loaded without css after save (Denis Chenu)
+-Fixed issue #13553: Default value not copied when copy question (Dominik Vitt)
+-Fixed issue #13558: Authenticated remote code execution by unrestricted file uploads (Dominik Vitt)
+-Fixed issue #13596: template assets is not resetted when update config (Denis Chenu)
+-Fixed issue #13606: Unable to reset manually single asset (Denis Chenu)
+-Fixed issue #13688: privacy policy are hidden on the startpage of a survey, when the first action is a mouseover over the button \'Next\' (Markus Flür)
+-Fixed issue #13718: Reload page after import lss show error (Dominik Vitt)
+-Fixed issue #13738: RPC method  is not working. (Olle Haerstedt)
+-Fixed issue #13742: empty label for dual-scale question (Denis Chenu)
+-Fixed issue #13743: PHP notice when viewing question view in theme editor (Dominik Vitt)
+-Fixed issue #13744: unable to run db migration via command line (Denis Chenu)
+-Fixed issue #13748: PHP Warning in register form (Markus Flür)
+-Fixed issue: Changed the caption for repeat headers option (Dominik Vitt)
+-Fixed issue: Created "Copy default answers" switch option on Copy question page (Dominik Vitt)
+-Fixes issue: multiple issues with theme assets (#1048) (Denis Chenu)
+-Fixed issue: line feed stripped and not replaced in SPSS export (Denis Chenu)
+-Fixed issue: reset asset when upload or delete a template file (Denis Chenu)
+-Fixed issue: Ajax-Mode totally unfunctional (Markus Flür)
+-Fixed issue: EM not loaded correctly in Ajaxmode (Markus Flür)
+-Fixed issue: Support for both question text and question code in PDF graph output (Olle Haerstedt)
+-Fixed issue: ajax mode was forced off. (LouisGac)
+-Fixed issue: barebone URL not working from RPC (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Taiwan) (Traditional) by sylsylsylvie, imacat
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by b00z00
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Russian by vipgroup
+
 Changes from 3.8.2 (build 180529) to 3.9.0 (build 180604) June 4, 2018
 -New feature #13732: Twig - add "striptags" allowed filters (LouisGac)
 -Fixed issue #13128: Vanilla theme error page admin-name missing (LouisGac)
@@ -94,7 +151,7 @@ Changes from 3.8.1 (build 180524) to 3.8.2 (build 180529) May 29, 2018
 #Updated translation: Polish by elissa
 #Updated translation: Russian by smilez, c0der, quarrier, panch_evg, vipgroup
 #Updated translation: Spanish (Argentina) by aesteban, Dhel210, gabrieljenik
-                                                                        
+
 Changes from 3.8.0 (build 180522) to 3.8.1 (build 180524) May 24, 2018
 -Fixed issue #12520: Crash when trying to generate a PDF with Graphs from statistic page on PHP 7.1 or later (Carsten Schmitz)
 -Fixed issue #13607: Multiple_choice_with_comments - bug (Dominik Vitt)
@@ -153,10 +210,10 @@ Changes from 3.7.2 (build 180508) to 3.7.3 (build 180516) May 16, 2018
 -Fixed issue: Postgres has no DOUBLE database type (Olle Haerstedt)
 -Fixed issue: Semicolon in twig statement (LouisGac)
 #Updated translation: Catalan by qualitatuvic
-#Updated translation: Dutch (Informal) by Han 
-#Updated translation: Dutch by Han 
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
 #Updated translation: French (France) by arnaud21
-#Updated translation: Hungarian by kkd 
+#Updated translation: Hungarian by kkd
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Italian by lfanfoni
 #Updated translation: Japanese by nomoto

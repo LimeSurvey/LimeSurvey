@@ -37,9 +37,12 @@ class LimesurveyApi
     {
         return App()->getDb()->tablePrefix.strtolower($plugin->getName())."_$tableName";
     }
+
     /**
      * Sets a flash message to be shown to the user.
-     * @param html $message
+     * @param string $message
+     * @param string $key
+     * @return void
      */
     public function setFlash($message, $key = 'api')
     {
@@ -49,7 +52,7 @@ class LimesurveyApi
 
     /**
      * Builds and executes a SQL statement for creating a new DB table.
-     * @param \QuickMenu $plugin The plugin object, id or name.
+     * @param PluginBase $plugin The plugin object, id or name.
      * @param string $sTableName the name of the table to be created. The name will be properly quoted and prefixed by the method.
      * @param array $aColumns the columns (name=>definition) in the new table.
      * @param string $sOptions additional SQL fragment that will be appended to the generated SQL.
@@ -224,11 +227,17 @@ class LimesurveyApi
         }
     }
 
+    /**
+     * @return \Response[]|null
+     */
     public function getResponses($surveyId, $attributes = array(), $condition = '', $params = array())
     {
         return \Response::model($surveyId)->findAllByAttributes($attributes, $condition, $params);
     }
 
+    /**
+     * @return \Token|null
+     */
     public function getToken($surveyId, $token)
     {
         return \Token::model($surveyId)->findByAttributes(array('token' => $token));
@@ -298,6 +307,7 @@ class LimesurveyApi
         }
         return $tables;
     }
+
     /**
      * Retrieves user details for a user
      * Returns null if the user does not exist anymore for some reason (should not really happen)
@@ -361,12 +371,19 @@ class LimesurveyApi
         return \Participant::model()->findByPk($iParticipantID);
     }
 
+    /**
+     * @param int $surveyId
+     * @param string $language
+     * $param array $conditions
+     * @return \Question[]
+     */
     public function getQuestions($surveyId, $language = 'en', $conditions = array())
     {
         $conditions['sid'] = $surveyId;
         $conditions['language'] = $language;
         return \Question::model()->with('subquestions')->findAllByAttributes($conditions);
     }
+
     /**
      * Gets the metadata for a table.
      * For details on the object check: http://www.yiiframework.com/doc/api/1.1/CDbTableSchema
@@ -420,6 +437,20 @@ class LimesurveyApi
         }
     }
 
+    /**
+     * @param string $file
+     * @param array $data
+     * @return string
+     */
+    public function renderTwig($file, array $data)
+    {
+        return Yii::app()->twigRenderer->renderViewFromFile(
+            $file,
+            $data,
+            // Don't echo.
+            true,
+            // Don't append application dir.
+            false
+        );
+    }
 }
-
-?>

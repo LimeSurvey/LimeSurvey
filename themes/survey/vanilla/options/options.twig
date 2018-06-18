@@ -93,7 +93,7 @@
 
             {# First settings row #}
             <div class='row action_hide_on_inherit'>
-                <div class='col-sm-12 col-md-6'>
+                <div class='col-sm-12 col-md-4'>
                     {# Ajaxmode setting #}
                     <div class='form-group row'>
                         <label for='simple_edit_options_ajaxmode' class='control-label'>Ajaxmode</label>
@@ -122,7 +122,7 @@
 
 
                 {# Container #}
-                <div class='col-sm-12 col-md-3'>
+                <div class='col-sm-12 col-md-4'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_container' class='control-label'> {{ gT("Survey container") }} </label>
                         <div class='col-sm-12'>
@@ -139,6 +139,32 @@
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='container' value='inherit' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
+                                        {{ gT("Inherit") }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# hideprivacyinfo #}
+                <div class='col-sm-12 col-md-4'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_hideprivacyinfo' class='control-label'>{{ gT("Hide privacy info") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='hideprivacyinfo' value='on' class='selector_option_radio_field simple_edit_options_hideprivacyinfo ' data-id='hideprivacyinfo'/>
+                                    {{ gT("Yes") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='hideprivacyinfo' value='off' class='selector_option_radio_field simple_edit_options_hideprivacyinfo ' data-id='hideprivacyinfo'/>
+                                    {{ gT("No") }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='hideprivacyinfo' value='inherit' class='selector_option_radio_field simple_edit_options_hideprivacyinfo ' data-id='hideprivacyinfo'/>
                                         {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
@@ -198,7 +224,7 @@
                 </div>
                 <div class='col-sm-4 col-md-2'>
                     <br/>
-                    <button class="btn btn-default selector__open_lightbox" data-target="#simple_edit_options_brandlogofile"> {{ gT('Preview Image')}}</button>
+                    <button class="btn btn-default selector__open_lightbox" data-target="#simple_edit_options_brandlogofile"> {{ gT('Preview image')}}</button>
                 </div>
             </div>
 

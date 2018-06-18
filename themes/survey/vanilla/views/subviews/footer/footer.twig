@@ -1,0 +1,19 @@
+{#
+Add your footer in this file.
+
+You will need to add custom CSS to make this work, for example, the following
+should work for a bottom-aligned footer in all browsers that properly support
+flex:
+
+body {
+     padding-bottom: 0; /* no bottom padding, footer should be bottom aligned */
+     padding-top: 60px;/* now is redefine in JS to fit any title length */
+     flex-direction: column; /* article, then footer */
+     display: flex; /* flex, to extend the content to full size */
+     min-height: 100vh; /* full height, to bottom-align footer */
+}
+body > article {
+    flex: 1; /* the main article should use as much space as possible */
+}
+
+#}

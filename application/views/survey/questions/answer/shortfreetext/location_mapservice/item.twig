@@ -21,7 +21,7 @@
 {{ registerScript('MAP_VARS_'~basename,  
     " var zoom = zoom || [];
     zoom['"~name~"'] = "~location_mapzoom~";"
-    , LSYii_ClientScript.POS_END) }}
+    , "POS_END") }}
 
 
 <div class="{{ coreClass }} {{ extraclass }}" row" role="group" aria-labelledby="ls-question-text-{{ basename }}">

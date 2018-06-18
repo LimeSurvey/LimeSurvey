@@ -9,50 +9,50 @@ class LsDefaultDataSets
     {
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
-        $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
+        $headerArray = ['menu_id', 'user_id', 'ordering', 'name', 'title', 'menu_title', 'menu_description', 'menu_icon', 'menu_icon_type', 'menu_class', 'menu_link', 'action', 'template', 'partial', 'classes', 'permission', 'permission_grade', 'data', 'getdatamethod', 'language', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by'];
         $basicMenues = [
-            [1,null,1,'overview', gT('Survey overview','unescaped'),gT('Overview','unescaped'),gT('Open the general survey overview','unescaped'),'list','fontawesome','','admin/survey/sa/view','','','','','','','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,2,'generalsettings', gT('General survey settings','unescaped'),gT('General settings','unescaped'),gT('Open general survey settings','unescaped'),'gears','fontawesome','','','updatesurveylocalesettings_generalsettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',null,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,3,'surveytexts', gT('Survey text elements','unescaped'),gT('Text elements','unescaped'),gT('Survey text elements','unescaped'),'file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',null,'_getTextEditData','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,4,'theme_options', gT('Theme options','unescaped'),gT('Theme options','unescaped'),gT('Edit theme options for this survey','unescaped'),'paint-brush','fontawesome','','admin/themeoptions/sa/updatesurvey','','','','','themes','read','{"render": {"link": { "pjaxed": true, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,5,'participants', gT('Survey participants','unescaped'),gT('Survey participants','unescaped'),gT('Go to survey participant and token settings','unescaped'),'user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,6,'presentation', gT('Presentation & navigation settings','unescaped'),gT('Presentation','unescaped'),gT('Edit presentation and navigation settings','unescaped'),'eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',null,'_tabPresentationNavigation','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,7,'publication', gT('Publication & access control settings','unescaped'),gT('Publication & access','unescaped'),gT('Edit settings for publication and access control','unescaped'),'key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',null,'_tabPublicationAccess','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,8,'surveypermissions',gT('Edit survey permissions','unescaped'),gT('Survey permissions','unescaped'),gT('Edit permissions for this survey','unescaped'),'lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,9,'tokens', gT('Survey participant settings','unescaped'),gT('Participant settings','unescaped'),gT('Set additional options for survey participants','unescaped'),'users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',null,'_tabTokens','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,10,'quotas', gT('Edit quotas','unescaped'),gT('Quotas','unescaped'),gT('Edit quotas for this survey.','unescaped'),'tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,11,'assessments', gT('Edit assessments','unescaped'),gT('Assessments','unescaped'),gT('Edit and look at the assessements for this survey.','unescaped'),'comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,12,'notification', gT('Notification and data management settings','unescaped'),gT('Notifications & data','unescaped'),gT('Edit settings for notification and data management','unescaped'),'feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',null,'_tabNotificationDataManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,13,'emailtemplates', gT('Email templates','unescaped'),gT('Email templates','unescaped'),gT('Edit the templates for invitation, reminder and registration emails','unescaped'),'envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,14,'panelintegration', gT('Edit survey panel integration','unescaped'),gT('Panel integration','unescaped'),gT('Define panel integrations for your survey','unescaped'),'link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read','{"render": {"link": { "pjaxed": false}}}','_tabPanelIntegration','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,null,15,'resources', gT('Add/edit resources (files/images) for this survey','unescaped'),gT('Resources','unescaped'),gT('Add/edit resources (files/images) for this survey','unescaped'),'file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',null,'_tabResourceManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,1,'activateSurvey',gT('Activate survey','unescaped'),gT('Activate survey','unescaped'),gT('Activate survey','unescaped'),'play','fontawesome','','admin/survey/sa/activate','','','','','surveyactivation','update','{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,2,'deactivateSurvey', gT('Stop this survey','unescaped'),gT('Stop this survey','unescaped'),gT('Stop this survey','unescaped'),'stop','fontawesome','','admin/survey/sa/deactivate','','','','','surveyactivation','update','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,3,'testSurvey', gT('Go to survey','unescaped'),gT('Go to survey','unescaped'),gT('Go to survey','unescaped'),'cog','fontawesome','','survey/index/','','','','','','','{"render": {"link": {"external": true, "data": {"sid": ["survey","sid"], "newtest": "Y", "lang": ["survey","language"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,4,'listQuestions',gT('List questions','unescaped'),gT('List questions','unescaped'),gT('List questions','unescaped'),'list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,5,'listQuestionGroups',gT('List question groups','unescaped'),gT('List question groups','unescaped'),gT('List question groups','unescaped'),'th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,6,'generalsettings_collapsed',gT('General survey settings','unescaped'),gT('General settings','unescaped'),gT('Open general survey settings','unescaped'),'gears','fontawesome','','','updatesurveylocalesettings_generalsettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',null,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,7,'surveypermissions_collapsed',gT('Edit survey permissions','unescaped'),gT('Survey permissions','unescaped'),gT('Edit permissions for this survey','unescaped'),'lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,8,'quotas_collapsed',gT('Edit quotas','unescaped'),gT('Survey quotas','unescaped'),gT('Edit quotas for this survey.','unescaped'),'tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,9,'assessments_collapsed',gT('Edit assessments','unescaped'),gT('Assessments','unescaped'),gT('Edit and look at the assessements for this survey.','unescaped'),'comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,10,'emailtemplates_collapsed',gT('Email templates','unescaped'),gT('Email templates','unescaped'),gT('Edit the templates for invitation, reminder and registration emails','unescaped'),'envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,11,'surveyLogicFile',gT('Survey logic file','unescaped'),gT('Survey logic file','unescaped'),gT('Survey logic file','unescaped'),'sitemap','fontawesome','','admin/expressions/sa/survey_logic_file/','','','','','surveycontent','read','{"render": { "link": {"data": {"sid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,12,'tokens_collapsed',gT('Survey participant settings','unescaped'),gT('Participant settings','unescaped'),gT('Set additional options for survey participants','unescaped'),'user','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','_tabTokens','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,13,'cpdb',gT('Central participant database','unescaped'),gT('Central participant database','unescaped'),gT('Central participant database','unescaped'),'users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{"render": {"link": {}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,14,'responses',gT('Responses','unescaped'),gT('Responses','unescaped'),gT('Responses','unescaped'),'icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,15,'statistics',gT('Statistics','unescaped'),gT('Statistics','unescaped'),gT('Statistics','unescaped'),'bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,null,16,'reorder',gT('Reorder questions/question groups','unescaped'),gT('Reorder questions/question groups','unescaped'),gT('Reorder questions/question groups','unescaped'),'icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [3,null,16,'plugins',gT('Simple plugin settings','unescaped'), gT('Simple plugins','unescaped'), gT('Edit simple plugin settings','unescaped'),'plug','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_plugins_panel','','surveysettings','read','{"render": {"link": {"data": {"surveyid": ["survey","sid"]}}}}','_pluginTabSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],      
+            [1, null, 1, 'overview', gT('Survey overview', 'unescaped'), gT('Overview', 'unescaped'), gT('Open the general survey overview', 'unescaped'), 'list', 'fontawesome', '', 'admin/survey/sa/view', '', '', '', '', '', '', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 2, 'generalsettings', gT('General survey settings', 'unescaped'), gT('General settings', 'unescaped'), gT('Open general survey settings', 'unescaped'), 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', null, '_generalTabEditSurvey', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 3, 'surveytexts', gT('Survey text elements', 'unescaped'), gT('Text elements', 'unescaped'), gT('Survey text elements', 'unescaped'), 'file-text-o', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/tab_edit_view', '', 'surveylocale', 'read', null, '_getTextEditData', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 4, 'theme_options', gT('Theme options', 'unescaped'), gT('Theme options', 'unescaped'), gT('Edit theme options for this survey', 'unescaped'), 'paint-brush', 'fontawesome', '', 'admin/themeoptions/sa/updatesurvey', '', '', '', '', 'themes', 'read', '{"render": {"link": { "pjaxed": true, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 5, 'participants', gT('Survey participants', 'unescaped'), gT('Survey participants', 'unescaped'), gT('Go to survey participant and token settings', 'unescaped'), 'user', 'fontawesome', '', 'admin/tokens/sa/index/', '', '', '', '', 'surveysettings', 'update', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 6, 'presentation', gT('Presentation & navigation settings', 'unescaped'), gT('Presentation', 'unescaped'), gT('Edit presentation and navigation settings', 'unescaped'), 'eye-slash', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_presentation_panel', '', 'surveylocale', 'read', null, '_tabPresentationNavigation', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 7, 'publication', gT('Publication & access control settings', 'unescaped'), gT('Publication & access', 'unescaped'), gT('Edit settings for publication and access control', 'unescaped'), 'key', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_publication_panel', '', 'surveylocale', 'read', null, '_tabPublicationAccess', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 8, 'surveypermissions', gT('Edit survey permissions', 'unescaped'), gT('Survey permissions', 'unescaped'), gT('Edit permissions for this survey', 'unescaped'), 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 9, 'tokens', gT('Survey participant settings', 'unescaped'), gT('Participant settings', 'unescaped'), gT('Set additional options for survey participants', 'unescaped'), 'users', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', null, '_tabTokens', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 10, 'quotas', gT('Edit quotas', 'unescaped'), gT('Quotas', 'unescaped'), gT('Edit quotas for this survey.', 'unescaped'), 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 11, 'assessments', gT('Edit assessments', 'unescaped'), gT('Assessments', 'unescaped'), gT('Edit and look at the assessements for this survey.', 'unescaped'), 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 12, 'notification', gT('Notification and data management settings', 'unescaped'), gT('Notifications & data', 'unescaped'), gT('Edit settings for notification and data management', 'unescaped'), 'feed', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_notification_panel', '', 'surveylocale', 'read', null, '_tabNotificationDataManagement', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 13, 'emailtemplates', gT('Email templates', 'unescaped'), gT('Email templates', 'unescaped'), gT('Edit the templates for invitation, reminder and registration emails', 'unescaped'), 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 14, 'panelintegration', gT('Edit survey panel integration', 'unescaped'), gT('Panel integration', 'unescaped'), gT('Define panel integrations for your survey', 'unescaped'), 'link', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_integration_panel', '', 'surveylocale', 'read', '{"render": {"link": { "pjaxed": false}}}', '_tabPanelIntegration', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, null, 15, 'resources', gT('Add/edit resources (files/images) for this survey', 'unescaped'), gT('Resources', 'unescaped'), gT('Add/edit resources (files/images) for this survey', 'unescaped'), 'file', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_resources_panel', '', 'surveylocale', 'read', null, '_tabResourceManagement', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 1, 'activateSurvey', gT('Activate survey', 'unescaped'), gT('Activate survey', 'unescaped'), gT('Activate survey', 'unescaped'), 'play', 'fontawesome', '', 'admin/survey/sa/activate', '', '', '', '', 'surveyactivation', 'update', '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 2, 'deactivateSurvey', gT('Stop this survey', 'unescaped'), gT('Stop this survey', 'unescaped'), gT('Stop this survey', 'unescaped'), 'stop', 'fontawesome', '', 'admin/survey/sa/deactivate', '', '', '', '', 'surveyactivation', 'update', '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 3, 'testSurvey', gT('Go to survey', 'unescaped'), gT('Go to survey', 'unescaped'), gT('Go to survey', 'unescaped'), 'cog', 'fontawesome', '', 'survey/index/', '', '', '', '', '', '', '{"render": {"link": {"external": true, "data": {"sid": ["survey","sid"], "newtest": "Y", "lang": ["survey","language"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 4, 'listQuestions', gT('List questions', 'unescaped'), gT('List questions', 'unescaped'), gT('List questions', 'unescaped'), 'list', 'fontawesome', '', 'admin/survey/sa/listquestions', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 5, 'listQuestionGroups', gT('List question groups', 'unescaped'), gT('List question groups', 'unescaped'), gT('List question groups', 'unescaped'), 'th-list', 'fontawesome', '', 'admin/survey/sa/listquestiongroups', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 6, 'generalsettings_collapsed', gT('General survey settings', 'unescaped'), gT('General settings', 'unescaped'), gT('Open general survey settings', 'unescaped'), 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', null, '_generalTabEditSurvey', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 7, 'surveypermissions_collapsed', gT('Edit survey permissions', 'unescaped'), gT('Survey permissions', 'unescaped'), gT('Edit permissions for this survey', 'unescaped'), 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 8, 'quotas_collapsed', gT('Edit quotas', 'unescaped'), gT('Survey quotas', 'unescaped'), gT('Edit quotas for this survey.', 'unescaped'), 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 9, 'assessments_collapsed', gT('Edit assessments', 'unescaped'), gT('Assessments', 'unescaped'), gT('Edit and look at the assessements for this survey.', 'unescaped'), 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 10, 'emailtemplates_collapsed', gT('Email templates', 'unescaped'), gT('Email templates', 'unescaped'), gT('Edit the templates for invitation, reminder and registration emails', 'unescaped'), 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 11, 'surveyLogicFile', gT('Survey logic file', 'unescaped'), gT('Survey logic file', 'unescaped'), gT('Survey logic file', 'unescaped'), 'sitemap', 'fontawesome', '', 'admin/expressions/sa/survey_logic_file/', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"sid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 12, 'tokens_collapsed', gT('Survey participant settings', 'unescaped'), gT('Participant settings', 'unescaped'), gT('Set additional options for survey participants', 'unescaped'), 'user', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '_tabTokens', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 13, 'cpdb', gT('Central participant database', 'unescaped'), gT('Central participant database', 'unescaped'), gT('Central participant database', 'unescaped'), 'users', 'fontawesome', '', 'admin/participants/sa/displayParticipants', '', '', '', '', 'tokens', 'read', '{"render": {"link": {}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 14, 'responses', gT('Responses', 'unescaped'), gT('Responses', 'unescaped'), gT('Responses', 'unescaped'), 'icon-browse', 'iconclass', '', 'admin/responses/sa/browse/', '', '', '', '', 'responses', 'read', '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 15, 'statistics', gT('Statistics', 'unescaped'), gT('Statistics', 'unescaped'), gT('Statistics', 'unescaped'), 'bar-chart', 'fontawesome', '', 'admin/statistics/sa/index/', '', '', '', '', 'statistics', 'read', '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, null, 16, 'reorder', gT('Reorder questions/question groups', 'unescaped'), gT('Reorder questions/question groups', 'unescaped'), gT('Reorder questions/question groups', 'unescaped'), 'icon-organize', 'iconclass', '', 'admin/survey/sa/organize/', '', '', '', '', 'surveycontent', 'update', '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [3, null, 16, 'plugins', gT('Simple plugin settings', 'unescaped'), gT('Simple plugins', 'unescaped'), gT('Edit simple plugin settings', 'unescaped'), 'plug', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_plugins_panel', '', 'surveysettings', 'read', '{"render": {"link": {"data": {"surveyid": ["survey","sid"]}}}}', '_pluginTabSurvey', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],      
         ];
         $returnArray = [];
-        
-        foreach($basicMenues as $basicMenu) {
+
+        foreach ($basicMenues as $basicMenu) {
             $returnArray[] = array_combine($headerArray, $basicMenu);
         }
         App()->setLanguage($sOldLanguage);
         return $returnArray;
     }
-    
+
     public static function getTemplateDefaultTexts($mode, $language='en')
     {
 
@@ -74,23 +74,23 @@ class LsDefaultDataSets
             border-width: 1px;
             padding:0.1em 1em 0.1em 0.5em;
             }
-        
+
             .printouttable td:first-child {
             font-weight: 700;
             text-align: right;
             padding-right: 5px;
             padding-left: 5px;
-        
+
             }
             .printouttable .printanswersquestion td{
             background-color:#F7F8FF;
             }
-        
+
             .printouttable .printanswersquestionhead td{
             text-align: left;
             background-color:#ddf;
             }
-        
+
             .printouttable .printanswersgroup td{
             text-align: center;
             font-weight:bold;
@@ -111,7 +111,7 @@ class LsDefaultDataSets
             App()->setLanguage($sOldLanguage);
         return $returnArray;
     }
-    
+
     public static function getSurveyMenuData()
     {
         $headerArray = [
@@ -133,9 +133,9 @@ class LsDefaultDataSets
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
         $returnArray = [];
-        $returnArray[] = array_combine($headerArray, [null,null,null,0,0,'mainmenu',gT('Survey menu'),'side',gT('Main survey menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]);
-        $returnArray[] = array_combine($headerArray, [null,null,null,0,0,'quickmenu',gT('Quick menu'),'collapsed',gT('Quick menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]);
-        $returnArray[] = array_combine($headerArray, [1,null,null,0,1,'pluginmenu',gT('Plugin menu'),'side',gT('Plugin menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]);
+        $returnArray[] = array_combine($headerArray, [null, null, null, 0, 0, 'mainmenu', gT('Survey menu'), 'side', gT('Main survey menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]);
+        $returnArray[] = array_combine($headerArray, [null, null, null, 0, 0, 'quickmenu', gT('Quick menu'), 'collapsed', gT('Quick menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]);
+        $returnArray[] = array_combine($headerArray, [1, null, null, 0, 1, 'pluginmenu', gT('Plugin menu'), 'side', gT('Plugin menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]);
         App()->setLanguage($sOldLanguage);
 
         return $returnArray;
@@ -155,13 +155,13 @@ class LsDefaultDataSets
 
         App()->setLanguage($sOldLanguage);
         return $returnArray;
-        
+
     }
 
     public static function getTemplateConfigurationData()
     {
         $returnArray = [];
-        
+
         $returnArray[] = [
             'template_name'     =>  'vanilla',
             'sid'               =>  null,
@@ -170,7 +170,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png","font":"noto"}',
+            'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on", "hideprivacyinfo": "off", "brandlogofile":"./files/logo.png","font":"noto"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -186,7 +186,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
             'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3"}',
+            'options'           => '{"ajaxmode":"on","brandlogo":"on","brandlogofile":null,"container":"on","backgroundimage":"off","backgroundimagefile":null,"animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"500","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"500","animatealert":"off","alertanimation":"shake","alertanimationduration":"500","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"500","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"500","zebrastriping":"off","stickymatrixheaders":"off","greyoutselected":"off","hideprivacyinfo":"off","crosshover":"off"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{}',
             'cssframework_js'   => '',
@@ -202,7 +202,7 @@ class LsDefaultDataSets
             'files_css'         => '{"add":["css/ajaxify.css","css/theme.css","css/custom.css"]}',
             'files_js'          =>  '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
             'files_print_css'   => '{"add":["css/print_theme.css"]}',
-            'options'           => '{"ajaxmode":"off","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
+            'options'           => '{"ajaxmode":"on","brandlogo":"on","container":"on","brandlogofile":"./files/logo.png"}',
             'cssframework_name' => 'bootstrap',
             'cssframework_css'  => '{"replace":[["css/bootstrap.css","css/variations/flatly.min.css"]]}',
             'cssframework_js'   => '',
@@ -213,8 +213,8 @@ class LsDefaultDataSets
 
         return $returnArray;
     }
-    
-    
+
+
     public static function getSurveygroupData()
     {
 
@@ -315,7 +315,7 @@ class LsDefaultDataSets
                 'keyboard' => false,
                 'orphan' => true,
                 'template' => ""
-                ."<div class='popover tour lstutorial__template--mainContainer'>" 
+                ."<div class='popover tour lstutorial__template--mainContainer'>"
                 ."<div class='arrow'></div>"
                 ."<button class='pull-right ls-space margin top-5 right-5 btn btn-warning btn-sm' data-role='end' data-toggle='tooltip' title='".gT('End tour','js')."'><i class='fa fa-close'></i></button>"
                 ."<h3 class='popover-title lstutorial__template--title'></h3>"
@@ -336,13 +336,13 @@ class LsDefaultDataSets
             'permission' => 'survey',
             'permission_grade' => 'create'
         ];
-        
+
         return $returnArray;
     }
 
     public static function getTutorialEntryData()
     {
-        $returnArray =[];
+        $returnArray = [];
         $returnArray['firstStartTour'] = array(
             array(
                 'teid' => 1,

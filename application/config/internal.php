@@ -83,6 +83,7 @@ $internalConfig = array(
         'application.core.*',
         'application.core.db.*',
         'application.models.*',
+        'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
         'bootstrap.helpers.*',
@@ -232,11 +233,17 @@ $internalConfig = array(
                 /* String management */
                 'processString'           => 'LS_Twig_Extension::processString',
                 'flatString'              => 'LS_Twig_Extension::flatString',
+                'flattenText'             => 'flattenText', /* Not in 3.X Temporary keep it */
                 'ellipsizeString'         => 'LS_Twig_Extension::ellipsizeString',
-                'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText',
+                'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText', /* Temporary keep it */
                 'str_replace'             => 'str_replace',
+                'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',/* Not in 3.X */
+                'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',/* Not in 3.X */
 
+                'checkPermission'         => 'LS_Twig_Extension::checkPermission',/* Not in 3.X */
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
+                'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
+
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
                 'count'                   => 'count',
@@ -251,7 +258,8 @@ $internalConfig = array(
                 'imageSrc'                => 'LS_Twig_Extension::imageSrc',
                 'sprintf'                 => 'sprintf',
                 'gT'                      => 'gT',
-                'ngT'                      => 'ngT',
+                'ngT'                     => 'ngT',
+                'createAbsoluteUrl'       => 'LS_Twig_Extension::createAbsoluteUrl',/* Not in 3.X */
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',
@@ -259,7 +267,9 @@ $internalConfig = array(
                 'checkconditionFunction'  => 'checkconditionFunction',
                 'doRender'                => 'doRender',
                 'flattenText'             => 'flattenText',
-                'getEditor'               => 'getEditor'
+                'getEditor'               => 'getEditor',
+                'darkencss'               => 'LS_Twig_Extension::darkencss',
+                'lightencss'              => 'LS_Twig_Extension::lightencss',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -283,8 +293,10 @@ $internalConfig = array(
                     'split',
                     'trim',
                     'json_encode',
+                    'round',
                     'replace',
                     'last',
+                    'url_encode',
                     'capitalize',
                     'lower',
                     'upper',
@@ -294,13 +306,14 @@ $internalConfig = array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
-                    'LSCaptcha'                          =>  array("renderOut")
+                    'LSCaptcha'                          =>  array("renderOut"),
                 ),
                 'properties' => array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                     'TemplateConfiguration'             =>  array("sTemplateurl"),
-                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'nokeyboard', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable'),
+                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'nokeyboard', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice'),
+                    'SurveyLanguageSetting' => array('surveyls_description', 'surveyls_welcometext', 'surveyls_endtext', 'surveyls_policy_notice', 'surveyls_policy_error', 'surveyls_policy_notice_label'),
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
                 ),
@@ -322,15 +335,20 @@ $internalConfig = array(
                     'unregisterScriptForAjax',
                     'listCoreScripts',
                     'listScriptFiles',
-                    'processString',
 
+                    'processString',
                     'flatEllipsizeText',
                     'flatString',
                     'ellipsizeString',
                     'flatEllipsizeText',
                     'str_replace',
+                    'flattenText',
+                    'getExpressionManagerOutput',
+                    'getTextDisplayWidget',
 
+                    'getLanguageNameFromCode',
                     'getAllQuestionClasses',
+                    'checkPermission',
                     'intval',
                     'empty',
                     'count',
@@ -346,6 +364,7 @@ $internalConfig = array(
                     'sprintf',
                     'gT',
                     'ngT',
+                    'createAbsoluteUrl',
                     'createUrl',
                     'json_decode',
                     'json_encode',
@@ -358,10 +377,11 @@ $internalConfig = array(
                     'doRender',
                     'flattenText',
                     'range',
-                    'getEditor'
+                    'getEditor',
+                    'darkencss',
+                    'lightencss',
                 ),
             ),
-
         ),
     )
 );

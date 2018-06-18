@@ -170,6 +170,7 @@ class SurveyLink extends LSActiveRecord
             $date = new DateTime($inviteDate);
             return $date->format($this->dateFormat);
         }
+        return null;
     }
     
     /**
@@ -182,6 +183,7 @@ class SurveyLink extends LSActiveRecord
             $date = new DateTime($reminddate);
             return $date->format($this->dateFormat);
         }
+        return null;
     }
 
     /**

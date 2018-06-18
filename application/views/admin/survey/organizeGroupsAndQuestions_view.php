@@ -30,7 +30,7 @@
                     <div class="panel-heading">
                         <a class='btn btn-default btn-xs disclose'><span title="Click to show/hide children" class="caret"></span></a>
                         &nbsp;
-                        <?php echo flattenText($aGroupAndQuestions['group_name'],true);?>
+                        <?php echo flattenText($aGroupAndQuestions['gid'],true);?>
                     </div>
                         <?php if (isset ($aGroupAndQuestions['questions']))
                             {?>

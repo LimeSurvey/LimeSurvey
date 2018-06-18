@@ -24,14 +24,19 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * @var array Twig_Extension_Sandbox configuration
      */
-    public  $sandboxConfig = array();
+    public $sandboxConfig = array();
+
+    /**
+     * @var Twig_Environment|null
+     */
     private $_twig;
 
     /**
      * Main method to render a survey.
      * @param string  $sLayout the name of the layout to render
      * @param array   $aDatas  the datas needed to fill the layout
-     * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
+     * @param boolean $bReturn if true, it will return the html string without
+     *                         rendering the whole page. Usefull for debuging, and used for Print Answers
      */
     public function renderTemplateFromFile($sLayout, $aDatas, $bReturn)
     {
@@ -40,7 +45,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         if ($oLayoutTemplate) {
             $line       = file_get_contents($oLayoutTemplate->viewPath.$sLayout);
             $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
-            $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage();
+            $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
             if($sEmHiddenInputs) {
                 $sHtml = str_replace("<!-- emScriptsAndHiddenInputs -->","<!-- emScriptsAndHiddenInputs updated -->\n".$sEmHiddenInputs,$sHtml);
             }
@@ -69,6 +74,44 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                     gT("Can't render layout %s for template %s. Please try to re-install the template."),
                     $sLayout,
                     $oTemplate->template_name
+                )
+            );
+        }
+    }
+
+
+    /**
+     * Main method to render an admin page or block.
+     * Extendable to use admin templates in the future currently running on pathes, like the yii render methods go.
+     * @param string  $sLayout the name of the layout to render
+     * @param array   $aDatas  the datas needed to fill the layout
+     * @param boolean $bReturn if true, it will return the html string without rendering the whole page. 
+     *                         Usefull for debuging, and used for Print Answers
+     * @param boolean $bUseRootDir Prepend application root dir to sLayoutFilePath if true.
+     * @return string HTML
+     */
+    public function renderViewFromFile($sLayoutFilePath, $aDatas, $bReturn = false, $bUseRootDir = true)
+    {
+        if ($bUseRootDir) {
+            $viewFile = Yii::app()->getConfig('rootdir').$sLayoutFilePath;
+        } else {
+            $viewFile = $sLayoutFilePath;
+        }
+
+        if (file_exists($viewFile)) {
+            $line       = file_get_contents($viewFile);
+            $sHtml      = $this->convertTwigToHtml($line, $aDatas);
+
+            if ($bReturn) {
+                return $sHtml;
+            } else {
+                $this->renderHtmlPage($sHtml, $oTemplate);
+            }
+        } else {
+            throw new CException(
+                sprintf(
+                    gT("Can't render layout %s. Please check that the view exists or contact your admin."),
+                    $viewFile
                 )
             );
         }
@@ -119,13 +162,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             
             //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
-            $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
-            $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
-            $aData['this'] = Yii::app()->getController();
             
             // check if this method is called from theme editor
             if (empty($aData['bIsThemeEditor'])){
                     $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
+                    $sBaseLanguage = Survey::model()->findByPk($_SESSION['LEMsid'])->language;
+                    $aData['surveyInfo'] = getSurveyInfo($_SESSION['LEMsid'], $sBaseLanguage);
+                    $aData['this'] = Yii::app()->getController();
                 } else {
                     $aData['question_template_attribute'] = null;
                 }
@@ -284,22 +327,25 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      *
      * @param string $sString The string of HTML/Twig to convert
      * @param array $aDatas Array containing the datas needed to render the view ($thissurvey)
-     * @param TemplateConfiguration $oTemplate
+     * @param TemplateConfiguration|null $oTemplate
      * @return string
      */
-    public function convertTwigToHtml($sString, $aDatas, $oTemplate)
+    public function convertTwigToHtml($sString, $aDatas, $oTemplate = null)
     {
         // Twig init
         $this->_twig = $twig = parent::getTwig();
 
-        // Get the additional infos for the view, such as language, direction, etc
-        $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
+        //Run theme related things only if a theme is provided!
+        if ($oTemplate !== null) {
+            // Get the additional infos for the view, such as language, direction, etc
+            $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
 
-        // Add to the loader the path of the template and its parents.
-        $this->addRecursiveTemplatesPath($oTemplate);
+            // Add to the loader the path of the template and its parents.
+            $this->addRecursiveTemplatesPath($oTemplate);
 
-        // Plugin for blocks replacement
-        list($sString, $aDatas) = $this->getPluginsData($sString, $aDatas);
+            // Plugin for blocks replacement
+            list($sString, $aDatas) = $this->getPluginsData($sString, $aDatas);
+        }
 
         // Twig rendering
         $oTwigTemplate = $twig->createTemplate($sString);
@@ -337,10 +383,30 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     {
         $oRTemplate   = $oTemplate;
         $loader       = $this->_twig->getLoader();
+        /* Event to add or replace twig views */
+        $oEvent = new PluginEvent('getPluginTwigPath');
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $configTwigExtendsAdd = (array) $oEvent->get("add");
+        $configTwigExtendsReplace = (array) $oEvent->get("replace");
+
+        /* Forced twig by plugins (used to replace vanilla or core template …  don't like to force on user template, but else can extend current core twig) */
+        foreach($configTwigExtendsReplace as $configTwigExtendReplace) {
+            if(is_string($configTwigExtendReplace)) { // Need more control ?
+                $loader->addPath($configTwigExtendReplace);
+            }
+        }
+        /* This template */
         $loader->addPath($oRTemplate->viewPath);
+        /* Parent template */
         while ($oRTemplate->oMotherTemplate instanceof TemplateConfiguration) {
             $oRTemplate = $oRTemplate->oMotherTemplate;
             $loader->addPath($oRTemplate->viewPath);
+        }
+        /* Added twig by plugins, replaced by any template file*/
+        foreach($configTwigExtendsAdd as $configTwigExtendAdd) {
+            if(is_string($configTwigExtendAdd)) {
+                $loader->addPath($configTwigExtendAdd);
+            }
         }
     }
 
@@ -444,4 +510,19 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             }
         }
     }
+
+    /**
+     * get a twig file and return html produced
+     * @param string $twigView twigfile to be used (without twig extension) (example ./subviews/ajax/messages)
+     * @param array $aData to be used
+     * @return string
+     */
+    public function renderPartial($twigView,$aData)
+    {
+        $oTemplate = Template::model()->getInstance();
+        $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
+        $this->addRecursiveTemplatesPath($oTemplate);
+        return $this->_twig->loadTemplate($twigView.'.twig')->render($aData);
+    }
+
 }

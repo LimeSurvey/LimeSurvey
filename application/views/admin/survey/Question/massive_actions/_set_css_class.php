@@ -2,6 +2,9 @@
 /**
  * Set question css classes (parsed to massive action widget)
  */
+
+/** @var AdminController $this */
+/** @var Question $model */
 ?>
 <form class="custom-modal-datas">
     <div  class="form-group" id="CssClass">

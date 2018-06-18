@@ -279,18 +279,7 @@ class labels extends Survey_Common_Action
 
 
             Yii::app()->loadHelper("surveytranslator");
-            $results = array();
-            foreach ($lslanguages as $lslanguage) {
-                if (!$lslanguage) {
-                    continue;
-                }
-
-                $results[] = array_filter($model->labels, function($item) use ($lslanguage)
-                {
-                    return ($item->language === $lslanguage);
-                });
-            }
-
+            $results = $model->labels;
             $aViewUrls['labelview_view'][] = array(
                 'results' => $results,
                 'lslanguages' => $lslanguages,
@@ -357,7 +346,7 @@ class labels extends Survey_Common_Action
                     modlabelsetanswers($lid);
         }
         if ($action == "deletelabelset" && Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
-            if (deletelabelset($lid)) {
+            if (LabelSet::model()->deleteLabelSet($lid)) {
                 Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."), 'success');
                 $lid = 0;
             }
@@ -377,12 +366,12 @@ class labels extends Survey_Common_Action
      */
     public function delete()
     {
-        $lid = returnGlobal('lid');
-
+        $lid = returnglobal('lid');
+        // @todo This needs to be a POST, interface needs to be changed
         if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             Yii::app()->loadHelper('admin/label');
 
-            if (deletelabelset($lid)) {
+            if (LabelSet::model()->deleteLabelSet($lid)) {
                 Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."));
             }
         } else {

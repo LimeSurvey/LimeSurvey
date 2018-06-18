@@ -179,13 +179,11 @@ class themes extends Survey_Common_Action
                         false
                     );
                 }
-                $checkImage = getimagesize($_FILES["file"]["tmp_name"]);
-                $debug[] = $checkImage;
-                if ($checkImage === false || !in_array($checkImage[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF])) {
-                    $uploadresult = gT("This file is not a supported image - please only upload JPG,PNG or GIF type images.");
+                $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]["tmp_name"]);
+                if ($checkImage['check'] === false) {
                     return Yii::app()->getController()->renderPartial(
                         '/admin/super/_renderJson',
-                        array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+                        array('data' => ['success' => $success, 'message' => $checkImage['uploadresult'], 'debug' => $checkImage['debug']]),
                         false,
                         false
                     );
@@ -489,7 +487,7 @@ class themes extends Survey_Common_Action
                 $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir')."/".$sNewName;
                 $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir')."/".returnGlobal('copydir');
 
-                if (isStandardTemplate(returnGlobal('newname'))) {
+                if (Template::isStandardTemplate(returnGlobal('newname'))) {
                     Yii::app()->user->setFlash('error', sprintf(gT("Template could not be renamed to '%s'."), $sNewName)." ".gT("This name is reserved for standard template."));
 
                     $this->getController()->redirect(array("admin/themes/sa/upload"));
@@ -785,7 +783,7 @@ class themes extends Survey_Common_Action
             //App()->getClientScript()->reset();
             @fwrite($fnew, getHeader());
 
-            App()->getClientScript()->registerScript("activateActionLink", "activateActionLink();", CClientScript::POS_END); /* show the button if needed */
+            App()->getClientScript()->registerScript("activateActionLink", "activateActionLink();", LSYii_ClientScript::POS_POSTSCRIPT); /* show the button if needed */
 
             /* Must remove all exitsing scripts / css and js */
             App()->getClientScript()->unregisterPackage('admin-theme'); // We remove the admin package
@@ -904,7 +902,7 @@ class themes extends Survey_Common_Action
         if (in_array(Yii::app()->session['adminlang'], $availableeditorlanguages)) {
             $sLanguageCode = Yii::app()->session['adminlang'];
         }
-        $aAllTemplates = getTemplateList();
+        $aAllTemplates = Template::getTemplateList();
         if (!isset($aAllTemplates[$templatename])) {
             $templatename = getGlobalSetting('defaulttheme');
         }
@@ -1289,7 +1287,6 @@ class themes extends Survey_Common_Action
             Yii::app()->user->setFlash('error', gT("Demo mode: Uploading templates is disabled."));
             $this->getController()->redirect(array("admin/themes/sa/upload"));
         }
-
     }
 
     /**

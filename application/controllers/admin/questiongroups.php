@@ -150,17 +150,13 @@ class questiongroups extends Survey_Common_Action
 
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
-            $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($surveyid)->language;
-            $grplangs[] = $baselang;
-            $grplangs = array_reverse($grplangs);
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'questiongroup.js');
 
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
             $aData['surveyid'] = $surveyid;
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'addgroup';
-            $aData['grplangs'] = $grplangs;
-            $aData['baselang'] = $baselang;
+            $aData['grplangs'] = $survey->allLanguages;
+            $aData['baselang'] = $survey->language; ;
 
             $aData['sidemenu']['state'] = false;
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
@@ -187,39 +183,27 @@ class questiongroups extends Survey_Common_Action
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
             Yii::app()->loadHelper('surveytranslator');
 
-            $sSurveyLanguages = Survey::model()->findByPk($surveyid)->getAllLanguages();
-            foreach ($sSurveyLanguages as $sLanguage) {
-                $oGroup = new QuestionGroup;
-                $oGroup->sid = $surveyid;
-                if (isset($newGroupID)) {
-                    switchMSSQLIdentityInsert('groups', true);
-                    $oGroup->gid = $newGroupID;
-                }
-                $oGroup->group_name = Yii::app()->request->getPost('group_name_'.$sLanguage, "");
-                $oGroup->description = Yii::app()->request->getPost('description_'.$sLanguage, "");
-                if (!isset($newGroupOrder)) {
-                    $newGroupOrder = getMaxGroupOrder($surveyid);
-                }
-                $oGroup->group_order = $newGroupOrder;
-                $oGroup->language = $sLanguage;
-                $oGroup->randomization_group = Yii::app()->request->getPost('randomization_group');
-                $oGroup->grelevance = Yii::app()->request->getPost('grelevance');
-                if ($oGroup->save()) {
-                    if (!isset($newGroupID)) {
-                        $newGroupID = $oGroup->gid;
-                    } else {
-                        switchMSSQLIdentityInsert('groups', true);
-                    }
-                } else {
-                    Yii::app()->setFlashMessage(CHtml::errorSummary($oGroup), 'error');
-                }
-            }
-            if (!isset($newGroupID)) {
-                // Error, redirect back.
-                Yii::app()->setFlashMessage(gT("Question group was not saved."), 'error');
+            $oGroup = new QuestionGroup;
+            $oGroup->sid = $surveyid;
+            $oGroup->group_order = getMaxGroupOrder($surveyid); ;
+            $oGroup->randomization_group = Yii::app()->request->getPost('randomization_group');
+            $oGroup->grelevance = Yii::app()->request->getPost('grelevance');
+            if ($oGroup->save()) {
+                $newGroupID = $oGroup->gid;
+            } else {
+                Yii::app()->setFlashMessage(CHtml::errorSummary($oGroup), 'error');
                 $this->getController()->redirect(array("admin/questiongroups/sa/add/surveyid/$surveyid"));
             }
-
+            $sSurveyLanguages = Survey::model()->findByPk($surveyid)->getAllLanguages();
+            foreach ($sSurveyLanguages as $sLanguage) {
+                $oGroupLS = new QuestionGroupL10n;
+                $oGroupLS->gid = $newGroupID;
+                $oGroupLS->group_name = Yii::app()->request->getPost('group_name_'.$sLanguage, "");
+                $oGroupLS->description = Yii::app()->request->getPost('description_'.$sLanguage, "");
+                $oGroupLS->language = $sLanguage;
+                $oGroupLS->save();
+            
+            }
             Yii::app()->setFlashMessage(gT("New question group was saved."));
             Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this group.'), '<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">', '</a>'), 'info');
             if (Yii::app()->request->getPost('close-after-save') === 'true') {
@@ -256,7 +240,7 @@ class questiongroups extends Survey_Common_Action
             $iGroupsDeleted = QuestionGroup::deleteWithDependency($iGroupId, $iSurveyId);
 
             if ($iGroupsDeleted > 0) {
-                fixSortOrderGroups($iSurveyId);
+                QuestionGroup::model()->updateGroupOrder($iSurveyId);
                 Yii::app()->setFlashMessage(gT('The question group was deleted.'));
             } else {
                             Yii::app()->setFlashMessage(gT('Group could not be deleted'), 'error');
@@ -279,18 +263,18 @@ class questiongroups extends Survey_Common_Action
         $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         $aData['condarray'] = $condarray;
 
-        $oQuestionGroup = QuestionGroup::model()->findByPk(array('gid' => $gid, 'language' => $baselang));
+        $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
         $grow           = $oQuestionGroup->attributes;
 
         $grow = array_map('flattenText', $grow);
-
+                                                 
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
         $aData['grow'] = $grow;
 
         $aData['sidemenu']['questiongroups'] = true;
-        $aData['sidemenu']['group_name'] = $grow['group_name'];
+        $aData['sidemenu']['group_name'] = $oQuestionGroup->questionGroupL10ns[$baselang]->group_name;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['buttons']['view'] = true;
 
@@ -326,28 +310,27 @@ class questiongroups extends Survey_Common_Action
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
 
-            $aAdditionalLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
             // TODO: This is not an array, but a string "en"
-            $aBaseLanguage = Survey::model()->findByPk($surveyid)->language;
+            $aBaseLanguage = $survey->language;
 
-            $aLanguages = array_merge(array($aBaseLanguage), $aAdditionalLanguages);
+            $aLanguages = $survey->allLanguages;
 
             $grplangs = array_flip($aLanguages);
 
             // Check out the intgrity of the language versions of this group
-            $egresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid));
+            $egresult = QuestionGroupL10n::model()->findAllByAttributes(array('gid' => $gid));
             foreach ($egresult as $esrow) {
                 $esrow = $esrow->attributes;
 
                 // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE
                 if (!in_array($esrow['language'], $aLanguages)) {
-                    QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $esrow['language']));
+                    QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' => $gid, 'language' => $esrow['language']));
                 } else {
                     $grplangs[$esrow['language']] = 'exists';
                 }
 
                 if ($esrow['language'] == $aBaseLanguage) {
-                                    $basesettings = $esrow;
+                    $basesettings = $esrow;
                 }
             }
 
@@ -355,26 +338,24 @@ class questiongroups extends Survey_Common_Action
             foreach ($grplangs as $key => $value) {
                 if ($value != 'exists') {
                     $basesettings['language'] = $key;
-                    $group = new QuestionGroup;
+                    $groupLS = new QuestionGroupL10n;
                     foreach ($basesettings as $k => $v) {
                                             $group->$k = $v;
                     }
-                    switchMSSQLIdentityInsert('groups', true);
-                    $group->save();
-                    switchMSSQLIdentityInsert('groups', false);
+                    $groupLS->save();
                 }
             }
             $first = true;
+            $oQuestionGroup = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
             foreach ($aLanguages as $sLanguage) {
-                $oResult = $oQuestionGroup = QuestionGroup::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $sLanguage));
-                $aData['aGroupData'][$sLanguage] = $oResult->attributes;
+                $oResult = QuestionGroupL10n::model()->findByAttributes(array('gid' => $gid, 'language' => $sLanguage));
+                $aData['aGroupData'][$sLanguage] = array_merge($oResult->attributes, $oQuestionGroup->attributes);
                 $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
                 if ($first) {
                     $aTabTitles[$sLanguage] .= ' ('.gT("Base language").')';
                     $first = false;
                 }
-            }
-
+            }                  
             $aData['oQuestionGroup'] = $oQuestionGroup;
             $aData['sidemenu']['questiongroups'] = true;
             $aData['questiongroupbar']['buttonspreview'] = true;
@@ -408,39 +389,54 @@ class questiongroups extends Survey_Common_Action
     /**
      * Reorder the questiongroups based on the new order in the adminpanel
      *
-     * @param type $surveyid
+     * @param integer $surveyid
      * @return void
      */
     public function updateOrder($surveyid)
     {
-        $grouparray = Yii::app()->request->getPost('grouparray', []);
-        foreach ($grouparray as $aQuestiongroup) {
-            
-            //first set up the ordering for questiongroups
-            $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
-            array_map(function($oQuestiongroup) use ($aQuestiongroup)
-            {
-                $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
-                $oQuestiongroup->save();
-            }, $oQuestiongroups);
-
-            
-            foreach ($aQuestiongroup['questions'] as $aQuestion) {
-                $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]);
-                array_map(function($oQuestion) use ($aQuestion)
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if(!$oSurvey->isActive) {
+            $grouparray = Yii::app()->request->getPost('grouparray', []);
+            foreach ($grouparray as $aQuestiongroup) {
+                
+                //first set up the ordering for questiongroups
+                $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
+                array_map(function($oQuestiongroup) use ($aQuestiongroup)
                 {
-                    $oQuestion->question_order = $aQuestion['question_order'];
-                    $oQuestion->gid = $aQuestion['gid'];
-                    $oQuestion->save(true);
-                }, $oQuestions);
-            }
-        }
+                    $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
+                    $oQuestiongroup->save();
+                }, $oQuestiongroups);
 
+                
+                foreach ($aQuestiongroup['questions'] as $aQuestion) {
+                    $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]);
+                    array_map(function($oQuestion) use ($aQuestion)
+                    {
+                        $oQuestion->question_order = $aQuestion['question_order'];
+                        $oQuestion->gid = $aQuestion['gid'];
+                        $oQuestion->save(true);
+                    }, $oQuestions);
+                }
+            }
+
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => true,
+                        'DEBUG' => ['POST'=>$_POST, 'grouparray' => $grouparray]
+                    ],
+                ),
+                false,
+                false
+            );
+        }
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
                 'data' => [
-                    'success' => true,
+                    'success' => false,
+                    'message' => gT("You can't reorder in an active survey"),
                     'DEBUG' => ['POST'=>$_POST, 'grouparray' => $grouparray]
                 ],
             ),
@@ -452,7 +448,7 @@ class questiongroups extends Survey_Common_Action
     /**
      * Reorder the questiongroups based on the new order in the adminpanel
      *
-     * @param type $surveyid
+     * @param integer $surveyid
      * @return void
      */
     public function updateOrderWithQuestions($surveyid)
@@ -498,24 +494,28 @@ class questiongroups extends Survey_Common_Action
                     $group_description = fixCKeditorText($group_description);
 
                     $aData = array(
-                        'group_name' => $group_name,
-                        'description' => $group_description,
                         'randomization_group' => $_POST['randomization_group'],
                         'grelevance' => $_POST['grelevance'],
                     );
-                    $condition = array(
-                        'gid' => $gid,
-                        'sid' => $surveyid,
-                        'language' => $grplang
-                    );
-                    $group = QuestionGroup::model()->findByAttributes($condition);
+                    $group = QuestionGroup::model()->findByPk($gid);
                     foreach ($aData as $k => $v) {
-                                            $group->$k = $v;
+                        $group->$k = $v;
                     }
                     $ugresult = $group->save();
-                    if ($ugresult) {
-                        $groupsummary = getGroupList($gid, $surveyid);
+
+                    $aData = array(
+                        'group_name' => $group_name,
+                        'description' => $group_description,
+                    );
+                    $condition = array(
+                        'language' => $grplang,
+                        'gid' => $gid,
+                    );
+                    $oGroupLS = QuestionGroupL10n::model()->findByAttributes($condition);
+                    foreach ($aData as $k => $v) {
+                                            $oGroupLS->$k = $v;
                     }
+                    $ugresult2 = $oGroupLS->save();
                 }
             }
 

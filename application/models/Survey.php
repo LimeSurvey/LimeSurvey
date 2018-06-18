@@ -86,6 +86,8 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property User $owner
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
+ * @property Question[] $allQuestions All survey questions including subquestions
+ * @property Question[] $baseQuestions Survey questions NOT including subquestions
  * @property Question[] $quotableQuestions
  *
  * @property array $fullAnswers
@@ -178,17 +180,29 @@ class Survey extends LSActiveRecord
         $this->format = 'G';
 
         // Default setting is to use the global Google Analytics key If one exists
-        Yii::import('application.helpers.globalsettings_helper', true);
-        $globalKey = getGlobalSetting('googleanalyticsapikey');
+        $globalKey = App()->getConfig('googleanalyticsapikey');
         if ($globalKey != "") {
             $this->googleanalyticsapikey = "9999useGlobal9999";
             $this->googleanalyticsapikeysetting = "G";
         }
-
-
-        $this->template = Template::templateNameFilter(getGlobalSetting('defaulttheme'));
+        /* default template */
+        $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
+        /* default language */
         $validator = new LSYii_Validators;
-        $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
+        $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
+        /* default user */
+        $this->owner_id = 1;
+        $this->admin = App()->getConfig('siteadminname');
+        $this->adminemail = App()->getConfig('siteadminemail');
+        $iUserid = Permission::getUserId();
+        if($iUserid) {
+            $this->owner_id = $iUserid;
+            $oUser = User::model()->findByPk($iUserid);
+            if($oUser) {
+                $this->admin = $oUser->full_name;
+                $this->adminemail = $oUser->email;
+            }
+        }
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
@@ -344,6 +358,7 @@ class Survey extends LSActiveRecord
         } else {
             self::model()->updateByPk($surveyId, array('expires' => $dateTime));
         }
+        return null;
 
     }
 
@@ -365,7 +380,9 @@ class Survey extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var Survey $model */
+        $model = parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -488,7 +505,8 @@ class Survey extends LSActiveRecord
         // set the attributes we allow to be fixed
         $allowedAttributes = array('template', 'usecookie', 'allowprev',
             'showxquestions', 'shownoanswer', 'showprogress', 'questionindex',
-            'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay');
+            'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay',
+            'expires','stardate','admin','adminemail');
         foreach ($allowedAttributes as $attribute) {
             if (!is_null($event->get($attribute))) {
                 $this->{$attribute} = $event->get($attribute);
@@ -747,7 +765,8 @@ class Survey extends LSActiveRecord
         return TemplateConfiguration::getInstance(null, null, $this->sid);
     }
 
-    private function __useTranslationForSurveymenu(&$entryData) {
+    private function __useTranslationForSurveymenu(&$entryData)
+    {
         $entryData['title']             = gT($entryData['title']);
         $entryData['menu_title']        = gT($entryData['menu_title']);
         $entryData['menu_description']  = gT($entryData['menu_description']);
@@ -923,18 +942,20 @@ class Survey extends LSActiveRecord
      */
     public function findByPk($pk, $condition = '', $params = array())
     {
+        /** @var self $model */
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
                 return $this->findByPkCache[$pk];
             } else {
-                $result = parent::findByPk($pk, $condition, $params);
-                if (!is_null($result)) {
-                    $this->findByPkCache[$pk] = $result;
+                $model = parent::findByPk($pk, $condition, $params);
+                if (!is_null($model)) {
+                    $this->findByPkCache[$pk] = $model;
                 }
-                return $result;
+                return $model;
             }
         }
-        return parent::findByPk($pk, $condition, $params);
+        $model = parent::findByPk($pk, $condition, $params);
+        return $model;
     }
 
     /**
@@ -1427,7 +1448,7 @@ class Survey extends LSActiveRecord
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
             if ($this->active != 'Y') {
-                $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid, 'language' => $this->language)); //Checked
+                $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid)); 
                 if ($groupCount > 0) {
                     $button .= '<a class="btn btn-default" href="'.$sAddquestion.'" role="button" data-toggle="tooltip" title="'.gT('Add new question').'"><span class="icon-add text-success" ></span><span class="sr-only">'.gT('Add new question').'</span></a>';
                 } else {
@@ -1704,8 +1725,8 @@ return $s->hasTokensTable; });
         /* Delete invalid questions (don't exist in primary language) using qid like column name*/
         $validQuestion = Question::model()->findAll(array(
             'select'=>'qid',
-            'condition'=>'sid=:sid AND language=:language AND parent_qid = 0',
-            'params'=>array('sid' => $this->sid, 'language' => $this->language)
+            'condition'=>'sid=:sid AND parent_qid = 0',
+            'params'=>array('sid' => $this->sid)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('sid', $this->sid);
@@ -1716,8 +1737,8 @@ return $s->hasTokensTable; });
         /* Delete invalid Sub questions (don't exist in primary language) using title like column name*/
         $validSubQuestion = Question::model()->findAll(array(
             'select'=>'title',
-            'condition'=>'sid=:sid AND language=:language AND parent_qid != 0',
-            'params'=>array('sid' => $this->sid, 'language' => $this->language)
+            'condition'=>'sid=:sid AND parent_qid != 0',
+            'params'=>array('sid' => $this->sid)
         ));
         $criteria = new CDbCriteria;
         $criteria->compare('sid', $this->sid);
@@ -1746,19 +1767,48 @@ return $s->hasTokensTable; });
     public function getQuotableQuestions()
     {
         $criteria = $this->getQuestionOrderCriteria();
-
         $criteria->addColumnCondition(array(
             't.sid' => $this->sid,
-            't.language' => $this->language,
             'parent_qid' => 0,
-
         ));
-
         $criteria->addInCondition('t.type', Question::getQuotableTypes());
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAll($criteria);
+        return $questions;
+    }
+
+    /**
+     * @return Question[]
+     */
+    public function getAllQuestions()
+    {
+        $criteria = $this->getSurveyQuestionsCriteria();
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAll($criteria);
+        return $questions;
+    }
+
+    /**
+     * @return Question[]
+     */
+    public function getBaseQuestions()
+    {
+        $criteria = $this->getSurveyQuestionsCriteria();
+        $criteria->addColumnCondition(array(
+            'parent_qid' => 0,
+        ));
 
         /** @var Question[] $questions */
         $questions = Question::model()->findAll($criteria);
         return $questions;
+    }
+
+    private function getSurveyQuestionsCriteria(){
+        $criteria = $this->getQuestionOrderCriteria();
+        $criteria->addColumnCondition(array(
+            't.sid' => $this->sid,
+        ));
+        return $criteria;
     }
 
     /**
@@ -1774,19 +1824,16 @@ return $s->hasTokensTable; });
         );
         $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','
             .Yii::app()->db->quoteColumnName('t.question_order');
-        $criteria->addCondition('groups.gid=t.gid', 'AND');
+        $criteria->addCondition('groups.gid = t.gid', 'AND');
         return $criteria;
-
     }
+
     /**
      * Gets number of groups inside a particular survey
      */
     public function getGroupsCount()
     {
-        //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
-        $condn = array('sid'=>$this->sid, 'language'=>$this->language);
-        $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
-        return $sumresult3;
+        return QuestionGroup::model()->countByAttributes(['sid'=>$this->sid]);
     }
 
     /**
@@ -1794,7 +1841,7 @@ return $s->hasTokensTable; });
      */
     public function getCountTotalQuestions()
     {
-        $condn = array('sid'=>$this->sid, 'language'=>$this->language, 'parent_qid'=>0);
+        $condn = array('sid'=>$this->sid, 'parent_qid'=>0);
         $sumresult = Question::model()->countByAttributes($condn);
         return (int) $sumresult;
     }
@@ -1807,7 +1854,6 @@ return $s->hasTokensTable; });
     {
         $condn = array(
             'sid'=>$this->sid,
-            'language'=>$this->language,
             'parent_qid'=>0,
             'type'=>['X', '*'],
         );
@@ -1885,4 +1931,18 @@ return $s->hasTokensTable; });
         return $dataSecurityNoticeLabel;
 
     }
+    
+    /**
+     * @param string $type Question->type
+     * @param bool $includeSubquestions
+     * @return Question
+     */
+    public function findQuestionByType($type, $includeSubquestions = false){
+        $criteria = $this->getSurveyQuestionsCriteria();
+        if ($includeSubquestions){
+            $criteria->addColumnCondition(['parent_qid' => 0]);
+        }
+        $criteria->addColumnCondition(['type'=>$type]);
+        return Question::model()->find($criteria);
+    }    
 }

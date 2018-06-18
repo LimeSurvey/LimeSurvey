@@ -43,15 +43,16 @@ class ExpressionValidate extends Survey_Common_Action
      */
     public function quota($iSurveyId, $quota, $lang = null)
     {
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read')) {
-                    throw new CHttpException(401, "401 Unauthorized");
+            throw new CHttpException(401, "401 Unauthorized");
         }
         $iQuotaId = $quota;
         if (is_string($lang)) {
             $oValidator = new LSYii_Validators;
             $aLangs = array($oValidator->languageFilter($lang));
         } else {
-            $aLangs = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
+            $aLangs = $oSurvey->allLanguages;
         }
         $aExpressions = array();
         $this->iSurveyId = $iSurveyId;

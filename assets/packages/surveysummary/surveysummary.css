@@ -1,0 +1,11 @@
+a.btn.twitter-button{
+    color: #fff;
+    background-color: #1da1f2;
+    border: 1px solid #1da1f2;
+}
+
+button.btn.facebook-button{
+    background: #4267b2;
+    border: 1px solid #4267b2;
+    color: #fff;
+}

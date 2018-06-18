@@ -176,7 +176,8 @@ class translate extends Survey_Common_Action
             $aData['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type);
             $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatetabs_view", $aData, true);
 
-            for ($j = 0; $j < count($resultbase); $j++) {
+            $countResultBase = count($resultbase);
+            for ($j = 0; $j < $countResultBase; $j++) {
                 $rowfrom = $resultbase[$j];
                 $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
                 
@@ -323,10 +324,10 @@ class translate extends Survey_Common_Action
     private function _getLanguageList($iSurveyID, $tolang)
     {
         $language_list = "";
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
 
-
-        $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $langs = $oSurvey->additionalLanguages;
         $supportedLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
 
         $language_list .= CHtml::openTag('div', array('class'=>'menubar-right')); // Opens .menubar-right div
@@ -345,7 +346,7 @@ class translate extends Survey_Common_Action
                                 'onchange' => "window.open(this.options[this.selectedIndex].value,'_top')"
                             )
                         );
-        if (count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) > 1) {
+        if (count($oSurvey->additionalLanguages) > 1) {
             $selected = (!isset($tolang)) ? "selected" : "";
 
             $language_list .= CHtml::tag(

@@ -1,6 +1,6 @@
 /*
  * This file is part of LimeSurvey
- * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
+ * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
  * License: GNU/GPL License v2 or later, see LICENSE.php
  * LimeSurvey is free software. This version may have been modified pursuant
@@ -46,7 +46,10 @@ $(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:
 $(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
-
+/* hidden item */
+$(document).on("change",".answer-item :hidden",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
+});
 /**
  * For number
  */

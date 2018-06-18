@@ -1,61 +1,160 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
-/*
-* LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*
-*/
+<?php
+
+/**
+ * LimeSurvey
+ * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ *
+ */
 
 class SurveyRuntimeHelper
 {
     /**
-     * In the 2.x version of LimeSurvey and priors, the main run method  was using a variable called redata fed via get_defined_vars. It was making hard to move piece of code to subfuntions.
-     * Those private variables are just a step to make easier refactorisation of this file, to have a global overview about what is set in this helper, and to move easely piece of code to new methods:
-     * The methods get/set the private variables, and defore calling get_defined_vars, variables are created from those private variables.
-     * It's just a first step. get_defined_vars should be removed, and most of the private variables here should be moved to the correct object:
-     * i.e: all the private variable concerning the survey should be moved to the survey model and replaced by a $oSurvey
+     * In the 2.x version of LimeSurvey and priors, the main run method  was
+     * using a variable called redata fed via get_defined_vars. It was making
+     * hard to move piece of code to subfuntions.
+     * Those private variables are just a step to make easier refactorisation
+     * of this file, to have a global overview about what is set in this
+     * helper, and to move easely piece of code to new methods:
+     * The methods get/set the private variables, and defore calling
+     * get_defined_vars, variables are created from those private variables.
+     * It's just a first step. get_defined_vars should be removed, and most of
+     * the private variables here should be moved to the correct object:
+     * i.e: all the private variable concerning the survey should be moved to
+     * the survey model and replaced by a $oSurvey
      */
 
-    // parameters
-    private $param;
+    /**
+     * Parameters
+     * @var array
+     */
+    private $param = [];
 
-    // Preview datas
-    private $previewquestion     = false;
-    private $previewgrp          = false;
-    private $preview             = false;
+    /**
+     * @var boolean
+     */
+    private $previewquestion = false;
 
-    // Template datas
-    private $oTemplate; // Template configuration object (set in model TemplateConfiguration)
-    private $sTemplateViewPath; // Path of the layout files in template
+    /**
+     * @var boolean
+     */
+    private $previewgrp = false;
 
-    // LEM Datas
-    private $LEMsessid;
-    private $LEMdebugLevel          = 0; // customizable debugging for Lime Expression Manager ; LEM_DEBUG_TIMING;   (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
-    private $LEMskipReprocessing    = false; // true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
+    /**
+     * @var boolean
+     */
+    private $preview = false;
 
-    // Survey settings:
-    // TODO: To respect object oriented design, all those "states" should be move to SurveyDynamic model, or its related models via relations.
-    // The only private variable here should be $oSurvey.
-    private $aSurveyInfo; // Array returned by common_helper::getSurveyInfo(); (survey row + language settings );
-    private $iSurveyid              = null; // The survey id
-    private $bShowEmptyGroup        = false; // True only when $_SESSION[$this->LEMsessid]['step'] == 0 ; Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
-    private $sSurveyMode; // {Group By Group,  All in one, Question by question}
-    private $aSurveyOptions; // Few options comming from thissurvey, App->getConfig, LEM. Could be replaced by $oSurvey + relations ; the one coming from LEM and getConfig should be public variable on the surveyModel, set via public methods (active, allowsave, anonymized, assessments, datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings, surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
-    private $sLangCode; // Current language code
+    /**
+     * Template configuration object (set in model TemplateConfiguration)
+     * @var Template|null
+     */
+    private $oTemplate = null;
 
-    // moves
-    private $aMoveResult            = false; // Contains the result of LimeExpressionManager::JumpTo() OR LimeExpressionManager::NavigateBackwards() OR NavigateForwards::LimeExpressionManager(). TODO: create a function LimeExpressionManager::MoveTo that call the right method
-    private $sMove = null; // The move requested by user. Set by frontend_helper::getMove() from the POST request.
-    private $bInvalidLastPage       = false; // Just a variable used to check if user submitted a survey while it's not finished. Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
-    private $aStepInfo;
+    /**
+     * Path of the layout files in template
+     * @var string|null
+     */
+    private $sTemplateViewPath = null;
+
+    /**
+     * @var int|null
+     */
+    private $LEMsessid = null;
+
+    /**
+     * customizable debugging for Lime Expression Manager ; LEM_DEBUG_TIMING;
+     * (LEM_DEBUG_TIMING + LEM_DEBUG_VALIDATION_SUMMARY + LEM_DEBUG_VALIDATION_DETAIL);
+     * @var int
+     */
+    private $LEMdebugLevel = 0;
+
+    /**
+     * true if used GetLastMoveResult to avoid generation of unneeded extra JavaScript
+     * @var boolean
+     */
+    private $LEMskipReprocessing = false;
+
+    /**
+     * Survey settings:
+     * TODO: To respect object oriented design, all those "states" should be
+     * move to SurveyDynamic model, or its related models via relations.
+     * The only private variable here should be $oSurvey.
+     * Array returned by common_helper::getSurveyInfo(); (survey row + language settings );
+     * @var array|null
+     */
+    private $aSurveyInfo = null;
+
+    /**
+     * The survey id
+     * @var int|null
+     */
+    private $iSurveyid              = null;
+
+    /**
+     * True only when $_SESSION[$this->LEMsessid]['step'] == 0 ; Just a
+     * variable for a logic step ==> should not be a Class variable (for
+     * now, only here for the redata== get_defined_vars mess)
+     * @var boolean
+     */
+    private $bShowEmptyGroup        = false;
+
+    /**
+     * Group By Group,  All in one, Question by question
+     * @var string|null
+     */
+    private $sSurveyMode = null;
+
+    /**
+     * Few options comming from thissurvey, App->getConfig, LEM. Could be
+     * replaced by $oSurvey + relations ; the one coming from LEM and
+     * getConfig should be public variable on the surveyModel, set via
+     * public methods (active, allowsave, anonymized, assessments,
+     * datestamp, deletenonvalues, ipaddr, radix, refurl, savetimings,
+     * surveyls_dateformat, startlanguage, target, tempdir,timeadjust)
+     * @var array|null
+     */
+    private $aSurveyOptions = null;
+
+    /**
+     * @var string|null
+     */
+    private $sLangCode = null;
+
+    /**
+     * Contains the result of LimeExpressionManager::JumpTo() OR
+     * LimeExpressionManager::NavigateBackwards() OR
+     * NavigateForwards::LimeExpressionManager(). TODO: create a function
+     * LimeExpressionManager::MoveTo that call the right method
+     * @var array|boolean
+     */
+    private $aMoveResult = false;
+
+    /**
+     * The move requested by user. Set by frontend_helper::getMove() from
+     * the POST request.
+     * @var int|null
+     */
+    private $sMove = null;
+
+    /**
+     * Just a variable used to check if user submitted a survey while it's
+     * not finished. Just a variable for a logic step ==> should not be a Class
+     * variable (for now, only here for the redata== get_defined_vars mess)
+     * @var boolean
+     */
+    private $bInvalidLastPage = false;
+
+    /**
+     * @var array|null
+     */
+    private $aStepInfo = null;
 
     // Popups: HTML of popus. If they are null, no popup. If they contains a string, a popup will be shown to participant.
     // They could probably be merged.
@@ -82,8 +181,9 @@ class SurveyRuntimeHelper
     /**
      * Main function
      *
-     * @param mixed $surveyid
-     * @param mixed $args
+     * @param int $surveyid
+     * @param array $args
+     * @return void
      */
     public function run($surveyid, $args)
     {
@@ -466,20 +566,24 @@ class SurveyRuntimeHelper
         ), false);
     }
 
+    /**
+     * @return array<string, boolean>
+     */
     public function getShowNumAndCode()
     {
-
         $showqnumcode_global_ = getGlobalSetting('showqnumcode');
         $showqnumcode_survey_ = $this->aSurveyInfo['showqnumcode'];
 
         // Check global setting to see if survey level setting should be applied
         if ($showqnumcode_global_ == 'choose') {
-// Use survey level settings
+            // Use survey level settings
             $showqnumcode_ = $showqnumcode_survey_; //B, N, C, or X
         } else {
             // Use global setting
             $showqnumcode_ = $showqnumcode_global_; //both, number, code, or none
         }
+
+        $aShow = [];
 
         switch ($showqnumcode_) {
             // Both
@@ -668,7 +772,7 @@ class SurveyRuntimeHelper
     {
 
         // First time the survey is loaded
-        if (!isset($_SESSION[$this->LEMsessid]['step']) || ($this->previewquestion || $this->previewgrp) ) {
+        if (!isset($_SESSION[$this->LEMsessid]['step']) || ($this->previewquestion || $this->previewgrp)) {
             // Init session, randomization and filed array
             buildsurveysession($this->iSurveyid);
             $fieldmap = randomizationGroupsAndQuestions($this->iSurveyid);
@@ -936,11 +1040,11 @@ class SurveyRuntimeHelper
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
             //Failsave to have a general standard value
             if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
-                $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey policy.");
+                $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey data policy.");
             }
 
             if (empty($this->aSurveyInfo['datasecurity_error'])) {
-                $this->aSurveyInfo['datasecurity_error'] = gT("You will have to accept our survey policy!");
+                $this->aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey data policy.");
             }
             $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
         }
@@ -994,6 +1098,23 @@ class SurveyRuntimeHelper
                 $oResponse           = SurveyDynamic::model($this->iSurveyid)->findByPk($iResponseID);
                 $oResponse->lastpage = $_SESSION[$this->LEMsessid]['step'];
                 $oResponse->save();
+
+                App()->clientScript->registerScript("saveflashmessage", "
+                    console.ls.log($('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']'));
+                    $('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']').popover({
+                        title: '".gT('Success')."',
+                        content: '<div>".gT("Your responses were successfully saved.", "js")."</div>',
+                        html: true,
+                        container: 'body',
+                        placement: 'bottom',
+                        delay: { 'show': 500, 'hide': 100 },
+                        trigger: 'click',
+                    }).popover('show');
+                    setTimeout(function(){ $('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']').popover('destroy');}, 3500);
+                    "
+                    , LSYii_ClientScript::POS_POSTSCRIPT
+                );
+                
             }
         }
     }
@@ -1018,9 +1139,8 @@ class SurveyRuntimeHelper
                 $aPopup  = $this->popup = array($aResult['message']);
             }
 
-            Yii::app()->clientScript->registerScript('startPopup', "LSvar.startPopups=".json_encode($aPopup).";", CClientScript::POS_BEGIN);
-            Yii::app()->clientScript->registerScript('showStartPopups', "window.templateCore.showStartPopups();", CClientScript::POS_END);
-
+            Yii::app()->clientScript->registerScript('startPopup', "LSvar.startPopups=".json_encode($aPopup).";", LSYii_ClientScript::POS_END);
+            Yii::app()->clientScript->registerScript('showStartPopups', "window.templateCore.showStartPopups();", LSYii_ClientScript::POS_POSTSCRIPT);
             // reshow the form if there is an error
             if (!empty($aResult['aSaveErrors'])) {
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
@@ -1245,8 +1365,8 @@ class SurveyRuntimeHelper
     /**
      * setJavascriptVar
      *
-     * @return @void
-     * @param integer $iSurveyId : the survey id for the script
+     * @return void
+     * @param mixed $iSurveyId : the survey id for the script
      */
     public function setJavascriptVar($iSurveyId = '')
     {
@@ -1333,8 +1453,8 @@ class SurveyRuntimeHelper
                 $restartparam['token'] = Token::sanitizeToken($token);
             }
 
-            if (Yii::app()->request->getQuery('lang')) {
-                $restartparam['lang'] = sanitize_languagecode(Yii::app()->request->getQuery('lang'));
+            if (!empty(App()->getLanguage())) {
+                $restartparam['lang'] = sanitize_languagecode(App()->getLanguage());
             } else {
                 $s_lang = isset(Yii::app()->session['survey_'.$this->iSurveyid]['s_lang']) ? Yii::app()->session['survey_'.$this->iSurveyid]['s_lang'] : 'en';
                 $restartparam['lang'] = $s_lang;

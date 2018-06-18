@@ -189,7 +189,7 @@ class RegisterController extends LSYii_Controller
      * @param Integer $iSurveyId The survey id
      * @param Integer $iTokenId The token id
      * 
-     * @return Array The rendereable array
+     * @return array The rendereable array
      */
     public function getRegisterSuccess($iSurveyId, $iTokenId)
     {
@@ -214,7 +214,7 @@ class RegisterController extends LSYii_Controller
      *
      * @param Integer $iSurveyId The surey id
      * 
-     * @return Array The rendereable array
+     * @return array The rendereable array
      */
     public function getRegisterForm($iSurveyId)
     {

@@ -71,7 +71,8 @@ class User extends LSActiveRecord
         return array(
             'permissions' => array(self::HAS_MANY, 'Permission', 'uid'),
             'parentUser' => array(self::HAS_ONE, 'User', array('uid' => 'parent_id')),
-            'settings' => array(self::HAS_MANY, 'SettingsUser', 'uid')
+            'settings' => array(self::HAS_MANY, 'SettingsUser', 'uid'),
+            'groups' => array(self::MANY_MANY, 'UserGroup', '{{user_in_groups}}(uid,ugid)')
         );
     }
 
@@ -98,28 +99,6 @@ class User extends LSActiveRecord
             // created as datetime default current date in create scenario ?
             // modifier as datetime default current date ?
         );
-    }
-
-    /**
-     * Returns all users
-     *
-     * @access public
-     * @param mixed|boolean $condition
-     * @return CActiveRecord[]
-     */
-    public function getAllRecords($condition = false)
-    {
-        $criteria = new CDbCriteria;
-
-        if ($condition != false) {
-            foreach ($condition as $item => $value) {
-                $criteria->addCondition($item.'='.Yii::app()->db->quoteValue($value));
-            }
-        }
-
-        $data = $this->findAll($criteria);
-
-        return $data;
     }
 
     /**

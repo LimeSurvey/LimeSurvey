@@ -33,6 +33,7 @@
                     {% for i, anslang in anslangs %}
                         <div id='tabpage_{{ anslang }}' class='tab-page tab-pane fade in {% if i==0 %}active{% endif %}'>
                             {% for scale_id in range(0,scalecount-1) %}
+
                                  {% set result = results[anslang][scale_id] %}
                                  {% set anscount = result|length %}
                                 {# TODO : check the rendering of XSCALES / Y SCALES #}
@@ -131,9 +132,9 @@
                                                     'surveyid'  : surveyid,
                                                     'gid'       : gid,
                                                     'qid'       : row.qid,
-                                                    'language'  : row.language,
+                                                    'language'  : anslang,
                                                     'title'     : row.title,
-                                                    'question'  : row.question,
+                                                    'question'  : row.questionL10ns[anslang].question,
                                                     'relevance' : row.relevance,
                                                     'oldCode'   : true,
                                                 } %}
@@ -148,10 +149,10 @@
                                                     'surveyid'          : surveyid,
                                                     'gid'               : gid,
                                                     'qid'               : qid,
-                                                    'language'          : row.language,
+                                                    'language'          : anslang,
                                                     'assessment_value'  : row.assessment_value,
                                                     'sortorder'         : row.sortorder,
-                                                    'answer'            : row.answer,
+                                                    'answer'            : row.answerL10ns[anslang].answer,
                                                     'oldCode'   : true,
                                                 } %}
 

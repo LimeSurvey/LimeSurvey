@@ -159,7 +159,7 @@ $url .= "_view"; });
     /**
      * Export to csv using optional search/filter
      *
-     * @param type $search  CDCriteria?
+     * @param CDbCriteria $search
      * @paran mixed $mAttributeIDs Empty array for no attributes, or array of attribute IDs or null for all attributes
      * @return false|null
      */
@@ -210,7 +210,7 @@ $url .= "_view"; });
     /**
      * Returns a string with the number of participants available for export or 0
      *
-     * @param type $search
+     * @param CDbCriteria $search
      * @return string|int
      */
     protected function csvExportCount($search = null)

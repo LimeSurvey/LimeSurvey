@@ -369,6 +369,7 @@ class QuestionTemplate extends CFormModel
         if ($this->bHasCustomAttributes) {
             return $this->aCustomAttributes;
         }
+        return null;
     }
 
     /**
@@ -507,6 +508,7 @@ class QuestionTemplate extends CFormModel
             $sFolderName    = $aTypeToFolder[$type];
             return $sFolderName;
         }
+        return null;
     }
 
     /**

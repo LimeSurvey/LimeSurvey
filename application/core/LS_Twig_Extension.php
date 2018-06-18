@@ -230,6 +230,11 @@ class LS_Twig_Extension extends Twig_Extension
         return App()->getController()->createUrl($url, $params);
     }
 
+    public static function createAbsoluteUrl($url, $params = array())
+    {
+        return App()->getController()->createAbsoluteUrl($url, $params);
+    }
+
     /**
      * @param string $sRessource
      */
@@ -286,12 +291,62 @@ class LS_Twig_Extension extends Twig_Extension
         return $sUrlImgAsset;
     }
 
+
+    /**
+     * Get the parsed output of the expression manger for a specific string
+     *
+     * @param String $sInString
+     * @return String 
+     */
+    public static function getExpressionManagerOutput($sInString) {
+        templatereplace(flattenText($sInString));
+        return LimeExpressionManager::GetLastPrettyPrintExpression();
+    }
+
+    /**
+     * Get the textcontrol widget output for a specific string
+     *
+     * @param String $sInString
+     * @return String 
+     */
+    public static function getTextDisplayWidget($sInString, $name) {
+        templatereplace(flattenText($sInString));
+        $fullInString = LimeExpressionManager::GetLastPrettyPrintExpression();
+
+        $widget = App()->getController()->widget('ext.admin.TextDisplaySwitch.TextDisplaySwitch', array(
+            'widgetsJsName' =>  $name,
+            'textToDisplay' => $fullInString,
+            'returnHtml' => true
+        ));
+        return $widget->run();
+    }
+
+
+
+    /**
+     * Checks for a permission on render
+     *
+     * @param String $permission
+     * @param String $permissionGrade
+     * @param Integer|NULL $iSurveyId (default null)
+     * 
+     * @return Boolean
+     */
+    public static function checkPermission($permission, $permissionGrade, $iSurveyId = null) {
+
+        if ($iSurveyId === null) {
+            return Permission::model()->hasGlobalPermission($permission, $permissionGrade);
+        }
+        return Permission::model()->hasSurveyPermission($iSurveyId, $permission, $permissionGrade);
+
+    }
+
     /**
      * @param string $sRessource
      */
     public static function getTemplateForRessource($sRessource)
     {
-        $oRTemplate = Template::model()->getInstance();
+        $oRTemplate = Template::getInstance();
 
         while (!file_exists($oRTemplate->path.$sRessource)) {
 
@@ -358,7 +413,7 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function unregisterScriptForAjax()
     {
-        $oTemplate            = Template::model()->getInstance();
+        $oTemplate            = Template::getInstance();
         $sTemplatePackageName = 'limesurvey-'.$oTemplate->sTemplateName;
         self::unregisterPackage($sTemplatePackageName);
         self::unregisterPackage('template-core');
@@ -368,10 +423,10 @@ class LS_Twig_Extension extends Twig_Extension
         self::unregisterPackage('fontawesome');
         self::unregisterPackage('template-default-ltr');
         self::unregisterPackage('decimal');
+        self::unregisterPackage('expressions');
         self::unregisterScriptFile('/assets/scripts/survey_runtime.js');
         self::unregisterScriptFile('/assets/scripts/admin/expression.js');
         self::unregisterScriptFile('/assets/scripts/nojs.js');
-        self::unregisterScriptFile('/assets/scripts/expressions/em_javascript.js');
     }
 
     public static function listCoreScripts()
@@ -476,5 +531,41 @@ class LS_Twig_Extension extends Twig_Extension
             $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
         }
         return $sString;
+    }
+
+    public static function darkencss($cssColor, $grade=10, $alpha=1){
+
+        $aColors = str_split(substr($cssColor,1), 2);
+        $return = [];
+        foreach ($aColors as $color) {
+            $decColor = hexdec($color);
+            $decColor = $decColor-$grade;
+            $decColor = $decColor<0 ? 0 : ($decColor>255 ? 255 : $decColor);
+            $return[] = $decColor;
+        }
+        if($alpha === 1) {
+            return '#'.join('', array_map(function($val){ return dechex($val);}, $return));
+        }
+
+        return 'rgba('.join(', ', $return).','.$alpha.')';
+        
+
+
+    }
+    
+    public static function lightencss($cssColor, $grade=10, $alpha=1){
+        $aColors = str_split(substr($cssColor,1), 2);
+        $return = [];
+        foreach ($aColors as $color) {
+            $decColor = hexdec($color);
+            $decColor = $decColor+$grade;
+            $decColor = $decColor<0 ? 0 : ($decColor>255 ? 255 : $decColor);
+            $return[] = $decColor;
+        }
+        if($alpha === 1) {
+            return '#'.join('', array_map(function($val){ return dechex($val);}, $return));
+        }
+
+        return 'rgba('.join(', ', $return).','.$alpha.')';
     }
 }

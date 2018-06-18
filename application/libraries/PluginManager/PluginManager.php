@@ -1,5 +1,7 @@
 <?php
+
 namespace LimeSurvey\PluginManager;
+
 use \Yii;
 use Plugin;
 
@@ -14,28 +16,46 @@ class PluginManager extends \CApplicationComponent
      * @var mixed $api The class name of the API class to load, or
      */
     public $api;
+
     /**
      * Array mapping guids to question object class names.
-     * @var type
+     * @var array
      */
-    protected $guidToQuestion = array();
+    protected $guidToQuestion = [];
 
     /**
-     * @var ?
+     * @var array
      */
-    protected $plugins = array();
+    protected $plugins = [];
 
-    protected $pluginDirs = array(
-        'webroot.plugins', // User plugins
-        'application.core.plugins' // Core plugins
-    );
+    /**
+     * @var array
+     */
+    public $pluginDirs = [
+        // User plugins installed through command line.
+        'user' => 'webroot.plugins',
+        // Core plugins.
+        'core' => 'application.core.plugins',
+        // Uploaded plugins installed through ZIP file.
+        'upload' => 'webroot.upload.plugins'
+    ];
 
-    protected $stores = array();
+    /**
+     * @var array
+     */
+    protected $stores = [];
 
     /**
      * @var array<string, array> Array with string key to tuple value like 'eventName' => array($plugin, $method)
      */
-    protected $subscriptions = array();
+    protected $subscriptions = [];
+
+    /**
+     * Created at init.
+     * Used to deal with syntax errors etc in plugins during load.
+     * @var PluginManagerShutdownFunction
+     */
+    public $shutdownObject;
 
     /**
      * Creates the plugin manager.
@@ -45,6 +65,11 @@ class PluginManager extends \CApplicationComponent
      */
     public function init()
     {
+        // NB: The shutdown object is disabled by default. Must be enabled
+        // before attempting to load plugins (and disabled after).
+        $this->shutdownObject = new PluginManagerShutdownFunction();
+        register_shutdown_function($this->shutdownObject);
+
         parent::init();
         if (!is_object($this->api)) {
             $class = $this->api;
@@ -77,9 +102,48 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
+     * @param string $destdir
+     * @return array [boolean $result, string $errorMessage]
+     */
+    public function installUploadedPlugin($destdir)
+    {
+        if (file_exists($configFile)) {
+            libxml_disable_entity_loader(false);
+            $xml = simplexml_load_file(realpath($configFile));
+            libxml_disable_entity_loader(true);
+            $pluginConfig = new \PluginConfiguration($xml);
+        }
+    }
+
+    /**
+     * Install a plugin given a plugin configuration and plugin type (core or user).
+     * @param string $pluginName Unique plugin class name/folder name.
+     * @param string $pluginType 'user' or 'core', depending on location of folder.
+     * @return array [boolean $result, string $errorMessage]
+     */
+    public function installPlugin(\PluginConfiguration $pluginConfig, $pluginType)
+    {
+        if (!$pluginConfig->validate()) {
+            return [false, gT('Plugin configuration file is not valid.')];
+        }
+
+        if (!$pluginConfig->isCompatible()) {
+            return [false, gT('Plugin is not compatible with your LimeSurvey version.')];
+        }
+
+        $plugin = new Plugin();
+        $plugin->name        = (string) $pluginConfig->xml->metadata->name;
+        $plugin->version     = (string) $pluginConfig->xml->metadata->version;
+        $plugin->active      = 0;
+        $plugin->plugin_type = $pluginType;
+        $plugin->save();
+        return [true, null];
+    }
+
+    /**
      * Return the status of plugin (true/active or false/desactive)
      *
-     * @param sPluginName Plugin name
+     * @param string sPluginName Plugin name
      * @return boolean
      */
     public function isPluginActive($sPluginName)
@@ -97,6 +161,7 @@ class PluginManager extends \CApplicationComponent
      * Returns the storage instance of type $storageClass.
      * If needed initializes the storage object.
      * @param string $storageClass
+     * @return mixed
      */
     public function getStore($storageClass)
     {
@@ -194,9 +259,14 @@ class PluginManager extends \CApplicationComponent
      * Scans the plugin directory for plugins.
      * This function is not efficient so should only be used in the admin interface
      * that specifically deals with enabling / disabling plugins.
+     * @param boolean $includeInstalledPlugins If set, also return plugins even if already installed in database.
+     * @return array
+     * @todo Factor out
      */
-    public function scanPlugins($forceReload = false)
+    public function scanPlugins($includeInstalledPlugins = false)
     {
+        $this->shutdownObject->enable();
+
         $result = array();
         foreach ($this->pluginDirs as $pluginDir) {
             $currentDir = Yii::getPathOfAlias($pluginDir);
@@ -204,17 +274,48 @@ class PluginManager extends \CApplicationComponent
                 foreach (new \DirectoryIterator($currentDir) as $fileInfo) {
                     if (!$fileInfo->isDot() && $fileInfo->isDir()) {
                         // Check if the base plugin file exists.
-                        // Directory name Example most contain file ExamplePlugin.php.
+                        // Directory name Example must contain file ExamplePlugin.php.
                         $pluginName = $fileInfo->getFilename();
+                        $this->shutdownObject->setPluginName($pluginName);
                         $file = Yii::getPathOfAlias($pluginDir.".$pluginName.{$pluginName}").".php";
-                        if (file_exists($file)) {
-                            $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
+                        $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
+                        if (empty($plugin)
+                            || ($includeInstalledPlugins && $plugin->load_error == 0)) {
+                            if (file_exists($file)) {
+                                try {
+                                    $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
+                                } catch (\Throwable $ex) {
+                                    // Load error.
+                                    $error = [
+                                        'message' => $ex->getMessage(),
+                                        'file'  => $ex->getFile()
+                                    ];
+                                    $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
+                                    if (!$saveResult) {
+                                        // This only happens if database save fails.
+                                        $this->shutdownObject->disable();
+                                        throw new \Exception(
+                                            'Internal error: Could not save load error for plugin ' . $pluginName
+                                        );
+                                    }
+                                }
+                            }
+                        } elseif ($plugin->load_error == 1) {
+                            // List faulty plugins in scan files view.
+                            $result[$pluginName] = [
+                                'pluginName' => $pluginName,
+                                'load_error' => 1,
+                                'isCompatible' => false
+                            ];
+                        } else {
                         }
                     }
 
                 }
             }
         }
+
+        $this->shutdownObject->disable();
 
         return $result;
     }
@@ -223,13 +324,16 @@ class PluginManager extends \CApplicationComponent
      * Gets the description of a plugin. The description is accessed via a
      * static function inside the plugin file.
      *
+     * @todo Read config.xml instead.
      * @param string $pluginClass The classname of the plugin
      * @return array|null
      */
     public function getPluginInfo($pluginClass, $pluginDir = null)
     {
-        $result = array();
-        $class = "{$pluginClass}";
+        $result       = [];
+        $class        = "{$pluginClass}";
+        $pluginConfig = null;
+        $pluginType   = null;
 
         if (!class_exists($class, false)) {
             $found = false;
@@ -239,10 +343,24 @@ class PluginManager extends \CApplicationComponent
                 $dirs = $this->pluginDirs;
             }
 
-            foreach ($this->pluginDirs as $pluginDir) {
+            foreach ($this->pluginDirs as $type => $pluginDir) {
                 $file = Yii::getPathOfAlias($pluginDir.".$pluginClass.{$pluginClass}").".php";
                 if (file_exists($file)) {
                     Yii::import($pluginDir.".$pluginClass.*");
+
+                    $configFile = Yii::getPathOfAlias($pluginDir)
+                        . DIRECTORY_SEPARATOR . $pluginClass
+                        . DIRECTORY_SEPARATOR .'config.xml';
+                    if (file_exists($configFile)) {
+                        libxml_disable_entity_loader(false);
+                        $xml = simplexml_load_file(realpath($configFile));
+                        libxml_disable_entity_loader(true);
+                        $pluginConfig = new \PluginConfiguration($xml);
+                        $pluginType = $type;
+                    } else {
+                        $pluginConfig = null;
+                    }
+
                     $found = true;
                     break;
                 }
@@ -256,9 +374,13 @@ class PluginManager extends \CApplicationComponent
         if (!class_exists($class)) {
             return null;
         } else {
-            $result['description'] = call_user_func(array($class, 'getDescription'));
-            $result['pluginName'] = call_user_func(array($class, 'getName'));
-            $result['pluginClass'] = $class;
+            $result['description']  = call_user_func(array($class, 'getDescription'));
+            $result['pluginName']   = call_user_func(array($class, 'getName'));
+            $result['pluginClass']  = $class;
+            $result['pluginConfig'] = $pluginConfig;
+            $result['isCompatible'] = $pluginConfig == null ? false : $pluginConfig->isCompatible();
+            $result['load_error']   = 0;
+            $result['pluginType']   = $pluginType;
             return $result;
         }
     }
@@ -273,31 +395,52 @@ class PluginManager extends \CApplicationComponent
      */
     public function loadPlugin($pluginName, $id = null)
     {
-        // If the id is not set we search for the plugin.
-        if (!isset($id)) {
-            foreach ($this->plugins as $plugin) {
-                if (get_class($plugin) == $pluginName) {
-                    return $plugin;
+        $return = null;
+        $this->shutdownObject->enable();
+        $this->shutdownObject->setPluginName($pluginName);
+        try {
+            // If the id is not set we search for the plugin.
+            if (!isset($id)) {
+                foreach ($this->plugins as $plugin) {
+                    if (get_class($plugin) == $pluginName) {
+                        $return = $plugin;
+                    }
                 }
-            }
-        } else {
-            if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName)) {
-                if ($this->getPluginInfo($pluginName) !== false) {
-                    if (class_exists($pluginName)) {
-                        $this->plugins[$id] = new $pluginName($this, $id);
-
-                        if (method_exists($this->plugins[$id], 'init')) {
-                            $this->plugins[$id]->init();
+            } else {
+                if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName)) {
+                    if ($this->getPluginInfo($pluginName) !== false) {
+                        if (class_exists($pluginName)) {
+                            $this->plugins[$id] = new $pluginName($this, $id);
+                            if (method_exists($this->plugins[$id], 'init')) {
+                                $this->plugins[$id]->init();
+                            }
+                        } else {
+                            $this->plugins[$id] = null;
                         }
                     } else {
                         $this->plugins[$id] = null;
                     }
-                } else {
-                    $this->plugins[$id] = null;
                 }
+                $return = $this->plugins[$id];
             }
-            return $this->plugins[$id];
+        } catch (\Throwable $ex) {
+            // Load error.
+            $error = [
+                'message' => $ex->getMessage(),
+                'file'  => $ex->getFile()
+            ];
+            $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
+            $saveResult = Plugin::setPluginLoadError($plugin, $pluginName, $error);
+            if (!$saveResult) {
+                // This only happens if database save fails.
+                $this->shutdownObject->disable();
+                throw new \Exception(
+                    'Internal error: Could not save load error for plugin ' . $pluginName
+                );
+            }
         }
+        $this->shutdownObject->disable();
+        return $return;
     }
 
     /**
@@ -316,10 +459,12 @@ class PluginManager extends \CApplicationComponent
             $records = $pluginModel->findAllByAttributes(array('active'=>1));
 
             foreach ($records as $record) {
-                $this->loadPlugin($record->name, $record->id);
+                if (!isset($record->load_error) || $record->load_error == 0) {
+                    $this->loadPlugin($record->name, $record->id);
+                }
             }
         } else {
-            // Log it ? tracevar ?
+            // Log it?
         }
         $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this)); // Alow plugins to do stuff after all plugins are loaded
     }
@@ -332,7 +477,9 @@ class PluginManager extends \CApplicationComponent
     {
         $records = Plugin::model()->findAll();
         foreach ($records as $record) {
-            $this->loadPlugin($record->name, $record->id);
+            if ($record->load_error == 0) {
+                $this->loadPlugin($record->name, $record->id);
+            }
         }
     }
 
@@ -409,5 +556,4 @@ class PluginManager extends \CApplicationComponent
         $this->subscriptions = array();
         $this->loadPlugins();
     }
-
 }

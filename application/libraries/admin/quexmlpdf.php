@@ -2439,7 +2439,8 @@ class quexmlpdf extends pdf
                 return;
             }
 
-            for ($rcount = 0; $rcount < count($question['responses']); $rcount++) {
+            $arraySize = count($question['responses']);
+            for ($rcount = 0; $rcount < $arraySize; $rcount++) {
                 $r = $question['responses'][$rcount];
 
                 //only split after one response
@@ -3259,7 +3260,8 @@ class quexmlpdf extends pdf
             return;
         }
 
-        for ($i = 0; $i < count($subquestions); $i++) {
+        $arraySize = count($subquestions);
+        for ($i = 0; $i < $arraySize; $i++) {
             if ($split && $i == 1) {
                 //don't proceed if breaking the page already
                 if ($this->pageBreakOccured) {
@@ -3385,7 +3387,8 @@ class quexmlpdf extends pdf
      */
     protected function drawSingleChoiceVerticalSeparate($categories, $subquestions, $parenttext, $help, $split = 'notset')
     {
-        for ($sc = 0; $sc < count($subquestions); $sc++) {
+        $arraySize = count($subquestions);
+        for ($sc = 0; $sc < $arraySize; $sc++) {
             $s = $subquestions[$sc];
 
             $this->drawQuestionHead("", $this->numberToLetter($sc + 1).". ".$s['text'], $help);
@@ -3484,7 +3487,8 @@ class quexmlpdf extends pdf
             $split = $this->allowSplittingSingleChoiceVertical && ($total >= $this->minSplittingSingleChoiceVertical);
         }
 
-        for ($i = 0; $i < count($categories); $i++) {
+        $arraySize = count($categories);
+        for ($i = 0; $i < $arraySize; $i++) {
             //don't continue if page break already (start on new page)
             if ($i == 1 && $split) {
                 if ($this->pageBreakOccured) {
@@ -3539,7 +3543,8 @@ class quexmlpdf extends pdf
             }
 
             //draw the response boxes
-            for ($j = 0; $j < count($subquestions); $j++) {
+            $arraySize = count($subquestions);
+            for ($j = 0; $j < $arraySize; $j++) {
                 $s = $subquestions[$j];
 
                 if ($i == 0) {
@@ -3713,6 +3718,7 @@ class quexmlpdf extends pdf
      */
     protected function addSection($desc = 'queXMLPDF Section', $title = false, $info = false)
     {
+        $html = '';
         $this->sectionCP++;
         $mtitle = $title;
         

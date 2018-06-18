@@ -378,7 +378,7 @@ class CheckIntegrity extends Survey_Common_Action
     /**
      * This function checks the LimeSurvey database for logical consistency and returns an according array
      * containing all issues in the particular tables.
-     * @returns array Array with all found issues.
+     * @return array Array with all found issues.
      */
     protected function _checkintegrity()
     {
@@ -411,6 +411,10 @@ class CheckIntegrity extends Survey_Common_Action
 
         // Deactivate surveys that have a missing response table
         $oSurveys = Survey::model()->findAll();
+        $oDB = Yii::app()->getDb();
+        $oDB->schemaCachingDuration = 0; // Deactivate schema caching
+        Yii::app()->setConfig('Updating', true);
+
         foreach ($oSurveys as $oSurvey) {
 
             if ($oSurvey->isActive && !$oSurvey->hasResponsesTable) {
@@ -418,6 +422,83 @@ class CheckIntegrity extends Survey_Common_Action
                 $bDirectlyFixed = true;
             }
         }
+
+        /** Check for active surveys if questions are in the correct group **/
+        foreach ($oSurveys as $oSurvey) {
+
+            // We get the active surveys
+            if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
+
+                $model    = SurveyDynamic::model($oSurvey->sid);
+                $aColumns = $model->getMetaData()->columns;
+                $aQids    = array();
+
+                // We get the columns of the reponses table
+                foreach ($aColumns as $oColumn) {
+
+                    // Question columns start with the SID
+                    if (strpos($oColumn->name, $oSurvey->sid) !== false) {
+
+                        // Fileds are separated by X
+                        $aFields   = explode('X', $oColumn->name);
+
+
+                        if ( isset($aFields[1]) ){
+
+                            $sGid      = $aFields[1];
+
+                            // QID field can be more than just QID, like: 886other or 886A1
+                            // So we clean it by finding the first alphabetical character
+                            $sDirtyQid = $aFields[2];
+                            preg_match('~[a-zA-Z_]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
+
+                            if (isset($match[0][1])){
+                                $sQID      =  substr ($sDirtyQid, 0, $match[0][1]);
+                            }else{
+                                // It was just the QID....
+                                $sQID      =  $sDirtyQid;
+                            }
+
+                            // Here, we get the question as defined in backend
+                            $oQuestion = Question::model()->findByPk([ 'qid' => $sQID , 'language' => $oSurvey->language]);
+                            if (is_a($oQuestion, 'Question')){
+
+                                // We check if its GID is the same as the one defined in the column name
+                                if ($oQuestion->gid != $sGid){
+
+                                    // If not, we change the column name
+                                    $sNvColName = $oSurvey->sid . 'X'. $oQuestion->groups->gid . 'X' . $sDirtyQid;
+                                    $oTransaction = $oDB->beginTransaction();
+                                    $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name , $sNvColName);
+                                    $oTransaction->commit();
+                                }
+                            }else{
+                                // QID not found: we should do something...
+                                // $aUnfoundQIDs[] = $sQID;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $oDB->schemaCachingDuration = 3600;
+        $oDB->schema->getTables();
+        $oDB->schema->refresh();
+        $oDB->active = false;
+        $oDB->active = true;
+        User::model()->refreshMetaData();
+        Yii::app()->db->schema->getTable('{{surveys}}', true);
+        Yii::app()->db->schema->getTable('{{templates}}', true);
+        Survey::model()->refreshMetaData();
+
+        if (!(defined('YII_DEBUG') && YII_DEBUG)) {
+            Yii::app()->cache->flush();
+            Yii::app()->cache->gc();
+        }
+
+        Yii::app()->setConfig('Updating', false);
+
         unset($oSurveys);
 
 
@@ -496,7 +577,7 @@ class CheckIntegrity extends Survey_Common_Action
             if ($condition['cfieldname']) {
                 // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
                 if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', $condition['cfieldname'])) {
-                    
+
                     list ($surveyid, $gid, $rest) = explode('X', $condition['cfieldname']);
 
                     $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid'=>$gid)));
@@ -597,7 +678,7 @@ class CheckIntegrity extends Survey_Common_Action
         $assessments = Assessment::model()->findAll($oCriteria);
         if (Assessment::model()->hasErrors()) {
             safeDie(join('<br>', Assessment::model()->getErrors()));
-            
+
         }
         foreach ($assessments as $assessment) {
             $iAssessmentCount = count(QuestionGroup::model()->findAllByPk(array('gid'=>$assessment['gid'], 'language'=>$assessment['language'])));
@@ -719,8 +800,6 @@ class CheckIntegrity extends Survey_Common_Action
             $aFullOldSIDs[$iSurveyID][] = $sTable;
         }
         $aOldSIDs = array_unique($aOldSIDs);
-        //$sQuery = 'SELECT sid FROM {{surveys}} ORDER BY sid';
-        //$oResult = dbExecuteAssoc($sQuery) or safeDie('Couldn\'t get unique survey ids');
         $surveys = Survey::model()->findAll();
         if (Survey::model()->hasErrors()) {
             safeDie(join('<br>', Survey::model()->getErrors()));
@@ -895,11 +974,10 @@ class CheckIntegrity extends Survey_Common_Action
     protected function checkGroupOrderDuplicates()
     {
         $sQuery = "
-            SELECT 
+            SELECT
                 g.sid
             FROM {{groups}} g
             JOIN {{surveys}} s ON s.sid = g.sid
-            WHERE g.language = s.language
             GROUP BY g.sid
             HAVING COUNT(DISTINCT g.group_order) != COUNT(g.gid)";
         $result = Yii::app()->db->createCommand($sQuery)->queryAll();
@@ -932,7 +1010,6 @@ class CheckIntegrity extends Survey_Common_Action
             FROM {{questions}} q
             JOIN {{groups}} g ON q.gid = g.gid
             JOIN {{surveys}} s ON s.sid = q.sid
-            WHERE q.language = s.language AND g.language = s.language
             GROUP BY q.sid, q.gid, q.parent_qid, q.scale_id
             HAVING COUNT(DISTINCT question_order) != COUNT(qid);
             ";

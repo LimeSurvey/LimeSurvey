@@ -1484,7 +1484,7 @@ abstract class CActiveRecord extends CModel
 	 * @param mixed $pk primary key value(s). Use array for multiple primary keys. For composite key, each key value must be an array (column name=>column value).
 	 * @param mixed $condition query condition or criteria.
 	 * @param array $params parameters to be bound to an SQL statement.
-	 * @return static the record found. Null if none is found.
+	 * @return static|null the record found. Null if none is found.
 	 */
 	public function findByPk($pk,$condition='',$params=array())
 	{

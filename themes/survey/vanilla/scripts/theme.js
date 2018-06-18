@@ -281,20 +281,23 @@ var ThemeScripts = function(){
     var initWelcomePage = function(){
         logObject.log('Starting up for first page');
         if($('#datasecurity_accepted').length >0) {
-            $('#ls-button-submit').prop('disabled', true).parent().on('mouseenter', function(e){
-                logObject.log('starting animation');
-                if(!$('#datasecurity_accepted').prop('checked') && $(this).data('moving') != 1){
-                    e.preventDefault();
-                    var self = this;
-                    $(self).data('moving', 1);
-                    $('label[for=datasecurity_accepted]').animate({'zoom': '1.05'}, 500, function(){
-                        $('label[for=datasecurity_accepted]').animate({'zoom': '1'}, 500, function(){
-                            $(self).data('moving', 0);
-                        });
-                    });
-                    return false;
-                }
-            });
+            /* 
+            * #### Animation function doesn't work on IE -> Deactivate until now.
+            * $('#ls-button-submit').prop('disabled', true).parent().on('mouseenter', function(e){
+            *    logObject.log('starting animation');
+            *     if(!$('#datasecurity_accepted').prop('checked') && $(this).data('moving') != 1){
+            *         e.preventDefault();
+            *         var self = this;
+            *         $(self).data('moving', 1);
+            *         $('label[for=datasecurity_accepted]').animate({'zoom': '1.05'}, 500, function(){
+            *             $('label[for=datasecurity_accepted]').animate({'zoom': '1'}, 500, function(){
+            *                 $(self).data('moving', 0);
+            *             });
+            *         });
+            *         return false;
+            *     }
+            * });
+            */
             $('#datasecurity_accepted').on('change', function(){
                 $('#ls-button-submit').prop('disabled', !$(this).prop('checked'));
             });

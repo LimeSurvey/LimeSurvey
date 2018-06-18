@@ -352,7 +352,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         // Upload question
-        if ($oFieldMap->type == '|' && strpos($oFieldMap->fieldname, 'filecount') === false) {
+        if ($oFieldMap->type == Question::QT_VERTICAL_FILE_UPLOAD && strpos($oFieldMap->fieldname, 'filecount') === false) {
 
             $sSurveyEntry = "<table class='table table-condensed upload-question'><tr>";
             $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);
@@ -805,6 +805,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         if ($aQuestionAttributes['questionclass'] === 'date') {
+            // FIXME Inexisting Question->language used here!
             $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge(self::$survey->attributes, $oQuestion->survey->languagesettings[$oQuestion->language]->attributes));
         }
 

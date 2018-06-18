@@ -1,7 +1,6 @@
 <?php
 /**
  * This file render the list of label sets
- * It use the Label Sets model getAllRecords method to build the data provider.
  *
  * @var $this AdminController
  * @var LabelSet $model the LabelSets model

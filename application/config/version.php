@@ -11,10 +11,10 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-
-$config['versionnumber'] = '3.9.0';
-$config['dbversionnumber'] = 350;
+// The current version of this branch, LS4
+$config['versionnumber'] = '4.0.0dev';
+$config['dbversionnumber'] = 403;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '30036';
+$config['assetsversionnumber'] = '30039';
 return $config;

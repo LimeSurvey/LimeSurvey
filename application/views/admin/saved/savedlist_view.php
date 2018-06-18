@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-lg-12 content-right">
                 <div class="alert alert-info" role="alert">
-                    <?php eT('Total:'); ?> <?php echo getSavedCount($iSurveyId); ?>
+                    <?php eT('Total:'); ?> <?php echo SavedControl::model()->getCountOfAll($surveyid); ?>
                 </div>
 
                 <p>

@@ -26,34 +26,12 @@ class listRadio extends CApplicationComponent
             $other = $row['other'];
         }
 
-        //question attribute random order set?
-        if ($aQuestionAttributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY ".dbRandom();
-        }
-
-        //question attribute alphasort set?
-        elseif ($aQuestionAttributes['alphasort']==1)
-        {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY answer";
-        }
-
-        //no question attributes -> order by sortorder
-        else
-        {
-            $ansquery = "SELECT * FROM {{answers}} WHERE qid=$ia[0] AND language='".$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
-        }
-
-        $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
+        //question attribute random order 
+        $sQuestion = Question::model()->findAllByPk($ia[0]);
+        $ansresult =  $sQuestion->getOrderedAnswers($aQuestionAttributes['random_order'],$aQuestionAttributes['alphasort']);
         $anscount = count($ansresult);
 
-        if (trim($aQuestionAttributes['display_columns'])!='')
-        {
-            $dcols = $aQuestionAttributes['display_columns'];
-        }
-        else
-        {
-            $dcols= 1;
-        }
+        $dcols = $aQuestionAttributes['display_columns'];
 
         if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='')
         {
@@ -89,7 +67,7 @@ class listRadio extends CApplicationComponent
         $colcounter = 1;
         $trbc='';
 
-        foreach ($ansresult as $key=>$ansrow)
+        foreach ($ansresult as $ansrow)
         {
             $myfname = $ia[1].$ansrow['code'];
             $check_ans = '';
@@ -115,17 +93,14 @@ class listRadio extends CApplicationComponent
             $answer .= '</div>';
 
             ++$rowcounter;
-            //if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'] || (count($ansresult)-$key)==$wrapper['cols']-$colcounter)
             if ($rowcounter == $ansByCol && $colcounter < $wrapper['cols'])
             {
                 if($colcounter == $wrapper['cols'] )
                 {
-                    //$answer .= 'là '.$wrapper['col-devide-last'];
                     $answer .= '    </div><!-- last -->';
                 }
                 else
                 {
-                    //$answer .= 'et là '.$wrapper['col-devide'];
                     $answer .= '    </div><!-- devide --> ';
                     $answer .= '    <div class="col-xs-'.$iBootCols.'">';
                 }

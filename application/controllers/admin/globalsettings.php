@@ -239,7 +239,7 @@ class GlobalSettings extends Survey_Common_Action
 
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
-            if (array_key_exists($sTemplate, getTemplateList())) {
+            if (array_key_exists($sTemplate, Template::getTemplateList())) {
 // Filter template name
                 setGlobalSetting('defaulttheme', $sTemplate);
             }

@@ -12,6 +12,7 @@ use Facebook\WebDriver\Firefox\FirefoxProfile;
 use Facebook\WebDriver\Firefox\FirefoxPreferences;
 use Facebook\WebDriver\Exception\WebDriverCurlException;
 use Facebook\WebDriver\Exception\NoSuchDriverException;
+use SurveyActivator;
 
 class TestHelper extends TestCase
 {
@@ -120,7 +121,8 @@ class TestHelper extends TestCase
         $survey->save();
         \Survey::model()->resetCache();  // Make sure the saved values will be picked up
 
-        $result = \activateSurvey($surveyId);
+        $surveyActivator = new SurveyActivator($survey);
+        $result = $surveyActivator->activate();
         // For Travis debugging.
         if (isset($result['error'])) {
             var_dump($result);

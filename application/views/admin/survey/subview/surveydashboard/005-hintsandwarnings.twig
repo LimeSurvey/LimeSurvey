@@ -1,0 +1,22 @@
+<!-- Hints  -->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>{{gT("Hints and warnings:")}}</strong>
+    </div>
+    <ul class="list-group">
+        {% for warning in warnings %}
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12 text-warning">
+                {{warning}}
+            </div>
+        </li>
+        {% endfor %}
+        {% for hint in hints %}
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12 text-info">
+                {{hint}}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

@@ -290,10 +290,11 @@ function updaterowproperties()
     var qID=$('input[name=qid]').val();
 
     $('.answertable tbody').each(function(){
-        info=$(this).closest('table').attr('id').split("_");
-        language=info[1];
-        scale_id=info[2];
-        var rownumber=1;
+        var id        = $(this).closest('table').attr('id');
+        var info      = id.split("_");
+        var language  = info[1];
+        var scale_id  = info[2];
+        var rownumber = 1;
 
         $(this).children('tr').each(function(){
 

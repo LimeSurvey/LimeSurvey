@@ -1,3 +1,7 @@
+<?php
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('editAnswerOptions');
+?>
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
         <?php echo $pageTitle; ?> <small><em><?php echo $oQuestion->title;?></em> (ID: <?php echo $oQuestion->qid;?>)</small>
@@ -25,7 +29,9 @@
             <?php
                 foreach ($anslangs as $i => $anslang) {
                     $base_language[$i] = getLanguageNameFromCode($anslang, false).($anslang==Survey::model()->findByPk($surveyid)->language ? ' ('.gT("Base language").')':'');
-                }
+                };
+
+                //echo "<pre>"; var_dump($results); die;
 
             $aData = array(
                 'surveyid' => $surveyid,
@@ -42,6 +48,28 @@
                 'has_permissions' => Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create'),
                 'all_languages' => Survey::model()->findByPk($surveyid)->getAllLanguages()
             );
+
+            /*
+            $aData = array(
+                'anslangs'  => $anslangs,
+                'results'   => $results,
+                'question'  => $oAnswer->questionL10ns[$anslang]->question,
+                'title'     => CHtml::encode($oAnswer->code),
+                'surveyid' => $surveyid,
+                'gid' => $gid,
+                'qid' => $qid,
+                'viewType' => $viewType,
+                'assessment_value'  => CHtml::encode($oAnswer->assessment_value),
+                'scalecount' => $scalecount,
+                'answer'     => CHtml::encode($oAnswer->answerL10ns[$anslang]->answer),
+                'tableId' => $tableId,
+                'activated' => $activated,
+                'assessmentvisible' => (empty($assessmentvisible)) ? false : $assessmentvisible,
+                'base_language' => $base_language,
+                'has_permissions' => Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create'),
+                'all_languages' => Survey::model()->findByPk($surveyid)->getAllLanguages()
+            );
+             */
 
             echo App()->twigRenderer->renderAnswerOptions('/admin/survey/Question/answerOptionsEdit_view', $aData); ?> 
 

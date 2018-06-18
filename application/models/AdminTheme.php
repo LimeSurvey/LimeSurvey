@@ -353,8 +353,7 @@ class AdminTheme extends CFormModel
     /**
      * Use to check if admin theme is standard
      *
-     * @var string $sAdminThemeName     the name of the template
-     * @param string $sAdminThemeName
+     * @param string $sAdminThemeName the name of the template
      * @return boolean                  return true if it's a standard template, else false
      */
     private function isStandardAdminTheme($sAdminThemeName)

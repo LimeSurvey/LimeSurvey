@@ -19,7 +19,8 @@ export default {
         getMenuUrl: { type: String },
         createQuestionGroupLink: { type: String },
         createQuestionLink: { type: String },
-        updateOrderLink: { type: String }
+        updateOrderLink: { type: String },
+        isActive: {type: Number},
     },
     data: () => {
         return {
@@ -28,7 +29,7 @@ export default {
             openSubpanelId: 0,
             questiongroups: [],
             menues: [],
-            "$store.state.isCollapsed": false,
+            collapsed: false,
             sideBarWidth: "315",
             initialPos: { x: 0, y: 0 },
             isMouseDown: false,
@@ -383,6 +384,7 @@ export default {
     },
     created() {
         const self = this;
+        self.$store.commit('setSurveyActiveState', this.isActive!=="0");
         // self.$log.debug(this.$store.state);
         this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen;

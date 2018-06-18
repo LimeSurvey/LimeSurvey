@@ -33,7 +33,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
      * @link https://manual.limesurvey.org/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
-    $aCriticalDBVersions = array(310);
+    $aCriticalDBVersions = array(310, 350);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
     // If trying to update silenty check if it is really possible
@@ -1661,7 +1661,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 316) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
+            //$oDB->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>316), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -1749,7 +1749,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
         if ($iOldDBVersion < 323) {
-            $oTransaction = $oDB->beginTransaction();
+            $oTransaction = $oDB->beginTransaction();    
             dropPrimaryKey('labels', 'lid');
             $oDB->createCommand()->addColumn('{{labels}}', 'id', 'pk');
             $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid', 'sortorder', 'language'], false);
@@ -1976,7 +1976,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>341), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
         /**
          * Url parameter "surveyid" should be "sid" for this link.
          */
@@ -2172,7 +2171,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>346], "stg_name='DBVersion'");
             $oTransaction->commit();
-        }
+        }        
 
         /**
          * Correct permission for survey menu email template (surveylocale, not assessments).
@@ -2189,6 +2188,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>347], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
         /**
          * Adding security message and settings
          */
@@ -2210,7 +2210,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-      
+
         /**
          * Adding asset version to allow to reset asset without write inside
          */
@@ -2225,6 +2225,179 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        /**
+         * Turning on ajax mode at global level for all themes (survey level not affected)
+         */
+        if ($iOldDBVersion < 351) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $aTHemes = TemplateConfiguration::model()->findAll();
+
+            foreach ($aTHemes as $oTheme){
+                $oTheme->setGlobalOptionOn("ajaxmode");
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>351], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+
+        
+        if ($iOldDBVersion < 400) {
+            // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
+            $oTransaction = $oDB->beginTransaction();
+            
+            // Question table 
+            $oDB->createCommand()->createTable('{{question_l10ns}}', array(
+                'id' =>  "pk",
+                'qid' =>  "integer NOT NULL",
+                'question' =>  "text NOT NULL",
+                'help' =>  "text",
+                'language' =>  "string(20) NOT NULL"
+            ));        
+            $oDB->createCommand()->createIndex('{{idx1_question_l10ns}}', '{{question_l10ns}}', ['qid', 'language'], true);
+            $oDB->createCommand("INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}")->execute();
+            $dataReader = $oDB->createCommand("SELECT q1.language, q1.qid FROM {{questions}} q1 INNER JOIN {{questions}} q2 ON q1.qid = q2.qid WHERE q1.language < q2.language")->query();
+            while (($row = $dataReader->read()) !== false) {
+                $oDB->createCommand("delete from  {{questions}} where qid={$row['qid']} and language='{$row['language']}'")->execute();
+            }
+            alterColumn('{{questions}}', 'qid', "int", true);
+            dropPrimaryKey('questions');
+            alterColumn('{{questions}}', 'qid', "pk", false);
+            $oDB->createCommand()->dropColumn('{{questions}}', 'question');
+            $oDB->createCommand()->dropColumn('{{questions}}', 'help');
+            $oDB->createCommand()->dropColumn('{{questions}}', 'language');    
+            // Groups table
+            $oDB->createCommand()->createTable('{{group_l10ns}}', array(
+                'id' =>  "pk",
+                'gid' =>  "integer NOT NULL",
+                'group_name' =>  "text NOT NULL",
+                'description' =>  "text",
+                'language' =>  "string(20) NOT NULL"
+            ));        
+            $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
+            $oDB->createCommand("INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}")->execute();
+            $dataReader = $oDB->createCommand("select g1.language,g1.gid FROM {{groups}} g1 INNER JOIN {{groups}} g2 WHERE g1.gid = g2.gid and g1.language<g2.language")->query();
+            while (($row = $dataReader->read()) !== false) {
+                $oDB->createCommand("delete from  {{groups}} where gid={$row['gid']} and language='{$row['language']}'")->execute();
+            }
+            alterColumn('{{groups}}', 'gid', "int", true);
+            dropPrimaryKey('groups');
+            alterColumn('{{groups}}', 'gid', "pk", false);
+            $oDB->createCommand()->dropColumn('{{groups}}', 'group_name');
+            $oDB->createCommand()->dropColumn('{{groups}}', 'description');
+            $oDB->createCommand()->dropColumn('{{groups}}', 'language');    
+            // Answers table
+            // Answers now have a proper answer ID - wohoo!
+            $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
+                'id' =>  "pk",
+                'aid' =>  "integer NOT NULL",
+                'answer' =>  "text NOT NULL",
+                'language' =>  "string(20) NOT NULL"
+            ));        
+            $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
+            dropPrimaryKey('answers');
+            
+            addColumn('{{answers}}', 'aid', 'int');
+            $oDB->createCommand()->createIndex('answer_idx_10', '{{answers}}', ['qid', 'code', 'scale_id']);
+            $dataReader = $oDB->createCommand("select qid, code, scale_id from {{answers}} group by qid, code, scale_id")->query();
+            $iCounter = 1;
+            while (($row = $dataReader->read()) !== false) {
+                $oDB->createCommand("update {{answers}} set aid={$iCounter} where qid={$row['qid']} and code='{$row['code']}' and scale_id={$row['scale_id']}")->execute();
+                $iCounter++;
+            }
+            $oDB->createCommand("INSERT INTO {{answer_l10ns}} (aid, answer, language) select aid, answer, language from {{answers}}")->execute();
+            $dataReader = $oDB->createCommand("select a1.language,a1.aid FROM {{answers}} a1 INNER JOIN {{answers}} a2 WHERE a1.aid = a2.aid and a1.language<a2.language")->query();
+            while (($row = $dataReader->read()) !== false) {
+                $oDB->createCommand("delete from  {{answers}} where aid={$row['aid']} and language='{$row['language']}'")->execute();
+            }
+            alterColumn('{{answers}}', 'aid', "pk", false);
+            $oDB->createCommand()->dropColumn('{{answers}}', 'answer');
+            $oDB->createCommand()->dropColumn('{{answers}}', 'language');    
+            $oDB->createCommand()->dropindex('answer_idx_10', '{{answers}}');
+            $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
+            
+            // Labels table
+            // label_l10ns
+            $oDB->createCommand()->createTable('{{label_l10ns}}', array(
+                'id' =>  "pk",
+                'label_id' =>  "integer NOT NULL",
+                'title' =>  "text",
+                'language' =>  "string(20) NOT NULL DEFAULT 'en'"
+            ));  
+            $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
+            
+            alterColumn('{{labels}}', 'id', "int", true);
+            dropPrimaryKey('labels');
+            $dataReader = $oDB->createCommand("select lid,code from {{labels}} group by lid,code")->query();
+            $iCounter = 1;
+            while (($row = $dataReader->read()) !== false) {
+                $oDB->createCommand("update {{labels}} set id={$iCounter} where lid={$row['lid']} and code='{$row['code']}'")->execute();
+                $iCounter++;
+            }
+            $oDB->createCommand("INSERT INTO {{label_l10ns}} (label_id, title, language) select id, title, language from {{labels}}")->execute();
+            $dataReader = $oDB->createCommand("select l1.language,l1.id FROM {{labels}} l1 INNER JOIN {{labels}} l2 WHERE l1.id = l2.id and l1.language<l2.language")->query();
+            while (($row = $dataReader->read()) !== false) {
+                $oDB->createCommand("delete from  {{labels}} where id={$row['id']} and language='{$row['language']}'")->execute();
+            }
+            alterColumn('{{labels}}', 'id', "pk", false);
+            $oDB->createCommand()->dropColumn('{{labels}}', 'title');
+            $oDB->createCommand()->dropColumn('{{labels}}', 'language');    
+           
+
+            // Extend language field on labelsets
+            alterColumn('{{labelsets}}', 'languages', "string(255)", false);
+
+            // Extend question type field length
+            alterColumn('{{questions}}', 'type', 'string(30)', false, 'T');
+            
+            // Drop autoincrement on timings table primary key
+            upgradeSurveyTimings350();
+            
+            $oDB->createCommand()->dropPrimaryKey('{{defaultvalues_pk}}','{{defaultvalues}}');
+            $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid']);
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>400), "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }   
+
+        /**
+         * Add load_error and load_error_message to plugin system.
+         */
+        if ($iOldDBVersion < 401) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $oDB->createCommand()->addColumn('{{plugins}}', 'load_error', 'int default 0');
+            $oDB->createCommand()->addColumn('{{plugins}}', 'load_error_message', 'text');
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>401), "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 402) {
+            $oTransaction = $oDB->beginTransaction();
+
+            // Plugin type is either "core" or "user" (different folder locations).
+            $oDB->createCommand()->addColumn('{{plugins}}', 'plugin_type', "string(4) default 'user'");
+
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>402), "stg_name='DBVersion'");
+
+            $oTransaction->commit();
+        }
+            
+        /**
+         * Make tokens fit UUID 36 chars
+         */
+        if ($iOldDBVersion < 403) {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeTokenTables402('utf8mb4_bin');
+            upgradeSurveyTables402('utf8mb4_bin');
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>403),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+      
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -2276,11 +2449,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         Yii::app()->cache->gc();
     }
 
-    // Inform  superadmin about update
+    // Inform superadmin about update
     $superadmins = User::model()->getSuperAdmins();
     $currentDbVersion = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'DBVersion'))->queryRow();
-    // Update the global config object because it is caching the old version
-    setGlobalSetting('DBVersion', $currentDbVersion['stg_value']);
+    // Update the global config object because it is static and set at start of App
+    Yii::app()->setConfig('DBVersion', $currentDbVersion['stg_value']);
 
     Notification::broadcast(array(
         'title' => gT('Database update'),
@@ -2292,6 +2465,76 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->setConfig('Updating', false);
     return true;
 }
+
+
+/**
+ * @param string $sMySQLCollation
+ */
+function upgradeSurveyTables402($sMySQLCollation)
+{
+    $oDB = Yii::app()->db;
+    $oSchema = Yii::app()->db->schema;
+    if (Yii::app()->db->driverName != 'pgsql') {
+        $aTables = dbGetTablesLike("survey\_%");
+        foreach ($aTables as $sTableName) {
+            $oTableSchema = $oSchema->getTable($sTableName);
+            if (!in_array('token', $oTableSchema->columnNames)) {
+                continue;
+            }
+            // No token field in this table
+            switch (Yii::app()->db->driverName) {
+                case 'sqlsrv':
+                case 'dblib':
+                case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
+                    alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                    break;
+                case 'mysql':
+                case 'mysqli':
+                    alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
+                    break;
+                default: die('Unknown database driver');
+            }
+        }
+
+    }
+}
+
+/**
+ * @param string $sMySQLCollation
+ */
+function upgradeTokenTables402($sMySQLCollation)
+{
+    $oDB = Yii::app()->db;
+    if (Yii::app()->db->driverName != 'pgsql') {
+        $aTables = dbGetTablesLike("tokens%");
+        if (!empty($aTables)) {
+            foreach ($aTables as $sTableName) {
+                switch (Yii::app()->db->driverName) {
+                    case 'sqlsrv':
+                    case 'dblib':
+                    case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
+                        alterColumn($sTableName, 'token', "string(36) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                        break;
+                    case 'mysql':
+                    case 'mysqli':
+                        alterColumn($sTableName, 'token', "string(36) COLLATE '{$sMySQLCollation}'");
+                        break;
+                    default: die('Unknown database driver');
+                }
+            }
+        }
+    }
+}
+function upgradeSurveyTimings350()
+{
+    $aTables = dbGetTablesLike("%timings");
+    foreach ($aTables as $sTable) {
+            alterColumn($sTable, 'id', "int", false);
+    }
+}
+
+
+
 /**
  * @param CDbConnection $oDB
  *
@@ -3767,8 +4010,20 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
         case 'pgsql':
             $sType = $sFieldType;
             $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
-            try { $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute(); } catch (Exception $e) {};
-            try { $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute(); } catch (Exception $e) {};
+
+            try {
+                setTransactionBookmark();
+                $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute();
+            } catch (Exception $e) {
+                rollBackToTransactionBookmark();
+            };
+
+            try {
+                setTransactionBookmark();
+                $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute();
+            } catch (Exception $e) {
+                rollBackToTransactionBookmark();
+            };
 
             if ($bAllowNull != true) {
                 $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET NOT NULL")->execute();
