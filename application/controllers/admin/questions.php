@@ -1055,8 +1055,6 @@ class questions extends Survey_Common_Action
         $aViewUrls = [];
         $aViewUrls['editQuestion_view'][] = $aData;
         App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$oQuestion->gid.'new', "OtherSelection('".$oQuestion->type."');", LSYii_ClientScript::POS_POSTSCRIPT);            
-        
-
 
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
@@ -1264,6 +1262,7 @@ class questions extends Survey_Common_Action
 
             $aData['addlanguages'] = $oSurvey->additionalLanguages;
 
+            $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($oQuestion->type);
             $aViewUrls['editQuestion_view'][] = $aData;
             App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$gid.$qid, "OtherSelection('".$oQuestion->type."');", LSYii_ClientScript::POS_POSTSCRIPT);            
         } else {

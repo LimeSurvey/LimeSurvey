@@ -55,11 +55,11 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
         'debugKeyCheck' => "Type: ",
         'previewWindowTitle' => "Preview question type",
         'groupStructureArray' => $aQuestionTypeGroups,
-        'value' => $eqrow['type'],
+        'value' => $oQuestion->type,
         'debug' => YII_DEBUG,
-        'currentSelected' => Question::getQuestionTypeName($eqrow['type']),
+        'currentSelected' => Question::getQuestionTypeName($oQuestion->type),
         'optionArray' => [
-            'selectedClass' => Question::getQuestionClass($eqrow['type']),
+            'selectedClass' => Question::getQuestionClass($oQuestion->type),
             'onUpdate' => [
                 'value',
                 "console.ls.log(value); $('#question_type').val(value);"
@@ -224,32 +224,25 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                         <?php //elseif($activated != "Y" && (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
 
 
-                                <div  class="form-group">
+                                <div class="form-group">
                                     <?php if( $activated != "Y") : ?>
-                                    <input type="hidden" id="question_type" name="type" value="<?php echo $oQuestion->type; ?>" />
-
-                                    <?php if( !$oSurvey->isActive && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
-                                        <?=$oQuestionSelector->getButtonOrSelect();?>
-                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>" data-gethelp='{ "title":"Get help", "text" : "More on questions", "href":"https://manual.limesurvey.org/Questions_-_introduction" }' data-help="<?=gT("Select the question type here.")?>">
-                                                    <?=Question::getQuestionTypeName($oQuestion->type); ?>
-                                                            Type code: <?php echo $oQuestion->type; ?>
-                                    <?php elseif(!$oSurvey->isActive && (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
-                                                    $selected = $oQuestion->type == $sQuestionTypeKey ? 'selected' : '';
-                                    <?php elseif($oSurvey->isActive) : ?>
                                         <input type="hidden" id="question_type" name="type" value="<?php echo $oQuestion->type; ?>" />
+                                        <?=$oQuestionSelector->getButtonOrSelect();?>
+                                    <?php elseif($activated == "Y") : ?>
+                                        <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                         <!-- TODO : control if we can remove, disable update type must be done by PHP -->
                                         <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
-                                            eT("Question type:");
+                                                eT("Question type:");
                                             ?>
                                         </label>
                                         <div class=" btn-group" id="question_type_button">
                                             <button type="button" class="btn btn-default" disabled  aria-haspopup="true" aria-expanded="false" >
                                                 <span class="buttontext" id="selector__editView_question_type_description">
-                                                    <?=Question::getQuestionTypeName($oQuestion->type); ?>
+                                                    <?=Question::getQuestionTypeName($eqrow['type']); ?>
                                                     <?php if(YII_DEBUG):?>
                                                         <em class="small">
-                                                            Type code: <?php echo $oQuestion->type; ?>
+                                                            Type code: <?php echo $eqrow['type']; ?>
                                                         </em>
                                                     <?php  endif;?>
                                                 </span>
