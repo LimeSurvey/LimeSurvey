@@ -1211,7 +1211,8 @@ class questions extends Survey_Common_Action
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
             $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $oQuestion->type, $surveyid);
-            $aData['aQuestionTemplateAttributes'] = $questionTemplateAttributes['question_template'];
+            // TODO: No index 'question_template'
+            $aData['aQuestionTemplateAttributes'] = []; //$questionTemplateAttributes['question_template'];
             $aData['aQuestionTemplateAttributes']['core'] = array('title'=>'Default', 'preview' => questionHelper::getQuestionThemePreviewUrl($oQuestion->type));
                 $aData['aQuestionTemplateAttributes']['value'] = 'core';
 
