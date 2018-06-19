@@ -19,9 +19,9 @@ Also you should give some information about the used licence (remember LimeSurve
 
 It makes a lot of sense to write which version of the view it is, to let people know If they would have to update.
 
-Also, there is a difference between <name> and <title> tags.
-<name> tag is used to enter a question theme code, without spaces.
-<title> tag is used to enter a nice title which would be visible on Question theme dropdown on edit question page.
+Also, there is a difference between `name` and `title` tags.
+`name` tag is used to enter a question theme code, without spaces.
+`title` tag is used to enter a nice title which would be visible on Question theme dropdown on edit question page.
 Both tags are required.
 
 The `metadatas` part should therefore look something like this:
@@ -46,7 +46,7 @@ The `metadatas` part should therefore look something like this:
 
 You can add additional files to the question view. 
 
-<preview> tag is used to show a preview image for question type on edit question page right side accordion. If this tag is missing or empty, default question type preview image would be used.
+`preview` tag is used to show a preview image for question type on edit question page right side accordion. If this tag is missing or empty, default question type preview image would be used.
 
 Please make sure, that you put your own files in an `asset` folder in the base folder of your question view.
 
