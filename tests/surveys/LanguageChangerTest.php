@@ -43,6 +43,8 @@ class LanguageChangerTest extends TestBaseClassWeb
             // Change to Deutsch.
             $web->changeLanguageSelect('de');
 
+            sleep(2);
+
             // Check so that we see German text.
             $text = $web->findElement(
                 WebDriverBy::cssSelector('.question-count-text')
@@ -51,6 +53,8 @@ class LanguageChangerTest extends TestBaseClassWeb
 
             // Click next.
             $web->next();
+
+            sleep(1);
 
             // Fill in first question.
             $web->answerTextQuestion($sgqa, 'This is an answer');

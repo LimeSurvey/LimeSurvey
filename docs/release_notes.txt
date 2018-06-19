@@ -35,6 +35,36 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.12.0 (build 180615) to 3.12.1 (build 180616) June 15, 2018
+-Fixed issue: question type selector not working (Markus Flür)
+Changes from 3.11.0 (build 180612) to 3.12.0 (build 180615) June 15, 2018
+-New feature: Added theme options zebrastriping and hide privacynotice (Markus Flür)
+-New feature: added crosshover functionality to fruity theme (Markus Flür)
+-Fixed issue: Export to printable survey .zip not working (Markus Flür)
+-Fixed issue: Language changer not working correctly (Markus Flür)
+-Fixed issue: View problems with queXML pdf export (Markus Flür)
+-Fixed issue: global settings not reapplied after save and not correctly loaded from db (Markus Flür)
+-Fixed issue: subquestion relevance broken through EM change (Markus Flür)
+-Fixed issue #13741: Bahasa Malaysia no longer in language selection (Carsten Schmitz)
+-Fixed issue #13762: copy question with subquestions (Dominik Vitt)
+-Fixed issue #13774: Date drop down always throws error using date format dd.mm.yyyy (Dominik Vitt)
+-Fixed issue #13778: Exporting data to the most recent version of R leads to incorrect data (Dominik Vitt)
+-Fixed issue #13780: Ranked items are re-set when using "previous" button (Dominik Vitt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Taiwan) (Traditional) by c_schmitz, terrywei, imacat, sylsylsylvie, comuss
+#Updated translation: Chinese (Taiwan) (Traditional) by sylsylsylvie, imacat
+#Updated translation: Croatian by dominikvitt
+#Updated translation: French (France) by c_schmitz, b00z00, arnaud21, DenisChenu
+#Updated translation: German (Informal) by c_schmitz, markusfluer
+#Updated translation: German by c_schmitz
+#Updated translation: German by surveyunihi, c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by c_schmitz, pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+
 Changes from 3.10.0 (build 180611) to 3.11.0 (build 180612) June 12, 2018
 #Updated translation: Catalan by c_schmitz
 #Updated translation: Chinese (Hong Kong) (Traditional) by LS_fan

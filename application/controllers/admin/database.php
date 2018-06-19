@@ -1313,32 +1313,39 @@ class database extends Survey_Common_Action
                 if (Yii::app()->request->getPost('action') == 'copyquestion') {
                     /** @var Question $oOldQuestion */
                     $oldQID = returnGlobal('oldqid');
-                    if ($oldQID) {
-                        $oOldQuestion = Question::model()->findByPk(
-                            array(
-                                'qid' => $oldQID,
-                                'language' => $survey->language
-                            )
-                        );
-                    }
-                    if (returnGlobal('copysubquestions') == 1 && isset($oOldQuestion)) {
-                        $aSQIDMappings = [];
-                        foreach ($oOldQuestion->subquestions as $qr1) {
-                            $arQuestion = new Question();
-                            $arQuestion->attributes = $qr1->attributes;
-                            $arQuestion->parent_qid = $this->iQuestionID;
-                            $oldqid = '';
-                            if (isset($aSQIDMappings[$qr1->qid])) {
-                                $arQuestion->qid = $aSQIDMappings[$qr1->qid];
-                            } else {
-                                $oldqid = $qr1->qid;
-                                $arQuestion->qid = null;
-                            }
+                    
+                    if (returnGlobal('copysubquestions') == 1) {
+                        $aSubquestionIds = array();
+                        if ($oldQID) {
+                            // get all survey languages
+                            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+                            foreach ($aLanguages as $sLanguageIndex => $sLanguage) {
+                                // create a Question model for each language
+                                $oOldQuestion = Question::model()->findByPk(
+                                    array(
+                                        'qid' => $oldQID,
+                                        'language' => $sLanguage
+                                    )
+                                );
 
-                            $arQuestion->gid = $this->iQuestionGroupID;
-                            if ($arQuestion->save()) {
-                                $aSQIDMappings[$oldqid] = $arQuestion->gid;
-                            }
+                                // subquestions
+                                foreach ($oOldQuestion->subquestions as $sSubquestionIndex => $qr1) {
+                                    $aInsertData = $qr1->attributes;
+                                    if ($sLanguageIndex == 0){ // main language
+                                        $aInsertData['qid'] = null;
+                                    } else {  // additional languages
+                                        $aInsertData['qid'] = $aSubquestionIds[$sSubquestionIndex]; // get qid from array 
+                                    }
+                                    
+                                    $aInsertData['parent_qid'] = $this->iQuestionID;
+                                    if (Question::model()->insertRecords($aInsertData)){
+                                        if ($sLanguageIndex == 0){ // main language
+                                            $aSubquestionIds[$sSubquestionIndex] = Yii::app()->db->getLastInsertID(); // save qid into the array
+                                        }
+                                    }
+                                }
+                            } 
+                                
                         }
                     }
                     if (returnGlobal('copyanswers') == 1) {

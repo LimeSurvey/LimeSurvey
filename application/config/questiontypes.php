@@ -94,4 +94,15 @@ return array(
             'emoji'
         ]
     ),
+    /* array-numeric question */
+    'question-array-numeric'=>array(
+        'devBaseUrl'  => 'assets/packages/questions/arraynumeric/',
+        'basePath' => 'core.questions.arraynumeric',
+        'position' => CClientScript::POS_BEGIN,
+        'css'=> array(
+        ),
+        'js'=>array(
+            'scripts/array-totalsum'.$minVersion.'.js',
+        ),
+    ),
 );

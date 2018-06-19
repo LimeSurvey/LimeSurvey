@@ -1102,9 +1102,7 @@ class statistics_helper
                         case 'html':
 
                             //output
-                            $statisticsoutput .= "\t<tr>\n"
-                            ."\t\t<td align='right'  colspan='4'>".gT("Not enough values for calculation")."</td>\n"
-                            ."\t</tr>\n</table><br />\n";
+                            $statisticsoutput .= "<p class='printable'>".gT("Not enough values for calculation")."</p>\n";
 
                             break;
                         default:
@@ -3244,7 +3242,7 @@ class statistics_helper
                                 $graphLbl[] = $al[1];
                                 break;
                             case 'both':
-                                if (empty($al[0]) == "") {
+                                if ($al[0] == "") {
                                     $graphLbl[] =  gT("No answer") . ': ' . $al[1];
                                 } else {
                                     $graphLbl[] = $al[0] . ': ' . $al[1];

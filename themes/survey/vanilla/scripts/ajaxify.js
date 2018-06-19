@@ -88,13 +88,13 @@ var AjaxSubmitObject = function () {
             debug: true,
             forceRedirectOnFail: true,
             reRenderCSS : true,
-            logObject : new ConsoleShim('PJAX-LOG'),
+            logObject : new ConsoleShim('PJAX-LOG', (LSvar.debugMode < 1)),
             scriptloadtimeout: 1500,
         });
         // Always bind to document to not need to bind again
         $(document).on('click', '.ls-move-btn',function (e) {
             $('#limesurvey').append('<input name=\''+$(this).attr('name')+'\' value=\''+$(this).attr('value')+'\' type=\'hidden\' />');
-            if(isIE10) {
+            if(isIE10 || /Edge\/\d+\.\d+/.test(navigator.userAgent)) {
                 e.preventDefault();    
                 $('#limesurvey').trigger('submit');
                 return false;

@@ -37,7 +37,6 @@ class index extends CAction
         }
 
         $this->_loadRequiredHelpersAndLibraries();
-
         $param       = $this->_getParameters(func_get_args(), $_POST);
         $surveyid    = $param['sid'];
         $thisstep    = $param['thisstep'];
@@ -90,6 +89,11 @@ class index extends CAction
         if ($surveyid && $surveyExists) {
             SetSurveyLanguage($surveyid, $sDisplayLanguage);
         }
+
+        /* Launch beforeSurveyPage before all renderExitMessage */
+        $beforeSurveyPageEvent = new PluginEvent('beforeSurveyPage');
+        $beforeSurveyPageEvent->set('surveyId', $surveyid);
+        App()->getPluginManager()->dispatchEvent($beforeSurveyPageEvent);
 
         if ($this->_isClientTokenDifferentFromSessionToken($clienttoken, $surveyid)) {
             $sReloadUrl = $this->getController()->createUrl("/survey/index/sid/{$surveyid}", array('token'=>$clienttoken, 'lang'=>App()->language, 'newtest'=>'Y'));
@@ -267,13 +271,9 @@ class index extends CAction
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $thissurvey = getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-
-        $event = new PluginEvent('beforeSurveyPage');
-        $event->set('surveyId', $surveyid);
-        App()->getPluginManager()->dispatchEvent($event);
-
-        if (!is_null($event->get('template'))) {
-            $thissurvey['templatedir'] = $event->get('template');
+        /* Unsure it still work, and surely better in afterFindSurvey */
+        if (!is_null($beforeSurveyPageEvent->get('template'))) {
+            $thissurvey['templatedir'] = $beforeSurveyPageEvent->get('template');
         }
 
         //SEE IF SURVEY USES TOKENS

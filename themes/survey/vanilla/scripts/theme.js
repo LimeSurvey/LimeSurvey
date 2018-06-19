@@ -107,23 +107,21 @@ var ThemeScripts = function(){
         });
     };
 
-    /*
-    var initLanguageChanger = function(selectorItem, selectorGlobalForm){
-        $(selectorItem).on('change',function() {
+    var initLanguageChanger = function(selectorItem){
+        $(selectorItem).on('change',function(e) {
             var lang = $(this).val();
             logObject.log(lang, 'changed');
             // If there are no form : we can't use it
             // No form, not targeturl : just see what happen
             var target = window.location.href;
-            $("<form>", {
-                "class":'ls-js-hidden',
-                "html": '<input type="hidden" name="lang" value="' + lang + '" />',
-                "action": target,
-                "method": 'get'
+            $('<form>', {
+                'class':'ls-js-hidden',
+                'html': '<input type="hidden" name="lang" value="' + lang + '" />',
+                'action': target,
+                'method': 'get'
             }).appendTo('body').submit();
         });
     };
-    */
 
     var initTopMenuLanguageChanger = function(selectorItem, selectorGlobalForm){
         // $(selectorContainer).height($('#main-row').height());
@@ -310,6 +308,7 @@ var ThemeScripts = function(){
         initUserForms: initUserForms,
         initGlobal: initGlobal,
         initWelcomePage: initWelcomePage,
+        initLanguageChanger: initLanguageChanger,
         focusFirst: focusFirst,
         sliderSuffixClone : sliderSuffixClone,
         fixBodyPadding : fixBodyPadding,

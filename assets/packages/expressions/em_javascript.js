@@ -786,9 +786,12 @@ function LEMval(alias)
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
             else if (attr.type=='D')  {
                 // get date format pattern of referenced question
-                var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).text();
-                // if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
-                sdatetimePattern =typeof sdatetimePattern == 'undefined'? 'YYYY-MM-DD HH:mm': sdatetimePattern;
+                var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).val();
+                if (sdatetimePattern == ''){
+                    sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).text();
+                }
+                // if empty (eg., variable on a previous page), set default format yy-mm-dd HH:MM
+                sdatetimePattern = sdatetimePattern == ''? 'YYYY-MM-DD HH:mm': sdatetimePattern;
 
                 if (sdatetimePattern==null) {
                     sdatetimePattern="";

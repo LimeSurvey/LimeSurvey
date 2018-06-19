@@ -36653,7 +36653,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         createQuestionGroupLink: { type: String },
         createQuestionLink: { type: String },
         updateOrderLink: { type: String },
-        isActive: { type: Number }
+        isActive: { type: String }
     },
     data: () => {
         return {

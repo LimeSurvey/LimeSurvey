@@ -181,6 +181,8 @@ class SurveysGroups extends LSActiveRecord
 
         $criteria = new CDbCriteria;
 
+        $criteria->select = array('DISTINCT t.*');
+
         $criteria->compare('gsid', $this->gsid);
         $criteria->compare('name', $this->name, true);
         $criteria->compare('title', $this->title, true);
@@ -192,9 +194,30 @@ class SurveysGroups extends LSActiveRecord
         $criteria->compare('modified', $this->modified, true);
         $criteria->compare('created_by', $this->created_by);
 
-        return new CActiveDataProvider($this, array(
+        // Permission
+        // Note: reflect Permission::hasPermission
+        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
+            $criteriaPerm = new CDbCriteria;
+
+            // Multiple ON conditions with string values such as 'survey'
+            $criteriaPerm->mergeWith(array(
+                'join'=>"JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
+                        JOIN {{permissions}} AS permissions ON (permissions.entity_id = surveys.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
+            ));
+
+            $criteriaPerm->compare('t.owner_uid', Yii::app()->user->id, false);
+            $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
+            $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
+            $criteria->mergeWith($criteriaPerm, 'AND');
+        }
+
+        $dataProvider = new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
+
+        $dataProvider->setTotalItemCount(count($dataProvider->getData()));
+
+        return $dataProvider;
     }
 
     public function getParentTitle()
