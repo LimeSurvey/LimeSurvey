@@ -40,8 +40,12 @@ class LanguageChangerTest extends TestBaseClassWeb
             // Open survey.
             $web->get($url);
 
+            $web->dumpBody();
+
             // Change to Deutsch.
             $web->changeLanguageSelect('de');
+
+            $web->dumpBody();
 
             sleep(2);
 

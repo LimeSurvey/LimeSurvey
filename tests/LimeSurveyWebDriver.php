@@ -101,4 +101,14 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         $button = $this->findElement(WebDriverBy::id($id));
         $button->click();
     }
+
+    /**
+     * Debug method to dump all text in <body></body>.
+     * @return void
+     */
+    public function dumpBody()
+    {
+        $body = $this->findElement(WebDriverBy::tagName('body'));
+        var_dump('body text = ' . $body->getText());
+    }
 }
