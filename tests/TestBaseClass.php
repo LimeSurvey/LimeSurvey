@@ -35,6 +35,12 @@ class TestBaseClass extends TestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+
+        //$lt = ini_get('session.gc_maxlifetime');
+        //var_dump('gc_maxlifetime = ' . $lt);
+        session_destroy();
+        session_start();
+
         self::$testHelper = new TestHelper();
 
         self::$dataFolder = __DIR__.'/data';
