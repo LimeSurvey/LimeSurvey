@@ -36,9 +36,9 @@ class TestBaseClass extends TestCase
     {
         parent::setUpBeforeClass();
 
-        $lt = ini_get('session.gc_maxlifetime');
-        var_dump('gc_maxlifetime = ' . $lt);
-        die;
+        //$lt = ini_get('session.gc_maxlifetime');
+        //var_dump('gc_maxlifetime = ' . $lt);
+        //die;
 
         // This did not fix the langchang test failure on Travis.
         //session_destroy();
