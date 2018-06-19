@@ -5661,7 +5661,6 @@
                     else
                     {
                         if ($finished && ($response->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
-                            $sQuery = 'UPDATE '.$this->surveyOptions['tablename'] . " SET ";
                             if($this->surveyOptions['datestamp'])
                             {
                                 // Replace with date("Y-m-d H:i:s") ? See timeadjust
@@ -5672,8 +5671,6 @@
                             $aResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
                             $aResponse->submitdate = $submitdate;
                             $aResponse->save();
-                            Yii::app()->db->createCommand($sQuery)->query();
-                            //dbExecuteAssoc($sQuery);   // Checked
                         }
                     }
 
