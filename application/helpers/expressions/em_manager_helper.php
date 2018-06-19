@@ -47,23 +47,23 @@
         *
         * @var array
         */
-        private $groupRelevanceInfo = array();
+        private $groupRelevanceInfo;
         /**
         * The survey ID
         * @var integer
         */
-        private $sid = 0;
+        private $sid;
         /**
         * sum of LEM_DEBUG constants - use bitwise AND comparisons to identify which parts to use
         * @var int
         */
-        private $debugLevel = 0;
+        private $debugLevel=0;
          /**
         * sPreviewMode used for relevance equation force to 1 in preview mode
         * Maybe we can set it public
         * @var string|boolean
         */
-        private $sPreviewMode = false;
+        private $sPreviewMode=false;
         /**
         * Collection of variable attributes, indexed by SGQA code
         *
@@ -103,7 +103,7 @@
         *
         * @var array
         */
-        private $knownVars = array();
+        private $knownVars;
 
         /**
         * maps qcode varname to SGQA code
@@ -111,7 +111,7 @@
         * @example ['gender'] = '38612X10X145'
         * @var array
         */
-        private $qcode2sgqa = array();
+        private $qcode2sgqa;
 
         /**
         * variables temporarily set for substitution purposes
@@ -126,7 +126,7 @@
         *
         * @var array
         */
-        private $tempVars = array();
+        private $tempVars;
 
         /**
         * Array of relevance information for each page (gseq), indexed by gseq.
@@ -145,23 +145,23 @@
         * 'hasErrors' => // 1 if there were parsing errors processing that relevance equation
         * @var array
         */
-        private $pageRelevanceInfo = array();
+        private $pageRelevanceInfo;
 
         /**
         *
         * @var array
         */
-        private $pageTailorInfo = array();
+        private $pageTailorInfo;
         /**
         * internally set to true (1) for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
         * @var boolean
         */
-        private $allOnOnePage = false;
+        private $allOnOnePage=false;
         /**
         * survey mode.  One of 'survey', 'group', or 'question'
         * @var string
         */
-        private $surveyMode = 'group';
+        private $surveyMode='group';
         /**
         * a set of global survey options passed from LimeSurvey
         *
@@ -186,21 +186,21 @@
         *
         * @var array
         */
-        private $surveyOptions = array();
+        private $surveyOptions=array();
         /**
         * array of mappings of Question # (qid) to pipe-delimited list of SGQA codes used within it
         *
         * @example [150] = "38612X11X150|38612X11X150other"
         * @var array
         */
-        private $qid2code = array();
+        private $qid2code;
         /**
         * array of mappings of JavaScript Variable names to Question number (qid)
         *
         * @example ['java38612X13X161other'] = '161'
         * @var array
         */
-        private $jsVar2qid = array();
+        private $jsVar2qid;
         /**
         * maps name of the variable to the SGQ name (without the A suffix)
         *
@@ -208,7 +208,7 @@
         * @example ['afDS_sq1_1'] = "26626X37X705sq1#1"
         * @var array
         */
-        private $qcode2sgq = array();
+        private $qcode2sgq;
         /**
         * array of mappings of knownVar aliases to the JavaScript variable names.
         * This maps both the SGQA and qcode alias names to the same 2 dimensional array
@@ -223,7 +223,7 @@
         * );
         * @var array
         */
-        private $alias2varName = array();
+        private $alias2varName;
         /**
         * JavaScript array of mappings of canonical JavaScript variable name to key attributes.
         * These fragments are used to create the JavaScript varNameAttr array.
@@ -233,7 +233,7 @@
         *
         * @var array
         */
-        private $varNameAttr = array();
+        private $varNameAttr;
 
         /**
         * array of enumerated answer lists indexed by qid
@@ -245,7 +245,7 @@
         *
         * @var array
         */
-        private $qans = array();
+        private $qans;
         /**
         * map of gid to 0-based sequence number of groups
         *
@@ -253,7 +253,7 @@
         *
         * @var array
         */
-        private $groupId2groupSeq = array();
+        private $groupId2groupSeq;
         /**
         * map question # to an incremental count of question order across the whole survey
         *
@@ -261,7 +261,7 @@
         *
         * @var array
         */
-        private $questionId2questionSeq = array();
+        private $questionId2questionSeq;
         /**
         * map question  # to the group it is within, using an incremental count of group order
         *
@@ -269,7 +269,7 @@
         *
         * @var array
         */
-        private $questionId2groupSeq = array();
+        private $questionId2groupSeq;
         /**
         * array of info about each Group, indexed by GroupSeq
         *
@@ -280,7 +280,7 @@
         *
         * @var array
         */
-        private $groupSeqInfo = array();
+        private $groupSeqInfo;
 
         /**
         * tracks which groups have at least one relevant, non-hidden question
@@ -289,7 +289,7 @@
         *
         * @var array
         */
-        private $gseq2relevanceStatus = array();
+        private $gseq2relevanceStatus;
         /**
         * maps question # to the validation equation(s) for that question.
         * These are grouped by qid then validation type, such as 'value_range', and 'num_answers'
@@ -312,7 +312,7 @@
         *
         * @var array
         */
-        private $qid2validationEqn = array();
+        private $qid2validationEqn;
 
         /**
         * keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
@@ -342,24 +342,24 @@
         *
         * @var array
         */
-        private $questionSeq2relevance = array();
+        private $questionSeq2relevance;
         /**
         * current Group sequence (0-based index)
         * @example 1
         * @var integer
         */
-        private $currentGroupSeq=-1;
+        private $currentGroupSeq;
         /**
         * for Question-by-Question mode, the 0-based index
         * @example 3
         * @var integer
         */
-        private $currentQuestionSeq=-1;
+        private $currentQuestionSeq;
         /**
         * used in Question-by-Question mode
         * @var integer
         */
-        private $currentQID = 0;
+        private $currentQID;
         /**
         * set of the current set of questions to be displayed, indexed by QID - at least one must be relevant
         *
@@ -392,7 +392,7 @@
         *
         * @var array|null
         */
-        private $currentQset = null;
+        private $currentQset=NULL;
         /**
         * last result of NavigateForwards, NavigateBackwards, or JumpTo
         * Array of status information about last movement, whether at question, group, or survey level
@@ -409,7 +409,7 @@
         *
         * @var array|null
         */
-        private $lastMoveResult = null;
+        private $lastMoveResult=NULL;
         /**
         * array of information needed to generate navigation index in question-by-question mode
         * One entry for each question, indexed by qseq
@@ -432,7 +432,7 @@
         *
         * @var array
         */
-        private $indexQseq = array();
+        private $indexQseq;
         /**
         * array of information needed to generate navigation index in group-by-group mode
         * One entry for each group, indexed by gseq
@@ -450,7 +450,7 @@
         *
         * @var array
         */
-        private $indexGseq = array();
+        private $indexGseq;
         /**
         * array of group sequence number to static info
         * One entry per group, indexed on gseq
@@ -465,13 +465,13 @@
         *
         * @var array
         */
-        private $gseq2info = array();
+        private $gseq2info;
 
         /**
         * the maximum groupSeq reached -  this is needed for Index
         * @var int
         */
-        private $maxGroupSeq = -1;
+        private $maxGroupSeq;
         /**
         * the maximum Question reached sequencly ordered, used to show error to the user if we stop before this step with indexed survey.
         * In question by question mode : $maxQuestionSeq==$_SESSION['survey_'.surveyid]['maxstep'], use it ?
@@ -504,7 +504,7 @@
         *
         * @var array
         */
-        private $q2subqInfo = array();
+        private $q2subqInfo;
         /**
         * array of advanced question attributes for each question
         * Indexed by qid; available for all quetions
@@ -519,7 +519,7 @@
         *
         * @var array
         */
-        private $qattr = array();
+        private $qattr;
         /**
         * list of needed sub-question relevance (e.g. array_filter)
         * Indexed by qid then sgqa; only generated for current group of questions
@@ -541,7 +541,7 @@
         *
         * @var array
         */
-        private $subQrelInfo = array();
+        private $subQrelInfo=array();
         /**
         * array of Group-level relevance status
         * Indexed by gseq; only shows groups that have been visited
@@ -558,7 +558,7 @@
         *
         * @var array
         */
-        private $gRelInfo = array();
+        private $gRelInfo=array();
 
         /**
         * Array of timing information to debug how long it takes for portions of LEM to run.
@@ -571,24 +571,24 @@
         *
         * @var array
         */
-        private $runtimeTimings = array();
+        private $runtimeTimings=array();
         /**
         * True (1) if calling LimeExpressionManager functions between StartSurvey and FinishProcessingPage
         * Used (mostly deprecated) to detect calls to LEM which happen outside of the normal processing scope
         * @var boolean
         */
-        private $initialized = false;
+        private $initialized=false;
         /**
         * True (1) if have already processed the relevance equations (so don't need to do it again)
         *
         * @var boolean
         */
-        private $processedRelevance = false;
+        private $processedRelevance=false;
         /**
         * Message generated to show debug timing values, if debugLevel includes LEM_DEBUG_TIMING
         * @var string
         */
-        private $debugTimingMsg = '';
+        private $debugTimingMsg='';
         /**
         * temporary variable to reduce need to parse same equation multiple times.  Used for relevance and validation
         * Array, indexed on equation, providing the following information:
@@ -601,7 +601,7 @@
         *
         * @var array
         */
-        private $ParseResultCache = array();
+        private $ParseResultCache;
         /**
         * array of 2nd scale answer lists for types ':' and ';' -- needed for convenient print of logic file
         * Indexed on qid; available for all questions
@@ -614,7 +614,7 @@
         *
         * @var array
         */
-        private $multiflexiAnswers = array();
+        private $multiflexiAnswers;
 
         /**
         * used to specify whether to  generate equations using SGQA codes or qcodes
@@ -628,17 +628,17 @@
         * Number of groups in survey (number of possible pages to display)
         * @var integer
         */
-        private $numGroups = 0;
+        private $numGroups=0;
         /**
         * Numer of questions in survey (counting display-only ones?)
         * @var integer
         */
-        private $numQuestions = 0;
+        private $numQuestions=0;
         /**
         * String identifier for the active session
-        * @var string|null
+        * @var string
         */
-        private $sessid = null;
+        private $sessid;
         /**
          * Linked list of array filters
          * @var array
