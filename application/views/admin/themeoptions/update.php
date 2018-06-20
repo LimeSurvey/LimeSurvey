@@ -131,6 +131,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                             unset($actionUrlArray['id']);
                             $actionBaseUrl = 'admin/themeoptions/sa/updatesurveygroup/';
                             $actionUrlArray['gsid'] = $model->gsid;
+                            $actionUrlArray['id'] = $model->id;
                         }
 
                         $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl,$actionUrlArray);
