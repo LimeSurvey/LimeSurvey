@@ -616,21 +616,42 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Turn ON a given option at global setting level (survey level not affected)
+     * Set a value on a given option at global setting level (survey level not affected).
      * Will be used to turn ON ajax mode on update. 
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
      */
-    public function setGlobalOptionOn($optionName="ajaxmode")
+    public function setGlobalOption($name, $value)
     {
-
         if ($this->options != 'inherit') {
             $oOptions = json_decode($this->options);
 
-            if ($oOptions->$optionName === "off" && empty($this->sid)){
-                $oOptions->$optionName = "on";
+            if (empty($this->sid)) {
+                $oOptions->$name = $value;
                 $sOptions = json_encode($oOptions);
                 $this->options = $sOptions;
                 $this->save();
             }
+        }
+    }
+
+    /**
+     * Set option (unless if options is set to "inherit").
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function setOption($name, $value)
+    {
+        if ($this->options != 'inherit') {
+            $oOptions = json_decode($this->options);
+
+            $oOptions->$name = $value;
+            $sOptions = json_encode($oOptions);
+            $this->options = $sOptions;
+            $this->save();
         }
     }
 
@@ -1089,5 +1110,18 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         return $sTemplateNames;
+    }
+
+    /**
+     * Get the global template configuration with same name as $this.
+     * The global config has no sid, no gsid and no uid.
+     * @return TemplateConfiguration
+     */
+    public function getGlobalParent()
+    {
+        return self::model()->find(
+            'sid IS NULL AND uid IS NULL and gsid IS NULL AND template_name = :template_name',
+            [':template_name'=>$this->template_name]
+        );
     }
 }
