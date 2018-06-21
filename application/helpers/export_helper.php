@@ -288,7 +288,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
     if ($field['LStype'] == ':') {
         //Get the labels that could apply!
         if (is_null($qidattributes)) {
-            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field["qid"]);
+            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field["qid"],$language);
         }
 
         if ($qidattributes['multiflexible_checkbox']) {
@@ -576,7 +576,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
                     $export_scale = $typeMap[$ftype]['Scale'];
                 }
                 //But allow override
-                $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($qid);
+                $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($qid,$sLanguage);
                 if (isset($aQuestionAttribs['scale_export'])) {
                     $export_scale = $aQuestionAttribs['scale_export'];
                 }

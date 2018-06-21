@@ -172,6 +172,12 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['notificationsettingsdata']  = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
         $aData['tokensettingsdata']         = array_merge($aData, $this->_tabTokens($esrow));
 
+        // set new survey settings from global settings
+        $aData['presentationsettingsdata']['showqnumcode'] = getGlobalSetting('showqnumcode');
+        $aData['presentationsettingsdata']['shownoanswer'] = getGlobalSetting('shownoanswer');
+        $aData['presentationsettingsdata']['showgroupinfo'] = getGlobalSetting('showgroupinfo');
+        $aData['presentationsettingsdata']['showxquestions'] = getGlobalSetting('showxquestions');
+
         $aViewUrls[] = 'newSurvey_view';
 
         $arrayed_data                                              = array();
@@ -925,6 +931,12 @@ class SurveyAdmin extends Survey_Common_Action
 
         $templateData = array_merge($this->_getGeneralTemplateData($iSurveyID), $templateData);
         $this->_registerScriptFiles();
+
+        // override survey settings if global settings exist
+        $templateData['showqnumcode'] = getGlobalSetting('showqnumcode') !=='choose'?getGlobalSetting('showqnumcode'):$survey->showqnumcode; 
+        $templateData['shownoanswer'] = getGlobalSetting('shownoanswer') !=='choose'?getGlobalSetting('shownoanswer'):$survey->shownoanswer; 
+        $templateData['showgroupinfo'] = getGlobalSetting('showgroupinfo') !=='2'?getGlobalSetting('showgroupinfo'):$survey->showgroupinfo; 
+        $templateData['showxquestions'] = getGlobalSetting('showxquestions') !=='choose'?getGlobalSetting('showxquestions'):$survey->showxquestions; 
 
         //Start collecting aData
         $aData['surveyid'] = $iSurveyID;
