@@ -2535,6 +2535,8 @@ class remotecontrol_handle
      * @param int $iSurveyID ID of the Survey to insert responses
      * @param array $aResponseData The actual response
      * @return int|array The response ID
+     * @todo Need to clean up return array, especially the case when response was added but file not uploaded.
+     * @todo See discussion: https://bugs.limesurvey.org/view.php?id=13794
      */
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {
@@ -2597,7 +2599,10 @@ class remotecontrol_handle
                         }
 
                         if (!rename($sFileTempName, $sFileRealName)) {
-                            return array('status' => 'Unable to move files '.$sFileTempName.' '.$sFileRealName);
+                            return array(
+                                'status'    => 'Unable to move files '.$sFileTempName.' '.$sFileRealName,
+                                'result_id' => $result_id
+                            );
                         }
                     }
 
