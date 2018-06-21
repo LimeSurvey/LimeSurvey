@@ -518,6 +518,14 @@ class RegisterController extends LSYii_Controller
 
         $aData['aSurveyInfo'] = array_merge($aSurveyInfo, $aData['aSurveyInfo']);
 
+        $aData['aSurveyInfo']['alanguageChanger']['show'] = false;
+        $alanguageChangerDatas = getLanguageChangerDatas(App()->language);
+
+        if ($alanguageChangerDatas) {
+            $aData['aSurveyInfo']['alanguageChanger']['show']  = true;
+            $aData['aSurveyInfo']['alanguageChanger']['datas'] = $alanguageChangerDatas;
+        }
+
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
 
     }
