@@ -620,7 +620,7 @@ class TemplateConfiguration extends TemplateConfig
      * Will be used to turn ON ajax mode on update. 
      *
      * @param string $name
-     * @param string $value
+     * @param mixed $value
      * @return void
      */
     public function setGlobalOption($name, $value)
@@ -634,6 +634,24 @@ class TemplateConfiguration extends TemplateConfig
                 $this->options = $sOptions;
                 $this->save();
             }
+        }
+    }
+
+    /**
+     * Set option (unless if options is set to "inherit").
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function setOption($name, $value)
+    {
+        if ($this->options != 'inherit') {
+            $oOptions = json_decode($this->options);
+
+            $oOptions->$name = $value;
+            $sOptions = json_encode($oOptions);
+            $this->options = $sOptions;
+            $this->save();
         }
     }
 
@@ -1092,5 +1110,18 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         return $sTemplateNames;
+    }
+
+    /**
+     * Get the global template configuration with same name as $this.
+     * The global config has no sid, no gsid and no uid.
+     * @return TemplateConfiguration
+     */
+    public function getGlobalParent()
+    {
+        return self::model()->find(
+            'sid IS NULL AND uid IS NULL and gsid IS NULL AND template_name = :template_name',
+            [':template_name'=>$this->template_name]
+        );
     }
 }
