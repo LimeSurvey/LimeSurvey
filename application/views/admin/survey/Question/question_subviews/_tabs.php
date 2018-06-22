@@ -27,7 +27,7 @@
 </ul>
 
 <!-- Editors for each languages -->
-<div class="tab-content">
+<div class="tab-content" v-pre>
 
     <!-- Base Language tab-pane -->
     <div id="<?php echo $oSurvey->language; ?>" class="tab-pane fade in active">
