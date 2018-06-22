@@ -155,9 +155,14 @@ class LSHttpRequest extends CHttpRequest
             $beforeUrlCheck = new PluginEvent('beforeUrlCheck');
             $beforeUrlCheck->set('routes', $this->noCsrfValidationRoutes);
             $beforeUrlCheck->set('params', []);
-            App()->getPluginManager()->dispatchEvent($beforeUrlCheck);
-            $validationRoutes = $beforeUrlCheck->get('routes');
-            $validationParams = $beforeUrlCheck->get('params');
+            try{
+                App()->getPluginManager()->dispatchEvent($beforeUrlCheck);
+                $validationRoutes = $beforeUrlCheck->get('routes');
+                $validationParams = $beforeUrlCheck->get('params');
+            } catch(CDbException $e) {
+                $validationRoutes = [];
+                $validationParams = [];
+            }
 
             foreach ($validationRoutes as $cr) {
                 if (preg_match('#'.$cr.'#', $route)) {
