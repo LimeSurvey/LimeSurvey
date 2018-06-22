@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-06-22 10:00:55+00:00\n"
+"POT-Creation-Date: 2018-06-22 10:15:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18068,11 +18068,11 @@ msgid "Survey structure"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:37
-msgid "Response data (Files uploaded in a file upload question have to exported separately)"
+msgid "Response data (Attention: Doesn't include files uploaded in a file upload question. These have to be exported separately.)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:38
-msgid "Token data (if activated)"
+msgid "Survey participant data (if activated)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:39
@@ -18080,7 +18080,7 @@ msgid "Timings (if activated)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:47
-msgid "Survey archive - only in active surveys"
+msgid "Survey archive - only available for active surveys"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:59
