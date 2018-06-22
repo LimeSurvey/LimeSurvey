@@ -136,7 +136,7 @@
                     "description" => gT("Printable survey").' ('.getLanguageNameFromCode($tmp_lang, false).')',
                     "detailpage" => "
                     <p>".sprintf(gT("This will open the survey in %s as a printable page in new window."), getLanguageNameFromCode($tmp_lang, false))."</p>
-                    <p>".gT("All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browsers menu.")."</p>
+                    <p>".gT("All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browser menu.")."</p>
                     <p>".gT("It will not contain any logic or EM-functionality, you'll have to take that into account yourself.")."</p>
                     ",
                     "href" => $this->createUrl("admin/printablesurvey/sa/index/surveyid/".$oSurvey->sid."/lang/".$tmp_lang),
