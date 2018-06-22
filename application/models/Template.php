@@ -219,12 +219,16 @@ class Template extends LSActiveRecord
         if (!empty($this->extends)) {
             $oRTemplate = self::model()->findByPk($this->extends);
             if (empty($oRTemplate)) {
-                throw new Exception(
+
+                // Why? it blocks the user at login screen....
+                // It should return false and show a nice warning message. 
+
+                /*throw new Exception(
                     sprintf(
                         'Extended template "%s" is not installed.',
                         $this->extends
                     )
-                );
+                );*/
             }
         }
         return true;
