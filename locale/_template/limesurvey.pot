@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-06-22 10:15:55+00:00\n"
+"POT-Creation-Date: 2018-06-22 10:22:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18072,7 +18072,7 @@ msgid "Response data (Attention: Doesn't include files uploaded in a file upload
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:38
-msgid "Survey participant data (if activated)"
+msgid "Survey participant data (if available)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:39
@@ -18150,15 +18150,12 @@ msgid "This will open the survey as a printable page in new window."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:114
+#: application/views/admin/survey/surveybar_displayexport.php:139
 msgid "All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browser menu."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:138
 msgid "This will open the survey in %s as a printable page in new window."
-msgstr ""
-
-#: application/views/admin/survey/surveybar_displayexport.php:139
-msgid "All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browsers menu."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:155
