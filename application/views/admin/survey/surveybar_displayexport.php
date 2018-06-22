@@ -35,7 +35,7 @@
             <ul>
                 <li>".gT("Survey structure")."</li>
                 <li>".gT("Response data (Attention: Doesn't include files uploaded in a file upload question. These have to be exported separately.)")."</li>
-                <li>".gT("Survey participant data (if activated)")."</li>
+                <li>".gT("Survey participant data (if available)")."</li>
                 <li>".gT("Timings (if activated)")."</li>
             </ul>
             ",
