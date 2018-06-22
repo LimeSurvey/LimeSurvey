@@ -81,14 +81,32 @@ var AjaxSubmitObject = function () {
         }
     };
 
+    
+
+
     var bindActions = function () {
+        var logFunction = new ConsoleShim('PJAX-LOG', (LSvar.debugMode < 1));
+        var jsonFound = false;
+        var onJsonDocument = function(jsonDocument){
+            logFunction.log("Found JSON document ->", jsonDocument);
+            if(jsonDocument.redirectTo !== undefined) {
+                jsonFound = true;
+                window.location.replace(jsonDocument.redirectTo);
+            }
+        };
+        var onDomDiffers = function(oldDom, newDom){
+            return !jsonFound;
+        }
+
         var globalPjax = new Pjax({
             elements: ['form#limesurvey'], // default is "a[href], form[action]"
             selectors: ['#dynamicReloadContainer', '#beginScripts', '#bottomScripts'],
             debug: true,
             forceRedirectOnFail: true,
+            onJsonDocument: onJsonDocument,
+            onDomDiffers: onDomDiffers,
             reRenderCSS : true,
-            logObject : new ConsoleShim('PJAX-LOG', (LSvar.debugMode < 1)),
+            logObject : logFunction,
             scriptloadtimeout: 1500,
         });
         // Always bind to document to not need to bind again
