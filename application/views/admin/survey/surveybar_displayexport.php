@@ -97,8 +97,8 @@
         "description" => gT("Printable survey (*.html)"),
         "detailpage" => "
         <p>".gT("This will download a .zip file containing the survey in all languages.")."</p>
-        <p>".gT("It will also contain the necessary stylesheets to put it up on any HTML-ready devices or browsers")."</p>
-        <p>".gT("It will not contain any logic, or EM-functionalities, you will have to calculate that yourself.")."</p>
+        <p>".gT("It will also contain the necessary stylesheets to put it up on any HTML-ready devices or browsers.")."</p>
+        <p>".gT("It will not contain any logic or EM-functionality, you'll have to take that into account yourself.")."</p>
         ",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportprintables/surveyid/".$oSurvey->sid),
         "download" => true,
@@ -110,9 +110,9 @@
                 "key" => "printablesurvey",
                 "description" => gT("Printable survey"),
                 "detailpage" => "
-                <p>".gT("This will open the survey as a printable page in another window.")."</p>
-                <p>".gT("All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browsers menu.")."</p>
-                <p>".gT("It will not contain any logic, or EM-functionalities, you will have to calculate that yourself.")."</p>
+                <p>".gT("This will open the survey as a printable page in new window.")."</p>
+                <p>".gT("All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browser menu.")."</p>
+                <p>".gT("It will not contain any logic or EM-functionality, you'll have to take that into account yourself.")."</p>
                 ",
                 "href" => $this->createUrl("admin/printablesurvey/sa/index/surveyid/$oSurvey->sid"),
                 "download" => false,
@@ -135,9 +135,9 @@
                     "key" => "printablesurvey_".$tmp_lang,
                     "description" => gT("Printable survey").' ('.getLanguageNameFromCode($tmp_lang, false).')',
                     "detailpage" => "
-                    <p>".sprintf(gT("This will open the survey in %s as a printable page in another window."), getLanguageNameFromCode($tmp_lang, false))."</p>
+                    <p>".sprintf(gT("This will open the survey in %s as a printable page in new window."), getLanguageNameFromCode($tmp_lang, false))."</p>
                     <p>".gT("All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browsers menu.")."</p>
-                    <p>".gT("It will not contain any logic, or EM-functionalities, you will have to calculate that yourself.")."</p>
+                    <p>".gT("It will not contain any logic or EM-functionality, you'll have to take that into account yourself.")."</p>
                     ",
                     "href" => $this->createUrl("admin/printablesurvey/sa/index/surveyid/".$oSurvey->sid."/lang/".$tmp_lang),
                     "external" => true,
