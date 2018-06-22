@@ -34,8 +34,8 @@
             <p>".gT("It will include the following data in a ZIP file ending with '.lsa'.")."</p>
             <ul>
                 <li>".gT("Survey structure")."</li>
-                <li>".gT("Response data (Files uploaded in a file upload question have to exported separately)")."</li>
-                <li>".gT("Token data (if activated)")."</li>
+                <li>".gT("Response data (Attention: Doesn't include files uploaded in a file upload question. These have to be exported separately.)")."</li>
+                <li>".gT("Survey participant data (if activated)")."</li>
                 <li>".gT("Timings (if activated)")."</li>
             </ul>
             ",
@@ -44,7 +44,7 @@
         ]
         : [
             "key" => "surveyarchive",
-            "description" => "".gT("Survey archive - only in active surveys"),
+            "description" => "".gT("Survey archive - only available for active surveys"),
             "detailpage" => "",
             "href" => '#',
             "htmlclasses" => 'disabled',
