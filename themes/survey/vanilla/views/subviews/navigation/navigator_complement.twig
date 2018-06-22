@@ -3,7 +3,7 @@
     Copyright (C) 2018 The LimeSurvey Project Team
     This file render extra part for navigator
 #}
-{% if aSurveyInfo.aNavigator.load.show == "Y" or aSurveyInfo.aNavigator.save.show == "Y" or aSurveyInfo.aQuestionIndex.bShow == true %}
+{% if aSurveyInfo.aNavigator.load.show == "Y" or aSurveyInfo.aNavigator.save.show == "Y" or aSurveyInfo.aQuestionIndex.bShow == true or aSurveyInfo.bShowClearAll == true %}
     <!-- extra tools, can be shown with javascript too (just remove ls-js-hidden class -->
     <div class="row ls-js-hidden">
         <!-- Extra button container -->

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-06-20 08:06:14+00:00\n"
+"POT-Creation-Date: 2018-06-22 10:25:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -548,7 +548,7 @@ msgstr ""
 
 #: application/controllers/UploaderController.php:171
 #: application/controllers/UploaderController.php:207
-#: application/helpers/remotecontrol/remotecontrol_handle.php:2785
+#: application/helpers/remotecontrol/remotecontrol_handle.php:2789
 msgid "The file has been successfully uploaded."
 msgstr ""
 
@@ -1663,7 +1663,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:136
 #: application/models/ParticipantShare.php:141
 #: application/models/ParticipantShare.php:248
-#: application/models/Survey.php:1023 application/models/Survey.php:1031
+#: application/models/Survey.php:1024 application/models/Survey.php:1032
 #: application/views/admin/conditions/deleteAllConditions.php:15
 #: application/views/admin/dataentry/content_view.php:642
 #: application/views/admin/dataentry/content_view.php:710
@@ -1830,7 +1830,7 @@ msgstr ""
 #: application/models/ParticipantShare.php:136
 #: application/models/ParticipantShare.php:141
 #: application/models/ParticipantShare.php:248
-#: application/models/Survey.php:1023 application/models/Survey.php:1031
+#: application/models/Survey.php:1024 application/models/Survey.php:1032
 #: application/views/admin/dataentry/content_view.php:643
 #: application/views/admin/dataentry/content_view.php:712
 #: application/views/admin/dataentry/vvimport.php:40
@@ -2392,7 +2392,7 @@ msgstr ""
 #: application/views/admin/surveymenu/_form.php:80
 #: application/views/admin/surveymenu_entries/_form.php:167
 #: application/views/admin/themeoptions/update.php:34
-#: application/views/admin/themeoptions/update.php:246
+#: application/views/admin/themeoptions/update.php:247
 #: application/views/admin/themes/templateeditorbar_view.php:208
 #: application/views/admin/token/browse.php:98
 #: application/views/admin/token/managetokenattributes.php:118
@@ -3690,7 +3690,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:430
 #: application/helpers/questionHelper.php:819
 #: application/helpers/userstatistics_helper.php:2661
-#: application/models/Permission.php:102 application/models/Survey.php:1438
+#: application/models/Permission.php:102 application/models/Survey.php:1439
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:17
 #: application/views/admin/export/statistics_view.php:18
@@ -4017,7 +4017,7 @@ msgstr ""
 #: application/views/admin/surveymenu/_form.php:80
 #: application/views/admin/surveymenu_entries/_form.php:167
 #: application/views/admin/surveymenu_entries/create.php:7
-#: application/views/admin/themeoptions/update.php:246
+#: application/views/admin/themeoptions/update.php:247
 #: application/views/admin/user/setuserpermissions.php:26
 msgid "Create"
 msgstr ""
@@ -7257,7 +7257,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/common_helper.php:232 application/models/Quota.php:100
-#: application/models/Survey.php:1123
+#: application/models/Survey.php:1124
 msgid "Active"
 msgstr ""
 
@@ -7266,7 +7266,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:240 application/models/Survey.php:1088
+#: application/helpers/common_helper.php:240 application/models/Survey.php:1089
 msgid "Inactive"
 msgstr ""
 
@@ -9340,7 +9340,7 @@ msgstr ""
 
 #: application/helpers/qanda_helper.php:2388
 #: application/views/admin/participants/importCSV_view.php:89
-#: application/views/admin/themeoptions/update.php:150
+#: application/views/admin/themeoptions/update.php:151
 #: application/views/admin/themes/templatesummary_view.php:159
 #: application/views/admin/token/csvupload.php:122
 #: application/views/admin/token/ldapform.php:71 tmp/twig_translate.php:9
@@ -11532,7 +11532,7 @@ msgid "Active surveys"
 msgstr ""
 
 #: application/models/ParticipantAttributeName.php:85
-#: application/models/QuestionAttribute.php:312
+#: application/models/QuestionAttribute.php:311
 msgid "Attribute"
 msgstr ""
 
@@ -12004,23 +12004,23 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:1109
+#: application/models/Survey.php:1110
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:1110
+#: application/models/Survey.php:1111
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:1111
+#: application/models/Survey.php:1112
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1434
+#: application/models/Survey.php:1435
 msgid "General settings & texts"
 msgstr ""
 
-#: application/models/Survey.php:1445
+#: application/models/Survey.php:1446
 #: application/views/admin/survey/subview/_survey_quickaction.php:125
 #: application/views/admin/survey/subview/_survey_quickaction.php:131
 #: application/views/admin/survey/subview/_survey_quickaction.php:179
@@ -12032,7 +12032,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:1447
+#: application/models/Survey.php:1448
 #: application/views/admin/survey/subview/_survey_quickaction.php:105
 #: application/views/admin/survey/subview/_survey_quickaction.php:109
 #: application/views/admin/survey/subview/_survey_quickaction.php:152
@@ -12042,7 +12042,7 @@ msgstr ""
 msgid "Add new group"
 msgstr ""
 
-#: application/models/Survey.php:1887
+#: application/models/Survey.php:1888
 msgid "Show policy"
 msgstr ""
 
@@ -12359,11 +12359,11 @@ msgstr ""
 msgid "You cannot uninstall the default template."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:707
+#: application/models/TemplateConfiguration.php:728
 msgid "Error: Malformed JSON: Field %s must be either a JSON array or the string \"inherit\". Found \"%s\"."
 msgstr ""
 
-#: application/models/TemplateConfiguration.php:830
+#: application/models/TemplateConfiguration.php:851
 msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
@@ -18068,11 +18068,11 @@ msgid "Survey structure"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:37
-msgid "Response data (Files uploaded in a file upload question have to exported separately)"
+msgid "Response data (Attention: Doesn't include files uploaded in a file upload question. These have to be exported separately.)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:38
-msgid "Token data (if activated)"
+msgid "Survey participant data (if available)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:39
@@ -18080,7 +18080,7 @@ msgid "Timings (if activated)"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:47
-msgid "Survey archive - only in active surveys"
+msgid "Survey archive - only available for active surveys"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:59
@@ -18102,12 +18102,15 @@ msgid "Exporting a questionnaire to queXML allows you to create PDF documents th
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:64
-#: application/views/admin/survey/surveybar_displayexport.php:76
-msgid "To get to know more about queXML check this page:"
+msgid "To find out more about queXML check out this page:"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:74
 msgid "On the following page you will be able to create a pdf that can be printed filled out and scanned again."
+msgstr ""
+
+#: application/views/admin/survey/surveybar_displayexport.php:76
+msgid "To get to know more about queXML check this page:"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:83
@@ -18131,13 +18134,13 @@ msgid "This will download a .zip file containing the survey in all languages."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:100
-msgid "It will also contain the necessary stylesheets to put it up on any HTML-ready devices or browsers"
+msgid "It will also contain the necessary stylesheets to put it up on any HTML-ready devices or browsers."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:101
 #: application/views/admin/survey/surveybar_displayexport.php:115
 #: application/views/admin/survey/surveybar_displayexport.php:140
-msgid "It will not contain any logic, or EM-functionalities, you will have to calculate that yourself."
+msgid "It will not contain any logic or EM-functionality, you'll have to take that into account yourself."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:111
@@ -18146,16 +18149,16 @@ msgid "Printable survey"
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:113
-msgid "This will open the survey as a printable page in another window."
+msgid "This will open the survey as a printable page in new window."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:114
 #: application/views/admin/survey/surveybar_displayexport.php:139
-msgid "All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browsers menu."
+msgid "All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browser menu."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:138
-msgid "This will open the survey in %s as a printable page in another window."
+msgid "This will open the survey in %s as a printable page in new window."
 msgstr ""
 
 #: application/views/admin/survey/surveybar_displayexport.php:155
@@ -18239,7 +18242,7 @@ msgstr ""
 #: application/views/admin/surveymenu/_form.php:28
 #: application/views/admin/surveymenu_entries/_form.php:29
 #: application/views/admin/surveysgroups/_form.php:18
-#: application/views/admin/themeoptions/update.php:180
+#: application/views/admin/themeoptions/update.php:181
 #: application/views/admin/tutorialEntry/_form.php:18
 #: application/views/admin/tutorials/_form.php:18
 msgid "Fields with %s are required."
@@ -18566,7 +18569,7 @@ msgstr ""
 msgid "Don't touch the values below unless you know what you're doing."
 msgstr ""
 
-#: application/views/admin/themeoptions/update.php:143
+#: application/views/admin/themeoptions/update.php:144
 msgid "Upload an image (maximum size: %d MB):"
 msgstr ""
 
@@ -20733,11 +20736,11 @@ msgid "Question shadow"
 msgstr ""
 
 #: tmp/twig_translate.php:33
-msgid "Sticky matrix headers"
+msgid "Sticky array headers"
 msgstr ""
 
 #: tmp/twig_translate.php:37
-msgid "Grey out selected array rows"
+msgid "Dim answered array rows"
 msgstr ""
 
 #: tmp/twig_translate.php:41 tmp/twig_translate.php:111

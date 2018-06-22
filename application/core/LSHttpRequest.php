@@ -151,7 +151,15 @@ class LSHttpRequest extends CHttpRequest
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
         if ($this->enableCsrfValidation) {
-            foreach ($this->noCsrfValidationRoutes as $cr) {
+
+            $beforeUrlCheck = new PluginEvent('beforeUrlCheck');
+            $beforeUrlCheck->set('routes', $this->noCsrfValidationRoutes);
+            $beforeUrlCheck->set('params', []);
+            App()->getPluginManager()->dispatchEvent($beforeUrlCheck);
+            $validationRoutes = $beforeUrlCheck->get('routes');
+            $validationParams = $beforeUrlCheck->get('params');
+
+            foreach ($validationRoutes as $cr) {
                 if (preg_match('#'.$cr.'#', $route)) {
                     Yii::app()->detachEventHandler('onBeginRequest',
                         array($this, 'validateCsrfToken'));
@@ -159,6 +167,16 @@ class LSHttpRequest extends CHttpRequest
                     break; // found first route and break
                 }
             }
+
+            foreach ($validationParams as $key => $value) {
+                if (isset($_GET[$key]) && $_GET[$key] === $value) {
+                    Yii::app()->detachEventHandler('onBeginRequest',
+                        array($this, 'validateCsrfToken'));
+                    Yii::trace('Route "'.$route.' passed without CSRF validation');
+                    break; // found first param and break
+                }
+            }
+
         }
     }
 

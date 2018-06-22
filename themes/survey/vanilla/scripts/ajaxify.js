@@ -92,7 +92,10 @@ var AjaxSubmitObject = function () {
             scriptloadtimeout: 1500,
         });
         // Always bind to document to not need to bind again
-        $(document).on('click', '.ls-move-btn',function (e) {
+        // Restrict to [type=submit]:not([data-confirmedby])
+        // - :submit is the default if button don't have type (reset button on slider for example),
+        // - confirmedby have their own javascript system
+        $(document).on('click', '#limesurvey [type=submit]:not([data-confirmedby])',function (e) {
             $('#limesurvey').append('<input name=\''+$(this).attr('name')+'\' value=\''+$(this).attr('value')+'\' type=\'hidden\' />');
             if(isIE10 || /Edge\/\d+\.\d+/.test(navigator.userAgent)) {
                 e.preventDefault();    
