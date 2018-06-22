@@ -59,7 +59,7 @@ foreach ( $aQuestionTypeList as $key => $questionType)
             'selectedClass' => Question::getQuestionClass($eqrow['type']),
             'onUpdate' => [
                 'value',
-                "console.ls.log(value); $('#question_type').val(value);"
+                "console.ls.log(value); $('#question_type').val(value); updatequestionattributes(''); updateQuestionTemplateOptions();"
             ]
         ]
     ));
