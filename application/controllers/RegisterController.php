@@ -91,9 +91,9 @@ class RegisterController extends LSYii_Controller
     {
 
         if (!is_null($sid)) {
-                    $iSurveyId = $sid;
+            $iSurveyId = $sid;
         } else {
-                    $iSurveyId = Yii::app()->request->getPost('sid');
+            $iSurveyId = Yii::app()->request->getPost('sid');
         }
 
         $oSurvey = Survey::model()->find("sid=:sid", array(':sid'=>$iSurveyId));
@@ -232,7 +232,7 @@ class RegisterController extends LSYii_Controller
         if (!is_null($event->get('registerForm'))) {
             $registerFormEvent = $event->get('registerForm');
             if (!isset($registerFormEvent['append']) || $registerFormEvent['append'] == false) {
-                            return $event->get('registerForm');
+                return $event->get('registerForm');
             }
         }
         $aFieldValue = $this->getFieldValue($iSurveyId);
@@ -513,7 +513,7 @@ class RegisterController extends LSYii_Controller
 
         $aData['aSurveyInfo']['registration_view'] = $registerContent;
 
-        $aData['aSurveyInfo']['registerform']['hiddeninputs'] = '<input value="'.$aData['aSurveyInfo']['sLanguage'].'"  type="hidden" name="lang" id="register_lang" /><input  value="true" type="hidden" name="register"id="register_register" />';
+        $aData['aSurveyInfo']['registerform']['hiddeninputs'] = '<input value="'.$aData['aSurveyInfo']['sLanguage'].'"  type="hidden" name="lang" id="register_lang" />';
         $aData['aSurveyInfo']['include_content'] = 'register';
 
         $aData['aSurveyInfo'] = array_merge($aSurveyInfo, $aData['aSurveyInfo']);
@@ -525,7 +525,7 @@ class RegisterController extends LSYii_Controller
             $aData['aSurveyInfo']['alanguageChanger']['show']  = true;
             $aData['aSurveyInfo']['alanguageChanger']['datas'] = $alanguageChangerDatas;
         }
-
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
 
     }
