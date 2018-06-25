@@ -212,8 +212,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             sleep(1);
 
             // New tab with active survey.
-            $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-            $nextButton->click();
+            self::$webDriver->next();
 
             // Get questions.
             $dbo = \Yii::app()->getDb();
@@ -240,8 +239,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             sleep(1);
 
             // Click submit.
-            $submitButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-            $submitButton->click();
+            self::$webDriver->next();
 
             // Check so that we see end page.
             $completed = self::$webDriver->findElement(WebDriverBy::cssSelector('div.completed-text'));

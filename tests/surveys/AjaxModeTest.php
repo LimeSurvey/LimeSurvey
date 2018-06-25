@@ -68,8 +68,8 @@ class AjaxModeTest extends TestBaseClassWeb
         try {
             // Click welcome page.
             self::$webDriver->get($url);
-            $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-            $nextButton->click();
+            self::$webDriver->next();
+
 
             sleep(1);
 
@@ -95,8 +95,7 @@ class AjaxModeTest extends TestBaseClassWeb
             $this->assertEquals($div->getText(), 'The previous answer was TRUE');
 
             // Click submit.
-            $submitButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-            $submitButton->click();
+            $submitButton = self::$webDriver->next();
 
             // Check so that we see end page.
             $completed = self::$webDriver->findElement(WebDriverBy::cssSelector('div.completed-text'));

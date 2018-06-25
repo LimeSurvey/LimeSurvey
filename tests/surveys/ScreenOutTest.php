@@ -46,8 +46,7 @@ class ScreenOutTest extends TestBaseClassWeb
             self::$webDriver->get($url);
 
             // Click next.
-            $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-            $nextButton->click();
+            $nextButton = self::$webDriver->next();
 
             // Check that we see completed text.
             $completed = self::$webDriver->findElement(WebDriverBy::cssSelector('div.completed-text'));
@@ -99,8 +98,7 @@ class ScreenOutTest extends TestBaseClassWeb
             $yesButton->click();
 
             // Click next.
-            $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-            $nextButton->click();
+            self::$webDriver->next();
 
             // answer186734X355X1912
             $question2Id = 'answer' . self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['q2']->qid;
@@ -108,8 +106,7 @@ class ScreenOutTest extends TestBaseClassWeb
             $this->assertNotEmpty($question2);
 
             // Click next again.
-            $nextButton = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-            $nextButton->click();
+            self::$webDriver->next();
 
             // Check that we see completed text.
             $completed = self::$webDriver->findElement(WebDriverBy::cssSelector('div.completed-text'));
