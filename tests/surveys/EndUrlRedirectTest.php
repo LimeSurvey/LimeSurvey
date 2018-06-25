@@ -69,6 +69,9 @@ class EndUrlRedirectTest extends TestBaseClassWeb
             // Click next.
             $web->next();
 
+            // Wait for Ajax to load page.
+            sleep(1);
+
             // Submit survey.
             $web->next();
 
