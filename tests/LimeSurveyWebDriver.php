@@ -26,7 +26,7 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         $langSelectOption = $this->findElement(
             WebDriverBy::cssSelector(
                 sprintf(
-                    '#lang option[value="%s"]',
+                    '[name="lang"] option[value="%s"]',
                     $newLang
                 )
             )
@@ -81,7 +81,7 @@ class LimeSurveyWebDriver extends RemoteWebDriver
      */
     public function next()
     {
-        $nextButton = $this->findElement(WebDriverBy::id('ls-button-submit'));
+        $nextButton = $this->findElement(WebDriverBy::cssSelector('[value="movenext"],[value="movesubmit"]'));
         $nextButton->click();
     }
 
