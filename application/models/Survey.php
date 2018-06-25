@@ -192,7 +192,7 @@ class Survey extends LSActiveRecord
         $this->owner_id = 1;
         $this->admin = App()->getConfig('siteadminname');
         $this->adminemail = App()->getConfig('siteadminemail');
-        if(!Yii::app() instanceof CConsoleApplication) {
+        if(!(Yii::app() instanceof CConsoleApplication)) {
             $iUserid = Permission::getUserId();
             if($iUserid) {
                 $this->owner_id = $iUserid;
