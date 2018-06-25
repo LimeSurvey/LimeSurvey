@@ -35,6 +35,29 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 3.12.1 (build 180616) to 3.12.2 (build 180625) June 25, 2018
+-Fixed issue #12640: Unable to update lang when registering (before fill mandatory values) (Dominik Vitt)
+-Fixed issue #12688: Global Settings are not applied to survey settings when creating a new survey (Dominik Vitt)
+-Fixed issue #13725: Bad behaviour of help with Expression Manager and em_validation_q_tip (Denis Chenu)
+-Fixed issue #13776: Survey admin can see all survey groups (Dominik Vitt)
+-Fixed issue #13783: [json-API] token in add_response causes errors and does not work in update_response (Dominik Vitt)
+-Fixed issue #13790: End-URL redfirect is not working in AJAX mode (Markus Flür)
+-Fixed issue #13794: RPC add_response reports error, still inserts a response record (Olle Haerstedt)
+-Fixed issue #13798: Ajaxmode : default save/reload button unfonctional (Denis Chenu)
+-Fixed issue #13801: Unable to change language without javascript (Denis Chenu)
+-Fixed issue : error shown when language updated in register (js) (Denis Chenu)
+-Fixed issue : extra attributes lost when update language in register (Denis Chenu)
+-Fixed issue : unable to update language without js in register (Denis Chenu)
+-Fixed issue: Printing statistics created white page (Markus Flür)
+-Fixed issue: Question edit breaking on double bracket insertion (Markus Flür)
+-Fixed issue: ajax mode unfunctional on IE and Edge (Markus Flür)
+-Fixed issue: error when installing LimeSurvey (Markus Flür)
+-Fixed issue: error when installing LimeSurvey prt2 (Markus Flür)
+-Fixed issue: live update of options on edit question page (Dominik Vitt)
+-Fixed issue: live update of question theme options on edit question page (Dominik Vitt)
+-Fixed issue: redirection in ajax mode + fallback for no-js ajax mode (Markus Flür)
+
 Changes from 3.12.0 (build 180615) to 3.12.1 (build 180616) June 15, 2018
 -Fixed issue: question type selector not working (Markus Flür)
 Changes from 3.11.0 (build 180612) to 3.12.0 (build 180615) June 15, 2018
