@@ -97,20 +97,20 @@ var AjaxSubmitObject = function () {
 
     var bindActions = function () {
         var logFunction = new ConsoleShim('PJAX-LOG', (LSvar.debugMode < 1));
-
+        
         var pjaxErrorHandler = function (href, options, requestData) {
+            logFunction.log('requestData', requestData);
             if (requestData.status >= 500) {
-                logFunction.log('requestData', requestData);
                 document.getElementsByTagName('html')[0].innerHTML = requestData.responseText; 
                 throw new Error(JSON.stringify({state: requestData.status, message: 'Error in PHP!', data: requestData }));
             }
-
+            
             if (requestData.status >= 404) {
                 window.location.href = href;
                 return false;
             }
             if (requestData.status >= 300 || requestData.status == 0) {
-                logFunction.log('requestData', requestData);
+                logFunction.log('responseURL', requestData.responseURL);
                 var responseHeaders = requestData.getAllResponseHeaders().trim().split(/[\r\n]+/);
                 var headerMap = {};
                 responseHeaders.forEach(function (line) {
@@ -119,7 +119,7 @@ var AjaxSubmitObject = function () {
                     var value = parts.join(': ');
                     headerMap[header.toLowerCase()] = value;
                 });
-                window.location.href = headerMap.location || href;
+                window.location = headerMap['x-redirect'] || headerMap.location || href;
                 return false;
             }
         };

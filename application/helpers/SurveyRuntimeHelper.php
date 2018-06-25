@@ -1184,7 +1184,16 @@ class SurveyRuntimeHelper
 
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
                 //Automatically redirect the page to the "url" setting for the survey               
-                header("Location: ".$this->aSurveyInfo['surveyls_url'], false, 300);
+                $headToSurveyUrl = $this->aSurveyInfo['surveyls_url'];
+                $actualRedirect = $headToSurveyUrl;
+                header("Access-Control-Allow-Origin: *");
+
+                if(Yii::app()->request->getParam('ajax') == 'on'){
+                    header("X-Redirect: ".$headToSurveyUrl, false, 302);
+                } else {
+                    header("Location: ".$actualRedirect, false, 302);
+                }
+
             }
 
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false;
