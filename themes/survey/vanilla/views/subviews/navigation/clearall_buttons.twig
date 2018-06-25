@@ -5,7 +5,7 @@
 #}
 
 <div class="{{ aSurveyInfo.class.clearallwrapper }} form-inline">
-    <label class="form-group">
+    <label class="form-group {{ aSurveyInfo.class.clearalllabel }}">
         <input {{ aSurveyInfo.attr.clearallconfirm }} class="{{ aSurveyInfo.class.clearallconfirm }}"><span class="control-label">{{gT("Please confirm you want to clear your response?")}}</span>
     </label>
     <button {{ aSurveyInfo.attr.clearallbutton }} class="{{ aSurveyInfo.class.clearallbutton }} btn btn-link" title="{{ gT('This action need confirmation.') }}">{{gT("Exit and clear survey")}}</button>

@@ -877,7 +877,9 @@ class SurveyRuntimeHelper
 
             if (!$this->aMoveResult && !($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0)) {
                 // Just in case not set via any other means, but don't do this if it is the welcome page
-                $this->aMoveResult = LimeExpressionManager::GetLastMoveResult(true);
+                /* GetLastMoveResult reset substitutionNum in EM core if param is true, this break in all in one mode (see #13725) */
+                /* Then don't reset substitutionNum since seems some LimeExpressionManager::ProcessString already happen*/
+                $this->aMoveResult = LimeExpressionManager::GetLastMoveResult(false);
                 $this->LEMskipReprocessing = true;
             }
         }
@@ -1181,8 +1183,17 @@ class SurveyRuntimeHelper
 
 
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
-                //Automatically redirect the page to the "url" setting for the survey
-                header("Location: {$this->aSurveyInfo['surveyls_url']}");
+                //Automatically redirect the page to the "url" setting for the survey               
+                $headToSurveyUrl = $this->aSurveyInfo['surveyls_url'];
+                $actualRedirect = $headToSurveyUrl;
+                header("Access-Control-Allow-Origin: *");
+
+                if(Yii::app()->request->getParam('ajax') == 'on'){
+                    header("X-Redirect: ".$headToSurveyUrl, false, 302);
+                } else {
+                    header("Location: ".$actualRedirect, false, 302);
+                }
+
             }
 
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false;
@@ -1205,6 +1216,7 @@ class SurveyRuntimeHelper
             if ($this->aSurveyInfo['printanswers'] != 'Y') {
                 killSurveySession($this->iSurveyid);
             }
+
             $this->aSurveyInfo['include_content'] = 'submit';
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
         }

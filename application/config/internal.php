@@ -259,7 +259,9 @@ $internalConfig = array(
                 'checkconditionFunction'  => 'checkconditionFunction',
                 'doRender'                => 'doRender',
                 'flattenText'             => 'flattenText',
-                'getEditor'               => 'getEditor'
+                'getEditor'               => 'getEditor',
+                'darkencss'               => 'LS_Twig_Extension::darkencss',
+                'lightencss'              => 'LS_Twig_Extension::lightencss',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -358,7 +360,9 @@ $internalConfig = array(
                     'doRender',
                     'flattenText',
                     'range',
-                    'getEditor'
+                    'getEditor',
+                    'darkencss',
+                    'lightencss',
                 ),
             ),
 

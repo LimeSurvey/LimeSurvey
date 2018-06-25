@@ -703,7 +703,7 @@ protected function insertCondition(array $args)
         } else {
             Yii::app()->setFlashMessage(
             gT(
-            "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
+            "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
             "js"
             ),
             'error'
@@ -743,7 +743,7 @@ protected function insertCondition(array $args)
             if($result === false) {
                 Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
             } else {
-                Yii::app()->setFlashMessage(gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."),'error');
+                Yii::app()->setFlashMessage(gT("The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."),'error');
             }
         }
     }
@@ -768,7 +768,7 @@ protected function insertConditionAjax($args)
     } elseif (isset($csrctoken) && $csrctoken != '') {
         $conditionCfieldname = $csrctoken;
     } else {
-        return array(gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
+        return array(gT("The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
     }
     
     $condition_data = array(
@@ -804,7 +804,7 @@ protected function insertConditionAjax($args)
         } else {
             return array(
             gT(
-            "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
+            "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
             "js"
             ),
             'error'
@@ -840,7 +840,7 @@ protected function insertConditionAjax($args)
         } else {
             return array(
             gT(
-            "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
+            "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
             "js"
             ),
             'error'
@@ -982,7 +982,7 @@ protected function updateCondition(array $args)
             if($result === false) {
                 Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
             } else {
-                Yii::app()->setFlashMessage(gT("Your condition could not be updated! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."),'error');
+                Yii::app()->setFlashMessage(gT("The condition could not be updated! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."),'error');
             }
         }
     }

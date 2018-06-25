@@ -180,6 +180,7 @@ function activateLanguageChanger(){
                 // If there are no form : we can't use it */
                 if($(this).data('targeturl')){
                     /* If we have a target url : just move location to this url with lang set */
+                    /* possible usage : in clear all */
                     var target=$(this).data('targeturl');
                     /* adding lang in get param manually */
                     if(target.indexOf("?") >=0){
@@ -208,10 +209,47 @@ function activateLanguageChanger(){
             $(this).closest('.ls-language-changer-item').find(":submit").click();
         }
     });
+    /* Language changer dropdown */
+    $('.form-change-lang [name="lang"]').on('change', function() {
+        var closestForm = $(this).closest('form');
+        var newLang = $(this).val();
+        if (!closestForm.length) {
+            /* we are not in a forum, can not submit directly */
+            if (limesurveyForm.length == 1) {
+                /* The limesurvey form exist in document, move select and button inside and click */
+                applyChangeAndSubmit(newLang);
+                // TODO: Check all code below. When does it happen?
+                // Answer : remind user can put language changer everywhere, not only in home page, but for example in clear all page etc …
+            } else {
+                // If there are no form : we can't use it */
+                if($(this).data('targeturl')){
+                    /* If we have a target url : just move location to this url with lang set */
+                    var target=$(this).data('targeturl');
+                    /* adding lang in get param manually */
+                    if(target.indexOf("?") >=0){
+                        target+="&lang="+$(this).val();
+                    }else{
+                        target+="?lang="+$(this).val();
+                    }
+                    /* directly move to location */
+                    location.href = target;
+                    return false;
+                }else{
+                    /* No form, not targeturl : just see what happen */
+                    $("<form>", {
+                        "class":'ls-js-hidden',
+                        "html": '<input type="hidden" name="lang" value="' + newLang + '" />',
+                        "action": target,
+                        "method": 'get'
+                    }).appendTo(document.body).submit();
+                }
 
-    // Survey welcome page language changer.
-    $('#langchangerSelectMain').on('change', function() {
-        applyChangeAndSubmit($(this).val());
+            }
+        }else{
+            /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
+            $(this).closest('form').find("[name='lang']").not($(this)).remove();
+            $(this).closest('.form-change-lang').find(':submit').click();
+        }
     });
 }
 

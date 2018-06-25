@@ -75,14 +75,6 @@ var QuestionFunctions = function () {
         },
 
 
-        onSelectQuestionType = function () {
-            var questionVars = $(this).data('question-type');
-            $('#selector__currentQuestionTypeTitle').html(questionVars.title)
-            $('#selector__currentQuestionTypeImage').html(getQuestionTypeImage(questionVars.key));
-            $('#selector__selected_questiontype').val(questionVars.key);
-            $('.selector__select-question-type').removeClass('mark-as-selected');
-            $(this).addClass('mark-as-selected');
-        },
         getQuestionTypeImage = function (questioncode) {
 
             var multiple = 1;
@@ -103,26 +95,23 @@ var QuestionFunctions = function () {
         },
 
         init = function () {
-
+        var oldQuestionTemplate = '';
             updatequestionattributes('');
-            $('#question_type').on('change', function(){updatequestionattributes('');  updateQuestionTemplatePreview();});
-            $(document).on('change', '#question_template', function(){updatequestionattributes($('#question_template').val());  updateQuestionTemplatePreview();});
+            $('#questionTypeSelector').on('change', function(){
+                $('#question_type').val($(this).val()).trigger('change')
+            });
 
-            if(selectormodeclass == 'default' || selectormodeclass == 'full'){
-                //bind advanced selector
-                $('#selector__modal_select-question-type').on('hide.bs.modal', function(){updatequestionattributes(''); updateQuestionTemplateOptions(); updateQuestionTemplatePreview();});
-                $('#selector__modal_select-question-type').on('show.bs.modal', function () {
-                    var question_class = questionTypeArray[$('#question_type').val()].class;
-                    $('#selector__question-type-select-modal_question-type-' + question_class).addClass('mark-as-selected').trigger('click').closest('div.panel-collapse').addClass('in');
-                });
+            $('#question_type').on('change', function(){
+                OtherSelection(this.value);
+            });
 
-                $('#selector__select-this-questiontype').on('click', function () {
-                    $('#question_type').val($('#selector__selected_questiontype').val());
-                    $('#selector__editView_question_type_description').html($('#selector__currentQuestionTypeTitle').html());
-                    $('#selector__modal_select-question-type').modal('hide');
-                })
-                $('.selector__select-question-type').on('click', onSelectQuestionType);
-            }
+            $(document).on('click', '#question_template', function(){
+                // save old value before the change
+                oldQuestionTemplate = $(this).val();
+            }).on('change', '#question_template', function() {
+                updatequestionattributes($(this).val(), oldQuestionTemplate);  
+                updateQuestionTemplateOptions('question_template');
+            });
 
             /**
              * Validate question object on blur on title element
@@ -144,10 +133,6 @@ var QuestionFunctions = function () {
                 }
             });
 
-            $("#question_type").on('change', function (event) {
-                OtherSelection(this.value);
-            });
-
         };
     return {
         init: init
@@ -161,7 +146,7 @@ $(document).on('ready  pjax:scriptcomplete', function () {
 });
 
 
-function updatequestionattributes(question_template_name) {
+function updatequestionattributes(question_template_name = '', oldQuestionTemplate = '') {
     var type = $('#question_type').val();
     OtherSelection(type);
 
@@ -173,7 +158,8 @@ function updatequestionattributes(question_template_name) {
     var postData = {
         'qid': $('#qid').val(),
         'question_type': selected_value,
-        'sid': $('input[name=sid]').val()
+        'sid': $('input[name=sid]').val(),
+        'old_question_template': oldQuestionTemplate
     };
 
     if (Object.prototype.toString.call(question_template_name) == '[object String]'){
@@ -188,7 +174,7 @@ function updatequestionattributes(question_template_name) {
             $('#container-advanced-question-settings').html(data);
             $('.loader-advancedquestionsettings').addClass("hidden");
             if(question_template_name) {
-                $('#collapse-cat1').collapse('toggle');
+                //$('#collapse-cat1').collapse('toggle');
             }
 
             $('label[title]').qtip({
@@ -222,22 +208,7 @@ function updatequestionattributes(question_template_name) {
     });
 }
 
-function updateQuestionTemplateOptions() {
-    var type = $('#question_type').val();
-    $.ajax({
-        url: get_question_template_options_url,
-        data: {'type': type},
-        method: 'POST',
-        success: function (data) {
-            $("#question_template").html(""); 
-            $.each(data, function (key, value) {
-                $("#question_template").append("<option value="+key+">"+value.title+"</option>");
-            });
-        }
-    });
-}
-
-function updateQuestionTemplatePreview() {
+function updateQuestionTemplateOptions(selector = '') { // selector is only set when this function is called from #question_template
     var type = $('#question_type').val();
     var template = $('#question_template').val();
     $.ajax({
@@ -249,6 +220,13 @@ function updateQuestionTemplatePreview() {
                 $("#QuestionTemplatePreview img").attr('src', data[template]['preview']);
             } else {
                 $("#QuestionTemplatePreview img").attr('src', data['core']['preview']);
+            }
+
+            if (selector === ''){ // selector is not called from #question_template
+                $("#question_template").html(""); 
+                $.each(data, function (key, value) {
+                    $("#question_template").append("<option value="+key+">"+value.title+"</option>");
+                });
             }
         }
     });
@@ -315,6 +293,12 @@ function OtherSelection(QuestionType) {
             }
             document.getElementById('Validation').style.display = 'none';
             document.getElementById('MandatorySelection').style.display = '';
+        }
+
+        if (QuestionType == 'H'){  // hide relevance equation input for array by column question type until it is fixed
+            document.getElementById('relevanceContainer').style.display = 'none';
+        } else {
+            document.getElementById('relevanceContainer').style.display = '';
         }
     } catch(e) {
         if(window.debugState.backend) console.ls.error(e);

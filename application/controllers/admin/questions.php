@@ -1287,7 +1287,7 @@ class questions extends Survey_Common_Action
             if (!empty($questionTemplateAttributes['question_template'])){
                 $aData['aQuestionTemplateAttributes'] = $questionTemplateAttributes['question_template'];
             } else {
-                $aData['aQuestionTemplateAttributes']['core'] = array('title'=>'Default', 'preview'=>\LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']));
+                $aData['aQuestionTemplateAttributes']['value'] = 'core';
             }
 
             $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
@@ -1655,8 +1655,10 @@ class questions extends Survey_Common_Action
         $surveyid           = (int) Yii::app()->request->getParam('sid', 0);
         $qid                = (int) Yii::app()->request->getParam('qid', 0);
         $type               = Yii::app()->request->getParam('question_type');
-        $question_template  = Yii::app()->request->getParam('question_template', '');
+        $sQuestionTemplate  = Yii::app()->request->getParam('question_template', '');
+        $sOldQuestionTemplate  = Yii::app()->request->getParam('old_question_template', '');
         $oSurvey = Survey::model()->findByPk($surveyid);
+        $questionTypeList = QuestionTemplate::getTypeToFolder();
 
         if ($oSurvey === null) {
             App()->end();
@@ -1668,10 +1670,24 @@ class questions extends Survey_Common_Action
             );
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
+        // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible  
+        if (!empty($sOldQuestionTemplate) && $sOldQuestionTemplate !== 'core'){
+            // get old custom question theme attributes
+            $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sOldQuestionTemplate, $questionTypeList[$type]);
+            if (!empty($aOldQuestionThemeAttributes)){ 
+                if (!array_key_exists('0', $aOldQuestionThemeAttributes)){
+                    unset($aAttributesWithValues[$aOldQuestionThemeAttributes['name']]);
+                } else {
+                    foreach ($aOldQuestionThemeAttributes as $key => $value) {
+                        unset($aAttributesWithValues[$value['name']]);
+                    }
+                }
+            }
+        }
+
         // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
-        if (!empty($question_template) && $question_template !== 'core') {
-                $questionTypeList = QuestionTemplate::getTypeToFolder();
-                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($question_template, $questionTypeList[$type]);
+        if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
+                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionTemplate, $questionTypeList[$type]);
                 // CHECK TO SEE IF ARRAY CONTAINS INDEX 0, IF NOT - INDEX 0 WOULD BE CREATED ( OTHERWISE DATA MERGE WOULD FAIL IF INDEX ÍS MISSING )
                 if (!array_key_exists('0', $themeAttributes)){$themeTemp[0] = $themeAttributes; $themeAttributes = $themeTemp;}
                 
@@ -1693,11 +1709,12 @@ class questions extends Survey_Common_Action
         }
         uasort($aAttributesWithValues, 'categorySort');
         unset($aAttributesWithValues['question_template']);
+
         $aAttributesPrepared = array();
         foreach ($aAttributesWithValues as $aAttribute) {
-            // SET QUESTION TEMPLATE FORM ATTRIBUTES WHEN $question_template VARIABLE IS SET
-            if (!empty($question_template) && isset($aAttribute['name']) && $aAttribute['name'] == 'question_template') {
-                $aAttribute['value'] = $question_template;
+            // SET QUESTION TEMPLATE FORM ATTRIBUTES WHEN $sQuestionTemplate VARIABLE IS SET
+            if (!empty($sQuestionTemplate) && isset($aAttribute['name']) && $aAttribute['name'] == 'question_template') {
+                $aAttribute['value'] = $sQuestionTemplate;
                 $aAttributesPrepared[] = $aAttribute;
             } elseif (isset($aAttribute['i18n']) && $aAttribute['i18n'] == false) {
                 $aAttributesPrepared[] = $aAttribute;

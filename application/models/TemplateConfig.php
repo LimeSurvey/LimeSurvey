@@ -594,7 +594,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['registerformcaptchalabel']  = ' for="loadsecurity"  ';
         $aClassAndAttributes['attr']['registerformcaptchainput']  = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
         $aClassAndAttributes['attr']['registermandatoryinfo']     = ' aria-hidden="true" ';
-        $aClassAndAttributes['class']['registersavedivbutton']    = ' type="submit" id="savebutton" name="savesubmit" value="save"';
+        $aClassAndAttributes['attr']['registersavedivbutton']    = ' type="submit" id="register_button" name="register" value="register"';
 
         $aClassAndAttributes['attr']['register']                  = $aClassAndAttributes['attr']['registerrow'] = $aClassAndAttributes['attr']['jumbotron'] = $aClassAndAttributes['attr']['registerrowjumbotrondiv'] = $aClassAndAttributes['attr']['registerulli'] = $aClassAndAttributes['class']['registerformcol'] = '';
         $aClassAndAttributes['attr']['registerformcolrow']        = $aClassAndAttributes['attr']['registerformcolrowb'] = $aClassAndAttributes['attr']['registerformcolrowbdiv'] = $aClassAndAttributes['class']['registerformcolrowc'] = $aClassAndAttributes['class']['registerformcolrowcdiv'] = $aClassAndAttributes['attr']['registerformextras'] = '';
@@ -725,6 +725,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['clearalllinks']  = $aClassAndAttributes['attr']['clearalllink'] = ' ';
         // Clearall Buttons
         $aClassAndAttributes['class']['clearallwrapper'] = $aClassAndAttributes['class']['clearallconfirm'] = ""; // No need, adding it if need something after
+        $aClassAndAttributes['class']['clearalllabel'] = "ls-js-hidden"; 
         $aClassAndAttributes['attr']['clearallconfirm']  = 'value="confirm" name="confirm-clearall" type="checkbox"';
         $aClassAndAttributes['attr']['clearallbutton'] = 'type="submit" value="clearall" name="move" data-confirmedby="confirm-clearall"';
         $aClassAndAttributes['class']['clearallbutton'] = "ls-clearaction ls-clearall"; // Not needed, keep it (and adding to twig to be most compatible in future)

@@ -2534,7 +2534,9 @@ class remotecontrol_handle
      * @param string $sSessionKey Auth credentials
      * @param int $iSurveyID ID of the Survey to insert responses
      * @param array $aResponseData The actual response
-     * @return int|array The response ID
+     * @return int|array The response ID or an array with status message (can include result_id)
+     * @todo Need to clean up return array, especially the case when response was added but file not uploaded.
+     * @todo See discussion: https://bugs.limesurvey.org/view.php?id=13794
      */
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {
@@ -2550,31 +2552,31 @@ class remotecontrol_handle
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create')) {
             if (!Yii::app()->db->schema->getTable($oSurvey->responsesTableName)) {
-                            return array('status' => 'No survey response table');
+                return array('status' => 'No survey response table');
             }
 
             //set required values if not set
 
             // @todo: Some of this is part of the validation and should be done in the model instead
             if (array_key_exists('submitdate', $aResponseData) && empty($aResponseData['submitdate'])) {
-                            unset($aResponseData['submitdate']);
-            } else if (!isset($aResponseData['submitdate'])) {
-                            $aResponseData['submitdate'] = date("Y-m-d H:i:s");
+                unset($aResponseData['submitdate']);
+            } elseif (!isset($aResponseData['submitdate'])) {
+                $aResponseData['submitdate'] = date("Y-m-d H:i:s");
             }
-                if (!isset($aResponseData['startlanguage'])) {
-                                $aResponseData['startlanguage'] = $oSurvey->language;
-                }
+            if (!isset($aResponseData['startlanguage'])) {
+                $aResponseData['startlanguage'] = $oSurvey->language;
+            }
 
             if ($oSurvey->isDateStamp) {
                 if (array_key_exists('datestamp', $aResponseData) && empty($aResponseData['datestamp'])) {
-                                    unset($aResponseData['datestamp']);
-                } else if (!isset($aResponseData['datestamp'])) {
-                                    $aResponseData['datestamp'] = date("Y-m-d H:i:s");
+                    unset($aResponseData['datestamp']);
+                } elseif (!isset($aResponseData['datestamp'])) {
+                    $aResponseData['datestamp'] = date("Y-m-d H:i:s");
                 }
-                    if (array_key_exists('startdate', $aResponseData) && empty($aResponseData['startdate'])) {
-                                        unset($aResponseData['startdate']);
-                    } else if (!isset($aResponseData['startdate'])) {
-                                    $aResponseData['startdate'] = date("Y-m-d H:i:s");
+                if (array_key_exists('startdate', $aResponseData) && empty($aResponseData['startdate'])) {
+                    unset($aResponseData['startdate']);
+                } elseif (!isset($aResponseData['startdate'])) {
+                    $aResponseData['startdate'] = date("Y-m-d H:i:s");
                 }
             }
 
@@ -2585,8 +2587,7 @@ class remotecontrol_handle
             $result_id = $survey_dynamic->insertRecords($aResponseData);
 
             if ($result_id) {
-                // FIXME $sToken is undefined!!
-                $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $sToken, 'id' => $result_id));
+                $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $aResponseData['token'], 'id' => $result_id));
                 foreach ($oResponse->getFiles() as $aFile) {
                     $sUploadPath = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/";
                     $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
@@ -2598,7 +2599,10 @@ class remotecontrol_handle
                         }
 
                         if (!rename($sFileTempName, $sFileRealName)) {
-                            return array('status' => 'Unable to move files '.$sFileTempName.' '.$sFileRealName);
+                            return array(
+                                'status'    => 'Unable to move files '.$sFileTempName.' '.$sFileRealName,
+                                'result_id' => $result_id
+                            );
                         }
                     }
 
@@ -2609,9 +2613,8 @@ class remotecontrol_handle
                 return array('status' => 'Unable to add response');
             }
         } else {
-                    return array('status' => 'No permission');
+            return array('status' => 'No permission');
         }
-
     }
 
     /**
@@ -2739,8 +2742,8 @@ class remotecontrol_handle
         if (!isset($aFieldMap[$sFieldName])) {
             return array('status' => 'Can not obtain field map');
         }
-        //FIXME undefined function getQuestionAttributeValues()
-        $aAttributes = getQuestionAttributeValues($aFieldMap[$sFieldName]['qid']);
+
+        $aAttributes = QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid']);
 
         $iFileUploadTotalSpaceMB = Yii::app()->getConfig('iFileUploadTotalSpaceMB');
 

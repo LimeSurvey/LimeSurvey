@@ -26,7 +26,7 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         $langSelectOption = $this->findElement(
             WebDriverBy::cssSelector(
                 sprintf(
-                    '#langchangerSelectMain option[value="%s"]',
+                    '#lang option[value="%s"]',
                     $newLang
                 )
             )
@@ -100,5 +100,15 @@ class LimeSurveyWebDriver extends RemoteWebDriver
     {
         $button = $this->findElement(WebDriverBy::id($id));
         $button->click();
+    }
+
+    /**
+     * Debug method to dump all text in <body></body>.
+     * @return void
+     */
+    public function dumpBody()
+    {
+        $body = $this->findElement(WebDriverBy::tagName('body'));
+        var_dump('body text = ' . $body->getText());
     }
 }

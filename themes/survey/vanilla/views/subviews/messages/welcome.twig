@@ -46,7 +46,7 @@
             {# If survey creator set "show x questions" in survey setting  #}
             {% if aSurveyInfo.bShowxquestions == true %}
                 {% if aSurveyInfo.iTotalquestions < 1 %}
-                    {{ gT("There are no question in this survey.") }}
+                    {{ gT("There are no questions in this survey.") }}
                 {% elseif aSurveyInfo.iTotalquestions == 1  %}
                     {{ gT("There is 1 question in this survey.") }}
                 {% else %}

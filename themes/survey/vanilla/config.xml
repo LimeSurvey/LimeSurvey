@@ -52,6 +52,7 @@
     <options>
         <ajaxmode>on</ajaxmode>
         <animatebody>off</animatebody>
+        <hideprivacyinfo>off</hideprivacyinfo>
         <container>on</container>
         <bodyanimation>fadeInRight</bodyanimation>
         <brandlogo>on</brandlogo>
@@ -112,6 +113,7 @@
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_form.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -132,7 +134,7 @@
                     <file type="view" role="subview">./subviews/messages/warnings.twig</file>
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
-                    <file type="view" role="subview">./subviews/navigation/language_changer_first_page.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -235,10 +237,17 @@
                     <file type="view" role="content">./subviews/content/main.twig</file>
                     <file type="view" role="subview">./subviews/navigation/ajax_indicator.twig</file>
                     <file type="view" role="subview">./subviews/navigation/clearall_links.twig</file>
-                    <file type="view" role="subview">./subviews/navigation/language_changer_top_menu.twig</file>
-                    <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
-                    <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
                     <file type="view" role="subview">./subviews/navigation/save_links.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_top_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator_complement.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/clearall_buttons.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/save_buttons.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_buttons.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_questions_buttons.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_groups_buttons.twig</file>
                 </navigation>
 
             </screens>
