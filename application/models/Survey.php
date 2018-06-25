@@ -194,13 +194,15 @@ class Survey extends LSActiveRecord
         $this->owner_id = 1;
         $this->admin = App()->getConfig('siteadminname');
         $this->adminemail = App()->getConfig('siteadminemail');
-        $iUserid = Permission::getUserId();
-        if($iUserid) {
-            $this->owner_id = $iUserid;
-            $oUser = User::model()->findByPk($iUserid);
-            if($oUser) {
-                $this->admin = $oUser->full_name;
-                $this->adminemail = $oUser->email;
+        if(!(Yii::app() instanceof CConsoleApplication)) {
+            $iUserid = Permission::getUserId();
+            if($iUserid) {
+                $this->owner_id = $iUserid;
+                $oUser = User::model()->findByPk($iUserid);
+                if($oUser) {
+                    $this->admin = $oUser->full_name;
+                    $this->adminemail = $oUser->email;
+                }
             }
         }
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));

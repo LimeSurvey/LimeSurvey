@@ -151,14 +151,18 @@ class LSHttpRequest extends CHttpRequest
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
         if ($this->enableCsrfValidation) {
+            
+            $validationRoutes = $this->noCsrfValidationRoutes;
+            $validationParams = [];
 
-            $beforeUrlCheck = new PluginEvent('beforeUrlCheck');
-            $beforeUrlCheck->set('routes', $this->noCsrfValidationRoutes);
-            $beforeUrlCheck->set('params', []);
+            if(preg_match('/admin/', $route)){
+                $beforeUrlCheck = new PluginEvent('beforeUrlCheck');
+                $beforeUrlCheck->set('routes', $validationRoutes);
+                $beforeUrlCheck->set('params', $validationParams);
             if(preg_match('/admin/', $route)){
                 App()->getPluginManager()->dispatchEvent($beforeUrlCheck);
                 $validationRoutes = $beforeUrlCheck->get('routes');
-                $validationParams = $beforeUrlCheck->get('params');
+                $validationParams = $beforeUrlCheck->get('params', []);
             } else {
                 $validationRoutes = [];
                 $validationParams = [];

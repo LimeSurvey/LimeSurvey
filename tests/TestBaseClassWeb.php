@@ -69,6 +69,9 @@ class TestBaseClassWeb extends TestBaseClass
         self::$testHelper->enablePreview();
     }
 
+    /**
+     * @return void
+     */
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();

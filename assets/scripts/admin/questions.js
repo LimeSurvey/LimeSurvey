@@ -95,7 +95,7 @@ var QuestionFunctions = function () {
         },
 
         init = function () {
-
+        var oldQuestionTemplate = '';
             updatequestionattributes('');
             $('#questionTypeSelector').on('change', function(){
                 $('#question_type').val($(this).val()).trigger('change')
@@ -105,8 +105,11 @@ var QuestionFunctions = function () {
                 OtherSelection(this.value);
             });
 
-            $(document).on('change', '#question_template', function(){
-                updatequestionattributes($('#question_template').val());  
+            $(document).on('click', '#question_template', function(){
+                // save old value before the change
+                oldQuestionTemplate = $(this).val();
+            }).on('change', '#question_template', function() {
+                updatequestionattributes($(this).val(), oldQuestionTemplate);  
                 updateQuestionTemplateOptions('question_template');
             });
 
@@ -143,7 +146,7 @@ $(document).on('ready  pjax:scriptcomplete', function () {
 });
 
 
-function updatequestionattributes(question_template_name) {
+function updatequestionattributes(question_template_name = '', oldQuestionTemplate = '') {
     var type = $('#question_type').val();
     OtherSelection(type);
 
@@ -155,7 +158,8 @@ function updatequestionattributes(question_template_name) {
     var postData = {
         'qid': $('#qid').val(),
         'question_type': selected_value,
-        'sid': $('input[name=sid]').val()
+        'sid': $('input[name=sid]').val(),
+        'old_question_template': oldQuestionTemplate
     };
 
     if (Object.prototype.toString.call(question_template_name) == '[object String]'){
@@ -170,7 +174,7 @@ function updatequestionattributes(question_template_name) {
             $('#container-advanced-question-settings').html(data);
             $('.loader-advancedquestionsettings').addClass("hidden");
             if(question_template_name) {
-                $('#collapse-cat1').collapse('toggle');
+                //$('#collapse-cat1').collapse('toggle');
             }
 
             $('label[title]').qtip({

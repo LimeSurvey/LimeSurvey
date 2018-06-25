@@ -82,7 +82,9 @@ class TestBaseClass extends TestCase
         }
     }
 
-
+    /**
+     * @return void
+     */
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();
