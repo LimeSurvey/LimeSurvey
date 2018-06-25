@@ -22,11 +22,12 @@
     {% set htmlOptions = {
             'class'          : 'form-control',
             'data-targeturl' : aLCD.targetUrl,
+            'id'             : false,
         }
     %}
     <!-- Language Changer -->
     <div class=" {{ aSurveyInfo.class.formgroup }} form-change-lang form-inline" {{ aSurveyInfo.attr.formgroup }} >
-        <label class="{{ aSurveyInfo.class.controllabel }}" {{ aSurveyInfo.attr.controllabel }} for="lang">
+        <label class="{{ aSurveyInfo.class.controllabel }}" {{ aSurveyInfo.attr.controllabel }}">
             <span class="control-label" {{ aSurveyInfo.attr.languagechanger }}>{{ gT("Language:") }}</span>
             {{
                 C.Html.dropDownList(
