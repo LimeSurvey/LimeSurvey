@@ -108,7 +108,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
             <p class='text-center'>
                 <br/>
                 <?php if (Permission::model()->hasGlobalPermission('templates','update')) {
-                    $sSaveText = ( $oEditedTemplate->getTemplateForFile($relativePathEditfile, $oEditedTemplate,false) && $oEditedTemplate->getTemplateForFile($relativePathEditfile, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName)
+                    $sSaveText = ( $oEditedTemplate->getTemplateForFile($relativePathEditfile, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName)
                         ? gT("Save changes")
                         : gT("Copy to local theme and save changes");
                     if (is_writable($templates[$templatename])) { ?>

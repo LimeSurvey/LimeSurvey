@@ -118,15 +118,18 @@ class TemplateConfig extends CActiveRecord
          * @param boolean $force file to be in template or mother template
          * @return TemplateConfig|null|void
          */
-        public function getTemplateForFile($sFile, $oRTemplate,$force=true)
+        public function getTemplateForFile($sFile, $oRTemplate, $force = false)
         {
             while (!file_exists($oRTemplate->path.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)) {
                 $oMotherTemplate = $oRTemplate->oMotherTemplate;
                 if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                     if(!$force && Yii::app()->twigRenderer->getPathOfFile($sFile)) {
-                        // Or return dummy template ?
-                        return null;
+                        // return dummy template , new self broke (No DB : TODO : must fix init of self)
+                        $templateConfig = new stdClass();
+                        $templateConfig->sTemplateName = null;
+                        return $templateConfig;
                     }
+                    /* @todo : same for css and js (in registered package ? ) */
                     TemplateConfiguration::uninstall($this->sTemplateName);
                     Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "), $this->sTemplateName), 'error');
                     Yii::app()->getController()->redirect(array("admin/themeoptions"));
@@ -220,7 +223,8 @@ class TemplateConfig extends CActiveRecord
                     return $oTemplate->viewPath.$sFile;
                 }
             }
-            if(strlen($sFile) > 5 && substr($sFile, -5) === '.twig') {
+            $sExtension = substr(strrchr($sFile, '.'), 1);
+            if($sExtension === 'twig') {
                 return Yii::app()->twigRenderer->getPathOfFile($sFile);
             }
             return false;
