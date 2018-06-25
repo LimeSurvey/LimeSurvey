@@ -84,7 +84,8 @@ Pjax.prototype = {
 //   }
 
   latestChance: function(href) {
-    window.location = href
+      window.location.href = href;
+      return false;
   },
 
   onSwitch: function() {
@@ -117,8 +118,8 @@ Pjax.prototype = {
         })
       }
     }
+
     jsonContent = null;
-    
     try{
       jsonContent = JSON.parse(html);
     } catch(e) {}
@@ -128,7 +129,7 @@ Pjax.prototype = {
 
     if(jsonContent !== null) {
       this.log("found JSON document", jsonContent);
-      this.options.onJsonDocument(jsonContent);      
+      this.options.onJsonDocument.call(this, jsonContent);  
     }
 
     // Clear out any focused controls before inserting new page contents.
@@ -208,12 +209,11 @@ Pjax.prototype = {
     trigger(document, "pjax:send", options);
 
     // Do the request
-    this.doRequest(href, options.requestOptions, function(html) {
+    this.doRequest(href, options.requestOptions, function(html, requestData) {
       // Fail if unable to load HTML via AJAX
-      if (html === false) {
-        trigger(document,"pjax:complete pjax:error", options)
-
-        return
+      if (html === false || requestData.status !== 200) {
+        trigger(document,"pjax:complete pjax:error", {options: options, requestData: requestData, href: href});
+        return options.pjaxErrorHandler(href, options, requestData);
       }
 
       // Clear out any focused controls before inserting new page contents.
@@ -227,12 +227,11 @@ Pjax.prototype = {
           if (console && this.options.logObject.error) {
             this.options.logObject.error("Pjax switch fail: ", e)
           }
-          this.latestChance(href)
-          return
+          return options.pjaxErrorHandler(href, options, requestData) || this.latestChance(href);
         }
         else {
           if (this.options.forceRedirectOnFail) {
-            this.latestChance(href);
+            return options.pjaxErrorHandler(href, options, requestData) || this.latestChance(href);
           }
           throw e;
         }
@@ -782,12 +781,16 @@ module.exports = function(options){
   this.options.mainScriptElement = this.options.mainScriptElement || "head"
   this.options.removeScriptsAfterParsing = this.options.removeScriptsAfterParsing || true
   this.options.logObject = this.options.logObject || console
+  this.options.latestChance = this.options.latestChance || null
   this.options.selectors = this.options.selectors || ["title", ".js-Pjax"]
   this.options.switches = this.options.switches || {}
   this.options.switchesOptions = this.options.switchesOptions || {}
   this.options.history = this.options.history || true
   this.options.onDomDiffers = this.options.onDomDiffers || function(oldDom, newDom){
     return true;
+  }
+  this.options.pjaxErrorHandler = this.options.pjaxErrorHandler || function(href, options, requestData){
+    return false;
   }
   this.options.onJsonDocument = this.options.onJsonDocument || function(jsonDocument){
     return true;

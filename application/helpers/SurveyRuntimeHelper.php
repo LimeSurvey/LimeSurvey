@@ -1183,17 +1183,17 @@ class SurveyRuntimeHelper
 
 
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
-                if(json_decode($this->oTemplate->options)->ajaxmode == 'on') {
-                    echo '{
-                        "redirectTo" : "'.$this->aSurveyInfo['surveyls_url'].'"
-                    }';
-                    killSurveySession($this->iSurveyid);
-                    Yii::app()->end();
-                    return;
+                //Automatically redirect the page to the "url" setting for the survey               
+                $headToSurveyUrl = $this->aSurveyInfo['surveyls_url'];
+                $actualRedirect = $headToSurveyUrl;
+                header("Access-Control-Allow-Origin: *");
+
+                if(Yii::app()->request->getParam('ajax') == 'on'){
+                    header("X-Redirect: ".$headToSurveyUrl, false, 302);
                 } else {
-                    //Automatically redirect the page to the "url" setting for the survey
-                    header("Location: {$this->aSurveyInfo['surveyls_url']}");
+                    header("Location: ".$actualRedirect, false, 302);
                 }
+
             }
 
             $this->aSurveyInfo['aLEM']['debugvalidation']['show'] = false;
