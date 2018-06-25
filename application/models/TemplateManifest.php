@@ -79,7 +79,6 @@ class TemplateManifest extends TemplateConfiguration
         $aScreenFiles = array_merge($aScreenFiles, (array)$oEvent->get('add'));
         $aScreenFiles = array_unique($aScreenFiles);
         return $aScreenFiles;
-        return $aScreenFiles;
     }
 
     /**
