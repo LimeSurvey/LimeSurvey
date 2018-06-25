@@ -77,7 +77,7 @@ class EndUrlRedirectTest extends TestBaseClassWeb
 
             $body = $web->findElement(WebDriverBy::tagName('body'));
             $text = $body->getText();
-            $this->assertTrue(strpos($text, 'Google') !== false, 'Ended up on google.com with text ' . $text);
+            $this->assertTrue(strpos($text, 'Gmail') !== false, 'Ended up on google.com with text ' . $text);
 
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, 'EndUrlRedirectTest' . $ajaxmode);
