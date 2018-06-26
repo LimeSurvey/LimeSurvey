@@ -2246,6 +2246,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             dropColumn('{{sessions}}','data');
             addColumn('{{sessions}}','data','binary');
             $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>352], "stg_name='DBVersion'");
         }
         
         
