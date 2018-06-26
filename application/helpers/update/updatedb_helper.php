@@ -2241,6 +2241,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 352) {
+            $oTransaction = $oDB->beginTransaction();
+            dropColumn('{{sessions}}','data');
+            addColumn('{{sessions}}','data','binary');
+            $oTransaction->commit();
+        }
+        
+        
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
