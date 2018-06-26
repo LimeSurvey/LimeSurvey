@@ -44,7 +44,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
         self::$webDriver->get($url);
 
         try {
-            $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
+            $submit = self::$webDriver->findElement(WebDriverBy::cssSelector('[value="movenext"],[value="movesubmit"]'));
         } catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
@@ -59,7 +59,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
         $this->assertNotEmpty($submit);
         self::$webDriver->wait(5)->until(
             WebDriverExpectedCondition::elementToBeClickable(
-                WebDriverBy::id('ls-button-submit')
+                WebDriverBy::cssSelector('[value="movenext"],[value="movesubmit"]')
             )
         );
         $submit->click();

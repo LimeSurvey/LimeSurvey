@@ -58,20 +58,18 @@ class MultipleChoiceNextPreviousTest extends TestBaseClassWeb
             $lis[0]->click();
 
             // Click next.
-            $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-            $submit->click();
+            $submit = self::$webDriver->next();
 
             // Click previous..
-            $prev = self::$webDriver->findElement(WebDriverBy::id('ls-button-previous'));
+            $prev = self::$webDriver->findElement(WebDriverBy::cssSelector('[value="moveprev"]'));
             $prev->click();
             sleep(1);  // TODO: Does not work without this.
 
             // Click next.
-            $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
-            $submit->click();
+            $submit = self::$webDriver->next();
 
             // Click previous..
-            $prev = self::$webDriver->findElement(WebDriverBy::id('ls-button-previous'));
+            $prev = self::$webDriver->findElement(WebDriverBy::cssSelector('[value="moveprev"]'));
             $prev->click();
 
             // Check value of checkbox.

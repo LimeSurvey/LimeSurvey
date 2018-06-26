@@ -117,7 +117,7 @@ class GroupRandomizationTest extends TestBaseClassWeb
         );
 
         self::$webDriver->get($url);
-        $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
+        $submit = self::$webDriver->findElement(WebDriverBy::cssSelector('[value="movenext"],[value="movesubmit"]'));
         $this->assertNotEmpty($submit);
         self::$webDriver->wait(10, 1000)->until(
             WebDriverExpectedCondition::visibilityOf($submit)

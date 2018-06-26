@@ -752,9 +752,9 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['loadbutton']            = ' ls-saveaction ls-loadall ';
         $aClassAndAttributes['class']['savebutton']            = ' ls-saveaction ls-loadall ';
 
-        $aClassAndAttributes['attr']['navigatorbuttonprev']   = ' id="ls-button-previous" type="submit" value="moveprev" name="move" ';
-        $aClassAndAttributes['attr']['navigatorbuttonsubmit'] = ' id="ls-button-submit" type="submit" value="movesubmit" name="move" ';
-        $aClassAndAttributes['attr']['navigatorbuttonnext']   = ' id="ls-button-submit" type="submit" value="movenext" name="move" ';
+        $aClassAndAttributes['attr']['navigatorbuttonprev']   = ' type="submit" value="moveprev" name="move" ';
+        $aClassAndAttributes['attr']['navigatorbuttonsubmit'] = ' type="submit" value="movesubmit" name="move" ';
+        $aClassAndAttributes['attr']['navigatorbuttonnext']   = ' type="submit" value="movenext" name="move" ';
         $aClassAndAttributes['attr']['loadbutton']            = ' type="submit" value="loadall" name="loadall" ';
         $aClassAndAttributes['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" ';
 
