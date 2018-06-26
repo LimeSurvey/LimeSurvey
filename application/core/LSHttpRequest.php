@@ -155,14 +155,14 @@ class LSHttpRequest extends CHttpRequest
             $validationRoutes = $this->noCsrfValidationRoutes;
             $validationParams = [];
 
-            if(preg_match('/admin/', $route)){
-                $beforeUrlCheck = new PluginEvent('beforeUrlCheck');
-                $beforeUrlCheck->set('routes', $validationRoutes);
-                $beforeUrlCheck->set('params', $validationParams);
-                App()->getPluginManager()->dispatchEvent($beforeUrlCheck);
-                $validationRoutes = $beforeUrlCheck->get('routes');
-                $validationParams = $beforeUrlCheck->get('params', []);
-            } 
+            // if(preg_match('/admin/', $route)){
+            //     $beforeUrlCheck = new PluginEvent('beforeUrlCheck');
+            //     $beforeUrlCheck->set('routes', $validationRoutes);
+            //     $beforeUrlCheck->set('params', $validationParams);
+            //     App()->getPluginManager()->dispatchEvent($beforeUrlCheck);
+            //     $validationRoutes = $beforeUrlCheck->get('routes');
+            //     $validationParams = $beforeUrlCheck->get('params', []);
+            // } 
 
             foreach ($validationRoutes as $cr) {
                 if (preg_match('#'.$cr.'#', $route)) {
