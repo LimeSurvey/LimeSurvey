@@ -182,7 +182,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
             $newsqid = getLastInsertID('{{questions}}');
             if (isset($insertdata['qid'])) {
-                switchMSSQLIdentityInsert('questions', true);
+                switchMSSQLIdentityInsert('questions', false);
             }
 
             if (!isset($insertdata['qid'])) {
@@ -424,9 +424,16 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                 $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."), $sOldTitle, $sNewTitle);
             }
         }
+        if (isset($insertdata['qid'])) {
+            switchMSSQLIdentityInsert('questions', true);
+        }
+        
         if (!$oQuestion->save()) {
             $results['fatalerror'] = CHtml::errorSummary($oQuestion, gT("The question could not be imported for the following reasons:"));
             return $results;
+        }
+        if (isset($insertdata['qid'])) {
+            switchMSSQLIdentityInsert('questions', false);
         }
         if (!isset($aQIDReplacements[$oldqid])) {
             $newqid = $aQIDReplacements[$oldqid] = $oQuestion->qid;
