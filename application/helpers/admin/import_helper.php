@@ -1400,6 +1400,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
+    $aQuestionsMapping = array(); // collect all old and new question codes for replacement
     if (isset($xml->questions)) {
 // There could be surveys without a any questions.
         foreach ($xml->questions->rows->row as $row) {
@@ -1421,7 +1422,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['mandatory'] = 'N';
             }
             
-            $iOldSID = $insertdata['sid'];
+            $iOldSID = $insertdata['sid'];            
+            $iOldGID = $insertdata['gid'];
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
             $iOldQID = $insertdata['qid']; // save the old qid
@@ -1494,6 +1496,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 unset($sNewTitle);
                 unset($sOldTitle);
             }
+
+            // question codes in format "38612X105X3011" are collected for replacing
+            $aQuestionsMapping[$iOldSID.'X'.$iOldGID.'X'.$oldqid] = $iNewSID.'X'.$oQuestion->gid.'X'.$oQuestion->qid;
         }
     }
 
@@ -1518,7 +1523,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['mandatory'] = 'N';
             }
             $iOldSID = $insertdata['sid'];
-            $insertdata['sid'] = $iNewSID;
+            $insertdata['sid'] = $iNewSID;            
             $insertdata['gid'] = $aGIDReplacements[(int) $insertdata['gid']];
             $iOldQID = (int) $insertdata['qid']; unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid'] = $aQIDReplacements[(int) $insertdata['parent_qid']]; // remap the parent_qid
@@ -1620,6 +1625,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             } else {
                 continue; //Skip invalid group ID
             }
+
+            // question codes in format "38612X105X3011" are collected for replacing
+            $aQuestionsMapping[$iOldSID.'X'.$iOldGID.'X'.$oldqid.$question->title] = $iNewSID.'X'.$oQuestion->gid.'X'.$oQuestion->qid.$question->title;
             $oQuestionL10n = new QuestionL10n(); 
             $oQuestionL10n->setAttributes($insertdata, false);
             $oQuestionL10n->save();
@@ -1998,6 +2006,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     LimeExpressionManager::SetSurveyId($iNewSID);
     translateInsertansTags($iNewSID, $iOldSID, $aOldNewFieldmap);
     replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
+    replaceExpressionCodes($iNewSID, $aQuestionsMapping); // replace question codes in format "38612X105X3011"
     if (count($aQuestionCodeReplacements)) {
             array_unshift($results['importwarnings'], "<span class='warningtitle'>".gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.').'</span>');
     }
