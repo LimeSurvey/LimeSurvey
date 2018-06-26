@@ -80,6 +80,8 @@ class ChangeQuestionTemplateTest extends TestBaseClassWeb
                 // Do nothing.
             }
 
+            sleep(1);
+
             // Select bootstrap_buttons on Question theme dropdown
             $option = self::$webDriver->findElement(WebDriverBy::cssSelector('#question_template option[value=bootstrap_buttons]'));
             $option->click();
