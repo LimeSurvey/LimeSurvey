@@ -547,10 +547,11 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registerform']             = ' register-form  ';
         $aClassAndAttributes['class']['registerul']               = '  ';
         $aClassAndAttributes['class']['registerformcolrowlabel']  = ' ';
-        $aClassAndAttributes['class']['registerformcol']          = '  ';
+        $aClassAndAttributes['class']['registerformcol']          = ' register-form-column ';
         $aClassAndAttributes['class']['registerformcolrow']       = ' ';
         $aClassAndAttributes['class']['registerformcolrowb']      = '  ';
         $aClassAndAttributes['class']['registerformcolrowc']      = '  ';
+        $aClassAndAttributes['class']['registerformcoladdidtions']= ' register-form-column-additions ';
         $aClassAndAttributes['class']['registerformextras']       = '  ';
         $aClassAndAttributes['class']['registerformcaptcha']      = ' captcha-item ';
         $aClassAndAttributes['class']['registerformcolrowblabel'] = ' ';
