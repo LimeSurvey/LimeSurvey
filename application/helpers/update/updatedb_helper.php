@@ -2245,11 +2245,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             dropColumn('{{sessions}}','data');
             addColumn('{{sessions}}','data','binary');
+
+            $aTHemes = TemplateConfiguration::model()->findAll();
+
+            foreach ($aTHemes as $oTheme){
+                $oTheme->setGlobalOption("ajaxmode", "off");
+            }
+
             $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>352], "stg_name='DBVersion'");
         }
-        
-        
+
+
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
