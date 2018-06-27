@@ -650,7 +650,7 @@ class LsDefaultDataSets
                 .gT("This type of question allows you to add multiple subquestions and a set of answers.")
                 .'<p class="alert bg-warning">'.gT("Please select the 'Array'-type.").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#question_type_button',
+                    'element' => '#trigger_questionTypeSelector_button',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'left',
                     'redirect' => false,
