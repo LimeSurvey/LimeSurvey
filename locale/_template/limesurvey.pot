@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-06-26 14:18:30+00:00\n"
+"POT-Creation-Date: 2018-06-27 08:37:41+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -37,26 +37,26 @@ msgstr ""
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:60
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:7
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:31
-#: application/helpers/admin/import_helper.php:962
-#: application/helpers/admin/import_helper.php:997
-#: application/helpers/admin/import_helper.php:1079
-#: application/helpers/admin/import_helper.php:1192
-#: application/helpers/admin/import_helper.php:1300
-#: application/helpers/admin/import_helper.php:1303
-#: application/helpers/admin/import_helper.php:1329
-#: application/helpers/admin/import_helper.php:1402
-#: application/helpers/admin/import_helper.php:1423
-#: application/helpers/admin/import_helper.php:1441
-#: application/helpers/admin/import_helper.php:1462
-#: application/helpers/admin/import_helper.php:1478
-#: application/helpers/admin/import_helper.php:1499
-#: application/helpers/admin/import_helper.php:1694
-#: application/helpers/admin/import_helper.php:2026
-#: application/helpers/admin/import_helper.php:2197
-#: application/helpers/admin/import_helper.php:2251
-#: application/helpers/admin/import_helper.php:2295
-#: application/helpers/admin/import_helper.php:2414
-#: application/helpers/admin/import_helper.php:2453
+#: application/helpers/admin/import_helper.php:969
+#: application/helpers/admin/import_helper.php:1004
+#: application/helpers/admin/import_helper.php:1086
+#: application/helpers/admin/import_helper.php:1199
+#: application/helpers/admin/import_helper.php:1307
+#: application/helpers/admin/import_helper.php:1310
+#: application/helpers/admin/import_helper.php:1336
+#: application/helpers/admin/import_helper.php:1409
+#: application/helpers/admin/import_helper.php:1430
+#: application/helpers/admin/import_helper.php:1448
+#: application/helpers/admin/import_helper.php:1469
+#: application/helpers/admin/import_helper.php:1485
+#: application/helpers/admin/import_helper.php:1506
+#: application/helpers/admin/import_helper.php:1701
+#: application/helpers/admin/import_helper.php:2033
+#: application/helpers/admin/import_helper.php:2204
+#: application/helpers/admin/import_helper.php:2258
+#: application/helpers/admin/import_helper.php:2302
+#: application/helpers/admin/import_helper.php:2421
+#: application/helpers/admin/import_helper.php:2460
 #: application/views/admin/dataentry/active_html_view.php:116
 #: application/views/admin/dataentry/vvimport_result.php:16
 #: application/views/admin/error_view.php:3
@@ -1503,10 +1503,10 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:644
 #: application/controllers/admin/tokens.php:1491
 #: application/controllers/admin/useraction.php:163
-#: application/helpers/admin/import_helper.php:2338
-#: application/helpers/admin/import_helper.php:2355
-#: application/helpers/admin/import_helper.php:2379
-#: application/helpers/admin/import_helper.php:2435
+#: application/helpers/admin/import_helper.php:2345
+#: application/helpers/admin/import_helper.php:2362
+#: application/helpers/admin/import_helper.php:2386
+#: application/helpers/admin/import_helper.php:2442
 #: application/views/admin/dataentry/import.php:29
 #: application/views/admin/dataentry/vvimport_result.php:22
 #: application/views/admin/survey/Question/question_view.php:102
@@ -2687,7 +2687,7 @@ msgstr ""
 #: application/controllers/admin/export.php:1116
 #: application/views/admin/survey/queXMLSurvey_view.php:5
 #: application/views/admin/survey/queXMLSurvey_view.php:6
-#: application/views/admin/survey/surveybar_displayexport.php:71
+#: application/views/admin/survey/surveybar_displayexport.php:76
 msgid "queXML PDF export"
 msgstr ""
 
@@ -4041,7 +4041,7 @@ msgstr ""
 #: application/views/admin/responses/browsemenubar_view.php:72
 #: application/views/admin/responses/browsemenubar_view.php:166
 #: application/views/admin/responses/massive_actions/_selector.php:76
-#: application/views/admin/survey/surveybar_displayexport.php:154
+#: application/views/admin/survey/surveybar_displayexport.php:162
 #: application/views/admin/themeoptions/index.php:83
 #: application/views/admin/themeoptions/index.php:95
 #: application/views/admin/themes/templateeditorbar_view.php:100
@@ -7223,7 +7223,7 @@ msgid "This will export the survey structure (.lss) for all selected active surv
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:93
-#: application/views/admin/survey/surveybar_displayexport.php:97
+#: application/views/admin/survey/surveybar_displayexport.php:105
 msgid "Printable survey (*.html)"
 msgstr ""
 
@@ -7454,149 +7454,149 @@ msgid "The languages of the imported question file must at least include the bas
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:421
-#: application/helpers/admin/import_helper.php:428
+#: application/helpers/admin/import_helper.php:432
 msgid "The question could not be imported for the following reasons:"
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:424
-#: application/helpers/admin/import_helper.php:1095
+#: application/helpers/admin/import_helper.php:1102
 msgid "Question code %s was updated to %s."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:673
+#: application/helpers/admin/import_helper.php:680
 msgid "Label set was not imported because the same label set already exists."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:673
+#: application/helpers/admin/import_helper.php:680
 msgid "Existing LID: %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:760
+#: application/helpers/admin/import_helper.php:767
 msgid "Unable to create survey participants table"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:805
+#: application/helpers/admin/import_helper.php:812
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:901
+#: application/helpers/admin/import_helper.php:908
 msgid "This survey setting has not been imported: %s => %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:908
+#: application/helpers/admin/import_helper.php:915
 msgid "Unable to import survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1208
+#: application/helpers/admin/import_helper.php:1215
 msgid "Title of subquestion %s was updated to %s."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1521
+#: application/helpers/admin/import_helper.php:1528
 msgid "Error when saving %s for plugin %s"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1524
+#: application/helpers/admin/import_helper.php:1531
 msgid "Plugin %s didn't exist, settings not imported"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1540
+#: application/helpers/admin/import_helper.php:1547
 msgid "Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1585
+#: application/helpers/admin/import_helper.php:1592
 msgid "This is not a valid token data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1629
+#: application/helpers/admin/import_helper.php:1636
 msgid "Skipped tokens entry:"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1663
+#: application/helpers/admin/import_helper.php:1670
 msgid "This is not a valid response data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1759
+#: application/helpers/admin/import_helper.php:1766
 msgid "File seems empty or has only one line"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1809
+#: application/helpers/admin/import_helper.php:1816
 msgid "Import failed: Forced import was requested but the input file doesn't contain enough columns to fill the survey."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1821
+#: application/helpers/admin/import_helper.php:1828
 msgid "Import failed: No answers could be mapped."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1964
+#: application/helpers/admin/import_helper.php:1971
 msgid "%s response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1966
+#: application/helpers/admin/import_helper.php:1973
 msgid "No response lines in your file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1969
+#: application/helpers/admin/import_helper.php:1976
 msgid "%s responses were inserted."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1973
+#: application/helpers/admin/import_helper.php:1980
 msgid "%s responses were updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1976
+#: application/helpers/admin/import_helper.php:1983
 msgid "%s responses cannot be inserted or updated."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1979
+#: application/helpers/admin/import_helper.php:1986
 msgid "%s responses already exist."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:1997
+#: application/helpers/admin/import_helper.php:2004
 msgid "This is not a valid timings data XML file."
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2167
+#: application/helpers/admin/import_helper.php:2174
 msgid "Error(s) when try to create survey"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2197
+#: application/helpers/admin/import_helper.php:2204
 msgid "Failed to insert survey language"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2251
+#: application/helpers/admin/import_helper.php:2258
 msgid "Failed to insert group"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2251
-#: application/helpers/admin/import_helper.php:2295
-#: application/helpers/admin/import_helper.php:2338
-#: application/helpers/admin/import_helper.php:2355
-#: application/helpers/admin/import_helper.php:2379
-#: application/helpers/admin/import_helper.php:2414
-#: application/helpers/admin/import_helper.php:2435
-#: application/helpers/admin/import_helper.php:2453
+#: application/helpers/admin/import_helper.php:2258
+#: application/helpers/admin/import_helper.php:2302
+#: application/helpers/admin/import_helper.php:2345
+#: application/helpers/admin/import_helper.php:2362
+#: application/helpers/admin/import_helper.php:2386
+#: application/helpers/admin/import_helper.php:2421
+#: application/helpers/admin/import_helper.php:2442
+#: application/helpers/admin/import_helper.php:2460
 msgid "Text file row number "
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2295
+#: application/helpers/admin/import_helper.php:2302
 msgid "Could not insert question"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2338
+#: application/helpers/admin/import_helper.php:2345
 msgid "Failed to insert question attribute"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2355
-#: application/helpers/admin/import_helper.php:2379
-#: application/helpers/admin/import_helper.php:2435
+#: application/helpers/admin/import_helper.php:2362
+#: application/helpers/admin/import_helper.php:2386
+#: application/helpers/admin/import_helper.php:2442
 msgid "Failed to insert default value"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2414
+#: application/helpers/admin/import_helper.php:2421
 msgid "Could not insert subquestion"
 msgstr ""
 
-#: application/helpers/admin/import_helper.php:2453
+#: application/helpers/admin/import_helper.php:2460
 msgid "Could not insert answer"
 msgstr ""
 
@@ -11239,19 +11239,19 @@ msgstr ""
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2259
+#: application/helpers/update/updatedb_helper.php:2275
 msgid "An non-recoverable error happened during the update. Error details:"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2263
+#: application/helpers/update/updatedb_helper.php:2279
 msgid "File %s, line %s."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2303
+#: application/helpers/update/updatedb_helper.php:2319
 msgid "Database update"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2304
+#: application/helpers/update/updatedb_helper.php:2320
 msgid "The database has been updated from version %s to version %s."
 msgstr ""
 
@@ -18047,124 +18047,136 @@ msgstr ""
 msgid "Survey structure (.lss)"
 msgstr ""
 
+#: application/views/admin/survey/surveybar_displayexport.php:20
+msgid "This export will dump all the groups, questions, answers and conditions for your survey into a .LSS file (which is basically an XML file). This dump file can be used with the 'Import survey' feature when creating a new survey."
+msgstr ""
+
 #: application/views/admin/survey/surveybar_displayexport.php:23
+msgid "A survey which uses a custom theme will import fine, but the template it refers to will not exist on the new server. In that case the system will use the global default theme."
+msgstr ""
+
+#: application/views/admin/survey/surveybar_displayexport.php:26
 msgid "Please note: This file does not contain any collected responses."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:31
+#: application/views/admin/survey/surveybar_displayexport.php:35
 msgid "Survey archive (.lsa)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:33
+#: application/views/admin/survey/surveybar_displayexport.php:37
 msgid "This export is intended to create a complete backup of an active survey for archival purposes."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:34
+#: application/views/admin/survey/surveybar_displayexport.php:38
 msgid "It will include the following data in a ZIP file ending with '.lsa'."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:36
+#: application/views/admin/survey/surveybar_displayexport.php:40
 msgid "Survey structure"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:37
+#: application/views/admin/survey/surveybar_displayexport.php:41
 msgid "Response data (Attention: Doesn't include files uploaded in a file upload question. These have to be exported separately.)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:38
+#: application/views/admin/survey/surveybar_displayexport.php:42
 msgid "Survey participant data (if available)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:39
+#: application/views/admin/survey/surveybar_displayexport.php:43
 msgid "Timings (if activated)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:47
+#: application/views/admin/survey/surveybar_displayexport.php:51
 msgid "Survey archive - only available for active surveys"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:59
+#: application/views/admin/survey/surveybar_displayexport.php:63
 msgid "queXML format (*.xml)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:61
-#: application/views/admin/survey/surveybar_displayexport.php:73
+#: application/views/admin/survey/surveybar_displayexport.php:65
+#: application/views/admin/survey/surveybar_displayexport.php:78
 msgid "queXML is an XML description of a questionnaire."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:62
-#: application/views/admin/survey/surveybar_displayexport.php:75
+#: application/views/admin/survey/surveybar_displayexport.php:66
+#: application/views/admin/survey/surveybar_displayexport.php:80
 msgid "It is not suitable for backing up a LimeSurvey survey as it cannot export conditions, and isn't able to export all question types."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:63
+#: application/views/admin/survey/surveybar_displayexport.php:67
 msgid "Exporting a questionnaire to queXML allows you to create PDF documents that can be printed, filled then scanned and processed using queXF software."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:64
+#: application/views/admin/survey/surveybar_displayexport.php:68
 msgid "To find out more about queXML check out this page:"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:74
+#: application/views/admin/survey/surveybar_displayexport.php:79
 msgid "On the following page you will be able to create a pdf that can be printed filled out and scanned again."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:76
+#: application/views/admin/survey/surveybar_displayexport.php:81
 msgid "To get to know more about queXML check this page:"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:83
+#: application/views/admin/survey/surveybar_displayexport.php:88
 msgid "Tab-separated-values format (*.txt)"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:85
+#: application/views/admin/survey/surveybar_displayexport.php:90
 msgid "This feature is designed to make it easy to use Excel to author and edit surveys."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:86
+#: application/views/admin/survey/surveybar_displayexport.php:91
 msgid "It completely eliminates the dependence upon SGQA codes."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:89
+#: application/views/admin/survey/surveybar_displayexport.php:93
+msgid "It also makes it easy to do bulk editing of your survey, such as find-replace, bulk-reordering, looping (repeating groups), and testing (such as temporarily disabling mandatory or validation criteria)."
+msgstr ""
+
+#: application/views/admin/survey/surveybar_displayexport.php:96
 msgid "Check out the dedicated documentation for this format."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:99
+#: application/views/admin/survey/surveybar_displayexport.php:107
 msgid "This will download a .zip file containing the survey in all languages."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:100
+#: application/views/admin/survey/surveybar_displayexport.php:108
 msgid "It will also contain the necessary stylesheets to put it up on any HTML-ready devices or browsers."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:101
-#: application/views/admin/survey/surveybar_displayexport.php:115
-#: application/views/admin/survey/surveybar_displayexport.php:140
+#: application/views/admin/survey/surveybar_displayexport.php:109
+#: application/views/admin/survey/surveybar_displayexport.php:123
+#: application/views/admin/survey/surveybar_displayexport.php:148
 msgid "It will not contain any logic or EM-functionality, you'll have to take that into account yourself."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:111
-#: application/views/admin/survey/surveybar_displayexport.php:136
+#: application/views/admin/survey/surveybar_displayexport.php:119
+#: application/views/admin/survey/surveybar_displayexport.php:144
 msgid "Printable survey"
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:113
+#: application/views/admin/survey/surveybar_displayexport.php:121
 msgid "This will open the survey as a printable page in new window."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:114
-#: application/views/admin/survey/surveybar_displayexport.php:139
+#: application/views/admin/survey/surveybar_displayexport.php:122
+#: application/views/admin/survey/surveybar_displayexport.php:147
 msgid "All necessary styles will be loaded, to print it just press Ctrl/Cmd+p or select print from your browser menu."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:138
+#: application/views/admin/survey/surveybar_displayexport.php:146
 msgid "This will open the survey in %s as a printable page in new window."
 msgstr ""
 
-#: application/views/admin/survey/surveybar_displayexport.php:155
-#: application/views/admin/survey/surveybar_displayexport.php:156
-#: application/views/admin/survey/surveybar_displayexport.php:165
-#: application/views/admin/survey/surveybar_displayexport.php:189
+#: application/views/admin/survey/surveybar_displayexport.php:163
+#: application/views/admin/survey/surveybar_displayexport.php:164
+#: application/views/admin/survey/surveybar_displayexport.php:173
+#: application/views/admin/survey/surveybar_displayexport.php:197
 msgid "Display/Export"
 msgstr ""
 
