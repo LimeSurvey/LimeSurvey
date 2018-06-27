@@ -16,7 +16,7 @@
 
             <!-- Save -->
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+                <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
                 </a>
@@ -24,7 +24,7 @@
 
             
             <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
-                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
+                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>

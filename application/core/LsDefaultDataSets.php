@@ -450,7 +450,8 @@ class LsDefaultDataSets
                     'redirect' => false,
                     'onNext' => "(function(tour){
                                     tour.setCurrentStep(8);
-                                    $('#save-form-button').trigger('click');
+                                    if(!$('#save-form-button').hasClass('disabled'))
+                                        $('#save-form-button').trigger('click');
                                     return new Promise(function(res,rej){});
                                 })",
                 ))
