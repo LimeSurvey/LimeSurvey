@@ -44,7 +44,8 @@ return array(
             'yiistrap'.$minVersion.'.css',
         ),
         'js'=>array(
-            'bootstrap'.$minVersion.'.js'
+            'bootstrap'.$minVersion.'.js',
+            'plugins/bootstrapconfirm/bootstrapconfirm'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',
