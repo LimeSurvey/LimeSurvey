@@ -73,6 +73,7 @@ third_party/**/less/
 third_party/**/*.sh
 third_party/**/*.md
 third_party/**/gulpfile.js
+yarn-error.log
 
 # Test stuff
 chromedriver
