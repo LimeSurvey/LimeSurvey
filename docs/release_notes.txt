@@ -36,6 +36,28 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 3.12.2 (build 180625) to 3.12.3 (build 180627) June 27, 2018
+-Fixed issue #13251: DB error when importing multilingual group or question using MSSQL DB (Carsten Schmitz)
+-Fixed issue #13548: Import survey process fails sometimes with data conditions (Dominik Vitt)
+-Fixed issue #13644: Error when activating database sessions and using MSSQL (Carsten Schmitz)
+-Fixed issue #13750: PHP warning when setting template permission for a user (Carsten Schmitz)
+-Fixed issue #13784: Wrong language label for Other option when exporting with queXML PDF export (Dominik Vitt)
+-Fixed issue: Redirect in public registration plugins always wrong (Markus Flür)
+-Fixed issue: barebone URL only in path format from RPC (LouisGac)
+-Fixed issue: deactivated breaking plugin hook (Markus Flür)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Russian by vipgroup
+#Updated translation: Turkish by kayazeren
+
+                                                               
 Changes from 3.12.1 (build 180616) to 3.12.2 (build 180625) June 25, 2018
 -Fixed issue #12640: Unable to update lang when registering (before fill mandatory values) (Dominik Vitt)
 -Fixed issue #12688: Global Settings are not applied to survey settings when creating a new survey (Dominik Vitt)
