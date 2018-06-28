@@ -14,6 +14,7 @@
 !.gitattributes
 !.editorconfig
 !.travis.yml
+!.babelrc
 
 
 # upload directory : whole except the index.html and readme.txt
