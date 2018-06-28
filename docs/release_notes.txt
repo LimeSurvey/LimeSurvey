@@ -34,7 +34,23 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-
+Changes from 3.12.3 (build 180627) to 3.13.0 (build 180628) June 28, 2018
+-New feature: Allow plugin to add or remove file for template editor (#1084) (Denis Chenu)
+-Fixed issue #13685: Create a new survey - Save and Save and close -> same behavour (Markus Flür)
+-Fixed issue #13786: Duplicate survey in tutorial/beginner tour (Markus Flür)
+-Fixed issue #13787: Tutorial "beginner tour" breaks off (Markus Flür)
+-Fixed issue #13803: Deprecated confirm box since 3.0 alpha (Markus Flür)
+-Fixed issue #13811: Reordering questions by drag-and-drop (Markus Flür)
+-Fixed issue #13813: Question advanced settings not updated when update question type (Dominik Vitt)
+-Fixed issue #13814: Opening Question->Check logic will change admin interface language to question language (Dominik Vitt)
+-Fixed issue #13818: Error when using timer function in a question. (Markus Flür)
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Russian by vipgroup
 
 Changes from 3.12.2 (build 180625) to 3.12.3 (build 180627) June 27, 2018
 -Fixed issue #13251: DB error when importing multilingual group or question using MSSQL DB (Carsten Schmitz)
