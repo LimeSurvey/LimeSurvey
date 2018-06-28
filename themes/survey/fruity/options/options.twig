@@ -567,15 +567,16 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_bodybackgroundcolor' class='control-label'>{{ gT("Background color") }}</label>
                         <div class="input-group">
-                            <div class="input-group-addon">
-                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.bodybackgroundcolor}}">&nbsp;</span>
+                            <div class="input-group-addon style__colorpicker">
+                                <input type="color" name="bodybackgroundcolor_picker" data-value="{{oParentOptions.bodybackgroundcolor}}" class="selector__colorpicker-inherit-value"/>
                             </div>
-                            <input type="text" name="bodybackgroundcolor" data-inheritvalue="{{oParentOptions.bodybackgroundcolor}}" value="inherit" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_bodybackgroundcolor" data-id="bodybackgroundcolor" />
+                            <input type="text" name="bodybackgroundcolor" data-inheritvalue="{{oParentOptions.bodybackgroundcolor}}" value="inherit" class="selector_option_value_field selector__color-picker form-control simple_edit_options_bodybackgroundcolor" data-id="bodybackgroundcolor" />
                             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                 <div class="input-group-addon">
                                     <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
                                 </div>
                             {% endif %}
+
                         </div>
                     </div>
                 </div>
@@ -585,10 +586,10 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_fontcolor' class='control-label'>{{ gT("Font color") }}</label>
                         <div class="input-group">
-                            <div class="input-group-addon">
-                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.fontcolor}}">&nbsp;</span>
+                            <div class="input-group-addon style__colorpicker">
+                                <input type="color" name="fontcolor_picker" data-value="{{oParentOptions.fontcolor}}" class="selector__colorpicker-inherit-value"/>
                             </div>
-                            <input type="text" name="fontcolor" value="inherit" data-inheritvalue="{{oParentOptions.fontcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_fontcolor" data-id="fontcolor" />
+                            <input type="text" name="fontcolor" value="inherit" data-inheritvalue="{{oParentOptions.fontcolor}}" class="selector_option_value_field selector__color-picker form-control simple_edit_options_fontcolor" data-id="fontcolor" />
                             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                 <div class="input-group-addon">
                                     <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
@@ -603,10 +604,10 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_questionbackgroundcolor' class='control-label'>{{ gT("Question background color") }}</label>
                         <div class="input-group">
-                            <div class="input-group-addon">
-                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.questionbackgroundcolor}}">&nbsp;</span>
+                            <div class="input-group-addon style__colorpicker">
+                                <input type="color" name="questionbackgroundcolor_picker" data-value="{{oParentOptions.questionbackgroundcolor}}" class="selector__colorpicker-inherit-value"/>
                             </div>
-                            <input type="text" name="questionbackgroundcolor" value="inherit" data-inheritvalue="{{oParentOptions.questionbackgroundcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_questionbackgroundcolor" data-id="questionbackgroundcolor" />
+                            <input type="text" name="questionbackgroundcolor" value="inherit" data-inheritvalue="{{oParentOptions.questionbackgroundcolor}}" class="selector_option_value_field selector__color-picker form-control simple_edit_options_questionbackgroundcolor" data-id="questionbackgroundcolor" />
                             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                 <div class="input-group-addon">
                                     <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
