@@ -111,17 +111,25 @@ class TemplateConfig extends CActiveRecord
 
         /**
          * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
-         *
+         * Can return a 302 redirect (this is not really a throw …
+         * 
          * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
          * @param TemplateConfig $oRTemplate template from which the recurrence should start
-         * @return TemplateConfig
-         * @throws Exception
+         * @param boolean $force file to be in template or mother template
+         * @return TemplateConfig|null|void
          */
-        public function getTemplateForFile($sFile, $oRTemplate)
+        public function getTemplateForFile($sFile, $oRTemplate, $force = false)
         {
             while (!file_exists($oRTemplate->path.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)) {
                 $oMotherTemplate = $oRTemplate->oMotherTemplate;
                 if (!($oMotherTemplate instanceof TemplateConfiguration)) {
+                    if(!$force && Yii::app()->twigRenderer->getPathOfFile($sFile)) {
+                        // return dummy template , new self broke (No DB : TODO : must fix init of self)
+                        $templateConfig = new stdClass();
+                        $templateConfig->sTemplateName = null;
+                        return $templateConfig;
+                    }
+                    /* @todo : same for css and js (in registered package ? ) */
                     TemplateConfiguration::uninstall($this->sTemplateName);
                     Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "), $this->sTemplateName), 'error');
                     Yii::app()->getController()->redirect(array("admin/themeoptions"));
@@ -206,7 +214,7 @@ class TemplateConfig extends CActiveRecord
             $sFile = trim($sFile, '/');
 
             // Retreive the correct template for this file (can be a mother template)
-            $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
+            $oTemplate = $this->getTemplateForFile($sFile, $oTemplate,false);
 
             if ($oTemplate instanceof TemplateConfiguration) {
                 if (file_exists($oTemplate->path.$sFile)) {
@@ -214,6 +222,10 @@ class TemplateConfig extends CActiveRecord
                 } elseif (file_exists($oTemplate->viewPath.$sFile)) {
                     return $oTemplate->viewPath.$sFile;
                 }
+            }
+            $sExtension = substr(strrchr($sFile, '.'), 1);
+            if($sExtension === 'twig') {
+                return Yii::app()->twigRenderer->getPathOfFile($sFile);
             }
             return false;
         }
