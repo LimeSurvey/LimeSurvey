@@ -28,6 +28,7 @@
 /upload/surveys/**/*.*
 !/upload/surveys/index.html
 !/upload/surveys/readme.txt
+!/upload/surveys/.htaccess
 /upload/templates/*.*
 !/upload/templates/index.html
 !/upload/templates/readme.txt
