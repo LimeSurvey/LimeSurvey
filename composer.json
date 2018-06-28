@@ -10,7 +10,7 @@
 			"role" : "Developer"
 		}
 	],
-	
+
 	"support" : {
 		"wiki" : "https://manual.limesurvey.org/LimeSurvey_Manual",
 		"source" : "https://github.com/LimeSurvey/LimeSurvey",
@@ -28,7 +28,7 @@
 		}
 	},
 	"require": {
-		"facebook/webdriver": "^1.4"
+		"php": "^7.0"
 	},
     "config": {
         "vendor-dir": "third_party",
