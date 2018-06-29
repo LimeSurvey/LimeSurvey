@@ -35,10 +35,10 @@ function checkFile($file)
     $numberOfFiles++;
 
     $phpmd_output = [];
-    exec(sprintf('phpmd %s text tests/rulesets/phpmd_ruleset.xml', $file), $phpmd_output);
+    exec(sprintf('./third_party/bin/phpmd %s text tests/rulesets/phpmd_ruleset.xml', $file), $phpmd_output);
 
     $phpcs_output = [];
-    exec(sprintf('phpcs --report=emacs --standard=tests/rulesets/phpcs_ruleset.xml %s', $file), $phpcs_output);
+    exec(sprintf('./third_party/bin/phpcs --report=emacs --standard=tests/rulesets/phpcs_ruleset.xml %s', $file), $phpcs_output);
 
     $psalm_output = [];
     exec(sprintf('./third_party/bin/psalm -m --output-format=emacs %s', $file), $psalm_output);
