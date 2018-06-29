@@ -34,6 +34,17 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+
+Changes from 3.13.0 (build 180628) to 3.13.1 (build 180629) June 29, 2018
+-Fixed issue #13734:  image upload is not possible - You don't have permissions to browse server. (LouisGac)
+-Fixed issue #13828: Internal Server Error when clicking on 'Theme Options' in Survey Admin Area (Dominik Vitt)
+-Fixed issue: no token replacement in end url (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Basque by IVAP, the Official Translators' Service of the Basque Government.
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
 Changes from 3.12.3 (build 180627) to 3.13.0 (build 180628) June 28, 2018
 -New feature: Allow plugin to add or remove file for template editor (#1084) (Denis Chenu)
 -Fixed issue #13685: Create a new survey - Save and Save and close -> same behavour (Markus Flür)
