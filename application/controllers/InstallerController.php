@@ -1053,7 +1053,8 @@ class InstallerController extends CController
             $sConfig .= "\t\t"."),"."\n"
             ."\t\t".""."\n"
 
-            ."\t\t"."// Uncomment the following line if you need table-based sessions"."\n"
+            ."\t\t"."// Uncomment the following lines if you need table-based sessions."."\n"
+            ."\t\t"."// Note: Table-based sessions are currently not supported on MSSQL server."."\n"
             ."\t\t"."// 'session' => array ("."\n"
             ."\t\t\t"."// 'class' => 'application.core.web.DbHttpSession',"."\n"
             ."\t\t\t"."// 'connectionID' => 'db',"."\n"

@@ -14,6 +14,7 @@
 !.gitattributes
 !.editorconfig
 !.travis.yml
+!.babelrc
 
 
 # upload directory : whole except the index.html and readme.txt
@@ -73,6 +74,7 @@ third_party/**/less/
 third_party/**/*.sh
 third_party/**/*.md
 third_party/**/gulpfile.js
+yarn-error.log
 
 # Test stuff
 chromedriver

@@ -478,7 +478,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     global $thissurvey;
 
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js', CClientScript::POS_BEGIN);
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'timer.js', CClientScript::POS_BEGIN);
+    Yii::app()->getClientScript()->registerPackage('timer-addition');
 
     $langTimer = array(
         'hours'=>gT("hours"),

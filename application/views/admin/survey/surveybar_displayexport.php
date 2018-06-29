@@ -16,11 +16,15 @@
     $aExportItemsArray["surveystructure"] = [
         "key" => "surveystructure",
         "description" => "".gT("Survey structure (.lss)"),
-        "detailpage" => "<p>".gT("This export will dump all the groups, questions, answers and conditions for your survey into a .LSS file"
-        ."(which is basically an XML file). This dump file can be used with the 'Import survey' feature when creating a new survey.")."</p>"
-        ."<p>".gT("A survey which uses a custom theme will import fine, but the template it refers to will not exist on the new server."
-        ." In that case the system will use the global default theme.")."</p>"
-        ."<p><b>".gT("Please note: This file does not contain any collected responses.")."</b></p>",
+        "detailpage" => "<p>"
+        .gT("This export will dump all the groups, questions, answers and conditions for your survey into a .LSS file (which is basically an XML file). This dump file can be used with the 'Import survey' feature when creating a new survey.")
+        ."</p>"
+        ."<p>"
+        .gT("A survey which uses a custom theme will import fine, but the template it refers to will not exist on the new server. In that case the system will use the global default theme.")
+        ."</p>"
+        ."<p><b>"
+        .gT("Please note: This file does not contain any collected responses.")
+        ."</b></p>",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/".$oSurvey->sid),
         "download" => true
     ];
@@ -61,7 +65,8 @@
         <p>".gT("queXML is an XML description of a questionnaire.")."</p>
         <p>".gT("It is not suitable for backing up a LimeSurvey survey as it cannot export conditions, and isn't able to export all question types.")."</p>
         <p>".gT("Exporting a questionnaire to queXML allows you to create PDF documents that can be printed, filled then scanned and processed using queXF software.")."</p>
-        <p>".gT("To find out more about queXML check out this page:")." <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au <i class=\"fa fa-external-link\"></i></a>.</p>",
+        <p>".gT("To find out more about queXML check out this page:")
+        ." <a href=\"https://quexml.acspri.org.au/\" target=\"_blank\">quexml.acspri.org.au <i class=\"fa fa-external-link\"></i></a>.</p>",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructurequexml/surveyid/".$oSurvey->sid),
         "download" => true                            
     ];
@@ -84,9 +89,12 @@
         "detailpage" => "
         <p>".gT("This feature is designed to make it easy to use Excel to author and edit surveys.")."</p>
         <p>".gT("It completely eliminates the dependence upon SGQA codes.")."</p>
-        <p>".gT("It also makes it easy to do bulk editing of your survey, such as find-replace, bulk-reordering, looping (repeating groups), "
-        ."and testing (such as temporarily disabling mandatory or validation criteria).")."</p>
-        <p><a href=\"https://manual.limesurvey.org/Excel_Survey_Structure\" target=\"_blank\" >".gT("Check out the dedicated documentation for this format.")." <i class=\"fa fa-external-link\"></i></a></p>
+        <p>"
+        .gT("It also makes it easy to do bulk editing of your survey, such as find-replace, bulk-reordering, looping (repeating groups), and testing (such as temporarily disabling mandatory or validation criteria).")
+        ."</p>
+        <p><a href=\"https://manual.limesurvey.org/Excel_Survey_Structure\" target=\"_blank\" >"
+        .gT("Check out the dedicated documentation for this format.")
+        ." <i class=\"fa fa-external-link\"></i></a></p>
         ",
         "href" => $this->createUrl("admin/export/sa/survey/action/exportstructuretsv/surveyid/".$oSurvey->sid),
         "download" => true

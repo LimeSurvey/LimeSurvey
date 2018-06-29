@@ -738,7 +738,7 @@ class UserAction extends Survey_Common_Action
             // if not create it with current user as creator (user with rights "create user" can assign template rights)
             $result = Template::model()->findByPk($tp);
 
-            if (count($result) == 0) {
+            if ($result == NULL) {
                 $post = new Template;
                 $post->folder = $tp;
                 $post->owner_id = Yii::app()->session['loginID'];

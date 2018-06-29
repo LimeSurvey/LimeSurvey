@@ -290,15 +290,28 @@ function activateActionLink(){
  * @var object[] submits : name.value to submit
  */
 function confirmSurveyDialog(text,title,submits){
-    if(confirm(text)){
-        $.each(submits, function(name, value) {
-            $("<input/>",{
-                'type':"hidden",
-                'name':name,
-                'value':value,
-            }).appendTo('form#limesurvey');
+    if($.bsconfirm !== undefined) {
+        $.bsconfirm(text, LSvar.lang.confirm, function(){
+            $.each(submits, function(name, value) {
+                $("<input/>",{
+                    'type':"hidden",
+                    'name':name,
+                    'value':value,
+                }).appendTo('form#limesurvey');
+            });
+            $('form#limesurvey').submit();
         });
-        $('form#limesurvey').submit();
+    } else {
+        if(confirm(text)){
+            $.each(submits, function(name, value) {
+                $("<input/>",{
+                    'type':"hidden",
+                    'name':name,
+                    'value':value,
+                }).appendTo('form#limesurvey');
+            });
+            $('form#limesurvey').submit();
+        }
     }
 }
 /**

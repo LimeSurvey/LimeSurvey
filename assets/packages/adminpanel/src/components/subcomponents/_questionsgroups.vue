@@ -141,6 +141,15 @@ export default {
             }
         },
         dragoverQuestiongroup($event, questiongroupObject) {
+            if(this.draggedQuestion == undefined || this.draggedQuestion == null) {
+                this.$log.error({
+                    this: this, 
+                    event: $event, 
+                    questiongroupObject: questiongroupObject,
+                    draggedQuestion: this.draggedQuestion
+                    });
+            }
+                
             if (this.questiongroupDragging) {
                 const orderSwap = questiongroupObject.group_order;
                 questiongroupObject.group_order = this.draggedQuestionGroup.group_order;
@@ -186,7 +195,7 @@ export default {
         //dragevents questions
         startDraggingQuestion($event, questionObject, questionGroupObject) {
             this.$log.log("Dragging started", questionObject);
-            $event.dataTransfer.setData("text/plain", "node");
+            $event.dataTransfer.setData('application/node', this);
             this.questionDragging = true;
             this.draggedQuestion = questionObject;
             this.draggedQuestionsGroup = questionGroupObject;
@@ -254,16 +263,16 @@ export default {
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
                 >
                     <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
-                        <template v-if="!$store.state.surveyActiveState">
-                            <i 
-                                class="fa fa-bars bigIcons dragPointer" 
-                                draggable="true" 
-                                @dragend="endDraggingGroup($event, questiongroup)" 
-                                @dragstart="startDraggingGroup($event, questiongroup)"
-                            >
-                                &nbsp;
-                            </i>
-                        </template>
+                        <i 
+                            v-if="!$store.state.surveyActiveState"
+                            class="fa fa-bars bigIcons dragPointer" 
+                            draggable="true"
+                            @dragend="endDraggingGroup($event, questiongroup)" 
+                            @dragstart="startDraggingGroup($event, questiongroup)"
+                            @click.stop.prevent="()=>false"
+                        >
+                            &nbsp;
+                        </i>
                         <a 
                             class="col-12 pjax"
                             :href="questiongroup.link" 
@@ -285,35 +294,35 @@ export default {
                             v-if="isActive(questiongroup.gid)" 
                             @drop="dropQuestion($event, question)"
                         >
-                            <a 
+                            <div 
                                 v-for="question in orderQuestions(questiongroup.questions)" 
                                 v-bind:key="question.qid" 
                                 v-bind:class="questionItemClasses(question)" 
                                 data-toggle="tootltip" 
                                 class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-between" 
-                                :href="question.link" 
                                 :title="question.question_flat"
                                 @dragenter="dragoverQuestion($event, question, questiongroup)"
                             >
-                                <template v-if="!$store.state.surveyActiveState">
                                     <i 
-                                        class="fa fa-bars margin-right bigIcons dragPointer" 
-                                        draggable="true" 
+                                        v-if="!$store.state.surveyActiveState"
+                                        class="fa fa-bars margin-right bigIcons dragPointer question-question-list-item-drag" 
+                                        draggable="true"
                                         @dragend="endDraggingQuestion($event, question)" 
                                         @dragstart="startDraggingQuestion($event, question, questiongroup)"
+                                        @click.stop.prevent="()=>false"
                                     >
                                         &nbsp;
                                     </i>
-                                </template>
-                                <span 
-                                    class="col-12 pjax question-question-list-item-link" 
-                                    @click.prevent="openQuestion(question)" 
+                                <a
+                                    :href="question.link"  
+                                    class="col-12 pjax question-question-list-item-link display-as-container" 
+                                    @click.stop.prevent="openQuestion(question)" 
                                 > 
                                     <span class="question_text_ellipsize" :style="{ width: itemWidth }">
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }} 
                                     </span> 
-                                </span>
-                            </a>
+                                </a>
+                            </div>
                         </ul>
                     </transition>
                 </li>
@@ -323,6 +332,9 @@ export default {
 </template>
 
 <style lang="scss">
+.display-as-container{
+    display: block;
+}
 #questionexplorer {
     overflow: auto;
 }

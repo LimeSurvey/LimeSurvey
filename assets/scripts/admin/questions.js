@@ -97,8 +97,10 @@ var QuestionFunctions = function () {
         init = function () {
         var oldQuestionTemplate = '';
             updatequestionattributes('');
-            $('#questionTypeSelector').on('change', function(){
-                $('#question_type').val($(this).val()).trigger('change')
+            $('#questionTypeSelector').on('change', function(){ //  Simple Question type selector in General settings 
+                $('#question_type').val($(this).val()).trigger('change');
+                updatequestionattributes();  
+                updateQuestionTemplateOptions();
             });
 
             $('#question_type').on('change', function(){

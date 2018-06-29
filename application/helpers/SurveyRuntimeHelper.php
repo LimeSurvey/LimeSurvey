@@ -1390,7 +1390,12 @@ class SurveyRuntimeHelper
             $aLSJavascriptVar['bNumRealValue'] = (int) (bool) Yii::app()->getConfig('bNumRealValue', 0);
             $aRadix                            = getRadixPointData($aSurveyinfo['surveyls_numberformat']);
             $aLSJavascriptVar['sLEMradix']     = $aRadix['separator'];
-            $aLSJavascriptVar['lang']          = new stdClass; // To add more easily some lang string here
+            $aLSJavascriptVar['lang']          = [
+                "confirm" =>  [
+                    "confirm_cancel" =>  gT('Cancel'),
+                    "confirm_ok" =>  gT('OK'),
+                ],
+            ]; // To add more easily some lang string here
             $aLSJavascriptVar['showpopup']     = (int) Yii::app()->getConfig('showpopups');
             $aLSJavascriptVar['startPopups']   = new stdClass;
             $aLSJavascriptVar['debugMode']     = Yii::app()->getConfig('debug');

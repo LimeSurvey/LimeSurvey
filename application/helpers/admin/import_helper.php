@@ -266,6 +266,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             $oQuestion->setAttributes($insertdata, false);
 
             if (!isset($aQIDReplacements[$iOldQID])) {
+                switchMSSQLIdentityInsert('questions', false);
                 // Try to fix question title for valid question code enforcement
                 if (!$oQuestion->validate(array('title'))) {
                     $sOldTitle = $oQuestion->title;
@@ -624,9 +625,16 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                     unset($sOldTitle);
                 }
             }
+        if (isset($insertdata['qid'])) {
+            switchMSSQLIdentityInsert('questions', true);
+        }
+        
             if (!$oQuestion->save()) {
                 $results['fatalerror'] = CHtml::errorSummary($oQuestion, gT("The question could not be imported for the following reasons:"));
                 return $results;
+        }
+        if (isset($insertdata['qid'])) {
+            switchMSSQLIdentityInsert('questions', false);
             }
             $aQIDReplacements[$iOldQID] = $oQuestion->qid; ;
             $results['questions']++;
