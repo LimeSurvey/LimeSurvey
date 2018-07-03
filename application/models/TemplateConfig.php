@@ -112,7 +112,7 @@ class TemplateConfig extends CActiveRecord
         /**
          * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
          * Can return a 302 redirect (this is not really a throw …
-         * 
+         *
          * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
          * @param TemplateConfig $oRTemplate template from which the recurrence should start
          * @param boolean $force file to be in template or mother template
@@ -730,7 +730,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['clearalllinks']  = $aClassAndAttributes['attr']['clearalllink'] = ' ';
         // Clearall Buttons
         $aClassAndAttributes['class']['clearallwrapper'] = $aClassAndAttributes['class']['clearallconfirm'] = ""; // No need, adding it if need something after
-        $aClassAndAttributes['class']['clearalllabel'] = "ls-js-hidden"; 
+        $aClassAndAttributes['class']['clearalllabel'] = "ls-js-hidden";
         $aClassAndAttributes['attr']['clearallconfirm']  = 'value="confirm" name="confirm-clearall" type="checkbox"';
         $aClassAndAttributes['attr']['clearallbutton'] = 'type="submit" value="clearall" name="move" data-confirmedby="confirm-clearall"';
         $aClassAndAttributes['class']['clearallbutton'] = "ls-clearaction ls-clearall"; // Not needed, keep it (and adding to twig to be most compatible in future)
