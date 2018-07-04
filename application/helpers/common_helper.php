@@ -2163,7 +2163,7 @@ function jsonEscape($str, $strip_tags = false, $htmldecode = false)
     if ($strip_tags == true) {
         $str = strip_tags($str);
     }
-    return str_replace('"', "&apos;", $str);
+    return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
 }
 
 /**
