@@ -75,7 +75,6 @@ class themes extends Survey_Common_Action
         }
     }
 
-
     /**
     * Exports a deprecated template
     *
@@ -89,10 +88,39 @@ class themes extends Survey_Common_Action
         $templatename        = sanitize_dirname($templatename);
         $usertemplaterootdir = Yii::app()->getConfig("uploaddir").DIRECTORY_SEPARATOR."templates";
         $templatePath        = $usertemplaterootdir.DIRECTORY_SEPARATOR.$templatename;
+        $this->folderzip($templatename, $templatePath);
+    }
 
+    /**
+    * Exports a broken theme
+    *
+    * @access public
+    * @param string $templatename
+    * @return void
+    */
+    public function brokentemplatezip($templatename)
+    {
+        //$oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        $templatename        = sanitize_dirname($templatename);
+        $templatePath        = Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$templatename;
+        $this->folderzip($templatename, $templatePath);
+    }
+
+    /**
+    * Exports a theme folder
+    * NOTE: This function must remain private !!! it doesn't sanitize the $templatePath
+    * This should be done by the proxy function (eg: deprecatedtemplatezip(), brokentemplatezip() )
+    *
+    * @access public
+    * @param string $templatename
+    * @return void
+    */
+    private function folderzip($templatename, $templatePath)
+    {
 
         if (!Permission::model()->hasGlobalPermission('templates','export')){
-            die('No permission');
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            $this->getController()->redirect(array("admin/themeoptions"));
         }
 
         $tempdir = Yii::app()->getConfig('tempdir');
@@ -116,8 +144,8 @@ class themes extends Survey_Common_Action
             // Delete the temporary file
             unlink($zipfile);
         }
-    }
 
+    }
 
     /**
      * Retrieves a temporary template file from disk
@@ -616,7 +644,25 @@ class themes extends Survey_Common_Action
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
+
+
         // Redirect with default templatename, editfile and screenname
+        $this->getController()->redirect(array("admin/themeoptions"));
+    }
+
+    public function deleteBrokenTheme($templatename)
+    {
+        // First we check that the theme is really broken
+        $aBrokenThemes = Template::getBrokenThemes();
+        $templatename  = sanitize_dirname($templatename);
+        if (array_key_exists($templatename, $aBrokenThemes)) {
+            if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
+                Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+            }
+        }else{
+            Yii::app()->setFlashMessage(gT("Not a broken theme!"), 'error');
+        }
+
         $this->getController()->redirect(array("admin/themeoptions"));
     }
 
@@ -1185,7 +1231,7 @@ class themes extends Survey_Common_Action
 
         $thissurvey['include_content'] = $sContentFile;
 
-        
+
         try {
             $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
                 $sLayoutFile,

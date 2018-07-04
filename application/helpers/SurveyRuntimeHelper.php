@@ -391,8 +391,8 @@ class SurveyRuntimeHelper
 
         $bShowpopups                            = Yii::app()->getConfig('showpopups');
         $aErrorHtmlMessage                      = $this->getErrorHtmlMessage();
-        $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage);
-        $this->aSurveyInfo['errorHtml']['hiddenClass'] = $bShowpopups ? "ls-js-hidden " : "";
+        $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage) && $bShowpopups==0;  
+        $this->aSurveyInfo['errorHtml']['hiddenClass'] = $bShowpopups==1 ? "ls-js-hidden " : "";
         $this->aSurveyInfo['errorHtml']['messages']    = $aErrorHtmlMessage;
 
         $_gseq = -1;
@@ -1420,7 +1420,7 @@ class SurveyRuntimeHelper
         }
 
         // Question(s) with not valid answer(s)
-        if ($this->aStepInfo['valid'] && $this->okToShowErrors) {
+        if (!$this->aStepInfo['valid'] && $this->okToShowErrors) {
             $aErrorsMandatory[] = gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
         }
 

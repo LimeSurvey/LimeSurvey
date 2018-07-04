@@ -221,7 +221,7 @@ class Template extends LSActiveRecord
             if (empty($oRTemplate)) {
 
                 // Why? it blocks the user at login screen....
-                // It should return false and show a nice warning message. 
+                // It should return false and show a nice warning message.
 
                 /*throw new Exception(
                     sprintf(
@@ -676,6 +676,32 @@ class Template extends LSActiveRecord
 
         return $aTemplateList;
     }
+
+    /**
+     * Retrieves a list of broken themes
+     */
+    public static function getBrokenThemes($sFolder=null)
+    {
+        $aBrokenTemplateList = array();
+        $sFolder    =  (empty($sFolder))?Yii::app()->getConfig("userthemerootdir"):$sFolder;
+
+        if ($sFolder && $handle = opendir($sFolder)) {
+            while (false !== ($sFileName = readdir($handle))) {
+                if (!is_file("$sFolder/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName != ".svn" && $sFileName != 'generalfiles' ) {
+
+                    try {
+                        $oTheme = Template::getTemplateConfiguration($sFileName, null, null, true); // Get the manifest;
+                    }catch (Exception $e) {
+                        $aBrokenTemplateList[$sFileName] = $e;
+                    }
+                }
+            }
+            closedir($handle);
+        }
+        ksort($aBrokenTemplateList);
+        return  $aBrokenTemplateList;
+    }
+
 
     /**
      * Returns the static model of the specified AR class.
