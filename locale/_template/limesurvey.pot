@@ -9748,7 +9748,7 @@ msgid "Sub-question validation tip"
 msgstr ""
 
 #: application/helpers/questionHelper.php:341
-msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semikolon."
+msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semicolon."
 msgstr ""
 
 #: application/helpers/questionHelper.php:342
@@ -14475,7 +14475,7 @@ msgid "Enter your labels:"
 msgstr ""
 
 #: application/views/admin/labels/_labelviewquickadd_view.php:9
-msgid "Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab."
+msgid "Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab."
 msgstr ""
 
 #: application/views/admin/labels/_labelviewquickadd_view.php:12
