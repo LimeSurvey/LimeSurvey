@@ -10282,7 +10282,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $row = array();
                         $row['class'] = 'SQ';
                         $row['type/scale'] = 0;
-                        $row['name'] = substr($varName,strlen($rootVarName)+1);
+                        
+                        $subqName = substr($varName,strlen($rootVarName)+1);
+                        // it breaks TSV survey import process if first character for name is numeric
+                        // in such case, characters 'SQ' are added to the front of name, so validation can pass
+                        if (preg_match('/^\d/', subqName) === 1){
+                            $row['name'] = 'SQ'.subqName;
+                        } else {
+                            $row['name'] = subqName;
+                        }
+
                         $row['relevance'] = $SQrelevance;
                         $row['text'] = $subqText;
                         $row['language'] = $lang;

@@ -81,6 +81,8 @@ function quoteText($sText, $sEscapeMode = 'html')
             return HTMLEscape($sText);
         case 'js':
             return javascriptEscape($sText);
+        case 'json':
+            return jsonEscape($sText);
         case 'unescaped':
             return $sText;
         default:
@@ -1931,6 +1933,18 @@ function javascriptEscape($str, $strip_tags = false, $htmldecode = false)
     return str_replace(array('\'', '"', "\n", "\r"),
     array("\\'", '\u0022', "\\n", '\r'),
     $str);
+}
+// make a string safe to include in a json String parameter.
+function jsonEscape($str, $strip_tags = false, $htmldecode = false)
+{
+
+    if ($htmldecode == true) {
+        $str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
+    }
+    if ($strip_tags == true) {
+        $str = strip_tags($str);
+    }
+    return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
 }
 
 /**
