@@ -192,12 +192,15 @@ class InstallFromConfigCommand extends CConsoleCommand
                 case 'dblib':
                 case 'mssql':
                 case 'odbc':
+                    // TODO: Check if exists
                     $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
                     break;
                 case 'pgsql':
+                    // TODO: Check if exists
                     $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
                     break;
                 default:
+                    // TODO: Check if exists
                     $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
                     break;
             }
