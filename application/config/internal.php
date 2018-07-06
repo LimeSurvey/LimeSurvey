@@ -235,7 +235,7 @@ $internalConfig = array(
                 'ellipsizeString'         => 'LS_Twig_Extension::ellipsizeString',
                 'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText',
                 'str_replace'             => 'str_replace',
-
+                'getConfig'               => 'LS_Twig_Extension::getConfig',
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
@@ -331,7 +331,7 @@ $internalConfig = array(
                     'ellipsizeString',
                     'flatEllipsizeText',
                     'str_replace',
-
+                    'getConfig',
                     'getAllQuestionClasses',
                     'intval',
                     'empty',

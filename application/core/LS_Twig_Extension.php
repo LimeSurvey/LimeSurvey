@@ -513,4 +513,9 @@ class LS_Twig_Extension extends Twig_Extension
 
         return 'rgba('.join(', ', $return).','.$alpha.')';
     }
+
+    public static function getConfig($item)
+    {
+        return Yii::app()->getConfig($item);
+    }
 }
