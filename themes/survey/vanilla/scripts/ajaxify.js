@@ -64,37 +64,6 @@ var AjaxSubmitObject = function () {
         return true;
     };
 
-    var appendScript = function (scriptText, scriptPosition, src) {
-        src = src || '';
-        scriptPosition = scriptPosition || null;
-        var scriptNode = document.createElement('script');
-        scriptNode.type = 'text/javascript';
-        if (src != false) {
-            scriptNode.src = src;
-        }
-        scriptNode.text = scriptText;
-        scriptNode.attributes.class = 'toRemoveOnAjax';
-        switch (scriptPosition) {
-            case 'head':
-                if (checkScriptNotLoaded(scriptNode)) {
-                    document.head.appendChild(scriptNode);
-                }
-                break;
-            case 'body':
-                document.body.appendChild(scriptNode);
-                break;
-            case 'beginScripts':
-                document.getElementById('beginScripts').appendChild(scriptNode);
-                break;
-            case 'bottomScripts': //fallthrough
-            default:
-                document.getElementById('bottomScripts').appendChild(scriptNode);
-                break;
-
-        }
-    };
-
-
     var bindActions = function () {
         var logFunction = new ConsoleShim('PJAX-LOG', (LSvar.debugMode < 1));
 
