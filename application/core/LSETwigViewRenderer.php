@@ -281,6 +281,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $this->_twig = $twig = parent::getTwig();
         $this->addRecursiveTemplatesPath($oRTemplate);
         $renderArray['optionsPath'] = $sOptionsPath;
+        $renderArray['showpopups_disabled'] = (int)Yii::app()->getConfig('showpopups') < 2 ? 'disabled' : '';
+        $renderArray['showpopups_disabled_qtip'] = (int)Yii::app()->getConfig('showpopups') < 2 ? 'data-hasqtip="true" title="'.gT("Disabled by configuration. Set 'showpopups' option in config.php file to enable this option. ").'"' : '';
         // Twig rendering
         $line         = file_get_contents($oRTemplate->path.$sOptionFile);
         $oTwigTemplate = $twig->createTemplate($line);

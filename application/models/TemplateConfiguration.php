@@ -85,6 +85,9 @@ class TemplateConfiguration extends TemplateConfig
 
     public $generalFilesPath; //Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.'generalfiles'.DIRECTORY_SEPARATOR;
 
+    /** @var int $showpopups show warnings when running survey */
+    public $showpopups; //
+
     /**
      * @return string the associated database table name
      */
@@ -453,7 +456,8 @@ class TemplateConfiguration extends TemplateConfig
         $this->setBasics($sTemplateName, $iSurveyId);
         $this->setMotherTemplates(); // Recursive mother templates configuration
         $this->setThisTemplate(); // Set the main config values of this template
-        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
+        $this->createTemplatePackage($this); // Create an asset package ready to be loaded#
+        $this->getshowpopups();
         self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit] = $this;
         return $this;
     }
@@ -1116,5 +1120,21 @@ class TemplateConfiguration extends TemplateConfig
             'sid IS NULL AND uid IS NULL and gsid IS NULL AND template_name = :template_name',
             [':template_name'=>$this->template_name]
         );
+    }
+
+    /**
+     * Get showpopups value from config or template configuration
+     */
+    public function getshowpopups(){
+        $config = (int)Yii::app()->getConfig('showpopups');
+        if ($config == 2){
+            if (isset($this->oOptions->showpopups)){
+                $this->showpopups = (int)$this->oOptions->showpopups; 
+            } else {
+               $this->showpopups = 1;
+           }
+        } else {
+            $this->showpopups = $config;
+        }
     }
 }

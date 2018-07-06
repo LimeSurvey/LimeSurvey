@@ -87,6 +87,7 @@
         <greyoutselected>off</greyoutselected>
         <hideprivacyinfo>off</hideprivacyinfo>
         <crosshover>off</crosshover>
+        <showpopups>1</showpopups>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->
