@@ -2416,10 +2416,7 @@ function TSVImportSurvey($sFullFilePath)
                     }
                     // Insert sub question and keep the sqid for multi language survey
                     $question = new Question();
-                    //$question->attributes = $insertdata; : this broke call of $this when test rules when save : PLEASE : don't use
-                    foreach($insertdata as $attribute=>$value) {
-                        $question->setAttribute($attribute,$value);
-                    }
+                    $question->setAttributes($insertdata,false); //$question->attributes = $insertdata; : this broke call of $this when test rules when save : PLEASE : don't use
                     if (!$question->save()) {
                         $results['error'][] = gT("Error")." : ".gT("Could not insert subquestion").". ".gT("Text file row number ").$rownumber." (".$sqname.")";
                         break;
