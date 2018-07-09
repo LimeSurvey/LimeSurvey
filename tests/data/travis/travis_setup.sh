@@ -30,7 +30,7 @@ chmod -R 776 tests/tmp
 chmod -R 776 tests/tmp/runtime
 php application/commands/console.php install admin password TravisLS no@email.com verbose
 cp application/config/config-sample-mysql.php application/config/config.php
-sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
+# sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
 
 sudo apt-get update > /dev/null
 sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs firefox

@@ -50,7 +50,7 @@ foreach ( $aQuestionTypeList as $key => $questionType)
         'groupTitleKey' => "questionGroupName",
         'groupItemsKey' => "questionTypes",
         'debugKeyCheck' => "Type: ",
-        'previewWindowTitle' => "Preview question type",
+        'previewWindowTitle' => gT("Preview question type"),
         'groupStructureArray' => $aQuestionTypeGroups,
         'value' => $eqrow['type'],
         'debug' => YII_DEBUG,
@@ -59,7 +59,7 @@ foreach ( $aQuestionTypeList as $key => $questionType)
             'selectedClass' => Question::getQuestionClass($eqrow['type']),
             'onUpdate' => [
                 'value',
-                "console.ls.log(value); $('#question_type').val(value);"
+                "console.ls.log(value); $('#question_type').val(value); updatequestionattributes(''); updateQuestionTemplateOptions();"
             ]
         ]
     ));

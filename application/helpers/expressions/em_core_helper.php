@@ -2217,9 +2217,9 @@ class ExpressionManager
     {
         $em = new ExpressionManager();
         $output = "<div class='h3'>Functions Available within Expression Manager</div>\n";
-        $output .= "<table border='1'><tr><th>Function</th><th>Meaning</th><th>Syntax</th><th>Reference</th></tr>\n";
+        $output .= "<table border='1' class='table'><tr><th>Function</th><th>Meaning</th><th>Syntax</th><th>Reference</th></tr>\n";
         foreach ($em->RDP_ValidFunctions as $name => $func) {
-            $output .= "<tr><td>".$name."</td><td>".$func[2]."</td><td>".$func[3]."</td><td>";
+            $output .= "<thead><tr><th>".$name."</th><th>".$func[2]."</th><th>".$func[3]."</th><th>";
 
         // 508 fix, don't output empty anchor tags
         if ($func[4]) {
@@ -2230,6 +2230,16 @@ class ExpressionManager
         }
         $output .= "</table>\n";
         return $output;
+    }
+
+    /**
+     * Show a table of allowable Expression Manager functions
+     * @return string
+     */
+    static function GetAllowableFunctions()
+    {
+        $em = new ExpressionManager();
+        return $em->RDP_ValidFunctions;
     }
 
     /**

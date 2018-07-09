@@ -44,7 +44,8 @@ return array(
             'yiistrap'.$minVersion.'.css',
         ),
         'js'=>array(
-            'bootstrap'.$minVersion.'.js'
+            'bootstrap'.$minVersion.'.js',
+            'plugins/bootstrapconfirm/bootstrapconfirm'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',
@@ -343,13 +344,11 @@ return array(
     ),
 
     'jquery-datatable' => array(
-        'basePath' => 'third_party.jquery-datatable',
+        'basePath' => 'third_party.datatables',
         'position' => CClientScript::POS_BEGIN,
-        'css' => array(
-            'datatables.min.css'
-        ),
         'js' => array(
-            'datatables.js'
+            'js/jquery.dataTables'.$minVersion.'.js',
+            'js/dataTables.bootstrap'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',

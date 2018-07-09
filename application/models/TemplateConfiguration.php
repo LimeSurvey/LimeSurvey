@@ -85,6 +85,9 @@ class TemplateConfiguration extends TemplateConfig
 
     public $generalFilesPath; //Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.'generalfiles'.DIRECTORY_SEPARATOR;
 
+    /** @var int $showpopups show warnings when running survey */
+    public $showpopups; //
+
     /**
      * @return string the associated database table name
      */
@@ -453,7 +456,8 @@ class TemplateConfiguration extends TemplateConfig
         $this->setBasics($sTemplateName, $iSurveyId);
         $this->setMotherTemplates(); // Recursive mother templates configuration
         $this->setThisTemplate(); // Set the main config values of this template
-        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
+        $this->createTemplatePackage($this); // Create an asset package ready to be loaded#
+        $this->getshowpopups();
         self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit] = $this;
         return $this;
     }
@@ -637,6 +641,43 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
+    // TODO
+    public function addOptionFromXMLToLiveTheme($name, $value)
+    {
+        if ($this->options != 'inherit') {
+
+            $oOptions = json_decode($this->options);
+            // $oXmlOptions = TemplateManifest::getOptions ?
+
+            // TODO: implement logic (it should read the XML file, compare the if all the option from the XML are present inside)
+            // Foreach ($oXmlOptions as $oXmlOption)
+            //  if ($oXmlOption is not inside   $oOptions)
+            //      addOptionToLiveTheme($oXmlOption->name, $oXmlOptionvalue)
+        }
+    }
+
+    /**
+     * Add an option definition to the current theme.
+     * Will be used to turn ON ajax mode on update.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function addOptionToLiveTheme($name, $value)
+    {
+        if ($this->options != 'inherit') {
+
+            $oOptions = json_decode($this->options);
+            $oOptions->$name = $value;
+            $sOptions = json_encode($oOptions);
+            $this->options = $sOptions;
+            $this->save();
+
+        }
+    }
+
+
     /**
      * Set option (unless if options is set to "inherit").
      * @param string $name
@@ -780,13 +821,6 @@ class TemplateConfiguration extends TemplateConfig
                     //Yii::app()->clientScript->removeFileFromPackage($this->sPackageName, $sType, $sFileName);
                     unset($aSettings[$key]);
                     Yii::app()->clientScript->addFileToPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
-                    /* Old way todo
-                        $oTemplate = $this->getTemplateForFile($sFileName, $this);
-                        if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)) {
-                            Yii::app()->clientScript->addFileToPackage($oTemplate->sPackageName, $sType, $sFileName);
-                            unset($aSettings[$key]);
-                        }
-                    */
                 }
             }
         }
@@ -1123,5 +1157,21 @@ class TemplateConfiguration extends TemplateConfig
             'sid IS NULL AND uid IS NULL and gsid IS NULL AND template_name = :template_name',
             [':template_name'=>$this->template_name]
         );
+    }
+
+    /**
+     * Get showpopups value from config or template configuration
+     */
+    public function getshowpopups(){
+        $config = (int)Yii::app()->getConfig('showpopups');
+        if ($config == 2){
+            if (isset($this->oOptions->showpopups)){
+                $this->showpopups = (int)$this->oOptions->showpopups; 
+            } else {
+               $this->showpopups = 1;
+           }
+        } else {
+            $this->showpopups = $config;
+        }
     }
 }

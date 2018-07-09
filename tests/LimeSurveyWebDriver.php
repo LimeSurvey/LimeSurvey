@@ -26,7 +26,7 @@ class LimeSurveyWebDriver extends RemoteWebDriver
         $langSelectOption = $this->findElement(
             WebDriverBy::cssSelector(
                 sprintf(
-                    '#langchangerSelectMain option[value="%s"]',
+                    '#lang option[value="%s"]',
                     $newLang
                 )
             )

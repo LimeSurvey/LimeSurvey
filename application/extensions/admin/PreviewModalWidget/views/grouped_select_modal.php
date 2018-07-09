@@ -36,11 +36,11 @@
                               class="list-group-item selector__Item--select-<?=$this->widgetsJsName?> <?=@$aItemContent['htmlclasses']?>" 
                               data-selector="<?=!empty($aItemContent['class']) ? $aItemContent['class'] : $sItemKey ?>"
                               data-key="<?=$sItemKey?>"
-                              data-item-value='<?=htmlentities(json_encode([
+                              data-item-value='<?=json_encode([
                                     "key" => $sItemKey,
-                                    "title" => $aItemContent['description'],
+                                    "title" => htmlentities($aItemContent['description']),
                                     "itemArray" => $aItemContent
-                                ])); ?>'
+                                ]); ?>'
                               <?=@$aItemContent['extraAttributes']?>
                             >
                               <?=$aItemContent['description']?>

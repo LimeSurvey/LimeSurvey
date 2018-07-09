@@ -182,7 +182,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             Yii::app()->db->createCommand()->insert('{{questions}}', $insertdata);
             $newsqid = getLastInsertID('{{questions}}');
             if (isset($insertdata['qid'])) {
-                switchMSSQLIdentityInsert('questions', true);
+                switchMSSQLIdentityInsert('questions', false);
             }
 
             if (!isset($insertdata['qid'])) {
@@ -424,9 +424,16 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                 $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."), $sOldTitle, $sNewTitle);
             }
         }
+        if (isset($insertdata['qid'])) {
+            switchMSSQLIdentityInsert('questions', true);
+        }
+        
         if (!$oQuestion->save()) {
             $results['fatalerror'] = CHtml::errorSummary($oQuestion, gT("The question could not be imported for the following reasons:"));
             return $results;
+        }
+        if (isset($insertdata['qid'])) {
+            switchMSSQLIdentityInsert('questions', false);
         }
         if (!isset($aQIDReplacements[$oldqid])) {
             $newqid = $aQIDReplacements[$oldqid] = $oQuestion->qid;
@@ -1009,6 +1016,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     // We have to run the question table data two times - first to find all main questions
     // then for subquestions (because we need to determine the new qids for the main questions first)
         // there could be surveys without a any questions
+    $aQuestionsMapping = array(); // collect all old and new question codes for replacement
     if (isset($xml->questions)) {
 
         foreach ($xml->questions->rows->row as $row) {
@@ -1022,7 +1030,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 continue;
             }
 
-            $iOldSID = $insertdata['sid'];
+            $iOldSID = $insertdata['sid'];            
+            $iOldGID = $insertdata['gid'];
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
             $oldqid = $insertdata['qid']; unset($insertdata['qid']); // save the old qid
@@ -1104,6 +1113,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             } else {
                 switchMSSQLIdentityInsert('questions', false);
             }
+
+            // question codes in format "38612X105X3011" are collected for replacing
+            $aQuestionsMapping[$iOldSID.'X'.$iOldGID.'X'.$oldqid] = $iNewSID.'X'.$oQuestion->gid.'X'.$oQuestion->qid;
         }
     }
 
@@ -1123,10 +1135,12 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['mandatory'] = 'N';
             }
 
-            $insertdata['sid'] = $iNewSID;
+            $insertdata['sid'] = $iNewSID;            
+            $iOldGID = $insertdata['gid'];
             $insertdata['gid'] = $aGIDReplacements[(int) $insertdata['gid']]; ;
             $oldsqid = (int) $insertdata['qid']; unset($insertdata['qid']); // save the old qid
             $insertdata['parent_qid'] = $aQIDReplacements[(int) $insertdata['parent_qid']]; // remap the parent_qid
+            $sOldTitle = '';
 
             // now translate any links
             if ($bTranslateInsertansTags) {
@@ -1212,6 +1226,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             } else {
                 switchMSSQLIdentityInsert('questions', false);
             }
+
+            // question codes in format "38612X105X3011" are collected for replacing
+            $aQuestionsMapping[$iOldSID.'X'.$iOldGID.'X'.$oldqid.$question->title] = $iNewSID.'X'.$oQuestion->gid.'X'.$oQuestion->qid.$question->title;
         }
     }
 
@@ -1525,6 +1542,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     LimeExpressionManager::SetSurveyId($iNewSID);
     translateInsertansTags($iNewSID, $iOldSID, $aOldNewFieldmap);
     replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
+    replaceExpressionCodes($iNewSID, $aQuestionsMapping); // replace question codes in format "38612X105X3011"
     if (count($aQuestionCodeReplacements)) {
             array_unshift($results['importwarnings'], "<span class='warningtitle'>".gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.').'</span>');
     }

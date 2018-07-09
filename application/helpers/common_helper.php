@@ -80,6 +80,8 @@ function quoteText($sText, $sEscapeMode = 'html')
             return HTMLEscape($sText);
         case 'js':
             return javascriptEscape($sText);
+        case 'json':
+            return jsonEscape($sText);
         case 'unescaped':
             return $sText;
         default:
@@ -2151,10 +2153,22 @@ function javascriptEscape($str, $strip_tags = false, $htmldecode = false)
     array("\\'", '\u0022', "\\n", '\r'),
     $str);
 }
+// make a string safe to include in a json String parameter.
+function jsonEscape($str, $strip_tags = false, $htmldecode = false)
+{
+
+    if ($htmldecode == true) {
+        $str = html_entity_decode($str, ENT_QUOTES, 'UTF-8');
+    }
+    if ($strip_tags == true) {
+        $str = strip_tags($str);
+    }
+    return str_replace(array('"','\''), array("&apos;","&apos;"), $str);
+}
 
 /**
 * This function mails a text $body to the recipient $to.
-* You can use more than one recipient when using a semikolon separated string with recipients.
+* You can use more than one recipient when using a semicolon separated string with recipients.
 *
 * @param string $body Body text of the email in plain text or HTML
 * @param mixed $subject Email subject
@@ -3625,9 +3639,9 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         $bModified = false;
         foreach ($aCodeMap as $sOldCode=>$sNewCode) {
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-            if (strlen($sOldCode) > 1 && !is_numeric($sOldCode[0])) {
+            if (strlen($sOldCode) > 1 && !is_numeric($sOldCode)) {
                 $sOldCode = preg_quote($sOldCode, '~');
-                $arQuestion->relevance = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->relevance, -1, $iCount);
+                $arQuestion->relevance=preg_replace("/\b{$sOldCode}/",$sNewCode,$arQuestion->relevance,-1,$iCount);
                 $bModified = $bModified || $iCount;
                 $arQuestion->question = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->question, -1, $iCount);
                 $bModified = $bModified || $iCount;
@@ -3642,7 +3656,7 @@ function replaceExpressionCodes($iSurveyID, $aCodeMap)
         $bModified = false;
         foreach ($aCodeMap as $sOldCode=>$sNewCode) {
             $sOldCode = preg_quote($sOldCode, '~');
-            $arGroup->grelevance = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->grelevance, -1, $iCount);
+            $arGroup->grelevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
             $bModified = $bModified || $iCount;
             $arGroup->description = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->description, -1, $iCount);
             $bModified = $bModified || $iCount;

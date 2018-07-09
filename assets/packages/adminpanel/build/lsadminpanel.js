@@ -37062,7 +37062,7 @@ exports = module.exports = __webpack_require__(44)(true);
 
 
 // module
-exports.push([module.i, "\n#questionexplorer {\n  overflow: auto;\n}\n", "", {"version":3,"sources":["/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/subcomponents/_questionsgroups.vue"],"names":[],"mappings":";AAAA;EACE,eAAe;CAAE","file":"_questionsgroups.vue","sourcesContent":["#questionexplorer {\n  overflow: auto; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.display-as-container {\n  display: block;\n}\n#questionexplorer {\n  overflow: auto;\n}\n", "", {"version":3,"sources":["/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/subcomponents/_questionsgroups.vue"],"names":[],"mappings":";AAAA;EACE,eAAe;CAAE;AAEnB;EACE,eAAe;CAAE","file":"_questionsgroups.vue","sourcesContent":[".display-as-container {\n  display: block; }\n\n#questionexplorer {\n  overflow: auto; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -37192,6 +37192,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         dragoverQuestiongroup($event, questiongroupObject) {
+            if (this.draggedQuestion == undefined || this.draggedQuestion == null) {
+                this.$log.error({
+                    this: this,
+                    event: $event,
+                    questiongroupObject: questiongroupObject,
+                    draggedQuestion: this.draggedQuestion
+                });
+            }
+
             if (this.questiongroupDragging) {
                 const orderSwap = questiongroupObject.group_order;
                 questiongroupObject.group_order = this.draggedQuestionGroup.group_order;
@@ -37224,7 +37233,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //dragevents questions
         startDraggingQuestion($event, questionObject, questionGroupObject) {
             this.$log.log("Dragging started", questionObject);
-            $event.dataTransfer.setData("text/plain", "node");
+            $event.dataTransfer.setData('application/node', this);
             this.questionDragging = true;
             this.draggedQuestion = questionObject;
             this.draggedQuestionsGroup = questionGroupObject;
@@ -37304,7 +37313,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('div', {
       staticClass: "col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5"
-    }, [(!_vm.$store.state.surveyActiveState) ? [_c('i', {
+    }, [(!_vm.$store.state.surveyActiveState) ? _c('i', {
       staticClass: "fa fa-bars bigIcons dragPointer",
       attrs: {
         "draggable": "true"
@@ -37315,9 +37324,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         },
         "dragstart": function($event) {
           _vm.startDraggingGroup($event, questiongroup)
+        },
+        "click": function($event) {
+          $event.stopPropagation();
+          $event.preventDefault();
+          (function () { return false; })($event)
         }
       }
-    }, [_vm._v("\n                             \n                        ")])] : _vm._e(), _vm._v(" "), _c('a', {
+    }, [_vm._v("\n                         \n                    ")]) : _vm._e(), _vm._v(" "), _c('a', {
       staticClass: "col-12 pjax",
       attrs: {
         "href": questiongroup.link
@@ -37344,7 +37358,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.toggleActivation(questiongroup.gid)
         }
       }
-    }, [_vm._v(" ")])], 2), _vm._v(" "), _c('transition', {
+    }, [_vm._v(" ")])]), _vm._v(" "), _c('transition', {
       attrs: {
         "name": "slide-fade-down"
       }
@@ -37356,13 +37370,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, _vm._l((_vm.orderQuestions(questiongroup.questions)), function(question) {
-      return _c('a', {
+      return _c('div', {
         key: question.qid,
         staticClass: "list-group-item question-question-list-item ls-flex-row align-itmes-flex-between",
         class: _vm.questionItemClasses(question),
         attrs: {
           "data-toggle": "tootltip",
-          "href": question.link,
           "title": question.question_flat
         },
         on: {
@@ -37370,8 +37383,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             _vm.dragoverQuestion($event, question, questiongroup)
           }
         }
-      }, [(!_vm.$store.state.surveyActiveState) ? [_c('i', {
-        staticClass: "fa fa-bars margin-right bigIcons dragPointer",
+      }, [(!_vm.$store.state.surveyActiveState) ? _c('i', {
+        staticClass: "fa fa-bars margin-right bigIcons dragPointer question-question-list-item-drag",
         attrs: {
           "draggable": "true"
         },
@@ -37381,12 +37394,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           },
           "dragstart": function($event) {
             _vm.startDraggingQuestion($event, question, questiongroup)
+          },
+          "click": function($event) {
+            $event.stopPropagation();
+            $event.preventDefault();
+            (function () { return false; })($event)
           }
         }
-      }, [_vm._v("\n                                     \n                                ")])] : _vm._e(), _vm._v(" "), _c('span', {
-        staticClass: "col-12 pjax question-question-list-item-link",
+      }, [_vm._v("\n                                     \n                                ")]) : _vm._e(), _vm._v(" "), _c('a', {
+        staticClass: "col-12 pjax question-question-list-item-link display-as-container",
+        attrs: {
+          "href": question.link
+        },
         on: {
           "click": function($event) {
+            $event.stopPropagation();
             $event.preventDefault();
             _vm.openQuestion(question)
           }
@@ -37396,7 +37418,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         style: ({
           width: _vm.itemWidth
         })
-      }, [_vm._v("\n                                    [" + _vm._s(question.title) + "] › " + _vm._s(question.question_flat) + " \n                                ")])])], 2)
+      }, [_vm._v("\n                                    [" + _vm._s(question.title) + "] › " + _vm._s(question.question_flat) + " \n                                ")])])])
     })) : _vm._e()])], 1)
   }))])])
 },staticRenderFns: []}

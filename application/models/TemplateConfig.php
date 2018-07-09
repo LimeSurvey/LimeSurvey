@@ -111,17 +111,25 @@ class TemplateConfig extends CActiveRecord
 
         /**
          * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
+         * Can return a 302 redirect (this is not really a throw …
          *
          * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
          * @param TemplateConfig $oRTemplate template from which the recurrence should start
-         * @return TemplateConfig
-         * @throws Exception
+         * @param boolean $force file to be in template or mother template
+         * @return TemplateConfig|null|void
          */
-        public function getTemplateForFile($sFile, $oRTemplate)
+        public function getTemplateForFile($sFile, $oRTemplate, $force = false)
         {
             while (!file_exists($oRTemplate->path.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)) {
                 $oMotherTemplate = $oRTemplate->oMotherTemplate;
                 if (!($oMotherTemplate instanceof TemplateConfiguration)) {
+                    if(!$force && Yii::app()->twigRenderer->getPathOfFile($sFile)) {
+                        // return dummy template , new self broke (No DB : TODO : must fix init of self)
+                        $templateConfig = new stdClass();
+                        $templateConfig->sTemplateName = null;
+                        return $templateConfig;
+                    }
+                    /* @todo : same for css and js (in registered package ? ) */
                     TemplateConfiguration::uninstall($this->sTemplateName);
                     Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "), $this->sTemplateName), 'error');
                     Yii::app()->getController()->redirect(array("admin/themeoptions"));
@@ -206,7 +214,7 @@ class TemplateConfig extends CActiveRecord
             $sFile = trim($sFile, '/');
 
             // Retreive the correct template for this file (can be a mother template)
-            $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
+            $oTemplate = $this->getTemplateForFile($sFile, $oTemplate,false);
 
             if ($oTemplate instanceof TemplateConfiguration) {
                 if (file_exists($oTemplate->path.$sFile)) {
@@ -214,6 +222,10 @@ class TemplateConfig extends CActiveRecord
                 } elseif (file_exists($oTemplate->viewPath.$sFile)) {
                     return $oTemplate->viewPath.$sFile;
                 }
+            }
+            $sExtension = substr(strrchr($sFile, '.'), 1);
+            if($sExtension === 'twig') {
+                return Yii::app()->twigRenderer->getPathOfFile($sFile);
             }
             return false;
         }
@@ -547,10 +559,11 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registerform']             = ' register-form  ';
         $aClassAndAttributes['class']['registerul']               = '  ';
         $aClassAndAttributes['class']['registerformcolrowlabel']  = ' ';
-        $aClassAndAttributes['class']['registerformcol']          = '  ';
+        $aClassAndAttributes['class']['registerformcol']          = ' register-form-column ';
         $aClassAndAttributes['class']['registerformcolrow']       = ' ';
         $aClassAndAttributes['class']['registerformcolrowb']      = '  ';
         $aClassAndAttributes['class']['registerformcolrowc']      = '  ';
+        $aClassAndAttributes['class']['registerformcoladdidtions']= ' register-form-column-additions ';
         $aClassAndAttributes['class']['registerformextras']       = '  ';
         $aClassAndAttributes['class']['registerformcaptcha']      = ' captcha-item ';
         $aClassAndAttributes['class']['registerformcolrowblabel'] = ' ';
@@ -586,7 +599,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['registerformcaptchalabel']  = ' for="loadsecurity"  ';
         $aClassAndAttributes['attr']['registerformcaptchainput']  = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
         $aClassAndAttributes['attr']['registermandatoryinfo']     = ' aria-hidden="true" ';
-        $aClassAndAttributes['class']['registersavedivbutton']    = ' type="submit" id="savebutton" name="savesubmit" value="save"';
+        $aClassAndAttributes['attr']['registersavedivbutton']    = ' type="submit" id="register_button" name="register" value="register"';
 
         $aClassAndAttributes['attr']['register']                  = $aClassAndAttributes['attr']['registerrow'] = $aClassAndAttributes['attr']['jumbotron'] = $aClassAndAttributes['attr']['registerrowjumbotrondiv'] = $aClassAndAttributes['attr']['registerulli'] = $aClassAndAttributes['class']['registerformcol'] = '';
         $aClassAndAttributes['attr']['registerformcolrow']        = $aClassAndAttributes['attr']['registerformcolrowb'] = $aClassAndAttributes['attr']['registerformcolrowbdiv'] = $aClassAndAttributes['class']['registerformcolrowc'] = $aClassAndAttributes['class']['registerformcolrowcdiv'] = $aClassAndAttributes['attr']['registerformextras'] = '';
@@ -717,7 +730,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['clearalllinks']  = $aClassAndAttributes['attr']['clearalllink'] = ' ';
         // Clearall Buttons
         $aClassAndAttributes['class']['clearallwrapper'] = $aClassAndAttributes['class']['clearallconfirm'] = ""; // No need, adding it if need something after
-        $aClassAndAttributes['class']['clearalllabel'] = "ls-js-hidden"; 
+        $aClassAndAttributes['class']['clearalllabel'] = "ls-js-hidden";
         $aClassAndAttributes['attr']['clearallconfirm']  = 'value="confirm" name="confirm-clearall" type="checkbox"';
         $aClassAndAttributes['attr']['clearallbutton'] = 'type="submit" value="clearall" name="move" data-confirmedby="confirm-clearall"';
         $aClassAndAttributes['class']['clearallbutton'] = "ls-clearaction ls-clearall"; // Not needed, keep it (and adding to twig to be most compatible in future)

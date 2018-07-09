@@ -58,6 +58,7 @@
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
         <font>noto</font>
+        <showpopups>1</showpopups>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
@@ -113,6 +114,7 @@
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_form.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -133,7 +135,7 @@
                     <file type="view" role="subview">./subviews/messages/warnings.twig</file>
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
-                    <file type="view" role="subview">./subviews/navigation/language_changer_first_page.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -214,6 +216,7 @@
                     <file type="view" role="subview">./subviews/registration/register_head.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_message.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_success.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_form.twig</file>
                     <file type="view" role="subview">./subviews/registration/required.twig</file>
                 </register>
 
@@ -237,6 +240,7 @@
                     <file type="view" role="subview">./subviews/navigation/clearall_links.twig</file>
                     <file type="view" role="subview">./subviews/navigation/save_links.twig</file>
                     <file type="view" role="subview">./subviews/navigation/language_changer_top_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer.twig</file>
                     <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
                     <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
                     <file type="view" role="subview">./subviews/navigation/navigator_complement.twig</file>

@@ -105,4 +105,15 @@ return array(
             'scripts/array-totalsum'.$minVersion.'.js',
         ),
     ),
+    /* array-numeric question */
+    'timer-addition'=>array(
+        'devBaseUrl'  => 'assets/packages/questions/timer/',
+        'basePath' => 'core.questions.timer',
+        'position' => CClientScript::POS_BEGIN,
+        'css'=> array(
+        ),
+        'js'=>array(
+            'timer'.$minVersion.'.js',
+        ),
+    ),
 );

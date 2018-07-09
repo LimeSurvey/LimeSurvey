@@ -35,6 +35,78 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.13.0 (build 180628) to 3.13.1 (build 180629) June 29, 2018
+-Fixed issue #13734:  image upload is not possible - You don't have permissions to browse server. (LouisGac)
+-Fixed issue #13828: Internal Server Error when clicking on 'Theme Options' in Survey Admin Area (Dominik Vitt)
+-Fixed issue: no token replacement in end url (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Basque by IVAP, the Official Translators' Service of the Basque Government.
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+Changes from 3.12.3 (build 180627) to 3.13.0 (build 180628) June 28, 2018
+-New feature: Allow plugin to add or remove file for template editor (#1084) (Denis Chenu)
+-Fixed issue #13685: Create a new survey - Save and Save and close -> same behavour (Markus Flür)
+-Fixed issue #13786: Duplicate survey in tutorial/beginner tour (Markus Flür)
+-Fixed issue #13787: Tutorial "beginner tour" breaks off (Markus Flür)
+-Fixed issue #13803: Deprecated confirm box since 3.0 alpha (Markus Flür)
+-Fixed issue #13811: Reordering questions by drag-and-drop (Markus Flür)
+-Fixed issue #13813: Question advanced settings not updated when update question type (Dominik Vitt)
+-Fixed issue #13814: Opening Question->Check logic will change admin interface language to question language (Dominik Vitt)
+-Fixed issue #13818: Error when using timer function in a question. (Markus Flür)
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Russian by vipgroup
+
+Changes from 3.12.2 (build 180625) to 3.12.3 (build 180627) June 27, 2018
+-Fixed issue #13251: DB error when importing multilingual group or question using MSSQL DB (Carsten Schmitz)
+-Fixed issue #13548: Import survey process fails sometimes with data conditions (Dominik Vitt)
+-Fixed issue #13644: Error when activating database sessions and using MSSQL (Carsten Schmitz)
+-Fixed issue #13750: PHP warning when setting template permission for a user (Carsten Schmitz)
+-Fixed issue #13784: Wrong language label for Other option when exporting with queXML PDF export (Dominik Vitt)
+-Fixed issue: Redirect in public registration plugins always wrong (Markus Flür)
+-Fixed issue: barebone URL only in path format from RPC (LouisGac)
+-Fixed issue: deactivated breaking plugin hook (Markus Flür)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Russian by vipgroup
+#Updated translation: Turkish by kayazeren
+
+                                                               
+Changes from 3.12.1 (build 180616) to 3.12.2 (build 180625) June 25, 2018
+-Fixed issue #12640: Unable to update lang when registering (before fill mandatory values) (Dominik Vitt)
+-Fixed issue #12688: Global Settings are not applied to survey settings when creating a new survey (Dominik Vitt)
+-Fixed issue #13725: Bad behaviour of help with Expression Manager and em_validation_q_tip (Denis Chenu)
+-Fixed issue #13776: Survey admin can see all survey groups (Dominik Vitt)
+-Fixed issue #13783: [json-API] token in add_response causes errors and does not work in update_response (Dominik Vitt)
+-Fixed issue #13790: End-URL redfirect is not working in AJAX mode (Markus Flür)
+-Fixed issue #13794: RPC add_response reports error, still inserts a response record (Olle Haerstedt)
+-Fixed issue #13798: Ajaxmode : default save/reload button unfonctional (Denis Chenu)
+-Fixed issue #13801: Unable to change language without javascript (Denis Chenu)
+-Fixed issue : error shown when language updated in register (js) (Denis Chenu)
+-Fixed issue : extra attributes lost when update language in register (Denis Chenu)
+-Fixed issue : unable to update language without js in register (Denis Chenu)
+-Fixed issue: Printing statistics created white page (Markus Flür)
+-Fixed issue: Question edit breaking on double bracket insertion (Markus Flür)
+-Fixed issue: ajax mode unfunctional on IE and Edge (Markus Flür)
+-Fixed issue: error when installing LimeSurvey (Markus Flür)
+-Fixed issue: error when installing LimeSurvey prt2 (Markus Flür)
+-Fixed issue: live update of options on edit question page (Dominik Vitt)
+-Fixed issue: live update of question theme options on edit question page (Dominik Vitt)
+-Fixed issue: redirection in ajax mode + fallback for no-js ajax mode (Markus Flür)
+
 Changes from 3.12.0 (build 180615) to 3.12.1 (build 180616) June 15, 2018
 -Fixed issue: question type selector not working (Markus Flür)
 Changes from 3.11.0 (build 180612) to 3.12.0 (build 180615) June 15, 2018
@@ -3422,7 +3494,7 @@ Fixed #1794: Errors showing when previewing question without answers in Flexible
 Fixed #1802: "Resume Later" -> reloading saved survey starts at first page (c_schmitz)
 Fixed HTML entities showing up in Excel, CSV & SPSS export (c_schmitz)
 Fixed #1780: Java script error with dual scale
-Updated tokens and email validation to be able to use several email addresses separated by semikolon when sending an invitation (c_schmitz)
+Updated tokens and email validation to be able to use several email addresses separated by semicolon when sending an invitation (c_schmitz)
 Fixed SPSS & data export to filter out tags and html-encoded chars (c_schmitz)
 Fixed #1798: In reminder email (html format) surveyurl is displayed as HTML code in Outlook (c_schmitz)
 Fixed #1785: Upgrade script failed to add startdate column under certain circumstances  (c_schmitz)

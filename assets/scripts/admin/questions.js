@@ -95,21 +95,24 @@ var QuestionFunctions = function () {
         },
 
         init = function () {
-
+        var oldQuestionTemplate = '';
             updatequestionattributes('');
-            $('#questionTypeSelector').on('change', function(){
-                $('#question_type').val($(this).val()).trigger('change')
+            $('#questionTypeSelector').on('change', function(){ //  Simple Question type selector in General settings 
+                $('#question_type').val($(this).val()).trigger('change');
+                updatequestionattributes();  
+                updateQuestionTemplateOptions();
             });
 
             $('#question_type').on('change', function(){
-                updatequestionattributes('');  
-                updateQuestionTemplatePreview();
                 OtherSelection(this.value);
             });
 
-            $(document).on('change', '#question_template', function(){
-                updatequestionattributes($('#question_template').val());  
-                updateQuestionTemplatePreview();
+            $(document).on('click', '#question_template', function(){
+                // save old value before the change
+                oldQuestionTemplate = $(this).val();
+            }).on('change', '#question_template', function() {
+                updatequestionattributes($(this).val(), oldQuestionTemplate);  
+                updateQuestionTemplateOptions('question_template');
             });
 
             /**
@@ -145,7 +148,7 @@ $(document).on('ready  pjax:scriptcomplete', function () {
 });
 
 
-function updatequestionattributes(question_template_name) {
+function updatequestionattributes(question_template_name = '', oldQuestionTemplate = '') {
     var type = $('#question_type').val();
     OtherSelection(type);
 
@@ -157,7 +160,8 @@ function updatequestionattributes(question_template_name) {
     var postData = {
         'qid': $('#qid').val(),
         'question_type': selected_value,
-        'sid': $('input[name=sid]').val()
+        'sid': $('input[name=sid]').val(),
+        'old_question_template': oldQuestionTemplate
     };
 
     if (Object.prototype.toString.call(question_template_name) == '[object String]'){
@@ -172,7 +176,7 @@ function updatequestionattributes(question_template_name) {
             $('#container-advanced-question-settings').html(data);
             $('.loader-advancedquestionsettings').addClass("hidden");
             if(question_template_name) {
-                $('#collapse-cat1').collapse('toggle');
+                //$('#collapse-cat1').collapse('toggle');
             }
 
             $('label[title]').qtip({
@@ -206,22 +210,7 @@ function updatequestionattributes(question_template_name) {
     });
 }
 
-function updateQuestionTemplateOptions() {
-    var type = $('#question_type').val();
-    $.ajax({
-        url: get_question_template_options_url,
-        data: {'type': type},
-        method: 'POST',
-        success: function (data) {
-            $("#question_template").html(""); 
-            $.each(data, function (key, value) {
-                $("#question_template").append("<option value="+key+">"+value.title+"</option>");
-            });
-        }
-    });
-}
-
-function updateQuestionTemplatePreview() {
+function updateQuestionTemplateOptions(selector = '') { // selector is only set when this function is called from #question_template
     var type = $('#question_type').val();
     var template = $('#question_template').val();
     $.ajax({
@@ -233,6 +222,13 @@ function updateQuestionTemplatePreview() {
                 $("#QuestionTemplatePreview img").attr('src', data[template]['preview']);
             } else {
                 $("#QuestionTemplatePreview img").attr('src', data['core']['preview']);
+            }
+
+            if (selector === ''){ // selector is not called from #question_template
+                $("#question_template").html(""); 
+                $.each(data, function (key, value) {
+                    $("#question_template").append("<option value="+key+">"+value.title+"</option>");
+                });
             }
         }
     });

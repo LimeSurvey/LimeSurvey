@@ -686,7 +686,6 @@ function initializeAjaxProgress()
     });
     $('#ajaxprogress').on('ajaxStop', function()
     {
-
         $(this).dialog('close');
     });
 }

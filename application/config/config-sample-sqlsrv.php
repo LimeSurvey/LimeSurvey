@@ -35,7 +35,8 @@ return array(
             'initSQLs'=>array('SET DATEFORMAT ymd;', 'SET QUOTED_IDENTIFIER ON;'),
         ),
 
-        // Uncomment the following line if you need table-based sessions
+        // Uncomment the following lines if you need table-based sessions.
+        // Note: Table-based sessions are currently not supported on MSSQL server.
         // 'session' => array (
             // 'class' => 'application.core.web.DbHttpSession',
             // 'connectionID' => 'db',

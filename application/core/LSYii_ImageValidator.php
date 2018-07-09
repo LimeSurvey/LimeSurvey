@@ -25,18 +25,17 @@ class LSYii_ImageValidator
     static function validateImage($path)
     {
         $result =[];
-        $checkImage = getimagesize($path);
+        $checkImage = CFileHelper::getMimeType($path);
         $result['debug'] = $checkImage;
-        $result['uploadresult'] = '';
-        $checkSvg = mime_content_type($path);
+        $allowedImageFormats = array("image/png", "image/jpg", "image/jpeg", "image/gif", "image/svg+xml");
 
-        if (!($checkImage !== false || $checkSvg === 'image/svg+xml')) {
+        if (!empty($checkImage) && in_array($checkImage, $allowedImageFormats)) {
+            $result['uploadresult'] = '';
+            $result['check'] = true;
+        } else {
             $result['uploadresult'] = gT("This file is not a supported image - please only upload JPG,PNG,GIF or SVG type images.");
             $result['check'] = false;
-        } else {
-            $result['check'] = true;
         }
-
         return $result;
     }
 
