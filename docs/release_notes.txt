@@ -3494,7 +3494,7 @@ Fixed #1794: Errors showing when previewing question without answers in Flexible
 Fixed #1802: "Resume Later" -> reloading saved survey starts at first page (c_schmitz)
 Fixed HTML entities showing up in Excel, CSV & SPSS export (c_schmitz)
 Fixed #1780: Java script error with dual scale
-Updated tokens and email validation to be able to use several email addresses separated by semikolon when sending an invitation (c_schmitz)
+Updated tokens and email validation to be able to use several email addresses separated by semicolon when sending an invitation (c_schmitz)
 Fixed SPSS & data export to filter out tags and html-encoded chars (c_schmitz)
 Fixed #1798: In reminder email (html format) surveyurl is displayed as HTML code in Outlook (c_schmitz)
 Fixed #1785: Upgrade script failed to add startdate column under certain circumstances  (c_schmitz)
