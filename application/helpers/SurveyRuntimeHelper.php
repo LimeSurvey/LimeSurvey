@@ -89,11 +89,11 @@ class SurveyRuntimeHelper
     {
         // Survey settings
         $this->setSurveySettings($surveyid, $args);
-        
+
         // Start rendering
         $this->makeLanguageChanger(); //  language changer can be used on any entry screen, so it must be set first
         extract($args);
-        
+
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
         if (!isset($_SESSION[$this->LEMsessid]['step'])) {
@@ -1011,7 +1011,7 @@ class SurveyRuntimeHelper
                     "
                     , LSYii_ClientScript::POS_POSTSCRIPT
                 );
-                
+
             }
         }
     }
@@ -1182,7 +1182,7 @@ class SurveyRuntimeHelper
 
 
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
-                //Automatically redirect the page to the "url" setting for the survey               
+                //Automatically redirect the page to the "url" setting for the survey
                 $headToSurveyUrl = $this->aSurveyInfo['surveyls_url'];
                 $actualRedirect = $headToSurveyUrl;
                 header("Access-Control-Allow-Origin: *");
@@ -1713,6 +1713,16 @@ class SurveyRuntimeHelper
             $aQuestionClass .= ' ls-hidden';
         }
 
+        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
+            $aQuestionClass .= ' mandatory';
+        }
+
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION[$this->LEMsessid]['maxstep'] != $_SESSION[$this->LEMsessid]['step']) {
+            $aQuestionClass .= ' missing';
+        }
+
+
+
         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQid);
 
         //add additional classes
@@ -1724,13 +1734,6 @@ class SurveyRuntimeHelper
             }
         }
 
-        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
-            $aQuestionClass .= ' mandatory';
-        }
-
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION[$this->LEMsessid]['maxstep'] != $_SESSION[$this->LEMsessid]['step']) {
-            $aQuestionClass .= ' missing';
-        }
         return $aQuestionClass;
     }
 }
