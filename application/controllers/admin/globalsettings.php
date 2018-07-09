@@ -62,6 +62,47 @@ class GlobalSettings extends Survey_Common_Action
         }
     }
 
+    public function sendTestEmail()
+    {
+        //Use the current user details for the default administrator name and email for this survey
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+        $owner = $user->attributes;
+
+        $sTo = $owner['full_name'] ." <".$owner['email'].">";
+
+        $sFrom = Yii::app()->getConfig("siteadminname")." <".Yii::app()->getConfig("siteadminemail").">";
+        
+        $sSubject = gT('User data');
+        $sSiteName = Yii::app()->getConfig('sitename');
+        $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
+
+        $body   = array();
+        $body[] = sprintf(gT('This is a test email from '), Yii::app()->getConfig('sitename'));
+        $body   = implode("\n", $body);
+        
+        $this->_sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom, $sSiteName, $sSiteAdminBounce);
+    }
+
+    private function _sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom, $sSiteName, $sSiteAdminBounce)
+    {
+        global $maildebug; 
+        $content = '';
+
+        $setting = App()->getConfig('maildebug');
+        App()->setConfig('maildebug',2);
+        if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce)) {
+            $content .= gT('Email sending success: ') .gT('Email sent successfully');
+        } else {
+            $content .= gT('Email sending failure: ') .$maildebug;
+        }
+        App()->setConfig('maildebug',$setting);
+        
+        $data = [];
+        $data['message'] = $content;
+
+        $this->_renderWrappedTemplate('', 'global_settings/_emailTestResults', $data);
+    }
+
     private function _displaySettings()
     {
         Yii::app()->loadHelper('surveytranslator');
