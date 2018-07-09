@@ -641,18 +641,25 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
-    // TODO
-    public function addOptionFromXMLToLiveTheme($name, $value)
-    {
+    /**
+     * Apply options from XML configuration for all missing template options  
+     *
+     * @return void
+     */
+    public function addOptionFromXMLToLiveTheme()
+    { 
         if ($this->options != 'inherit') {
+            $oOptions = get_object_vars(json_decode($this->options));
+            $oTemplateConfigurationModel = new TemplateManifest;
+            $oTemplateConfigurationModel->setBasics();
+            $oXmlOptions = get_object_vars($oTemplateConfigurationModel->config->options); 
 
-            $oOptions = json_decode($this->options);
-            // $oXmlOptions = TemplateManifest::getOptions ?
-
-            // TODO: implement logic (it should read the XML file, compare the if all the option from the XML are present inside)
-            // Foreach ($oXmlOptions as $oXmlOption)
-            //  if ($oXmlOption is not inside   $oOptions)
-            //      addOptionToLiveTheme($oXmlOption->name, $oXmlOptionvalue)
+            // compare template options to options from the XML and add if missing
+            foreach ($oXmlOptions as $key=>$value){
+                if (!array_key_exists($key, $oOptions)){
+                  $this->addOptionToLiveTheme($key, $value);
+                }                
+            }
         }
     }
 
