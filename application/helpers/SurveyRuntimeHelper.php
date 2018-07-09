@@ -935,6 +935,7 @@ class SurveyRuntimeHelper
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
+            
             //Failsave to have a general standard value
             if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
                 $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey data policy.");
@@ -943,6 +944,8 @@ class SurveyRuntimeHelper
             if (empty($this->aSurveyInfo['datasecurity_error'])) {
                 $this->aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey data policy.");
             }
+            
+
             $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
         }
 
@@ -954,16 +957,18 @@ class SurveyRuntimeHelper
     }
 
     private function checkForDataSecurityAccepted(){
-         if($this->param['thisstep'] === '0' && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice>0) {
-             $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
-            //  if($data_security_accepted !== 'on' && ($this->aSurveyInfo['active'] == 'Y')){
-             if($data_security_accepted !== 'on'){
+        $this->aSurveyInfo['datasecuritynotaccepted'] = false;
+        if($this->param['thisstep'] === '0' && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice>0) {
+            $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
+            $move_step = App()->request->getPost('move', false);
+
+            if($data_security_accepted !== 'on' && ($move_step !== 'default')){
                 $_SESSION[$this->LEMsessid]['step'] = 0;
                 $this->aSurveyInfo['datasecuritynotaccepted'] = true;
                 $this->displayFirstPageIfNeeded(true);
                 Yii::app()->end(); // So we can still see debug messages
             }
-         }
+        } 
     }
 
     /**
