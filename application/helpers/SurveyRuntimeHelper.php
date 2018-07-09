@@ -389,10 +389,9 @@ class SurveyRuntimeHelper
 
         $this->aSurveyInfo['jPopup'] = json_encode($aPopup);
 
-        $bShowpopups                            = Yii::app()->getConfig('showpopups');
-        $aErrorHtmlMessage                      = $this->getErrorHtmlMessage();
-        $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage) && $bShowpopups==0;  
-        $this->aSurveyInfo['errorHtml']['hiddenClass'] = $bShowpopups==1 ? "ls-js-hidden " : "";
+        $aErrorHtmlMessage                             = $this->getErrorHtmlMessage();
+        $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage) && $this->oTemplate->showpopups==0;  
+        $this->aSurveyInfo['errorHtml']['hiddenClass'] = $this->oTemplate->showpopups==1 ? "ls-js-hidden " : "";
         $this->aSurveyInfo['errorHtml']['messages']    = $aErrorHtmlMessage;
 
         $_gseq = -1;
@@ -1396,7 +1395,7 @@ class SurveyRuntimeHelper
                     "confirm_ok" =>  gT('OK'),
                 ],
             ]; // To add more easily some lang string here
-            $aLSJavascriptVar['showpopup']     = (int) Yii::app()->getConfig('showpopups');
+            $aLSJavascriptVar['showpopup']     = $this->oTemplate->showpopups;
             $aLSJavascriptVar['startPopups']   = new stdClass;
             $aLSJavascriptVar['debugMode']     = Yii::app()->getConfig('debug');
             $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar).';';

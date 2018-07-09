@@ -93,10 +93,10 @@
 
             {# First settings row #}
             <div class='row action_hide_on_inherit'>
-                <div class='col-sm-12 col-md-4'>
+                <div class='col-sm-12 col-md-2'>
                     {# Ajaxmode setting #}
                     <div class='form-group row'>
-                        <label for='simple_edit_options_ajaxmode' class='control-label'>Ajaxmode</label>
+                        <label for='simple_edit_options_ajaxmode' class='control-label'>{{ gT("Ajax mode") }}</label>
                         <div class='col-sm-12'>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
@@ -122,7 +122,7 @@
 
 
                 {# Container #}
-                <div class='col-sm-12 col-md-4'>
+                <div class='col-sm-12 col-md-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_container' class='control-label'> {{ gT("Survey container") }} </label>
                         <div class='col-sm-12'>
@@ -148,7 +148,7 @@
                 </div>
 
                 {# hideprivacyinfo #}
-                <div class='col-sm-12 col-md-4'>
+                <div class='col-sm-12 col-md-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_hideprivacyinfo' class='control-label'>{{ gT("Hide privacy info") }}</label>
                         <div class='col-sm-12'>
@@ -168,6 +168,36 @@
                                         {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Show popups #}
+                <div class='col-sm-12 col-md-4'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_showpopups' class='control-label' {{ showpopups_disabled_qtip }}>{{ gT("Show popups") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default control-label" {{ showpopups_disabled }}>
+                                        <input type='radio' name='showpopups' value='1' {{ showpopups_disabled }} class='selector_option_radio_field simple_edit_options_showpopups ' data-id='showpopups'/>
+                                        {{ gT("Popup") }}
+                                    </label>
+                                    <label class="btn btn-default" {{ showpopups_disabled }}>
+                                        <input type='radio' name='showpopups' value='0' {{ showpopups_disabled }} class='selector_option_radio_field simple_edit_options_showpopups ' data-id='showpopups'/>
+                                        {{ gT("On page") }}
+                                    </label>
+                                    <label class="btn btn-default" {{ showpopups_disabled }}>
+                                        <input type='radio' name='showpopups' value='-1' {{ showpopups_disabled }} class='selector_option_radio_field simple_edit_options_showpopups ' data-id='showpopups'/>
+                                        {{ gT("Off") }}
+                                    </label>
+                                    {# If this is a root template setting, don't show the inherit button #}
+                                    {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                        <label class="btn btn-default" {{ showpopups_disabled }}>
+                                            <input type='radio' name='showpopups' value='inherit' class='selector_option_radio_field simple_edit_options_showpopups ' data-id='showpopups'/>
+                                            {{ gT("Inherit") }}
+                                        </label>
+                                    {% endif %}
                             </div>
                         </div>
                     </div>

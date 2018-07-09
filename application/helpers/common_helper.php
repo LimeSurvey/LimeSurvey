@@ -1949,7 +1949,7 @@ function jsonEscape($str, $strip_tags = false, $htmldecode = false)
 
 /**
 * This function mails a text $body to the recipient $to.
-* You can use more than one recipient when using a semikolon separated string with recipients.
+* You can use more than one recipient when using a semicolon separated string with recipients.
 *
 * @param string $body Body text of the email in plain text or HTML
 * @param mixed $subject Email subject

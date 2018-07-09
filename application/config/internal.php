@@ -237,9 +237,9 @@ $internalConfig = array(
                 'ellipsizeString'         => 'LS_Twig_Extension::ellipsizeString',
                 'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText', /* Temporary keep it */
                 'str_replace'             => 'str_replace',
+                'getConfig'               => 'LS_Twig_Extension::getConfig',
                 'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',/* Not in 3.X */
                 'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',/* Not in 3.X */
-
                 'checkPermission'         => 'LS_Twig_Extension::checkPermission',/* Not in 3.X */
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
@@ -343,9 +343,9 @@ $internalConfig = array(
                     'flatEllipsizeText',
                     'str_replace',
                     'flattenText',
+                    'getConfig',
                     'getExpressionManagerOutput',
                     'getTextDisplayWidget',
-
                     'getLanguageNameFromCode',
                     'getAllQuestionClasses',
                     'checkPermission',
