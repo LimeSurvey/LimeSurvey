@@ -72,8 +72,9 @@ class GlobalSettings extends Survey_Common_Action
 
         $sFrom = Yii::app()->getConfig("siteadminname")." <".Yii::app()->getConfig("siteadminemail").">";
         
-        $sSubject = gT('User data');
         $sSiteName = Yii::app()->getConfig('sitename');
+        $sSubject = gT('Test email from ') .$sSiteName;
+
         $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
 
         $body   = array();
