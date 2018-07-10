@@ -182,7 +182,7 @@
         }
         .sticky .ls-heading.stickyBar>td, 
         .sticky .ls-heading.stickyBar>th {
-            word-break: break-all;
+            word-break: break-word;
         }
         
         .sticky .ls-heading.stickyBar>td:first-child {
@@ -233,6 +233,7 @@
             height: 10000px;
             width: 100%;
             z-index: 2;
+            pointer-events: none;
         }
     {% endif %}
 
@@ -240,6 +241,7 @@
 
 
 {% if (aSurveyInfo.options.stickymatrixheaders == "on" ) %}
+    {{ registerScriptFile( assetPublish(aSurveyInfo.oTemplate.path ~ "scripts/sticky.min.js"), "POS_BEGIN") }}
     {{ registerScript("StickyMatrixHeaderScript", "
         var stickyRows = new StickyTableRows();
         $('thead>tr.ls-heading').each(function(itrt, item){
