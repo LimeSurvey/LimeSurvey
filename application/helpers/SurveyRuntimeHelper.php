@@ -89,11 +89,11 @@ class SurveyRuntimeHelper
     {
         // Survey settings
         $this->setSurveySettings($surveyid, $args);
-        
+
         // Start rendering
         $this->makeLanguageChanger(); //  language changer can be used on any entry screen, so it must be set first
         extract($args);
-        
+
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
         if (!isset($_SESSION[$this->LEMsessid]['step'])) {
@@ -289,10 +289,9 @@ class SurveyRuntimeHelper
 
         $this->aSurveyInfo['jPopup'] = json_encode($aPopup);
 
-        $bShowpopups                            = Yii::app()->getConfig('showpopups');
-        $aErrorHtmlMessage                      = $this->getErrorHtmlMessage();
-        $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage);
-        $this->aSurveyInfo['errorHtml']['hiddenClass'] = $bShowpopups ? "ls-js-hidden " : "";
+        $aErrorHtmlMessage                             = $this->getErrorHtmlMessage();
+        $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage) && $this->oTemplate->showpopups==0;  
+        $this->aSurveyInfo['errorHtml']['hiddenClass'] = $this->oTemplate->showpopups==1 ? "ls-js-hidden " : "";
         $this->aSurveyInfo['errorHtml']['messages']    = $aErrorHtmlMessage;
 
         $_gseq = -1;
@@ -936,6 +935,7 @@ class SurveyRuntimeHelper
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
+            
             //Failsave to have a general standard value
             if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
                 $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey data policy.");
@@ -944,6 +944,8 @@ class SurveyRuntimeHelper
             if (empty($this->aSurveyInfo['datasecurity_error'])) {
                 $this->aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey data policy.");
             }
+            
+
             $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
         }
 
@@ -955,16 +957,18 @@ class SurveyRuntimeHelper
     }
 
     private function checkForDataSecurityAccepted(){
-         if($this->param['thisstep'] === '0' && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice>0) {
-             $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
-            //  if($data_security_accepted !== 'on' && ($this->aSurveyInfo['active'] == 'Y')){
-             if($data_security_accepted !== 'on'){
+        $this->aSurveyInfo['datasecuritynotaccepted'] = false;
+        if($this->param['thisstep'] === '0' && Survey::model()->findByPk($this->aSurveyInfo['sid'])->showsurveypolicynotice>0) {
+            $data_security_accepted = App()->request->getPost('datasecurity_accepted', false);
+            $move_step = App()->request->getPost('move', false);
+
+            if($data_security_accepted !== 'on' && ($move_step !== 'default')){
                 $_SESSION[$this->LEMsessid]['step'] = 0;
                 $this->aSurveyInfo['datasecuritynotaccepted'] = true;
                 $this->displayFirstPageIfNeeded(true);
                 Yii::app()->end(); // So we can still see debug messages
             }
-         }
+        } 
     }
 
     /**
@@ -1012,7 +1016,7 @@ class SurveyRuntimeHelper
                     "
                     , LSYii_ClientScript::POS_POSTSCRIPT
                 );
-                
+
             }
         }
     }
@@ -1169,9 +1173,9 @@ class SurveyRuntimeHelper
 
             $this->aSurveyInfo['aCompleted']['sPluginHTML']  = implode("\n", $blocks)."\n";
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
+            $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
             $this->aSurveyInfo['surveyls_url']               = passthruReplace($this->aSurveyInfo['surveyls_url'], $this->aSurveyInfo);
             $this->aSurveyInfo['surveyls_url']               = templatereplace($this->aSurveyInfo['surveyls_url'], array(), $redata, 'URLReplace', false, null, array(), true); // to do INSERTANS substitutions
-            $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
             // TODO: Process string in url description?
@@ -1183,7 +1187,7 @@ class SurveyRuntimeHelper
 
 
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
-                //Automatically redirect the page to the "url" setting for the survey               
+                //Automatically redirect the page to the "url" setting for the survey
                 $headToSurveyUrl = $this->aSurveyInfo['surveyls_url'];
                 $actualRedirect = $headToSurveyUrl;
                 header("Access-Control-Allow-Origin: *");
@@ -1292,7 +1296,7 @@ class SurveyRuntimeHelper
                     "confirm_ok" =>  gT('OK'),
                 ],
             ]; // To add more easily some lang string here
-            $aLSJavascriptVar['showpopup']     = (int) Yii::app()->getConfig('showpopups');
+            $aLSJavascriptVar['showpopup']     = $this->oTemplate->showpopups;
             $aLSJavascriptVar['startPopups']   = new stdClass;
             $aLSJavascriptVar['debugMode']     = Yii::app()->getConfig('debug');
             $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar).';';
@@ -1316,7 +1320,7 @@ class SurveyRuntimeHelper
         }
 
         // Question(s) with not valid answer(s)
-        if ($this->aStepInfo['valid'] && $this->okToShowErrors) {
+        if (!$this->aStepInfo['valid'] && $this->okToShowErrors) {
             $aErrorsMandatory[] = gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.");
         }
 
@@ -1714,6 +1718,16 @@ class SurveyRuntimeHelper
             $aQuestionClass .= ' ls-hidden';
         }
 
+        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
+            $aQuestionClass .= ' mandatory';
+        }
+
+        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION[$this->LEMsessid]['maxstep'] != $_SESSION[$this->LEMsessid]['step']) {
+            $aQuestionClass .= ' missing';
+        }
+
+
+
         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQid);
 
         //add additional classes
@@ -1725,13 +1739,6 @@ class SurveyRuntimeHelper
             }
         }
 
-        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
-            $aQuestionClass .= ' mandatory';
-        }
-
-        if ($lemQuestionInfo['anyUnanswered'] && $_SESSION[$this->LEMsessid]['maxstep'] != $_SESSION[$this->LEMsessid]['step']) {
-            $aQuestionClass .= ' missing';
-        }
         return $aQuestionClass;
     }
 }

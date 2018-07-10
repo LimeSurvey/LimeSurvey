@@ -163,7 +163,7 @@ function activateLanguageChanger(){
             .val(lang)
             .appendTo(limesurveyForm);
         // Append move type.
-        $('<input type="hidden" name="move" value="changelang" />').appendTo(limesurveyForm);
+        $('<input type="hidden" id="onsubmitbuttoninput" name="move" value="changelang" />').appendTo(limesurveyForm);
         limesurveyForm.submit();
     };
 

@@ -27,6 +27,8 @@ class PreviewModalWidget extends CWidget {
     //This is the option array that gets fed into the javascript.
     public $optionArray = [];
 
+    //The position the icon has in the modal button
+    public $iconPosition = 'back';
 
     //These are pretty standard and may not need to be changed
     public $closeButton = "Close";

@@ -64,47 +64,20 @@ var AjaxSubmitObject = function () {
         return true;
     };
 
-    var appendScript = function (scriptText, scriptPosition, src) {
-        src = src || '';
-        scriptPosition = scriptPosition || null;
-        var scriptNode = document.createElement('script');
-        scriptNode.type = 'text/javascript';
-        if (src != false) {
-            scriptNode.src = src;
-        }
-        scriptNode.text = scriptText;
-        scriptNode.attributes.class = 'toRemoveOnAjax';
-        switch (scriptPosition) {
-            case 'head':
-                if (checkScriptNotLoaded(scriptNode)) {
-                    document.head.appendChild(scriptNode);
-                }
-                break;
-            case 'body':
-                document.body.appendChild(scriptNode);
-                break;
-            case 'beginScripts':
-                document.getElementById('beginScripts').appendChild(scriptNode);
-                break;
-            case 'bottomScripts': //fallthrough
-            default:
-                document.getElementById('bottomScripts').appendChild(scriptNode);
-                break;
-
-        }
-    };
-
-
     var bindActions = function () {
         var logFunction = new ConsoleShim('PJAX-LOG', (LSvar.debugMode < 1));
-        
+
         var pjaxErrorHandler = function (href, options, requestData) {
             logFunction.log('requestData', requestData);
             if (requestData.status >= 500) {
-                document.getElementsByTagName('html')[0].innerHTML = requestData.responseText; 
-                throw new Error(JSON.stringify({state: requestData.status, message: 'Error in PHP!', data: requestData }));
+                document.getElementsByTagName('html')[0].innerHTML = requestData.responseText;
+                throw new Error(JSON.stringify({
+                    state: requestData.status,
+                    message: 'Error in PHP!',
+                    data: requestData
+                }));
             }
-            
+
             if (requestData.status >= 404) {
                 window.location.href = href;
                 return false;
@@ -138,8 +111,8 @@ var AjaxSubmitObject = function () {
         // Restrict to [type=submit]:not([data-confirmedby])
         // - :submit is the default if button don't have type (reset button on slider for example),
         // - confirmedby have their own javascript system
-        $(document).on('click', '#limesurvey [type=submit]:not([data-confirmedby])', function (e) {
-            $('#limesurvey').append('<input name=\'' + $(this).attr('name') + '\' value=\'' + $(this).attr('value') + '\' type=\'hidden\' />');
+        $(document).on('click', '#ls-button-submit, #ls-button-previous', function (e) {
+            $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $(this).attr('name') + '\' value=\'' + $(this).attr('value') + '\' type=\'hidden\' />');
             if (isIE10 || /Edge\/\d+\.\d+/.test(navigator.userAgent)) {
                 e.preventDefault();
                 $('#limesurvey').trigger('submit');
@@ -156,6 +129,9 @@ var AjaxSubmitObject = function () {
             if (activeSubmit) return;
             //block further submissions
             activeSubmit = true;
+            if ($('#onsubmitbuttoninput').length == 0) {
+                $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $('#limesurvey [type=submit]:not([data-confirmedby])').attr('name') + '\' value=\'' + $('#limesurvey [type=submit]:not([data-confirmedby])').attr('value') + '\' type=\'hidden\' />');
+            }
             //start the loading animation
             startLoadingBar();
 

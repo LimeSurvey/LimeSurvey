@@ -338,7 +338,7 @@ class questionHelper
             'category'=>gT('Logic'),
             'sortorder'=>130,
             'inputtype'=>'text',
-            "help"=>gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semikolon.'),
+            "help"=>gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semicolon.'),
             "caption"=>gT('Exclusive option')
         );
 

@@ -9419,6 +9419,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 'html'=>sprintf($LEM->gT('Invalid question - probably missing sub-questions or language-specific settings for language %s'),$_SESSION['LEMlang'])
                 );
             }
+            
+            /* return app language to adminlang, otherwise admin interface get rendered in survey language #13814 */
+            Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
 
             $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title'])));
 
@@ -10264,7 +10267,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         $row = array();
                         $row['class'] = 'SQ';
                         $row['type/scale'] = 0;
-                        $row['name'] = substr($varName,strlen($rootVarName)+1);
+                        
+                        $subqName = substr($varName,strlen($rootVarName)+1);
+                        // it breaks TSV survey import process if first character for name is numeric
+                        // in such case, characters 'SQ' are added to the front of name, so validation can pass
+                        if (preg_match('/^\d/', subqName) === 1){
+                            $row['name'] = 'SQ'.subqName;
+                        } else {
+                            $row['name'] = subqName;
+                        }
+
                         $row['relevance'] = $SQrelevance;
                         $row['text'] = $subqText;
                         $row['language'] = $lang;

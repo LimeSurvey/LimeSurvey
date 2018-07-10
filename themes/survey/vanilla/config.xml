@@ -58,6 +58,7 @@
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
         <font>noto</font>
+        <showpopups>1</showpopups>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
@@ -215,6 +216,7 @@
                     <file type="view" role="subview">./subviews/registration/register_head.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_message.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_success.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_form.twig</file>
                     <file type="view" role="subview">./subviews/registration/required.twig</file>
                 </register>
 

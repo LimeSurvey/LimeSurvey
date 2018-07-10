@@ -1881,7 +1881,7 @@ return $s->hasTokensTable; });
         $ENDPOLICYLINK = "";
         
         if(self::model()->findByPk($surveyId)->showsurveypolicynotice == 2){
-            $STARTPOLICYLINK = "<a href='#data-security-modal-".$surveyId."' data-toggle='modal'>";
+            $STARTPOLICYLINK = "<a href='#data-security-modal-".$surveyId."' data-toggle='collapse'>";
             $ENDPOLICYLINK = "</a>";
         }
         

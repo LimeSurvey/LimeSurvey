@@ -279,6 +279,7 @@ var ThemeScripts = function(){
     var initWelcomePage = function(){
         logObject.log('Starting up for first page');
         if($('#datasecurity_accepted').length >0) {
+            $('#ls-button-submit').prop('disabled', true);
             /* 
             * #### Animation function doesn't work on IE -> Deactivate until now.
             * $('#ls-button-submit').prop('disabled', true).parent().on('mouseenter', function(e){

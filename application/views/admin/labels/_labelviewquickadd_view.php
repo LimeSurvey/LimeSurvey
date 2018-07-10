@@ -6,7 +6,7 @@
         <h4 class="modal-title"><?php eT('Enter your labels:') ?></h4>
       </div>
       <div class="modal-body">
-          <textarea id='quickaddarea' name='quickaddarea' class='tipme' title='<?php eT('Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.') ?>' rows='20' cols='100' style='width:570px;'></textarea>
+          <textarea id='quickaddarea' name='quickaddarea' class='tipme' title='<?php eT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab.') ?>' rows='20' cols='100' style='width:570px;'></textarea>
       </div>
       <div class="modal-footer button-list">
         <button id='btnqareplace' type='button' class="btn btn-default"><?php eT('Replace') ?></button>

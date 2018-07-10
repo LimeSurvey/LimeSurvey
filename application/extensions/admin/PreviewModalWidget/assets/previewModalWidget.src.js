@@ -62,10 +62,10 @@ class PreviewModalScript {
         value = value || this.options.value;
         let selectedItem = null;
         if(/[^~!@\$%\^&\*\( \)\+=,\.\/';:"\?><\[\]\\\{\}\|`#]/.test(value)){
-            selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-selector=${value.trim()}]`);
+            selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-selector=${value.toString().trim()}]`);
         }
         if((selectedItem === null || selectedItem.length !== 1) && this.options.selectedClass != '') {
-            selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-selector=${this.options.selectedClass.trim()}]`);
+            selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-selector=${this.options.selectedClass.toString().trim()}]`);
         }
 
         return selectedItem;

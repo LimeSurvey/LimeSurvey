@@ -35,6 +35,51 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.13.1 (build 180629) to 3.13.2 (build 180709) July 09, 2018
+-Fixed issue #13345: showpopups in config.php seems to have no effect anymore (Dominik Vitt)
+-Fixed issue #13802: Unable to see Survey policy without javascript activated (Markus Flür)
+-Fixed issue #13804: Error about Data security policy shown when change language + clear all (Markus Flür)
+-Fixed issue #13805: Multi-line Text Messages Do Not Exist in Translation. (imacat)
+-Fixed issue #13821: When importing a survey I receive a "Failed to Insert [3]" error message (#1090) (githubLewis)
+-Fixed issue #13830: Language changer broken in Ajax mode (Markus Flür)
+-Fixed issue #13831: Export of survey-structure (*.lss - Files) is not possible in LS 3.13.0 (Markus Flür)
+-Fixed issue #13833: Owner of survey are not able to edit assesments (no button) (Denis Chenu)
+-Fixed issue #13842: missing translation (Markus Flür)
+-Fixed issue #13843: icon at the right side, should be in front of label (Markus Flür)
+-Fixed issue #13845: Can't export and then import tab-separated text survey file (Dominik Vitt)
+-Fixed issue #13846: missing translation (Markus Flür)
+-Fixed issue #13856: position of labels in 5-point scale (Markus Flür)
+-Fixed issue: 13840: Login with local user gives a php7.2 warning (Markus Flür)
+-Fixed issue: Not possible to go to previous page in ajax mode (Markus Flür)
+-Fixed issue: end-url redirection not working in ajax mode with compressed js (Markus Flür)
+
+Changes from 3.13.0 (build 180628) to 3.13.1 (build 180629) June 29, 2018
+-Fixed issue #13734:  image upload is not possible - You don't have permissions to browse server. (LouisGac)
+-Fixed issue #13828: Internal Server Error when clicking on 'Theme Options' in Survey Admin Area (Dominik Vitt)
+-Fixed issue: no token replacement in end url (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Basque by IVAP, the Official Translators' Service of the Basque Government.
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+Changes from 3.12.3 (build 180627) to 3.13.0 (build 180628) June 28, 2018
+-New feature: Allow plugin to add or remove file for template editor (#1084) (Denis Chenu)
+-Fixed issue #13685: Create a new survey - Save and Save and close -> same behavour (Markus Flür)
+-Fixed issue #13786: Duplicate survey in tutorial/beginner tour (Markus Flür)
+-Fixed issue #13787: Tutorial "beginner tour" breaks off (Markus Flür)
+-Fixed issue #13803: Deprecated confirm box since 3.0 alpha (Markus Flür)
+-Fixed issue #13811: Reordering questions by drag-and-drop (Markus Flür)
+-Fixed issue #13813: Question advanced settings not updated when update question type (Dominik Vitt)
+-Fixed issue #13814: Opening Question->Check logic will change admin interface language to question language (Dominik Vitt)
+-Fixed issue #13818: Error when using timer function in a question. (Markus Flür)
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Russian by vipgroup
 
 Changes from 3.12.2 (build 180625) to 3.12.3 (build 180627) June 27, 2018
 -Fixed issue #13251: DB error when importing multilingual group or question using MSSQL DB (Carsten Schmitz)
@@ -3467,7 +3512,7 @@ Fixed #1794: Errors showing when previewing question without answers in Flexible
 Fixed #1802: "Resume Later" -> reloading saved survey starts at first page (c_schmitz)
 Fixed HTML entities showing up in Excel, CSV & SPSS export (c_schmitz)
 Fixed #1780: Java script error with dual scale
-Updated tokens and email validation to be able to use several email addresses separated by semikolon when sending an invitation (c_schmitz)
+Updated tokens and email validation to be able to use several email addresses separated by semicolon when sending an invitation (c_schmitz)
 Fixed SPSS & data export to filter out tags and html-encoded chars (c_schmitz)
 Fixed #1798: In reminder email (html format) surveyurl is displayed as HTML code in Outlook (c_schmitz)
 Fixed #1785: Upgrade script failed to add startdate column under certain circumstances  (c_schmitz)

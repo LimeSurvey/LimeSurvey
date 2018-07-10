@@ -33,7 +33,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                             </a>
                         </div>
                         <div class="col-sm-3">
-                            <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
+                            <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate,false) && $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) { ?>
                                 <span class="label label-success"> <?php eT("local"); ?> </span>
                             <?php } else { ?>
                                 <span class="label label-danger"> <?php eT("inherited"); ?> </span>

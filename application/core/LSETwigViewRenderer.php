@@ -281,6 +281,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $this->_twig = $twig = parent::getTwig();
         $this->addRecursiveTemplatesPath($oRTemplate);
         $renderArray['optionsPath'] = $sOptionsPath;
+        $renderArray['showpopups_disabled'] = (int)Yii::app()->getConfig('showpopups') < 2 ? 'disabled' : '';
+        $renderArray['showpopups_disabled_qtip'] = (int)Yii::app()->getConfig('showpopups') < 2 ? 'data-hasqtip="true" title="'.gT("Disabled by configuration. Set 'showpopups' option in config.php file to enable this option. ").'"' : '';
         // Twig rendering
         $line         = file_get_contents($oRTemplate->path.$sOptionFile);
         $oTwigTemplate = $twig->createTemplate($line);
@@ -507,7 +509,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
     /**
      * get a twig file and return html produced
-     * @param string $twigView twigfile to be used (without twig extension) (example ./subviews/ajax/messages)
+     * @param string $twigView twigfile to be used (with twig extension)
      * @param array $aData to be used
      * @return string
      */
@@ -516,7 +518,25 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oTemplate = Template::model()->getInstance();
         $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
         $this->addRecursiveTemplatesPath($oTemplate);
-        return $this->_twig->loadTemplate($twigView.'.twig')->render($aData);
+        return $this->_twig->loadTemplate($twigView)->render($aData);
     }
 
+    /**
+     * Get the final source file for current context
+     * Currently used in theme editor
+     * @param string $twigView twigfile to be used (with twig extension)
+     * @param TemplateConfiguration $oTemplate
+     * @return string complete filename to be used
+     */
+    public function getPathOfFile($twigView,$oTemplate=null)
+    {
+        if(!$oTemplate) {
+            $oTemplate = Template::model()->getInstance();
+        }
+        $this->addRecursiveTemplatesPath($oTemplate);
+        if(!$this->_twig->getLoader()->exists($twigView)) {
+            return null;
+        }
+        return $this->_twig->getLoader()->getSourceContext($twigView)->getPath();
+    }
 }

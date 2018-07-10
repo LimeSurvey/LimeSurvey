@@ -90,8 +90,11 @@ $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,g
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
-$config['showpopups']         = 1; // Show popup messages if mandatory or conditional questions have not been answered correctly.
-// 1=Show popup message, 0=Show message on page instead.
+$config['showpopups']         = 2; // Show popup messages if mandatory or conditional questions have not been answered correctly.
+//  2 = defined by Theme option (default)
+//  1 = Show popup message
+//  0 = Show message on page instead;
+// -1 = Do not show the message at all (in this case, users will still see the question-specific tips indicating which questions must be answered).
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
