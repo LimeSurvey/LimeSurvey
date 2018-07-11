@@ -53,6 +53,7 @@
 
 <?php echo $conditionsoutput_action_error;?>
 <?php App()->getClientScript()->registerScript("conditionshead_prepared_javascript", $javascriptpre, LSYii_ClientScript::POS_BEGIN);?>
+<?php App()->getClientScript()->registerScript("conditionshead_onrun_javascript", 'doToolTip();', LSYii_ClientScript::POS_POSTSCRIPT);?>
 
 <!-- Modal for quick add -->
 <div id="quick-add-condition-modal" class="modal fade" role="dialog">
