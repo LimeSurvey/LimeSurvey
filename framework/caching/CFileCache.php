@@ -258,6 +258,9 @@ class CFileCache extends CCache
 		if($this->embedExpiry)
 			return (int)@file_get_contents($path,false,null,0,10);
 		else
+			if (!@file_exists($path))
+				return 0;
+
 			return @filemtime($path);
 	}
 }
