@@ -262,7 +262,7 @@ class LS_Twig_Extension extends Twig_Extension
         if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
             $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
         }
-        
+
 
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
     }
@@ -278,11 +278,11 @@ class LS_Twig_Extension extends Twig_Extension
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
         $sUrlImgAsset =  $sImagePath;
-        
-        
+
+
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
-        } 
+        }
 
         if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
             $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
@@ -395,7 +395,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function registerScriptFile($path, $position = null)
     {
 
-        Yii::app()->getClientScript()->registerScriptFile($path, ($position === null ? CClientScript::POS_BEGIN : $position));
+        Yii::app()->getClientScript()->registerScriptFile($path, ($position === null ? LSYii_ClientScript::POS_BEGIN : self::getPosition($position)));
     }
 
     public static function registerCssFile($path)
@@ -405,7 +405,7 @@ class LS_Twig_Extension extends Twig_Extension
 
     public static function registerPackage($name)
     {
-        Yii::app()->getClientScript()->registerPackage($name, CClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerPackage($name, LSYii_ClientScript::POS_BEGIN);
     }
 
     /**
@@ -548,12 +548,28 @@ class LS_Twig_Extension extends Twig_Extension
         }
 
         return 'rgba('.join(', ', $return).','.$alpha.')';
-        
-
-
     }
-    
-    public static function lightencss($cssColor, $grade=10, $alpha=1){
+
+    /**
+     * Check if a needle is in a multidimensional array
+     * @param mixed $needle The searched value.
+     * @param array $haystack The array.
+     * @param bool $strict If the third parameter strict is set to TRUE then the in_array() function will also check the types of the needle in the haystack.
+     */
+    function in_multiarray($needle, $haystack, $strict = false) {
+        
+        foreach ($haystack as $item) {
+            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    public static function lightencss($cssColor, $grade=10, $alpha=1)
+    {
         $aColors = str_split(substr($cssColor,1), 2);
         $return = [];
         foreach ($aColors as $color) {

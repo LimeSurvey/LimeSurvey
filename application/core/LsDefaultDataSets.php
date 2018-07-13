@@ -462,10 +462,7 @@ class LsDefaultDataSets
                 'title' => gT('The sidebar'),
                 'content' => gT('This is the sidebar.').'<br/>'
                 .gT('All important settings can be reached in this sidebar.').'<br/>'
-                .gT('The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu.'
-                .' You may resize it to fit your screen to easily navigate through the available options.'
-                .' If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed.'
-                .' If you wish to work from the quick-menu, either click on the arrow button or drag it to the left.'),
+                .gT('The most important settings of your survey can be reached from this sidebar: the survey settings menu and the survey structure menu. You may resize it to fit your screen to easily navigate through the available options. If the size of the sidebar is too small, the options get collapsed and the quick-menu is displayed. If you wish to work from the quick-menu, either click on the arrow button or drag it to the left.'),
                 'settings' => json_encode(array(
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'element' => '#sidebar',
@@ -481,8 +478,7 @@ class LsDefaultDataSets
                 'teid' => 10,
                 'ordering' => 10,
                 'title' => gT('The settings tab with the survey menu'),
-                'content' => gT('If you click on this tab, the survey settings menu will be displayed.'
-                .' The most important settings of your survey are accessible from this menu.').'<br/>'
+                'content' => gT('If you click on this tab, the survey settings menu will be displayed. The most important settings of your survey are accessible from this menu.').'<br/>'
                 .gT('If you want to know more about them, check our manual.'),
                 'settings' => json_encode(array(
                     'element' => '#adminpanel__sidebar--selectorSettingsButton',
@@ -496,8 +492,7 @@ class LsDefaultDataSets
                 'ordering' => 11,
                 'title' => gT('The top bar'),
                 'content' => gT('This is the top bar.').'<br/>'
-                .gT('This bar will change as you move through the functionalities.'
-                .'The current bar corresponds to the "overview" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey.'),
+                .gT('This bar will change as you move through the functionalities. The current bar corresponds to the "overview" tab. It contains the most important LimeSurvey functionalities such as preview and activate survey.'),
                 'settings' => json_encode(array(
                     'element' => '#surveybarid',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
@@ -544,9 +539,7 @@ class LsDefaultDataSets
                 'teid' => 14,
                 'ordering' => 14,
                 'title' => gT('Enter a title for your first question group'),
-                'content' => gT('The title of the question group is visible to your survey participants (this setting can be changed later and it cannot be empty). '
-                .'Question groups are important because they allow the survey administrators to logically group the questions. '
-                .'By default, each question group (including its questions) is shown on its own page (this setting can be changed later).'),
+                'content' => gT('The title of the question group is visible to your survey participants (this setting can be changed later and it cannot be empty). Question groups are important because they allow the survey administrators to logically group the questions. By default, each question group (including its questions) is shown on its own page (this setting can be changed later).'),
                 'settings' => json_encode(array(
                     'element' => '#group_name_en',
                     'path' => ['/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}']],
@@ -620,8 +613,7 @@ class LsDefaultDataSets
                 'teid' => 19,
                 'ordering' => 19,
                 'title' => gT('The actual question text'),
-                'content' => gT('The content of this box is the actual question text shown to your participants.'
-                .' It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine.'),
+                'content' => gT('The content of this box is the actual question text shown to your participants. It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine.'),
                 'settings' => json_encode(array(
                     'element' => '#cke_question_en',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
@@ -633,8 +625,7 @@ class LsDefaultDataSets
                 'teid' => 20,
                 'ordering' => 20,
                 'title' => gT('An additional help text for your question'),
-                'content' => gT('You can add some additional help text to your question. '
-                .'If you decide not to offer any additional question hints, then no help text will be displayed to your respondents.'),
+                'content' => gT('You can add some additional help text to your question. If you decide not to offer any additional question hints, then no help text will be displayed to your respondents.'),
                 'settings' => json_encode(array(
                     'element' => '#cke_help_en',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
@@ -662,8 +653,7 @@ class LsDefaultDataSets
                 'ordering' => 22,
                 'title' => gT('Now save the created question'),
                 'content' => gT('Next, we will create subquestions and answer options.').'<br/>'
-                    .gT('Please remember that in order to have a valid code, it must contain only letters and numbers, '
-                    .'also please check that it starts with a letter.'),
+                    .gT('Please remember that in order to have a valid code, it must contain only letters and numbers, also please check that it starts with a letter.'),
                 'settings' => json_encode(array(
                     'element' => '#save-button',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
@@ -720,8 +710,7 @@ class LsDefaultDataSets
                 'ordering' => 25,
                 'title' => gT('Edit subquestions'),
                 'content' => gT("You should add some subquestions for your question here.").'<br/>'
-                .gT("Every row is one subquestion. We recommend the usage of logical or numerical codes for subquestions."
-                ." Your participants cannot see the subquestion code, only the subquestion text itself.")
+                .gT("Every row is one subquestion. We recommend the usage of logical or numerical codes for subquestions. Your participants cannot see the subquestion code, only the subquestion text itself.")
                 ."<p class='bg-info alert'>".gT("Pro tip: The subquestion may even contain HTML code.").'</p>',
                 'settings' => json_encode(array(
                     'element' => '#rowcontainer',

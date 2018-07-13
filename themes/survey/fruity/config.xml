@@ -42,7 +42,6 @@
             <add>scripts/theme.js</add>
             <add>scripts/ajaxify.js</add>
             <add>scripts/custom.js</add>
-            <add>scripts/sticky.min.js</add>
         </js>
         <print_css>
             <add>css/print_theme.css</add>

@@ -642,6 +642,50 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * Apply options from XML configuration for all missing template options  
+     *
+     * @return void
+     */
+    public function addOptionFromXMLToLiveTheme()
+    { 
+        if ($this->options != 'inherit') {
+            $oOptions = get_object_vars(json_decode($this->options));
+            $oTemplateConfigurationModel = new TemplateManifest;
+            $oTemplateConfigurationModel->setBasics();
+            $oXmlOptions = get_object_vars($oTemplateConfigurationModel->config->options); 
+
+            // compare template options to options from the XML and add if missing
+            foreach ($oXmlOptions as $key=>$value){
+                if (!array_key_exists($key, $oOptions)){
+                  $this->addOptionToLiveTheme($key, $value);
+                }                
+            }
+        }
+    }
+
+    /**
+     * Add an option definition to the current theme.
+     * Will be used to turn ON ajax mode on update.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function addOptionToLiveTheme($name, $value)
+    {
+        if ($this->options != 'inherit') {
+
+            $oOptions = json_decode($this->options);
+            $oOptions->$name = $value;
+            $sOptions = json_encode($oOptions);
+            $this->options = $sOptions;
+            $this->save();
+
+        }
+    }
+
+
+    /**
      * Set option (unless if options is set to "inherit").
      * @param string $name
      * @param mixed $value

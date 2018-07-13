@@ -59,7 +59,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                         <input type="radio" name="showsurveypolicynotice" value="1" <?=$oSurvey->showsurveypolicynotice==1 ? 'checked' : ''?> autocomplete="off"> <?=gT("Show as text");?>
                     </label>
                     <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==2 ? 'active' : ''?>" >
-                        <input type="radio" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off"> <?=gT("Show in modal");?>
+                        <input type="radio" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off"> <?=gT("Show in collapsible");?>
                     </label>
                 </div>
             </div>
