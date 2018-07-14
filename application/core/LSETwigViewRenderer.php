@@ -125,8 +125,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     {
         $this->_twig  = parent::getTwig(); // Twig object
         $loader       = $this->_twig->getLoader(); // Twig Template loader
-        $requiredView = Yii::getPathOfAlias('application.views').$sView; // By default, the required view is the core view
-        $loader->setPaths(App()->getBasePath().'/views/'); // Core views path
+        //~ $requiredView = Yii::getPathOfAlias('application.views').$sView; // By default, the required view is the core view
 
         $oQuestionTemplate   = QuestionTemplate::getInstance(); // Question template instance has been created at top of qanda_helper::retrieveAnswers()
 
@@ -142,7 +141,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
             if ($bTemplateHasThisView) {
                 $sQTemplatePath = $oQuestionTemplate->getTemplatePath(); // Question template views path
-                $loader->setPaths($sQTemplatePath); // Loader path
+                $loader->addPath($sQTemplatePath); // Loader path
                 $requiredView = $sQTemplatePath.ltrim($sView, '/'); // Complete path of the view
             }
         }
@@ -150,7 +149,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         // We check if the file is a twig file or a php file
         // This allow us to twig the view one by one, from PHP to twig.
         // The check will be removed when 100% of the views will have been twig
-        if (file_exists($requiredView.'.twig')) {
+        if ($this->getPathOfFile($sView.'.twig')) {
+            //~ $this->addRecursiveTemplatesPath(Template::model()->getInstance());
             // We're not using the Yii Theming system, so we don't use parent::renderFile
             // current controller properties will be accessible as {{ this.property }}
             
@@ -404,6 +404,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                 $loader->addPath($configTwigExtendAdd);
             }
         }
+        $loader->addPath(App()->getBasePath().'/views/'); // Core views path
     }
 
     /**
