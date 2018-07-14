@@ -368,7 +368,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * Twig can look for twig path in different path. This function will add the path of the template and all its parents to the load path
      * So if a twig file is inclueded, it will look in the local template directory and all its parents
      * @param Template $oTemplate  the template where to start
-     * @param string[] extra path to be added before plugin add and core views
+     * @param string[] extra path to be added before template, parent template plugin add and core views. Example : question template
      */
     private function addRecursiveTemplatesPath($oTemplate,$extraPaths=array())
     {
@@ -387,18 +387,18 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                 $loader->addPath($configTwigExtendReplace);
             }
         }
+        /* Extra path (Question template Path for example)*/
+        if(!empty($extraPaths)) {
+            foreach($extraPaths as $extraPath) {
+                $loader->addPath($extraPath);
+            }
+        }
         /* This template */
         $loader->addPath($oRTemplate->viewPath);
         /* Parent template */
         while ($oRTemplate->oMotherTemplate instanceof TemplateConfiguration) {
             $oRTemplate = $oRTemplate->oMotherTemplate;
             $loader->addPath($oRTemplate->viewPath);
-        }
-        /* Extra path (Question template Path for example)*/
-        if(!empty($extraPaths)) {
-            foreach($extraPaths as $extraPath) {
-                $loader->addPath($extraPath);
-            }
         }
         /* Added twig by plugins, replaced by any template file or question template file*/
         foreach($configTwigExtendsAdd as $configTwigExtendAdd) {
