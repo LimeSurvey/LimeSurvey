@@ -124,7 +124,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderQuestion($sView, $aData)
     {
         $this->_twig  = parent::getTwig(); // Twig object
-        $loader       = $this->_twig->getLoader(); // Twig Template loader
 
         $oQuestionTemplate   = QuestionTemplate::getInstance(); // Question template instance has been created at top of qanda_helper::retrieveAnswers()
         $extraPath = array();
@@ -348,7 +347,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Find which template should be used to render a given view
      * @param  string    $sView           the view (layout) to render
-     * @param  Template  $oRTemplate    the template where the custom option page should be looked for
+     * @param  TemplateConfiguration  $oRTemplate    the template where the custom option page should be looked for
      * @return Template|boolean
      */
     private function getTemplateForView($sView, $oRTemplate)
@@ -368,9 +367,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Twig can look for twig path in different path. This function will add the path of the template and all its parents to the load path
      * So if a twig file is inclueded, it will look in the local template directory and all its parents
-     * @param Template $oTemplate  the template where to start
-     * @param string[] extra path to be added before template, parent template plugin add and core views. Example : question template
-     * @param string|null directory name to be added as extra 
+     * @param TemplateConfiguration $oTemplate  the template where to start
+     * @param string[] $extraPaths to be added before template, parent template plugin add and core views. Example : question template
+     * @param string|null $dirName directory name to be added as extra directory inside template view
      */
     private function addRecursiveTemplatesPath($oTemplate,$extraPaths=array(),$dirName=null)
     {
@@ -545,7 +544,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * Currently used in theme editor
      * @param string $twigView twigfile to be used (with twig extension)
      * @param TemplateConfiguration $oTemplate
-     * @param string[] extra path to be added before plugins add and core views
+     * @param string[] $extraPath path to be added before plugins add and core views
+     * @param string|null $dirName directory name to be added as extra directory inside template view
      * @return string complete filename to be used
      */
     public function getPathOfFile($twigView,$oTemplate=null,$extraPath=array(),$dirName = null)
