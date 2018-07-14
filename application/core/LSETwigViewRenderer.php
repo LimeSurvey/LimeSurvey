@@ -129,15 +129,16 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oQuestionTemplate   = QuestionTemplate::getInstance(); // Question template instance has been created at top of qanda_helper::retrieveAnswers()
         $extraPath = array();
         // check if this method is called from theme editor
+        $sTemplateFolderName = null;
         if (empty($aData['bIsThemeEditor'])){
             $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName(); // Get the name of the folder for that question type.
-        } else {
-            $sTemplateFolderName = null;
         }
         // Check if question use a custom template and that it provides its own twig view
+        $sDirName = null; // Extra dir name to readed from template before question template
         if ($sTemplateFolderName) {
             $bTemplateHasThisView = $oQuestionTemplate->checkIfTemplateHasView($sView); // A template can change only one of the view of the question type. So other views should be rendered by core.
             if ($bTemplateHasThisView) {
+                $sDirName = 'question'.DIRECTORY_SEPARATOR.$sTemplateFolderName;
                 $extraPath[] = $oQuestionTemplate->getTemplatePath(); // Question template views path
             }
         }
@@ -145,7 +146,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         // We check if the file is a twig file or a php file
         // This allow us to twig the view one by one, from PHP to twig.
         // The check will be removed when 100% of the views will have been twig
-        if ($this->getPathOfFile($sView.'.twig',null,$extraPath)) {
+        if ($this->getPathOfFile($sView.'.twig',null,$extraPath,$sDirName)) {
             // We're not using the Yii Theming system, so we don't use parent::renderFile
             // current controller properties will be accessible as {{ this.property }}
                         //  aData and surveyInfo variables are accessible from question type twig files
@@ -369,8 +370,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * So if a twig file is inclueded, it will look in the local template directory and all its parents
      * @param Template $oTemplate  the template where to start
      * @param string[] extra path to be added before template, parent template plugin add and core views. Example : question template
+     * @param string|null directory name to be added as extra 
      */
-    private function addRecursiveTemplatesPath($oTemplate,$extraPaths=array())
+    private function addRecursiveTemplatesPath($oTemplate,$extraPaths=array(),$dirName=null)
     {
         $oRTemplate   = $oTemplate;
         $loader       = $this->_twig->getLoader();
@@ -387,12 +389,26 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                 $loader->addPath($configTwigExtendReplace);
             }
         }
+        if(!empty($dirName)) {
+            /* This template for dirName template*/
+            if(is_dir($oRTemplate->viewPath.$dirName)) {
+                $loader->addPath($oRTemplate->viewPath.$dirName.DIRECTORY_SEPARATOR);
+            }
+            /* Parent template (for question)*/
+            while ($oRTemplate->oMotherTemplate instanceof TemplateConfiguration) {
+                $oRTemplate = $oRTemplate->oMotherTemplate;
+                if(is_dir($oRTemplate->viewPath.$dirName)) {
+                    $loader->addPath($oRTemplate->viewPath.$dirName.DIRECTORY_SEPARATOR);
+                }
+            }
+        }
         /* Extra path (Question template Path for example)*/
         if(!empty($extraPaths)) {
             foreach($extraPaths as $extraPath) {
                 $loader->addPath($extraPath);
             }
         }
+        $oRTemplate   = $oTemplate;
         /* This template */
         $loader->addPath($oRTemplate->viewPath);
         /* Parent template */
@@ -532,12 +548,12 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param string[] extra path to be added before plugins add and core views
      * @return string complete filename to be used
      */
-    public function getPathOfFile($twigView,$oTemplate=null,$extraPath=array())
+    public function getPathOfFile($twigView,$oTemplate=null,$extraPath=array(),$dirName = null)
     {
         if(!$oTemplate) {
             $oTemplate = Template::model()->getInstance();
         }
-        $this->addRecursiveTemplatesPath($oTemplate,$extraPath);
+        $this->addRecursiveTemplatesPath($oTemplate,$extraPath,$dirName);
         if(!$this->_twig->getLoader()->exists($twigView)) {
             return null;
         }
