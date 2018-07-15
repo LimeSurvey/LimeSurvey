@@ -578,9 +578,13 @@ class LSYii_ClientScript extends CClientScript
      */
     public function render(&$output)
     {
-        /* beforeCloseHtml event @see https://manual.limesurvey.org/BeforeCloseHtml */
-        /* Set it before all other action allow registerScript by plugin */
-        if(Yii::app()->getController()->getId() != "admin" && strpos($output, '</body>')) {
+        /**
+         * beforeCloseHtml event @see https://manual.limesurvey.org/BeforeCloseHtml
+         * Set it before all other action allow registerScript by plugin
+         * Whitelisting available controller (public plugin not happen for PluginsController using actionDirect, actionUnsecure event)
+         */
+        $publicControllers = array('option','optout','printanswers','register','statistics_user','survey','surveys','uploader');
+        if(Yii::app()->getController() && in_array(Yii::app()->getController()->getId(),$publicControllers) && strpos($output, '</body>')) {
             $event = new PluginEvent('beforeCloseHtml');
             $surveyId = Yii::app()->getRequest()->getParam('surveyid',Yii::app()->getRequest()->getParam('sid',Yii::app()->getConfig('surveyid')));
             $event->set('surveyId', $surveyId); // Set to null if not set by param
