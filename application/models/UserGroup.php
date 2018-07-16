@@ -405,15 +405,13 @@ class UserGroup extends LSActiveRecord
 
         $criteria->join .= 'LEFT JOIN {{users}} AS users ON ( users.uid = t.owner_id )';
 
-        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-            if ($isMine) {
-                $criteria->addCondition("t.owner_id=".App()->user->getId(), "AND");
-            } else {
-                $criteria->addCondition("t.owner_id<>".App()->user->getId(), "AND");
-                $criteria->addCondition("t.ugid IN (SELECT ugid FROM $user_in_groups_table WHERE ".$user_in_groups_table.".uid = ".App()->user->getId().")", "AND");
-            }
+        if ($isMine) {
+            $criteria->addCondition("t.owner_id=".App()->user->getId(), "AND");
+        } else {
+            $criteria->addCondition("t.owner_id<>".App()->user->getId(), "AND");
+            $criteria->addCondition("t.ugid IN (SELECT ugid FROM $user_in_groups_table WHERE ".$user_in_groups_table.".uid = ".App()->user->getId().")", "AND");
         }
-        
+                
         $dataProvider = new CActiveDataProvider('UserGroup', array(
             'sort'=>$sort,
             'criteria'=>$criteria,
