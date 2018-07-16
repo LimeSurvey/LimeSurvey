@@ -1110,7 +1110,11 @@ class questions extends Survey_Common_Action
 
         $aViewUrls = [];
         $aViewUrls['editQuestion_view'][] = $aData;
-        App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$eqrow['gid'].'new', "OtherSelection('".$eqrow['type']."');", LSYii_ClientScript::POS_POSTSCRIPT);            
+        App()->getClientScript()->registerScript("ZOrder-EditQuestionView_question_jsviews_".$surveyid.$eqrow['gid'].'new', "
+        if(window.questionFunctions) {
+            window.questionFunctions.OtherSelection('".$eqrow['type']."');
+        }
+        ", LSYii_ClientScript::POS_POSTSCRIPT);            
         
 
 
