@@ -28,7 +28,7 @@ export default {
             return _.orderBy(
                 this.$store.state.questiongroups,
                 a => {
-                    return parseInt(a.group_order || 999999);
+                    return parseInt(a.group_order);
                 },
                 ["asc"]
             );
