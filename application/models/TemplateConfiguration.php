@@ -151,9 +151,9 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
-    public static function getInstanceFromTemplateName($sTemplateName)
+    public static function getInstanceFromTemplateName($sTemplateName, $abstractInstance = false)
     {
-        if (!empty(self::$aInstancesFromTemplateName[$sTemplateName])) {
+        if (!empty(self::$aInstancesFromTemplateName[$sTemplateName]) && !$abstractInstance) {
             return self::$aInstancesFromTemplateName[$sTemplateName];
         }
 
@@ -165,6 +165,10 @@ class TemplateConfiguration extends TemplateConfig
         // If the survey configuration table of the wanted template doesn't exist (eg: manually deleted), then we provide the default one.
         if (!is_a($oInstance, 'TemplateConfiguration')) {
             $oInstance = self::getInstanceFromTemplateName(getGlobalSetting('defaulttheme'));
+        }
+        
+        if($abstractInstance === true) {
+            return $oInstance;
         }
 
         self::$aInstancesFromTemplateName[$sTemplateName] = $oInstance;
@@ -180,7 +184,7 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
-    public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName = null)
+    public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName = null, $abstractInstance = false)
     {
         //if a template name is given also check against that
         $sTemplateName = $sTemplateName != null ? $sTemplateName : SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
@@ -194,7 +198,7 @@ class TemplateConfiguration extends TemplateConfig
         // No specific template configuration for this surveygroup => create one
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName, $abstractInstance);
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
@@ -217,7 +221,7 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
-    public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName = null)
+    public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName = null, $abstractInstance = false)
     {
 
         //if a template name is given also check against that
@@ -234,7 +238,7 @@ class TemplateConfiguration extends TemplateConfig
         // No specific template configuration for this surveygroup => create one
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName, $abstractInstance);
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
@@ -308,21 +312,21 @@ class TemplateConfiguration extends TemplateConfig
      * @param integer $iSurveyId
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName = null, $iSurveyGroupId = null, $iSurveyId = null)
+    public static function getInstance($sTemplateName = null, $iSurveyGroupId = null, $iSurveyId = null, $abstractInstance = false)
     {
 
         $oTemplateConfigurationModel = new TemplateConfiguration();
 
         if ($sTemplateName != null && $iSurveyGroupId == null && $iSurveyId == null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName, $abstractInstance);
         }
 
         if ($iSurveyGroupId != null && $iSurveyId == null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName, $abstractInstance);
         }
 
         if ($iSurveyId != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyId($iSurveyId, $sTemplateName, $abstractInstance);
         }
 
         return $oTemplateConfigurationModel;
@@ -736,7 +740,12 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getOptionPage()
     {
+        $oSimpleInheritance = Template::getInstance($this->template->name, $this->sid, $this->gsid, null, true);
+        $oSimpleInheritance->options = 'inherit';
+        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($this->template->name);
+
         $oTemplate = $this->prepareTemplateRendering($this->template->name);
+
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
 
         $oTemplate->setOptions();
@@ -744,7 +753,11 @@ class TemplateConfiguration extends TemplateConfig
 
         //We add some extra values to the option page
         //This is just a dirty hack, and somewhere in the future we will correct it
-        $renderArray['oParentOptions'] = array_merge(((array) $oTemplate->oOptions), array('packages_to_load' =>  $oTemplate->packages_to_load, 'files_css' => $oTemplate->files_css));
+        $renderArray['oParentOptions'] = array_merge(
+            ((array) $oSimpleInheritanceTemplate->oOptions), 
+            array('packages_to_load' =>  $oTemplate->packages_to_load, 
+            'files_css' => $oTemplate->files_css)
+        );
 
         return Yii::app()->twigRenderer->renderOptionPage($oTemplate, $renderArray);
     }
