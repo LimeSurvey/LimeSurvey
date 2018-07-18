@@ -37119,7 +37119,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         orderedQuestionGroups() {
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(this.$store.state.questiongroups, a => {
-                return parseInt(a.group_order);
+                return parseInt(a.group_order || 999999);
             }, ["asc"]);
         },
         createQuestionAllowed() {
