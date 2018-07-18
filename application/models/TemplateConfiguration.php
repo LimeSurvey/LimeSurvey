@@ -1074,7 +1074,7 @@ class TemplateConfiguration extends TemplateConfig
             //check for surveygroup id if a survey is given
             if ($this->sid != null) {
                 $oSurvey = Survey::model()->findByPk($this->sid);
-                $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName, null, $oSurvey->gsid);
+                $oParentTemplate = Template::getTemplateConfiguration($this->template->name, null, $oSurvey->gsid);
                 if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                     $this->oParentTemplate = $oParentTemplate;
                     $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
@@ -1087,7 +1087,7 @@ class TemplateConfiguration extends TemplateConfig
                 $oSurveyGroup = SurveysGroups::model()->findByPk($this->gsid);
                 //Switch if the surveygroup inherits from a parent surveygroup
                 if ($oSurveyGroup != null && $oSurveyGroup->parent_id != 0) {
-                    $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName, null, $oSurveyGroup->parent_id);
+                    $oParentTemplate = Template::getTemplateConfiguration($this->template->name, null, $oSurveyGroup->parent_id);
                     if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                         $this->oParentTemplate = $oParentTemplate;
                         $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
