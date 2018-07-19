@@ -562,7 +562,6 @@ class LSYii_ClientScript extends CClientScript
             $html .= $this->renderScriptBatch($scripts);
         }
 
-
         if ($fullPage) {
             $output = preg_replace('/<###end###>/', $html, $output, 1);
         } else {
@@ -579,14 +578,30 @@ class LSYii_ClientScript extends CClientScript
      */
     public function render(&$output)
     {
+        /**
+         * beforeCloseHtml event @see https://manual.limesurvey.org/BeforeCloseHtml
+         * Set it before all other action allow registerScript by plugin
+         * Whitelisting available controller (public plugin not happen for PluginsController using actionDirect, actionUnsecure event)
+         */
+        $publicControllers = array('option','optout','printanswers','register','statistics_user','survey','surveys','uploader');
+        if(Yii::app()->getController() && in_array(Yii::app()->getController()->getId(),$publicControllers) && strpos($output, '</body>')) {
+            $event = new PluginEvent('beforeCloseHtml');
+            $surveyId = Yii::app()->getRequest()->getParam('surveyid',Yii::app()->getRequest()->getParam('sid',Yii::app()->getConfig('surveyid')));
+            $event->set('surveyId', $surveyId); // Set to null if not set by param
+            App()->getPluginManager()->dispatchEvent($event);
+            $pluginHtml = $event->get('html');
+            if (!empty($pluginHtml) && is_string($pluginHtml)) {
+                $output = preg_replace('/(<\\/body\s*>)/is', "{$pluginHtml}$1", $output, 1);
+            }
+        }
         if (!$this->hasScripts) {
-                    return;
+            return;
         }
 
         $this->renderCoreScripts();
 
         if (!empty($this->scriptMap)) {
-                    $this->remapScripts();
+            $this->remapScripts();
         }
 
         $this->unifyScripts();
