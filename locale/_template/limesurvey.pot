@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-07-19 08:45:59+00:00\n"
+"POT-Creation-Date: 2018-07-19 14:59:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -30,10 +30,9 @@ msgstr ""
 #: application/controllers/admin/themes.php:924
 #: application/controllers/admin/themes.php:1226
 #: application/controllers/survey/index.php:156
-#: application/controllers/survey/index.php:183
-#: application/controllers/survey/index.php:296
-#: application/controllers/survey/index.php:318
-#: application/controllers/survey/index.php:342
+#: application/controllers/survey/index.php:294
+#: application/controllers/survey/index.php:316
+#: application/controllers/survey/index.php:340
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:60
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:7
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:31
@@ -388,12 +387,12 @@ msgid "Plugin '%s' was missing and is removed from the database."
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:88
-#: application/controllers/survey/index.php:211
+#: application/controllers/survey/index.php:201
 msgid "We are sorry but your session has expired."
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:93
-#: application/controllers/survey/index.php:213
+#: application/controllers/survey/index.php:203
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr ""
 
@@ -419,7 +418,7 @@ msgstr ""
 #: application/controllers/admin/questions.php:435
 #: application/controllers/admin/questions.php:649
 #: application/controllers/admin/questions.php:1019
-#: application/controllers/admin/questions.php:1158
+#: application/controllers/admin/questions.php:1154
 #: application/controllers/admin/quotas.php:146
 #: application/controllers/admin/quotas.php:364
 #: application/controllers/admin/quotas.php:418
@@ -527,6 +526,70 @@ msgstr ""
 
 #: application/controllers/RegisterController.php:426
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr ""
+
+#: application/controllers/SurveysController.php:74
+msgid "If you think this is a server error, please contact %s."
+msgstr ""
+
+#: application/controllers/SurveysController.php:77
+msgid "400: Bad Request"
+msgstr ""
+
+#: application/controllers/SurveysController.php:78
+msgid "The request could not be understood by the server due to malformed syntax."
+msgstr ""
+
+#: application/controllers/SurveysController.php:79
+msgid "Please do not repeat the request without modifications."
+msgstr ""
+
+#: application/controllers/SurveysController.php:82
+msgid "401: Unauthorized"
+msgstr ""
+
+#: application/controllers/SurveysController.php:83
+msgid "You must be loggued to access to this page."
+msgstr ""
+
+#: application/controllers/SurveysController.php:88
+msgid "403: Forbidden"
+msgstr ""
+
+#: application/controllers/SurveysController.php:89
+msgid "You do not have the proper credential to access this page."
+msgstr ""
+
+#: application/controllers/SurveysController.php:92
+msgid "404: Not Found"
+msgstr ""
+
+#: application/controllers/SurveysController.php:93
+msgid "The requested URL was not found on this server."
+msgstr ""
+
+#: application/controllers/SurveysController.php:94
+msgid "If you entered the URL manually please check your spelling and try again."
+msgstr ""
+
+#: application/controllers/SurveysController.php:97
+msgid "500: Internal Server Error"
+msgstr ""
+
+#: application/controllers/SurveysController.php:98
+msgid "An internal error occurred while the Web server was processing your request."
+msgstr ""
+
+#: application/controllers/SurveysController.php:99
+msgid "Please contact %s to report this problem."
+msgstr ""
+
+#: application/controllers/SurveysController.php:102
+msgid "Error %s"
+msgstr ""
+
+#: application/controllers/SurveysController.php:103
+msgid "The above error occurred when the Web server was processing your request."
 msgstr ""
 
 #: application/controllers/UploaderController.php:105
@@ -932,7 +995,7 @@ msgstr ""
 #: application/controllers/admin/questions.php:633
 #: application/controllers/admin/questions.php:678
 #: application/controllers/admin/questions.php:1009
-#: application/controllers/admin/questions.php:1185
+#: application/controllers/admin/questions.php:1181
 #: application/controllers/admin/surveyadmin.php:150
 #: application/controllers/admin/surveyadmin.php:215
 #: application/controllers/admin/surveyadmin.php:471
@@ -996,6 +1059,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:583
 #: application/controllers/survey/index.php:157
 #: application/controllers/survey/index.php:184
+#: application/controllers/survey/index.php:186
 #: application/views/admin/participants/blacklist_view.php:128
 #: application/views/admin/survey/subview/_survey_quickaction.php:241
 #: application/views/admin/survey/subview/_survey_quickaction.php:294
@@ -3401,59 +3465,59 @@ msgid "Edit subquestions"
 msgstr ""
 
 #: application/controllers/admin/questions.php:1020
-#: application/controllers/admin/questions.php:1174
+#: application/controllers/admin/questions.php:1170
 #: application/views/admin/survey/Question/editQuestion_view.php:78
 msgid "Add a new question"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1174
+#: application/controllers/admin/questions.php:1170
 #: application/views/admin/survey/Question/editQuestion_view.php:80
 #: application/views/admin/survey/Question/editQuestion_view.php:373
 msgid "Copy question"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1395
+#: application/controllers/admin/questions.php:1391
 #: application/controllers/admin/surveyadmin.php:73
 msgid "Deleted"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1430
+#: application/controllers/admin/questions.php:1426
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1460
+#: application/controllers/admin/questions.php:1456
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1475
+#: application/controllers/admin/questions.php:1471
 msgid "You are not authorized to delete questions."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1840
+#: application/controllers/admin/questions.php:1836
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1840
+#: application/controllers/admin/questions.php:1836
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1843
+#: application/controllers/admin/questions.php:1839
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1843
+#: application/controllers/admin/questions.php:1839
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1849
+#: application/controllers/admin/questions.php:1845
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1851
+#: application/controllers/admin/questions.php:1847
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1853
+#: application/controllers/admin/questions.php:1849
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:65
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:83
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:99
@@ -3461,7 +3525,7 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1938
+#: application/controllers/admin/questions.php:1934
 #: application/views/admin/super/_question_explorer.php:74
 msgid "You can't add questions while the survey is active."
 msgstr ""
@@ -5289,7 +5353,7 @@ msgstr ""
 
 #: application/controllers/survey/index.php:105
 #: application/controllers/survey/index.php:137
-#: application/controllers/survey/index.php:223
+#: application/controllers/survey/index.php:213
 msgid "Click here to start the survey."
 msgstr ""
 
@@ -5301,14 +5365,18 @@ msgstr ""
 msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
 msgstr ""
 
-#: application/controllers/survey/index.php:298
+#: application/controllers/survey/index.php:250
+msgid "The survey in which you are trying to participate does not seem to exist."
+msgstr ""
+
+#: application/controllers/survey/index.php:296
 msgid "We are sorry but the survey is expired and no longer available."
 msgstr ""
 
-#: application/controllers/survey/index.php:299
-#: application/controllers/survey/index.php:321
-#: application/controllers/survey/index.php:345
-#: application/controllers/survey/index.php:484
+#: application/controllers/survey/index.php:297
+#: application/controllers/survey/index.php:319
+#: application/controllers/survey/index.php:343
+#: application/controllers/survey/index.php:482
 #: application/helpers/replacements_helper.php:149
 #: application/helpers/replacements_helper.php:151
 #: application/helpers/replacements_helper.php:399
@@ -5316,57 +5384,57 @@ msgstr ""
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
-#: application/controllers/survey/index.php:320
+#: application/controllers/survey/index.php:318
 msgid "This survey is not yet started."
 msgstr ""
 
-#: application/controllers/survey/index.php:344
+#: application/controllers/survey/index.php:342
 msgid "You have already completed this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:370
+#: application/controllers/survey/index.php:368
 msgid "You did not provide a name."
 msgstr ""
 
-#: application/controllers/survey/index.php:374
+#: application/controllers/survey/index.php:372
 msgid "You did not provide a password."
 msgstr ""
 
-#: application/controllers/survey/index.php:386
+#: application/controllers/survey/index.php:384
 msgid "You did not answer to the security question."
 msgstr ""
 
-#: application/controllers/survey/index.php:388
+#: application/controllers/survey/index.php:386
 #: application/libraries/Save.php:199 application/libraries/Save.php:336
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
-#: application/controllers/survey/index.php:400
+#: application/controllers/survey/index.php:398
 msgid "There is no matching saved survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:470
+#: application/controllers/survey/index.php:468
 msgid "This invitation has already been used."
 msgstr ""
 
-#: application/controllers/survey/index.php:472
+#: application/controllers/survey/index.php:470
 msgid "This invitation has no uses left."
 msgstr ""
 
-#: application/controllers/survey/index.php:474
+#: application/controllers/survey/index.php:472
 msgid "This invitation is not valid yet."
 msgstr ""
 
-#: application/controllers/survey/index.php:476
+#: application/controllers/survey/index.php:474
 msgid "This invitation is not valid anymore."
 msgstr ""
 
-#: application/controllers/survey/index.php:479
-#: application/controllers/survey/index.php:500
+#: application/controllers/survey/index.php:477
+#: application/controllers/survey/index.php:498
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
-#: application/controllers/survey/index.php:483
+#: application/controllers/survey/index.php:481
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
