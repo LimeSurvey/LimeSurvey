@@ -11,6 +11,7 @@ var ConfirmDeleteModal = function(options){
         confirmText   = options.confirmText   || $item.data('text')           || '',
         confirmTitle  = options.confirmTitle  || $item.attr('title')          || '',
         postObject    = options.postObject    || $item.data('post'),
+        showTextArea  = options.showTextArea  || $item.data('show-text-area') || '',
         buttonNo      = options.buttonNo      || $item.data('button-no')      || '<i class="fa fa-times"></i>',
         buttonYes     = options.buttonYes     || $item.data('button-yes')     || '<i class="fa fa-check"></i>',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
@@ -73,6 +74,11 @@ var ConfirmDeleteModal = function(options){
         formObject.append('<input name="YII_CSRF_TOKEN" value="'+LS.data.csrfToken+'" type="hidden" />');
         modalObject.find('.modal-body').append(formObject)
         modalObject.find('.modal-body').append('<p>'+confirmText+'</p>');
+
+        if (showTextArea !== '' ){
+            modalObject.find('.modal-body').append('<textarea></textarea>');
+        }
+
     },
     bindEvents = function(){
         modalObject.on('show.bs.modal', function(){
