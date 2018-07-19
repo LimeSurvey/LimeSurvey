@@ -80,13 +80,13 @@
                         break;
                     case '401': 
                         $title = gT('401: Unauthorized');
-                        $message = gT('You must be loggued to access to this page.');
+                        $message = gT('You must be logged in to access to this page.');
                         // $loginurl = $this->getController()->createUrl("/admin/login")
                         // header('WWW-Authenticate: MyAuthScheme  realm="'.$loginurl.'"');
                         break;
                     case '403': 
                         $title = gT('403: Forbidden');
-                        $message = gT('You do not have the proper credential to access this page.');
+                        $message = gT('You do not have the permission to access this page.');
                         break;
                     case '404': 
                         $title = gT('404: Not Found');
