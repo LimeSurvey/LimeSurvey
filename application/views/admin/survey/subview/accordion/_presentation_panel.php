@@ -49,7 +49,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
 
         <!-- security notice -->
         <div class="form-group">
-            <label class=" control-label" for='showsurveypolicynotice'><?php  eT("Show policy notice:") ; ?></label>
+            <label class=" control-label" for='showsurveypolicynotice'><?php  eT("Show survey policy text with mandatory checkbox:") ; ?></label>
             <div class="">
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==0 ? 'active' : ''?>" >
@@ -59,7 +59,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                         <input type="radio" name="showsurveypolicynotice" value="1" <?=$oSurvey->showsurveypolicynotice==1 ? 'checked' : ''?> autocomplete="off"> <?=gT("Inline text");?>
                     </label>
                     <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==2 ? 'active' : ''?>" >
-                        <input type="radio" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off"> <?=gT("Text in collapsible");?>
+                        <input type="radio" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off"> <?=gT("Collapsible text");?>
                     </label>
                 </div>
             </div>
