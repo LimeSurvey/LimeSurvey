@@ -312,14 +312,14 @@ class Template extends LSActiveRecord
      * @param boolean $bForceXML        the id of the survey.
      * @return TemplateConfiguration
      */
-    public static function getTemplateConfiguration($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = false)
+    public static function getTemplateConfiguration($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = false, $abstractInstance = false)
     {
 
         // First we try to get a confifuration row from DB
         if (!$bForceXML) {
             // The name need to be filtred only for DB version. From TemplateEditor, the template is not installed.
             $sTemplateName = (empty($sTemplateName)) ? null : self::templateNameFilter($sTemplateName);
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId, $abstractInstance);
         }
 
 
@@ -480,7 +480,7 @@ class Template extends LSActiveRecord
      * @param boolean $bForceXML
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null)
+    public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null, $abstractInstance = false)
     {
         // The error page from default template can be called when no survey found with a specific ID.
         if ($sTemplateName === null && $iSurveyId === null) {
@@ -494,6 +494,10 @@ class Template extends LSActiveRecord
             } elseif (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG) {
                 $bForceXML = false;
             }
+        }
+        
+        if($abstractInstance === true) {
+            return self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML, true);
         }
 
         if (empty(self::$instance)) {

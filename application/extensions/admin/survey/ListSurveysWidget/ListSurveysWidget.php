@@ -35,7 +35,6 @@ class ListSurveysWidget extends CWidget
         }
 
         $this->model->active = null;
-        $this->model->gsid   = null;
 
         // Filter state
         if (isset($_GET['active']) && !empty($_GET['active'])){

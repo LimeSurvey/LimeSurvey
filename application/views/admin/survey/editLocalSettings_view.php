@@ -140,8 +140,8 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 <!-- Survey data policy checkbox label -->
                 <div class="form-group">
                     <label class="control-label"><?php eT("Survey data policy checkbox label:"); ?> 
-                    <i class="fa fa-question-circle" id="dataseclabel_popover_<?=$aSurveyLanguageSettings['surveyls_language']?>" data-toggle="popover" title="<?=gT('How to link to the survey data policy statement modal window')?>"  data-content="<?php
-                        eT("If you want to specify a link to the survey data policy please use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} to define the link that opens the popup. If there is no placeholder given, there will be an appendix.")
+                    <i class="fa fa-question-circle" id="dataseclabel_popover_<?=$aSurveyLanguageSettings['surveyls_language']?>" data-toggle="tooltip" title="<?php
+                        eT("If you want to specify a link to the survey data policy please use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} to define the link that opens the popup. If there is no placeholder given, there will be an appendix.", 'json')
                     ?>"></i> </label>
                     <div class="">
                         <?php echo CHtml::textField("dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_notice_label'],array('class'=>'form-control','size'=>"80",'id'=>"dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}")); ?>

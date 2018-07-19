@@ -964,7 +964,7 @@ class database extends Survey_Common_Action
             if (getGlobalSetting('showqnumcode') === 'choose'){
                 $oSurvey->showqnumcode = $this->_filterEmptyFields($oSurvey, 'showqnumcode');
             }
-            if (getGlobalSetting('shownoanswer') === '2'){
+            if (getGlobalSetting('shownoanswer') == 2){  // Don't do exact comparison because the value could be from global settings table (string) or from config (integer)
                 $oSurvey->shownoanswer = $this->_filterEmptyFields($oSurvey, 'shownoanswer');
             }
             $oSurvey->showwelcome = $this->_filterEmptyFields($oSurvey, 'showwelcome');

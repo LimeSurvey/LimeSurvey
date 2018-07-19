@@ -80,11 +80,37 @@ echo viewHelper::getViewTestTag('index');
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-
-
-
     <?php endif;?>
 
+    <?php 
+        //Check for IE and show a warning box
+        if (preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false)) { 
+    ?>
+    <div class="container">
+        <div class="alert alert-danger" role="alert" id="warningIE11">
+            <div class="container-fluid">
+                <div class="row">
+                    <h4 class="col-xs-12"><?=gT("Warning!")?></h4>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <?php eT("You are using Microsoft Internet Explorer."); ?><br/><br/>
+                        <?php eT("LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work."); ?><br/>
+                        <?php eT("If you have any issues, please try using a modern browser first, before reporting it.");?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <?php 
+    }
+    App()->getClientScript()->registerScript('WelcomeCheckIESafety', "
+    if(!/(MSIE|Trident\/)/i.test(navigator.userAgent)) {
+        $('#warningIE11').remove();
+    }
+    ", LSYii_ClientScript::POS_POSTSCRIPT); 
+    ?>
     <!-- Last visited survey/question -->
     <?php if( $bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
         <div class="row text-right">

@@ -1,2 +1,6 @@
 <?php
-App()->getClientScript()->registerScript("EditQuestionView_question_jsviews" ,"OtherSelection('".$type."');", LSYii_ClientScript::POS_POSTSCRIPT );
+App()->getClientScript()->registerScript("ZOrder-EditQuestionView_question_jsviews" ,"
+if(window.questionFunctions) {
+    window.questionFunctions.OtherSelection('".$type."');
+}
+", LSYii_ClientScript::POS_POSTSCRIPT );

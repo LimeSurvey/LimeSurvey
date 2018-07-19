@@ -62,7 +62,7 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
             'selectedClass' => Question::getQuestionClass($oQuestion->type),
             'onUpdate' => [
                 'value',
-                "console.ls.log(value); $('#question_type').val(value); updatequestionattributes(''); updateQuestionTemplateOptions();"
+                "console.ls.log(value); $('#question_type').val(value); window.questionFunctions.updatequestionattributes(''); window.questionFunctions.updateQuestionTemplateOptions();"
             ]
         ]
     ));
