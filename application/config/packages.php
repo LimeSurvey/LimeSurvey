@@ -130,7 +130,7 @@ return array(
         'devBaseUrl' => 'assets/packages/adminpanel/',
         'basePath' => 'core.adminpanel',
         'js' => array(
-            'build/lsadminpanel'.(($debug > 0) ? '.debug' : '.min').'.js',
+            'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
             'build/surveysettings'.$minVersion.'.js',
             'build/hammer'.$minVersion.'.js'
         ),

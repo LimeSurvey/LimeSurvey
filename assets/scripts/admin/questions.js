@@ -12,13 +12,6 @@
 var LS = LS || {
     onDocumentReady: {}
 };
-
-var qtypes = new Array();
-var qnames = new Array();
-var qhelp = new Array();
-var qcaption = new Array();
-
-
 var QuestionFunctions = function () {
 
     var
@@ -81,164 +74,7 @@ var QuestionFunctions = function () {
             );
         },
 
-        updatequestionattributes = function(question_template_name, oldQuestionTemplate) {
-            
-            question_template_name = question_template_name || ''; 
-            oldQuestionTemplate = oldQuestionTemplate || '';
 
-            var type = $('#question_type').val();
-            window.questionFunctions.OtherSelection(type);
-        
-            $('.loader-advancedquestionsettings').removeClass("hidden");
-            $('.panel-advancedquestionsettings').remove();
-        
-            var selected_value = $("#question_type").val();
-        
-            var postData = {
-                'qid': $('#qid').val(),
-                'question_type': selected_value,
-                'sid': $('input[name=sid]').val(),
-                'old_question_template': oldQuestionTemplate
-            };
-        
-            if (Object.prototype.toString.call(question_template_name) == '[object String]'){
-                postData['question_template'] = question_template_name;
-            }
-        
-            $.ajax({
-                url: attr_url,
-                data: postData,
-                method: 'POST',
-                success: function (data) {
-                    $('#container-advanced-question-settings').html(data);
-                    $('.loader-advancedquestionsettings').addClass("hidden");
-                    if(question_template_name) {
-                        //$('#collapse-cat1').collapse('toggle');
-                    }
-        
-                    $('label[title]').qtip({
-                        style: {
-                            name: 'cream',
-                            tip: true,
-                            color: '#111111',
-                            border: {
-                                width: 1,
-                                radius: 5,
-                                color: '#EADF95'
-                            }
-                        },
-                        position: {
-                            adjust: {
-                                screen: true,
-                                scroll: true
-                            },
-                            corner: {
-                                target: 'bottomRight'
-                            }
-                        },
-                        show: {
-                            effect: {
-                                length: 50
-                            }
-                        }
-                    });
-                    renderBootstrapSwitch();
-                }
-            });
-        },
-
-        // selector is only set when this function is called from #question_template
-        updateQuestionTemplateOptions = function(selector) { 
-            selector = selector || '';
-            
-            var type = $('#question_type').val();
-            var template = $('#question_template').val();
-            $.ajax({
-                url: get_question_template_options_url,
-                data: {'type': type},
-                method: 'POST',
-                success: function (data) {
-                    if ( data[template] != undefined ) {
-                        $("#QuestionTemplatePreview img").attr('src', data[template]['preview']);
-                    } else {
-                        $("#QuestionTemplatePreview img").attr('src', data['core']['preview']);
-                    }
-
-                    if (selector === ''){ // selector is not called from #question_template
-                        $("#question_template").html(""); 
-                        $.each(data, function (key, value) {
-                            $("#question_template").append("<option value="+key+">"+value.title+"</option>");
-                        });
-                    }
-                }
-            });
-        },
-        OtherSelection = function (QuestionType) {
-            if (QuestionType == undefined) {
-                //console.log('Error: OtherSelection: QuestionType must not be undefined');
-                return;
-            }
-            try{
-                if (QuestionType == '') {
-                    QuestionType = document.getElementById('question_type').value;
-                }
-                if (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!') {
-                    document.getElementById('OtherSelection').style.display = '';
-                    document.getElementById('Validation').style.display = 'none';
-                    document.getElementById('MandatorySelection').style.display = '';
-                } else if (QuestionType == 'W' || QuestionType == 'Z') {
-                    document.getElementById('OtherSelection').style.display = '';
-                    document.getElementById('Validation').style.display = 'none';
-                    document.getElementById('MandatorySelection').style.display = '';
-                } else if (QuestionType == '|') {
-                    document.getElementById('OtherSelection').style.display = 'none';
-                    document.getElementById('Validation').style.display = 'none';
-                    document.getElementById('MandatorySelection').style.display = 'none';
-                } else if (QuestionType == 'F' || QuestionType == 'H') {
-                    document.getElementById('OtherSelection').style.display = 'none';
-                    document.getElementById('Validation').style.display = 'none';
-                    document.getElementById('MandatorySelection').style.display = '';
-                } else if (QuestionType == ':' || QuestionType == ';') {
-                    document.getElementById('OtherSelection').style.display = 'none';
-                    document.getElementById('Validation').style.display = '';
-                    document.getElementById('MandatorySelection').style.display = '';
-                } else if (QuestionType == '1') {
-                    document.getElementById('OtherSelection').style.display = 'none';
-                    document.getElementById('Validation').style.display = 'none';
-                    document.getElementById('MandatorySelection').style.display = '';
-                } else if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType == '' || QuestionType == 'K') {
-                    document.getElementById('Validation').style.display = '';
-                    document.getElementById('OtherSelection').style.display = 'none';
-                    if (document.getElementById('ON')) {
-                        document.getElementById('ON').checked = true;
-                    }
-                    document.getElementById('MandatorySelection').style.display = '';
-                } else if (QuestionType == 'X') {
-                    document.getElementById('Validation').style.display = 'none';
-                    document.getElementById('OtherSelection').style.display = 'none';
-                    document.getElementById('MandatorySelection').style.display = 'none';
-                } else if (QuestionType == 'Q') {
-                    document.getElementById('Validation').style.display = '';
-                    document.getElementById('OtherSelection').style.display = 'none';
-                    document.getElementById('MandatorySelection').style.display = '';
-                } else {
-                    document.getElementById('OtherSelection').style.display = 'none';
-                    if (document.getElementById('ON')) {
-                        document.getElementById('ON').checked = true;
-                    }
-                    document.getElementById('Validation').style.display = 'none';
-                    document.getElementById('MandatorySelection').style.display = '';
-                }
-        
-                if (QuestionType == 'H'){  // hide relevance equation input for array by column question type until it is fixed
-                    document.getElementById('relevanceContainer').style.display = 'none';
-                } else {
-                    document.getElementById('relevanceContainer').style.display = '';
-                }
-            } catch(e) {
-                if(window.debugState.backend) console.ls.error(e);
-            }
-        },
         getQuestionTypeImage = function (questioncode) {
 
             var multiple = 1;
@@ -301,10 +137,7 @@ var QuestionFunctions = function () {
 
         };
     return {
-        init: init,
-        OtherSelection: OtherSelection,
-        updatequestionattributes : updatequestionattributes,
-        updateQuestionTemplateOptions : updateQuestionTemplateOptions
+        init: init
     };
 }
 
@@ -315,3 +148,161 @@ $(document).on('ready  pjax:scriptcomplete', function () {
 });
 
 
+function updatequestionattributes(question_template_name = '', oldQuestionTemplate = '') {
+    var type = $('#question_type').val();
+    OtherSelection(type);
+
+    $('.loader-advancedquestionsettings').removeClass("hidden");
+    $('.panel-advancedquestionsettings').remove();
+
+    var selected_value = $("#question_type").val();
+
+    var postData = {
+        'qid': $('#qid').val(),
+        'question_type': selected_value,
+        'sid': $('input[name=sid]').val(),
+        'old_question_template': oldQuestionTemplate
+    };
+
+    if (Object.prototype.toString.call(question_template_name) == '[object String]'){
+        postData['question_template'] = question_template_name;
+    }
+
+    $.ajax({
+        url: attr_url,
+        data: postData,
+        method: 'POST',
+        success: function (data) {
+            $('#container-advanced-question-settings').html(data);
+            $('.loader-advancedquestionsettings').addClass("hidden");
+            if(question_template_name) {
+                //$('#collapse-cat1').collapse('toggle');
+            }
+
+            $('label[title]').qtip({
+                style: {
+                    name: 'cream',
+                    tip: true,
+                    color: '#111111',
+                    border: {
+                        width: 1,
+                        radius: 5,
+                        color: '#EADF95'
+                    }
+                },
+                position: {
+                    adjust: {
+                        screen: true,
+                        scroll: true
+                    },
+                    corner: {
+                        target: 'bottomRight'
+                    }
+                },
+                show: {
+                    effect: {
+                        length: 50
+                    }
+                }
+            });
+            renderBootstrapSwitch();
+        }
+    });
+}
+
+function updateQuestionTemplateOptions(selector = '') { // selector is only set when this function is called from #question_template
+    var type = $('#question_type').val();
+    var template = $('#question_template').val();
+    $.ajax({
+        url: get_question_template_options_url,
+        data: {'type': type},
+        method: 'POST',
+        success: function (data) {
+            if ( data[template] != undefined ) {
+                $("#QuestionTemplatePreview img").attr('src', data[template]['preview']);
+            } else {
+                $("#QuestionTemplatePreview img").attr('src', data['core']['preview']);
+            }
+
+            if (selector === ''){ // selector is not called from #question_template
+                $("#question_template").html(""); 
+                $.each(data, function (key, value) {
+                    $("#question_template").append("<option value="+key+">"+value.title+"</option>");
+                });
+            }
+        }
+    });
+}
+
+var qtypes = new Array();
+var qnames = new Array();
+var qhelp = new Array();
+var qcaption = new Array();
+
+
+function OtherSelection(QuestionType) {
+    if (QuestionType == undefined) {
+        //console.log('Error: OtherSelection: QuestionType must not be undefined');
+        return;
+    }
+    try{
+        if (QuestionType == '') {
+            QuestionType = document.getElementById('question_type').value;
+        }
+        if (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!') {
+            document.getElementById('OtherSelection').style.display = '';
+            document.getElementById('Validation').style.display = 'none';
+            document.getElementById('MandatorySelection').style.display = '';
+        } else if (QuestionType == 'W' || QuestionType == 'Z') {
+            document.getElementById('OtherSelection').style.display = '';
+            document.getElementById('Validation').style.display = 'none';
+            document.getElementById('MandatorySelection').style.display = '';
+        } else if (QuestionType == '|') {
+            document.getElementById('OtherSelection').style.display = 'none';
+            document.getElementById('Validation').style.display = 'none';
+            document.getElementById('MandatorySelection').style.display = 'none';
+        } else if (QuestionType == 'F' || QuestionType == 'H') {
+            document.getElementById('OtherSelection').style.display = 'none';
+            document.getElementById('Validation').style.display = 'none';
+            document.getElementById('MandatorySelection').style.display = '';
+        } else if (QuestionType == ':' || QuestionType == ';') {
+            document.getElementById('OtherSelection').style.display = 'none';
+            document.getElementById('Validation').style.display = '';
+            document.getElementById('MandatorySelection').style.display = '';
+        } else if (QuestionType == '1') {
+            document.getElementById('OtherSelection').style.display = 'none';
+            document.getElementById('Validation').style.display = 'none';
+            document.getElementById('MandatorySelection').style.display = '';
+        } else if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType == '' || QuestionType == 'K') {
+            document.getElementById('Validation').style.display = '';
+            document.getElementById('OtherSelection').style.display = 'none';
+            if (document.getElementById('ON')) {
+                document.getElementById('ON').checked = true;
+            }
+            document.getElementById('MandatorySelection').style.display = '';
+        } else if (QuestionType == 'X') {
+            document.getElementById('Validation').style.display = 'none';
+            document.getElementById('OtherSelection').style.display = 'none';
+            document.getElementById('MandatorySelection').style.display = 'none';
+        } else if (QuestionType == 'Q') {
+            document.getElementById('Validation').style.display = '';
+            document.getElementById('OtherSelection').style.display = 'none';
+            document.getElementById('MandatorySelection').style.display = '';
+        } else {
+            document.getElementById('OtherSelection').style.display = 'none';
+            if (document.getElementById('ON')) {
+                document.getElementById('ON').checked = true;
+            }
+            document.getElementById('Validation').style.display = 'none';
+            document.getElementById('MandatorySelection').style.display = '';
+        }
+
+        if (QuestionType == 'H'){  // hide relevance equation input for array by column question type until it is fixed
+            document.getElementById('relevanceContainer').style.display = 'none';
+        } else {
+            document.getElementById('relevanceContainer').style.display = '';
+        }
+    } catch(e) {
+        if(window.debugState.backend) console.ls.error(e);
+    }
+}
