@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-07-19 08:38:34+00:00\n"
+"POT-Creation-Date: 2018-07-19 08:45:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16253,11 +16253,11 @@ msgid "You are using Microsoft Internet Explorer."
 msgstr ""
 
 #: application/views/admin/super/welcome.php:98
-msgid "We do not support Internet Explorer for the LimeSurvey administration officially. However most of the functionality should still work."
+msgid "LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work."
 msgstr ""
 
 #: application/views/admin/super/welcome.php:99
-msgid "If you happen to find any issues, please try using a different Browser first, before reporting it."
+msgid "If you have any issues, please try using a modern browser first, before reporting it."
 msgstr ""
 
 #: application/views/admin/super/welcome.php:121
