@@ -12,6 +12,10 @@ var ConfirmDeleteModal = function(options){
         confirmTitle  = options.confirmTitle  || $item.attr('title')          || '',
         postObject    = options.postObject    || $item.data('post'),
         showTextArea  = options.showTextArea  || $item.data('show-text-area') || '',
+        useAjax       = options.useAjax       || $item.data('use-ajax')       || '',
+        keepopen      = options.keepopen      || $item.data('keepopen')       || '',
+        gridReload    = options.gridReload    || $item.data('grid-reload')    || '',
+        gridid        = options.gridid        || $item.data('grid-id')        || '',
         buttonNo      = options.buttonNo      || $item.data('button-no')      || '<i class="fa fa-times"></i>',
         buttonYes     = options.buttonYes     || $item.data('button-yes')     || '<i class="fa fa-check"></i>',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
@@ -76,7 +80,7 @@ var ConfirmDeleteModal = function(options){
         modalObject.find('.modal-body').append('<p>'+confirmText+'</p>');
 
         if (showTextArea !== '' ){
-            modalObject.find('.modal-body').append('<textarea></textarea>');
+            modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" ></textarea>');
         }
 
     },
@@ -89,8 +93,54 @@ var ConfirmDeleteModal = function(options){
             var self = this;
             modalObject.find('.selector--button-confirm').on('click', function(e){
                 e.preventDefault();
-                modalObject.find('form').trigger('submit');
-                modalObject.modal('close');
+
+                if (! useAjax ){
+                    modalObject.find('form').trigger('submit');
+                    modalObject.modal('close');
+                }else{
+
+                    // Ajax request
+                    $.ajax({
+                        url  : postUrl,
+                        type : 'POST',
+                        data :  modalObject.find('form').serialize(),
+
+                        // html contains the buttons
+                        success : function(html, statut){
+
+                            if( keepopen != 'true' ){
+                                modalObject.modal('hide'); // $modal.modal('hide');
+                            }else{
+                                modalObject.find('.modal-body').empty().html(html);                  // Inject the returned HTML in the modal body
+                            }
+
+                            // Reload grid
+                            if (gridReload){
+                                $('#'+gridid).yiiGridView('update');                         // Update the surveys list
+                                setTimeout(function(){
+                                    $(document).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
+                            }
+
+                            if (html.ajaxHelper) {
+                                LS.ajaxHelperOnSuccess(html);
+                                return;
+                            }
+
+                            if (onSuccess) {
+                                var func = eval(onSuccess);
+                                func(html);
+                                return;
+                            }
+
+
+                        },
+                        error :  function(html, statut){
+                            modalObject.find('.modal-body').empty().html(html.responseText);
+                            console.log(html);
+                        }
+                    });
+
+                }
             });
             options.fnOnShown.call(this);
         });
