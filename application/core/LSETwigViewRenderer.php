@@ -509,6 +509,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
     /**
      * get a twig file and return html produced
+     * @todo find a way to fix this …
+     * Twig didn't have any return part and usage of this function throw a white page (called during ob_start…)
+     * Usage of $this->renderFile(Yii::app()->getController(),$twigView,$aData,1) broke too
      * @param string $twigView twigfile to be used (with twig extension)
      * @param array $aData to be used
      * @return string
@@ -516,7 +519,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderPartial($twigView,$aData)
     {
         $oTemplate = Template::model()->getInstance();
-        $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
+        $aData = $this->getAdditionalInfos($aData, $oTemplate);
         $this->addRecursiveTemplatesPath($oTemplate);
         return $this->_twig->loadTemplate($twigView)->render($aData);
     }
