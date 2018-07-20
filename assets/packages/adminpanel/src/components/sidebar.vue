@@ -123,8 +123,12 @@ export default {
                 },
                 error => {
                     self.$log.error("questiongroups updating error!");
-                    self.getQuestions().then(() => {
-                        self.showLoader = false;
+                    this.post(this.updateOrderLink, {
+                        surveyid: this.$store.surveyid
+                    }).then(()=>{
+                        self.getQuestions().then(() => {
+                            self.showLoader = false;
+                        });
                     });
                 }
             );

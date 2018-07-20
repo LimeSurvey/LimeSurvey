@@ -1455,7 +1455,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _reorderGroup($iSurveyID)
     {
-        $grouporder = 0;
+        $grouporder = 1;
         $orgdata = $this->getOrgdata();
         foreach ($orgdata as $ID => $parent) {
             if ($parent == 'root' && $ID[0] == 'g') {
