@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-07-20 13:12:24+00:00\n"
+"POT-Creation-Date: 2018-07-20 13:38:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15884,7 +15884,7 @@ msgid "View Saved but not submitted Responses"
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:158
-msgid "Enter the list of IDs here for questions that are to be deleted, separated by comma."
+msgid "Enter a list of IDs for responses that are to be deleted, separated by comma."
 msgstr ""
 
 #: application/views/admin/responses/browsemenubar_view.php:159
