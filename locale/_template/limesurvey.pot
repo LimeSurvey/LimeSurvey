@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-07-19 15:03:55+00:00\n"
+"POT-Creation-Date: 2018-07-20 13:12:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -423,7 +423,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:364
 #: application/controllers/admin/quotas.php:418
 #: application/controllers/admin/quotas.php:438
-#: application/controllers/admin/responses.php:750
+#: application/controllers/admin/responses.php:761
 #: application/controllers/admin/surveyadmin.php:247
 #: application/controllers/admin/surveyadmin.php:417
 #: application/controllers/admin/surveyadmin.php:581
@@ -1106,7 +1106,7 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_showParticipantSurveys.php:37
 #: application/views/admin/pluginmanager/configure.php:30
 #: application/views/admin/responses/browseallfiltered_view.php:12
-#: application/views/admin/responses/browsemenubar_view.php:243
+#: application/views/admin/responses/browsemenubar_view.php:265
 #: application/views/admin/responses/listResponses_view.php:277
 #: application/views/admin/super/footer.php:163
 #: application/views/admin/super/footer.php:183
@@ -2336,8 +2336,8 @@ msgstr ""
 #: application/controllers/admin/export.php:399
 #: application/controllers/admin/export.php:599
 #: application/controllers/admin/export.php:600
-#: application/controllers/admin/responses.php:1023
-#: application/controllers/admin/responses.php:1024
+#: application/controllers/admin/responses.php:1034
+#: application/controllers/admin/responses.php:1035
 #: application/controllers/admin/saved.php:73
 #: application/controllers/admin/saved.php:77
 #: application/controllers/admin/statistics.php:812
@@ -2445,7 +2445,7 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:120
 #: application/views/admin/participants/viewAttribute_view.php:135
 #: application/views/admin/pluginmanager/configure.php:27
-#: application/views/admin/responses/browsemenubar_view.php:153
+#: application/views/admin/responses/browsemenubar_view.php:175
 #: application/views/admin/responses/listResponses_view.php:278
 #: application/views/admin/super/fullpagebar_view.php:21
 #: application/views/admin/survey/Question/editQuestion_view.php:377
@@ -2495,7 +2495,7 @@ msgid "Follow the following link to update it"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1463
-#: application/views/admin/responses/browsemenubar_view.php:206
+#: application/views/admin/responses/browsemenubar_view.php:228
 msgid "Edit this entry"
 msgstr ""
 
@@ -3368,7 +3368,7 @@ msgstr ""
 #: application/views/admin/dataentry/vvimport.php:120
 #: application/views/admin/participants/participantsPanel_view.php:73
 #: application/views/admin/responses/browsemenubar_view.php:107
-#: application/views/admin/responses/browsemenubar_view.php:173
+#: application/views/admin/responses/browsemenubar_view.php:195
 #: application/views/admin/survey/subview/tab_survey_view.php:38
 #: application/views/admin/themeoptions/import_modal.php:32
 #: application/views/admin/themeoptions/surveythememenu.php:15
@@ -3661,41 +3661,41 @@ msgstr ""
 msgid "This response ID is invalid."
 msgstr ""
 
-#: application/controllers/admin/responses.php:558
+#: application/controllers/admin/responses.php:569
 msgid "Response(s) deleted."
 msgstr ""
 
-#: application/controllers/admin/responses.php:560
+#: application/controllers/admin/responses.php:571
 msgid "Error during response deletion."
 msgstr ""
 
-#: application/controllers/admin/responses.php:605
+#: application/controllers/admin/responses.php:616
 msgid "Sorry, this file was not found."
 msgstr ""
 
-#: application/controllers/admin/responses.php:644
+#: application/controllers/admin/responses.php:655
 msgid "The requested files do not exist on the server."
 msgstr ""
 
-#: application/controllers/admin/responses.php:689
+#: application/controllers/admin/responses.php:700
 msgid "Found no response with ID %d"
 msgstr ""
 
-#: application/controllers/admin/responses.php:695
+#: application/controllers/admin/responses.php:706
 msgid "Error: Could not delete some files: "
 msgstr ""
 
-#: application/controllers/admin/responses.php:699
+#: application/controllers/admin/responses.php:710
 msgid "%d file deleted.|%d files deleted."
 msgstr ""
 
-#: application/controllers/admin/responses.php:757
-#: application/controllers/admin/responses.php:771
+#: application/controllers/admin/responses.php:768
+#: application/controllers/admin/responses.php:782
 #: application/helpers/common_helper.php:1998
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/admin/responses.php:775
+#: application/controllers/admin/responses.php:786
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:69
 #: application/helpers/admin/export/HtmlWriter.php:75
 #: application/models/Assessment.php:129
@@ -3704,11 +3704,11 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: application/controllers/admin/responses.php:777
+#: application/controllers/admin/responses.php:788
 msgid "Group: "
 msgstr ""
 
-#: application/controllers/admin/responses.php:783
+#: application/controllers/admin/responses.php:794
 #: application/controllers/admin/themes.php:918
 #: application/helpers/admin/statistics_helper.php:4269
 #: application/views/admin/conditions/includes/form_editconditions_header.php:65
@@ -3719,16 +3719,16 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#: application/controllers/admin/responses.php:785
+#: application/controllers/admin/responses.php:796
 msgid "Question: "
 msgstr ""
 
-#: application/controllers/admin/responses.php:984
+#: application/controllers/admin/responses.php:995
 msgid "Sorry, there are no files for this response."
 msgstr ""
 
-#: application/controllers/admin/responses.php:1021
-#: application/controllers/admin/responses.php:1022
+#: application/controllers/admin/responses.php:1032
+#: application/controllers/admin/responses.php:1033
 msgid "Responses and statistics"
 msgstr ""
 
@@ -3961,7 +3961,7 @@ msgid "Edit permissions"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:131
-#: application/views/admin/responses/browsemenubar_view.php:210
+#: application/views/admin/responses/browsemenubar_view.php:232
 #: application/views/admin/saved/savedlist_view.php:39
 #: application/views/admin/usergroup/usergroupbar_view.php:35
 #: application/views/admin/usergroup/viewUserGroup_view.php:56
@@ -4112,7 +4112,7 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:32
 #: application/views/admin/participants/participantsPanel_view.php:8
 #: application/views/admin/responses/browsemenubar_view.php:72
-#: application/views/admin/responses/browsemenubar_view.php:166
+#: application/views/admin/responses/browsemenubar_view.php:188
 #: application/views/admin/responses/massive_actions/_selector.php:76
 #: application/views/admin/survey/surveybar_displayexport.php:152
 #: application/views/admin/themeoptions/index.php:103
@@ -6725,7 +6725,7 @@ msgstr ""
 #: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:20
 #: application/views/admin/export/statistics_view.php:53
 #: application/views/admin/export/statistics_view.php:97
-#: application/views/admin/responses/browsemenubar_view.php:190
+#: application/views/admin/responses/browsemenubar_view.php:212
 #: application/views/admin/themes/templateeditor_surveylist_view.php:38
 #: application/views/admin/themes/templateeditor_surveylist_view.php:42
 msgid "View statistics"
@@ -13089,7 +13089,7 @@ msgstr ""
 #: application/views/admin/conditions/includes/form_editconditions_header.php:216
 #: application/views/admin/export/statistics_view.php:54
 #: application/views/admin/export/statistics_view.php:98
-#: application/views/admin/responses/browsemenubar_view.php:195
+#: application/views/admin/responses/browsemenubar_view.php:217
 msgid "Clear"
 msgstr ""
 
@@ -15883,34 +15883,43 @@ msgstr ""
 msgid "View Saved but not submitted Responses"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:181
+#: application/views/admin/responses/browsemenubar_view.php:158
+msgid "Enter the list of IDs here for questions that are to be deleted, separated by comma."
+msgstr ""
+
+#: application/views/admin/responses/browsemenubar_view.php:159
+#: application/views/admin/responses/browsemenubar_view.php:163
+msgid "Batch deletion"
+msgstr ""
+
+#: application/views/admin/responses/browsemenubar_view.php:203
 msgid "Expert mode"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:186
+#: application/views/admin/responses/browsemenubar_view.php:208
 msgid "Simple mode"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:212
+#: application/views/admin/responses/browsemenubar_view.php:234
 msgid "Delete this entry"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:219
+#: application/views/admin/responses/browsemenubar_view.php:241
 #: application/views/admin/responses/massive_actions/_selector.php:62
 msgid "Download files"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:225
+#: application/views/admin/responses/browsemenubar_view.php:247
 msgid "Export this response"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:229
-#: application/views/admin/responses/browsemenubar_view.php:231
+#: application/views/admin/responses/browsemenubar_view.php:251
+#: application/views/admin/responses/browsemenubar_view.php:253
 msgid "Show previous..."
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:233
-#: application/views/admin/responses/browsemenubar_view.php:235
+#: application/views/admin/responses/browsemenubar_view.php:255
+#: application/views/admin/responses/browsemenubar_view.php:257
 msgid "Show next..."
 msgstr ""
 
