@@ -1773,7 +1773,7 @@ class SurveyAdmin extends Survey_Common_Action
         global $sCKEditorURL;
 
         // TAB Uploaded Resources Management
-        $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".gT('Please select a file to import!', 'js')."\")) { this.form.submit();}'";
+        $ZIPimportAction = " onclick='if (window.LS.validatefilename(this.form,\"".gT('Please select a file to import!', 'js')."\")) { this.form.submit();}'";
         if (!function_exists("zip_open")) {
             $ZIPimportAction = " onclick='alert(\"".gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js")."\");'";
         }

@@ -46,10 +46,13 @@ var BootstrapRemoteModal = function(presetOptions, templateOptions){
     var modalObject = null;
     
     var 
+    convertKebabCase = function(string){
+        return string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    },
     parseOptions = function(){
         var self=this;
         $.each(options, function(key, option){
-            options[key] = self.data(key) || options[key];
+            options[key] = self.data(convertKebabCase(key)) || options[key];
         });
     },
     bindEvents = function(){

@@ -174,7 +174,7 @@
                 </a>
 
                 <!-- View participants of this survey in CPDB -->
-                <a class="btn btn-default" href="#" role="button" onclick="sendPost('<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>','',['searchcondition'],['surveyid||equal|| <?php echo $oSurvey->sid ?>']);">
+                <a class="btn btn-default" href="#" role="button" onclick="window.LS.sendPost('<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>',false,{'searchcondition': 'surveyid||equal|| <?php echo $oSurvey->sid ?>'});">
                     <span class="ui-icon ui-participant-link"></span>
                     <?php eT("View in CPDB"); ?>
                 </a>

@@ -411,10 +411,10 @@ function areCodesUnique(sNewValue)
         })
         if (sNewValue!='')
         {
-            codearray=codearray.filter( onlyUnique );
+            codearray=window.LS.getUnique(codearray);
             codearray.push(sNewValue);
         }
-        if (arrHasDupes(codearray))
+        if (window.LS.arrHasDupes(codearray))
             {
             dupefound=true;
             return;
@@ -439,7 +439,7 @@ function lsbrowser(e)
     $('#labelsets').select2();
     $("#labelsetpreview").html('');
     //    e.preventDefault();
-    var scale_id=removechars($(this).attr('id'));
+    var scale_id=window.LS.removechars($(this).attr('id'));
     var surveyid=$('input[name=sid]').val();
         
     $.ajax({
@@ -770,7 +770,7 @@ for (var x in languages)
 function getlabel()
 {
     var answer_table = $(this).parent().children().eq(0);
-    scale_id=removechars($(this).attr('id'));
+    scale_id=window.LS.removechars($(this).attr('id'));
     updaterowproperties();
 }
 
