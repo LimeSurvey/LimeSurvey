@@ -36750,8 +36750,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }, error => {
                 self.$log.error("questiongroups updating error!");
-                self.getQuestions().then(() => {
-                    self.showLoader = false;
+                this.post(this.updateOrderLink, {
+                    surveyid: this.$store.surveyid
+                }).then(() => {
+                    self.getQuestions().then(() => {
+                        self.showLoader = false;
+                    });
                 });
             });
         },
