@@ -63,8 +63,8 @@ function getGlobalSetting($settingname)
 }
 
 /**
- * Set a global setting after control (must be moved to rules or filter of SettingGlobal model)
- * And save it in DB
+ * Set a global setting
+ * @deprecated : use SettingGlobal::setSetting($settingname, $settingvalue);
  * @param string $settingname
  * @param string $settingvalue
  * @return void
