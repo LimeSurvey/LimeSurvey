@@ -154,7 +154,12 @@
 				<?php echo $form->textField($model,'language',array('size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model,'language'); ?>
 			</div>
-		
+			
+			<div class="form-group">
+				<?php echo $form->labelEx($model,'showincollapse'); ?>
+				<?php echo $form->checkbox($model,'showincollapse'); ?>
+				<?php echo $form->error($model,'showincollapse'); ?>
+			</div>
 		</div>
 
 		<?php echo $form->hiddenField($model, 'changed_by', ['value' => $user]);?>
