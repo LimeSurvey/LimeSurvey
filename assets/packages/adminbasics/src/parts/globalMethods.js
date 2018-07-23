@@ -116,5 +116,8 @@ const globalStartUpMethods = {
         globalWindowMethods.fixAccordionPosition();
     }
 };
+const globalOnloadMethods = () => {
+    globalWindowMethods.renderBootstrapSwitch();
+}
 
-export {globalStartUpMethods, globalWindowMethods};
+export {globalStartUpMethods, globalWindowMethods, globalOnloadMethods};

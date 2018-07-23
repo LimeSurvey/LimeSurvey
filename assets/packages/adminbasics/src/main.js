@@ -35,7 +35,7 @@ import {onExistBinding as surveyGrid} from './pages/surveyGrid';
 
 //import parts for globalscope
 import confirmationModal from './parts/confirmationModal'; 
-import {globalStartUpMethods, globalWindowMethods} from './parts/globalMethods';
+import {globalStartUpMethods, globalWindowMethods, globalOnloadMethods} from './parts/globalMethods';
 import * as notifyFader from './parts/notifyFader';
 import * as AjaxHelper from './parts/ajaxHelper';
 import saveBindings from './parts/save';
@@ -62,6 +62,7 @@ const AdminCore = function(){
         onLoadRegister = () => {
             globalStartUpMethods.bootstrapping();
             surveyGrid();
+            appendToLoad(globalOnloadMethods);
             appendToLoad(confirmationModal);
             appendToLoad(questionEdit);
             appendToLoad(confirmDeletemodal);
