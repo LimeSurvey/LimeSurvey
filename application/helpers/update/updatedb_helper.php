@@ -2272,9 +2272,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 354) {
             $oTransaction = $oDB->beginTransaction();
+            $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            
+            if (!isset($surveymenuTable->columns['showincollapse'])) {
+                $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'boolean DEFAULT 0');
+            }
 
-            $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'boolean DEFAULT 0');
-            $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'boolean DEFAULT 0');
+            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
+                $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'boolean DEFAULT 0');
+            }
 
             $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
             
