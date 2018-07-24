@@ -182,7 +182,6 @@ return array(
             'css/displayParticipants.css',
         ),
         'js' => array(
-            'js/notifications.js',
             'build/adminbasics'.(($debug > 0) ? '' : '.min').'.js',
         ),
         'depends' => array(
