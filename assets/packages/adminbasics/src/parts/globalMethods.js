@@ -2,11 +2,13 @@
  * Define global setters for LimeSurvey
  * Also bootstrapping methods and window bound methods are set here
  */
-
+import LOG from '../components/lslog';
 
 const globalWindowMethods = {
     renderBootstrapSwitch : () => {
-        $('[data-is-bootstrap-switch]').bootstrapSwitch();
+        try{
+            $('[data-is-bootstrap-switch]').bootstrapSwitch();
+        } catch(e) { LOG.error(e); }
     },
     validatefilename: (form, strmessage) => {
         if (form.the_file.value == "") {
@@ -28,10 +30,10 @@ const globalWindowMethods = {
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes:  ( arrayToCheck ) => {  
-        return _.uniq(arrayToCheck).length == arrayToCheck.length;
+        return (_.uniq(arrayToCheck).length !== arrayToCheck.length);
     },
     arrHasDupesWhich: ( arrayToCheck ) => {  
-        return _.difference(_.uniq(arrayToCheck), arrayToCheck);
+        return (_.difference(_.uniq(arrayToCheck), arrayToCheck)).length > 0;
     },
     getkey :  (e) => {
         return (window.event) ? window.event.keyCode :(e ? e.which : null);

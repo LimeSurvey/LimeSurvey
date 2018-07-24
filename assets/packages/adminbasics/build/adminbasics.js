@@ -17350,6 +17350,7 @@ const adminCoreLSConsole = new ConsoleShim('AdminCore');
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return globalStartUpMethods; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return globalWindowMethods; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return globalOnloadMethods; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_lslog__ = __webpack_require__(1);
 /**
  * Define global setters for LimeSurvey
  * Also bootstrapping methods and window bound methods are set here
@@ -17358,7 +17359,9 @@ const adminCoreLSConsole = new ConsoleShim('AdminCore');
 
 const globalWindowMethods = {
     renderBootstrapSwitch : () => {
-        $('[data-is-bootstrap-switch]').bootstrapSwitch();
+        try{
+            $('[data-is-bootstrap-switch]').bootstrapSwitch();
+        } catch(e) { __WEBPACK_IMPORTED_MODULE_0__components_lslog__["a" /* default */].error(e); }
     },
     validatefilename: (form, strmessage) => {
         if (form.the_file.value == "") {
@@ -17380,10 +17383,10 @@ const globalWindowMethods = {
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes:  ( arrayToCheck ) => {  
-        return _.uniq(arrayToCheck).length == arrayToCheck.length;
+        return (_.uniq(arrayToCheck).length !== arrayToCheck.length);
     },
     arrHasDupesWhich: ( arrayToCheck ) => {  
-        return _.difference(_.uniq(arrayToCheck), arrayToCheck);
+        return (_.difference(_.uniq(arrayToCheck), arrayToCheck)).length > 0;
     },
     getkey :  (e) => {
         return (window.event) ? window.event.keyCode :(e ? e.which : null);
@@ -17775,7 +17778,7 @@ const AdminCore = function(){
         window.LS.adminCore.refresh();
         return;
     }
-    
+
     const eventsBound = {
         document: []
     };
@@ -17785,13 +17788,13 @@ const AdminCore = function(){
             __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["b" /* globalStartUpMethods */].bootstrapping();
             Object(__WEBPACK_IMPORTED_MODULE_8__pages_surveyGrid__["a" /* onExistBinding */])();
             appendToLoad(__WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["a" /* globalOnloadMethods */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_13__parts_save__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_9__parts_confirmationModal__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_14__components_confirmdeletemodal__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_15__components_panelclickable__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_16__components_panelsanimation__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */].initNotification);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_13__parts_save__["a" /* default */]);
         },
         appendToLoad = (fn, event, root) => {
             event = event || 'ready pjax:scriptcomplete';
@@ -17811,7 +17814,7 @@ const AdminCore = function(){
                     $(root).on(events.join(' '), fn);
                 }
             }
-
+            fn();
         },
         refreshAdminCore = () => {
             __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(eventsBound, (eventMap, root) => {
@@ -18403,7 +18406,7 @@ const SaveController = () => {
     checks = () => {
         return {
             _checkSaveButton: {
-                check: () => $('#save-button'),
+                check: '#save-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -18418,7 +18421,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveFormButton: {
-                check: () => $('#save-form-button'),
+                check: '#save-form-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const
@@ -18431,7 +18434,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndNewButton: {
-                check: () => $('#save-and-new-button'),
+                check: '#save-and-new-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -18449,7 +18452,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndCloseButton: {
-                check: () => $('#save-and-close-button'),
+                check: '#save-and-close-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -18462,7 +18465,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndCloseFormButton: {
-                check: () => $('#save-and-close-form-button'),
+                check: '#save-and-close-form-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const formid = '#' + $(this).attr('data-form-id'),
@@ -18482,7 +18485,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndNewQuestionButton: {
-                check: () => $('#save-and-new-question-button'),
+                check: '#save-and-new-question-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -18498,7 +18501,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkOpenPreview: {
-                check: () => $('.open-preview'),
+                check: '.open-preview',
                 run: function(ev) {
                     const frameSrc = $(this).attr("aria-data-url");
                     $('#frame-question-preview').attr('src', frameSrc);
@@ -18511,14 +18514,14 @@ const SaveController = () => {
     //############PUBLIC
     return () => {
         __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(checks(), (checkItem) => {
-            let $item = checkItem.check();
-            $item.off(checkItem.on);
+            let item = checkItem.check;
+            $(document).off(checkItem.on, item);
 
-            __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log('saveBindings', checkItem, $item);
+            __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log('saveBindings', checkItem, $(item));
 
-            if ($item.length > 0) {
-                $item.on(checkItem.on, checkItem.run);
-                __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log($item, 'on', checkItem.on, 'run', checkItem.run);
+            if ($(item).length > 0) {
+                $(document).on(checkItem.on, item, checkItem.run);
+                __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log($(item), 'on', checkItem.on, 'run', checkItem.run);
             }
         });
     };
