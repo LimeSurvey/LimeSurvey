@@ -95,8 +95,8 @@ echo viewHelper::getViewTestTag('index');
                 <div class="row">
                     <div class="col-xs-12">
                         <?php eT("You are using Microsoft Internet Explorer."); ?><br/><br/>
-                        <?php eT("We do not support Internet Explorer for the LimeSurvey administration officially. However most of the functionality should still work."); ?><br/>
-                        <?php eT("If you happen to find any issues, please try using a different Browser first, before reporting it.");?>
+                        <?php eT("LimeSurvey 3.x or newer does not support Internet Explorer for the LimeSurvey administration, anymore. However most of the functionality should still work."); ?><br/>
+                        <?php eT("If you have any issues, please try using a modern browser first, before reporting it.");?>
                     </div>
                 </div>
             </div>

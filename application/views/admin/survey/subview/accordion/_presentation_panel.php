@@ -28,7 +28,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
         <div class="form-group">
             <label class=" control-label" for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
             <div class="">
-                <input type='text' class="form-control" value="<?php echo $oSurvey->navigationdelay; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />
+                <input type='text' class="form-control" value="<?php echo $oSurvey->navigationdelay; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')" />
             </div>
         </div>
         <!-- Show question index -->
@@ -49,17 +49,17 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
 
         <!-- security notice -->
         <div class="form-group">
-            <label class=" control-label" for='showsurveypolicynotice'><?php  eT("Show policy notice:") ; ?></label>
+            <label class=" control-label" for='showsurveypolicynotice'><?php  eT("Show survey policy text with mandatory checkbox:") ; ?></label>
             <div class="">
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==0 ? 'active' : ''?>" >
                         <input type="radio" name="showsurveypolicynotice" value="0" <?=$oSurvey->showsurveypolicynotice==0 ? 'checked' : ''?> autocomplete="off"> <?=gT("Don't show");?>
                     </label>
                     <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==1 ? 'active' : ''?>" >
-                        <input type="radio" name="showsurveypolicynotice" value="1" <?=$oSurvey->showsurveypolicynotice==1 ? 'checked' : ''?> autocomplete="off"> <?=gT("Show as text");?>
+                        <input type="radio" name="showsurveypolicynotice" value="1" <?=$oSurvey->showsurveypolicynotice==1 ? 'checked' : ''?> autocomplete="off"> <?=gT("Inline text");?>
                     </label>
                     <label class="btn btn-default <?=$oSurvey->showsurveypolicynotice==2 ? 'active' : ''?>" >
-                        <input type="radio" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off"> <?=gT("Show in collapsible");?>
+                        <input type="radio" name="showsurveypolicynotice" value="2" <?=$oSurvey->showsurveypolicynotice==2 ? 'checked' : ''?> autocomplete="off"> <?=gT("Collapsible text");?>
                     </label>
                 </div>
             </div>

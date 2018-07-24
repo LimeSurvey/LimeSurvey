@@ -59,7 +59,7 @@ foreach ( $aQuestionTypeList as $key => $questionType)
             'selectedClass' => Question::getQuestionClass($eqrow['type']),
             'onUpdate' => [
                 'value',
-                "console.ls.log(value); $('#question_type').val(value); window.questionFunctions.updatequestionattributes(''); window.questionFunctions.updateQuestionTemplateOptions();"
+                "console.ls.log(value); $('#question_type').val(value); updatequestionattributes(''); updateQuestionTemplateOptions();"
             ]
         ]
     ));
@@ -379,7 +379,10 @@ foreach ( $aQuestionTypeList as $key => $questionType)
         <?php endif; ?>
         <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
         </form>
+<<<<<<< HEAD
         
+=======
+>>>>>>> upstream/master
         <div id='questionactioncopy' class='extra-action'>
             <button type='submit' class="btn btn-primary saveandreturn hidden"  name="redirection" value="edit"><?php eT("Save") ?> </button>
             <input type='submit' value='<?php eT("Save and close"); ?>'  class="btn btn-default hidden"/>

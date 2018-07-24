@@ -40,7 +40,7 @@
         'htmlOptions' => array('class' => 'time-statistics-table'),
 
         'ajaxUpdate' => true,
-        'afterAjaxUpdate' => 'doToolTip',
+        'afterAjaxUpdate' => 'window.LS.doToolTip',
 
         // Number of row per page selection
         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),

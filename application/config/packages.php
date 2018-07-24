@@ -130,7 +130,7 @@ return array(
         'devBaseUrl' => 'assets/packages/adminpanel/',
         'basePath' => 'core.adminpanel',
         'js' => array(
-            'build/lsadminpanel'.(($debug > 0) ? '.debug' : '.min').'.js',
+            'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
             'build/surveysettings'.$minVersion.'.js',
             'build/hammer'.$minVersion.'.js'
         ),
@@ -187,6 +187,7 @@ return array(
         'depends' => array(
             'jquery',
             'pjaxbackend',
+            'lslog',
         )
     ),
 
@@ -203,8 +204,7 @@ return array(
             'css/rtl/displayParticipants-rtl.css',
         ),
         'js' => array(
-            'js/admin_core.js',
-            'js/notifications.js',
+            'build/adminbasics.js',
         ),
         'depends' => array(
             'jquery',
@@ -217,14 +217,11 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'js' => array(
-            'js/notify.js',
-            'js/panelclickable.js',
-            'js/panelsanimation.js',
-            'js/save.js',
         ),
         'depends' => array(
             'jquery',
             'pjaxbackend',
+            'adminbasics'
         )
     ),
 

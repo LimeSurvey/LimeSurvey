@@ -68,7 +68,7 @@ class SurveymenuController extends Survey_Common_Action
                 $aSurveymenu['created_at'] = date('Y-m-d H:i:s');
                 $aSurveymenu['parent_id'] = (int) $aSurveymenu['parent_id'];
                 if ($aSurveymenu['parent_id'] > 0) {
-                                    $aSurveymenu['level'] = ((Surveymenu::model()->findByPk($aSurveymenu['parent_id'])->level) + 1);
+                    $aSurveymenu['level'] = ((Surveymenu::model()->findByPk($aSurveymenu['parent_id'])->level) + 1);
                 }
             }
 
@@ -79,7 +79,7 @@ class SurveymenuController extends Survey_Common_Action
             }
         }
 
-        $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+        $debug = App()->getConfig('debug');
         $returnData = array(
             'data' => [
                 'success'=> $success,
@@ -356,6 +356,12 @@ class SurveymenuController extends Survey_Common_Action
 
         $data = array();
         $data['model'] = Surveymenu::model();
+        
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSize', (int) Yii::app()->request->getParam('pageSize'));
+        }
+        $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
+
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->_renderWrappedTemplate(null, array('surveymenu/index'), $data);
     }

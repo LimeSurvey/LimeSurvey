@@ -507,7 +507,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             }
             $title = gT('Only numbers may be entered in this field.');
 
-            echo $prefix; ?><input type='text' name='<?php echo $fieldname; ?>' size='<?php echo $tiwidth; ?>' title='<?php echo $title; ?>' <?php echo $maxlength; ?> onkeypress="return goodchars(event,'-0123456789<?php echo $acomma; ?>')" /><?php echo $suffix;
+            echo $prefix; ?><input type='text' name='<?php echo $fieldname; ?>' size='<?php echo $tiwidth; ?>' title='<?php echo $title; ?>' <?php echo $maxlength; ?> onkeypress="return window.LS.goodchars(event,'-0123456789<?php echo $acomma; ?>')" /><?php echo $suffix;
             echo '</div>';
             break;
 
@@ -544,7 +544,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
             {
                 $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $sSeparator = $sSeparator['separator'];
-                $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeparator.'\')"';
+                $numbersonly = 'onkeypress="return window.LS.goodchars(event,\'-0123456789'.$sSeparator.'\')"';
             }
             else
             {

@@ -509,6 +509,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
     /**
      * get a twig file and return html produced
+     * @todo find a way to fix in beforeCloseHtml @see https://bugs.limesurvey.org/view.php?id=13889
      * @param string $twigView twigfile to be used (with twig extension)
      * @param array $aData to be used
      * @return string
@@ -516,7 +517,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderPartial($twigView,$aData)
     {
         $oTemplate = Template::model()->getInstance();
-        $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
+        $aData = $this->getAdditionalInfos($aData, $oTemplate);
         $this->addRecursiveTemplatesPath($oTemplate);
         return $this->_twig->loadTemplate($twigView)->render($aData);
     }

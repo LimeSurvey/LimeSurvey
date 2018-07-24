@@ -166,7 +166,7 @@ class TemplateConfiguration extends TemplateConfig
         if (!is_a($oInstance, 'TemplateConfiguration')) {
             $oInstance = self::getInstanceFromTemplateName(getGlobalSetting('defaulttheme'));
         }
-        
+
         if($abstractInstance === true) {
             return $oInstance;
         }
@@ -625,7 +625,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Set a value on a given option at global setting level (survey level not affected).
-     * Will be used to turn ON ajax mode on update. 
+     * Will be used to turn ON ajax mode on update.
      *
      * @param string $name
      * @param mixed $value
@@ -646,23 +646,23 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Apply options from XML configuration for all missing template options  
+     * Apply options from XML configuration for all missing template options
      *
      * @return void
      */
     public function addOptionFromXMLToLiveTheme()
-    { 
+    {
         if ($this->options != 'inherit') {
             $oOptions = get_object_vars(json_decode($this->options));
             $oTemplateConfigurationModel = new TemplateManifest;
             $oTemplateConfigurationModel->setBasics();
-            $oXmlOptions = get_object_vars($oTemplateConfigurationModel->config->options); 
+            $oXmlOptions = get_object_vars($oTemplateConfigurationModel->config->options);
 
             // compare template options to options from the XML and add if missing
             foreach ($oXmlOptions as $key=>$value){
                 if (!array_key_exists($key, $oOptions)){
                   $this->addOptionToLiveTheme($key, $value);
-                }                
+                }
             }
         }
     }
@@ -709,7 +709,7 @@ class TemplateConfiguration extends TemplateConfig
 
     private function _filterImages($file)
     {
-        $imagePath = (file_exists($this->filesPath.$file['name'])) 
+        $imagePath = (file_exists($this->filesPath.$file['name']))
             ? $this->filesPath.'/'.$file['name']
             : $this->generalFilesPath.$file['name'] ;
 
@@ -754,8 +754,8 @@ class TemplateConfiguration extends TemplateConfig
         //We add some extra values to the option page
         //This is just a dirty hack, and somewhere in the future we will correct it
         $renderArray['oParentOptions'] = array_merge(
-            ((array) $oSimpleInheritanceTemplate->oOptions), 
-            array('packages_to_load' =>  $oTemplate->packages_to_load, 
+            ((array) $oSimpleInheritanceTemplate->oOptions),
+            array('packages_to_load' =>  $oTemplate->packages_to_load,
             'files_css' => $oTemplate->files_css)
         );
 
@@ -1074,7 +1074,7 @@ class TemplateConfiguration extends TemplateConfig
             //check for surveygroup id if a survey is given
             if ($this->sid != null) {
                 $oSurvey = Survey::model()->findByPk($this->sid);
-                $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName, null, $oSurvey->gsid);
+                $oParentTemplate = Template::getTemplateConfiguration($this->template->name, null, $oSurvey->gsid);
                 if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                     $this->oParentTemplate = $oParentTemplate;
                     $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
@@ -1087,7 +1087,7 @@ class TemplateConfiguration extends TemplateConfig
                 $oSurveyGroup = SurveysGroups::model()->findByPk($this->gsid);
                 //Switch if the surveygroup inherits from a parent surveygroup
                 if ($oSurveyGroup != null && $oSurveyGroup->parent_id != 0) {
-                    $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName, null, $oSurveyGroup->parent_id);
+                    $oParentTemplate = Template::getTemplateConfiguration($this->template->name, null, $oSurveyGroup->parent_id);
                     if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                         $this->oParentTemplate = $oParentTemplate;
                         $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
@@ -1186,7 +1186,7 @@ class TemplateConfiguration extends TemplateConfig
         $config = (int)Yii::app()->getConfig('showpopups');
         if ($config == 2){
             if (isset($this->oOptions->showpopups)){
-                $this->showpopups = (int)$this->oOptions->showpopups; 
+                $this->showpopups = (int)$this->oOptions->showpopups;
             } else {
                $this->showpopups = 1;
            }

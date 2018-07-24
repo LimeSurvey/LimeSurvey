@@ -10,7 +10,7 @@
                 <!-- Jumbotron -->
                 <div class="jumbotron message-box">
                     <h2 class="text-success"><?php eT("Import question group") ?></h2>
-                    <p class)"lead text-success"><?php eT("Success") ?></p>
+                    <p class="lead text-success"><?php eT("Success") ?></p>
                     <p>
                         <?php eT("File upload succeeded.") ?>                    
                     </p>

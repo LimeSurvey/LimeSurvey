@@ -492,10 +492,15 @@ class SurveymenuEntries extends LSActiveRecord
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('created_by', $this->created_by);
 
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'sort'=>array(
                 'defaultOrder'=>'t.menu_id ASC, t.ordering ASC',
+            ),
+            'pagination' => array(
+                'pageSize' => $pageSize
             )
         ));
     }

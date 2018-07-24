@@ -212,32 +212,30 @@
         }
 
         $scriptCode = ""
-        . "$(document).on('ready pjax:scriptcomplete', 
-            function(){ 
-                if($('#".$fieldname."').length >0){
-                    var $oCKeditorVarName = CKEDITOR.instances['$fieldname'];
-                    if ($oCKeditorVarName) { 
-                            CKEDITOR.remove($oCKeditorVarName);
-                        $oCKeditorVarName = null;
-                    }
-
-                    $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
-                    LimeReplacementFieldsType : \"".$fieldtype."\"
-                    ,LimeReplacementFieldsSID : \"".$surveyID."\"
-                    ,LimeReplacementFieldsGID : \"".$gID."\"
-                    ,LimeReplacementFieldsQID : \"".$qID."\"
-                    ,LimeReplacementFieldsAction : \"".$action."\"
-                    ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
-                    ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
-                    . $sFileBrowserAvailable
-                    . $htmlformatoption
-                    . $toolbaroption
-                    ."});
-
-                    \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
+        . "
+            if($('#".$fieldname."').length >0){
+                var $oCKeditorVarName = CKEDITOR.instances['$fieldname'];
+                if ($oCKeditorVarName) { 
+                        CKEDITOR.remove($oCKeditorVarName);
+                    $oCKeditorVarName = null;
                 }
-        });";
 
-        Yii::app()->getClientScript()->registerScript('ckEditorScriptsInline-'.$fieldname, $scriptCode, LSYii_ClientScript::POS_END);
+                $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
+                LimeReplacementFieldsType : \"".$fieldtype."\"
+                ,LimeReplacementFieldsSID : \"".$surveyID."\"
+                ,LimeReplacementFieldsGID : \"".$gID."\"
+                ,LimeReplacementFieldsQID : \"".$qID."\"
+                ,LimeReplacementFieldsAction : \"".$action."\"
+                ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
+                ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
+                . $sFileBrowserAvailable
+                . $htmlformatoption
+                . $toolbaroption
+                ."});
+
+                \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
+            }";
+
+        Yii::app()->getClientScript()->registerScript('ckEditorScriptsInline-'.$fieldname, $scriptCode, LSYii_ClientScript::POS_POSTSCRIPT);
     }
 

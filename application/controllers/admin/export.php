@@ -1295,16 +1295,7 @@ class export extends Survey_Common_Action
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Pragma: public"); // HTTP/1.0
 
-        $data = & LimeExpressionManager::TSVSurveyExport($surveyid);
-
-        $lines = array();
-        foreach ($data as $row) {
-            $lines[] = implode("\t", str_replace(array("\t", "\n", "\r"), array(" ", " ", " "), $row));
-        }
-        $output = implode("\n", $lines);
-//        echo "\xEF\xBB\xBF"; // UTF-8 BOM
-        echo $output;
-        return;
+        tsvSurveyExport($surveyid);
     }
 
     /**
