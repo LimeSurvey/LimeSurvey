@@ -79,9 +79,11 @@ const globalWindowMethods = {
                 contentObject = _.merge(contentObject, JSON.parse(content));
             } catch(e) { console.error('JSON parse on sendPost failed!') }
         }
-        _.each(content, (value,key) => {
+        
+        _.each(contentObject, (value,key) => {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
         });
+        
         $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", LS.data.csrfToken).appendTo($form);
         $form.appendTo("body");
         $form.submit();
