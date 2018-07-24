@@ -840,7 +840,6 @@
         * Return array database name as key, LEM name as value
         * @example (['gender'] => '38612X10X145')
         * @param integer $iSurveyId
-        * @param boolean $initialize force initialisation of Survey
         * @return array
         **/
         public static function getLEMqcode2sgqa($iSurveyId){
