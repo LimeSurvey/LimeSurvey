@@ -775,7 +775,7 @@ class Survey extends LSActiveRecord
         $entryData['menu_description']  = gT($entryData['menu_description']);
     }
 
-    private function _createSurveymenuArray($oSurveyMenuObjects)
+    private function _createSurveymenuArray($oSurveyMenuObjects, $collapsed=false)
     {
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
         //Also for peripheral menues we may add submenus someday.
@@ -783,9 +783,14 @@ class Survey extends LSActiveRecord
         foreach ($oSurveyMenuObjects as $oSurveyMenuObject) {
             $entries = [];
             $aMenuEntries = $oSurveyMenuObject->surveymenuEntries;
-            $submenus = $this->_getSurveymenuSubmenus($oSurveyMenuObject);
+            $submenus = $this->_getSurveymenuSubmenus($oSurveyMenuObject, $collapsed);
             foreach ($aMenuEntries as $menuEntry) {
                 $aEntry = $menuEntry->attributes;
+                //Skip menu if not activated in collapsed mode
+                if ($collapsed && $aEntry['showincollapse'] == 0 ) {
+                    continue;
+                }
+                
                 //Skip menu if no permission
                 if ((!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])
                     && !Permission::model()->hasSurveyPermission($this->sid, $aEntry['permission'], $aEntry['permission_grade']))
@@ -832,12 +837,17 @@ class Survey extends LSActiveRecord
         return $aResultCollected;
     }
 
-    private function _getSurveymenuSubmenus($oParentSurveymenu)
+    private function _getSurveymenuSubmenus($oParentSurveymenu, $collapsed=false)
     {
         $criteria = new CDbCriteria;
         $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
         $criteria->addCondition('parent_id=:parentid');
         $criteria->addCondition('level=:level');
+
+        if ($collapsed === true) {
+            $criteria->addCondition('showincollapse=1');
+        }
+
         $criteria->params = [
             ':surveyid' => $oParentSurveymenu->survey_id,
             ':parentid' =>  $oParentSurveymenu->id,
@@ -846,7 +856,7 @@ class Survey extends LSActiveRecord
 
         $oMenus = Surveymenu::model()->findAll($criteria);
 
-        $aResultCollected = $this->_createSurveymenuArray($oMenus);
+        $aResultCollected = $this->_createSurveymenuArray($oMenus, $collapsed);
         return $aResultCollected;
     }
 
@@ -854,14 +864,21 @@ class Survey extends LSActiveRecord
     {
         $criteria = new CDbCriteria;
         $criteria->condition = 'survey_id IS NULL AND parent_id IS NULL';
-
-        if ($position != '') {
+        $collapsed = $position==='collapsed';
+        
+        if ($position != '' && !$collapsed) {
             $criteria->condition .= ' AND position=:position';
             $criteria->params = array(':position'=>$position);
         }
-
+            
+        if ($collapsed) {
+            $criteria->condition .= ' AND (position=:position OR showincollapse=1 )';
+            $criteria->params = array(':position'=>$position);
+            $collapsed = true;
+        }
+        
         $oDefaultMenus = Surveymenu::model()->findAll($criteria);
-        $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus);
+        $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus, $collapsed);
 
         return $aResultCollected;
     }
@@ -873,11 +890,11 @@ class Survey extends LSActiveRecord
      */
     public function getSurveyMenus($position = '')
     {
-
+        $collapsed = $position==='collapsed';
         //Get the default menus
         $aDefaultSurveyMenus = $this->_getDefaultSurveyMenus($position);
         //get all survey specific menus
-        $aThisSurveyMenues = $this->_createSurveymenuArray($this->surveymenus);
+        $aThisSurveyMenues = $this->_createSurveymenuArray($this->surveymenus, $collapsed);
         //merge them
         $aSurveyMenus = $aDefaultSurveyMenus + $aThisSurveyMenues;
         // var_dump($aDefaultSurveyMenus);

@@ -154,15 +154,11 @@ class index extends CAction
 
                 // @todo : throw a 401
                 $aErrors  = array(gT('Error'));
-                $aMessage = array(gT("We are sorry but you don't have permissions to do this."),);
-
-                App()->getController()->renderExitMessage(
-                    $surveyid,
-                    'norights-401',
-                    $aMessage,
-                    null,
-                    $aErrors
-                    );
+                $message = gT("We are sorry but you don't have permissions to do this.");
+                if(Permission::getUserId()) {
+                    throw new CHttpException(403, $message);
+                }
+                throw new CHttpException(401, $message);
             } else {
                 if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
                     $previewmode = 'question';
@@ -179,21 +175,15 @@ class index extends CAction
             $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
 
             if ($bPreviewRight === false) {
-                // @todo : throw a 401
-                $aErrors  = array(gT('Error'));
-                $aMessage = array(gT("We are sorry but you don't have permissions to do this."),);
                 $event    = new PluginEvent('onSurveyDenied');
                 $event->set('surveyId', $surveyid);
                 $event->set('reason', 'noPreviewPermission');
-
+                
                 App()->getPluginManager()->dispatchEvent($event);
-                App()->getController()->renderExitMessage(
-                    $surveyid,
-                    'norights-410',
-                    $aMessage,
-                    null,
-                    $aErrors
-                    );
+                if(Permission::getUserId()) {
+                    throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this."));
+                }
+                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this."));
             }
         }
 
@@ -257,11 +247,19 @@ class index extends CAction
             $event->set('surveyId', $surveyid);
             $event->set('reason', 'surveyDoesNotExist');
             App()->getPluginManager()->dispatchEvent($event);
+            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
+            /* Alt solution */
+            //~ header("HTTP/1.0 404 Not Found",true,404);
+            //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
+                //~ array('aSurveyInfo' =>array(
+                    //~ 'aError'=>array(
+                        //~ 'error'=>gT('404: Not Found'),
+                        //~ 'title'=>gT('This survey does not seem to exist'),
+                        //~ 'message'=>gT("The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.")
 
-            $aError['title'] = "Not Found!";
-            $aError['message'] = "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.";
-
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aSurveyInfo' => array('aError' => $aError, 'adminemail' => Yii::app()->getConfig('siteadminemail'), 'adminname' => Yii::app()->getConfig('siteadminname') )), false);
+                    //~ ),
+                //~ )), false);
+            
         }
 
         // Get token
@@ -495,7 +493,7 @@ class index extends CAction
                         $aMessage,
                         null,
                         array($sError)
-                        );
+                    );
                 } else {
                     $sError = gT("This is a controlled survey. You need a valid token to participate.");
                 }

@@ -1125,7 +1125,7 @@ function do_date($ia)
             'dateformatdetails'      => $dateformatdetails['dateformat'],
             'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
             'dateformatdetailsphp'    => $dateformatdetails['phpdate'],
-            'goodchars'              => "", // "return goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
+            'goodchars'              => "", // "return window.LS.goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
             'language'               => App()->language,
             'hidetip'                => trim($aQuestionAttributes['hide_tip']) == 0,

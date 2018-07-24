@@ -35,8 +35,8 @@
             'type'        => 'action',
             'action'      => 'deleteAttachments',
             //'url'         =>  App()->createUrl("admin/responses", array("sa"=>"actionDeleteAttachments")),
-            'url'         =>  App()->createUrl('/admin/responses/sa/actionDeleteAttachments/surveyid/'.$_GET['surveyid']),
-            'iconClasses' => 'text-danger glyphicon glyphicon-paperclip',
+            'url'         =>  App()->createUrl("/admin/responses/sa/actionDelete/", array("surveyid" => $_GET['surveyid'] )),
+            'iconClasses' => 'text-danger fa fa-paperclip',
             'text'        =>  gT('Delete attachments'),
             'grid-reload' => 'yes',
 
@@ -72,7 +72,7 @@
             'type'            => 'action',
             'action'          => 'export',
             'url'             =>  App()->createUrl('admin/export/sa/exportresults/surveyid/'.$_GET['surveyid']),
-            'iconClasses'     => 'glyphicon glyphicon-download-alt',
+            'iconClasses'     => 'fa fa-upload',
             'text'            =>  gT('Export'),
 
             'aLinkSpecificDatas'  => array(

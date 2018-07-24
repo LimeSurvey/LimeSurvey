@@ -247,21 +247,17 @@ function convertGETtoPOST($url)
     $calledscript = array_shift($stack);
     $query = array_shift($stack);
     $aqueryitems = explode('&', $query);
-    $arrayParam = Array();
-    $arrayVal = Array();
+    $postArray = [];
 
     foreach ($aqueryitems as $queryitem) {
         $stack = explode('=', $queryitem);
         $paramname = array_shift($stack);
         $value = array_shift($stack);
-        $arrayParam[] = "'".$paramname."'";
-        $arrayVal[] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
+        $postArray[$paramname] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
     }
-    //    $Paramlist = "[" . implode(",",$arrayParam) . "]";
-    //    $Valuelist = "[" . implode(",",$arrayVal) . "]";
-    $Paramlist = "[".implode(",", $arrayParam)."]";
-    $Valuelist = "[".implode(",", $arrayVal)."]";
-    $callscript = "sendPost('$calledscript','',$Paramlist,$Valuelist);";
+
+    $callscript = "window.LS.sendPost('".$calledscript."','".json_encode($postArray)."');";
+
     return $callscript;
 }
 

@@ -203,6 +203,11 @@ ol.breadcrumb.title-bar-breadcrumb {
       font-style: italic; }
     ol.breadcrumb.title-bar-breadcrumb li > div {
       display: inline-block; }
+  ol.breadcrumb.title-bar-breadcrumb .menu-label {
+    width: 100%;
+    display: block;
+    font-size: 85%;
+    font-style: normal; }
 
 .breadcrumb-title {
   line-height: 24px;

@@ -44,7 +44,7 @@ function prepareCopyconditions() {
     $('input:checked[name^=\"aConditionFromScenario\"]').each(function(i,val) {
         var thecid = val.value;
         var theform = document.getElementById('copyconditions');
-        addHiddenElement(theform,'copyconditionsfrom[]',thecid);
+        window.LS.addHiddenElement(theform,'copyconditionsfrom[]',thecid);
         return true;
     });
 }

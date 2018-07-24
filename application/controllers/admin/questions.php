@@ -1055,10 +1055,6 @@ class questions extends Survey_Common_Action
         $aViewUrls = [];
         $aViewUrls['editQuestion_view'][] = $aData;
         App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$oQuestion->gid.'new', "OtherSelection('".$oQuestion->type."');", LSYii_ClientScript::POS_POSTSCRIPT);            
-        if(window.questionFunctions) {
-            window.questionFunctions.OtherSelection('".$eqrow['type']."');
-        }
-        ", LSYii_ClientScript::POS_POSTSCRIPT);            
 
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }

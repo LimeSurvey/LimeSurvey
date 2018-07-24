@@ -128,7 +128,8 @@ class LsDefaultDataSets
             'changed_at',
             'changed_by',
             'created_at',
-            'created_by'
+            'created_by',
+            'showincollapse'
         ];
         $sOldLanguage = App()->language;
         App()->setLanguage('en');
@@ -136,6 +137,7 @@ class LsDefaultDataSets
         $returnArray[] = array_combine($headerArray, [null, null, null, 0, 0, 'mainmenu', gT('Survey menu'), 'side', gT('Main survey menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]);
         $returnArray[] = array_combine($headerArray, [null, null, null, 0, 0, 'quickmenu', gT('Quick menu'), 'collapsed', gT('Quick menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]);
         $returnArray[] = array_combine($headerArray, [1, null, null, 0, 1, 'pluginmenu', gT('Plugin menu'), 'side', gT('Plugin menu'), 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]);
+        $returnArray[] = array_combine($headerArray, [1,null,null,0,1,'pluginmenu',gT('Plugin menu'),'side',gT('Plugin menu'),1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0]);
         App()->setLanguage($sOldLanguage);
 
         return $returnArray;

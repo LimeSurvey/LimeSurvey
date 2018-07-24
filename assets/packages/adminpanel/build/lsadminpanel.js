@@ -36750,8 +36750,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }, error => {
                 self.$log.error("questiongroups updating error!");
-                self.getQuestions().then(() => {
-                    self.showLoader = false;
+                this.post(this.updateOrderLink, {
+                    surveyid: this.$store.surveyid
+                }).then(() => {
+                    self.getQuestions().then(() => {
+                        self.showLoader = false;
+                    });
                 });
             });
         },
@@ -36884,6 +36888,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         getQuestions() {
+            this.questiongroups = [];
             return this.get(this.getQuestionsUrl).then(result => {
                 this.$log.log("Questions", result);
                 this.questiongroups = result.data.groups;
@@ -36893,6 +36898,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         getSidemenus() {
+            this.sidemenus = [];
             return this.get(this.getMenuUrl, { position: "side" }).then(result => {
                 this.$log.log("sidemenues", result);
                 this.sidemenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
@@ -36904,6 +36910,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         getCollapsedmenus() {
+            this.collapsedmenus = [];
             return this.get(this.getMenuUrl, { position: "collapsed" }).then(result => {
                 this.$log.log("quickmenu", result);
                 this.collapsedmenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
@@ -36949,6 +36956,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
     },
+    created() {
+        const self = this;
+        //retrieve the current menues via ajax
+        this.getQuestions();
+        this.getSidemenus();
+        this.getCollapsedmenus();
+        this.getTopmenus();
+        this.getBottommenus();
+    },
     mounted() {
         const self = this;
 
@@ -36958,12 +36974,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         window.addEventListener("resize", () => {
             self.calculateHeight(self);
         });
-        //retrieve the current menues via ajax
-        this.getQuestions();
-        this.getSidemenus();
-        this.getCollapsedmenus();
-        this.getTopmenus();
-        this.getBottommenus();
 
         $(document).on("vue-sidemenu-update-link", () => {
             this.controlActiveLink();
@@ -37941,12 +37951,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, _vm._l((_vm.sortedMenues), function(menu) {
     return _c('div', {
       key: menu.id,
-      staticClass: "ls-flex-row ls-space padding all-0",
+      staticClass: "ls-flex-row wrap ls-space padding all-0",
       attrs: {
         "title": menu.title,
         "id": menu.id
       }
-    }, [_c('submenu', {
+    }, [_c('label', {
+      staticClass: "menu-label"
+    }, [_vm._v(_vm._s(menu.title))]), _vm._v(" "), _c('submenu', {
       attrs: {
         "menu": menu
       }
@@ -38123,14 +38135,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "ls-column fill"
+    staticClass: "ls-flex-column fill"
   }, _vm._l((_vm.sortedMenues), function(menu) {
     return _c('div', {
       key: menu.title,
-      staticClass: "btn-group-vertical",
+      staticClass: "ls-space margin top-10",
       attrs: {
         "title": menu.title
       }
+    }, [_c('div', {
+      staticClass: "btn-group-vertical ls-space padding right-10"
     }, _vm._l((_vm.sortedMenuEntries(menu.entries)), function(menuItem, index) {
       return _c('a', {
         key: menuItem.id,
@@ -38159,7 +38173,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         staticClass: "quickmenuIcon",
         class: menuItem.menu_icon
       })] : _vm._e()], 2)
-    }))
+    }))])
   }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true

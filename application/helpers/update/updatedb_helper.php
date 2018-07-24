@@ -2270,6 +2270,47 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
 
+        if ($iOldDBVersion < 354) {
+            $oTransaction = $oDB->beginTransaction();
+            $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            
+            if (!isset($surveymenuTable->columns['showincollapse'])) {
+                $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'boolean DEFAULT 0');
+            }
+
+            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
+                $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'boolean DEFAULT 0');
+            }
+
+            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
+            
+            
+            $aIdMap = [];
+            
+            foreach($aDefaultSurveyMenus as $i => $aSurveymenu) {
+                $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
+                $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
+                $aIdMap[$aSurveymenu['name']] = $oDB->getLastInsertId();
+            }
+            
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
+                $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
+                switch($aSurveymenuentry['menu_id']) {
+                    case 1: $aSurveymenuentry['menu_id'] = $aIdMap['settings']; break;
+                    case 2: $aSurveymenuentry['menu_id'] = $aIdMap['mainmenu']; break;
+                    case 3: $aSurveymenuentry['menu_id'] = $aIdMap['quickmenu']; break;
+                    case 4: $aSurveymenuentry['menu_id'] = $aIdMap['pluginmenu']; break;
+                }
+                $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+            }
+
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>354], "stg_name='DBVersion'");
+        }
+
+
 
         
         if ($iOldDBVersion < 400) {
@@ -2776,6 +2817,7 @@ function createSurveyMenuTable(CDbConnection $oDB)
         'position' => "string(192)  NOT NULL DEFAULT 'side'",
         'description' => "text ",
         'active' => "boolean NOT NULL DEFAULT '0'",
+        'showincollapse' =>  "boolean DEFAULT 0",
         'changed_at' => "datetime",
         'changed_by' => "integer NOT NULL DEFAULT '0'",
         'created_at' => "datetime",
@@ -2813,6 +2855,7 @@ function createSurveyMenuTable(CDbConnection $oDB)
         'getdatamethod' =>  "string(192)  NOT NULL DEFAULT ''",
         'language' =>  "string(32)  NOT NULL DEFAULT 'en-GB'",
         'active' =>  "boolean NOT NULL DEFAULT '0'",
+        'showincollapse' =>  "boolean DEFAULT 0",
         'changed_at' =>  "datetime NULL",
         'changed_by' =>  "integer NOT NULL DEFAULT '0'",
         'created_at' =>  "datetime NULL",

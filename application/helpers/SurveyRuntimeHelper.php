@@ -390,7 +390,7 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['jPopup'] = json_encode($aPopup);
 
         $aErrorHtmlMessage                             = $this->getErrorHtmlMessage();
-        $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage) && $this->oTemplate->showpopups==0;  
+        $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage) && $this->oTemplate->showpopups==0;
         $this->aSurveyInfo['errorHtml']['hiddenClass'] = $this->oTemplate->showpopups==1 ? "ls-js-hidden " : "";
         $this->aSurveyInfo['errorHtml']['messages']    = $aErrorHtmlMessage;
 
@@ -439,7 +439,7 @@ class SurveyRuntimeHelper
             // one entry per QID
             foreach ($qanda as $qa) {
 
-                if ($gid == $qa[6] || isset($_SESSION[$this->LEMsessid]['fieldmap-'.$this->iSurveyid.'-randMaster'])) {
+                if ($gid == $qa[6] || ( isset($_SESSION[$this->LEMsessid]['fieldmap-'.$this->iSurveyid.'-randMaster']) && $this->sSurveyMode != 'survey' ) ) {
                     $qid             = $qa[4];
                     $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
                     $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
@@ -1039,7 +1039,7 @@ class SurveyRuntimeHelper
         $bDisplayFirstPage = ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0);
 
         if ($this->sSurveyMode == 'survey' || $bDisplayFirstPage) {
-            
+
             //Failsave to have a general standard value
             if (empty($this->aSurveyInfo['datasecurity_notice_label'])) {
                 $this->aSurveyInfo['datasecurity_notice_label'] = gT("To continue please first accept our survey data policy.");
@@ -1048,7 +1048,7 @@ class SurveyRuntimeHelper
             if (empty($this->aSurveyInfo['datasecurity_error'])) {
                 $this->aSurveyInfo['datasecurity_error'] = gT("We are sorry but you can't proceed without first agreeing to our survey data policy.");
             }
-            
+
 
             $this->aSurveyInfo['datasecurity_notice_label'] = Survey::replacePolicyLink($this->aSurveyInfo['datasecurity_notice_label'],$this->aSurveyInfo['sid']);
         }
@@ -1072,7 +1072,7 @@ class SurveyRuntimeHelper
                 $this->displayFirstPageIfNeeded(true);
                 Yii::app()->end(); // So we can still see debug messages
             }
-        } 
+        }
     }
 
     /**

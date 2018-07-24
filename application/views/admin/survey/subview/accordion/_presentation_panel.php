@@ -28,7 +28,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
         <div class="form-group">
             <label class=" control-label" for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
             <div class="">
-                <input type='text' class="form-control" value="<?php echo $oSurvey->navigationdelay; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />
+                <input type='text' class="form-control" value="<?php echo $oSurvey->navigationdelay; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')" />
             </div>
         </div>
         <!-- Show question index -->

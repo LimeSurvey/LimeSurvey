@@ -616,7 +616,7 @@ class dataentry extends Survey_Common_Action
                                 array(
                                 'class' => 'popupdate',
                                 'size' => '12',
-                                'onkeypress' => 'return goodchars(event,\''.$goodchars.'\')'
+                                'onkeypress' => 'return window.LS.goodchars(event,\''.$goodchars.'\')'
                                 )
                                 );
                                 /*
@@ -648,7 +648,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= CHtml::hiddenField('dateformat'.$fname['fieldname'], $dateformatdetails['jsdate'],
                                 array('id' => "dateformat{$fname['fieldname']}")
                                 );
-                                // $aDataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' onkeypress=\"return goodchars(event,'".$goodchars."')\"/>\n";
+                                // $aDataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' onkeypress=\"return window.LS.goodchars(event,'".$goodchars."')\"/>\n";
                                 // $aDataentryoutput .= "\t<input type='hidden' name='dateformat{$fname['fieldname']}' id='dateformat{$fname['fieldname']}' value='{$dateformatdetails['jsdate']}'  />\n";
                             } else {
                                 $aDataentryoutput .= CHtml::textField($fname['fieldname'], $thisdate);
@@ -932,7 +932,7 @@ class dataentry extends Survey_Common_Action
                             break;
                         case Question::QT_N_NUMERICAL: //NUMERICAL TEXT
                             $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}' "
-                            ."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
+                            ."onkeypress=\"return window.LS.goodchars(event,'0123456789.,')\" />\n";
                             break;
                         case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
                             $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"

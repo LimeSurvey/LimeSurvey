@@ -14,7 +14,10 @@ echo viewHelper::getViewTestTag('themeEditor');
     {
         if (newtemplatename=window.prompt(text, defvalue))
         {
-            sendPost('<?php echo $this->createUrl('admin/themes/sa/template'); ?>'+action,'',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));
+            window.LS.sendPost(
+                '<?php echo $this->createUrl('admin/themes/sa/template'); ?>'+action,
+                false,
+                {'action' : 'template'+action,'newname' : newtemplatename,'copydir' : copydirectory})
         }
     }
 

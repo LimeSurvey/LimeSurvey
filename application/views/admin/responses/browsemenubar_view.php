@@ -22,7 +22,7 @@
                 <?php else:?>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fa fa-list text-success"></span> 
+                        <span class="fa fa-list text-success"></span>
                         <?php eT("Responses"); ?> <span class="fa fa-caret-down"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -144,7 +144,29 @@
                     </a>
                 <?php endif;?>
             <?php endif;?>
+
+            <!-- Batch deletion -->
+            <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')): ?>
+                <a
+                    id="response-batch-deletion"
+                    href="<?php echo $this->createUrl("/admin/responses/sa/actionDelete/", array("surveyid" => $_GET['surveyid'] )); ?>"
+                    data-post="{}"
+                    data-show-text-area="true"
+                    data-use-ajax="true"
+                    data-grid-id="responses-grid"
+                    data-grid-reload="true"
+                    data-text="<?php eT('Enter a list of response IDs that are to be deleted, separated by comma.')?>"
+                    title="<?php eT('Batch deletion')?>"
+                    class="btn btn-default selector--ConfirmModal">
+
+                    <span class="fa fa-trash text-danger"></span>
+                        <?php eT("Batch deletion"); ?>
+                </a>
+            <?php endif;?>
+
         </div>
+
+
         <?php else: ?>
         <div class="col-md-7 text-right col-md-offset-5">
             <?php if(isset($menu['save'])): ?>

@@ -11,6 +11,11 @@ var ConfirmDeleteModal = function(options){
         confirmText   = options.confirmText   || $item.data('text')           || '',
         confirmTitle  = options.confirmTitle  || $item.attr('title')          || '',
         postObject    = options.postObject    || $item.data('post'),
+        showTextArea  = options.showTextArea  || $item.data('show-text-area') || '',
+        useAjax       = options.useAjax       || $item.data('use-ajax')       || '',
+        keepopen      = options.keepopen      || $item.data('keepopen')       || '',
+        gridReload    = options.gridReload    || $item.data('grid-reload')    || '',
+        gridid        = options.gridid        || $item.data('grid-id')        || '',
         buttonNo      = options.buttonNo      || $item.data('button-no')      || '<i class="fa fa-times"></i>',
         buttonYes     = options.buttonYes     || $item.data('button-yes')     || '<i class="fa fa-check"></i>',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
@@ -18,7 +23,7 @@ var ConfirmDeleteModal = function(options){
     var closeIcon      = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
         closeButton    = '<button type="button" class="btn btn-default" data-dismiss="modal">'+buttonNo+'</button>',
         confirmButton  = '<button type="button" class="btn btn-primary selector--button-confirm">'+buttonYes+'</button>';
-    
+
 
     //Define all the blocks and combine them by jquery methods
     var outerBlock      = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
@@ -36,7 +41,7 @@ var ConfirmDeleteModal = function(options){
 
     var combineModal = function(){
         var thisContent = contentBlock.clone();
-        
+
         thisContent.append(bodyBlock.clone());
 
         if(confirmTitle !== ''){
@@ -44,17 +49,17 @@ var ConfirmDeleteModal = function(options){
             headlineBlock.text(confirmTitle);
             thisHeader.append(closeIcon.clone());
             thisHeader.append(headlineBlock);
-            thisContent.prepend(thisHeader);   
+            thisContent.prepend(thisHeader);
         }
-        
+
         var thisFooter = footerBlock.clone();
         thisFooter.append(closeButton.clone());
         thisFooter.append(confirmButton.clone());
-        thisContent.append(thisFooter);   
+        thisContent.append(thisFooter);
 
         modalObject = outerBlock.clone();
         modalObject.append(innerBlock.clone().append(thisContent));
-    }, 
+    },
     addForm = function(){
         var formObject = $('<form name="'+Math.round(Math.random()*1000)+'_'+confirmTitle.replace(/[^a-bA-B0-9]/g,'')+'" method="post" action="'+postUrl+'"></form>');
         for(var key in postObject){
@@ -73,6 +78,11 @@ var ConfirmDeleteModal = function(options){
         formObject.append('<input name="YII_CSRF_TOKEN" value="'+LS.data.csrfToken+'" type="hidden" />');
         modalObject.find('.modal-body').append(formObject)
         modalObject.find('.modal-body').append('<p>'+confirmText+'</p>');
+
+        if (showTextArea !== '' ){
+            modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" ></textarea>');
+        }
+
     },
     bindEvents = function(){
         modalObject.on('show.bs.modal', function(){
@@ -83,9 +93,55 @@ var ConfirmDeleteModal = function(options){
             var self = this;
             modalObject.find('.selector--button-confirm').on('click', function(e){
                 e.preventDefault();
-                modalObject.find('form').trigger('submit');
-                modalObject.modal('close');
-            });   
+
+                if (! useAjax ){
+                    modalObject.find('form').trigger('submit');
+                    modalObject.modal('close');
+                }else{
+
+                    // Ajax request
+                    $.ajax({
+                        url  : postUrl,
+                        type : 'POST',
+                        data :  modalObject.find('form').serialize(),
+
+                        // html contains the buttons
+                        success : function(html, statut){
+
+                            if( keepopen != 'true' ){
+                                modalObject.modal('hide'); // $modal.modal('hide');
+                            }else{
+                                modalObject.find('.modal-body').empty().html(html);                  // Inject the returned HTML in the modal body
+                            }
+
+                            // Reload grid
+                            if (gridReload){
+                                $('#'+gridid).yiiGridView('update');                         // Update the surveys list
+                                setTimeout(function(){
+                                    $(document).trigger("actions-updated");}, 500);    // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
+                            }
+
+                            if (html.ajaxHelper) {
+                                LS.ajaxHelperOnSuccess(html);
+                                return;
+                            }
+
+                            if (onSuccess) {
+                                var func = eval(onSuccess);
+                                func(html);
+                                return;
+                            }
+
+
+                        },
+                        error :  function(html, statut){
+                            modalObject.find('.modal-body').empty().html(html.responseText);
+                            console.log(html);
+                        }
+                    });
+
+                }
+            });
             options.fnOnShown.call(this);
         });
         modalObject.on('hide.bs.modal', options.fnOnHide);
@@ -99,9 +155,9 @@ var ConfirmDeleteModal = function(options){
     },
     bindToElement = function(){
         $item.on('click.confirmmodal', function(){
-            modalObject.modal('toggle');    
+            modalObject.modal('toggle');
         });
-    }, 
+    },
     runPrepare = function(){
         if($item.data('confirm-modal-appended') == 'yes') {
             return;
@@ -110,10 +166,10 @@ var ConfirmDeleteModal = function(options){
         modalObject.appendTo($(parentElement));
         bindToElement.call(this);
         bindEvents.call(this);
-        
+
         $item.data('confirm-modal-appended', 'yes');
     };
-    
+
     runPrepare();
 };
 

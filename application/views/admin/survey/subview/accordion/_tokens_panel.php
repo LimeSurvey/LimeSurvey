@@ -40,7 +40,7 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
             <div class="form-group">
                 <label class=" control-label" for='tokenlength'><?php  eT("Set token length to:"); ?></label>
                 <div class="">
-                    <input type='text' value="<?php echo $oSurvey->tokenlength ?>" name='tokenlength' id='tokenlength' size='4' maxlength='2' onkeypress="return goodchars(event,'0123456789')"  class="form-control" />
+                    <input type='text' value="<?php echo $oSurvey->tokenlength ?>" name='tokenlength' id='tokenlength' size='4' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')"  class="form-control" />
                 </div>
             </div>
         </div>
