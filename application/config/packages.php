@@ -182,10 +182,8 @@ return array(
             'css/displayParticipants.css',
         ),
         'js' => array(
-            'js/confirmdeletemodal.js',
-            'js/bootstrap-remote-modals.js',
-            'js/admin_core.js',
             'js/notifications.js',
+            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.js',
         ),
         'depends' => array(
             'jquery',
