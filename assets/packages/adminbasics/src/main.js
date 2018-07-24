@@ -89,7 +89,7 @@ const AdminCore = function(){
                     $(root).on(events.join(' '), fn);
                 }
             }
-            fn();
+            //fn();
         },
         refreshAdminCore = () => {
             _.each(eventsBound, (eventMap, root) => {
