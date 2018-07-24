@@ -869,19 +869,25 @@ function prefillFromCommandLine($surveyid)
     } else {
         $startingValues = $_SESSION['survey_'.$surveyid]['startingValues'];
     }
-
-    if (isset($_GET)) {
-
-        foreach ($_GET as $k=>$v) {
-
-            if (!in_array($k, $reservedGetValues) && isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k])) {
-                $startingValues[$k] = $v;
-            } else {
-                // Search question codes to use those for prefilling.
-                foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details) {
-                    if ($details['title'] == $k) {
-                        $startingValues[$sgqa] = $v;
+    if (Yii::app()->getRequest()->getRequestType()=='GET') {
+        $getValues = array_diff_key($_GET,array_combine($reservedGetValues, $reservedGetValues));
+        if(!empty($getValues)) {
+            $qcode2sgqa = LimeExpressionManager::getLEMqcode2sgqa($surveyid);
+            foreach ($getValues as $k=>$v) {
+                if (isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k])) {
+                    // sXgXqa prefilling
+                    $startingValues[$k] = $v;
+                } elseif( !empty($qcode2sgqa) && array_key_exists($k,$qcode2sgqa) ) {
+                    // EM code prefilling
+                    $startingValues[$qcode2sgqa[$k]] = $v;
+                    /* Alternative
+                    foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details) {
+                        // Need Yii::import('application.helpers.viewHelper');
+                        if (viewHelper::getFieldCode($details,array('LEMcompat'=>true)) == $k) {
+                            $startingValues[$sgqa] = $v;
+                        }
                     }
+                    */
                 }
             }
         }

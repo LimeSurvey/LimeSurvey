@@ -840,14 +840,16 @@
         * Return array database name as key, LEM name as value
         * @example (['gender'] => '38612X10X145')
         * @param integer $iSurveyId
+        * @param boolean $initialize force initialisation of Survey
         * @return array
         **/
         public static function getLEMqcode2sgqa($iSurveyId){
                 $LEM =& LimeExpressionManager::singleton();
-
-                $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);
-                $LEM->SetSurveyId($iSurveyId);
-                $LEM->StartProcessingPage(true,true);
+                $LEM->SetSurveyId($iSurveyId); // This update session only if needed
+                if( !in_array(Yii::app()->session['LEMlang'],Survey::model()->findByPk($iSurveyId)->getAllLanguages()) ) {
+                    $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);// Reset language only if needed
+                }
+                $LEM->setVariableAndTokenMappingsForExpressionManager($iSurveyId);
                 return $LEM->qcode2sgqa;
         }
 
