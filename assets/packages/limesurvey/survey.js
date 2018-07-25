@@ -414,3 +414,9 @@ function alertSurveyDialog(text,title)
 {
     alert(text);
 }
+$(document).on('click', '#limesurvey [type=submit]:not([data-confirmedby])', function (e) {
+    $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $(this).attr('name') + '\' value=\'' + $(this).attr('value') + '\' type=\'hidden\' />');
+});
+$(document).on('submit', '#limesurvey', function (e) {
+    $('#limesurvey [type=submit]').prop("disabled",true);
+});
