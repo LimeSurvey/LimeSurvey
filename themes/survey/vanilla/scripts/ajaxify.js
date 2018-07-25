@@ -111,7 +111,7 @@ var AjaxSubmitObject = function () {
         // Restrict to [type=submit]:not([data-confirmedby])
         // - :submit is the default if button don't have type (reset button on slider for example),
         // - confirmedby have their own javascript system
-        $(document).on('click', '#ls-button-submit, #ls-button-previous', function (e) {
+        $(document).on('click', '#limesurvey [type=submit]:not([data-confirmedby])', function (e) {
             $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $(this).attr('name') + '\' value=\'' + $(this).attr('value') + '\' type=\'hidden\' />');
             if (isIE10 || /Edge\/\d+\.\d+/.test(navigator.userAgent)) {
                 e.preventDefault();
@@ -123,6 +123,7 @@ var AjaxSubmitObject = function () {
         // If the user try to submit the form
         // Always bind to document to not need to bind again
         $(document).on('submit', '#limesurvey', function (e) {
+            console.log(activeSubmit);
             // Prevent multiposting
             //Check if there is an active submit
             //If there is -> return immediately
@@ -130,7 +131,7 @@ var AjaxSubmitObject = function () {
             //block further submissions
             activeSubmit = true;
             if ($('#onsubmitbuttoninput').length == 0) {
-                $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $('#limesurvey [type=submit]:not([data-confirmedby])').attr('name') + '\' value=\'' + $('#limesurvey [type=submit]:not([data-confirmedby])').attr('value') + '\' type=\'hidden\' />');
+                $('#limesurvey').append('<input id="onsubmitbuttoninput" name="move" value="default">');
             }
             //start the loading animation
             startLoadingBar();
