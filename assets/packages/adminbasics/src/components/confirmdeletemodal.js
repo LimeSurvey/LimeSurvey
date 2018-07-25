@@ -87,7 +87,7 @@ const ConfirmDeleteModal = function (options) {
 
         },
         runAjaxRequest = function () {
-            return $.ajax({
+            return LS.ajax({
                 url: postUrl,
                 type: 'POST',
                 data: modalObject.find('form').serialize(),
@@ -110,7 +110,7 @@ const ConfirmDeleteModal = function (options) {
                     }
 
                     if (html.ajaxHelper) {
-                        LS.ajaxHelperOnSuccess(html);
+                        LS.AjaxHelper.onSuccess(html);
                         return;
                     }
 

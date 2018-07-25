@@ -5,50 +5,50 @@
  * @author Olle Haerstedt, Markus Flür
  */
 
-import ajaxHelper from '../parts/ajaxHelper';
+import * as AjaxHelper from '../parts/ajaxHelper';
 import LOG from './lslog';
 
-class NotifcationSystem {
-    
+const NotifcationSystem  = function (){
+    const
     /**
      * Load widget HTML and inject it
      * @param {string} URL to call
      * @return
      */
-     __updateNotificationWidget(updateUrl) {
+     __updateNotificationWidget = (updateUrl) => {
         LOG.log('updateNotificationWidget');
         // Update notification widget
-        return ajaxHelper({
+        return $.ajax({
             url: updateUrl,
             method: 'GET',
             success: (response) => {
                 $('#notification-li').replaceWith(response);
 
                 // Re-bind onclick
-                this.initNotification();
+                initNotification();
 
                 // Adapt style to window size
-                this.styleNotificationMenu();
+                styleNotificationMenu();
             }
         });
-    };
+    },
     
     /**
      * Tell system that notification is read
      * @param {object} that The notification link
      * @return
      */
-    __notificationIsRead(that) {
+    __notificationIsRead = (that) => {
         LOG.log('notificationIsRead');
-        ajaxHelper({
+        $.ajax({
             url: $(that).data('read-url'),
             method: 'GET',
         }).done((response) => {
             // Fetch new HTML for menu widget
-            this.__updateNotificationWidget($(that).data('update-url'));
+            __updateNotificationWidget($(that).data('update-url'));
         });
 
-    };
+    },
     
     /**
      * Fetch notification as JSON and show modal
@@ -56,9 +56,9 @@ class NotifcationSystem {
      * @param {url} URL to fetch notification as JSON
      * @return
      */
-    __showNotificationModal(that, url) {
+    __showNotificationModal = (that, url) => {
         LOG.log('showNotificationModal');
-        ajaxHelper({
+        $.ajax({
             url: url,
             method: 'GET',
         }).done((response) => {
@@ -74,18 +74,18 @@ class NotifcationSystem {
             // TODO: Will this work in message includes a link that is clicked?
             $('#admin-notification-modal').off('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
-                this.__notificationIsRead(that);
+                __notificationIsRead(that);
                 $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
             });
         });
-    };
+    },
 
     /*##########PUBLIC##########*/
     /**
      * Bind onclick and stuff
      * @return
      */
-    initNotification() {
+    initNotification = () => {
         // const self = this;
         LOG.group('initNotification');
         $('.admin-notification-link').each((nr, that) => {
@@ -98,20 +98,20 @@ class NotifcationSystem {
 
             // Important notifications are shown as pop-up on load
             if (importance == 3 && status == 'new') {
-                this.__showNotificationModal(that, url);
+                __showNotificationModal(that, url);
                 LOG.log('stoploop');
                 return false;  // Stop loop
             }
 
             // Bind click to notification in drop-down
-            $(that).off('click');
-            $(that).on('click', () => {
-                this.__showNotificationModal(that, url);
+            $(that).off('click.showNotification');
+            $(that).on('click.showNotification', () => {
+                __showNotificationModal(that, url);
             });
 
         });
         LOG.groupEnd('initNotification');
-    };
+    },
 
     /**
      * Called from outside (update notifications when click
@@ -120,49 +120,51 @@ class NotifcationSystem {
      * @return
      */
     
-    updateNotificationWidget(url, openAfter) {
+    updateNotificationWidget = (url, openAfter) => {
         // Make sure menu is open after load
-        this.__updateNotificationWidget(url).then(() =>{
+        __updateNotificationWidget(url).then(() =>{
             if (openAfter !== false) {
                 $('#notification-li').addClass('open');
             }
         });
         // Only update once
-        $('#notification-li').off('click');
-    };
+        $('#notification-li').off('click.showNotification');
+    },
 
     /**
      * Apply styling
      * @return
      */
-    styleNotificationMenu() {
+    styleNotificationMenu = () => {
         LOG.log('styleNotificationMenu');
         const height = window.innerHeight - 70;
         $('#notification-outer-ul').css('height', height + 'px');
         $('#notification-inner-ul').css('height', (height - 60) + 'px');
         $('#notification-inner-li').css('height', (height - 60) + 'px');
-    };
+    },
 
-    deleteAllNotifications(url, updateUrl) {
-        return ajaxHelper({
+    deleteAllNotifications = (url, updateUrl) => {
+        return $.ajax({
             url: url,
             method: 'GET',
             success: (response) => {
                LOG.log('response', response);
             }
         }).then(() => {
-            this.updateNotificationWidget(updateUrl);
+            updateNotificationWidget(updateUrl);
         });
     };
+
+    return {
+        initNotification,
+        updateNotificationWidget,
+        styleNotificationMenu,
+        deleteAllNotifications,
+    }
 }
 
 //########################################################################
 
-const notificationHelper = new NotifcationSystem();
+const notificationSystem = new NotifcationSystem();
 
-export default {
-    initNotification : ()=> notificationHelper.initNotification.call(notificationHelper, arguments),
-    updateNotificationWidget : ()=> notificationHelper.updateNotificationWidget.call(notificationHelper, arguments),
-    styleNotificationMenu : ()=> notificationHelper.styleNotificationMenu.call(notificationHelper, arguments),
-    deleteAllNotifications : ()=> notificationHelper.deleteAllNotifications.call(notificationHelper, arguments),
-};
+export default notificationSystem;
