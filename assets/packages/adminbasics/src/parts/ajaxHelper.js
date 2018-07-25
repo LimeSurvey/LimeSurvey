@@ -71,7 +71,7 @@ const ajax = (options) => {
        $('#ls-loading').hide();
 
        // User-supplied success is always run EXCEPT when login fails
-       var runOldSuccess = ajaxHelperOnSuccess(response);
+       var runOldSuccess = onSuccess(response);
 
        if (oldSuccess && runOldSuccess) {
            oldSuccess(response, textStatus, jqXHR);
@@ -96,4 +96,4 @@ const ajax = (options) => {
    return $.ajax(options);
 }
 
-export default ajax;
+export {ajax, onSuccess};
