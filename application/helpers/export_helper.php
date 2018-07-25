@@ -2513,12 +2513,13 @@ function tsvSurveyExport($surveyid){
                 if ($index_languages == 0 && !empty($conditions[$qid])){
                     foreach ($conditions[$qid] as $key => $condition) {
                         $tsv_output = $fields;
+                        $tsv_output['id'] = $condition['cid'];
                         $tsv_output['class'] = 'C';
                         $tsv_output['type/scale'] = $condition['scenario'];
                         $tsv_output['related_id'] = $condition['cqid']; 
                         $tsv_output['name'] = $condition['cfieldname']; 
                         $tsv_output['relevance'] = $condition['method']; 
-                        $tsv_output['text'] = $condition['value']; 
+                        $tsv_output['text'] = !empty($assessment['value']) && count($condition['value']) > 0?$condition['value']:''; 
                         fputcsv($out, $tsv_output, chr(9));
                     }
                 }
