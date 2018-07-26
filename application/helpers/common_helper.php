@@ -4937,3 +4937,18 @@ function isJson($str) {
     $json = json_decode($str);
     return $json && $str != $json;
 }
+
+/**
+* Check if array is associative
+*
+* @param array $array
+* @return bool
+*/
+function isAssociativeArray($array){
+    foreach ($array as $key => $value) {
+        if (is_string($key)) {
+            return true;
+        }
+    }
+    return false;
+}
