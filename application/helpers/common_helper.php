@@ -4926,3 +4926,29 @@ function get_absolute_path($path)
     }
     return implode(DIRECTORY_SEPARATOR, $absolutes);
 }
+
+/**
+* Check if string is JSON array
+*
+* @param string $str
+* @return bool
+*/
+function isJson($str) {
+    $json = json_decode($str);
+    return $json && $str != $json;
+}
+
+/**
+* Check if array is associative
+*
+* @param array $array
+* @return bool
+*/
+function isAssociativeArray($array){
+    foreach ($array as $key => $value) {
+        if (is_string($key)) {
+            return true;
+        }
+    }
+    return false;
+}

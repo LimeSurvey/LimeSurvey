@@ -526,7 +526,7 @@ class SurveyAdmin extends Survey_Common_Action
         );
     }
 
-
+    
     /**
      * Ajaxified get MenuItems with containing questions
      * @todo
@@ -1595,6 +1595,46 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * @param Survey $survey
+     * @return array
+     * tab_edit_view_datasecurity
+     * editDataSecurityLocalSettings_view
+     */
+    private function _getDataSecurityEditData($survey)
+    {
+        Yii::app()->loadHelper("admin/htmleditor");
+        $aData = $aTabTitles = $aTabContents = array();
+
+        $aData['scripts'] = PrepareEditorScript(false, $this->getController());
+        $aLanguageData = [];
+
+        foreach ($survey->allLanguages as $i => $sLang) {
+            $aLanguageData = $this->_getGeneralTemplateData($survey->sid);
+            // this one is created to get the right default texts fo each language
+            Yii::app()->loadHelper('database');
+            Yii::app()->loadHelper('surveytranslator');
+
+            $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $survey->sid, 'surveyls_language' => $sLang))->getAttributes();
+
+            $aTabTitles[$sLang] = getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false);
+
+            if ($aSurveyLanguageSettings['surveyls_language'] == $survey->language) {
+                $aTabTitles[$sLang] .= ' ('.gT("Base language").')';
+            }
+
+            $aLanguageData['aSurveyLanguageSettings'] = $aSurveyLanguageSettings;
+            $aLanguageData['action'] = "surveygeneralsettings";
+            $aLanguageData['i'] = $i;
+            $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aLanguageData['oSurvey'] = $survey;
+            $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editDataSecurityLocalSettings_view', $aLanguageData, true);
+        }
+        
+        $aData['aTabContents'] = $aTabContents;
+        $aData['aTabTitles'] = $aTabTitles;
+        return $aData;
+    }
     /**
      * @param Survey $survey
      * @return array

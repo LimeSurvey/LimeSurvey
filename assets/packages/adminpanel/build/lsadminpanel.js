@@ -37851,10 +37851,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.getLinkClass(menuItem),
       attrs: {
         "href": menuItem.link,
-        "id": 'sidemenu_' + _vm.menu.id + '_' + menuItem.id
+        "id": 'sidemenu_' + menuItem.name
       },
       on: {
         "click": function($event) {
+          $event.stopPropagation();
           _vm.setActiveMenuItemIndex(menuItem)
         }
       }
@@ -37895,6 +37896,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.checkIsOpen(submenu) ? 'menu-selected' : '',
       on: {
         "!click": function($event) {
+          $event.stopPropagation();
           _vm.setActiveMenuIndex(submenu)
         }
       }

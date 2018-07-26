@@ -85,9 +85,9 @@ export default {
     <ul class="list-group subpanel col-12" :class="'level-'+(menu.level)">        
         <a  v-for="(menuItem, index) in sortedMenuEntries" 
             v-bind:key="menuItem.id" 
-            v-on:click="setActiveMenuItemIndex(menuItem)"  
+            v-on:click.stop="setActiveMenuItemIndex(menuItem)"  
             :href="menuItem.link" 
-            :id="'sidemenu_'+menu.id+'_'+menuItem.id" 
+            :id="'sidemenu_'+menuItem.name" 
             class="list-group-item"
             :class="getLinkClass(menuItem)" >
 
@@ -103,7 +103,7 @@ export default {
                 </div>
             </div>
         </a>
-        <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.capture="setActiveMenuIndex(submenu)" >
+        <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.capture.stop="setActiveMenuIndex(submenu)" >
             <a href="#" v-bind:title="reConvertHTML(submenu.description)" data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center" :class="checkIsOpen(submenu) ? 'ls-space margin bottom-5' : ''">
                 <div class="ls-space col-sm-10 padding all-0">
                     <menuicon icon-type="fontawesome" icon="arrow-right"></menuicon>

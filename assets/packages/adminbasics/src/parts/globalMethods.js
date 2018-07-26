@@ -7,7 +7,16 @@ import LOG from '../components/lslog';
 const globalWindowMethods = {
     renderBootstrapSwitch : () => {
         try{
-            $('[data-is-bootstrap-switch]').bootstrapSwitch();
+            if(!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
+                $('[data-is-bootstrap-switch]').bootstrapSwitch({
+                    onInit: () => LOG.log("BootstrapSwitch Initialized")
+                });
+            }
+        } catch(e) { LOG.error(e); }
+    },
+    unrenderBootstrapSwitch : () => {
+        try{
+            $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
         } catch(e) { LOG.error(e); }
     },
     validatefilename: (form, strmessage) => {
@@ -120,8 +129,6 @@ const globalStartUpMethods = {
         globalWindowMethods.fixAccordionPosition();
     }
 };
-const globalOnloadMethods = () => {
-    globalWindowMethods.renderBootstrapSwitch();
-}
 
-export {globalStartUpMethods, globalWindowMethods, globalOnloadMethods};
+
+export {globalStartUpMethods, globalWindowMethods};

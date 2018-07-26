@@ -62,7 +62,6 @@ const AdminCore = function(){
         onLoadRegister = () => {
             globalStartUpMethods.bootstrapping();
             surveyGrid();
-            appendToLoad(globalOnloadMethods);
             appendToLoad(saveBindings);
             appendToLoad(confirmationModal);
             appendToLoad(questionEdit);
@@ -89,7 +88,6 @@ const AdminCore = function(){
                     $(root).on(events.join(' '), fn);
                 }
             }
-            //fn();
         },
         refreshAdminCore = () => {
             _.each(eventsBound, (eventMap, root) => {

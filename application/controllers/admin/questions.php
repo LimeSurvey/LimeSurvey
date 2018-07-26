@@ -1460,10 +1460,10 @@ class questions extends Survey_Common_Action
             $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
             $oCriteria->compare('stg_value', $rqid, false, 'AND');
             SettingGlobal::model()->deleteAll($oCriteria);
-
+            $redirectUrl = array('admin/survey/sa/listquestions/', 'surveyid' => $surveyid, 'gid' => $gid_search);
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
+                $this->getController()->redirect($redirectUrl);
             } else {
                 return array('status'=>true, 'message'=>$sMessage);
             }
@@ -1471,7 +1471,7 @@ class questions extends Survey_Common_Action
             $sMessage = gT("You are not authorized to delete questions.");
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
+                $this->getController()->redirect($redirectUrl);
             } else {
                 return array('status'=>false, 'message'=>$sMessage);
             }

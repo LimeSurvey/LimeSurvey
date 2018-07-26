@@ -133,7 +133,7 @@ function submitEditToken(){
     var $modal      = $('#editTokenModal');
 
     // Ajax request
-    LS.ajax({
+    $.ajax({
         url  : $actionUrl,
         type : 'POST',
         data : $datas,
