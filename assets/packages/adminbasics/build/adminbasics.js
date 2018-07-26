@@ -17823,7 +17823,6 @@ const AdminCore = function(){
                     $(root).on(events.join(' '), fn);
                 }
             }
-            //fn();
         },
         refreshAdminCore = () => {
             __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(eventsBound, (eventMap, root) => {
@@ -18288,9 +18287,9 @@ const ConfirmationModal = function(e){
     //////METHODS
     //Parse available options from specific item.data settings, if not available load relatedTarget settings
     const _parseOptions = (e) => {
-        return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.mergeWith(optionsDefault, $(_this).data(), (objValue, srcValue, key ) => {
-            return srcValue || $(e.relatedTarget).data(key) || null;
-        }); 
+        return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(optionsDefault, (value, key) => {
+            optionsDefault[key] = $(_this).data(key) || $(e.relatedTarget).data(key) || optionsDefault[key];
+        });
     },
     //Generate a simple link on the ok button
     _basicLink = () => {
