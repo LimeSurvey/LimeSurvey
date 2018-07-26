@@ -7290,9 +7290,11 @@
             }
 
             $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
-            if ($LEM->surveyMode == 'group')
+            if ($LEM->surveyMode == 'group' && $LEM->currentGroupSeq != '')
             {
                 $jsParts[] = "var LEMgseq=" . $LEM->currentGroupSeq . ";\n";
+            } else {
+                $jsParts[] = "var LEMgseq='';\n";
             }
             if ($LEM->surveyMode == 'question' && isset($LEM->currentQID))
             {

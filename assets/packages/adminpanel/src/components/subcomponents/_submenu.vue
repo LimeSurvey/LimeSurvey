@@ -87,7 +87,7 @@ export default {
             v-bind:key="menuItem.id" 
             v-on:click="setActiveMenuItemIndex(menuItem)"  
             :href="menuItem.link" 
-            :id="'sidemenu_'+menu.id+'_'+menuItem.id" 
+            :id="'sidemenu_'+menuItem.name" 
             class="list-group-item"
             :class="getLinkClass(menuItem)" >
 

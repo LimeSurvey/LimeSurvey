@@ -2283,16 +2283,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'boolean DEFAULT 0');
             }
 
-            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
-            
             $aIdMap = [];
-
+            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
             foreach($aDefaultSurveyMenus as $i => $aSurveymenu) {
-                $aIdMap[$aSurveymenu['name']] = $oDB->createCommand()
-                ->select(['id'])
-                ->from('{{surveymenu}}')
-                ->where('name=:name', [':name' => $aSurveymenu['name']])
-                ->query();
+                $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
+                $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
+                $aIdMap[$aSurveymenu['name']] = $oDB->getLastInsertId();
             }
             
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
@@ -2314,14 +2310,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 355) {
             $oTransaction = $oDB->beginTransaction();
 
-            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
-            
             $aIdMap = [];
-
+            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
             foreach($aDefaultSurveyMenus as $i => $aSurveymenu) {
-                $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
-                $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
-                $aIdMap[$aSurveymenu['name']] = $oDB->getLastInsertId();
+                $aIdMap[$aSurveymenu['name']] = $oDB->createCommand()
+                ->select(['id'])
+                ->from('{{surveymenu}}')
+                ->where('name=:name', [':name' => $aSurveymenu['name']])
+                ->queryScalar();
             }
             
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
