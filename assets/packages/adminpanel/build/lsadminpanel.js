@@ -37855,6 +37855,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       on: {
         "click": function($event) {
+          $event.stopPropagation();
           _vm.setActiveMenuItemIndex(menuItem)
         }
       }
@@ -37895,6 +37896,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.checkIsOpen(submenu) ? 'menu-selected' : '',
       on: {
         "!click": function($event) {
+          $event.stopPropagation();
           _vm.setActiveMenuIndex(submenu)
         }
       }
