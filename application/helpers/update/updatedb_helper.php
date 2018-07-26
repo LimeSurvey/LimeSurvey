@@ -2285,13 +2285,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
             
-            
             $aIdMap = [];
-            
+
             foreach($aDefaultSurveyMenus as $i => $aSurveymenu) {
-                $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
-                $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
-                $aIdMap[$aSurveymenu['name']] = $oDB->getLastInsertId();
+                $aIdMap[$aSurveymenu['name']] = $oDB->createCommand()
+                ->select(['id'])
+                ->from('{{surveymenu}}')
+                ->where('name=:name', [':name' => $aSurveymenu['name']])
+                ->query();
             }
             
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
@@ -2310,6 +2311,35 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>354], "stg_name='DBVersion'");
         }
 
+        if ($iOldDBVersion < 355) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
+            
+            $aIdMap = [];
+
+            foreach($aDefaultSurveyMenus as $i => $aSurveymenu) {
+                $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
+                $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
+                $aIdMap[$aSurveymenu['name']] = $oDB->getLastInsertId();
+            }
+            
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
+                $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
+                switch($aSurveymenuentry['menu_id']) {
+                    case 1: $aSurveymenuentry['menu_id'] = $aIdMap['settings']; break;
+                    case 2: $aSurveymenuentry['menu_id'] = $aIdMap['mainmenu']; break;
+                    case 3: $aSurveymenuentry['menu_id'] = $aIdMap['quickmenu']; break;
+                    case 4: $aSurveymenuentry['menu_id'] = $aIdMap['pluginmenu']; break;
+                }
+                $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+            }
+
+
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>355], "stg_name='DBVersion'");
+        }
 
 
     } catch (Exception $e) {
