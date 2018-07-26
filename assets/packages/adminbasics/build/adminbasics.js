@@ -17347,9 +17347,8 @@ const adminCoreLSConsole = new ConsoleShim('AdminCore');
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return globalStartUpMethods; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return globalWindowMethods; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return globalOnloadMethods; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return globalStartUpMethods; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return globalWindowMethods; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_lslog__ = __webpack_require__(1);
 /**
  * Define global setters for LimeSurvey
@@ -17360,7 +17359,16 @@ const adminCoreLSConsole = new ConsoleShim('AdminCore');
 const globalWindowMethods = {
     renderBootstrapSwitch : () => {
         try{
-            $('[data-is-bootstrap-switch]').bootstrapSwitch();
+            if(!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
+                $('[data-is-bootstrap-switch]').bootstrapSwitch({
+                    onInit: () => __WEBPACK_IMPORTED_MODULE_0__components_lslog__["a" /* default */].log("BootstrapSwitch Initialized")
+                });
+            }
+        } catch(e) { __WEBPACK_IMPORTED_MODULE_0__components_lslog__["a" /* default */].error(e); }
+    },
+    unrenderBootstrapSwitch : () => {
+        try{
+            $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
         } catch(e) { __WEBPACK_IMPORTED_MODULE_0__components_lslog__["a" /* default */].error(e); }
     },
     validatefilename: (form, strmessage) => {
@@ -17473,9 +17481,7 @@ const globalStartUpMethods = {
         globalWindowMethods.fixAccordionPosition();
     }
 };
-const globalOnloadMethods = () => {
-    globalWindowMethods.renderBootstrapSwitch();
-}
+
 
 
 
@@ -17631,7 +17637,7 @@ const onSuccess = (response) => {
     // Put HTML into element.
     if (response.outputType == 'jsonoutputhtml') {
         $('#' + response.target).html(response.html);
-        __WEBPACK_IMPORTED_MODULE_0__globalMethods__["c" /* globalWindowMethods */].doToolTip();
+        __WEBPACK_IMPORTED_MODULE_0__globalMethods__["b" /* globalWindowMethods */].doToolTip();
     }
 
     // Success popup
@@ -17789,9 +17795,8 @@ const AdminCore = function(){
 
     const 
         onLoadRegister = () => {
-            __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["b" /* globalStartUpMethods */].bootstrapping();
+            __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["a" /* globalStartUpMethods */].bootstrapping();
             Object(__WEBPACK_IMPORTED_MODULE_8__pages_surveyGrid__["a" /* onExistBinding */])();
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["a" /* globalOnloadMethods */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_13__parts_save__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_9__parts_confirmationModal__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__["a" /* default */]);
@@ -17839,7 +17844,7 @@ const AdminCore = function(){
                     appendToLoad: appendToLoad
                 }
             };
-            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["c" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_12__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_11__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_7__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */]);
+            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_12__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_11__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_7__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */]);
             
             /*
             * Set the namespace to the global variable LS
