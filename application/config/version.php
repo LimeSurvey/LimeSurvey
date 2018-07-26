@@ -15,11 +15,6 @@
 $config['versionnumber'] = '3.13.2';
 $config['dbversionnumber'] = 354;
 $config['buildnumber'] = '';
-<<<<<<< HEAD
 $config['updatable'] = false;
-$config['assetsversionnumber'] = '30049';
-=======
-$config['updatable'] = true;
 $config['assetsversionnumber'] = '30050';
->>>>>>> upstream/master
 return $config;
