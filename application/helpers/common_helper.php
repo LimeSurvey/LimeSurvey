@@ -4926,3 +4926,14 @@ function get_absolute_path($path)
     }
     return implode(DIRECTORY_SEPARATOR, $absolutes);
 }
+
+/**
+* Check if string is JSON array
+*
+* @param string $str
+* @return bool
+*/
+function isJson($str) {
+    $json = json_decode($str);
+    return $json && $str != $json;
+}
