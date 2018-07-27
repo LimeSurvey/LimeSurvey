@@ -43,13 +43,14 @@ function doDualScaleRadio(qID) {
 
 /**
  * Update answers part for a dual scale dropdown question and lauch EM
+ * Default system use name, we need to replace # by _ for dualscale
+ * Do it for whole input : we can remove this. Unsure of the best solution
  *
  * @author Denis Chenu (Shnoulle)
  * @param {number} qId The qid of the question where apply.
- * @todo : control if it's needed since em_javascript have his own function (or fix em_javascript function)
  */
 function doDualScaleDropDown(qID) {
-  $("#question"+qID+" .ls-answers").on("select","change",function(){
+  $("#question"+qID+" .ls-answers select").on("change",function(){
     name=$(this).attr("name");
     name=name.replace('#','_');
     value=""+$(this).val();
