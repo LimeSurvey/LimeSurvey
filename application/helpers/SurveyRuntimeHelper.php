@@ -576,15 +576,6 @@ class SurveyRuntimeHelper
             //field for limereplace stuff, and do transformations!
             $this->aSurveyInfo['surveyls_url'] = passthruReplace($this->aSurveyInfo['surveyls_url'], $this->aSurveyInfo);
             $this->aSurveyInfo['surveyls_url'] = templatereplace($this->aSurveyInfo['surveyls_url'], array(), $redata, 'URLReplace', false, null, array(), true); // to do INSERTANS substitutions
-
-            //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
-            //don't use cookies if tokens are being used
-            if (!empty($this->aSurveyInfo['active']) && $this->aSurveyInfo['active'] == "Y") {
-                global $tokensexist;
-                if ($this->aSurveyInfo['usecookie'] == "Y" && $tokensexist != 1 &&  ( array_key_exists('finished', $_SESSION['survey_'.$this->iSurveyid]) &&  $_SESSION['survey_'.$this->iSurveyid]['finished'] == true )  ) {
-                    setcookie("LS_".$this->iSurveyid."_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
-                }
-            }
         }
     }
 
@@ -1151,6 +1142,14 @@ class SurveyRuntimeHelper
                 $_SESSION[$this->LEMsessid]['finished'] = true;
                 $_SESSION[$this->LEMsessid]['sid']      = $this->iSurveyid;
 
+                //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
+                //don't use cookies if tokens are being used
+                if (!empty($this->aSurveyInfo['active']) && $this->aSurveyInfo['active'] == "Y") {
+                    global $tokensexist;
+                    if ($this->aSurveyInfo['usecookie'] == "Y" && $tokensexist != 1 && $this->aMoveResult['finished'] == true ) {
+                        setcookie("LS_".$this->iSurveyid."_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
+                    }
+                }
             }
 
             $redata['completed'] = $this->completed;
