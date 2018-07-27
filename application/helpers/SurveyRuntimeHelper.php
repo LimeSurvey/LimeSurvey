@@ -581,7 +581,7 @@ class SurveyRuntimeHelper
             //don't use cookies if tokens are being used
             if (!empty($this->aSurveyInfo['active']) && $this->aSurveyInfo['active'] == "Y") {
                 global $tokensexist;
-                if ($this->aSurveyInfo['usecookie'] == "Y" && $tokensexist != 1 && $this->aMoveResult['finished'] == true ) {
+                if ($this->aSurveyInfo['usecookie'] == "Y" && $tokensexist != 1 &&  ( array_key_exists('finished', $_SESSION['survey_'.$this->iSurveyid]) &&  $_SESSION['survey_'.$this->iSurveyid]['finished'] == true )  ) {
                     setcookie("LS_".$this->iSurveyid."_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
                 }
             }
