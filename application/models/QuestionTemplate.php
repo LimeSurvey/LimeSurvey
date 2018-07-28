@@ -138,7 +138,7 @@ class QuestionTemplate extends CFormModel
 
     /**
      * Get the template folder name
-     * @return bool|string
+     * @return false|string
      */
     public function getQuestionTemplateFolderName()
     {
