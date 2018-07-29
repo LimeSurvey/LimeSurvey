@@ -329,7 +329,7 @@ function convertGETtoPOST($url)
         $stack = explode('=', $queryitem);
         $paramname = array_shift($stack);
         $value = array_shift($stack);
-        $postArray[$paramname] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
+        $postArray[$paramname] = $value;
     }
 
     $callscript = "window.LS.sendPost('".$calledscript."','".json_encode($postArray)."');";

@@ -57,21 +57,18 @@
                                 class='btn btn-default'
                                 id='activateTokenTable__selector--yes'
                                 value='<?php eT("Switch to closed-access mode"); ?>'
-                                onclick="<?php echo $closedOnclickAction;?>"
                                 />
                             <input
                                 type='submit'
                                 class='btn btn-default'
                                 id='activateTokenTable__selector--no'
                                 value='<?php eT("No, thanks."); ?>'
-                                onclick="<?php echo $noOnclickAction;?>"
                                 />
                             <?php else:?>
                             <input
                                 type='submit'
                                 class='btn btn-default'
                                 value='<?php eT("Back to survey home"); ?>'
-                                onclick="<?php echo $noOnclickAction;?>"
                                 />
 
                             <?php endif; ?>
@@ -82,3 +79,9 @@
         </div>
     </div>
 </div>
+
+<?php App()->getClientScript()->registerScript("ActivationFeedBackTriggers","
+$('#activateTokenTable__selector--yes').on('click', function(e){ var run=function(){".$closedOnclickAction."}; run();});
+$('#activateTokenTable__selector--no').on('click', function(e){ var run=function(){".$noOnclickAction."}; run();});
+",LSYii_ClientScript::POS_POSTSCRIPT); 
+?>

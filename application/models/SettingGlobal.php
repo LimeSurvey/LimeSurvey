@@ -45,30 +45,40 @@ class SettingGlobal extends LSActiveRecord
         return 'stg_name';
     }
 
+    /** @inheritdoc */
+    public function rules()
+    {
+        $aRules = array(
+            array('stg_name', 'required'),
+            array('stg_name', 'unique'),
+            array('stg_value', 'default', 'value'=>''),
+        );
+        /* Specific rules for demo mode */
+        if (Yii::app()->getConfig("demoMode")) {
+            $aRules[] = array('stg_name', 'in', 'not'=>true,'range'=>array('sitename','defaultlang','defaulthtmleditormode','filterxsshtml'));
+        }
+        return $aRules;
+    }
 
     /**
+     * Update or set a setting in DB and update current app config if no error happen
+     * Return self : then other script can use if(!$oSetting) { $oSetting->getErrors; }
      * @param string $settingname
      * @param string $settingvalue
-     * @return int
+     * @return self
      */
-    public function updateSetting($settingname, $settingvalue)
+    public static function setSetting($settingname, $settingvalue)
     {
-
-        $data = array(
-            'stg_name' => $settingname,
-            'stg_value' => $settingvalue
-        );
-
-        $user = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-        $query = $user->queryRow('settings_global');
-        $user1 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where("stg_name = :setting_name")->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-        if (count($query) == 0) {
-            return $user1->insert('{{settings_global}}', $data);
-        } else {
-            $user2 = Yii::app()->db->createCommand()->from("{{settings_global}}")->where('stg_name = :setting_name')->bindParam(":setting_name", $settingname, PDO::PARAM_STR);
-            return $user2->update('{{settings_global}}', array('stg_value' => $settingvalue));
+        $setting = self::model()->findByPk($settingname);
+        if(empty($setting)) {
+            $setting = new self;
+            $setting->stg_name = $settingname;
         }
-
+        $setting->stg_value = $settingvalue;
+        if($setting->save()) {
+            Yii::app()->setConfig($settingname,$settingvalue);
+        }
+        return $setting;
     }
 
     /**
@@ -79,7 +89,7 @@ class SettingGlobal extends LSActiveRecord
     {
         $iCustomassetversionnumber = getGlobalSetting('customassetversionnumber');
         $iCustomassetversionnumber++;
-        setGlobalSetting('customassetversionnumber', $iCustomassetversionnumber);
+        self::setSetting('customassetversionnumber', $iCustomassetversionnumber);
         return;
     }
 
