@@ -331,18 +331,55 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-     * @todo
+     * Change survey theme for multiple survey at once.
+     * Called from survey list massive actions
      */
-    public function changetemplate($iSurveyID, $template)
+    public function changeMultipleTheme()
     {
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
-            die('No permission');
+        $sSurveys = $_POST['sItems'];
+        $aSIDs = json_decode($sSurveys);
+        $aResults = array();
+
+        $sTemplate = App()->request->getPost('theme');
+
+        foreach ($aSIDs as $iSurveyID){
+            $aResults = self::changetemplate($iSurveyID, $sTemplate, $aResults, true);
         }
+
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>$sTemplate));
+    }
+
+    /**
+    * Update the theme of a survey
+    *
+    * @access public
+    * @param int     $iSurveyID
+    * @param string  $template      the survey theme name
+    * @param array   $aResults      if the method is called from changeMultipleTheme(), it will update its array of results
+    * @param boolean $bReturn       should the method update and return aResults
+    * @return mixed                 null or array
+     */
+    public function changetemplate($iSurveyID, $template, $aResults = null, $bReturn = false)
+    {
 
         $iSurveyID  = sanitize_int($iSurveyID);
         $sTemplate  = sanitize_dirname($template);
 
         $survey           = Survey::model()->findByPk($iSurveyID);
+
+
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) {
+
+            if (!empty($bReturn)){
+                $aResults[$iSurveyID]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
+                $aResults[$iSurveyID]['result'] = false;
+                return $aResults;
+            }else{
+                die('No permission');
+            }
+        }
+
+
         $survey->template = $sTemplate;
         $survey->save();
 
@@ -352,6 +389,12 @@ class SurveyAdmin extends Survey_Common_Action
 
         // This will force the generation of the entry for survey group
         TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
+
+        if (!empty($bReturn)){
+            $aResults[$iSurveyID]['title']  = $survey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['result'] = true;
+            return $aResults;
+        }
     }
 
     /**
@@ -526,7 +569,7 @@ class SurveyAdmin extends Survey_Common_Action
         );
     }
 
-    
+
     /**
      * Ajaxified get MenuItems with containing questions
      * @todo
@@ -948,7 +991,7 @@ class SurveyAdmin extends Survey_Common_Action
      * @uses self::_tabTokens()
      * @uses self::_tabPanelIntegration()
      * @uses self::_tabResourceManagement()
-     * 
+     *
      * @param int $iSurveyID
      * @param string $subaction
      * @return void
@@ -983,10 +1026,10 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_registerScriptFiles();
 
         // override survey settings if global settings exist
-        $templateData['showqnumcode'] = getGlobalSetting('showqnumcode') !=='choose'?getGlobalSetting('showqnumcode'):$survey->showqnumcode; 
-        $templateData['shownoanswer'] = getGlobalSetting('shownoanswer') !=='choose'?getGlobalSetting('shownoanswer'):$survey->shownoanswer; 
-        $templateData['showgroupinfo'] = getGlobalSetting('showgroupinfo') !=='2'?getGlobalSetting('showgroupinfo'):$survey->showgroupinfo; 
-        $templateData['showxquestions'] = getGlobalSetting('showxquestions') !=='choose'?getGlobalSetting('showxquestions'):$survey->showxquestions; 
+        $templateData['showqnumcode'] = getGlobalSetting('showqnumcode') !=='choose'?getGlobalSetting('showqnumcode'):$survey->showqnumcode;
+        $templateData['shownoanswer'] = getGlobalSetting('shownoanswer') !=='choose'?getGlobalSetting('shownoanswer'):$survey->shownoanswer;
+        $templateData['showgroupinfo'] = getGlobalSetting('showgroupinfo') !=='2'?getGlobalSetting('showgroupinfo'):$survey->showgroupinfo;
+        $templateData['showxquestions'] = getGlobalSetting('showxquestions') !=='choose'?getGlobalSetting('showxquestions'):$survey->showxquestions;
 
         //Start collecting aData
         $aData['surveyid'] = $iSurveyID;
@@ -1630,7 +1673,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aLanguageData['oSurvey'] = $survey;
             $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editDataSecurityLocalSettings_view', $aLanguageData, true);
         }
-        
+
         $aData['aTabContents'] = $aTabContents;
         $aData['aTabTitles'] = $aTabTitles;
         return $aData;
@@ -1705,25 +1748,25 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
 
-    /** 
-     * 
-     * survey::_pluginTabSurvey() 
-     * Load "Simple Plugin" page in specific survey. 
-     * @param Survey $survey 
-     * @return mixed 
-     * 
+    /**
+     *
+     * survey::_pluginTabSurvey()
+     * Load "Simple Plugin" page in specific survey.
+     * @param Survey $survey
+     * @return mixed
+     *
      * This method is called via call_user_func in self::rendersidemenulink()
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
-     */ 
-    private function _pluginTabSurvey($survey) 
-    { 
-        $aData = array(); 
-        $beforeSurveySettings = new PluginEvent('beforeSurveySettings'); 
-        $beforeSurveySettings->set('survey', $survey->sid); 
-        App()->getPluginManager()->dispatchEvent($beforeSurveySettings); 
-        $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings'); 
-        return $aData; 
-    } 
+     */
+    private function _pluginTabSurvey($survey)
+    {
+        $aData = array();
+        $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
+        $beforeSurveySettings->set('survey', $survey->sid);
+        App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
+        $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
+        return $aData;
+    }
     /**
      * survey::_tabPresentationNavigation()
      * Load "Presentation & navigation" tab.
