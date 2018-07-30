@@ -752,7 +752,11 @@ class SurveyRuntimeHelper
         /* quota submitted */
         if ($this->sMove == 'confirmquota') {
             checkCompletedQuota($this->iSurveyid);
-        }
+        } 
+        /* quota submitted */
+        if ($this->sMove == 'returnfromquota') {
+            LimeExpressionManager::JumpTo($this->param->thisstep);
+        } 
     }
 
     /**

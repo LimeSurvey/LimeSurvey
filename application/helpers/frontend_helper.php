@@ -1884,8 +1884,8 @@ function checkCompletedQuota($surveyid, $return = false)
     $thissurvey['aQuotas']                       = array();
     $thissurvey['aQuotas']['sMessage']           = $sMessage;
     $thissurvey['aQuotas']['bShowNavigator']     = !$closeSurvey;
-    $thissurvey['aQuotas']['sQuotaStep']         = isset($_SESSION['survey_'.$surveyid]['step']) ? $_SESSION['survey_'.$surveyid]['step'] : 0; // Surely not needed
     $thissurvey['aQuotas']['sClientToken']       = $sClientToken;
+    $thissurvey['aQuotas']['sQuotaStep']         = 'returnfromquota';
     $thissurvey['aQuotas']['aPostedQuotaFields'] = isset($aPostedQuotaFields) ? $aPostedQuotaFields : '';
     $thissurvey['aQuotas']['sPluginBlocks']      = implode("\n", $blocks);
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
@@ -1894,8 +1894,8 @@ function checkCompletedQuota($surveyid, $return = false)
     
 
     $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="'.$surveyid.'" />
-                                                   <input type="hidden" name="token"    value="'.$thissurvey['aQuotas']['sClientToken'].'" />
-                                                   <input type="hidden" name="thisstep" value="'.$thissurvey['aQuotas']['sQuotaStep'].'" />';
+                                              <input type="hidden" name="token"    value="'.$thissurvey['aQuotas']['sClientToken'].'" />
+                                              <input type="hidden" name="thisstep" value="'.(isset($_SESSION['survey_'.$surveyid]['step']) ? $_SESSION['survey_'.$surveyid]['step'] : 0).'" />';
 
 
     if (!empty($thissurvey['aQuotas']['aPostedQuotaFields'])){
