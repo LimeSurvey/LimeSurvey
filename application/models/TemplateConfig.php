@@ -536,9 +536,9 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['quotamessage']         = ' quotamessage limesurveycore ';
         $aClassAndAttributes['class']['navigator']            = ' navigator ';
         $aClassAndAttributes['class']['navigatorcoll']        = '  ';
-        $aClassAndAttributes['class']['navigatorcollbutton']  = ' ls-move-btn ls-move-previous-btn ';
+        $aClassAndAttributes['class']['navigatorcollbutton']  = ' ls-move-btn ls-move-previous-btn action--ls-button-previous';
         $aClassAndAttributes['class']['navigatorcolr']        = '  ';
-        $aClassAndAttributes['class']['navigatorcolrbutton']  = ' ls-move-btn ls-move-submit-btn ';
+        $aClassAndAttributes['class']['navigatorcolrbutton']  = ' ls-move-btn ls-move-submit-btn action--ls-button-submit';
         $aClassAndAttributes['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl ';
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
@@ -756,10 +756,10 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['class']['navigatorcontainer']    = '   ';
         $aClassAndAttributes['class']['navigatorbuttonl']      = '  ';
-        $aClassAndAttributes['class']['navigatorbuttonprev']   = ' ls-move-btn ls-move-previous-btn ';
+        $aClassAndAttributes['class']['navigatorbuttonprev']   = ' ls-move-btn ls-move-previous-btn action--ls-button-previous';
         $aClassAndAttributes['class']['navigatorbuttonr']      = '  ';
-        $aClassAndAttributes['class']['navigatorbuttonsubmit'] = ' ls-move-btn ls-move-submit-btn  ';
-        $aClassAndAttributes['class']['navigatorbuttonnext']   = ' ls-move-btn ls-move-next-btn ls-move-submit-btn  ';
+        $aClassAndAttributes['class']['navigatorbuttonsubmit'] = ' ls-move-btn ls-move-submit-btn action--ls-button-submit ';
+        $aClassAndAttributes['class']['navigatorbuttonnext']   = ' ls-move-btn ls-move-next-btn ls-move-submit-btn action--ls-button-submit ';
         $aClassAndAttributes['class']['loadsavecontainer']     = '  ';
         $aClassAndAttributes['class']['loadsaveccol']          = ' save-clearall-wrapper ';
         $aClassAndAttributes['class']['loadbutton']            = ' ls-saveaction ls-loadall ';
