@@ -7,6 +7,13 @@
 
     # otherwise forward it to index.php
     RewriteRule . index.php
+
+    # deny access to hidden files and directories
+    RewriteRule ^(.*/)?\.+ - [F]
 </IfModule>
+
+# deny access to hidden files and directories without mod_rewrite
+RedirectMatch 403 ^(.*/)?\.+
+
 # General setting to properly handle LimeSurvey paths
 # AcceptPathInfo on
