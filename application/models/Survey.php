@@ -41,6 +41,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $allowregister Allow public registration (Y/N)
  * @property string $allowsave Is participant allowed save and resume later (Y/N)
  * @property integer $autonumber_start
+ * @property string $tokentype Token type: 'default' or 'numeric'
  * @property integer $tokenlength Token length: MIN:5 MAX:36
  * @property string $autoredirect Automatically load URL when survey complete: (Y/N)
  * @property string $allowprev Allow backwards navigation (Y/N)
@@ -472,6 +473,7 @@ class Survey extends LSActiveRecord
             array('format', 'in', 'range'=>array('G', 'S', 'A'), 'allowEmpty'=>true),
             array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
             array('autonumber_start', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('tokentype', 'in', 'range'=>array('default','numeric'), 'allowEmpty'=>true),
             array('tokenlength', 'default', 'value'=>15),
             array('tokenlength', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false, 'min'=>'5', 'max'=>'36'),
             array('bouncetime', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),

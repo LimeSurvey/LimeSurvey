@@ -548,6 +548,7 @@ function createDatabase($oDB){
             'emailresponseto' => "text NULL",
             'emailnotificationto' => "text NULL",
             'tokenlength' => "integer NOT NULL default '15'",
+            'tokentype' => "string(16) default 'default'",
             'showxquestions' => "string(1) default 'Y'",
             'showgroupinfo' => "string(1) default 'B'",
             'shownoanswer' => "string(1) default 'Y'",

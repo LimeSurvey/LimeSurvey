@@ -29,6 +29,7 @@ function getSurveyDefaultSettings()
     'publicgraphs'             => 'N',
     'public'                   => 'Y',
     'autoredirect'             => 'N',
+    'tokentype'                => 'default',
     'tokenlength'              => 15,
     'allowregister'            => 'N',
     'usecookie'                => 'N',

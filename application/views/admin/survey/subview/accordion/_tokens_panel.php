@@ -36,6 +36,20 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
 <div id='tokens-panel' class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-6">
+            <!-- Set token type -->
+            <div class="form-group">
+                <label class=" control-label" for='tokentype'><?php  eT("Select token type:"); ?></label>
+                <div class="">
+                    <select name='tokentype' id='tokentype' class="form-control">
+                        <option value='default' <?php if($oSurvey->tokentype != 'numeric') { ?>
+                                selected='selected'
+                        <?php } ?> ><?php eT("Default") ?></option>
+                        <option value='numeric' <?php if($oSurvey->tokentype == 'numeric') { ?>
+                                selected='selected'
+                        <?php } ?> ><?php eT("Numeric") ?></option>
+                    </select>
+                </div>
+            </div>
             <!--  Set token length to -->
             <div class="form-group">
                 <label class=" control-label" for='tokenlength'><?php  eT("Set token length to:"); ?></label>

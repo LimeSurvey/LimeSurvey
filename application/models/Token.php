@@ -193,10 +193,11 @@ abstract class Token extends Dynamic
     public function generateToken()
     {
         $iTokenLength = $this->survey->tokenlength;
-        $this->token = $this::generateRandomToken($iTokenLength);
+        $tokenType = $this->survey->tokentype;
+        $this->token = $this::generateRandomToken($iTokenLength, $tokenType);
         $counter = 0;
         while (!$this->validate(array('token'))) {
-            $this->token = $this::generateRandomToken($iTokenLength);
+            $this->token = $this::generateRandomToken($iTokenLength, $tokenType);
             $counter++;
             // This is extremely unlikely.
             if ($counter > 10) {
@@ -211,9 +212,13 @@ abstract class Token extends Dynamic
      * @param integer $iTokenLength
      * @return string
      */
-    public static function generateRandomToken($iTokenLength)
+    public static function generateRandomToken($iTokenLength, $tokenType)
     {
-        return str_replace(array('~', '_'), array('a', 'z'), Yii::app()->securityManager->generateRandomString($iTokenLength));
+        if($tokenType == 'numeric') {
+            return randomChars($iTokenLength, '123456789');
+        } else {
+            return str_replace(array('~', '_'), array('a', 'z'), Yii::app()->securityManager->generateRandomString($iTokenLength));
+        }
     }
 
     /**
@@ -241,6 +246,7 @@ abstract class Token extends Dynamic
         }
         $surveyId = $this->dynamicId;
         $iTokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
+        $tokenType = isset($this->survey) && is_string($this->survey->tokentype) ? $this->survey->tokentype : 'default';
 
         $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
         //Exit early if there are not empty tokens
@@ -263,7 +269,7 @@ abstract class Token extends Dynamic
         foreach ($tkresult as $tkrow) {
             $bIsValidToken = false;
             while ($bIsValidToken == false && $invalidtokencount < 50) {
-                $newtoken = $this::generateRandomToken($iTokenLength);
+                $newtoken = $this::generateRandomToken($iTokenLength, $tokenType);
                 if (!isset($existingtokens[$newtoken])) {
                     $existingtokens[$newtoken] = true;
                     $bIsValidToken = true;

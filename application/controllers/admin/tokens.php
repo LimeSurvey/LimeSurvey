@@ -691,6 +691,7 @@ class tokens extends Survey_Common_Action
 
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
+            $aData['tokenType'] = !empty(Token::model($iSurveyId)->survey->tokentype) ? Token::model($iSurveyId)->survey->tokentype : 'default';
             $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
 
             $aData['sidemenu']['state'] = false;
@@ -915,6 +916,7 @@ class tokens extends Survey_Common_Action
 
             $amount = (int) Yii::app()->request->getPost('amount');
             $iTokenLength = (int) Yii::app()->request->getPost('tokenlen');
+            $tokenType = (int) Yii::app()->request->getPost('tokentype');
 
             // Fill an array with all existing tokens
             $existingtokens = array();
@@ -941,7 +943,7 @@ class tokens extends Survey_Common_Action
 
                 $attempts = 0;
                 do {
-                    $token->token = Token::generateRandomToken($iTokenLength);
+                    $token->token = Token::generateRandomToken($iTokenLength, $tokenType);
                     $attempts++;
                 } while (isset($existingtokens[$token->token]) && $attempts < 50);
 
@@ -975,11 +977,13 @@ class tokens extends Survey_Common_Action
 
         } else {
             $iTokenLength = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
+            $tokenType = !empty(Token::model($iSurveyId)->survey->tokentype) ? Token::model($iSurveyId)->survey->tokentype : 'default';
 
             $thissurvey = getSurveyInfo($iSurveyId);
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
             $aData['tokenlength'] = $iTokenLength;
+            $aData['tokentype'] = $tokenType;
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
             $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
             $this->_renderWrappedTemplate('token', array('dummytokenform'), $aData);
@@ -2356,6 +2360,7 @@ class tokens extends Survey_Common_Action
         }
 
         $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
+        $aData['tokenType'] = !empty(Token::model($iSurveyId)->survey->tokentype) ? Token::model($iSurveyId)->survey->tokentype : 'default';
 
         $thissurvey = getSurveyInfo($iSurveyId);
         $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];

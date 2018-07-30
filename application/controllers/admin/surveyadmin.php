@@ -2084,6 +2084,7 @@ class SurveyAdmin extends Survey_Common_Action
                 'publicgraphs' => App()->request->getPost('publicgraphs') == '1' ? 'Y' : 'N',
                 'assessments' => App()->request->getPost('assessments') == '1' ? 'Y' : 'N',
                 'emailresponseto' => App()->request->getPost('emailresponseto'),
+                'tokentype' => App()->request->getPost('tokentype'),
                 'tokenlength' => $iTokenLength,
                 'gsid'  => App()->request->getPost('gsid', '1'),
             );

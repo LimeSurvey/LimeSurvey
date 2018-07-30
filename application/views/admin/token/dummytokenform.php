@@ -27,6 +27,17 @@
                     </div>
                 </div>
 
+                <!-- Token type  -->
+                <div class="form-group">
+                    <label  class=" control-label" for='tokentype'><?php eT("Token type"); ?>:</label>
+                    <div class="">
+                        <select class='form-control' id='tokentype' name='tokentype'>
+                            <option value='default'><?php eT("Default") ?></option>
+                            <option value='numeric'><?php eT("Numeric") ?></option>
+                        </select>
+                    </div>
+                </div>
+
                 <!-- Token length  -->
                 <div class="form-group">
                     <label  class=" control-label" for='tokenlen'><?php eT("Token length"); ?>:</label>

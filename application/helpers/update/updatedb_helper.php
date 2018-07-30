@@ -1678,8 +1678,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
-
-
         //Rename order to sortorder
 
         if ($iOldDBVersion < 318) {
@@ -2336,6 +2334,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>355], "stg_name='DBVersion'");
         }
+
+        if ($iOldDBVersion < 356) {
+            $oTransaction = $oDB->beginTransaction();
+            addColumn('{{surveys}}','tokentype',"string(16) not null default 'default'");
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>356], "stg_name='DBVersion'");
+        }
+
 
 
     } catch (Exception $e) {
