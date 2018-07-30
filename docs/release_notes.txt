@@ -35,6 +35,74 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.13.2 (build 180709) to 3.14.0 (build 180730) July 30, 2018
+-New feature: allow template to replace question template twig file (Denis Chenu)
+-New feature: allow to use EM code for subquestions in prefilling (Denis Chenu)
+-New feature: massive action to change theme of surveys (LouisGac) 
+-Fixed issue: colon typo (Iko)
+-Fixed issue #13693: strange translation quote (Markus Flür)
+-Fixed issue #13702: beforeCloseHtml event removed (Denis Chenu)
+-Fixed issue #13744: unable to run db migration via command line (Denis Chenu)
+-Fixed issue #13773: Cannot style slider handle when not touched anymore (Markus Flür)
+-Fixed issue #13795: Custom logo is not saved (Markus Flür)
+-Fixed issue #13841: tooltips not working after performing an action in the conditions designer (Markus Flür)
+-Fixed issue #13845: Can't export and then import tab-separated text s… (#1092) (Denis Chenu)
+-Fixed issue #13870: Apple devices do not support ranking question (Markus Flür)
+-Fixed issue #13877: Unable to update answers twig part in theme (Denis Chenu)
+-Fixed issue #13894: EM with dualscale value didn't work (Denis Chenu)
+-Fixed issue #13898: Unable to update token (Markus Flür)
+-Fixed issue #13900: Unable to update Manadtory switch widget on Question edit (Markus Flür)
+-Fixed issue #13901: Prefilling single choice prefill other and comment (Denis Chenu)
+-Fixed issue #13907: Can't delete question in latest master (Markus Flür)
+-Fixed issue #13913: Some replacementfieds not accessible in help-text (LouisGac)
+-Fixed issue #13915: Cannot submit survey with mandatory question and cookie to prevent repeated participation (LouisGac, Olle Haerstedt)
+-Fixed issue : 400, 404 show template unrelated to current template (#1089) (Denis Chenu)
+-Fixed issue: 'Show policy' text also visible if policy is shown inline (Carsten Schmitz)
+-Fixed issue: Modified default config value for shownoanswer causes non-saving in survey settings (Carsten Schmitz)
+-Fixed issue: Question selector not working on IE11 (Markus Flür)
+-Fixed issue: Return from Quota resets survey completely. (Markus Flür)
+-Fixed issue: all surveys shown in survey list at survey group level (LouisGac)
+-Fixed issue: bootstrapswitch not rendering properly (Markus Flür)
+-Fixed issue: can't show surveys from all groups (LouisGac)
+-Fixed issue: crazy html in the activation process (Markus Flür)
+-Fixed issue: emailtemplates validation not working and editor multiplying (Markus Flür)
+-Fixed issue: no icons for attachment and exports in response list massive actions (LouisGac)
+-Fixed issue: not all action button are in a single row in response list (LouisGac)
+-Fixed issue: notifications not working (Markus Flür)
+-Fixed issue: ordering of questions erroring (Markus Flür)
+-Fixed issue: randomization group + "all in one" mode ==> all questions of the survey are shown in all groups (LouisGac)
+-Fixed issue: registerScriptFile using PHP static syntax intead of twig function to filter position (Markus Flür)
+-Fixed issue: save buttons not responding (Markus Flür)
+-Fixed issue: sticky headers and crosshover not working correctly in Firefox (Markus Flür)
+-Fixed issue: survey group can't inherit another survey group (LouisGac)
+-Fixed issue: uncontrolled reordering problems (Markus Flür)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch (Informal) by markusfluer, Han
+#Updated translation: Dutch by Han
+#Updated translation: Dutch by c_schmitz
+#Updated translation: Dutch by markusfluer, Han
+#Updated translation: French (France) by b00z00
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, markusfluer
+#Updated translation: German (Informal) by markusfluer, Joffm, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German by c_schmitz, actxcellence, markusfluer, Joffm
+#Updated translation: German by c_schmitz, markusfluer
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Persian by ESH, UTeQ
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Russian by vipgroup
+#Updated translation: Thai by tomzt
+#Updated translation: Turkish by kayazeren
+
 Changes from 3.13.1 (build 180629) to 3.13.2 (build 180709) July 09, 2018
 -Fixed issue #13345: showpopups in config.php seems to have no effect anymore (Dominik Vitt)
 -Fixed issue #13802: Unable to see Survey policy without javascript activated (Markus Flür)
