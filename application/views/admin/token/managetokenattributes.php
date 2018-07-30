@@ -164,7 +164,7 @@
     </div>
 </div>
 <?php
-App()->getClientScript()->registerScript('StatisticsViewBSSwitcher', "
+App()->getClientScript()->registerScript('ManageTokenAttributesViewBSSwitcher', "
 LS.renderBootstrapSwitch();
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>

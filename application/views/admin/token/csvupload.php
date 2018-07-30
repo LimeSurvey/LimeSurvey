@@ -136,7 +136,7 @@
     </div>
 </div>
 <?php
-App()->getClientScript()->registerScript('StatisticsViewBSSwitcher', "
+App()->getClientScript()->registerScript('CSVUploadViewBSSwitcher', "
 LS.renderBootstrapSwitch();
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>

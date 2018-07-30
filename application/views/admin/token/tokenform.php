@@ -442,7 +442,7 @@ foreach ($tokendata as $Key => $Value) {
   </div>
 </div>
 <?php
-App()->getClientScript()->registerScript('StatisticsViewBSSwitcher', "
+App()->getClientScript()->registerScript('TokenformViewBSSwitcher', "
 LS.renderBootstrapSwitch();
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>

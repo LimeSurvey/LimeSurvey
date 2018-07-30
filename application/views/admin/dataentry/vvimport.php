@@ -144,7 +144,7 @@
 
 </div></div></div>
 <?php
-App()->getClientScript()->registerScript('StatisticsViewBSSwitcher', "
+App()->getClientScript()->registerScript('VVImportBSSwitcher', "
 LS.renderBootstrapSwitch();
 
 $('#noid').on('switchChange.bootstrapSwitch', function(event, state) {

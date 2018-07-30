@@ -196,7 +196,7 @@
     </form>
 </div>
 <?php
-App()->getClientScript()->registerScript('GlobalSettingsBSSwitcher', "
+App()->getClientScript()->registerScript('QueXMLExportBSSwitcher', "
 LS.renderBootstrapSwitch();
 ", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
