@@ -207,7 +207,7 @@ $surveyid = $aTabContents['surveyid'];
 </div>
 
 <?php
-App()->getClientScript()->registerScript('StatisticsViewBSSwitcher', "
+App()->getClientScript()->registerScript('CreateSurveyViewBSSwitcher', "
 LS.renderBootstrapSwitch();
 $('#surveyls_title').focus();
 ", LSYii_ClientScript::POS_POSTSCRIPT);
