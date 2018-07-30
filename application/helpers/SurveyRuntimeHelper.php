@@ -1301,7 +1301,7 @@ class SurveyRuntimeHelper
                     "confirm_ok" =>  gT('OK'),
                 ],
             ]; // To add more easily some lang string here
-            $aLSJavascriptVar['showpopup']     = $this->oTemplate->showpopups;
+            $aLSJavascriptVar['showpopup']     = $this->oTemplate != null ? $this->oTemplate->showpopups : false;
             $aLSJavascriptVar['startPopups']   = new stdClass;
             $aLSJavascriptVar['debugMode']     = Yii::app()->getConfig('debug');
             $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar).';';
