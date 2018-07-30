@@ -755,7 +755,7 @@ class SurveyRuntimeHelper
         } 
         /* quota submitted */
         if ($this->sMove == 'returnfromquota') {
-            LimeExpressionManager::JumpTo($this->param->thisstep);
+            LimeExpressionManager::JumpTo($this->param['thisstep']);
         } 
     }
 
