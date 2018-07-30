@@ -133,7 +133,7 @@ function bindClickIfNotExpanded()
     {
         bindExpandRelevanceEquation();
         // Activate tooltip
-        $('[data-toggle="tooltip"]').tooltip()
+        window.LS.doToolTip();
     }
 
 }

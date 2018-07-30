@@ -36355,19 +36355,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
             this.$store.commit("updatePjax");
         },
         redoTooltips: function() {
-            try {
-                $(".btntooltip").tooltip("destroy");
-            } catch (e) {}
-            try {
-                $('[data-tooltip="true"]').tooltip("destroy");
-            } catch (e) {}
-            try {
-                $('[data-tooltip="true"]').tooltip("destroy");
-            } catch (e) {}
-
-            $(".btntooltip").tooltip();
-            $('[data-tooltip="true"]').tooltip();
-            $('[data-toggle="tooltip"]').tooltip();
+            window.LS.doToolTip();
         }
     }
 });

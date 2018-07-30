@@ -17380,12 +17380,19 @@ const globalWindowMethods = {
         return true ;
     },
     doToolTip: () => {
-        //Get all tooltips and destroy them first
-        try{ $('.btntooltip').tooltip('destroy'); } catch(e){}
-        try{ $('[data-tooltip="true"]').tooltip('destroy'); } catch(e){}
-        //Then reapply them
-        $('.btntooltip').tooltip();
+        try {
+            $(".btntooltip").tooltip("destroy");
+        } catch (e) {}
+        try {
+            $('[data-tooltip="true"]').tooltip("destroy");
+        } catch (e) {}
+        try {
+            $('[data-tooltip="true"]').tooltip("destroy");
+        } catch (e) {}
+
+        $(".btntooltip").tooltip();
         $('[data-tooltip="true"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
 
 
     },
