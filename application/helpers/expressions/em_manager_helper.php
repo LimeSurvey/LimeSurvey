@@ -7283,7 +7283,12 @@
 
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js" );
             /* Call the function when trigerring event */
-            App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END);
+            App()->getClientScript()->registerScript("triggerEmClassChange","
+            try{ 
+                triggerEmClassChange(); 
+            } catch(e) {
+                console.ls.warn('triggerEmClassChange could not be run. Is survey.js correctly loaded?');
+            }\n",LSYii_ClientScript::POS_END);
 
             if (!$bReturnArray) {
                 $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
@@ -7588,8 +7593,8 @@
                             if ($validationEqn == '') {
                                 continue;
                             }
-
-                            $LEM->em->ProcessBooleanExpression($validationEqn,$arg['gseq'],$LEM->questionId2questionSeq[$arg['qid']]);
+                            $relQuestionSeq = isset($LEM->questionId2questionSeq[$arg['qid']]) ? $LEM->questionId2questionSeq[$arg['qid']] : null;
+                            $LEM->em->ProcessBooleanExpression($validationEqn,$arg['gseq'],$relQuestionSeq);
                             $_vars = $LEM->em->GetJSVarsUsed();
                             $allJsVarsUsed = array_merge($allJsVarsUsed,$_vars);
                             $valJsVarsUsed = array_merge($valJsVarsUsed,$_vars);
