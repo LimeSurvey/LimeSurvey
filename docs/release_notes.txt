@@ -35,10 +35,13 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.14.0 (build 180709) to 3.14.1 (build 180731) July 31, 2018
+-Fixed issue: wrong permission check in survey theme selector. (LouisGac)
+
 Changes from 3.13.2 (build 180709) to 3.14.0 (build 180730) July 30, 2018
 -New feature: allow template to replace question template twig file (Denis Chenu)
 -New feature: allow to use EM code for subquestions in prefilling (Denis Chenu)
--New feature: massive action to change theme of surveys (LouisGac) 
+-New feature: massive action to change theme of surveys (LouisGac)
 -Fixed issue: colon typo (Iko)
 -Fixed issue #13693: strange translation quote (Markus Flür)
 -Fixed issue #13702: beforeCloseHtml event removed (Denis Chenu)
@@ -170,7 +173,7 @@ Changes from 3.12.2 (build 180625) to 3.12.3 (build 180627) June 27, 2018
 #Updated translation: Russian by vipgroup
 #Updated translation: Turkish by kayazeren
 
-                                                               
+
 Changes from 3.12.1 (build 180616) to 3.12.2 (build 180625) June 25, 2018
 -Fixed issue #12640: Unable to update lang when registering (before fill mandatory values) (Dominik Vitt)
 -Fixed issue #12688: Global Settings are not applied to survey settings when creating a new survey (Dominik Vitt)
