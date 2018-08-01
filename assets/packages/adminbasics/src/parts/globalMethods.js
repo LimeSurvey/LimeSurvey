@@ -2,11 +2,22 @@
  * Define global setters for LimeSurvey
  * Also bootstrapping methods and window bound methods are set here
  */
-
+import LOG from '../components/lslog';
 
 const globalWindowMethods = {
     renderBootstrapSwitch : () => {
-        $('[data-is-bootstrap-switch]').bootstrapSwitch();
+        try{
+            if(!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
+                $('[data-is-bootstrap-switch]').bootstrapSwitch({
+                    onInit: () => LOG.log("BootstrapSwitch Initialized")
+                });
+            }
+        } catch(e) { LOG.error(e); }
+    },
+    unrenderBootstrapSwitch : () => {
+        try{
+            $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
+        } catch(e) { LOG.error(e); }
     },
     validatefilename: (form, strmessage) => {
         if (form.the_file.value == "") {
@@ -17,21 +28,28 @@ const globalWindowMethods = {
         return true ;
     },
     doToolTip: () => {
-        //Get all tooltips and destroy them first
-        try{ $('.btntooltip').tooltip('destroy'); } catch(e){}
-        try{ $('[data-tooltip="true"]').tooltip('destroy'); } catch(e){}
-        //Then reapply them
-        $('.btntooltip').tooltip();
+        try {
+            $(".btntooltip").tooltip("destroy");
+        } catch (e) {}
+        try {
+            $('[data-tooltip="true"]').tooltip("destroy");
+        } catch (e) {}
+        try {
+            $('[data-tooltip="true"]').tooltip("destroy");
+        } catch (e) {}
+
+        $(".btntooltip").tooltip();
         $('[data-tooltip="true"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
 
 
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes:  ( arrayToCheck ) => {  
-        return _.uniq(arrayToCheck).length == arrayToCheck.length;
+        return (_.uniq(arrayToCheck).length !== arrayToCheck.length);
     },
     arrHasDupesWhich: ( arrayToCheck ) => {  
-        return _.difference(_.uniq(arrayToCheck), arrayToCheck);
+        return (_.difference(_.uniq(arrayToCheck), arrayToCheck)).length > 0;
     },
     getkey :  (e) => {
         return (window.event) ? window.event.keyCode :(e ? e.which : null);
@@ -77,9 +95,11 @@ const globalWindowMethods = {
                 contentObject = _.merge(contentObject, JSON.parse(content));
             } catch(e) { console.error('JSON parse on sendPost failed!') }
         }
-        _.each(content, (value,key) => {
+        
+        _.each(contentObject, (value,key) => {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
         });
+        
         $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", LS.data.csrfToken).appendTo($form);
         $form.appendTo("body");
         $form.submit();
@@ -116,8 +136,6 @@ const globalStartUpMethods = {
         globalWindowMethods.fixAccordionPosition();
     }
 };
-const globalOnloadMethods = () => {
-    globalWindowMethods.renderBootstrapSwitch();
-}
 
-export {globalStartUpMethods, globalWindowMethods, globalOnloadMethods};
+
+export {globalStartUpMethods, globalWindowMethods};

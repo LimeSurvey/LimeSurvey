@@ -2182,8 +2182,8 @@ class tokens extends Survey_Common_Action
             $this->_renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Create tokens"),
             'message' => gT("Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?")."<br /><br />\n"
-            . "<input class='btn btn-default btn-lg' type='submit' value='"
-            . gT("Yes")."' onclick=\"".convertGETtoPOST($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$iSurveyId", array('ok'=>'Y')))."\" />\n"
+            . "<button class='btn btn-default btn-lg' type='submit' value='"
+            . gT("Yes")."' onclick='".convertGETtoPOST($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$iSurveyId", array('ok'=>'Y')))."' >".gT("Yes")."</button>\n"
             . "<input class='btn btn-default  btn-lg' type='submit' value='"
             . gT("No")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId")."', '_top')\" />\n"
             . "<br />\n"

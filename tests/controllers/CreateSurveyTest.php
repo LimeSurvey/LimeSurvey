@@ -172,7 +172,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             // Click "Overview".
             $overview = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('sidemenu_1_1')
+                    WebDriverBy::id('sidemenu_overview')
                 )
             );
             $overview->click();
@@ -188,7 +188,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $overview->click();
 
             // Click "Overview".
-            $overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_1_1'));
+            $overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_overview'));
             $overview->click();
 
             sleep(2);

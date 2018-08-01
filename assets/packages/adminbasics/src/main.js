@@ -53,7 +53,7 @@ const AdminCore = function(){
         window.LS.adminCore.refresh();
         return;
     }
-    
+
     const eventsBound = {
         document: []
     };
@@ -62,14 +62,13 @@ const AdminCore = function(){
         onLoadRegister = () => {
             globalStartUpMethods.bootstrapping();
             surveyGrid();
-            appendToLoad(globalOnloadMethods);
+            appendToLoad(saveBindings);
             appendToLoad(confirmationModal);
             appendToLoad(questionEdit);
             appendToLoad(confirmDeletemodal);
             appendToLoad(panelClickable);
             appendToLoad(panelsAnimation);
             appendToLoad(notificationSystem.initNotification);
-            appendToLoad(saveBindings);
         },
         appendToLoad = (fn, event, root) => {
             event = event || 'ready pjax:scriptcomplete';
@@ -89,7 +88,6 @@ const AdminCore = function(){
                     $(root).on(events.join(' '), fn);
                 }
             }
-
         },
         refreshAdminCore = () => {
             _.each(eventsBound, (eventMap, root) => {

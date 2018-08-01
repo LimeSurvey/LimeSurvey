@@ -505,7 +505,7 @@ class TemplateManifest extends TemplateConfiguration
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
         $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         $oOldMailNode   = $ometadata->getElementsByTagName('authorEmail')->item(0);
-        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(getGlobalSetting('siteadminemail')));
+        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(Yii::app()->getConfig('siteadminemail')));
         $ometadata->replaceChild($oNvMailNode, $oOldMailNode);
     }
 
@@ -602,12 +602,12 @@ class TemplateManifest extends TemplateConfiguration
         // If the template directory doesn't exist, we just set Default as the template to use
         // TODO: create a method "setToDefault"
         if (!is_dir($this->path)) {
-            $this->sTemplateName = getGlobalSetting('defaulttheme');
+            $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
             $this->isStandard    = true;
             $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             if (!$this->iSurveyId) {
                 // Why?
-                setGlobalSetting('defaulttheme', 'fruity');
+                \SettingGlobal::setSetting('defaulttheme','fruity');
             }
         }
 

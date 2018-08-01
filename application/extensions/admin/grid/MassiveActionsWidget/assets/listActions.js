@@ -171,7 +171,7 @@ var onClickListAction =  function () {
                 }
 
                 if (html.ajaxHelper) {
-                    LS.ajaxHelperOnSuccess(html);
+                    LS.AjaxHelper.onSuccess(html);
                     return;
                 }
 

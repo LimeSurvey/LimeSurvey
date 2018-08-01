@@ -205,7 +205,7 @@ return array(
             'css/displayParticipants.css',
         ),
         'js' => array(
-            'build/adminbasics.js',
+            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.js',
         ),
         'depends' => array(
             'jquery',

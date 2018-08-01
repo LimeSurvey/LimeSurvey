@@ -1358,10 +1358,10 @@ class questions extends Survey_Common_Action
                 $oQuestion->delete();
                 $sMessage = gT("Question was successfully deleted.");
             }
-
+            $redirectUrl = array('admin/survey/sa/listquestions/', 'surveyid' => $surveyid, 'gid' => $gid_search);
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
+                $this->getController()->redirect($redirectUrl);
             } else {
                 return array('status'=>true, 'message'=>$sMessage);
             }
@@ -1369,7 +1369,7 @@ class questions extends Survey_Common_Action
             $sMessage = gT("You are not authorized to delete questions.");
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
+                $this->getController()->redirect($redirectUrl);
             } else {
                 return array('status'=>false, 'message'=>$sMessage);
             }

@@ -465,7 +465,9 @@ class SurveyRuntimeHelper
 
                     $aStandardsReplacementFields = array();
                     $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
-                    if (strpos($qa[0]['text'], "{") !== false) {
+
+                    if ( strpos( $qa[0]['text'], '{' ) || strpos( $lemQuestionInfo['info']['help'], '{' ) )   {
+
                         // process string anyway so that it can be pretty-printed
                         $aStandardsReplacementFields = getStandardsReplacementFields($this->aSurveyInfo);
                         $aStandardsReplacementFields['QID'] = $qid;
@@ -680,15 +682,6 @@ class SurveyRuntimeHelper
             //field for limereplace stuff, and do transformations!
             $this->aSurveyInfo['surveyls_url'] = passthruReplace($this->aSurveyInfo['surveyls_url'], $this->aSurveyInfo);
             $this->aSurveyInfo['surveyls_url'] = templatereplace($this->aSurveyInfo['surveyls_url'], array(), $redata, 'URLReplace', false, null, array(), true); // to do INSERTANS substitutions
-
-            //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
-            //don't use cookies if tokens are being used
-            if (!empty($this->aSurveyInfo['active']) && $this->aSurveyInfo['active'] == "Y") {
-                global $tokensexist;
-                if ($this->aSurveyInfo['usecookie'] == "Y" && $tokensexist != 1) {
-                    setcookie("LS_".$this->iSurveyid."_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
-                }
-            }
         }
     }
 
@@ -865,7 +858,11 @@ class SurveyRuntimeHelper
         /* quota submitted */
         if ($this->sMove == 'confirmquota') {
             checkCompletedQuota($this->iSurveyid);
-        }
+        } 
+        /* quota submitted */
+        if ($this->sMove == 'returnfromquota') {
+            LimeExpressionManager::JumpTo($this->param['thisstep']);
+        } 
     }
 
     /**
@@ -1255,6 +1252,14 @@ class SurveyRuntimeHelper
                 $_SESSION[$this->LEMsessid]['finished'] = true;
                 $_SESSION[$this->LEMsessid]['sid']      = $this->iSurveyid;
 
+                //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
+                //don't use cookies if tokens are being used
+                if (!empty($this->aSurveyInfo['active']) && $this->aSurveyInfo['active'] == "Y") {
+                    global $tokensexist;
+                    if ($this->aSurveyInfo['usecookie'] == "Y" && $tokensexist != 1 && $this->aMoveResult['finished'] == true ) {
+                        setcookie("LS_".$this->iSurveyid."_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
+                    }
+                }
             }
 
             $redata['completed'] = $this->completed;
@@ -1400,7 +1405,7 @@ class SurveyRuntimeHelper
                     "confirm_ok" =>  gT('OK'),
                 ],
             ]; // To add more easily some lang string here
-            $aLSJavascriptVar['showpopup']     = $this->oTemplate->showpopups;
+            $aLSJavascriptVar['showpopup']     = $this->oTemplate != null ? $this->oTemplate->showpopups : false;
             $aLSJavascriptVar['startPopups']   = new stdClass;
             $aLSJavascriptVar['debugMode']     = Yii::app()->getConfig('debug');
             $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar).';';

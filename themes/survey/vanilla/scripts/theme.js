@@ -240,7 +240,7 @@ var ThemeScripts = function(){
                 }
                 $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
             } else if (code==13 && e.ctrlKey == true) {
-                $('.ls-move-btn').trigger('click');
+                $('.action--ls-button-submit').trigger('click');
             }
         };
 
@@ -256,7 +256,7 @@ var ThemeScripts = function(){
                 }
                 $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
             } else if (code==13 && e.ctrlKey == true) {
-                $('.ls-move-btn').trigger('click');
+                $('.action--ls-button-submit').trigger('click');
             }
         };
 

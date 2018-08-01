@@ -17347,9 +17347,9 @@ const adminCoreLSConsole = new ConsoleShim('AdminCore');
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return globalStartUpMethods; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return globalWindowMethods; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return globalOnloadMethods; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return globalStartUpMethods; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return globalWindowMethods; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_lslog__ = __webpack_require__(1);
 /**
  * Define global setters for LimeSurvey
  * Also bootstrapping methods and window bound methods are set here
@@ -17358,7 +17358,18 @@ const adminCoreLSConsole = new ConsoleShim('AdminCore');
 
 const globalWindowMethods = {
     renderBootstrapSwitch : () => {
-        $('[data-is-bootstrap-switch]').bootstrapSwitch();
+        try{
+            if(!$('[data-is-bootstrap-switch]').parent().hasClass('bootstrap-switch-container')) {
+                $('[data-is-bootstrap-switch]').bootstrapSwitch({
+                    onInit: () => __WEBPACK_IMPORTED_MODULE_0__components_lslog__["a" /* default */].log("BootstrapSwitch Initialized")
+                });
+            }
+        } catch(e) { __WEBPACK_IMPORTED_MODULE_0__components_lslog__["a" /* default */].error(e); }
+    },
+    unrenderBootstrapSwitch : () => {
+        try{
+            $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
+        } catch(e) { __WEBPACK_IMPORTED_MODULE_0__components_lslog__["a" /* default */].error(e); }
     },
     validatefilename: (form, strmessage) => {
         if (form.the_file.value == "") {
@@ -17369,21 +17380,28 @@ const globalWindowMethods = {
         return true ;
     },
     doToolTip: () => {
-        //Get all tooltips and destroy them first
-        try{ $('.btntooltip').tooltip('destroy'); } catch(e){}
-        try{ $('[data-tooltip="true"]').tooltip('destroy'); } catch(e){}
-        //Then reapply them
-        $('.btntooltip').tooltip();
+        try {
+            $(".btntooltip").tooltip("destroy");
+        } catch (e) {}
+        try {
+            $('[data-tooltip="true"]').tooltip("destroy");
+        } catch (e) {}
+        try {
+            $('[data-tooltip="true"]').tooltip("destroy");
+        } catch (e) {}
+
+        $(".btntooltip").tooltip();
         $('[data-tooltip="true"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
 
 
     },
     // finds any duplicate array elements using the fewest possible comparison
     arrHasDupes:  ( arrayToCheck ) => {  
-        return _.uniq(arrayToCheck).length == arrayToCheck.length;
+        return (_.uniq(arrayToCheck).length !== arrayToCheck.length);
     },
     arrHasDupesWhich: ( arrayToCheck ) => {  
-        return _.difference(_.uniq(arrayToCheck), arrayToCheck);
+        return (_.difference(_.uniq(arrayToCheck), arrayToCheck)).length > 0;
     },
     getkey :  (e) => {
         return (window.event) ? window.event.keyCode :(e ? e.which : null);
@@ -17429,9 +17447,11 @@ const globalWindowMethods = {
                 contentObject = _.merge(contentObject, JSON.parse(content));
             } catch(e) { console.error('JSON parse on sendPost failed!') }
         }
-        _.each(content, (value,key) => {
+        
+        _.each(contentObject, (value,key) => {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
         });
+        
         $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", LS.data.csrfToken).appendTo($form);
         $form.appendTo("body");
         $form.submit();
@@ -17468,9 +17488,7 @@ const globalStartUpMethods = {
         globalWindowMethods.fixAccordionPosition();
     }
 };
-const globalOnloadMethods = () => {
-    globalWindowMethods.renderBootstrapSwitch();
-}
+
 
 
 
@@ -17584,6 +17602,8 @@ window.LS.LsGlobalNotifier = window.LS.LsGlobalNotifier || new NotifyFader();
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ajax", function() { return ajax; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "onSuccess", function() { return onSuccess; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalMethods__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__notifyFader__ = __webpack_require__(3);
 /**
@@ -17624,7 +17644,7 @@ const onSuccess = (response) => {
     // Put HTML into element.
     if (response.outputType == 'jsonoutputhtml') {
         $('#' + response.target).html(response.html);
-        __WEBPACK_IMPORTED_MODULE_0__globalMethods__["c" /* globalWindowMethods */].doToolTip();
+        __WEBPACK_IMPORTED_MODULE_0__globalMethods__["b" /* globalWindowMethods */].doToolTip();
     }
 
     // Success popup
@@ -17659,7 +17679,7 @@ const ajax = (options) => {
        $('#ls-loading').hide();
 
        // User-supplied success is always run EXCEPT when login fails
-       var runOldSuccess = ajaxHelperOnSuccess(response);
+       var runOldSuccess = onSuccess(response);
 
        if (oldSuccess && runOldSuccess) {
            oldSuccess(response, textStatus, jqXHR);
@@ -17684,7 +17704,7 @@ const ajax = (options) => {
    return $.ajax(options);
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (ajax);
+
 
 /***/ }),
 /* 5 */
@@ -17775,23 +17795,22 @@ const AdminCore = function(){
         window.LS.adminCore.refresh();
         return;
     }
-    
+
     const eventsBound = {
         document: []
     };
 
     const 
         onLoadRegister = () => {
-            __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["b" /* globalStartUpMethods */].bootstrapping();
+            __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["a" /* globalStartUpMethods */].bootstrapping();
             Object(__WEBPACK_IMPORTED_MODULE_8__pages_surveyGrid__["a" /* onExistBinding */])();
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["a" /* globalOnloadMethods */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_13__parts_save__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_9__parts_confirmationModal__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_14__components_confirmdeletemodal__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_15__components_panelclickable__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_16__components_panelsanimation__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */].initNotification);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_13__parts_save__["a" /* default */]);
         },
         appendToLoad = (fn, event, root) => {
             event = event || 'ready pjax:scriptcomplete';
@@ -17811,7 +17830,6 @@ const AdminCore = function(){
                     $(root).on(events.join(' '), fn);
                 }
             }
-
         },
         refreshAdminCore = () => {
             __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(eventsBound, (eventMap, root) => {
@@ -17832,7 +17850,7 @@ const AdminCore = function(){
                     appendToLoad: appendToLoad
                 }
             };
-            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["c" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_12__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_11__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_7__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */]);
+            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_12__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_11__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_7__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */]);
             
             /*
             * Set the namespace to the global variable LS
@@ -18276,9 +18294,9 @@ const ConfirmationModal = function(e){
     //////METHODS
     //Parse available options from specific item.data settings, if not available load relatedTarget settings
     const _parseOptions = (e) => {
-        return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.mergeWith(optionsDefault, $(_this).data(), (objValue, srcValue, key ) => {
-            return srcValue || $(e.relatedTarget).data(key) || null;
-        }); 
+        return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(optionsDefault, (value, key) => {
+            optionsDefault[key] = $(_this).data(key) || $(e.relatedTarget).data(key) || optionsDefault[key];
+        });
     },
     //Generate a simple link on the ok button
     _basicLink = () => {
@@ -18403,7 +18421,7 @@ const SaveController = () => {
     checks = () => {
         return {
             _checkSaveButton: {
-                check: () => $('#save-button'),
+                check: '#save-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -18418,7 +18436,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveFormButton: {
-                check: () => $('#save-form-button'),
+                check: '#save-form-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const
@@ -18431,7 +18449,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndNewButton: {
-                check: () => $('#save-and-new-button'),
+                check: '#save-and-new-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -18449,7 +18467,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndCloseButton: {
-                check: () => $('#save-and-close-button'),
+                check: '#save-and-close-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -18462,7 +18480,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndCloseFormButton: {
-                check: () => $('#save-and-close-form-button'),
+                check: '#save-and-close-form-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const formid = '#' + $(this).attr('data-form-id'),
@@ -18482,7 +18500,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndNewQuestionButton: {
-                check: () => $('#save-and-new-question-button'),
+                check: '#save-and-new-question-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -18498,7 +18516,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkOpenPreview: {
-                check: () => $('.open-preview'),
+                check: '.open-preview',
                 run: function(ev) {
                     const frameSrc = $(this).attr("aria-data-url");
                     $('#frame-question-preview').attr('src', frameSrc);
@@ -18511,14 +18529,14 @@ const SaveController = () => {
     //############PUBLIC
     return () => {
         __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(checks(), (checkItem) => {
-            let $item = checkItem.check();
-            $item.off(checkItem.on);
+            let item = checkItem.check;
+            $(document).off(checkItem.on, item);
 
-            __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log('saveBindings', checkItem, $item);
+            __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log('saveBindings', checkItem, $(item));
 
-            if ($item.length > 0) {
-                $item.on(checkItem.on, checkItem.run);
-                __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log($item, 'on', checkItem.on, 'run', checkItem.run);
+            if ($(item).length > 0) {
+                $(document).on(checkItem.on, item, checkItem.run);
+                __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log($(item), 'on', checkItem.on, 'run', checkItem.run);
             }
         });
     };
@@ -18536,131 +18554,197 @@ const saveController = SaveController();
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = confirmDeletemodal;
-var ConfirmDeleteModal = function(options){
-    var $item = $(this);
+const ConfirmDeleteModal = function (options) {
+    const $item = $(this);
 
-    options.fnOnShown     = options.fnOnShown     || function(){};
-    options.fnOnHide      = options.fnOnHide      || function(){};
-    options.removeOnClose = options.removeOnClose || function(){};
-    options.fnOnHidden    = options.fnOnHidden    || function(){};
-    options.fnOnLoaded    = options.fnOnLoaded    || function(){};
+    options.fnOnShown = options.fnOnShown || function () {};
+    options.fnOnHide = options.fnOnHide || function () {};
+    options.removeOnClose = options.removeOnClose || function () {};
+    options.fnOnHidden = options.fnOnHidden || function () {};
+    options.fnOnLoaded = options.fnOnLoaded || function () {};
 
-    var postUrl       = options.postUrl       || $item.attr('href'),
-        confirmText   = options.confirmText   || $item.data('text')           || '',
-        confirmTitle  = options.confirmTitle  || $item.attr('title')          || '',
-        postObject    = options.postObject    || $item.data('post'),
-        buttonNo      = options.buttonNo      || $item.data('button-no')      || '<i class="fa fa-times"></i>',
-        buttonYes     = options.buttonYes     || $item.data('button-yes')     || '<i class="fa fa-check"></i>',
+    const postUrl = options.postUrl || $item.attr('href'),
+        confirmText = options.confirmText || $item.data('text') || '',
+        confirmTitle = options.confirmTitle || $item.attr('title') || '',
+        postObject = options.postObject || $item.data('post'),
+        showTextArea = options.showTextArea || $item.data('show-text-area') || '',
+        useAjax = options.useAjax || $item.data('use-ajax') || '',
+        keepopen = options.keepopen || $item.data('keepopen') || '',
+        gridReload = options.gridReload || $item.data('grid-reload') || '',
+        gridid = options.gridid || $item.data('grid-id') || '',
+        buttonNo = options.buttonNo || $item.data('button-no') || '<i class="fa fa-times"></i>',
+        buttonYes = options.buttonYes || $item.data('button-yes') || '<i class="fa fa-check"></i>',
         parentElement = options.parentElement || $item.data('parent-element') || 'body';
 
-    var closeIcon      = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
-        closeButton    = '<button type="button" class="btn btn-default" data-dismiss="modal">'+buttonNo+'</button>',
-        confirmButton  = '<button type="button" class="btn btn-primary selector--button-confirm">'+buttonYes+'</button>';
-    
+    const closeIconHTML = '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+        closeButtonHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">' + buttonNo + '</button>',
+        confirmButtonHTML = '<button type="button" class="btn btn-primary selector--button-confirm">' + buttonYes + '</button>';
+
 
     //Define all the blocks and combine them by jquery methods
-    var outerBlock      = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
-        innerBlock      = $('<div class="modal-dialog" role="document"></div>'),
-        contentBlock    = $('<div class="modal-content"></div>'),
-        headerBlock     = $('<div class="modal-header"></div>'),
-        headlineBlock   = $('<h4 class="modal-title"></h4>'),
-        bodyBlock       = $('<div class="modal-body"></div>'),
-        footerBlock     = $('<div class="modal-footer"></div>'),
-        closeIcon       = $(closeIcon),
-        closeButton     = $(closeButton),
-        confirmButton   = $(confirmButton);
+    const outerBlock = $('<div class="modal fade" tabindex="-1" role="dialog"></div>'),
+        innerBlock = $('<div class="modal-dialog" role="document"></div>'),
+        contentBlock = $('<div class="modal-content"></div>'),
+        headerBlock = $('<div class="modal-header"></div>'),
+        headlineBlock = $('<h4 class="modal-title"></h4>'),
+        bodyBlock = $('<div class="modal-body"></div>'),
+        footerBlock = $('<div class="modal-footer"></div>'),
+        closeIcon = $(closeIconHTML),
+        closeButton = $(closeButtonHTML),
+        confirmButton = $(confirmButtonHTML);
 
-    var modalObject = null;
+    let modalObject = null;
 
-    var combineModal = function(){
-        var thisContent = contentBlock.clone();
-        
-        thisContent.append(bodyBlock.clone());
+    const combineModal = () => {
+            const thisContent = contentBlock.clone();
 
-        if(confirmTitle !== ''){
-            var thisHeader = headerBlock.clone();
-            headlineBlock.text(confirmTitle);
-            thisHeader.append(closeIcon.clone());
-            thisHeader.append(headlineBlock);
-            thisContent.prepend(thisHeader);   
-        }
-        
-        var thisFooter = footerBlock.clone();
-        thisFooter.append(closeButton.clone());
-        thisFooter.append(confirmButton.clone());
-        thisContent.append(thisFooter);   
+            thisContent.append(bodyBlock.clone());
 
-        modalObject = outerBlock.clone();
-        modalObject.append(innerBlock.clone().append(thisContent));
-    }, 
-    addForm = function(){
-        var formObject = $('<form name="'+Math.round(Math.random()*1000)+'_'+confirmTitle.replace(/[^a-bA-B0-9]/g,'')+'" method="post" action="'+postUrl+'"></form>');
-        for(var key in postObject){
-            var type = 'hidden';
-            var value = postObject[key];
-            var htmlClass = '';
-
-            if(typeof postObject[key] == 'object') {
-                type = postObject[key].type;
-                value = postObject[key].value;
-                htmlClass = postObject[key].class
+            if (confirmTitle !== '') {
+                const thisHeader = headerBlock.clone();
+                headlineBlock.text(confirmTitle);
+                thisHeader.append(closeIcon.clone());
+                thisHeader.append(headlineBlock);
+                thisContent.prepend(thisHeader);
             }
 
-            formObject.append('<input name="'+key+'" value="'+value+'" type="'+type+'" '+(htmlClass ? 'class="'+htmlClass+'"' : '')+ ' />');
-        }
-        formObject.append('<input name="YII_CSRF_TOKEN" value="'+LS.data.csrfToken+'" type="hidden" />');
-        modalObject.find('.modal-body').append(formObject)
-        modalObject.find('.modal-body').append('<p>'+confirmText+'</p>');
-    },
-    bindEvents = function(){
-        modalObject.on('show.bs.modal', function(){
-            addForm();
-            try{ options.fnOnShow } catch (e) {}
-        });
-        modalObject.on('shown.bs.modal', function(){
-            var self = this;
-            modalObject.find('.selector--button-confirm').on('click', function(e){
-                e.preventDefault();
-                modalObject.find('form').trigger('submit');
-                modalObject.modal('close');
-            });   
-            options.fnOnShown.call(this);
-        });
-        modalObject.on('hide.bs.modal', options.fnOnHide);
-        modalObject.on('hidden.bs.modal', function(){
-            if(options.removeOnClose === true){
-                modalObject.find('.modal-body').html(" ");
+            const thisFooter = footerBlock.clone();
+
+            thisFooter.append(closeButton.clone());
+            thisFooter.append(confirmButton.clone());
+            thisContent.append(thisFooter);
+
+            modalObject = outerBlock.clone();
+            modalObject.append(innerBlock.clone().append(thisContent));
+        },
+        addForm = function () {
+            const formObject = $('<form name="' + Math.round(Math.random() * 1000) + '_' + confirmTitle.replace(/[^a-bA-B0-9]/g, '') + '" method="post" action="' + postUrl + '"></form>');
+            for (let key in postObject) {
+                let type = 'hidden',
+                    value = postObject[key],
+                    htmlClass = '';
+
+                if (typeof postObject[key] == 'object') {
+                    type = postObject[key].type;
+                    value = postObject[key].value;
+                    htmlClass = postObject[key].class
+                }
+
+                formObject.append('<input name="' + key + '" value="' + value + '" type="' + type + '" ' + (htmlClass ? 'class="' + htmlClass + '"' : '') + ' />');
             }
-            try{ options.fnOnHidden } catch (e) {}
-        });
-        modalObject.on('loaded.ls.remotemodal', options.fnOnLoaded);
-    },
-    bindToElement = function(){
-        $item.on('click.confirmmodal', function(){
-            modalObject.modal('toggle');    
-        });
-    }, 
-    runPrepare = function(){
-        if($item.data('confirm-modal-appended') == 'yes') {
-            return;
-        }
-        combineModal();
-        modalObject.appendTo($(parentElement));
-        bindToElement.call(this);
-        bindEvents.call(this);
-        
-        $item.data('confirm-modal-appended', 'yes');
-    };
-    
+
+            formObject.append('<input name="YII_CSRF_TOKEN" value="' + LS.data.csrfToken + '" type="hidden" />');
+            modalObject.find('.modal-body').append(formObject)
+            modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
+
+            if (showTextArea !== '') {
+                modalObject.find('form').append('<textarea id="modalTextArea" name="modalTextArea" ></textarea>');
+            }
+
+        },
+        runAjaxRequest = function () {
+            return LS.ajax({
+                url: postUrl,
+                type: 'POST',
+                data: modalObject.find('form').serialize(),
+
+                // html contains the buttons
+                success: function (html, statut) {
+
+                    if (keepopen != 'true') {
+                        modalObject.modal('hide'); // $modal.modal('hide');
+                    } else {
+                        modalObject.find('.modal-body').empty().html(html); // Inject the returned HTML in the modal body
+                    }
+
+                    // Reload grid
+                    if (gridReload) {
+                        $('#' + gridid).yiiGridView('update'); // Update the surveys list
+                        setTimeout(function () {
+                            $(document).trigger("actions-updated");
+                        }, 500); // Raise an event if some widgets inside the modals need some refresh (eg: position widget in question list)
+                    }
+
+                    if (html.ajaxHelper) {
+                        LS.AjaxHelper.onSuccess(html);
+                        return;
+                    }
+
+                    if (onSuccess) {
+                        var func = eval(onSuccess);
+                        func(html);
+                        return;
+                    }
+
+                },
+                error: function (html, statut) {
+                    modalObject.find('.modal-body').empty().html(html.responseText);
+                    console.ls.log(html);
+                }
+            });
+        },
+        bindEvents = function () {
+            modalObject.on('show.bs.modal', function () {
+                addForm();
+                try {
+                    options.fnOnShow
+                } catch (e) {}
+            });
+            modalObject.on('shown.bs.modal', function () {
+                var self = this;
+                modalObject.find('.selector--button-confirm').on('click', function (e) {
+                    e.preventDefault();
+
+                    if (!useAjax) {
+                        modalObject.find('form').trigger('submit');
+                        modalObject.modal('close');
+                    } else {
+                        // Ajax request
+                        runAjaxRequest();
+                    }
+                });
+                options.fnOnShown.call(this);
+            });
+            modalObject.on('hide.bs.modal', options.fnOnHide);
+            modalObject.on('hidden.bs.modal', function () {
+                if (options.removeOnClose === true) {
+                    modalObject.find('.modal-body').html(" ");
+                }
+                try {
+                    options.fnOnHidden
+                } catch (e) {}
+            });
+            modalObject.on('loaded.ls.remotemodal', options.fnOnLoaded);
+        },
+        bindToElement = function () {
+            $item.on('click.confirmmodal', function () {
+                modalObject.modal('toggle');
+            });
+        },
+        runPrepare = function () {
+
+            if ($item.data('confirm-modal-appended') == 'yes') {
+                return;
+            }
+            combineModal();
+            modalObject.appendTo($(parentElement));
+            bindToElement.call(this);
+            bindEvents.call(this);
+
+            $item.data('confirm-modal-appended', 'yes');
+        };
+
     runPrepare();
 };
 
+
 jQuery.fn.extend({
-    confirmModal : ConfirmDeleteModal
+    confirmModal: ConfirmDeleteModal
 });
 
 function confirmDeletemodal() {
-    $(document).on('click.confirmModalSelector', 'a.selector--ConfirmModal', function(e){
+    $(document).off('click.confirmModalSelector', 'a.selector--ConfirmModal');
+    $(document).on('click.confirmModalSelector', 'a.selector--ConfirmModal', function (e) {
         e.preventDefault();
         $(this).confirmModal({});
         $(this).trigger('click.confirmmodal');
@@ -18752,47 +18836,47 @@ function panelsAnimation(){
 
 
 
-class NotifcationSystem {
-    
+const NotifcationSystem  = function (){
+    const
     /**
      * Load widget HTML and inject it
      * @param {string} URL to call
      * @return
      */
-     __updateNotificationWidget(updateUrl) {
+     __updateNotificationWidget = (updateUrl) => {
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('updateNotificationWidget');
         // Update notification widget
-        return Object(__WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"])({
+        return $.ajax({
             url: updateUrl,
             method: 'GET',
             success: (response) => {
                 $('#notification-li').replaceWith(response);
 
                 // Re-bind onclick
-                this.initNotification();
+                initNotification();
 
                 // Adapt style to window size
-                this.styleNotificationMenu();
+                styleNotificationMenu();
             }
         });
-    };
+    },
     
     /**
      * Tell system that notification is read
      * @param {object} that The notification link
      * @return
      */
-    __notificationIsRead(that) {
+    __notificationIsRead = (that) => {
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('notificationIsRead');
-        Object(__WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"])({
+        $.ajax({
             url: $(that).data('read-url'),
             method: 'GET',
         }).done((response) => {
             // Fetch new HTML for menu widget
-            this.__updateNotificationWidget($(that).data('update-url'));
+            __updateNotificationWidget($(that).data('update-url'));
         });
 
-    };
+    },
     
     /**
      * Fetch notification as JSON and show modal
@@ -18800,9 +18884,9 @@ class NotifcationSystem {
      * @param {url} URL to fetch notification as JSON
      * @return
      */
-    __showNotificationModal(that, url) {
+    __showNotificationModal = (that, url) => {
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('showNotificationModal');
-        Object(__WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"])({
+        $.ajax({
             url: url,
             method: 'GET',
         }).done((response) => {
@@ -18818,18 +18902,18 @@ class NotifcationSystem {
             // TODO: Will this work in message includes a link that is clicked?
             $('#admin-notification-modal').off('hidden.bs.modal');
             $('#admin-notification-modal').on('hidden.bs.modal', (e) => {
-                this.__notificationIsRead(that);
+                __notificationIsRead(that);
                 $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
             });
         });
-    };
+    },
 
     /*##########PUBLIC##########*/
     /**
      * Bind onclick and stuff
      * @return
      */
-    initNotification() {
+    initNotification = () => {
         // const self = this;
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].group('initNotification');
         $('.admin-notification-link').each((nr, that) => {
@@ -18842,20 +18926,20 @@ class NotifcationSystem {
 
             // Important notifications are shown as pop-up on load
             if (importance == 3 && status == 'new') {
-                this.__showNotificationModal(that, url);
+                __showNotificationModal(that, url);
                 __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('stoploop');
                 return false;  // Stop loop
             }
 
             // Bind click to notification in drop-down
-            $(that).off('click');
-            $(that).on('click', () => {
-                this.__showNotificationModal(that, url);
+            $(that).off('click.showNotification');
+            $(that).on('click.showNotification', () => {
+                __showNotificationModal(that, url);
             });
 
         });
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].groupEnd('initNotification');
-    };
+    },
 
     /**
      * Called from outside (update notifications when click
@@ -18864,52 +18948,54 @@ class NotifcationSystem {
      * @return
      */
     
-    updateNotificationWidget(url, openAfter) {
+    updateNotificationWidget = (url, openAfter) => {
         // Make sure menu is open after load
-        this.__updateNotificationWidget(url).then(() =>{
+        __updateNotificationWidget(url).then(() =>{
             if (openAfter !== false) {
                 $('#notification-li').addClass('open');
             }
         });
         // Only update once
-        $('#notification-li').off('click');
-    };
+        $('#notification-li').off('click.showNotification');
+    },
 
     /**
      * Apply styling
      * @return
      */
-    styleNotificationMenu() {
+    styleNotificationMenu = () => {
         __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('styleNotificationMenu');
         const height = window.innerHeight - 70;
         $('#notification-outer-ul').css('height', height + 'px');
         $('#notification-inner-ul').css('height', (height - 60) + 'px');
         $('#notification-inner-li').css('height', (height - 60) + 'px');
-    };
+    },
 
-    deleteAllNotifications(url, updateUrl) {
-        return Object(__WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__["default"])({
+    deleteAllNotifications = (url, updateUrl) => {
+        return $.ajax({
             url: url,
             method: 'GET',
             success: (response) => {
                __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('response', response);
             }
         }).then(() => {
-            this.updateNotificationWidget(updateUrl);
+            updateNotificationWidget(updateUrl);
         });
     };
+
+    return {
+        initNotification,
+        updateNotificationWidget,
+        styleNotificationMenu,
+        deleteAllNotifications,
+    }
 }
 
 //########################################################################
 
-const notificationHelper = new NotifcationSystem();
+const notificationSystem = new NotifcationSystem();
 
-/* harmony default export */ __webpack_exports__["a"] = ({
-    initNotification : ()=> notificationHelper.initNotification.call(notificationHelper, arguments),
-    updateNotificationWidget : ()=> notificationHelper.updateNotificationWidget.call(notificationHelper, arguments),
-    styleNotificationMenu : ()=> notificationHelper.styleNotificationMenu.call(notificationHelper, arguments),
-    deleteAllNotifications : ()=> notificationHelper.deleteAllNotifications.call(notificationHelper, arguments),
-});
+/* harmony default export */ __webpack_exports__["a"] = (notificationSystem);
 
 
 /***/ })

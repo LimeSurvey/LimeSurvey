@@ -143,17 +143,18 @@
         <?php } ?>
 
 </div></div></div>
+<?php
+App()->getClientScript()->registerScript('VVImportBSSwitcher', "
+LS.renderBootstrapSwitch();
 
-<script>
-$(document).ready(function() {
-    $('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
-        if (!state){
-            $('#insertmethod').removeAttr('disabled');
-            $('#insertmethod-container').show('slow');
-        }else{
-            $('#insertmethod').attr('disabled','disabled');
-            $('#insertmethod-container').hide('slow');
-        }
-    });
+$('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
+    if (!state){
+        $('#insertmethod').removeAttr('disabled');
+        $('#insertmethod-container').show('slow');
+    }else{
+        $('#insertmethod').attr('disabled','disabled');
+        $('#insertmethod-container').hide('slow');
+    }
 });
-</script>
+", LSYii_ClientScript::POS_POSTSCRIPT);
+?>

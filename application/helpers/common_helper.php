@@ -235,11 +235,12 @@ function getGidNext($surveyid, $gid)
 
 
 /**
-* Converts GET to POSTS
-* 
-* @param mixed $url
-* @deprecated  This function must be deprecated and replaced by $.post
-*/
+ * convertGETtoPOST a function to create a post Request from get parameters
+ * !!! This functions result has to be wrappen in singlequotes!
+ *
+ * @param String $url | The complete url with all parameters
+ * @return String | The onclick action for the element
+ */
 function convertGETtoPOST($url)
 {
     $url = preg_replace('/&amp;/i', '&', $url);
@@ -253,10 +254,10 @@ function convertGETtoPOST($url)
         $stack = explode('=', $queryitem);
         $paramname = array_shift($stack);
         $value = array_shift($stack);
-        $postArray[$paramname] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
+        $postArray[$paramname] = $value;
     }
 
-    $callscript = "window.LS.sendPost('".$calledscript."','".json_encode($postArray)."');";
+    $callscript = "window.LS.sendPost(\"".$calledscript."\",\"\",".json_encode($postArray).");";
 
     return $callscript;
 }
@@ -4658,4 +4659,30 @@ function get_absolute_path($path)
         }
     }
     return implode(DIRECTORY_SEPARATOR, $absolutes);
+}
+
+/**
+* Check if string is JSON array
+*
+* @param string $str
+* @return bool
+*/
+function isJson($str) {
+    $json = json_decode($str);
+    return $json && $str != $json;
+}
+
+/**
+* Check if array is associative
+*
+* @param array $array
+* @return bool
+*/
+function isAssociativeArray($array){
+    foreach ($array as $key => $value) {
+        if (is_string($key)) {
+            return true;
+        }
+    }
+    return false;
 }
