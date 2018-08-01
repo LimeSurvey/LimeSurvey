@@ -823,10 +823,13 @@ class Question extends LSActiveRecord
         $gid_search = Yii::app()->request->getParam('gid');
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
-            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
-                        onclick="if (confirm(\' '.gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "js").' \' )){ '.convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/surveyid/$this->sid/qid/$this->qid/gid/$gid_search")).'} ">
-                            <span class="text-danger fa fa-trash"></span>
-                            </a>';
+            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"'
+                ." onclick='$.bsconfirm(\"".gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js")
+                            ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
+                            . convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $this->sid, "qid" => $this->qid, "gid" => $gid_search]))
+                        ."});'>"                        
+                    .' <i class="text-danger fa fa-trash"></i>
+                </a>';
         }
 
         return $button;

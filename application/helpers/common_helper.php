@@ -314,7 +314,13 @@ function getGidNext($surveyid, $gid)
 }
 
 
-
+/**
+ * convertGETtoPOST a function to create a post Request from get parameters
+ * !!! This functions result has to be wrappen in singlequotes!
+ *
+ * @param String $url | The complete url with all parameters
+ * @return String | The onclick action for the element
+ */
 function convertGETtoPOST($url)
 {
     // This function must be deprecated and replaced by $.post
@@ -332,7 +338,7 @@ function convertGETtoPOST($url)
         $postArray[$paramname] = $value;
     }
 
-    $callscript = "window.LS.sendPost('".$calledscript."','".json_encode($postArray)."');";
+    $callscript = "window.LS.sendPost(\"".$calledscript."\",\"\",".json_encode($postArray).");";
 
     return $callscript;
 }
