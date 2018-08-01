@@ -1487,9 +1487,10 @@ class database extends Survey_Common_Action
 
     private function _resetEM(){
         $oSurvey = Survey::model()->findByPk($this->iSurveyID);
-        LimeExpressionManager::SetDirtyFlag();
         $oEM =& LimeExpressionManager::singleton();
+        LimeExpressionManager::SetDirtyFlag(); // UpgradeConditionsToRelevance SetDirtyFlag too
         LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
+        LimeExpressionManager::SetPreviewMode('database');// Deactivate _UpdateValuesInDatabase
         LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
         LimeExpressionManager::StartProcessingPage(true,true); 
         $aGrouplist = QuestionGroup::model()->getGroups($this->iSurveyID);
