@@ -4524,7 +4524,7 @@
                     'readWrite'=>'N',
                     );
                 }
-                self::updateTempVars($replaceArray)
+                self::updateTempVars($replaceArray);
             }
             $questionSeq = -1;
             $groupSeq = -1;
