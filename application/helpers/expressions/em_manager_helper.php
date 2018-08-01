@@ -118,6 +118,7 @@
 
         /**
         * variables temporarily set for substitution purposes
+        * temporarily mean for this page, until resetted. Not for next page
         *
         * These are typically the LimeReplacement Fields passed in via templatereplace()
         * Each has the following structure:  array(
@@ -4523,7 +4524,7 @@
                     'readWrite'=>'N',
                     );
                 }
-                $LEM->tempVars = $replaceArray;
+                self::updateTempVars($replaceArray)
             }
             $questionSeq = -1;
             $groupSeq = -1;
@@ -4568,7 +4569,7 @@
                     'readWrite'=>'N',
                     );
                 }
-                $LEM->tempVars = $replaceArray;
+                self::updateTempVars($replaceArray);
             }
             // Get current seq for question and group*/
             $questionSeq = $LEM->currentQuestionSeq;
@@ -4953,7 +4954,7 @@
             $LEM->processedRelevance=false;
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting']=true;    // this will be temporary - should be reset in running survey
             $LEM->qid2exclusiveAuto=array();
-
+            self::resetTempVars();
             $surveyinfo = (isset($LEM->sid) ? getSurveyInfo($LEM->sid) : null);
             if (isset($surveyinfo['assessments']) && $surveyinfo['assessments']=='Y')
             {
@@ -7276,13 +7277,12 @@
             } else if($applyJavaScriptAnyway && !self::isInitialized()){
                 $LEM =& LimeExpressionManager::singleton();
                 $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
-                
                 $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
                 Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
                 Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
                 Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/      
-                
             }
+            self::resetTempVars();
         }
 
         /*
@@ -8168,6 +8168,24 @@
         {
             $LEM =& LimeExpressionManager::singleton();
             $LEM->tempVars = $vars;
+        }
+
+        /**
+         * @param array $vars
+         */
+        public static function updateTempVars($vars)
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            $LEM->tempVars = array_merge($LEM->tempVars,$vars);
+        }
+
+        /**
+         * @param array $vars
+         */
+        public static function resetTempVars()
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            $LEM->tempVars = array();
         }
 
         /**
