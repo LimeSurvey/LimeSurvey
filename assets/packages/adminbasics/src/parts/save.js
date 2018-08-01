@@ -37,7 +37,7 @@ const SaveController = () => {
     checks = () => {
         return {
             _checkSaveButton: {
-                check: () => $('#save-button'),
+                check: '#save-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -52,7 +52,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveFormButton: {
-                check: () => $('#save-form-button'),
+                check: '#save-form-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const
@@ -65,7 +65,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndNewButton: {
-                check: () => $('#save-and-new-button'),
+                check: '#save-and-new-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -83,7 +83,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndCloseButton: {
-                check: () => $('#save-and-close-button'),
+                check: '#save-and-close-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -96,7 +96,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndCloseFormButton: {
-                check: () => $('#save-and-close-form-button'),
+                check: '#save-and-close-form-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const formid = '#' + $(this).attr('data-form-id'),
@@ -116,7 +116,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkSaveAndNewQuestionButton: {
-                check: () => $('#save-and-new-question-button'),
+                check: '#save-and-new-question-button',
                 run: function(ev) {
                     ev.preventDefault();
                     const $form = getForm(this);
@@ -132,7 +132,7 @@ const SaveController = () => {
                 on: 'click'
             },
             _checkOpenPreview: {
-                check: () => $('.open-preview'),
+                check: '.open-preview',
                 run: function(ev) {
                     const frameSrc = $(this).attr("aria-data-url");
                     $('#frame-question-preview').attr('src', frameSrc);
@@ -145,14 +145,14 @@ const SaveController = () => {
     //############PUBLIC
     return () => {
         _.each(checks(), (checkItem) => {
-            let $item = checkItem.check();
-            $item.off(checkItem.on);
+            let item = checkItem.check;
+            $(document).off(checkItem.on, item);
 
-            LOG.log('saveBindings', checkItem, $item);
+            LOG.log('saveBindings', checkItem, $(item));
 
-            if ($item.length > 0) {
-                $item.on(checkItem.on, checkItem.run);
-                LOG.log($item, 'on', checkItem.on, 'run', checkItem.run);
+            if ($(item).length > 0) {
+                $(document).on(checkItem.on, item, checkItem.run);
+                LOG.log($(item), 'on', checkItem.on, 'run', checkItem.run);
             }
         });
     };

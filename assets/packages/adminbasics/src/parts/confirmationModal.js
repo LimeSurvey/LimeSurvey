@@ -21,9 +21,9 @@ const ConfirmationModal = function(e){
     //////METHODS
     //Parse available options from specific item.data settings, if not available load relatedTarget settings
     const _parseOptions = (e) => {
-        return _.mergeWith(optionsDefault, $(_this).data(), (objValue, srcValue, key ) => {
-            return srcValue || $(e.relatedTarget).data(key) || null;
-        }); 
+        return _.each(optionsDefault, (value, key) => {
+            optionsDefault[key] = $(_this).data(key) || $(e.relatedTarget).data(key) || optionsDefault[key];
+        });
     },
     //Generate a simple link on the ok button
     _basicLink = () => {

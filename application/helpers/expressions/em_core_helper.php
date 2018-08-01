@@ -1341,7 +1341,7 @@ class ExpressionManager
                             $messages[] = $funcInfo[2];
                             $messages[] = $funcInfo[3];
                         }
-                        $stringParts[] = "<span title='".implode('; ', $messages)."' class='em-function' >";
+                        $stringParts[] = "<span title='".preg_replace('/\'/', '"', implode('; ', $messages))."' class='em-function' >";
                         $stringParts[] = $token[0];
                         $stringParts[] = "</span>";
                     } else {

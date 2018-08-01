@@ -1110,9 +1110,6 @@ class database extends Survey_Common_Action
                 $oSurvey->sid
             );
 
-            if (is_a($currentConfiguration, "TemplateConfiguration")) {
-                TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);
-            }
         }
         $oSurvey->template = $new_template;
 

@@ -707,17 +707,30 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
+    private function _getRelativePath($from, $to) {
+        $dir = explode(DIRECTORY_SEPARATOR, is_file($from) ? dirname($from) : rtrim($from, DIRECTORY_SEPARATOR));
+        $file = explode(DIRECTORY_SEPARATOR, $to);
+    
+        while ($dir && $file && ($dir[0] == $file[0])) {
+            array_shift($dir);
+            array_shift($file);
+        }
+        return str_repeat('..'.DIRECTORY_SEPARATOR, count($dir)) . implode(DIRECTORY_SEPARATOR, $file);
+    }
+
     private function _filterImages($file)
     {
         $imagePath = (file_exists($this->filesPath.$file['name']))
-            ? $this->filesPath.'/'.$file['name']
+            ? $this->filesPath.$file['name']
             : $this->generalFilesPath.$file['name'] ;
 
-        $filepath = App()->getAssetManager()->publish($imagePath);
+        $filePath = $this->_getRelativePath(Yii::app()->getConfig('rootdir'),  $imagePath);
+
+        $previewFilePath = App()->getAssetManager()->publish($imagePath);
 
         $checkImage = LSYii_ImageValidator::validateImage($imagePath);
         if (!$checkImage['check'] === false) {
-                return ['filepath' => $filepath, 'filepathOptions' => $imagePath ,'filename'=>$file['name']];
+                return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>$file['name']];
         }
     }
 

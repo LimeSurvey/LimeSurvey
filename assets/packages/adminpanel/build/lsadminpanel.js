@@ -36355,19 +36355,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
             this.$store.commit("updatePjax");
         },
         redoTooltips: function() {
-            try {
-                $(".btntooltip").tooltip("destroy");
-            } catch (e) {}
-            try {
-                $('[data-tooltip="true"]').tooltip("destroy");
-            } catch (e) {}
-            try {
-                $('[data-tooltip="true"]').tooltip("destroy");
-            } catch (e) {}
-
-            $(".btntooltip").tooltip();
-            $('[data-tooltip="true"]').tooltip();
-            $('[data-toggle="tooltip"]').tooltip();
+            window.LS.doToolTip();
         }
     }
 });
@@ -36946,7 +36934,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created() {
         const self = this;
-        self.$store.commit('setSurveyActiveState', this.isActive !== "0");
+
+        self.$store.commit('setSurveyActiveState', parseInt(this.isActive) === 1);
         // self.$log.debug(this.$store.state);
         this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
@@ -36955,9 +36944,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
-    },
-    created() {
-        const self = this;
+
         //retrieve the current menues via ajax
         this.getQuestions();
         this.getSidemenus();
@@ -37851,10 +37838,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.getLinkClass(menuItem),
       attrs: {
         "href": menuItem.link,
-        "id": 'sidemenu_' + _vm.menu.id + '_' + menuItem.id
+        "id": 'sidemenu_' + menuItem.name
       },
       on: {
         "click": function($event) {
+          $event.stopPropagation();
           _vm.setActiveMenuItemIndex(menuItem)
         }
       }
@@ -37895,6 +37883,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.checkIsOpen(submenu) ? 'menu-selected' : '',
       on: {
         "!click": function($event) {
+          $event.stopPropagation();
           _vm.setActiveMenuIndex(submenu)
         }
       }

@@ -40,6 +40,32 @@
                     'type'  => 'separator',
                 ),
 
+
+
+                // Theme selector
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'updateTheme',
+                    'url'         =>  App()->createUrl('/admin/survey/sa/changeMultipleTheme/'),
+                    'iconClasses' => 'icon-templates',
+                    'text'        =>  gT("Survey theme"),
+                    'grid-reload' => 'no',
+                    // modal
+                    'actionType'  => 'modal',
+                    'modalType'   => 'yes-no',
+                    'keepopen'    => 'yes',
+                    'sModalTitle'   => gT('Set survey theme'),
+                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_select_survey_theme.php',array(),true),
+                ),
+
+                // Separator
+                array(
+
+                    // li element
+                    'type'  => 'separator',
+                ),
+
                 // Download header
                 array(
 
@@ -113,9 +139,6 @@
                     'keepopen'    => 'yes',
                     'sModalTitle'   => gT('Set expiry date'),
                     'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_expiry_dialog.php',array(),true),
-
-
-
                 ),
             ),
 

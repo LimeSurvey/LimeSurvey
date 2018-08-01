@@ -312,7 +312,7 @@ class SettingsWidget extends CWidget
         if (!isset($metaData['label'])) {
             return "";
         } elseif (!in_array($metaData['type'], array('list','logo','link','info'))) {
-            return CHtml::label($metaData['label'], $name, $metaData['labelOptions']);
+            return CHtml::label($metaData['label'], CHtml::getIdByName($name), $metaData['labelOptions']);
         } else {
             return CHtml::tag('div', $metaData['labelOptions'], $metaData['label']);
         }

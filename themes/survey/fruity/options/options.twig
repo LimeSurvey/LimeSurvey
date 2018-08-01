@@ -707,7 +707,7 @@
                                 {% endif %}
 
                                 {% for image in templateConfiguration.imageFileList %}
-                                    <option data-lightbox-src="{{imageSrc(image.filepath)}}" value="{{image.filepath}}">{{image.filename}}</option>
+                                    <option data-lightbox-src="{{image.preview}}" value="{{image.filepath}}">{{image.filename}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -755,7 +755,7 @@
                                 {% endif %}
 
                                 {% for image in templateConfiguration.imageFileList %}
-                                    <option data-lightbox-src="{{imageSrc(image.filepathOptions)}}" value="{{image.filepath}}">{{image.filename}}</option>
+                                    <option data-lightbox-src="{{image.preview}}" value="{{image.filepath}}">{{image.filename}}</option>
                                 {% endfor %}
                             </select>
                         </div>

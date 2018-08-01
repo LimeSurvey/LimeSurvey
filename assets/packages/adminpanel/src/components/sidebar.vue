@@ -391,7 +391,8 @@ export default {
     },
     created() {
         const self = this;
-        self.$store.commit('setSurveyActiveState', this.isActive!=="0");
+        
+        self.$store.commit('setSurveyActiveState', (parseInt(this.isActive)===1));
         // self.$log.debug(this.$store.state);
         this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
@@ -400,9 +401,7 @@ export default {
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
-    },
-    created() {
-        const self = this;
+
         //retrieve the current menues via ajax
         this.getQuestions();
         this.getSidemenus();

@@ -133,7 +133,7 @@ function bindClickIfNotExpanded()
     {
         bindExpandRelevanceEquation();
         // Activate tooltip
-        $('[data-toggle="tooltip"]').tooltip()
+        window.LS.doToolTip();
     }
 
 }
@@ -503,7 +503,7 @@ function code_duplicates_check()
         $(this).find('tr .code').each(function(){
             codearray.push($(this).val().toLowerCase());
         });
-        var theDuplicate = arrHasDupesWhich(codearray);
+        var theDuplicate = window.LS.arrHasDupesWhich(codearray);
         if (theDuplicate !== false)
         {
 

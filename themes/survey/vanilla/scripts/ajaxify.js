@@ -111,7 +111,7 @@ var AjaxSubmitObject = function () {
         // Restrict to [type=submit]:not([data-confirmedby])
         // - :submit is the default if button don't have type (reset button on slider for example),
         // - confirmedby have their own javascript system
-        $(document).on('click', '#ls-button-submit, #ls-button-previous', function (e) {
+        $(document).on('click', '.action--ls-button-submit, .action--ls-button-previous', function (e) {
             $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $(this).attr('name') + '\' value=\'' + $(this).attr('value') + '\' type=\'hidden\' />');
             if (isIE10 || /Edge\/\d+\.\d+/.test(navigator.userAgent)) {
                 e.preventDefault();

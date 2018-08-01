@@ -2203,3 +2203,460 @@ function numericSize($sColumn,$decimal=false)
     }
     return $maxLen.".".$decimalMaxLen;
 }
+
+/**
+ * Export survey to TSV format
+ * It is using existing XML function to get the same source data as lss format
+ * @param int surveyid
+ * @return string 
+ **/
+function tsvSurveyExport($surveyid){
+    // TODO: refactor and simplify this code
+    // data loops located on first part should be replaced with one loop which writes all data in one big array 
+    // $tsv_output arrays should be created automatically, just need to create helper array with mapping column names between xml and tsv formats  
+    $fn = "limesurvey_survey_{$surveyid}.txt";
+
+    $aBaseFields = array(
+        'id',         // primary key
+        'related_id', // foreign key
+        'class',
+        'type/scale',
+        'name',
+        'relevance',
+        'text',
+        'help',
+        'language',
+        'validation',
+        'mandatory',
+        'other',
+        'default',
+        'same_default',
+    );
+
+    $survey = Survey::model()->findByPk($surveyid);
+    $aSurveyLanguages = $survey->getAllLanguages();
+
+    // Advanced question attributes : @todo get used question attribute by question in survey ?
+    $aQuestionAttributes=array_keys(\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions());
+    sort($aQuestionAttributes);
+    $fields=array_merge($aBaseFields,$aQuestionAttributes);
+    // Reusing existing XML function to get data for exporting into TSV format
+    // That way the same data source is used for both XML and TSV formats
+    $xml = simplexml_load_string(surveyGetXMLData($surveyid), null, LIBXML_NOCDATA);
+    $xmlData = json_decode(json_encode($xml), TRUE);
+    
+    // creating an array where attributes are keys, to be reused for each row
+    // flip keys and values, fields becoming keys, values are cleared with array_map function
+    $fields = array_map(function () { return ''; }, array_flip($fields)); 
+    $out = fopen('php://output', 'w');
+    fputcsv($out, array_keys($fields), chr(9));
+    
+    // DATA PREPARATION
+    // survey settings
+    if (array_key_exists('surveys', $xmlData)){
+        $surveys_data = $xmlData['surveys']['rows']['row'];
+    } else {
+        $surveys_data = array();
+    } 
+
+    foreach ($surveys_data as $key => $value) {
+
+        if (is_array($value)){
+
+            if (count($value) === 0){
+                $value = '';
+            } else {
+                $value = $value;
+            }  
+
+        }
+        $tsv_output = $fields;
+        $tsv_output['class'] = 'S';
+        $tsv_output['name'] = $key;
+        $tsv_output['text'] = str_replace(array("\n", "\r"), '', $value);
+        fputcsv($out, $tsv_output, chr(9));
+    }
+    
+    // language settings
+    if (array_key_exists('surveys_languagesettings', $xmlData)){
+        $language_data = $xmlData['surveys_languagesettings']['rows']['row'];
+        if (!array_key_exists('0', $language_data)){
+            $language_data = array($language_data);
+        }
+    } else {
+        $language_data = array();
+    }
+
+    if (!array_key_exists('surveyls_language', $language_data[0])){
+        $language_data[0]['surveyls_language'] = $aSurveyLanguages[0];
+    }
+
+    foreach ($language_data as $key => $language) {  //echo $key.'---'; print_r($language); die;
+        $current_language = !empty($language['surveyls_language'])?$language['surveyls_language']:'';
+        foreach ((array)$language as $key => $value) {                
+            if (is_array($value)){
+                if (count($value) === 0){
+                    $value = '';
+                } else {
+                    $value = $value[0];
+                }                    
+            }
+            $tsv_output = $fields;
+            $tsv_output['class'] = 'SL';
+            $tsv_output['name'] = $key;
+            $tsv_output['text'] = str_replace(array("\n", "\r"), '', $value);
+            $tsv_output['language'] = $current_language;
+            fputcsv($out, $tsv_output, chr(9));
+        }
+    }
+
+    // attributes data
+    if (array_key_exists('question_attributes', $xmlData)){
+        $attributes_data = $xmlData['question_attributes']['rows']['row'];
+        if (!array_key_exists('0', $attributes_data)){
+            $attributes_data = array($attributes_data);
+        }
+    } else {
+        $attributes_data = array();
+    }
+    $attributes = array();
+    foreach ($attributes_data as $key => $attribute) {
+        $attributes[$attribute['qid']][] = $attribute;
+    }
+    
+    // default values data
+    if (array_key_exists('defaultvalues', $xmlData)){
+        $defaultvalues_data = $xmlData['defaultvalues']['rows']['row'];
+        if (!array_key_exists('0', $defaultvalues_data)){
+            $defaultvalues_data = array($defaultvalues_data);
+        }
+    } else {
+        $defaultvalues_data = array();
+    }
+    $defaultvalues = array();
+    foreach ($defaultvalues_data as $key => $defaultvalue) {
+        if ($defaultvalue['sqid'] > 0){
+            $defaultvalues[$defaultvalue['language']][$defaultvalue['sqid']] = $defaultvalue['defaultvalue'];
+        } else {
+            $defaultvalues[$defaultvalue['language']][$defaultvalue['qid']] = $defaultvalue['defaultvalue'];
+        }
+    }
+
+    $groups = array();
+    $index_languages = 0;
+    foreach ($aSurveyLanguages as $key => $language) {
+        // groups
+        if (array_key_exists('groups', $xmlData)){
+            $groups_data = $xmlData['groups']['rows']['row'];
+            if (!array_key_exists('0', $groups_data)){
+                $groups_data = array($groups_data);
+            }
+        } else {
+            $groups_data = array();
+        }
+        $groups = array();
+        foreach ($groups_data as $key => $group) {
+            if ($group['language'] === $language){
+                $groups[$language][$group['gid']] = $group;
+            }                 
+        }
+
+        // questions data
+        if (array_key_exists('questions', $xmlData)){
+            $questions_data = $xmlData['questions']['rows']['row'];
+            if (!array_key_exists('0', $questions_data)){
+                $questions_data = array($questions_data);
+            }
+        } else {
+            $questions_data = array();
+        }
+        $questions = array();
+        foreach ($questions_data as $key => $question) {
+            if ($question['language'] === $language){
+                $questions[$language][$question['gid']][$question['qid']] = $question;
+            } 
+        }
+
+        // subquestions data
+        if (array_key_exists('subquestions', $xmlData)){
+            $subquestions_data = $xmlData['subquestions']['rows']['row'];
+            if (!array_key_exists('0', $subquestions_data)){
+                $subquestions_data = array($subquestions_data);
+            }
+        } else {
+            $subquestions_data = array();
+        }
+        $subquestions = array();
+        foreach ($subquestions_data as $key => $subquestion) {
+            if ($subquestion['language'] === $language){
+                $subquestions[$language][$subquestion['parent_qid']][] = $subquestion;
+            } 
+        }
+        
+        // answers data
+        if (array_key_exists('answers', $xmlData)){
+            $answers_data = $xmlData['answers']['rows']['row'];
+            if (!array_key_exists('0', $answers_data)){
+                $answers_data = array($answers_data);
+            }
+        } else {
+            $answers_data = array();
+        }
+        $answers = array();
+        foreach ($answers_data as $key => $answer) {
+            if ($answer['language'] === $language){
+                $answers[$language][$answer['qid']][] = $answer;
+            } 
+        }
+        
+        // assessments data
+        if (array_key_exists('assessments', $xmlData)){
+            $assessments_data = $xmlData['assessments']['rows']['row'];
+            if (!array_key_exists('0', $assessments_data)){
+                $assessments_data = array($assessments_data);
+            }
+        } else {
+            $assessments_data = array();
+        }
+        $assessments = array();
+        foreach ($assessments_data as $key => $assessment) {
+                $assessments[] = $assessment;
+        }
+
+        // quotas data
+        if (array_key_exists('quota', $xmlData)){
+            $quotas_data = $xmlData['quota']['rows']['row'];
+            if (!array_key_exists('0', $quotas_data)){
+                $quotas_data = array($quotas_data);
+            }
+        } else {
+            $quotas_data = array();
+        }
+        $quotas = array();
+        foreach ($quotas_data as $key => $quota) {
+                $quotas[$quota['id']] = $quota;
+        }
+        
+        // quota members data
+        if (array_key_exists('quota_members', $xmlData)){
+            $quota_members_data = $xmlData['quota_members']['rows']['row'];
+            if (!array_key_exists('0', $quota_members_data)){
+                $quota_members_data = array($quota_members_data);
+            }
+        } else {
+            $quota_members_data = array();
+        }
+        $quota_members = array();
+        foreach ($quota_members_data as $key => $quota_member) {
+            $quota_members[$quota_member['qid']][] = $quota_member;
+        }
+        
+        // quota language settings data
+        if (array_key_exists('quota_languagesettings', $xmlData)){
+            $quota_ls_data = $xmlData['quota_languagesettings']['rows']['row'];
+            if (!array_key_exists('0', $quota_ls_data)){
+                $quota_ls_data = array($quota_ls_data);
+            }
+        } else {
+            $quota_ls_data = array();
+        }
+        $quota_ls = array();
+        foreach ($quota_ls_data as $key => $quota) {
+            $quota_ls[$quota['quotals_quota_id']][$quota['quotals_language']][] = $quota;
+        }            
+        
+        // conditions
+        if (array_key_exists('conditions', $xmlData)){
+            $condition_data = $xmlData['conditions']['rows']['row'];
+            if (!array_key_exists('0', $condition_data)){
+                $condition_data = array($condition_data);
+            }
+        } else {
+            $condition_data = array();
+        }
+        $conditions = array();
+        foreach ($condition_data as $key => $condition) {
+            $conditions[$condition['qid']][] = $condition;
+        }
+
+        sortArrayByColumn($groups[$language], 'group_order');
+        foreach ($groups[$language] as $gid => $group) {
+            $tsv_output = $fields;
+            $tsv_output['id'] = $gid;
+            $tsv_output['class'] = 'G';
+            $tsv_output['type/scale'] = $group['group_order'];
+            $tsv_output['name'] = $group['group_name'];
+            $tsv_output['text'] = !empty($group['description']) && count($group['description']) > 0 ? str_replace(array("\n", "\r"), '', $group['description']) : '';
+            $tsv_output['relevance'] = !empty($value['grelevance']) && count($group['grelevance']) > 0 ? $group['grelevance'][0] : '';
+            $tsv_output['random_group'] = !empty($value['randomization_group']) && count($group['randomization_group']) > 0 ? $group['randomization_group'] : '';
+            $tsv_output['language'] = $language;
+            fputcsv($out, $tsv_output, chr(9));
+            sortArrayByColumn($questions[$language][$gid], 'question_order');
+
+            // questions
+            foreach ($questions[$language][$gid] as $qid => $question) {
+                $tsv_output = $fields;
+                $tsv_output['id'] = $question['qid'];
+                $tsv_output['class'] = 'Q';
+                $tsv_output['type/scale'] = $question['type'];
+                $tsv_output['name'] = $question['title'];
+                $tsv_output['relevance'] = !empty($question['relevance']) && count($question['relevance']) > 0 ? $question['relevance'] : '';
+                $tsv_output['text'] = !empty($question['question']) && count($question['question']) > 0 ? str_replace(array("\n", "\r"), '', $question['question']) : '';
+                $tsv_output['help'] = !empty($question['help']) && count($question['help']) > 0 ? str_replace(array("\n", "\r"), '', $question['help']) : '';
+                $tsv_output['language'] = $question['language'];
+                $tsv_output['mandatory'] = !empty($question['mandatory']) && count($question['mandatory']) > 0 ? $question['mandatory'] : '';
+                $tsv_output['other'] = $question['other'];
+                $tsv_output['same_default'] = $question['same_default'];
+
+                if (array_key_exists($language, $defaultvalues) && array_key_exists($qid, $defaultvalues[$language])){
+                    $tsv_output['default'] = $defaultvalues[$language][$qid];                                
+                }
+                
+                // question attributes
+                if ($index_languages == 0 && array_key_exists($question['qid'], $attributes)){
+                    foreach ($attributes[$question['qid']] as $key => $attribute) {
+                        if (in_array($attribute['attribute'], array_keys($fields))){
+                            if (is_array($attribute['value']) && count($attribute['attribute']) > 0){
+                                $tsv_output[$attribute['attribute']] = implode(' ', $attribute['value']);
+                            } else {
+                                $tsv_output[$attribute['attribute']] = $attribute['value'];
+                            }
+                        }
+                    }
+                }
+                fputcsv($out, $tsv_output, chr(9));
+                
+                // quota members
+                if ($index_languages == 0 && !empty($quota_members[$qid])){
+                    foreach ($quota_members[$qid] as $key => $member) {
+                        $tsv_output = $fields;
+                        $tsv_output['id'] = $member['id'];
+                        $tsv_output['related_id'] = $member['quota_id'];
+                        $tsv_output['class'] = 'QTAM';
+                        $tsv_output['name'] = $member['code']; 
+                        fputcsv($out, $tsv_output, chr(9));
+                    }
+                }
+                
+                // conditions
+                if ($index_languages == 0 && !empty($conditions[$qid])){
+                    foreach ($conditions[$qid] as $key => $condition) {
+                        $tsv_output = $fields;
+                        $tsv_output['id'] = $condition['cid'];
+                        $tsv_output['class'] = 'C';
+                        $tsv_output['type/scale'] = $condition['scenario'];
+                        $tsv_output['related_id'] = $condition['cqid']; 
+                        $tsv_output['name'] = $condition['cfieldname']; 
+                        $tsv_output['relevance'] = $condition['method']; 
+                        $tsv_output['text'] = !empty($assessment['value']) && count($condition['value']) > 0?$condition['value']:''; 
+                        fputcsv($out, $tsv_output, chr(9));
+                    }
+                }
+                
+                if (!empty($subquestions[$language][$qid])){
+                    sortArrayByColumn($subquestions[$language][$qid], 'question_order');
+                    foreach ($subquestions[$language][$qid] as $key => $subquestion) {
+                        $tsv_output = $fields;
+                        $tsv_output['id'] = $subquestion['qid'];
+                        $tsv_output['class'] = 'SQ';
+                        $tsv_output['type/scale'] = !empty($subquestion['scale_id']) && count($subquestion['scale_id']) > 0 ? $subquestion['scale_id'] : '';
+                        $tsv_output['name'] = $subquestion['title'];
+                        $tsv_output['relevance'] = !empty($subquestion['relevance']) && count($subquestion['relevance']) > 0 ? $subquestion['relevance'] : '';
+                        $tsv_output['text'] = $subquestion['question'];
+                        $tsv_output['language'] = $subquestion['language'];
+                        $tsv_output['mandatory'] = !empty($subquestion['mandatory']) && count($subquestion['mandatory']) > 0 ? $subquestion['mandatory'] : '';
+                        $tsv_output['other'] = $subquestion['other'];
+                        $tsv_output['same_default'] = $subquestion['same_default'];
+
+                        if (array_key_exists($language, $defaultvalues) && array_key_exists($subquestion['qid'], $defaultvalues[$language])){
+                            $tsv_output['default'] = $defaultvalues[$language][$subquestion['qid']];                                
+                        }
+                        fputcsv($out, $tsv_output, chr(9));
+                    }
+                }
+
+                if (!empty($answers[$language][$qid])){
+                    sortArrayByColumn($answers[$language][$qid], 'sortorder');
+                    foreach ($answers[$language][$qid] as $key => $answer) {
+                        $tsv_output = $fields;
+                        $tsv_output['id'] = $answer['qid'];
+                        $tsv_output['class'] = 'A';
+                        $tsv_output['type/scale'] = $answer['scale_id'];
+                        $tsv_output['name'] = $answer['code'];
+                        $tsv_output['text'] = $answer['answer'];
+                        $tsv_output['assessment_value'] = $answer['assessment_value'];
+                        $tsv_output['language'] = $answer['language'];
+                        fputcsv($out, $tsv_output, chr(9));
+                    }
+                }
+            }
+        }
+        $index_languages += 1;
+    }
+
+    // assessments
+    if (!empty($assessments)){
+        //sortArrayByColumn($assessments[$gid], 'other');
+        foreach ($assessments as $key => $assessment) {
+            $tsv_output = $fields;
+            $tsv_output['id'] = $assessment['id'];
+            $tsv_output['related_id'] = $assessment['gid'];
+            $tsv_output['class'] = 'AS';
+            $tsv_output['type/scale'] = $assessment['scope'];
+            $tsv_output['name'] = !empty($assessment['name']) && count($assessment['name']) > 0?$assessment['name']:'';
+            $tsv_output['text'] = !empty($assessment['message']) && count($assessment['message']) > 0?$assessment['message']:'';
+            $tsv_output['min_num_value'] = $assessment['minimum'];
+            $tsv_output['max_num_value'] = $assessment['maximum'];
+            $tsv_output['language'] = $assessment['language'];
+            fputcsv($out, $tsv_output, chr(9));
+        }
+    }
+
+    // quotas
+    if (!empty($quotas)){
+        sortArrayByColumn($quotas, 'id');
+        foreach ($quotas as $key => $quota) {
+            $tsv_output = $fields;
+            $tsv_output['id'] = $quota['id'];
+            $tsv_output['class'] = 'QTA';
+            $tsv_output['mandatory'] = $quota['qlimit'];
+            $tsv_output['name'] = $quota['name'];
+            $tsv_output['other'] = $quota['action'];
+            $tsv_output['default'] = $quota['active'];
+            $tsv_output['same_default'] = $quota['autoload_url'];
+            fputcsv($out, $tsv_output, chr(9));  
+
+                if (!empty($quota_ls[$quota['id']])){
+                foreach ($quota_ls[$quota['id']] as $key => $language) {
+                    foreach ($language as $key => $ls) {
+                        $tsv_output = $fields;
+                        $tsv_output['id'] = $ls['quotals_id'];
+                        $tsv_output['related_id'] = $quota['id'];
+                        $tsv_output['class'] = 'QTALS';
+                        //$tsv_output['name'] = $ls['quotals_name'];
+                        $tsv_output['relevance'] = $ls['quotals_message'];
+                        $tsv_output['text'] = $ls['quotals_url'];
+                        $tsv_output['help'] = !empty($value['quotals_urldescrip']) && count($group['quotals_urldescrip']) > 0 ? $group['quotals_urldescrip'][0] : '';
+                        $tsv_output['language'] = $ls['quotals_language'];
+                        fputcsv($out, $tsv_output, chr(9));  
+                    }
+                }
+            }
+        }
+    }
+
+    $output = $out;
+    fclose($out);
+    return $output;
+}
+
+/**
+ * Sort array by column name
+ * @param array $array
+ * @param string $column_name
+ **/
+function sortArrayByColumn(&$array, $column_name){
+    uasort($array, create_function('$a, $b', '
+        return strnatcmp($a["' . $column_name . '"], $b["' . $column_name . '"]);
+    '));
+}

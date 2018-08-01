@@ -63,27 +63,13 @@ function getGlobalSetting($settingname)
 }
 
 /**
- * Set a global setting after control (must be moved to rules or filter of SettingGlobal model)
- * And save it in DB
+ * Set a global setting
+ * @deprecated : use SettingGlobal::setSetting($settingname, $settingvalue);
  * @param string $settingname
  * @param string $settingvalue
  * @return void
  */
 function setGlobalSetting($settingname, $settingvalue)
 {
-    if (Yii::app()->getConfig("demoMode") == true && ($settingname == 'sitename' || $settingname == 'defaultlang' || $settingname == 'defaulthtmleditormode' || $settingname == 'filterxsshtml')) {
-        return; //don't save
-    }
-
-    if ($record = SettingGlobal::model()->findByPk($settingname)) {
-        $record->stg_value = $settingvalue;
-        $record->save();
-    } else {
-        $record = new SettingGlobal;
-        $record->stg_name = $settingname;
-        $record->stg_value = $settingvalue;
-        $record->save();
-    }
-
-    Yii::app()->setConfig($settingname, $settingvalue);
+    SettingGlobal::setSetting($settingname, $settingvalue);
 }

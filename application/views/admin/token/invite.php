@@ -168,7 +168,9 @@
 </div>
 
 <?php
+
 App()->getClientScript()->registerScript("Tokens:BindInviteView", "
+        LS.renderBootstrapSwitch();
         $('#send-invitation-button').on('click', function(){
             $('#sendinvitation').submit();
         })
