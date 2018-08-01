@@ -68,7 +68,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
     foreach ($xml->groups->rows->row as $row) {
         $insertdata = array();
-        foreach ($row as $key=>$value) {
+        foreach ($row as $key => $value) {
             $insertdata[(string) $key] = (string) $value;
         }
         $iOldSID = $insertdata['sid'];
@@ -102,7 +102,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             $oQuestionGroupL10n = new QuestionGroupL10n(); 
             $oQuestionGroupL10n->setAttributes($aDataL10n, false);
             $oQuestionGroupL10n->save();
-        }        
+        }
     }
 
     if ($iDBVersion >= 350 && isset($xml->group_l10ns->rows->row)) {
@@ -625,17 +625,17 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                     unset($sOldTitle);
                 }
             }
+        }
         if (isset($insertdata['qid'])) {
             switchMSSQLIdentityInsert('questions', true);
         }
         
-            if (!$oQuestion->save()) {
-                $results['fatalerror'] = CHtml::errorSummary($oQuestion, gT("The question could not be imported for the following reasons:"));
-                return $results;
+        if (!$oQuestion->save()) {
+            $results['fatalerror'] = CHtml::errorSummary($oQuestion, gT("The question could not be imported for the following reasons:"));
+            return $results;
         }
         if (isset($insertdata['qid'])) {
             switchMSSQLIdentityInsert('questions', false);
-            }
             $aQIDReplacements[$iOldQID] = $oQuestion->qid; ;
             $results['questions']++;
         } 
@@ -2733,10 +2733,12 @@ function TSVImportSurvey($sFullFilePath)
                     } else {
                         $gid = $row['id'];
                     }
+                }
                 $questionGroup = new QuestionGroup();
                 $questionGroup->attributes = $insertdata;
 
                 if (!$questionGroup->save()) {
+                    // TODO
                 }
                 $newgid = $questionGroup->gid;
                 if (!isset($ginfo[$sGroupseq])) {
@@ -2838,6 +2840,8 @@ function TSVImportSurvey($sFullFilePath)
                     $defaultValue = new DefaultValue();
                     $defaultValue->attributes = $insertdata;
                     if (!$defaultValue->save()) {
+                        // TODO
+                    }
                 }
                 break;
 
@@ -2859,6 +2863,8 @@ function TSVImportSurvey($sFullFilePath)
                             $defaultValue = new DefaultValue();
                             $defaultValue->attributes = $insertdata;
                             if (!$defaultValue->save()) {
+                                // TODO
+                            }
                         }
                     }
                 } else {
@@ -2912,6 +2918,8 @@ function TSVImportSurvey($sFullFilePath)
                         $defaultValue = new DefaultValue();
                         $defaultValue->attributes = $insertdata;
                         if (!$defaultValue->save()) {
+                            // TODO
+                        }
                     }
                 }
                 break;
@@ -3085,8 +3093,6 @@ function switchMSSQLIdentityInsert($table, $state)
         } else {
             // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
             Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' OFF');
-        }
-    }
         }
     }
     $xml = new XMLWriter();
