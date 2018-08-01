@@ -229,7 +229,7 @@ class SurveyRuntimeHelper
         Yii::app()->loadHelper('qanda');
         setNoAnswerMode($this->aSurveyInfo);
         // set tmpVars with global field for all EM done after
-        LimeExpressionManager::updateTempVars(getStandardsReplacementFields($this->aSurveyInfo));
+        LimeExpressionManager::updateReplacementFields(getStandardsReplacementFields($this->aSurveyInfo));
         //Iterate through the questions about to be displayed:
         $inputnames = array();
         $vpopup     = $fpopup = false;
@@ -401,7 +401,7 @@ class SurveyRuntimeHelper
             ++$_gseq;
 
             $gid              = $gl['gid'];
-            LimeExpressionManager::updateTempVars(array(
+            LimeExpressionManager::updateReplacementFields(array(
                 'GID' => $gid,
                 'GROUPNAME' => $this->groupname,
             ));
@@ -470,7 +470,7 @@ class SurveyRuntimeHelper
 
                     $aStandardsReplacementFields = array();
                     $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
-                    LimeExpressionManager::updateTempVars(array(
+                    LimeExpressionManager::updateReplacementFields(array(
                         'QID'=>$qid,
                         'SGQ'=>$qa[7],
                         'QUESTION_CODE' => $qa[0]['code'], // Always ?
@@ -482,7 +482,6 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['type']                 = $qinfo['info']['type'];
                     $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
                     $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
-                    LimeExpressionManager::updateTempVars(array('QID'=>$qid,'SGQ'=>$aGroup['aQuestions'][$qid]['SGQ']));
                     $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], $aStandardsReplacementFields, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
                     $aGroup['aQuestions'][$qid]['class']                = $this->getCurrentQuestionClasses($qid);
@@ -494,7 +493,7 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText($lemQuestionInfo['info']['help'], true, true) != '');
                     $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], null, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid] = $this->doBeforeQuestionRenderEvent($aGroup['aQuestions'][$qid]);
-                    LimeExpressionManager::updateTempVars(array(
+                    LimeExpressionManager::updateReplacementFields(array(
                         'QID'=>null,
                         'SGQ'=>null,
                         'QUESTION_CODE' => null,
@@ -518,7 +517,7 @@ class SurveyRuntimeHelper
                 Yii::app()->setConfig('gid', '');
                 $this->aSurveyInfo['aGroups'][$gid] = $aGroup;
             }
-            LimeExpressionManager::updateTempVars(array(
+            LimeExpressionManager::updateReplacementFields(array(
                 'GID' => null,
                 'GROUPNAME' => null,
             ));

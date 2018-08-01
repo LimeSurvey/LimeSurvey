@@ -4512,19 +4512,8 @@
                 $LEM->em->SetPrettyPrintSource($string);
                 return $string;
             }
-
-            if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
-            {
-                $replaceArray = array();
-                foreach ($replacementFields as $key => $value) {
-                    $replaceArray[$key] = array(
-                    'code'=>$value,
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
-                    );
-                }
-                self::updateTempVars($replaceArray);
+            if(!empty($replacementFields) && is_array($replacementFields)) {
+                self::updateReplacementFields($replacementFields);
             }
             $questionSeq = -1;
             $groupSeq = -1;
@@ -4559,17 +4548,8 @@
             $LEM =& LimeExpressionManager::singleton();
 
             // Fill tempVars if needed
-            if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0) {
-                $replaceArray = array();
-                foreach ($replacementFields as $key => $value) {
-                    $replaceArray[$key] = array(
-                    'code'=>$value,
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
-                    );
-                }
-                self::updateTempVars($replaceArray);
+            if(!empty($replacementFields) && is_array($replacementFields)) {
+                self::updateReplacementFields($replacementFields);
             }
             // Get current seq for question and group*/
             $questionSeq = $LEM->currentQuestionSeq;
@@ -8173,10 +8153,19 @@
         /**
          * @param array $vars
          */
-        public static function updateTempVars($vars)
+        public static function updateReplacementFields($replacementFields)
         {
             $LEM =& LimeExpressionManager::singleton();
-            $LEM->tempVars = array_merge($LEM->tempVars,$vars);
+            $replaceArray = array();
+            foreach($replacementFields as $key => $value) {
+                $replaceArray[$key] = array(
+                    'code'=>$value,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
+            }
+            $LEM->tempVars = array_merge($LEM->tempVars,$replaceArray);
         }
 
         /**
