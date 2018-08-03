@@ -351,7 +351,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{quota_languagesettings}}', array(
             'quotals_id' => "pk",
             'quotals_quota_id' => "integer NOT NULL default '0'",
-            'quotals_language' => "sstring(45) NOT NULL default 'en'",
+            'quotals_language' => "string(45) NOT NULL default 'en'",
             'quotals_name' => "string(255) NULL",
             'quotals_message' => "text NOT NULL",
             'quotals_url' => "string(255)",
