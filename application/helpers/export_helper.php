@@ -891,6 +891,10 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
     }
     $xml->endElement();
     surveyGetXMLStructure($iSurveyID, $xml, $exclude);
+    // survey theme configuration - db values
+    surveyGetThemeConfiguration($iSurveyID, $xml, false, 'themes');
+    // survey theme configuration - inherited values
+    surveyGetThemeConfiguration($iSurveyID, $xml, true, 'themes_inherited');
     $xml->endElement(); // close columns
     $xml->endDocument();
     return $xml->outputMemory(true);
@@ -2630,4 +2634,82 @@ function sortArrayByColumn(&$array, $column_name){
     uasort($array, create_function('$a, $b', '
         return strnatcmp($a["' . $column_name . '"], $b["' . $column_name . '"]);
     '));
+}
+
+/**
+* Write XML from Associative Array, recursive function
+* @param object $xml XMLWriter Object
+* @param array $aData Associative Data Array
+* @param int $sParentKey parent key
+*/
+function writeXmlFromArray(XMLWriter $xml, $aData, $sParentKey='') {        
+    $bCloseElement = false;
+    foreach($aData as $key => $value) {
+        if (!empty($value)){
+            if(is_array($value)) {
+
+                if (is_numeric($key)){
+                    $xml->startElement($sParentKey);
+                    $bCloseElement = true;
+                } elseif (isAssociativeArray($value)){
+                    $xml->startElement($key);
+                    $bCloseElement = true;
+                }
+                
+                if (is_numeric($key)){
+                    writeXmlFromArray($xml, $value, $sParentKey);
+                } else {
+                    writeXmlFromArray($xml, $value, $key);
+                }
+
+                if ($bCloseElement === true){
+                    $xml->endElement();
+                    $bCloseElement = false;
+                }
+                continue;
+            } elseif (is_numeric($key)){
+                $xml->writeElement($sParentKey, $value);
+            } else {
+                $xml->writeElement($key, $value);
+            }
+        }
+    }
+    return $xml;
+}
+
+/**
+* Write XML structure for themes
+* @param int $iSurveyId Survey ID
+* @param object $oXml XMLWriter Object
+* @param bool $bInherit should theme configuration be inherited?
+* @param string $sElementName name for XML element
+*/
+function surveyGetThemeConfiguration($iSurveyId = null, $oXml = null, $bInherit = false, $sElementName = 'themes'){
+
+    $aThemeData = array();
+
+    if ($iSurveyId != null) {
+        $aSurveyConfiguration = TemplateConfiguration::getThemeOptionsFromSurveyId($iSurveyId, $bInherit);
+
+        foreach ($aSurveyConfiguration as $iThemeKey => $oConfig) {
+
+            foreach ($oConfig as $key => $attribute) {
+                
+                if (is_array($attribute)){
+                    $attribute = (array)$attribute;
+                } elseif (isJson($attribute)){
+                    $attribute = (array)json_decode($attribute);
+                } 
+                $aThemeData[$sElementName]['theme'][$iThemeKey][$key] = $attribute;                
+            }
+        }
+        
+    }
+
+    if ($oXml !== null && !empty($aThemeData)){
+
+        writeXmlFromArray($oXml, $aThemeData);
+
+    }
+
 }
