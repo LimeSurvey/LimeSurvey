@@ -984,7 +984,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createTable('{{plugins}}', array(
                 'id' => 'pk',
                 'name' => 'string NOT NULL',
-                'active' => 'smallint'
+                'active' => 'integer'
             ));
             $oDB->createCommand()->createTable('{{plugin_settings}}', array(
                 'id' => 'pk',
@@ -2275,12 +2275,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
             
             if (!isset($surveymenuTable->columns['showincollapse'])) {
-                $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'smallint DEFAULT 0');
+                $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
             }
 
             $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
             if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
-                $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'smallint DEFAULT 0');
+                $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
             }
 
             $aIdMap = [];
