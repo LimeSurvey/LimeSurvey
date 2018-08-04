@@ -4303,7 +4303,7 @@ function do_array($ia)
                 $options[] = array(
                     'value'=>$aAnswer['code'],
                     'selected'=>($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $aAnswer['code']) ? SELECTED :'',
-                    'text'=> flattenText($aAnswer['answer'])
+                    'text'=> $aAnswer['answer']
                 );
             }
             /* Add the now answer if needed */
