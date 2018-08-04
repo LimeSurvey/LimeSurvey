@@ -631,7 +631,7 @@ CREATE TABLE `prefix_surveymenu` (
   `title` varchar(255)  NOT NULL DEFAULT '',
   `position` varchar(255)  NOT NULL DEFAULT 'side',
   `description` text ,
-  `active` int(1) NOT NULL DEFAULT '0',
+  `active` int(11) NOT NULL DEFAULT '0',
   `changed_at` datetime NULL,
   `changed_by` int(11) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
