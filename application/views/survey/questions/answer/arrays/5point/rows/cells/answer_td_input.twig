@@ -20,7 +20,7 @@
         onclick="{{ checkconditionFunction }}(this.value, this.name, this.type)"
      />
     <label for="answer{{ myfname }}-{{ i }}" class="ls-label-xs-visibility">
-        {{ labelText }}
+        {{ processString(labelText) }}
     </label>
 </td>
 <!-- end of td_input -->

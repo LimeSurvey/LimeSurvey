@@ -14,8 +14,8 @@
 
 <!-- answer_row -->
 <tr id="javatbd{{ myfname }}" class="answers-list radio-list form-group {% if odd %}ls-odd{% else %}ls-even{% endif %}{% if error %} ls-error-mandatory has-error{% endif %}" {{ sDisplayStyle }}  role="radiogroup"  aria-labelledby="answertext{{ myfname }}">
-    <th id="answertext{{ myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only  {% endif %}}">
-        {{ answertext }}
+    <th id="answertext{{ myfname }}" class="answertext control-label{% if answerwidth==0 %} hidden sr-only  {% endif %}}">
+        {{ processString(answertext) }}
 
         {# Value for expression manager javascript (use id) ; no need to submit #}
         {{ C.Html.hiddenField("java"~myfname,value,({
