@@ -16,7 +16,7 @@
         <td class="hidden"></td>
     {% endif %}
     {% for ld in labelans0 %}
-        <th class='answer-text'>{{ ld }}</th>
+        <th class='answer-text'>{{ processString(ld) }}</th>
     {% endfor %}
     {% if labelans1|length > 0 %}
         <td class="header_separator">
@@ -27,7 +27,7 @@
             <td class="hidden"></td>
         {% endif %}
         {% for ld in labelans1 %}
-            <th class='answer-text'>{{ ld }}</th>
+            <th class='answer-text'>{{ processString(ld) }}</th>
         {% endfor %}
     {% endif %}
     {% if shownoanswer or rightexists %}
