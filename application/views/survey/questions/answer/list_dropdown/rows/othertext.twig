@@ -9,7 +9,7 @@
  */
 #}
 <label for="othertext{{ name }}" class="sr-only">
-    {{ label }}
+    {{ processString(label) }}
 </label>
 <div class="form-group text-item other-text-item">
 {{ C.Html.textField(name~"other",value,({
