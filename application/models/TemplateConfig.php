@@ -587,7 +587,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registermandatoryinfo']    = '  ';
         $aClassAndAttributes['class']['registersave']             = ' ';
         $aClassAndAttributes['class']['registersavediv']          = '  ';
-        $aClassAndAttributes['class']['registersavedivbutton']    = '  ';
+        $aClassAndAttributes['class']['registersavedivbutton']    = ' action--ls-button-submit ';
         $aClassAndAttributes['class']['registerhead']             = '  ';
 
 
