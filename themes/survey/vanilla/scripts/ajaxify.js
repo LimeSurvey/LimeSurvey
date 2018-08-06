@@ -119,16 +119,20 @@ var AjaxSubmitObject = function () {
                 return false;
             }
         });
-
+        
         // If the user try to submit the form
         // Always bind to document to not need to bind again
         $(document).on('submit', '#limesurvey', function (e) {
             // Prevent multiposting
             //Check if there is an active submit
             //If there is -> return immediately
-            if (activeSubmit) return;
+            if (activeSubmit) {
+                e.preventDefault();
+                return false;
+            }
             //block further submissions
             activeSubmit = true;
+            $('.action--ls-button-submit, .action--ls-button-previous').prop('disabled', true).addClass('btn-disabled');
             if ($('#onsubmitbuttoninput').length == 0) {
                 $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $('#limesurvey [type=submit]:not([data-confirmedby])').attr('name') + '\' value=\'' + $('#limesurvey [type=submit]:not([data-confirmedby])').attr('value') + '\' type=\'hidden\' />');
             }
@@ -140,6 +144,8 @@ var AjaxSubmitObject = function () {
                 endLoadingBar();
                 //free submitting again
                 activeSubmit = false;
+                $('.action--ls-button-submit, .action--ls-button-previous').prop('disabled', false).removeClass('btn-disabled');
+
                 if (/<###begin###>/.test($('#beginScripts').text())) {
                     $('#beginScripts').text('');
                 }
