@@ -2273,14 +2273,43 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 354) {
             $oTransaction = $oDB->beginTransaction();
             $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
-            
-            if (!isset($surveymenuTable->columns['showincollapse'])) {
+            /**
+            * Convert Boolean values into integers for better Database compatability
+            */
+            if (!isset($surveymenuTable->columns['showincollapse'])) 
+            {
                 $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
             }
+            else
+            {
+                $oDB->createCommand()->alterColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
+            }
 
-            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            if (!isset($surveymenuTable->columns['active'])) 
+            {
+                $oDB->createCommand()->addColumn('{{surveymenu}}', 'active', 'integer NOT NULL DEFAULT 0');
+            }
+            else
+            {
+                $oDB->createCommand()->alterColumn('{{surveymenu}}', 'active', 'integer NOT NULL DEFAULT 0');
+            }
+
+            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{showincollapse}}');
             if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
                 $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
+            }
+            else
+            {
+                $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
+            }
+
+            if (!isset($surveymenuEntryTable->columns['active'])) 
+            {
+                $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'active', 'integer NOT NULL DEFAULT 0');
+            }
+            else
+            {
+                $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'active', 'integer NOT NULL DEFAULT 0');
             }
 
             $aIdMap = [];
@@ -2654,8 +2683,8 @@ function createSurveyMenuTable(CDbConnection $oDB)
         'data' =>  "text ",
         'getdatamethod' =>  "string(192)  NOT NULL DEFAULT ''",
         'language' =>  "string(32)  NOT NULL DEFAULT 'en-GB'",
-        'active' =>  "boolean NOT NULL DEFAULT '0'",
-        'showincollapse' =>  "boolean DEFAULT 0",
+        'active' =>  "integer NOT NULL DEFAULT '0'",
+        'showincollapse' =>  "integer DEFAULT 0",
         'changed_at' =>  "datetime NULL",
         'changed_by' =>  "integer NOT NULL DEFAULT '0'",
         'created_at' =>  "datetime NULL",
