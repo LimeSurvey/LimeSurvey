@@ -251,6 +251,50 @@ class TemplateConfiguration extends TemplateConfig
         return $oTemplateConfigurationModel;
     }
 
+
+
+    /**
+     * Returns a Theme options array based on a surveyID
+     *
+     * @param integer $iSurveyId
+     * @param bool $bInherited should inherited theme option values be used?
+     * @return array
+     */
+    
+    public static function getThemeOptionsFromSurveyId($iSurveyId = 0, $bInherited = false)
+    {
+        $aTemplateConfigurations = array();
+        // fetch all themes belonging to $iSurveyId
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('sid=:sid');
+        $criteria->params = array('sid' => $iSurveyId);
+        $oTemplateConfigurations = self::model()->findAll($criteria);
+
+        if ($bInherited){ // inherited values
+            foreach ($oTemplateConfigurations as $key => $oTemplateConfiguration) {
+                $oTemplateConfiguration->bUseMagicInherit = true;
+                $oTemplateConfiguration->setOptions();
+                // set array with values
+                $aTemplateConfigurations[$key]['id'] = null;
+                $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
+                $aTemplateConfigurations[$key]['template_name'] = $oTemplateConfiguration->template_name;
+                $aTemplateConfigurations[$key]['config']['options'] = (array)$oTemplateConfiguration->oOptions;
+            }
+        } else { // db values
+            foreach ($oTemplateConfigurations as $key => $oTemplateConfiguration) {
+                $oTemplateConfiguration->bUseMagicInherit = false;
+                $oAttributes = $oTemplateConfiguration->attributes;
+                // set array with values
+                $aTemplateConfigurations[$key]['id'] = null;
+                $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
+                $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
+                $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])?(array)json_decode($oAttributes['options']):$oAttributes['options'];            
+            }            
+        }
+
+        return $aTemplateConfigurations;
+    }
+
     /**
      * For a given survey, it checks if its theme have a all the needed configuration entries (survey + survey group). Else, it will create it.
      * @TODO: recursivity for survey group

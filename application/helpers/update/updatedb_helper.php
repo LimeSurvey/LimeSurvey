@@ -2273,6 +2273,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 354) {
             $oTransaction = $oDB->beginTransaction();
             $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+
             /**
             * Convert Boolean values into integers for better Database compatability
             */
@@ -2297,6 +2298,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu_entries}}');
             if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
                 $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
+
             }
             else
             {
@@ -2310,6 +2312,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             else
             {
                 $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'active', 'integer NOT NULL DEFAULT 0');
+
             }
 
             $aIdMap = [];

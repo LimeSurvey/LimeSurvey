@@ -8,8 +8,8 @@
             <div class="form-group">
                 <label for='copymail'>
                     <?php eT("Send me a copy:"); ?>
+                    <input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1'  class="form-control"/>
                 </label>
-                <input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1'  class="form-control"/>
             </div>    
             <div class="form-group">
                 <label for='subject'>
