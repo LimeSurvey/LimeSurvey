@@ -2,9 +2,11 @@
  * Methods for the quickaction module
  * -> deprecated and stalled for now
  */
+import LOG from '../components/lslog';
 
-const methods = {
+const quickActionMethods = {
     surveyQuickActionTrigger : () => {
+        LOG.log('surveyQuickActionTrigger');
         const $self = $(this);
         $.ajax({
             url : $self.data('url'),
@@ -14,8 +16,8 @@ const methods = {
             // html contains the buttons
             success : function(data, statut){
                 const newState = parseInt(data.newState);
-                console.log('quickaction resolve', data);
-                console.log('quickaction new state', newState);
+                LOG.log('quickaction resolve', data);
+                LOG.log('quickaction new state', newState);
                 $self.data('active', newState);
                 if(newState === 1){
                     $('#survey-action-container').slideDown(500);
@@ -26,13 +28,14 @@ const methods = {
                 
             },
             error :  function(html, statut){
-                console.error('ERROR!', html, statut);
+                LOG.error('ERROR!', html, statut);
             }
         });
     },
 }
 
-const bindings = ()=>{
+const quickActionBindings = ()=>{
+    LOG.log('quickActionBindings');
     $('#switchchangeformat button').on('click', function(event, state) {
         $('#switchchangeformat button.active').removeClass('active');
         $(this).addClass('active');
@@ -56,4 +59,4 @@ const bindings = ()=>{
     });
 }
 
-export {bindings, methods};
+export {quickActionMethods, quickActionBindings};
