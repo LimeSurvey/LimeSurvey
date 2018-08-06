@@ -2294,7 +2294,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->alterColumn('{{surveymenu}}', 'active', 'integer NOT NULL DEFAULT 0');
             }
 
-            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{showincollapse}}');
+            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu_entries}}');
             if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
                 $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
             }
