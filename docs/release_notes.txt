@@ -35,7 +35,41 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 3.14.0 (build 180709) to 3.14.1 (build 180731) July 31, 2018
+Changes from 3.14.1 (build 180731) to 3.14.2 (build 180807) August 08, 2018
+-Fixed issue #13878: Send email to user group - display issue (Markus Flür)
+-Fixed issue #13902: LimeSurvey try to update response when editing Question (Denis Chenu)
+-Fixed issue #13910: Unable to use saveall button (Markus Flür)
+-Fixed issue #13911: Multi submit action done (Markus Flür)
+-Fixed issue #13923: unable to log in into Admin Backend. Error "Undefined variable: security_update_available" (Markus Flür)
+-Fixed issue #13924: Attribute without description are not seen in management (Denis Chenu)
+-Fixed issue #13925: Unable to use QID SGQ … in validation equation tip (LouisGac)
+-Fixed issue #13935: 'Double click' to Register (Markus Flür)
+-Fixed issue #13939: Add New Question to Groups Disappeared (3.14.1) (Markus Flür)
+-Fixed issue: Postgresql cannot update to latest version due too type error (Markus Flür)
+-Fixed issue: Unable to use ClearAll in Ajax mode (navigator complement) (Markus Flür)
+-Fixed issue: convertGETtoPOST has to be wrapped in singlequotes (Markus Flür)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Danish by achstil
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: German (Informal) by markusfluer
+#Updated translation: German by c_schmitz, markusfluer
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Malay by apisznasdin
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Persian by ESH
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Spanish (Mexican) by rodrirokr
+#Updated translation: Spanish (Spain) by atavei, rodrirokr
+#Updated translation: Thai by tomzt
+#Updated translation: Turkish by kayazeren
+
+Changes from 3.14.0 (build 180730) to 3.14.1 (build 180731) July 31, 2018
 -Fixed issue: wrong permission check in survey theme selector. (LouisGac)
 
 Changes from 3.13.2 (build 180709) to 3.14.0 (build 180730) July 30, 2018
