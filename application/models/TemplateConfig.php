@@ -174,8 +174,11 @@ class TemplateConfig extends CActiveRecord
             $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
 
             // Remove/Replace mother template files
-            $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
-            $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
+            if ($this->template->extends){
+              $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
+              $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
+            }
+
 
             // Then we add the direction files if they exist
             // TODO: attribute system rather than specific fields for RTL
