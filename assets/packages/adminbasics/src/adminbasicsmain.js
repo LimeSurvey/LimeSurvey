@@ -29,7 +29,7 @@ import './components/bootstrap-remote-modals';
 
 //import page wise functionality
 import questionEdit from './pages/questionEditing';
-import * as quickAction from './pages/quickaction';
+//import * as quickAction from './pages/quickaction'; ->temporary deprecated
 import {subquestionAndAnswersGlobalMethods} from './pages/subquestionandanswers';
 import {onExistBinding as surveyGrid} from './pages/surveyGrid';
 
@@ -57,44 +57,55 @@ const AdminCore = function(){
     const eventsBound = {
         document: []
     };
+    
+    const debug = () => {
+        return {eventsBound, windowLS : window.LS }
+    };
 
     const 
         onLoadRegister = () => {
             globalStartUpMethods.bootstrapping();
             surveyGrid();
+            appendToLoad(function(){LOG.log('TRIGGERWARNING','Document ready triggered')}, 'ready');
+            appendToLoad(function(){LOG.log('TRIGGERWARNING','Document scriptcomplete triggered')}, 'pjax:scriptcomplete');
             appendToLoad(saveBindings);
             appendToLoad(confirmationModal);
             appendToLoad(questionEdit);
             appendToLoad(confirmDeletemodal);
             appendToLoad(panelClickable);
-            appendToLoad(panelsAnimation);
+            appendToLoad(panelsAnimation, null, null, 200);
             appendToLoad(notificationSystem.initNotification);
         },
-        appendToLoad = (fn, event, root) => {
-            event = event || 'ready pjax:scriptcomplete';
+        appendToLoad = (fn, event, root, delay) => {
+            event = event || 'pjax:scriptcomplete ready';
             root = root || 'document';
+            delay = delay || 0;
             LOG.log('appendToLoad', {
                 'type' : typeof fn,
                 'fn' : fn
             })
             eventsBound[root] = eventsBound[root] || [];
             
-            if(_.find(eventsBound[root], {fn, event, root}) === undefined) {
-                eventsBound[root].push({fn, event, root});
-                const events = _.map(event.split(' '), (event) => event+'.admincore');
+            if(_.find(eventsBound[root], {fn, event, root, delay}) === undefined) {
+                eventsBound[root].push({fn, event, root, delay});
+                const events = _.map(event.split(' '), (event) => (event !== 'ready' ? event+'.admincore' : 'ready') );
+                const call = delay > 0 ? () => { window.setTimeout(fn, delay); } : fn;
                 if(root == 'document') {
-                    $(document).on(events.join(' '), fn);
+                    $(document).on(events.join(' '), call);
                 } else {
-                    $(root).on(events.join(' '), fn);
+                    $(root).on(events.join(' '), call); 
                 }
             }
         },
         refreshAdminCore = () => {
             _.each(eventsBound, (eventMap, root) => {
                 _.each(eventMap, (evItem) => {
-                    const events = _.map(evItem.event.split(' '), (event) => event+'.admincore');
-                    $(evItem.root).off(events.join(' '));
-                    $(evItem.root).on(events.join(' '), evItem.fn);
+                    const events = _.map(evItem.event.split(' '), (event) => (event !== 'ready' ? event+'.admincore' : ''));
+                    const call = evItem.delay > 0 ? () => { window.setTimeout(evItem.fn, evItem.delay); } : fn;
+                    if(evItem.root !== 'document') {
+                        $(evItem.root).off(events.join(' '));
+                        $(evItem.root).on(events.join(' '), call);
+                    }
                 });
             });
             surveyGrid();
@@ -108,12 +119,23 @@ const AdminCore = function(){
                     appendToLoad: appendToLoad
                 }
             };
+
+            const pageLoadActions = {
+                saveBindings,
+                confirmationModal,
+                questionEdit,
+                confirmDeletemodal,
+                panelClickable,
+                panelsAnimation,
+                initNotification : notificationSystem.initNotification
+            }
+
             const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, AjaxHelper, notifyFader, subquestionAndAnswersGlobalMethods, notificationSystem);
             
             /*
             * Set the namespace to the global variable LS
             */
-            window.LS = _.merge(window.LS, LsNameSpace, {ld: _});
+            window.LS = _.merge(window.LS, LsNameSpace, {pageLoadActions, ld: _, debug});
             
             /* Set a variable to test if browser have HTML5 form ability
             * Need to be replaced by some polyfills see #8009

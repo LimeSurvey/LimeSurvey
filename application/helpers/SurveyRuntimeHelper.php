@@ -488,7 +488,7 @@ class SurveyRuntimeHelper
                     $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
                     $aGroup['aQuestions'][$qid]['class']                = $this->getCurrentQuestionClasses($qid);
                     $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
-                    $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
+                    $aGroup['aQuestions'][$qid]['valid_message']        = LimeExpressionManager::ProcessString( $qa[0]['valid_message'] );
                     $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
                     $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
                     $aGroup['aQuestions'][$qid]['answer']               = LimeExpressionManager::ProcessString($qa[1], $qa[4], null, 3, 1, false, true, false);
@@ -858,11 +858,11 @@ class SurveyRuntimeHelper
         /* quota submitted */
         if ($this->sMove == 'confirmquota') {
             checkCompletedQuota($this->iSurveyid);
-        } 
+        }
         /* quota submitted */
         if ($this->sMove == 'returnfromquota') {
             LimeExpressionManager::JumpTo($this->param['thisstep']);
-        } 
+        }
     }
 
     /**

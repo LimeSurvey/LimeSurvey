@@ -587,7 +587,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['registermandatoryinfo']    = '  ';
         $aClassAndAttributes['class']['registersave']             = ' ';
         $aClassAndAttributes['class']['registersavediv']          = '  ';
-        $aClassAndAttributes['class']['registersavedivbutton']    = '  ';
+        $aClassAndAttributes['class']['registersavedivbutton']    = ' action--ls-button-submit ';
         $aClassAndAttributes['class']['registerhead']             = '  ';
 
 
@@ -732,7 +732,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['clearallwrapper'] = $aClassAndAttributes['class']['clearallconfirm'] = ""; // No need, adding it if need something after
         $aClassAndAttributes['class']['clearalllabel'] = "ls-js-hidden";
         $aClassAndAttributes['attr']['clearallconfirm']  = 'value="confirm" name="confirm-clearall" type="checkbox"';
-        $aClassAndAttributes['attr']['clearallbutton'] = 'type="submit" value="clearall" name="move" data-confirmedby="confirm-clearall"';
+        $aClassAndAttributes['attr']['clearallbutton'] = 'type="submit" ';
         $aClassAndAttributes['class']['clearallbutton'] = "ls-clearaction ls-clearall"; // Not needed, keep it (and adding to twig to be most compatible in future)
 
         // Language changer

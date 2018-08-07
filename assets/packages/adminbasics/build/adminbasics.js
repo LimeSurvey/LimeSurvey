@@ -65,6 +65,172 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Check the browsers console capabilities and bundle them into general functions
+ * If the build environment was "production" only put out error messages.
+ */
+
+
+class ConsoleShim {
+    constructor(param='', silencer=false) {
+
+        this.param = param;
+        this.silencer = silencer;
+        this.collector = [];
+        this.currentGroupDescription = '';
+        this.activeGroups = 0;
+        this.timeHolder = null;
+        this.methods = [
+            'group', 'groupEnd', 'log', 'trace', 'time', 'timeEnd', 'error', 'warn'
+        ];
+
+        this.silent = {
+            group : ()=>{return;},
+            groupEnd : ()=>{return;},
+            log : ()=>{return;},
+            trace : ()=>{return;},
+            time : ()=>{return;},
+            timeEnd : ()=>{return;},
+            error : ()=>{return;},
+            err : ()=>{return;},
+            debug : ()=>{return;},
+            warn : ()=>{return;}
+        }
+    }
+
+    _generateError() {
+        try {
+            throw new Error();
+        } catch (err) {
+            return err;
+        }
+    }
+    _insertParamToArguments(rawArgs){
+        if(this.param !== ''){
+            let args = [...rawArgs];
+            args.unshift(this.param);
+            return args;
+        }
+        return Array.from(arguments);
+    }
+    setSilent(newValue = null){
+        this.silencer = newValue || !this.silencer;
+    }
+    //Start grouping logs
+    group() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.group === 'function') {
+            console.group.apply(console, args);
+            return;
+        }
+        const description = args[0] || 'GROUP';
+        this.currentGroupDescription = description;
+        this.activeGroups++;
+    }
+    //Stop grouping logs
+    groupEnd() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.groupEnd === 'function') {
+            console.groupEnd.apply(console, args);
+            return;
+        }
+        this.currentGroupDescription = '';
+        this.activeGroups--;
+        this.activeGroups = this.activeGroups === 0 ? 0 : this.activeGroups--;
+    }
+    //Simplest mechanism to log stuff
+    // Aware of the group shim
+    log() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.group === 'function') {
+            console.log.apply(console, args);
+            return;
+        }
+        args.shift();
+        args.unshift(' '.repeat(this.activeGroups * 2));
+        this.log.apply(this,args);
+    }
+    //Trace back the apply.
+    //Uses either the inbuilt function console trace or opens a shim to trace by calling this._insertParamToArguments(arguments).callee
+    trace() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);        
+        if (typeof console.trace === 'function') {
+            console.trace.apply(console, args);
+            return;
+        }
+        const artificialError = this._generateError();
+        if (artificialError.stack) {
+            this.log.apply(console, artificialError.stack);
+            return;
+        }
+
+        this.log(args);
+        if (arguments.callee != undefined) {
+            this.trace.apply(console, arguments.callee);
+        }
+    }
+
+    time() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);    
+        if (typeof console.time === 'function') {
+            console.time.apply(console, args);
+            return;
+        }
+
+        this.timeHolder = new Date();
+    }
+
+    timeEnd() {
+        if(this.silencer) { return; }
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.timeEnd === 'function') {
+            console.timeEnd.apply(console, args);
+            return;
+        }
+        const diff = (new Date()) - this.timeHolder;
+        this.log(`Took ${Math.floor(diff/(1000*60*60))} hours, ${Math.floor(diff/(1000*60))} minutes and ${Math.floor(diff/(1000))} seconds ( ${diff} ms)`);
+        this.time = new Date();
+    }
+
+    error() {
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.error === 'function') {
+            console.error.apply(console,args);
+            return;
+        }
+
+        this.log('--- ERROR ---');
+        this.log(args);
+    }
+
+
+    warn() {
+        const args = this._insertParamToArguments(arguments);
+        if (typeof console.warn === 'function') {
+            console.warn.apply(console,args);
+            return;
+        }
+
+        this.log('--- WARN ---');
+        this.log(args);
+    }
+}
+
+const adminCoreLSConsole = new ConsoleShim('AdminCore');
+
+/* harmony default export */ __webpack_exports__["a"] = (adminCoreLSConsole);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -17177,179 +17343,13 @@
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)(module)))
 
 /***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/**
- * Check the browsers console capabilities and bundle them into general functions
- * If the build environment was "production" only put out error messages.
- */
-
-
-class ConsoleShim {
-    constructor(param='', silencer=false) {
-
-        this.param = param;
-        this.silencer = silencer;
-        this.collector = [];
-        this.currentGroupDescription = '';
-        this.activeGroups = 0;
-        this.timeHolder = null;
-        this.methods = [
-            'group', 'groupEnd', 'log', 'trace', 'time', 'timeEnd', 'error', 'warn'
-        ];
-
-        this.silent = {
-            group : ()=>{return;},
-            groupEnd : ()=>{return;},
-            log : ()=>{return;},
-            trace : ()=>{return;},
-            time : ()=>{return;},
-            timeEnd : ()=>{return;},
-            error : ()=>{return;},
-            err : ()=>{return;},
-            debug : ()=>{return;},
-            warn : ()=>{return;}
-        }
-    }
-
-    _generateError() {
-        try {
-            throw new Error();
-        } catch (err) {
-            return err;
-        }
-    }
-    _insertParamToArguments(rawArgs){
-        if(this.param !== ''){
-            let args = [...rawArgs];
-            args.unshift(this.param);
-            return args;
-        }
-        return Array.from(arguments);
-    }
-    setSilent(newValue = null){
-        this.silencer = newValue || !this.silencer;
-    }
-    //Start grouping logs
-    group() {
-        if(this.silencer) { return; }
-        const args = this._insertParamToArguments(arguments);
-        if (typeof console.group === 'function') {
-            console.group.apply(console, args);
-            return;
-        }
-        const description = args[0] || 'GROUP';
-        this.currentGroupDescription = description;
-        this.activeGroups++;
-    }
-    //Stop grouping logs
-    groupEnd() {
-        if(this.silencer) { return; }
-        const args = this._insertParamToArguments(arguments);
-        if (typeof console.groupEnd === 'function') {
-            console.groupEnd.apply(console, args);
-            return;
-        }
-        this.currentGroupDescription = '';
-        this.activeGroups--;
-        this.activeGroups = this.activeGroups === 0 ? 0 : this.activeGroups--;
-    }
-    //Simplest mechanism to log stuff
-    // Aware of the group shim
-    log() {
-        if(this.silencer) { return; }
-        const args = this._insertParamToArguments(arguments);
-        if (typeof console.group === 'function') {
-            console.log.apply(console, args);
-            return;
-        }
-        args.shift();
-        args.unshift(' '.repeat(this.activeGroups * 2));
-        this.log.apply(this,args);
-    }
-    //Trace back the apply.
-    //Uses either the inbuilt function console trace or opens a shim to trace by calling this._insertParamToArguments(arguments).callee
-    trace() {
-        if(this.silencer) { return; }
-        const args = this._insertParamToArguments(arguments);        
-        if (typeof console.trace === 'function') {
-            console.trace.apply(console, args);
-            return;
-        }
-        const artificialError = this._generateError();
-        if (artificialError.stack) {
-            this.log.apply(console, artificialError.stack);
-            return;
-        }
-
-        this.log(args);
-        if (arguments.callee != undefined) {
-            this.trace.apply(console, arguments.callee);
-        }
-    }
-
-    time() {
-        if(this.silencer) { return; }
-        const args = this._insertParamToArguments(arguments);    
-        if (typeof console.time === 'function') {
-            console.time.apply(console, args);
-            return;
-        }
-
-        this.timeHolder = new Date();
-    }
-
-    timeEnd() {
-        if(this.silencer) { return; }
-        const args = this._insertParamToArguments(arguments);
-        if (typeof console.timeEnd === 'function') {
-            console.timeEnd.apply(console, args);
-            return;
-        }
-        const diff = (new Date()) - this.timeHolder;
-        this.log(`Took ${Math.floor(diff/(1000*60*60))} hours, ${Math.floor(diff/(1000*60))} minutes and ${Math.floor(diff/(1000))} seconds ( ${diff} ms)`);
-        this.time = new Date();
-    }
-
-    error() {
-        const args = this._insertParamToArguments(arguments);
-        if (typeof console.error === 'function') {
-            console.error.apply(console,args);
-            return;
-        }
-
-        this.log('--- ERROR ---');
-        this.log(args);
-    }
-
-
-    warn() {
-        const args = this._insertParamToArguments(arguments);
-        if (typeof console.warn === 'function') {
-            console.warn.apply(console,args);
-            return;
-        }
-
-        this.log('--- WARN ---');
-        this.log(args);
-    }
-}
-
-const adminCoreLSConsole = new ConsoleShim('AdminCore');
-
-/* harmony default export */ __webpack_exports__["a"] = (adminCoreLSConsole);
-
-
-/***/ }),
 /* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return globalStartUpMethods; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return globalWindowMethods; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_lslog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_lslog__ = __webpack_require__(0);
 /**
  * Define global setters for LimeSurvey
  * Also bootstrapping methods and window bound methods are set here
@@ -17719,7 +17719,7 @@ module.exports = __webpack_require__(6);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jqueryAdditions_center_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__jqueryAdditions_isEmpty_js__ = __webpack_require__(10);
@@ -17727,19 +17727,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_bootstrap_remote_modals__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_bootstrap_remote_modals___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_bootstrap_remote_modals__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_quickaction__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_subquestionandanswers__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_surveyGrid__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__parts_confirmationModal__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__parts_notifyFader__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__parts_ajaxHelper__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__parts_save__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_confirmdeletemodal__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_panelclickable__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_panelsanimation__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_notifications__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_lslog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_subquestionandanswers__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_surveyGrid__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__parts_confirmationModal__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__parts_notifyFader__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__parts_ajaxHelper__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__parts_save__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_confirmdeletemodal__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_panelclickable__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_panelsanimation__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_notifications__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_lslog__ = __webpack_require__(0);
 /*
  * JavaScript functions for LimeSurvey administrator
  *
@@ -17771,7 +17770,7 @@ window.LS = window.LS || {};
 
 //import page wise functionality
 
-
+//import * as quickAction from './pages/quickaction'; ->temporary deprecated
 
 
 
@@ -17799,48 +17798,59 @@ const AdminCore = function(){
     const eventsBound = {
         document: []
     };
+    
+    const debug = () => {
+        return {eventsBound, windowLS : window.LS }
+    };
 
     const 
         onLoadRegister = () => {
-            __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["a" /* globalStartUpMethods */].bootstrapping();
-            Object(__WEBPACK_IMPORTED_MODULE_8__pages_surveyGrid__["a" /* onExistBinding */])();
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_13__parts_save__["a" /* default */]);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_9__parts_confirmationModal__["a" /* default */]);
+            __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["a" /* globalStartUpMethods */].bootstrapping();
+            Object(__WEBPACK_IMPORTED_MODULE_7__pages_surveyGrid__["a" /* onExistBinding */])();
+            appendToLoad(function(){__WEBPACK_IMPORTED_MODULE_17__components_lslog__["a" /* default */].log('TRIGGERWARNING','Document ready triggered')}, 'ready');
+            appendToLoad(function(){__WEBPACK_IMPORTED_MODULE_17__components_lslog__["a" /* default */].log('TRIGGERWARNING','Document scriptcomplete triggered')}, 'pjax:scriptcomplete');
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_12__parts_save__["a" /* default */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_8__parts_confirmationModal__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__["a" /* default */]);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_14__components_confirmdeletemodal__["a" /* default */]);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_15__components_panelclickable__["a" /* default */]);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_16__components_panelsanimation__["a" /* default */]);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */].initNotification);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_13__components_confirmdeletemodal__["a" /* default */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_14__components_panelclickable__["a" /* default */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_15__components_panelsanimation__["a" /* default */], null, null, 200);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_16__components_notifications__["a" /* default */].initNotification);
         },
-        appendToLoad = (fn, event, root) => {
-            event = event || 'ready pjax:scriptcomplete';
+        appendToLoad = (fn, event, root, delay) => {
+            event = event || 'pjax:scriptcomplete ready';
             root = root || 'document';
-            __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log('appendToLoad', {
+            delay = delay || 0;
+            __WEBPACK_IMPORTED_MODULE_17__components_lslog__["a" /* default */].log('appendToLoad', {
                 'type' : typeof fn,
                 'fn' : fn
             })
             eventsBound[root] = eventsBound[root] || [];
             
-            if(__WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(eventsBound[root], {fn, event, root}) === undefined) {
-                eventsBound[root].push({fn, event, root});
-                const events = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.map(event.split(' '), (event) => event+'.admincore');
+            if(__WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(eventsBound[root], {fn, event, root, delay}) === undefined) {
+                eventsBound[root].push({fn, event, root, delay});
+                const events = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.map(event.split(' '), (event) => (event !== 'ready' ? event+'.admincore' : 'ready') );
+                const call = delay > 0 ? () => { window.setTimeout(fn, delay); } : fn;
                 if(root == 'document') {
-                    $(document).on(events.join(' '), fn);
+                    $(document).on(events.join(' '), call);
                 } else {
-                    $(root).on(events.join(' '), fn);
+                    $(root).on(events.join(' '), call); 
                 }
             }
         },
         refreshAdminCore = () => {
             __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(eventsBound, (eventMap, root) => {
                 __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(eventMap, (evItem) => {
-                    const events = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.map(evItem.event.split(' '), (event) => event+'.admincore');
-                    $(evItem.root).off(events.join(' '));
-                    $(evItem.root).on(events.join(' '), evItem.fn);
+                    const events = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.map(evItem.event.split(' '), (event) => (event !== 'ready' ? event+'.admincore' : ''));
+                    const call = evItem.delay > 0 ? () => { window.setTimeout(evItem.fn, evItem.delay); } : fn;
+                    if(evItem.root !== 'document') {
+                        $(evItem.root).off(events.join(' '));
+                        $(evItem.root).on(events.join(' '), call);
+                    }
                 });
             });
-            Object(__WEBPACK_IMPORTED_MODULE_8__pages_surveyGrid__["a" /* onExistBinding */])();
-            __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log("Refreshed Admin core methods");
+            Object(__WEBPACK_IMPORTED_MODULE_7__pages_surveyGrid__["a" /* onExistBinding */])();
+            __WEBPACK_IMPORTED_MODULE_17__components_lslog__["a" /* default */].log("Refreshed Admin core methods");
         },
         setNameSpace = () => {
             const BaseNameSpace = {
@@ -17850,12 +17860,23 @@ const AdminCore = function(){
                     appendToLoad: appendToLoad
                 }
             };
-            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_10__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_12__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_11__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_7__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */]);
+
+            const pageLoadActions = {
+                saveBindings: __WEBPACK_IMPORTED_MODULE_12__parts_save__["a" /* default */],
+                confirmationModal: __WEBPACK_IMPORTED_MODULE_8__parts_confirmationModal__["a" /* default */],
+                questionEdit: __WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__["a" /* default */],
+                confirmDeletemodal: __WEBPACK_IMPORTED_MODULE_13__components_confirmdeletemodal__["a" /* default */],
+                panelClickable: __WEBPACK_IMPORTED_MODULE_14__components_panelclickable__["a" /* default */],
+                panelsAnimation: __WEBPACK_IMPORTED_MODULE_15__components_panelsanimation__["a" /* default */],
+                initNotification : __WEBPACK_IMPORTED_MODULE_16__components_notifications__["a" /* default */].initNotification
+            }
+
+            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_11__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_10__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_6__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_16__components_notifications__["a" /* default */]);
             
             /*
             * Set the namespace to the global variable LS
             */
-            window.LS = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(window.LS, LsNameSpace, {ld: __WEBPACK_IMPORTED_MODULE_0_lodash___default.a});
+            window.LS = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(window.LS, LsNameSpace, {pageLoadActions, ld: __WEBPACK_IMPORTED_MODULE_0_lodash___default.a, debug});
             
             /* Set a variable to test if browser have HTML5 form ability
             * Need to be replaced by some polyfills see #8009
@@ -17865,7 +17886,7 @@ const AdminCore = function(){
         };
         setNameSpace();
         onLoadRegister();
-        __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log("AdminCore", eventsBound);
+        __WEBPACK_IMPORTED_MODULE_17__components_lslog__["a" /* default */].log("AdminCore", eventsBound);
 }
 
 AdminCore();
@@ -18156,75 +18177,8 @@ jQuery.fn.extend({
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export bindings */
-/* unused harmony export methods */
-/**
- * Methods for the quickaction module
- * -> deprecated and stalled for now
- */
-
-const methods = {
-    surveyQuickActionTrigger : () => {
-        const $self = $(this);
-        $.ajax({
-            url : $self.data('url'),
-            type : 'GET',
-            dataType : 'json',
-            data: {currentState: $self.data('active')},
-            // html contains the buttons
-            success : function(data, statut){
-                const newState = parseInt(data.newState);
-                console.log('quickaction resolve', data);
-                console.log('quickaction new state', newState);
-                $self.data('active', newState);
-                if(newState === 1){
-                    $('#survey-action-container').slideDown(500);
-                } else {
-                    $('#survey-action-container').slideUp(500);
-                }
-                $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
-                
-            },
-            error :  function(html, statut){
-                console.error('ERROR!', html, statut);
-            }
-        });
-    },
-}
-
-const bindings = ()=>{
-    $('#switchchangeformat button').on('click', function(event, state) {
-        $('#switchchangeformat button.active').removeClass('active');
-        $(this).addClass('active');
-
-        const value = $(this).data('value');
-        const url = $('#switch-url').attr('data-url')+'/format/'+value;
-
-        $.ajax({
-            url : url,
-            type : 'GET',
-            dataType : 'html',
-
-            // html contains the buttons
-            success : function(html, statut){
-            },
-            error :  function(html, statut){
-                alert('error');
-            }
-        });
-
-    });
-}
-
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return subquestionAndAnswersGlobalMethods; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
 /**
  * Methods loaded on subquestions and answers page
@@ -18243,7 +18197,7 @@ const subquestionAndAnswersGlobalMethods = {
  
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18265,11 +18219,11 @@ const onExistBinding = ()=>{
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
 /**
  * Neccessary methods for the confirmation modal
@@ -18375,13 +18329,13 @@ const loadMethods = ()=>{
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_lslog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_lslog__ = __webpack_require__(0);
 
 
 
@@ -18549,7 +18503,7 @@ const saveController = SaveController();
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18753,7 +18707,7 @@ function confirmDeletemodal() {
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18778,23 +18732,26 @@ function panelClickable () {
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = panelsAnimation;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lslog__ = __webpack_require__(0);
 /**
  * Welcome page panels animations
  */
+
+
 function panelsAnimation(){
 
+    __WEBPACK_IMPORTED_MODULE_0__lslog__["a" /* default */].log('Triggering panel animation');
     /**
      * Panel shown one by one
      */
     $('.panel').each(function(i){
         $(this).delay((i++) * 200).animate({opacity: 1, top: '0px'}, 200);
     });
-
 
     /**
      * Rotate last survey/question
@@ -18820,12 +18777,12 @@ function panelsAnimation(){
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parts_ajaxHelper__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lslog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lslog__ = __webpack_require__(0);
 /**
  * Notifcation system for admin
  *

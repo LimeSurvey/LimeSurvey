@@ -509,7 +509,7 @@ class Survey extends LSActiveRecord
         $allowedAttributes = array('template', 'usecookie', 'allowprev',
             'showxquestions', 'shownoanswer', 'showprogress', 'questionindex',
             'usecaptcha', 'showgroupinfo', 'showqnumcode', 'navigationdelay',
-            'expires','stardate','admin','adminemail');
+            'expires','stardate','admin','adminemail','emailnotificationto','emailresponseto');
         foreach ($allowedAttributes as $attribute) {
             if (!is_null($event->get($attribute))) {
                 $this->{$attribute} = $event->get($attribute);
