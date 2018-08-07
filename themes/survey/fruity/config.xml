@@ -29,10 +29,14 @@
         Here the list of the css/js files to add to the template package.
         About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
         "css/variations/sea_green.css" will be updated via the theme variation options
+
+        NOTE: The "add" tag also count as a "replace" tag.
+        Eg: <add>css/theme.css</add> will replace the vanilla css/theme.css
+        But, all files that are already added in vanilla will be also added here.
+        Eg: css/ajaxify.css is already added in vanilla, it doen't exist in this theme, so ne need to add it here. 
     -->
     <files>
         <css>
-            <add>css/ajaxify.css</add>
             <add>css/animate.css</add>
             <add>css/variations/sea_green.css</add>
             <add>css/theme.css</add>

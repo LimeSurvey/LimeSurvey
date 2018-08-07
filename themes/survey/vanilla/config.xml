@@ -29,6 +29,11 @@
     <!--
         Here the list of the css/js files to add to the template package.
         About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
+
+        NOTE: The "add" tag also count as a "replace" tag.
+        Eg: In any theme extended vanilla, ""<add>css/theme.css</add>"" will replace the vanilla css/theme.css
+        But, all files that are already added in vanilla will be also added in the extended theme.
+        Eg: css/ajaxify.css is already added in vanilla. If it's not modified in the extended theme, if you want to use the vanilla css/ajaxify.css, just don't add it all in the extened theme config
     -->
     <files>
         <css>
