@@ -106,7 +106,38 @@ class LSYii_ClientScript extends CClientScript
     {
         if (!empty(Yii::app()->clientScript->packages[$sPackageName])) {
             if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])) {
+
+              $sFilePath = Yii::getPathOfAlias( Yii::app()->clientScript->packages[$sPackageName]["basePath"] ) . DIRECTORY_SEPARATOR . $sFileName;
+
+              // We add the file the package only if exists, to avoid 404 errors in console
+              if (file_exists($sFilePath)){
                 Yii::app()->clientScript->packages[$sPackageName][$sType][] = $sFileName;
+              }elseif(YII_DEBUG){
+
+                // If debug mode is on, we warn the theme designer, and give him few tips to find the error
+
+                // Advanced tips concern only frontend theme package
+                $aPackageName = explode('-', $sPackageName);
+                if ($aPackageName[0] == "survey" && $aPackageName[1] == "template"){
+                  $sMessage = "\\n";
+                  $sMessage .= "\\n";
+                  $sMessage .= " (¯`·._.·(¯`·._.· Theme Configuration Error  ·._.·´¯)·._.·´¯) \\n";
+                  $sMessage .= "\\n";
+                  $sMessage .= "Can't find file '$sFilePath' defined in package '$sPackageName' \\n";
+                  $sMessage .= "\\n";
+                  $sMessage .= "Note: This file can be defined in a child theme of the package. \\n";
+                  $sMessage .= "Note: If this file is defined in your theme manifest, please make sure it exists in your theme. \\n";
+                  $sMessage .= "Note: If it exists in its mother theme but not in your extended theme, you don't need to add it in your manifest  \\n";
+                  $sMessage .= "Note: Remember to reset your theme so the modifications to config.xml are applied  \\n";
+                  $sMessage .= "Note: You can also set in config.php 'force_xmlsettings_for_survey_rendering' so configuration is read from XML instead of DB (no reset needed)  \\n ";
+                  $sMessage .= "\\n";
+                  $sMessage .= "\\n";
+                }else{
+                  $sMessage = "Can't find file '$sFilePath' defined in package '$sPackageName' \\n";
+                }
+
+                Yii::app()->clientScript->registerScript('error_'.$sPackageName, "throw Error(\"$sMessage\");", LSYii_ClientScript::POS_POSTSCRIPT);
+              }
             }
         }
     }
@@ -302,7 +333,7 @@ class LSYii_ClientScript extends CClientScript
                             $package = $this->corePackages[$name];
             }
         }
-        
+
         if (isset($package)) {
             $package['position'] = $position;
 
@@ -311,7 +342,7 @@ class LSYii_ClientScript extends CClientScript
                                     $this->registerPackageScriptOnPosition($p, $position);
                 }
             }
-            
+
             $this->coreScripts[$name] = $package;
             $this->hasScripts = true;
             $params = func_get_args();
@@ -324,7 +355,7 @@ class LSYii_ClientScript extends CClientScript
 
         return $this;
     }
-    
+
     /**
      * Renders the specified core javascript library.
      */
@@ -408,7 +439,7 @@ class LSYii_ClientScript extends CClientScript
             $debugFrontend = 0;
             $debugBackend  = 0;
         }
-        
+
         $html .= "<script type='text/javascript'>window.debugState = {frontend : (".$debugFrontend." === 1), backend : (".$debugBackend." === 1)};</script>";
 
         if ($this->enableJavaScript) {
@@ -422,7 +453,7 @@ class LSYii_ClientScript extends CClientScript
                     }
                 }
             }
-            
+
             if (isset($this->scripts[self::POS_HEAD])) {
                 $html .= $this->renderScriptBatch($this->scripts[self::POS_HEAD]);
             }
@@ -498,7 +529,7 @@ class LSYii_ClientScript extends CClientScript
      */
     public function renderBodyEnd(&$output)
     {
-        if (!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END]) && !isset($this->scripts[self::POS_READY]) 
+        if (!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END]) && !isset($this->scripts[self::POS_READY])
         && !isset($this->scripts[self::POS_LOAD]) && !isset($this->scripts[self::POS_POSTSCRIPT])) {
             str_replace('<###end###>', '', $output);
             return;
@@ -533,14 +564,14 @@ class LSYii_ClientScript extends CClientScript
         if (isset($this->scripts[self::POS_LOAD])) {
             if ($fullPage) {
                 //This part is different to reflect the changes needed in the backend by the pjax loading of pages
-                
-                
+
+
                 $scripts[] = "jQuery(document).on('ready pjax:complete',function() {\n".implode("\n", $this->scripts[self::POS_LOAD])."\n});";
             } else {
                             $scripts[] = implode("\n", $this->scripts[self::POS_LOAD]);
             }
         }
-        
+
         if (isset($this->scripts[self::POS_POSTSCRIPT])) {
             if ($fullPage) {
                 //This part is different to reflect the changes needed in the backend by the pjax loading of pages
@@ -556,7 +587,7 @@ class LSYii_ClientScript extends CClientScript
             $scripts[] = "jQuery(document).off('pjax:success.debugger').on('pjax:success.debugger',function(e) { console.ls.log('PJAX success', e);});";
             $scripts[] = "jQuery(document).off('pjax:error.debugger').on('pjax:error.debugger',function(e) { console.ls.log('PJAX error', e);});";
         }
-        
+
         //All scripts are wrapped into a section to be able to reload them accordingly
         if (!empty($scripts)) {
             $html .= $this->renderScriptBatch($scripts);
