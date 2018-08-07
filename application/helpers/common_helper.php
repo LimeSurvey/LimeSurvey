@@ -898,6 +898,8 @@ function getSurveyInfo($surveyid, $languagecode = '')
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail'] = Yii::app()->getConfig('siteadminname'); }
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '') {$thissurvey['urldescrip'] = $thissurvey['surveyls_url']; }
 
+            $thissurvey['owner_username'] = $result->survey->owner->users_name;
+
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
 
