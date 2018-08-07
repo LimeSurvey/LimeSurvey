@@ -766,10 +766,15 @@ class TemplateManifest extends TemplateConfiguration
         $aFiles = array();
         $oRFilesTemplate = (!empty($bExtends)) ? self::getTemplateForXPath($oTemplate, 'files') : $oTemplate;
 
-        if (isset($oRFilesTemplate->config->files->$sType->add)) {
-            // TODO: "replace" and "remove"
+        if (isset($oRFilesTemplate->config->files->$sType->add)) {          
             $aFiles = (array) $oTemplate->config->files->$sType->add;
         }
+
+        if (isset($oRFilesTemplate->config->files->$sType->replace)) {
+            $aReplaceFiles = (array) $oTemplate->config->files->$sType->replace;
+            $aFiles = array_merge($aFiles, $aReplaceFiles);
+        }
+
         return $aFiles;
     }
 
