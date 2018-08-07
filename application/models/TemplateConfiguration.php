@@ -891,13 +891,35 @@ class TemplateConfiguration extends TemplateConfig
             foreach ($aSettings as $key => $sFileName) {
                 if (file_exists($this->path.$sFileName)) {
                     Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
-
                 } else {
+
                     // File doesn't exist locally, so it should be removed
                     $key = array_search($sFileName, $aSettings);
-                    //Yii::app()->clientScript->removeFileFromPackage($this->sPackageName, $sType, $sFileName);
                     unset($aSettings[$key]);
-                    Yii::app()->clientScript->addFileToPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
+
+                    $oRTemplate = self::getTemplateForAsset($sFileName, $this);
+
+                    if ($oRTemplate){
+
+                      Yii::app()->clientScript->addFileToPackage($oRTemplate->sPackageName, $sType, $sFileName);
+
+                    }else{
+
+                      die();
+                      $sMessage = "\\n";
+                      $sMessage .= "\\n";
+                      $sMessage .= " (¯`·._.·(¯`·._.· Theme Configuration Error  ·._.·´¯)·._.·´¯) \\n";
+                      $sMessage .= "\\n";
+                      $sMessage .= "Can't find file '$sFileName' defined in theme '$this->template_name' \\n";
+                      $sMessage .= "\\n";
+                      $sMessage .= "Note: Make sure this file exist in the current theme, or in one of its parent themes.  \\n ";
+                    //  $sMessage .= "Note: Remember you can set in config.php 'force_xmlsettings_for_survey_rendering' so configuration is read from XML instead of DB (no reset needed)  \\n ";
+                      $sMessage .= "\\n";
+                      $sMessage .= "\\n";
+
+                      Yii::app()->clientScript->registerScript('error_'.$this->template_name, "throw Error(\"$sMessage\");");
+                    }
+
                 }
             }
         }
@@ -932,6 +954,36 @@ class TemplateConfiguration extends TemplateConfig
             $instance->template->checkTemplate();
             $this->oMotherTemplate = $instance->prepareTemplateRendering($sMotherTemplateName, null);
         }
+    }
+
+
+
+    /**
+     * Find which template should be used to render a given view
+     * @param  string    $sFile           the file to check
+     * @param  TemplateConfiguration  $oRTemplate    the template where the custom option page should be looked for
+     * @return Template|boolean
+     */
+    public function getTemplateForAsset($sFile, $oRTemplate)
+    {
+      do {
+
+          if (!($oRTemplate instanceof TemplateConfiguration)) {
+            return false;
+            break;
+          }
+
+          $oMotherTemplate = $oRTemplate->oMotherTemplate;
+          $oRTemplate = $oMotherTemplate;
+          $sPackageName = $oRTemplate->sPackageName;
+
+          $sFilePath = Yii::getPathOfAlias( Yii::app()->clientScript->packages[$oRTemplate->sPackageName]["basePath"] ) . DIRECTORY_SEPARATOR . $sFile;
+
+
+
+      }while(!file_exists($sFilePath));
+
+      return $oRTemplate;
     }
 
     /**
