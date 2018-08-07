@@ -829,8 +829,12 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['quotals'] = 0;
     $results['quotamembers'] = 0;
     $results['plugin_settings'] = 0;
+    $results['themes'] = 0;
     $results['survey_url_parameters'] = 0;
     $results['importwarnings'] = array();
+    $results['theme_options_original_data'] = '';
+    $results['theme_options_differences'] = array();
+    $sTemplateName = '';
 
 
     $aLanguagesSupported = array();
@@ -850,6 +854,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             // Set survey group id to 1. Makes no sense to import it without the actual survey group.
             if ($key == 'gsid') {
                 $value = 1;
+            }
+            if ($key == 'template') {
+                $sTemplateName = (string)$value;
             }
             $insertdata[(string) $key] = (string) $value;
         }
@@ -1554,6 +1561,83 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                     $results['importwarnings'][] = sprintf(gT("Plugin %s didn't exist, settings not imported"), CHtml::encode($row->name));
                     $pluginNamesWarning[(string) $row->name] = 1;
                 }
+            }
+        }
+    }
+
+    //// Import Survey theme settings
+    $aTemplateConfiguration = array();
+
+    // original theme
+    if (isset($xml->themes_inherited)) {
+        foreach ($xml->themes_inherited->theme as $theme_key => $theme_row) {
+            if ((string)$theme_row->template_name === $sTemplateName){
+                $aTemplateConfiguration['theme_original']['options'] = (array)$theme_row->config->options;
+                $results['theme_original'] = json_encode($theme_row->config->options);
+            }
+        }
+    }
+
+
+    if (isset($xml->themes)) {
+
+        // current theme options
+        if (!empty($sTemplateName)){
+            $oTemplateConfigurationCurrent = TemplateConfiguration::getInstance($sTemplateName);
+            //$oTemplateConfigurationCurrent->bUseMagicInherit = true;
+            $aTemplateConfiguration['theme_current']['options'] = (array)json_decode($oTemplateConfigurationCurrent->attributes['options']);
+        }
+
+        // survey theme options
+        foreach ($xml->themes->theme as $theme_key => $theme_row) { 
+            // skip if theme doesn't exist
+            if (!Template::checkIfTemplateExists((string)$theme_row->template_name)) {
+                // show warning if survey theme doesn't exist
+                if ((string)$theme_row->template_name === $sTemplateName){
+                    $results['template_deleted'] = '1';
+                }
+                continue;
+            }
+            // insert into Template configuration table
+            $result = TemplateManifest::importManifestLss($iNewSID, $theme_row);
+            if ($result) {
+                $results['themes']++;
+                if ((string)$theme_row->template_name === $sTemplateName){
+
+                    if (isset($theme_row->config->options)){
+                        $options = $theme_row->config->options;
+
+                        // set each key value to 'inherit' if options are set to 'inherit'
+                        if ((string)$options === 'inherit' && isset($aTemplateConfiguration['theme_current']['options'])){
+                            $options = $aTemplateConfiguration['theme_current']['options'];
+                            $options = array_fill_keys(array_keys($options), 'inherit');
+                        }
+
+                        $aThemeOptionsData = array();
+                        foreach ((array)$options as $key => $value) {
+                            if ($value == 'inherit'){ 
+                                $sOldValue = isset($aTemplateConfiguration['theme_original']['options'][$key])?$aTemplateConfiguration['theme_original']['options'][$key]:'';
+                                $sNewValue = isset($aTemplateConfiguration['theme_current']['options'][$key])?$aTemplateConfiguration['theme_current']['options'][$key]:'';
+                                if (!empty($sOldValue) && !empty($sNewValue) && $sOldValue !== $sNewValue){
+                                    // used to send original theme options data to controller action if client wants to restore original theme options                                 
+                                    $aThemeOptionsData[$key] = $aTemplateConfiguration['theme_original']['options'][$key];
+                                    // used to display difference between options
+                                    $aThemeOptionsDifference = array();
+                                    $aThemeOptionsDifference['option'] = $key;
+                                    $aThemeOptionsDifference['current_value'] = $aTemplateConfiguration['theme_current']['options'][$key];
+                                    $aThemeOptionsDifference['original_value'] = $aTemplateConfiguration['theme_original']['options'][$key];
+                                    $results['theme_options_differences'][] = $aThemeOptionsDifference;
+                                }
+                            }
+                        }
+
+                        $results['theme_options_original_data'] = json_encode($aThemeOptionsData);
+                    }
+
+                $aTemplateConfiguration['theme_survey']['options'] = (array)$theme_row->config->options;
+                }
+            } else {
+                $results['importwarnings'][] = gT("Error").": Failed to insert data[18]<br />";
             }
         }
     }

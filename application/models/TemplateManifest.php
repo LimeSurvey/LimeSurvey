@@ -359,6 +359,36 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
+     * Create a new entry in {{template_configuration}} table using the survey theme options from lss export file 
+     * @param     $iSurveyId      int    the id of the survey
+     * @param $xml SimpleXMLElement 
+     * @return boolean true on success
+     */
+    public static function importManifestLss($iSurveyId = 0, $xml =null)
+    {
+        if ((int)$iSurveyId > 0 && !empty($xml)){
+            $oTemplateConfiguration = new TemplateConfiguration;
+            $oTemplateConfiguration->setToInherit();
+
+            $oTemplateConfiguration->bJustCreated = true;
+            $oTemplateConfiguration->isNewRecord = true;
+            $oTemplateConfiguration->id = null;
+            $oTemplateConfiguration->template_name = $xml->template_name->__toString();
+            $oTemplateConfiguration->sid = $iSurveyId;
+
+            if (isAssociativeArray((array)$xml->config->options)){
+                $oTemplateConfiguration->options  = TemplateConfig::formatToJsonArray($xml->config->options);
+            }
+           
+            if ($oTemplateConfiguration->save()){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param string $sFieldPath
      */
     public static function getTemplateForXPath($oTemplate, $sFieldPath)
