@@ -1251,4 +1251,22 @@ class TemplateConfiguration extends TemplateConfig
             $this->showpopups = $config;
         }
     }
+
+    /**
+     * Set each option key value to 'inherit' instead of having only one 'inherit' value for options.
+     * Keys are fetched from parent xml configuration.
+     */
+    public function setOptionKeysToInherit(){
+        $oTemplate = $this->getParentConfiguration();
+        $oTemplate->bUseMagicInherit = true;
+        $oTemplate->setOptions();
+
+        $aOptions = array();
+        if ((string)$this->options === 'inherit'){
+            foreach ($oTemplate->oOptions as $key => $value) {
+                $aOptions[$key] = 'inherit';
+            }
+            $this->options = json_encode($aOptions);
+        }
+    }
 }
