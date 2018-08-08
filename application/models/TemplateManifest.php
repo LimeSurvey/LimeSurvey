@@ -758,25 +758,36 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
      *
-     * @var $jFiles string json
+     * @var $sType string js or css ?
      * @return array
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
+        $aFiles        = array();
+        $aFiles        = $this->getFilesTo($oTemplate, $sType, 'add');
+        $aReplaceFiles = $this->getFilesTo($oTemplate, $sType, 'replace');
+        $aFiles        = array_merge($aFiles, $aReplaceFiles);
+        return $aFiles;
+    }
+
+    /**
+     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
+     *
+     * @var $sType string js or css ?
+     * @return array
+     */
+    protected function getFilesTo($oTemplate, $sType, $sAction)
+    {
         $aFiles = array();
         $oRFilesTemplate = (!empty($bExtends)) ? self::getTemplateForXPath($oTemplate, 'files') : $oTemplate;
 
-        if (isset($oRFilesTemplate->config->files->$sType->add)) {
-            $aFiles = (array) $oTemplate->config->files->$sType->add;
-        }
-
-        if (isset($oRFilesTemplate->config->files->$sType->replace)) {
-            $aReplaceFiles = (array) $oTemplate->config->files->$sType->replace;
-            $aFiles = array_merge($aFiles, $aReplaceFiles);
+        if (isset($oRFilesTemplate->config->files->$sType->$sAction)) {
+            $aFiles = (array) $oTemplate->config->files->$sType->$sAction;
         }
 
         return $aFiles;
     }
+
 
     /**
      * Proxy for Yii::app()->clientScript->removeFileFromPackage()
