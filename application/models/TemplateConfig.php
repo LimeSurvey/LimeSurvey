@@ -1043,6 +1043,17 @@ class TemplateConfig extends CActiveRecord
     }
 
     /**
+     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
+     *
+     * @var $sType string js or css ?
+     * @return array
+     */
+    protected function getFilesToRemove($oTemplate, $sType)
+    {
+        return $this->getFilesTo($oTemplate, $sType, 'remove');
+    }
+
+    /**
      * Change the mother template configuration depending on template settings
      * @var $sType     string   the type of settings to change (css or js)
      * @var $aSettings array    array of local setting
