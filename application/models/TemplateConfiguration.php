@@ -871,11 +871,17 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getOfiles($oTemplate, $sField)
     {
-        if ( !empty($this->Ofiles[$oTemplate->template->name]) && !empty($this->Ofiles[$oTemplate->template->name][$sField] )) {
-            return $this->Ofiles[$oTemplate->template->name][$sField];
+        if ( !empty($this->Ofiles[$oTemplate->template->name])){
+          if (!empty($this->Ofiles[$oTemplate->template->name][$sField] )) {
+              return $this->Ofiles[$oTemplate->template->name][$sField];
+            }else{
+                $this->Ofiles[$oTemplate->template->name][$sField] = array();
+            }
+        }else{
+            $this->Ofiles[$oTemplate->template->name] = array();
+            $this->Ofiles[$oTemplate->template->name][$sField] = array();
         }
 
-        $this->Ofiles[$oTemplate->template->name]           = array();
 
         $files = $oTemplate->$sField;
 
