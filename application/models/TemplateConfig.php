@@ -1027,7 +1027,20 @@ class TemplateConfig extends CActiveRecord
         return self::$aTemplatesWithoutDB;
     }
 
-
+    /**
+     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
+     *
+     * @var $sType string js or css ?
+     * @return array
+     */
+    protected function getFilesToLoad($oTemplate, $sType)
+    {
+        $aFiles        = array();
+        $aFiles        = $this->getFilesTo($oTemplate, $sType, 'add');
+        $aReplaceFiles = $this->getFilesTo($oTemplate, $sType, 'replace');
+        $aFiles        = array_merge($aFiles, $aReplaceFiles);
+        return $aFiles;
+    }
 
     /**
      * Change the mother template configuration depending on template settings

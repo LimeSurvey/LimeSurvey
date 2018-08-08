@@ -822,24 +822,6 @@ class TemplateConfiguration extends TemplateConfig
         return Yii::app()->twigRenderer->renderOptionPage($oTemplate, $renderArray);
     }
 
-    /**
-     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
-     *
-     * @param TemplateConfiguration $oTemplate
-     * @param string $sType
-     * @return array
-     * @internal param string $jFiles json
-     */
-    protected function getFilesToLoad($oTemplate, $sType)
-    {
-        $aFiles        = array();
-        $aFiles        = $this->getFilesTo($oTemplate, $sType, 'add');
-        $aReplaceFiles = $this->getFilesTo($oTemplate, $sType, 'replace');
-        $aFiles        = array_merge($aFiles, $aReplaceFiles);
-        return $aFiles;
-
-    }
-
 
     /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
