@@ -161,6 +161,16 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 </div>
             </div>
         </div>
+        <div class="row ls-space margin top-10">
+            <div class='form-group col-xs-12'>
+                <label class='col-sm-12 text-left control-label' for='forgotpasswordurl'>
+                    <?php eT("Forgotten password URL:") ?>
+                </label>
+                <div class="col-sm-12">
+                    <input class="form-control" type='text' size='255' id='forgotpasswordurl' name='forgotpasswordurl' value="<?php echo htmlspecialchars(getGlobalSetting('forgotpasswordurl')); ?>" />
+                </div>
+            </div>
+        </div>
     </div>
     <div class="ls-flex-column ls-space padding left-5 right-5 col-md-5">
 

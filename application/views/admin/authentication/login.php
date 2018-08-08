@@ -131,11 +131,16 @@ echo viewHelper::getViewTestTag('login');
                                     <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Log in');?></button><br />
                                     <br/>
                                     <?php
-                                    if (Yii::app()->getConfig("display_user_password_in_email") === true)
+                                    $fpu = getGlobalSetting("forgotpasswordurl");
+                                    if($fpu) {
+                                    ?>
+                                        <a href='<?php echo $fpu; ?>'><?php eT("Forgot your password?"); ?></a><br />
+                                    <?php
+                                    } elseif (Yii::app()->getConfig("display_user_password_in_email") === true)
                                     {
-                                        ?>
-                                        <a href='<?php echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php eT("Forgot your password?"); ?></a><br />
-                                        <?php
+                                    ?>
+                                            <a href='<?php echo $this->createUrl("admin/authentication/sa/forgotpassword"); ?>'><?php eT("Forgot your password?"); ?></a><br />
+                                    <?php
                                     }
                                     ?>
                                 </p>
