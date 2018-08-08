@@ -984,7 +984,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createTable('{{plugins}}', array(
                 'id' => 'pk',
                 'name' => 'string NOT NULL',
-                'active' => 'boolean'
+                'active' => 'integer'
             ));
             $oDB->createCommand()->createTable('{{plugin_settings}}', array(
                 'id' => 'pk',
@@ -2273,14 +2273,46 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 354) {
             $oTransaction = $oDB->beginTransaction();
             $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
-            
-            if (!isset($surveymenuTable->columns['showincollapse'])) {
+
+            /**
+            * Convert Boolean values into integers for better Database compatability
+            */
+            if (!isset($surveymenuTable->columns['showincollapse'])) 
+            {
                 $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
             }
+            else
+            {
+                $oDB->createCommand()->alterColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
+            }
 
-            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            if (!isset($surveymenuTable->columns['active'])) 
+            {
+                $oDB->createCommand()->addColumn('{{surveymenu}}', 'active', 'integer NOT NULL DEFAULT 0');
+            }
+            else
+            {
+                $oDB->createCommand()->alterColumn('{{surveymenu}}', 'active', 'integer NOT NULL DEFAULT 0');
+            }
+
+            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu_entries}}');
             if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
                 $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
+
+            }
+            else
+            {
+                $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
+            }
+
+            if (!isset($surveymenuEntryTable->columns['active'])) 
+            {
+                $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'active', 'integer NOT NULL DEFAULT 0');
+            }
+            else
+            {
+                $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'active', 'integer NOT NULL DEFAULT 0');
+
             }
 
             $aIdMap = [];
