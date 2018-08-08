@@ -74,9 +74,7 @@ class TemplateConfiguration extends TemplateConfig
     /** @var string $sTypeIcon the type of template for icon (core vs user)*/
     private $sTypeIcon;
 
-    /** @var array $aFilesToLoad cache for the method getFilesToLoad()*/
-    private $aFilesToLoad;
-
+    /** @var array $aFilesTo cache for the method getFilesTo*/
     private $aFilesTo;
 
     /** @var array $aFrameworkAssetsToReplace cache for the method getFrameworkAssetsToReplace()*/
@@ -834,35 +832,12 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
-        if (empty($this->aFilesToLoad)) {
-            $this->aFilesToLoad = array();
-        }
+        $aFiles        = array();
+        $aFiles        = $this->getFilesTo($oTemplate, $sType, 'add');
+        $aReplaceFiles = $this->getFilesTo($oTemplate, $sType, 'replace');
+        $aFiles        = array_merge($aFiles, $aReplaceFiles);
+        return $aFiles;
 
-        $sField = 'files_'.$sType;
-        $oFiles = $this->getOfiles($oTemplate, $sField);
-        $this->aFilesToLoad[$sType] = array();
-
-
-        if ($oFiles) {
-
-            foreach ($oFiles as $action => $aFileList) {
-
-                if (is_array($aFileList)) {
-                    if ($action == "add" || $action == "replace") {
-
-                        // Specific inheritance of one of the value of the json array
-                        if ($aFileList[0] == 'inherit') {
-                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
-                            $aFileList = $aParentjFiles[$action];
-                        }
-
-                        $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
-                    }
-                }
-            }
-        }
-
-        return $this->aFilesToLoad[$sType];
     }
 
 
