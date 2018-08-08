@@ -298,6 +298,27 @@ class TemplateConfig extends CActiveRecord
             return $this->sPreviewImgTag;
         }
 
+        public function throwConsoleError($sCustomMessage=null)
+        {
+            $sMessage = "\\n";
+            $sMessage .= "\\n";
+            $sMessage .= " (¯`·._.·(¯`·._.· Theme Configuration Error  ·._.·´¯)·._.·´¯) \\n";
+            $sMessage .= "\\n";
+
+            if ($sCustomMessage==null){
+                $sMessage .= "Can't find file '$sFileName' defined in theme '$this->template_name' \\n";
+                $sMessage .= "\\n";
+                $sMessage .= "Note: Make sure this file exist in the current theme, or in one of its parent themes.  \\n ";
+                $sMessage .= "Note: Remember you can set in config.php 'force_xmlsettings_for_survey_rendering' so configuration is read from XML instead of DB (no reset needed)  \\n ";
+                $sMessage .= "\\n";
+                $sMessage .= "\\n";
+            }else{
+                $sMessage .= $sCustomMessage;
+            }
+
+            Yii::app()->clientScript->registerScript('error_'.$this->template_name, "throw Error(\"$sMessage\");");
+        }
+
 
         /**
          * @return boolean|null
@@ -1007,6 +1028,72 @@ class TemplateConfig extends CActiveRecord
     }
 
 
+
+    /**
+     * Change the mother template configuration depending on template settings
+     * @var $sType     string   the type of settings to change (css or js)
+     * @var $aSettings array    array of local setting
+     * @return array
+     */
+    protected function changeMotherConfiguration($sType, $aSettings)
+    {
+        if (is_a($this->oMotherTemplate, 'TemplateConfiguration')) {
+
+
+            // Check if each file exist in this template path
+            // If the file exists in local template, we can remove it from mother template package.
+            // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
+            // (and leave it in moter template definition if it already exists.)
+            foreach ($aSettings as $key => $sFileName) {
+                if (file_exists($this->path.$sFileName)) {
+                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
+                } else {
+                    // File doesn't exist locally, so it should be removed
+                    $key = array_search($sFileName, $aSettings);
+                    unset($aSettings[$key]);
+
+                    $oRTemplate = self::getTemplateForAsset($sFileName, $this);
+
+                    if ($oRTemplate){
+                      Yii::app()->clientScript->addFileToPackage($oRTemplate->sPackageName, $sType, $sFileName);
+                    }else{
+                      parent::throwConsoleError();
+                    }
+
+                }
+            }
+        }
+        return $aSettings;
+    }
+
+    /**
+     * Find which template should be used to render a given view
+     * @param  string    $sFile           the file to check
+     * @param  TemplateConfiguration  $oRTemplate    the template where the custom option page should be looked for
+     * @return Template|boolean
+     */
+    public function getTemplateForAsset($sFile, $oRTemplate)
+    {
+      do {
+
+          if (!($oRTemplate instanceof TemplateConfiguration)) {
+            return false;
+            break;
+          }
+
+          $oMotherTemplate = $oRTemplate->oMotherTemplate;
+          $oRTemplate = $oMotherTemplate;
+          $sPackageName = $oRTemplate->sPackageName;
+
+          $sFilePath = Yii::getPathOfAlias( Yii::app()->clientScript->packages[$oRTemplate->sPackageName]["basePath"] ) . DIRECTORY_SEPARATOR . $sFile;
+
+
+      }while(!file_exists($sFilePath));
+
+      return $oRTemplate;
+    }
+
+
     // TODO: try to refactore most of those methods in TemplateConfiguration and TemplateManifest so we can define their body here.
     // It will consist in adding private methods to get the values of variables... See what has been done for createTemplatePackage
     // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and format the data
@@ -1035,14 +1122,6 @@ class TemplateConfig extends CActiveRecord
     }
     */
 
-    /**
-     * @param string $sType
-     */
-    /*
-    protected function changeMotherConfiguration($sType, $aSettings)
-    {
-    }
-    */
     /**
      * @param string $sType
      */

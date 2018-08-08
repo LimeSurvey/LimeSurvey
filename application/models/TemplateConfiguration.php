@@ -260,7 +260,7 @@ class TemplateConfiguration extends TemplateConfig
      * @param bool $bInherited should inherited theme option values be used?
      * @return array
      */
-    
+
     public static function getThemeOptionsFromSurveyId($iSurveyId = 0, $bInherited = false)
     {
         $aTemplateConfigurations = array();
@@ -288,8 +288,8 @@ class TemplateConfiguration extends TemplateConfig
                 $aTemplateConfigurations[$key]['id'] = null;
                 $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
                 $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
-                $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])?(array)json_decode($oAttributes['options']):$oAttributes['options'];            
-            }            
+                $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])?(array)json_decode($oAttributes['options']):$oAttributes['options'];
+            }
         }
 
         return $aTemplateConfigurations;
@@ -754,7 +754,7 @@ class TemplateConfiguration extends TemplateConfig
     private function _getRelativePath($from, $to) {
         $dir = explode(DIRECTORY_SEPARATOR, is_file($from) ? dirname($from) : rtrim($from, DIRECTORY_SEPARATOR));
         $file = explode(DIRECTORY_SEPARATOR, $to);
-    
+
         while ($dir && $file && ($dir[0] == $file[0])) {
             array_shift($dir);
             array_shift($file);
@@ -874,60 +874,6 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Change the mother template configuration depending on template settings
-     * @var $sType     string   the type of settings to change (css or js)
-     * @var $aSettings array    array of local setting
-     * @return array
-     */
-    protected function changeMotherConfiguration($sType, $aSettings)
-    {
-        if (is_a($this->oMotherTemplate, 'TemplateConfiguration')) {
-
-
-            // Check if each file exist in this template path
-            // If the file exists in local template, we can remove it from mother template package.
-            // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
-            // (and leave it in moter template definition if it already exists.)
-            foreach ($aSettings as $key => $sFileName) {
-                if (file_exists($this->path.$sFileName)) {
-                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
-                } else {
-
-                    // File doesn't exist locally, so it should be removed
-                    $key = array_search($sFileName, $aSettings);
-                    unset($aSettings[$key]);
-
-                    $oRTemplate = self::getTemplateForAsset($sFileName, $this);
-
-                    if ($oRTemplate){
-
-                      Yii::app()->clientScript->addFileToPackage($oRTemplate->sPackageName, $sType, $sFileName);
-
-                    }else{
-
-                      die();
-                      $sMessage = "\\n";
-                      $sMessage .= "\\n";
-                      $sMessage .= " (¯`·._.·(¯`·._.· Theme Configuration Error  ·._.·´¯)·._.·´¯) \\n";
-                      $sMessage .= "\\n";
-                      $sMessage .= "Can't find file '$sFileName' defined in theme '$this->template_name' \\n";
-                      $sMessage .= "\\n";
-                      $sMessage .= "Note: Make sure this file exist in the current theme, or in one of its parent themes.  \\n ";
-                    //  $sMessage .= "Note: Remember you can set in config.php 'force_xmlsettings_for_survey_rendering' so configuration is read from XML instead of DB (no reset needed)  \\n ";
-                      $sMessage .= "\\n";
-                      $sMessage .= "\\n";
-
-                      Yii::app()->clientScript->registerScript('error_'.$this->template_name, "throw Error(\"$sMessage\");");
-                    }
-
-                }
-            }
-        }
-
-        return $aSettings;
-    }
-
-    /**
      * Proxy for Yii::app()->clientScript->removeFileFromPackage()
      *
      * @param string $sPackageName     string   name of the package to edit
@@ -954,36 +900,6 @@ class TemplateConfiguration extends TemplateConfig
             $instance->template->checkTemplate();
             $this->oMotherTemplate = $instance->prepareTemplateRendering($sMotherTemplateName, null);
         }
-    }
-
-
-
-    /**
-     * Find which template should be used to render a given view
-     * @param  string    $sFile           the file to check
-     * @param  TemplateConfiguration  $oRTemplate    the template where the custom option page should be looked for
-     * @return Template|boolean
-     */
-    public function getTemplateForAsset($sFile, $oRTemplate)
-    {
-      do {
-
-          if (!($oRTemplate instanceof TemplateConfiguration)) {
-            return false;
-            break;
-          }
-
-          $oMotherTemplate = $oRTemplate->oMotherTemplate;
-          $oRTemplate = $oMotherTemplate;
-          $sPackageName = $oRTemplate->sPackageName;
-
-          $sFilePath = Yii::getPathOfAlias( Yii::app()->clientScript->packages[$oRTemplate->sPackageName]["basePath"] ) . DIRECTORY_SEPARATOR . $sFile;
-
-
-
-      }while(!file_exists($sFilePath));
-
-      return $oRTemplate;
     }
 
     /**
