@@ -174,10 +174,11 @@ class TemplateConfig extends CActiveRecord
             $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
 
             // Remove/Replace mother template files
-            if ($this->template->extends){
+            if ( $this->template instanceof Template &&  $this->template->extends){
               $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
               $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
             }
+
 
 
             // Then we add the direction files if they exist
