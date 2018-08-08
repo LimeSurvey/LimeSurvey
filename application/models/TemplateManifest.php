@@ -770,6 +770,18 @@ class TemplateManifest extends TemplateConfiguration
         return $aFiles;
     }
 
+
+    /**
+     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
+     *
+     * @var $sType string js or css ?
+     * @return array
+     */
+    protected function getFilesToRemove($oTemplate, $sType)
+    {
+        return $this->getFilesTo($oTemplate, $sType, 'remove');
+    }
+
     /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
      *
