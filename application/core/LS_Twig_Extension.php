@@ -110,6 +110,10 @@ class LS_Twig_Extension extends Twig_Extension
     /**
      * Publish a script
      * In any twig file, you can register a script doing: {{ registerScript($sId, $sScript) }}
+     *
+     * NOTE: this function is not recursive, so don't use it to register a script located inside a theme folder, or inherited themes will be broken.
+     * NOTE! to register a script located inside a theme folder, registerTemplateScript() 
+     *
      */
     public static function registerScript($id, $script, $position = null, array $htmlOptions = array())
     {
@@ -502,7 +506,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @param bool $strict If the third parameter strict is set to TRUE then the in_array() function will also check the types of the needle in the haystack.
      */
     function in_multiarray($needle, $haystack, $strict = false) {
-        
+
         foreach ($haystack as $item) {
             if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
                 return true;
