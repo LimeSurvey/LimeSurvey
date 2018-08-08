@@ -837,22 +837,10 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         $sField = 'files_'.$sType;
-        $jFiles = $oTemplate->$sField;
+        $oFiles = $this->getOfiles($oTemplate, $sField);
         $this->aFilesToLoad[$sType] = array();
 
-
-        if (!empty($jFiles)) {
-            $oFiles = json_decode($jFiles, true);
-            if ($oFiles === null) {
-                Yii::app()->setFlashMessage(
-                    sprintf(
-                        gT('Error: Malformed JSON: Field %s must be either a JSON array or the string "inherit". Found "%s".'),
-                        $sField,
-                        $jFiles
-                    ),
-                    'error'
-                );
-            } else {
+        if ($oFiles) {
                 foreach ($oFiles as $action => $aFileList) {
 
                     if (is_array($aFileList)) {
@@ -870,7 +858,6 @@ class TemplateConfiguration extends TemplateConfig
                 }
             }
 
-        }
 
 
         return $this->aFilesToLoad[$sType];
@@ -890,16 +877,16 @@ class TemplateConfiguration extends TemplateConfig
 
         $this->Ofiles[$oTemplate->template->name]           = array();
 
-        $Ofiles = $oTemplate->$sField;
+        $files = $oTemplate->$sField;
 
-        if (!empty($Ofiles)) {
-            $oFiles = json_decode($Ofiles, true);
+        if (!empty($files)) {
+            $oFiles = json_decode($files, true);
             if ($oFiles === null) {
                 Yii::app()->setFlashMessage(
                     sprintf(
                         gT('Error: Malformed JSON: Field %s must be either a JSON array or the string "inherit". Found "%s".'),
                         $sField,
-                        $Ofiles
+                        $oFiles
                     ),
                     'error'
                 );
@@ -907,8 +894,8 @@ class TemplateConfiguration extends TemplateConfig
             }
         }
 
-        $this->Ofiles[$oTemplate->template->name][$sField] = $Ofiles;
-        return $Ofiles;
+        $this->Ofiles[$oTemplate->template->name][$sField] = $oFiles;
+        return $oFiles;
     }
 
     /**
