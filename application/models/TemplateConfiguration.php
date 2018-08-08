@@ -77,6 +77,8 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aFilesToLoad cache for the method getFilesToLoad()*/
     private $aFilesToLoad;
 
+    private $aFilesTo;
+
     /** @var array $aFrameworkAssetsToReplace cache for the method getFrameworkAssetsToReplace()*/
     private $aFrameworkAssetsToReplace;
 
@@ -862,6 +864,65 @@ class TemplateConfiguration extends TemplateConfig
 
         return $this->aFilesToLoad[$sType];
     }
+
+
+    /**
+     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
+     *
+     * @param TemplateConfiguration $oTemplate
+     * @param string $sType
+     * @return array
+     * @internal param string $jFiles json
+     */
+    protected function getFilesTo($oTemplate, $sType, $sAction)
+    {
+        // Todo: make it in a recursive way
+        if ( !empty($this->aFilesTo[$oTemplate->template->name]) ) {
+            if ( !empty($this->aFilesTo[$oTemplate->template->name][$sType]) ) {
+                if ( !empty($this->aFilesTo[$oTemplate->template->name][$sType][$sAction] ) ){
+                    return $this->aFilesTo[$oTemplate->template->name][$sType][$sAction];
+                }else{
+                    $this->aFilesTo[$oTemplate->template->name][$sType][$sAction] = array();
+                }
+            }else{
+                $this->aFilesTo[$oTemplate->template->name][$sType]           = array();
+                $this->aFilesTo[$oTemplate->template->name][$sType][$sAction] = array();
+            }
+        }else{
+            $this->aFilesTo[$oTemplate->template->name]                   = array();
+            $this->aFilesTo[$oTemplate->template->name][$sType]           = array();
+            $this->aFilesTo[$oTemplate->template->name][$sType][$sAction] = array();
+        }
+
+
+        $sField = 'files_'.$sType;
+        $oFiles = $this->getOfiles($oTemplate, $sField);
+
+        $aFiles = array();
+
+        if ($oFiles) {
+
+            foreach ($oFiles as $action => $aFileList) {
+
+                if (is_array($aFileList)) {
+                    if ($action == $sAction) {
+
+                        // Specific inheritance of one of the value of the json array
+                        if ($aFileList[0] == 'inherit') {
+                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                            $aFileList = $aParentjFiles[$action];
+                        }
+
+                        $aFiles = array_merge($aFiles, $aFileList);
+                    }
+                }
+            }
+        }
+
+        $this->aFilesTo[$oTemplate->template->name][$sType][$sAction] = $aFiles;
+        return $aFiles;
+    }
+
 
     /**
      * Get the json files (to load/replace/remove) from  a theme, and checks if its correctly formated
