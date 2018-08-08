@@ -83,6 +83,9 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aReplacements cache for the method getFrameworkAssetsReplacement */
     private $aReplacements;
 
+    /** @var array $Ofiles cache for the method getOfiles */
+    private $Ofiles;
+
     public $generalFilesPath; //Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.'generalfiles'.DIRECTORY_SEPARATOR;
 
     /** @var int $showpopups show warnings when running survey */
@@ -871,6 +874,41 @@ class TemplateConfiguration extends TemplateConfig
 
 
         return $this->aFilesToLoad[$sType];
+    }
+
+    /**
+     * Get the json files (to load/replace/remove) from  a theme, and checks if its correctly formated
+     *
+     * @param $oTemplate the theme to check
+     * @param $sField name of the DB field to get (file_css, file_js, file_print_css)
+     */
+    protected function getOfiles($oTemplate, $sField)
+    {
+        if ( !empty($this->Ofiles[$oTemplate->template->name]) && !empty($this->Ofiles[$oTemplate->template->name][$sField] )) {
+            return $this->Ofiles[$oTemplate->template->name][$sField];
+        }
+
+        $this->Ofiles[$oTemplate->template->name]           = array();
+
+        $Ofiles = $oTemplate->$sField;
+
+        if (!empty($Ofiles)) {
+            $oFiles = json_decode($Ofiles, true);
+            if ($oFiles === null) {
+                Yii::app()->setFlashMessage(
+                    sprintf(
+                        gT('Error: Malformed JSON: Field %s must be either a JSON array or the string "inherit". Found "%s".'),
+                        $sField,
+                        $Ofiles
+                    ),
+                    'error'
+                );
+                return false;
+            }
+        }
+
+        $this->Ofiles[$oTemplate->template->name][$sField] = $Ofiles;
+        return $Ofiles;
     }
 
     /**
