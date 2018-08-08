@@ -180,15 +180,15 @@
             background: white;
             opacity: 1;
         }
-        .sticky .ls-heading.stickyBar>td, 
+        .sticky .ls-heading.stickyBar>td,
         .sticky .ls-heading.stickyBar>th {
             word-break: break-word;
         }
-        
+
         .sticky .ls-heading.stickyBar>td:first-child {
             visibility: hidden;
         }
-        
+
         .sticky .ls-heading:nth-child(n+2) {
             display: none;
             background: white;
@@ -241,7 +241,7 @@
 
 
 {% if (aSurveyInfo.options.stickymatrixheaders == "on" ) %}
-    {{ registerScriptFile( assetPublish(aSurveyInfo.oTemplate.path ~ "scripts/sticky.min.js"), "POS_BEGIN") }}
+    {{ registerTemplateScript( "scripts/sticky.min.js", "POS_BEGIN" ) }}
     {{ registerScript("StickyMatrixHeaderScript", "
         var stickyRows = new StickyTableRows();
         $('thead>tr.ls-heading').each(function(itrt, item){
