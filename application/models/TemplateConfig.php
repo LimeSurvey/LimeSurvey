@@ -126,9 +126,29 @@ class TemplateConfig extends CActiveRecord
      */
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
-        if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
-           return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
+
+        if (!empty ($sTemplateName) && !empty ($iSurveyId)  ){
+            if (!empty(self::$aPreparedToRender[$sTemplateName])) {
+                if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId])) {
+                    if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+                       return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
+                   }else{
+                    self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+                   }
+                }else{
+                    self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
+                    self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+                }
+
+            }else{
+                self::$aPreparedToRender = array();
+                self::$aPreparedToRender[$sTemplateName][$iSurveyId] = array();
+                self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = array();
+            }
         }
+
+
+
 
         $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
         $this->setMotherTemplates(); // Recursive mother templates configuration
