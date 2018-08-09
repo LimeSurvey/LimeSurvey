@@ -41,7 +41,7 @@
     ];
     
     foreach($menuObjectArray as $position => $arr) {
-        $menuObjectArray[$position] = $survey->getSurveyMenus($position);
+        $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
     }
     
     $menuObject =  json_encode($menuObjectArray);
