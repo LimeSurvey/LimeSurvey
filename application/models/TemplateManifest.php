@@ -703,22 +703,40 @@ class TemplateManifest extends TemplateConfiguration
             return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
         }
 
-        $this->setBasics($sTemplateName, $iSurveyId);
+        $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
         $this->setMotherTemplates(); // Recursive mother templates configuration
         $this->setThisTemplate(); // Set the main config values of this template
         $this->createTemplatePackage($this); // Create an asset package ready to be loaded
+        $this->getshowpopups();
 
         self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
         return $this;
     }
 
 
-    public function setBasics($sTemplateName = '', $iSurveyId = '')
+    public function setBasics($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = false)
     {
+        // In manifest mode, we always use the default value from manifest, so no inheritance, no $bUseMagicInherit set needed
         $this->setTemplateName($sTemplateName, $iSurveyId); // Check and set template name
         $this->setIsStandard(); // Check if  it is a CORE template
         $this->setPath(); // Check and set path
         $this->readManifest(); // Check and read the manifest to set local params
+    }
+
+    /**
+     * Get showpopups value from config or template configuration
+     */
+    public function getshowpopups(){
+        $config = (int)Yii::app()->getConfig('showpopups');
+        if ($config == 2){
+            if (isset($this->oOptions->showpopups)){
+                $this->showpopups = (int)$this->oOptions->showpopups;
+            } else {
+               $this->showpopups = 1;
+           }
+        } else {
+            $this->showpopups = $config;
+        }
     }
 
     /**
