@@ -51,7 +51,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     public $oParentTemplate;
 
-    /**@var boolean Should the magic getters automatically retreives the parent value when field is set to inherit. Only turn to on for template rendering  */
+    /**@var boolean Should the magic getters automatically retreives the parent value when field is set to inherit. Only turn to on for template rendering. There is no option inheritance on Manifest mode: values from XML are always used. */
     public $bUseMagicInherit = false;
 
     /**@var boolean Indicate if this entry in DB get created on the fly. If yes, because of Cache, it can need a page redirect  */

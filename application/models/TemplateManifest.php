@@ -27,6 +27,9 @@ class TemplateManifest extends TemplateConfiguration
     public $templateEditor;
     public $sPreviewImgTag;
 
+    /* There is no option inheritance on Manifest mode: values from XML are always used. So no: $bUseMagicInherit */
+
+
     /**
      * Public interface specific to TemplateManifest
      * They are used in TemplateEditor
