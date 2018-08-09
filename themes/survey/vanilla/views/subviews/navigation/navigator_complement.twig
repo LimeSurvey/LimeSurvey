@@ -5,7 +5,7 @@
 #}
 {% if aSurveyInfo.aNavigator.load.show == "Y" or aSurveyInfo.aNavigator.save.show == "Y" or aSurveyInfo.aQuestionIndex.bShow == true or aSurveyInfo.bShowClearAll == true %}
     <!-- extra tools, can be shown with javascript too (just remove ls-js-hidden class -->
-    <div class="row ">
+    <div class="row ls-js-hidden">
         <!-- Extra button container -->
         <div class="col-xs-6 clearall-saveall-wrapper">
             {% if aSurveyInfo.aNavigator.load.show == "Y" or aSurveyInfo.aNavigator.save.show == "Y" %}
