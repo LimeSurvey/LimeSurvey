@@ -689,31 +689,6 @@ class TemplateManifest extends TemplateConfiguration
      */
 
 
-    /**
-     * Constructs a template configuration object
-     * If any problem (like template doesn't exist), it will load the default template configuration
-     *
-     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
-     * @param  string $iSurveyId the id of the survey. If
-     * @return $this
-     */
-    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
-    {
-        if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
-            return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
-        }
-
-        $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
-        $this->setMotherTemplates(); // Recursive mother templates configuration
-        $this->setThisTemplate(); // Set the main config values of this template
-        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
-        $this->getshowpopups();
-
-        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
-        return $this;
-    }
-
-
     public function setBasics($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = false)
     {
         // In manifest mode, we always use the default value from manifest, so no inheritance, no $bUseMagicInherit set needed

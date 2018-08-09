@@ -485,33 +485,6 @@ class TemplateConfiguration extends TemplateConfig
         return $this->bTemplateCheckResult;
     }
 
-    /**
-     * Prepare all the needed datas to render the temple
-     * If any problem (like template doesn't exist), it will load the default theme configuration
-     * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
-     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template.
-     *
-     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
-     * @param  string $iSurveyId the id of the survey. If
-     * @param bool $bUseMagicInherit
-     * @return $this
-     */
-    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
-    {
-        if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
-            return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
-        }
-
-        $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
-        $this->setMotherTemplates(); // Recursive mother templates configuration
-        $this->setThisTemplate(); // Set the main config values of this template
-        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
-        $this->getshowpopups();
-
-        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
-        return $this;
-    }
-
     public function setBasics($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = false)
     {
         $this->bUseMagicInherit = $bUseMagicInherit;

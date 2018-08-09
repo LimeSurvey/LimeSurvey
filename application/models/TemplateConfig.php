@@ -109,6 +109,34 @@ class TemplateConfig extends CActiveRecord
         }
 
 
+       /**
+        * Prepare all the needed datas to render the temple
+        * If any problem (like template doesn't exist), it will load the default theme configuration
+        * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
+        * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template.
+        *
+        * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
+        * @param  string $iSurveyId the id of the survey. If
+        * @param bool $bUseMagicInherit
+        * @return $this
+        */
+       public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
+       {
+           if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+               return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
+           }
+
+           $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
+           $this->setMotherTemplates(); // Recursive mother templates configuration
+           $this->setThisTemplate(); // Set the main config values of this template
+           $this->createTemplatePackage($this); // Create an asset package ready to be loaded
+           $this->getshowpopups();
+
+           self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
+           return $this;
+       }
+
+
         /**
          * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
          * Can return a 302 redirect (this is not really a throw …
@@ -178,7 +206,6 @@ class TemplateConfig extends CActiveRecord
               $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
               $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
             }
-
 
             // Then we add the direction files if they exist
             // TODO: attribute system rather than specific fields for RTL
