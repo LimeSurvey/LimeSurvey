@@ -502,19 +502,19 @@ class TemplateConfiguration extends TemplateConfig
             return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
         }
 
-        $this->bUseMagicInherit = $bUseMagicInherit;
-        $this->setBasics($sTemplateName, $iSurveyId);
+        $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
         $this->setMotherTemplates(); // Recursive mother templates configuration
         $this->setThisTemplate(); // Set the main config values of this template
-        $this->createTemplatePackage($this); // Create an asset package ready to be loaded#
+        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
         $this->getshowpopups();
 
         self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
         return $this;
     }
 
-    public function setBasics($sTemplateName = '', $iSurveyId = '')
+    public function setBasics($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = false)
     {
+        $this->bUseMagicInherit = $bUseMagicInherit;
         $this->sTemplateName = $this->template->name;
         $this->setIsStandard(); // Check if  it is a CORE template
         $this->path = ($this->isStandard)
