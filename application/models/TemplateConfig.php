@@ -27,6 +27,9 @@ class TemplateConfig extends CActiveRecord
     /** @var string $sTemplateName The template name */
     public $sTemplateName = '';
 
+    /** @var array of prepared to render TemplateConfig */
+    public static $aPreparedToRender;
+
     /** @var string $sPackageName Name of the asset package of this template*/
     public $sPackageName;
 
