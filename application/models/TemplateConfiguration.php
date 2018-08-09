@@ -498,9 +498,8 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
-        //echo '<br><br><br> $aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] ; <br> $sTemplateName: '.$sTemplateName.' <br>$iSurveyId: '.$iSurveyId.'<br> $bUseMagicInherit: '.$bUseMagicInherit;
-        if (!empty(self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit])) {
-            return self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit];
+        if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+            return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
         }
 
         $this->bUseMagicInherit = $bUseMagicInherit;
@@ -509,7 +508,8 @@ class TemplateConfiguration extends TemplateConfig
         $this->setThisTemplate(); // Set the main config values of this template
         $this->createTemplatePackage($this); // Create an asset package ready to be loaded#
         $this->getshowpopups();
-        self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit] = $this;
+
+        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
         return $this;
     }
 

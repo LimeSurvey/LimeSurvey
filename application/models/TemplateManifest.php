@@ -699,13 +699,16 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
     {
+        if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+            return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
+        }
+
         $this->setBasics($sTemplateName, $iSurveyId);
         $this->setMotherTemplates(); // Recursive mother templates configuration
-
         $this->setThisTemplate(); // Set the main config values of this template
         $this->createTemplatePackage($this); // Create an asset package ready to be loaded
 
-
+        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
         return $this;
     }
 
