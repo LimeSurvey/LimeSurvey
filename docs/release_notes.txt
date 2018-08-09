@@ -35,6 +35,24 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.14.2 (build 180807) to 3.14.3 (build 180809) August 09, 2018
+-Fixed issue #13669: Stylesheet missing in themes/survey fruity (LouisGac)
+-Fixed issue #13669: recursive way, for easy maintenance (LouisGac)
+-Fixed issue #13929: Italic text in admin shown with a serif font (LouisGac)
+-Fixed issue #13931: Installer enters an infinite redirect loop if the 'tmp' directory is not writable. (Olle Haerstedt)
+-Fixed issue #13934: 3.14.1: Wrong redirect after logic check for question (Dominik Vitt)
+-Fixed issue #13941: graphs do not show in simple or complex statistics (Markus Flür)
+-Fixed issue: Browserdetect question theme not working correctly (Markus Flür)
+-Fixed issue: Internet Explorer not able to open login screen (Markus Flür)
+-Fixed issue: Rehide the navigator complement (Markus Flür)
+-Fixed issue: STATA export plugin's not working. (LouisGac)
+-Fixed issue: browserdetect not saved correctly (Markus Flür)
+-Fixed issue: color picker not working in inheriting themes (Markus Flür)
+-Fixed issue: no logo for fruity after install (LouisGac)
+-Fixed issue: possible notice in theme editor. (LouisGac)
+-Fixed issue: sticky header option in fruity breaks inheritance (LouisGac)
+
+
 Changes from 3.14.1 (build 180731) to 3.14.2 (build 180807) August 08, 2018
 -Fixed issue #13878: Send email to user group - display issue (Markus Flür)
 -Fixed issue #13902: LimeSurvey try to update response when editing Question (Denis Chenu)
