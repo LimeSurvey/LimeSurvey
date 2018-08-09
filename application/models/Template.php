@@ -495,7 +495,7 @@ class Template extends LSActiveRecord
                 $bForceXML = false;
             }
         }
-        
+
         if($abstractInstance === true) {
             return self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML, true);
         }

@@ -24,6 +24,7 @@ if (!defined('BASEPATH')) {
  */
 class TemplateConfig extends CActiveRecord
 {
+
     /** @var string $sTemplateName The template name */
     public $sTemplateName = '';
 
@@ -89,274 +90,274 @@ class TemplateConfig extends CActiveRecord
 
     public static $aTemplatesWithoutDB = null;
 
-        /**
-         * get the template API version
-         * @return integer
-         */
-        public function getApiVersion()
-        {
-            return $this->apiVersion;
+    /**
+     * get the template API version
+     * @return integer
+     */
+    public function getApiVersion()
+    {
+        return $this->apiVersion;
+    }
+
+    /**
+     * Returns the complete URL path to a given template name
+     *
+     * @return string template url
+     */
+    public function getTemplateURL()
+    {
+        if (!isset($this->sTemplateurl)) {
+            $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
+        }
+        return $this->sTemplateurl;
+    }
+
+
+    /**
+     * Prepare all the needed datas to render the temple
+     * If any problem (like template doesn't exist), it will load the default theme configuration
+     * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
+     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template.
+     *
+     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
+     * @param  string $iSurveyId the id of the survey. If
+     * @param bool $bUseMagicInherit
+     * @return $this
+     */
+    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
+    {
+        if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
+           return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
         }
 
-        /**
-         * Returns the complete URL path to a given template name
-         *
-         * @return string template url
-         */
-        public function getTemplateURL()
-        {
-            if (!isset($this->sTemplateurl)) {
-                $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
+        $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
+        $this->setMotherTemplates(); // Recursive mother templates configuration
+        $this->setThisTemplate(); // Set the main config values of this template
+        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
+        $this->getshowpopups();
+
+        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
+        return $this;
+    }
+
+
+    /**
+     * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
+     * Can return a 302 redirect (this is not really a throw …
+     *
+     * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
+     * @param TemplateConfig $oRTemplate template from which the recurrence should start
+     * @param boolean $force file to be in template or mother template
+     * @return TemplateConfig|null|void
+     */
+    public function getTemplateForFile($sFile, $oRTemplate, $force = false)
+    {
+        while (!file_exists($oRTemplate->path.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)) {
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if (!($oMotherTemplate instanceof TemplateConfiguration)) {
+                if(!$force && Yii::app()->twigRenderer->getPathOfFile($sFile)) {
+                    // return dummy template , new self broke (No DB : TODO : must fix init of self)
+                    $templateConfig = new stdClass();
+                    $templateConfig->sTemplateName = null;
+                    return $templateConfig;
+                }
+                /* @todo : same for css and js (in registered package ? ) */
+                TemplateConfiguration::uninstall($this->sTemplateName);
+                Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "), $this->sTemplateName), 'error');
+                Yii::app()->getController()->redirect(array("admin/themeoptions"));
+                break;
             }
-            return $this->sTemplateurl;
+            $oRTemplate = $oMotherTemplate;
         }
 
-
-       /**
-        * Prepare all the needed datas to render the temple
-        * If any problem (like template doesn't exist), it will load the default theme configuration
-        * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
-        * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template.
-        *
-        * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
-        * @param  string $iSurveyId the id of the survey. If
-        * @param bool $bUseMagicInherit
-        * @return $this
-        */
-       public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
-       {
-           if (!empty(self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit])) {
-               return self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit];
-           }
-
-           $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
-           $this->setMotherTemplates(); // Recursive mother templates configuration
-           $this->setThisTemplate(); // Set the main config values of this template
-           $this->createTemplatePackage($this); // Create an asset package ready to be loaded
-           $this->getshowpopups();
-
-           self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
-           return $this;
-       }
+        return $oRTemplate;
+    }
 
 
-        /**
-         * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
-         * Can return a 302 redirect (this is not really a throw …
-         *
-         * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
-         * @param TemplateConfig $oRTemplate template from which the recurrence should start
-         * @param boolean $force file to be in template or mother template
-         * @return TemplateConfig|null|void
-         */
-        public function getTemplateForFile($sFile, $oRTemplate, $force = false)
-        {
-            while (!file_exists($oRTemplate->path.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)) {
-                $oMotherTemplate = $oRTemplate->oMotherTemplate;
-                if (!($oMotherTemplate instanceof TemplateConfiguration)) {
-                    if(!$force && Yii::app()->twigRenderer->getPathOfFile($sFile)) {
-                        // return dummy template , new self broke (No DB : TODO : must fix init of self)
-                        $templateConfig = new stdClass();
-                        $templateConfig->sTemplateName = null;
-                        return $templateConfig;
-                    }
-                    /* @todo : same for css and js (in registered package ? ) */
-                    TemplateConfiguration::uninstall($this->sTemplateName);
-                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version. Can't find file: $sFile "), $this->sTemplateName), 'error');
-                    Yii::app()->getController()->redirect(array("admin/themeoptions"));
-                    break;
-                }
-                $oRTemplate = $oMotherTemplate;
-            }
+    /**
+     * Create a package for the asset manager.
+     * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
+     * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
+     * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
+     *
+     * @param TemplateConfiguration $oTemplate TemplateManifest
+     */
+    protected function createTemplatePackage($oTemplate)
+    {
+        // Each template in the inheritance tree needs a specific alias
+        $sPathName  = 'survey.template-'.$oTemplate->sTemplateName.'.path';
+        $sViewName  = 'survey.template-'.$oTemplate->sTemplateName.'.viewpath';
 
-            return $oRTemplate;
+        Yii::setPathOfAlias($sPathName, $oTemplate->path);
+        Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
+
+        // First we add the framework replacement (bootstrap.css must be loaded before template.css)
+        $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
+        $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
+
+        // This variable will be used to add the variation name to the body class via $aClassAndAttributes['class']['body']
+        $this->aCssFrameworkReplacement = $aCssFiles;
+
+        // Then we add the template config files
+        $aTCssFiles = $this->getFilesToLoad($oTemplate, 'css');
+        $aTJsFiles  = $this->getFilesToLoad($oTemplate, 'js');
+
+        $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
+        $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
+
+        // Remove/Replace mother template files
+        if ( ( $this->template instanceof Template &&  $this->template->extends) || Yii::app()->getConfig('force_xmlsettings_for_survey_rendering') ){
+          $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
+          $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
         }
 
+        // Then we add the direction files if they exist
+        // TODO: attribute system rather than specific fields for RTL
 
-        /**
-         * Create a package for the asset manager.
-         * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
-         * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
-         * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
-         *
-         * @param TemplateConfiguration $oTemplate TemplateManifest
-         */
-        protected function createTemplatePackage($oTemplate)
-        {
-            // Each template in the inheritance tree needs a specific alias
-            $sPathName  = 'survey.template-'.$oTemplate->sTemplateName.'.path';
-            $sViewName  = 'survey.template-'.$oTemplate->sTemplateName.'.viewpath';
+        $this->sPackageName = 'survey-template-'.$this->sTemplateName;
+        $sTemplateurl       = $oTemplate->getTemplateURL();
 
-            Yii::setPathOfAlias($sPathName, $oTemplate->path);
-            Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
+        $aDepends = empty($oTemplate->depends) ? array() : $oTemplate->depends;
 
-            // First we add the framework replacement (bootstrap.css must be loaded before template.css)
-            $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
-            $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
 
-            // This variable will be used to add the variation name to the body class via $aClassAndAttributes['class']['body']
-            $this->aCssFrameworkReplacement = $aCssFiles;
+        // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
+        // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );
+        // Depending on settings, it will create the asset directory, and publish the css and js files
+        Yii::app()->clientScript->addPackage($this->sPackageName, array(
+            'devBaseUrl'  => $sTemplateurl, // Used when asset manager is off
+            'basePath'    => $sPathName, // Used when asset manager is on
+            'css'         => $aCssFiles,
+            'js'          => $aJsFiles,
+            'depends'     => $aDepends,
+        ));
+    }
 
-            // Then we add the template config files
-            $aTCssFiles = $this->getFilesToLoad($oTemplate, 'css');
-            $aTJsFiles  = $this->getFilesToLoad($oTemplate, 'js');
+    /**
+     * Get the file path for a given template.
+     * It will check if css/js (relative to path), or view (view path)
+     * It will search for current template and mother templates
+     *
+     * @param   string $sFile relative path to the file
+     * @param   TemplateConfig $oTemplate the template where to look for (and its mother templates)
+     * @return string|false
+     */
+    protected function getFilePath($sFile, $oTemplate)
+    {
+        // Remove relative path
+        $sFile = trim($sFile, '.');
+        $sFile = trim($sFile, '/');
 
-            $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
-            $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
+        // Retreive the correct template for this file (can be a mother template)
+        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate,false);
 
-            // Remove/Replace mother template files
-            if ( ( $this->template instanceof Template &&  $this->template->extends) || Yii::app()->getConfig('force_xmlsettings_for_survey_rendering') ){
-              $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
-              $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
+        if ($oTemplate instanceof TemplateConfiguration) {
+            if (file_exists($oTemplate->path.$sFile)) {
+                return $oTemplate->path.$sFile;
+            } elseif (file_exists($oTemplate->viewPath.$sFile)) {
+                return $oTemplate->viewPath.$sFile;
+            }
+        }
+        $sExtension = substr(strrchr($sFile, '.'), 1);
+        if($sExtension === 'twig') {
+            return Yii::app()->twigRenderer->getPathOfFile($sFile);
+        }
+        return false;
+    }
+
+    /**
+     * Get the depends package
+     * @uses self::@package
+     * @param TemplateConfiguration $oTemplate
+     * @return string[]
+     */
+    protected function getDependsPackages($oTemplate)
+    {
+        $dir = (getLanguageRTL(App()->getLanguage())) ? 'rtl' : 'ltr';
+
+        /* Core package */
+        $packages[] = 'limesurvey-public';
+        $packages[] = 'template-core';
+        $packages[] = ($dir == "ltr") ? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
+
+        /* bootstrap */
+        if (!empty($this->cssFramework)) {
+
+            // Basic bootstrap package
+            if ((string) $this->cssFramework->name == "bootstrap") {
+                $packages[] = 'bootstrap';
             }
 
-            // Then we add the direction files if they exist
-            // TODO: attribute system rather than specific fields for RTL
+            // Rtl version of bootstrap
+            if ($dir == "rtl") {
+                $packages[] = 'bootstrap-rtl';
+            }
 
-            $this->sPackageName = 'survey-template-'.$this->sTemplateName;
-            $sTemplateurl       = $oTemplate->getTemplateURL();
+            // Remove unwanted bootstrap stuff
+            foreach ($this->getFrameworkAssetsToReplace('css', true) as $toReplace) {
+                Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'css', $toReplace);
+            }
 
-            $aDepends = empty($oTemplate->depends) ? array() : $oTemplate->depends;
-
-
-            // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
-            // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );
-            // Depending on settings, it will create the asset directory, and publish the css and js files
-            Yii::app()->clientScript->addPackage($this->sPackageName, array(
-                'devBaseUrl'  => $sTemplateurl, // Used when asset manager is off
-                'basePath'    => $sPathName, // Used when asset manager is on
-                'css'         => $aCssFiles,
-                'js'          => $aJsFiles,
-                'depends'     => $aDepends,
-            ));
+            foreach ($this->getFrameworkAssetsToReplace('js', true) as $toReplace) {
+                Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'js', $toReplace);
+            }
         }
 
-        /**
-         * Get the file path for a given template.
-         * It will check if css/js (relative to path), or view (view path)
-         * It will search for current template and mother templates
-         *
-         * @param   string $sFile relative path to the file
-         * @param   TemplateConfig $oTemplate the template where to look for (and its mother templates)
-         * @return string|false
-         */
-        protected function getFilePath($sFile, $oTemplate)
-        {
-            // Remove relative path
-            $sFile = trim($sFile, '.');
-            $sFile = trim($sFile, '/');
+        // Moter Template Package
+        $packages = $this->addMotherTemplatePackage($packages);
 
-            // Retreive the correct template for this file (can be a mother template)
-            $oTemplate = $this->getTemplateForFile($sFile, $oTemplate,false);
+        return $packages;
+    }
 
-            if ($oTemplate instanceof TemplateConfiguration) {
-                if (file_exists($oTemplate->path.$sFile)) {
-                    return $oTemplate->path.$sFile;
-                } elseif (file_exists($oTemplate->viewPath.$sFile)) {
-                    return $oTemplate->viewPath.$sFile;
+    // For list, so no "setConfiguration" before
+    public function getPreview()
+    {
+        if (empty($this->sPreviewImgTag)) {
+            if (is_a($this->template, 'Template')) {
+                $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
+                $previewPath         = Template::getTemplatePath($this->template->name).'/'.$sTemplateFileFolder;
+
+                if ($previewPath && file_exists($previewPath.'/preview.png')) {
+                    $previewUrl = Template::getTemplateURL($this->template->name).$sTemplateFileFolder;
+                    $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
                 }
+            } else {
+                $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
             }
-            $sExtension = substr(strrchr($sFile, '.'), 1);
-            if($sExtension === 'twig') {
-                return Yii::app()->twigRenderer->getPathOfFile($sFile);
-            }
-            return false;
+
         }
 
-        /**
-         * Get the depends package
-         * @uses self::@package
-         * @param TemplateConfiguration $oTemplate
-         * @return string[]
-         */
-        protected function getDependsPackages($oTemplate)
-        {
-            $dir = (getLanguageRTL(App()->getLanguage())) ? 'rtl' : 'ltr';
+        return $this->sPreviewImgTag;
+    }
 
-            /* Core package */
-            $packages[] = 'limesurvey-public';
-            $packages[] = 'template-core';
-            $packages[] = ($dir == "ltr") ? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
+    public function throwConsoleError($sCustomMessage=null)
+    {
+        $sMessage = "\\n";
+        $sMessage .= "\\n";
+        $sMessage .= " (¯`·._.·(¯`·._.· Theme Configuration Error  ·._.·´¯)·._.·´¯) \\n";
+        $sMessage .= "\\n";
 
-            /* bootstrap */
-            if (!empty($this->cssFramework)) {
-
-                // Basic bootstrap package
-                if ((string) $this->cssFramework->name == "bootstrap") {
-                    $packages[] = 'bootstrap';
-                }
-
-                // Rtl version of bootstrap
-                if ($dir == "rtl") {
-                    $packages[] = 'bootstrap-rtl';
-                }
-
-                // Remove unwanted bootstrap stuff
-                foreach ($this->getFrameworkAssetsToReplace('css', true) as $toReplace) {
-                    Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'css', $toReplace);
-                }
-
-                foreach ($this->getFrameworkAssetsToReplace('js', true) as $toReplace) {
-                    Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'js', $toReplace);
-                }
-            }
-
-            // Moter Template Package
-            $packages = $this->addMotherTemplatePackage($packages);
-
-            return $packages;
-        }
-
-        // For list, so no "setConfiguration" before
-        public function getPreview()
-        {
-            if (empty($this->sPreviewImgTag)) {
-                if (is_a($this->template, 'Template')) {
-                    $sTemplateFileFolder = Template::getTemplatesFileFolder($this->template->name);
-                    $previewPath         = Template::getTemplatePath($this->template->name).'/'.$sTemplateFileFolder;
-
-                    if ($previewPath && file_exists($previewPath.'/preview.png')) {
-                        $previewUrl = Template::getTemplateURL($this->template->name).$sTemplateFileFolder;
-                        $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
-                    }
-                } else {
-                    $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
-                }
-
-            }
-
-            return $this->sPreviewImgTag;
-        }
-
-        public function throwConsoleError($sCustomMessage=null)
-        {
-            $sMessage = "\\n";
+        if ($sCustomMessage==null){
+            $sMessage .= "Can't find file '$sFileName' defined in theme '$this->template_name' \\n";
             $sMessage .= "\\n";
-            $sMessage .= " (¯`·._.·(¯`·._.· Theme Configuration Error  ·._.·´¯)·._.·´¯) \\n";
+            $sMessage .= "Note: Make sure this file exist in the current theme, or in one of its parent themes.  \\n ";
+            $sMessage .= "Note: Remember you can set in config.php 'force_xmlsettings_for_survey_rendering' so configuration is read from XML instead of DB (no reset needed)  \\n ";
             $sMessage .= "\\n";
-
-            if ($sCustomMessage==null){
-                $sMessage .= "Can't find file '$sFileName' defined in theme '$this->template_name' \\n";
-                $sMessage .= "\\n";
-                $sMessage .= "Note: Make sure this file exist in the current theme, or in one of its parent themes.  \\n ";
-                $sMessage .= "Note: Remember you can set in config.php 'force_xmlsettings_for_survey_rendering' so configuration is read from XML instead of DB (no reset needed)  \\n ";
-                $sMessage .= "\\n";
-                $sMessage .= "\\n";
-            }else{
-                $sMessage .= $sCustomMessage;
-            }
-
-            Yii::app()->clientScript->registerScript('error_'.$this->template_name, "throw Error(\"$sMessage\");");
+            $sMessage .= "\\n";
+        }else{
+            $sMessage .= $sCustomMessage;
         }
 
+        Yii::app()->clientScript->registerScript('error_'.$this->template_name, "throw Error(\"$sMessage\");");
+    }
 
-        /**
-         * @return boolean|null
-         */
-        protected function setIsStandard()
-        {
+
+    /**
+     * @return boolean|null
+     */
+    protected function setIsStandard()
+    {
         $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
-        }
+    }
 
 
     /**

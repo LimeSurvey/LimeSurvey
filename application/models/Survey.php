@@ -159,8 +159,8 @@ class Survey extends LSActiveRecord
 
 
     public $searched_value;
-    
-    public $showsurveypolicynotice = 0; 
+
+    public $showsurveypolicynotice = 0;
 
 
     private $sSurveyUrl;
@@ -792,7 +792,7 @@ class Survey extends LSActiveRecord
                 if ($collapsed && $aEntry['showincollapse'] == 0 ) {
                     continue;
                 }
-                
+
                 //Skip menu if no permission
                 if ((!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])
                     && !Permission::model()->hasSurveyPermission($this->sid, $aEntry['permission'], $aEntry['permission_grade']))
@@ -867,18 +867,18 @@ class Survey extends LSActiveRecord
         $criteria = new CDbCriteria;
         $criteria->condition = 'survey_id IS NULL AND parent_id IS NULL';
         $collapsed = $position==='collapsed';
-        
+
         if ($position != '' && !$collapsed) {
             $criteria->condition .= ' AND position=:position';
             $criteria->params = array(':position'=>$position);
         }
-            
+
         if ($collapsed) {
             $criteria->condition .= ' AND (position=:position OR showincollapse=1 )';
             $criteria->params = array(':position'=>$position);
             $collapsed = true;
         }
-        
+
         $oDefaultMenus = Surveymenu::model()->findAll($criteria);
         $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus, $collapsed);
 
@@ -1901,10 +1901,10 @@ return $s->hasTokensTable; });
     }
 
     public static function replacePolicyLink($dataSecurityNoticeLabel, $surveyId) {
-        
+
         $STARTPOLICYLINK = "";
         $ENDPOLICYLINK = "";
-        
+
         if(self::model()->findByPk($surveyId)->showsurveypolicynotice == 2){
             $STARTPOLICYLINK = "<a href='#data-security-modal-".$surveyId."' data-toggle='collapse'>";
             $ENDPOLICYLINK = "</a>";
@@ -1912,16 +1912,16 @@ return $s->hasTokensTable; });
                 $dataSecurityNoticeLabel.= "<br/> {STARTPOLICYLINK}".gT("Show policy")."{ENDPOLICYLINK}";
             }
         }
-        
+
 
 
         $dataSecurityNoticeLabel =  preg_replace('/\{STARTPOLICYLINK\}/', $STARTPOLICYLINK ,$dataSecurityNoticeLabel);
-        
+
         $countEndLabel = 0;
         $dataSecurityNoticeLabel =  preg_replace('/\{ENDPOLICYLINK\}/', $ENDPOLICYLINK ,$dataSecurityNoticeLabel, -1, $countEndLabel);
         if($countEndLabel == 0){
             $dataSecurityNoticeLabel .= '</a>';
-        } 
+        }
 
         return $dataSecurityNoticeLabel;
 

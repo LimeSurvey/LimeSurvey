@@ -67,7 +67,7 @@ class Surveymenu extends LSActiveRecord
         );
     }
 
-    
+
     public static function staticAddMenu($menuArray)
     {
         $oSurveymenu = new Surveymenu();
@@ -88,9 +88,9 @@ class Surveymenu extends LSActiveRecord
 
     public static function staticRemoveMenu($menuName, $recursive = false)
     {
-        
+
         $oSurveymenu = Surveymenu::model()->find('name=:name', [':name'=>$menuName]);
-        
+
         if ($recursive !== true && count($oSurveymenu->surveymenuEntries) > 0) {
                 return false;
         }
@@ -196,7 +196,7 @@ class Surveymenu extends LSActiveRecord
             'created_by'	=> gT('Created by'),
         );
     }
-    
+
     public function getButtons()
     {
         $buttons = "<div style='white-space: nowrap'>";
@@ -204,10 +204,10 @@ class Surveymenu extends LSActiveRecord
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
-		
+
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
 
-            
+
             $editData = array(
                 'action_surveymenu_editModal',
                 'text-danger',
@@ -227,7 +227,7 @@ class Surveymenu extends LSActiveRecord
         }
 
         $buttons .= '</div>';
-		
+
         return $buttons;
     }
     /**
@@ -309,13 +309,13 @@ class Surveymenu extends LSActiveRecord
     public function onAfterSave($event)
     {
         $criteria = new CDbCriteria();
-		
+
         $criteria->addCondition(['position=:position']);
         $criteria->addCondition(['ordering=:ordering']);
         $criteria->addCondition(['id!=:id']);
         $criteria->params = ['position' => $this->position, 'ordering' => (int) $this->ordering, 'id'=> (int) $this->id];
         $criteria->limit = 1;
-		
+
         $collidingMenu = Surveymenu::model()->find($criteria);
 
         if ($collidingMenu != null) {
@@ -334,7 +334,7 @@ class Surveymenu extends LSActiveRecord
          */
     public function restoreDefaults()
     {
-       
+
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
@@ -425,7 +425,7 @@ class Surveymenu extends LSActiveRecord
         $criteria->compare('changed_by', $this->changed_by);
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('created_by', $this->created_by);
-        
+
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
         return new CActiveDataProvider($this, array(
@@ -448,7 +448,7 @@ class Surveymenu extends LSActiveRecord
         $model = parent::model($className);
         return $model;
     }
-    
+
 
     public function delete()
     {

@@ -165,7 +165,7 @@ class Assessment extends LSActiveRecord
         $criteria->compare('maximum', $this->maximum);
         $criteria->compare('message', $this->message, true);
         $criteria->compare('language', $survey->language);
-        
+
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);
         return new CActiveDataProvider(
             $this,

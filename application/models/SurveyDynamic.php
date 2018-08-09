@@ -739,7 +739,7 @@ class SurveyDynamic extends LSActiveRecord
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
 
         if (
-            !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true) 
+            !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true)
             || $attributes['hidden'] === 1
         ) {
             return false;
@@ -761,8 +761,8 @@ class SurveyDynamic extends LSActiveRecord
                 }
 
                 $aQuestionAttributes['subquestions'][$oSubquestion->qid] = $subQuestionArray;
-                
-                
+
+
             }
             //Get other options
             if (in_array($oQuestion->type, ["M", "P"]) && $oQuestion->other == "Y") {
@@ -784,15 +784,15 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         $fieldname = $oQuestion->basicFieldName;
-        
+
         //If question is of any Array-Type  or a subquestion
-        if (in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"]) 
-            || ($oQuestion->type=='T' && $oQuestion->parent_qid != 0) 
+        if (in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
+            || ($oQuestion->type=='T' && $oQuestion->parent_qid != 0)
         ) {
             $fieldname .= $oQuestion->title;
         }
 
-        
+
         if ($getComment === true) {
             $fieldname .= 'comment';
         }
@@ -809,16 +809,16 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         $aQuestionAttributes['answervalue'] = isset($oResponses[$fieldname]) ? $oResponses[$fieldname] : null;
-        
+
 
         if ((in_array($oQuestion->type, ["!", "L", "O", "F", "H"]))
             || ($oQuestion->type=='T' && $oQuestion->parent_qid != 0) ) {
 
             $aAnswers = (
-                $oQuestion->parent_qid == 0 
-                    ? $oQuestion->answers 
-                    : ($oQuestion->parents != null 
-                        ? $oQuestion->parents->answers 
+                $oQuestion->parent_qid == 0
+                    ? $oQuestion->answers
+                    : ($oQuestion->parents != null
+                        ? $oQuestion->parents->answers
                         : []
                     )
                 );
@@ -835,17 +835,17 @@ class SurveyDynamic extends LSActiveRecord
             $languageArray = getLanguageData(false, $aQuestionAttributes['answervalue']);
             $aQuestionAttributes['languageArray'] = $languageArray[$aQuestionAttributes['answervalue']];
         }
-        
+
         if ($aQuestionAttributes['questionclass'] === 'upload-files') {
             $aQuestionAttributes['fileinfo'] = json_decode($aQuestionAttributes['answervalue'], true);
         }
 
-        
+
         if ($oQuestion->parent_qid != 0 && $oQuestion->parents['type'] === "1") {
             $tempFieldname = $fieldname.'#0';
             $aQuestionAttributes['answervalues'][0] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
             $tempFieldname = $fieldname.'#1';
-            $aQuestionAttributes['answervalues'][1] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;        
+            $aQuestionAttributes['answervalues'][1] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
         }
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
@@ -853,20 +853,20 @@ class SurveyDynamic extends LSActiveRecord
             $iterator = 1;
             do {
                 $currentResponse = $oResponses[$fieldname.$iterator];
-                
+
                 $oSelectedAnswerOption = array_reduce( $oQuestion->answers, function($carry, $oAnswer) use ($currentResponse){
                     return $currentResponse == $oAnswer->code ? $oAnswer : $carry;
                 });
-    
+
                 $option = $oSelectedAnswerOption !== null ? $oSelectedAnswerOption->attributes : '';
 
                 $aQuestionAttributes['answervalues'][] = ['value' => $currentResponse, 'option' => $option];
 
                 $iterator++;
             } while (isset($oResponses[$fieldname.$iterator]));
-        
+
         }
-        
+
         if ($oQuestion->parent_qid != 0 && in_array($oQuestion->parents['type'], [";", ":"])) {
             foreach (Question::model()->findAllByAttributes(array('parent_qid' => $aQuestionAttributes['parent_qid'], 'scale_id' => ($oQuestion->parents['type'] == '1' ? 2 : 1))) as $oScaleSubquestion) {
                 $tempFieldname = $fieldname.'_'.$oScaleSubquestion->title;
@@ -882,13 +882,13 @@ class SurveyDynamic extends LSActiveRecord
 
         $oSurvey = self::$survey;
         $aGroupArray = array();
-        $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id'=>$sSRID));     
+        $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id'=>$sSRID));
         $oGroupList = array_filter($oSurvey->groups, function($oGroup) use ($sLanguage) { return $oGroup->language == $sLanguage; });
 
         foreach ($oGroupList as $oGroup) {
 
             if (!(LimeExpressionManager::GroupIsRelevant($oGroup->gid) && $bHonorConditions == true)) {
-                continue; 
+                continue;
             }
 
             $aAnswersArray = array();
@@ -907,10 +907,9 @@ class SurveyDynamic extends LSActiveRecord
             $aGroupAttributes['answerArray'] = $aAnswersArray;
             $aGroupAttributes['debug'] = $oResponses->attributes;
             $aGroupArray[$oGroup->gid] = $aGroupAttributes;
-            
+
         }
 
         return $aGroupArray;
     }
 }
-

@@ -53,12 +53,12 @@ class Session extends CActiveRecord
         $sDatabasetype = Yii::app()->db->getDriverName();
         // MSSQL delivers hex data (except for dblib driver)
         if ($sDatabasetype == 'sqlsrv' || $sDatabasetype == 'mssql') {
-            $this->data = $this->hexToStr($this->data); 
+            $this->data = $this->hexToStr($this->data);
         }
         // Postgres delivers a stream pointer
         if (gettype($this->data) == 'resource') {
-            $this->data = stream_get_contents($this->data, -1, 0); 
-        }        
+            $this->data = stream_get_contents($this->data, -1, 0);
+        }
         return parent::afterFind();
     }
 

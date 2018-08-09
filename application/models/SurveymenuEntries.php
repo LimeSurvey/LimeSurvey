@@ -513,7 +513,7 @@ class SurveymenuEntries extends LSActiveRecord
      */
     public function restoreDefaults()
     {
-        
+
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {

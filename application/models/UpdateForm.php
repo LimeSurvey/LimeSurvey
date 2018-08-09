@@ -578,10 +578,10 @@ class UpdateForm extends CFormModel
 
                 $updates = $this->getUpdateInfo('1');
                 $update_available = false;
-                
+
                 if ($updates->result) {
                     unset($updates->result);
-                    
+
                     $security_update_available = false;
                     $unstable_update_available = false;
 

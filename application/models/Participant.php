@@ -242,7 +242,7 @@ class Participant extends LSActiveRecord
             $returnArray[$name] = $attribute['defaultname'];
         }
         return $returnArray;
-        
+
     }
 
     /**
@@ -307,7 +307,7 @@ class Participant extends LSActiveRecord
         $participantAttributes = ParticipantAttribute::model()->getAttributeInfo($this->participant_id);
         foreach ($participantAttributes as $singleAttribute) {
             if ($singleAttribute['attribute_id'] == $attribute_id) {
-                return $singleAttribute['value']; 
+                return $singleAttribute['value'];
             }
         }
         return "";
@@ -407,7 +407,7 @@ class Participant extends LSActiveRecord
                 "id" => $name,
                 "header" => $attribute['defaultname'],
                 "type" => "raw",
-               
+
             );
             //textbox
             if ($attribute['attribute_type'] == "TB") {
@@ -534,7 +534,7 @@ class Participant extends LSActiveRecord
             $criteria->addCondition('t.owner_uid = '.Yii::app()->user->id.' OR '.Yii::app()->user->id.' = shares.share_uid OR shares.share_uid = -1');
         }
 
-        $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
+        $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => $sort,
@@ -561,7 +561,7 @@ class Participant extends LSActiveRecord
             $ownerList[$id['owner_uid']] = $oUser->full_name;
         }
         return TbHtml::dropDownList('Participant[owner_uid]', $selected, $ownerList);
-        
+
     }
 
     public function addSurveyFilter($conditions)
@@ -1342,7 +1342,7 @@ class Participant extends LSActiveRecord
                     'owner_name');
                 if (!in_array($sFieldname, $aSafeFieldNames)) {
 // Skip invalid fieldname
-                    continue; 
+                    continue;
                 }
                 $command->addCondition(Yii::app()->db->quoteColumnName($sFieldname).' '.$operator.' '.$param, $booloperator);
             }
@@ -1694,7 +1694,7 @@ class Participant extends LSActiveRecord
                 } catch (Exception $e) {
                     throw new Exception(gT("Could not update token attribute value: ".$e->getMessage()));
                 }
-                
+
                 //If there are new attributes created, add those values to the token entry for this participant
                 if (!empty($newAttributes)) {
                     $numberofattributes = count($addedAttributes);
@@ -1911,15 +1911,15 @@ class Participant extends LSActiveRecord
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */
                 $insertnames = array(
-                    'attribute_type' => 'TB', 
-                    'visible' => 'Y', 
+                    'attribute_type' => 'TB',
+                    'visible' => 'Y',
                     'defaultname' => $value
                 );
                 $oParticipantAttributeNames = new ParticipantAttributeName();
                 $oParticipantAttributeNames->setAttributes($insertnames, false);
                 $oParticipantAttributeNames->save(false);
                 $attid[$key] = $oParticipantAttributeNames->getPrimaryKey();
-                
+
                 $insertnameslang = array(
                     'attribute_id' => $attid[$key],
                     'attribute_name' => urldecode($value),
@@ -1927,18 +1927,18 @@ class Participant extends LSActiveRecord
                 );
                 $oParticipantAttributeNamesLang = new ParticipantAttributeNameLang();
                 $oParticipantAttributeNamesLang->setAttributes($insertnameslang, false);
-                $oParticipantAttributeNamesLang->save(false);                
+                $oParticipantAttributeNamesLang->save(false);
 
             }
         }
 
         /* Add the participants to the CPDB = Iterate through each $tokenid and create the new CPDB id*/
-        if (!is_array($tokenids)) { $tokenids = (array) $tokenids; } 
+        if (!is_array($tokenids)) { $tokenids = (array) $tokenids; }
         foreach ($tokenids as $tid) {
             if (is_numeric($tid) && $tid != "") {
                 /* Get the data for this participant from the tokens table */
                 $oTokenDynamic = TokenDynamic::model($survey->sid)->findByPk($tid);
-    
+
                 /* See if there are any existing CPDB entries that match on firstname,lastname and email */
                 $participantCriteria = new CDbCriteria();
                 $participantCriteria->addCondition('firstname = :firstname');
