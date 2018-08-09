@@ -50,7 +50,7 @@ question_template_attribute.add_platform_info           : {{question_template_at
             value="{{dispVal}}"
             {% if inputsize is not empty %} size="{{inputsize}}" {% endif %}
             {% if maxlength is not empty %} maxlength='{{maxlength}}' {% endif %}
-            disabled="disabled"
+            readonly="readonly"
             aria-labelledby="ls-question-text-{{basename}}"
         />
 
