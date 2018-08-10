@@ -1132,7 +1132,7 @@ class TemplateConfig extends CActiveRecord
                     if ($oRTemplate){
                       Yii::app()->clientScript->addFileToPackage($oRTemplate->sPackageName, $sType, $sFileName);
                     }else{
-                      parent::throwConsoleError();
+                      self::throwConsoleError();
                     }
 
                 }
