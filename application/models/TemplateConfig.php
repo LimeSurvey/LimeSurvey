@@ -148,15 +148,15 @@ class TemplateConfig extends CActiveRecord
         }
 
 
-
-
         $this->setBasics($sTemplateName, $iSurveyId, $bUseMagicInherit);
         $this->setMotherTemplates(); // Recursive mother templates configuration
         $this->setThisTemplate(); // Set the main config values of this template
         $this->createTemplatePackage($this); // Create an asset package ready to be loaded
         $this->getshowpopups();
 
-        self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
+        if (!empty ($sTemplateName) && !empty ($iSurveyId)  ){
+            self::$aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] = $this;
+        }
         return $this;
     }
 
