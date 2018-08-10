@@ -1072,11 +1072,19 @@ class TemplateConfig extends CActiveRecord
 
         // If in template manifest, a single file is provided, a string is produced instead of an array.
         // We force it to array here
-        if (is_object($oFiled) && !empty($oFiled->add) && is_string($oFiled->add)) {
-            $sValue      = $oFiled->add;
-            $oFiled->add = array($sValue);
-            $jFiled      = json_encode($oFiled);
+
+        foreach ( array('add', 'replace', 'remove') as $sAction){
+            if (is_object($oFiled) && !empty($oFiled->$sAction) && is_string($oFiled->$sAction)) {
+                $sValue      = $oFiled->$sAction;
+                $oFiled->$sAction = array($sValue);
+                $jFiled      = json_encode($oFiled);
+
+                Yii::app()->setFlashMessage('encoded: '. $sValue, 'error');
+            }
+
         }
+
+
 
         return $jFiled;
     }
