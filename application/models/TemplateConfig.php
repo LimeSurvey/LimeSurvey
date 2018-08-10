@@ -1078,10 +1078,7 @@ class TemplateConfig extends CActiveRecord
                 $sValue      = $oFiled->$sAction;
                 $oFiled->$sAction = array($sValue);
                 $jFiled      = json_encode($oFiled);
-
-                Yii::app()->setFlashMessage('encoded: '. $sValue, 'error');
             }
-
         }
 
 
