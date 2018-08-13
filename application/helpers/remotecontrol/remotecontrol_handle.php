@@ -2199,7 +2199,7 @@ class remotecontrol_handle
                 } else {
                                     $aSurveyTitle = $oSurveyLanguageSettings->attributes['surveyls_title'];
                 }
-                $aData[] = array('sid'=>$oSurvey->primaryKey, 'surveyls_title'=>$aSurveyTitle, 'startdate'=>$oSurvey->attributes['startdate'], 'expires'=>$oSurvey->attributes['expires'], 'active'=>$oSurvey->attributes['active']);
+                $aData[] = array('sid'=>$oSurvey->primaryKey, 'surveyls_title'=>$aSurveyTitle, 'gsid' => $oSurvey->attributes['gsid'], 'startdate'=>$oSurvey->attributes['startdate'], 'expires'=>$oSurvey->attributes['expires'], 'active'=>$oSurvey->attributes['active']);
             }
             return $aData;
         } else {
