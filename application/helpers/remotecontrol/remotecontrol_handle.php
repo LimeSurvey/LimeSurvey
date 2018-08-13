@@ -2207,6 +2207,55 @@ class remotecontrol_handle
         }
     }
 
+    /**
+     * List the survey groups belonging to a user
+     *
+     * If user is admin he can get survey groups of every user (parameter sUser) or all survey groups (sUser=null)
+     * Else only the survey groups belonging to the user requesting will be shown.
+     *
+     * Returns array with
+     * * `gsid` the ids of survey group
+     * * `surveygroup_title` the title of the survey group
+     * * `surveygroup_name` the name of the survey group
+     * * `surveygroup_description` the description of the survey group
+     * * `template` template
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param string|null $sUsername (optional) username to get list of survey groups
+     * @return array In case of success the list of survey groups
+     */
+    public function list_survey_groups($sSessionKey, $sUsername = null)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            $oSurveyGroup = new SurveysGroups;
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && ($sUsername == null)) {
+                $oSurveyGroup->permission(Yii::app()->user->getId());
+            } elseif ($sUsername != null) {
+                $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
+                if (!isset($aUserData)) {
+                                    return array('status' => 'Invalid user');
+                } else {
+                                    $sUid = $aUserData->attributes['uid'];
+                }
+                $oSurveyGroup->permission($sUid);
+            }
+
+            $aUserSurveyGroups = $oSurveyGroup->with(array('owner'))->findAll();
+            if (count($aUserSurveyGroups) == 0) {
+                            return array('status' => 'No survey groups found');
+            }
+
+            foreach ($aUserSurveyGroups as $oSurveyGroup) {
+                $aData[] = array('gsid'=>$oSurveyGroup->primaryKey, 'parent_gsid' => $oSurveyGroup->attributes['parent_id'],  'sortorder' => $oSurveyGroup->attributes['sortorder'], 'title'=>$oSurveyGroup->attributes['title'], 'name'=>$oSurveyGroup->attributes['name'],'description'=>$oSurveyGroup->attributes['description'],'owner_uid'=>$oSurveyGroup->attributes['owner_uid'],'created'=>$oSurveyGroup->attributes['created'],'modified'=>$oSurveyGroup->attributes['modified']);
+            }
+            return $aData;
+        } else {
+                    return array('status' => 'Invalid session key');
+        }
+    }
+    
+    
 /**
  * Get list the ids and info of users.
  *
