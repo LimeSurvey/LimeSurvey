@@ -398,12 +398,7 @@ class TemplateConfig extends CActiveRecord
         $sMessage .= "\\n";
 
         if ($sCustomMessage==null){
-            $sMessage .= "Can't find file '$sFileName' defined in theme '$this->template_name' \\n";
-            $sMessage .= "\\n";
-            $sMessage .= "Note: Make sure this file exist in the current theme, or in one of its parent themes.  \\n ";
-            $sMessage .= "Note: Remember you can set in config.php 'force_xmlsettings_for_survey_rendering' so configuration is read from XML instead of DB (no reset needed)  \\n ";
-            $sMessage .= "\\n";
-            $sMessage .= "\\n";
+            $sMessage .= "\\n unknown error";
         }else{
             $sMessage .= $sCustomMessage;
         }
@@ -1168,7 +1163,13 @@ class TemplateConfig extends CActiveRecord
                     if ($oRTemplate){
                       Yii::app()->clientScript->addFileToPackage($oRTemplate->sPackageName, $sType, $sFileName);
                     }else{
-                      self::throwConsoleError();
+                        $sMessage  = "Can't find file '$sFileName' defined in theme '$this->sTemplateName' \\n";
+                        $sMessage .= "\\n";
+                        $sMessage .= "Note: Make sure this file exist in the current theme, or in one of its parent themes.  \\n ";
+                        $sMessage .= "Note: Remember you can set in config.php 'force_xmlsettings_for_survey_rendering' so configuration is read from XML instead of DB (no reset needed)  \\n ";
+                        $sMessage .= "\\n";
+                        $sMessage .= "\\n";
+                      self::throwConsoleError($sMessage);
                     }
 
                 }
@@ -1187,7 +1188,7 @@ class TemplateConfig extends CActiveRecord
     {
       do {
 
-          if (!($oRTemplate instanceof TemplateConfiguration)) {
+          if ( !($oRTemplate instanceof TemplateConfiguration) || !($oRTemplate->oMotherTemplate instanceof TemplateConfiguration) ) {
             return false;
             break;
           }
