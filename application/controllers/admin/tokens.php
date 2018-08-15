@@ -1017,14 +1017,14 @@ class tokens extends Survey_Common_Action
         $aData['thissurvey'] = $oSurvey->attributes;
         $aData['surveyid'] = $iSurveyId;
         $aData['tokenfields'] = getAttributeFieldNames($iSurveyId);
-        $aData['tokenfielddata'] = decodeTokenAttributes($oSurvey->attributedescriptions);
+        $aData['tokenfielddata'] = $oSurvey->decodedAttributedescriptions;
         // Prepare token fiel list for dropDownList
         $tokenfieldlist = array();
         foreach ($aData['tokenfields'] as $tokenfield) {
             if (isset($aData['tokenfielddata'][$tokenfield])) {
-                            $description = $aData['tokenfielddata'][$tokenfield]['description'];
+                $description = $aData['tokenfielddata'][$tokenfield]['description'];
             } else {
-                            $description = "";
+                $description = "";
             }
             $description = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", $tokenfield), $description);
             $tokenfieldlist[] = array("id"=>$tokenfield, "description"=>$description);
