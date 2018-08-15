@@ -264,6 +264,18 @@ return array(
         'depends' => array(
             'adminbasics',
         )
+        ),
+
+    'decimalcustom' => array(
+        'devBaseUrl' => 'assets/packages/decimalcustom/',
+        'basePath' => 'core.decimalcustom',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'decimalcustom.js',
+        ),
+        'depends' => array(
+            'decimal',
+        )
     )
 
 

@@ -166,22 +166,22 @@ class ExpressionManager
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
         // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
         $this->RDP_ValidFunctions = array(
-'abs' => array('abs', 'Math.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
-'acos' => array('acos', 'Math.acos', gT('Arc cosine'), 'number acos(number)', 'http://php.net/acos', 1),
+'abs' => array('abs', 'Decimal.asNum.abs', gT('Absolute value'), 'number abs(number)', 'http://php.net/abs', 1),
+'acos' => array('acos', 'Decimal.asNum.acos', gT('Arc cosine'), 'number acos(number)', 'http://php.net/acos', 1),
 'addslashes' => array('addslashes', gT('addslashes'), 'Quote string with slashes', 'string addslashes(string)', 'http://php.net/addslashes', 1),
-'asin' => array('asin', 'Math.asin', gT('Arc sine'), 'number asin(number)', 'http://php.net/asin', 1),
-'atan' => array('atan', 'Math.atan', gT('Arc tangent'), 'number atan(number)', 'http://php.net/atan', 1),
-'atan2' => array('atan2', 'Math.atan2', gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://php.net/atan2', 2),
-'ceil' => array('ceil', 'Math.ceil', gT('Round fractions up'), 'number ceil(number)', 'http://php.net/ceil', 1),
+'asin' => array('asin', 'Decimal.asNum.asin', gT('Arc sine'), 'number asin(number)', 'http://php.net/asin', 1),
+'atan' => array('atan', 'Decimal.asNum.atan', gT('Arc tangent'), 'number atan(number)', 'http://php.net/atan', 1),
+'atan2' => array('atan2', 'Decimal.asNum.atan2', gT('Arc tangent of two variables'), 'number atan2(number, number)', 'http://php.net/atan2', 2),
+'ceil' => array('ceil', 'Decimal.asNum.ceil', gT('Round fractions up'), 'number ceil(number)', 'http://php.net/ceil', 1),
 'checkdate' => array('checkdate', 'checkdate', gT('Returns true(1) if it is a valid date in gregorian calendar'), 'bool checkdate(month,day,year)', 'http://php.net/checkdate', 3),
-'cos' => array('cos', 'Math.cos', gT('Cosine'), 'number cos(number)', 'http://php.net/cos', 1),
+'cos' => array('cos', 'Decimal.asNum.cos', gT('Cosine'), 'number cos(number)', 'http://php.net/cos', 1),
 'count' => array('exprmgr_count', 'LEMcount', gT('Count the number of answered questions in the list'), 'number count(arg1, arg2, ... argN)', '', -1),
 'countif' => array('exprmgr_countif', 'LEMcountif', gT('Count the number of answered questions in the list equal the first argument'), 'number countif(matches, arg1, arg2, ... argN)', '', -2),
 'countifop' => array('exprmgr_countifop', 'LEMcountifop', gT('Count the number of answered questions in the list which pass the critiera (arg op value)'), 'number countifop(op, value, arg1, arg2, ... argN)', '', -3),
 'date' => array('exprmgr_date', 'date', gT('Format a local date/time'), 'string date(format [, timestamp=time()])', 'http://php.net/date', 1, 2),
-'exp' => array('exp', 'Math.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
+'exp' => array('exp', 'Decimal.asNum.exp', gT('Calculates the exponent of e'), 'number exp(number)', 'http://php.net/exp', 1),
 'fixnum' => array('exprmgr_fixnum', 'LEMfixnum', gT('Display numbers with comma as decimal separator, if needed'), 'string fixnum(number)', '', 1),
-'floor' => array('floor', 'Math.floor', gT('Round fractions down'), 'number floor(number)', 'http://php.net/floor', 1),
+'floor' => array('floor', 'Decimal.asNum.floor', gT('Round fractions down'), 'number floor(number)', 'http://php.net/floor', 1),
 'gmdate' => array('gmdate', 'gmdate', gT('Format a GMT date/time'), 'string gmdate(format [, timestamp=time()])', 'http://php.net/gmdate', 1, 2),
 'html_entity_decode' => array('html_entity_decode', 'html_entity_decode', gT('Convert all HTML entities to their applicable characters (always uses ENT_QUOTES and UTF-8)'), 'string html_entity_decode(string)', 'http://php.net/html-entity-decode', 1),
 'htmlentities' => array('htmlentities', 'htmlentities', gT('Convert all applicable characters to HTML entities (always uses ENT_QUOTES and UTF-8)'), 'string htmlentities(string)', 'http://php.net/htmlentities', 1),
@@ -202,13 +202,13 @@ class ExpressionManager
 'list' => array('exprmgr_list', 'LEMlist', gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
 'log' => array('exprmgr_log', 'LEMlog', gT('The logarithm of number to base, if given, or the natural logarithm. '), 'number log(number,base=e)', 'http://php.net/log', -2),
 'ltrim' => array('ltrim', 'ltrim', gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://php.net/ltrim', 1, 2),
-'max' => array('max', 'Math.max', gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://php.net/max', -2),
-'min' => array('min', 'Math.min', gT('Find lowest value'), 'number min(arg1, arg2, ... argN)', 'http://php.net/min', -2),
+'max' => array('max', 'Decimal.asNum.max', gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://php.net/max', -2),
+'min' => array('min', 'Decimal.asNum.min', gT('Find lowest value'), 'number min(arg1, arg2, ... argN)', 'http://php.net/min', -2),
 'mktime' => array('exprmgr_mktime', 'mktime', gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://php.net/mktime', 0, 1, 2, 3, 4, 5, 6),
 'nl2br' => array('nl2br', 'nl2br', gT('Inserts HTML line breaks before all newlines in a string'), 'string nl2br(string)', 'http://php.net/nl2br', 1, 1),
 'number_format' => array('number_format', 'number_format', gT('Format a number with grouped thousands'), 'string number_format(number)', 'http://php.net/number-format', 1),
 'pi' => array('pi', 'LEMpi', gT('Get value of pi'), 'number pi()', '', 0),
-'pow' => array('pow', 'Math.pow', gT('Exponential expression'), 'number pow(base, exp)', 'http://php.net/pow', 2),
+'pow' => array('pow', 'Decimal.asNum.pow', gT('Exponential expression'), 'number pow(base, exp)', 'http://php.net/pow', 2),
 'quoted_printable_decode' => array('quoted_printable_decode', 'quoted_printable_decode', gT('Convert a quoted-printable string to an 8 bit string'), 'string quoted_printable_decode(string)', 'http://php.net/quoted-printable-decode', 1),
 'quoted_printable_encode' => array('quoted_printable_encode', 'quoted_printable_encode', gT('Convert a 8 bit string to a quoted-printable string'), 'string quoted_printable_encode(string)', 'http://php.net/quoted-printable-encode', 1),
 'quotemeta' => array('quotemeta', 'quotemeta', gT('Quote meta characters'), 'string quotemeta(string)', 'http://php.net/quotemeta', 1),
@@ -216,9 +216,9 @@ class ExpressionManager
 'regexMatch' => array('exprmgr_regexMatch', 'LEMregexMatch', gT('Compare a string to a regular expression pattern'), 'bool regexMatch(pattern,input)', '', 2),
 'round' => array('round', 'round', gT('Rounds a number to an optional precision'), 'number round(val [, precision])', 'http://php.net/round', 1, 2),
 'rtrim' => array('rtrim', 'rtrim', gT('Strip whitespace (or other characters) from the end of a string'), 'string rtrim(string [, charlist])', 'http://php.net/rtrim', 1, 2),
-'sin' => array('sin', 'Math.sin', gT('Sine'), 'number sin(arg)', 'http://php.net/sin', 1),
+'sin' => array('sin', 'Decimal.asNum.sin', gT('Sine'), 'number sin(arg)', 'http://php.net/sin', 1),
 'sprintf' => array('sprintf', 'sprintf', gT('Return a formatted string'), 'string sprintf(format, arg1, arg2, ... argN)', 'http://php.net/sprintf', -2),
-'sqrt' => array('sqrt', 'Math.sqrt', gT('Square root'), 'number sqrt(arg)', 'http://php.net/sqrt', 1),
+'sqrt' => array('sqrt', 'Decimal.asNum.sqrt', gT('Square root'), 'number sqrt(arg)', 'http://php.net/sqrt', 1),
 'stddev' => array('exprmgr_stddev', 'LEMstddev', gT('Calculate the Sample Standard Deviation for the list of numbers'), 'number stddev(arg1, arg2, ... argN)', '', -2),
 'str_pad' => array('str_pad', 'str_pad', gT('Pad a string to a certain length with another string'), 'string str_pad(input, pad_length [, pad_string])', 'http://php.net/str-pad', 2, 3),
 'str_repeat' => array('str_repeat', 'str_repeat', gT('Repeat a string'), 'string str_repeat(input, multiplier)', 'http://php.net/str-repeat', 2),
@@ -239,7 +239,7 @@ class ExpressionManager
 'substr' => array('exprmgr_substr', 'substr', gT('Return part of a string'), 'string substr(string, start [, length])', 'http://php.net/substr', 2, 3),
 'sum' => array('array_sum', 'LEMsum', gT('Calculate the sum of values in an array'), 'number sum(arg1, arg2, ... argN)', '', -2),
 'sumifop' => array('exprmgr_sumifop', 'LEMsumifop', gT('Sum the values of answered questions in the list which pass the critiera (arg op value)'), 'number sumifop(op, value, arg1, arg2, ... argN)', '', -3),
-'tan' => array('tan', 'Math.tan', gT('Tangent'), 'number tan(arg)', 'http://php.net/tan', 1),
+'tan' => array('tan', 'Decimal.asNum.tan', gT('Tangent'), 'number tan(arg)', 'http://php.net/tan', 1),
 'convert_value' => array('exprmgr_convert_value', 'LEMconvert_value', gT('Convert a numerical value using a inputTable and outputTable of numerical values'), 'number convert_value(fValue, iStrict, sTranslateFromList, sTranslateToList)', '', 4),
 'time' => array('time', 'time', gT('Return current UNIX timestamp'), 'number time()', 'http://php.net/time', 0),
 'trim' => array('trim', 'trim', gT('Strip whitespace (or other characters) from the beginning and end of a string'), 'string trim(string [, charlist])', 'http://php.net/trim', 1, 2),
@@ -284,8 +284,9 @@ class ExpressionManager
         /* Don't return true always : user can entre non numeric value in a numeric value : we must compare as string then */
         $arg1[0] = ($arg1[2] == "NUMBER" && strpos($arg1[0], ".")) ? rtrim(rtrim($arg1[0], "0"), ".") : $arg1[0];
         $arg2[0] = ($arg2[2] == "NUMBER" && strpos($arg2[0], ".")) ? rtrim(rtrim($arg2[0], "0"), ".") : $arg2[0];
-        $bNumericArg1 = !$arg1[0] || strval(floatval($arg1[0])) == strval($arg1[0]);
-        $bNumericArg2 = !$arg2[0] || strval(floatval($arg2[0])) == strval($arg2[0]);
+        
+        $bNumericArg1 = $arg1[0]!== "" && (!$arg1[0] || strval(floatval($arg1[0])) == strval($arg1[0]));
+        $bNumericArg2 = $arg2[0]!== "" && (!$arg2[0] || strval(floatval($arg2[0])) == strval($arg2[0]));
 
         $bStringArg1 = !$arg1[0] || !$bNumericArg1;
         $bStringArg2 = !$arg2[0] || !$bNumericArg2;
@@ -1882,12 +1883,12 @@ class ExpressionManager
                                         if (is_numeric($params[0]) && is_numeric($params[1])) {
                                             $result = $funcName(floatval($params[0]), floatval($params[1]));
                                         } else {
-                                            $result = NAN;
+                                            $result = false;
                                         }
                                         break;
                                     default:
-                                        $result = $funcName($params[0], $params[1]);
-                                            break;
+                                        $result = @$funcName($params[0], $params[1]);
+                                        $result = $result ? $result : false;
                             }
                         }
                         break;
