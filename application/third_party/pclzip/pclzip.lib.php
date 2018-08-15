@@ -3669,6 +3669,9 @@
       }
     }
 
+    // Added by LS Team to check for invalid paths
+    $p_entry['filename'] = get_absolute_path($p_entry['filename']);    
+
     // ----- Add the path
     if ($p_path != '') {
       $p_entry['filename'] = $p_path."/".$p_entry['filename'];
