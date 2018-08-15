@@ -21,7 +21,7 @@ export default {
         createQuestionLink: { type: String },
         updateOrderLink: { type: String },
         isActive: {type: String},
-        menus: {type: Object}
+        basemenus: {type: Object}
     },
     data: () => {
         return {
@@ -336,7 +336,7 @@ export default {
                         },
                         ["desc"]
                     );
-                    this.$store.commit("collapsedmenus", this.collapsedmenus);
+                    this.$store.commit("updateCollapsedmenus", this.collapsedmenus);
                     break;
                 case 'top':
                     this.topmenus = _.orderBy(
@@ -446,7 +446,7 @@ export default {
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
-        _.each(menus, this.setBaseMenuPosition)
+        _.each(this.basemenus, this.setBaseMenuPosition)
         //retrieve the current menues via ajax
         this.getQuestions();
         this.getSidemenus();

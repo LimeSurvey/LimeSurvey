@@ -27741,7 +27741,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         createQuestionLink: { type: String },
         updateOrderLink: { type: String },
         isActive: { type: String },
-        menus: { type: Object }
+        basemenus: { type: Object }
     },
     data: () => {
         return {
@@ -27982,7 +27982,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     this.collapsedmenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(entries, a => {
                         return parseInt(a.order || 999999);
                     }, ["desc"]);
-                    this.$store.commit("collapsedmenus", this.collapsedmenus);
+                    this.$store.commit("updateCollapsedmenus", this.collapsedmenus);
                     break;
                 case 'top':
                     this.topmenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(entries, a => {
@@ -28057,7 +28057,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
-        __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(menus, this.setBaseMenuPosition);
+        __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(this.basemenus, this.setBaseMenuPosition);
         //retrieve the current menues via ajax
         this.getQuestions();
         this.getSidemenus();
