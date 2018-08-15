@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-08-15 12:30:29+00:00\n"
+"POT-Creation-Date: 2018-08-15 15:47:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -419,7 +419,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:364
 #: application/controllers/admin/quotas.php:418
 #: application/controllers/admin/quotas.php:438
-#: application/controllers/admin/responses.php:761
+#: application/controllers/admin/responses.php:763
 #: application/controllers/admin/surveyadmin.php:247
 #: application/controllers/admin/surveyadmin.php:460
 #: application/controllers/admin/surveyadmin.php:624
@@ -1725,7 +1725,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:141
 #: application/models/ParticipantShare.php:248
 #: application/models/Question.php:828 application/models/Survey.php:1054
-#: application/models/Survey.php:1062
+#: application/models/Survey.php:1062 application/models/SurveyDynamic.php:308
+#: application/models/SurveyDynamic.php:320
 #: application/views/admin/conditions/deleteAllConditions.php:15
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:642
@@ -1894,7 +1895,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:141
 #: application/models/ParticipantShare.php:248
 #: application/models/Question.php:828 application/models/Survey.php:1054
-#: application/models/Survey.php:1062
+#: application/models/Survey.php:1062 application/models/SurveyDynamic.php:308
+#: application/models/SurveyDynamic.php:320
 #: application/views/admin/conditions/includes/conditions_edit.php:8
 #: application/views/admin/dataentry/content_view.php:643
 #: application/views/admin/dataentry/content_view.php:712
@@ -2332,8 +2334,8 @@ msgstr ""
 #: application/controllers/admin/export.php:399
 #: application/controllers/admin/export.php:599
 #: application/controllers/admin/export.php:600
-#: application/controllers/admin/responses.php:1034
-#: application/controllers/admin/responses.php:1035
+#: application/controllers/admin/responses.php:1036
+#: application/controllers/admin/responses.php:1037
 #: application/controllers/admin/saved.php:73
 #: application/controllers/admin/saved.php:77
 #: application/controllers/admin/statistics.php:812
@@ -3667,33 +3669,33 @@ msgstr ""
 msgid "Error during response deletion."
 msgstr ""
 
-#: application/controllers/admin/responses.php:616
+#: application/controllers/admin/responses.php:617
 msgid "Sorry, this file was not found."
 msgstr ""
 
-#: application/controllers/admin/responses.php:655
+#: application/controllers/admin/responses.php:656
 msgid "The requested files do not exist on the server."
 msgstr ""
 
-#: application/controllers/admin/responses.php:700
+#: application/controllers/admin/responses.php:701
 msgid "Found no response with ID %d"
 msgstr ""
 
-#: application/controllers/admin/responses.php:706
+#: application/controllers/admin/responses.php:707
 msgid "Error: Could not delete some files: "
 msgstr ""
 
-#: application/controllers/admin/responses.php:710
+#: application/controllers/admin/responses.php:711
 msgid "%d file deleted.|%d files deleted."
 msgstr ""
 
-#: application/controllers/admin/responses.php:768
-#: application/controllers/admin/responses.php:782
+#: application/controllers/admin/responses.php:770
+#: application/controllers/admin/responses.php:784
 #: application/helpers/common_helper.php:2002
 msgid "Total time"
 msgstr ""
 
-#: application/controllers/admin/responses.php:786
+#: application/controllers/admin/responses.php:788
 #: application/extensions/admin/survey/ListSurveysWidget/views/listSurveys.php:69
 #: application/helpers/admin/export/HtmlWriter.php:75
 #: application/models/Assessment.php:129
@@ -3702,11 +3704,11 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#: application/controllers/admin/responses.php:788
+#: application/controllers/admin/responses.php:790
 msgid "Group: "
 msgstr ""
 
-#: application/controllers/admin/responses.php:794
+#: application/controllers/admin/responses.php:796
 #: application/controllers/admin/themes.php:918
 #: application/helpers/admin/statistics_helper.php:4269
 #: application/views/admin/conditions/includes/form_editconditions_header.php:65
@@ -3717,16 +3719,16 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#: application/controllers/admin/responses.php:796
+#: application/controllers/admin/responses.php:798
 msgid "Question: "
 msgstr ""
 
-#: application/controllers/admin/responses.php:995
+#: application/controllers/admin/responses.php:997
 msgid "Sorry, there are no files for this response."
 msgstr ""
 
-#: application/controllers/admin/responses.php:1032
-#: application/controllers/admin/responses.php:1033
+#: application/controllers/admin/responses.php:1034
+#: application/controllers/admin/responses.php:1035
 msgid "Responses and statistics"
 msgstr ""
 
@@ -12157,15 +12159,17 @@ msgstr ""
 msgid "Download all files in this response as a zip file"
 msgstr ""
 
-#: application/models/SurveyDynamic.php:314
+#: application/models/SurveyDynamic.php:306
+#: application/models/SurveyDynamic.php:307
 msgid "Delete response %s"
 msgstr ""
 
-#: application/models/SurveyDynamic.php:326
+#: application/models/SurveyDynamic.php:318
+#: application/models/SurveyDynamic.php:319
 msgid "Delete all attachments for this response"
 msgstr ""
 
-#: application/models/SurveyDynamic.php:560
+#: application/models/SurveyDynamic.php:557
 #: application/models/TokenDynamic.php:854
 msgid "Edit this survey participant"
 msgstr ""
