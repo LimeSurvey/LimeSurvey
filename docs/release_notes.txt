@@ -35,6 +35,33 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.14.4 (build 180810) to 3.14.5 (build 180815) August 15, 2018
+-[security] fixed issue #13959: RCE via resource file upload as authenticated user (LouisGac)
+-Fixed issue #13962: Token description cannot be changed (Markus Flür)
+-Fixed issue: Tokenattributedescription not used in token table (Markus Flür)
+-Fixed issue: converting single item to array works only for "add" keyword (LouisGac)
+-Fixed issue: numeric values not acute and wrong arguments blocking js (Markus Flür)
+-Fixed issue: unable to delete survey responses and attachments (Dominik Vitt)
+#Updated translation: Arabic by abusaud1981
+#Updated translation: Chinese (Simplified) by c_schmitz, johnxan
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Chinese (Simplified) by yanglaw, Bobo001, johnxan
+#Updated translation: Chinese (Simplified) by yanglaw, elan365, huageorg, johnxan
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by DenisChenu, b00z00
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by femariso, holch, mauriciofurtado
+#Updated translation: Romanian by cdorin
+#Updated translation: Spanish (Spain) by rodrirokr, aesteban
+#Updated translation: Thai by adzpire, tomzt
+~                                                                                                             
 Changes from 3.14.3 (build 180807) to 3.14.4 (build 180810) August 09, 2018
 -Fixed issue: Theme overview could not be opened due to infinite loop  (LouisGac)
 
