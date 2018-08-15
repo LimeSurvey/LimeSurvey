@@ -1439,6 +1439,15 @@ class Survey extends LSActiveRecord
     }
 
     /**
+     * decodes the attributedescriptions to be used anywhere necessary
+     * @return Array
+     */
+    public function getDecodedAttributedescriptions()
+    {
+        return decodeTokenAttributes($this->attributedescriptions);
+    }
+
+    /**
      * @return int
      */
     public function getCountTotalAnswers()
