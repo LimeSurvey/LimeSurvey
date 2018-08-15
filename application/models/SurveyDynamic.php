@@ -275,8 +275,8 @@ class SurveyDynamic extends LSActiveRecord
         $sViewPDFUrl = App()->createUrl("/admin/responses/sa/viewquexmlpdf/surveyid/".self::$sid."/id/".$this->id);
         $sEditUrl     = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
         $sDownloadUrl = App()->createUrl("admin/responses", array("sa"=>"actionDownloadfiles", "surveyid"=>self::$sid, "sResponseId"=>$this->id));
-        $sDeleteUrl   = App()->createUrl("admin/responses", array("sa"=>"actionDelete", "surveyid"=>self::$sid));
-        $sAttachmentDeleteUrl = App()->createUrl("admin/responses", array("sa"=>"actionDeleteAttachments"));
+        $sDeleteUrl   = convertGETtoPOST(App()->createUrl("admin/responses/sa/actionDelete/surveyid/".self::$sid."?surveyid=".self::$sid."&sResponseId=".$this->id));
+        $sAttachmentDeleteUrl   = convertGETtoPOST(App()->createUrl("admin/responses/sa/actionDeleteAttachments/?surveyid=".self::$sid."&sResponseId=".$this->id));
         $button       = "";
 
         // View detail icon
@@ -301,30 +301,27 @@ class SurveyDynamic extends LSActiveRecord
             $button .= '<a class="btn btn-default btn-xs invisible" href="#" role="button"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
         }
 
-        $aPostDatas = json_encode(
-            array(
-                'surveyid' => self::$sid,
-                'sResponseId' => $this->id
-            )
-        );
-
         // Delete icon
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $aPostDatas = json_encode(array('sResponseId'=>$this->id));
-            $button .= "<a class='deleteresponse btn btn-default btn-xs' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='".sprintf(gT('Delete response %s'), $this->id)."'><span class='fa fa-trash text-danger' ></span></a>";
+            $button .= '<a class="deleteresponse btn btn-default btn-xs"  data-toggle="tooltip" title="'.sprintf(gT('Delete response %s'), $this->id).'" href="#" role="button"'
+                ." onclick='$.bsconfirm(\"".sprintf(gT('Delete response %s',"js"), $this->id)
+                            ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
+                            . $sDeleteUrl
+                        ."});'>"
+                    .' <i class="text-danger fa fa-trash"></i>
+                </a>';
         }
 
         // Delete all uploaded attachments from one response.
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
             if (hasFileUploadQuestion(self::$sid) && $responseHasFiles) {
-                $button .= sprintf(
-                    "<a class='deleteattachments btn btn-danger btn-xs text-danger' data-ajax-url='%s' data-gridid='responses-grid' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
-                        <span class='fa fa-paperclip'></span>
-                        </a>",
-                    $sAttachmentDeleteUrl,
-                    $aPostDatas,
-                    gT('Delete all attachments for this response')
-                );
+                $button .= '<a class="deleteattachments btn btn-danger btn-xs text-danger"  data-toggle="tooltip" title="'.sprintf(gT('Delete all attachments for this response'), $this->id).'" href="#" role="button"'
+                ." onclick='$.bsconfirm(\"".gT("Delete all attachments for this response","js")
+                            ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
+                            . $sAttachmentDeleteUrl
+                        ."});'>"
+                    .' <i class="text-danger fa fa-paperclip"></i>
+                </a>';
             }
         }
 

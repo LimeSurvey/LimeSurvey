@@ -572,6 +572,7 @@ class responses extends Survey_Common_Action
             }
 
         }
+        $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$iSurveyId));
     }
 
     /**
@@ -713,6 +714,7 @@ class responses extends Survey_Common_Action
             // No permission.
             ls\ajax\AjaxHelper::outputNoPermission();
         }
+        $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$surveyId));
     }
 
     /**
