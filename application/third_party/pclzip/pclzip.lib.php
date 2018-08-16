@@ -221,6 +221,13 @@
       die('Abort '.basename(__FILE__).' : Missing zlib extensions');
     }
 
+
+    // Added by LS Team to prevent Zip Bombing
+    if (isZipBomb($p_zipname)){
+        die('Abort '.basename(__FILE__).' : Unzipped file is superior to upload_max_filesize or to post_max_size');
+    }
+
+
     // ----- Set the attributes
     $this->zipname = $p_zipname;
     $this->zip_fd = 0;
@@ -3670,7 +3677,7 @@
     }
 
     // Added by LS Team to check for invalid paths
-    $p_entry['filename'] = get_absolute_path($p_entry['filename']);    
+    $p_entry['filename'] = get_absolute_path($p_entry['filename']);
 
     // ----- Add the path
     if ($p_path != '') {
