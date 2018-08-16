@@ -211,7 +211,7 @@ class homepagesettings extends Survey_Common_Action
         }
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $bNewShowLogo = (getGlobalSetting('show_logo') == "show") ? "hide" : "show";
-            setGlobalSetting('show_logo', $bNewShowLogo);
+            SettingGlobal::setSetting('show_logo', $bNewShowLogo);
             echo $bNewShowLogo;
         }
     }
@@ -227,7 +227,7 @@ class homepagesettings extends Survey_Common_Action
         }
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $bNewShowLastSurveyAndQuestion = (getGlobalSetting('show_last_survey_and_question') == "show") ? "hide" : "show";
-            setGlobalSetting('show_last_survey_and_question', $bNewShowLastSurveyAndQuestion);
+            SettingGlobal::setSetting('show_last_survey_and_question', $bNewShowLastSurveyAndQuestion);
             echo $bNewShowLastSurveyAndQuestion;
         }
     }
@@ -245,7 +245,7 @@ class homepagesettings extends Survey_Common_Action
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $bShowSurveyList = (getGlobalSetting('show_survey_list') == "show") ? "hide" : "show";
-            setGlobalSetting('show_survey_list', $bShowSurveyList);
+            SettingGlobal::setSetting('show_survey_list', $bShowSurveyList);
             echo $bShowSurveyList;
         }
     }
@@ -262,7 +262,7 @@ class homepagesettings extends Survey_Common_Action
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $bShowSurveyListSearch = (getGlobalSetting('show_survey_list_search') == "show") ? "hide" : "show";
-            setGlobalSetting('show_survey_list_search', $bShowSurveyListSearch);
+            SettingGlobal::setSetting('show_survey_list_search', $bShowSurveyListSearch);
             echo $bShowSurveyListSearch;
         }
     }
@@ -279,7 +279,7 @@ class homepagesettings extends Survey_Common_Action
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
             $changeBoxesInContainer = (getGlobalSetting('boxes_in_container') == "yes") ? "no" : "yes";
-            setGlobalSetting('boxes_in_container', $changeBoxesInContainer);
+            SettingGlobal::setSetting('boxes_in_container', $changeBoxesInContainer);
             echo $changeBoxesInContainer;
         }
     }
@@ -294,8 +294,8 @@ class homepagesettings extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
         }
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-            setGlobalSetting('boxes_by_row', $boxesbyrow);
-            setGlobalSetting('boxes_offset', $boxesoffset);
+            SettingGlobal::setSetting('boxes_by_row', $boxesbyrow);
+            SettingGlobal::setSetting('boxes_offset', $boxesoffset);
             return true;
         }
     }

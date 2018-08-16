@@ -403,9 +403,9 @@ class UpdateForm extends CFormModel
      */
     public function destroyGlobalSettings()
     {
-        setGlobalSetting('updateavailable', '0');
-        setGlobalSetting('updatebuild', '');
-        setGlobalSetting('updateversions', '');
+        SettingGlobal::setSetting('updateavailable', '0');
+        SettingGlobal::setSetting('updatebuild', '');
+        SettingGlobal::setSetting('updateversions', '');
         Yii::app()->session['security_update'] = null;
         Yii::app()->session['update_result'] = null;
         Yii::app()->session['next_update_check'] = null;
@@ -552,7 +552,7 @@ class UpdateForm extends CFormModel
 
         if ($iAssetVersionNumber != $iCurrentAssetVersion) {
             self::republishAssets();
-            setGlobalSetting('AssetsVersion', $iAssetVersionNumber);
+            SettingGlobal::setSetting('AssetsVersion', $iAssetVersionNumber);
         }
         return false;
     }

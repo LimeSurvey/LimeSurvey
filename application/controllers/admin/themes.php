@@ -534,7 +534,7 @@ class themes extends Survey_Common_Action
                     if (is_a($oTemplate, 'Template')) {
                         $oTemplate->renameTo($sNewName);
                         if (getGlobalSetting('defaulttheme') == $sOldName) {
-                            setGlobalSetting('defaulttheme', $sNewName);
+                            SettingGlobal::setSetting('defaulttheme', $sNewName);
                         }
 
                         $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=>'layout_global.twig', 'screenname'=>'welcome', 'templatename'=>$sNewName));
@@ -619,7 +619,7 @@ class themes extends Survey_Common_Action
                         $globalDefaultIsGettingDeleted = getGlobalSetting('defaulttheme') == $templatename;
 
                         if ($globalDefaultIsGettingDeleted) {
-                            setGlobalSetting('defaulttheme', getGlobalSetting('defaulttheme'));
+                            SettingGlobal::setSetting('defaulttheme', getGlobalSetting('defaulttheme'));
                         }
 
                         foreach ($surveys as $s) {

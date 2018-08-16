@@ -463,7 +463,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         // Last survey visited
         $setting_entry = 'last_survey_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $iSurveyID);
+        SettingGlobal::setSetting($setting_entry, $iSurveyID);
 
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");

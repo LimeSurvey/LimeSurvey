@@ -160,7 +160,7 @@ class themeoptions  extends Survey_Common_Action
         }
 
         $sAdmintheme = sanitize_paranoid_string($sAdminThemeName);
-        setGlobalSetting('admintheme', $sAdmintheme);
+        SettingGlobal::setSetting('admintheme', $sAdmintheme);
         $this->getController()->redirect(Yii::app()->getController()->createUrl("admin/themeoptions#adminthemes"));
     }
 

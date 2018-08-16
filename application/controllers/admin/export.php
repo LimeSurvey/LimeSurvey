@@ -1088,7 +1088,7 @@ class export extends Survey_Common_Action
     {
         $queXMLSettings = $this->_quexmlsettings();
         foreach ($queXMLSettings as $s) {
-            setGlobalSetting($s, '');
+            SettingGlobal::setSetting($s, '');
         }
         $this->getController()->redirect($this->getController()->createUrl("/admin/export/sa/quexml/surveyid/{$iSurveyID}"));
     }
@@ -1138,7 +1138,7 @@ class export extends Survey_Common_Action
             //Save settings globally and generate queXML document
             foreach ($queXMLSettings as $s) {
                 if ($s !== 'queXMLStyle') {
-                    setGlobalSetting($s, Yii::app()->request->getPost($s));
+                    SettingGlobal::setSetting($s, Yii::app()->request->getPost($s));
                 }
 
                 $method = str_replace("queXML", "set", $s);
