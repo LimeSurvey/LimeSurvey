@@ -73,37 +73,37 @@
                 <div class='panel-body'>
                     <div class="tokenatt ui-sortable" style="min-height: 200px;">
                         <?php foreach ($selectedtokenattribute as $id => $name): ?>
-                                    <?php if (isset($automaticallyMappedAttributes[$id])): ?>
-                                        <?php $autoAttr = $automaticallyMappedAttributes[$id]; // Short-hand... ?>
-                                        <div class='tokenatt-container col-sm-12'>
-                                            <div class='col-sm-6'>
-                                                <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
-                                                    <div class='panel-body'>
-                                                        <?php echo $name; ?>
-                                                        <span class='fa fa-arrows-h tokenatt-arrow'></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class='col-sm-6'>
-                                                <div class='panel panel-default ui-state-disabled cpdb-attribute' id='c_<?php echo $autoAttr['cpdbAttribute']['attribute_id']; ?>'>
-                                                    <div class='panel-body'>
-                                                        <?php echo $autoAttr['cpdbAttribute']['attribute_name']; ?>
-                                                    </div>
+                                <?php if (isset($automaticallyMappedAttributes[$id])): ?>
+                                    <?php $autoAttr = $automaticallyMappedAttributes[$id]; // Short-hand... ?>
+                                    <div class='tokenatt-container col-sm-12'>
+                                        <div class='col-sm-6'>
+                                            <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
+                                                <div class='panel-body'>
+                                                    <?php echo CHtml::encode($name); ?>
+                                                    <span class='fa fa-arrows-h tokenatt-arrow'></span>
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php else: ?>
-                                        <div class='tokenatt-container col-sm-12'>
-                                            <div class='col-sm-6'>
-                                                <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
-                                                    <div class='panel-body'>
-                                                        <?php echo $name; ?>
-                                                    </div>
+                                        <div class='col-sm-6'>
+                                            <div class='panel panel-default ui-state-disabled cpdb-attribute' id='c_<?php echo $autoAttr['cpdbAttribute']['attribute_id']; ?>'>
+                                                <div class='panel-body'>
+                                                    <?php echo $autoAttr['cpdbAttribute']['attribute_name']; ?>
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php endif; ?>
-                            <?php endforeach; ?>
+                                    </div>
+                                <?php else: ?>
+                                    <div class='tokenatt-container col-sm-12'>
+                                        <div class='col-sm-6'>
+                                            <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
+                                                <div class='panel-body'>
+                                                    <?php echo CHtml::encode($name); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
 
                     <?php if(!empty($selectedtokenattribute)): ?>

@@ -635,7 +635,7 @@ function sendSubmitNotifications($surveyid)
         foreach ($aEmailNotificationTo as $sRecipient) {
         if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments)) {
                 if ($debug > 0) {
-                    echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';
+                    echo '<br />Email could not be sent. Reason: '.CHtml::encode($maildebug).'<br/>';
                 }
             }
         }
@@ -661,7 +661,7 @@ function sendSubmitNotifications($surveyid)
         foreach ($aEmailResponseTo as $sRecipient) {
         if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments)) {
                 if ($debug > 0) {
-                    echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';
+                    echo '<br />Email could not be sent. Reason: '.CHtml::encode($maildebug).'<br/>';
                 }
             }
         }
