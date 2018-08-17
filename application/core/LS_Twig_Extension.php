@@ -166,6 +166,21 @@ class LS_Twig_Extension extends Twig_Extension
     }
 
     /**
+     * since count with a noncountable element is throwing a warning in latest php versions
+     * we have to be sure not to kill rendering by a wrong variable
+     *
+     * @param mixed $element
+     * @return void
+     */
+    public static function safecount($element) 
+    {
+        $isCountable = is_array($element) || $element instanceof Countable;
+        if($isCountable) {
+            return count($element);
+        }
+        return 0;
+    }
+    /**
      * Retreive the question classes for a given question id
      * Use in survey template question.twig file.
      * TODO: we'd rather provide a oQuestion object to the twig view with a method getAllQuestion(). But for now, this public static function respect the old way of doing
