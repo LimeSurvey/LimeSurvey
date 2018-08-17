@@ -47,7 +47,7 @@
 
                                     <tr  {{ aSurveyInfo.attr.assessmentstabletr }} >
                                         <td {{ aSurveyInfo.attr.assessmentstabletd }} >
-                                            {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}" ], [ val, aAssessments.total_score, aAssessments.total_score  ], assessed.message)  }}
+                                            {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}", "{EMAIL}", "{FIRSTNAME}", "{LASTNAME}", "{TOKEN}" ], [ val, aAssessments.total_score, aAssessments.total_score, aAssessments.token.email, aAssessments.token.firstname, aAssessments.token.lastname, aAssessments.token.token ], assessed.message)  }}
                                         </td>
                                     </tr>
                                 </table>
@@ -73,7 +73,7 @@
                             </tr>
                             <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
                                 <td {{ aSurveyInfo.attr.assessmentstablettd }}>
-                                    {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}" ], [ val, aAssessments.total_score, aAssessments.total_score ], assessed.message)  }}
+                                    {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}", "{EMAIL}", "{FIRSTNAME}", "{LASTNAME}", "{TOKEN}" ], [ val, aAssessments.total_score, aAssessments.total_score, aAssessments.token.email, aAssessments.token.firstname, aAssessments.token.lastname, aAssessments.token.token ], assessed.message)  }}
                                 </td>
                             </tr>
                         </table>
