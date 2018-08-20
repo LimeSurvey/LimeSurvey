@@ -427,25 +427,13 @@ class index extends CAction
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
         }
 
-
+        //check if token is in a valid time frame
         //Check if TOKEN is used for EVERY PAGE
         //This function fixes a bug where users able to submit two surveys/votes
         //by checking that the token has not been used at each page displayed.
         // bypass only this check at first page (Step=0) because
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
-        if ($tokensexist == 1 && isset($token) && $token != "" &&
-            isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step'] > 0 && tableExists("tokens_{$surveyid}}}")) {
-
-            // check also if it is allowed to change survey after completion
-            if ($thissurvey['alloweditaftercompletion'] == 'Y') {
-                $tokenInstance = Token::model($surveyid)->findByAttributes(array('token' => $token));
-            } else {
-                $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
-            }
-        }
-
-        //check if token is in a valid time frame
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
 
             // check also if it is allowed to change survey after completion
