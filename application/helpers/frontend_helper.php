@@ -1667,14 +1667,6 @@ function doAssessment($surveyid)
 
         $assessment['subtotal_score'] = (isset($subtotal)) ? $subtotal : '';
         $assessment['total_score']    = (isset($total)) ? $total : '';
-        // token data for placeholder replacements
-        $token = Token::model($surveyid)->findByAttributes(array('token' => $_SESSION['survey_'.$surveyid]['token']));
-        if ($token !== null){
-            $assessment['token']['email'] = $survey->anonymized === 'N'?$token->email:'';
-            $assessment['token']['firstname'] = $survey->anonymized === 'N'?$token->firstname:'';
-            $assessment['token']['lastname'] = $survey->anonymized === 'N'?$token->lastname:'';
-            $assessment['token']['token'] = $survey->anonymized === 'N'?$token->token:'';
-        }
         //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
         return array('show'=>($assessment['subtotal']['show'] || $assessment['total']['show']), 'datas' => $assessment);
 
