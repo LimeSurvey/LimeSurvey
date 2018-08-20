@@ -132,7 +132,7 @@ class index extends CAction
         // Keep the old value, because SetSurveyLanguage update $_SESSION
         $sOldLang = isset($_SESSION['survey_'.$surveyid]['s_lang']) ? $_SESSION['survey_'.$surveyid]['s_lang'] : ""; // Keep the old value, because SetSurveyLanguage update $_SESSION
 
-
+        $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
         if (!empty($param['lang'])) {
             $sDisplayLanguage = $param['lang']; // $param take lang from returnGlobal and returnGlobal sanitize langagecode
         } elseif (isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
@@ -141,8 +141,6 @@ class index extends CAction
             $sDisplayLanguage = $oToken->language;
         }elseif (Survey::model()->findByPk($surveyid)) {
             $sDisplayLanguage = Survey::model()->findByPk($surveyid)->language;
-        } else {
-            $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
         }
 
         if ($surveyid && $surveyExists) {
