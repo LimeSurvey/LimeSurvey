@@ -5062,7 +5062,7 @@ function get_zip_originalsize($filename) {
         return $size;
     }else{
         if ( YII_DEBUG ){
-            Yii::app()->setFlashMessage(gT("Warning! php zip extension is not installed on your server. You're not protected from Zip Bomb attaacks."), 'error');
+            Yii::app()->setFlashMessage("Warning! The PHP Zip extension is not installed on this server. You're not protected from ZIP bomb attacks.", 'error');
         }
     }
 
