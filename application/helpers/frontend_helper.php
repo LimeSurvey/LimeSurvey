@@ -749,20 +749,6 @@ function buildsurveysession($surveyid, $preview = false)
 
     // Reset all the session variables and start again
     resetAllSessionVariables($surveyid);
-
-    // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
-    if (returnGlobal('lang', true)) {
-        $language_to_set = returnGlobal('lang', true);
-    } elseif (isset($oTokenEntry) && $oTokenEntry) {
-        // If survey have token : we have a $oTokenEntry
-        // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
-        $language_to_set = $oTokenEntry->language;
-    } else {
-        $language_to_set = $thissurvey['language'];
-    }
-
-    // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
-    SetSurveyLanguage($surveyid, $language_to_set);
     UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
     $totalquestions               = $survey->countTotalQuestions;
@@ -1296,6 +1282,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
                 Yii::app()->getController()->createAction('captcha');
             }
             $oSurvey = Survey::model()->findByPk($surveyid);
+
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
@@ -1667,6 +1654,14 @@ function doAssessment($surveyid)
 
         $assessment['subtotal_score'] = (isset($subtotal)) ? $subtotal : '';
         $assessment['total_score']    = (isset($total)) ? $total : '';
+        // token data for placeholder replacements
+        $token = Token::model($surveyid)->findByAttributes(array('token' => $_SESSION['survey_'.$surveyid]['token']));
+        if ($token !== null){
+            $assessment['token']['email'] = $survey->anonymized === 'N'?$token->email:'';
+            $assessment['token']['firstname'] = $survey->anonymized === 'N'?$token->firstname:'';
+            $assessment['token']['lastname'] = $survey->anonymized === 'N'?$token->lastname:'';
+            $assessment['token']['token'] = $survey->anonymized === 'N'?$token->token:'';
+        }
         //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
         return array('show'=>($assessment['subtotal']['show'] || $assessment['total']['show']), 'datas' => $assessment);
 
@@ -1897,7 +1892,7 @@ function checkCompletedQuota($surveyid, $return = false)
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
     $thissurvey['active']                        = 'Y';
-    
+
 
     $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="'.$surveyid.'" />
                                               <input type="hidden" name="token"    value="'.$thissurvey['aQuotas']['sClientToken'].'" />

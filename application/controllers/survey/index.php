@@ -69,18 +69,77 @@ class index extends CAction
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
 
-        $this->_loadLimesurveyLang($surveyid);
 
+        $previewmode = false;
+        if (isset($param['action']) && (in_array($param['action'], array('previewgroup', 'previewquestion')))) {
+
+            if (!$this->_canUserPreviewSurvey($surveyid)) {
+
+                // @todo : throw a 401
+                $aErrors  = array(gT('Error'));
+                $message = gT("We are sorry but you don't have permissions to do this.");
+                if(Permission::getUserId()) {
+                    throw new CHttpException(403, $message);
+                }
+                throw new CHttpException(401, $message);
+            } else {
+                if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
+                    $previewmode = 'question';
+                }
+                if ((intval($param['gid']) && $param['action'] == 'previewgroup')) {
+                    $previewmode = 'group';
+                }
+            }
+        }
+
+        Yii::app()->setConfig('previewmode', $previewmode);
+
+
+        // Token Object
+
+        //SEE IF SURVEY USES TOKENS
+        if ($oSurvey->hasTokensTable) {
+            $tokensexist = 1;
+        } else {
+            $tokensexist = 0;
+            unset($_POST['token']);
+            unset($param['token']);
+            unset($token);
+            unset($clienttoken);
+        }
+
+        // Get token
+        if (!isset($token)) {
+            $token = $clienttoken;
+        }
+
+        if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
+
+            // check also if it is allowed to change survey after completion
+            if ($thissurvey['alloweditaftercompletion'] == 'Y') {
+                $oToken = $tokenInstance = Token::model($surveyid)->editable()->findByAttributes(array('token' => $token));
+            } else {
+                $oToken = $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
+            }
+            if (empty($tokenInstance)) {
+                $oToken = Token::model($surveyid)->findByAttributes(array('token' => $token));
+            }
+        }
+
+        $this->_loadLimesurveyLang($surveyid);
 
         // Set the language of the survey, either from POST, GET parameter of session var
         // Keep the old value, because SetSurveyLanguage update $_SESSION
         $sOldLang = isset($_SESSION['survey_'.$surveyid]['s_lang']) ? $_SESSION['survey_'.$surveyid]['s_lang'] : ""; // Keep the old value, because SetSurveyLanguage update $_SESSION
 
+
         if (!empty($param['lang'])) {
             $sDisplayLanguage = $param['lang']; // $param take lang from returnGlobal and returnGlobal sanitize langagecode
         } elseif (isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        } elseif (Survey::model()->findByPk($surveyid)) {
+        } elseif ( !empty($clienttoken) ) {
+            $sDisplayLanguage = $oToken->language;
+        }elseif (Survey::model()->findByPk($surveyid)) {
             $sDisplayLanguage = Survey::model()->findByPk($surveyid)->language;
         } else {
             $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
@@ -147,30 +206,6 @@ class index extends CAction
             );
         }
 
-        $previewmode = false;
-        if (isset($param['action']) && (in_array($param['action'], array('previewgroup', 'previewquestion')))) {
-
-            if (!$this->_canUserPreviewSurvey($surveyid)) {
-
-                // @todo : throw a 401
-                $aErrors  = array(gT('Error'));
-                $message = gT("We are sorry but you don't have permissions to do this.");
-                if(Permission::getUserId()) {
-                    throw new CHttpException(403, $message);
-                }
-                throw new CHttpException(401, $message);
-            } else {
-                if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
-                    $previewmode = 'question';
-                }
-                if ((intval($param['gid']) && $param['action'] == 'previewgroup')) {
-                    $previewmode = 'group';
-                }
-            }
-        }
-
-        Yii::app()->setConfig('previewmode', $previewmode);
-
         if ($this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists)) {
             $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
 
@@ -178,7 +213,7 @@ class index extends CAction
                 $event    = new PluginEvent('onSurveyDenied');
                 $event->set('surveyId', $surveyid);
                 $event->set('reason', 'noPreviewPermission');
-                
+
                 App()->getPluginManager()->dispatchEvent($event);
                 if(Permission::getUserId()) {
                     throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this."));
@@ -259,12 +294,7 @@ class index extends CAction
 
                     //~ ),
                 //~ )), false);
-            
-        }
 
-        // Get token
-        if (!isset($token)) {
-            $token = $clienttoken;
         }
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
@@ -272,17 +302,6 @@ class index extends CAction
         /* Unsure it still work, and surely better in afterFindSurvey */
         if (!is_null($beforeSurveyPageEvent->get('template'))) {
             $thissurvey['templatedir'] = $beforeSurveyPageEvent->get('template');
-        }
-
-        //SEE IF SURVEY USES TOKENS
-        if ($oSurvey->hasTokensTable) {
-            $tokensexist = 1;
-        } else {
-            $tokensexist = 0;
-            unset($_POST['token']);
-            unset($param['token']);
-            unset($token);
-            unset($clienttoken);
         }
 
         //SET THE TEMPLATE DIRECTORY
@@ -435,20 +454,8 @@ class index extends CAction
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
-
-            // check also if it is allowed to change survey after completion
-            if ($thissurvey['alloweditaftercompletion'] == 'Y') {
-                $tokenInstance = Token::model($surveyid)->editable()->findByAttributes(array('token' => $token));
-            } else {
-                $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
-            }
-
             if (empty($tokenInstance)) {
-
-                $oToken = Token::model($surveyid)->findByAttributes(array('token' => $token));
-
                 if ($oToken) {
-
                     $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
 
                     // This can not happen (TokenInstance must fix this)
