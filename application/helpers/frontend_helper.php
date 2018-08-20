@@ -749,6 +749,29 @@ function buildsurveysession($surveyid, $preview = false)
 
     // Reset all the session variables and start again
     resetAllSessionVariables($surveyid);
+
+    // NOTE: All of this is already done in survey controller.
+    // We keep it here only for Travis Tested thar are still not using Selenium
+    // As soon as the tests are rewrote to use selenium, those lines can be removed
+    $lang       = $_SESSION['survey_'.$surveyid]['s_lang'];
+    if (empty($lang)){
+
+        // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
+
+           if (returnGlobal('lang', true)) {
+               $language_to_set = returnGlobal('lang', true);
+           } elseif (isset($oTokenEntry) && $oTokenEntry) {
+               // If survey have token : we have a $oTokenEntry
+               // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
+               $language_to_set = $oTokenEntry->language;
+           } else {
+               $language_to_set = $thissurvey['language'];
+           }
+            // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
+           SetSurveyLanguage($surveyid, $language_to_set);
+    }
+
+
     UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
     $totalquestions               = $survey->countTotalQuestions;
