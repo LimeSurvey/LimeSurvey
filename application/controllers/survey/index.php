@@ -96,22 +96,16 @@ class index extends CAction
 
 
         // Token Object
+        // Get token
+        if (!isset($token) && isset($clienttoken)) {
+            $token = $clienttoken;
+        }
 
         //SEE IF SURVEY USES TOKENS
         if ($oSurvey->hasTokensTable) {
             $tokensexist = 1;
-        } else {
-            $tokensexist = 0;
-            unset($_POST['token']);
-            unset($param['token']);
-            unset($token);
-            unset($clienttoken);
         }
 
-        // Get token
-        if (!isset($token)) {
-            $token = $clienttoken;
-        }
 
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
 
@@ -176,6 +170,14 @@ class index extends CAction
 
         } elseif (!$clienttoken) {
             $clienttoken = isset($_SESSION['survey_'.$surveyid]['token']) ? $_SESSION['survey_'.$surveyid]['token'] : ""; // Fix for #12003
+        }
+
+        if ($tokensexist != 1){
+            $tokensexist = 0;
+            unset($_POST['token']);
+            unset($param['token']);
+            unset($token);
+            unset($clienttoken);
         }
 
         // No test for response update
