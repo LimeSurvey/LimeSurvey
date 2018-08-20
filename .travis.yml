@@ -72,4 +72,4 @@ before_script:
 
 script:
     # Run tests.
-    - DOMAIN=localhost phpunit --stop-on-failure
+    - DOMAIN=localhost phpunit # --stop-on-failure
