@@ -5051,10 +5051,13 @@ function get_zip_originalsize($filename) {
     if ( function_exists ('zip_entry_filesize') ){
         $size = 0;
         $resource = zip_open($filename);
-        while ($dir_resource = zip_read($resource)) {
-            $size += zip_entry_filesize($dir_resource);
+
+        if ( ! is_int($resource) ) {
+            while ($dir_resource = zip_read($resource)) {
+                $size += zip_entry_filesize($dir_resource);
+            }
+            zip_close($resource);
         }
-        zip_close($resource);
 
         return $size;
     }else{
