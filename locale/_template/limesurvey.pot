@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-08-20 15:13:19+00:00\n"
+"POT-Creation-Date: 2018-08-21 09:49:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3021,7 +3021,7 @@ msgstr ""
 #: application/core/Survey_Common_Action.php:1219
 #: application/extensions/LimeScript/LimeScript.php:25
 #: application/helpers/SurveyRuntimeHelper.php:1301
-#: application/helpers/frontend_helper.php:2148
+#: application/helpers/frontend_helper.php:2171
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
@@ -5341,15 +5341,15 @@ msgstr ""
 msgid "User not found."
 msgstr ""
 
-#: application/controllers/survey/index.php:159
+#: application/controllers/survey/index.php:151
 msgid "Token mismatch"
 msgstr ""
 
-#: application/controllers/survey/index.php:160
+#: application/controllers/survey/index.php:152
 msgid "The token you provided doesn't match the one in your session."
 msgstr ""
 
-#: application/controllers/survey/index.php:164
+#: application/controllers/survey/index.php:156
 #: application/controllers/survey/index.php:196
 #: application/controllers/survey/index.php:248
 msgid "Click here to start the survey."
@@ -9243,32 +9243,32 @@ msgstr ""
 msgid "Try to submit again"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1222
+#: application/helpers/frontend_helper.php:1245
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1370
-#: application/helpers/frontend_helper.php:1395
+#: application/helpers/frontend_helper.php:1393
+#: application/helpers/frontend_helper.php:1418
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1374 tmp/twig_translate.php:167
+#: application/helpers/frontend_helper.php:1397 tmp/twig_translate.php:167
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1378
+#: application/helpers/frontend_helper.php:1401
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2147
+#: application/helpers/frontend_helper.php:2170
 msgid "This website uses cookies. By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2149
+#: application/helpers/frontend_helper.php:2172
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2150
+#: application/helpers/frontend_helper.php:2173
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
