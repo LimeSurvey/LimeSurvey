@@ -2078,7 +2078,7 @@ function buildLabelSetCheckSumArray()
         foreach ($result2->readAll() as $row2) {
             $thisset .= implode('.', $row2);
         } // while
-        $csarray[$row['lid']] = dechex(crc32($thisset) * 1);
+        $csarray[$row['lid']] = hash('sha256', $thisset);
     }
 
     return $csarray;

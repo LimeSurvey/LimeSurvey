@@ -484,7 +484,7 @@ class dataentry extends Survey_Common_Action
                 }
             } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 if (isset($_GET['public']) && $_GET['public'] == "true") {
-                    $password = md5(Yii::app()->request->getParam('accesscode'));
+                    $password = hash('sha256',Yii::app()->request->getParam('accesscode'));
                 } else {
                     $password = Yii::app()->request->getParam('accesscode');
                 }

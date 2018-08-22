@@ -656,12 +656,12 @@ function XMLImportLabelsets($sFullFilePath, $options)
                 $row2 = array_values($row2);
                 $thisset .= implode('.', $row2);
             } // while
-            $newcs = dechex(crc32($thisset) * 1);
+            $newcs = hash('sha256', $thisset);
             unset($lsmatch);
 
             if (isset($csarray) && $options['checkforduplicates'] == 'on') {
                 foreach ($csarray as $key=>$val) {
-                    if ($val == $newcs) {
+                    if (hash_equals($val,$newcs)) {
                         $lsmatch = $key;
                     }
                 }
