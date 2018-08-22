@@ -64,37 +64,6 @@ var AjaxSubmitObject = function () {
         return true;
     };
 
-    var appendScript = function (scriptText, scriptPosition, src) {
-        src = src || '';
-        scriptPosition = scriptPosition || null;
-        var scriptNode = document.createElement('script');
-        scriptNode.type = 'text/javascript';
-        if (src != false) {
-            scriptNode.src = src;
-        }
-        scriptNode.text = scriptText;
-        scriptNode.attributes.class = 'toRemoveOnAjax';
-        switch (scriptPosition) {
-            case 'head':
-                if (checkScriptNotLoaded(scriptNode)) {
-                    document.head.appendChild(scriptNode);
-                }
-                break;
-            case 'body':
-                document.body.appendChild(scriptNode);
-                break;
-            case 'beginScripts':
-                document.getElementById('beginScripts').appendChild(scriptNode);
-                break;
-            case 'bottomScripts': //fallthrough
-            default:
-                document.getElementById('bottomScripts').appendChild(scriptNode);
-                break;
-
-        }
-    };
-
-
     var bindActions = function () {
         var logFunction = new ConsoleShim('PJAX-LOG', (LSvar.debugMode < 1));
 
@@ -142,7 +111,7 @@ var AjaxSubmitObject = function () {
         // Restrict to [type=submit]:not([data-confirmedby])
         // - :submit is the default if button don't have type (reset button on slider for example),
         // - confirmedby have their own javascript system
-        $(document).on('click', '#ls-button-submit', function (e) {
+        $(document).on('click', '.action--ls-button-submit, .action--ls-button-previous', function (e) {
             $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $(this).attr('name') + '\' value=\'' + $(this).attr('value') + '\' type=\'hidden\' />');
             if (isIE10 || /Edge\/\d+\.\d+/.test(navigator.userAgent)) {
                 e.preventDefault();
@@ -150,16 +119,20 @@ var AjaxSubmitObject = function () {
                 return false;
             }
         });
-
+        
         // If the user try to submit the form
         // Always bind to document to not need to bind again
         $(document).on('submit', '#limesurvey', function (e) {
             // Prevent multiposting
             //Check if there is an active submit
             //If there is -> return immediately
-            if (activeSubmit) return;
+            if (activeSubmit) {
+                e.preventDefault();
+                return false;
+            }
             //block further submissions
             activeSubmit = true;
+            $('.action--ls-button-submit, .action--ls-button-previous').prop('disabled', true).addClass('btn-disabled');
             if ($('#onsubmitbuttoninput').length == 0) {
                 $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $('#limesurvey [type=submit]:not([data-confirmedby])').attr('name') + '\' value=\'' + $('#limesurvey [type=submit]:not([data-confirmedby])').attr('value') + '\' type=\'hidden\' />');
             }
@@ -171,6 +144,8 @@ var AjaxSubmitObject = function () {
                 endLoadingBar();
                 //free submitting again
                 activeSubmit = false;
+                $('.action--ls-button-submit, .action--ls-button-previous').prop('disabled', false).removeClass('btn-disabled');
+
                 if (/<###begin###>/.test($('#beginScripts').text())) {
                     $('#beginScripts').text('');
                 }

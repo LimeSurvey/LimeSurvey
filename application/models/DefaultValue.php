@@ -85,7 +85,7 @@ class DefaultValue extends LSActiveRecord
                 'message'=>'{attribute} "{value}" is already in use.'),
         );
     }
-    
+
     public function insertRecords($data)
     {
         $oRecord = new self;

@@ -14,11 +14,14 @@ Vue.mixin({
     methods: {
         updatePjaxLinks: function() {
             this.$store.commit("updatePjax");
+        },
+        redoTooltips: function() {
+            window.LS.doToolTip();
         }
     }
 });
 
-$(document).on("ready", function() {
+$(document).on("ready", function () {
     const AppState = getAppState(LS.globalUserId);
     if (document.getElementById("vue-app-main-container")) {
         // eslint-disable-next-line
@@ -33,16 +36,16 @@ $(document).on("ready", function() {
             methods: {
                 controlWindowSize() {
                     const adminmenuHeight = $("body")
-                            .find("nav")
-                            .first()
-                            .height(),
+                        .find("nav")
+                        .first()
+                        .height(),
                         footerHeight = $("body")
-                            .find("footer")
-                            .last()
-                            .height(),
+                        .find("footer")
+                        .last()
+                        .height(),
                         menuHeight = $(".menubar").outerHeight(),
                         inSurveyOffset =
-                            adminmenuHeight + footerHeight + menuHeight + 25,
+                        adminmenuHeight + footerHeight + menuHeight + 25,
                         windowHeight = window.innerHeight,
                         inSurveyViewHeight = windowHeight - inSurveyOffset;
 
@@ -87,7 +90,7 @@ $(document).on("ready", function() {
 
                 $(document).trigger("vue-reload-remote");
 
-                window.setInterval(function() {
+                window.setInterval(function () {
                     $(document).trigger("vue-reload-remote");
                 }, 60 * 5 * 1000);
             }
@@ -134,13 +137,13 @@ $(document)
         $("#pjax-file-load-container")
             .find("div")
             .css("width", "100%");
-        $("#pjaxClickInhibitor").fadeOut(400, function() {
+        $("#pjaxClickInhibitor").fadeOut(400, function () {
             $(this).remove();
         });
         $(document).trigger("vue-resize-height");
         $(document).trigger("vue-reload-remote");
         // $(document).trigger('vue-sidemenu-update-link');
-        setTimeout(function() {
+        setTimeout(function () {
             $("#pjax-file-load-container")
                 .find("div")
                 .css({

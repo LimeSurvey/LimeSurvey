@@ -52,7 +52,19 @@
 				<?php echo $form->dropDownList($model,'ordering', $model->getOrderOptions()); ?>
 				<?php echo $form->error($model,'ordering'); ?>
 			</div>
+			
+			<div class="form-group">
+				<?php echo $form->labelEx($model,'showincollapse'); ?>
+				<?php echo $form->checkbox($model,'showincollapse'); ?>
+				<?php echo $form->error($model,'showincollapse'); ?>
+			</div>
 
+			<div class="form-group">
+				<?php echo $form->labelEx($model,'name'); ?>
+				<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>255, 'pattern' => '[a-z][a-z0-9]{5,59}')); ?>
+				<?php echo $form->error($model,'name'); ?>
+			</div>
+			
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'title'); ?>
 				<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>255)); ?>

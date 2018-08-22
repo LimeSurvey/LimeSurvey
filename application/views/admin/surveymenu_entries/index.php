@@ -55,14 +55,14 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
                             'pageSize',
                             $pageSize,
                             Yii::app()->params['pageSizeOptions'],
-                            array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+                            array('class'=>'changePageSize form-control', 'id'=>'pageSize', 'style'=>'display: inline; width: auto')
                         )
                     ),
                     'itemsCssClass' =>'table table-striped',
                     'rowHtmlOptionsExpression' => '["data-surveymenu-entry-id" => $data->id]',
                     'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view col-12'),
                     'ajaxType' => 'POST',
-                    'ajaxUpdate' => true,
+                    'ajaxUpdate' => 'bindAction',
                     'afterAjaxUpdate'=>'bindAction',
                     'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                 ));
@@ -137,6 +137,5 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
       deleteEntryUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/delete'); ?>"
     }),
     bindAction = surveyMenuEntryFunctions.getBindActionForSurveymenuEntries();
-
-    $(document).on('ready pjax:scriptcomplete', bindAction);
+    bindAction();
   </script>

@@ -134,7 +134,6 @@ var QuestionFunctions = function () {
                     return false;
                 }
             });
-
         };
     return {
         init: init
@@ -151,7 +150,6 @@ $(document).on('ready  pjax:scriptcomplete', function () {
 function updatequestionattributes(question_template_name = '', oldQuestionTemplate = '') {
     var type = $('#question_type').val();
     OtherSelection(type);
-
     $('.loader-advancedquestionsettings').removeClass("hidden");
     $('.panel-advancedquestionsettings').remove();
 
@@ -167,7 +165,7 @@ function updatequestionattributes(question_template_name = '', oldQuestionTempla
     if (Object.prototype.toString.call(question_template_name) == '[object String]'){
         postData['question_template'] = question_template_name;
     }
-
+    window.LS.unrenderBootstrapSwitch();
     $.ajax({
         url: attr_url,
         data: postData,
@@ -175,6 +173,7 @@ function updatequestionattributes(question_template_name = '', oldQuestionTempla
         success: function (data) {
             $('#container-advanced-question-settings').html(data);
             $('.loader-advancedquestionsettings').addClass("hidden");
+            window.LS.renderBootstrapSwitch();
             if(question_template_name) {
                 //$('#collapse-cat1').collapse('toggle');
             }
@@ -205,7 +204,6 @@ function updatequestionattributes(question_template_name = '', oldQuestionTempla
                     }
                 }
             });
-            renderBootstrapSwitch();
         }
     });
 }

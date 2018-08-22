@@ -3,8 +3,8 @@
 class SurveymenuEntryData extends CFormModel
 {
 
-    public $rawData = null;    
-    public $render = null;    
+    public $rawData = null;
+    public $render = null;
     public $link = "admin/survey/sa/rendersidemenulink";
     public $linkData  = array();
     public $linkExternal = false;
@@ -34,7 +34,7 @@ class SurveymenuEntryData extends CFormModel
 
     public function createOptionJson($addSurveyID = false, $addQuestionGroupId = false, $addQuestionId = false)
     {
-        
+
         $dataArray = array();
         if ($addSurveyID) {
                     $dataArray['surveyid'] = ['survey', 'sid'];
@@ -63,7 +63,7 @@ class SurveymenuEntryData extends CFormModel
 
         return json_encode(array('render' => $baseArray));
     }
-    
+
     public function linkCreator()
     {
         $returnLink = Yii::app()->getController()->createUrl($this->link, $this->linkData);
@@ -85,7 +85,7 @@ class SurveymenuEntryData extends CFormModel
             $this->linkData[$key] = $value;
         }
     }
-    
+
 
     private function _parseLink()
     {
@@ -127,7 +127,7 @@ class SurveymenuEntryData extends CFormModel
         list($type, $attribute) = $getDataPair;
         $oTypeObject = null;
         switch ($type) {
-            case 'survey': 
+            case 'survey':
                 $oTypeObject = &$oSurvey;
                 break;
             case 'template':
@@ -143,7 +143,7 @@ class SurveymenuEntryData extends CFormModel
                     $oTypeObject = QuestionGroup::model()->getByPk(((int) $_REQUEST['qid']));
                 }
                 break;
-            break; 
+            break;
         }
 
         $result = $oTypeObject != null ? $oTypeObject->{$attribute} : null;

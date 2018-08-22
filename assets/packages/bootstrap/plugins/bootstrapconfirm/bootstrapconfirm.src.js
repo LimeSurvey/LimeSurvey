@@ -14,8 +14,8 @@ jQuery.extend({
                     ${text}
                 </div>
                 <div class="modal-footer">
-                    <button id="identity__bsconfirmModal_button_cancel" type="button" class="btn btn-default">${i18n.confirm_cancel || '<i class="fa fa-times"></i>'}</button>
-                    <button id="identity__bsconfirmModal_button_ok" type="button" class="btn btn-danger">${i18n.confirm_ok || '<i class="fa fa-check"></i>'}</button>
+                    <button id="identity__bsconfirmModal_button_cancel" type="button" class="btn btn-default">${i18n.confirm_cancel || ''} <i class="fa fa-times"></i></button>
+                    <button id="identity__bsconfirmModal_button_ok" type="button" class="btn btn-danger">${i18n.confirm_ok || ''} <i class="fa fa-check"></i></button>
                 </div>
                 </div>
             </div>

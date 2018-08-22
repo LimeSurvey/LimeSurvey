@@ -1125,7 +1125,7 @@ function do_date($ia)
             'dateformatdetails'      => $dateformatdetails['dateformat'],
             'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
             'dateformatdetailsphp'    => $dateformatdetails['phpdate'],
-            'goodchars'              => "", // "return goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
+            'goodchars'              => "", // "return window.LS.goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
             'language'               => App()->language,
             'hidetip'                => trim($aQuestionAttributes['hide_tip']) == 0,
@@ -5543,9 +5543,10 @@ function do_array_dual($ia)
         $answer = "<p class='error'>".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames = "";
     }
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js", CClientScript::POS_BEGIN);
+    if(!Yii::app()->getClientScript()->isScriptFileRegistered(Yii::app()->getConfig('generalscripts')."dualscale.js", LSYii_ClientScript::POS_BEGIN)) {
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js", LSYii_ClientScript::POS_BEGIN);
+    }
     Yii::app()->getClientScript()->registerScript('doDualScaleFunction'.$ia[0], "{$doDualScaleFunction}({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
-
     return array($answer, $inputnames);
 }
 

@@ -31,6 +31,7 @@ var RankingQuestion = function (options) {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
             sort: false,
+            scroll: false,
             onMove: function(ev) {
                 if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
                     //sortableAlert();

@@ -994,14 +994,14 @@ class tokens extends Survey_Common_Action
     public function managetokenattributes($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
-        $survey = Survey::model()->findByPk($iSurveyId);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
-        $bTokenExists = $survey->hasTokensTable;
+        $bTokenExists = $oSurvey->hasTokensTable;
         if (!$bTokenExists) {
 //If no tokens table exists
             $this->_newtokentable($iSurveyId);
@@ -1010,24 +1010,24 @@ class tokens extends Survey_Common_Action
 
         $aData = array();
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId; // Close button
 
-        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+        $aData['thissurvey'] = $oSurvey->attributes;
         $aData['surveyid'] = $iSurveyId;
         $aData['tokenfields'] = getAttributeFieldNames($iSurveyId);
-        $aData['tokenfielddata'] = $aData['thissurvey']['attributedescriptions'];
+        $aData['tokenfielddata'] = $oSurvey->decodedAttributedescriptions;
         // Prepare token fiel list for dropDownList
         $tokenfieldlist = array();
         foreach ($aData['tokenfields'] as $tokenfield) {
             if (isset($aData['tokenfielddata'][$tokenfield])) {
-                            $descrition = $aData['tokenfielddata'][$tokenfield]['description'];
+                $description = $aData['tokenfielddata'][$tokenfield]['description'];
             } else {
-                            $descrition = "";
+                $description = "";
             }
-            $descrition = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", $tokenfield), $descrition);
-            $tokenfieldlist[] = array("id"=>$tokenfield, "descrition"=>$descrition);
+            $description = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", $tokenfield), $description);
+            $tokenfieldlist[] = array("id"=>$tokenfield, "description"=>$description);
         }
         $aData['tokenfieldlist'] = $tokenfieldlist;
         $languages = array_merge((array) Survey::model()->findByPk($iSurveyId)->language, Survey::model()->findByPk($iSurveyId)->additionalLanguages);
@@ -1054,12 +1054,12 @@ class tokens extends Survey_Common_Action
     public function updatetokenattributes($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
-        $survey = Survey::model()->findByPk($iSurveyId);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
-        if (!$survey->hasTokensTable) {
+        if (!$oSurvey->hasTokensTable) {
             // If no tokens table exists
             $this->_newtokentable($iSurveyId);
         }
@@ -1076,7 +1076,7 @@ class tokens extends Survey_Common_Action
             Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyId)."}}", 'attribute_'.$i, 'string(255)'))->execute();
         }
 
-        Yii::app()->db->schema->getTable($survey->tokensTableName, true); // Refresh schema cache just in case the table existed in the past
+        Yii::app()->db->schema->getTable($oSurvey->tokensTableName, true); // Refresh schema cache just in case the table existed in the past
         LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
 
         Yii::app()->session['flashmessage'] = sprintf(gT("%s field(s) were successfully added."), $number2add);
@@ -1092,9 +1092,9 @@ class tokens extends Survey_Common_Action
     public function deletetokenattributes($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
-        $survey = Survey::model()->findByPk($iSurveyId);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
-        if (!$survey->hasTokensTable) {
+        if (!$oSurvey->hasTokensTable) {
             Yii::app()->session['flashmessage'] = gT("No survey participants table.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
@@ -1129,7 +1129,7 @@ class tokens extends Survey_Common_Action
             )), $aData);
         } elseif ($sAttributeToDelete) {
             // Update field attributedescriptions in survey table
-            $aTokenAttributeDescriptions = decodeTokenAttributes(Survey::model()->findByPk($iSurveyId)->attributedescriptions);
+            $aTokenAttributeDescriptions = $oSurvey->decodedAttributedescriptions;
             unset($aTokenAttributeDescriptions[$sAttributeToDelete]);
             Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($aTokenAttributeDescriptions)));
 
@@ -1153,12 +1153,13 @@ class tokens extends Survey_Common_Action
     public function updatetokenattributedescriptions($iSurveyId)
     {
         $iSurveyId = (int) $iSurveyId;
-        $survey = Survey::model()->findByPk($iSurveyId);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update')) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
-        if (!$survey->hasTokensTable) {
+        if (!$oSurvey->hasTokensTable) {
             // If no tokens table exists
             $this->_newtokentable($iSurveyId);
         }
@@ -1166,7 +1167,7 @@ class tokens extends Survey_Common_Action
         // find out the existing token attribute fieldnames
         $tokenattributefieldnames = getAttributeFieldNames($iSurveyId);
 
-        $languages = array_merge((array) Survey::model()->findByPk($iSurveyId)->language, Survey::model()->findByPk($iSurveyId)->additionalLanguages);
+        $languages = array_merge((array) $oSurvey->language, $oSurvey->additionalLanguages);
         $fieldcontents = array();
         $captions = array();
         foreach ($tokenattributefieldnames as $fieldname) {
@@ -1177,7 +1178,8 @@ class tokens extends Survey_Common_Action
             'cpdbmap' => Yii::app()->request->getPost('cpdbmap_'.$fieldname)
             );
             foreach ($languages as $language) {
-                            $captions[$language][$fieldname] = Yii::app()->request->getPost("caption_{$fieldname}_$language");
+                $fieldNameValue = Yii::app()->request->getPost("caption_".$fieldname."_".$language);
+                $captions[$language][$fieldname] = $fieldNameValue;
             }
         }
         Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
@@ -2182,8 +2184,8 @@ class tokens extends Survey_Common_Action
             $this->_renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Create tokens"),
             'message' => gT("Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?")."<br /><br />\n"
-            . "<input class='btn btn-default btn-lg' type='submit' value='"
-            . gT("Yes")."' onclick=\"".convertGETtoPOST($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$iSurveyId", array('ok'=>'Y')))."\" />\n"
+            . "<button class='btn btn-default btn-lg' type='submit' value='"
+            . gT("Yes")."' onclick='".convertGETtoPOST($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$iSurveyId", array('ok'=>'Y')))."' >".gT("Yes")."</button>\n"
             . "<input class='btn btn-default  btn-lg' type='submit' value='"
             . gT("No")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId")."', '_top')\" />\n"
             . "<br />\n"
@@ -2340,8 +2342,8 @@ class tokens extends Survey_Common_Action
      */
     public function _handletokenform($iSurveyId, $subaction, $iTokenId = "", $ajax = false)
     {
-        $survey = Survey::model()->findByPk($iSurveyId);
-        if (!$survey->hasTokensTable) {
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        if (!$oSurvey->hasTokensTable) {
             // If no tokens table exists
             $this->_newtokentable($iSurveyId);
         }
@@ -2357,8 +2359,8 @@ class tokens extends Survey_Common_Action
 
         $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
 
-        $thissurvey = getSurveyInfo($iSurveyId);
-        $aAdditionalAttributeFields = $thissurvey['attributedescriptions'];
+        $thissurvey = $oSurvey->attributes;
+        $aAdditionalAttributeFields = $oSurvey->decodedAttributedescriptions;
         $aTokenFieldNames = Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyId}}", true);
         $aTokenFieldNames = array_keys($aTokenFieldNames->columns);
         $aData['attrfieldnames'] = array();
@@ -2382,13 +2384,13 @@ class tokens extends Survey_Common_Action
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['savebutton']['form'] = true;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
 
         if ($ajax) {
-            $aData['oSurvey'] = $survey;
+            $aData['oSurvey'] = $oSurvey;
             $aData['ajax'] = true;
             $this->getController()->renderPartial('/admin/token/tokenform', $aData, false, false);
         } else {

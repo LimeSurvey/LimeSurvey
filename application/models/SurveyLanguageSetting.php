@@ -127,11 +127,11 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
         );
     }
-    
+
     public  function defaultScope()
     {
         return array('index'=>'surveyls_language');
-    }        
+    }
 
     /**
      * Defines the customs validation rule lsdefault

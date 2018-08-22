@@ -20,8 +20,8 @@ $script = array();
             <div class=''>
                 <?php
                 $sBodyField=$details['field']['body'];
-                echo CHtml::textArea("email_{$tab}_{$grouplang}",$esrow->$sBodyField,array('cols'=>80,'rows'=>20, 'class'=>'form-control')); ?>
-                <?php echo getEditor("email-$tab","email_{$tab}_$grouplang", $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); ?>
+                echo CHtml::textArea("email_".$tab."_".$grouplang,$esrow->$sBodyField,array('cols'=>80,'rows'=>20, 'class'=>'form-control')); ?>
+                <?php echo getEditor("email_".$tab."_".$grouplang, "email_".$tab."_".$grouplang, $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); ?>
             </div>
             <div class=''></div>
         </div>

@@ -17,7 +17,7 @@
               <?php  eT("Import resources ZIP archive"); ?>
           </h4>
         </div>
-        <?php echo CHtml::form(array('admin/survey/sa/importsurveyresources'), 'post', array('id'=>'importsurveyresources', 'name'=>'importsurveyresources', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'. gT('Please select a file to import!', 'js').'");')); ?>
+        <?php echo CHtml::form(array('admin/survey/sa/importsurveyresources'), 'post', array('id'=>'importsurveyresources', 'name'=>'importsurveyresources', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return window.LS.validatefilename(this,"'. gT('Please select a file to import!', 'js').'");')); ?>
           <div class="modal-body">
             <input type='hidden' name='surveyid' value='<?php echo $surveyid; ?>' />
             <input type='hidden' name='action' value='importsurveyresources' />

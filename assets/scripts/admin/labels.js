@@ -438,7 +438,7 @@ function code_duplicates_check() {
         return false;
     }
 
-    if (arrHasDupes(codearray)) {
+    if (window.LS.arrHasDupes(codearray)) {
         alert(duplicatelabelcode);
         return false;
     }

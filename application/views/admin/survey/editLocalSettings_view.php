@@ -135,49 +135,5 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12 col-lg-6">
-                <!-- Survey data policy checkbox label -->
-                <div class="form-group">
-                    <label class="control-label"><?php eT("Survey data policy checkbox label:"); ?> 
-                    <i class="fa fa-question-circle" id="dataseclabel_popover_<?=$aSurveyLanguageSettings['surveyls_language']?>" data-toggle="popover" title="<?=gT('How to link to the survey data policy statement modal window')?>"  data-content="<?php
-                        eT("If you want to specify a link to the survey data policy please use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} to define the link that opens the popup. If there is no placeholder given, there will be an appendix.")
-                    ?>"></i> </label>
-                    <div class="">
-                        <?php echo CHtml::textField("dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_notice_label'],array('class'=>'form-control','size'=>"80",'id'=>"dataseclabel_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
-                    </div>
-                </div>
-                <!-- Survey data policy message -->
-                <div class="form-group">
-                    <label class=" control-label" for='datasec_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Survey data policy message:"); ?></label>
-                    <div class="">
-                    <div class="htmleditor input-group">
-                        <?php echo CHtml::textArea("datasec_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_notice'],array('class'=>'form-control','cols'=>'80','rows'=>'20','id'=>"datasec_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
-                        <?php echo getEditor("survey-datasec","datasec_".$aSurveyLanguageSettings['surveyls_language'], "[".gT("Survey data policy:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12 col-lg-6">
-                <!-- Survey data policy error message -->
-                <div class="form-group">
-                    <label class=" control-label" for='datasecerror_<?php echo $aSurveyLanguageSettings['surveyls_language']; ?>'><?php eT("Survey data policy error message:"); ?></label>
-                    <div class="">
-                    <div class="htmleditor input-group">
-                        <?php echo CHtml::textArea("datasecerror_{$aSurveyLanguageSettings['surveyls_language']}",$aSurveyLanguageSettings['surveyls_policy_error'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"datasecerror_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
-                        <?php echo getEditor("survey-datasec-error","datasecerror_".$aSurveyLanguageSettings['surveyls_language'], "[".gT("Survey data policy error:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
-
-<?php
-App()->getClientScript()->registerScript(
-    'popover_'.$aSurveyLanguageSettings['surveyls_language'], 
-    '$("dataseclabel_popover_'.$aSurveyLanguageSettings['surveyls_language'].'").popover()', 
-    LSYii_ClientScript::POS_POSTSCRIPT 
-)
-?>

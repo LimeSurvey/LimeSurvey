@@ -32,6 +32,12 @@ class SurveymenuEntryController extends Survey_Common_Action
         $data['model'] = SurveymenuEntries::model();
         $data['model']->setAttributes($filterAndSearch);
         $data['user'] = Yii::app()->session['loginID'];
+
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSize', (int) Yii::app()->request->getParam('pageSize'));
+        }
+        $aData['pageSize'] = Yii::app()->user->getState('pageSize', (int) Yii::app()->params['defaultPageSize']);
+
         App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->_renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
     }

@@ -133,7 +133,7 @@ function submitEditToken(){
     var $modal      = $('#editTokenModal');
 
     // Ajax request
-    LS.ajax({
+    $.ajax({
         url  : $actionUrl,
         type : 'POST',
         data : $datas,
@@ -323,7 +323,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         <td><span data-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button fa fa-trash text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
         <span data-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success icon-add' style='margin-bottom:4px'></span></td></tr><tr></tr>";
         $('#searchtable tr:last').after(html);
-        $('[data-toggle="tooltip"]').tooltip()
+        window.LS.doToolTip();
     });
     if(typeof searchconditions === "undefined") {
         searchconditions = {};

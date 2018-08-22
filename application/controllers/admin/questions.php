@@ -112,23 +112,23 @@ class questions extends Survey_Common_Action
 
         // Last question visited : By user (only one by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $qid);
+        SettingGlobal::setSetting($setting_entry, $qid);
 
         // we need to set the sid for this question
         $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $iSurveyID);
+        SettingGlobal::setSetting($setting_entry, $iSurveyID);
 
         // we need to set the gid for this question
         $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $gid);
+        SettingGlobal::setSetting($setting_entry, $gid);
 
         // Last question for this survey (only one by survey, many by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
-        setGlobalSetting($setting_entry, $qid);
+        SettingGlobal::setSetting($setting_entry, $qid);
 
         // we need to set the gid for this question
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
-        setGlobalSetting($setting_entry, $gid);
+        SettingGlobal::setSetting($setting_entry, $gid);
 
         $aData['surveyIsActive'] = $survey->active !== 'N';
 
@@ -1460,10 +1460,10 @@ class questions extends Survey_Common_Action
             $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
             $oCriteria->compare('stg_value', $rqid, false, 'AND');
             SettingGlobal::model()->deleteAll($oCriteria);
-
+            $redirectUrl = array('admin/survey/sa/listquestions/', 'surveyid' => $surveyid, 'gid' => $gid_search);
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
+                $this->getController()->redirect($redirectUrl);
             } else {
                 return array('status'=>true, 'message'=>$sMessage);
             }
@@ -1471,7 +1471,7 @@ class questions extends Survey_Common_Action
             $sMessage = gT("You are not authorized to delete questions.");
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
+                $this->getController()->redirect($redirectUrl);
             } else {
                 return array('status'=>false, 'message'=>$sMessage);
             }

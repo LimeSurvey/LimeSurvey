@@ -133,7 +133,7 @@ function bindClickIfNotExpanded()
     {
         bindExpandRelevanceEquation();
         // Activate tooltip
-        $('[data-toggle="tooltip"]').tooltip()
+        window.LS.doToolTip();
     }
 
 }
@@ -466,10 +466,10 @@ function areCodesUnique(sNewValue)
         })
         if (sNewValue!='')
         {
-            codearray=codearray.filter( onlyUnique );
+            codearray=window.LS.getUnique(codearray);
             codearray.push(sNewValue);
         }
-        if (arrHasDupes(codearray))
+        if (window.LS.arrHasDupes(codearray))
             {
             dupefound=true;
             return;
@@ -503,7 +503,7 @@ function code_duplicates_check()
         $(this).find('tr .code').each(function(){
             codearray.push($(this).val().toLowerCase());
         });
-        var theDuplicate = arrHasDupesWhich(codearray);
+        var theDuplicate = window.LS.arrHasDupesWhich(codearray);
         if (theDuplicate !== false)
         {
 
@@ -873,7 +873,7 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
 function getlabel()
 {
     var answer_table = $(this).parent().children().eq(0);
-    scale_id=removechars($(this).attr('id'));
+    scale_id=window.LS.removechars($(this).attr('id'));
 
     //$('#saveaslabel').dialog('open');
     updaterowproperties();

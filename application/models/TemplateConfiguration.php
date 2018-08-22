@@ -51,7 +51,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     public $oParentTemplate;
 
-    /**@var boolean Should the magic getters automatically retreives the parent value when field is set to inherit. Only turn to on for template rendering  */
+    /**@var boolean Should the magic getters automatically retreives the parent value when field is set to inherit. Only turn to on for template rendering. There is no option inheritance on Manifest mode: values from XML are always used. */
     public $bUseMagicInherit = false;
 
     /**@var boolean Indicate if this entry in DB get created on the fly. If yes, because of Cache, it can need a page redirect  */
@@ -74,8 +74,8 @@ class TemplateConfiguration extends TemplateConfig
     /** @var string $sTypeIcon the type of template for icon (core vs user)*/
     private $sTypeIcon;
 
-    /** @var array $aFilesToLoad cache for the method getFilesToLoad()*/
-    private $aFilesToLoad;
+    /** @var array $aFilesTo cache for the method getFilesTo*/
+    private $aFilesTo;
 
     /** @var array $aFrameworkAssetsToReplace cache for the method getFrameworkAssetsToReplace()*/
     private $aFrameworkAssetsToReplace;
@@ -83,7 +83,13 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aReplacements cache for the method getFrameworkAssetsReplacement */
     private $aReplacements;
 
+    /** @var array $Ofiles cache for the method getOfiles */
+    private $Ofiles;
+
     public $generalFilesPath; //Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.'generalfiles'.DIRECTORY_SEPARATOR;
+
+    /** @var int $showpopups show warnings when running survey */
+    public $showpopups; //
 
     /**
      * @return string the associated database table name
@@ -148,9 +154,9 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
-    public static function getInstanceFromTemplateName($sTemplateName)
+    public static function getInstanceFromTemplateName($sTemplateName, $abstractInstance = false)
     {
-        if (!empty(self::$aInstancesFromTemplateName[$sTemplateName])) {
+        if (!empty(self::$aInstancesFromTemplateName[$sTemplateName]) && !$abstractInstance) {
             return self::$aInstancesFromTemplateName[$sTemplateName];
         }
 
@@ -162,6 +168,10 @@ class TemplateConfiguration extends TemplateConfig
         // If the survey configuration table of the wanted template doesn't exist (eg: manually deleted), then we provide the default one.
         if (!is_a($oInstance, 'TemplateConfiguration')) {
             $oInstance = self::getInstanceFromTemplateName(getGlobalSetting('defaulttheme'));
+        }
+
+        if($abstractInstance === true) {
+            return $oInstance;
         }
 
         self::$aInstancesFromTemplateName[$sTemplateName] = $oInstance;
@@ -177,7 +187,7 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
-    public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName = null)
+    public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName = null, $abstractInstance = false)
     {
         //if a template name is given also check against that
         $sTemplateName = $sTemplateName != null ? $sTemplateName : SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
@@ -191,7 +201,7 @@ class TemplateConfiguration extends TemplateConfig
         // No specific template configuration for this surveygroup => create one
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName, $abstractInstance);
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
@@ -214,7 +224,7 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $sTemplateName
      * @return TemplateConfiguration
      */
-    public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName = null)
+    public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName = null, $abstractInstance = false)
     {
 
         //if a template name is given also check against that
@@ -231,7 +241,7 @@ class TemplateConfiguration extends TemplateConfig
         // No specific template configuration for this surveygroup => create one
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName, $abstractInstance);
             $oTemplateConfigurationModel->bUseMagicInherit = false;
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
@@ -242,6 +252,50 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         return $oTemplateConfigurationModel;
+    }
+
+
+
+    /**
+     * Returns a Theme options array based on a surveyID
+     *
+     * @param integer $iSurveyId
+     * @param bool $bInherited should inherited theme option values be used?
+     * @return array
+     */
+
+    public static function getThemeOptionsFromSurveyId($iSurveyId = 0, $bInherited = false)
+    {
+        $aTemplateConfigurations = array();
+        // fetch all themes belonging to $iSurveyId
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('sid=:sid');
+        $criteria->params = array('sid' => $iSurveyId);
+        $oTemplateConfigurations = self::model()->findAll($criteria);
+
+        if ($bInherited){ // inherited values
+            foreach ($oTemplateConfigurations as $key => $oTemplateConfiguration) {
+                $oTemplateConfiguration->bUseMagicInherit = true;
+                $oTemplateConfiguration->setOptions();
+                // set array with values
+                $aTemplateConfigurations[$key]['id'] = null;
+                $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
+                $aTemplateConfigurations[$key]['template_name'] = $oTemplateConfiguration->template_name;
+                $aTemplateConfigurations[$key]['config']['options'] = (array)$oTemplateConfiguration->oOptions;
+            }
+        } else { // db values
+            foreach ($oTemplateConfigurations as $key => $oTemplateConfiguration) {
+                $oTemplateConfiguration->bUseMagicInherit = false;
+                $oAttributes = $oTemplateConfiguration->attributes;
+                // set array with values
+                $aTemplateConfigurations[$key]['id'] = null;
+                $aTemplateConfigurations[$key]['sid'] = $iSurveyId;
+                $aTemplateConfigurations[$key]['template_name'] = $oAttributes['template_name'];
+                $aTemplateConfigurations[$key]['config']['options'] = isJson($oAttributes['options'])?(array)json_decode($oAttributes['options']):$oAttributes['options'];
+            }
+        }
+
+        return $aTemplateConfigurations;
     }
 
     /**
@@ -305,21 +359,21 @@ class TemplateConfiguration extends TemplateConfig
      * @param integer $iSurveyId
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName = null, $iSurveyGroupId = null, $iSurveyId = null)
+    public static function getInstance($sTemplateName = null, $iSurveyGroupId = null, $iSurveyId = null, $abstractInstance = false)
     {
 
         $oTemplateConfigurationModel = new TemplateConfiguration();
 
         if ($sTemplateName != null && $iSurveyGroupId == null && $iSurveyId == null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName, $abstractInstance);
         }
 
         if ($iSurveyGroupId != null && $iSurveyId == null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName, $abstractInstance);
         }
 
         if ($iSurveyId != null) {
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyId($iSurveyId, $sTemplateName, $abstractInstance);
         }
 
         return $oTemplateConfigurationModel;
@@ -431,35 +485,9 @@ class TemplateConfiguration extends TemplateConfig
         return $this->bTemplateCheckResult;
     }
 
-    /**
-     * Prepare all the needed datas to render the temple
-     * If any problem (like template doesn't exist), it will load the default theme configuration
-     * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
-     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template.
-     *
-     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
-     * @param  string $iSurveyId the id of the survey. If
-     * @param bool $bUseMagicInherit
-     * @return $this
-     */
-    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
+    public function setBasics($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = false)
     {
-        //echo '<br><br><br> $aPreparedToRender[$sTemplateName][$iSurveyId][$bUseMagicInherit] ; <br> $sTemplateName: '.$sTemplateName.' <br>$iSurveyId: '.$iSurveyId.'<br> $bUseMagicInherit: '.$bUseMagicInherit;
-        if (!empty(self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit])) {
-            return self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit];
-        }
-
         $this->bUseMagicInherit = $bUseMagicInherit;
-        $this->setBasics($sTemplateName, $iSurveyId);
-        $this->setMotherTemplates(); // Recursive mother templates configuration
-        $this->setThisTemplate(); // Set the main config values of this template
-        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
-        self::$aPreparedToRender[$this->template->name][$iSurveyId][$bUseMagicInherit] = $this;
-        return $this;
-    }
-
-    public function setBasics($sTemplateName = '', $iSurveyId = '')
-    {
         $this->sTemplateName = $this->template->name;
         $this->setIsStandard(); // Check if  it is a CORE template
         $this->path = ($this->isStandard)
@@ -617,7 +645,7 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Set a value on a given option at global setting level (survey level not affected).
-     * Will be used to turn ON ajax mode on update. 
+     * Will be used to turn ON ajax mode on update.
      *
      * @param string $name
      * @param mixed $value
@@ -638,6 +666,50 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * Apply options from XML configuration for all missing template options
+     *
+     * @return void
+     */
+    public function addOptionFromXMLToLiveTheme()
+    {
+        if ($this->options != 'inherit') {
+            $oOptions = get_object_vars(json_decode($this->options));
+            $oTemplateConfigurationModel = new TemplateManifest;
+            $oTemplateConfigurationModel->setBasics();
+            $oXmlOptions = get_object_vars($oTemplateConfigurationModel->config->options);
+
+            // compare template options to options from the XML and add if missing
+            foreach ($oXmlOptions as $key=>$value){
+                if (!array_key_exists($key, $oOptions)){
+                  $this->addOptionToLiveTheme($key, $value);
+                }
+            }
+        }
+    }
+
+    /**
+     * Add an option definition to the current theme.
+     * Will be used to turn ON ajax mode on update.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function addOptionToLiveTheme($name, $value)
+    {
+        if ($this->options != 'inherit') {
+
+            $oOptions = json_decode($this->options);
+            $oOptions->$name = $value;
+            $sOptions = json_encode($oOptions);
+            $this->options = $sOptions;
+            $this->save();
+
+        }
+    }
+
+
+    /**
      * Set option (unless if options is set to "inherit").
      * @param string $name
      * @param mixed $value
@@ -655,17 +727,30 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
+    private function _getRelativePath($from, $to) {
+        $dir = explode(DIRECTORY_SEPARATOR, is_file($from) ? dirname($from) : rtrim($from, DIRECTORY_SEPARATOR));
+        $file = explode(DIRECTORY_SEPARATOR, $to);
+
+        while ($dir && $file && ($dir[0] == $file[0])) {
+            array_shift($dir);
+            array_shift($file);
+        }
+        return str_repeat('..'.DIRECTORY_SEPARATOR, count($dir)) . implode(DIRECTORY_SEPARATOR, $file);
+    }
+
     private function _filterImages($file)
     {
-        $imagePath = (file_exists($this->filesPath.$file['name'])) 
-            ? $this->filesPath.'/'.$file['name']
+        $imagePath = (file_exists($this->filesPath.$file['name']))
+            ? $this->filesPath.$file['name']
             : $this->generalFilesPath.$file['name'] ;
 
-        $filepath = App()->getAssetManager()->publish($imagePath);
+        $filePath = $this->_getRelativePath(Yii::app()->getConfig('rootdir'),  $imagePath);
+
+        $previewFilePath = App()->getAssetManager()->publish($imagePath);
 
         $checkImage = LSYii_ImageValidator::validateImage($imagePath);
         if (!$checkImage['check'] === false) {
-                return ['filepath' => $filepath, 'filepathOptions' => $imagePath ,'filename'=>$file['name']];
+                return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>$file['name']];
         }
     }
 
@@ -688,7 +773,12 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getOptionPage()
     {
+        $oSimpleInheritance = Template::getInstance($this->template->name, $this->sid, $this->gsid, null, true);
+        $oSimpleInheritance->options = 'inherit';
+        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($this->template->name);
+
         $oTemplate = $this->prepareTemplateRendering($this->template->name);
+
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
 
         $oTemplate->setOptions();
@@ -696,10 +786,15 @@ class TemplateConfiguration extends TemplateConfig
 
         //We add some extra values to the option page
         //This is just a dirty hack, and somewhere in the future we will correct it
-        $renderArray['oParentOptions'] = array_merge(((array) $oTemplate->oOptions), array('packages_to_load' =>  $oTemplate->packages_to_load, 'files_css' => $oTemplate->files_css));
+        $renderArray['oParentOptions'] = array_merge(
+            ((array) $oSimpleInheritanceTemplate->oOptions),
+            array('packages_to_load' =>  $oTemplate->packages_to_load,
+            'files_css' => $oTemplate->files_css)
+        );
 
         return Yii::app()->twigRenderer->renderOptionPage($oTemplate, $renderArray);
     }
+
 
     /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
@@ -709,82 +804,95 @@ class TemplateConfiguration extends TemplateConfig
      * @return array
      * @internal param string $jFiles json
      */
-    protected function getFilesToLoad($oTemplate, $sType)
+    protected function getFilesTo($oTemplate, $sType, $sAction)
     {
-        if (empty($this->aFilesToLoad)) {
-            $this->aFilesToLoad = array();
+        // Todo: make it in a recursive way
+        if ( !empty($this->aFilesTo[$oTemplate->template->name]) ) {
+            if ( !empty($this->aFilesTo[$oTemplate->template->name][$sType]) ) {
+                if ( !empty($this->aFilesTo[$oTemplate->template->name][$sType][$sAction] ) ){
+                    return $this->aFilesTo[$oTemplate->template->name][$sType][$sAction];
+                }else{
+                    $this->aFilesTo[$oTemplate->template->name][$sType][$sAction] = array();
+                }
+            }else{
+                $this->aFilesTo[$oTemplate->template->name][$sType]           = array();
+                $this->aFilesTo[$oTemplate->template->name][$sType][$sAction] = array();
+            }
+        }else{
+            $this->aFilesTo[$oTemplate->template->name]                   = array();
+            $this->aFilesTo[$oTemplate->template->name][$sType]           = array();
+            $this->aFilesTo[$oTemplate->template->name][$sType][$sAction] = array();
         }
 
+
         $sField = 'files_'.$sType;
-        $jFiles = $oTemplate->$sField;
-        $this->aFilesToLoad[$sType] = array();
+        $oFiles = $this->getOfiles($oTemplate, $sField);
+
+        $aFiles = array();
+
+        if ($oFiles) {
+
+            foreach ($oFiles as $action => $aFileList) {
+
+                if (is_array($aFileList)) {
+                    if ($action == $sAction) {
+
+                        // Specific inheritance of one of the value of the json array
+                        if ($aFileList[0] == 'inherit') {
+                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                            $aFileList = $aParentjFiles[$action];
+                        }
+
+                        $aFiles = array_merge($aFiles, $aFileList);
+                    }
+                }
+            }
+        }
+
+        $this->aFilesTo[$oTemplate->template->name][$sType][$sAction] = $aFiles;
+        return $aFiles;
+    }
 
 
-        if (!empty($jFiles)) {
-            $oFiles = json_decode($jFiles, true);
+    /**
+     * Get the json files (to load/replace/remove) from  a theme, and checks if its correctly formated
+     *
+     * @param $oTemplate the theme to check
+     * @param $sField name of the DB field to get (file_css, file_js, file_print_css)
+     */
+    protected function getOfiles($oTemplate, $sField)
+    {
+        if ( !empty($this->Ofiles[$oTemplate->template->name])){
+          if (!empty($this->Ofiles[$oTemplate->template->name][$sField] )) {
+              return $this->Ofiles[$oTemplate->template->name][$sField];
+            }else{
+                $this->Ofiles[$oTemplate->template->name][$sField] = array();
+            }
+        }else{
+            $this->Ofiles[$oTemplate->template->name] = array();
+            $this->Ofiles[$oTemplate->template->name][$sField] = array();
+        }
+
+
+        $files = $oTemplate->$sField;
+
+        if (!empty($files)) {
+            $oFiles = json_decode($files, true);
             if ($oFiles === null) {
                 Yii::app()->setFlashMessage(
                     sprintf(
                         gT('Error: Malformed JSON: Field %s must be either a JSON array or the string "inherit". Found "%s".'),
                         $sField,
-                        $jFiles
+                        $oFiles
                     ),
                     'error'
                 );
-            } else {
-                foreach ($oFiles as $action => $aFileList) {
-
-                    if (is_array($aFileList)) {
-                        if ($action == "add" || $action == "replace") {
-
-                            // Specific inheritance of one of the value of the json array
-                            if ($aFileList[0] == 'inherit') {
-                                $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
-                                $aFileList = $aParentjFiles[$action];
-                            }
-
-                            $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
-                        }
-                    }
-                }
-            }
-
-        }
-
-
-        return $this->aFilesToLoad[$sType];
-    }
-
-    /**
-     * Change the mother template configuration depending on template settings
-     * @var $sType     string   the type of settings to change (css or js)
-     * @var $aSettings array    array of local setting
-     * @return array
-     */
-    protected function changeMotherConfiguration($sType, $aSettings)
-    {
-        if (is_a($this->oMotherTemplate, 'TemplateConfiguration')) {
-
-
-            // Check if each file exist in this template path
-            // If the file exists in local template, we can remove it from mother template package.
-            // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
-            // (and leave it in moter template definition if it already exists.)
-            foreach ($aSettings as $key => $sFileName) {
-                if (file_exists($this->path.$sFileName)) {
-                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
-
-                } else {
-                    // File doesn't exist locally, so it should be removed
-                    $key = array_search($sFileName, $aSettings);
-                    //Yii::app()->clientScript->removeFileFromPackage($this->sPackageName, $sType, $sFileName);
-                    unset($aSettings[$key]);
-                    Yii::app()->clientScript->addFileToPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
-                }
+                return false;
             }
         }
 
-        return $aSettings;
+        $this->Ofiles[$oTemplate->template->name][$sField] = $oFiles;
+        return $oFiles;
     }
 
     /**
@@ -1013,7 +1121,7 @@ class TemplateConfiguration extends TemplateConfig
             //check for surveygroup id if a survey is given
             if ($this->sid != null) {
                 $oSurvey = Survey::model()->findByPk($this->sid);
-                $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName, null, $oSurvey->gsid);
+                $oParentTemplate = Template::getTemplateConfiguration($this->template->name, null, $oSurvey->gsid);
                 if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                     $this->oParentTemplate = $oParentTemplate;
                     $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
@@ -1026,7 +1134,7 @@ class TemplateConfiguration extends TemplateConfig
                 $oSurveyGroup = SurveysGroups::model()->findByPk($this->gsid);
                 //Switch if the surveygroup inherits from a parent surveygroup
                 if ($oSurveyGroup != null && $oSurveyGroup->parent_id != 0) {
-                    $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName, null, $oSurveyGroup->parent_id);
+                    $oParentTemplate = Template::getTemplateConfiguration($this->template->name, null, $oSurveyGroup->parent_id);
                     if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                         $this->oParentTemplate = $oParentTemplate;
                         $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
@@ -1116,5 +1224,39 @@ class TemplateConfiguration extends TemplateConfig
             'sid IS NULL AND uid IS NULL and gsid IS NULL AND template_name = :template_name',
             [':template_name'=>$this->template_name]
         );
+    }
+
+    /**
+     * Get showpopups value from config or template configuration
+     */
+    public function getshowpopups(){
+        $config = (int)Yii::app()->getConfig('showpopups');
+        if ($config == 2){
+            if (isset($this->oOptions->showpopups)){
+                $this->showpopups = (int)$this->oOptions->showpopups;
+            } else {
+               $this->showpopups = 1;
+           }
+        } else {
+            $this->showpopups = $config;
+        }
+    }
+
+    /**
+     * Set each option key value to 'inherit' instead of having only one 'inherit' value for options.
+     * Keys are fetched from parent xml configuration.
+     */
+    public function setOptionKeysToInherit(){
+        $oTemplate = $this->getParentConfiguration();
+        $oTemplate->bUseMagicInherit = true;
+        $oTemplate->setOptions();
+
+        $aOptions = array();
+        if ((string)$this->options === 'inherit'){
+            foreach ($oTemplate->oOptions as $key => $value) {
+                $aOptions[$key] = 'inherit';
+            }
+            $this->options = json_encode($aOptions);
+        }
     }
 }

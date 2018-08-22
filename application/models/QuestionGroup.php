@@ -129,6 +129,33 @@ class QuestionGroup extends LSActiveRecord
         }
     }
 
+    public function cleanOrder($surveyid){
+        $iSurveyId = (int) $surveyid;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+
+        $aSurveyLanguages = array_merge([$oSurvey->language], explode(" ", $oSurvey->additional_languages));
+
+        foreach ($aSurveyLanguages as $sSurveyLanguage) {
+            $oCriteria=new CDbCriteria;
+            $oCriteria->compare('sid',$iSurveyId);
+            $oCriteria->compare('language',$sSurveyLanguage);
+            $oCriteria->order = 'group_order ASC';
+
+            $aQuestiongroups = QuestionGroup::model()->findAll($oCriteria);
+            foreach($aQuestiongroups as $itrt => $oQuestiongroup) {
+                $iQuestionGroupOrder = $itrt+1;
+                $oQuestiongroup->group_order = $iQuestionGroupOrder;
+                $oQuestiongroup->save();
+
+                $aQuestions = $oQuestiongroup->questions;
+                foreach ($aQuestions as $qitrt => $oQuestion) {
+                    $iQuestionOrder = $qitrt+1;
+                    $oQuestion->question_order = $iQuestionOrder;
+                    $oQuestion->save(true);
+                }
+            }
+        }
+    }
     /**
      * Insert an array into the groups table
      * Returns false if insertion fails, otherwise the new GID
@@ -304,7 +331,7 @@ class QuestionGroup extends LSActiveRecord
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if (is_null($condarray)) {
                 $sDeleteUrl = Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid");
-                
+
                 $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
                     .'<a class="btn btn-default" href="#" '
                     .' data-href="'.$sDeleteUrl.'" '

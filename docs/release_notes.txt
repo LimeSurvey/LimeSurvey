@@ -35,6 +35,192 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.14.5 (build 180815) to 3.14.6 (build 180821) August 21, 2018
+-[security] Fixed issue #13960: vulnerabilities in file upload functionality (LouisGac)
+-Fixed issue #13948: Survey not opened in token langage if language not definrd in URL (LouisGac)
+-Fixed issue #13960: removed unused method (LouisGac)
+-Fixed issue: captcha box no numbers in box (Markus Flür)
+-Fixed issue: langage changer unavailable from token entry screen (LouisGac)
+-Fixed issue: php7 incomapitbility with count (Markus Flür)
+-This reverts commit a6b553a7b79e15d366804c9f213052e03f387b6c. (LouisGac)
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by finni, pmonstad
+#Updated translation: Russian by vipgroup
+#Updated translation: Thai by tomzt
+#Updated translation: Vietnamese by dnvservices
+
+Changes from 3.14.4 (build 180810) to 3.14.5 (build 180815) August 15, 2018
+-[security] fixed issue #13959: RCE via resource file upload as authenticated user (LouisGac)
+-Fixed issue #13962: Token description cannot be changed (Markus Flür)
+-Fixed issue: Tokenattributedescription not used in token table (Markus Flür)
+-Fixed issue: converting single item to array works only for "add" keyword (LouisGac)
+-Fixed issue: numeric values not acute and wrong arguments blocking js (Markus Flür)
+-Fixed issue: unable to delete survey responses and attachments (Dominik Vitt)
+#Updated translation: Arabic by abusaud1981
+#Updated translation: Chinese (Simplified) by c_schmitz, johnxan
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Chinese (Simplified) by yanglaw, Bobo001, johnxan
+#Updated translation: Chinese (Simplified) by yanglaw, elan365, huageorg, johnxan
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by DenisChenu, b00z00
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by femariso, holch, mauriciofurtado
+#Updated translation: Romanian by cdorin
+#Updated translation: Spanish (Spain) by rodrirokr, aesteban
+#Updated translation: Thai by adzpire, tomzt
+~
+Changes from 3.14.3 (build 180807) to 3.14.4 (build 180810) August 09, 2018
+-Fixed issue: Theme overview could not be opened due to infinite loop  (LouisGac)
+
+Changes from 3.14.2 (build 180807) to 3.14.3 (build 180809) August 09, 2018
+-Fixed issue #13669: Stylesheet missing in themes/survey fruity (LouisGac)
+-Fixed issue #13669: recursive way, for easy maintenance (LouisGac)
+-Fixed issue #13929: Italic text in admin shown with a serif font (LouisGac)
+-Fixed issue #13931: Installer enters an infinite redirect loop if the 'tmp' directory is not writable. (Olle Haerstedt)
+-Fixed issue #13934: 3.14.1: Wrong redirect after logic check for question (Dominik Vitt)
+-Fixed issue #13941: graphs do not show in simple or complex statistics (Markus Flür)
+-Fixed issue: Browserdetect question theme not working correctly (Markus Flür)
+-Fixed issue: Internet Explorer not able to open login screen (Markus Flür)
+-Fixed issue: Rehide the navigator complement (Markus Flür)
+-Fixed issue: STATA export plugin's not working. (LouisGac)
+-Fixed issue: browserdetect not saved correctly (Markus Flür)
+-Fixed issue: color picker not working in inheriting themes (Markus Flür)
+-Fixed issue: no logo for fruity after install (LouisGac)
+-Fixed issue: possible notice in theme editor. (LouisGac)
+-Fixed issue: sticky header option in fruity breaks inheritance (LouisGac)
+
+
+Changes from 3.14.1 (build 180731) to 3.14.2 (build 180807) August 08, 2018
+-Fixed issue #13878: Send email to user group - display issue (Markus Flür)
+-Fixed issue #13902: LimeSurvey try to update response when editing Question (Denis Chenu)
+-Fixed issue #13910: Unable to use saveall button (Markus Flür)
+-Fixed issue #13911: Multi submit action done (Markus Flür)
+-Fixed issue #13923: unable to log in into Admin Backend. Error "Undefined variable: security_update_available" (Markus Flür)
+-Fixed issue #13924: Attribute without description are not seen in management (Denis Chenu)
+-Fixed issue #13925: Unable to use QID SGQ … in validation equation tip (LouisGac)
+-Fixed issue #13935: 'Double click' to Register (Markus Flür)
+-Fixed issue #13939: Add New Question to Groups Disappeared (3.14.1) (Markus Flür)
+-Fixed issue: Postgresql cannot update to latest version due too type error (Markus Flür)
+-Fixed issue: Unable to use ClearAll in Ajax mode (navigator complement) (Markus Flür)
+-Fixed issue: convertGETtoPOST has to be wrapped in singlequotes (Markus Flür)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Danish by achstil
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: German (Informal) by markusfluer
+#Updated translation: German by c_schmitz, markusfluer
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Malay by apisznasdin
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Persian by ESH
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Spanish (Mexican) by rodrirokr
+#Updated translation: Spanish (Spain) by atavei, rodrirokr
+#Updated translation: Thai by tomzt
+#Updated translation: Turkish by kayazeren
+
+Changes from 3.14.0 (build 180730) to 3.14.1 (build 180731) July 31, 2018
+-Fixed issue: wrong permission check in survey theme selector. (LouisGac)
+
+Changes from 3.13.2 (build 180709) to 3.14.0 (build 180730) July 30, 2018
+-New feature: allow template to replace question template twig file (Denis Chenu)
+-New feature: allow to use EM code for subquestions in prefilling (Denis Chenu)
+-New feature: massive action to change theme of surveys (LouisGac)
+-Fixed issue: colon typo (Iko)
+-Fixed issue #13693: strange translation quote (Markus Flür)
+-Fixed issue #13702: beforeCloseHtml event removed (Denis Chenu)
+-Fixed issue #13744: unable to run db migration via command line (Denis Chenu)
+-Fixed issue #13773: Cannot style slider handle when not touched anymore (Markus Flür)
+-Fixed issue #13795: Custom logo is not saved (Markus Flür)
+-Fixed issue #13841: tooltips not working after performing an action in the conditions designer (Markus Flür)
+-Fixed issue #13845: Can't export and then import tab-separated text s… (#1092) (Denis Chenu)
+-Fixed issue #13870: Apple devices do not support ranking question (Markus Flür)
+-Fixed issue #13877: Unable to update answers twig part in theme (Denis Chenu)
+-Fixed issue #13894: EM with dualscale value didn't work (Denis Chenu)
+-Fixed issue #13898: Unable to update token (Markus Flür)
+-Fixed issue #13900: Unable to update Manadtory switch widget on Question edit (Markus Flür)
+-Fixed issue #13901: Prefilling single choice prefill other and comment (Denis Chenu)
+-Fixed issue #13907: Can't delete question in latest master (Markus Flür)
+-Fixed issue #13913: Some replacementfieds not accessible in help-text (LouisGac)
+-Fixed issue #13915: Cannot submit survey with mandatory question and cookie to prevent repeated participation (LouisGac, Olle Haerstedt)
+-Fixed issue : 400, 404 show template unrelated to current template (#1089) (Denis Chenu)
+-Fixed issue: 'Show policy' text also visible if policy is shown inline (Carsten Schmitz)
+-Fixed issue: Modified default config value for shownoanswer causes non-saving in survey settings (Carsten Schmitz)
+-Fixed issue: Question selector not working on IE11 (Markus Flür)
+-Fixed issue: Return from Quota resets survey completely. (Markus Flür)
+-Fixed issue: all surveys shown in survey list at survey group level (LouisGac)
+-Fixed issue: bootstrapswitch not rendering properly (Markus Flür)
+-Fixed issue: can't show surveys from all groups (LouisGac)
+-Fixed issue: crazy html in the activation process (Markus Flür)
+-Fixed issue: emailtemplates validation not working and editor multiplying (Markus Flür)
+-Fixed issue: no icons for attachment and exports in response list massive actions (LouisGac)
+-Fixed issue: not all action button are in a single row in response list (LouisGac)
+-Fixed issue: notifications not working (Markus Flür)
+-Fixed issue: ordering of questions erroring (Markus Flür)
+-Fixed issue: randomization group + "all in one" mode ==> all questions of the survey are shown in all groups (LouisGac)
+-Fixed issue: registerScriptFile using PHP static syntax intead of twig function to filter position (Markus Flür)
+-Fixed issue: save buttons not responding (Markus Flür)
+-Fixed issue: sticky headers and crosshover not working correctly in Firefox (Markus Flür)
+-Fixed issue: survey group can't inherit another survey group (LouisGac)
+-Fixed issue: uncontrolled reordering problems (Markus Flür)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch (Informal) by markusfluer, Han
+#Updated translation: Dutch by Han
+#Updated translation: Dutch by c_schmitz
+#Updated translation: Dutch by markusfluer, Han
+#Updated translation: French (France) by b00z00
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, markusfluer
+#Updated translation: German (Informal) by markusfluer, Joffm, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: German by c_schmitz, actxcellence, markusfluer, Joffm
+#Updated translation: German by c_schmitz, markusfluer
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Persian by ESH, UTeQ
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Russian by vipgroup
+#Updated translation: Thai by tomzt
+#Updated translation: Turkish by kayazeren
+
+Changes from 3.13.1 (build 180629) to 3.13.2 (build 180709) July 09, 2018
+-Fixed issue #13345: showpopups in config.php seems to have no effect anymore (Dominik Vitt)
+-Fixed issue #13802: Unable to see Survey policy without javascript activated (Markus Flür)
+-Fixed issue #13804: Error about Data security policy shown when change language + clear all (Markus Flür)
+-Fixed issue #13805: Multi-line Text Messages Do Not Exist in Translation. (imacat)
+-Fixed issue #13821: When importing a survey I receive a "Failed to Insert [3]" error message (#1090) (githubLewis)
+-Fixed issue #13830: Language changer broken in Ajax mode (Markus Flür)
+-Fixed issue #13831: Export of survey-structure (*.lss - Files) is not possible in LS 3.13.0 (Markus Flür)
+-Fixed issue #13833: Owner of survey are not able to edit assesments (no button) (Denis Chenu)
+-Fixed issue #13842: missing translation (Markus Flür)
+-Fixed issue #13843: icon at the right side, should be in front of label (Markus Flür)
+-Fixed issue #13845: Can't export and then import tab-separated text survey file (Dominik Vitt)
+-Fixed issue #13846: missing translation (Markus Flür)
+-Fixed issue #13856: position of labels in 5-point scale (Markus Flür)
+-Fixed issue: 13840: Login with local user gives a php7.2 warning (Markus Flür)
+-Fixed issue: Not possible to go to previous page in ajax mode (Markus Flür)
+-Fixed issue: end-url redirection not working in ajax mode with compressed js (Markus Flür)
+
 Changes from 3.13.0 (build 180628) to 3.13.1 (build 180629) June 29, 2018
 -Fixed issue #13734:  image upload is not possible - You don't have permissions to browse server. (LouisGac)
 -Fixed issue #13828: Internal Server Error when clicking on 'Theme Options' in Survey Admin Area (Dominik Vitt)
@@ -84,7 +270,7 @@ Changes from 3.12.2 (build 180625) to 3.12.3 (build 180627) June 27, 2018
 #Updated translation: Russian by vipgroup
 #Updated translation: Turkish by kayazeren
 
-                                                               
+
 Changes from 3.12.1 (build 180616) to 3.12.2 (build 180625) June 25, 2018
 -Fixed issue #12640: Unable to update lang when registering (before fill mandatory values) (Dominik Vitt)
 -Fixed issue #12688: Global Settings are not applied to survey settings when creating a new survey (Dominik Vitt)
@@ -3494,7 +3680,7 @@ Fixed #1794: Errors showing when previewing question without answers in Flexible
 Fixed #1802: "Resume Later" -> reloading saved survey starts at first page (c_schmitz)
 Fixed HTML entities showing up in Excel, CSV & SPSS export (c_schmitz)
 Fixed #1780: Java script error with dual scale
-Updated tokens and email validation to be able to use several email addresses separated by semikolon when sending an invitation (c_schmitz)
+Updated tokens and email validation to be able to use several email addresses separated by semicolon when sending an invitation (c_schmitz)
 Fixed SPSS & data export to filter out tags and html-encoded chars (c_schmitz)
 Fixed #1798: In reminder email (html format) surveyurl is displayed as HTML code in Outlook (c_schmitz)
 Fixed #1785: Upgrade script failed to add startdate column under certain circumstances  (c_schmitz)

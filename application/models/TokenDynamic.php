@@ -795,7 +795,7 @@ class TokenDynamic extends LSActiveRecord
     {
 
 
-        $sPreviewUrl  = App()->createUrl("survey/index", array('sid'=>self::$sid, 'token'=> $this->token, 'newtest'=>"Y", 'lang'=>$this->language));                        
+        $sPreviewUrl  = App()->createUrl("survey/index", array('sid'=>self::$sid, 'token'=> $this->token, 'newtest'=>"Y", 'lang'=>$this->language));
         $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid/ajax/true");
         $sInviteUrl   = App()->createUrl("/admin/tokens/sa/email/surveyid/".self::$sid."/tokenids/$this->tid");
         $sRemindUrl   = App()->createUrl("admin/tokens/sa/email/action/remind/surveyid/".self::$sid."/tokenids/$this->tid");
@@ -864,7 +864,7 @@ class TokenDynamic extends LSActiveRecord
             && $this->participant_id != ""
             && Permission::model()->hasGlobalPermission('participantpanel', 'read')) {
 
-            $onClick = "sendPost('".App()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$this->participant_id}']);";
+            $onClick = "window.LS.sendPost('".App()->createUrl('admin/participants/sa/displayParticipants')."',false,{'searchcondition': 'participant_id||equal||{$this->participant_id}'});";
             $button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('View this person in the central participants database').'" onclick="'.$onClick.'"><span class="icon-cpdb" ></span></a>';
         } else {
             $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ><!-- Display participant in CPDB--></span></span>';

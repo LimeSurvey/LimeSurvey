@@ -218,6 +218,7 @@ body {
 
 html {
   font-family: Roboto;
+  font-weight: 400;
   position: relative;
   min-height: 100%; }
 
@@ -1493,13 +1494,13 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-righ
   margin: 1em 0 1em 0; }
 
 #systemoverview .info div {
-	font-size: 14px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	font-weight: 500;
-	line-height: 1.1;
-	color: inherit;
-	text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    text-align: center;
 }
 
 /**
@@ -2238,7 +2239,7 @@ table#responsedetail tr td{
 }
 
 .welcome .panel-title {
-	font-weight: 500;
+    font-weight: 500;
 }
 
 .welcome .panel-body {
@@ -2331,7 +2332,7 @@ input[type="file"].form-control {
     left: -1000px;
     top: -1000px;
     margin: 0 !important;
-    width: 0px !important;    
+    width: 0px !important;
   }
 
   body.onStatistics div.row {
@@ -2356,8 +2357,8 @@ input[type="file"].form-control {
     min-height: 29.7cm !important;
     height: 100% !important;
     overflow: visible;
-    page-break-inside: auto; 
-    break-inside: auto; 
+    page-break-inside: auto;
+    break-inside: auto;
   }
   body.onStatistics #statisticsview div,
   body.onStatistics #statisticsview table {
@@ -2409,7 +2410,7 @@ input[type="file"].form-control {
     padding: 0 !important;
   }
   body.onStatistics div.printable table{
-    position: static;    
+    position: static;
     page-break-inside : avoid;
     break-inside : avoid;
     margin-left: 0 !important;

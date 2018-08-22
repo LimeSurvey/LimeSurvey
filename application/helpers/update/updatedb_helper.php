@@ -2092,7 +2092,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
                         'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
                         'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                        'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3"}',
+                        'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1"}',
                         'cssframework_name' => 'bootstrap',
                         'cssframework_css'  => '{}',
                         'cssframework_js'   => '',
@@ -2109,7 +2109,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
                     'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
                     'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                    'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3"}',
+                    'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1"}',
                     'cssframework_name' => 'bootstrap',
                     'cssframework_css'  => '{}',
                     'cssframework_js'   => '',
@@ -2256,6 +2256,86 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>352], "stg_name='DBVersion'");
         }
 
+        if ($iOldDBVersion < 353) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $aTHemes = TemplateConfiguration::model()->findAll();
+
+            foreach ($aTHemes as $oTheme){
+                $oTheme->addOptionFromXMLToLiveTheme();
+            }
+
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>353], "stg_name='DBVersion'");
+        }
+
+
+        if ($iOldDBVersion < 354) {
+            $oTransaction = $oDB->beginTransaction();
+            $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            
+            if (!isset($surveymenuTable->columns['showincollapse'])) {
+                $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
+            }
+
+            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
+                $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
+            }
+
+            $aIdMap = [];
+            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
+            foreach($aDefaultSurveyMenus as $i => $aSurveymenu) {
+                $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
+                $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
+                $aIdMap[$aSurveymenu['name']] = $oDB->getLastInsertId();
+            }
+            
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
+                $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
+                switch($aSurveymenuentry['menu_id']) {
+                    case 1: $aSurveymenuentry['menu_id'] = $aIdMap['settings']; break;
+                    case 2: $aSurveymenuentry['menu_id'] = $aIdMap['mainmenu']; break;
+                    case 3: $aSurveymenuentry['menu_id'] = $aIdMap['quickmenu']; break;
+                    case 4: $aSurveymenuentry['menu_id'] = $aIdMap['pluginmenu']; break;
+                }
+                $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+            }
+
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>354], "stg_name='DBVersion'");
+        }
+
+        if ($iOldDBVersion < 355) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $aIdMap = [];
+            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
+            foreach($aDefaultSurveyMenus as $i => $aSurveymenu) {
+                $aIdMap[$aSurveymenu['name']] = $oDB->createCommand()
+                ->select(['id'])
+                ->from('{{surveymenu}}')
+                ->where('name=:name', [':name' => $aSurveymenu['name']])
+                ->queryScalar();
+            }
+            
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
+                $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
+                switch($aSurveymenuentry['menu_id']) {
+                    case 1: $aSurveymenuentry['menu_id'] = $aIdMap['settings']; break;
+                    case 2: $aSurveymenuentry['menu_id'] = $aIdMap['mainmenu']; break;
+                    case 3: $aSurveymenuentry['menu_id'] = $aIdMap['quickmenu']; break;
+                    case 4: $aSurveymenuentry['menu_id'] = $aIdMap['pluginmenu']; break;
+                }
+                $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+            }
+
+
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>355], "stg_name='DBVersion'");
+        }
 
 
     } catch (Exception $e) {
@@ -2536,7 +2616,8 @@ function createSurveyMenuTable(CDbConnection $oDB)
         'title' => "string(168)  NOT NULL DEFAULT ''",
         'position' => "string(192)  NOT NULL DEFAULT 'side'",
         'description' => "text ",
-        'active' => "boolean NOT NULL DEFAULT '0'",
+        'active' => "integer NOT NULL DEFAULT '0'",
+        'showincollapse' =>  "integer DEFAULT 0",
         'changed_at' => "datetime",
         'changed_by' => "integer NOT NULL DEFAULT '0'",
         'created_at' => "datetime",
@@ -2573,7 +2654,8 @@ function createSurveyMenuTable(CDbConnection $oDB)
         'data' =>  "text ",
         'getdatamethod' =>  "string(192)  NOT NULL DEFAULT ''",
         'language' =>  "string(32)  NOT NULL DEFAULT 'en-GB'",
-        'active' =>  "boolean NOT NULL DEFAULT '0'",
+        'active' =>  "integer NOT NULL DEFAULT '0'",
+        'showincollapse' =>  "integer DEFAULT 0",
         'changed_at' =>  "datetime NULL",
         'changed_by' =>  "integer NOT NULL DEFAULT '0'",
         'created_at' =>  "datetime NULL",
