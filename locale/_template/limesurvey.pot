@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-08-21 09:49:53+00:00\n"
+"POT-Creation-Date: 2018-08-23 13:29:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2448,7 +2448,7 @@ msgstr ""
 #: application/views/admin/super/fullpagebar_view.php:21
 #: application/views/admin/survey/Question/editQuestion_view.php:377
 #: application/views/admin/survey/Question/editQuestion_view.php:383
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:191
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:194
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:125
 #: application/views/admin/survey/Question/questionbar_view.php:227
 #: application/views/admin/survey/Question/questionbar_view.php:276
@@ -6180,7 +6180,7 @@ msgid "You do not need to add a description to your question group, but sometime
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:564
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:131
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:132
 msgid "Advanced settings"
 msgstr ""
 
@@ -6830,12 +6830,12 @@ msgstr ""
 #: application/views/admin/survey/Question/editQuestion_view.php:315
 #: application/views/admin/survey/Question/importQuestion_view.php:36
 #: application/views/admin/survey/Question/importQuestion_view.php:48
-#: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:21
+#: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:22
 #: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:10
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:20
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:38
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:101
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:106
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:102
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:107
 #: application/views/admin/survey/QuestionGroups/importGroup_view.php:36
 #: application/views/admin/survey/subview/_create_survey_text.php:88
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:43
@@ -6930,13 +6930,13 @@ msgstr ""
 #: application/views/admin/survey/Question/editQuestion_view.php:315
 #: application/views/admin/survey/Question/importQuestion_view.php:37
 #: application/views/admin/survey/Question/importQuestion_view.php:49
-#: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:22
+#: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:23
 #: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:10
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:21
 #: application/views/admin/survey/Question/massive_actions/_set_statistics_options.php:39
-#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:11
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:101
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:106
+#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:12
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:102
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:107
 #: application/views/admin/survey/QuestionGroups/importGroup_view.php:37
 #: application/views/admin/survey/subview/_create_survey_text.php:89
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:44
@@ -11390,14 +11390,14 @@ msgstr ""
 #: application/libraries/PluginManager/Question/QuestionBase.php:114
 #: application/views/admin/assessments/assessments_edit.php:39
 #: application/views/admin/survey/Question/editQuestion_view.php:288
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:93
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:94
 #: application/views/admin/survey/Question/question_view.php:11
 msgid "Question group:"
 msgstr ""
 
 #: application/libraries/PluginManager/Question/QuestionBase.php:123
 #: application/views/admin/survey/Question/editQuestion_view.php:320
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:110
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:111
 #: application/views/admin/survey/Question/question_view.php:167
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:77
 #: application/views/admin/survey/QuestionGroups/editGroup_view.php:60
@@ -14916,7 +14916,7 @@ msgstr ""
 
 #: application/views/admin/participants/attributeMapCSV_view.php:79
 #: application/views/admin/super/header.php:66
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:143
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:144
 #: application/views/admin/translate/translatetabs_view.php:10
 msgid "Loading..."
 msgstr ""
@@ -16405,7 +16405,7 @@ msgid "Copy advanced settings?"
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:210
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:10
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:11
 #: application/views/admin/survey/subview/accordion/_accordion_container.php:29
 msgid "General options"
 msgstr ""
@@ -16434,7 +16434,7 @@ msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:300
 #: application/views/admin/survey/Question/massive_actions/_set_questions_other.php:8
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:100
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:101
 #: application/views/admin/survey/Question/question_view.php:133
 msgid "Option 'Other':"
 msgstr ""
@@ -16450,8 +16450,8 @@ msgid "Set \"Mandatory\" state"
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:312
-#: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:8
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:105
+#: application/views/admin/survey/Question/massive_actions/_set_questions_mandatory.php:9
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:106
 #: application/views/admin/survey/Question/question_view.php:151
 msgid "Mandatory:"
 msgstr ""
@@ -16461,7 +16461,7 @@ msgid "Note: You can't edit the relevance equation because there are currently c
 msgstr ""
 
 #: application/views/admin/survey/Question/editQuestion_view.php:334
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:115
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:116
 #: application/views/admin/survey/Question/question_view.php:74
 msgid "Validation:"
 msgstr ""
@@ -16471,7 +16471,7 @@ msgid "Edit default answer values"
 msgstr ""
 
 #: application/views/admin/survey/Question/editdefaultvalues_view.php:38
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:76
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:79
 msgid "Default answer for scale %s:"
 msgstr ""
 
@@ -16479,15 +16479,15 @@ msgstr ""
 msgid "Default answer value:"
 msgstr ""
 
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:59
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:62
 msgid "Default value for option 'Other':"
 msgstr ""
 
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:156
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:159
 msgid "Default value:"
 msgstr ""
 
-#: application/views/admin/survey/Question/editdefaultvalues_view.php:172
+#: application/views/admin/survey/Question/editdefaultvalues_view.php:175
 msgid "Use same default value across languages:"
 msgstr ""
 
@@ -16617,23 +16617,23 @@ msgstr ""
 msgid "Display chart:"
 msgstr ""
 
-#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:8
+#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:9
 msgid "Random order:"
 msgstr ""
 
-#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:12
+#: application/views/admin/survey/Question/massive_actions/_set_subquestansw_order.php:13
 msgid "Randomize on each page load"
 msgstr ""
 
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:19
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:20
 msgid "Question Type:"
 msgstr ""
 
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:138
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:139
 msgid "Show advanced settings"
 msgstr ""
 
-#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:138
+#: application/views/admin/survey/Question/question_subviews/_accordion_container.php:139
 msgid "Hide advanced settings"
 msgstr ""
 
