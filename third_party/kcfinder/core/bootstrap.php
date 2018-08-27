@@ -32,11 +32,12 @@ if (ini_get("safe_mode"))
 
 
 // CMS INTEGRATION
-if (isset($_GET['cms']) &&
-    (basename($_GET['cms']) == $_GET['cms']) &&
-    is_file("integration/{$_GET['cms']}.php")
-)
-    require "integration/{$_GET['cms']}.php";
+// Possible files -> drupal, BolmerCMS
+if(isset($_GET['cms']) && (basename($cmsFile) == $cmsFile) && preg_match("/drupal|BolmerCMS/", $_GET['cms'])){
+    $cmsFile = basename($_GET['cms']);
+    if (is_file("integration/{$cmsFile}.php") )
+        require "integration/{$cmsFile}.php";
+}
 
 
 // REGISTER AUTOLOAD FUNCTION

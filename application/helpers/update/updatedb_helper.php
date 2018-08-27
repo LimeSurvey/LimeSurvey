@@ -2288,7 +2288,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             foreach($aDefaultSurveyMenus as $i => $aSurveymenu) {
                 $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
                 $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
-                $aIdMap[$aSurveymenu['name']] = $oDB->getLastInsertId();
+                $aIdMap[$aSurveymenu['name']] = $oDB->getCommandBuilder()->getLastInsertID('{{surveymenu}}');
             }
             
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();

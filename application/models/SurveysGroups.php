@@ -15,7 +15,7 @@
  * @property string $modified
  * @property integer $created_by
  * @property object $parentgroup
- * @property boolean $hasSurveys 
+ * @property boolean $hasSurveys
  */
 class SurveysGroups extends LSActiveRecord
 {

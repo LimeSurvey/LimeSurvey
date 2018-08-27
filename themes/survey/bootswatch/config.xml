@@ -29,20 +29,33 @@
     <!--
         Here the list of the css/js files to add to the template package.
         About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
+
+        NOTE: The "add" tag also count as a "replace" tag.
+              Eg: You can't add a file with the same name as a file in the mother theme. It will always replace it. You must use a diffrent file name.
+              Eg: Vanilla manifest already has "<add>css/theme.css</add>". So here, if you use "<add>css/theme.css</add>" it will replace the vanilla css/theme.css
+
+        NOTE: If a file in a mother theme, you don't need to add it here again.
+              Eg: css/ajaxify.css is already added in vanilla, this theme doesn't replace it, so ne need to add it here.
+                  Even if no mention at all about  "css/ajaxify.css" is made here, it will be added because it's in the mother theme configuration
+
+        NOTE: To easy test changes in config file, you can force the use of the XML file rather than DB. To do so, turn debug mode on, and in config.php config array, on bottom of debug mode, add:
+              'force_xmlsettings_for_survey_rendering' => true,
+
+              Then, you will not need anymore to reset your theme each time you change the config file.
+              But, once turning the setting off, You will still must reset the theme to the changes are pushed to DB 
     -->
     <files>
         <css>
-            <add>css/ajaxify.css</add>
-            <add>css/theme.css</add>
-            <add>css/custom.css</add>
+            <replace>css/theme.css</replace>
+            <replace>css/custom.css</replace>
         </css>
         <js>
-            <add>scripts/theme.js</add>
-            <add>scripts/ajaxify.js</add>
-            <add>scripts/custom.js</add>
+            <replace>scripts/theme.js</replace>
+            <replace>scripts/ajaxify.js</replace>
+            <replace>scripts/custom.js</replace>
         </js>
         <print_css>
-            <add>css/print_theme.css</add>
+            <replace>css/print_theme.css</replace>
         </print_css>
     </files>
 

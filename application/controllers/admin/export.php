@@ -347,7 +347,7 @@ class export extends Survey_Common_Action
 // Default to 2 (16 and up)
             Yii::app()->session['spssversion'] = 2;
         }
-        $spssver = Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']); 
+        $spssver = Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']);
         Yii::app()->session['spssversion'] = $spssver;
 
         $length_varlabel = '231'; // Set the max text length of Variable Labels
@@ -1093,7 +1093,7 @@ class export extends Survey_Common_Action
     {
         $queXMLSettings = $this->_quexmlsettings();
         foreach ($queXMLSettings as $s) {
-            setGlobalSetting($s, '');
+            SettingGlobal::setSetting($s, '');
         }
         $this->getController()->redirect($this->getController()->createUrl("/admin/export/sa/quexml/surveyid/{$iSurveyID}"));
     }
@@ -1143,7 +1143,7 @@ class export extends Survey_Common_Action
             //Save settings globally and generate queXML document
             foreach ($queXMLSettings as $s) {
                 if ($s !== 'queXMLStyle') {
-                    setGlobalSetting($s, Yii::app()->request->getPost($s));
+                    SettingGlobal::setSetting($s, Yii::app()->request->getPost($s));
                 }
 
                 $method = str_replace("queXML", "set", $s);
@@ -1155,7 +1155,7 @@ class export extends Survey_Common_Action
 
 
             $lang = Yii::app()->request->getPost('save_language');
-            $tempdir = Yii::app()->getConfig("tempdir");
+
 
             // Setting the selected language for printout
             App()->setLanguage($lang);
@@ -1174,7 +1174,9 @@ class export extends Survey_Common_Action
             //NEED TO GET QID from $quexmlpdf
             $qid = intval($quexmlpdf->getQuestionnaireId());
 
-            $zipdir = $this->_tempdir($tempdir);
+            Yii::import('application.helpers.common_helper', true);
+            $zipdir = createRandomTempDir();
+
 
             $f1 = "$zipdir/quexf_banding_{$qid}_{$lang}.xml";
             $f2 = "$zipdir/quexmlpdf_{$qid}_{$lang}.pdf";
@@ -1190,7 +1192,7 @@ class export extends Survey_Common_Action
 
 
             Yii::app()->loadLibrary('admin.pclzip');
-            $zipfile = "$tempdir/quexmlpdf_{$qid}_{$lang}.zip";
+            $zipfile = Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR."quexmlpdf_{$qid}_{$lang}.zip";
             $z = new PclZip($zipfile);
             $z->create($zipdir, PCLZIP_OPT_REMOVE_PATH, $zipdir);
 
@@ -1227,10 +1229,12 @@ class export extends Survey_Common_Action
         $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
         $aLanguages = $oSurvey->getAllLanguages();
 
-        $tempdir = Yii::app()->getConfig("tempdir");
-        $zipdir = $this->_tempdir($tempdir);
+        Yii::import('application.helpers.common_helper', true);
+        $zipdir = createRandomTempDir();
 
         $fn = "printable_survey_".preg_replace('([^\w\s\d\-_~,;\[\]\(\).])','',$oSurvey->currentLanguageSettings->surveyls_title)."_{$oSurvey->primaryKey}.zip";
+
+        $tempdir = Yii::app()->getConfig("tempdir");
         $zipfile = "$tempdir/".$fn;
 
         Yii::app()->loadLibrary('admin.pclzip');

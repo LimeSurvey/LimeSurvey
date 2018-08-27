@@ -21,6 +21,7 @@ export default {
         createQuestionLink: { type: String },
         updateOrderLink: { type: String },
         isActive: {type: String},
+        basemenus: {type: Object}
     },
     data: () => {
         return {
@@ -315,6 +316,50 @@ export default {
                 this.updatePjaxLinks();
             });
         },
+        setBaseMenuPosition(entries, position){
+            switch(position) {
+                case 'side' : 
+                    this.sidemenus = _.orderBy(
+                        entries,
+                        a => {
+                            return parseInt(a.order || 999999);
+                        },
+                        ["desc"]
+                    );
+                    this.$store.commit("updateSidemenus", this.sidemenus);
+                    break;
+                case 'collapsed':
+                    this.collapsedmenus = _.orderBy(
+                        entries,
+                        a => {
+                            return parseInt(a.order || 999999);
+                        },
+                        ["desc"]
+                    );
+                    this.$store.commit("updateCollapsedmenus", this.collapsedmenus);
+                    break;
+                case 'top':
+                    this.topmenus = _.orderBy(
+                        entries,
+                        a => {
+                            return parseInt(a.order || 999999);
+                        },
+                        ["desc"]
+                    );
+                    this.$store.commit("updateTopmenus", this.topmenus);
+                    break;
+                case 'bottom':
+                    this.bottommenus = _.orderBy(
+                        entries,
+                        a => {
+                            return parseInt(a.order || 999999);
+                        },
+                        ["desc"]
+                    );
+                    this.$store.commit("updateBottommenus", this.bottommenus);
+                    break;
+            };
+        },
         getSidemenus() {
             this.sidemenus = [];
             return this.get(this.getMenuUrl, { position: "side" }).then(
@@ -401,7 +446,7 @@ export default {
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
-
+        _.each(this.basemenus, this.setBaseMenuPosition)
         //retrieve the current menues via ajax
         this.getQuestions();
         this.getSidemenus();

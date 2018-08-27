@@ -35,7 +35,7 @@
             'type'        => 'action',
             'action'      => 'deleteAttachments',
             //'url'         =>  App()->createUrl("admin/responses", array("sa"=>"actionDeleteAttachments")),
-            'url'         =>  App()->createUrl("/admin/responses/sa/actionDelete/", array("surveyid" => $_GET['surveyid'] )),
+            'url'         =>  App()->createUrl("/admin/responses/sa/actionDeleteAttachments/", array("surveyid" => $_GET['surveyid'] )),
             'iconClasses' => 'text-danger fa fa-paperclip',
             'text'        =>  gT('Delete attachments'),
             'grid-reload' => 'yes',

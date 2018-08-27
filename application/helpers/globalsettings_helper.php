@@ -54,22 +54,10 @@ function getGlobalSetting($settingname)
         if (Yii::app()->getConfig($settingname) !== false) {
             // If the setting was not found in the setting table but exists as a variable (from config.php)
             // get it and save it to the table
-            setGlobalSetting($settingname, Yii::app()->getConfig($settingname));
+            SettingGlobal::setSetting($settingname, Yii::app()->getConfig($settingname));
             $dbvalue = Yii::app()->getConfig($settingname);
         }
     }
 
     return $dbvalue;
-}
-
-/**
- * Set a global setting
- * @deprecated : use SettingGlobal::setSetting($settingname, $settingvalue);
- * @param string $settingname
- * @param string $settingvalue
- * @return void
- */
-function setGlobalSetting($settingname, $settingvalue)
-{
-    SettingGlobal::setSetting($settingname, $settingvalue);
 }

@@ -33,6 +33,18 @@
         $createQuestionLink = "";
     }
 
+    $menuObjectArray =  [
+        "side" => [],
+        "collapsed" => [],
+        "top" => [],
+        "bottom" => [],
+    ];
+    
+    foreach($menuObjectArray as $position => $arr) {
+        $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
+    }
+    
+    $menuObject =  json_encode($menuObjectArray);
 
 ?>
 <sidebar
@@ -41,6 +53,7 @@
     is-active = <?=(Survey::model()->findByPk($surveyid)->isActive ? 1 : 0)?>
     get-questions-url="<?=$getQuestionsUrl ?>"
     get-menu-url="<?=$getMenuUrl ?>"
+    :basemenus='<?=$menuObject?>'
     create-question-group-link ="<?=$createQuestionGroupLink?>"
     create-question-link ="<?=$createQuestionLink?>"
     update-order-link="<?=$updateOrderLink?>"

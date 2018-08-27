@@ -117,14 +117,14 @@ class User extends LSActiveRecord
     {
         $dateFormat = getDateFormatData(Yii::app()->session['dateformat']);
         return $dateFormat['phpdate'];
-    }    
+    }
 
     public function getFormattedDateCreated()
     {
         $dateCreated = $this->created;
         $date = new DateTime($dateCreated);
         return $date->format($this->dateFormat);
-    }    
+    }
     /**
      * Returns onetime password
      *
@@ -474,12 +474,12 @@ class User extends LSActiveRecord
             "name" =>"parentUserName",
             "header" => gT("Created by"),
         );
-        
+
         $cols[] = array(
             "name" =>"created",
             "header" => gT("Created on"),
             "value" => '$data->formattedDateCreated',
-            
+
         );
         return $cols;
     }
