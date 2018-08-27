@@ -35,6 +35,19 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.14.6 (build 180821) to 3.14.7 (build 180827) August 27, 2018
+
+-[security] fixed issue: admin user can read arbitrary file that is readable via upload question type  (reported by Matej Zidek and Miloslav Homer) (LouisGac)
+-Fixed issue #13958: Error updating the database schema from verson 353 to 355 (Markus Flür)
+-Fixed issue #13976: bootstrapbuttons not counted in answer logic (Dominik Vitt)
+-Fixed issue #14008: Prepopulate question with answer from URL parameter not working (Dominik Vitt)
+-Fixed issue: Potential security issue in kcfinder fixed (Markus Flür)
+-Fixed issue: Too many labelsets cause the system to break (Markus Flür)
+-Fixed issue: fixed multiple possible XSS attack vectors (Markus Flür)
+#Updated translation: German by c_schmitz
+#Updated translation: Russian by vipgroup
+
+
 Changes from 3.14.5 (build 180815) to 3.14.6 (build 180821) August 21, 2018
 -[security] Fixed issue #13960: vulnerabilities in file upload functionality (LouisGac)
 -Fixed issue #13948: Survey not opened in token langage if language not definrd in URL (LouisGac)
