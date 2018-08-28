@@ -63,6 +63,13 @@ class FormattingOptions
     public $headCodeTextSeparator;
 
     /**
+     * What is the character to separate CSV fields
+     *
+     * @var boolean
+     */
+    public $csvFieldSeparator;
+
+    /**
      * Valid values are:
      * "short" = Answer codes
      * "long" = Full answers

@@ -244,6 +244,13 @@ class export extends Survey_Common_Action
             }
             $data['aLanguages'] = $aLanguages; // Pass available exports
 
+            $data['aCsvFieldSeparator'] = array(
+                chr(44) => "Comma",
+                chr(59) => "Semicolon",
+                chr(9) => "Tab",
+
+            );
+
             $data['sidemenu']['state'] = false;
             $data['menu']['edition'] = true;
             $data['menu']['export'] = true;
@@ -281,6 +288,7 @@ class export extends Survey_Common_Action
         $options->headingTextLength = (Yii::app()->request->getPost('abbreviatedtext')) ? (int) Yii::app()->request->getPost('abbreviatedtextto') : null;
         $options->useEMCode = Yii::app()->request->getPost('emcode');
         $options->headCodeTextSeparator = Yii::app()->request->getPost('codetextseparator');
+        $options->csvFieldSeparator = Yii::app()->request->getPost('csvfieldseparator');
 
         $options->headerSpacesToUnderscores = $bHeaderSpacesToUnderscores;
         $options->headingFormat = $sHeadingFormat;
