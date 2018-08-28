@@ -269,7 +269,7 @@ class Question extends LSActiveRecord
         }
         $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($iQuestionID, $sLanguage);
         // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
-        $aAttributeNames = questionHelper::getQuestionAttributesSettings($sQuestionType);
+        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
 
         // If the question has a custom template, we first check if it provides custom attributes
 

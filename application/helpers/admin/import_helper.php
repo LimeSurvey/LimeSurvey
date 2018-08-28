@@ -2901,7 +2901,7 @@ function TSVImportSurvey($sFullFilePath)
                                 $questionAttribute = new QuestionAttribute();
                                 $questionAttribute->qid = $qid;
                                 // check if attribute is a i18n attribute. If yes, set language, else set language to null in attribute table
-                                $aAttributeList[$qtype] = questionHelper::getQuestionAttributesSettings($qtype);
+                                $aAttributeList[$qtype] = QuestionAttribute::getQuestionAttributesSettings($qtype);
                                 if (!empty($aAttributeList[$qtype][$key]['i18n'])) {
                                     $questionAttribute->language = (isset($row['language']) ? $row['language'] : $baselang);
                                 }

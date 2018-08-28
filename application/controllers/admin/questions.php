@@ -1245,7 +1245,7 @@ class questions extends Survey_Common_Action
              * Since is moved via ajax call only : it's not needed, when we have time : readd it for no-js solution
              */
             //~ if (!$adding)
-                //~ $qattributes = questionHelper::getQuestionAttributesSettings(($aqresult->type); //(or Question::getAdvancedSettingsWithValues )
+                //~ $qattributes = QuestionAttribute::getQuestionAttributesSettings(($aqresult->type); //(or Question::getAdvancedSettingsWithValues )
             //~ else
                 //~ $qattributes = array();
 

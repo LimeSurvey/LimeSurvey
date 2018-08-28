@@ -30,6 +30,8 @@
  */
 class QuestionAttribute extends LSActiveRecord
 {
+    protected static $questionAttributesSettings = array();
+
     /**
      * @inheritdoc
      * @return QuestionAttribute
@@ -198,7 +200,7 @@ class QuestionAttribute extends LSActiveRecord
                 throw new \CException("Question is corrupt: no type defined for question ".$iQuestionID);
             }
 
-            $aAttributeNames = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sType);
+            $aAttributeNames = self::getQuestionAttributesSettings($sType);
 
             /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
@@ -333,5 +335,127 @@ class QuestionAttribute extends LSActiveRecord
             "readonly_when_active" => false,
             "expression"=> null,
         );
+    }
+
+
+    /**
+     * Return the question attributes definition by question type
+     * @param $sType: type pof question
+     * @return array : the attribute settings for this question type
+     */
+    public static function getQuestionAttributesSettings($sType)
+    {
+        // get attributes from config.xml
+        self::$questionAttributesSettings[$sType] = self::getQuestionAttributesFromXml($sType);
+        // if empty, fall back to getting attributes from questionHelper
+        if (empty(self::$questionAttributesSettings[$sType])) {
+            self::$questionAttributesSettings[$sType] = array();
+            $attributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
+            /* Filter to get this question type setting */
+            $aQuestionTypeAttributes = array_filter($attributes, function($attribute) use ($sType) {
+                return stripos($attribute['types'], $sType) !== false;
+            });
+            foreach ($aQuestionTypeAttributes as $attribute=>$settings) {
+                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
+                      QuestionAttribute::getDefaultSettings(),
+                      array("category"=>gT("Plugins")),
+                      $settings,
+                      array("name"=>$attribute)
+                  );
+            }
+        }
+
+        /**
+         * New event to allow plugin to add own question attribute (settings)
+         * Using $event->append('questionAttributes', $questionAttributes);
+         * $questionAttributes=[
+         *  attributeName=>[
+         *      'types' : Aply to this question type
+         *      'category' : Where to put it
+         *      'sortorder' : Qort order in this category
+         *      'inputtype' : type of input
+         *      'expression' : 2 to force Exprerssion Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
+         *      'options' : optionnal options if input type need it
+         *      'default' : the default value
+         *      'caption' : the label
+         *      'help' : an help
+         *  ]
+         */
+        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
+        $questionAttributes = (array) $result->get('questionAttributes');
+        if (!empty($questionAttributes)){
+            self::$questionAttributesSettings[$sType] = array_merge(self::$questionAttributesSettings[$sType], $questionAttributes);
+        }
+        return self::$questionAttributesSettings[$sType];
+    }
+
+    /**
+     * Read question attributes from XML file and convert it to array
+     * @param $sType: type pof question
+     * @return array : the attribute settings for this question type
+     */
+    public static function getQuestionAttributesFromXml($sType = ''){
+        $aXmlAttributes = array();
+        $aAttributes = array();
+        $sFolderName = QuestionTemplate::getFolderName($sType);
+        $sXmlFilePath = Yii::app()->getConfig('rootdir').'/application/views/survey/questions/answer/'.$sFolderName.'/config.xml';
+
+        if(file_exists($sXmlFilePath)){
+            // load xml file
+            libxml_disable_entity_loader(false);
+            $xml_config = simplexml_load_file($sXmlFilePath);
+            $aXmlAttributes = json_decode(json_encode((array)$xml_config->attributes), TRUE);
+            // if only one attribute, then it doesn't return numeric index
+            if (!empty($aXmlAttributes && !array_key_exists('0', $aXmlAttributes['attribute']))){
+                $aTemp = $aXmlAttributes['attribute'];
+                unset($aXmlAttributes);
+                $aXmlAttributes['attribute'][0] = $aTemp;
+
+            }
+            libxml_disable_entity_loader(true);
+        } else {
+            return null;
+        }
+
+        // set $aAttributes array with attribute data
+        if (!empty($aXmlAttributes['attribute'])){
+            foreach ($aXmlAttributes['attribute'] as $key => $value) { 
+                foreach ($value as $key2 => $value2) {                 
+
+                    if ($key2 === 'options' && !empty($value2)){
+                        foreach ($value2['option'] as $key3 => $value3) {
+                            if (isset($value3['value'])){
+                                $value4 = is_array($value3['value'])?'':$value3['value'];
+                                $aAttributes[$value['name']]['options'][$value4] = $value3['text'];
+                            }
+                        }
+                    } else {
+                        $aAttributes[$value['name']][$key2] = $value2;
+                    }
+                }
+
+                // seting array keys if they doesn't exist
+                if (empty($value['i18n']) && $value['i18n'] !== '0'){ 
+                    $aAttributes[$value['name']]['i18n'] = '';
+                }
+                if (empty($value['readonly']) && $value['readonly'] !== '0'){ 
+                    $aAttributes[$value['name']]['readonly'] = '';
+                }
+                if (empty($value['readonly_when_active']) && $value['readonly_when_active'] !== '0'){ 
+                    $aAttributes[$value['name']]['readonly_when_active'] = '';
+                }
+                if (empty($value['expression']) && $value['expression'] !== '0'){ 
+                    $aAttributes[$value['name']]['expression'] = '';
+                }                
+                if (isset($value['default']) && $value['default'] == '0'){ 
+                    $aAttributes[$value['name']]['default'] = '0';
+                } elseif (empty($value['default'])){ 
+                    $aAttributes[$value['name']]['default'] = '';
+                }
+            }
+        }
+        return $aAttributes;
     }
 }
