@@ -84,7 +84,7 @@
         <?php eT("Code/text separator:"); ?>
       </label>
       <div class="col-sm-12">
-        <input size="4" type="text" value="," name="codetextseparator" id="codetextseparator" class="form-control" />
+        <input size="4" type="text" value=". " name="codetextseparator" id="codetextseparator" class="form-control" />
       </div>
     </div>
   </div>
