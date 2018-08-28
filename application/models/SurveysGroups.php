@@ -35,7 +35,7 @@ class SurveysGroups extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, sortorder, created_by', 'required'),
+            array('name, sortorder, created_by, title', 'required'),
             array('sortorder, owner_uid, parent_id, created_by', 'numerical', 'integerOnly'=>true),
             array('name', 'length', 'max'=>45),
             array('title', 'length', 'max'=>100),
