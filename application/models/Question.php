@@ -314,13 +314,19 @@ class Question extends LSActiveRecord
                     // Add the custom attributes to the list
                     foreach ($oQuestionTemplate->oConfig->custom_attributes->attribute as $oCustomAttribute) {
                         $sAttributeName = (string) $oCustomAttribute->name;
-                        $aCustomAttribute = json_decode(json_encode((array) $oCustomAttribute), 1);
-                        $aCustomAttribute = array_merge(
-                            QuestionAttribute::getDefaultSettings(),
-                            array("category"=>gT("Template")),
-                            $aCustomAttribute
-                        );
-                        $aAttributeNames[$sAttributeName] = $aCustomAttribute;
+                        $sInputType = (string)$oCustomAttribute->inputtype;
+                        // remove attribute if inputtype is empty
+                        if (empty($sInputType)){
+                            unset($aAttributeNames[$sAttributeName]);
+                        } else {
+                            $aCustomAttribute = json_decode(json_encode((array) $oCustomAttribute), 1);
+                            $aCustomAttribute = array_merge(
+                                QuestionAttribute::getDefaultSettings(),
+                                array("category"=>gT("Template")),
+                                $aCustomAttribute
+                            );
+                            $aAttributeNames[$sAttributeName] = $aCustomAttribute;
+                        }
                     }
                 }
             }

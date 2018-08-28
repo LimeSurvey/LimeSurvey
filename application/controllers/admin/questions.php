@@ -1582,26 +1582,31 @@ class questions extends Survey_Common_Action
 
         // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
         if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
-            $questionTypeList = QuestionTemplate::getTypeToFolder();
-            $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($question_template, $questionTypeList[$type]);
-            // CHECK TO SEE IF ARRAY CONTAINS INDEX 0, IF NOT - INDEX 0 WOULD BE CREATED ( OTHERWISE DATA MERGE WOULD FAIL IF INDEX ÍS MISSING )
-            if (!array_key_exists('0', $themeAttributes)){$themeTemp[0] = $themeAttributes; $themeAttributes = $themeTemp;}
-
-            foreach ($themeAttributes as $key => $attribute) {
+                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionTemplate, $questionTypeList[$type]);
+                // CHECK TO SEE IF ARRAY CONTAINS INDEX 0, IF NOT - INDEX 0 WOULD BE CREATED ( OTHERWISE DATA MERGE WOULD FAIL IF INDEX ÍS MISSING )
+                if (!array_key_exists('0', $themeAttributes)){$themeTemp[0] = $themeAttributes; $themeAttributes = $themeTemp;}
+                
                 // INSERTING EACH OF THIS KEYS TO THE ARRAY IF KEYS ARE MISSING
-                if (empty($attribute['name'])){$attribute['name'] = 'default_theme_attribute_name';}
-                if (empty($attribute['readonly'])){$attribute['readonly'] = '';}
-                if (empty($attribute['default'])){$attribute['default'] = '';}
-                if (empty($attribute['readonly_when_active'])){$attribute['readonly_when_active'] = '';}
-                if (empty($attribute['value'])){$attribute['value'] = '';}
-                if (empty($attribute['i18n'])){$attribute['i18n'] = '';}
-                if (empty($attribute['category'])){$attribute['category'] = 'Display Theme Options';}
-                if (empty($attribute['sortorder'])){$attribute['sortorder'] = '';}
-                if (empty($attribute['help'])){$attribute['help'] = '';}
-                if (empty($attribute['caption'])){$attribute['caption'] = '';}
-                if (empty($attribute['inputtype'])){$attribute['inputtype'] = '';}
-                $aAttributesWithValues[$attribute['name']] = $attribute;
-            }              
+                foreach ($themeAttributes as $key =>$attribute) {
+                    // remove attribute if inputtype is empty 
+                    if (empty($attribute['inputtype'])){
+                        unset($aAttributesWithValues[$attribute['name']]);
+                        continue;
+                    }
+
+                    if (empty($attribute['name'])){$attribute['name'] = 'default_theme_attribute_name';}
+                    if (empty($attribute['readonly'])){$attribute['readonly'] = '';}
+                    if (empty($attribute['default'])){$attribute['default'] = '';}
+                    if (empty($attribute['readonly_when_active'])){$attribute['readonly_when_active'] = '';}
+                    if (empty($attribute['value'])){$attribute['value'] = '';}
+                    if (empty($attribute['i18n'])){$attribute['i18n'] = '';}
+                    if (empty($attribute['category'])){$attribute['category'] = 'Display Theme Options';}
+                    if (empty($attribute['sortorder'])){$attribute['sortorder'] = '';}
+                    if (empty($attribute['help'])){$attribute['help'] = '';}
+                    if (empty($attribute['caption'])){$attribute['caption'] = '';}
+                    if (empty($attribute['expression'])){$attribute['expression'] = '';}
+                    $aAttributesWithValues[$attribute['name']] = $attribute;
+                }              
         }
         uasort($aAttributesWithValues, 'categorySort');
         unset($aAttributesWithValues['question_template']);
