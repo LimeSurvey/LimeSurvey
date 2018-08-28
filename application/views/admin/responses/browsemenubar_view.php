@@ -229,7 +229,7 @@
                     </a>
                     <?php endif;?>
                     <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage)): ?>
-                    <a class="btn btn-default" href='#' role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl("admin/dataentry/sa/delete/", ['id' => $id, 'sid' => $surveyid])); ?>}">
+                    <a class="btn btn-default" href='#' role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl("admin/dataentry/sa/delete/", ['id' => $id, 'sid' => $surveyid])); ?>}'>
                         <span class="fa fa-trash text-warning"></span>
                         <?php eT("Delete this entry"); ?>
                     </a>
