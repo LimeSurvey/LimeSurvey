@@ -1,0 +1,3 @@
+.checkbox-item label::before, .checkbox-item label::after {
+    display: none !important;
+}

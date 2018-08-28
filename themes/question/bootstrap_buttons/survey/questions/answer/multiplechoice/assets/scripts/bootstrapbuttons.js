@@ -3,14 +3,28 @@
  * See COPYRIGHT.php for copyright notices and details.
  * @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
  *
- * This javascript updates value of "other" input field, shows "other" input field when "Other" checkbox button is checked
+ * This javascript updates values of input fields, shows "other" input field when "Other" checkbox button is checked
  * and triggers validation
  */
 
 
 
 $( document ).ready(function() {
-	$(".bootstrap-checkbox-value").each( function( index, element ){
+	
+	// ROW
+	$(".bootstrap-checkbox").change(function(){
+		name = $(this).data('name');
+		// set value for java element
+	    if ($(this).is(':checked')){
+	    	$("#java" + name).val('Y');
+	    } else {
+	    	$("#java" + name).val('');
+	    }
+	    checkconditions(this.value, this.name, this.type);
+	});
+
+	// OTHER
+	$(".bootstrap-checkbox-other-value").each( function( index, element ){
 		name = $(this).data('name');
 		if ($(this).val()){
 		    // "other" input field
@@ -21,7 +35,7 @@ $( document ).ready(function() {
 	    checkconditions($("#answer" + name).val(), name, this.type);
 	});
 
-	$(".bootstrap-checkbox").change(function(){
+	$(".bootstrap-checkbox-other").change(function(){
 		name = $(this).data('name');
 		// conditionaly show or hide "other" input field
 	    if ($(this).is(':checked')){
@@ -32,8 +46,11 @@ $( document ).ready(function() {
 	    }
 	});
 
-	$(".bootstrap-input").on('change keyup paste', function(){
+	$(".bootstrap-other-input").on('change keyup paste', function(){
         name = $(this).data('name');
+        if (!$(this).val()){
+        	$("#java" + name + "other").val('');
+        }
         checkconditions(this.value, this.name, this.type);
 	});
 

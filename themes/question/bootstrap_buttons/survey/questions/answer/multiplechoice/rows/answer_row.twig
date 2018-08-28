@@ -26,10 +26,12 @@
 {% endif %}
 
 <!-- answer_row -->
-<li id='javatbd{{ myfname }}' class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %}">
+<li id='javatbd{{ myfname }}' class="button-item btn btn-primary checkbox-item {{ button_size_class }} {% if checkedState!='' %} active {% endif %}">
     <input
         type="checkbox"
         name="{{ myfname }}"
+        data-name="{{myfname}}"
+        class="bootstrap-checkbox"
         id="answer{{ myfname }}"
         {{ checkedState }}
         value="Y"
