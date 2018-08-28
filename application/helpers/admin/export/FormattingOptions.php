@@ -79,6 +79,16 @@ class FormattingOptions
     public $answerFormat;
 
     /**
+     * Strip HTML code
+     * Valid values are:
+     * "1" = Strip HTML code
+     * "0" = No stripping
+     *
+     * @var string
+     */
+    public $stripHtmlCode;
+
+    /**
      * If $answerFormat is set to "short" then this indicates that 'Y' responses
      * should be converted to another value that is specified by $yValue.
      *

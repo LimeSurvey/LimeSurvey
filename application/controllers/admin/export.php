@@ -289,6 +289,7 @@ class export extends Survey_Common_Action
         $options->useEMCode = Yii::app()->request->getPost('emcode');
         $options->headCodeTextSeparator = Yii::app()->request->getPost('codetextseparator');
         $options->csvFieldSeparator = Yii::app()->request->getPost('csvfieldseparator');
+        $options->stripHtmlCode = Yii::app()->request->getPost('striphtmlcode');
 
         $options->headerSpacesToUnderscores = $bHeaderSpacesToUnderscores;
         $options->headingFormat = $sHeadingFormat;
