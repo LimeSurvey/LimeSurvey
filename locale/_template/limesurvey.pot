@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-08-28 15:22:39+00:00\n"
+"POT-Creation-Date: 2018-08-29 09:50:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -400,7 +400,7 @@ msgstr ""
 #: application/controllers/admin/PluginHelper.php:34
 #: application/controllers/admin/assessments.php:91
 #: application/controllers/admin/emailtemplates.php:74
-#: application/controllers/admin/export.php:1125
+#: application/controllers/admin/export.php:1126
 #: application/controllers/admin/expressions.php:114
 #: application/controllers/admin/index.php:35
 #: application/controllers/admin/questiongroups.php:100
@@ -624,8 +624,8 @@ msgid "Sorry, there was an error uploading your file"
 msgstr ""
 
 #: application/controllers/UploaderController.php:237
-#: application/controllers/admin/export.php:874
-#: application/controllers/admin/export.php:892
+#: application/controllers/admin/export.php:875
+#: application/controllers/admin/export.php:893
 msgid "Unknown error"
 msgstr ""
 
@@ -1025,7 +1025,7 @@ msgstr ""
 
 #: application/controllers/admin/SurveymenuController.php:157
 #: application/controllers/admin/SurveymenuEntryController.php:181
-#: application/controllers/admin/export.php:909
+#: application/controllers/admin/export.php:910
 #: application/controllers/admin/questions.php:145
 #: application/controllers/admin/surveyadmin.php:1317
 #: application/controllers/admin/themeoptions.php:42
@@ -1149,7 +1149,7 @@ msgstr ""
 #: application/controllers/admin/checkintegrity.php:30
 #: application/controllers/admin/dataentry.php:103
 #: application/controllers/admin/emailtemplates.php:37
-#: application/controllers/admin/export.php:587
+#: application/controllers/admin/export.php:588
 #: application/controllers/admin/expressions.php:39
 #: application/controllers/admin/expressions.php:75
 #: application/controllers/admin/printablesurvey.php:39
@@ -2330,10 +2330,10 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:278
 #: application/controllers/admin/export.php:259
 #: application/controllers/admin/export.php:260
-#: application/controllers/admin/export.php:406
 #: application/controllers/admin/export.php:407
-#: application/controllers/admin/export.php:607
+#: application/controllers/admin/export.php:408
 #: application/controllers/admin/export.php:608
+#: application/controllers/admin/export.php:609
 #: application/controllers/admin/responses.php:1036
 #: application/controllers/admin/responses.php:1037
 #: application/controllers/admin/saved.php:73
@@ -2714,7 +2714,7 @@ msgstr ""
 #: application/controllers/admin/export.php:212
 #: application/controllers/admin/export.php:261
 #: application/controllers/admin/export.php:262
-#: application/controllers/admin/export.php:404
+#: application/controllers/admin/export.php:405
 #: application/views/admin/export/exportresults_view.php:18
 #: application/views/admin/export/vv_view.php:118
 msgid "Export results"
@@ -2737,30 +2737,30 @@ msgstr ""
 msgid "Question code & question text"
 msgstr ""
 
-#: application/controllers/admin/export.php:594
+#: application/controllers/admin/export.php:595
 msgid "Export VV file"
 msgstr ""
 
-#: application/controllers/admin/export.php:609
 #: application/controllers/admin/export.php:610
+#: application/controllers/admin/export.php:611
 #: application/views/admin/export/vv_view.php:2
 #: application/views/admin/responses/browsemenubar_view.php:93
 msgid "Export a VV survey file"
 msgstr ""
 
-#: application/controllers/admin/export.php:877
+#: application/controllers/admin/export.php:878
 msgid "Not active."
 msgstr ""
 
-#: application/controllers/admin/export.php:1123
 #: application/controllers/admin/export.php:1124
+#: application/controllers/admin/export.php:1125
 #: application/views/admin/survey/queXMLSurvey_view.php:5
 #: application/views/admin/survey/queXMLSurvey_view.php:6
 #: application/views/admin/survey/surveybar_displayexport.php:70
 msgid "queXML PDF export"
 msgstr ""
 
-#: application/controllers/admin/export.php:1194
+#: application/controllers/admin/export.php:1195
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
 msgstr ""
 
@@ -6801,6 +6801,7 @@ msgstr ""
 #: application/views/admin/export/exportresult_panels/_headings.php:35
 #: application/views/admin/export/exportresult_panels/_headings.php:51
 #: application/views/admin/export/exportresult_panels/_headings.php:67
+#: application/views/admin/export/exportresult_panels/_headings.php:83
 #: application/views/admin/export/statistics_subviews/_dataselection.php:26
 #: application/views/admin/export/statistics_subviews/_dataselection.php:39
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:12
@@ -6896,6 +6897,7 @@ msgstr ""
 #: application/views/admin/export/exportresult_panels/_headings.php:36
 #: application/views/admin/export/exportresult_panels/_headings.php:52
 #: application/views/admin/export/exportresult_panels/_headings.php:68
+#: application/views/admin/export/exportresult_panels/_headings.php:84
 #: application/views/admin/export/statistics_subviews/_dataselection.php:26
 #: application/views/admin/export/statistics_subviews/_dataselection.php:40
 #: application/views/admin/export/statistics_subviews/_outputoptions.php:12
@@ -13515,22 +13517,26 @@ msgid "Export questions as:"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_headings.php:28
-msgid "Convert spaces in question text to underscores:"
+msgid "Strip HTML code:"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_headings.php:44
-msgid "Text abbreviated:"
+msgid "Convert spaces in question text to underscores:"
 msgstr ""
 
 #: application/views/admin/export/exportresult_panels/_headings.php:60
+msgid "Text abbreviated:"
+msgstr ""
+
+#: application/views/admin/export/exportresult_panels/_headings.php:76
 msgid "Use Expression Manager code:"
 msgstr ""
 
-#: application/views/admin/export/exportresult_panels/_headings.php:75
+#: application/views/admin/export/exportresult_panels/_headings.php:91
 msgid "Number of characters:"
 msgstr ""
 
-#: application/views/admin/export/exportresult_panels/_headings.php:84
+#: application/views/admin/export/exportresult_panels/_headings.php:100
 msgid "Code/text separator:"
 msgstr ""
 
