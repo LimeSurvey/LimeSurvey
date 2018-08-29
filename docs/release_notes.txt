@@ -35,6 +35,17 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.14.7 (build 180827) to 3.14.8 (build 180829) August 29, 2018
+
+-Fixed issue #14000: "Export this response" button in view response page is broken (Dominik Vitt)
+-Fixed issue #13283: Survey Groups title should be mandatory (Dominik Vitt)
+-Fixed issue #13747: CSV Export of Survey Responses no longer valid CSV (Dominik Vitt)
+-Fixed issue #14013: Cannot Add Conditions - Total Failure (#1114) (Tõnis Ormisson)
+-Fixed issue: "Strip HTML code" option for response export
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+
 Changes from 3.14.6 (build 180821) to 3.14.7 (build 180827) August 27, 2018
 
 -[security] fixed issue: admin user can read arbitrary file that is readable via upload question type  (reported by Matej Zidek and Miloslav Homer) (LouisGac)
