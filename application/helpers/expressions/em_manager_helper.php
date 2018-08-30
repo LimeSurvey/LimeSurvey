@@ -5004,12 +5004,11 @@
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
 
-            // set seed key for non-activated survey mode, activated mode already have seed key,
-            // to be able to pass count of startingValues check at next IF 
-            if (!$LEM->surveyOptions['active'] || $LEM->sPreviewMode){
+            // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF 
+            if (!array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])){
                 $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';  
             }
-
+            
             // NOTE: now that we use a seed, count($_SESSION[$LEM->sessid]['startingValues']) start at 1
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 1)
             {
