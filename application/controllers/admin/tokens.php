@@ -2232,6 +2232,7 @@ class tokens extends Survey_Common_Action
         $aData = array();
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
 
         $date = date('YmdHis');
         /* If there is not a $_POST value of 'ok', then ask if the user is sure they want to
@@ -2422,18 +2423,21 @@ class tokens extends Survey_Common_Action
         Yii::import('application.helpers.admin.token_helper', true);
 
         $aData = array();
+        $aData['thissurvey'] = getSurveyInfo($iSurveyId);
+        $aData['surveyid'] = $iSurveyId;
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
+        $aData['sidemenu']['state'] = false;
 
         // Update table, must be CRSF controlled
         if (Yii::app()->request->getPost('createtable') == "Y") {
             Token::createTable($iSurveyId);
-            $aData['sidemenu']['state'] = false;
             LimeExpressionManager::SetDirtyFlag(); // LimeExpressionManager needs to know about the new survey participants table
             $this->_renderWrappedTemplate('token', array('message' =>array(
             'title' => gT("Survey participants"),
             'message' => gT("A participant table has been created for this survey.")." (\"".Yii::app()->db->tablePrefix."tokens_$iSurveyId\")<br /><br />\n"
             . "<input type='submit' class='btn btn-default' value='"
             . gT("Continue")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId")."', '_top')\" />\n"
-            )), ['surveyid' => $iSurveyId]);
+            )), $aData);
         }
         /* Restore a previously deleted tokens table */
         elseif (returnGlobal('restoretable') == "Y" && Yii::app()->request->getPost('oldtable')) {
@@ -2462,21 +2466,18 @@ class tokens extends Survey_Common_Action
             }
             Survey::model()->updateByPk($iSurveyId, array('attributedescriptions' => json_encode($fieldcontents)));
 
-
             Yii::app()->db->createCommand()->renameTable(Yii::app()->request->getPost('oldtable'), Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId));
             Yii::app()->db->schema->getTable(Yii::app()->db->tablePrefix."tokens_".intval($iSurveyId), true); // Refresh schema cache just in case the table existed in the past
 
             //Add any survey_links from the renamed table
             SurveyLink::model()->rebuildLinksFromTokenTable($iSurveyId);
 
-            $aData = array();
-            $aData['sidemenu']['state'] = false;
             $this->_renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Import old tokens"),
             'message' => gT("A survey participants table has been created for this survey and the old tokens were imported.")." (\"".Yii::app()->db->tablePrefix."tokens_$iSurveyId"."\")<br /><br />\n"
             . "<input type='submit' class='btn btn-default' value='"
             . gT("Continue")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId")."', '_top')\" />\n"
-            )), ['surveyid' => $iSurveyId]);
+            )), $aData);
 
             LimeExpressionManager::SetDirtyFlag(); // so that knows that survey participants tables have changed
         } else {
@@ -2490,17 +2491,10 @@ class tokens extends Survey_Common_Action
                 $aData['oldlist'] = $oldlist;
             }
 
-            $thissurvey = getSurveyInfo($iSurveyId);
-            $aData['thissurvey'] = $thissurvey;
-            $aData['surveyid'] = $iSurveyId;
             $aData['tcount'] = $tcount;
             $aData['databasetype'] = Yii::app()->db->getDriverName();
-            /////////////////////////////
-
-        $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
-        $aData['sidemenu']["token_menu"] = true;
-        $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
+            $aData['sidemenu']["token_menu"] = true;
+            $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
         Yii::app()->end();
     }
