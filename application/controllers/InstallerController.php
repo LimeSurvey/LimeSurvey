@@ -514,7 +514,7 @@ class InstallerController extends CController
         if (!in_array($sDatabaseType, ['mysqli', 'mysql', 'dblib', 'sqlsrv', 'mssql', 'pgsql'])) {
             throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
-
+  
         //checking DB Connection
         $aErrors = $this->_setup_tables(dirname(APPPATH).'/installer/create-database.php');
         if ($aErrors === false) {
@@ -1283,6 +1283,9 @@ class InstallerController extends CController
             $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
             if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib') {
                 $this->connection->emulatePrepare = true;
+            }
+            if (in_array($sDatabaseType, array('mssql', 'sqlsrv', 'dblib'))) {
+                $this->connection->initSQLs=array('SET DATEFORMAT ymd;', 'SET QUOTED_IDENTIFIER ON;');
             }
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;
