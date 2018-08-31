@@ -5005,7 +5005,7 @@
             $LEM->qrootVarName2arrayFilter=array();
 
             // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF 
-            if (!array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])){
+            if (array_key_exists('startingValues', $_SESSION[$LEM->sessid]) && !array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])){
                 $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';  
             }
             
