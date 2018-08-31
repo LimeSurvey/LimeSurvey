@@ -323,12 +323,6 @@ class InstallerController extends CController
                             /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();
                     }
 
-                    // Setting date format for mssql driver. It seems if you don't do that the in- and output format could be different
-                    if (in_array($oModel->dbtype, array('mssql', 'sqlsrv', 'dblib'))) {
-                        @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();
-                        @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();
-                    }
-
                     //$aData array won't work here. changing the name
                     $aValues = [];
                     $aValues['title'] = gT('Database settings');
