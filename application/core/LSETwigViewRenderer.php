@@ -431,18 +431,17 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     private function getPluginsData($sString, $aDatas)
     {
         $event = new PluginEvent('beforeTwigRenderTemplate');
+        $aDatas['aSurveyInfo']['bShowClearAll'] = false; // default to not show "Exit and clear survey" button
 
         if (!empty($aDatas['aSurveyInfo']['sid'])) {
             $surveyid = $aDatas['aSurveyInfo']['sid'];
             $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
 
+            // show "Exit and clear survey" button whenever there is 'srid' key set, 
+            // button won't be rendered on welcome and final page because 'srid' key doesn't exist on those pages
             if (isset($_SESSION['survey_'.$surveyid]['srid']) && $aDatas['aSurveyInfo']['active']=='Y') {
-                $isCompleted = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
-            } else {
-                $isCompleted = false;
+                $aDatas['aSurveyInfo']['bShowClearAll'] = true;
             }
-
-            $aDatas['aSurveyInfo']['bShowClearAll'] = !$isCompleted;
         }
 
         App()->getPluginManager()->dispatchEvent($event);
