@@ -149,7 +149,7 @@
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')): ?>
                 <a
                     id="response-batch-deletion"
-                    href="<?php echo $this->createUrl("/admin/responses/sa/actionDelete/", array("surveyid" => $_GET['surveyid'] )); ?>"
+                    href="<?php echo $this->createUrl("/admin/responses/sa/actionDelete/", array("surveyid" => $surveyid )); ?>"
                     data-post="{}"
                     data-show-text-area="true"
                     data-use-ajax="true"
