@@ -488,6 +488,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['mr']['dateformat'] = 2;
     $supportedLanguages['mr']['radixpoint'] = 0;
     
+    // Montenegrin
+    $supportedLanguages['cnr']['description'] = gT('Montenegrin');
+    $supportedLanguages['cnr']['nativedescription'] = 'Crnogorski';
+    $supportedLanguages['cnr']['rtl'] = false;
+    $supportedLanguages['cnr']['dateformat'] = 4;
+    $supportedLanguages['cnr']['radixpoint'] = 1;
+
     // Myanmar / Burmese
     $supportedLanguages['mya']['description'] = gT('Myanmar (Burmese)');
     $supportedLanguages['mya']['nativedescription'] = '&#4121;&#4156;&#4116;&#4154;&#4121;&#4140;&#4120;&#4140;&#4126;&#4140;';
@@ -531,7 +538,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['fa']['radixpoint'] = 0;
 
     // Papiamento (Curacao and Bonaire)
-    $supportedLanguages['pap-CW']['description'] = gT('Papiamento (Curaçao & Bonaire)');
+    $supportedLanguages['pap-CW']['description'] = gT('Papiamento (CuraÃ§ao & Bonaire)');
     $supportedLanguages['pap-CW']['nativedescription'] = 'Papiamentu';
     $supportedLanguages['pap-CW']['rtl'] = false;
     $supportedLanguages['pap-CW']['dateformat'] = 2;
