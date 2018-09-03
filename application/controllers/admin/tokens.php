@@ -878,43 +878,44 @@ class tokens extends Survey_Common_Action
 
             //Fix up dates and match to database format
             if (trim(Yii::app()->request->getPost('validfrom')) == '') {
-                $_POST['validfrom'] = null;
+                $aData['validfrom'] = null;
             } else {
                 $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validfrom')), $dateformatdetails['phpdate'].' H:i');
-                $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
+                $aData['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
             if (trim(Yii::app()->request->getPost('validuntil')) == '') {
-                $_POST['validuntil'] = null;
+                $aData['validuntil'] = null;
             } else {
                 $datetimeobj = new Date_Time_Converter(trim(Yii::app()->request->getPost('validuntil')), $dateformatdetails['phpdate'].' H:i');
-                $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
+                $aData['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            $aData = array('firstname' => flattenText(Yii::app()->request->getPost('firstname')),
-            'lastname' => flattenText(Yii::app()->request->getPost('lastname')),
-            'email' => flattenText(Yii::app()->request->getPost('email')),
-            'token' => '',
-            'language' => sanitize_languagecode(Yii::app()->request->getPost('language')),
-            'sent' => 'N',
-            'remindersent' => 'N',
-            'completed' => 'N',
-            'usesleft' => flattenText(Yii::app()->request->getPost('usesleft')),
-            'validfrom' => Yii::app()->request->getPost('validfrom'),
-            'validuntil' => Yii::app()->request->getPost('validuntil'));
+            $aData['firstname'] = flattenText(Yii::app()->request->getPost('firstname'));
+            $aData['lastname'] = flattenText(Yii::app()->request->getPost('lastname'));
+            $aData['email'] = flattenText(Yii::app()->request->getPost('email'));
+            $aData['token'] = '';
+            $aData['language'] = sanitize_languagecode(Yii::app()->request->getPost('language'));
+            $aData['sent'] = 'N';
+            $aData['remindersent'] = 'N';
+            $aData['completed'] = 'N';
+            $aData['usesleft'] = flattenText(Yii::app()->request->getPost('usesleft'));
+            $aData['amount'] = Yii::app()->request->getPost('amount');
+            $aData['tokenlength'] = Yii::app()->request->getPost('tokenlen');
 
             // add attributes
+            $cntAttributeErrors = 0;
             $attrfieldnames = getTokenFieldsAndNames($iSurveyId, true);
             foreach ($attrfieldnames as $attr_name => $desc) {
                 $value = flattenText(Yii::app()->request->getPost($attr_name));
                 if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                     Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
-                    $this->getController()->refresh();
+                    $cntAttributeErrors+=1;
                 }
                 $aData[$attr_name] = $value;
             }
 
-            $amount = (int) Yii::app()->request->getPost('amount');
-            $iTokenLength = (int) Yii::app()->request->getPost('tokenlen');
+            $aData['amount'] = (int) Yii::app()->request->getPost('amount');
+            $aData['tokenlength'] = (int) Yii::app()->request->getPost('tokenlen');
 
             // Fill an array with all existing tokens
             $existingtokens = array();
@@ -931,7 +932,7 @@ class tokens extends Survey_Common_Action
 
             $invalidtokencount = 0;
             $newDummyToken = 0;
-            while ($newDummyToken < $amount && $invalidtokencount < 50) {
+            while ($newDummyToken < $aData['amount'] && $invalidtokencount < 50) {
                 $token = Token::create($iSurveyId);
                 $token->setAttributes($aData, false);
 
@@ -941,7 +942,7 @@ class tokens extends Survey_Common_Action
 
                 $attempts = 0;
                 do {
-                    $token->token = Token::generateRandomToken($iTokenLength);
+                    $token->token = Token::generateRandomToken($aData['tokenlength']);
                     $attempts++;
                 } while (isset($existingtokens[$token->token]) && $attempts < 50);
 
@@ -955,7 +956,11 @@ class tokens extends Survey_Common_Action
             }
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
-            if (!$invalidtokencount) {
+            if ($cntAttributeErrors > 0){ // attribute validation errors
+                $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
+                $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
+                $this->_renderWrappedTemplate('token', array('dummytokenform'), $aData);
+            } elseif (!$invalidtokencount) {
                 $aData['success'] = true;
                 Yii::app()->session['flashmessage'] = gT("New dummy participants were added.");
                 //admin/tokens/sa/browse/surveyid/652779//
@@ -969,17 +974,31 @@ class tokens extends Survey_Common_Action
                 ."\n<input type='button' value='"
                 . gT("Browse participants")."' onclick=\"window.open('".$this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId")."', '_top')\" />\n"
                 );
+                $this->_renderWrappedTemplate('token', array('message' => $message), $aData);
             }
-
-            $this->_renderWrappedTemplate('token', array('message' => $message), $aData);
+            
 
         } else {
-            $iTokenLength = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
+            // default values
+            $aData['firstname'] = '';
+            $aData['lastname'] = '';
+            $aData['email'] = '';
+            $aData['token'] = '';
+            $aData['language'] = Survey::model()->findByPk($iSurveyId)->language;
+            $aData['sent'] = 'N';
+            $aData['remindersent'] = 'N';
+            $aData['completed'] = 'N';
+            $aData['usesleft'] = 1;
+            $aData['validfrom'] = null;
+            $aData['validuntil'] = null;
+            $aData['amount'] = 100;
+            $aData['tokenlength'] = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
+
 
             $thissurvey = getSurveyInfo($iSurveyId);
             $aData['thissurvey'] = $thissurvey;
             $aData['surveyid'] = $iSurveyId;
-            $aData['tokenlength'] = $iTokenLength;
+
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'], App()->language);
             $aData['aAttributeFields'] = getParticipantAttributes($iSurveyId);
             $this->_renderWrappedTemplate('token', array('dummytokenform'), $aData);
