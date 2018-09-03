@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-09-03 08:04:21+00:00\n"
+"POT-Creation-Date: 2018-09-03 08:23:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11203,7 +11203,7 @@ msgid "Persian"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:541
-msgid "Papiamento (CuraÃ§ao & Bonaire)"
+msgid "Papiamento (Curaçao & Bonaire)"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:549
