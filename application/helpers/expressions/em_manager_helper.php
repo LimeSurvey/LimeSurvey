@@ -6731,13 +6731,19 @@
                         // Only add non-empty tip
                         if (trim($vtip) != "")
                         {
+                            // set hideTip from question atrribute
+                            $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
+                            $hideTip = array_key_exists('hide_tip', $qattr)?$qattr['hide_tip']:0;
+
                             $tipsDatas = array(
                                 'qid'       =>$qid,
                                 'coreId'    =>"vmsg_{$qid}_{$vclass}", // If it's not this id : EM is broken
                                 'coreClass' =>"ls-em-tip em_{$vclass}",
                                 'vclass'    =>$vclass,
                                 'vtip'      =>$vtip,
+                                'hideTip'   =>($vclass == 'default' && $hideTip == 1)?true:false  // hide default tip if attribute hide_tip is set to 1
                             );
+
                             $stringToParse .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/em-tip', $tipsDatas, true);
                         }
                     }
