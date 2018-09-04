@@ -1924,13 +1924,13 @@ class tokens extends Survey_Common_Action
                 Yii::app()->setFlashMessage(sprintf(gT("Upload file not found. Check your permissions and path (%s) for the upload directory"), $sPath), 'error');
             } else {
                 $iRecordImported = 0;
-                $iRecordCount = 0;
+                $iRecordCount =  0;
                 $iRecordOk = 0;
                 $iInvalidEmailCount = 0; // Count invalid email imported
                 // This allows to read file with MAC line endings too
-                @ini_set('auto_detect_line_endings', 'true');
+                @ini_set('auto_detect_line_endings', '1');
                 // open it and trim the endings
-                $aTokenListArray = file($sFileName);
+                $aTokenListArray = file($sFileName, FILE_SKIP_EMPTY_LINES);
                 $sBaseLanguage = Survey::model()->findByPk($iSurveyId)->language;
                 if (!Yii::app()->request->getPost('filterduplicatefields') || (Yii::app()->request->getPost('filterduplicatefields') && count(Yii::app()->request->getPost('filterduplicatefields')) == 0)) {
                     $aFilterDuplicateFields = array('firstname', 'lastname', 'email');
