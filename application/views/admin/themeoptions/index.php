@@ -33,7 +33,7 @@ $this->renderPartial('super/fullpagebar_view', array(
                 <?php echo '<h3>'.gT('Installed survey themes:').'</h3>'; ?>
 
                 <?php $this->renderPartial('themeoptions/surveythememenu',['canImport'=>$canImport,'importErrorMessage'=>$importErrorMessage]); ?>
-                <?php $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $oSurveyTheme )); ?>
+                <?php $this->renderPartial('themeoptions/surveythemelist', array( 'oSurveyTheme'=> $oSurveyTheme, 'pageSize'=>$pageSize )); ?>
 
                 <!-- Available Themes -->
                 <?php if (count($oSurveyTheme->templatesWithNoDb) > 0 ):?>
