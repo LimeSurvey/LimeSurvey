@@ -363,7 +363,7 @@ class tokens extends Survey_Common_Action
             Yii::app()->user->setState('pageSizeTokenView', (int) $_POST['pageSizeTokenView']);
         }
 
-        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', array(), true, false);
+        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/token/massive_actions/_selector', $aData, true, false);
 
         $this->_renderWrappedTemplate('token', array('browse'), $aData);
     }
@@ -415,9 +415,13 @@ class tokens extends Survey_Common_Action
                 // Core Fields
                 $aCoreTokenFields = array('firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft');
                 foreach ($aCoreTokenFields as $sCoreTokenField) {
-                                if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
-                    $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
-                }
+                    if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
+                        $value = flattenText(Yii::app()->request->getPost($sCoreTokenField));
+                        if ($sCoreTokenField == 'language' and empty($value)){
+                            continue;
+                        }
+                        $aData[$sCoreTokenField] = $value;
+                    }
                 }
 
                 // Attibutes fields
