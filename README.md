@@ -53,9 +53,9 @@ Pictures and the LimeSurvey Logo are registered trademarks of LimeSurvey GmbH, H
 
 ## Tools used
 
-[![We are using Scrutinizer to check our code](https://github.com/limesurvey/limesurvey/raw/master/src/docs/contributions/scrutinizer-logo.png "Checkout scrutinizer")](https://scrutinizer-ci.com/)
+[![We are using Scrutinizer to check our code](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/scrutinizer-logo.png "Checkout scrutinizer")](https://scrutinizer-ci.com/)
 
 
-[![We are using TravisCI to run automated tests before release](https://github.com/limesurvey/limesurvey/raw/master/src/docs/contributions/travisci-logo.png "Checkout TravisCI")](https://travis-ci.org/)
+[![We are using TravisCI to run automated tests before release](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/travisci-logo.png "Checkout TravisCI")](https://travis-ci.org/)
 
-[![We are using BrowserStack to run manual tests on different browsers and devices](https://github.com/limesurvey/limesurvey/raw/master/src/docs/contributions/browserstack-logo.png "Checkout BrowserStack")](https://www.browserstack.com/)
+[![We are using BrowserStack to run manual tests on different browsers and devices](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/browserstack-logo.png "Checkout BrowserStack")](https://www.browserstack.com/)
