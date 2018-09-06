@@ -50,3 +50,12 @@ for more information please refer to our [homepage](http://www.limesurvey.org), 
 LimeSurvey software is licenced under the [GPL 2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
 
 Pictures and the LimeSurvey Logo are registered trademarks of LimeSurvey GmbH, Hamburg, Germany.
+
+## Tools used
+
+[![We are using Scrutinizer to check our code](https://github.com/limesurvey/limesurvey/raw/master/src/docs/contributions/scrutinizer-logo.png "Checkout scrutinizer")](https://scrutinizer-ci.com/)
+
+
+[![We are using TravisCI to run automated tests before release](https://github.com/limesurvey/limesurvey/raw/master/src/docs/contributions/travisci-logo.png "Checkout TravisCI")](https://travis-ci.org/)
+
+[![We are using BrowserStack to run manual tests on different browsers and devices](https://github.com/limesurvey/limesurvey/raw/master/src/docs/contributions/browserstack-logo.png "Checkout BrowserStack")](https://www.browserstack.com/)
