@@ -53,7 +53,7 @@ Pictures and the LimeSurvey Logo are registered trademarks of LimeSurvey GmbH, H
 
 ## Tools used
 
-[![We are using Scrutinizer to check our code](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/scrutinizer-logo.png "Checkout scrutinizer")](https://scrutinizer-ci.com/)
+[![We are using Scrutinizer to check our code](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/scrutinzier-logo.png "Checkout scrutinizer")](https://scrutinizer-ci.com/)
 
 
 [![We are using TravisCI to run automated tests before release](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/travisci-logo.png "Checkout TravisCI")](https://travis-ci.org/)
