@@ -52,10 +52,13 @@ LimeSurvey software is licenced under the [GPL 2.0](https://www.gnu.org/licenses
 Pictures and the LimeSurvey Logo are registered trademarks of LimeSurvey GmbH, Hamburg, Germany.
 
 ## Tools used
+We are using BrowserStack to run manual tests on different browsers and devices
 
-[![We are using Scrutinizer to check our code](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/scrutinizer-logo.png "Checkout scrutinizer")](https://scrutinizer-ci.com/)
+[![](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/browserstack-logo.png "Checkout BrowserStack")](https://www.browserstack.com/)
 
+We are using Scrutinizer to static check our code
+[![](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/scrutinizer-logo.png "Checkout scrutinizer")](https://scrutinizer-ci.com/)
 
-[![We are using TravisCI to run automated tests before release](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/travisci-logo.png "Checkout TravisCI")](https://travis-ci.org/)
+We are using TravisCI to run automated tests before release
+[![](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/travisci-logo.png "Checkout TravisCI")](https://travis-ci.org/)
 
-[![We are using BrowserStack to run manual tests on different browsers and devices](https://raw.githubusercontent.com/LimeSurvey/LimeSurvey/master/docs/contributions/browserstack-logo.png "Checkout BrowserStack")](https://www.browserstack.com/)
