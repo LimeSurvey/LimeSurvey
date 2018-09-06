@@ -1255,7 +1255,7 @@ class questions extends Survey_Common_Action
                     $this->getController()->error('Invalid question id');
                 }
 
-                while (list($key, $value) = each($questlangs))
+                foreach($questlangs as $key=>$value)
                 {
                     if ($value != 99)
                     {

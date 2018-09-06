@@ -176,7 +176,12 @@
     if (version_compare(PHP_VERSION, '5.3.3', '<'))
         die ('This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />');
 
-
+function safeCount($argument) {
+    if(is_array($argument) || $argument instanceof Countable) {
+        return count($argument);
+    }
+    return 0;
+}
 /**
  * Load Psr4 autoloader, should be replaced by composer autoloader at some point.
  */
