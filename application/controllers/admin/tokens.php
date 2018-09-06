@@ -1096,7 +1096,7 @@ class tokens extends Survey_Common_Action
                 $i++;
             }
             $tokenattributefieldnames[] = 'attribute_'.$i;
-            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyId)."}}", 'attribute_'.$i, 'string(255)'))->execute();
+            Yii::app()->db->createCommand(Yii::app()->db->getSchema()->addColumn("{{tokens_".intval($iSurveyId)."}}", 'attribute_'.$i, 'text'))->execute();
         }
 
         Yii::app()->db->schema->getTable($oSurvey->tokensTableName, true); // Refresh schema cache just in case the table existed in the past
