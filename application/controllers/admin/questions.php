@@ -1099,7 +1099,7 @@ class questions extends Survey_Common_Action
         $aData['copying'] = false;
 
         $aData['aqresult'] = '';
-        $aData['action'] = 'addquestion';
+        $aData['action'] = 'newquestion';
 
         ///////////
         // sidemenu
@@ -1165,9 +1165,10 @@ class questions extends Survey_Common_Action
             // if (isset($_POST['sortorder']))
             //     $postsortorder = sanitize_int($_POST['sortorder']);
 
-            $aData['adding'] = $adding = $action == 'addquestion';
+            $aData['adding'] = $adding = $action == 'newquestion';
             $aData['copying'] = $copying = $action == 'copyquestion';
-            $aData['subaction'] = $copying ? gT('Copy question') : gT('Add a new question');
+            $aData['editing'] = $editing = $action == 'editquestion';
+            $aData['subaction'] = $copying ? gT('Copy question') : ($editing ? gT('Edit question') : gT('Add a new question'));
 
             $questlangs = $oSurvey->additionalLanguages;
             $baselang = $oSurvey->language;

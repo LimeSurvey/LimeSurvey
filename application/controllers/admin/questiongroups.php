@@ -164,6 +164,7 @@ class questiongroups extends Survey_Common_Action
 
             $aData['sidemenu']['state'] = false;
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+            $aData['subaction'] = gT('Add question group');
             $aData['surveybar']['importquestiongroup'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid; // Close button
             $aData['surveybar']['savebutton']['form'] = true;
@@ -383,6 +384,7 @@ class questiongroups extends Survey_Common_Action
             $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid; // Close button
 
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
+            $aData['subaction'] = gT('Edit group');
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
             $aData['tabtitles'] = $aTabTitles;

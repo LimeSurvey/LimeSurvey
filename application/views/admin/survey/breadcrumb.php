@@ -14,7 +14,7 @@
                     </li>
                     <?php //First create the basis with a surveylink if set?>
                     <?php if (isset($oSurvey)): ?>
-                        <?php if (!isset($active) || isset($oQuestionGroup)): ?>
+                        <?php if (!isset($oQuestionGroup)): ?>
                             <li>
                                 <div>
                                     <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid]); ?>">
@@ -31,17 +31,14 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="marks_as_active">
-                                <?php echo gT($active);?>
-                            </li>
                         <?php endif; ?>
+<?php echo $sSimpleSubaction;?>
 
-                        <?php if(isset($sSubaction)): ?>
-                            <?php if(isset($sSimpleSubaction)): ?>
+                            <?php if(isset($sSubaction) && !isset($oQuestionGroup) && !isset($oQuestion)):  ?>
                                 <li class="marks_as_active">
-                                    <?php echo $sSimpleSubaction;?>
+                                    <?php echo $sSubaction;?>
                                 </li>
-                            <?php else: ?>
+                            <?php /* else: ?>
                                 <li>
                                     <div>
                                         <a id="breadcrumb__survey--subaction-<?php echo strtolower(preg_replace('/\s/','',$sSubaction)); ?>" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid, 'subaction' => $sSubaction]); ?>">
@@ -49,15 +46,14 @@
                                         </a>
                                     </div>
                                 </li>
-                            <?php endif; ?>
-                        <?php endif; ?>
+                            <?php */ endif; ?>
 
                     <?php endif; ?>
 
                     <?php //If we are in a questiongroup view render the breadcrumb with question group ?>
                     <?php if (isset($oQuestionGroup)): ?>
                         <?php //If the questiongroup view is active right now, don't link it?>
-                        <?php if(!isset($active) && !isset($oQuestion)): ?>
+                        <?php if(!$sSubaction && !isset($oQuestion)): ?>
                             <li class="marks_as_active">
                                 <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->group_name,1);?>
                             </li>
@@ -68,27 +64,19 @@
                                         <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->group_name,1,60,"…"); ?>
                                     </a>
                                 </div>
-                            </li>
-                            <?php if(!isset($oQuestion)): ?>
-                                <li class="marks_as_active">
-                                    <?php echo gT($active)?>
-                                </li>
-                            <?php endif; ?>
-
-                    
-                            <?php if(!isset($oQuestion) && isset($sSubaction)): ?>
+                            </li>  
+                            <?php if(isset($sSubaction) && !isset($oQuestion)): ?>               
                                 <li class="marks_as_active">
                                     <?php echo gT($sSubaction)?>
                                 </li>
                             <?php endif; ?>
-
                         <?php endif; ?>
                     <?php endif; ?>
 
                     <?php //If we are in a question view render the breadcrumb with the question ?>
                     <?php if (isset($oQuestion)): ?>
                         <?php //If the question view is active right now, don't link it?>    
-                        <?php if(!isset($active)): ?>
+                        <?php if(!isset($sSubaction)): ?>
                             <li class="marks_as_active">
                                 <?php echo $oQuestion->title;?>
                             </li>
@@ -100,22 +88,15 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="marks_as_active">
-                                <?php echo gT($active)?>
-                            </li>
-                        <?php endif; ?>
 
-
-                        <?php //If a subaction is defined, display it ?>
-                        <?php if(isset($sSubaction)): ?>
                             <li class="marks_as_active">
                                 <?php echo gT($sSubaction)?>
                             </li>
+
                         <?php endif; ?>
+                        
                     <?php endif; ?>
 
-
-                        
                     <?php if (isset($token)): ?>
                         <li>
                             <a id="breadcrumb__survey--participants" class="pjax animate" href="<?php echo App()->createUrl('admin/tokens/sa/index/', ['surveyid' => $oSurvey->sid]); ?>">
