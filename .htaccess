@@ -8,12 +8,14 @@
     # otherwise forward it to index.php
     RewriteRule . index.php
 
-    # deny access to hidden files and directories
+    # deny access to hidden files and directories except .well-known
+    RewriteCond %{REQUEST_URI} !^/\.well-known
     RewriteRule ^(.*/)?\.+ - [F]
 </IfModule>
 
 # deny access to hidden files and directories without mod_rewrite
-RedirectMatch 403 ^(.*/)?\.+
+# TODO : disable /.well-known from redirect
+# RedirectMatch 403 ^(.*/)?\.+
 
 # General setting to properly handle LimeSurvey paths
 # AcceptPathInfo on
