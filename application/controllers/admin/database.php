@@ -744,8 +744,8 @@ class database extends Survey_Common_Action
 
 
                 // Update the group ID on subquestions, too
-                if ($oldgid != $this->iQuestionGroupID) {
-                    Question::model()->updateAll(array('gid'=>$this->iQuestionGroupID), 'qid=:qid and parent_qid>0', array(':qid'=>$this->iQuestionID));
+                if ($oldgid != $this->iQuestionGroupID) { 
+                    Question::model()->updateAll(array('gid'=>$this->iQuestionGroupID), 'parent_qid=:qid and parent_qid>0', array(':qid'=>$this->iQuestionID));
                     // if the group has changed then fix the sortorder of old and new group
                     Question::model()->updateQuestionOrder($oldgid, $iSurveyID);
                     Question::model()->updateQuestionOrder($this->iQuestionGroupID, $iSurveyID);
