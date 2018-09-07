@@ -101,7 +101,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                         <div class='panel-body'>
 
                             <p>
-                                <?php eT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."); ?>
+                                <?php eT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for LibreOffice and Excel). The first line must contain the field names. The fields can be in any order."); ?>
                             </p>
                             <span style="font-weight:bold;"><?php eT("Mandatory field:") ?></span> email <br/>
                             <span style="font-weight:bold;"><?php eT("Optional fields:") ?></span> firstname, lastname,blacklisted,language
