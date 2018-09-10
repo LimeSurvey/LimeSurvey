@@ -82,6 +82,7 @@ class LSUserIdentity extends CUserIdentity
             // Perform postlogin
             regenerateCSRFToken();
             $this->postLogin();
+            FailedLoginAttempt::model()->deleteAttempts(); // Reset counter after successful login
         } else {
             // Log a failed attempt
             FailedLoginAttempt::model()->addAttempt();
