@@ -46,6 +46,20 @@
             </div>
         </div>
         <div class='form-group'>
+            <label class='control-label '><?php eT("Language:"); ?></label>
+            <div class=''>
+                &nbsp;
+                <select name='Participant[language]' class='action_changeLanguage'>
+                    <?php foreach($model->languageOptions as $language) {
+                    ?>
+                        <option value="<?=$language['code']?>" <?=($model->language == $language['code']?' selected=true ':'')?>>
+                            <?=$language['name']?>
+                        </option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <div class='form-group'>
             <label class='control-label '><?php eT("Blacklist user:"); ?></label>
             <div class=''>
                 &nbsp;
