@@ -110,6 +110,10 @@ class LS_Twig_Extension extends Twig_Extension
     /**
      * Publish a script
      * In any twig file, you can register a script doing: {{ registerScript($sId, $sScript) }}
+     *
+     * NOTE: this function is not recursive, so don't use it to register a script located inside a theme folder, or inherited themes will be broken.
+     * NOTE! to register a script located inside a theme folder, registerTemplateScript() 
+     *
      */
     public static function registerScript($id, $script, $position = null, array $htmlOptions = array())
     {
@@ -161,6 +165,21 @@ class LS_Twig_Extension extends Twig_Extension
         return $position;
     }
 
+    /**
+     * since count with a noncountable element is throwing a warning in latest php versions
+     * we have to be sure not to kill rendering by a wrong variable
+     *
+     * @param mixed $element
+     * @return void
+     */
+    public static function safecount($element) 
+    {
+        $isCountable = is_array($element) || $element instanceof Countable;
+        if($isCountable) {
+            return count($element);
+        }
+        return 0;
+    }
     /**
      * Retreive the question classes for a given question id
      * Use in survey template question.twig file.
@@ -557,7 +576,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @param bool $strict If the third parameter strict is set to TRUE then the in_array() function will also check the types of the needle in the haystack.
      */
     function in_multiarray($needle, $haystack, $strict = false) {
-        
+
         foreach ($haystack as $item) {
             if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
                 return true;

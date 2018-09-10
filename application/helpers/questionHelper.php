@@ -30,8 +30,12 @@ class questionHelper
     /**
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
+     * 
+     * DEPRECATED, used only as fall back method
+     * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
-    public static function getAttributesDefinitions()
+    public static function getAttributesDefinitions() 
+
     {
         if (self::$attributes) {
             return self::$attributes;
@@ -1576,31 +1580,6 @@ class questionHelper
         return self::$attributes;
     }
 
-    /**
-     * Return the question attributes definition by question type
-     * @param $sType: type pof question
-     * @return array : the attribute settings for this question type
-     */
-    public static function getQuestionAttributesSettings($sType)
-    {
-        if (!isset(self::$questionAttributesSettings[$sType])) {
-            self::$questionAttributesSettings[$sType] = array();
-            self::getAttributesDefinitions(); /* we need to have self::$attributes */
-            /* Filter to get this question type setting */
-            $aQuestionTypeAttributes = array_filter(self::$attributes, function($attribute) use ($sType) {
-                return stripos($attribute['types'], $sType) !== false;
-            });
-            foreach ($aQuestionTypeAttributes as $attribute=>$settings) {
-                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
-                      QuestionAttribute::getDefaultSettings(),
-                      array("category"=>gT("Plugins")),
-                      $settings,
-                      array("name"=>$attribute)
-                  );
-            }
-        }
-        return self::$questionAttributesSettings[$sType];
-    }
 
     /**
      * Return the question Theme custom attributes values

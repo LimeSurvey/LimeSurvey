@@ -4,7 +4,7 @@ var path = require('path');
 
 // Naming and path settings
 var appName = 'adminbasics';
-var entryPoint = ['./src/main.js'];
+var entryPoint = ['babel-polyfill','./src/adminbasicsmain.js'];
 var exportPath = path.resolve(__dirname, './build');
 
 // Enviroment flag

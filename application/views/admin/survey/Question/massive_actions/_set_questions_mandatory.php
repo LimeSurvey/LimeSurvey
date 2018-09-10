@@ -2,7 +2,7 @@
 /**
  * Set question group and position modal body (parsed to massive action widget)
  */
-
+$surveyid = App()->request->getParam('surveyid', 0);
 /** @var AdminController $this */
 /** @var Question $model */
 /** @var Survey $oSurvey */
@@ -27,7 +27,7 @@
                 'offLabel'=>gT('Off')));
             ?>
 
-            <input type="hidden" name="sid" value="<?= $oSurvey->sid?>" class="custom-data"/>
+            <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" class="custom-data"/>
         </div>
     </div>
 </form>

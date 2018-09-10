@@ -269,7 +269,7 @@ class Question extends LSActiveRecord
         }
         $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($iQuestionID, $sLanguage);
         // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
-        $aAttributeNames = questionHelper::getQuestionAttributesSettings($sQuestionType);
+        $aAttributeNames = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
 
         // If the question has a custom template, we first check if it provides custom attributes
 
@@ -314,13 +314,19 @@ class Question extends LSActiveRecord
                     // Add the custom attributes to the list
                     foreach ($oQuestionTemplate->oConfig->custom_attributes->attribute as $oCustomAttribute) {
                         $sAttributeName = (string) $oCustomAttribute->name;
-                        $aCustomAttribute = json_decode(json_encode((array) $oCustomAttribute), 1);
-                        $aCustomAttribute = array_merge(
-                            QuestionAttribute::getDefaultSettings(),
-                            array("category"=>gT("Template")),
-                            $aCustomAttribute
-                        );
-                        $aAttributeNames[$sAttributeName] = $aCustomAttribute;
+                        $sInputType = (string)$oCustomAttribute->inputtype;
+                        // remove attribute if inputtype is empty
+                        if (empty($sInputType)){
+                            unset($aAttributeNames[$sAttributeName]);
+                        } else {
+                            $aCustomAttribute = json_decode(json_encode((array) $oCustomAttribute), 1);
+                            $aCustomAttribute = array_merge(
+                                QuestionAttribute::getDefaultSettings(),
+                                array("category"=>gT("Template")),
+                                $aCustomAttribute
+                            );
+                            $aAttributeNames[$sAttributeName] = $aCustomAttribute;
+                        }
                     }
                 }
             }
@@ -330,7 +336,7 @@ class Question extends LSActiveRecord
 
     public function getTypeGroup()
     {
-        
+
     }
 
     /**
@@ -576,7 +582,7 @@ class Question extends LSActiveRecord
                 ." onclick='$.bsconfirm(\"".gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js")
                             ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
                             . convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $this->sid, "qid" => $this->qid, "gid" => $gid_search]))
-                        ."});'>"                        
+                        ."});'>"
                     .' <i class="text-danger fa fa-trash"></i>
                 </a>';
         }
@@ -621,7 +627,7 @@ class Question extends LSActiveRecord
                 if (($answer['title'] == trim($exclude_all_others))) {
                     if ($position == $answer['question_order'] - 1) {
 //already in the right position
-                        break; 
+                        break;
                     }
                     $tmp = array_splice($ansresult, $position, 1);
                     array_splice($ansresult, $answer['question_order'] - 1, 0, $tmp);

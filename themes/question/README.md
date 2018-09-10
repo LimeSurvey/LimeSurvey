@@ -76,7 +76,10 @@ Or fixed width and height of images in the question. Anything you can think of.
 
 You can have as many extra attributes as you want. But be careful not to flood the question edit view with a million new attributes.
 
-<category> tag is used to categorize attributes into different categories on edit question page right side accordion.
+`category` tag is used to categorize attributes into different categories on edit question page right side accordion.
+
+Existing attribute can be removed from edit question page, if `inputtype` tag is left empty (like ```xml <inputtype></inputtype> ```). 
+This is just a temporary way to hide attributes, a proper way to hide attribute would be created soon. 
 
 For a full list of possible input types please have a look at the questionHelper in application/helpers.
 

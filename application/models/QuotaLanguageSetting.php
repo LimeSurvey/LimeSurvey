@@ -107,7 +107,7 @@ class QuotaLanguageSetting extends LSActiveRecord
             } else {
                 $settings->$k = $v;
             }
-        }        
+        }
         return $settings->save();
     }
 }

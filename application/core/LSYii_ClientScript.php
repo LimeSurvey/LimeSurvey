@@ -105,9 +105,14 @@ class LSYii_ClientScript extends CClientScript
     public function addFileToPackage($sPackageName, $sType, $sFileName)
     {
         if (!empty(Yii::app()->clientScript->packages[$sPackageName])) {
-            if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])) {
-                Yii::app()->clientScript->packages[$sPackageName][$sType][] = $sFileName;
+
+
+            if (empty(Yii::app()->clientScript->packages[$sPackageName][$sType])) {
+              Yii::app()->clientScript->packages[$sPackageName][$sType] = array();
             }
+
+            $sFilePath = Yii::getPathOfAlias( Yii::app()->clientScript->packages[$sPackageName]["basePath"] ) . DIRECTORY_SEPARATOR . $sFileName;
+            Yii::app()->clientScript->packages[$sPackageName][$sType][] = $sFileName;
         }
     }
 
@@ -302,7 +307,7 @@ class LSYii_ClientScript extends CClientScript
                             $package = $this->corePackages[$name];
             }
         }
-        
+
         if (isset($package)) {
             $package['position'] = $position;
 
@@ -311,7 +316,7 @@ class LSYii_ClientScript extends CClientScript
                                     $this->registerPackageScriptOnPosition($p, $position);
                 }
             }
-            
+
             $this->coreScripts[$name] = $package;
             $this->hasScripts = true;
             $params = func_get_args();
@@ -324,7 +329,7 @@ class LSYii_ClientScript extends CClientScript
 
         return $this;
     }
-    
+
     /**
      * Renders the specified core javascript library.
      */
@@ -408,7 +413,7 @@ class LSYii_ClientScript extends CClientScript
             $debugFrontend = 0;
             $debugBackend  = 0;
         }
-        
+
         $html .= "<script type='text/javascript'>window.debugState = {frontend : (".$debugFrontend." === 1), backend : (".$debugBackend." === 1)};</script>";
 
         if ($this->enableJavaScript) {
@@ -422,7 +427,7 @@ class LSYii_ClientScript extends CClientScript
                     }
                 }
             }
-            
+
             if (isset($this->scripts[self::POS_HEAD])) {
                 $html .= $this->renderScriptBatch($this->scripts[self::POS_HEAD]);
             }
@@ -498,7 +503,7 @@ class LSYii_ClientScript extends CClientScript
      */
     public function renderBodyEnd(&$output)
     {
-        if (!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END]) && !isset($this->scripts[self::POS_READY]) 
+        if (!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END]) && !isset($this->scripts[self::POS_READY])
         && !isset($this->scripts[self::POS_LOAD]) && !isset($this->scripts[self::POS_POSTSCRIPT])) {
             str_replace('<###end###>', '', $output);
             return;
@@ -533,14 +538,14 @@ class LSYii_ClientScript extends CClientScript
         if (isset($this->scripts[self::POS_LOAD])) {
             if ($fullPage) {
                 //This part is different to reflect the changes needed in the backend by the pjax loading of pages
-                
-                
+
+
                 $scripts[] = "jQuery(document).on('ready pjax:complete',function() {\n".implode("\n", $this->scripts[self::POS_LOAD])."\n});";
             } else {
                             $scripts[] = implode("\n", $this->scripts[self::POS_LOAD]);
             }
         }
-        
+
         if (isset($this->scripts[self::POS_POSTSCRIPT])) {
             if ($fullPage) {
                 //This part is different to reflect the changes needed in the backend by the pjax loading of pages
@@ -556,7 +561,7 @@ class LSYii_ClientScript extends CClientScript
             $scripts[] = "jQuery(document).off('pjax:success.debugger').on('pjax:success.debugger',function(e) { console.ls.log('PJAX success', e);});";
             $scripts[] = "jQuery(document).off('pjax:error.debugger').on('pjax:error.debugger',function(e) { console.ls.log('PJAX error', e);});";
         }
-        
+
         //All scripts are wrapped into a section to be able to reload them accordingly
         if (!empty($scripts)) {
             $html .= $this->renderScriptBatch($scripts);

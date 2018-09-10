@@ -398,7 +398,7 @@
                 <?php endforeach; ?>
             </div>
         </div>
-        <input type="hidden" id="sid" name="sid" class="custom-data" value="<?php echo $_GET['surveyid']; ?>" />
+        <input type="hidden" id="sid" name="sid" class="custom-data" value="<?php echo $iSurveyId; ?>" />
     </div>
 </form>
 

@@ -43,13 +43,16 @@
                                                         <option value=''<?php is_null($opts['defaultvalue']) ? ' selected="selected"' : '' ?>>
                                                             <?php eT('<No default value>') ?>
                                                         </option>
-                                                        <?php
-                                                            foreach ($opts['answers'] as $answer) {
-                                                                $answer = $answer->attributes;
-                                                            ?>                          <option<?php if ($answer['code'] == $opts['defaultvalue']){ ?> selected="selected" <?php } ?> value="<?php echo $answer['code'] ?>"><?php echo $answer['answer'] ?></option>
-                                                            <?php
-                                                            }
-                                                        ?>
+                                                        <?php foreach ($opts['answers'] as $answer) {
+                                                            $answer = $answer->attributes;
+                                                        ?>                          
+                                                            <option 
+                                                                <?=($answer['code'] == $opts['defaultvalue'] ? 'selected="selected"' : '')?> 
+                                                                value="<?php echo $answer['code'] ?>"
+                                                            >
+                                                                <?php echo $answer['answer'] ?>
+                                                            </option>
+                                                        <?php } ?>
                                                     </select>
                                                 </div>
                                             </div>

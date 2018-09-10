@@ -560,7 +560,7 @@ class database extends Survey_Common_Action
         // Remove invalid question attributes on saving
         $criteria = new CDbCriteria;
         $criteria->compare('qid', $this->iQuestionID);
-        $validAttributes = questionHelper::getQuestionAttributesSettings($sQuestionType);
+        $validAttributes = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
         // If the question has a custom template, we first check if it provides custom attributes
         //~ $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
         //~ if (is_object($oAttributeValues && $oAttributeValues->value)){
@@ -1395,7 +1395,7 @@ class database extends Survey_Common_Action
                         }
                     }
                 } else {
-                    $validAttributes = questionHelper::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
+                    $validAttributes = QuestionAttribute::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
                     $aAttributeValues = [];
                     // If the question has a custom template, we first check if it provides custom attributes
                     $aAttributeValues['question_template'] = 'core';
@@ -1488,9 +1488,10 @@ class database extends Survey_Common_Action
     private function _resetEM()
     {
         $oSurvey = Survey::model()->findByPk($this->iSurveyID);
-        LimeExpressionManager::SetDirtyFlag();
         $oEM =& LimeExpressionManager::singleton();
+        LimeExpressionManager::SetDirtyFlag(); // UpgradeConditionsToRelevance SetDirtyFlag too
         LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
+        LimeExpressionManager::SetPreviewMode('database');// Deactivate _UpdateValuesInDatabase
         LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
         LimeExpressionManager::StartProcessingPage(true,true); 
         $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid' => $this->iSurveyID]);

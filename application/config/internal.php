@@ -246,7 +246,7 @@ $internalConfig = array(
 
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
-                'count'                   => 'count',
+                'count'                   => 'LS_Twig_Extension::safecount',
                 'reset'                   => 'reset',
                 'in_array'                => 'in_array',
                 'in_multiarray'           => 'LS_Twig_Extension::in_multiarray',

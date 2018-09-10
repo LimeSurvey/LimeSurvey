@@ -180,7 +180,7 @@ class Template extends LSActiveRecord
         }
 
         if (!empty($sTemplateName)) {
-            setGlobalSetting('defaulttheme', $sTemplateName);
+            SettingGlobal::setSetting('defaulttheme', $sTemplateName);
             $sDefaultTemplate = App()->getConfig('defaulttheme');
 
             if(method_exists(Yii::app(), 'setFlashMessage'))
@@ -495,7 +495,7 @@ class Template extends LSActiveRecord
                 $bForceXML = false;
             }
         }
-        
+
         if($abstractInstance === true) {
             return self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML, true);
         }

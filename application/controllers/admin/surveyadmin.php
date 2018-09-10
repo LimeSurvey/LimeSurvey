@@ -219,7 +219,8 @@ class SurveyAdmin extends Survey_Common_Action
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
-            $extractdir  = $this->_tempdir(Yii::app()->getConfig('tempdir'));
+            Yii::import('application.helpers.common_helper', true);
+            $extractdir  = createRandomTempDir();
             $zipfilename = $_FILES['the_file']['tmp_name'];
             $basedestdir = Yii::app()->getConfig('uploaddir')."/surveys";
             $destdir     = $basedestdir."/$iSurveyID/";
@@ -410,7 +411,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         // Last survey visited
         $setting_entry = 'last_survey_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $iSurveyID);
+        SettingGlobal::setSetting($setting_entry, $iSurveyID);
 
         $aData['surveybar']['buttons']['view'] = true;
         $aData['surveybar']['returnbutton']['url'] = $this->getController()->createUrl("admin/survey/sa/listsurveys");
@@ -1135,6 +1136,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['action'] = $action;
                 if (isset($aImportResults['newsid'])) {
                     $aData['sLink'] = $this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$aImportResults['newsid']);
+                    $aData['sLinkApplyThemeOptions'] = 'admin/survey/sa/applythemeoptions/surveyid/'.$aImportResults['newsid'];
                 }
             }
         }
@@ -2017,5 +2019,33 @@ class SurveyAdmin extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'survey', $aViewUrls = array(), $aData = array(), $sRenderFile = false)
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
+    }
+
+    /**
+     * Apply current theme options for imported survey theme
+     *
+     * @param integer $iSurveyID  The survey ID of imported survey
+     */
+    public function applythemeoptions($iSurveyID = 0)
+    {
+        if ((int)$iSurveyID > 0 && Yii::app()->request->isPostRequest) {
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $sTemplateName = $oSurvey->template;
+            $aThemeOptions = json_decode(App()->request->getPost('themeoptions', ''));
+
+            if (!empty($aThemeOptions)){
+                $oSurveyConfig = TemplateConfiguration::getInstance($sTemplateName, null, $iSurveyID);
+                if ($oSurveyConfig->options === 'inherit'){
+                    $oSurveyConfig->setOptionKeysToInherit();
+                }
+                
+                foreach ($aThemeOptions as $key => $value) {
+                        $oSurveyConfig->setOption($key, $value);
+                }
+
+                $oSurveyConfig->save();
+            }
+        }
+        $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
     }
 }

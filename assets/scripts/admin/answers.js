@@ -472,7 +472,9 @@ function lsbrowser(e)
     });
 
     $('#labelsets').on('change', function(){
-        lspreview($(this).val());
+        var value = $(this).val();
+        if(parseFloat(value) == value)
+            lspreview(value);
     });
 }
 
