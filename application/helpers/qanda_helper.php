@@ -1813,7 +1813,6 @@ function do_ranking($ia)
     } else {
         $max_answers = $max_subquestions;
     }
-    $max_answers = LimeExpressionManager::ProcessString("{{$max_answers}}", $ia[0]);
     // Get the max number of line needed
     if (ctype_digit($max_answers) && intval($max_answers) < $max_subquestions) {
         $iMaxLine = $max_answers;
@@ -1825,7 +1824,6 @@ function do_ranking($ia)
     } else {
         $min_answers = 0;
     }
-    $min_answers = LimeExpressionManager::ProcessString("{{$min_answers}}", $ia[0]);
 
     $inputnames = [];
     $sSelects   = '';
@@ -1860,7 +1858,7 @@ function do_ranking($ia)
                 'value' => $aAnswer['code'],
                 'selected'=>$selected,
                 'classes'=>'',
-                'optiontext'=>flattenText($aAnswer->answerL10ns[$sSurveyLanguage]->answer)
+                'optiontext'=>$aAnswer->answerL10ns[$sSurveyLanguage]->answer
             );
 
         }
