@@ -18,7 +18,7 @@
         <div class="ls-input-group col-xs-12 col-sm-{{sInputContainerWidth}}">
             {% if prefix %}
                 <div class="ls-input-group-extra prefix-text prefix">
-                    {{prefix}}
+                    {{ processString(prefix) }}
                 </div>
             {% endif %}
             <div id="remainingvalue_{{id}}" class="form-control-static numeric dynamic-remaining" data-number="1">
@@ -27,7 +27,7 @@
             </div>
             {% if suffix  %}
                 <div class="ls-input-group-extra suffix-text suffix">
-                    {{ suffix }}
+                    {{ processString(suffix) }}
                 </div>
             {% endif %}
         </div>
@@ -42,7 +42,7 @@
        <div class="ls-input-group col-xs-12 col-sm-{{sInputContainerWidth}}">
             {% if prefix %}
                 <div class="ls-input-group-extra prefix-text prefix hidden">
-                    {{prefix}}
+                    {{ processString(prefix) }}
                 </div>
             {% endif %}
             <div id="totalvalue_{{id}}" class="form-control-static numeric dynamic-total" data-number="1">
@@ -50,7 +50,7 @@
             </div>
             {% if suffix  %}
                 <div class="ls-input-group-extra suffix-text suffix hidden">
-                    {{ suffix }}
+                    {{ processString(suffix) }}
                 </div>
             {% endif %}
         </div>

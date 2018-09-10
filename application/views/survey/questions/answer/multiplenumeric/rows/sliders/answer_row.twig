@@ -32,7 +32,7 @@
 
 <li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item slider-item form-group {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
     <label id="label-{{ myfname }}" class='control-label col-xs-12 col-sm-{{ sLabelWidth }}{{ sLabelWidth == 0 ? " hidden":"" }}' for="answer{{myfname}}">
-        {{ labelText }}
+        {{ processString(labelText) }}
     </label>
     <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} container-fluid">
             {% if sliderleft is not empty %}
@@ -89,8 +89,8 @@
         'handle' : "{{slider_handle}}",
         'tooltip' : 'always',
         'reset' : "{{slider_reset}}",
-        'prefix' : "{{prefix}}",
-        'suffix' : "{{suffix}}",
+        'prefix' : "{{ processString(prefix,1) }}",
+        'suffix' : "{{ processString(suffix,1) }}",
         'separator' : "{{sSeparator}}",
         'number' : true,
         'integer' : {{integeronly}},
