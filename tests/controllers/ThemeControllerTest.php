@@ -306,11 +306,25 @@ class ThemeControllerTest extends TestBaseClassWeb
         try {
             $w->get($url);
 
+            // Make sure there's no vanilla_version_1 yet.
+            $temp = \Template::model()->findAll(
+                'title = :title',
+                ['title' => 'vanilla_version_1']
+            );
+            $this->assertEmpty($temp, 'vanilla_version_1 is not yet created');
+
             // Extend vanilla.
             $w->clickButton('button-extend-vanilla');
             $w->switchTo()->alert()->sendKeys('vanilla_version_1');
             $w->switchTo()->alert()->accept();
             sleep(1);
+
+            // Make sure vanilla_version_1 was created.
+            $temp = \Template::model()->findAll(
+                'title = :title',
+                ['title' => 'vanilla_version_1']
+            );
+            $this->assertNotEmpty($temp, 'vanilla_version_1 was created');
 
             $w->clickButton('button-export');
 
