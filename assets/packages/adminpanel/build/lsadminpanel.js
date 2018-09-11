@@ -28951,6 +28951,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.getLinkClass(menuItem),
       attrs: {
         "href": menuItem.link,
+        "target": menuItem.link_external == true ? '_blank' : '',
         "id": 'sidemenu_' + menuItem.name
       },
       on: {
@@ -28978,7 +28979,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       domProps: {
         "innerHTML": _vm._s(menuItem.menu_title)
       }
-    })], 1), _vm._v(" "), _c('div', {
+    }), _vm._v(" "), (menuItem.link_external == true) ? _c('i', {
+      staticClass: "fa fa-external-link"
+    }, [_vm._v(" ")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
       directives: [{
         name: "show",
         rawName: "v-show",

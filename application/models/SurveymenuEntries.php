@@ -535,6 +535,29 @@ class SurveymenuEntries extends LSActiveRecord
         return true;
     }
 
+    private function _parseUniqueNameFromTitle() {
+
+        $name = preg_replace("/[^a-z]*/","", strtolower($this->title));
+        if(!preg_match("/^[a-z].*$/",$name)) {
+            $name = 'm'.$name;
+        }
+        $itrt = 0;
+        while(self::model()->findByAttributes(['name' => $name]) !== null){
+            $name = $name.($itrt++);
+        }
+        return $name;
+    }
+
+    public function save($runValidation=true,$attributes=null)
+	{
+        if($this->getIsNewRecord()){
+            $this->name = $this->_parseUniqueNameFromTitle();
+            $this->menu_title = empty($this->menu_title) ? $this->title : $this->menu_title;
+            $this->menu_description = empty($this->menu_description) ? $this->title : $this->menu_title;
+        }
+		parent::save($runValidation,$attributes);
+	}
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!

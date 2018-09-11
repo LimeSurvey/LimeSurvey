@@ -10,6 +10,7 @@ class SurveymenuEntryData extends CFormModel
     public $linkExternal = false;
     public $surveyid  = 0;
     public $menuEntry = null;
+    public $placeholder = false;
     public $pjaxed = true;
     public $isActive  = null;
 
@@ -66,8 +67,11 @@ class SurveymenuEntryData extends CFormModel
 
     public function linkCreator()
     {
-        $returnLink = Yii::app()->getController()->createUrl($this->link, $this->linkData);
-        return $returnLink;
+        if( $this->linkExternal ) {
+            return $this->link;
+        }
+        return  Yii::app()->getController()->createUrl($this->link, $this->linkData);
+        
     }
 
     private function _parseDataAttribute()

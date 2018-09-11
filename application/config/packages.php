@@ -230,6 +230,7 @@ return array(
         'basePath' => 'core.surveymenufunctions',
         'js' => array(
             'surveymenufunctionswrapper'.$minVersion.'.js',
+            'surveymenuentryfunctions'.$minVersion.'.js',
         ),
         'depends' => array(
             'adminbasics',
