@@ -201,13 +201,14 @@ class SurveysGroups extends LSActiveRecord
 
             // Multiple ON conditions with string values such as 'survey'
             $criteriaPerm->mergeWith(array(
-                'join'=>"JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
-                        JOIN {{permissions}} AS permissions ON (permissions.entity_id = surveys.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
+                'join'=>"LEFT JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
+                        LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = surveys.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
             ));
 
             $criteriaPerm->compare('t.owner_uid', Yii::app()->user->id, false);
             $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
             $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
+            $criteriaPerm->compare('t.gsid', '1', false, 'OR');  // "default" survey group            
             $criteria->mergeWith($criteriaPerm, 'AND');
         }
 
@@ -261,8 +262,15 @@ class SurveysGroups extends LSActiveRecord
 
     public static function getSurveyGroupsList()
     {
-        $aSurveyList = [];
-        $oSurveyGroups = self::model()->findAll();
+        $aSurveyList = [];        
+        $criteria = new CDbCriteria;
+
+        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
+            $criteria->compare('t.owner_uid', Yii::app()->user->id, false);
+            $criteria->compare('t.gsid', '1', false, 'OR');  // "default" survey group
+        }
+
+        $oSurveyGroups = self::model()->findAll($criteria);
 
         foreach ($oSurveyGroups as $oSurveyGroup) {
             $aSurveyList[$oSurveyGroup->gsid] = $oSurveyGroup->title;
