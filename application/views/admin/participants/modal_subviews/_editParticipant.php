@@ -50,10 +50,10 @@
             <div class=''>
                 &nbsp;
                 <select name='Participant[language]' class='action_changeLanguage'>
-                    <?php foreach($model->languageOptions as $language) {
+                    <?php foreach($model->languageOptions as $language_code => $language_name) {
                     ?>
-                        <option value="<?=$language['code']?>" <?=($model->language == $language['code']?' selected=true ':'')?>>
-                            <?=$language['name']?>
+                        <option value="<?=$language_code?>" <?=($model->language == $language_code?' selected=true ':'')?>>
+                            <?=$language_name?>
                         </option>
                     <?php } ?>
                 </select>
