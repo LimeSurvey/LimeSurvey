@@ -287,18 +287,7 @@ class ThemeControllerTest extends TestBaseClassWeb
         \Yii::import('application.controllers.admin.themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
 
-        // Extend vanilla.
-        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
-        $_POST['copydir'] = 'vanilla';
-        $_POST['newname'] = 'vanilla_version_1';
-        $contr->templatecopy();
-
-        // NB: Running controller from CLI creates different folder and file permissions.
-        exec('chmod -R 777 upload/');
-
-        //$contr->templatezip('vanilla_version_1');
-        //return;
-
+        // Create URL.
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -307,7 +296,7 @@ class ThemeControllerTest extends TestBaseClassWeb
                 'sa'           => 'view',
                 'editfile'     => 'layout_global.twig',
                 'screenname'   => 'welcome',
-                'templatename' => 'vanilla_version_1'
+                'templatename' => 'vanilla'
             ]
         );
 
@@ -317,7 +306,23 @@ class ThemeControllerTest extends TestBaseClassWeb
         try {
             $w->get($url);
 
+            // Extend vanilla.
+            $w->clickButton('button-extend-vanilla');
+            $w->switchTo()->alert()->sendKeys('vanilla_version_1');
+            $w->switchTo()->alert()->accept();
+
+            $url = $urlMan->createUrl(
+                'admin/themes',
+                [
+                    'sa'           => 'view',
+                    'editfile'     => 'layout_global.twig',
+                    'screenname'   => 'welcome',
+                    'templatename' => 'vanilla_version_1'
+                ]
+            );
+
             $w->clickButton('button-export');
+            $w->get($url);
 
             sleep(1);
 
