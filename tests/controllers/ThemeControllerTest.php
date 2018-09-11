@@ -321,6 +321,8 @@ class ThemeControllerTest extends TestBaseClassWeb
                 ]
             );
 
+            sleep(1);
+
             $w->clickButton('button-export');
             $w->get($url);
 
