@@ -308,7 +308,9 @@ class ThemeControllerTest extends TestBaseClassWeb
 
             // Extend vanilla.
             $w->clickButton('button-extend-vanilla');
+            sleep(1);
             $w->switchTo()->alert()->sendKeys('vanilla_version_1');
+            sleep(1);
             $w->switchTo()->alert()->accept();
 
             $url = $urlMan->createUrl(
