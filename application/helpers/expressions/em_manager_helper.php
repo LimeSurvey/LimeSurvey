@@ -7814,7 +7814,9 @@
                     //     $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     // }
 
-                    //Normally trigger reevaluation only for relevant questions even for equation question (using change specific event, this allow update previous text too)
+                    /* Trigger reevaluation only for relevant questions */
+                    /* even for equation question : using updated specific event, this allow update previous text too, see mantis #14047 */
+                    /* And this disable launch again equation update if equation is not updated */
                     $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
                     $qrelJS .= "  return;\n }\n";
 
