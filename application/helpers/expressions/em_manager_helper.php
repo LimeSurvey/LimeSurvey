@@ -7728,7 +7728,8 @@
                         $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
                         // Note, this will destroy embedded HTML in the equation (e.g. if it is a report, can use {QCODE.question} for this purpose)
                         // This make same than flattenText to be same in JS and in PHP
-                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('update');\n";
+                        // Launch updated event after update value to allow equation update propagation
+                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('updated');\n";
                     }
                     $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
@@ -7813,15 +7814,12 @@
                     //     $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     // }
 
-                    //Normally trigger reevaluation only for relevant questions except for equation questions
-                    if($arg['type'] != '*') {
-                        $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
-                        $qrelJS .= "  return;\n }\n";
-                    }
+                    //Normally trigger reevaluation only for relevant questions even for equation question (using change specific event, this allow update previous text too)
+                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+                    $qrelJS .= "  return;\n }\n";
 
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
-
                     $relEqns[] = $qrelJS;
 
                     $gseq_qidList[$arg['gseq']][$arg['qid']] = '1';   // means has an explicit LEMrel() function

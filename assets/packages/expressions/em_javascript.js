@@ -25,9 +25,12 @@
  **/
 /* text/number item */
 $(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item :text:not([onkeyup])",function(event){
-    if($(this).data("number")) { // data-type ?
+    if($(this).data("number"))// data-type ?
+    {
         fixnum_checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup', $(this).data("integer"))
-    } else {
+    }
+    else
+    {
         checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
     }
 });
@@ -44,8 +47,8 @@ $(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* hidden item */
-$(document).on("update change",".answer-item :hidden",function(event){
-    checkconditions($(this).val(), $(this).attr('name'), 'text', 'update')
+$(document).on("updated",".answer-item :hidden",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
 });
 /**
  * For number

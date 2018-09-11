@@ -762,7 +762,7 @@ function do_equation($ia)
         'name'      => $ia[1],
         'basename'  => $ia[1],
         'sValue'    => $sValue,
-        'sEquation' => $sEquation,
+        'sEquation' => LimeExpressionManager::ProcessString($sEquation,$ia[0]), /* Must do update of html string, else updated action is done before html is updated */
         'coreClass' => 'ls-answers answer-item hidden-item ',
         'insideClass' => 'em_equation',
         ), true);

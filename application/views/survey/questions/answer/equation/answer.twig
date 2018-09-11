@@ -10,8 +10,10 @@
 <!-- Equation -->
 
 <!-- answer -->
-<input type="hidden" name="{{ name }}" id="java{{ name }}" value="{{ sValue }}">
-<div class='{{ coreClass }} {{ insideClass }} hidden'>
-    {{ processString(sEquation) }}
+<div class='{{ coreClass }} hidden'>
+    <input type="hidden" name="{{ name }}" id="java{{ name }}" value="{{ sValue }}">
+    <div class='{{ insideClass }}'>
+        {{ sEquation }}
+    </div>
 </div>
 <!-- end of answer -->
