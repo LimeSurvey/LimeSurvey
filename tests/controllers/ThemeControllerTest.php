@@ -293,6 +293,9 @@ class ThemeControllerTest extends TestBaseClassWeb
         $_POST['newname'] = 'vanilla_version_1';
         $contr->templatecopy();
 
+        // NB: Running controller from CLI creates different folder and file permissions.
+        exec('chmod -R 777 upload/');
+
         //$contr->templatezip('vanilla_version_1');
         //return;
 

@@ -72,4 +72,4 @@ before_script:
 
 script:
     # Run tests.
-    - sudo -u www-data DOMAIN=localhost phpunit # --stop-on-failure
+    - DOMAIN=localhost phpunit # --stop-on-failure
