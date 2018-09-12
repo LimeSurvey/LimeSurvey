@@ -108,7 +108,20 @@ $categoryNum=0;
                         ));
                         break;
 
-                    // Interger
+                    // Float
+                    case 'float':
+                        echo CHtml::numberField($aAttribute['name'],$aAttribute['value'],array(
+                            'class'=>"form-control",
+                            'disabled'=>$readonly,
+                            'step'=>1,
+                            'pattern'=>'^[-+]?[0-9]*\.[0-9]+$',
+                            'min'=>(isset($aAttribute['min'])?$aAttribute['min']:null),
+                            'max'=>(isset($aAttribute['max'])?$aAttribute['max']:null)
+                        ));
+                        break;
+
+
+                    // Columns
                     case 'columns':
                         echo CHtml::numberField($aAttribute['name'],$aAttribute['value'],array(
                             'class'=>"form-control",
