@@ -314,8 +314,7 @@ class dataentry extends Survey_Common_Action
             foreach ($sourceResponses as $sourceResponse) {
                 $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
-                $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
-
+                $targetResponse = Response::create($iSurveyId);
                 foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
                 }
