@@ -859,10 +859,10 @@ class database extends Survey_Common_Action
                         $data['surveyls_policy_notice_label'] = $dataseclabel;
                     }
                     if ($sURL !== null) {
-                        $data['surveyls_url'] = html_entity_decode($sURL, ENT_QUOTES, "UTF-8");
+                        $data['surveyls_url'] = htmlspecialchars($sURL);
                     }
                     if ($sURLDescription !== null) {
-                        $data['surveyls_urldescription'] = html_entity_decode($sURLDescription, ENT_QUOTES, "UTF-8");
+                        $data['surveyls_urldescription'] = htmlspecialchars($sURLDescription);
                     }
                     if ($dateformat !== null) {
                         $data['surveyls_dateformat'] = $dateformat;

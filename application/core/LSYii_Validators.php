@@ -64,7 +64,6 @@ class LSYii_Validators extends CValidator
         // Note that URL checking only checks basic URL properties. As a URL can contain EM expression there needs to be a lot of freedom.
         if ($this->isUrl) {
             if ($object->$attribute == 'http://' || $object->$attribute == 'https://') {$object->$attribute = ""; }
-            $object->$attribute = html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8");
         }
         if ($this->isLanguage) {
             $object->$attribute = $this->languageFilter($object->$attribute);
