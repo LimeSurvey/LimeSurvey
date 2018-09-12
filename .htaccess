@@ -14,7 +14,8 @@
 </IfModule>
 
 # deny access to hidden files and directories without mod_rewrite
-RedirectMatch 403 ^/(?!\.well-known/)(.*/)?\.+
+# TODO : disable /.well-known from redirect
+# RedirectMatch 403 ^(.*/)?\.+
 
 # General setting to properly handle LimeSurvey paths
 # AcceptPathInfo on
