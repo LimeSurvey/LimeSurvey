@@ -170,7 +170,7 @@ class themeoptions  extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
             $aData = array();
-            $aData['oSurveyTheme'] = new TemplateConfiguration();
+            $oSurveyTheme = new TemplateConfiguration();
             $aData['oAdminTheme']  = new AdminTheme();
 
 
@@ -190,9 +190,30 @@ class themeoptions  extends Survey_Common_Action
                 $importErrorMessage = gT("You do not have the required ZIP library installed in PHP.");
             }
 
+            /// FOR GRID View
+            $filterForm = Yii::app()->request->getPost('TemplateConfiguration', false);
+            if ($filterForm) {
+                $oSurveyTheme->setAttributes($filterForm, false);
+                if (array_key_exists('template_description', $filterForm)){
+                    $oSurveyTheme->template_description = $filterForm['template_description'];
+                }
+                if (array_key_exists('template_type', $filterForm)){
+                    $oSurveyTheme->template_type = $filterForm['template_type'];
+                }
+                if (array_key_exists('template_extends', $filterForm)){
+                    $oSurveyTheme->template_extends = $filterForm['template_extends'];
+                }
+            }
+
+            // Page size
+            if (Yii::app()->request->getParam('pageSize')) {
+                Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
+            }
+
+            $aData['oSurveyTheme'] = $oSurveyTheme;
             $aData['canImport']  = $canImport;
             $aData['importErrorMessage']  = $importErrorMessage;
-
+            $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
 
             $this->_renderWrappedTemplate('themeoptions', 'index', $aData);
         } else {

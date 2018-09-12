@@ -37,6 +37,7 @@ class LSHttpRequest extends CHttpRequest
     private $_pathInfo;
     
     public $noCsrfValidationRoutes = array();
+    public $noCsrfValidationParams = array();
 
     /**
      * Return the referal url,
@@ -153,20 +154,9 @@ class LSHttpRequest extends CHttpRequest
         if ($this->enableCsrfValidation) {
             
             $validationRoutes = $this->noCsrfValidationRoutes;
-            $validationParams = [];
-
-            // if(preg_match('/admin/', $route)){
-            //     $beforeUrlCheck = new PluginEvent('beforeUrlCheck');
-            //     $beforeUrlCheck->set('routes', $validationRoutes);
-            //     $beforeUrlCheck->set('params', $validationParams);
-            //     App()->getPluginManager()->dispatchEvent($beforeUrlCheck);
-            //     $validationRoutes = $beforeUrlCheck->get('routes');
-            //     $validationParams = $beforeUrlCheck->get('params', []);
-            // } 
-            //} else {
-            //    $validationRoutes = [];
-            //    $validationParams = [];
-            //}
+            $validationParams = $this->noCsrfValidationParams;
+            // $validationRoutes[] = 'plugins/direct/plugin/AuthSAML/function/acs';
+            // $validationParams['request'] = 'acs';
 
             foreach ($validationRoutes as $cr) {
                 if (preg_match('#'.$cr.'#', $route)) {

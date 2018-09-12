@@ -91,6 +91,11 @@ class TemplateConfiguration extends TemplateConfig
     /** @var int $showpopups show warnings when running survey */
     public $showpopups; //
 
+    // for survey theme gridview columns
+    public $template_type;
+    public $template_extends;
+    public $template_description;
+
     /**
      * @return string the associated database table name
      */
@@ -418,6 +423,48 @@ class TemplateConfiguration extends TemplateConfig
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
+        ));
+    }
+
+    public function searchGrid()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $pageSizeTemplateView = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']);
+        $criteria = new CDbCriteria;
+
+        $criteria->join = 'INNER JOIN {{templates}} AS template ON t.template_name = template.name';
+        $criteria->together = true; 
+        //Don't show surveyspecifi settings on the overview
+        $criteria->addCondition('t.sid IS NULL');
+        $criteria->addCondition('t.gsid IS NULL');
+        $criteria->addCondition('template.name IS NOT NULL');
+
+        $criteria->compare('id', $this->id);
+        $criteria->compare('template_name', $this->template_name, true);
+        $criteria->compare('files_css', $this->files_css, true);
+        $criteria->compare('files_js', $this->files_js, true);
+        $criteria->compare('files_print_css', $this->files_print_css, true);
+        $criteria->compare('options', $this->options, true);
+        $criteria->compare('cssframework_name', $this->cssframework_name, true);
+        $criteria->compare('cssframework_css', $this->cssframework_css, true);
+        $criteria->compare('cssframework_js', $this->cssframework_js, true);
+        $criteria->compare('packages_to_load', $this->packages_to_load, true);
+        $criteria->compare('template.description', $this->template_description, true);
+        $criteria->compare('template.extends', $this->template_extends, true);
+
+        $coreTemplates = Template::getStandardTemplateList();
+        if ($this->template_type == 'core'){
+            $criteria->addInCondition('template_name', $coreTemplates);
+        } elseif ($this->template_type == 'user'){
+            $criteria->addNotInCondition('template_name', $coreTemplates);
+        }
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+            'pagination'=>array(
+                'pageSize'=>$pageSizeTemplateView,
+            ),
         ));
     }
 

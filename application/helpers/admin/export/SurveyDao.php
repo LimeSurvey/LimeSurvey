@@ -13,7 +13,7 @@ class SurveyDao
      * @param int $id
      * @return SurveyObj
      */
-    public function loadSurveyById($id, $lang = null)
+    public function loadSurveyById($id, $lang = null, FormattingOptions $oOptions = null)
     {
         $survey = new SurveyObj();
 
@@ -45,6 +45,9 @@ class SurveyDao
         $survey->questions = Question::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'question_order'));
         $aAnswers = Answer::model()->with('question', array('condition'=>'sid='.$intId))->findAll(array('order' => 'question.question_order, t.scale_id, sortorder'));
         foreach ($aAnswers as $aAnswer) {
+            if(!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1  && Yii::app()->controller->action->id !='remotecontrol'){
+                $aAnswer=stripTagsFull($aAnswer);
+            }
             $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']] = $aAnswer;
         }
         //Load language settings for requested language

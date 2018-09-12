@@ -287,15 +287,14 @@ class ThemeControllerTest extends TestBaseClassWeb
         \Yii::import('application.controllers.admin.themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
 
-        // Extend vanilla.
-        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
-        $_POST['copydir'] = 'vanilla';
-        $_POST['newname'] = 'vanilla_version_1';
-        $contr->templatecopy();
+        // Make sure there's no vanilla_test_3 yet.
+        $temp = \Template::model()->findAll(
+            'title = :title',
+            ['title' => 'vanilla_test_3']
+        );
+        $this->assertEmpty($temp, 'vanilla_test_3 is not yet created');
 
-        //$contr->templatezip('vanilla_version_1');
-        //return;
-
+        // Create URL.
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl(
@@ -304,7 +303,7 @@ class ThemeControllerTest extends TestBaseClassWeb
                 'sa'           => 'view',
                 'editfile'     => 'layout_global.twig',
                 'screenname'   => 'welcome',
-                'templatename' => 'vanilla_version_1'
+                'templatename' => 'vanilla'
             ]
         );
 
@@ -314,11 +313,30 @@ class ThemeControllerTest extends TestBaseClassWeb
         try {
             $w->get($url);
 
+            // Wait for possible modal to appear.
+            // Two modals on fresh install.
+            sleep(1);
+            $this->dismissModal();
+            $this->dismissModal();
+
+            // Extend vanilla.
+            $w->clickButton('button-extend-vanilla');
+            $w->switchTo()->alert()->sendKeys('vanilla_test_3');
+            $w->switchTo()->alert()->accept();
+            sleep(1);
+
+            // Make sure vanilla_test_3 was created.
+            $temp = \Template::model()->findAll(
+                'title = :title',
+                ['title' => 'vanilla_test_3']
+            );
+            $this->assertNotEmpty($temp, 'vanilla_test_3 was created');
+
             $w->clickButton('button-export');
 
             sleep(1);
 
-            $this->assertTrue(file_exists(BASEPATH . '../tmp/vanilla_version_1.zip'));
+            $this->assertTrue(file_exists(BASEPATH . '../tmp/vanilla_test_3.zip'));
 
             $w->clickButton('button-delete');
             $w->switchTo()->alert()->accept();
@@ -344,7 +362,7 @@ class ThemeControllerTest extends TestBaseClassWeb
             // Test upload file.
             $fileInput = $w->findElement(WebDriverBy::id('the_file'));
             $fileInput->setFileDetector(new LocalFileDetector());
-            $file = BASEPATH . '../tmp/vanilla_version_1.zip';
+            $file = BASEPATH . '../tmp/vanilla_test_3.zip';
             $this->assertTrue(file_exists($file));
             $fileInput->sendKeys($file)->submit();
 
@@ -358,8 +376,8 @@ class ThemeControllerTest extends TestBaseClassWeb
             $header = $w->findElement(WebDriverBy::className('theme-editor-header'));
             $this->assertEquals(
                 $header->getText(),
-                'Theme editor: vanilla_version_1',
-                $header->getText() . ' should equal "Theme editor: vanilla_version_1"'
+                'Theme editor: vanilla_test_3',
+                $header->getText() . ' should equal "Theme editor: vanilla_test_3"'
             );
 
         } catch (\Exception $ex) {

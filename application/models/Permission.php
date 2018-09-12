@@ -743,4 +743,31 @@ class Permission extends LSActiveRecord
         }
         return null;
     }
+
+    public static function getPermissionList(){
+        return [
+            'assessments' => gT('Assessments'),
+            'quotas' => gT('Quotas'),
+            'responses' => gT('Responses'),
+            'statistics' => gT('Statistics'),
+            'survey' => gT('Survey'),
+            'surveyactivation' => gT('Surveyactivation'),
+            'surveycontent' => gT('Surveycontent'),
+            'surveylocale' => gT('Surveylocale'),
+            'surveysecurity' => gT('Surveysecurity'),
+            'surveysettings' => gT('Surveysettings'),
+            'tokens' => gT('Tokens'),
+            'translations' => gT('Translations')
+        ];
+    }
+    public static function getPermissionGradeList(){
+        return [
+            'create' => gT('Create'),
+            'read' => gT('Read'),
+            'update' => gT('Update'),
+            'delete' => gT('Delete'),
+            'import' => gT('Import'),
+            'export' => gT('Export'),
+        ];
+    }
 }

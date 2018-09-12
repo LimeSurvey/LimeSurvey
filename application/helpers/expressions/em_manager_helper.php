@@ -5044,12 +5044,11 @@
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
 
-            // set seed key for non-activated survey mode, activated mode already have seed key,
-            // to be able to pass count of startingValues check at next IF 
-            if (!$LEM->surveyOptions['active'] || $LEM->sPreviewMode){
+            // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF 
+            if (array_key_exists('startingValues', $_SESSION[$LEM->sessid]) && !array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])){
                 $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';  
             }
-
+            
             // NOTE: now that we use a seed, count($_SESSION[$LEM->sessid]['startingValues']) start at 1
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 1)
             {
@@ -6754,13 +6753,19 @@
                         // Only add non-empty tip
                         if (trim($vtip) != "")
                         {
+                            // set hideTip from question atrribute
+                            $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
+                            $hideTip = array_key_exists('hide_tip', $qattr)?$qattr['hide_tip']:0;
+
                             $tipsDatas = array(
                                 'qid'       =>$qid,
                                 'coreId'    =>"vmsg_{$qid}_{$vclass}", // If it's not this id : EM is broken
                                 'coreClass' =>"ls-em-tip em_{$vclass}",
                                 'vclass'    =>$vclass,
                                 'vtip'      =>$vtip,
+                                'hideTip'   =>($vclass == 'default' && $hideTip == 1)?true:false  // hide default tip if attribute hide_tip is set to 1
                             );
+
                             $stringToParse .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/em-tip', $tipsDatas, true);
                         }
                     }

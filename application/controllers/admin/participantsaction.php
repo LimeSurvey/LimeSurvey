@@ -557,6 +557,61 @@ $url .= "_view"; });
         }
     }
 
+    public function batchEdit() {
+        if (!Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+            return;
+        }
+
+        $aParticipantIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aResults = array();
+        $oBaseModel = Surveymenu::model();
+        // First we create the array of fields to update
+        $aData = array();
+        $aResults['global']['result'] = true;
+
+        // Core Fields
+        $aCoreTokenFields = array('language', 'owner_uid','blacklisted');
+        foreach ($aCoreTokenFields as $sCoreTokenField) {
+            if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
+                $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
+            }
+        }
+        
+
+        if (count($aData) > 0) {
+            foreach ($aParticipantIds as $sParticipantId) {
+                $oParticipant = Participant::model()->findByPk($sParticipantId);
+                
+                
+                
+                foreach ($aData as $key => $value) {
+                    // Make sure no-one hacks owner_uid into form
+                    if (!$oParticipant->isOwnerOrSuperAdmin() && $key=='owner_uid') {
+                        continue;
+                    }
+                    $oParticipant->$key = $value;
+                }
+
+                $bUpdateSuccess = $oParticipant->save();
+                if ($bUpdateSuccess) {
+                    $aResults[$sParticipantId]['status']    = true;
+                    $aResults[$sParticipantId]['message']   = gT('Updated');
+                } else {
+                    $aResults[$sParticipantId]['status']    = false;
+                    $aResults[$sParticipantId]['message']   = $oParticipant->error;
+                }
+            }
+        } else {
+            $aResults['global']['result']  = false;
+            $aResults['global']['message'] = gT('Nothing to update');
+        }
+
+        Yii::app()->getController()->renderPartial('/admin/surveymenu/massive_action/_update_results', array('aResults'=>$aResults));
+
+    }
+
     /**
      * Update participant
      * Outputs Ajax result
