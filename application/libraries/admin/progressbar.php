@@ -23,29 +23,29 @@ class ProgressBar
 {
     // private vars
 
-    var $code;	// unique code
-    var $status = 'new';	// current status (new,show,hide)
-    var $step = 0;	// current step
-    var $position = array(); // current bar position
+    private $code;	// unique code
+    private $status = 'new';	// current status (new,show,hide)
+    private $step = 0;	// current step
+    private $position = array(); // current bar position
 
     // public vars
 
-    var $min = 0;	// minimal steps
-    var $max = 100;	// maximal steps
+    public $min = 0;	// minimal steps
+    public $max = 100;	// maximal steps
 
-    var $left = 10;	// bar position from left
-    var $top = 25;	// bar position from top
-    var $width = 300;	// bar width
-    var $height = 25;	// bar height
-    var $pedding = 0;	// bar pedding
-    var $color = '#0033ff';	// bar color
-    var $bgr_color = '#c0c0c0';	// bar background color
-    var $border = 1;			// bar border width
-    var $brd_color = '#000000';	// bar border color
+    public $left = 10;	// bar position from left
+    public $top = 25;	// bar position from top
+    public $width = 300;	// bar width
+    public $height = 25;	// bar height
+    public $pedding = 0;	// bar pedding
+    public $color = '#0033ff';	// bar color
+    public $bgr_color = '#c0c0c0';	// bar background color
+    public $border = 1;			// bar border width
+    public $brd_color = '#000000';	// bar border color
 
-    var $direction = 'right';	// direction of motion (right,left,up,down)
+    public $direction = 'right';	// direction of motion (right,left,up,down)
 
-    var $frame = array('show' => false);	// ProgressBar Frame
+    public $frame = array('show' => false);	// ProgressBar Frame
     /*	'show' => false,	# frame show (true/false)
      'left' => 200,	# frame position from left
      'top' => 100,	# frame position from top
@@ -56,7 +56,7 @@ class ProgressBar
      'brd_color' => '#dfdfdf #404040 #404040 #dfdfdf'	# frame border color
      */
 
-    var $label = array();	// ProgressBar Labels
+    public $label = array();	// ProgressBar Labels
     /*	'name' => array(	# label name
      'type' => 'text',	# label type (text,button,step,percent,crossbar)
      'value' => 'Please wait ...',	# label value
@@ -97,6 +97,9 @@ class ProgressBar
 
     // private functions
 
+    /**
+     * @param integer $step
+     */
     function _calculatePercent($step)
     {
         $percent = round(($step - $this->min) / ($this->max - $this->min) * 100);
@@ -104,6 +107,9 @@ class ProgressBar
         return $percent;
     }
 
+    /**
+     * @param integer $step
+     */
     function _calculatePosition($step)
     {
         switch ($this->direction) {
@@ -150,6 +156,9 @@ class ProgressBar
         return $position;
     }
 
+    /**
+     * @param integer $step
+     */
     function _setStep($step)
     {
         if ($step > $this->max) {$step = $this->max;}
@@ -176,6 +185,10 @@ class ProgressBar
 			if ($height>0) {$this->frame['height'] = $height;}
     }
 
+    /**
+     * @param string $type
+     * @param string $name
+     */
     function addLabel($type,$name,$value='&nbsp;')
     {
         switch($type) {
@@ -264,6 +277,10 @@ class ProgressBar
         }
     }
 
+    /**
+     * @param string $name
+     * @param string $action
+     */
     function addButton($name,$value,$action,$target='self')
     {
         $this->addLabel('button',$name,$value);
@@ -337,6 +354,9 @@ class ProgressBar
         }
     }
 
+    /**
+     * @param string $name
+     */
     function setLabelValue($name,$value)
     {
         $this->label[$name]['value'] = $value;
@@ -496,6 +516,9 @@ class ProgressBar
         flush();
     }
 
+    /**
+     * @param integer $step
+     */
     function moveStep($step)
     {
         $last_step = $this->step;

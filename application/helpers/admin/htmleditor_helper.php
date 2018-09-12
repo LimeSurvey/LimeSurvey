@@ -23,6 +23,10 @@
             'flash' => $sAllowedExtensions,
             'images' => $sAllowedExtensions
         );
+        if (Yii::app()->getRequest()->enableCsrfValidation && !empty(Yii::app()->getRequest()->csrfCookie->domain))
+        {
+            $_SESSION['KCFINDER']['cookieDomain'] = Yii::app()->getRequest()->csrfCookie->domain;
+        }
 
         if (Yii::app()->getConfig('demoMode') === false &&
                 isset(Yii::app()->session['loginID']) &&
@@ -183,10 +187,14 @@
         $fieldtype == 'addlabel')
         {
             $imgopts = "width='16' height='16'";
+            $class="editorLink";
         }
-
+        else
+        {
+            $class="editorLink input-group-addon";
+        }
         $htmlcode .= ""
-        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes(htmlspecialchars_decode($fieldtext,ENT_QUOTES))."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='editorLink'>\n"
+        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes(htmlspecialchars_decode($fieldtext,ENT_QUOTES))."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='{$class}'>\n"
         . "\t<span class='glyphicon glyphicon-pencil btneditanswerena' id='".$fieldname."_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='".gT("Start HTML editor in a popup window")."'></span>"
         . "\t<span class='glyphicon glyphicon-pencil btneditanswerdis' id='".$fieldname."_popupctrldis'  style='display:none'  ></span>"
         . "</a>\n";
@@ -223,12 +231,12 @@
             }
         }
 
-        if ( $fieldtype == 'email-inv' ||
-        $fieldtype == 'email-reg' ||
-        $fieldtype == 'email-conf'||
-        $fieldtype == 'email-admin-notification'||
-        $fieldtype == 'email-admin-resp'||
-        $fieldtype == 'email-rem' )
+        if ( $fieldtype == 'email-invitation' ||
+        $fieldtype == 'email-registration' ||
+        $fieldtype == 'email-confirmation'||
+        $fieldtype == 'email-admin_notification'||
+        $fieldtype == 'email-admin_detailed_notification'||
+        $fieldtype == 'email-reminder' )
         {
             $htmlformatoption = ",fullPage:true\n";
         }
@@ -256,9 +264,7 @@
         ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsAction : \"".$action."\"
         ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
-        ,width:'660'
-        ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'
-        ,smiley_path : \"".Yii::app()->getConfig('uploadurl')."/images/smiley/msn/\"\n"
+        ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
         . $sFileBrowserAvailable
         . $htmlformatoption
         . $toolbaroption

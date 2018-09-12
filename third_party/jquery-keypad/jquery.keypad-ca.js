@@ -2,7 +2,7 @@
    Catalan initialisation for the jQuery keypad extension
    Written by Ignasi Nogues (inogues@clickartedu.com). */
 (function($) { // hide the namespace
-	$.keypad.regional['ca'] = {
+	$.keypad.regionalOptions['ca'] = {
 		buttonText: '...', buttonStatus: 'Obrir el teclat',
 		closeText: 'Tancar', closeStatus: 'Tancar el teclat',
 		clearText: 'Netejar', clearStatus: 'Eliminar tot el text',
@@ -17,5 +17,5 @@
 		isNumeric: $.keypad.isNumeric,
 		toUpper: $.keypad.toUpper,
 		isRTL: false};
-	$.keypad.setDefaults($.keypad.regional['ca']);
+	$.keypad.setDefaults($.keypad.regionalOptions['ca']);
 })(jQuery);

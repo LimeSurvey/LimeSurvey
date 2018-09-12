@@ -4,21 +4,60 @@
  * This file contains package definition for third party libraries.
  * Defining them here allows for easy inclusion in views.
  */
+
+
+if (!isset($_GET['isAjax']))
+{
+    $aJquery = array(
+        'basePath' => 'third_party.jquery',
+        'js' => array(
+            'jquery-2.2.4.min.js'
+        ));
+}
+else
+{
+    $aJquery = array(
+        'basePath' => 'third_party.jquery',
+        'js' => array(
+
+        ),
+        );
+}
+
 return array(
 
     // jQuery
-    'jquery' => array(
-        'baseUrl' => 'third_party/jquery/',
-        'js' => array(
-            'jquery-1.11.1.min.js'
+    'jquery' => $aJquery,
+
+
+    // Bootstrap
+    // This package replace the Yiistrap register() function
+    // Then instead of using the composer dependency system for templates (will be used for LS3)
+    // We can use the package dependency system (easier for now)
+    'bootstrap' => array(
+        'basePath' => 'bootstrap',
+        'css'=> array(
+            'css/bootstrap.css',
+            'css/yiistrap.css',
+        ),
+        'depends' => array(
+            'jquery',
+        )
+    ),
+
+    'fontawesome' => array(
+        //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
+        'basePath' => 'third_party.fontawesome',
+        'css'=> array(
+            'css/font-awesome.min.css',
         ),
     ),
 
     // jQuery UI
     'jqueryui' => array(
-        'baseUrl' => 'third_party/jqueryui/',
+        'basePath' => 'third_party.jqueryui',
         'js' => array(
-            'js/jquery-ui-1.10.3.custom.min.js'
+            'js/jquery-ui-1.11.4.min.js'
         ),
         'css' => array(
             //'css/jquery-ui.css'
@@ -28,45 +67,9 @@ return array(
         )
     ),
 
-    // jQgrid
-    'jqgrid' => array(
-        'baseUrl' => 'third_party/jqgrid/',
-        'js' => array(
-            'js/jquery.jqGrid.min.js',
-            'js/i18n/grid.locale-en.js',
-            'plugins/jquery.searchFilter.js'
-        ),
-        'css' => array(
-            //'css/ui.jqgrid.css'
-        ),
-        'depends' => array(
-            'jquery'
-        )
-
-    ),
-
-
-        'jquery-price-format' => array(
-            'baseUrl' => 'third_party/jquery-price-format/',
-            'js' => array(
-                'jquery_price_format.js'
-            ),
-        ),
-
-    'jqgrid.addons' => array(
-        'baseUrl' => 'third_party/jqgrid/plugins/',
-        'js' => array(
-            'grid.addons.js'
-        ),
-        'depends' => array(
-            'jqgrid'
-        )
-
-    ),
-
     // jquery bindWithDelay
     'jquery-bindWithDelay' => array(
-        'baseUrl' => 'third_party/jquery-bindWithDelay',
+        'basePath' => 'third_party.jquery-bindWithDelay',
         'js' => array(
             'bindWithDelay.js'
         ),
@@ -77,7 +80,7 @@ return array(
 
     // jQuery Cookie
     'jquery-cookie' => array(
-        'baseUrl' => 'third_party/jquery-cookie',
+        'basePath' => 'third_party.jquery-cookie',
         'js' => array(
             'jquery.cookie.js'
         ),
@@ -88,7 +91,7 @@ return array(
 
     // jQuery Superfish
     'jquery-superfish' => array(
-        'baseUrl' => 'third_party/jquery-superfish',
+        'basePath' => 'third_party.jquery-superfish',
         'js' => array(
             'js/superfish.js',
             'js/hoverIntent.js'
@@ -103,7 +106,7 @@ return array(
 
     // jQuery json
     'jquery-json' => array(
-        'baseUrl' => 'third_party/jquery-json',
+        'basePath' => 'third_party.jquery-json',
         'js' => array(
             'jquery.json-2.4.min.js'
         ),
@@ -114,7 +117,7 @@ return array(
 
     // jQuery blockUI
     'jquery-blockUI' => array(
-        'baseUrl' => 'third_party/jquery-blockui',
+        'basePath' => 'third_party.jquery-blockui',
         'js' => array(
             'jquery.blockUI.js'
         ),
@@ -125,7 +128,7 @@ return array(
 
     // qTip2
     'qTip2' => array(
-        'baseUrl' => 'third_party/qTip2',
+        'basePath' => 'third_party.qTip2',
         'js' => array(
             'dist/jquery.qtip.min.js'
         ),
@@ -140,7 +143,7 @@ return array(
 
     // jQuery Table Sorter
     'jquery-tablesorter' => array(
-        'baseUrl' => 'third_party/jquery-tablesorter',
+        'basePath' => 'third_party.jquery-tablesorter',
         'js' => array(
             'jquery.tablesorter.min.js'
         ),
@@ -151,7 +154,7 @@ return array(
 
     // jQuery NestedSortable
     'jquery-nestedSortable' => array(
-        'baseUrl' => 'third_party/jquery-nestedSortable',
+        'basePath' => 'third_party.jquery-nestedSortable',
         'js' => array(
             'jquery.mjs.nestedSortable.js'
         ),
@@ -162,7 +165,7 @@ return array(
 
     // Bootstrap Multiselect
     'bootstrap-multiselect' => array(
-        'baseUrl' => 'third_party/bootstrap-multiselect',
+        'basePath' => 'third_party.bootstrap-multiselect',
         'js' => array(
             'js/bootstrap-multiselect.js',
         ),
@@ -176,7 +179,7 @@ return array(
 
     // Ace
     'ace' => array(
-        'baseUrl' => 'third_party/ace',
+        'basePath' => 'third_party.ace',
         'js' => array(
             'ace.js'
         ),
@@ -187,7 +190,7 @@ return array(
 
     // jQuery Ace
      'jquery-ace' => array(
-        'baseUrl' => 'third_party/jquery-ace',
+         'basePath' => 'third_party.jquery-ace',
         'js' => array(
             'jquery.ace.js',
         ),
@@ -198,7 +201,7 @@ return array(
 
     // jQuery selectboxes
     'jquery-selectboxes' => array(
-        'baseUrl' => 'third_party/jquery-selectboxes/selectboxes',
+        'basePath' => 'third_party.jquery-selectboxes.selectboxes',
         'js' => array(
             'jquery.selectboxes.js'
         ),
@@ -209,7 +212,7 @@ return array(
 
     // jQuery actual
     'jquery-actual' => array(
-        'baseUrl' => 'third_party/jquery-actual/',
+        'basePath' => 'third_party.jquery-actual',
         'js' => array(
             'jquery.actual.min.js'
         ),
@@ -220,7 +223,7 @@ return array(
 
     // jQuery touch punch
     'jquery-touch-punch' => array(
-        'baseUrl' => 'third_party/jquery-touch-punch/',
+        'basePath' => 'third_party.jquery-touch-punch',
         'js' => array(
             'jquery.ui.touch-punch.min.js'
         ),
@@ -229,25 +232,114 @@ return array(
         )
     ),
 
-    // jQuery timepicker
-    'jqueryui-timepicker' => array(
-        'baseUrl' => 'third_party/jquery-ui-timepicker-addon/',
+    // Decimal.js calculate in js 
+    'decimal' => array(
+        'basePath' => 'third_party.decimal',
         'js' => array(
-            'jquery-ui-timepicker-addon.js'
-        ),
-        'css' => array(
-            'jquery-ui-timepicker-addon.css'
+            'decimal.js'
         ),
         'depends' => array(
-            'jqueryui'
         )
     ),
 
-    // select2
-    'select2' => array(
-        'baseUrl' => 'styles/limebootstrap/assets/',
-        'js' => array('scripts/select2.js'),
+    // Moment.js use real simple dateTime modification 
+    'moment' => array(
+        'basePath' => 'third_party.moment',
+        'js' => array(
+            'moment-with-locales.min.js'
+        ),
         'depends' => array(
+        )
+    ),
+
+    // leaflet, needed for short text question with map (OSM)
+    'leaflet' => array(
+        'basePath' => 'third_party.leaflet',
+        'js' => array(
+            'leaflet.js'
+        ),
+        'css' => array(
+            'leaflet.css'
         ),
     ),
+    'jsuri' => array(
+        'basePath' => 'third_party.jsUri',
+        'js' => array(
+            'Uri.js'
+        ),
+    ),
+
+    'bootstrap-datetimepicker' => array(
+        'basePath' => 'third_party.bootstrap-datetimepicker',
+        'css' => array(
+            'css/bootstrap-datetimepicker.min.css'
+        ),
+        'js' => array(
+            'js/bootstrap-datetimepicker.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
+        )
+    ),
+
+    'bootstrap-switch' => array(
+        'basePath' => 'third_party.bootstrap-switch',
+        'css' => array(
+            'css/bootstrap-switch.min.css'
+        ),
+        'js' => array(
+            'js/bootstrap-switch.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
+        )
+    ),
+
+    'jquery-datatable' => array(
+        'basePath' => 'third_party.jquery-datatable',
+        'css' => array(
+            'datatables.min.css'
+        ),
+        'js' => array(
+            'datatables.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
+        )
+    ),
+
+    'es6promise' => array(
+        'basePath' => 'third_party.es6promise',
+        'js' => array(
+            'es6-promise.auto.min.js'
+        )
+    ),
+    
+    'dom2image' => array(
+        'basePath' => 'third_party.dom-to-image',
+        'js' => array(
+            'dist/dom-to-image.min.js',
+        )
+    ),
+
+    'jspdf' => array(
+        'basePath' => 'third_party.jspdf',
+        'js' => array(
+            'jspdf.min.js',
+            'createpdf_worker.js'
+        ),
+        'depends' => array(
+            'dom2image',
+            'es6promise',
+            'jquery',
+            'bootstrap'
+        )
+    )
+
+
 );

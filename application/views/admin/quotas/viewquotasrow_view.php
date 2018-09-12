@@ -9,7 +9,7 @@
             {
                 echo '<font color="#48B150">'.gT("Active").'</font>';
             } else {
-                echo '<font color="#B73838">'.gT("Not Active").'</font>';
+                echo '<font color="#B73838">'.gT("Not active").'</font>';
             }
         ?>
     </td>
@@ -24,25 +24,30 @@
     <td><?php echo $quotalisting['qlimit'];?></td>
     <td style="padding: 3px;">
         <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) { ?>
-            <?php echo CHtml::form(array("admin/quotas/sa/editquota/surveyid/{$iSurveyId}"), 'post'); ?>
-                <input name="submit" type="submit" class="submit btn btn-default" value="<?php eT("Edit");?>" />
-                <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
-                <input type="hidden" name="action" value="quotas" />
-                <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
-                <input type="hidden" name="subaction" value="quota_editquota" />
-            </form>
+                <a href="<?php echo $editUrl; ?>" class="btn btn-default" data-toggle='tooltip' title='<?php eT("Edit"); ?>'>
+                    <span class='glyphicon glyphicon-pencil'></span>
+                </a>
         <?php } ?>
         <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','delete')) { ?>
-            <?php echo CHtml::form(array("admin/quotas/sa/delquota/surveyid/{$iSurveyId}"), 'post'); ?>
-                <input name="submit" type="submit" class="submit btn btn-default"  value="<?php eT("Remove");?>" />
-                <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
-                <input type="hidden" name="action" value="quotas" />
-                <input type="hidden" name="quota_id" value="<?php echo $quotalisting['id'];?>" />
-                <input type="hidden" name="subaction" value="quota_delquota" />
-            </form>
+                <a data-href="<?php echo $deleteUrl; ?>" class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal" data-tooltip="true" title="<?php eT("Delete");?>" >
+                    <span class='glyphicon glyphicon-trash text-danger'></span>
+                </a>
         <?php } ?>
         <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','update')) {
-            echo CHtml::link(gT("Validate"),array('admin/validate','sa'=>'quota','sid'=>$surveyid,'quota'=>$quotalisting['id']),array('class'=>'btn btn-link','title'=>sprintf(gT("Validation of quota %s"),$quotalisting['name']),"target"=>"dialog"));
+            echo CHtml::link(CHtml::tag('span', array(
+                'class' => 'glyphicon glyphicon-ok-sign',
+                ), ''
+            ), array(
+                'admin/validate',
+                'sa'=>'quota',
+                'sid'=>$surveyid,
+                'quota'=>$quotalisting['id'],
+            ), array(
+                'class'=>'btn btn-default',
+                'title'=>sprintf(gT("Validation of quota %s"),$quotalisting['name']),
+                'target'=>'dialog',
+                'data-tooltip' => 'true'
+            ));
         } ?>
     </td></tr>
 

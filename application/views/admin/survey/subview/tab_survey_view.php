@@ -62,9 +62,8 @@ $active = (isset($_GET['tab']))?$_GET['tab']:'create';
             </a>
         </li>
 
+        <!-- Plugins -->
         <?php if(isset($pluginSettings)): ?>
-
-            <!-- Plugins -->
             <li role="presentation">
                 <a data-toggle="tab" href="#pluginsettings">
                     <?php  eT("Plugins"); ?>

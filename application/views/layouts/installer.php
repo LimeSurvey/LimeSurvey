@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta name="author" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="" />
 
     <link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>/styles/admin/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="<?php echo $this->createUrl('/');?>styles/admin/favicon.ico" type="image/x-icon" />
@@ -11,13 +11,17 @@
         <?php
         App()->getClientScript()->registerPackage('jqueryui');
         App()->bootstrap->register();
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/styles/Sea_Green/css/lime-admin.css');
+        App()->getClientScript()->registerPackage('fontawesome');
+
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/styles/Sea_Green/css/lime-admin-colors.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/styles/Sea_Green/css/lime-admin-common.css');
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
 
         $script = "$(function() {
         $('.on').animate({
-					color: '#0B55C4'
-				}, 1000 );
+                    color: '#0B55C4'
+                }, 1000 );
 
         $('.demo').find('a:first').button().end().
             find('a:eq(1)').button().end().
@@ -26,7 +30,7 @@
         App()->getClientScript()->registerScript('installer', $script);
     ?>
     <link rel="icon" href="<?php echo Yii::app()->baseUrl; ?>/images/favicon.ico" />
-	<title><?php eT("LimeSurvey installer"); ?></title>
+    <title><?php eT("LimeSurvey installer"); ?></title>
 </head>
 
 <body>

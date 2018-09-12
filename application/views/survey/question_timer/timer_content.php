@@ -12,17 +12,25 @@
  * @var
  */
 ?>
-<div id='question<?php echo $iQid; ?>_timer' style='<?php echo $time_limit_message_style; ?>'>
-    <?php echo $time_limit_message; ?>
-</div>
-<div id='LS_question<?php echo $iQid; ?>_warning' style='<?php echo $time_limit_warning_style; ?>'>
-    <?php echo $time_limit_warning_message; ?>
-</div>
-
-<div id='LS_question<?php echo $iQid; ?>_warning_2' style='<?php echo $time_limit_warning_2_style; ?>'>
-    <?php echo $time_limit_warning_2_message; ?>
+<div class='col-sm-12 questionmancontainer'>
+    <div id='question<?php echo $iQid; ?>_timer' class='alert alert-info' style='<?php echo $time_limit_message_style; ?>'>
+        <?php echo $time_limit_message; ?>
+    </div>
 </div>
 
-<div id='LS_question<?php echo $iQid; ?>_Timer' style='<?php echo $time_limit_timer_style; ?>'>
+<div class='col-sm-12 questionmancontainer'>
+    <div id='LS_question<?php echo $iQid; ?>_warning' class='alert alert-danger' style='<?php echo $time_limit_warning_style; ?>'>
+        <?php echo $time_limit_warning_message; ?>
+    </div>
+</div>
 
+<div class='col-sm-12 questionmancontainer'>
+    <div id='LS_question<?php echo $iQid; ?>_warning_2' class='alert alert-danger' style='<?php echo $time_limit_warning_2_style; ?>'>
+        <?php echo $time_limit_warning_2_message; ?>
+    </div>
+</div>
+
+<div class='col-sm-12 questionmancontainer'>
+    <div id='LS_question<?php echo $iQid; ?>_Timer' class='alert alert-warning' style='<?php echo $time_limit_timer_style; ?>'>
+    </div>
 </div>

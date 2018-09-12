@@ -59,18 +59,6 @@
                     <?php echo $usergroupbar['returnbutton']['text']; ?>
                 </a>
             <?php endif;?>
-
-
-            <!-- labelsetchanger -->
-            <?php if(isset($usergroupbar['returnbutton']['url'])):?>
-                <div class="form-group form-inline col-md-7 pull-right">
-                    <label for='labelsetchanger'><?php eT("User groups"); ?>:</label>
-                    <select id='labelsetchanger' onchange="window.open(this.options[this.selectedIndex].value,'_top')" class="form-control">
-                        <?php echo getUserGroupList($ugid,'optionlist'); ?>
-                    </select>
-                </div>
-            <?php endif; ?>
-
         </div>
     </div>
 </div>

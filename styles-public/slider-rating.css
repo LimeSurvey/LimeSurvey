@@ -10,9 +10,12 @@
 .slider-background .slider-rating
 ,.page-odd .slider-background .slider-rating
   {visibility:hidden;height:22px;width:366px;}
-.slider-rating a.ui-slider-handle
-,.page-odd .slider-rating a.ui-slider-handle
+
+
+.slider-wrapper  .slider-background .slider-rating .ui-slider-handle
 {
+  display: block;
+  position: relative;
   visibility:visible;
   background:transparent url(img/slider.png) no-repeat 50% 50%;
   width:15px;

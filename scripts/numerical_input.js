@@ -14,21 +14,20 @@ $(document).ready(function () {
 
     var selector = '.thousandsseparator input.numeric, input.integeronly, .numberonly input[type=text]';
     $(selector).unbind('keydown');
-    $('input.numeric, .numberonly input[type=text]').priceFormat({
+    $('.thousandsseparator input.numeric').priceFormat({
         'centsSeparator' : centsSep,
         'thousandsSeparator' : thousandsSep,
         'centsLimit' : 2,
         'prefix' : '',
         'allowNegative' : true
     });
-    $('input.integeronly').priceFormat({
+    $('.thousandsseparator input.integeronly').priceFormat({
         'centsSeparator' : centsSep,
         'thousandsSeparator' : thousandsSep,
         'centsLimit' : 0,
         'prefix' : '',
-	'allowNegative' : true
+        'allowNegative' : true
     });
-
 
     $(selector).bind('keyup', custom_checkconditions);
     // Initialize LEM tabs first.
@@ -42,7 +41,7 @@ $(document).ready(function () {
 
         var varName = LEMalias2varName[alias.split(".", 1)];
         var attr = LEMvarNameAttr[varName];
-        if (attr.onlynum == 1)
+        if (attr && attr.onlynum == 1)
         {
             return ls_represent($('#' + attr.jsName_on).val());
         }

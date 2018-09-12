@@ -212,15 +212,21 @@ class PclZip
     //   Note that no real action is taken, if the archive does not exist it is not
     //   created. Use create() for that.
     // --------------------------------------------------------------------------------
-    function __construct($params = array())
+    function __construct($params)
     {
 
-        if(isset($params['p_zipname']) && is_array($params))
+        if (is_array($params) && isset($params['p_zipname']))
+        {
             $p_zipname = $params['p_zipname'];
+        }
         elseif (isset($params))
+        {
             $p_zipname = $params;
+        }
         else
+        {
             trigger_error("Missing argument p_zipname", E_USER_ERROR);
+        }
 
         // ----- Tests the zlib
         if (!function_exists('gzopen'))
@@ -2342,6 +2348,10 @@ class PclZip
     // Description :
     // Parameters :
     // --------------------------------------------------------------------------------
+
+    /**
+     * @param string $p_mode
+     */
     function privOpenFd($p_mode)
     {
         $v_result=1;
@@ -4146,6 +4156,10 @@ class PclZip
     // Parameters :
     // Return Values :
     // --------------------------------------------------------------------------------
+
+    /**
+     * @param string $p_string
+     */
     function privExtractFileAsString(&$p_entry, &$p_string, &$p_options)
     {
         $v_result=1;
@@ -5027,6 +5041,10 @@ class PclZip
     // Parameters :
     // Return Values :
     // --------------------------------------------------------------------------------
+
+    /**
+     * @param PclZip $p_archive_to_add
+     */
     function privMerge(&$p_archive_to_add)
     {
         $v_result=1;
@@ -5212,6 +5230,10 @@ class PclZip
     // Parameters :
     // Return Values :
     // --------------------------------------------------------------------------------
+
+    /**
+     * @param string $p_archive_filename
+     */
     function privDuplicate($p_archive_filename)
     {
         $v_result=1;
@@ -5534,6 +5556,10 @@ function PclZipUtilPathInclusion($p_dir, $p_path)
 //             3 : src & dest gzip
 // Return Values :
 // --------------------------------------------------------------------------------
+/**
+ * @param integer $p_src
+ * @param integer $p_dest
+ */
 function PclZipUtilCopyBlock($p_src, $p_dest, $p_size, $p_mode=0)
 {
     $v_result = 1;
@@ -5596,6 +5622,10 @@ function PclZipUtilCopyBlock($p_src, $p_dest, $p_size, $p_mode=0)
 // Return Values :
 //   1 on success, 0 on failure.
 // --------------------------------------------------------------------------------
+/**
+ * @param string $p_src
+ * @param string $p_dest
+ */
 function PclZipUtilRename($p_src, $p_dest)
 {
     $v_result = 1;

@@ -113,7 +113,7 @@ class Usergroups extends Survey_Common_Action
             $aViewUrls = 'mailUserGroup_view';
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = 'admin/usergroups/sa/view/ugid/'.$ugid;
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index'));  // Close button, UrlReferrer
 
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
@@ -202,7 +202,7 @@ class Usergroups extends Survey_Common_Action
         }
         $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
         $aData['usergroupbar']['savebutton']['text']= gT('Save');
-        $aData['usergroupbar']['closebutton']['url'] = 'admin/usergroups';
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index'));  // Close button, urlReferrer
         $aData['usergroupbar']['add'] = 'admin/usergroups';
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
@@ -219,7 +219,8 @@ class Usergroups extends Survey_Common_Action
 
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         if (Permission::model()->hasGlobalPermission('usergroups','update')) {
-            if ($action == "editusergroupindb") {
+            if ($action == "editusergroupindb")
+             {
 
                 $ugid = (int)$_POST['ugid'];
 
@@ -246,7 +247,7 @@ class Usergroups extends Survey_Common_Action
             }
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = 'admin/usergroups/sa/view/ugid/'.$ugid;
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index'));  // Close button, urlReferrer
         $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
         $aData['usergroupbar']['savebutton']['text']= gT("Update user group");
 
@@ -262,6 +263,11 @@ class Usergroups extends Survey_Common_Action
     */
     public function index($ugid = false, $header = false)
     {
+        if(!Permission::model()->hasGlobalPermission('usergroups','read'))
+        {
+            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            $this->getController()->redirect(App()->createUrl("/admin"));
+        }
         if ($ugid != false)
             $ugid = (int)$ugid;
 
@@ -333,6 +339,11 @@ class Usergroups extends Survey_Common_Action
                 }
                 $aViewUrls[] = 'viewUserGroup_view';
             }
+            else {
+                //show listing
+                $aViewUrls['usergroups_view'][] = array();
+                $aData['model']  =  UserGroup::model();
+            }
 
 
         }
@@ -340,12 +351,17 @@ class Usergroups extends Survey_Common_Action
         if ($ugid == false)
         {
             $aData['usergroupbar']['returnbutton']['url']='admin/index';
-            $aData['usergroupbar']['returnbutton']['text']=gT('return to admin panel');
+            $aData['usergroupbar']['returnbutton']['text']=gT('Return to admin home');
         }
         else
         {
             $aData['usergroupbar']['edit'] = TRUE;
-            $aData['usergroupbar']['closebutton']['url'] = 'admin/usergroups';
+            $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('admin/usergroups/sa/view');  // Close button
+        }
+
+        if (isset($_GET['pageSize']))
+        {
+            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
         }
 
         if (!empty($header))
@@ -372,7 +388,7 @@ class Usergroups extends Survey_Common_Action
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid));
         }
-        else    
+        else
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid, 'owner_id' => Yii::app()->session['loginID']));
         }
@@ -434,8 +450,7 @@ class Usergroups extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array())
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'users.js' ));
-
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'users.js');
         $aData['display']['menu_bars']['user_group'] = true;
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);

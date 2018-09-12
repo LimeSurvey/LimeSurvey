@@ -63,7 +63,7 @@ div.boilerplate,div.choice-5-pt-radio,div.date,div.list-radio-flexible,div.list-
 }
 
 .other {
-  
+
 }
 
 .question ul,.question ul li {
@@ -214,15 +214,8 @@ div.array-multi-flexi .q-answer table tbody td div.input-text {
 .array-flexible-duel-scale {}
 */
 .array-flexible-column col.odd,.array-flexible-column th.odd {
-  background-color: #0c1c2b;
-  padding: 0% 0.3em;
 }
 
-/* Create spikes for single-row inputs */
-div.input-other,div.input-othercomment,div.input-rank,div.input-text {
-  background: transparent url(print_img_textspike.gif) repeat-x scroll 0%
-    50%
-}
 
 /*fix styling for some questions that cannot be controlled individually */
 div.input-rank {

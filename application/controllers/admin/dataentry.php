@@ -66,7 +66,6 @@ class dataentry extends Survey_Common_Action
     /**
     * Function responsible for importing responses from file (.csv)
     *
-    * @param mixed $surveyid
     * @return void
     */
     function vvimport()
@@ -108,7 +107,7 @@ class dataentry extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->session['flashmessage'] = gT("You do not have sufficient rights to access this page.");
+            Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect($this->getController()->createUrl("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
     }
@@ -138,8 +137,6 @@ class dataentry extends Survey_Common_Action
 
     private function _handleFileUpload($iSurveyId, $aData)
     {
-        $vvoutput = '';
-        $donotimport = array();
         $filePath = $this->_moveUploadedFile($aData);
         //$aFileContents = $this->_readFile($filePath);
 
@@ -164,6 +161,15 @@ class dataentry extends Survey_Common_Action
         if(isset($aResult['success'])){
             $aData['aResult']['success']=array_merge($aData['aResult']['success'],$aResult['success']);
         }
+        if(isset($aResult['warnings']))
+        {
+            $aData['class']="message-box-warning";
+        }
+        if(isset($aResult['errors']))
+        {
+            $aData['class']="message-box-error";
+        }
+
         $aData['aResult']['errors']=(isset($aResult['errors'])) ? $aResult['errors'] : false;
         $aData['aResult']['warnings']=(isset($aResult['warnings'])) ? $aResult['warnings'] : false;
 
@@ -186,6 +192,7 @@ class dataentry extends Survey_Common_Action
     private function _readFile($filePath)
     { // Open the file for reading
         $handle = fopen($filePath, "r");
+        $bigarray = array();
         // Read the file
         while (!feof($handle))
         {
@@ -207,16 +214,15 @@ class dataentry extends Survey_Common_Action
                 $aData['class']='error warningheader';
                 $aData['title']=gT("Error");
                 $aData['aResult']['errors'][] = sprintf(
-                    gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),
+                    gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
                     Yii::app()->getConfig('tempdir')
                 );
-                $aData['aResult']['errors'][] = "<pre>".
+                //$aData['aResult']['errors'][] = "<pre>".
                 $aData['aUrls'][] = array(
                     'link'=>$this->getController()->createUrl('admin/dataentry/sa/vvimport/surveyid/'.$aData['surveyid']),
                     'text'=>$aData['aUrlText'][] = gT("Back to Response Import"),
                     );
                 $this->_renderWrappedTemplate('dataentry', 'vvimport_result', $aData);
-                die;
             }
             else
             {
@@ -232,6 +238,20 @@ class dataentry extends Survey_Common_Action
     {
         unset($aEncodings['auto']);
         asort($aEncodings);
+
+        // Get default character set from global settings
+        $thischaracterset = getGlobalSetting('characterset');
+
+        // If no encoding was set yet, use the old "utf8" default
+        if($thischaracterset == "")
+        {
+            $thischaracterset = "utf8";
+        }
+
+        // Create encodings list using the Yii's CHtml helper
+        $charsetsout = CHtml::listOptions($thischaracterset, $aEncodings, $aEncodings);
+
+        $aData['charsetsout'] = $charsetsout;
         $aData['aEncodings']=$aEncodings;
         $aData['tableExists'] = tableExists("{{survey_$surveyid}}");
 
@@ -243,161 +263,161 @@ class dataentry extends Survey_Common_Action
     /**
     * dataentry::import()
     * Function responsible to import responses from old survey table(s).
-    * @param int $iSurveyId
+    * @param int $surveyid
     * @return void
     */
     public function import($surveyid)
     {
         $iSurveyId = sanitize_int($surveyid);
 
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','create'))
+        if(!Permission::model()->hasSurveyPermission($iSurveyId,'responses','create'))
         {
-            if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none')
+            Yii::app()->setFlashMessage(gT("No permission"), 'error');
+            return;
+        }
+
+        if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none')
+        {
+
+            // Schema that serves as the base for compatibility checks.
+            $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
+            $tables = App()->getApi()->getOldResponseTables($iSurveyId);
+            $compatible = array();
+            $coercible = array();
+            foreach ($tables as $table)
             {
-
-                // Schema that serves as the base for compatibility checks.
-                $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
-                $tables = App()->getApi()->getOldResponseTables($iSurveyId);
-                $compatible = array();
-                $coercible = array();
-                foreach ($tables as $table)
+                $schema = PluginDynamic::model($table)->getTableSchema();
+                if (PluginDynamic::model($table)->count() > 0)
                 {
-                    $schema = PluginDynamic::model($table)->getTableSchema();
-                    if (PluginDynamic::model($table)->count() > 0)
+                    if ($this->isCompatible($baseSchema, $schema))
                     {
-                        if ($this->isCompatible($baseSchema, $schema))
-                        {
-                            $compatible[] = $table;
-                        }
-                        elseif ($this->isCompatible($baseSchema, $schema, false))
-                        {
-                            $coercible[] = $table;
-                        }
+                        $compatible[] = $table;
+                    }
+                    elseif ($this->isCompatible($baseSchema, $schema, false))
+                    {
+                        $coercible[] = $table;
                     }
                 }
-
-                $aData = array();
-                $aData['surveyid'] = $iSurveyId;
-                $aData['settings']['table'] = array(
-                    'label' => gT('Source table'),
-                    'type' => 'select',
-                    'options' => array(
-                        gT('Compatible') => $this->tableList($compatible),
-                        gT('Compatible with type coercion') => $this->tableList($coercible)
-                    )
-                );
-
-
-                $aData['settings']['timings'] = array(
-                    'type' => 'checkbox',
-                    'label' => gT('Import timings (if exist)')
-                );
-
-                //Get the menubar
-                $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
-
-                $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-                $aData["surveyinfo"] = $surveyinfo;
-                $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
-
-                $aData['sidemenu']['state'] = false;
-                $aData['menu']['edition'] = true;
-                $aData['menu']['import'] =  true;
-                $aData['menu']['close'] =  true;
-
-                $this->_renderWrappedTemplate('dataentry', 'import', $aData);
             }
-            else
+
+            $aData = array();
+            $aData['surveyid'] = $iSurveyId;
+            $aData['settings']['table'] = array(
+                'label' => gT('Source table'),
+                'type' => 'select',
+                'options' => array(
+                    gT('Compatible') => $this->tableList($compatible),
+                    gT('Compatible with type coercion') => $this->tableList($coercible)
+                )
+            );
+
+
+            $aData['settings']['timings'] = array(
+                'type' => 'checkbox',
+                'label' => gT('Import timings (if exist)')
+            );
+
+            //Get the menubar
+            $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
+
+            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+            $aData["surveyinfo"] = $surveyinfo;
+            $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+
+            $aData['sidemenu']['state'] = false;
+            $aData['menu']['edition'] = true;
+            $aData['menu']['import'] =  true;
+            $aData['menu']['close'] =  true;
+
+            $this->_renderWrappedTemplate('dataentry', 'import', $aData);
+        }
+        else
+        {
+            $aSRIDConversions=array();
+            $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
+            $sourceTable = PluginDynamic::model($_POST['table']);
+            $sourceSchema = $sourceTable->getTableSchema();
+
+            $fieldMap = array();
+            $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
+            foreach ($sourceSchema->getColumnNames() as $name)
             {
-                $aSRIDConversions=array();
-                $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
-                $sourceTable = PluginDynamic::model($_POST['table']);
-                $sourceSchema = $sourceTable->getTableSchema();
-
-                $fieldMap = array();
-                $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
-                foreach ($sourceSchema->getColumnNames() as $name)
+                // Skip id field.
+                if ($name == 'id')
                 {
-                    // Skip id field.
-                    if ($name == 'id')
-                    {
-                        continue;
-                    }
-
-                    $sourceColumn = $sourceSchema->getColumn($name);
-                    $matches = array();
-                    // Exact match.
-                    if ($targetSchema->getColumn($name))
-                    {
-                        $fieldMap[$name] = $name;
-                    }
-                    elseif(preg_match($pattern, $name, $matches)) // Column name is SIDXGIDXQID
-                    {
-                        $qid = $matches[3];
-                        $targetColumn = $this->getQidColumn($targetSchema, $qid);
-                        if (isset($targetColumn))
-                        {
-                            $fieldMap[$name] = $targetColumn->name;
-                        }
-                    }
-                }
-                $imported = 0;
-                $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
-                foreach ($sourceResponses as $sourceResponse)
-                {
-                   $iOldID=$sourceResponse->id;
-                    // Using plugindynamic model because I dont trust surveydynamic.
-                   $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
-
-                   foreach($fieldMap as $sourceField => $targetField)
-                   {
-                       $targetResponse[$targetField] = $sourceResponse[$sourceField];
-                   }
-                   $imported++;
-                   $targetResponse->save();
-                   $aSRIDConversions[$iOldID]=$targetResponse->id;
-                   unset($targetResponse);
+                    continue;
                 }
 
-
-
-                Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-                $sOldTimingsTable=substr(substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_')),strlen(Yii::app()->db->tablePrefix));
-                $sNewTimingsTable = "survey_{$surveyid}_timings";
-
-                if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
+                $matches = array();
+                // Exact match.
+                if ($targetSchema->getColumn($name))
                 {
-                    // Import timings
-                    $arDestination=SurveyTimingDynamic::model($surveyid);
-                    $aFieldsOldTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sOldTimingsTable.'}}')->columnNames);
-                    $aFieldsNewTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sNewTimingsTable.'}}')->columnNames);
-
-                    $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
-
-                    $sQueryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {{{$sOldTimingsTable}}} ";
-                    $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll();   //Checked
-                    $iRecordCountT=0;
-                    foreach ($aQueryOldValues as $sRecord)
-                    {
-                        if (isset($aSRIDConversions[$sRecord['id']]))
-                        {
-                            $sRecord['id']=$aSRIDConversions[$sRecord['id']];
-                        }
-                        else continue;
-                        Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}",$sRecord);
-                        $iRecordCountT++;
-                    }
-                    Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."),$imported,$iRecordCountT);
+                    $fieldMap[$name] = $name;
                 }
-                $this->getController()->redirect(array("/admin/responses/sa/index/", 'surveyid' => $surveyid));
+                elseif(preg_match($pattern, $name, $matches)) // Column name is SIDXGIDXQID
+                {
+                    $qid = $matches[3];
+                    $targetColumn = $this->getQidColumn($targetSchema, $qid);
+                    if (isset($targetColumn))
+                    {
+                        $fieldMap[$name] = $targetColumn->name;
+                    }
+                }
             }
+            $imported = 0;
+            $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
+            foreach ($sourceResponses as $sourceResponse)
+            {
+               $iOldID=$sourceResponse->id;
+                // Using plugindynamic model because I dont trust surveydynamic.
+               $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
+
+               foreach($fieldMap as $sourceField => $targetField)
+               {
+                   $targetResponse[$targetField] = $sourceResponse[$sourceField];
+               }
+               $imported++;
+               $targetResponse->save();
+               $aSRIDConversions[$iOldID]=$targetResponse->id;
+               unset($targetResponse);
+            }
+
+
+
+            Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
+            $sOldTimingsTable=substr(substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_')),strlen(Yii::app()->db->tablePrefix));
+            $sNewTimingsTable = "survey_{$surveyid}_timings";
+
+            if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
+            {
+                // Import timings
+                $aFieldsOldTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sOldTimingsTable.'}}')->columnNames);
+                $aFieldsNewTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sNewTimingsTable.'}}')->columnNames);
+
+                $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
+
+                $sQueryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {{{$sOldTimingsTable}}} ";
+                $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll();   //Checked
+                $iRecordCountT=0;
+                foreach ($aQueryOldValues as $sRecord)
+                {
+                    if (isset($aSRIDConversions[$sRecord['id']]))
+                    {
+                        $sRecord['id']=$aSRIDConversions[$sRecord['id']];
+                    }
+                    else continue;
+                    Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}",$sRecord);
+                    $iRecordCountT++;
+                }
+                Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."),$imported,$iRecordCountT);
+            }
+            $this->getController()->redirect(array("/admin/responses/sa/index/", 'surveyid' => $surveyid));
         }
     }
 
 
     /**
      * Takes a list of tablenames and creates a nice key value array.
-     * @param type $list
      */
     protected function tableList($tables)
     {
@@ -418,7 +438,7 @@ class dataentry extends Survey_Common_Action
     /**
      * Takes a table schema and finds the field for some question id.
      * @param CDbTableSchema $schema
-     * @param type $qid
+     * @param string $qid
      * @return CDbColumnSchema
      */
     protected function getQidColumn(CDbTableSchema $schema, $qid)
@@ -477,21 +497,12 @@ class dataentry extends Survey_Common_Action
     */
     public function editdata($subaction, $id, $surveyid, $language='')
     {
-        if ($language == '') {
-            $language = Survey::model()->findByPk($surveyid)->language;
-        }
 
         $surveyid = sanitize_int($surveyid);
         $id = sanitize_int($id);
         $aViewUrls = array();
+        $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
 
-        if (!isset($sDataEntryLanguage))
-        {
-            $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
-        }
-
-
-        $surveyinfo = getSurveyInfo($surveyid);
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
         {
             $surveytable = "{{survey_".$surveyid.'}}';
@@ -507,15 +518,12 @@ class dataentry extends Survey_Common_Action
             order by group_order, question_order";
             $fnresult = dbExecuteAssoc($fnquery);
             $fnresult=$fnresult->readAll();
-            $fncount = count($fnresult);
 
             $fnrows = array(); //Create an empty array in case FetchRow does not return any rows
             foreach ($fnresult as $fnrow)
             {
                 $fnrows[] = $fnrow;
                 $private=$fnrow['anonymized'];
-                $datestamp=$fnrow['datestamp'];
-                $ipaddr=$fnrow['ipaddr'];
             } // Get table output into array
 
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
@@ -530,7 +538,7 @@ class dataentry extends Survey_Common_Action
             $nfncount = count($fnames)-1;
 
             //SHOW INDIVIDUAL RECORD
-
+            $results = array();
             if ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid,'responses','update'))
             {
                 $idquery = "SELECT * FROM $surveytable WHERE id=$id";
@@ -558,6 +566,7 @@ class dataentry extends Survey_Common_Action
                 'access_code' => $password)
                 );
 
+                $saver = array();
                 foreach($svresult as $svrow)
                 {
                     $saver['email'] = $svrow['email'];
@@ -572,6 +581,7 @@ class dataentry extends Survey_Common_Action
                 } // while
 
                 $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+                $results1 = array();
                 foreach($fieldmap as $fm)
                 {
                     if (isset($responses[$fm['fieldname']]))
@@ -585,7 +595,7 @@ class dataentry extends Survey_Common_Action
                 }
 
                 $results1['id'] = "";
-                $results1['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
+                $results1['datestamp'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                 $results1['ipaddr'] = $saver['ip'];
                 $results[] = $results1;
             }
@@ -619,10 +629,6 @@ class dataentry extends Survey_Common_Action
 
                 do
                 {
-                    if (isset($idrow[$fname['fieldname']]) )
-                    {
-                        $answer = $idrow[ $fname['fieldname'] ];
-                    }
                     $question = $fname['question'];
                     $aDataentryoutput .= "\t<tr";
                     if ($highlight) $aDataentryoutput .=" class='odd'";
@@ -644,7 +650,7 @@ class dataentry extends Survey_Common_Action
                     {
                         case "completed":
                             // First compute the submitdate
-                            if ($private == "Y")
+                            if ( isset($private) && $private == "Y")
                             {
                                 // In case of anonymized responses survey with no datestamp
                                 // then the the answer submitdate gets a conventional timestamp
@@ -661,8 +667,8 @@ class dataentry extends Survey_Common_Action
                             $selected = (empty($idrow['submitdate'])) ? 'N' : $completedate;
 
                             $select_options = array(
-                            'N' => gT('No'),
-                            $completedate => gT('Yes')
+                            'N' => gT('No','unescaped'),
+                            $completedate => gT('Yes','unescaped')
                             );
 
                             $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options, array('class'=>'form-control'));
@@ -691,7 +697,6 @@ class dataentry extends Survey_Common_Action
                             }
                             break;
                         case "D": //DATE
-                            $thisdate='';
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid)
                             ;
                             if ($idrow[$fname['fieldname']]!='')
@@ -715,6 +720,32 @@ class dataentry extends Survey_Common_Action
                                 'onkeypress' => 'return goodchars(event,\''.$goodchars.'\')'
                                 )
                                 );
+                                /*
+                                Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                                    'name' => $fname['fieldname'],
+                                    'value' => $thisdate,
+                                    'pluginOptions' => array(
+                                        'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                                        'allowInputToggle' =>true,
+                                        'showClear' => true,
+                                        'tooltips' => array(
+                                            'clear'=> gT('Clear selection'),
+                                            'prevMonth'=> gT('Previous month'),
+                                            'nextMonth'=> gT('Next month'),
+                                            'selectYear'=> gT('Select year'),
+                                            'prevYear'=> gT('Previous year'),
+                                            'nextYear'=> gT('Next year'),
+                                            'selectDecade'=> gT('Select decade'),
+                                            'prevDecade'=> gT('Previous decade'),
+                                            'nextDecade'=> gT('Next decade'),
+                                            'prevCentury'=> gT('Previous century'),
+                                            'nextCentury'=> gT('Next century'),
+                                'selectTime'=> gT('Select time')
+                                        ),
+                                        'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                                    )
+                                ));
+                                */
                                 $aDataentryoutput .= CHtml::hiddenField('dateformat'.$fname['fieldname'], $dateformatdetails['jsdate'],
                                 array( 'id' => "dateformat{$fname['fieldname']}" )
                                 );
@@ -845,7 +876,7 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             $currentvalues=array();
                             $myfname=$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid'];
-                            $aDataentryoutput .= '<div id="question'.$thisqid.'" class="ranking-answers"><ul class="answers-list">';
+                            $aDataentryoutput .= '<div id="question'.$thisqid.'" class="ranking-answers"><ul class="answers-list select-list">';
                             while (isset($fname['type']) && $fname['type'] == "R" && $fname['qid']==$thisqid)
                             {
                                 //Let's get all the existing values into an array
@@ -898,8 +929,10 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= '</div>';
                             App()->getClientScript()->registerPackage('jquery-actual');
 
-                            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'ranking.js' ));
-                            App()->getClientScript()->registerCssFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH.'ranking.css' ));
+                            $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
+                            $this->registerCssFile( 'PUBLIC', 'ranking.css' );
+                            $this->registerCssFile( 'PUBLIC', 'jquery-ui-custom.css' );
+
                             $aDataentryoutput .= "<script type='text/javascript'>\n"
                                 .  "  <!--\n"
                                 . "var aRankingTranslations = {
@@ -932,7 +965,6 @@ class dataentry extends Survey_Common_Action
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 //$aDataentryoutput .= substr($fname['fieldname'], strlen($fname['fieldname'])-5, 5)."<br />\n";
                                 if (substr($fname['fieldname'], -5) == "other")
                                 {
@@ -976,7 +1008,7 @@ class dataentry extends Survey_Common_Action
                             break;
 
                         case "P": //Multiple choice with comments checkbox + text
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             while (isset($fname) && $fname['type'] == "P")
                             {
                                 $thefieldname=$fname['fieldname'];
@@ -1013,7 +1045,7 @@ class dataentry extends Survey_Common_Action
                             $fname=prev($fnames);
                             break;
                         case "|": //FILE UPLOAD
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             if ($fname['aid']!=='filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0))
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
@@ -1091,7 +1123,7 @@ class dataentry extends Survey_Common_Action
                             ."\t</select>\n";
                             break;
                         case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
@@ -1114,11 +1146,10 @@ class dataentry extends Survey_Common_Action
                             $fname=prev($fnames);
                             break;
                         case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n";
@@ -1138,11 +1169,10 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             break;
                         case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n"
@@ -1163,11 +1193,10 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             break;
                         case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 ."<td align='right'>{$fname['subquestion']}</td>\n"
                                 ."<td>\n"
@@ -1190,11 +1219,10 @@ class dataentry extends Survey_Common_Action
                         case "F": //ARRAY (Flexible Labels)
                         case "H":
                         case "1":
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 ."<td>{$fname['subquestion']}";
                                 if (isset($fname['scale']))
@@ -1257,11 +1285,10 @@ class dataentry extends Survey_Common_Action
                                 $maxvalue=1;
                                 $stepvalue=1;
                             }
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
@@ -1288,11 +1315,10 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             break;
                         case ";": //ARRAY (Multi Flexi)
-                            $aDataentryoutput .= "<table>\n";
+                            $aDataentryoutput .= "<table class='table'>\n";
                             $thisqid=$fname['qid'];
                             while (isset($fname['qid']) && $fname['qid'] == $thisqid)
                             {
-                                $fieldn = substr($fname['fieldname'], 0, strlen($fname['fieldname']));
                                 $aDataentryoutput .= "\t<tr>\n"
                                 . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
@@ -1362,6 +1388,7 @@ class dataentry extends Survey_Common_Action
     */
     public function delete()
     {
+        $surveyid= '';
         if (isset($_REQUEST['surveyid']) && !empty($_REQUEST['surveyid']))
         {
             $surveyid = $_REQUEST['surveyid'];
@@ -1415,8 +1442,6 @@ class dataentry extends Survey_Common_Action
             $baselang = Survey::model()->findByPk($surveyid)->language;
             Yii::app()->loadHelper("database");
             $surveytable = "{{survey_".$surveyid.'}}';
-
-            $aDataentryoutput = "<div class='header ui-widget-header'>".gT("Data entry")."</div>\n";
 
             $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
             // restet token if user is not allowed to update
@@ -1504,25 +1529,15 @@ class dataentry extends Survey_Common_Action
 
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
 
-            $onerecord_link = $this->getController()->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$id);
-            $allrecords_link = $this->getController()->createUrl('/admin/responses/sa/index/surveyid/'.$surveyid);
-
-
-            $aDataentryoutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".gT("Success")."</div>\n"
-            .gT("Record has been updated.")."<br /><br />\n"
-            ."<input type='submit' value='".gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
-            ."<input type='submit' value='".gT("Browse responses")."' onclick=\"window.open('$allrecords_link', '_top')\" />\n"
-            ."</div>\n";
-
-            $aDataentryoutput = '<div class="jumbotron message-box">';
-            $aDataentryoutput .= '<h2>'.gT("Success").'</h2>';
-            $aDataentryoutput .= '<p class="lead">'.gT("Record has been updated.").'</p>';
-            $aDataentryoutput .= "<input type='submit' class='btn btn-lg btn-default' value='".gT("View This Record")."' onclick=\"window.open('$onerecord_link', '_top')\" /><br /><br />\n"
-            ."<input type='submit' class='btn btn-lg btn-default' value='".gT("Browse responses")."' onclick=\"window.open('$allrecords_link', '_top')\" />\n";
-            $aDataentryoutput .= '</div>';
-
-            $aViewUrls['output'] = $aDataentryoutput;
-            $this->_renderWrappedTemplate('dataentry', $aViewUrls, $aData);
+            Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."),$id));
+            if (Yii::app()->request->getPost('close-after-save')=='true')
+            {
+                $this->getController()->redirect($this->getController()->createUrl("admin/responses/sa/view/surveyid/{$surveyid}/id/{$id}"));
+            }
+            else
+            {
+                $this->getController()->redirect($this->getController()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}"));
+            }
         }
     }
 
@@ -1533,286 +1548,287 @@ class dataentry extends Survey_Common_Action
     */
     public function insert()
     {
-
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
 
         $aData = array(
-        'surveyid' => $surveyid,
-        'lang' => $lang
+            'surveyid' => $surveyid,
+            'lang' => $lang
         );
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses','create'))
+        if ($subaction == "insert" && Permission::model()->hasSurveyPermission($surveyid,'responses','create'))
         {
-            if ($subaction == "insert" && Permission::model()->hasSurveyPermission($surveyid,'responses','create'))
+            $surveytable = "{{survey_{$surveyid}}}";
+            $thissurvey = getSurveyInfo($surveyid);
+            $errormsg = "";
+
+            Yii::app()->loadHelper("database");
+            $aViewUrls['display']['menu_bars']['browse'] = gT("Data entry");
+
+            $aDataentryoutput = '';
+            $aDataentrymsgs = array();
+            $hiddenfields = '';
+
+            $lastanswfortoken = ''; // check if a previous answer has been submitted or saved
+            $rlanguage = '';
+
+            if (Yii::app()->request->getPost('token') && Permission::model()->hasSurveyPermission($surveyid,'tokens','update'))
             {
-                $surveytable = "{{survey_{$surveyid}}}";
-                $thissurvey = getSurveyInfo($surveyid);
-                $errormsg = "";
-
-                Yii::app()->loadHelper("database");
-                $aViewUrls['display']['menu_bars']['browse'] = gT("Data entry");
-
-                $aDataentryoutput = '';
-                $aDataentrymsgs = array();
-                $hiddenfields = '';
-
-                $lastanswfortoken = ''; // check if a previous answer has been submitted or saved
-                $rlanguage = '';
-
-                if (Yii::app()->request->getPost('token') && Permission::model()->hasSurveyPermission($surveyid,'tokens','update'))
+                $tokencompleted = "";
+                $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".dbQuoteAll($_POST['token']);
+                $tcresult = dbExecuteAssoc($tcquery);
+                $tcresult = $tcresult->readAll();
+                $tccount = count($tcresult);
+                foreach ($tcresult as $tcrow)
                 {
-                    $tokencompleted = "";
-                    $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".dbQuoteAll($_POST['token']);
-                    $tcresult = dbExecuteAssoc($tcquery);
-                    $tcresult = $tcresult->readAll();
-                    $tccount = count($tcresult);
-                    foreach ($tcresult as $tcrow)
-                    {
-                        $tokencompleted = $tcrow['completed'];
-                    }
-
-                    if ($tccount < 1)
-                    { // token doesn't exist in token table
-                        $lastanswfortoken = 'UnknownToken';
-                    }
-                    elseif ($thissurvey['anonymized'] == "Y")
-                    { // token exist but survey is anonymous, check completed state
-                        if ($tokencompleted != "" && $tokencompleted != "N")
-                        { // token is completed
-                            $lastanswfortoken='PrivacyProtected';
-                        }
-                    }
-                    else
-                    { // token is valid, survey not anonymous, try to get last recorded response id
-                        $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".dbQuoteAll($_POST['token']);
-                        $aresult = dbExecuteAssoc($aquery);
-                        foreach ($aresult->readAll() as $arow)
-                        {
-                            if ($tokencompleted != "N") { $lastanswfortoken=$arow['id']; }
-                            $rlanguage=$arow['startlanguage'];
-                        }
-                    }
+                    $tokencompleted = $tcrow['completed'];
                 }
 
-                // First Check if the survey uses tokens and if a token has been provided
-                if (tableExists('{{tokens_'.$thissurvey['sid'].'}}') && (!$_POST['token']))
-                {
-                    $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
-                    $errormsg .= CHtml::tag('p', array(), gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."));
+                if ($tccount < 1)
+                { // token doesn't exist in token table
+                    $lastanswfortoken = 'UnknownToken';
                 }
-                elseif (tableExists('{{tokens_'.$thissurvey['sid'].'}}') && $lastanswfortoken == 'UnknownToken')
-                {
-                    $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
-                    $errormsg .= CHtml::tag('p', array(), gT("The token you have provided is not valid or has already been used."));
-                }
-                elseif (tableExists('{{tokens_'.$thissurvey['sid'].'}}') && $lastanswfortoken != '')
-                {
-                    $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
-                    $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this token"));
-
-                    if ($lastanswfortoken != 'PrivacyProtected')
-                    {
-                        $errormsg .= "<br /><br />".gT("Follow the following link to update it").":\n";
-                        $errormsg .= CHtml::link("[id:$lastanswfortoken]",
-                        $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
-                        array('title' => gT("Edit this entry")));
-                        $errormsg .= "<br/><br/>";
-                    }
-                    else
-                    {
-                        $errormsg .= "<br /><br />".gT("This surveys uses anonymized responses, so you can't update your response.")."\n";
+                elseif ($thissurvey['anonymized'] == "Y")
+                { // token exist but survey is anonymous, check completed state
+                    if ($tokencompleted != "" && $tokencompleted != "N")
+                    { // token is completed
+                        $lastanswfortoken='PrivacyProtected';
                     }
                 }
                 else
+                { // token is valid, survey not anonymous, try to get last recorded response id
+                    $aquery = "SELECT id,startlanguage FROM $surveytable WHERE token=".dbQuoteAll($_POST['token']);
+                    $aresult = dbExecuteAssoc($aquery);
+                    foreach ($aresult->readAll() as $arow)
+                    {
+                        if ($tokencompleted != "N") { $lastanswfortoken=$arow['id']; }
+                        $rlanguage=$arow['startlanguage'];
+                    }
+                }
+            }
+
+            $tokenTableExists = tableExists('{{tokens_'.$thissurvey['sid'].'}}');
+
+            // First Check if the survey uses tokens and if a token has been provided
+            if ($tokenTableExists && (!$_POST['token']))
+            {
+                $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
+                $errormsg .= CHtml::tag('p', array(), gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."));
+            }
+            elseif ($tokenTableExists && $lastanswfortoken == 'UnknownToken')
+            {
+                $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
+                $errormsg .= CHtml::tag('p', array(), gT("The token you have provided is not valid or has already been used."));
+            }
+            elseif ($tokenTableExists && $lastanswfortoken != '')
+            {
+                $errormsg = CHtml::tag('div', array('class'=>'warningheader'), gT("Error"));
+                $errormsg .= CHtml::tag('p', array(), gT("There is already a recorded answer for this token"));
+
+                if ($lastanswfortoken != 'PrivacyProtected')
                 {
-                    $last_db_id = 0;
+                    $errormsg .= "<br /><br />".gT("Follow the following link to update it").":\n";
+                    $errormsg .= CHtml::link("[id:$lastanswfortoken]",
+                        $this->getController()->createUrl('/admin/dataentry/sa/editdata/subaction/edit/id/'.$lastanswfortoken.'/surveyid/'.$surveyid.'/lang/'.$rlanguage),
+                        array('title' => gT("Edit this entry")));
+                    $errormsg .= "<br/><br/>";
+                }
+                else
+                {
+                    $errormsg .= "<br /><br />".gT("This surveys uses anonymized responses, so you can't update your response.")."\n";
+                }
+            }
+            else
+            {
+                $last_db_id = 0;
 
-                    if (isset($_POST['save']) && $_POST['save'] == "on")
+                if (isset($_POST['save']) && $_POST['save'] == "on")
+                {
+                    $aData['save'] = TRUE;
+
+                    $saver['identifier']=$_POST['save_identifier'];
+                    $saver['language']=$_POST['save_language'];
+                    $saver['password']=$_POST['save_password'];
+                    $saver['passwordconfirm']=$_POST['save_confirmpassword'];
+                    $saver['email']=$_POST['save_email'];
+                    if (!returnGlobal('redo'))
                     {
-                        $aData['save'] = TRUE;
+                        $password = md5($saver['password']);
+                    }
+                    else
+                    {
+                        $password=$saver['password'];
+                    }
+                    $errormsg="";
+                    if (!$saver['identifier']) { $errormsg .= gT("Error").": ".gT("You must supply a name for this saved session.");}
+                    if (!$saver['password']) { $errormsg .= gT("Error").": ".gT("You must supply a password for this saved session.");}
+                    if ($saver['password'] != $saver['passwordconfirm']) { $errormsg .= gT("Error").": ".gT("Your passwords do not match.");}
 
-                        $saver['identifier']=$_POST['save_identifier'];
-                        $saver['language']=$_POST['save_language'];
-                        $saver['password']=$_POST['save_password'];
-                        $saver['passwordconfirm']=$_POST['save_confirmpassword'];
-                        $saver['email']=$_POST['save_email'];
-                        if (!returnGlobal('redo'))
-                        {
-                            $password = md5($saver['password']);
-                        }
-                        else
-                        {
-                            $password=$saver['password'];
-                        }
-                        $errormsg="";
-                        if (!$saver['identifier']) { $errormsg .= gT("Error").": ".gT("You must supply a name for this saved session.");}
-                        if (!$saver['password']) { $errormsg .= gT("Error").": ".gT("You must supply a password for this saved session.");}
-                        if ($saver['password'] != $saver['passwordconfirm']) { $errormsg .= gT("Error").": ".gT("Your passwords do not match.");}
+                    $aData['errormsg'] = $errormsg;
 
-                        $aData['errormsg'] = $errormsg;
-
-                        if ($errormsg)
+                    if ($errormsg)
+                    {
+                        foreach ($_POST as $key=>$val)
                         {
-                            foreach ($_POST as $key=>$val)
+                            if (substr($key, 0, 4) != "save" && $key != "action" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
                             {
-                                if (substr($key, 0, 4) != "save" && $key != "action" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
-                                {
-                                    $hiddenfields .= CHtml::hiddenField($key, $val);
-                                    //$aDataentryoutput .= "<input type='hidden' name='$key' value='$val' />\n";
-                                }
+                                $hiddenfields .= CHtml::hiddenField($key, $val);
+                                //$aDataentryoutput .= "<input type='hidden' name='$key' value='$val' />\n";
                             }
                         }
                     }
+                }
 
-                    //BUILD THE SQL TO INSERT RESPONSES
-                    $baselang = Survey::model()->findByPk($surveyid)->language;
-                    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
-                    $insert_data = array();
+                //BUILD THE SQL TO INSERT RESPONSES
+                $baselang = Survey::model()->findByPk($surveyid)->language;
+                $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+                $insert_data = array();
 
-                    $_POST['startlanguage'] = $baselang;
-                    if ($thissurvey['datestamp'] == "Y") { $_POST['startdate'] = $_POST['datestamp']; }
-                    if (isset($_POST['closerecord']))
+                $_POST['startlanguage'] = $baselang;
+                if ($thissurvey['datestamp'] == "Y") { $_POST['startdate'] = $_POST['datestamp']; }
+                if (isset($_POST['closerecord']))
+                {
+                    if ($thissurvey['datestamp'] == "Y")
                     {
-                        if ($thissurvey['datestamp'] == "Y")
-                        {
-                            $_POST['submitdate'] = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
-                        }
-                        else
-                        {
-                            $_POST['submitdate'] = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
-                        }
+                        $_POST['submitdate'] = dateShift(date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                     }
-
-                    foreach ($fieldmap as $irow)
+                    else
                     {
-                        $fieldname = $irow['fieldname'];
-                        if (isset($_POST[$fieldname]))
+                        $_POST['submitdate'] = date("Y-m-d H:i",mktime(0,0,0,1,1,1980));
+                    }
+                }
+
+                foreach ($fieldmap as $irow)
+                {
+                    $fieldname = $irow['fieldname'];
+                    if (isset($_POST[$fieldname]))
+                    {
+                        if ($_POST[$fieldname] == "" && ($irow['type'] == 'D' || $irow['type'] == 'N' || $irow['type'] == 'K'))
+                        { // can't add '' in Date column
+                            // Do nothing
+                        }
+                        else if ($irow['type'] == '|')
                         {
-                            if ($_POST[$fieldname] == "" && ($irow['type'] == 'D' || $irow['type'] == 'N' || $irow['type'] == 'K'))
-                            { // can't add '' in Date column
-                                // Do nothing
-                            }
-                            else if ($irow['type'] == '|')
+                            if (!strpos($irow['fieldname'], "_filecount"))
+                            {
+                                $json = $_POST[$fieldname];
+                                $phparray = json_decode(stripslashes($json));
+                                $filecount = 0;
+
+                                for ($i = 0; $filecount < count($phparray); $i++)
                                 {
-                                    if (!strpos($irow['fieldname'], "_filecount"))
+                                    if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
                                     {
-                                        $json = $_POST[$fieldname];
-                                        $phparray = json_decode(stripslashes($json));
-                                        $filecount = 0;
+                                        $target = Yii::app()->getConfig('uploaddir')."/surveys/". $thissurvey['sid'] ."/files/".randomChars(20);
+                                        $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
+                                        $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
 
-                                        for ($i = 0; $filecount < count($phparray); $i++)
+                                        if (move_uploaded_file($_FILES[$fieldname."_file_".$i]['tmp_name'], $target))
                                         {
-                                            if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
-                                            {
-                                                $target = Yii::app()->getConfig('uploaddir')."/surveys/". $thissurvey['sid'] ."/files/".randomChars(20);
-                                                $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
-                                                $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
-
-                                                if (move_uploaded_file($_FILES[$fieldname."_file_".$i]['tmp_name'], $target))
-                                                {
-                                                    $phparray[$filecount]->filename = basename($target);
-                                                    $phparray[$filecount]->name = $name;
-                                                    $phparray[$filecount]->size = $size;
-                                                    $pathinfo = pathinfo($_FILES[$fieldname."_file_".$i]['name']);
-                                                    $phparray[$filecount]->ext = $pathinfo['extension'];
-                                                    $filecount++;
-                                                }
+                                            $phparray[$filecount]->filename = basename($target);
+                                            $phparray[$filecount]->name = $name;
+                                            $phparray[$filecount]->size = $size;
+                                            $pathinfo = pathinfo($_FILES[$fieldname."_file_".$i]['name']);
+                                            $phparray[$filecount]->ext = $pathinfo['extension'];
+                                            $filecount++;
                                         }
                                     }
-
-                                    $insert_data[$fieldname] = ls_json_encode($phparray);
-
                                 }
-                                else
-                                {
-                                    $insert_data[$fieldname] = count($phparray);
-                                }
-                            }
-                            elseif ($irow['type'] == 'D')
-                            {
-                                Yii::app()->loadLibrary('Date_Time_Converter');
-                                $qidattributes = getQuestionAttributeValues($irow['qid']);
-                                $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
-                                $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
-                                $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
+
+                                $insert_data[$fieldname] = ls_json_encode($phparray);
+
                             }
                             else
                             {
-                                $insert_data[$fieldname] = $_POST[$fieldname];
+                                $insert_data[$fieldname] = count($phparray);
                             }
                         }
-                    }
-
-                    SurveyDynamic::sid($surveyid);
-                    $new_response = new SurveyDynamic;
-                    foreach($insert_data as $column => $value)
-                    {
-                        $new_response->$column = $value;
-                    }
-                    $new_response->save();
-                    $last_db_id = $new_response->getPrimaryKey();
-                    if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
-                    {
-                        // get submit date
-                        if (isset($_POST['closedate']))
-                        { $submitdate = $_POST['closedate']; }
-                        else
-                        { $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
-
-                        // check how many uses the token has left
-                        $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".dbQuoteAll($_POST['token']);
-                        $usesresult = dbExecuteAssoc($usesquery);
-                        $usesrow = $usesresult->readAll(); //$usesresult->row_array()
-                        if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
-
-                        // query for updating tokens
-                        $utquery = "UPDATE {{tokens_$surveyid}}\n";
-                        if (isTokenCompletedDatestamped($thissurvey))
+                        elseif ($irow['type'] == 'D')
                         {
-                            if (isset($usesleft) && $usesleft<=1)
-                            {
-                                $utquery .= "SET usesleft=usesleft-1, completed=".dbQuoteAll($submitdate);
-                            }
-                            else
-                            {
-                                $utquery .= "SET usesleft=usesleft-1\n";
-                            }
+                            Yii::app()->loadLibrary('Date_Time_Converter');
+                            $qidattributes = getQuestionAttributeValues($irow['qid']);
+                            $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
+                            $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
+                            $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
                         }
                         else
                         {
-                            if (isset($usesleft) && $usesleft<=1)
-                            {
-                                $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
-                            }
-                            else
-                            {
-                                $utquery .= "SET usesleft=usesleft-1\n";
-                            }
+                            $insert_data[$fieldname] = $_POST[$fieldname];
                         }
-                        $utquery .= "WHERE token=".dbQuoteAll($_POST['token']);
-                        $utresult = dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
-
-                        // save submitdate into survey table
-                        $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$last_db_id}\n";
-                        $sdresult = dbExecuteAssoc($sdquery) or safeDie ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
                     }
-                    if (isset($_POST['save']) && $_POST['save'] == "on")
+                }
+
+                SurveyDynamic::sid($surveyid);
+                $new_response = new SurveyDynamic;
+                foreach($insert_data as $column => $value)
+                {
+                    $new_response->$column = $value;
+                }
+                $new_response->save();
+                $last_db_id = $new_response->getPrimaryKey();
+                if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
+                {
+                    // get submit date
+                    if (isset($_POST['closedate'])) {
+                        $submitdate = $_POST['closedate'];
+                    }
+                    else {
+                        $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust);
+                    }
+
+                    // check how many uses the token has left
+                    $usesquery = "SELECT usesleft FROM {{tokens_}}$surveyid WHERE token=".dbQuoteAll($_POST['token']);
+                    $usesresult = dbExecuteAssoc($usesquery);
+                    $usesrow = $usesresult->readAll(); //$usesresult->row_array()
+                    if (isset($usesrow)) { $usesleft = $usesrow[0]['usesleft']; }
+
+                    // query for updating tokens
+                    $utquery = "UPDATE {{tokens_$surveyid}}\n";
+                    if (isTokenCompletedDatestamped($thissurvey))
                     {
-                        $srid = $last_db_id;
-                        $aUserData=Yii::app()->session;
-                        //CREATE ENTRY INTO "saved_control"
+                        if (isset($usesleft) && $usesleft<=1)
+                        {
+                            $utquery .= "SET usesleft=usesleft-1, completed=".dbQuoteAll($submitdate);
+                        }
+                        else
+                        {
+                            $utquery .= "SET usesleft=usesleft-1\n";
+                        }
+                    }
+                    else
+                    {
+                        if (isset($usesleft) && $usesleft<=1)
+                        {
+                            $utquery .= "SET usesleft=usesleft-1, completed='Y'\n";
+                        }
+                        else
+                        {
+                            $utquery .= "SET usesleft=usesleft-1\n";
+                        }
+                    }
+                    $utquery .= "WHERE token=".dbQuoteAll($_POST['token']);
+                    $utresult = dbExecuteAssoc($utquery); //Yii::app()->db->Execute($utquery) or safeDie ("Couldn't update tokens table!<br />\n$utquery<br />\n".Yii::app()->db->ErrorMsg());
+
+                    // save submitdate into survey table
+                    $sdquery = "UPDATE {{survey_$surveyid}} SET submitdate='".$submitdate."' WHERE id={$last_db_id}\n";
+                    $sdresult = dbExecuteAssoc($sdquery) or safeDie ("Couldn't set submitdate response in survey table!<br />\n$sdquery<br />\n");
+                }
+                if (isset($_POST['save']) && $_POST['save'] == "on")
+                {
+                    $srid = $last_db_id;
+                    $aUserData=Yii::app()->session;
+                    //CREATE ENTRY INTO "saved_control"
 
 
-                        $saved_control_table = '{{saved_control}}';
+                    $saved_control_table = '{{saved_control}}';
 
-                        $columns = array("sid", "srid", "identifier", "access_code", "email", "ip",
+                    $columns = array("sid", "srid", "identifier", "access_code", "email", "ip",
                         "refurl", 'saved_thisstep', "status", "saved_date");
-                        $values = array("'".$surveyid."'", "'".$srid."'", "'".$saver['identifier']."'", "'".$password."'", "'".$saver['email']."'", "'".$aUserData['ip_address']."'",
-                        "'".getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "'".Yii::app()->getConfig('timeadjust'))."'");
+                    $values = array("'".$surveyid."'", "'".$srid."'", "'".$saver['identifier']."'", "'".$password."'", "'".$saver['email']."'", "'".$aUserData['ip_address']."'",
+                        "'".getenv("HTTP_REFERER")."'", 0, "'"."S"."'", "'".dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", "'".Yii::app()->getConfig('timeadjust'))."'");
 
-                        $SQL = "INSERT INTO $saved_control_table
+                    $SQL = "INSERT INTO $saved_control_table
                         (".implode(',',$columns).")
                         VALUES
                         (".implode(',',$values).")";
@@ -1828,18 +1844,18 @@ class dataentry extends Survey_Common_Action
                         "status"=>"S",
                         "saved_date"=>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust')));
                         $this->load->model('saved_control_model');*/
-                        if (dbExecuteAssoc($SQL))
+                    if (dbExecuteAssoc($SQL))
+                    {
+                        $scid =  getLastInsertID('{{saved_control}}');
+
+                        $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
+                        //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
+
+                        $tokens_table = "{{tokens_$surveyid}}";
+                        if (tableExists($tokens_table)) //If the query fails, assume no tokens table exists
                         {
-                            $scid =  getLastInsertID('{{saved_control}}');
-
-                            $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."));
-                            //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
-
-                            $tokens_table = "{{tokens_$surveyid}}";
-                            if (tableExists($tokens_table)) //If the query fails, assume no tokens table exists
-                            {
-                                $tkquery = "SELECT * FROM {$tokens_table}";
-                                $tkresult = dbExecuteAssoc($tkquery);
+                            $tkquery = "SELECT * FROM {$tokens_table}";
+                            $tkresult = dbExecuteAssoc($tkquery);
                                 /*$tokendata = array (
                                 "firstname"=> $saver['identifier'],
                                 "lastname"=> $saver['identifier'],
@@ -1849,62 +1865,60 @@ class dataentry extends Survey_Common_Action
                                 "sent"=>dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust),
                                 "completed"=>"N");*/
 
-                                $columns = array("firstname", "lastname", "email", "token",
+                            $columns = array("firstname", "lastname", "email", "token",
                                 "language", "sent", "completed");
-                                $values = array("'".$saver['identifier']."'", "'".$saver['identifier']."'", "'".$saver['email']."'", "'".$password."'",
+                            $values = array("'".$saver['identifier']."'", "'".$saver['identifier']."'", "'".$saver['email']."'", "'".$password."'",
                                 "'".randomChars(15)."'", "'".$saver['language']."'", "'"."N"."'");
 
-                                $SQL = "INSERT INTO $token_table
+                            $SQL = "INSERT INTO $token_table
                                 (".implode(',',$columns).")
                                 VALUES
                                 (".implode(',',$values).")";
-                                dbExecuteAssoc($SQL);
-                                $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A token entry for the saved survey has been created too."));
-                                //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
-                            }
-                            if ($saver['email'])
+                            dbExecuteAssoc($SQL);
+                            $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
+                            //$aDataentryoutput .= "<font class='successtitle'></font><br />\n";
+                        }
+                        if ($saver['email'])
+                        {
+                            //Send email
+                            if (validateEmailAddress($saver['email']) && !returnGlobal('redo'))
                             {
-                                //Send email
-                                if (validateEmailAddress($saver['email']) && !returnGlobal('redo'))
+                                $subject = gT("Saved Survey Details");
+                                $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
+                                $message .= "\n\n".$thissurvey['name']."\n\n";
+                                $message .= gT("Name").": ".$saver['identifier']."\n";
+                                $message .= gT("Password").": ".$saver['password']."\n\n";
+                                $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
+                                $aParams=array('lang'=>$saver['language'],'loadname'=>$saver['identifier'],'loadpass'=>$saver['password']);
+                                if (isset($tokendata['token'])) { $aParams['token']= $tokendata['token']; }
+                                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/",$aParams);
+                                $from = $thissurvey['adminemail'];
+                                if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
                                 {
-                                    $subject = gT("Saved Survey Details");
-                                    $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
-                                    $message .= "\n\n".$thissurvey['name']."\n\n";
-                                    $message .= gT("Name").": ".$saver['identifier']."\n";
-                                    $message .= gT("Password").": ".$saver['password']."\n\n";
-                                    $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                                    $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/loadname/".rawurlencode ($saver['identifier'])."/loadpass/".rawurlencode ($saver['password'])."/lang/".rawurlencode($saver['language']));
-                                    if (isset($tokendata['token'])) { $message .= "/token/".rawurlencode($tokendata['token']); }
-
-                                    $from = $thissurvey['adminemail'];
-
-                                    if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
-                                    {
-                                        $emailsent="Y";
-                                        $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("An email has been sent with details about your saved survey"));
-                                    }
+                                    $emailsent="Y";
+                                    $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("An email has been sent with details about your saved survey"));
                                 }
                             }
-
-                        }
-                        else
-                        {
-                            safeDie("Unable to insert record into saved_control table.<br /><br />");
                         }
 
                     }
-                    $aData['thisid'] = $last_db_id;
+                    else
+                    {
+                        safeDie("Unable to insert record into saved_control table.<br /><br />");
+                    }
+
                 }
-
-                $aData['errormsg'] = $errormsg;
-
-                $aData['dataentrymsgs'] = $aDataentrymsgs;
-
-                $aData['sidemenu']['state'] = false;
-
-                $this->_renderWrappedTemplate('dataentry', 'insert', $aData);
+                $aData['thisid'] = $last_db_id;
             }
 
+            $aData['errormsg'] = $errormsg;
+
+            $aData['dataentrymsgs'] = $aDataentrymsgs;
+
+            $aData['sidemenu']['state'] = false;
+            $aData['hiddenfields'] = $hiddenfields;
+
+            $this->_renderWrappedTemplate('dataentry', 'insert', $aData);
         }
     }
 
@@ -2174,8 +2188,8 @@ class dataentry extends Survey_Common_Action
                                 }
                             $cdata['answers']=$answers;
                             App()->getClientScript()->registerPackage('jquery-actual');
-                            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'ranking.js');
-                            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'ranking.css');
+                            $this->registerScriptFile( 'SCRIPT_PATH', 'ranking.js');
+                            $this->registerCssFile( 'PUBLIC', 'ranking.css' );
                             unset($answers);
                             break;
                         case "M": //Multiple choice checkbox (Quite tricky really!)
@@ -2279,10 +2293,28 @@ class dataentry extends Survey_Common_Action
 
                             $lquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and scale_id=1 and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $lresult=dbExecuteAssoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
+
+                            $lresult=dbExecuteAssoc($lquery);
+                            if( !$lresult)
+                            {
+                                $eMessage = "Couldn't get labels, Type \":\"<br />$lquery<br />";
+                                Yii::app()->setFlashMessage($eMessage );
+                                $this->getController()->redirect($this->getController()->createUrl("/admin/"));
+                            }
+
+
                             $cdata['lresult'] = $lresult->readAll();
 
                             $meaquery = "SELECT question, title FROM {{questions}} WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='{$sDataEntryLanguage}' ORDER BY question_order";
-                            $mearesult=dbExecuteAssoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
+                            $mearesult=dbExecuteAssoc($meaquery);
+
+                            if( !$mearesult)
+                            {
+                                $eMessage = "Couldn't get answers, Type \":\"<br />$meaquery<br />";
+                                Yii::app()->setFlashMessage($eMessage );
+                                $this->getController()->redirect($this->getController()->createUrl("/admin/"));
+                            }
+
                             $cdata['mearesult'] = $mearesult->readAll();
 
                             break;
@@ -2407,18 +2439,25 @@ class dataentry extends Survey_Common_Action
         if(!empty($qidattributes['array_filter']))
         {
 
-            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
-            $output .= "\n<p class='extrahelp'>
-            ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext)))."
-            </p>\n";
+            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            if(is_object($newquestiontext))
+            {
+                $newquestiontext->getAttribute('question');
+                $output .= "\n<p class='extrahelp'>
+                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext)))."
+                </p>\n";
+            }
         }
         if(!empty($qidattributes['array_filter_exclude']))
         {
-            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid))->getAttribute('question');
-
-            $output .= "\n    <p class='extrahelp'>
-            ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext))."
-            </p>\n";
+            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            if(is_object($newquestiontext))
+            {
+                $newquestiontext->getAttribute('question');
+                $output .= "\n    <p class='extrahelp'>
+                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext))."
+                </p>\n";
+            }
         }
         return $output;
     }

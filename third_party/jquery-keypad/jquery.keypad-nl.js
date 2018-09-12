@@ -2,7 +2,7 @@
    dutch initialisation for the jQuery keypad extension
    Written by Michiel Mussies (mail{at}webcrafts.nl) November 2009. */
 (function($) { // hide the namespace
-    $.keypad.regional['nl'] = {
+    $.keypad.regionalOptions['nl'] = {
         buttonText: '...', buttonStatus: 'Open',
         closeText: 'Sluit', closeStatus: 'Sluit',
         clearText: 'Wissen', clearStatus: 'Wis alle tekens',
@@ -17,5 +17,5 @@
         isNumeric: $.keypad.isNumeric,
 		toUpper: $.keypad.toUpper,
         isRTL: false};
-    $.keypad.setDefaults($.keypad.regional['nl']);
+    $.keypad.setDefaults($.keypad.regionalOptions['nl']);
 })(jQuery);

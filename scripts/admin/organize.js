@@ -1,11 +1,11 @@
 var formSubmitting = false;
 var changed = false;
-var setFormSubmitting = function() { formSubmitting = true; };
 $(document).ready(function(){
     var sourceItem;
     $('ol.organizer').nestedSortable({
         doNotClear: true,
         disableNesting: 'no-nest',
+        disableNestingClass: 'no-nest',
         forcePlaceholderSize: true,
         handle: 'div',
         helper: 'clone',
@@ -16,6 +16,9 @@ $(document).ready(function(){
         revert: 250,
         tabSize: 25,
         rootID: 'root',
+        protectRoot: true,
+        isTree: true,
+        startCollapsed: true,
         stop: function(event, ui) {
             var itemLevel = $(ui.item).attr('data-level');
             var listLevel = $(ui.item).closest('ol').attr('data-level');
@@ -40,13 +43,30 @@ $(document).ready(function(){
         toleranceElement: '> div'
     });
 
+    $('.disclose').on('click', function() {
+        $(this).closest('li').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+        $(this).toggleClass('ui-icon-plusthick').toggleClass('ui-icon-minusthick');
+    });
+
     $('#btnSave').click(function(){
         $('#orgdata').val($('ol.organizer').nestedSortable('serialize'));
         frmOrganize.submit();
     });
+
+    // Collapse all question groups
+    $('#organizer-collapse-all').on('click', function() {
+        $('.organizer').find('.mjs-nestedSortable-expanded').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+    });
+
+    // Expand all question groups
+    $('#organizer-expand-all').on('click', function() {
+        $('.organizer').find('.mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
+    });
 });
 
-
+/**
+ * Show confirmation message when user leaves without saving
+ */
 window.onload = function() {
     window.addEventListener("beforeunload", function (e) {
         if (formSubmitting) {
@@ -61,3 +81,24 @@ window.onload = function() {
         }
     });
 }
+
+/**
+ * Fix big question part
+ */
+/** Update class when click on hide-button */
+$(document).on("click",".question-item .hide-button",function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    $(this).closest(".question-item").toggleClass("stretched").toggleClass("opened").toggleClass("dropup");
+});
+/** Show the button only if needed */
+/** Maybe brok if there are a lot of question : hide it when click ?*/
+$(function() {
+  $(".question-item").each(function(){
+    var element = $(this).get(0);
+    if(element.scrollHeight <= element.clientHeight)
+    {
+        $(this).find(".hide-button").addClass("invisible").css("visibility","hidden"); // See bug #10365
+    }
+  });
+});

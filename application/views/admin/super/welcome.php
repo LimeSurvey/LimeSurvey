@@ -24,16 +24,18 @@
 <!-- Welcome view -->
 <div class="container-fluid welcome full-page-wrapper">
 
-    <!-- Jumbotron -->
-    <div class="row">
-        <div class="jumbotron" id="welcome-jumbotron">
-            <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" style="display: inline;" />
-            <p class="hidden-xs" ><?php echo PRESENTATION; // Defined in AdminController?></p>
+    <!-- Logo & Presentation -->
+    <?php if($bShowLogo):?>
+        <div class="row">
+            <div class="jumbotron" id="welcome-jumbotron">
+                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" style="display: inline;" />
+                <p class="hidden-xs" ><?php echo PRESENTATION; // Defined in AdminController?></p>
+            </div>
         </div>
-    </div>
+    <?php endif;?>
 
     <!-- Message when first start -->
-    <?php if($countSurveyList==0):?>
+    <?php if($countSurveyList==0  && Permission::model()->hasGlobalPermission('surveys','create') ):?>
         <script type="text/javascript">
             $(window).load(function(){
                 $('#welcomeModal').modal('show');
@@ -71,7 +73,7 @@
     <?php endif;?>
 
     <!-- Last visited survey/question -->
-    <?php if($showLastSurvey || $showLastQuestion):?>
+    <?php if( $bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
         <div class="row text-right">
             <div class="col-lg-9 col-sm-9  ">
                 <div class='pull-right'>
@@ -85,7 +87,7 @@
                 <?php if($showLastQuestion):?>
                     <span id="last_question" class="rotateHidden">
                     <?php eT("Last visited question:");?>
-                    <a href="<?php echo $last_question_link;?>" class=""><?php echo strip_tags($last_question_name);?></a>
+                    <a href="<?php echo $last_question_link;?>" class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
                     </span>
                 <?php endif; ?>
                 </div>
@@ -94,56 +96,28 @@
         </div>
     <?php endif;?>
 
+    <!-- Rendering all boxes in database -->
+    <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
+            'display'=>'allboxesinrows',
+            'boxesbyrow'=>$iBoxesByRow,
+            'offset'=>$sBoxesOffSet,
+        ));
+    ?>
+
+    <?php if( $bShowSurveyList ): ?>
+        <div class="col-sm-12 list-surveys">
+            <h3><?php eT('Survey list'); ?></h3>
+            <?php
+                $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(                        
+                            'model'            => $oSurveySearch,
+                            'bRenderSearchBox' => $bShowSurveyListSearch,
+                        ));
+            ?>
+        </div>
+    <?php endif; ?>
 
 
-    <!-- First row of boxes -->
-    <div class="row text-center hidden-xs">
-
-        <!-- First box defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'1',
-                'offset' =>'3',
-        ));?>
-
-        <!-- 2nd  defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'2',
-        ));?>
-
-        <!-- 3rd defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'3',
-        ));?>
-
-    </div>
-
-    <!-- Second row of boxes -->
-    <div class="row text-center hidden-xs">
-
-        <!-- 4th defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'4',
-                'offset' =>'3',
-        ));?>
-
-        <!-- 5th defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'5',
-        ));?>
-
-        <!-- 6th defined in database -->
-        <?php $this->widget('ext.PannelBoxWidget.PannelBoxWidget', array(
-                'fromDb'=> true,
-                'dbPosition'=>'6',
-        ));?>
-    </div>
-
-    <!-- Boxes for smartphones-->
+    <!-- Boxes for smartphones -->
     <div class="row  hidden-sm  hidden-md hidden-lg ">
         <div class="panel panel-primary panel-clickable" id="pannel-7" data-url="/limesurvey/LimeSurveyNext/index.php/admin/survey/sa/listsurveys" style="opacity: 1; top: 0px;">
             <div class="panel-heading">

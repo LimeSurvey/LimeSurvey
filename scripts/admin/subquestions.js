@@ -16,10 +16,9 @@
 
 var labelcache=[];
 
-/* Event added on document for all button (new one added in js too)*/
-$(document).on("click",'.btntogglerelevance',function(){
-    togglerelevance();
-});
+/* Event added on document for all button (new one added in js too)
+ * TODO : use a real ajax system : see scripts/question.js validateQuestion function for example
+ **/
 $(document).on("click","#editsubquestionsform :submit", function() {
     //Validate duplicate before try to submit: surely some other javascript elsewhere
     return code_duplicates_check();
@@ -27,62 +26,137 @@ $(document).on("click","#editsubquestionsform :submit", function() {
 
 $(document).ready(function(){
 
-
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',
         start:startmove,
+        stop: endmove,
         update:aftermove,
         distance:3});
-    $('.btnaddanswer').click(addinput);
-    $('.btndelanswer').click(deleteinput);
-    $('.btnlsbrowser').click(lsbrowser);
+
+    $(document).on("click", '.btnaddanswer', addinput);
+    $(document).on("click", '.btndelanswer', deleteinput);
+    $(document).on("click", '.btnlsbrowser', lsbrowser );
+
+    //$('.btnaddanswer').click(addinput);
+    //$('.btndelanswer').click(deleteinput);
+    //$('.btnlsbrowser').click(lsbrowser);
     $('#btnlsreplace').click(transferlabels);
     $('#btnlsinsert').click(transferlabels);
-    $('#btnqareplace').click(quickaddlabels);
-    $('#btnqainsert').click(quickaddlabels);
+
+
+    $('#quickaddModal').on('show.bs.modal', function(e) {
+        var scale_id = $(e.relatedTarget).data('scale-id');
+        var table_id = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
+
+        $('#btnqainsert').unbind('click').on('click', function () {
+            quickaddlabels(scale_id, 'add', table_id);
+        });
+
+        $('#btnqareplace').unbind('click').on('click', function () {
+            quickaddlabels(scale_id, 'replace', table_id);
+        });
+    });
+
     $('#labelsets').click(lspreview);
     $('#languagefilter').click(lsbrowser);
     $('.bthsaveaslabel').click(getlabel);
     $('input[name=savelabeloption]:radio').click(setlabel);
     flag = [false, false];
     $('#btnsave').click(savelabel);
-
     updaterowproperties();
+
+    bindExpandRelevanceEquation();
+
 });
+
+/**
+ * Bind relevance equation to expand on click (only once)
+ *
+ * @return void
+ */
+function bindExpandRelevanceEquation()
+{
+    $('.relevance').unbind('click').on('click', function() {
+        $('#rel-eq-th').toggleClass('col-md-1 col-md-4', 'fast');
+        $('.relevance').data('toggle', '').tooltip('destroy');
+        $('.relevance').unbind('click');
+    });
+}
+
+/**
+ * @return {boolean} true if relevance equation field is expanded
+ */
+function relevanceIsExpanded()
+{
+    return $('#rel-eq-th').hasClass('col-md-4');
+}
+
+/**
+ * Bind click to expand relevance equation
+ * if not already expanded.
+ *
+ * @return {void}
+ */
+function bindClickIfNotExpanded()
+{
+    if (!relevanceIsExpanded())
+    {
+        bindExpandRelevanceEquation();
+        // Activate tooltip
+        $('[data-toggle="tooltip"]').tooltip()
+    }
+
+}
+
+/**
+ * Get toolrip data for relevance equation.
+ * If expanded, returns empty string
+ *
+ * @return {string}
+ */
+function getRelevanceToolTip()
+{
+    var relevanceTooltip = !relevanceIsExpanded() ?
+        'data-toggle="tooltip" data-title="' + clickToExpand + '"' :
+        '';
+
+    return relevanceTooltip;
+}
 
 function deleteinput()
 {
+
     // 1.) Check if there is at least one answe
-    console.log('delete input start');
-    countanswers=$(this).closest("tbody").children("tr").length;//Maybe use class is better
-    console.log(countanswers);
+    var position,
+        countanswers=$(this).closest("tbody").children("tr").length; //Maybe use class is better
     if (countanswers>1)
     {
         // 2.) Remove the table row
-        var x;
-        classes=$(this).closest('tr').attr('class').split(' ');
-        for (x in classes)
-            {
+        var classes=$(this).closest('tr').attr('class').split(' ');
+        for (var x in classes)
+        {
             if (classes[x].substr(0,3)=='row'){
                 position=classes[x].substr(4);
             }
         }
-        info=$(this).closest('table').attr('id').split("_");
-        language=info[1];
-        scale_id=info[2];
-        languages=langs.split(';');
+        var info=$(this).closest('table').attr('id').split("_"),
+            language=info[1],
+            scale_id=info[2],
+            languages=langs.split(';');
 
-        var x;
-        for (x in languages)
+
+        for (var x in languages)
+        {
+            var tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
+            if (x==0)
             {
-            tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
-            if (x==0) {
                 tablerow.fadeTo(400, 0, function(){
                     $(this).remove();
                     updaterowproperties();
                 });
             }
-            else {
+            else
+            {
                 tablerow.remove();
             }
         }
@@ -93,7 +167,7 @@ function deleteinput()
         }
     }
     else
-        {
+    {
         $.blockUI({message:"<p><br/>"+strCantDeleteLastAnswer+"</p>"});
         setTimeout(jQuery.unblockUI,1000);
     }
@@ -101,175 +175,161 @@ function deleteinput()
 }
 
 
+/**
+ * add addinputQuickEdit : for usage with the quickAdd Button
+ */
+function addinputQuickEdit($currentTable, language, first, scale_id, codes)
+{
+    codes = codes || [];
+    var $elDatas               = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
+        $url                   = $elDatas.data('quickurl'),         // Url for the request
+        $errormessage          = $elDatas.data('errormessage'),     // the error message if the AJAX request failed
+        qid = "{{quid_placeholder}}",
+        $defer                 = $.Deferred(),
+        $codes, datas;
+
+    // We get all the subquestion codes currently displayed
+        // We get all the subquestion codes currently displayed
+    if($currentTable.find('.code').length>0){
+        $currentTable.find('.code').each(function(){
+            codes.push($(this).val());
+        });
+    } else {
+        $currentTable.find('.code-title').each(function(){
+            codes.push($(this).text().trim());
+        });
+    }
+
+    // We convert them to json for the request
+    $codes = JSON.stringify(codes);
+
+    //We build the datas for the request
+    datas                  = 'surveyid='+$elDatas.data('surveyid');
+    datas                 += '&gid='+$elDatas.data('gid');
+    datas                 += '&qid='+qid;
+    datas                 += '&codes='+$codes;
+    datas                 += '&scale_id='+scale_id;
+    datas                 += '&type=subquestion';
+    datas                 += '&position=';
+    datas                 += '&first='+first;
+    datas                 += '&language='+language+'';
+
+    // We get the HTML of the new row to insert
+     $.ajax({
+        type: "GET",
+        url: $url,
+        data: datas,
+        success: function(htmlrow) {
+            var $lang_table = $('#answers_'+language+'_'+scale_id);
+            $defer.resolve({lng: language, langtable: $lang_table, html: htmlrow});
+        },
+        error :  function(html, statut){
+            alert($errormessage);
+            $defer.reject([html, statut, $errormessage]);
+        }
+    });
+    return $defer.promise();
+}
+
+
+/**
+ * add input : the ajax way
+ */
+
 function addinput()
 {
-    console.log('------------------------------------------------------------------');
-    console.log('addinput start');
-    var sID=$('input[name=sid]').val();
-    var gID=$('input[name=gid]').val();
-    var qID=$('input[name=qid]').val();
+       var $that              = $(this),                               // The "add" button
+        $currentRow            = $that.parents('.row-container'),   // The row containing the "add" button
+        $currentTable          = $that.parents('.answertable'),
+        $commonId              = $currentRow.data('common-id'),     // The common id of this row in the other languages
+        $elDatas               = $('#add-input-javascript-datas'),  // This hidden element  on the page contains various datas for this function
+        $url                   = $elDatas.data('url'),              // Url for the request
+        $errormessage          = $elDatas.data('errormessage'),     // the error message if the AJAX request failed
+        $languages             = JSON.stringify(langs),             // The languages
+        $codes, datas;
 
-    var x;
-    console.log('classes: '+$(this).parent().parent().attr('class'));
-    classes=$(this).parent().parent().attr('class').split(' ');
+    // We get all the subquestion codes currently displayed
+    var codes = [];
+    $currentTable.find('.code').each(function(){
+        codes.push($(this).val());
+    });
+
+    // We convert them to json for the request
+    $codes = JSON.stringify(codes);
+
+    //We build the datas for the request
+    datas                  = 'surveyid='+$elDatas.data('surveyid'),
+    datas                 += '&gid='+$elDatas.data('gid'),
+    datas                 += '&qid='+$elDatas.data('qid'),
+    datas                 += '&codes='+$codes,
+    datas                 += '&scale_id='+$(this).data('scale-id'),
+    datas                 += '&type=subquestion',
+    datas                 += '&position=',
+    datas                 += '&languages='+$languages;
 
 
-    for (x in classes)
-        {
-        if (classes[x].substr(0,3)=='row'){
-            position=classes[x].substr(4);
+    // We get the HTML of the different rows to insert  (one by language)
+    $.ajax({
+        type: "GET",
+        url: $url,
+        data: datas,
+        success: function(arrayofhtml) {
+
+            // arrayofhtml is a json string containing the different HTML row by language
+            // eg: {"en":"{the html of the en row}", "fr":{the html of the fr row}}
+
+            $arrayOfHtml = JSON.parse(arrayofhtml);                             // Convert the JSON to a javascript object
+
+            // We insert each row for each language
+            $.each($arrayOfHtml, function(lang, htmlRow){
+                $elRowToUpdate = $('#row_'+lang+'_'+$commonId);                 // The row for the current language
+                $elRowToUpdate.after(htmlRow);                                  // We insert the HTML of the new row after this one
+            });
+
+        },
+        error :  function(html, statut){
+            alert($errormessage);
         }
-    }
-    console.log('position:'+position);
-
-    scale_id=removechars($(this).closest('table').attr('id'));
-    newposition = Number($(this).closest('tr').parent().children().index($(this).closest('tr')))+1;
-    languages=langs.split(';');
-    sNextCode=getNextCode($(this).data('code'));
-
-    console.log('before while');
-
-    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
-
-    console.log('sNextCode: '+sNextCode);
-    console.log('languages: '+languages);
-    for (x in classes)
-        {
-        if (classes[x].substr(0,3)=='row'){
-            position=classes[x].substr(4);
-        }
-    }
-    info=$(this).closest('table').attr('id').split("_");
-    language=info[1];
-    scale_id=info[2];
-    newposition=Number(position)+1;
-    languages=langs.split(';');
-
-    sNextCode=getNextCode($(this).parent().parent().find('.code').val());
-
-    for (x in languages)
-        {
-        console.log('x: '+x);
-        var randomid='new'+Math.floor(Math.random()*111111);
-        relbutton='';
-
-        tablerow=$('#tabpage_'+languages[x]).find('#answers_'+languages[x]+'_'+scale_id+' .row_'+position);
-
-        if (x==0) {
-            $(".relevance").toggle(false);
-            if (scale_id==0) {
-                relbutton  = '<td>';
-                relbutton += '  <span class="icon-conditions text-success btntogglerelevance"></span>';
-                relbutton += '  <input style="display: none" type="text" size="20" id="relevance_'+randomid+'_'+scale_id+'" name="relevance_'+randomid+'_'+scale_id+'" class="relevance"  value="1"></input>';
-                relbutton += '</td>';
-            }
-
-            // Line insertion
-            inserthtml= '<tr class="row_'+newposition+'" style="display:none;">';
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <span class="glyphicon glyphicon-move"></span>';
-            inserthtml+='   </td>';
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <input class="code form-control input-lg" id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" required="required" pattern="^[a-zA-Z0-9]*$" class="code" type="text" maxlength="20" size="20" value="'+htmlspecialchars(sNextCode)+'" />';
-            inserthtml+='   </td>';
-
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="col-sm-12">';
-            inserthtml+='           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg"  placeholder="'+htmlspecialchars(newansweroption_text)+'" value=""></input>';
-            inserthtml+='       </div>';
-            inserthtml+='  </td>';
-
-            inserthtml+='  <td style="vertical-align: middle;">';
-            inserthtml+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="glyphicon glyphicon-pencil btneditanswerena"></span>';
-            inserthtml+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="glyphicon glyphicon-pencil btneditanswerdis" alt="Give focus to the HTML editor popup window" style="display: none;"></span>';
-            inserthtml+='           </a>';
-            inserthtml+='       <span class="icon-add text-success btnaddanswer" data-code="'+htmlspecialchars(sNextCode)+'"></span>';
-            inserthtml+='       <span class="glyphicon glyphicon-trash text-success btndelanswer"  ></span>';
-            inserthtml+='  </td>' + relbutton + '</tr>';
-        }
-        else
-            {
-            if (scale_id==0) {
-                relbutton ='<td>'
-                relbutton+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>';
-                relbutton+='           </a>';
-                relbutton+='    <span class="icon-conditions text-success btntogglerelevance"></span>';
-                relbutton+='    <span style="display: none" class="relevance">1</span>';
-                relbutton+='</td>';
-            }
-            else
-            {
-                relbutton ='<td>'
-                relbutton+='           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>';
-                relbutton+='               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>';
-                relbutton+='           </a>';
-                relbutton+='</td>';
-            }
-            inserthtml ='<tr class="row_'+newposition+'" style="display:none;">';
-            inserthtml+='   <td>&nbsp;</td>';
-            inserthtml+='   <td>'+htmlspecialchars(sNextCode)+'</td>';
-
-            inserthtml+='   <td style="vertical-align: middle;">';
-            inserthtml+='       <div class="col-sm-12">';
-            inserthtml+='           <input type="text" size="0" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" placeholder="'+htmlspecialchars(newansweroption_text)+'" value="" />';
-            inserthtml+='       </div>';
-            inserthtml+='   </td>' + relbutton + '</tr>';
-        }
-        tablerow.after(inserthtml);
-
-        tablerow.next().find('.btnaddanswer').click(addinput);
-
-        tablerow.next().find('.btndelanswer').click(deleteinput);
-        tablerow.next().find('.answer').focus(function(){
-            if ($(this).val()==newansweroption_text)
-                {
-                $(this).val('');
-            }
-        });
-        tablerow.next().find('.code').blur(updatecodes);
-    }
-    $('.row_'+newposition).fadeIn('slow');
-    $('.row_'+newposition).show(); //Workaround : IE does not show with fadeIn only
-
-    $('.tab-page:first .answertable tbody').sortable('refresh');
-
+    });
 }
 
 function startmove(event,ui)
 {
-    oldindex = Number($(ui.item[0]).parent().children().index(ui.item[0]))+1;
+    var $that = ui.item,
+    	oldindex = Number($that.parent().children().index($that)+1);
+    $that.data('oldindex', oldindex);
 }
 
+function endmove(event,ui){
+    updaterowproperties();
+}
 
 function aftermove(event,ui)
 {
     // But first we have change the sortorder in translations, too
-    var newindex = Number($(ui.item[0]).parent().children().index(ui.item[0]))+1;
+    var $that = ui.item,
+    	newindex = Number($that.parent().children().index($that)+1),
+    	oldindex = $that.data('oldindex'),
+        info=$that.closest('table').attr('id').split("_"),
+        languages=langs.split(';');
 
-    info=$(ui.item[0]).closest('table').attr('id').split("_");
-    languages=langs.split(';');
-    var x;
-    for (x in languages)
+    for (var x in languages)
+    {
+        if (x>0)
         {
-        if (x>0) {
-            tablerow=$('#tabpage_'+languages[x]+' tbody tr:nth-child('+newindex+')');
-            tablebody=$('#tabpage_'+languages[x]).find('tbody');
+            var tablerow=$('#tabpage_'+languages[x]+' tbody tr:nth-child('+newindex+')'),
+                tablebody=$('#tabpage_'+languages[x]).find('tbody');
             if (newindex<oldindex)
-                {
+            {
                 $('#tabpage_'+languages[x]+' tbody tr:nth-child('+newindex+')').before($('#tabpage_'+languages[x]+' tbody tr:nth-child('+oldindex+')'));
             }
             else
-                {
+            {
                 $('#tabpage_'+languages[x]+' tbody tr:nth-child('+newindex+')').after($('#tabpage_'+languages[x]+' tbody tr:nth-child('+oldindex+')'));
                 //tablebody.find('.row_'+newindex).after(tablebody.find('.row_'+oldindex));
             }
         }
     }
-    updaterowproperties();
 }
 
 // This function adjusts the alternating table rows
@@ -285,42 +345,41 @@ function updateIfEmpty($elm, $attr, $attr_value)
 
 function updaterowproperties()
 {
-    var sID=$('input[name=sid]').val();
-    var gID=$('input[name=gid]').val();
-    var qID=$('input[name=qid]').val();
+    var sID=$('input[name=sid]').val(),
+    	gID=$('input[name=gid]').val(),
+    	qID=$('input[name=qid]').val();
 
     $('.answertable tbody').each(function(){
-        info=$(this).closest('table').attr('id').split("_");
-        language=info[1];
-        scale_id=info[2];
+        var info=$(this).closest('table').attr('id').split("_");
+        var language=info[1];
+        var scale_id=info[2];
+        var rownumber = 1;
 
-        var $firstrow = $(this).children('tr').first();
-        var datas=$firstrow.attr('id').split('_');
-        var rownumber=datas[2];
+        $(this).children('tr').each(function(){
 
+            var uniqueRowId=$(this).data('common-id').split('_').shift();
 
-        $(this).children('tr').each(function()
-        {
-            $(this).addClass('row_'+rownumber);
+            if(!$(this).hasClass('row_'+uniqueRowId))
+            {
+                $(this).addClass('row_'+uniqueRowId);
+            }
 
-            updateIfEmpty($(this).find('.oldcode'), 'name', 'oldcode_'+rownumber+'_'+scale_id);
-            updateIfEmpty($(this).find('.code'), 'id', 'code_'+rownumber+'_'+scale_id);
-            updateIfEmpty($(this).find('.code'), 'name', 'code_'+rownumber+'_'+scale_id);
-            updateIfEmpty($(this).find('.answer'), 'id', 'answer_'+language+'_'+rownumber+'_'+scale_id);
-            updateIfEmpty($(this).find('.answer'), 'name', 'answer_'+language+'_'+rownumber+'_'+scale_id);
-            updateIfEmpty($(this).find('.assessment'), 'id', 'assessment_'+rownumber+'_'+scale_id);
-            updateIfEmpty($(this).find('.assessment'), 'name', 'assessment_'+rownumber+'_'+scale_id);
-
+            updateIfEmpty($(this).find('.oldcode'), 'name', 'oldcode_'+uniqueRowId+'_'+scale_id);
+            updateIfEmpty($(this).find('.code'), 'id', 'code_'+uniqueRowId+'_'+scale_id);
+            updateIfEmpty($(this).find('.code'), 'name', 'code_'+uniqueRowId+'_'+scale_id);
+            updateIfEmpty($(this).find('.answer'), 'id', 'answer_'+language+'_'+uniqueRowId+'_'+scale_id);
+            updateIfEmpty($(this).find('.answer'), 'name', 'answer_'+language+'_'+uniqueRowId+'_'+scale_id);
+            updateIfEmpty($(this).find('.assessment'), 'id', 'assessment_'+uniqueRowId+'_'+scale_id);
+            updateIfEmpty($(this).find('.assessment'), 'name', 'assessment_'+uniqueRowId+'_'+scale_id);
             // Newly inserted row editor button
-            $(this).find('.editorLink').attr('href','javascript:start_popup_editor(\'answer_'+language+'_'+rownumber+'_'+scale_id+'\',\'[Answer:]('+language+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')');
-            $(this).find('.editorLink').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_ctrl');
-            $(this).find('.btneditanswerena').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
-            $(this).find('.btneditanswerena').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrlena');
-            $(this).find('.btneditanswerdis').attr('id','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
-            $(this).find('.btneditanswerdis').attr('name','answer_'+language+'_'+rownumber+'_'+scale_id+'_popupctrldis');
+            $(this).find('.editorLink').attr('href','javascript:start_popup_editor(\'answer_'+language+'_'+uniqueRowId+'_'+scale_id+'\',\'[Answer:]('+language+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')');
+            $(this).find('.editorLink').attr('id','answer_'+language+'_'+uniqueRowId+'_'+scale_id+'_ctrl');
+            $(this).find('.btneditanswerena').attr('id','answer_'+language+'_'+uniqueRowId+'_'+scale_id+'_popupctrlena');
+            $(this).find('.btneditanswerena').attr('name','answer_'+language+'_'+uniqueRowId+'_'+scale_id+'_popupctrlena');
+            $(this).find('.btneditanswerdis').attr('id','answer_'+language+'_'+uniqueRowId+'_'+scale_id+'_popupctrldis');
+            $(this).find('.btneditanswerdis').attr('name','answer_'+language+'_'+uniqueRowId+'_'+scale_id+'_popupctrldis');
             rownumber++;
-        }
-        );
+        });
     });
 }
 
@@ -331,42 +390,31 @@ function updatecodes()
 
 function getNextCode(sSourceCode)
 {
-
-        i=1;
-        found=true;
-        mNumberFound=-1;
-        console.log('sSourceCode: '+sSourceCode);
-        while (i<=sSourceCode.length && found)
+    sourcecode = sSourceCode;
+    i=1;
+    found=true;
+    foundnumber=-1;
+    sclength = sourcecode.length;
+    while (i<=sclength && found == true)
+    {
+        found=is_numeric(sourcecode.substr(sclength-i,i));
+        if (found)
         {
-            found=is_numeric(sSourceCode.substr(-i));
-            if (found)
-                {
-                mNumberFound=sSourceCode.substr(-i);
-                i++;
-            }
+            foundnumber=sourcecode.substr(sclength-i,i);
+            i++;
         }
-        if (mNumberFound==-1)
-        {
-            sBaseCode=sSourceCode;
-            mNumberFound=0
-        }
-        else
-        {
-            sBaseCode=sSourceCode.substr(0,sSourceCode.length-mNumberFound.length);
-        }
-        var iNumberFound=+mNumberFound;
-        do
-        {
-            iNumberFound=iNumberFound+1;
-            sNewNumber=iNumberFound+'';
-            sResult=sBaseCode+sNewNumber;
-            if (sResult.length>5)
-            {
-              sResult=sResult.substr(sResult.length - 5);
-            }
-        }
-        while (areCodesUnique(sResult)==false);
-        return(sResult);
+    }
+    if (foundnumber==-1)
+    {
+        return(sourcecode);
+    }
+    else
+    {
+        foundnumber++;
+        foundnumber=foundnumber+'';
+        result=sourcecode.substr(0,sclength-foundnumber.length)+foundnumber;
+        return(result);
+    }
 }
 
 /**
@@ -415,20 +463,26 @@ function popupeditor()
 
 function code_duplicates_check()
 {
+    //$('.code[data-toggle="tooltip"]').data('toggle', '').tooltip('destroy');
+
     languages=langs.split(';');
     var cansubmit=true;
-    $('#tabpage_'+languages[0]+' .answertable tbody').each(function(){
+    $('#tabpage_'+languages[0]+' .answertable tbody').each(function()
+    {
         var codearray=[];
         $(this).find('tr .code').each(function(){
             codearray.push($(this).val().toLowerCase());
         });
-        if (arrHasDupes(codearray))
+        var theDuplicate = arrHasDupesWhich(codearray);
+        if (theDuplicate !== false)
         {
-            //alert(duplicatesubquestioncode);
-            $notifycontainer.notify("create", 'error-notify', { message:duplicatesubquestioncode});
+
+            $('#error-modal .modal-body-text').html(duplicatesubquestioncode);
+            $('#error-modal').modal();
             cansubmit= false;
         }
     });
+    console.log('cansubmit: '+cansubmit);
     return cansubmit;
 }
 
@@ -457,9 +511,9 @@ function lsbrowser()
         }
         else
         {
-            $("#labelsetpreview").html("<p class='ui-state-highlight ui-corner-all ui-notify-message'>"+strNoLabelSet+"</p>");
-            $('#btnlsreplace').addClass('ui-state-disabled');
-            $('#btnlsinsert').addClass('ui-state-disabled');
+            $("#labelsetpreview").html("<p class='alert alert-warning'>"+strNoLabelSet+"</p>");
+            $('#btnlsreplace').addClass('disabled');
+            $('#btnlsinsert').addClass('disabled');
             $('#btnlsreplace').prop( "disabled", true );
             $('#btnlsinsert').prop( "disabled", true );
         }
@@ -479,7 +533,7 @@ function lspreview()
     surveyid=$('input[name=sid]').val();
     // check if this label set is already cached
     if (!isset(labelcache[lsid]))
-        {
+    {
         $.ajax({
             url: lsdetailurl,
             dataType: 'json',
@@ -488,28 +542,47 @@ function lspreview()
             success: function(json){
                 //$("#labelsetpreview").tabs('destroy');
                 $("#labelsetpreview").empty();
-                var tabindex='';
-                var tabbody='';
+                var tabindex='<ul class="nav nav-tabs">';
+                var tabbody='<div class="tab-content">';
+                var count=0;
                 for ( x in json)
-                    {
-
+                {
                     language=json[x];
                     for (y in language)
+                    {
+                        if(count==0)
                         {
-                        tabindex=tabindex+'<li><a href="#language_'+y+'">'+language[y][1]+'</a></li>';
-                        tabbody=tabbody+"<div id='language_"+y+"'><table class='limetable'>";
+                            active="active";
+                            bodyactive="in active";
+                            count++;
+                        }
+                        else
+                        {
+                            active = bodyactive = "";
+                        }
+
+                        tabindex=tabindex+
+                            '<li role="presentation" class="'+active+'">'+
+                            '   <a data-toggle="tab" href="#language_'+y+'">'+
+                                    language[y][1]+
+                            '   </a>'+
+                            '</li>';
+
+                        tabbody=tabbody+
+                                '<div id="language_'+y+'" class="tab-page tab-pane fade '+bodyactive+'">'+
+                                '   <table class="limetable">';
                         lsrows=language[y][0];
                         tablerows='';
                         var highlight=true;
                         for (z in lsrows)
-                            {
+                        {
                             highlight=!highlight;
                             tabbody=tabbody+'<tbody><tr';
                             if (highlight==true) {
                                 tabbody=tabbody+" class='highlight' ";
                             }
                             if (lsrows[z].title==null)
-                                {
+                            {
                                 lsrows[z].title='';
                             }
                             tabbody=tabbody+'><td>'+lsrows[z].code+'</td><td>'+htmlspecialchars(lsrows[z].title)+'</td></tr><tbody>';
@@ -517,55 +590,22 @@ function lspreview()
                         tabbody=tabbody+'<thead><tr><th>'+strcode+'</th><th>'+strlabel+'</th></tr></thead></table></div>';
                     }
                 }
-                $("#labelsetpreview").append('<ul>'+tabindex+'</ul>'+tabbody);
-                labelcache[lsid]='<ul>'+tabindex+'</ul>'+tabbody;
-                $("#labelsetpreview").tabs();
-                $("#labelsetpreview").tabs( "refresh" );
+                tabindex=tabindex+'</ul>';
+                tabbody=tabbody+'</div>';
+                $("#labelsetpreview").append(tabindex+tabbody);
+                labelcache[lsid]=tabindex+tabbody;
         }}
         );
     }
     else
     {
-        //$("#labelsetpreview").tabs('destroy');
         $("#labelsetpreview").empty();
         $("#labelsetpreview").append(labelcache[lsid]);
-        $("#labelsetpreview").tabs();
-        $("#labelsetpreview").tabs( "refresh" );
     }
 
 
 }
 
-/**
-* This is a debug function
-* similar to var_dump in PHP
-*/
-function dump(arr,level) {
-    var dumped_text = "";
-    if(!level) level = 0;
-
-    //The padding given at the beginning of the line.
-    var level_padding = "";
-    for(var j=0;j<level+1;j++) level_padding += "    ";
-
-    if(typeof(arr) == 'object') {
-        //Array/Hashes/Objects
-        for(var item in arr) {
-            var value = arr[item];
-
-            if(typeof(value) == 'object') {
-                 //If it is an array,
-                dumped_text += level_padding + "'" + item + "' ...\n";
-                dumped_text += dump(value,level+1);
-            } else {
-                dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
-            }
-        }
-    } else { //Stings/Chars/Numbers etc.
-        dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
-    }
-    return dumped_text;
-}
 
 function transferlabels()
 {
@@ -574,18 +614,21 @@ function transferlabels()
     var qID=$('input[name=qid]').val();
 
     surveyid=$('input[name=sid]').val();
+
     if ($(this).attr('id')=='btnlsreplace')
-        {
+    {
         var lsreplace=true;
+
     }
     else
-        {
+    {
         var lsreplace=false;
     }
 
     if (lsreplace)
+    {
+        $('.answertable:eq('+scale_id+') tbody tr').each(function()
         {
-        $('.answertable:eq('+scale_id+') tbody tr').each(function(){
             aRowInfo=this.id.split('_');
             $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
         });
@@ -601,13 +644,14 @@ function transferlabels()
             languages=langs.split(';');
             var x;
             var defaultdata_labels = null;
+
             for (x in languages)
-                {
+            {
                 lang_x_found_in_label=false;
                 var tablerows='';
                 var y;
                 for (y in json)
-                    {
+                {
                     language=json[y];
                     var lsrows = new Array();
                     //defaultdata=language[languages[0]][0];
@@ -629,9 +673,8 @@ function transferlabels()
                             var randomid='new'+Math.floor(Math.random()*111111);
                             if (x==0)
                             {
-                                $(".relevance").toggle(false);
                                 tablerows=tablerows+
-                                '<tr class="row_'+k+'_'+scale_id+'" >'+
+                                '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" data-common-id="'+k+'_'+scale_id+'">'+
                                 '   <td>'+
                                 '       <span class="glyphicon glyphicon-move text-success"></span>'+
                                 '   </td>'+
@@ -642,7 +685,7 @@ function transferlabels()
                                 '   </td>'+
 
                                 '   <td>'+
-                                '       <div class="col-sm-12">'+
+                                '       <div class="">'+
                                 '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
                                 '       </div>'+
                                 '   </td>'+
@@ -661,14 +704,14 @@ function transferlabels()
                                 '</tr>';
                             }
                             else
-                                {
+                            {
                                 tablerows=tablerows+
-                                '<tr class="row_'+k+'_'+scale_id+'" >'+
+                                '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'">'+
                                 '   <td>&nbsp;</td>'+
                                 '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
                                 '   <td style="vertical-align: middle;">'+
-                                '       <div class="col-sm-12">'+
+                                '       <div class="">'+
                                 '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
                                 '       </div>'+
                                 '   </td>'+
@@ -678,7 +721,7 @@ function transferlabels()
                                 '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span><span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
                                 '           </a>'+
 
-                                '       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
+                                //'       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
                                 '       <span style="display: none" class="relevance">1</span>'+
                                 '   </td>'+
                                 '</tr>';
@@ -687,18 +730,18 @@ function transferlabels()
                     }
                 }
                 if (lang_x_found_in_label === false)
-                    {
+                {
                     lsrows=defaultdata_labels[0];
                     k=0;
                     for (k in lsrows)
-                        {
+                    {
                         tablerows=tablerows+
-                        '<tr class="row_'+k+'_'+scale_id+'" >'+
+                        '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" data-common-id="'+k+'_'+scale_id+'">'+
                         '   <td>&nbsp;</td>'+
                         '   <td>'+htmlspecialchars(lsrows[k].code)+'</td>'+
 
                         '   <td style="vertical-align: middle;">'+
-                        '       <div class="col-sm-12">'+
+                        '       <div class="">'+
                         '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(lsrows[k].title)+'"></input>'+
                         '       </div>'+
                         '   </td>'+
@@ -708,22 +751,27 @@ function transferlabels()
                         '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena  glyphicon glyphicon-pencil text-success" ><span>'+
                         '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                         '           </a>'+
-                        '       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
+                        //'       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
                         '       <span style="display: none" class="relevance">1</span>'+
                         '   </td>'+
                         '</tr>';
                     }
                 }
-                if (lsreplace) {
-                    $('#answertable_'+languages[x]+'_'+scale_id+' tbody').empty();
+
+                $('#labelsetbrowserModal').modal('hide');
+                if (lsreplace)
+                {
+                    $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
                 }
-                $('#answertable_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
+
+                $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
                 // Unbind any previous events
-                $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
-                $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
-                $('#answertable_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
-                $('#answertable_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
-                $('#answertable_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
+                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
+                $('#answers_'+languages[x]+'_'+scale_id+' .answer').unbind('focus');
+                $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
+                $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
+
             }
             /*$('#labelsetbrowser').dialog('close');*/
             $('.tab-page:first .answertable tbody').sortable('refresh');
@@ -735,133 +783,123 @@ function transferlabels()
 
 }
 
-function quickaddlabels()
+/**
+ * Quick-add subquestions/answers
+ *
+ * @global langs
+ *
+ * @param {int} scale_id
+ * @param {string} addOrReplace - Either 'add' or 'replace'
+ * @return {void}
+ */
+function quickaddlabels(scale_id, addOrReplace, table_id)
 {
-    var sID=$('input[name=sid]').val();
-    var gID=$('input[name=gid]').val();
-    var qID=$('input[name=qid]').val();
-
-    if ($(this).attr('id')=='btnqareplace')
-    {
-        var lsreplace=true;
-    }
-    else
-    {
-        var lsreplace=false;
-    }
-    scale_id = 0;
-
+    console.log('quickaddlabels');
+    var sID=$('input[name=sid]').val(),
+        gID=$('input[name=gid]').val(),
+        qID=$('input[name=qid]').val(),
+        codes = [],
+        closestTable = $('#'+table_id);
+        lsreplace = (addOrReplace === 'replace');
 
     if (lsreplace)
     {
         $('.answertable:eq('+scale_id+') tbody tr').each(function(){
-            aRowInfo=this.id.split('_');
+            var aRowInfo=this.id.split('_');
             $('#deletedqids').val($('#deletedqids').val()+' '+aRowInfo[2]);
         });
     }
 
-    languages=langs.split(';');
-    for (x in languages)
-    {
-        lsrows=$('#quickaddarea').val().split("\n");
+    if(closestTable.find('.code').length<0){
+        closestTable.find('.code-title').each(function(){
+            codes.push($(this).text());
+        });
+    } else {
+        closestTable.find('.code').each(function(){
+            codes.push($(this).val());
+        });
+    }
 
-        if (lsrows[0].indexOf("\t")==-1)
+    languages=langs.split(';');
+    var promises = [];
+    var answers = [];
+    var separatorchar;
+    var lsrows=$('#quickaddarea').val().split("\n");
+    var allrows = $('.answertable:eq('+scale_id+') tbody tr').length;
+
+    if (lsrows[0].indexOf("\t")==-1)
+    {
+        separatorchar=';';
+    }
+    else
+    {
+        separatorchar="\t";
+    }
+
+    var numericSuffix = '',
+        n = 1,
+        numeric = true,
+        currentCharacter,
+        codeSigil = (codes[0] !== undefined ? codes[0].split("") : ("001").split(""));
+    while(numeric == true && n <= codeSigil.length){
+        currentCharacter = codeSigil.pop()                          // get the current character
+        if ( !isNaN(Number(currentCharacter)) )                         // check if it's numerical
         {
-            separatorchar=';';
+            numericSuffix    = currentCharacter+""+numericSuffix;       // store it in a string
+            n++;
         }
         else
         {
-            separatorchar="\t";
+            $numeric = false;                                           // At first non numeric character found, the loop is stoped
         }
-        tablerows='';
-        for (k in lsrows)
-        {
-            thisrow=lsrows[k].splitCSV(separatorchar);
-            if (thisrow.length<=languages.length)
-            {
-                thisrow.unshift(parseInt(k)+1);
-            }
-            else
-            {
-                thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "").substr(0,20);
-            }
-            var randomid='new'+Math.floor(Math.random()*111111);
+    }
+    //Sometimes "0" is interpreted as NaN so test if it's just a missing Zero
+    if(isNaN(Number(currentCharacter))){
+        codeSigil.push(currentCharacter);
+    }
+    var tablerows = "";
+    for (var k in lsrows)
+    {
+        var thisrow=lsrows[k].splitCSV(separatorchar);
 
+
+        if (thisrow.length<=languages.length)
+        {
+            var qCode = (parseInt(k)+1);
+            if (lsreplace===false){
+                qCode+=(parseInt(allrows));}
+            while(qCode.toString().length < numericSuffix.length){
+                qCode = "0"+qCode;
+            }
+            thisrow.unshift( codeSigil.join('')+qCode);
+        }
+        else
+        {
+            thisrow[0]=thisrow[0].replace(/[^A-Za-z0-9]/g, "").substr(0,20);
+        }
+        var quid = "new"+(Math.floor(Math.random()*10000));
+        for (var x in languages)
+        {
             if (typeof thisrow[parseInt(x)+1]=='undefined')
             {
                 thisrow[parseInt(x)+1]=thisrow[1];
             }
-            if (x==0)
+
+            var lang_active = languages[x];
+            if(!answers[lang_active]){
+                answers[lang_active] = [];
+            }
+            if (lsreplace)
             {
-                tablerows=tablerows+
-                '<tr class="row_'+k+'" >'+
-                '   <td>'+
-                '       <span class="glyphicon glyphicon-move text-success"></span>'+
-                '   </td>'+
-
-                '   <td style="vertical-align: middle;">'+
-                '       <input'+
-                '           class="code third form-control input-lg" required="required" pattern="^[a-zA-Z0-9]*$" '+
-                '           type="text" maxlength="20" size="20" '+
-                '           pattern="^([a-zA-Z0-9]*|12)$"'+
-                '           value="'+thisrow[0]+'" pattern="^[a-zA-Z0-9]*$"  '+
-                '           id="code_'+randomid+'_'+scale_id+'" name="code_'+randomid+'_'+scale_id+'" '+
-                '           value="'+htmlspecialchars(thisrow[0],'ENT_QUOTES')+'" '+
-                '       />'+
-                '   </td>'+
-
-                '   <td style="vertical-align: middle;">'+
-                '       <div class="col-sm-12">'+
-                '           <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
-                '       </div>'+
-                '   </td>'+
-
-                '   <td>'+
-                '           <a class="editorLink">'+
-                '               <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
-                '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                '           </a>'+
-
-                '       <span class="btnaddanswer icon-add text-success"></span>'+
-                '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
-                '   </td>'+
-                '</tr>';
-
-                $(".relevance").toggle(false);
-
+                $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
             }
-            else
-                {
-
-                    tablerows=tablerows+
-                    '<tr class="row_'+k+'" >'+
-                    '   <td>&nbsp;</td>'+
-                    '   <td>&nbsp;</td>'+
-
-                    '   <td style="vertical-align: middle;">'+
-                    '       <div class="col-sm-12">'+
-                    '          <input type="text" size="20" id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" name="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'" class="answer form-control input-lg" value="'+htmlspecialchars(thisrow[parseInt(x)+1],'ENT_QUOTES')+'"></input>'+
-                    '       </div>'+
-                    '   </td>'+
-
-                    '   <td>'+
-                    '           <a class="editorLink">'+
-                    '               <span class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
-                    '               <span class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
-                    '           </a>'+
-
-                    '       <span class="btnaddanswer  icon-add text-success"></span>'+
-                    '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
-                    '   </td>'+
-                    '</tr>';
-            }
-        }
-        if (lsreplace)
-        {
-            $('#answers_'+languages[x]+'_'+scale_id+' tbody').empty();
+            answers[lang_active].push(
+                {text: thisrow[(parseInt(x)+1)], code: thisrow[0], quid: quid}
+            );
         }
 
-        $('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
+        //$('#answers_'+languages[x]+'_'+scale_id+' tbody').append(tablerows);
+
         // Unbind any previous events
         $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').unbind('click');
         $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').unbind('click');
@@ -869,11 +907,56 @@ function quickaddlabels()
         $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').click(addinput);
         $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').click(deleteinput);
     }
-    /*$('#quickadd').dialog('close');*/
-    $('#quickaddarea').val('');
-    $('.tab-page:first .answertable tbody').sortable('refresh');
-    updaterowproperties();
-    $('#quickaddModal').modal('hide')
+    for (var x in languages)
+    {
+        if (typeof thisrow[parseInt(x)+1]=='undefined')
+        {
+            thisrow[parseInt(x)+1]=thisrow[1];
+        }
+
+        var lang_active = languages[x];
+        promises.push(
+            addinputQuickEdit(closestTable, lang_active, (x==0), scale_id, codes)
+        );
+    }
+    $.when.apply($,promises).done(
+            function(){
+                /*$('#quickadd').dialog('close');*/
+                $.each(arguments, function(i,item){
+                    $.each(answers[item.lng], function(j,row){
+                        var html = item.html;
+                        var html_quid = html.replace(/({{quid_placeholder}})/g,row.quid);
+                        var htmlRowObject = $(html_quid);
+                        htmlRowObject.find('input.answer').val(row.text);
+                        if(htmlRowObject.find('input.code').length > 0)
+                        {
+                            htmlRowObject.find('input.code').val(row.code);
+                        }
+                        else
+                        {
+                            htmlRowObject.find('td.code-title').text(row.code);
+                        }
+                        htmlRowObject.find('td.relevance-equation').find('input').val(1);
+
+                        item.langtable.find('tbody').append(htmlRowObject);
+                    })
+                });
+                $('#quickaddarea').val('');
+                $('.tab-page:first .answertable tbody').sortable('refresh');
+                updaterowproperties();
+                $('#quickaddModal').modal('hide')
+                bindClickIfNotExpanded();
+            },
+            function(){
+                 console.log(arguments);
+                /*$('#quickadd').dialog('close');*/
+                $('#quickaddarea').val('');
+                $('.tab-page:first .answertable tbody').sortable('refresh');
+                updaterowproperties();
+                $('#quickaddModal').modal('hide')
+                bindClickIfNotExpanded();
+            }
+        )
 
 }
 
@@ -953,15 +1036,15 @@ function ajaxcheckdup()
             $("#dialog-confirm-replaceModal").modal('hide');
 
             if($('#laname').val() == val)
+            {
+                if($('#dialog-duplicate').is(":visible"))
                 {
-                    if($('#dialog-duplicate').is(":visible"))
-                    {
-                        $('#dialog-duplicate').effect( "pulsate", {times:3}, 3000 );
-                    }
-                    else
-                    {
-                        $('#dialog-duplicate').show();
-                    }
+                    $('#dialog-duplicate').effect( "pulsate", {times:3}, 3000 );
+                }
+                else
+                {
+                    $('#dialog-duplicate').show();
+                }
                 check = false;
                 return false;
             }
@@ -990,9 +1073,9 @@ function ajaxreqsave() {
     languages = langs.split(';');
 
     for(x in languages)
-        {
+    {
         answers[languages[x]] = new Array();
-        $('.answer').each(function(index) {
+        $('.answer').each(function(index){
             if($(this).attr('id').substr(-1) === scale_id && $(this).attr('id').indexOf(languages[x]) != -1)
                 answers[languages[x]].push($(this).val());
         });
@@ -1027,11 +1110,4 @@ function ajaxreqsave() {
             $('#dialog-result').show();
         }
     });
-}
-
-
-
-function togglerelevance()
-{
-    $(".relevance").toggle("fast");
 }

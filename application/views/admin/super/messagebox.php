@@ -5,12 +5,14 @@
  * @var $message html
  */
 ?>
-<div class="row">
-    <div class="col-sm-11 content-right">
-        <!-- Message box from super admin -->
-        <div class="jumbotron message-box <?php echo $class;?>">
-            <h2 ><?php echo $title;?></h2>
-            <?php echo $message;?>
+<div class='side-body  <?php echo getSideBodyClass(false); ?>'>   
+    <div class="row">
+        <div class="col-sm-12 content-center">
+            <!-- Message box from super admin -->
+            <div class="jumbotron message-box <?php echo isset($class) ? $class : ""; ?>">
+                <h2 ><?php echo $title;?></h2>
+                <?php echo $message;?>
+            </div>
         </div>
     </div>
 </div>

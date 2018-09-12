@@ -4,10 +4,10 @@
     </div>
     <div class="col-md-9">
         <h2><?php echo $title; ?></h2>
-        <p><?php echo $descp; ?></p>
-        <b> <?php eT("Administrator credentials"); ?>:</b><br /><br />
-        <?php eT("Username"); ?>: <?php echo $user; ?> <br />
-        <?php eT("Password"); ?>: <?php echo $pwd; ?>
+        <div class='alert alert-success'><?php echo $descp; ?></div>
+        <legend> <?php eT("Administrator credentials"); ?></legend>
+        <?php eT("Username:"); ?> <?php echo $user; ?> <br />
+        <?php eT("Password:"); ?> <?php echo $pwd; ?>
         <div style="text-align: center">
             <a href="<?php echo $this->createUrl("/admin"); ?>" class="btn btn-default btn btn-default-default btn btn-default-lg"><?php eT("Administration")?></a>
         </div>

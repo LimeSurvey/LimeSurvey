@@ -19,7 +19,7 @@ class Expressions extends Survey_Common_Action {
         $aData['surveyid']=$surveyid=$iSurveyID=sanitize_int(Yii::app()->request->getQuery('sid'));
         $aData['sa']=$sa=sanitize_paranoid_string(Yii::app()->request->getQuery('sa','index'));
 
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/';
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/';  // Close button
 
         if (($aData['sa']=='survey_logic_file' || $aData['sa']=='navigation_test') && $surveyid)
         {
@@ -28,16 +28,17 @@ class Expressions extends Survey_Common_Action {
         if($needpermission && !Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
         {
             $message['title']= gT('Access denied!');
-            $message['message']= gT('You do not have sufficient rights to access this page.');
+            $message['message']= gT('You do not have permission to access this page.');
             $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
         else
         {
             App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH . 'survey_runtime.js' ));
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( SCRIPT_PATH . '/expressions/em_javascript.js' ));
+            App()->getClientScript()->registerPackage('decimal');
 
+            $this->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
+            $this->registerScriptFile( 'SCRIPT_PATH', '/expressions/em_javascript.js');
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle']="ExpressionManager:  {$aData['sa']}";
 

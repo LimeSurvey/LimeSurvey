@@ -1,6 +1,7 @@
-<div class="side-body" id="edit-question-body">
+<div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>$pageTitle )); ?>
     <h3>
-        <?php echo $pageTitle; ?>
+        <?php echo $pageTitle; ?> <small><em><?php echo $oQuestion->title;?></em> (ID: <?php echo $oQuestion->qid;?>)</small>
     </h3>
 
     <div class="row">
@@ -97,39 +98,33 @@
                                     <!-- Headers -->
                                     <thead>
                                         <tr>
-                                            <th>
-                                                <?php if( $first): ?>
+                                            <th class="col-md-1">
+                                                <?php if( $first && $activated != 'Y'): ?>
                                                     <?php eT("Position");?>
                                                 <?php else: ?>
                                                     &nbsp;
                                                 <?php endif; ?>
                                             </th>
-                                            <th><?php eT("Code"); ?></th>
+                                            <th class='col-md-1'><?php eT("Code"); ?></th>
 
                                             <!-- subQuestions headers -->
                                             <?php if($viewType=='subQuestions'): ?>
                                                 <th>
                                                     <?php eT("Subquestion"); ?>
                                                 </th>
-                                                <?php if ($activated != 'Y' && $first): ?>
-                                                    <th>
-                                                        <?php eT("Action"); ?>
+                                                <?php if ($first): ?>
+                                                    <th id='rel-eq-th' class='col-md-1'>
+                                                        <?php eT("Relevance equation"); ?>
                                                     </th>
-                                                <?php endif; ?>
-                                                <?php if ($scale_id==0): ?>
-                                                    <th class="relevancehead">
-                                                        <?php // eT("Edit subquestion relevance") ?>
-                                                        <span class="icon-conditions"></span>
-                                                        <span style="display: none" class="relevance">
-                                                            <?php eT("Relevance"); ?>
-                                                        </span>
+                                                    <th class="col-md-1">
+                                                        <?php eT("Action"); ?>
                                                     </th>
                                                 <?php endif; ?>
 
                                             <!-- answer Options header-->
                                             <?php elseif($viewType=='answerOptions'): ?>
                                                 <?php if ($assessmentvisible): ?>
-                                                    <th>
+                                                    <th class='col-md-1'>
                                                         <?php eT("Assessment value"); ?>
                                                     </th>
                                                 <?php else: ?>
@@ -138,11 +133,11 @@
                                                     </th>
                                                 <?php endif; ?>
 
-                                                <th>
+                                                <th class='col-md-8'>
                                                     <?php eT("Answer option"); ?>
                                                 </th>
 
-                                                <th>
+                                                <th class='col-md-1'>
                                                     <?php if( $first): ?>
                                                         <?php eT("Actions"); ?>
                                                     <?php endif;?>
@@ -157,200 +152,40 @@
 
                                             <!-- Line tag -->
                                             <?php if($viewType=='subQuestions'): ?>
-                                                <tr id='row_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'>
-                                                <?php $title = $row->title;?>
+                                                <?php $this->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_subquestion', array(
+                                                    'position'  => $position,
+                                                    'scale_id'  => $scale_id,
+                                                    'activated' => $activated,
+                                                    'first'     => $first,
+                                                    'surveyid'  => $surveyid,
+                                                    'gid'       => $gid,
+                                                    'qid'       => $row->qid,
+                                                    'language'  => $row->language,
+                                                    'title'     => $row->title,
+                                                    'question'  => $row->question,
+                                                    'relevance' => $row->relevance,
+                                                    'oldCode'   => true,
+                                                ));?>
+
                                             <?php elseif($viewType=='answerOptions'):?>
-                                                <tr class='row_<?php echo $position; ?>'>
-                                                <?php $title = $row->code;?>
+                                                <?php $this->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_answer_option', array(
+                                                    'position'          => $position,
+                                                    'first'             => $first,
+                                                    'assessmentvisible' => $assessmentvisible,
+                                                    'scale_id'          => $scale_id,
+                                                    'title'             => $row->code,
+                                                    'surveyid'          => $surveyid,
+                                                    'gid'               => $gid,
+                                                    'qid'               => $qid,
+                                                    'language'          => $row->language,
+                                                    'assessment_value'  => $row->assessment_value,
+                                                    'sortorder'         => $row->sortorder,
+                                                    'answer'            => $row->answer,
+                                                    'oldCode'   => true,
+                                                ));?>
+
                                             <?php endif; ?>
 
-                                            <!-- Move icon -->
-                                            <?php if ($activated == 'Y' ): ?>
-                                                <td>
-                                                    &nbsp;
-                                                </td>
-                                                <td  style="vertical-align: middle;">
-                                                    <input
-                                                        type='hidden'
-                                                        name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                                                        value="<?php echo $title; ?>"
-                                                        maxlength='20'
-                                                        size='5'
-                                                    />
-                                                    <?php echo $title; ?>
-                                                </td>
-                                            <?php elseif ($activated != 'Y' && $first): // If survey is not activated and first language ?>
-                                                <?php if($title) {$sPattern="^([a-zA-Z0-9]*|{$title})$";}else{$sPattern="^[a-zA-Z0-9]*$";} ?>
-                                                <td>
-                                                    <span class="glyphicon glyphicon-move"></span>
-                                                </td>
-
-                                                <td  style="vertical-align: middle;">
-                                                    <?php
-                                                        // TODO : check if possible to remove the viewType condition here
-                                                        // implies : check if $row->qid == $position  && if onkeypress can be applied to subQuestions
-                                                    ?>
-
-                                                    <?php if($viewType=='subQuestions'): ?>
-                                                        <input
-                                                            type='hidden'
-                                                            class='oldcode'
-                                                            id='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                                                            name='oldcode_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                                                            value="<?php echo $title; ?>"
-                                                        />
-                                                        <input
-                                                            type='text'
-                                                            class="code form-control input-lg"
-                                                            id='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                                                            class='code'
-                                                            name='code_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                                                            value="<?php echo $title; ?>"
-                                                            maxlength='20' size='20'
-                                                            pattern='<?php echo $sPattern; ?>'
-                                                            required='required'
-                                                        />
-                                                    <?php elseif($viewType=='answerOptions'):?>
-                                                        <input
-                                                            type='hidden'
-                                                            class='oldcode'
-                                                            id='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                                                            name='oldcode_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                                                            value="<?php echo $title; ?>"
-                                                        />
-                                                        <input
-                                                            type='text'
-                                                            class='code form-control input-lg'
-                                                            id='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                                                            name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                                                            value="<?php echo $title; ?>"
-                                                            maxlength='5' size='20' required
-                                                            onkeypress="return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')"
-                                                        />
-
-                                                    <?php endif; ?>
-                                                </td>
-                                            <?php else:?>
-                                                <td>&nbsp</td>
-                                                <td  style="vertical-align: middle;">
-                                                    <?php echo $title; ?>
-                                                </td>
-                                            <?php endif; ?>
-
-
-                                            <!-- Assessment Value -->
-                                            <?php if($viewType=='subQuestions'): ?>
-                                                <!-- No assessment values for subQuestions -->
-                                            <?php elseif($viewType=='answerOptions'):?>
-                                                <?php if ($assessmentvisible && $first): ?>
-                                                    <td>
-                                                        <input
-                                                            type='text'
-                                                            class='assessment'
-                                                            id='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                                                            name='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                                                            value="<?php echo $row->assessment_value; ?>"
-                                                            maxlength='5'
-                                                            size='5'
-                                                            onkeypress="return goodchars(event,'-1234567890')"
-                                                        />
-                                                    </td>
-                                                <?php elseif ( $first): ?>
-                                                    <td style='display:none;'>
-                                                        <input
-                                                            type='text'
-                                                            class='assessment'
-                                                            id='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                                                            name='assessment_<?php echo $position; ?>_<?php echo $scale_id; ?>'
-                                                            value="<?php echo $row->assessment_value; ?>" maxlength='5' size='5'
-                                                            onkeypress="return goodchars(event,'-1234567890')"
-                                                        />
-                                                    </td>
-                                                <?php elseif ($assessmentvisible): ?>
-                                                    <td>
-                                                        <?php echo $row['assessment_value']; ?>
-                                                    </td>
-                                                <?php else: ?>
-                                                    <td style='display:none;'>
-                                                    </td>
-                                                <?php endif; ?>
-                                            <?php endif;?>
-
-                                            <!-- Question / Answer -->
-                                            <?php
-                                                // TODO : remove this if statement, and merge the two td
-                                                // implies : define in controller $answer_id for each row (answer_<?php echo $row->language; ? >_<?php echo $row->qid; ? >_<?php echo $row->scale_id; ? >)
-                                                // and : define getEditor paramaters in controller for each row
-                                                // and : check if the onkeypress event makes sense for answer options
-                                            ?>
-                                            <?php if($viewType=='subQuestions'): ?>
-                                                <td style="vertical-align: middle;">
-                                                    <div class="col-sm-12">
-                                                        <input
-                                                            type='text'
-                                                            size='20'
-                                                            class='answer form-control input-lg'
-                                                            id='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                                                            name='answer_<?php echo $row->language; ?>_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>'
-                                                            placeholder='<?php eT("Some example subquestion","js") ?>'
-                                                            value="<?php echo $row->question; ?>"
-                                                            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}"
-                                                            />
-                                                    </div>
-                                                </td>
-                                            <?php elseif($viewType=='answerOptions'): ?>
-                                                <td style="vertical-align: middle;">
-                                                    <div class="col-sm-12">
-                                                        <input
-                                                            type='text'
-                                                            size='20'
-                                                            class='answer form-control input-lg'
-                                                            id='answer_<?php echo $row->language; ?>_<?php echo $row->sortorder; ?>_<?php echo $scale_id; ?>'
-                                                            name='answer_<?php echo $row->language; ?>_<?php echo $row->sortorder; ?>_<?php echo $scale_id; ?>'
-                                                            placeholder='<?php eT("Some example answer option","js") ?>'
-                                                            value="<?php echo $row->answer; ?>"
-                                                        />
-                                                    </div>
-                                                </td>
-                                            <?php endif;?>
-
-                                            <!-- Icons edit/delete -->
-                                            <td style="vertical-align: middle;">
-
-                                                <?php echo  getEditor("editanswer","answer_".$row->language."_".$row->qid."_{$row->scale_id}", "[".gT("Subquestion:", "js")."](".$row->language.")",$surveyid,$gid,$qid,'editanswer'); ?>
-
-                                                <?php if ($activated != 'Y' && $first):?>
-                                                    <?php
-                                                        // TODO : remove this if statement, and merge the two td
-                                                        // implies : define in controller titles
-                                                    ?>
-                                                    <?php if($viewType=='subQuestions'): ?>
-                                                        <span class="icon-add text-success btnaddanswer" data-code="<?php echo $title; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></span>
-                                                        <span class="glyphicon glyphicon-trash text-success btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
-                                                    <?php elseif($viewType=='answerOptions'): ?>
-                                                        <span class="icon-add text-success btnaddanswer"  data-code="<?php echo $title; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
-                                                        <span class="glyphicon glyphicon-trash text-warning btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
-                                                    <?php endif; ?>
-                                                <?php endif; ?>
-                                            </td>
-
-                                            <!-- Relevance : only for subQuestion. -->
-                                            <?php if($viewType=='subQuestions'): ?>
-                                                <?php if ($scale_id==0):   /* relevance column */ ?>
-                                                    <td  style="vertical-align: middle;">
-                                                        <?php if ($row->relevance!="1" && trim($row->relevance)!=""): ?>
-                                                            <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Edit subquestion relevance") ?>'></span>
-                                                        <?php else:   /* no relevance equation: icon deactivated */  ?>
-                                                            <span class="icon-conditions text-success btntogglerelevance" data-toggle="tooltip" data-placement="bottom" title='<?php eT("Edit subquestion relevance") ?>'></span>
-                                                        <?php endif;?>
-                                                        <?php if ($first):  /* default lang - input field */?>
-                                                            <input style="display: none" type='text' size='20' class='relevance' id='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' name='relevance_<?php echo $row->qid; ?>_<?php echo $row->scale_id; ?>' value="<?php echo $row->relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
-                                                        <?php else:       /* additional language: just print rel. equation */  ?>
-                                                            <span style="display: none" class="relevance"> <?php echo $row->relevance; ?> </span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                <?php endif; ?>
-                                            <?php endif; ?>
                                             <?php $position++; ?>
 
                                         <?php endforeach; ?>
@@ -374,7 +209,7 @@
                                         <?php eT('Predefined label sets...'); ?>
                                     </button>
 
-                                    <button <?php echo $disabled; ?>  id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btn btn-default' type='button'  data-toggle="modal" data-target="#quickaddModal">
+                                    <button <?php echo $disabled; ?>  id='btnquickadd_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' data-scale-id="<?php echo $scale_id; ?>" class='btn btn-default btnquickadd' type='button'  data-toggle="modal" data-target="#quickaddModal" data-scale-id="<?php echo $scale_id; ?>">
                                         <?php eT('Quick add...'); ?>
                                     </button>
 
@@ -393,115 +228,23 @@
                     <?php endforeach; ?>
 
 
-
-                    <!-- Bootstrap modals -->
-
-                    <!-- quickaddModal -->
-                    <div class="modal fade labelsets-update" id="quickaddModal" tabindex="-1" role="dialog" aria-labelledby="quickaddModal">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
-                                    <h4 class="modal-title" id="quickaddModal"><?php eT('Enter your answers:'); ?></h4>
-                                </div>
-
-                                <div class="modal-body">
-                                    <p>
-                                        <?php eT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or tab.'); ?>
-                                    </p>
-                                    <textarea id='quickaddarea' class='tipme' title='' cols='100' rows='10' style='width:570px;'></textarea>
-                                </div>
-                                <div class="modal-footer button-list">
-                                    <button class='btn btn-default' id='btnqareplace' type='button'><?php eT('Replace'); ?></button>
-                                    <button class='btn btn-default' id='btnqainsert' type='button'><?php eT('Add'); ?></button>
-                                    <button class='btn btn-warning' id='btnqacancel' type='button'  data-dismiss="modal"><?php eT('Cancel'); ?></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--labelset browser Modal -->
-                    <div class="modal fade labelsets-update" id="labelsetbrowserModal" tabindex="-1" role="dialog" aria-labelledby="labelsetbrowserModal">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
-                                    <h4 class="modal-title" id="labelsetbrowserModal"><?php eT('Available label sets:'); ?></h4>
-                                </div>
-
-                                <div class="modal-body">
-                                    <select id='labelsets' size='10' style='width:250px;'>
-                                        <option>&nbsp;</option>
-                                    </select>
-                                    <div id='labelsetpreview' style='col-xs-6'></div>
-                                </div>
-                                <div class="modal-footer button-list">
-                                    <button id='btnlsreplace' type='button' class='btn btn-default'><?php eT('Replace'); ?></button>
-                                    <button id='btnlsinsert' type='button' class='btn btn-default'><?php eT('Add'); ?></button>
-                                    <button class='btn btn-warning' id='btnqacancel' type='button'  data-dismiss="modal"><?php eT('Cancel'); ?></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Save as labelset Modal -->
-                    <div class="modal fade" id="saveaslabelModal" tabindex="-1" role="dialog" aria-labelledby="saveaslabelModal">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
-                                    <h4 class="modal-title">
-                                        <?php eT('Save as label set:'); ?>
-                                    </h4>
-
-                                </div>
-
-                                <div class="modal-body">
-                                    <p>
-                                        <input type="radio" name="savelabeloption" id="newlabel">
-                                        <label for="newlabel"><?php eT('New label set'); ?></label>
-                                    </p>
-                                    <p>
-                                        <input type="radio" name="savelabeloption" id="replacelabel">
-                                        <label for="replacelabel"><?php eT('Replace existing label set'); ?>
-                                    </p>
-                                </div>
-
-                                <div class="modal-footer button-list">
-                                    <button id='btnsave' class='btn btn-default' type='button'><?php eT('Save'); ?></button>
-                                    <button class='btn btn-warning' id='btnlacancel' type='button'  data-dismiss="modal"><?php eT('Cancel'); ?></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Confirm labelset replacement -->
-                    <div class="modal fade" id="dialog-confirm-replaceModal" tabindex="-1" role="dialog" aria-labelledby="dialog-confirm-replaceModal">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
-                                    <h4 class="modal-title">
-                                        <?php eT('Replace label set?'); ?>
-                                    </h4>
-                                </div>
-
-                                <div class="modal-body">
-                                    <p>
-                                        <span id='strReplaceMessage'></span>
-                                    </p>
-                                </div>
-
-                                <div class="modal-footer button-list">
-                                    <button class='btn btn-default' id='btnlconfirmreplace' type='button' data-dismiss="modal"  ><?php eT('OK'); ?></button>
-                                    <button class='btn btn-warning' id='btnlacancel' type='button'  data-dismiss="modal"><?php eT('Cancel'); ?></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Modals -->
+                    <?php $this->renderPartial("./survey/Question/question_subviews/_modals", array()); ?>
 
                     <p>
                         <input type='submit' class="hidden" id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php eT("Save changes"); ?>' />
+                        <!-- For javascript -->
+                        <input
+                            type="hidden"
+                            id="add-input-javascript-datas"
+                            data-url="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowForAllLanguages/');?>"
+                            data-quickurl="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowQuickAdd/');?>"
+                            data-errormessage="An error occured while processing the ajax request."
+                            data-surveyid="<?php echo $surveyid;?>"
+                            data-gid="<?php echo $gid;?>"
+                            data-qid="<?php echo $qid;?>"
+                            data-scale-id="<?php echo $scale_id-1; // -1 : because it's incremented via <  ?>"
+                        />
                     </p>
 
                 </div>

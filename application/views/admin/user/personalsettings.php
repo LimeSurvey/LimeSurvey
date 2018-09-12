@@ -5,28 +5,65 @@
 ?>
 
 <div class="container-fluid welcome full-page-wrapper">
+    <?php echo CHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44 form-horizontal', 'id'=>'personalsettings','autocomplete'=>"off")); ?>
+    <h3 class="pagetitle"><?php eT("Your profile"); ?></h3>
+        <div class="form-group">
+            <?php echo CHtml::label(gT("User name:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+             <div class="col-sm-3">
+                <?php echo CHtml::textField('username', $sUsername,array('class'=>'form-control','readonly'=>'readonly')); ?>
+             </div>
+             <div class="col-sm-3">
+                <span class='text-info'><?php eT("The user name cannot be changed."); ?></span>
+             </div>
+        </div>
+        <div class="form-group">
+            <?php echo CHtml::label(gT("Email:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+             <div class="col-sm-3">
+                <?php echo CHtml::emailField('email', $sEmailAdress,array('class'=>'form-control','maxlength'=>254)); ?>
+             </div>
+        </div>
+        <div class="form-group">
+            <?php echo CHtml::label(gT("Full name:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+             <div class="col-sm-3">
+                <?php echo CHtml::textField('fullname', $sFullname ,array('class'=>'form-control','maxlength'=>50)); ?>
+             </div>
+        </div>
+        <div class="form-group">
+            <?php echo CHtml::label(gT("Password:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+             <div class="col-sm-3">
+                <?php echo CHtml::passwordField('password', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+             </div>
+        </div>
+        <div class="form-group">
+            <?php echo CHtml::label(gT("Repeat password:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+             <div class="col-sm-3">
+                <?php echo CHtml::passwordField('repeatpassword', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+             </div>
+        </div>
+    <!-- form -->
     <h3 class="pagetitle"><?php eT("Your personal settings"); ?></h3>
 
     <!-- form -->
-    <?php echo CHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44 form-horizontal', 'id'=>'personalsettings')); ?>
 
         <!-- Interface language -->
         <div class="form-group">
             <?php echo CHtml::label(gT("Interface language:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
-             <div class="col-sm-3">
-                <select id='lang' name='lang' class="form-control">
-                    <option value='auto'<?php if ($sSavedLanguage == 'auto') { echo " selected='selected'"; } ?>>
-                        <?php eT("(Autodetect)"); ?>
-                    </option>
-                    <?php foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind)
-                    { ?>
-                    <option value='<?php echo $langkey; ?>'<?php if ($langkey == $sSavedLanguage) {
-                        echo " selected='selected'";
-                    } ?>>
-                    <?php echo $languagekind['nativedescription']; ?> - <?php echo $languagekind['description']; ?>
-                    </option>
-                <?php } ?>
-                </select>
+            <div class="col-sm-3">
+                <?php
+                $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                    'asDropDownList' => true,
+                    'name' => 'lang',
+                    'data' => $aLanguageData,
+                    'pluginOptions' => array(
+                        'htmlOptions' => array(
+                            'id' => 'lang',
+                           'class'=> "form-control"
+                        )
+                    ),
+                    'value' => $sSavedLanguage
+                ));
+
+                ?>
             </div>
         </div>
 
@@ -36,10 +73,10 @@
             <div class="col-sm-3">
                 <?php
                     echo CHtml::dropDownList('htmleditormode', Yii::app()->session['htmleditormode'], array(
-                        'default' => gT("Default"),
-                        'inline' => gT("Inline HTML editor"),
-                        'popup' => gT("Popup HTML editor"),
-                        'none' => gT("No HTML editor")
+                        'default' => gT("Default",'unescaped'),
+                        'inline' => gT("Inline HTML editor",'unescaped'),
+                        'popup' => gT("Popup HTML editor",'unescaped'),
+                        'none' => gT("No HTML editor",'unescaped')
                     ), array('class'=>"form-control"));
                 ?>
             </div>
@@ -51,9 +88,9 @@
             <div class="col-sm-3">
                 <?php
                 echo CHtml::dropDownList('questionselectormode', Yii::app()->session['questionselectormode'], array(
-                    'default' => gT("Default"),
-                    'full' => gT("Full selector"),
-                    'none' => gT("Simple selector")
+                    'default' => gT("Default",'unescaped'),
+                    'full' => gT("Full selector",'unescaped'),
+                    'none' => gT("Simple selector",'unescaped')
                 ), array('class'=>"form-control"));
                 ?>
             </div>
@@ -97,7 +134,7 @@
         <!-- Buttons -->
         <p>
             <?php echo CHtml::hiddenField('action', 'savepersonalsettings'); ?>
-            <?php echo CHtml::submitButton(gT("Save settings"),array('class' => 'hidden')); ?>
+            <?php echo CHtml::submitButton(gT("Save settings",'unescaped'),array('class' => 'hidden')); ?>
         </p>
     <?php echo CHtml::endForm(); ?>
 </div>

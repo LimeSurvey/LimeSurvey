@@ -33,8 +33,7 @@ class translate extends Survey_Common_Action {
             echo $this->translate_google_api();
             return;
         }
-
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'translation.js' ));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'translation.js');
 
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
         $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -87,11 +86,14 @@ class translate extends Survey_Common_Action {
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
+            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
         $this->_renderWrappedTemplate('translate', $aViewUrls, $aData);
     }
 
+    /**
+     * @param string[] $tab_names
+     */
     private function _translateSave($iSurveyID, $tolang, $baselang, $tab_names)
     {
         $tab_names_full = $tab_names;
@@ -131,6 +133,9 @@ class translate extends Survey_Common_Action {
         } // end foreach
     }
 
+    /**
+     * @param string[] $tab_names
+     */
     private function _displayUntranslatedFields($iSurveyID, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc)
     {
         $aData['surveyid'] = $iSurveyID;
@@ -251,8 +256,6 @@ class translate extends Survey_Common_Action {
     * @param string $iSurveyID The survey ID
     * @param string $survey_title
     * @param string $tolang
-    * @param string $activated
-    * @param string $scriptname
     * @return string
     */
     private function showTranslateAdminmenu($iSurveyID, $survey_title, $tolang)
@@ -286,7 +289,7 @@ class translate extends Survey_Common_Action {
         $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->defaultlanguage->attributes);
 
         $surveyinfo = array_map('flattenText', $surveyinfo);
-        $menutext = ( $surveyinfo['active'] == "N" ) ? gT("Test this survey") : gT("Execute this survey");
+        $menutext = ( $surveyinfo['active'] == "N" ) ? gT("Preview survey") : gT("Execute survey");
 
         if ( count($langs) == 0 )
         {
@@ -412,13 +415,7 @@ class translate extends Survey_Common_Action {
     /**
     * setupTranslateFields() creates a customised array with database query
     * information for use by survey translation
-    * @param string $iSurveyID Survey id
     * @param string $type Type of database field that is being translated, e.g. title, question, etc.
-    * @param string $baselang The source translation language code, e.g. "En"
-    * @param string $tolang The target translation language code, e.g. "De"
-    * @param string $new The new value of the translated string
-    * @param string $id1 An index variable used in the database select and update query
-    * @param string $id2 An index variable used in the database select and update query
     * @return array
     */
     private function setupTranslateFields($type)
@@ -733,6 +730,10 @@ class translate extends Survey_Common_Action {
         return $aData;
     }
 
+    /**
+     * @param string $action
+     * @param string $type
+     */
     private function query($type, $action, $iSurveyID, $tolang, $baselang, $id1 = "", $id2 = "", $iScaleID="", $new = "")
     {
         $amTypeOptions = array();
@@ -821,6 +822,7 @@ class translate extends Survey_Common_Action {
     * displayTranslateFieldsHeader() Formats and displays header of translation fields table
     * @param string $baselangdesc The source translation language, e.g. "English"
     * @param string $tolangdesc The target translation language, e.g. "German"
+    * @param string $type
     * @return string $translateoutput
     */
     private function displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type)
@@ -931,6 +933,9 @@ class translate extends Survey_Common_Action {
         return $translateoutput;
     }
 
+    /**
+     * @param string[] $aData
+     */
     private function _loadEditor($htmleditor, $aData)
     {
         $editor_function = "";
@@ -952,7 +957,7 @@ class translate extends Survey_Common_Action {
     * calc_nrows($subject) calculates the vertical size of textbox for survey translation.
     * The function adds the number of line breaks <br /> to the number of times a string wrap occurs.
     * @param string $subject The text string that is being translated
-    * @return integer
+    * @return double
     */
     private function calc_nrows( $subject )
     {
@@ -983,6 +988,9 @@ class translate extends Survey_Common_Action {
     /**
     * menuItem() creates a menu item with text and image in the admin screen menus
     * @param string $jsMenuText
+    * @param string $menuImageText
+    * @param string $menuIconClasses
+    * @param string $scriptname
     * @return string
     */
     private function menuItem( $jsMenuText, $menuImageText, $menuIconClasses, $scriptname)

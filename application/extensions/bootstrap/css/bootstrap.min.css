@@ -1,7 +1,6 @@
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 
 html {
-  font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -255,7 +254,6 @@ html {
   font-size: 62.5%;
 }
 body {
-  font-family: Roboto;
   font-size: 14px;
   line-height: 1.428571429;
 }
@@ -263,7 +261,6 @@ input,
 button,
 select,
 textarea {
-  font-family: Roboto;
   font-size: inherit;
   line-height: inherit;
 }
@@ -313,7 +310,6 @@ img {
 hr {
   margin-top: 20px;
   margin-bottom: 20px;
-  border: 0;
 }
 .sr-only {
   position: absolute;
@@ -337,7 +333,6 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: Roboto;
   font-weight: 500;
   line-height: 1.1;
   color: inherit;
@@ -598,7 +593,6 @@ code,
 kbd,
 pre,
 samp {
-  font-family: Roboto Mono;
 }
 code {
   padding: 2px 4px;
@@ -3423,7 +3417,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   display: inline-block;
 }
 .breadcrumb > li + li:before {
-  content: "\00a0";
+  content: ">";
   padding: 0 5px;
 }
 .pagination {
@@ -4357,7 +4351,6 @@ button.close {
   text-align: center;
 }
 .carousel-control.left {
-  background-repeat: repeat-x;
 }
 .carousel-control.right {
   left: auto;

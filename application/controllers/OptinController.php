@@ -33,7 +33,7 @@ class OptinController extends LSYii_Controller {
         $sLanguageCode = $langcode;
         $iSurveyID = $surveyid;
         $sToken = $token;
-        $sToken = sanitize_token($sToken);
+        $sToken = Token::sanitizeToken($sToken);
 
         if (!$iSurveyID)
         {
@@ -88,27 +88,28 @@ class OptinController extends LSYii_Controller {
             }
         }
 
-        //PRINT COMPLETED PAGE
-        if (!$aSurveyInfo['templatedir'])
-        {
-            $sTemplate=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
-        }
-        else
-        {
-            $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
-        }
-        $this->_renderHtml($sMessage,$sTemplate,$aSurveyInfo);
+        $this->_renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
     }
 
-    private function _renderHtml($html,$thistpl, $aSurveyInfo)
+    /**
+     * Render stuff
+     *
+     * @param string $html
+     * @param array $aSurveyInfo
+     * @param int $iSurveyID
+     * @return void
+     */
+    private function _renderHtml($html, $aSurveyInfo, $iSurveyID)
     {
         sendCacheHeaders();
         doHeader();
         $aSupportData=array('thissurvey'=>$aSurveyInfo);
 
-        // $oTemplate is a global variable defined in controller/survey/index
-        global $oTemplate;
-        $sTemplatePath = $oTemplate->path;
+        $oTemplate = Template::model()->getInstance(null, $iSurveyID);
+        if($oTemplate->cssFramework == 'bootstrap')
+        {
+            App()->bootstrap->register();
+        }
         $thistpl = $oTemplate->viewPath;
 
         echo templatereplace(file_get_contents($thistpl.'startpage.pstpl'),array(), $aSupportData);

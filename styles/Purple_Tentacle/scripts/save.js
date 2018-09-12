@@ -1,11 +1,31 @@
+var formSubmitting = false;
 $(document).ready(function(){
 
-
+/** These buttons are in global settings */
 if ($('#save-form-button').length>0){
-    $("#save-form-button").on('click', function(){
+    $("#save-form-button").on('click', function(ev){
+        ev.preventDefault();
         var formid = '#'+$(this).attr('data-form-id');
         $form = $(formid);
         //alert($form.find('[type="submit"]').attr('id'));
+        $form.find('[type="submit"]').trigger('click');
+        return false;
+    });
+}
+if ($('#save-and-close-form-button').length>0){
+    $('#save-and-close-form-button').on('click', function(ev){
+        ev.preventDefault();
+        var formid = '#'+$(this).attr('data-form-id');
+        $form = $(formid);
+
+        // Add input to tell us to not redirect
+        // TODO : change that
+        $('<input type="hidden">').attr({
+            name: 'saveandclose',
+            value: '1'
+        }).appendTo($form);
+
+
         $form.find('[type="submit"]').trigger('click');
         return false;
     });
@@ -37,24 +57,26 @@ var getForm = function (that) {
 };
 
 if ($('#save-button').length > 0){
-    $('#save-button').on('click', function()
+    $('#save-button').on('click', function(ev)
     {
-        console.log('ok');
+        ev.preventDefault();
         var $form = getForm(this);
         closeAfterSaveInput.val("false");
         $form.append(closeAfterSaveInput);
+        formSubmitting = true;
         $form.find('[type="submit"]').first().trigger('click');
     });
 }
 
 // Save-and-close button
 if ($('#save-and-close-button').length > 0){
-    $('#save-and-close-button').on('click', function()
+    $('#save-and-close-button').on('click', function(ev)
     {
+        ev.preventDefault();
         var $form = getForm(this);
         closeAfterSaveInput.val("true");
         $form.append(closeAfterSaveInput);
-        //$form.submit();
+        formSubmitting = true;
         $form.find('[type="submit"]').first().trigger('click');
     });
 }

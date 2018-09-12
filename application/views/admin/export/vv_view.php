@@ -1,38 +1,121 @@
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Export a VV survey file");?></h3>
         <div class="row">
-            <div class="col-lg-12 content-right">
-                
+            <div class="col-sm-6 content-right">
 
-<?php echo CHtml::form(array("admin/export/sa/vvexport/surveyid/{$surveyid}"), 'post', array('id'=>'vvexport'));?>
+                <?php echo CHtml::form(array("admin/export/sa/vvexport/surveyid/{$surveyid}"), 'post', array('id'=>'vvexport', 'class'=>'form-horizontal'));?>
 
-    <ul class="list-unstyled">
-        <li>
-            <label for='surveyid'><?php eT("Export survey");?>:</label>
-            <?php echo CHtml::textField('surveyid', $surveyid,array('size'=>10, 'readonly'=>'readonly')); ?>
-        </li>
-        <li>
-            <label for='completionstate'><?php eT("Export");?>:</label>
-            <?php  echo CHtml::dropDownList('completionstate', $selectincansstate, array(
-                    'complete' => gT("Completed responses only"), 
-                    'all' => gT("All responses"),
-                    'incomplete' => gT("Incomplete responses only"),
-                    ), array('class'=>'form-control')); ?>
-        </li>
-        <li>
-            <label for='extension' title='<?php eT("For easy opening in MS Excel, change the extension to 'tab' or 'txt'");?>'><?php eT("File extension");?>: </label>
-            <?php echo CHtml::textField('extension', 'csv',array('size'=>3)); ?>
-        </li>
-        <li>
-            <label for='vvversion' title='<?php eT("If you want to import survey on old installation or if your survey have problem: use old version (automatically selected if some code are duplicated).");?>'><?php eT("VV export version");?>: </label>
-            <?php  echo CHtml::dropDownList('vvversion', $vvversionseleted, array(
-                '2' => gT("Last VV version"), 
-                '1' => gT("Old VV version"),
-                ), array('class'=>'form-control'));; ?>
-        <li>
-    </ul>
+                <div class="panel panel-primary" id="pannel-1" style="opacity: 1; top: 0px;">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <?php eT("Export survey");?>
+                        </h4>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="surveyid" class="col-sm-2 control-label">
+                                <?php eT("Survey ID:");?>
+                            </label>
+                            <div class="col-sm-4">
+                                <?php echo CHtml::textField('surveyid', $surveyid, array('size'=>10, 'readonly'=>'readonly', 'class'=>'form-control')); ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="completionstate" class="col-sm-2 control-label">
+                                <?php eT("Export:");?>
+                            </label>
+                            <div class="col-sm-8">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default">
+                                        <input
+                                            name="completionstate"
+                                            value="complete"
+                                            type="radio"
+                                            id="completionstate-complete"
+                                        />
+                                        <?php eT("Completed responses only");?>
+                                    </label>
+
+                                    <label class="btn btn-default active">
+                                        <input
+                                            name="completionstate"
+                                            value="all"
+                                            type="radio"
+                                            checked='checked'
+                                            id="completionstate-all"
+                                            autofocus="true"
+                                        />
+                                        <?php eT("All responses");?>
+                                    </label>
+
+                                    <label class="btn btn-default">
+                                        <input
+                                            name="completionstate"
+                                            value="incomplete"
+                                            type="radio"
+                                            id="completionstate-incomplete"
+                                        />
+                                        <?php eT("Incomplete responses only");?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary" id="pannel-1" style="opacity: 1; top: 0px;">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <?php eT("Format");?>
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="extension" class="col-sm-2 control-label" data-toggle="tooltip" data-placement="right" title='<?php eT("For easy opening in MS Excel, change the extension to 'tab' or 'txt'");?>'>
+                                <?php eT("File extension:");?>
+                            </label>
+                            <div class="col-sm-4">
+                                <?php echo CHtml::textField('extension', 'csv',array('size'=>3, 'class'=>'form-control')); ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vvversion" class="col-sm-2 control-label"  data-toggle="tooltip" data-placement="right" title='<?php eT("If you want to import survey on old installation or if your survey have problem: use old version (automatically selected if some code are duplicated).");?>' >
+                                <?php eT("VV export version:");?>
+                            </label>
+                            <div class="col-sm-4">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default">
+                                        <input
+                                            name="vvversion"
+                                            value="2"
+                                            type="radio"
+                                            id="vvversion-last"
+                                            checked='checked'
+                                            autofocus="true"
+                                        />
+                                        <?php eT("Last VV version");?>
+                                    </label>
+
+                                    <label class="btn btn-default">
+                                        <input
+                                            name="vvversion"
+                                            value="1"
+                                            type="radio"
+                                            id="vvversion-old"
+                                        />
+                                        <?php eT("Old VV version");?>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
     <p>
-        <?php echo CHtml::submitButton(gT('Export results'), array('class'=>'btn btn-default hidden')); ?>
+        <?php echo CHtml::submitButton(gT('Export results','unescaped'), array('class'=>'btn btn-default hidden')); ?>
         <?php echo CHtml::hiddenField('subaction','export'); ?>
     </p>
 <form>

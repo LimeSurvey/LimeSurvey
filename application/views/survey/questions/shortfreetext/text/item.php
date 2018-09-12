@@ -14,28 +14,38 @@
  */
 ?>
 
-<p class="question answer-item text-item <?php echo $extraclass; ?>">
+<div class="question answer-item text-item <?php echo $extraclass; ?> form-horizontal short-free-text">
 
-    <!-- Label -->
-    <label for='answer<?php echo $name; ?>' class='hide label'>
-        <?php eT('Your answer'); ?>
-    </label>
+    <div class='form-group'>
 
-    <!-- Prefix -->
-    <?php echo $prefix; ?>
+        <!-- Label -->
+        <label class='control-label col-xs-12 col-sm-2 hide label' for='answer<?php echo $name; ?>' >
+            <?php eT('Your answer'); ?>
+        </label>
 
-    <!-- Input -->
-    <input
-        class="text <?php echo $kpclass;?>"
-        type="text"
-        size="<?php echo $tiwidth; ?>"
-        name="<?php echo $name; ?>"
-        id="answer<?php echo $name;?>"
-        value="<?php echo $dispVal; ?>"
-        <?php echo $maxlength; ?>
-        onkeyup="<?php echo $checkconditionFunction; ?>"
-    />
+        <!-- Prefix -->
+        <?php if ($prefix !== ''): ?>
+            <span class='col-xs-12 col-sm-2 prefix-text-right prefix'><?php echo $prefix; ?></span>
+        <?php endif; ?>
 
-    <!-- Suffix -->
-    <?php echo $suffix; ?>
-</p>
+        <!-- Input -->
+        <div class='col-xs-12 col-sm-<?php echo max($sm_col - 5, 6); ?>'>
+            <input
+                class="form-control text <?php echo $kpclass;?>"
+                type="text"
+                size="<?php echo $tiwidth; ?>"
+                name="<?php echo $name; ?>"
+                id="answer<?php echo $name;?>"
+                value="<?php echo $dispVal; ?>"
+                <?php echo $maxlength; ?>
+                onkeyup="<?php echo $checkconditionFunction; ?>"
+            />
+        </div>
+
+        <!-- Suffix -->
+        <?php if ($suffix !== ''): ?>
+            <span class='col-xs-12 col-sm-2 text-left suffix'><?php echo $suffix; ?></span>
+        <?php endif; ?>
+
+    </div>
+</div>

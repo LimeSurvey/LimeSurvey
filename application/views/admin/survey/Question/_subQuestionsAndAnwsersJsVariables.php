@@ -33,6 +33,8 @@
         var newansweroption_text    = '<?php eT('New answer option','js'); ?>';
         var quickaddtitle           = '<?php eT('Quick-add answers','js'); ?>';
         var strCantDeleteLastAnswer = '<?php eT('You cannot delete the last answer option.','js'); ?>';
+        var duplicatesubquestioncode = '<?php eT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
+        var clickToExpand           = '<?php eT('Click to expand'); ?>';
     </script>
 <?php elseif($viewType=='answerOptions'):?>
     <script>
@@ -46,6 +48,7 @@
         var duplicateanswercode     = '<?php eT('Error: You are trying to use duplicate answer codes.','js'); ?>';
         var sAssessmentValue        = '<?php eT('Assessment value','js'); ?>';
         var scalecount              = <?php echo $scalecount; ?>;
+
     </script>
 <?php endif; ?>
 

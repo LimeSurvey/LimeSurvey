@@ -11,13 +11,11 @@
  * @param {number} qId The qid of the question where apply.
  */
 function doNumericSlider(qID,jsonOptions) {
-    
-    console.log('doNumericSlider');
+
     var slider_list=$("#question"+qID+" .slider-list");
     var havevalue,startvalue;
     if(slider_list)
     {
-        console.log('slider_list for question : '+qID);
         // Remove not needed tips
         $("#question"+qID+" .em_value_range").remove();
         // Construction of HTML
@@ -32,11 +30,8 @@ function doNumericSlider(qID,jsonOptions) {
         var htmlSliderResest=((jsonOptions.slider_reset==1)? "<a id='slider-reset-myfname' class='slider-reset' title='"+jsonOptions.lang.reset+"'>"+jsonOptions.lang.reset+"</a>\n" : "");
         // Replace each input by the slider
         $("#question"+qID).find('.slider-list').find('.answer-item').each(function(){
-            //console.log('for each question children');
             var thisinput=$(this).find(".input").find('input.text').first();
-            //console.log(thisinput);
             var myfname=$(thisinput).attr('name');
-            //console.log('myfname: '+myfname);
             if($(thisinput).attr('value'))
             {
                 var actualval=$(thisinput).attr('value').replace(LSvar.sLEMradix,".");
@@ -58,7 +53,6 @@ function doNumericSlider(qID,jsonOptions) {
             $(htmlSlider.replace(/myfname/g,myfname)).insertAfter($(this).find(".input"));
             $(htmlSliderResest.replace(/myfname/g,myfname)).appendTo($(this));
             // Launch slider (http://api.jqueryui.com/slider/)
-            console.log("#container-"+myfname);
             $("#container-"+myfname).slider({
                 value:startvalue,
                 min: parseFloat(jsonOptions.slider_min),

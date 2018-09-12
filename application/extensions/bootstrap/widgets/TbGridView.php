@@ -83,12 +83,15 @@ class TbGridView extends CGridView
      */
     protected function createDataColumn($text)
     {
-        if (!preg_match('/^([\w\.]+)(:(\w*))?(:(.*))?$/', $text, $matches)) {
+        if (!preg_match('/^([a-zA-Z0-9_#\.]+)(:([a-zA-Z0-9_#]*))?(:(.*))?$/', $text, $matches)) {
+            var_dump($text); var_dump($matches);
+            die('TbGridView exception');
             throw new CException(Yii::t(
                 'zii',
                 'The column must be specified in the format of "Name:Type:Label", where "Type" and "Label" are optional.'
             ));
         }
+
         $column = new TbDataColumn($this);
         $column->name = $matches[1];
         if (isset($matches[3]) && $matches[3] !== '') {

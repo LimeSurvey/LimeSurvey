@@ -6,16 +6,55 @@
             <div class='form-group'>
                 <label for='showtextinline' class="col-sm-5 control-label" ><?php eT("Show text responses inline:") ?></label>
                 <div class='col-sm-1'>
-                    <input type='checkbox' id='showtextinline' name='showtextinline' <?php if(isset($showtextinline) && $showtextinline == 1) {echo "checked='checked'"; } ?> />
+                    <?php $sShowtextinline = (int) Yii::app()->request->getPost('showtextinline');?>
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'showtextinline', 'id'=>'showtextinline', 'value'=>$sShowtextinline, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                 </div>
             </div>
 
             <div class='form-group'>
-                <label for='usegraph'  class="col-sm-5 control-label" ><?php eT("Show graphs"); ?></label>
+                <label for='usegraph'  class="col-sm-5 control-label" ><?php eT("Show graphs:"); ?></label>
                 <div class='col-sm-1'>
-                    <input type='checkbox' id='usegraph' name='usegraph' <?php if (isset($usegraph) && $usegraph == 1) { echo "checked='checked'"; } ?> />
+                    <?php $sUsegraph = (int) Yii::app()->request->getPost('usegraph');?>
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'usegraph', 'id'=>'usegraph', 'value'=>$sUsegraph, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                 </div>
                 <?php if($error != '') { echo "<div id='grapherror' style='display:none'>$error<hr /></div>"; } ?>
+            </div>
+
+
+            <div class='form-group'>
+                <label for='stats_columns' class="col-sm-5 control-label" ><?php eT("Number of columns:") ?></label>
+                <div class="btn-group hidden-sm hidden-xs  pull-left" data-toggle="buttons">
+                    <label class="btn btn-default">
+                        <input name="stats_columns" value="1" type="radio" class="selected" >
+                        <?php eT('One');?>
+                    </label>
+                    <label class="btn btn-default active">
+                        <input name="stats_columns" value="2" type="radio" checked>
+                        <?php eT('Two');?>
+                    </label>
+                    <label class="btn btn-default">
+                        <input name="stats_columns" value="3" class="active" type="radio">
+                        <?php eT('Three');?>
+                    </label>
+                </div>
+            </div>
+
+            <div class='form-group'>
+                <label for='graph_labels' class="col-sm-5 control-label" ><?php eT("Graph labels:") ?></label>
+                <div class="btn-group hidden-sm hidden-xs  pull-left" data-toggle="buttons">
+                    <label class="btn btn-default active">
+                        <input name="graph_labels" value="qcode" type="radio" checked>
+                        <?php eT('Question code');?>
+                    </label>
+                    <label class="btn btn-default">
+                        <input name="graph_labels" value="qtext" type="radio">
+                        <?php eT('Question text');?>
+                    </label>
+                    <label class="btn btn-default">
+                        <input name="graph_labels" value="both" class="active" type="radio">
+                        <?php eT('Both');?>
+                    </label>
+                </div>
             </div>
 
             <div class="form-group col-sm-12">
@@ -23,7 +62,7 @@
                     <button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close"><span>×</span></button>
                     <?php eT("Each question has its own graph type defined in its advanced settings.");?>
                     <br/>
-                    <?php eT("With chart type selector, you can force the use of graph type for all selected questions)");?>
+                    <?php eT("Using the chart type selector you can force the graph type for all selected questions.");?>
                 </div>
             </div>
 
@@ -34,13 +73,13 @@
 
                 <div class='col-sm-5'>
                     <select name="charttype" id='charttype' class="form-control">
-                        <option value="default" selected="selected"><?php eT('as defined in questions\'s advanced setting');?></option>
-                        <option value="0" ><?php eT('bar chart');?></option>
-                        <option value="1"><?php eT('pie chart');?></option>
-                        <option value="2"><?php eT('radar chart');?></option>
-                        <option value="3"><?php eT('line chart');?></option>
-                        <option value="4"><?php eT('polar chart');?></option>
-                        <option value="5"><?php eT('doughnut chart');?></option>
+                        <option value="default" selected="selected"><?php eT("As defined in question settings");?></option>
+                        <option value="0"><?php eT('Bar chart');?></option>
+                        <option value="1"><?php eT('Pie chart');?></option>
+                        <option value="2"><?php eT('Radar chart');?></option>
+                        <option value="3"><?php eT('Line chart');?></option>
+                        <option value="4"><?php eT('Polar chart');?></option>
+                        <option value="5"><?php eT('Doughnut chart');?></option>
                     </select>
                 </div>
             </div>

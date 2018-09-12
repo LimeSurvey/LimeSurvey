@@ -30,13 +30,16 @@
                 <input type='hidden' name='action' value='modlabelsetanswers' />
 
                 <!-- tab content -->
-                <?php $this->renderPartial("./labels/_labelviewtabcontent_view", array('lslanguages'=>$lslanguages, 'results'=>$results)); ?>
+                <?php $this->renderPartial("./labels/_labelviewtabcontent_view", array('lslanguages'=>$lslanguages, 'results'=>$results, 'action' => $action)); ?>
             </form>
         </div>
 
         <!-- Right content -->
         <div class="col-sm-4">
+        <?php if(Permission::model()->hasGlobalPermission('labelsets','edit'))
+        { ?>
             <?php $this->renderPartial("./labels/_labelviewrightcontent_view", array('lid'=>$lid)); ?>
+        <?php }; ?>
         </div>
     </div>
 </div>

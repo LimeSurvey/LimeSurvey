@@ -1,5 +1,6 @@
 .star-rating{
-    background: url("img/stars.png") no-repeat scroll 0 0 transparent;
+    font-size: 24px;
+    line-height:36px;
     cursor: pointer;
     display: block;
     float: left;
@@ -7,21 +8,46 @@
     overflow: hidden;
     width: 36px;
 }
-.star-cancel{background-position:0 0;}
-.star-cancel.star-drained{background-position:0 0;}
-.star-cancel.star-hover{background-position:0 -36px;}
-.star-1{background-position:-36px 0}
-.star-1.star-rated-on{background-position:-36px -72px}
-.star-1.star-drained{background-position:-36px -36px}
-.star-2{background-position:-72px 0}
-.star-2.star-rated-on{background-position:-72px -72px}
-.star-2.star-drained{background-position:-72px -36px}
-.star-3{background-position:-108px 0}
-.star-3.star-rated-on{background-position:-108px -72px}
-.star-3.star-drained{background-position:-108px -36px}
-.star-4{background-position:-144px 0}
-.star-4.star-rated-on{background-position:-144px -72px}
-.star-4.star-drained{background-position:-144px -36px}
-.star-5{background-position:-180px 0}
-.star-5.star-rated-on{background-position:-180px -72px}
-.star-5.star-drained{background-position:-180px -36px}
+.star-cancel{color: #727272;}
+.star-cancel.star-drained{color: #932424}
+.star-cancel.star-hover{color: #a12424; text-shadow: 1px 0 #a12424;}
+.star-1{color: #797979}
+.star-1.star-rated-on:not(.star-stub){color: hsl(66, 80%, 50%)}
+.star-1.star-drained{color: hsl(66, 80%, 65%)}
+.star-1.star-drained.star-hover{text-shadow: 1px 2px hsl(66, 80%, 65%);}
+.star-2{color: #868686}
+.star-2.star-rated-on:not(.star-stub){color: hsl(60,80%,50%)}
+.star-2.star-drained{color: hsl(60,60%,65%)}
+.star-2.star-drained.star-hover{text-shadow: 1px 2px hsl(60,60%,65%);}
+.star-3{color: #929292}
+.star-3.star-rated-on:not(.star-stub){color: hsl(54,80%,50%)}
+.star-3.star-drained{color: hsl(54,60%,65%)}
+.star-3.star-drained.star-hover{text-shadow: 1px 2px hsl(54,60%,65%);}
+.star-4{color: #989898}
+.star-4.star-rated-on:not(.star-stub){color: hsl(48,80%,50%)}
+.star-4.star-drained{color: hsl(48,60%,65%)}
+.star-4.star-drained.star-hover{text-shadow: 1px 2px hsl(48,60%,65%);}
+.star-5{color: #a4a4a4}
+.star-5.star-rated-on:not(.star-stub){color: hsl(42,80%,50%)}
+.star-5.star-drained{color: hsl(42,60%,65%)}
+.star-5.star-drained.star-hover{text-shadow: 1px 2px hsl(42,60%,65%);}
+.star-6{color: #b0b0b0}
+.star-6.star-rated-on:not(.star-stub){color: hsl(36,80%,50%)}
+.star-6.star-drained{color: hsl(36,60%,65%)}
+.star-6.star-drained.star-hover{text-shadow: 1px 2px hsl(36,60%,65%);}
+.star-7{color: #b6b6b6}
+.star-7.star-rated-on:not(.star-stub){color: hsl(30,80%,50%)}
+.star-7.star-drained{color: hsl(30,60%,65%)}
+.star-7.star-drained.star-hover{text-shadow: 1px 2px hsl(30,60%,65%);}
+.star-8{color: #c2c2c2}
+.star-8.star-rated-on:not(.star-stub){color: hsl(24,80%,50%)}
+.star-8.star-drained{color: hsl(24,60%,65%)}
+.star-8.star-drained.star-hover{text-shadow: 1px 2px hsl(24,60%,65%);}
+.star-9{color: #c8c8c8}
+.star-9.star-rated-on:not(.star-stub){color: hsl(18,80%,50%)}
+.star-9.star-drained{color: hsl(18,60%,65%)}
+.star-9.star-drained.star-hover{text-shadow: 1px 2px hsl(18,60%,65%);}
+.star-10{color: #d4d4d4}
+.star-10.star-rated-on:not(.star-stub){color: hsl(12,80%,50%)}
+.star-10.star-drained{color: hsl(12,60%,65%)}
+.star-10.star-drained.star-hover{text-shadow: 1px 2px hsl(12,60%,65%);}

@@ -43,4 +43,6 @@ function doRatingSlider(qID) {
   if(openValue){
     $('#question'+qID+' .slider-emoticon').attr('class', 'slider-emoticon slider-emoticon-'+openValue);
     }
+    
+    $('#question'+qID).find('.ui-slider-handle').css({left: 0});
 }

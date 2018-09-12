@@ -42,13 +42,13 @@ switch ($errorObject->error)
 
     case 'out_of_updates':
         $title = gT("Your update key has exceeded the maximum number updates!");
-        $message = gT("You should first renew this key before using it or try to enter a new one!");
+        $message = gT("Please buy a new one!");
         $buttons = 1;
         break;
 
     case 'expired':
         $title = gT("Your update key has expired!");
-        $message = gT("You should first renew this key before using it or try to enter a new one!");
+        $message = gT("Please buy a new one!");
         $buttons = 1;
         break;
 
@@ -146,7 +146,7 @@ switch ($errorObject->error)
 
 <?php if( $buttons == 1 ): ?>
         <a class="btn btn-default" href="https://www.limesurvey.org/en/" role="button" aria-disabled="false" target="_blank">
-            <?php eT("Renew this key"); ?>
+            <?php eT("Buy a new key"); ?>
         </a>
 
         <a class="btn btn-default" href="<?php echo $urlNew;?>" role="button" aria-disabled="false">

@@ -4,12 +4,10 @@
  */
 ?>
 <script type="text/javascript">
-    var sMsgMaximumExcelColumns = '<?php eT("You can only choose 255 colums at a maximum for Excel export.",'js'); ?>';
-    var sMsgExcelColumnsReduced = '<?php eT("The number of selected columns was reduced automatically.",'js'); ?>';
     var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';
 </script>
 
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
         <?php eT("Export results");?>
         <?php
@@ -35,38 +33,36 @@
                                 </h4>
                             </div>
                             <div class="panel-body">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <?php $hasTips = false; ?>
-                                    <?php foreach ($exports as $key => $info): ?>
-                                        <?php if (!empty($info['label'])): ?>
-                                            <label class="btn btn-default <?php if($info['label']=='CSV'){ echo 'active';}?>">
-                                                <input
-                                                    name="type"
-                                                    value="<?php echo $key;?>"
-                                                    type="radio"
-                                                    <?php if($info['label']=='CSV'){ echo 'checked';}?>
-                                                    id="<?php echo $key;?>"
-                                                >
-                                                <?php echo $info['label'];?>
-                                                </label>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
+                                <div class="form-group">
+                                    <!-- Format -->
+                                    <label for='export_from' class="col-sm-2 control-label">
+                                        <?php eT("Export format:"); ?>
+                                    </label>
+                                    <div class="col-sm-4">
+                                        <?php foreach ($exports as $key => $info): ?>
+                                            <?php if (!empty($info['label'])): ?>
+                                                <div class="radio">
+                                                    <label><input type="radio" name="type" id="<?php echo $key;?>" value="<?php echo $key;?>" <?php if($info['label']=='CSV'){ echo 'checked';}?>><?php echo $info['label'];?></label>
+                                                </div>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                                </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
                         <!-- Range -->
                         <div class="panel panel-primary" id="pannel-2" <?php  if ($SingleResponse) { echo 'style="display:none"';} ?> >
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <?php eT("Range:");?>
+                                    <?php eT("Range");?>
                                 </h4>
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
 
                                     <!-- From -->
-                                    <label for='export_from' class="col-sm-1 control-label">
+                                    <label for='export_from' class="col-sm-2 control-label">
                                         <?php eT("From:"); ?>
                                     </label>
                                     <div class="col-sm-2">
@@ -92,7 +88,7 @@
                                             max="<?php echo $max_datasets; ?>"
                                             step="1"
                                             type="number"
-                                            value="6164"
+                                            value="<?php echo $max_datasets; ?>"
                                             name="export_to"
                                             id="export_to"
                                             class="form-control"
@@ -111,7 +107,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label for='completionstate' class="col-sm-4 control-label"><?php eT("Completion state");?></label>
+                                    <label for='completionstate' class="col-sm-4 control-label"><?php eT("Completion state:");?></label>
 
                                     <div class="col-sm-4">
                                         <select name='completionstate' id='completionstate' class='form-control'>
@@ -124,7 +120,7 @@
 
                                 <div class="form-group">
                                     <label for='exportlang' class="col-sm-4 control-label" >
-                                        <?php eT("Export language"); ?>
+                                        <?php eT("Export language:"); ?>
                                     </label>
                                     <div class='col-sm-4'>
                                         <?php echo CHtml::dropDownList('exportlang', null, $aLanguages, array('class'=>'form-control')); ?>
@@ -143,49 +139,52 @@
                             <div class="panel-body">
 
                                 <!-- Headers -->
-                                <div class="btn-group" data-toggle="buttons">
-                                    <?php foreach($headexports as $type=>$headexport):?>
-                                        <label class="btn btn-default <?php if($headexport['checked']=='checked'){ echo 'active';}?>">
-                                            <input
-                                                value="<?php echo $type; ?>"
-                                                id="headstyle-<?php echo $type; ?>"
-                                                type="radio"
-                                                name="headstyle-<?php echo $type; ?>"
-                                                <?php if($headexport['checked']=='checked'){ echo 'checked';} ?>
-                                            />
-                                            <?php echo $headexport['label'];?>
-                                        </label>
-                                    <?php endforeach; ?>
-                                    <br/><br/>
+                                <div class="form-group">
+                                    <div class="btn-group col-sm-12" data-toggle="buttons">
+                                        <?php foreach($headexports as $type=>$headexport):?>
+                                            <label class="btn btn-default <?php if($headexport['checked']=='checked'){ echo 'active';}?>">
+                                                <input
+                                                    value="<?php echo $type; ?>"
+                                                    id="headstyle-<?php echo $type; ?>"
+                                                    type="radio"
+                                                    name="headstyle"
+                                                    <?php if($headexport['checked']=='checked'){ echo 'checked';} ?>
+                                                />
+                                                <?php echo $headexport['label'];?>
+                                            </label>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
 
                                 <!-- Convert spaces -->
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label" for='headspacetounderscores'>
-                                        <?php eT("Convert spaces in question text to underscores"); ?>
+                                        <?php eT("Convert spaces in question text to underscores:"); ?>
                                     </label>
                                     <div class='col-sm-1'>
-                                        <input
-                                            type='checkbox'
-                                            id='headspacetounderscores'
-                                            name='headspacetounderscores'
-                                            value='1'
-                                        />
+                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => 'headspacetounderscores',
+                                            'id'=>'headspacetounderscores',
+                                            'value' => 0,
+                                            'onLabel'=>gT('On'),
+                                            'offLabel' => gT('Off')));
+                                        ?>
                                     </div>
                                 </div>
 
                                 <!-- Text abbreviated-->
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label" for='abbreviatedtext'>
-                                        <?php eT("Text abbreviated"); ?>
+                                        <?php eT("Text abbreviated:"); ?>
                                     </label>
                                     <div class='col-sm-1'>
-                                        <input
-                                            type='checkbox'
-                                            id='abbreviatedtext'
-                                            name='abbreviatedtext'
-                                            value='1'
-                                         />
+                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => 'abbreviatedtext',
+                                            'id'=>'abbreviatedtext',
+                                            'value' => 0,
+                                            'onLabel'=>gT('On'),
+                                            'offLabel' => gT('Off')));
+                                        ?>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -208,15 +207,16 @@
                                 <!-- Use Expression Manager code-->
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label" for='emcode'>
-                                        <?php eT("Use Expression Manager code"); ?>
+                                        <?php eT("Use Expression Manager code:"); ?>
                                     </label>
                                     <div class='col-sm-1'>
-                                        <input
-                                            type='checkbox'
-                                            id='emcode'
-                                            name='emcode'
-                                            value='1'
-                                         />
+                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => 'emcode',
+                                            'id'=>'emcode',
+                                            'value' => 0,
+                                            'onLabel'=>gT('On'),
+                                            'offLabel' => gT('Off')));
+                                        ?>
                                     </div>
                                 </div>
 
@@ -249,24 +249,24 @@
                             <div class="panel-body">
                                 <!-- Answer codes / Full answers -->
                                 <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default active">
+                                    <label class="btn btn-default">
                                         <input
                                             name="answers"
                                             value="short"
                                             type="radio"
-                                            checked='checked'
                                             id="answers-short"
-                                            autofocus="true"
                                         />
                                         <?php eT("Answer codes");?>
                                     </label>
 
-                                    <label class="btn btn-default">
+                                    <label class="btn btn-default active">
                                         <input
                                             name="answers"
                                             value="long"
                                             type="radio"
+                                            checked='checked'
                                             id="answers-long"
+                                            autofocus="true"
                                         />
                                         <?php eT("Full answers");?>
                                     </label>
@@ -275,11 +275,11 @@
                                 <!-- Responses  -->
                                 <div class="form-group">
                                     <br/>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
-                                    echo CHTML::label(gT("Convert Y to"),'converty');?>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
+                                    echo '&nbsp;'.CHTML::label(gT("Convert Y to:"),'converty');?>
                                     <?php echo CHTML::textField('convertyto','1',array('id'=>'convertyto','size'=>'3','maxlength'=>'1')); ?>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('convertn',false,array('value'=>'Y','id'=>'convertn'));
-                                    echo CHTML::label(gT("Convert N to"),'convertn');?>
+                                    echo '&nbsp;'.CHTML::label(gT("Convert N to:"),'convertn');?>
                                     <?php echo CHTML::textField('convertnto','2',array('id'=>'convertnto','size'=>'3','maxlength'=>'1')); ?>
                                 </div>
                             </div>
@@ -293,7 +293,7 @@
                         <div class="panel panel-primary" id="pannel-6">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <?php eT("Column control");?>
+                                    <?php eT("Columns");?>
                                 </h4>
                             </div>
                             <div class="panel-body">
@@ -301,12 +301,8 @@
                                 <?php if ($SingleResponse): ?>
                                     <input type='hidden' name='response_id' value="<?php echo $SingleResponse;?>" />
                                 <?php endif; ?>
-                                <div class="alert alert-warning alert-dismissible" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                                    <?php eT('Please note: The export to Excel is currently limited to loading no more than 255 columns.'); ?>
-                                </div>
                                 <label for='colselect' class="col-sm-3 control-label">
-                                    <?php eT("Choose columns:");?>
+                                    <?php eT("Select columns:");?>
                                 </label>
                                 <div class="col-sm-9">
                                 <?php
@@ -361,12 +357,3 @@
           <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
     </form>
 </div>
-
-<script type='text/javascript'>
-    $(document).ready(function() {
-        $("[name='headspacetounderscores']").bootstrapSwitch();
-        $("[name='abbreviatedtext']").bootstrapSwitch();
-        $("[name='emcode']").bootstrapSwitch();
-
-    });
-</script>

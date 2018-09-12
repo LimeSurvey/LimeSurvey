@@ -9,7 +9,7 @@
     // First we check if the server provided a specific HTML message
     if(isset($serverAnswer->html))
         if($serverAnswer->html != "")
-            echo $serverAnswer->html.'<br/>';
+            echo $serverAnswer->html;
 
     $bError = true;
 
@@ -28,7 +28,7 @@
             break;
 
         case 'no_update_available_for_your_version':
-			$bError = false;
+            $bError = false;
             $sTile = gT('Up to date!');
             $sHeader = gT('No update available for your version.');
             $sMessage = gT('Your version is up to date!');
@@ -40,6 +40,12 @@
             $sMessage = gT('Your version is not updatable via ComfortUpdate. Please update manually.');
             break;
 
+        case 'update_disable':
+            $sTile = gT('Error!');
+            $sHeader = gT('Not updatable!');
+            $sMessage = gT('comfortUpdate is disabled in your LimeSurvey configuration. Please contact your administrator for more informations.');
+            break;
+
         case 'no_build':
             $sTile = gT('Error!');
             $sHeader = gT('No build version found!');
@@ -49,8 +55,14 @@
         case 'not_updatable':
             $sTile = gT('Error!');
             $sHeader = gT('No build version found!');
-            $sMessage = gT("You disabled comfortUpdate in your configuration file.");
+            $sMessage = gT("You disabled ComfortUpdate in your configuration file.");
             break;
+
+        case 'maintenance':
+            $sTile = gT('Maintenance!');
+            $sHeader = gT('The ComfortUpdate service is currently undergoing maintenance.');
+            $sMessage = gT("Please have patience and retry in 30 minutes. Thank you for your understanding.");
+        break;
 
         default :
             $sTile = gT('Error!');
@@ -65,12 +77,12 @@
         <h2 class="<?php if($bError){echo 'text-danger';}else{echo 'text-success';} ?>"><?php echo $sTile; ?></h2>
         <p class="lead"><?php echo $sHeader; ?></p>
         <p><?php echo $sMessage; ?></p>
-	    <?php if(isset($sErrorCode)):?>
-    		<p>
-        		<?php echo $sErrorCode; ?>
-	        </p>
-    	<?php endif;?>
+        <?php if(isset($sErrorCode)):?>
+            <p>
+                <?php echo $sErrorCode; ?>
+            </p>
+        <?php endif;?>
         <p>
-            <a class="btn btn-lg btn-success" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
+            <a class="btn btn-lg btn-default" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
         </p>
 </div>

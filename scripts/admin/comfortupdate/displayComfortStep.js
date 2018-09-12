@@ -11,11 +11,6 @@ $.fn.displayComfortStep = function(options)
     $("#updaterLayout").show();
     $("#updaterContainer").show();
 
-
-
-
-
-
     // We need to know the destination build to resume any step
     $destinationBuild = $('#destinationBuildForAjax').val();
     $access_token =  $('#access_tokenForAjax').val();
@@ -47,7 +42,7 @@ $.fn.displayComfortStep = function(options)
 
     // Those datas are defined in _ajaxVariables view
     datas = 'destinationBuild=' + $destinationBuild + '&access_token=' + $access_token + '&'+csrf_token_name+'='+csrf_token;
-
+    console.log($url);
     $.ajax({
         type: "POST",
         data: datas,

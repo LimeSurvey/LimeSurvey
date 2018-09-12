@@ -11,7 +11,8 @@ abstract class Writer implements IWriter
     protected $sLanguageCode;
     protected $translator;
     public $filename;
-    
+    public $webfilename;
+
     protected function translate($key, $sLanguageCode)
     {
         return $this->translator->translate($key, $sLanguageCode);
@@ -30,10 +31,8 @@ abstract class Writer implements IWriter
     {
         $this->languageCode = $sLanguageCode;
         $this->translator = new Translator();
-        if ($oOptions->output == 'file') {
-            $sRandomFileName=Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
-            $this->filename = $sRandomFileName;
-        }
+        $this->filename = Yii::app()->getConfig("tempdir") . DIRECTORY_SEPARATOR . randomChars(40);
+        $this->webfilename = 'results-survey'.$oSurvey->id;
     }
 
     /**
@@ -93,7 +92,7 @@ abstract class Writer implements IWriter
 
     /**
     * Return the subquestion part, if not empty : add a space before it.
-    * 
+    *
     * @param Survey $oSurvey
     * @param FormattingOptions $oOptions
     * @param string $fieldName
@@ -114,7 +113,7 @@ abstract class Writer implements IWriter
 
     /**
     * Return the question text part without any subquestion
-    * 
+    *
     * @param Survey $oSurvey
     * @param FormattingOptions $oOptions
     * @param string $fieldName
@@ -210,7 +209,7 @@ abstract class Writer implements IWriter
     public function getShortAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName,$sValue)
     {
         return $this->transformResponseValue(
-                $sValue,
+                $oSurvey->getShortAnswer($fieldName, $sValue),
                 $oSurvey->fieldMap[$fieldName]['type'],
                 $oOptions,
                 $fieldName
@@ -300,7 +299,7 @@ abstract class Writer implements IWriter
         }
         //Output the results.
         $sFile='';
-        
+
         // If empty survey, prepare an empty responses array, and output just 1 empty record with header.
         if ($oSurvey->responses->rowCount == 0)
         {
@@ -310,7 +309,7 @@ abstract class Writer implements IWriter
              }
         	$this->outputRecord($headers, $elementArray, $oOptions);
         }
-        		
+
         // If no empty survey, render/export responses array.
         foreach($oSurvey->responses as $response)
         {

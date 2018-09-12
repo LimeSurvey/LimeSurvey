@@ -1,7 +1,14 @@
 #dialog-confirm { padding: 0 20px; float: left; width: 750px; }/* Used .*/
 
 /* Using display:table and hack for IE6/7 */
-.files-list{display:table;table-layout:fixed;width:100%;list-style:none;padding:0;margin:0;}
+.files-list {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    list-style: none;
+    padding: 1em;
+    margin: 0;
+}
 .file-element{display:table-row;width:100%;padding:0.5em 0;}
 .file-info fieldset{
 border:0 none;
@@ -108,4 +115,8 @@ text-align:left;
     color: #D8000C;
     background-color: #FFBABA;
     background-image: url('img/upload-error.png');
+}
+
+body.uploader {
+    padding: 1em;
 }

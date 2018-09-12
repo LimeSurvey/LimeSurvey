@@ -26,8 +26,8 @@ $(document).ready(function()
     doToolTipTable();
 
     if (typeof LEMsetTabIndexes === 'function') { LEMsetTabIndexes(); }
-	if (typeof checkconditions!='undefined') checkconditions();
-	if (typeof template_onload!='undefined') template_onload();
+    if (typeof checkconditions!='undefined') checkconditions();
+    if (typeof template_onload!='undefined') template_onload();
     if (typeof(focus_element) != 'undefined')
     {
         $(focus_element).focus();
@@ -36,34 +36,34 @@ $(document).ready(function()
     // Keypad functions
     var kp = $("input.num-keypad");
     if(kp.length)
-	{ 
-		kp.keypad({
-			showAnim: 'fadeIn', keypadOnly: false,
-			onKeypress: function(key, value, inst) { 
-				$(this).trigger('keyup');
-			}
-		});
-	}
+    {
+        kp.keypad({
+            showAnim: 'fadeIn', keypadOnly: false,
+            onKeypress: function(key, value, inst) {
+                $(this).trigger('keyup');
+            }
+        });
+    }
     kp = $(".text-keypad");
     if(kp.length)
     {
         var spacer = $.keypad.HALF_SPACE;
         for(var i = 0; i != 8; ++i) spacer += $.keypad.SPACE;
-	    kp.keypad({
-		    showAnim: 'fadeIn',
-		    keypadOnly: false,
-		    layout: [
+        kp.keypad({
+            showAnim: 'fadeIn',
+            keypadOnly: false,
+            layout: [
                 spacer + $.keypad.CLEAR + $.keypad.CLOSE, $.keypad.SPACE,
-			    '!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
-			    $.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
-			    'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
-			    $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
-			    $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
-			    $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
-				onKeypress: function(key, value, inst) { 
-					$(this).trigger('keyup');
-				}
-			});
+                '!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
+                $.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
+                'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
+                $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
+                $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
+                $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
+                onKeypress: function(key, value, inst) {
+                    $(this).trigger('keyup');
+                }
+            });
     }
 
     // Maxlength for textareas TODO limit to not CSS3 compatible browser
@@ -78,7 +78,7 @@ function setJsVar(){
     bFixNumAuto=LSvar.bFixNumAuto;
     bNumRealValue=LSvar.bNumRealValue;
     LEMradix=LSvar.sLEMradix;
-    numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
+    numRegex = new RegExp('[^-\.,0-9]','g');
     intRegex = new RegExp('[^-0-9]','g');
 }
 // Deactivate all other button on submit
@@ -116,7 +116,7 @@ function needConfirmHandler(){
     });
 }
 /**
- * checkconditions : javascript function attach to some element 
+ * checkconditions : javascript function attach to some element
  * Launch ExprMgr_process_relevance_and_tailoring with good value
  */
 function checkconditions(value, name, type, evt_type)
@@ -143,85 +143,90 @@ function checkconditions(value, name, type, evt_type)
     {
         $('#java'+name).val(value);
     }
-    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
+
+    aQuestionsWithDependencies = $('#aQuestionsWithDependencies').data('qids');
+
+    var result;
+    if(typeof name !== 'undefined')
+    {
+        result = name.split('X');
+        result = result[2]
+    }
+
+    // $isRelevant = $.inArray(result, aQuestionsWithDependencies); NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
+    $isRelevant = 1;
+    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1)
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
 
 /**
- * fixnum_checkconditions : javascript function attach to some element 
+ * fixnum_checkconditions : javascript function attach to some element
  * Update the answer of the user to be numeric and launch checkconditions
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
-    newval = new String(value);
-
+    var newval = new String(value);
+    var cleansedValue = newval.replace(numRegex,'');
     /**
      * If have to use parsed value.
      */
     if(!bNumRealValue)
-    {
-        if (typeof intonly !=='undefined' && intonly==1) {
-            newval = newval.replace(intRegex,'');
+    {                
+        var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
+        if(checkNumericRegex.test(value)) {
+            try{
+                var decimalValue = new Decimal(cleansedValue);
+            } catch(e){
+                var decimalValue = new Decimal(cleansedValue.replace(',','.'));
+            }
+            
+            if (typeof intonly !=='undefined' && intonly==1) {
+                newval = decimalValue.trunc();
+            }
+        } else {
+            newval = "";
         }
-        else {
-            newval = newval.replace(numRegex,'');
-        }
-        aNewval = newval.split(LEMradix);
-        if(aNewval.length>0){
-            newval=aNewval[0];
-        }
-        if(aNewval.length>1){
-            newval=newval+"."+aNewval[1];
-        }
-        if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {// Todo : do it in reg
-            newval = '';
-        }
+
     }
 
     /**
      * If have to fix numbers automatically.
-     */    
-    if(bFixNumAuto)
+     */
+    if(bFixNumAuto && (newval != ""))
     {
-
-        /**
-         * Work on length of the number
-         * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator. 
-         */
-        var midval = newval;
-        var aNewval = midval.split('.');
-        var newval = '';
-        
-        // Treat integer part            
-        if (aNewval.length > 0) {                           
-            var intpart = aNewval[0];
-            newval = (intpart.length > 20) ? '99999999999999999999' : intpart;
+        var addition = "";
+        if(cleansedValue.split("").pop().match(/(,)|(\.)/)){
+            addition = cleansedValue.split("").pop();
         }
 
-        // Treat decimal part, if there is one.             
+         try{
+            var decimalValue = new Decimal(cleansedValue);
+        } catch(e){
+            var decimalValue = new Decimal(cleansedValue.replace(',','.'));
+        }
+        /**
+         * Work on length of the number
+         * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator.
+         */
+        // Treat decimal part, if there is one.
         // Trim after 10th decimal if larger than 10 decimals.
-        if (aNewval.length > 1) {                
-            var decpart = aNewval[1];
-            if (decpart.length > 10){       
-                decpart = decpart.substr(0,10);
-            }
-            else {
-                decpart = aNewval[1];                
-            }
-            newval = newval + "." + decpart;
+        if(decimalValue.dp()>10){
+            decimalValue.toDecimalPlaces(10);
         }
 
         /**
          * Set display value
-         */ 
-        displayVal = newval;
-        if (LEMradix === ',') {
-            displayVal = displayVal.split('.').join(',');
-        }
+         */
+        displayVal = decimalValue.toString();
+
+        if(LEMradix==",")
+            displayVal = displayVal.replace(/\./,',');
+
         if (name.match(/other$/)) {
-            $('#answer'+name+'text').val(displayVal);
+            $('#answer'+name+'text').val(displayVal+addition);
         }
-        $('#answer'+name).val(displayVal);
+
+        $('#answer'+name).val(displayVal+addition);
     }
 
     /**
@@ -231,7 +236,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     {
         evt_type = 'onchange';
     }
-    checkconditions(newval, name, type, evt_type);
+    checkconditions(cleansedValue, name, type, evt_type);
 }
 
 // Set jquery-ui to LS Button
@@ -317,7 +322,7 @@ function activateLanguageChanger(){
  */
 function manageIndex(){
     $("#index .jshide").hide();
-    $("#index").on('click','li,.row',function(e){ 
+    $("#index").on('click','li,.row',function(e){
         if(!$(e.target).is('button')){
             $(this).children("[name='move']").click();
         }
@@ -331,30 +336,30 @@ function manageIndex(){
     });
 }
 /**
- * Put a empty class on empty answer text item (limit to answers part) 
+ * Put a empty class on empty answer text item (limit to answers part)
  * @author Denis Chenu / Shnoulle
  */
 function addClassEmpty()
 {
-	$('.answer-item input.text[value=""]').addClass('empty');
-	$('.answer-item input[type=text][value=""]').addClass('empty');
-	$('.answer-item textarea').each(function(index) {
-	if ($(this).val() == ""){
-		$(this).addClass('empty');
-	}
-	});
-	$("body").delegate(".answer-item input.text,.text-item input[type=text],.answer-item textarea","blur focusout",function(){
-	if ($(this).val() == ""){
-		$(this).addClass('empty');
-	}else{
-		$(this).removeClass('empty');
-	}
-	});
+    $('.answer-item input.text[value=""]').addClass('empty');
+    $('.answer-item input[type=text][value=""]').addClass('empty');
+    $('.answer-item textarea').each(function(index) {
+    if ($(this).val() == ""){
+        $(this).addClass('empty');
+    }
+    });
+    $("body").delegate(".answer-item input.text,.text-item input[type=text],.answer-item textarea","blur focusout",function(){
+    if ($(this).val() == ""){
+        $(this).addClass('empty');
+    }else{
+        $(this).removeClass('empty');
+    }
+    });
 }
 
 /**
  * Disable scroll on select, put it in function to allow update in template
- * 
+ *
  */
 function noScrollOnSelect()
 {
@@ -372,79 +377,79 @@ function tableCellAdapters()
 //	$('table.question').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label',"click", function(e) {
 //		e.stopPropagation();
 //	});
-	$(document).on('click','table.question tbody td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
-		var eventTarget=$(event.target).prop("tagName");// Alternative us data
-		var eventActivate=$(this).find("input:radio,input:checkbox");
-		if(eventActivate.length==1 && (eventTarget!='INPUT' && eventTarget!='LABEL' ) )
-		{
-			$(eventActivate).click();
-			$(eventActivate).triggerHandler("click");
-			// Why not use trigger('click'); only ?
-		}
-	});
+    $(document).on('click','table.question tbody td',function(event) {// 'table.question tbody td' or 'td.radio-item,td.checkbox-item': maybe less js here
+        var eventTarget=$(event.target).prop("tagName");// Alternative us data
+        var eventActivate=$(this).find("input:radio,input:checkbox");
+        if(eventActivate.length==1 && (eventTarget!='INPUT' && eventTarget!='LABEL' ) )
+        {
+            $(eventActivate).click();
+            $(eventActivate).triggerHandler("click");
+            // Why not use trigger('click'); only ?
+        }
+    });
 }
 
 Array.prototype.push = function()
 {
-	var n = this.length >>> 0;
-	for (var i = 0; i < arguments.length; i++)
-	{
-		this[n] = arguments[i];
-		n = n + 1 >>> 0;
-	}
-	this.length = n;
-	return n;
+    var n = this.length >>> 0;
+    for (var i = 0; i < arguments.length; i++)
+    {
+        this[n] = arguments[i];
+        n = n + 1 >>> 0;
+    }
+    this.length = n;
+    return n;
 };
 
 Array.prototype.pop = function() {
-	var n = this.length >>> 0, value;
-	if (n) {
-		value = this[--n];
-		delete this[n];
-	}
-	this.length = n;
-	return value;
+    var n = this.length >>> 0, value;
+    if (n) {
+        value = this[--n];
+        delete this[n];
+    }
+    this.length = n;
+    return value;
 };
 
 
 //defined in group.php & question.php & survey.php, but a static function
 function inArray(needle, haystack)
 {
-	for (h in haystack)
-	{
-		if (haystack[h] == needle)
-		{
-			return true;
-		}
-	}
-	return false;
+    for (h in haystack)
+    {
+        if (haystack[h] == needle)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 //defined in group.php & survey.php, but a static function
 function match_regex(testedstring,str_regexp)
 {
-	// Regular expression test
-	if (str_regexp == '' || testedstring == '') return false;
-	pattern = new RegExp(str_regexp);
-	return pattern.test(testedstring)
+    // Regular expression test
+    if (str_regexp == '' || testedstring == '') return false;
+    pattern = new RegExp(str_regexp);
+    return pattern.test(testedstring)
 }
 
 function addHiddenField(theform,thename,thevalue)
 {
-	var myel = document.createElement('input');
-	myel.type = 'hidden';
-	myel.name = thename;
-	theform.appendChild(myel);
-	myel.value = thevalue;
+    var myel = document.createElement('input');
+    myel.type = 'hidden';
+    myel.name = thename;
+    theform.appendChild(myel);
+    myel.value = thevalue;
 }
 
 function cancelBubbleThis(eventObject)
 {
-	if (!eventObject) var eventObject = window.event;
-	eventObject.cancelBubble = true;
-	if (eventObject && eventObject.stopPropagation) {
-		eventObject.stopPropagation();
-	}
+    if (!eventObject) var eventObject = window.event;
+    eventObject.cancelBubble = true;
+    if (eventObject && eventObject.stopPropagation) {
+        eventObject.stopPropagation();
+    }
 }
 
 function cancelEvent(e)
@@ -514,18 +519,18 @@ function goodchars(e, goods)
 
 function show_hide_group(group_id)
 {
-	var questionCount;
+    var questionCount;
 
-	// First let's show the group description, otherwise, all its childs would have the hidden status
-	$("#group-" + group_id).show();
-	// If all questions in this group are conditionnal
-	// Count visible questions in this group
-		questionCount=$("div#group-" + group_id).find("div[id^='question']:visible").size();
+    // First let's show the group description, otherwise, all its childs would have the hidden status
+    $("#group-" + group_id).show();
+    // If all questions in this group are conditionnal
+    // Count visible questions in this group
+        questionCount=$("div#group-" + group_id).find("div[id^='question']:visible").size();
 
-		if( questionCount == 0 )
-		{
-			$("#group-" + group_id).hide();
-		}
+        if( questionCount == 0 )
+        {
+            $("#group-" + group_id).hide();
+        }
 }
 
 // round function from phpjs.org
@@ -584,10 +589,37 @@ function maxlengthtextarea(){
         }
     });
 }
-/* add a title on cell with answer */
+/**
+ * Add a title on cell with answer
+ * Title must be updated because label can be updated by expression : mouseover do it only if needed. Accessibility must use aria-labelledby
+ **/
 function doToolTipTable()
 {
-   $(document).on("mouseover"," td.answer-item",function(){
-        $( this).attr('title',$(this).find("label").text());
+    $(document).on("mouseover"," td.answer-item",function() {
+        var text = $(this).find('label').text().trim();
+        if(text!==""){
+            $(this).attr('title', text);
+        }else{
+            $(this).removeAttr('title');
+        }
     });
 }
+//Hide the Answer and the helper field in an
+$(document).ready(
+    function(){
+        $('.question-container').each(function(){
+            if($(this).find('div.answer-container').find('input').length == 1)
+            {
+                if($(this).find('div.answer-container').find('input[type=hidden]').length >0
+                    && $(this).find('div.answer-container').find('select').length < 1)
+                {
+                    $(this).find('div.answer-container').css({display: 'none'});
+                }
+                if(trim($(this).find('div.question-help-container').find('div').html()) == "")
+                {
+                    $(this).find('div.question-help-container').css({display: 'none'});
+                }
+            }
+        });
+    }
+);

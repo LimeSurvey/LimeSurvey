@@ -25,9 +25,9 @@ class limereplacementfields extends Survey_Common_Action
         {
             throw new CHttpException(401);
         }
-        list($replacementFields, $isInstertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
+        list($replacementFields, $isInsertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
 
-        if ($isInstertAnswerEnabled === true)
+        if ($isInsertAnswerEnabled === true)
         {
             //2: Get all other questions that occur before this question that are pre-determined answer types
             $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
@@ -53,6 +53,10 @@ class limereplacementfields extends Survey_Common_Action
         $this->getController()->render('/admin/limeReplacementFields_view', $data);
     }
 
+    /**
+     * @param integer $gid
+     * @param integer $qid
+     */
     private function _getQuestionList($action, $gid, $qid, array $fieldmap, $questionType, $surveyformat)
     {
         $previousQuestion = null;
@@ -61,11 +65,13 @@ class limereplacementfields extends Survey_Common_Action
 
         foreach ($fieldmap as $question)
         {
-            if (empty($question['qid'])) {
+            if (empty($question['qid']))
+            {
                 continue;
             }
 
-            if (is_null($qid) || $this->_shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion)) {
+            if (is_null($qid) || $this->_shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion))
+            {
                 $isPreviousPageQuestion = $this->_addQuestionToList($action, $gid, $question, $questionType, $surveyformat, $isPreviousPageQuestion, $questionList);
                 $previousQuestion = $question;
             }
@@ -77,6 +83,10 @@ class limereplacementfields extends Survey_Common_Action
         return $questionList;
     }
 
+    /**
+     * @param integer $gid
+     * @param integer $qid
+     */
     private function _shouldAddQuestion($action, $gid, $qid, array $question, $previousQuestion)
     {
         switch ($action)
@@ -98,7 +108,7 @@ class limereplacementfields extends Survey_Common_Action
 
             case 'addquestion':
                 if (empty($gid)) {
-                    safeDie("No GID provided.");
+                    safeDie("No GID provided. Please save the question and try again.");
                 }
 
                 if (!is_null($previousQuestion) && $previousQuestion['gid'] == $gid && $question['gid'] != $gid ) {
@@ -122,7 +132,7 @@ class limereplacementfields extends Survey_Common_Action
                    return false;
                 }
                 return true;
-            case 'emailtemplates':
+            case 'editemailtemplates':
                 // this is the case for email-conf
                 return true;
             default:
@@ -130,6 +140,9 @@ class limereplacementfields extends Survey_Common_Action
         }
     }
 
+    /**
+     * @param integer $gid
+     */
     private function _addQuestionToList($action, $gid, array $field, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList)
     {
         if ($action == 'tokens' && $questionType == 'email-conf' || $surveyformat == "S") {
@@ -177,6 +190,9 @@ class limereplacementfields extends Survey_Common_Action
         return $cquestions;
     }
 
+    /**
+     * @param integer $surveyid
+     */
     private function _getReplacementFields($fieldtype, $surveyid)
     {
 

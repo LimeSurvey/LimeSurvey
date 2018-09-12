@@ -21,217 +21,241 @@
 class surveypermission extends Survey_Common_Action {
 
     /**
-    * Load survey security screen.
-    * @param mixed $surveyid
-    * @return void
-    */
-    function index($surveyid)
+     * Load survey security screen.
+     *
+     * @param int|string $iSurveyID
+     * @return void
+     * @todo Export HTML to view
+     */
+    public function index($iSurveyID)
     {
-        $aData['surveyid'] = $iSurveyID = $surveyid =  sanitize_int($surveyid);
+        $aData = array();
+        $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
         $aViewUrls = array();
 
         $imageurl = Yii::app()->getConfig('adminimageurl');
 
-        if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','read'))
-        {
-
-            $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-            //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
-
-
-            $aBaseSurveyPermissions=Permission::model()->getSurveyBasePermissions();
-            $userList=getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
-            App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "surveypermissions.js" ));
-
-            $surveysecurity = '<div class="side-body" id="edit-permissions">';
-            $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
-            $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
-            $result2 = Permission::model()->getUserDetails($surveyid);
-            if(count($result2) > 0)
-            {
-                    $surveysecurity .= ""
-                    . "<table class='surveysecurity table table-striped'><thead>"
-                    . "<tr>\n"
-                    . "<th>".gT("Action")."</th>\n"
-                    . "<th>".gT("Username")."</th>\n"
-                    . "<th>".gT("User group")."</th>\n"
-                    . "<th>".gT("Full name")."</th>\n";
-                foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
-                {
-                    $surveysecurity.="<th>".$aSubPermissions['title']."</th>\n";
-                }
-                $surveysecurity .= "</tr></thead>\n";
-
-                // Foot first
-
-                if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
-                {
-                    $authorizedGroupsList = getUserGroupList(NULL,'simplegidarray');
-                }
-
-                $surveysecurity .= "<tbody>\n";
-                $row = 0;
-                foreach ($result2 as $PermissionRow)
-                {
-                    if(in_array($PermissionRow['uid'],$userList))
-                    {
-
-                        $result3 = UserInGroup::model()->with('users')->findAll('users.uid = :uid',array(':uid' => $PermissionRow['uid']));
-                        foreach ($result3 as $resul3row)
-                        {
-                            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
-                            in_array($resul3row->ugid,$authorizedGroupsList))
-                            {
-                                $group_ids[] = $resul3row->ugid;
-                            }
-                        }
-
-                        if(isset($group_ids) && $group_ids[0] != NULL)
-                        {
-                            $group_ids_query = implode(",", $group_ids);
-                            unset($group_ids);
-                            $result4 = UserGroup::model()->findAll("ugid IN ($group_ids_query)");
-
-                            foreach ($result4 as $resul4row)
-                            {
-                                $group_names[] = $resul4row->name;
-                            }
-                            if(count($group_names) > 0)
-                                $group_names_query = implode(", ", $group_names);
-                        }
-                        //                  else {break;} //TODO Commented by lemeur
-                        $surveysecurity .= "<tr>\n";
-
-                        $surveysecurity .= "<td class='col-xs-1'>\n";
-
-                        if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','update'))
-                        {
-                            if($PermissionRow['uid']!=Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin','read')) // Can not update own security
-                            {
-                                $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$surveyid}"), 'post', array('style'=>"display:inline;"))
-                                ."<button type='submit' class='btn btn-default btn-xs'><span class='glyphicon glyphicon-pencil text-success' title='".gT("Edit permissions")."'></span></button>"
-                                ."<input type='hidden' name='action' value='setsurveysecurity' />"
-                                ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
-                                ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
-                                ."</form>\n";
-                            }
-                        }
-                        if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','delete'))
-                        {
-                            $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/delete/surveyid/{$surveyid}"), 'post', array('style'=>"display:inline;"))
-                            ."<button onclick='return confirm(\"".gT("Are you sure you want to delete this entry?","js")."\")' type='submit' class=' btn-xs btn btn-default'><span class='glyphicon glyphicon-trash text-warning' title='".gT("Delete")."'></span></button>"
-                            ."<input type='hidden' name='action' value='delsurveysecurity' />"
-                            ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
-                            ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
-                            ."</form>";
-                        }
-
-                        $surveysecurity .= "</td>\n";
-                        $surveysecurity .= "<td>{$PermissionRow['users_name']}</td>\n"
-                        . "<td>";
-
-                        if(isset($group_names) > 0)
-                        {
-                            $surveysecurity .= $group_names_query;
-                        }
-                        else
-                        {
-                            $surveysecurity .= "---";
-                        }
-                        unset($group_names);
-
-                        $surveysecurity .= "</td>\n"
-                        . "<td>\n{$PermissionRow['full_name']}</td>\n";
-
-                        //Now show the permissions
-                        foreach ($aBaseSurveyPermissions as $sPKey=>$aPDetails) {
-                            unset($aPDetails['img']);
-                            unset($aPDetails['description']);
-                            unset($aPDetails['title']);
-                            $iCount=0;
-                            $iPermissionCount=0;
-                            foreach ($aPDetails as $sPDetailKey=>$sPDetailValue)
-                            {
-                                if ($sPDetailValue && Permission::model()->hasSurveyPermission($surveyid,$sPKey,$sPDetailKey,$PermissionRow['uid']) && !($sPKey=='survey' && $sPDetailKey=='read')) $iCount++;
-                                if ($sPDetailValue) $iPermissionCount++;
-                            }
-                            if ($sPKey=='survey')  $iPermissionCount--;
-                            if ($iCount==$iPermissionCount) {
-                                $insert = "<div class=\"ui-icon ui-icon-check\">&nbsp;</div>";
-                            }
-                            elseif ($iCount>0){
-                                $insert = "<div class=\"ui-icon ui-icon-check mixed\">&nbsp;</div>";
-                            }
-                            else
-                            {
-                                $insert = "<div>&nbsp;</div>";
-                            }
-                            $surveysecurity .= "<td>\n$insert\n</td>\n";
-                        }
-
-                        $surveysecurity .= "</tr>\n";
-                        $row++;
-                    }
-                }
-                $surveysecurity .= "</tbody>\n"
-                . "</table>\n";
-            }
-            else
-            {
-
-            }
-            if(Permission::model()->hasSurveyPermission($surveyid,'surveysecurity','create'))
-            {
-                $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$surveyid}"), 'post', array('class'=>"form44"))."<br/><br/><ul class='list-unstyled'>\n"
-                . "<li><label class='col-sm-1 col-md-offset-2 text-right control-label' for='uidselect'>".gT("User").": </label>
-                     <div class='col-sm-4'>
-                    <select id='uidselect' name='uid'  class='form-control'>\n"
-                . getSurveyUserList(false,false,$surveyid)
-                . "</select></div>\n"
-                . "<input style='width: 15em;' class='btn btn-default' type='submit' value='".gT("Add user")."'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('".gT("Please select a user first","js")."'); return false;}\"/>"
-                . "<input type='hidden' name='action' value='addsurveysecurity' />"
-                . "</li></ul></form>\n";
-
-                $surveysecurity .=  CHtml::form(array("admin/surveypermission/sa/addusergroup/surveyid/{$surveyid}"), 'post', array('class'=>"form44"))."<ul class='list-unstyled'><li>\n"
-                . "<label  class='col-sm-1 col-md-offset-2  text-right control-label'  for='ugidselect'>".gT("User group").": </label>
-                    <div class='col-sm-4'>
-                    <select id='ugidselect' name='ugid'  class='form-control'>\n"
-                . getSurveyUserGroupList('htmloptions',$surveyid)
-                . "</select></div>\n"
-                . "<input style='width: 15em;' class='btn btn-default'  type='submit' value='".gT("Add user group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) { alert('".gT("Please select a user group first","js")."'); return false;}\" />"
-                . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
-                . "</li></ul></form>";
-            }
-
-
-            $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
-
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;
-
-
-            $surveysecurity .= '</div></div></div>';
-            $aViewUrls['output'] = $surveysecurity;
-        }
-        else
+        if(!Permission::model()->hasSurveyPermission($iSurveyID,'surveysecurity','read'))
         {
             $this->getController()->error('Access denied');
+            return;
         }
+
+        $aData['sidemenu']['state'] = false;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $surveyinfo = $oSurvey->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
+
+        $aBaseSurveyPermissions=Permission::model()->getSurveyBasePermissions();
+        $userList=getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
+        App()->getClientScript()->registerPackage('jquery-tablesorter');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveypermissions.js');
+
+        $surveysecurity = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
+        $surveysecurity .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Survey permissions")), true, false);
+        $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
+        $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
+        $result2 = Permission::model()->getUserDetails($iSurveyID);
+        if(count($result2) > 0)
+        {
+                $surveysecurity .= ""
+                . "<table class='surveysecurity table table-striped'><thead>"
+                . "<tr>\n"
+                . "<th>".gT("Action")."</th>\n"
+                . "<th>".gT("Username")."</th>\n"
+                . "<th>".gT("User group")."</th>\n"
+                . "<th>".gT("Full name")."</th>\n";
+            foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
+            {
+                $surveysecurity.="<th>".$aSubPermissions['title']."</th>\n";
+            }
+            $surveysecurity .= "</tr></thead>\n";
+
+            // Foot first
+
+            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
+            {
+                $authorizedGroupsList = getUserGroupList(NULL,'simplegidarray');
+            }
+
+            $surveysecurity .= "<tbody>\n";
+            $row = 0;
+            foreach ($result2 as $PermissionRow)
+            {
+                // TODO: Filter this in SQL query.
+                if(!in_array($PermissionRow['uid'], $userList))
+                {
+                    continue;
+                }
+
+                $result3 = UserInGroup::model()->with('users')->findAll('users.uid = :uid',array(':uid' => $PermissionRow['uid']));
+                foreach ($result3 as $resul3row)
+                {
+                    if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
+                    in_array($resul3row->ugid,$authorizedGroupsList))
+                    {
+                        $group_ids[] = $resul3row->ugid;
+                    }
+                }
+
+                if(isset($group_ids) && $group_ids[0] != NULL)
+                {
+                    $group_ids_query = implode(",", $group_ids);
+                    unset($group_ids);
+                    $result4 = UserGroup::model()->findAll("ugid IN ($group_ids_query)");
+
+                    foreach ($result4 as $resul4row)
+                    {
+                        $group_names[] = $resul4row->name;
+                    }
+                    if(count($group_names) > 0)
+                        $group_names_query = implode(", ", $group_names);
+                }
+                //                  else {break;} //TODO Commented by lemeur
+                $surveysecurity .= "<tr>\n";
+
+                $surveysecurity .= "<td class='col-xs-1'>\n";
+
+                if(Permission::model()->hasSurveyPermission($iSurveyID,'surveysecurity','update'))
+                {
+                    if($PermissionRow['uid']!=Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin','read')) // Can not update own security
+                    {
+                        $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$iSurveyID}"), 'post', array('style'=>"display:inline;"))
+                        ."<button type='submit' class='btn btn-default btn-xs'><span class='glyphicon glyphicon-pencil text-success' data-toggle='tooltip' title='".gT("Edit permissions")."'></span></button>"
+                        ."<input type='hidden' name='action' value='setsurveysecurity' />"
+                        ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
+                        ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
+                        ."</form>\n";
+                    }
+                }
+                if(Permission::model()->hasSurveyPermission($iSurveyID,'surveysecurity','delete'))
+                {
+                    $deleteUrl = App()->createUrl("admin/surveypermission/sa/delete/surveyid/" . $iSurveyID, array(
+                        'action' => 'delsurveysecurity',
+                        'user' => $PermissionRow['users_name'],
+                        'uid' => $PermissionRow['uid']
+                    ));
+                    $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
+                    $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-href='{$deleteUrl}' type='submit' class='btn-xs btn btn-default'>
+                        <span class='glyphicon glyphicon-trash text-warning' data-toggle='tooltip' title='".gT("Delete")."'></span>
+                        </a>";
+                }
+
+                $surveysecurity .= "</td>\n";
+                $surveysecurity .= "<td>{$PermissionRow['users_name']}</td>\n"
+                . "<td>";
+
+                if(isset($group_names) > 0)
+                {
+                    $surveysecurity .= $group_names_query;
+                }
+                else
+                {
+                    $surveysecurity .= "&#8211;";
+                }
+                unset($group_names);
+
+                $surveysecurity .= "</td>\n"
+                . "<td>\n{$PermissionRow['full_name']}</td>\n";
+
+                //Now show the permissions
+                foreach ($aBaseSurveyPermissions as $sPKey=>$aPDetails) {
+                    unset($aPDetails['img']);
+                    unset($aPDetails['description']);
+                    unset($aPDetails['title']);
+                    $iCount=0;
+                    $iPermissionCount=0;
+                    $sTooltip = "";
+                    foreach ($aPDetails as $sPDetailKey=>$sPDetailValue)
+                    {
+                        if ($sPDetailValue
+                            && Permission::model()->hasSurveyPermission($iSurveyID,$sPKey,$sPDetailKey,$PermissionRow['uid'])
+                            && !($sPKey=='survey' && $sPDetailKey=='read'))
+                        {
+                            $iCount++;
+                            $sTooltip .= $sPDetailKey . ", ";
+                        }
+                        if ($sPDetailValue)
+                        {
+                            $iPermissionCount++;
+                        }
+                    }
+
+                    if ($sPKey=='survey')
+                    {
+                        $iPermissionCount--;
+                    }
+
+                    // Remove last ',' and make first char upper-case
+                    $sTooltip = substr($sTooltip, 0, -2);
+                    $sTooltip = ucfirst($sTooltip);
+
+                    // Full icon = all permissions
+                    if ($iCount==$iPermissionCount) {
+                        $insert = "<div data-toggle='tooltip' data-title='" . $sTooltip. "' class=\"fa fa-check\">&nbsp;</div>";
+                    }
+                    // Blurred icon, meaning only partial permissions
+                    elseif ($iCount>0){
+                        $insert = "<div data-toggle='tooltip' data-title='" . $sTooltip . "' class=\"fa fa-check mixed\">&nbsp;</div>";
+                    }
+                    else
+                    {
+                        $insert = "<div>&#8211;</div>";
+                    }
+
+                    $surveysecurity .= "<td class='text-center' >\n$insert\n</td>\n";
+                }
+
+                $surveysecurity .= "</tr>\n";
+                $row++;
+            }
+            $surveysecurity .= "</tbody>\n"
+            . "</table>\n";
+        }
+
+        if(Permission::model()->hasSurveyPermission($iSurveyID,'surveysecurity','create'))
+        {
+            $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/adduser/surveyid/{$iSurveyID}"), 'post', array('class'=>"form44"))."<br/><br/><ul class='list-unstyled'>\n"
+            . "<li><label class='col-sm-1 col-md-offset-2 text-right control-label' for='uidselect'>".gT("User").": </label>
+                 <div class='col-sm-4'>
+                <select id='uidselect' name='uid'  class='form-control'>\n"
+            . getSurveyUserList(false,false,$iSurveyID)
+            . "</select></div>\n"
+            . "<input style='width: 15em;' class='btn btn-default' type='submit' value='".gT("Add user")."'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('".gT("Please select a user first","js")."'); return false;}\"/>"
+            . "<input type='hidden' name='action' value='addsurveysecurity' />"
+            . "</li></ul></form>\n";
+
+            $surveysecurity .=  CHtml::form(array("admin/surveypermission/sa/addusergroup/surveyid/{$iSurveyID}"), 'post', array('class'=>"form44"))."<ul class='list-unstyled'><li>\n"
+            . "<label  class='col-sm-1 col-md-offset-2  text-right control-label'  for='ugidselect'>".gT("User group").": </label>
+                <div class='col-sm-4'>
+                <select id='ugidselect' name='ugid'  class='form-control'>\n"
+            . getSurveyUserGroupList('htmloptions',$iSurveyID)
+            . "</select></div>\n"
+            . "<input style='width: 15em;' class='btn btn-default'  type='submit' value='".gT("Add user group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) { alert('".gT("Please select a user group first","js")."'); return false;}\" />"
+            . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
+            . "</li></ul></form>";
+        }
+
+
+        $aData['sidemenu']['state'] = false;
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
+
+        $surveysecurity .= '</div></div></div>';
+        $aViewUrls['output'] = $surveysecurity;
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
-    * surveypermission::addusergroup()
-    * Function responsible to add usergroup.
-    * @param mixed $surveyid
-    * @return void
-    */
+     * surveypermission::addusergroup()
+     * Function responsible to add usergroup.
+     * @param mixed $surveyid
+     * @return void
+     */
     function addusergroup($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
@@ -246,7 +270,7 @@ class surveypermission extends Survey_Common_Action {
         if($action == "addusergroupsurveysecurity")
         {
             //////////////////
-            $addsummary = '<div class="side-body" id="edit-permissions">';
+            $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
             $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
 
             $result = Survey::model()->findAll('sid = :surveyid AND owner_id = :owner_id',array(':surveyid' => $surveyid, ':owner_id' => Yii::app()->session['loginID']));
@@ -335,13 +359,12 @@ class surveypermission extends Survey_Common_Action {
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
-
     /**
-    * surveypermission::adduser()
-    * Function responsible to add user.
-    * @param mixed $surveyid
-    * @return void
-    */
+     * surveypermission::adduser()
+     * Function responsible to add user.
+     * @param mixed $surveyid
+     * @return void
+     */
     function adduser($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
@@ -356,7 +379,7 @@ class surveypermission extends Survey_Common_Action {
         if($action == "addsurveysecurity")
         {
 
-            $addsummary = '<div class="side-body" id="edit-permissions">';
+            $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
             $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
 
 
@@ -412,33 +435,30 @@ class surveypermission extends Survey_Common_Action {
             $aViewUrls['output'] = $addsummary;
         }
 
-            $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
-            //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            //$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;
-
+        $aData['sidemenu']['state'] = false;
+        $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
-    * surveypermission::set()
-    * Function responsible to set permissions to a user/usergroup.
-    * @param mixed $surveyid
-    * @return void
-    */
+     * surveypermission::set()
+     * Function responsible to set permissions to a user/usergroup.
+     * @param mixed $surveyid
+     * @return void
+     */
     function set($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
 
-        $action = App()->getRequest()->getPost('action');
+        $action = App()->getRequest()->getParam('action');
 
 
         $imageurl = Yii::app()->getConfig('adminimageurl');
-        $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : null;
-        $postusergroupid = !empty($_POST['ugid']) ? $_POST['ugid'] : null;
+        $postuserid = App()->getRequest()->getParam('uid');
+        $postusergroupid = App()->getRequest()->getParam('ugid');
         if($action == "setsurveysecurity")
         {
             if ( (!Permission::model()->hasGlobalPermission('superadmin','read') && Yii::app()->user->getId()==$postuserid) // User can not change own security (except superadmin)
@@ -463,10 +483,10 @@ class surveypermission extends Survey_Common_Action {
 
         if( Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update') )
         {
-            $usersummary = '<div class="side-body" id="edit-permissions">';
+            $usersummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
 
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . "surveypermissions.js" ));
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'surveypermissions.js');
             if ($action == "setsurveysecurity")
             {
                 $query = "select users_name from {{users}} where uid=:uid";
@@ -483,7 +503,7 @@ class surveypermission extends Survey_Common_Action {
             $usersummary .= '<div class="row"><div class="col-lg-12 content-right">';
             $usersummary .= "<br />"
             .CHtml::form(array("admin/surveypermission/sa/surveyright/surveyid/{$surveyid}"), 'post')
-            . "<table style='margin:0 auto;' class='usersurveypermissions table'><thead>\n";
+            . "<table class='usersurveypermissions table table-striped'><thead>\n";
 
             $usersummary .= ""
             . "<tr><th></th><th>".gT("Permission")."</th>\n"
@@ -550,40 +570,42 @@ class surveypermission extends Survey_Common_Action {
             $this->getController()->error('Access denied');
         }
 
-            $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
-            $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;
-
+        $aData['sidemenu']['state'] = false;
+        $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
+        $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
+        $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;  // Close button
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
-    * surveypermission::delete()
-    * Function responsible to delete a user/usergroup.
-    * @param mixed $surveyid
-    * @return void
-    */
+     * surveypermission::delete()
+     * Function responsible to delete a user/usergroup.
+     * @param mixed $surveyid
+     * @return void
+     */
     function delete($surveyid)
     {
 
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
         $aViewUrls = array();
 
-        $action = $_POST['action'];
-
+        $action = App()->getRequest()->getParam('action');
 
         $imageurl = Yii::app()->getConfig('imageurl');
-        $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
-        $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : false;// Not used
+        $uid = App()->getRequest()->getParam('uid');
+        $gid = App()->getRequest()->getParam('gid');
+        $postuserid = (!empty($uid)) ? $uid : false;
+        $postusergroupid = (!empty($gid)) ? $gid : false;// Not used
+        $userList = getUserList('onlyuidarray');
 
-        if($postuserid && !in_array($postuserid,getUserList('onlyuidarray')))
+        if($postuserid && !in_array($postuserid,$userList))
         {
             $this->getController()->error('Access denied');
         }
-        elseif( $postusergroupid &&  !in_array($postusergroupid,getUserList('onlyuidarray')))
+        elseif($postusergroupid && !in_array($postusergroupid, $userList))
         {
             $this->getController()->error('Access denied');
         }
@@ -591,7 +613,7 @@ class surveypermission extends Survey_Common_Action {
         if($action == "delsurveysecurity")
         {
 
-            $addsummary = '<div class="side-body" id="edit-permissions">';
+            $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
             $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
             $addsummary .= "<div class=\"jumbotron message-box\">\n";
             $addsummary .= "<h2>".gT("Deleting User")."</h2>\n";
@@ -602,7 +624,7 @@ class surveypermission extends Survey_Common_Action {
                 if (isset($postuserid))
                 {
                     $dbresult = Permission::model()->deleteAll("uid = :uid AND entity_id = :sid AND entity = 'survey'",array(':uid' => $postuserid, ':sid' => $surveyid));
-                    $addsummary .= "<br />".gT("Username").": ".sanitize_xss_string($_POST['user'])."<br /><br />\n";
+                    $addsummary .= "<br />".gT("Username").": ".sanitize_xss_string(App()->getRequest()->getParam('user'))."<br /><br />\n";
                     $addsummary .= "<div class=\"successheader\">".gT("Success!")."</div>\n";
                 }
                 else
@@ -620,21 +642,21 @@ class surveypermission extends Survey_Common_Action {
             $aViewUrls['output'] = $addsummary;
         }
 
-            $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
-            //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
-            //$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;
+        $aData['sidemenu']['state'] = false;
+        $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$surveyid.")";
+        //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
+        //$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
 
     /**
-    * surveypermission::surveyright()
-    * Function responsible to process setting of permission of a user/usergroup.
-    * @param mixed $surveyid
-    * @return void
-    */
+     * surveypermission::surveyright()
+     * Function responsible to process setting of permission of a user/usergroup.
+     * @param mixed $surveyid
+     * @return void
+     */
     function surveyright($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
@@ -658,7 +680,7 @@ class surveypermission extends Survey_Common_Action {
         if ($action == "surveyrights" && Permission::model()->hasSurveyPermission($surveyid, 'surveysecurity', 'update'))
         {
 
-            $addsummary = '<div class="side-body" id="edit-permissions">';
+            $addsummary = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
             $addsummary .= '<div class="row"><div class="col-lg-12 content-right">';
 
             $addsummary .= "<div class=\"jumbotron message-box\">\n";
@@ -715,13 +737,17 @@ class surveypermission extends Survey_Common_Action {
             {
                 if (Permission::model()->setPermissions($postuserid, $surveyid, 'survey', $aPermissions))
                 {
-                    $addsummary .= "<div class=\"successheader\">".gT("Survey permissions were successfully updated.")."</div>\n";
+                    Yii::app()->setFlashMessage(gT("Survey permissions were successfully updated."));
                 }
                 else
                 {
-                    $addsummary .= "<div class=\"warningheader\">".gT("Failed to update survey permissions!")."</div>\n";
+                    Yii::app()->setFlashMessage(gT("Failed to update survey permissions!"));
                 }
-
+                if (App()->getRequest()->getPost('close-after-save')=='false')
+                {
+                    Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/surveypermission/sa/set', array('action'=>'setsurveysecurity','surveyid'=>$surveyid,'uid'=>$postuserid)));
+                }
+                Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/surveypermission/sa/view', array('surveyid'=>$surveyid)));
             }
             $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
             $addsummary .= "</div></div></div>\n";

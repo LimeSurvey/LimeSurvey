@@ -1,4 +1,5 @@
-<div class='header ui-widget-header'><?php eT("Iterate survey");?></div>
+<div class="side-body <?php echo getSideBodyClass(true); ?>">
+<h3><?php eT("Iterate survey");?></h3>
 
 <?php if($success) {?>
 <p style='width:100%;'>
@@ -13,7 +14,8 @@
 <li><?php eT("Reset all your tokens to the 'not used' state");?></li>
 </ol><br />
 <?php echo CHtml::form(array("admin/dataentry/sa/iteratesurvey/unfinalizeanswers/true/surveyid/".$surveyid), 'post');?>
-<input type='submit' onclick="return confirm('<?php eT("Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?","js");?>')" value='<?php eT("Reset answers and token completed state");?>' />
+<input class='btn btn-danger' type='submit' onclick="return confirm('<?php eT("Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?","js");?>')" value='<?php eT("Reset answers and token completed state");?>' />
 </form>
 </div>
 <?php }?>
+</div>

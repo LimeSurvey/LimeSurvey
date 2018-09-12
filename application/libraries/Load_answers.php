@@ -20,7 +20,7 @@ class Load_answers {
         sendCacheHeaders();
         doHeader();
 
-        global $oTemplate;
+        $oTemplate = Template::model()->getInstance(null, $surveyid);
 
         echo templatereplace(file_get_contents($oTemplate->viewPath."startpage.pstpl"),array(),$redata);
 

@@ -106,6 +106,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
      * Constructor
      *
      * @param ReflectionFunction $r
+     * @param string $namespace
      */
     public function __construct(Reflector $r, $namespace = null, $argv = array())
     {
@@ -193,7 +194,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
      *
      * @param array $return Array of return types
      * @param string $returnDesc Return value description
-     * @param array $params Array of arguments (each an array of types)
+     * @param array $paramTypes Array of arguments (each an array of types)
      * @param array $paramDesc Array of parameter descriptions
      * @return array
      */
@@ -253,7 +254,6 @@ abstract class Zend_Server_Reflection_Function_Abstract
      * comment. Determines method signatures using a combination of
      * ReflectionFunction and parsing of DocBlock @param and @return values.
      *
-     * @param ReflectionFunction $function
      * @return array
      */
     protected function _reflect()
@@ -466,7 +466,7 @@ abstract class Zend_Server_Reflection_Function_Abstract
     /**
      * Retrieve the description
      *
-     * @return void
+     * @return string
      */
     public function getDescription()
     {

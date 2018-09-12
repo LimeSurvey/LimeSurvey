@@ -86,12 +86,136 @@ class ParticipantAttributeName extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'attribute_id' => 'Attribute',
-            'attribute_type' => 'Attribute Type',
-            'visible' => 'Visible',
+            'attribute_id' => gT('Attribute'),
+            'attribute_type' => gT('Attribute type'),
+            'visible' => gT('Visible'),
         );
     }
 
+    /**
+     * @return string html
+     */
+    public function getButtons()
+    {
+        $raw_button_template = ""
+            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tootltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<span class='fa fa-%s' ></span>" //icon class
+            . "</button>";
+        $buttons = "";
+        //DELETE attribute
+        //Edit-button 
+        $editData = array(
+            'action_attributeNames_editModal',
+            '',
+            gT("Edit this attribute"),
+            'edit'
+        );
+
+        $buttons .= vsprintf($raw_button_template, $editData);
+        //delete-button
+        $deleteData = array(
+            'action_attributeNames_deleteModal',
+            'text-danger',
+            gT("Delete this attribute"),
+            'trash text-danger'
+        );
+        $buttons .= "<a href='#' data-toggle='modal' data-target='#confirmation-modal' data-onclick='deleteAttributeAjax(".$this->attribute_id.")'>"
+            . vsprintf($raw_button_template, $deleteData)
+            . "</a>";
+
+        return $buttons;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMassiveActionCheckbox()
+    {
+        return "<input type='checkbox' class='selector_attributeNamesCheckbox' name='selectedAttributeNames[]' value='".$this->attribute_id."' >";
+    }
+
+    /**
+     * @return string ??
+     */
+    public function getAttributeTypeNice()
+    {
+        return $this->attributeTypeDropdownArray[$this->attribute_type];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributeTypeDropdownArray()
+    {
+        $realNames = array(
+            'DD' => gT("Drop-down list"),
+            'DP' => gT("Date"),
+            'TB' => gT("Text box")
+        );
+        return $realNames;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamePlusLanguageName()
+    {
+        $namesList = $this->participant_attribute_names_lang;
+        $names = array();
+        foreach($namesList as $name){
+             $names[] = $name['attribute_name'];
+        }
+        $defaultname = $this->defaultname;
+        $returnName = $defaultname." (".join(', ',$names).")";
+        return $returnName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVisibleSwitch(){
+        $inputHtml = "<input type='checkbox' data-size='small' data-visible='".$this->visible."' data-on-color='primary' data-off-color='warning' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeVisibility' "
+            . ($this->visible == "TRUE" ? "checked" : "")
+            . "/>";
+        return  $inputHtml;
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumns(){
+       $cols = array(
+            array(
+                "name" => 'massiveActionCheckbox',
+                "type" => 'raw',
+                "header" => "<input type='checkbox' id='action_toggleAllAttributeNames' />",
+                "filter" => false
+            ),
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
+            array(
+                "name" => 'defaultname',
+                "value" => '$data->getNamePlusLanguageName()',
+                "header" => gT("Name")
+            ),
+            array(
+                "name" => 'attribute_type',
+                "value" => '$data->getAttributeTypeNice()',
+                "filter" => $this->attributeTypeDropdownArray
+            ),
+            array(
+                "name" => 'visible',
+                "value" => '$data->getVisibleSwitch()',
+                "type" => "raw",
+                "filter" => array("TRUE" => gT("Yes"), "FALSE" => gT("No"))
+            )
+       );
+       return $cols;
+    }
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -103,12 +227,17 @@ class ParticipantAttributeName extends LSActiveRecord
 
         $criteria=new CDbCriteria;
 
+        $criteria->compare('defaultname',$this->defaultname,true,'AND',true);
         $criteria->compare('attribute_id',$this->attribute_id);
-        $criteria->compare('attribute_type',$this->attribute_type,true);
+        $criteria->compare('attribute_type',$this->attribute_type);
         $criteria->compare('visible',$this->visible,true);
+
+        $sort = new CSort();
+        $sort->defaultOrder = array('defaultname' => CSort::SORT_ASC);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
+            'sort' => $sort
         ));
     }
 
@@ -140,29 +269,45 @@ class ParticipantAttributeName extends LSActiveRecord
         $ids = ParticipantAttributeName::model()->findAll("visible = 'TRUE'");
         //Then find a language for each one - the current $lang, if possible, english second, otherwise, the first in the list
         foreach($ids as $id) {
-            $langs=ParticipantAttributeNameLang::model()->findAll("attribute_id = :attribute_id", array(":attribute_id"=>$id->attribute_id));
-            $language=null;
-            foreach($langs as $lang) {
-                //If we can find a language match, set the language and exit
-                if($lang->lang == $sLanguageFilter) {
-                    $language = $lang->lang;
-                    $attribute_name = $lang->attribute_name;
-                    break;
+
+            $langs = ParticipantAttributeNameLang::model()->findAll(
+                "attribute_id = :attribute_id",
+                array(
+                    ":attribute_id" => $id->attribute_id
+                )
+            );
+
+            if ($langs) {
+                $language=null;
+                foreach($langs as $lang) {
+                    //If we can find a language match, set the language and exit
+                    if($lang->lang == $sLanguageFilter) {
+                        $language = $lang->lang;
+                        $attribute_name = $lang->attribute_name;
+                        break;
+                    }
+                    if($lang->lang == "en") {
+                        $language = $lang->lang;
+                        $attribute_name = $lang->attribute_name;
+                    }
                 }
-                if($lang->lang == "en") {
-                    $language = $lang->lang;
-                    $attribute_name = $lang->attribute_name;
+                if($language==null) {
+                    $language=$langs[0]->lang;
+                    $attribute_name=$langs[0]->attribute_name;
                 }
             }
-            if($language==null) {
-                $language=$langs[0]->lang;
-                $attribute_name=$langs[0]->attribute_name;
+            else {
+                $language = Yii::app()->session['adminlang'];
+                $attribute_name = $id->defaultname;
             }
-            $output[$id->attribute_id]=array("attribute_id"=>$id->attribute_id,
-                          "attribute_type"=>$id->attribute_type,
-                          "visible"=>$id->visible,
-                          "attribute_name"=>$attribute_name,
-                          "lang"=>$language);
+
+            $output[$id->attribute_id] = array(
+                "attribute_id"      => $id->attribute_id,
+                "attribute_type"    => $id->attribute_type,
+                "visible"           => $id->visible,
+                "attribute_name"    => $attribute_name,
+                "lang"              => $language
+            );
         }
         return $output;
     }
@@ -170,7 +315,7 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
     * Returns a list of attributes, with name and value. Currently not working for alternate languages
     *
-    * @param mixed $participant_id the id of the participant to return values/names for (if empty, returns all)
+    * @param string $participant_id the id of the participant to return values/names for (if empty, returns all)
     */
     function getParticipantVisibleAttribute($participant_id)
     {
@@ -232,11 +377,14 @@ class ParticipantAttributeName extends LSActiveRecord
         return $data;
     }
 
-    function getCPDBAttributes($count = false, $limit = -1, $offset = -1)
+    /**
+     * @return array
+     */
+    function getCPDBAttributes()
     {
         $findCriteria=new CDbCriteria();
-        $findCriteria->offset=$offset;
-        $findCriteria->limit=$limit;
+        $findCriteria->offset = -1;
+        $findCriteria->limit = -1;
         $output=array();
         $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($findCriteria);
         foreach($records as $row) { //Iterate through each attribute
@@ -247,35 +395,35 @@ class ParticipantAttributeName extends LSActiveRecord
                 if($names->lang == Yii::app()->session['adminlang']) {$thisname=$names->attribute_name; $thislang=$names->lang;} //Override the default with the admin language version if found
             }
             $output[]=array('attribute_id'=>$row->attribute_id,
-                            'attribute_type'=>$row->attribute_type,
-                            'attribute_display'=>$row->visible,
-                            'attribute_name'=>$thisname,
-                            'lang'=>$thislang);
+                'attribute_type'=>$row->attribute_type,
+                'attribute_display'=>$row->visible,
+                'attribute_name'=>$thisname,
+                'lang'=>$thislang
+            );
         }
 
-        /* $command = Yii::app()->db->createCommand()
-                                 ->from('{{participant_attribute_names}}')
-                                 ->leftjoin('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
-                                 ->where('lang = "'.Yii::app()->session['adminlang'].'"')
-                                 ->limit(intval($limit), intval($offset)); */
-        if (empty($count))
+        return $output;
+    }
+
+    /**
+     * @param int $attribute_id
+     * @return array
+     */
+    function getAttributesValues($attribute_id = null)
+    {
+        if (empty($attribute_id))
         {
-            return $output;
+            return array();
         }
         else
         {
-            return count($output);
+            return Yii::app()->db->createCommand()
+                ->select('*')
+                ->from('{{participant_attribute_values}}')
+                ->where('attribute_id = :attribute_id')
+                ->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)
+                ->queryAll();
         }
-    }
-
-    function getAttributesValues($attribute_id)
-    {
-       return Yii::app()->db->createCommand()
-                            ->select('*')
-                            ->from('{{participant_attribute_values}}')
-                            ->where('attribute_id = :attribute_id')
-                            ->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)
-                            ->queryAll();
     }
 
     // this is a very specific function used to get the attributes that are not present for the participant
@@ -357,6 +505,9 @@ class ParticipantAttributeName extends LSActiveRecord
 
     }
 
+    /**
+     * @return void
+     */
     function delAttribute($attid)
     {
         Yii::app()->db->createCommand()->delete('{{participant_attribute_names_lang}}', 'attribute_id = '.$attid);
@@ -368,8 +519,8 @@ class ParticipantAttributeName extends LSActiveRecord
     function delAttributeValues($attid,$valid)
     {
         Yii::app()->db
-                  ->createCommand()
-                  ->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid.' AND value_id = '.$valid);
+            ->createCommand()
+            ->delete('{{participant_attribute_values}}', 'attribute_id = '.$attid.' AND value_id = '.$valid);
     }
 
     function getAttributeNames($attributeid)
@@ -377,6 +528,9 @@ class ParticipantAttributeName extends LSActiveRecord
         return Yii::app()->db->createCommand()->where("attribute_id = :attribute_id")->from('{{participant_attribute_names_lang}}')->select('*')->bindParam(":attribute_id", $attributeid, PDO::PARAM_INT)->queryAll();
     }
 
+    /**
+     * @param string $attributeid
+     */
     function getAttributeName($attributeid, $lang='en')
     {
         return Yii::app()->db->createCommand()->where("attribute_id = :attribute_id AND lang = :lang")->from('{{participant_attribute_names_lang}}')->select('*')->bindParam(":attribute_id", $attributeid, PDO::PARAM_INT)->bindParam(":lang", $lang, PDO::PARAM_STR)->queryRow();
@@ -409,11 +563,7 @@ class ParticipantAttributeName extends LSActiveRecord
         }
         if (!empty($insertnames))
         {
-            $oParticipantAttributeName=ParticipantAttributeName::model()->findByPk(array (
-                    'attribute_id' => $data['attribute_id'],
-                    'attribute_type' => $data['attribute_type']
-                )
-            );
+            $oParticipantAttributeName=ParticipantAttributeName::model()->findByPk($data['attribute_id']);
             foreach ($insertnames as $sFieldname=>$sValue)
             {
                $oParticipantAttributeName->$sFieldname=$sValue;
@@ -467,6 +617,15 @@ class ParticipantAttributeName extends LSActiveRecord
         foreach ($data as $record) {
             Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$record);
         }
+    }
+    function storeAttributeValue($data)
+    {
+        Yii::app()->db->createCommand()->insert('{{participant_attribute_values}}',$data);
+    }
+    function clearAttributeValues()
+    {
+        $deleteCommand = Yii::app()->db->createCommand();
+        $deleteCommand->delete('{{participant_attribute_values}}', 'attribute_id=:attribute_id', array('attribute_id'=>$this->attribute_id));
     }
 
     function storeAttributeCSV($data)

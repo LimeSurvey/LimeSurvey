@@ -12,8 +12,11 @@ class MysqlSchema extends CMysqlSchema
     }
 
     public function createTable($table, $columns, $options = null) {
+        if(empty($options))
+        {
+            $options='ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
+        }
         $result = parent::createTable($table, $columns, $options);
-        $result .= ' ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci';
         return $result;
     }
     /**
@@ -27,7 +30,7 @@ class MysqlSchema extends CMysqlSchema
         { // Direct : get it
             $sResult=$this->columnTypes[$type];
         }
-        elseif (preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $type, $matches)) 
+        elseif (preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $type, $matches))
         { // With params : some test to do
             $baseType = parent::getColumnType($matches[1]);
             if(preg_match('/^([a-zA-Z ]+)\((.+?)\)(.*)$/', $baseType, $baseMatches))

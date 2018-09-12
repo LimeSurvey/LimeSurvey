@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * This view display the header of the generated statistics
  * It is called from statistics_helper::generate_html_chartjs_statistics()
@@ -23,7 +23,7 @@
     <?php endif;?>
 
     <?php if($browse): ?>
-        <?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post',array('target'=>'_blank'))."\n" ;?>
+        <?php echo CHtml::form(array("admin/responses/sa/browse/surveyid/{$surveyid}"), 'post')."\n" ;?>
             <p>
                 <input type='submit' class='btn btn-default' value='<?php eT("Browse");?>' />
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>'/>
@@ -33,3 +33,4 @@
         </form>
     <?php endif;?>
 </div>
+<input type="hidden" id="showGraphOnPageLoad" />

@@ -1,10 +1,17 @@
-<div class="side-body">
-    <h3><?php eT('Question summary'); ?></h3>
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion)); ?>
+    <h3><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</small></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
 
             <!-- Summary Table -->
             <table  id='questiondetails' <?php echo $qshowstyle; ?>>
+
+                <!-- Question Group -->
+                <tr>
+                    <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
+                    <td><em><?php echo flattenText($oQuestion->groups->group_name);?></em> (ID:<?php echo $oQuestion->groups->gid;?>)</td>
+                </tr>
 
                 <!-- Code -->
                 <tr>
@@ -112,7 +119,7 @@
                                 <?php eT("Warning"); ?>:
                                 <a href='<?php echo $this->createUrl("admin/questions/sa/subquestions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>'>
                                     <?php eT("You need to add subquestions to this question"); ?>
-                                    <span class="icon-subquestions text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
+                                    <span class="icon-defaultanswers text-success" title='<?php eT("Edit subquestions for this question"); ?>' ></span>
                                 </a>
                             </span>
                         </td>
@@ -189,26 +196,28 @@
             </table>
 
             <!-- Quick Actions -->
-            <h3 id="survey-action-title"><?php eT('Question quick actions'); ?></h3>
-            <div class="row welcome survey-action">
-                <div class="col-lg-12 content-right">
+            <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'update')): ?>
+                <h3 id="survey-action-title"><?php eT('Question quick actions'); ?></h3>
+                <div class="row welcome survey-action">
+                    <div class="col-lg-12 content-right">
 
-                    <!-- create new question in this group -->
-                    <div class="col-lg-3">
-                        <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="pannel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
-                            <div class="panel-heading">
-                                <h4 class="panel-title"><?php eT("Add new question to group");?></h4>
-                            </div>
-                            <div class="panel-body">
-                                <span class="icon-add text-success"  style="font-size: 3em;"></span>
-                                <p class='btn-link'>
-                                        <?php eT("Add new question to group");?>
-                                </p>
+                        <!-- create question in this group -->
+                        <div class="col-lg-3">
+                            <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="pannel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><?php eT("Add new question to group");?></h4>
+                                </div>
+                                <div class="panel-body">
+                                    <span class="icon-add text-success"  style="font-size: 3em;"></span>
+                                    <p class='btn-link'>
+                                            <?php eT("Add new question to group");?>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>

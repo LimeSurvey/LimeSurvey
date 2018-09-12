@@ -92,7 +92,7 @@ class SurveyDao
     * @param Survey $survey
     * @param int $iMinimum
     * @param int $iMaximum
-    * @param string|array $sFilter An optional filter for the results, i  string or arry of string
+    * @param string $sFilter An optional filter for the results, i  string or arry of string
     * @param string $completionState all, complete or incomplete
     */
     public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter='', $completionState = 'all' )
@@ -152,7 +152,7 @@ class SurveyDao
                 // Do nothing, all responses
                 break;
         }
-
+        $oRecordSet->order='{{survey_' . $survey->id . '}}.id ASC';
         $survey->responses=$oRecordSet->select($aSelectFields)->query();
     }
 }

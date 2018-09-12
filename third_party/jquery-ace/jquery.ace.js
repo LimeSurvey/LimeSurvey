@@ -89,7 +89,7 @@
                     var data = $(this).data('ace');
                     if (data)
                     {
-                        data.editor.setValue(value);
+                        data.editor.session.setValue(value);
                     }
                 });
             }

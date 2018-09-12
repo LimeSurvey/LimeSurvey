@@ -36,7 +36,6 @@
         /**
          * We have a custom implementation here since the parents' implementation
          * does not create a new model for each table name.
-         * @param type $className
          * @return Plugin
          */
         public static function model($sTableName = null)

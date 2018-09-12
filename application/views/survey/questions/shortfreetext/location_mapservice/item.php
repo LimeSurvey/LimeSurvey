@@ -25,7 +25,7 @@
 <div class="question answer-item geoloc-item <?php echo $extraclass;?>">
     <!-- Input Text Location -->
     <input
-        class="text location <?php echo $kpclass; ?>"
+        class="text location <?php echo $kpclass; ?> if-no-js"
         type="text"
         size="20"
         name="<?php echo $name; ?>_c"

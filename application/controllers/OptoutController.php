@@ -24,16 +24,15 @@ class OptoutController extends LSYii_Controller {
      public $layout = 'bare';
      public $defaultAction = 'tokens';
 
-    /* This function is run when opting out of an individual token table. The other function /optout/participants
+    /**
+     * This function is run when opting out of an individual token table. The other function /optout/participants
      * opts the user out of ALL survey invitations from the system
-     *
-     *
-     * */
+     */
     function actiontokens()
     {
         $iSurveyID=Yii::app()->request->getQuery('surveyid');
         $sLanguageCode=Yii::app()->request->getQuery('langcode');
-        $sToken=sanitize_token(Yii::app()->request->getQuery('token'));
+        $sToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
 
@@ -85,29 +84,18 @@ class OptoutController extends LSYii_Controller {
             }
         }
 
-        //PRINT COMPLETED PAGE
-        if (!$aSurveyInfo['templatedir'])
-        {
-            $sTemplate=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
-        }
-        else
-        {
-            $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
-        }
-
-        $this->_renderHtml($sMessage,$sTemplate,$aSurveyInfo);
+        $this->_renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
     }
 
-    /* This function is run when opting out of the participants system. The other function /optout/token
+    /**
+     * This function is run when opting out of the participants system. The other function /optout/token
      * opts the user out of just a single token/survey invite list
-     *
-     *
-     * */
+     */
     function actionparticipants()
     {
         $iSurveyID=Yii::app()->request->getQuery('surveyid');
         $sLanguageCode=Yii::app()->request->getQuery('langcode');
-        $sToken=sanitize_token(Yii::app()->request->getQuery('token'));
+        $sToken = Token::sanitizeToken(Yii::app()->request->getQuery('token'));
         Yii::app()->loadHelper('database');
         Yii::app()->loadHelper('sanitize');
         if (!$iSurveyID) //IF there is no survey id, redirect back to the default public page
@@ -172,37 +160,45 @@ class OptoutController extends LSYii_Controller {
             }
         }
 
-        //PRINT COMPLETED PAGE
-        if (!$aSurveyInfo['templatedir'])
-        {
-            $sTemplate=getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
-        }
-        else
-        {
-            $sTemplate=getTemplatePath($aSurveyInfo['templatedir']);
-        }
-
-        $this->_renderHtml($sMessage,$sTemplate, $aSurveyInfo);
+        $this->_renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
     }
 
-    private function _renderHtml($html, $thistpl, $aSurveyInfo)
+    /**
+     * Render something
+     *
+     * @param string $html
+     * @param array $aSurveyInfo
+     * @param int $iSurveyID
+     * @return void
+     */
+    private function _renderHtml($html, $aSurveyInfo, $iSurveyID)
     {
         sendCacheHeaders();
         doHeader();
         $aSupportData=array('thissurvey'=>$aSurveyInfo);
 
-        // $oTemplate is a global variable defined in controller/survey/index
-        global $oTemplate;
-        $sTemplatePath = $oTemplate->path;
+        $oTemplate = Template::model()->getInstance(null, $iSurveyID);
+        if($oTemplate->cssFramework == 'bootstrap')
+        {
+            App()->bootstrap->register();
+        }
         $thistpl = $oTemplate->viewPath;
-
+        Yii::app()->clientScript->registerPackage( 'survey-template' );
+        ob_start(function($buffer, $phase)
+        {
+            App()->getClientScript()->render($buffer);
+            App()->getClientScript()->reset();
+            return $buffer;
+        });
 
         echo templatereplace(file_get_contents($thistpl.'startpage.pstpl'),array(), $aSupportData);
+
         $aData['html'] = $html;
         $aData['thistpl'] = $thistpl;
-        $this->render('/opt_view',$aData);
+        $this->renderPartial('/opt_view',$aData);
         echo templatereplace(file_get_contents($thistpl.'endpage.pstpl'),array(), $aSupportData);
         doFooter();
+        ob_flush();
     }
 
 }

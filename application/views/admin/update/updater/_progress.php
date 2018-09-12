@@ -11,7 +11,7 @@
             <span id="welcome"><?php eT("Welcome"); ?></span>
             <span id="newKey" style="display : none;"><?php eT("New key"); ?></span>
         </li>
-        
+
         <li id="step1Updt" class="off">
             <?php eT("Pre-installation check"); ?>
         </li>
@@ -26,6 +26,6 @@
         </li>
         <li id="step5Updt" class="off">
             <?php eT("End"); ?>
-        </li>               
-    </ol>           
-</div>          
+        </li>
+    </ol>
+</div>

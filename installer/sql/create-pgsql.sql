@@ -154,8 +154,8 @@ CREATE TABLE prefix_participant_attribute (
 --
 CREATE TABLE prefix_participant_attribute_names_lang (
   "attribute_id" integer NOT NULL,
-  "attribute_name" character varying( 30 ) NOT NULL,
-  "lang" character varying( 255 ) NOT NULL,
+  "attribute_name" character varying( 255 ) NOT NULL,
+  "lang" character varying( 20 ) NOT NULL,
   CONSTRAINT prefix_participant_attribute_names_lang_pkey PRIMARY KEY (attribute_id,lang)
 );
 
@@ -166,7 +166,7 @@ CREATE TABLE prefix_participant_attribute_names_lang (
 CREATE TABLE prefix_participant_attribute_names (
   "attribute_id" serial NOT NULL,
   "attribute_type" character varying( 4 ) NOT NULL,
-  "defaultname" character varying(50) NOT NULL,
+  "defaultname" character varying(255) NOT NULL,
   "visible" character varying( 5 ) NOT NULL,
   CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
 );
@@ -201,7 +201,7 @@ CREATE TABLE prefix_participants (
   "participant_id" character varying(50) PRIMARY KEY NOT NULL,
   "firstname" character varying(150),
   "lastname" character varying(150),
-  "email" character varying(254),
+  "email" text,
   "language" character varying(40),
   "blacklisted" character varying(1) NOT NULL,
   "owner_uid" integer NOT NULL,
@@ -216,14 +216,14 @@ CREATE TABLE prefix_participants (
 --
 CREATE TABLE prefix_permissions (
     "id" serial NOT NULL,
-	"entity" character varying(50) NOT NULL,
-	"entity_id" integer NOT NULL,
-	"uid" integer NOT NULL,
-	"permission" character varying(100) NOT NULL,
-	"create_p" integer DEFAULT 0 NOT NULL,
+    "entity" character varying(50) NOT NULL,
+    "entity_id" integer NOT NULL,
+    "uid" integer NOT NULL,
+    "permission" character varying(100) NOT NULL,
+    "create_p" integer DEFAULT 0 NOT NULL,
     "read_p" integer DEFAULT 0 NOT NULL,
-	"update_p" integer DEFAULT 0 NOT NULL,
-	"delete_p" integer DEFAULT 0 NOT NULL,
+    "update_p" integer DEFAULT 0 NOT NULL,
+    "delete_p" integer DEFAULT 0 NOT NULL,
     "import_p" integer DEFAULT 0 NOT NULL,
     "export_p" integer DEFAULT 0 NOT NULL,
     CONSTRAINT prefix_permissions_pkey PRIMARY KEY (id)
@@ -396,11 +396,11 @@ CREATE TABLE prefix_survey_links (
 -- Table structure for table survey_url_parameters
 --
 CREATE TABLE prefix_survey_url_parameters (
-	"id" serial PRIMARY KEY NOT NULL,
-	"sid" integer NOT NULL,
-	"parameter" character varying(50) NOT NULL,
-	"targetqid" integer NULL,
-	"targetsqid" integer NULL
+    "id" serial PRIMARY KEY NOT NULL,
+    "sid" integer NOT NULL,
+    "parameter" character varying(50) NOT NULL,
+    "targetqid" integer NULL,
+    "targetsqid" integer NULL
 );
 
 
@@ -444,9 +444,9 @@ CREATE TABLE prefix_surveys (
     "usetokens" character varying(1) DEFAULT 'N' NOT NULL,
     "bounce_email" character varying(254),
     "attributedescriptions" text,
-	"emailresponseto" text,
+    "emailresponseto" text,
     "emailnotificationto" text,
-	"tokenlength" integer DEFAULT '15' NOT NULL,
+    "tokenlength" integer DEFAULT '15' NOT NULL,
     "showxquestions" character varying(1) DEFAULT 'Y',
     "showgroupinfo" character varying(1) DEFAULT 'B',
     "shownoanswer" character varying(1) DEFAULT 'Y',
@@ -537,7 +537,7 @@ CREATE TABLE prefix_users (
     "htmleditormode" character varying(7) DEFAULT 'default',
     "templateeditormode" character varying(7) DEFAULT 'default' NOT NULL,
     "questionselectormode" character varying(7) DEFAULT 'default' NOT NULL,
-	"one_time_pw" bytea,
+    "one_time_pw" bytea,
     "dateformat" integer DEFAULT 1 NOT NULL,
     "created" timestamp,
     "modified" timestamp
@@ -547,7 +547,7 @@ CREATE TABLE prefix_users (
 -- Table structure for table templates
 --
 CREATE TABLE prefix_templates (
-  "folder" character varying(255) NOT NULL,
+  "folder" character varying(50) NOT NULL,
   "creator" integer NOT NULL,
   CONSTRAINT prefix_templates_pkey PRIMARY KEY ("folder")
 );
@@ -563,20 +563,20 @@ CREATE TABLE prefix_boxes (
   "position" int DEFAULT NULL ,
   "url" text NOT NULL ,
   "title" text NOT NULL ,
-  "img" text NOT NULL ,
   "ico" text DEFAULT NULL,
   "desc" text NOT NULL ,
   "page" text NOT NULL ,
+  "usergroup" integer NOT NULL,
   PRIMARY KEY (id)
 );
 
-INSERT INTO "prefix_boxes" ("id", "position", "url", "title", "img", "ico", "desc", "page") VALUES
-(1, 1, 'admin/survey/sa/newsurvey', 'Create survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
-(2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'list', 'List available surveys', 'welcome'),
-(3, 3, 'admin/globalsettings', 'Global settings', 'global.png', 'settings', 'Edit global settings', 'welcome'),
-(4, 4, 'admin/update', 'ComfortUpdate', 'shield&#45;update.png', 'shield', 'Stay safe and up to date', 'welcome'),
-(5, 5, 'admin/labels/sa/view', 'Label sets', 'labels.png', 'label', 'Edit label sets', 'welcome'),
-(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates.png', 'templates', 'Edit LimeSurvey templates', 'welcome');
+INSERT INTO "prefix_boxes" ("id", "position", "url", "title", "ico", "desc", "page", "usergroup") VALUES
+(1, 1, 'admin/survey/sa/newsurvey', 'Create survey', 'add', 'Create a new survey', 'welcome', '-2'),
+(2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'list', 'List available surveys', 'welcome', '-1'),
+(3, 3, 'admin/globalsettings', 'Global settings', 'settings', 'Edit global settings', 'welcome', '-2'),
+(4, 4, 'admin/update', 'ComfortUpdate', 'shield', 'Stay safe and up to date', 'welcome', '-2'),
+(5, 5, 'admin/labels/sa/view', 'Label sets', 'label', 'Edit label sets', 'welcome', '-2'),
+(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates', 'Edit LimeSurvey templates', 'welcome', '-2');
 
 --
 -- Secondary indexes
@@ -598,8 +598,25 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 create index labels_code_idx on prefix_labels (code);
 create unique index permissions_idx2 ON prefix_permissions (entity_id, entity, uid, permission);
 
+--
+-- Notification table
+--
+CREATE TABLE prefix_notifications (
+    "id" SERIAL,
+    "entity" character varying(15) NOT NULL,
+    "entity_id" integer NOT NULL,
+    "title" character varying(255) NOT NULL,
+    "message" TEXT NOT NULL,
+    "status" character varying(15) NOT NULL DEFAULT 'new',
+    "importance" integer NOT NULL DEFAULT 1,
+    "display_class" character varying(31) DEFAULT 'default',
+    "created" timestamp NOT NULL,
+    "first_read" timestamp DEFAULT NULL,
+    CONSTRAINT prefix_notifications_pkey PRIMARY KEY (id)
+);
+CREATE INDEX prefix_index ON prefix_notifications USING btree (entity, entity_id, status);
 
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '252');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '260');

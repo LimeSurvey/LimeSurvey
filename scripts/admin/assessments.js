@@ -23,7 +23,7 @@ function jquery_goodchars(e, goods)
 
 
 $(document).ready(function(){
-    $('#languagetabs').tabs();
+    //$('#languagetabs').tabs();
     if ($(".assessmentlist tbody tr").size()>0)
     {
         $(".assessmentlist").tablesorter({sortList: [[0,0]] });
@@ -39,7 +39,7 @@ $(document).ready(function(){
               {
                 if ($('#gid>option').length==0){
                   $('#radiototal').attr('checked',true);
-                  alert (strnogroup);    
+                  alert (strnogroup);
                 }
                 else
                 {
@@ -51,10 +51,8 @@ $(document).ready(function(){
     $('#radiototal,#radiogroup').change();
     $('.numbersonly').keypress(
         function(e){
-            return jquery_goodchars(e,'1234567890-');    
+            return jquery_goodchars(e,'1234567890-');
         }
     )
   }
 );
-
-

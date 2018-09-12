@@ -4,8 +4,7 @@
     </div>
     <div class="col-md-9">
         <h2><?php echo $title; ?></h2>
-        <p><?php echo $descp; ?></p>
-            <h3><?php eT('Database creation'); ?></h3>
+            <legend><?php eT('Database creation'); ?></legend>
                 <?php if (isset($adminoutputText)) echo $adminoutputText; ?>
 
             <div class="row">
@@ -19,7 +18,7 @@
                         if (isset($next))
                         {
                             echo CHtml::form(array($next['action']), 'post');
-                            echo CHtml::submitButton(gT($next['label']), array(
+                            echo CHtml::submitButton($next['label'], array(
                                 'name' => $next['name'],
                                 'class' => 'btn btn-default'
                             ));

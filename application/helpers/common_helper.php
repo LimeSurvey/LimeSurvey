@@ -31,7 +31,7 @@ function comparePermission($aPermissionA,$aPermissionB)
 /**
  * Translation helper function
  * @param string $sToTranslate
- * @param string $sEscapeMode
+ * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped
  * @param string $sLanguage
  */
 function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
@@ -52,13 +52,13 @@ function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
 
 /**
  * Translation helper function for plural forms
- * @param string $sToTranslate
+ * @param string $sTextToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
  */
-function ngT($sToTranslate, $iCount, $sEscapeMode = 'html')
+function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 {
-    return quoteText(Yii::t('',$sToTranslate,$iCount),$sEscapeMode);
+    return quoteText(Yii::t('',$sTextToTranslate,$iCount),$sEscapeMode);
 }
 
 /**
@@ -67,7 +67,7 @@ function ngT($sToTranslate, $iCount, $sEscapeMode = 'html')
  * @param integer $iCount
  * @param string $sEscapeMode
  */
-function egT($sToTranslate, $iCount, $sEscapeMode = 'html')
+function neT($sToTranslate, $iCount, $sEscapeMode = 'html')
 {
     echo ngT($sToTranslate,$iCount,$sEscapeMode);
 }
@@ -169,18 +169,6 @@ function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
     return $qtypeselecter;
 }
 
-function getQuestionModuleList($SelectedCode = "T", $ReturnType = "selector")
-{
-    $publicurl = Yii::app()->getConfig('publicurl');
-    $qtypes = Question::questionModuleList();
-
-    if ($ReturnType == "array")
-        return $qtypes;
-
-    else return null;
-
-}
-
 /**
 * isStandardTemplate returns true if a template is a standard template
 * This function does not check if a template actually exists
@@ -203,7 +191,7 @@ function isStandardTemplate($sTemplateName)
 function getSurveyList($returnarray=false, $surveyid=false)
 {
     static $cached = null;
-
+    $bCheckIntegrity = false;
     $timeadjust = getGlobalSetting('timeadjust');
     App()->setLanguage((isset(Yii::app()->session['adminlang']) ? Yii::app()->session['adminlang'] : 'en'));
 
@@ -216,7 +204,18 @@ function getSurveyList($returnarray=false, $surveyid=false)
         $surveynames = array();
         foreach ($surveyidresult as $result)
         {
-            $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
+            if(!empty($result->defaultlanguage))
+            {
+                $surveynames[] = array_merge($result->attributes, $result->defaultlanguage->attributes);
+            }
+            elseif(!($bCheckIntegrity))
+            {
+                $bCheckIntegrity=true;
+                Yii::app()->setFlashMessage(
+                    CHtml::link(gT("One or more surveys seem to be broken - please use the data integrity check tool to fix this."),array("admin/checkintegrity"))
+                    ,
+                    'error');
+            }
         }
 
         $cached = $surveynames;
@@ -234,9 +233,9 @@ function getSurveyList($returnarray=false, $surveyid=false)
         {
 
             $surveylstitle=flattenText($sv['surveyls_title']);
-            if (strlen($surveylstitle)>45)
+            if (strlen($surveylstitle)>70)
             {
-                $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 45, 'UTF-8'))."...";
+                $surveylstitle = htmlspecialchars(mb_strcut(html_entity_decode($surveylstitle,ENT_QUOTES,'UTF-8'), 0, 70, 'UTF-8'))."...";
             }
 
             if($sv['active']!='Y')
@@ -315,38 +314,10 @@ function getTemplateListWithPreviews()
     return Template::getTemplateListWithPreviews();
 }
 
-
-
-function getAdminThemeList()
-{
-    $standardtemplaterootdir=Yii::app()->getConfig("styledir");
-    $list_of_files = array();
-
-    if ($standardtemplaterootdir && $handle = opendir($standardtemplaterootdir))
-    {
-        while (false !== ($file = readdir($handle)))
-        {
-            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
-            {
-                //$list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                $oTemplateConfig = simplexml_load_file($standardtemplaterootdir.DIRECTORY_SEPARATOR.$file.'/config.xml');
-                $list_of_files[$file] = $oTemplateConfig;
-            }
-        }
-        closedir($handle);
-    }
-
-
-    ksort($list_of_files);
-
-    return $list_of_files;
-}
-
-
 /**
 * getQuestions() queries the database for an list of all questions matching the current survey and group id
 *
-* @return This string is returned containing <option></option> formatted list of questions in the current survey and group
+* @return string string is returned containing <option></option> formatted list of questions in the current survey and group
 */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
@@ -359,7 +330,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
     {
         $qrow = $qrow->attributes;
         $qrow['title'] = strip_tags($qrow['title']);
-        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$qrow['qid']);
+        $link = Yii::app()->getController()->createUrl("/admin/questions/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$qrow['qid']);
         $sQuestionselecter .= "<option value='{$link}'";
         if ($selectedqid == $qrow['qid'])
         {
@@ -386,7 +357,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
     }
     else
     {
-        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid);
+        $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$gid);
         $sQuestionselecter = "<option value='{$link}'>".gT("None")."</option>\n".$sQuestionselecter;
     }
     return $sQuestionselecter;
@@ -568,6 +539,9 @@ function calculateTotalFileUploadUsage(){
     return (float)$iTotalSize/1024/1024;
 }
 
+/**
+ * @param string $directory
+ */
 function getDirectorySize($directory) {
     $size = 0;
     foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file){
@@ -587,30 +561,38 @@ function getGroupSum($surveyid, $lang)
 {
     //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
     $condn = array('sid'=>$surveyid,'language'=>$lang);
-    $sumresult3 = count(QuestionGroup::model()->findAllByAttributes($condn)); //Checked)
+    $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
 
     return $sumresult3 ;
 }
 
 
 /**
-* getMaxGroupOrder($surveyid) queries the database for the maximum sortorder of a group and returns the next higher one.
-*
-* @param mixed $surveyid
-*/
+ * Queries the database for the maximum sortorder of a group and returns the next higher one.
+ *
+ * @param integer $surveyid
+ * @return int
+ */
 function getMaxGroupOrder($surveyid)
 {
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
+    $queryResult = QuestionGroup::model()->find(array(
+        'condition' => 'sid = :sid',
+        'params' => array(':sid' => $surveyid),
+        'order' => 'group_order desc',
+        'limit' => '1'
+    ));
 
-    //$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
-    $query = QuestionGroup::model()->find(array('order' => 'group_order desc'));
-    $current_max = !is_null($query) ? $query->group_order : '';
+    $current_max = !is_null($queryResult) ? $queryResult->group_order : "";
 
-    if($current_max!="")
+    if($current_max !== "")
     {
-        return ++$current_max ;
+        $current_max += 1;
+        return $current_max;
     }
-    else return "0" ;
+    else
+    {
+        return 0;
+    }
 }
 
 
@@ -861,8 +843,8 @@ function alternation($alternate = '' , $type = 'col')
     */
     if($type == 'row')
     {
-        $odd  = 'array2'; // should be row_odd
-        $even = 'array1'; // should be row_even
+        $odd  = 'array2 well'; // should be row_odd
+        $even = 'array1 well'; // should be row_even
     }
     else
     {
@@ -885,6 +867,7 @@ function alternation($alternate = '' , $type = 'col')
 * longestString() returns the length of the longest string past to it.
 * @peram string $new_string
 * @peram integer $longest_length length of the (previously) longest string passed to it.
+* @param integer $longest_length
 * @return integer representing the length of the longest string passed (updated if $new_string was longer than $longest_length)
 *
 * usage should look like this: $longest_length = longestString( $new_string , $longest_length );
@@ -906,7 +889,7 @@ function longestString( $new_string , $longest_length )
 *
 * @param string $notificationcode - the currently selected one
 *
-* @return This string is returned containing <option></option> formatted list of notification methods for current survey
+* @return string string is returned containing <option></option> formatted list of notification methods for current survey
 */
 function getNotificationList($notificationcode)
 {
@@ -933,7 +916,7 @@ function getNotificationList($notificationcode)
 *
 * @param string $gid - the currently selected gid/group
 *
-* @return This string is returned containing <option></option> formatted list of groups to current survey
+* @return string string is returned containing <option></option> formatted list of groups to current survey
 */
 function getGroupList($gid,$surveyid)
 {
@@ -982,7 +965,7 @@ function getGroupList3($gid,$surveyid)
         $gv = $gv->attributes;
         $groupselecter .= "<option";
         if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; }
-        $groupselecter .= " value='".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
+        $groupselecter .= " value='".$gv['gid']."'>".htmlspecialchars($gv['group_name'])." (ID:".$gv['gid'].")</option>\n";
     }
 
 
@@ -1011,7 +994,7 @@ function getGroupListLang($gid, $language, $surveyid)
         $gv = $gv->attributes;
         $groupselecter .= "<option";
         if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-        $link = Yii::app()->getController()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gv['gid']);
+        $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$gv['gid']);
         $groupselecter .= " value='{$link}'>";
         if (strip_tags($gv['group_name']))
         {
@@ -1194,7 +1177,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 /**
 * Returns the default email template texts as array
 *
-* @param mixed $oLanguage Required language translationb object
+* @param mixed $sLanguage Required language translationb object
 * @param string $mode Escape mode for the translation function
 * @return array
 */
@@ -1337,6 +1320,9 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
     QuestionGroup::model()->updateGroupOrder($surveyid,$baselang);
 }
 
+/**
+ * @param integer $iSurveyID
+ */
 function fixMovedQuestionConditions($qid,$oldgid,$newgid, $iSurveyID=NULL) //Function rewrites the cfieldname for a question after group change
 {
     if(!isset($iSurveyID))
@@ -1373,8 +1359,7 @@ function returnGlobal($stringname,$bRestrictToString=false)
         $stringname == "lid" || $stringname == "ugid"||
         $stringname == "thisstep" || $stringname == "scenario" ||
         $stringname == "cqid" || $stringname == "cid" ||
-        $stringname == "qaid" || $stringname == "scid" ||
-        $stringname == "loadsecurity")
+        $stringname == "qaid" || $stringname == "scid" )
         {
             if($bUrlParamIsArray){
                 return array_map("sanitize_int",$urlParam);
@@ -1425,6 +1410,10 @@ function sendCacheHeaders()
     if ( $embedded ) return;
     if (!headers_sent())
     {
+        if (Yii::app()->getConfig('x_frame_options','allow')=='sameorigin')
+        {
+            header('X-Frame-Options: SAMEORIGIN');
+        }
         header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');  // this line lets IE7 run LimeSurvey in an iframe
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
         header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
@@ -1451,9 +1440,13 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
     {
         $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage);
         if (isset($fieldmap[$sFieldCode]))
+        {
             $fields = $fieldmap[$sFieldCode];
+        }
         else
-            return false;
+        {
+            return '';
+        }
 
         // If it is a comment field there is nothing to convert here
         if ($fields['aid']=='comment') return $sValue;
@@ -1470,17 +1463,11 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
                     $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
                 }
                 break;
+            case 'K':
             case 'N':
-                if (trim($sValue)!='')
-                {
-                    if(strpos($sValue,".")!==false)
-                    {
+                if (trim($sValue)!='') {
+                    if (strpos($sValue,".")!==false) {
                         $sValue=rtrim(rtrim($sValue,"0"),".");
-                    }
-                    $qidattributes = getQuestionAttributeValues($fields['qid']);
-                    if($qidattributes['num_value_int_only'])
-                    {
-                        $sValue=number_format($sValue, 0, '', '');
                     }
                 }
                 break;
@@ -1565,16 +1552,24 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case "|": //File upload
                 if (substr($sFieldCode, -9) != 'filecount') {
                     //Show the filename, size, title and comment -- no link!
-                    $files = json_decode($sValue);
+                    $files = json_decode($sValue,true);
                     $sValue = '';
                     if (is_array($files)) {
                         foreach ($files as $file) {
-                            $sValue .= rawurldecode($file->name) .
-                            ' (' . round($file->size) . 'KB) ' .
-                            strip_tags($file->title);
-                            if (trim(strip_tags($file->comment))!="")
+                            if (!isset($file['title']))
                             {
-                                $sValue .=' - ' . strip_tags($file->comment);
+                                $file['title']='';
+                            }
+                            if (!isset($file['comment']))
+                            {
+                                $file['comment']='';
+                            }
+                            $sValue .= rawurldecode($file['name']) .
+                            ' (' . round($file['size']) . 'KB) ' .
+                            strip_tags($file['title']);
+                            if (trim(strip_tags($file['comment']))!="")
+                            {
+                                $sValue .=' - ' . strip_tags($file['comment']);
                             }
 
                         }
@@ -1629,7 +1624,7 @@ function validateEmailAddress($sEmailAddress){
 * Validate an list of email addresses - either as array or as semicolon-limited text
 * @returns List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
 *
-* @param mixed $sEmailAddresses  Email address to check
+* @param mixed $aEmailAddressList  Email address to check
 */
 function validateEmailAddresses($aEmailAddressList){
   $aOutList=false;
@@ -1653,7 +1648,7 @@ function validateEmailAddresses($aEmailAddressList){
  * @param int $iSurveyID Id of the Survey in question
  * @param array $aFilters an array which is the result of a query in Questions model
  * @param string $sLanguage
- * @return array The summary
+ * @return string[] The summary
  */
   function createCompleteSGQA($iSurveyID,$aFilters,$sLanguage) {
 
@@ -1775,8 +1770,8 @@ return $allfields;
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
 * @param string $surveyid The Survey ID
-* @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
-* @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
+* @param string $style 'short' (default) or 'full' - full creates extra information like default values
+* @param boolean|null $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sQuestionLanguage The language to use
 * @return array
@@ -1790,8 +1785,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
-    $sOldLanguage=App()->language;
-    App()->setLanguage($sLanguage);
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
     {
@@ -1823,6 +1816,16 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["startlanguage"]['question']=gT("Start language");
         $fieldmap["startlanguage"]['group_name']="";
     }
+
+    /*
+    $fieldmap['seed'] = array('fieldname' => 'seed', 'sid' => $surveyid, 'type' => 'seed', 'gid' => '', 'qid' => '', 'aid' => '');
+    if ($style == 'full')
+    {
+        $fieldmap["seed"]['title']="";
+        $fieldmap["seed"]['question']=gT("Seed");
+        $fieldmap["seed"]['group_name']="";
+    }
+    */
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
@@ -1892,6 +1895,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
     }
 
+    $sOldLanguage=App()->language;
+    App()->setLanguage($sLanguage);
     // Collect all default values once so don't need separate query for each question with defaults
     // First collect language specific defaults
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
@@ -2154,11 +2159,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
         elseif ($arow['type'] == "R")
         {
-            //MULTI ENTRY
-            $data = Answer::model()->findAllByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage));
-            $data = count($data);
-            $slots=$data;
-            for ($i=1; $i<=$slots; $i++)
+            // Sub question by answer number OR attribute
+            $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage)));
+            $maxDbAnswer=QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'",array(':qid' => $arow['qid']));
+            $columnsCount=(!$maxDbAnswer || intval($maxDbAnswer->value)<1) ? $answersCount : intval($maxDbAnswer->value);
+            for ($i=1; $i<=$columnsCount; $i++)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
                 if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
@@ -2369,6 +2374,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 /**
 * Returns true if the given survey has a File Upload Question Type
 * @param $surveyid The survey ID
+* @param integer $iSurveyID
 * @return bool
 */
 function hasFileUploadQuestion($iSurveyID) {
@@ -2380,8 +2386,8 @@ function hasFileUploadQuestion($iSurveyID) {
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
 * @param string $surveyid The Survey ID
-* @param mixed $style 'short' (default) or 'full' - full creates extra information like default values
-* @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy
+* @param string $style 'short' (default) or 'full' - full creates extra information like default values
+* @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sQuestionLanguage The language to use
 * @return array
@@ -2432,8 +2438,8 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 *
 * @param mixed $needle
 * @param mixed $haystack
-* @param mixed $keyname
-* @param mixed $maxanswers
+* @param string $keyname
+* @param integer $maxanswers
 */
 function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     $output=array();
@@ -2533,77 +2539,6 @@ function buildLabelSetCheckSumArray()
 function getQuestionAttributeValues($iQID)
 {
     return QuestionAttribute::model()->getQuestionAttributes($iQID);
-#    static $cache = array();
-#    static $availableattributesarr = null;
-#    $iQID = sanitize_int($iQID);
-
-#    if (isset($cache[$iQID])) {
-#        return $cache[$iQID];
-#    }
-#    $oQuestion = Question::model()->find("qid=:qid",array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
-#    if (!$oQuestion) // Question was deleted while running the survey
-#    {
-#        $cache[$iQID] = false;
-#        return false;
-#    }
-#    else
-#    {
-#        $type = $oQuestion->type;
-#        $surveyid = $oQuestion->type;
-#        $row = $oQuestion->getAttributes();
-#    }
-#    $type = $row['type'];
-#    $surveyid = $row['sid'];
-
-#    $aLanguages = array_merge((array)Survey::model()->findByPk($surveyid)->language, Survey::model()->findByPk($surveyid)->additionalLanguages);
-
-    //Now read available attributes, make sure we do this only once per request to save
-    //processing cycles and memory
-#    if (is_null($availableattributesarr)) $availableattributesarr = questionAttributes();
-#    if (isset($availableattributesarr[$type]))
-#    {
-#        $aAvailableAttributes = $availableattributesarr[$type];
-#    }
-#    else
-#    {
-#        $cache[$iQID] = array();
-#        return array();
-#    }
-
-#    $aResultAttributes = array();
-#    foreach($aAvailableAttributes as $attribute){
-#        if ($attribute['i18n'])
-#        {
-#            foreach ($aLanguages as $sLanguage)
-#            {
-#                $aResultAttributes[$attribute['name']][$sLanguage]=$attribute['default'];
-#            }
-#        }
-#        else
-#        {
-#            $aResultAttributes[$attribute['name']]=$attribute['default'];
-#        }
-#    }
-
-#    $result = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQID));
-#    foreach ($result as $row)
-#    {
-#        $row = $row->attributes;
-#        if (!isset($aAvailableAttributes[$row['attribute']]))
-#        {
-#            continue; // Sort out attributes not belonging to this question
-#        }
-#        if (!($aAvailableAttributes[$row['attribute']]['i18n']))
-#        {
-#            $aResultAttributes[$row['attribute']]=$row['value'];
-#        }
-#        elseif(!empty($row['language']))
-#        {
-#            $aResultAttributes[$row['attribute']][$row['language']]=$row['value'];
-#        }
-#    }
-#    $cache[$iQID] = $aResultAttributes;
-#    return $aResultAttributes;
 }
 
 /**
@@ -2611,7 +2546,7 @@ function getQuestionAttributeValues($iQID)
 * Returns the questionAttribtue value set or '' if not set
 * @author: lemeur
 * @param $questionAttributeArray
-* @param $attributeName
+* @param string $attributeName
 * @param $language string Optional: The language if the particualr attributes is localizable
 * @return string
 */
@@ -2631,1295 +2566,6 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName, $lan
     }
 }
 
-/**
-* Returns array of question type chars with attributes
-*
-* @param mixed $returnByName If set to true the array will be by attribute name
-*/
-function questionAttributes($returnByName=false)
-{
-    // Use some static
-    static $qattributes=false;
-    static $qat=false;
-
-
-    if (!$qattributes)
-    {
-        //For each question attribute include a key:
-        // name - the display name
-        // types - a string with one character representing each question typy to which the attribute applies
-        // help - a short explanation
-
-        // If you insert a new attribute please do it in correct alphabetical order!
-        // Please also list the new attribute in the function &TSVSurveyExport($sid) in em_manager_helper.php,
-        // so your new attribute will not be "forgotten" when the survey is exported to Excel/CSV-format!
-        $qattributes["alphasort"]=array(
-        "types"=>"!LOWZ",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT("Sort the answer options alphabetically"),
-        "caption"=>gT('Sort answers alphabetically'));
-
-        $qattributes["answer_width"]=array(
-        "types"=>"ABCEF1:;",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'integer',
-        'min'=>'1',
-        'max'=>'100',
-        "help"=>gT('Set the percentage width of the (sub-)question column (1-100)'),
-        "caption"=>gT('(Sub-)question width'));
-
-        $qattributes["repeat_headings"]=array(
-        "types"=>"F:1;",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'integer',
-         'default'=>'',
-        "help"=>gT('Repeat headings every X subquestions (Set to 0 to deactivate heading repeat, deactivate minimum repeat headings from config).'),
-        "caption"=>gT('Repeat headers'));
-
-        $qattributes["array_filter"]=array(
-        "types"=>"1ABCEF:;MPLKQR",
-        'category'=>gT('Logic'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to only show the matching answer options in this question."),
-        "caption"=>gT('Array filter'));
-
-        $qattributes["array_filter_exclude"]=array(
-        "types"=>"1ABCEF:;MPLKQR",
-        'category'=>gT('Logic'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT("Enter the code(s) of Multiple choice question(s) (separated by semicolons) to exclude the matching answer options in this question."),
-        "caption"=>gT('Array filter exclusion'));
-
-        $qattributes["array_filter_style"]=array(
-        "types"=>"1ABCEF:;MPLKQR",
-        'category'=>gT('Logic'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Hidden'),
-        1=>gT('Disabled')),
-        'default'=>0,
-        "help"=>gT("Specify how array-filtered sub-questions should be displayed"),
-        "caption"=>gT('Array filter style'));
-
-        $qattributes["assessment_value"]=array(
-        "types"=>"MP",
-        'category'=>gT('Logic'),
-        'sortorder'=>100,
-        'default'=>'1',
-        'inputtype'=>'integer',
-        "help"=>gT("If one of the subquestions is marked then for each marked subquestion this value is added as assessment."),
-        "caption"=>gT('Assessment value'));
-
-        $qattributes["category_separator"]=array(
-        "types"=>"!",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('Category separator'),
-        "caption"=>gT('Category separator'));
-
-        $qattributes["code_filter"]=array(
-        "types"=>"WZ",
-        'category'=>gT('Logic'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('Filter the available answers by this value'),
-        "caption"=>gT('Code filter'));
-
-        $qattributes["commented_checkbox"]=array(
-        "types"=>"P",
-        'category'=>gT('Logic'),
-        'sortorder'=>110,
-        'inputtype'=>'singleselect',
-        'options'=>array(
-            "allways"=>gT('No control on checkbox'),
-            "checked"=>gT('Checkbox is checked'),
-            "unchecked"=>gT('Checkbox is unchecked'),
-            ),
-        'default' => "checked",
-        'help'=>gT('Choose when user can add a comment'),
-        'caption'=>gT('Comment only when'));
-
-        $qattributes["commented_checkbox_auto"]=array(
-        "types"=>"P",
-        'category'=>gT('Logic'),
-        'sortorder'=>111,
-        'inputtype'=>'singleselect',
-        'options'=>array(
-            "0"=>gT('No'),
-            "1"=>gT('Yes'),
-            ),
-        'default' => "1",
-        'help'=>gT('Use javascript function to remove text and uncheck checkbox (or use Expression Manager only).'),
-        'caption'=>gT('Remove text or uncheck checkbox automatically'));
-
-        $qattributes["display_columns"]=array(
-        "types"=>"LM",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'integer',
-        'default'=>'1',
-        'min'=>'1',
-        'max'=>'100',
-        "help"=>gT('The answer options will be distributed across the number of columns set here'),
-        "caption"=>gT('Display columns'));
-
-        $qattributes["display_rows"]=array(
-        "types"=>"QSTU",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('How many rows to display'),
-        "caption"=>gT('Display rows'));
-
-        $qattributes["dropdown_dates"]=array(
-        "types"=>"D",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Use accessible dropdown boxes instead of calendar popup'),
-        "caption"=>gT('Display dropdown boxes'));
-
-        $qattributes["date_min"]=array(
-        "types"=>"D",
-        'category'=>gT('Display'),
-        'sortorder'=>110,
-        'inputtype'=>'text',
-        "help"=>gT('Minimum date, valide date in YYYY-MM-DD format or any English textual datetime description. Expression Managed can be used (only with YYYY-MM-DD format). For dropdown : only the year is restricted if date use variable not in same page.'),
-        "caption"=>gT('Minimum date'));
-
-        $qattributes["date_max"]=array(
-        "types"=>"D",
-        'category'=>gT('Display'),
-        'sortorder'=>111,
-        'inputtype'=>'text',
-        "help"=>gT('Maximum date, valide date in any English textual datetime description (YYYY-MM-DD for example). Expression Managed can be used (only with YYYY-MM-DD format) value. For dropdown : only the year is restricted if date use variable not in same page.'),
-        "caption"=>gT('Maximum date'));
-
-        $qattributes["dropdown_prepostfix"]=array(
-        "types"=>"1",
-        'category'=>gT('Display'),
-        'sortorder'=>112,
-        'inputtype'=>'text',
-        'i18n'=>true,
-        "help"=>gT('Prefix|Suffix for dropdown lists'),
-        "caption"=>gT('Dropdown prefix/suffix'));
-
-        $qattributes["dropdown_separators"]=array(
-        "types"=>"1",
-        'category'=>gT('Display'),
-        'sortorder'=>120,
-        'inputtype'=>'text',
-        "help"=>gT('Text shown on each subquestion row between both scales in dropdown mode'),
-        "caption"=>gT('Dropdown separator'));
-
-        $qattributes["dualscale_headerA"]=array(
-        "types"=>"1",
-        'category'=>gT('Display'),
-        'sortorder'=>110,
-        'inputtype'=>'text',
-        'i18n'=>true,
-        "help"=>gT('Enter a header text for the first scale'),
-        "caption"=>gT('Header for first scale'));
-
-        $qattributes["dualscale_headerB"]=array(
-        "types"=>"1",
-        'category'=>gT('Display'),
-        'sortorder'=>111,
-        'inputtype'=>'text',
-        'i18n'=>true,
-        "help"=>gT('Enter a header text for the second scale'),
-        "caption"=>gT('Header for second scale'));
-
-        $qattributes["equation"]=array(
-        "types"=>"*",
-        'category'=>gT('Logic'),
-        'sortorder'=>100,
-        'inputtype'=>'textarea',
-        "help"=>gT('Final equation to set in database, defaults to question text.'),
-        "caption"=>gT('Equation'),
-        "default"=>"");
-
-        $qattributes["equals_num_value"]=array(
-        "types"=>"K",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('Multiple numeric inputs sum must equal this value'),
-        "caption"=>gT('Equals sum value'));
-
-        $qattributes["em_validation_q"]=array(
-        "types"=>":;ABCDEFKMNOPQRSTU",
-        'category'=>gT('Logic'),
-        'sortorder'=>200,
-        'inputtype'=>'textarea',
-        "help"=>gT('Enter a boolean equation to validate the whole question.'),
-        "caption"=>gT('Question validation equation'));
-
-        $qattributes["em_validation_q_tip"]=array(
-        "types"=>":;ABCDEFKMNOPQRSTU",
-        'category'=>gT('Logic'),
-        'sortorder'=>210,
-        'inputtype'=>'textarea',
-        "help"=>gT('This is a hint text that will be shown to the participant describing the question validation equation.'),
-        "caption"=>gT('Question validation tip'));
-
-        $qattributes["em_validation_sq"]=array(
-        "types"=>";:KQSTUN",
-        'category'=>gT('Logic'),
-        'sortorder'=>220,
-        'inputtype'=>'textarea',
-        "help"=>gT('Enter a boolean equation to validate each sub-question.'),
-        "caption"=>gT('Sub-question validation equation'));
-
-        $qattributes["em_validation_sq_tip"]=array(
-        "types"=>";:KQSTUN",
-        'category'=>gT('Logic'),
-        'sortorder'=>230,
-        'inputtype'=>'textarea',
-        "help"=>gT('This is a tip shown to the participant describing the sub-question validation equation.'),
-        "caption"=>gT('Sub-question validation tip'));
-
-        $qattributes["exclude_all_others"]=array(
-        "types"=>":ABCEFMPKQ",
-        'category'=>gT('Logic'),
-        'sortorder'=>130,
-        'inputtype'=>'text',
-        "help"=>gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semikolon.'),
-        "caption"=>gT('Exclusive option'));
-
-        $qattributes["exclude_all_others_auto"]=array(
-        "types"=>"MP",
-        'category'=>gT('Logic'),
-        'sortorder'=>131,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('If the participant marks all options, uncheck all and check the option set in the "Exclusive option" setting'),
-        "caption"=>gT('Auto-check exclusive option if all others are checked'));
-
-        // Map Options
-
-        $qattributes["location_city"]=array(
-        "types"=>"S",
-        'readonly_when_active'=>true,
-        'category'=>gT('Location'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'default'=>0,
-        'options'=>array(0=>gT('Yes'),
-        1=>gT('No')),
-        "help"=>gT("Store the city?"),
-        "caption"=>gT("Save city"));
-
-        $qattributes["location_state"]=array(
-        "types"=>"S",
-        'readonly_when_active'=>true,
-        'category'=>gT('Location'),
-        'sortorder'=>100,
-        'default'=>0,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Yes'),
-        1=>gT('No')),
-        "help"=>gT("Store the state?"),
-        "caption"=>gT("Save state"));
-
-        $qattributes["location_postal"]=array(
-        "types"=>"S",
-        'readonly_when_active'=>true,
-        'category'=>gT('Location'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'default'=>0,
-        'options'=>array(0=>gT('Yes'),
-        1=>gT('No')),
-        "help"=>gT("Store the postal code?"),
-        "caption"=>gT("Save postal code"));
-
-        $qattributes["location_country"]=array(
-        "types"=>"S",
-        'readonly_when_active'=>true,
-        'category'=>gT('Location'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'default'=>0,
-        'options'=>array(0=>gT('Yes'),
-        1=>gT('No')),
-        "help"=>gT("Store the country?"),
-        "caption"=>gT("Save country"));
-
-        $qattributes["statistics_showmap"]=array(
-        "types"=>"S",
-        'category'=>gT('Statistics'),
-        'inputtype'=>'singleselect',
-        'sortorder'=>100,
-        'options'=>array(1=>gT('Yes'), 0=>gT('No')),
-        'help'=>gT("Show a map in the statistics?"),
-        'caption'=>gT("Display map"),
-        'default'=>1
-        );
-
-        $qattributes["statistics_showgraph"]=array(
-        'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
-        'category'=>gT('Statistics'),
-        'inputtype'=>'singleselect',
-        'sortorder'=>101,
-        'options'=>array(1=>gT('Yes'), 0=>gT('No')),
-        'help'=>gT("Display a chart in the statistics?"),
-        'caption'=>gT("Display chart"),
-        'default'=>1
-        );
-
-        $qattributes["statistics_graphtype"]=array(
-        "types"=>'15ABCDEFGHIKLMNOQRSTUWXYZ!:;|*',
-        'category'=>gT('Statistics'),
-        'inputtype'=>'singleselect',
-        'sortorder'=>102,
-        'options'=>array(
-            0=>gT('Bar chart'),
-            1=>gT('Pie chart'),
-            2=>gT('Radar'),
-            3=>gT('Line'),
-            4=>gT('PolarArea'),
-            5=>gT('Doughnut'),
-        ),
-        'help'=>gT("Select the type of chart to be displayed"),
-        'caption'=>gT("Chart type"),
-        'default'=>0
-        );
-
-        $qattributes["location_mapservice"]=array(
-        "types"=>"S",
-        'category'=>gT('Location'),
-        'sortorder'=>90,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Off'),
-            100=>gT('Open Layer (OpenStreetMap via mapquest)'),
-            1=>gT('Google Maps')
-        ),
-        'default' => 0,
-        "help"=>gT("Activate this to show a map above the input field where the user can select a location"),
-        "caption"=>gT("Use mapping service"));
-
-        $qattributes["location_mapwidth"]=array(
-        "types"=>"S",
-        'category'=>gT('Location'),
-        'sortorder'=>102,
-        'inputtype'=>'text',
-        'default'=>'500',
-        "help"=>gT("Width of the map in pixel"),
-        "caption"=>gT("Map width"));
-
-        $qattributes["location_mapheight"]=array(
-        "types"=>"S",
-        'category'=>gT('Location'),
-        'sortorder'=>103,
-        'inputtype'=>'text',
-        'default'=>'300',
-        "help"=>gT("Height of the map in pixel"),
-        "caption"=>gT("Map height"));
-
-        $qattributes["location_nodefaultfromip"]=array(
-        "types"=>"S",
-        'category'=>gT('Location'),
-        'sortorder'=>91,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Yes'),
-        1=>gT('No')),
-        'default' => 0,
-        "help"=>gT("Get the default location using the user's IP address?"),
-        "caption"=>gT("IP as default location"));
-
-        $qattributes["location_defaultcoordinates"]=array(
-        "types"=>"S",
-        'category'=>gT('Location'),
-        'sortorder'=>101,
-        'inputtype'=>'text',
-        "help"=>gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude'),
-        "caption"=>gT('Default position'));
-
-        $qattributes["location_mapzoom"]=array(
-        "types"=>"S",
-        'category'=>gT('Location'),
-        'sortorder'=>101,
-        'inputtype'=>'text',
-        'default'=>'11',
-        "help"=>gT("Map zoom level"),
-        "caption"=>gT("Zoom level"));
-
-        // End Map Options
-
-        $qattributes["hide_tip"]=array(
-        "types"=>"15ABCDEFGHIKLMNOPQRSTUXY!:;|",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Hide the tip that is normally shown with a question'),
-        "caption"=>gT('Hide tip'));
-
-        $qattributes['hidden']=array(
-        'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
-        'category'=>gT('Display'),
-        'sortorder'=>101,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        'help'=>gT('Hide this question at any time. This is useful for including data using answer prefilling.'),
-        'caption'=>gT('Always hide this question'));
-
-        $qattributes['cssclass']=array(
-            'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
-            'category'=>gT('Display'),
-            'sortorder'=>102,
-            'inputtype'=>'text',
-            'help'=>gT('Add additional CSS class(es) for this question. Use a space between different CSS class names.'),
-            'caption'=>gT('CSS class(es)'));
-
-        $qattributes["max_answers"]=array(
-        "types"=>"MPR1:;ABCEFKQ",
-        'category'=>gT('Logic'),
-        'sortorder'=>11,
-        'inputtype'=>'integer',
-        "help"=>gT('Limit the number of possible answers'),
-        "caption"=>gT('Maximum answers'));
-
-        $qattributes["max_num_value"]=array(
-        "types"=>"K",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('Maximum sum value of multiple numeric input'),
-        "caption"=>gT('Maximum sum value'));
-
-        $qattributes["max_num_value_n"]=array(
-        "types"=>"NK",
-        'category'=>gT('Input'),
-        'sortorder'=>110,
-        'inputtype'=>'integer',
-        "help"=>gT('Maximum value of the numeric input'),
-        "caption"=>gT('Maximum value'));
-
-        //    $qattributes["max_num_value_sgqa"]=array(
-        //    "types"=>"K",
-        //    'category'=>gT('Logic'),
-        //    'sortorder'=>100,
-        //    'inputtype'=>'text',
-        //    "help"=>gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
-        //    "caption"=>gT('Max value from SGQA'));
-
-        $qattributes["maximum_chars"]=array(
-        "types"=>"STUNQK:;",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('Maximum characters allowed'),
-        "caption"=>gT('Maximum characters'));
-
-        $qattributes["min_answers"]=array(
-        "types"=>"MPR1:;ABCEFKQ",
-        'category'=>gT('Logic'),
-        'sortorder'=>10,
-        'inputtype'=>'integer',
-        "help"=>gT('Ensure a minimum number of possible answers (0=No limit)'),
-        "caption"=>gT('Minimum answers'));
-
-        $qattributes["min_num_value"]=array(
-        "types"=>"K",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('The sum of the multiple numeric inputs must be greater than this value'),
-        "caption"=>gT('Minimum sum value'));
-
-        $qattributes["min_num_value_n"]=array(
-        "types"=>"NK",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        'inputtype'=>'integer',
-        "help"=>gT('Minimum value of the numeric input'),
-        "caption"=>gT('Minimum value'));
-
-        //    $qattributes["min_num_value_sgqa"]=array(
-        //    "types"=>"K",
-        //    'category'=>gT('Logic'),
-        //    'sortorder'=>100,
-        //    'inputtype'=>'text',
-        //    "help"=>gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
-        //    "caption"=>gT('Minimum value from SGQA'));
-
-        $qattributes["multiflexible_max"]=array(
-        "types"=>":",
-        'category'=>gT('Display'),
-        'sortorder'=>112,
-        'inputtype'=>'text',
-        "help"=>gT('Maximum value for array(mult-flexible) question type'),
-        "caption"=>gT('Maximum value'));
-
-        $qattributes["multiflexible_min"]=array(
-        "types"=>":",
-        'category'=>gT('Display'),
-        'sortorder'=>110,
-        'inputtype'=>'text',
-        "help"=>gT('Minimum value for array(multi-flexible) question type'),
-        "caption"=>gT('Minimum value'));
-
-        $qattributes["multiflexible_step"]=array(
-        "types"=>":",
-        'category'=>gT('Display'),
-        'sortorder'=>111,
-        'inputtype'=>'text',
-        "help"=>gT('Step value'),
-        "caption"=>gT('Step value'));
-
-        $qattributes["multiflexible_checkbox"]=array(
-        "types"=>":",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Use checkbox layout'),
-        "caption"=>gT('Checkbox layout'));
-
-        $qattributes["reverse"]=array(
-        "types"=>"D:",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Present answer options in reverse order'),
-        "caption"=>gT('Reverse answer order'));
-
-        //    $qattributes["num_value_equals_sgqa"]=array(
-        //    "types"=>"K",
-        //    'category'=>gT('Logic'),
-        //    'sortorder'=>100,
-        //    'inputtype'=>'text',
-        //    "help"=>gT('SGQA identifier to use total of previous question as total for this question'),
-        //    "caption"=>gT('Value equals SGQA'));
-
-        $qattributes["num_value_int_only"]=array(
-        "types"=>"N",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(
-        0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Restrict input to integer values'),
-        "caption"=>gT('Integer only'));
-
-        $qattributes["numbers_only"]=array(
-        "types"=>"Q;S*",
-        'category'=>gT('Other'),
-        'sortorder'=>150,
-        'inputtype'=>'singleselect',
-        'options'=>array(
-        0=>gT('No'),
-        1=>gT('Yes')
-        ),
-        'default'=>0,
-        "help"=>gT('Allow only numerical input'),
-        "caption"=>gT('Numbers only')
-        );
-
-        $qattributes['show_totals'] =    array(
-        'types' =>    ';',
-        'category' =>    gT('Other'),
-        'sortorder' =>    151,
-        'inputtype'    => 'singleselect',
-        'options' =>    array(
-        'X' =>    gT('Off'),
-        'R' =>    gT('Rows'),
-        'C' =>    gT('Columns'),
-        'B' =>    gT('Both rows and columns')
-        ),
-        'default' =>    'X',
-        'help' =>    gT('Show totals for either rows, columns or both rows and columns'),
-        'caption' =>    gT('Show totals for')
-        );
-
-        $qattributes['show_grand_total'] =    array(
-        'types' =>    ';',
-        'category' =>    gT('Other'),
-        'sortorder' =>    152,
-        'inputtype' =>    'singleselect',
-        'options' =>    array(
-        0 =>    gT('No'),
-        1 =>    gT('Yes')
-        ),
-        'default' =>    0,
-        'help' =>    gT('Show grand total for either columns or rows'),
-        'caption' =>    gT('Show grand total')
-        );
-
-        $qattributes["input_boxes"]=array(
-        "types"=>":",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT("Present as text input boxes instead of dropdown lists"),
-        "caption"=>gT("Text inputs"));
-
-        $qattributes["other_comment_mandatory"]=array(
-        "types"=>"PLW!Z",
-        'category'=>gT('Logic'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT("Make the 'Other:' comment field mandatory when the 'Other:' option is active"),
-        "caption"=>gT("'Other:' comment mandatory"));
-
-        $qattributes["other_numbers_only"]=array(
-        "types"=>"LMP",
-        'category'=>gT('Logic'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT("Allow only numerical input for 'Other' text"),
-        "caption"=>gT("Numbers only for 'Other'"));
-
-        $qattributes["other_replace_text"]=array(
-        "types"=>"LMPWZ!",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        'i18n'=>true,
-        "help"=>gT("Replaces the label of the 'Other:' answer option with a custom text"),
-        "caption"=>gT("Label for 'Other:' option"));
-
-        $qattributes["page_break"]=array(
-        "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|*",
-        'category'=>gT('Other'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Insert a page break before this question in printable view by setting this to Yes.'),
-        "caption"=>gT('Insert page break in printable view'));
-
-        $qattributes["prefix"]=array(
-        "types"=>"KNQS",
-        'category'=>gT('Display'),
-        'sortorder'=>10,
-        'inputtype'=>'text',
-        'i18n'=>true,
-        "help"=>gT('Add a prefix to the answer field'),
-        "caption"=>gT('Answer prefix'));
-
-        $qattributes["printable_help"]=array(
-        "types"=>"15ABCDEFGHKLMNOPRWYZ!:*",
-        'category'=>gT('Display'),
-        'sortorder'=>201,
-        "inputtype"=>"text",
-        'i18n'=>true,
-        'default'=>"",
-        "help"=>gT('In the printable version replace the relevance equation with this explanation text.'),
-        "caption"=>gT("Relevance help for printable survey"));
-
-        $qattributes["public_statistics"]=array(
-        "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
-        'category'=>gT('Statistics'),
-        'sortorder'=>80,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Show statistics of this question in the public statistics page'),
-        "caption"=>gT('Show in public statistics'));
-
-        $qattributes["random_order"]=array(
-        "types"=>"!ABCEFHKLMOPQRWZ1:;",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Off'),
-        1=>gT('Randomize on each page load')
-        //,2=>gT('Randomize once on survey start')  //Mdekker: commented out as code to handle this was removed in refactoring
-        ),
-        'default'=>0,
-        "help"=>gT('Present subquestions/answer options in random order'),
-        "caption"=>gT('Random order'));
-
-        /*
-        $qattributes['relevance']=array(
-        'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
-        'category'=>gT('Display'),
-        'sortorder'=>1,
-        'inputtype'=>'text',
-        'default'=>'1',
-        'help'=>gT('The relevance equation determines whether a question should be shown (if true) or hiddden and marked as Not Applicable (if false).'
-        . '  The relevance equation can be as complex as you like, using any combination of mathematical operators, nested parentheses,'
-        . ' any variable or token that has already been set, and any of more than 50 functions.  It is parsed by the ExpressionManager.'),
-        'caption'=>gT('Relevance equation'));
-        */
-
-        $qattributes["showpopups"]=array(
-        "types"=>"R",
-        'category'=>gT('Display'),
-        'sortorder'=>110,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>1,
-        "caption"=>gT('Show javascript alert'),
-        "help"=>gT('Show an alert if answers exceeds the number of max answers'));
-        $qattributes["samechoiceheight"]=array(
-        "types"=>"R",
-        'category'=>gT('Display'),
-        'sortorder'=>120,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>1,
-        "caption"=>gT('Same height for all answer options'),
-        "help"=>gT('Force each answer option to have the same height'));
-        $qattributes["samelistheight"]=array(
-        "types"=>"R",
-        'category'=>gT('Display'),
-        'sortorder'=>121,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>1,
-        "caption"=>gT('Same height for lists'),
-        "help"=>gT('Force the choice list and the rank list to have the same height'));
-
-        $qattributes["parent_order"]=array(
-        "types"=>":",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "caption"=>gT('Get order from previous question'),
-        "help"=>gT('Enter question ID to get subquestion order from a previous question'));
-
-        $qattributes["slider_layout"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>1,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Use slider layout'),
-        "caption"=>gT('Use slider layout'));
-
-        $qattributes["slider_min"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>10,
-        'inputtype'=>'text',
-        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
-        "caption"=>gT('Slider minimum value'));
-
-        $qattributes["slider_max"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>11,
-        'inputtype'=>'text',
-        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
-        "caption"=>gT('Slider maximum value'));
-
-        $qattributes["slider_accuracy"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>30,
-        'inputtype'=>'text',
-        "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
-        "caption"=>gT('Slider accuracy'));
-
-        $qattributes["slider_default"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>50,
-        'inputtype'=>'text',
-        "help"=>gT('Slider start as this value (this will set the initial value). You can use Expression manager, but this must be a number before showing the page.'),
-        "caption"=>gT('Slider initial value'));
-
-        $qattributes["slider_middlestart"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>40,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('The handle is displayed at the middle of the slider except if Slider initial value is set (this will not set the initial value).'),
-        "caption"=>gT('Slider starts at the middle position'));
-
-        $qattributes["slider_rating"]=array(
-        "types"=>"5",
-        'category'=>gT('Display'),
-        'sortorder'=>90,
-        'inputtype'=>'singleselect',
-        'options'=>array(
-        0=>gT('No'),
-        1=>gT('Yes - stars'),
-        2=>gT('Yes - slider with emoticon'),
-        ),
-        'default'=>0,
-        "help"=>gT('Use slider layout'),
-        "caption"=>gT('Use slider layout'));
-
-        $qattributes["slider_reset"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>50,
-        'inputtype'=>'singleselect',
-        'options'=>array(
-        0=>gT('No'),
-        1=>gT('Yes'),
-        ),
-        'default'=>0,
-        "help"=>gT('Add a button to reset the slider. If you choose an start value, it reset at start value, else empty the answer.'),
-        "caption"=>gT('Allow reset the slider'));
-
-        $qattributes["slider_showminmax"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Display min and max value under the slider'),
-        "caption"=>gT('Display slider min and max value'));
-
-        $qattributes["slider_separator"]=array(
-        "types"=>"K",
-        'category'=>gT('Slider'),
-        'sortorder'=>110,
-        'inputtype'=>'text',
-        "help"=>gT('Answer|Left-slider-text|Right-slider-text separator character'),
-        "caption"=>gT('Slider left/right text separator'));
-
-        $qattributes["suffix"]=array(
-        "types"=>"KNQS",
-        'category'=>gT('Display'),
-        'sortorder'=>11,
-        'inputtype'=>'text',
-        'i18n'=>true,
-        "help"=>gT('Add a suffix to the answer field'),
-        "caption"=>gT('Answer suffix'));
-
-        $qattributes["text_input_width"]=array(
-        "types"=>"KNSTUQ;",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        'inputtype'=>'text',
-        "help"=>gT('Width of text input box'),
-        "caption"=>gT('Input box width'));
-
-        $qattributes["use_dropdown"]=array(
-        "types"=>"1FO",
-        'category'=>gT('Display'),
-        'sortorder'=>112,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT('Present dropdown control(s) instead of list of radio buttons'),
-        "caption"=>gT('Use dropdown presentation'));
-
-
-        $qattributes["dropdown_size"]=array(
-        "types"=>"!",   // TODO add these later?  "1F",
-        'category'=>gT('Display'),
-        'sortorder'=>200,
-        'inputtype'=>'text',
-        'default'=>0,
-        "help"=>gT('For list dropdown boxes, show up to this many rows'),
-        "caption"=>gT('Height of dropdown'));
-
-        $qattributes["dropdown_prefix"]=array(
-        "types"=>"!",   // TODO add these later?  "1F",
-        'category'=>gT('Display'),
-        'sortorder'=>201,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('None'),
-        1=>gT('Order - like 3)'),
-        ),
-        'default'=>0,
-        "help"=>gT('Accelerator keys for list items'),
-        "caption"=>gT('Prefix for list items'));
-
-        $qattributes["scale_export"]=array(
-        "types"=>"CEFGHLMOPWYZ1!:*",
-        'category'=>gT('Other'),
-        'sortorder'=>100,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Default'),
-        1=>gT('Nominal'),
-        2=>gT('Ordinal'),
-        3=>gT('Scale')),
-        'default'=>0,
-        "help"=>gT("Set a specific SPSS export scale type for this question"),
-        "caption"=>gT('SPSS export scale type'));
-
-        $qattributes["choice_title"]=array(
-        "types"=>"R",
-        'category'=>gT('Other'),
-        'sortorder'=>200,
-        "inputtype"=>"text",
-        'i18n'=>true,
-        'default'=>"",
-        "help"=>sprintf(gT("Replace choice header (default: \"%s\")",'js'),gT("Your Choices")),
-        "caption"=>gT("Choice header"));
-
-        $qattributes["rank_title"]=array(
-        "types"=>"R",
-        'category'=>gT('Other'),
-        'sortorder'=>201,
-        "inputtype"=>"text",
-        'i18n'=>true,
-        'default'=>"",
-        "help"=>sprintf(gT("Replace rank header (default: \"%s\")",'js'),gT("Your Ranking")),
-        "caption"=>gT("Rank header"));
-
-        //Timer attributes
-        $qattributes["time_limit"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>90,
-        "inputtype"=>"integer",
-        "help"=>gT("Limit time to answer question (in seconds)"),
-        "caption"=>gT("Time limit"));
-
-        $qattributes["time_limit_action"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>92,
-        'inputtype'=>'singleselect',
-        'options'=>array(1=>gT('Warn and move on'),
-        2=>gT('Move on without warning'),
-        3=>gT('Disable only')),
-        "default" => 1,
-        "help"=>gT("Action to perform when time limit is up"),
-        "caption"=>gT("Time limit action"));
-
-        $qattributes["time_limit_disable_next"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>94,
-        "inputtype"=>"singleselect",
-        'default'=>0,
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        "help"=>gT("Disable the next button until time limit expires"),
-        "caption"=>gT("Time limit disable next"));
-
-        $qattributes["time_limit_disable_prev"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>96,
-        "inputtype"=>"singleselect",
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>0,
-        "help"=>gT("Disable the prev button until the time limit expires"),
-        "caption"=>gT("Time limit disable prev"));
-
-        $qattributes["time_limit_countdown_message"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>98,
-        "inputtype"=>"textarea",
-        'i18n'=>true,
-        "help"=>gT("The text message that displays in the countdown timer during the countdown"),
-        "caption"=>gT("Time limit countdown message"));
-
-        $qattributes["time_limit_timer_style"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>100,
-        "inputtype"=>"textarea",
-        "help"=>gT("CSS Style for the message that displays in the countdown timer during the countdown"),
-        "caption"=>gT("Time limit timer CSS style"));
-
-        $qattributes["time_limit_message_delay"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>102,
-        "inputtype"=>"integer",
-        "help"=>gT("Display the 'time limit expiry message' for this many seconds before performing the 'time limit action' (defaults to 1 second if left blank)"),
-        "caption"=>gT("Time limit expiry message display time"));
-
-        $qattributes["time_limit_message"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>104,
-        "inputtype"=>"textarea",
-        'i18n'=>true,
-        "help"=>gT("The message to display when the time limit has expired (a default message will display if this setting is left blank)"),
-        "caption"=>gT("Time limit expiry message"));
-
-        $qattributes["time_limit_message_style"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>106,
-        "inputtype"=>"textarea",
-        "help"=>gT("CSS style for the 'time limit expiry message'"),
-        "caption"=>gT("Time limit message CSS style"));
-
-        $qattributes["time_limit_warning"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>108,
-        "inputtype"=>"integer",
-        "help"=>gT("Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
-        "caption"=>gT("1st time limit warning message timer"));
-
-        $qattributes["time_limit_warning_display_time"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>110,
-        "inputtype"=>"integer",
-        "help"=>gT("The 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
-        "caption"=>gT("1st time limit warning message display time"));
-
-        $qattributes["time_limit_warning_message"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>112,
-        "inputtype"=>"textarea",
-        'i18n'=>true,
-        "help"=>gT("The message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
-        "caption"=>gT("1st time limit warning message"));
-
-        $qattributes["time_limit_warning_style"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>114,
-        "inputtype"=>"textarea",
-        "help"=>gT("CSS style used when the 'time limit warning' message is displayed"),
-        "caption"=>gT("1st time limit warning CSS style"));
-
-        $qattributes["time_limit_warning_2"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>116,
-        "inputtype"=>"integer",
-        "help"=>gT("Display the 2nd 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
-        "caption"=>gT("2nd time limit warning message timer"));
-
-        $qattributes["time_limit_warning_2_display_time"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>118,
-        "inputtype"=>"integer",
-        "help"=>gT("The 2nd 'time limit warning' will stay visible for this many seconds (will not turn off if this setting is left blank)"),
-        "caption"=>gT("2nd time limit warning message display time"));
-
-        $qattributes["time_limit_warning_2_message"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>120,
-        "inputtype"=>"textarea",
-        'i18n'=>true,
-        "help"=>gT("The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
-        "caption"=>gT("2nd time limit warning message"));
-
-        $qattributes["time_limit_warning_2_style"]=array(
-        "types"=>"STUXL!",
-        'category'=>gT('Timer'),
-        'sortorder'=>122,
-        "inputtype"=>"textarea",
-        "help"=>gT("CSS style used when the 2nd 'time limit warning' message is displayed"),
-        "caption"=>gT("2nd time limit warning CSS style"));
-
-        $qattributes["date_format"]=array(
-        "types"=>"D",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        "inputtype"=>"text",
-        "help"=>gT("Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i> formats and \"-./: \" characters are allowed for day/month/year/hour/minutes without or with leading zero respectively. Defaults to survey's date format"),
-        "caption"=>gT("Date/Time format"));
-
-        $qattributes["dropdown_dates_minute_step"]=array(
-        "types"=>"D",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        "inputtype"=>"integer",
-        'default'=>1,
-        "help"=>gT("Minute step interval when using select boxes"),
-        "caption"=>gT("Minute step interval"));
-
-        $qattributes["dropdown_dates_month_style"]=array(
-        "types"=>"D",
-        'category'=>gT('Display'),
-        'sortorder'=>100,
-        "inputtype"=>"singleselect",
-        'options'=>array(0=>gT('Short names'),
-        1=>gT('Full names'),
-        2=>gT('Numbers')),
-        'default'=>0,
-        "help"=>gT("Change the display style of the month when using select boxes"),
-        "caption"=>gT("Month display style"));
-
-        $qattributes["show_title"]=array(
-        "types"=>"|",
-        'category'=>gT('File metadata'),
-        'sortorder'=>124,
-        "inputtype"=>"singleselect",
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>1,
-        "help"=>gT("Is the participant required to give a title to the uploaded file?"),
-        "caption"=>gT("Show title"));
-
-        $qattributes["show_comment"]=array(
-        "types"=>"|",
-        'category'=>gT('File metadata'),
-        'sortorder'=>126,
-        "inputtype"=>"singleselect",
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>1,
-        "help"=>gT("Is the participant required to give a comment to the uploaded file?"),
-        "caption"=>gT("Show comment"));
-
-
-        $qattributes["max_filesize"]=array(
-        "types"=>"|",
-        'category'=>gT('Other'),
-        'sortorder'=>128,
-        "inputtype"=>"integer",
-        'default'=>10240,
-        "help"=>gT("The participant cannot upload a single file larger than this size"),
-        "caption"=>gT("Maximum file size allowed (in KB)"));
-
-        $qattributes["max_num_of_files"]=array(
-        "types"=>"|",
-        'category'=>gT('Other'),
-        'sortorder'=>130,
-        "inputtype"=>"text",
-        'default'=>'1',
-        "help"=>gT("Maximum number of files that the participant can upload for this question"),
-        "caption"=>gT("Max number of files"));
-
-        $qattributes["min_num_of_files"]=array(
-        "types"=>"|",
-        'category'=>gT('Other'),
-        'sortorder'=>132,
-        "inputtype"=>"text",
-        'default'=>'0',
-        "help"=>gT("Minimum number of files that the participant must upload for this question"),
-        "caption"=>gT("Min number of files"));
-
-        $qattributes["allowed_filetypes"]=array(
-        "types"=>"|",
-        'category'=>gT('Other'),
-        'sortorder'=>134,
-        "inputtype"=>"text",
-        'default'=>"png, gif, doc, odt, jpg, pdf",
-        "help"=>gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
-        "caption"=>gT("Allowed file types"));
-
-        $qattributes["random_group"]=array(
-        "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
-        'category'=>gT('Logic'),
-        'sortorder'=>180,
-        'inputtype'=>'text',
-        "help"=>gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
-        "caption"=>gT("Randomization group name"));
-
-        // This is added to support historical behavior.  Early versions of 1.92 used a value of "No", so if there was a min_sum_value or equals_sum_value, the question was not valid
-        // unless those criteria were met.  In later releases of 1.92, the default was changed so that missing values were allowed even if those attributes were set
-        // This attribute lets authors control whether missing values should be allowed in those cases without needing to set min_answers
-        // Existing surveys will use the old behavior, but if the author edits the question, the default will be the new behavior.
-        $qattributes["value_range_allows_missing"]=array(
-        "types"=>"K",
-        'category'=>gT('Input'),
-        'sortorder'=>100,
-        "inputtype"=>"singleselect",
-        'options'=>array(0=>gT('No'),
-        1=>gT('Yes')),
-        'default'=>1,
-        "help"=>gT("Is no answer (missing) allowed when either 'Equals sum value' or 'Minimum sum value' are set?"),
-        "caption"=>gT("Value range allows missing"));
-        $qattributes["thousands_separator"] = array(
-            'types' => 'NK',
-            "help" => gT("Show a thousands separator when the user enters a value"),
-            "caption" => gT("Thousands separator"),
-            'category' => gT('Display'),
-            'inputtype' => 'singleselect',
-            'sortorder' => 100,
-            'options' => array(
-                0 => gT('No'),
-                1 => gT('Yes')
-            ),
-            'default'=>0,
-        );
-
-        $qattributes["display_type"]=array(
-        "types"=>"YG",
-        'category'=>gT('Display'),
-        'sortorder'=>90,
-        'inputtype'=>'singleselect',
-        'options'=>array(0=>gT('Buttons'),
-        1=>gT('Radio')),
-        'default'=>0,
-        "help"=>gT('Use buttons or radio list'),
-        "caption"=>gT('Display type'));
-
-    }
-    //This builds a more useful array (don't modify)
-    if ($returnByName==false)
-    {
-        if(!$qat)
-        {
-            foreach($qattributes as $qname=>$qvalue)
-            {
-                for ($i=0; $i<=strlen($qvalue['types'])-1; $i++)
-                {
-                    $qat[substr($qvalue['types'], $i, 1)][$qname]=array("name"=>$qname,
-                    "inputtype"=>$qvalue['inputtype'],
-                    "category"=>$qvalue['category'],
-                    "sortorder"=>$qvalue['sortorder'],
-                    "i18n"=>isset($qvalue['i18n'])?$qvalue['i18n']:false,
-                    "readonly"=>isset($qvalue['readonly_when_active'])?$qvalue['readonly_when_active']:false,
-                    "options"=>isset($qvalue['options'])?$qvalue['options']:'',
-                    "default"=>isset($qvalue['default'])?$qvalue['default']:'',
-                    "help"=>$qvalue['help'],
-                    "caption"=>$qvalue['caption']);
-                }
-            }
-        }
-        return $qat;
-    }
-    else {
-        return $qattributes;
-    }
-}
 
 function categorySort($a, $b)
 {
@@ -3970,6 +2616,23 @@ function dbQuoteAll($value)
     return Yii::app()->db->quoteValue($value);
 }
 
+
+/**
+* This function strips UTF-8 control characters from strings, except tabs, CR and LF
+* - it is intended to be used before any response data is saved to the response table
+*
+* @param mixed $sValue A string to be sanitized
+* @return A sanitized string, otherwise the unmodified original variable
+*/
+function stripCtrlChars($sValue)
+{
+    if (is_string($sValue))
+    {
+        $sValue=preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\x9F]/u', '', $sValue);
+    }
+    return $sValue;
+}
+
 // make a string safe to include in a JavaScript String parameter.
 function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
     $new_str ='';
@@ -3995,16 +2658,15 @@ function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
 * @param mixed $to Array with several email addresses or single string with one email address
 * @param mixed $from
 * @param mixed $sitename
-* @param mixed $ishtml
+* @param boolean $ishtml
 * @param mixed $bouncemail
-* @param mixed $attachment
+* @param mixed $attachments
 * @return bool If successful returns true
 */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=null, $customheaders="")
 {
-
     global $maildebug, $maildebugbody;
-
+    require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
 
     $emailmethod = Yii::app()->getConfig('emailmethod');
     $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
@@ -4049,8 +2711,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     }
 
 
-    require_once(APPPATH.'/third_party/phpmailer/class.phpmailer.php');
+    require_once(APPPATH.'/third_party/phpmailer/PHPMailerAutoload.php');
     $mail = new PHPMailer;
+    $mail->SMTPAutoTLS=false;
     if (!$mail->SetLanguage($defaultlang,APPPATH.'/third_party/phpmailer/language/'))
     {
         $mail->SetLanguage('en',APPPATH.'/third_party/phpmailer/language/');
@@ -4132,18 +2795,24 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->AddCustomHeader($val);
         }
     }
-    $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
+    $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.org)");
     if (get_magic_quotes_gpc() != "0")    {$body = stripcslashes($body);}
     if ($ishtml)
     {
         $mail->IsHTML(true);
-        //$mail->AltBody = strip_tags(breakToNewline(html_entity_decode($body,ENT_QUOTES,$emailcharset))); // Use included PHPmailer system see bug #8234
+        if(strpos($body,"<html>")===false)
+        {
+            $body="<html>".$body."</html>";
+        }
+        $mail->msgHTML($body,App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
+        $html=new \Html2Text\Html2Text($body);
+        $mail->AltBody=$html->getText();
     }
     else
     {
         $mail->IsHTML(false);
+        $mail->Body = $body;
     }
-    $mail->Body = $body;
     // Add attachments if they are there.
     if (is_array($attachments))
     {
@@ -4160,9 +2829,10 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             }
         }
     }
+    $mail->Subject=$subject;
 
-    if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
-    if ($emailsmtpdebug>0) {
+    if ($emailsmtpdebug>0)
+    {
         ob_start();
     }
     $sent=$mail->Send();
@@ -4181,19 +2851,19 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
 *
 * @param string $sTextToFlatten  Text you want to clean
-* @param boolan $keepSpan set to true for keep span, used for expression manager. Default: false
-* @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
+* @param boolean $bKeepSpan set to true for keep span, used for expression manager. Default: false
+* @param boolean $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
 * @param string $sCharset Charset to decode to if $decodeHTMLEntities is set to true. Default: UTF-8
 * @param string $bStripNewLines strip new lines if true, if false replace all new line by \r\n. Default: true
 *
 * @return string  Cleaned text
 */
-function flattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
+function flattenText($sTextToFlatten, $bKeepSpan=false, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
 {
     $sNicetext = stripJavaScript($sTextToFlatten);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
     $sNicetext = str_replace(array('</td','</th'),array(' </td',' </th'), $sNicetext);
-    if ($keepSpan) {
+    if ($bKeepSpan) {
         // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
         $sNicetext = strip_tags($sNicetext,'<span><table><tr><td><th>');
     }
@@ -4468,12 +3138,19 @@ function getArrayFilterExcludesForQuestion($qid)
 
 
 
+/**
+ * @param string $sString
+ */
 function CSVEscape($sString)
 {
     $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $sString);
     return '"' . str_replace('"','""', $sString) . '"';
 }
 
+/**
+ * @param string $separator
+ * @param string $quotechar
+ */
 function convertCSVRowToArray($string, $separator, $quotechar)
 {
     $fields=preg_split('/' . $separator . '(?=([^"]*"[^"]*")*(?![^"]*"))/',trim($string));
@@ -4514,7 +3191,7 @@ function languageDropdown($surveyid,$selected)
 
 /**
  * Creates a <select> HTML element for language selection for this survey
- * 
+ *
  * @param int $surveyid
  * @param string $selected The selected language
  * @return string
@@ -4537,7 +3214,7 @@ function languageDropdownClean($surveyid, $selected)
 /**
 * This function removes a directory recursively
 *
-* @param mixed $dirname
+* @param string $dirname
 * @return bool
 */
 function rmdirr($dirname)
@@ -4721,7 +3398,7 @@ function isTokenCompletedDatestamped($thesurvey)
 * will output: 2007-01-01 03:00:00
 *
 * @param mixed $date
-* @param mixed $dformat
+* @param string $dformat
 * @param mixed $shift
 * @return string
 */
@@ -4804,7 +3481,7 @@ function getNextCode($sourcecode)
 /**
 * Translate links which are in any answer/question/survey/email template/label set to their new counterpart
 *
-* @param mixed $sType 'survey' or 'label'
+* @param string $sType 'survey' or 'label'
 * @param mixed $iOldSurveyID
 * @param mixed $iNewSurveyID
 * @param mixed $sString
@@ -4814,15 +3491,15 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
     if ($sType == 'survey')
     {
-        $sPattern = "([^'\"]*)/upload/surveys/{$iOldSurveyID}/";
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/'.$iOldSurveyID.'\/)';
         $sReplace = Yii::app()->getConfig("publicurl")."upload/surveys/{$iNewSurveyID}/";
-        return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
+        return preg_replace('/'.$sPattern.'/u', $sReplace, $sString);
     }
     elseif ($sType == 'label')
     {
-        $pattern = "([^'\"]*)/upload/labels/{$iOldSurveyID}/";
-        $replace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
-        return preg_replace('#'.$pattern.'#', $replace, $sString);
+        $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/labels\/'.$iOldSurveyID.'\/)';
+        $sReplace = Yii::app()->getConfig("publicurl")."upload/labels/{$iNewSurveyID}/";
+        return preg_replace("/".$sPattern."/u", $sReplace, $sString);
     }
     else // unknown type
     {
@@ -4834,7 +3511,7 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 * This function creates the old fieldnames for survey import
 *
 * @param mixed $iOldSID  The old survey id
-* @param mixed $iNewSID  The new survey id
+* @param integer $iNewSID  The new survey id
 * @param array $aGIDReplacements An array with group ids (oldgid=>newgid)
 * @param array $aQIDReplacements An array with question ids (oldqid=>newqid)
 */
@@ -4873,7 +3550,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
 * put your comment there...
 *
 * @param mixed $id
-* @param mixed $type
+* @param string $type
 */
 function hasResources($id,$type='survey')
 {
@@ -4992,10 +3669,10 @@ function fixCKeditorText($str)
 
 
 /**
-* This is a helper function for getAttributeFieldNames
-*
-* @param mixed $fieldname
-*/
+ * This is a helper function for getAttributeFieldNames
+ *
+ * @param mixed $fieldname
+ */
 function filterForAttributes ($fieldname)
 {
     if (strpos($fieldname,'attribute_')===false) return false; else return true;
@@ -5225,7 +3902,7 @@ function useFirebug()
 * This is a convenience function for the coversion of datetime values
 *
 * @param mixed $value
-* @param mixed $fromdateformat
+* @param string $fromdateformat
 * @param mixed $todateformat
 * @return string
 */
@@ -5234,6 +3911,38 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
     Yii::import('application.libraries.Date_Time_Converter', true);
     $date = new Date_Time_Converter($value, $fromdateformat);
     return $date->convert($todateformat);
+}
+
+/**
+* This is a convenience function to convert any date, in any date format, to the global setting date format
+* Check if the time shoul be rendered also
+*
+* @param string $sDate
+* @param boolean withTime
+* @return string
+*/
+function convertToGlobalSettingFormat($sDate,$withTime=false)
+{
+
+    $sDateformatdata = getDateFormatData(Yii::app()->session['dateformat']);    // We get the Global Setting date format
+    $usedDatetime = ($withTime===true ? $sDateformatdata['phpdate']." H:i" : $sDateformatdata['phpdate']); //return also hours and minutes if asked for
+    try
+    {
+        // Workaround for bug in older PHP version (confirmed for 5.5.9)
+        // The bug is causing invalid dates to create an internal server error which cannot not be caught by try.. catch
+        if (@strtotime($sDate) === false) {
+            throw new Exception("Failed to parse date string ({$sDate})");
+        }
+        $oDate           = new DateTime($sDate);                                    // We generate the Date object (PHP will deal with the format of the string)
+        $sDate           = $oDate->format($usedDatetime);             // We apply it to the Date object to generate a string date
+        return $sDate;                                                              // We return the string date
+    }
+    catch(Exception $e) {
+        $oDate           = new DateTime('1/1/1980 00:00');                                    // We generate the Date object (PHP will deal with the format of the string)
+        $sDate           = $oDate->format($usedDatetime);             // We apply it to the Date object to generate a string date
+        return $sDate;                                                              // We return the string date
+
+    }
 }
 
 /**
@@ -5289,65 +3998,6 @@ function getUpdateInfo()
         );
     }
     return $updateInfo;
-}
-
-/**
-* This function updates the actual global variables if an update is available after using getUpdateInfo
-*
-* Not used anymore.
-*
-* @return Array with update or error information
-*/
-function updateCheck()
-{
-    /*
-    $aUpdateVersions=getUpdateInfo();
-
-    if (isset($aUpdateVersions['errorcode']))
-    {
-        Yii::app()->setFlashMessage(sprintf(gT("Error when checking for new version: %s"),$aUpdateVersions['errorcode']).'<br>'.$aUpdateVersions['errorhtml'],'error');
-        $aUpdateVersions=array();
-    }
-    if (count($aUpdateVersions) && trim(Yii::app()->getConfig('buildnumber'))!='')
-    {
-        $sUpdateNotificationType = getGlobalSetting('updatenotification');
-        switch ($sUpdateNotificationType)
-        {
-            case 'stable':
-                // Only show update if in stable (master) branch
-                if (isset($aUpdateVersions['master'])) {
-                    $aUpdateVersion=$aUpdateVersions['master'];
-                    $aUpdateVersions=array_intersect_key($aUpdateVersions,array('master'=>'1'));
-                }
-                break;
-
-            case 'both':
-                // Show first available update
-                $aUpdateVersion=reset($aUpdateVersions);
-                break;
-
-            default:
-                // Never show a notification
-                $aUpdateVersions=array();
-                break;
-        }
-    }
-
-    setGlobalSetting('updateversions',json_encode($aUpdateVersions));
-
-
-    if (isset($aUpdateVersion)) {
-        setGlobalSetting('updateavailable',1);
-        setGlobalSetting('updatebuild',$aUpdateVersion['build']);
-        setGlobalSetting('updateversion',$aUpdateVersion['versionnumber']);
-    } else {
-        setGlobalSetting('updateavailable',0);
-        $aUpdateVersions = array();
-    }
-
-    setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
-    return $aUpdateVersions;
-     */
 }
 
 /**
@@ -5438,7 +4088,7 @@ function getXMLWriter() {
 * SSLRedirect() generates a redirect URL for the appropriate SSL mode then applies it.
 * (Was redirect() before CodeIgniter port.)
 *
-* @param $enforceSSLMode string 's' or '' (empty).
+* @param string $enforceSSLMode string 's' or '' (empty).
 */
 function SSLRedirect($enforceSSLMode)
 {
@@ -5620,7 +4270,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 /**
 * Check if $str is an integer, or string representation of an integer
 *
-* @param mixed $mStr
+* @param string $mStr
 */
 function isNumericInt($mStr)
 {
@@ -5690,6 +4340,7 @@ function short_implode($sDelimeter, $sHyphen, $aArray)
 */
 function includeKeypad()
 {
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.plugin.min.js');
     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js');
     $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
     if (App()->language != 'en' && file_exists($localefile))
@@ -5704,6 +4355,7 @@ function includeKeypad()
 * @param string $surveyid - Survey identification number
 * @param string $language - Language of the quota
 * @param string $quotaid - Optional quotaid that restricts the result to a given quota
+* @param integer $iQuotaID
 * @return array - nested array, Quotas->Members
 */
 function getQuotaInformation($surveyid,$language,$iQuotaID=null)
@@ -5985,7 +4637,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
 /**
 * Replaces EM variable codes in a current survey with a new one
 *
-* @param mixed $iSurveyID The survey ID
+* @param integer $iSurveyID The survey ID
 * @param mixed $aCodeMap The codemap array (old_code=>new_code)
 */
 function replaceExpressionCodes ($iSurveyID, $aCodeMap)
@@ -6064,7 +4716,7 @@ function accessDenied($action,$sid='')
         }
         elseif($action == "newsurvey")
         {
-            $accesssummary .= "<p>".gT("You are not allowed to create new surveys!")."<br />";
+            $accesssummary .= "<p>".gT("You are not allowed to create surveys!")."<br />";
             $accesssummary .= "<a href='$scriptname'>".gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "deletesurvey")
@@ -6409,7 +5061,7 @@ function fixLanguageConsistency($sid, $availlangs='')
 * This function switches identity insert on/off for the MSSQL database
 *
 * @param string $table table name (without prefix)
-* @param mixed $state  Set to true to activate ID insert, or false to deactivate
+* @param boolean $state  Set to true to activate ID insert, or false to deactivate
 */
 function switchMSSQLIdentityInsert($table,$state)
 {
@@ -6452,7 +5104,7 @@ function getLastInsertID($sTableName)
 * @param string $sid - the currently selected survey
 * @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
 * @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
-* @param string $index-by - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
+* @param string $indexby - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
 *                   "by-targgid" for result indexed with $res[$targgid][$depgid]
 * @return array - returns an array describing the conditions or NULL if no dependecy is found
 *
@@ -6571,7 +5223,7 @@ function getGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 * @param string $gid - (optionnal) only search dependecies inside the Group Id $gid
 * @param string $depqid - (optionnal) get only the dependencies applying to the question with qid depqid
 * @param string $targqid - (optionnal) get only the dependencies for questions dependents on question Id targqid
-* @param string $index-by - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
+* @param string $indexby - (optionnal) "by-depqid" for result indexed with $res[$depqid][$targqid]
 *                   "by-targqid" for result indexed with $res[$targqid][$depqid]
 * @return array - returns an array describing the conditions or NULL if no dependecy is found
 *
@@ -6964,8 +5616,12 @@ function getLabelSets($languages = null)
     return $labelsets;
 }
 
+/**
+ * @return string
+ */
 function getHeader($meta = false)
 {
+    /* Todo : move this to layout/public.html */
     global $embedded,$surveyid ;
     Yii::app()->loadHelper('surveytranslator');
 
@@ -6982,7 +5638,7 @@ function getHeader($meta = false)
     {
         $languagecode = Yii::app()->getConfig('defaultlang');
     }
-
+    App()->getClientScript()->registerPackage('fontawesome');
     $header=  "<!DOCTYPE html>\n"
     . "<html lang=\"{$languagecode}\"";
 
@@ -7001,7 +5657,7 @@ function getHeader($meta = false)
         return $header;
     }
 
-    global $embedded_headerfunc;
+    global $embedded_headerfunc; // Did this work ? Can be removed or not ?
 
     if ( function_exists( $embedded_headerfunc ) )
         return $embedded_headerfunc($header);
@@ -7021,10 +5677,7 @@ function doHeader()
 function getPrintableHeader()
 {
     global $rooturl,$homeurl;
-    $headelements = '
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="'.Yii::app()->getConfig('adminscripts').'printablesurvey.js"></script>
-    ';
+    $headelements = App()->getController()->renderPartial('/survey/system/print_survey/header', array(), true, true);
     return $headelements;
 }
 
@@ -7187,8 +5840,8 @@ function  doesImportArraySupportLanguage($csvarray,$idkeysarray,$langfieldnum,$l
 /**
 * Retrieve a HTML <OPTION> list of survey admin users
 *
-* @param mixed $bIncludeOwner If the survey owner should be included
-* @param mixed $bIncludeSuperAdmins If Super admins should be included
+* @param boolean $bIncludeOwner If the survey owner should be included
+* @param boolean $bIncludeSuperAdmins If Super admins should be included
 * @param int surveyid
 * @return string
 */
@@ -7355,11 +6008,9 @@ function json_decode_ls($jsonString)
  */
 function aEncodingsArray()
     {
-
-        return array(
+        $aEncodings= array(
         "armscii8" => gT("ARMSCII-8 Armenian"),
         "ascii" => gT("US ASCII"),
-        "auto" => gT("Automatic"),
         "big5" => gT("Big5 Traditional Chinese"),
         "binary" => gT("Binary pseudo charset"),
         "cp1250" => gT("Windows Central European (Windows-1250)"),
@@ -7395,6 +6046,10 @@ function aEncodingsArray()
         "ujis" => gT("EUC-JP Japanese"),
         "utf8" => gT("UTF-8 Unicode"),
         );
+        // Sort list of encodings
+        asort($aEncodings);
+        $aEncodings=array("auto" => gT("(Automatic)"))+$aEncodings;
+        return $aEncodings;
     }
 /**
 * Swaps two positions in an array
@@ -7491,6 +6146,12 @@ function getBrowserLanguage()
     if (!isset($aLanguages[$sLanguage]))
     {
         $sLanguage=str_replace('_','-',$sLanguage);
+        if (strpos($sLanguage,'-')!==false)
+        {
+          $aLanguage=explode('-',$sLanguage);
+          $aLanguage[1]=strtoupper($aLanguage[1]);
+          $sLanguage=implode('-',$aLanguage);
+        }
         if (!isset($aLanguages[$sLanguage]))
         {
             $sLanguage=substr($sLanguage,0,strpos($sLanguage,'-'));
@@ -7522,6 +6183,9 @@ function array_diff_assoc_recursive($array1, $array2) {
 }
 
 
+    /**
+     * @param string $sSize
+     */
     function convertPHPSizeToBytes($sSize)
     {
         //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
@@ -7552,7 +6216,6 @@ function array_diff_assoc_recursive($array1, $array2) {
     * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
     *
     * @param string $oTokenAttributeData  The original token attributes as stored in the database
-    * @param boolean $bAllowSerialized If serialized data is accepted and properly read - with DBVersion 179 this should only be allowed on survey import
     */
     function decodeTokenAttributes($oTokenAttributeData){
         if (trim($oTokenAttributeData)=='') return array();
@@ -7576,6 +6239,9 @@ function array_diff_assoc_recursive($array1, $array2) {
         return $aReturnData;
     }
 
+    /**
+     * @param string $sSerial
+     */
     function getSerialClass($sSerial) {
         $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
 
@@ -7586,7 +6252,6 @@ function array_diff_assoc_recursive($array1, $array2) {
     /**
     * Checks if a string looks like it is a MD5 hash
     *
-    * @param mixed $md5
     */
     function isMd5($sMD5 ='') {
         return strlen($sMD5) == 32 && ctype_xdigit($sMD5);

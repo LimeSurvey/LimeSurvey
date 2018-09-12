@@ -191,7 +191,7 @@ class ExpressionManager {
 'ltrim' => array('ltrim', 'ltrim', gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://php.net/ltrim', 1,2),
 'max' => array('max', 'Math.max', gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://php.net/max', -2),
 'min' => array('min', 'Math.min', gT('Find lowest value'), 'number min(arg1, arg2, ... argN)', 'http://php.net/min', -2),
-'mktime' => array('mktime', 'mktime', gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://php.net/mktime', 0,1,2,3,4,5,6),
+'mktime' => array('exprmgr_mktime', 'mktime', gT('Get UNIX timestamp for a date (each of the 6 arguments are optional)'), 'number mktime([hour [, minute [, second [, month [, day [, year ]]]]]])', 'http://php.net/mktime', 0,1,2,3,4,5,6),
 'nl2br' => array('nl2br', 'nl2br', gT('Inserts HTML line breaks before all newlines in a string'), 'string nl2br(string)', 'http://php.net/nl2br', 1,1),
 'number_format' => array('number_format', 'number_format', gT('Format a number with grouped thousands'), 'string number_format(number)', 'http://php.net/number-format', 1),
 'pi' => array('pi', 'LEMpi', gT('Get value of pi'), 'number pi()', '', 0),
@@ -269,21 +269,24 @@ class ExpressionManager {
             $this->RDP_AddError(gT("Invalid value(s) on the stack"), $token);
             return false;
         }
+        /* When value come from DB : it's set to 1.000000 (DECIMAL) : must be fixed see #11163. Response::model() must fix this . or not ? */
+        /* Don't return true always : user can entre non numeric value in a numeric value : we must compare as string then */
+        $arg1[0]=($arg1[2]=="NUMBER" && strpos($arg1[0],".")) ? rtrim(rtrim($arg1[0],"0"),".") : $arg1[0];
+        $arg2[0]=($arg2[2]=="NUMBER" && strpos($arg2[0],".")) ? rtrim(rtrim($arg2[0],"0"),".") : $arg2[0];
+        $bNumericArg1 = !$arg1[0] || strval(floatval($arg1[0]))==strval($arg1[0]);
+        $bNumericArg2 = !$arg2[0] || strval(floatval($arg2[0]))==strval($arg2[0]);
 
-        $bNumericArg1 = (is_numeric($arg1[0]) || $arg1[0] == '');
-        $bNumericArg2 = (is_numeric($arg2[0]) || $arg2[0] == '');
-
-        $bStringArg1 = (!$bNumericArg1 || $arg1[0] == '');
-        $bStringArg2 = (!$bNumericArg2 || $arg2[0] == '');
+        $bStringArg1 = !$arg1[0] || !$bNumericArg1;
+        $bStringArg2 = !$arg2[0] || !$bNumericArg2;
 
         $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
         $bBothString = ($bStringArg1 && $bStringArg2);
         $bMismatchType=(!$bBothNumeric && !$bBothString);
 
-        // Set bBothString if one is forced to be string, only if bith can be numeric. Mimic JS and PHO
+        // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
         // Not sure if needed to test if [2] is set. : TODO review
         if($bBothNumeric){
-            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMERIC or WORD : DQ and DS is string entered by user, STRING is a result of a String function
+            $aForceStringArray=array('DQ_STRING','DS_STRING','STRING');// Question can return NUMBER or WORD : DQ and DS is string entered by user, STRING is a result of a String function
             if( (isset($arg1[2]) && in_array($arg1[2],$aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2],$aForceStringArray)) ) )
             {
                 $bBothNumeric=false;
@@ -341,7 +344,7 @@ class ExpressionManager {
                     $result = array(false,$token[1],'NUMBER');
                 }
                 else {
-                    // Need this explicit comparison in order to be in agreement with JavaScript
+                    // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(false,$token[1],'NUMBER');
                     }
@@ -441,7 +444,7 @@ class ExpressionManager {
 
     /**
      * Main entry function
-     * @param <type> $expr
+     * @param string $expr
      * @param <type> $onlyparse - if true, then validate the syntax without computing an answer
      * @return boolean - true if success, false if any error occurred
      */
@@ -542,7 +545,7 @@ class ExpressionManager {
 
     /**
      * Process a Constant (number of string), retrieve the value of a known variable, or process a function, returning result on the stack.
-     * @return boolean - true if success, false if any error occurred
+     * @return boolean|null - true if success, false if any error occurred
      */
 
     private function RDP_EvaluateConstantVarOrFunction()
@@ -765,7 +768,7 @@ class ExpressionManager {
 
     /**
      * Process a function call
-     * @return boolean - true if success, false if any error occurred
+     * @return boolean|null - true if success, false if any error occurred
      */
     private function RDP_EvaluateFunction()
     {
@@ -964,7 +967,7 @@ class ExpressionManager {
 
     /**
      * Process expressions including functions and parenthesized blocks
-     * @return boolean - true if success, false if any error occurred
+     * @return boolean|null - true if success, false if any error occurred
      */
 
     private function RDP_EvaluatePrimaryExpression()
@@ -1045,7 +1048,7 @@ class ExpressionManager {
 
     /**
      * Process "op a" where op in (+,-,!)
-     * @return boolean - true if success, false if any error occurred
+     * @return boolean|null - true if success, false if any error occurred
      */
 
     private function RDP_EvaluateUnaryExpression()
@@ -1186,7 +1189,7 @@ class ExpressionManager {
     /**
      * Return the JavaScript variable name for a named variable
      * @param <type> $name
-     * @return <type>
+     * @return string
      */
     public function GetJsVarFor($name)
     {
@@ -1344,6 +1347,7 @@ class ExpressionManager {
 
     /**
      * JavaScript Test function - simply writes the result of the current JavaScriptEquivalentFunction to the output buffer.
+     * @param integer $num
      * @return <type>
      */
     public function GetJavascriptTestforExpression($expected,$num)
@@ -1366,7 +1370,9 @@ class ExpressionManager {
 
     /**
      * Generate the function needed to dynamically change the value of a <span> section
-     * @param <type> $name - the ID name for the function
+     * @param string $name - the ID name for the function
+     * @param string $eqn
+     * @param integer $questionNum
      * @return <type>
      */
     public function GetJavaScriptFunctionForReplacement($questionNum, $name,$eqn)
@@ -1377,7 +1383,7 @@ class ExpressionManager {
         $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=LEMfixnum(\n    ";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
         $jsParts[] = ");\n";
-        $jsParts[] = "  } catch (e) { }\n";
+        $jsParts[] = "  } catch (e) { console.log(e); }\n";
         return implode('',$jsParts);
     }
 
@@ -1391,7 +1397,7 @@ class ExpressionManager {
 
     /**
      * This is only used when there are no needed substitutions
-     * @param <type> $expr
+     * @param string $expr
      */
     public function SetPrettyPrintSource($expr)
     {
@@ -1549,7 +1555,7 @@ class ExpressionManager {
                             }
 
                             if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
-                                $class = 'em-var-static'; 
+                                $class = 'em-var-static';
                             }
                             elseif ($groupSeq > $this->groupSeq) {
                                 $class = 'em-var-before em-var-diffgroup';
@@ -1570,7 +1576,7 @@ class ExpressionManager {
 
                         if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid>0)
                         {
-                            $editlink = Yii::app()->getController()->createUrl('admin/survey/sa/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
+                            $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/' . $this->sid . '/gid/' . $gid . '/qid/' . $qid);
                             $stringParts[] = "<a title='{$message}' class='em-var {$class}' href='{$editlink}' >";
                         }
                         else
@@ -1627,8 +1633,15 @@ class ExpressionManager {
         }
         if($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
         {
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('styleurl') . "expressions.css" );
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . "expression.js");
+            /*
+            $oAdminTheme = AdminTheme::getInstance();
+            $oAdminTheme->registerCssFile( 'PUBLIC', 'expressions.css' );
+            $oAdminTheme->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'expression.js');
+            */
+
+            App()->getClientScript()->registerCssFile( Yii::app()->getConfig('publicstyleurl') . "expressions.css" );
+            App()->getClientScript()->registerScriptFile( Yii::app()->getConfig('adminscripts') . "expression.js");
+
         }
         $sClass='em-expression';
         $sClass.=($bHaveError)?" em-haveerror":"";
@@ -1637,8 +1650,9 @@ class ExpressionManager {
 
     /**
      * Get information about the variable, including JavaScript name, read-write status, and whether set on current page.
-     * @param <type> $varname
-     * @return <type>
+     * @param <type> $name
+     * @param string|null $attr
+     * @return string
      */
     private function GetVarAttribute($name,$attr,$default)
     {
@@ -1818,7 +1832,7 @@ class ExpressionManager {
 
     /**
      * Process multiple substitution iterations of a full string, containing multiple expressions delimited by {}, return a consolidated string
-     * @param <type> $src
+     * @param string $src
      * @param <type> $questionNum
      * @param <type> $numRecursionLevels - number of levels of recursive substitution to perform
      * @param <type> $whichPrettyPrintIteration - if recursing, specify which pretty-print iteration is desired
@@ -1855,8 +1869,8 @@ class ExpressionManager {
 
     /**
      * Process one substitution iteration of a full string, containing multiple expressions delimited by {}, return a consolidated string
-     * @param <type> $src
-     * @param <type> $questionNum - used to generate substitution <span>s that indicate to which question they belong
+     * @param string $src
+     * @param integer $questionNum - used to generate substitution <span>s that indicate to which question they belong
      * @return <type>
      */
 
@@ -1929,7 +1943,6 @@ class ExpressionManager {
 
     /**
      * If the equation contains refernece to this, expand to comma separated list if needed.
-     * @param type $eqn
      */
     function ExpandThisVar($src)
     {
@@ -1984,7 +1997,7 @@ class ExpressionManager {
      * Some PHP functions require specific data types - those can be cast here.
      * @param <type> $funcNameToken
      * @param <type> $params
-     * @return boolean
+     * @return boolean|null
      */
     private function RDP_RunFunction($funcNameToken,$params)
     {
@@ -2133,6 +2146,14 @@ class ExpressionManager {
                     $this->RDP_AddError(sprintf(gT("Function does not support %s arguments"), $argsPassed).' '
                             . sprintf(gT("Function supports this many arguments, where -1=unlimited: %s"), implode(',', $numArgsAllowed)), $funcNameToken);
                     return false;
+                }
+                if(function_exists("geterrors_".$funcName))
+                {
+                    if($sError=call_user_func_array("geterrors_".$funcName,$params))
+                    {
+                        $this->RDP_AddError($sError,$funcNameToken);
+                        return false;
+                    }
                 }
             }
             catch (Exception $e)
@@ -2344,7 +2365,7 @@ class ExpressionManager {
 
     /**
      * Specify the survey  mode for this survey.  Options are 'survey', 'group', and 'question'
-     * @param type $mode
+     * @param string $mode
      */
     public function SetSurveyMode($mode)
     {
@@ -2584,14 +2605,14 @@ function exprmgr_stripos($haystack , $needle ,$offset=0)
  * @param string $haystack : checked string
  * @param string $needle : string to find
  * @param boolean $before_needle : portion to return
- * @return string|false 
+ * @return string|false
  */
 function exprmgr_stristr($haystack,$needle,$before_needle=false)
 {
     return mb_stristr($haystack,$needle,$before_needle,'UTF-8');
 }
 /**
- * Get unicode string length 
+ * Get unicode string length
  * @param string $string
  * @return int
  */
@@ -2617,14 +2638,14 @@ function exprmgr_strpos($haystack , $needle ,$offset=0)
  * @param string $haystack : checked string
  * @param string $needle : string to find
  * @param boolean $before_needle : portion to return
- * @return string|false 
+ * @return string|false
  */
 function exprmgr_strstr($haystack,$needle,$before_needle=false)
 {
     return mb_strstr($haystack,$needle,$before_needle,'UTF-8');
 }
 /**
- * Make an unicode string lowercase 
+ * Make an unicode string lowercase
  * @param string $string
  * @return string
  */
@@ -2633,7 +2654,7 @@ function exprmgr_strtolower($string)
     return mb_strtolower ($string,'UTF-8');
 }
 /**
- * Make an unicode string uppercase 
+ * Make an unicode string uppercase
  * @param string $string
  * @return string
  */
@@ -2688,48 +2709,48 @@ function exprmgr_sumifop($args)
 
 /**
  * Find the closest matching numerical input values in a list an replace it by the
- * corresponding value within another list 
- * 
+ * corresponding value within another list
+ *
  * @author Johannes Weberhofer, 2013
  *
  * @param numeric $fValueToReplace
- * @param numeric $iStrict - 1 for exact matches only otherwise interpolation the 
+ * @param numeric $iStrict - 1 for exact matches only otherwise interpolation the
  * 		  closest value should be returned
  * @param string $sTranslateFromList - comma seperated list of numeric values to translate from
  * @param string $sTranslateToList - comma seperated list of numeric values to translate to
  * @return numeric
  */
-function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList) 
+function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList)
 {
-	if ( (is_numeric($fValueToReplace)) && ($iStrict!=null) && ($sTranslateFromList!=null) && ($sTranslateToList!=null) ) 
-	{
-		$aFromValues = explode( ',', $sTranslateFromList);
-		$aToValues = explode( ',', $sTranslateToList);
-		if ( (count($aFromValues) > 0)  && (count($aFromValues) == count($aToValues)) )
-		{
-			$fMinimumDiff = null;
-			$iNearestIndex = 0;
-			for ( $i = 0; $i < count($aFromValues); $i++) {
-				if ( !is_numeric($aFromValues[$i])) {
-					// break processing when non-numeric variables are about to be processed
-					return null;
-				}
-				$fCurrentDiff = abs($aFromValues[$i] - $fValueToReplace);
-				if ($fCurrentDiff === 0) {
-					return $aToValues[$i];
-				} else if ($i === 0) {
-					$fMinimumDiff = $fCurrentDiff;
-				} else if ( $fMinimumDiff > $fCurrentDiff ) {
-					$fMinimumDiff = $fCurrentDiff;
-					$iNearestIndex = $i;
-				}
-			}					
-			if ( $iStrict !== 1 ) {
-				return $aToValues[$iNearestIndex];
-			}
-		}
-	}
-	return null;
+    if ( (is_numeric($fValueToReplace)) && ($iStrict!=null) && ($sTranslateFromList!=null) && ($sTranslateToList!=null) )
+    {
+        $aFromValues = explode( ',', $sTranslateFromList);
+        $aToValues = explode( ',', $sTranslateToList);
+        if ( (count($aFromValues) > 0)  && (count($aFromValues) == count($aToValues)) )
+        {
+            $fMinimumDiff = null;
+            $iNearestIndex = 0;
+            for ( $i = 0; $i < count($aFromValues); $i++) {
+                if ( !is_numeric($aFromValues[$i])) {
+                    // break processing when non-numeric variables are about to be processed
+                    return null;
+                }
+                $fCurrentDiff = abs($aFromValues[$i] - $fValueToReplace);
+                if ($fCurrentDiff === 0) {
+                    return $aToValues[$i];
+                } else if ($i === 0) {
+                    $fMinimumDiff = $fCurrentDiff;
+                } else if ( $fMinimumDiff > $fCurrentDiff ) {
+                    $fMinimumDiff = $fCurrentDiff;
+                    $iNearestIndex = $i;
+                }
+            }
+            if ( $iStrict != 1 ) {
+                return $aToValues[$iNearestIndex];
+            }
+        }
+    }
+    return null;
 }
 
 /**
@@ -2753,16 +2774,18 @@ function exprmgr_if($test,$ok,$error)
 
 /**
  * Return true if the variable is an integer for LimeSurvey
- * Can not really use is_int due to SQL DECIMAL system
+ * Can not really use is_int due to SQL DECIMAL system. This function can surely be improved
  * @param string $arg
- * @return boolean
+ * @return integer
  * @link http://php.net/is_int#82857
  */
 function exprmgr_int($arg)
 {
     if(strpos($arg,"."))
+    {
         $arg=preg_replace("/\.$/","",rtrim(strval($arg),"0"));// DECIMAL from SQL return always .00000000, the remove all 0 and one . , see #09550
-    return (ctype_digit($arg));// Accept empty value too before PHP 5.1 see http://php.net/ctype-digit#refsect1-function.ctype-digit-changelog
+    }
+    return (preg_match("/^-?[0-9]*$/",$arg));// Allow 000 for value, @link https://bugs.limesurvey.org/view.php?id=9550 DECIMAL sql type.
 }
 /**
  * Join together $args[0-N] with ', '
@@ -2805,6 +2828,38 @@ function exprmgr_log($args)
     if(!is_numeric($base)){return NAN;}
     if(floatval($base)<=0){return NAN;}
     return log($number,$base);
+}
+/**
+ * Get Unix timestamp for a date : false if parameters is invalid.
+ * PHP 5.3.3 send E_STRICT notice without param, then replace by time if needed
+ * @param int $hour
+ * @param int $minute
+ * @param int $second
+ * @param int $month
+ * @param int $day
+ * @param int $year
+ * @return int|boolean
+ */
+function exprmgr_mktime($hour=null,$minute=null,$second=null,$month=null,$day=null,$year=null)
+{
+    $iNumArg=count(array_filter(array($hour,$minute,$second,$month,$day,$year),create_function('$a','return $a !== null;')));
+    switch($iNumArg)
+    {
+        case 0:
+            return time();
+        case 1:
+            return mktime($hour);
+        case 2:
+            return mktime($hour,$minute);
+        case 3:
+            return mktime($hour,$minute,$second);
+        case 4:
+            return mktime($hour,$minute,$second,$month);
+        case 5:
+            return mktime($hour,$minute,$second,$month,$day);
+        default:
+            return mktime($hour,$minute,$second,$month,$day,$year);
+    }
 }
 
 /**
@@ -2899,22 +2954,34 @@ function expr_mgr_htmlspecialchars_decode($string)
 }
 
 /**
- * Return true of $input matches the regular expression $pattern
- * @param <type> $pattern
- * @param <type> $input
- * @return <type>
+ * Return true if $input matches the regular expression $pattern
+ * @param string $pattern
+ * @param string $input
+ * @return boolean
  */
 function exprmgr_regexMatch($pattern, $input)
 {
-    try {
-        // 'u' is the regexp modifier for unicode so that non-ASCII string will nbe validated properly
-        $result = @preg_match($pattern.'u', $input);
-    } catch (Exception $e) {
-        $result = false;
-        // How should errors be logged?
-        echo sprintf(gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
+    // Test the regexp pattern agains null : must always return 0, false if error happen
+    if(@preg_match($pattern.'u', null) === false)
+    {
+        return false; // invalid : true or false ?
     }
-    return $result;
+    // 'u' is the regexp modifier for unicode so that non-ASCII string will be validated properly
+    return preg_match($pattern.'u', $input);
+}
+/**
+ * Return error information from pattern of regular expression $pattern
+ * @param string $pattern
+ * @param string $input
+ * @return string|null
+ */
+function geterrors_exprmgr_regexMatch($pattern, $input)
+{
+    // @todo : use set_error_handler to get the preg_last_error
+    if(@preg_match($pattern.'u', null) === false)
+    {
+        return sprintf(gT('Invalid PERL Regular Expression: %s'), htmlspecialchars($pattern));
+    }
 }
 
 /**

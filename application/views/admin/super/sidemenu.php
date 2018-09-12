@@ -8,23 +8,45 @@
     */
 ?>
 <?php
+    $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
+    if ($sideMenuBehaviour == 'alwaysClosed'
+        || ($sideMenuBehaviour == 'adaptive'
+        && !$sidemenu['state']))
+    {
+        $showSideMenu = false;
+    }
+    else
+    {
+        $showSideMenu = true;
+    }
+?>
+<?php
     // TODO : move to controller
     $bSurveyIsActive = (isset($surveyIsActive))?$surveyIsActive:$oSurvey->active=='Y';
     $sidemenu = (isset($sidemenu))?$sidemenu:array();
 ?>
 
     <!-- State when page is loaded : for JavaScript-->
-    <?php if(isset($sidemenu['state']) && $sidemenu['state']==false ):?>
-       <input type="hidden" id="close-side-bar" />
+    <?php if ($sideMenuBehaviour == 'adaptive' || $sideMenuBehaviour == ''): ?>
+        <?php if(isset($sidemenu['state']) && $sidemenu['state']==false ):?>
+           <input type="hidden" id="close-side-bar" />
+        <?php endif;?>
+    <?php elseif ($sideMenuBehaviour == 'alwaysClosed'): ?>
+           <input type="hidden" id="close-side-bar" />
+    <?php elseif ($sideMenuBehaviour == 'alwaysOpen'): ?>
+        <!-- Do nothing -->
     <?php endif;?>
 
     <!-- To handle correctly the side menu positioning -->
-    <div class="absolute-wrapper hidden-xs" style="z-index: 100;"> </div>
+        <div
+            class="absolute-wrapper hidden-xs"
+            style="z-index: 100; <?php if (!$showSideMenu): echo 'left: -250px;'; endif; ?> ">
+        </div>
 
     <!-- sideMenu -->
-    <div class="side-menu  hidden-xs" id="sideMenu" style="z-index: 101;">
+    <div class="side-menu <?php if (!$showSideMenu): echo ' side-menu-hidden'; endif; ?> hidden-xs" id="sideMenu" style="z-index: 101;">
 
-        <nav class="navbar navbar-default  hidden-xs" role="navigation">
+        <nav class="navbar navbar-default hidden-xs">
 
             <!-- Header : General -->
             <div class="navbar-header  hidden-xs">
@@ -41,13 +63,12 @@
                     <div class='row no-gutter'>
 
                         <!-- Brand -->
-                        <div class='col-sm-7'>
-                            <div class="brand-name-wrapper  hidden-xs">
-                                <a class="navbar-brand hideside toggleside" href="#">
-                                    <?php eT('General');?>
-                                </a>
+                        <a id='sidemenu-home' class="col-sm-7 navbar-brand hideside toggleside" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
+                            <div class="brand-name-wrapper hidden-xs">
+                                    <span class="glyphicon glyphicon-home"></span>&nbsp;
+                                    <?php eT("Survey");?>
                             </div>
-                        </div>
+                        </a>
 
                         <!-- chevrons to stretch the side menu -->
                         <?php if (getLanguageRTL($_SESSION['adminlang'])): ?>
@@ -75,17 +96,11 @@
 
             </div>
 
-            <!-- Main Menu -->
-            <div class="side-menu-container  hidden-xs">
-                <ul class="nav navbar-nav sidemenuscontainer  hidden-xs">
+            <?php echo $quickmenu; ?>
 
-                    <!-- Link to survey summary-->
-                    <li class="toWhite <?php if( isset($sidemenu["survey_menu"]) ) echo 'active'; ?> ">
-                        <a href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
-                            <span class="glyphicon glyphicon-info-sign"></span>
-                            <?php eT("Survey");?>
-                        </a>
-                    </li>
+            <!-- Main Menu -->
+            <div class="side-menu-container hidden-xs">
+                <ul class="nav navbar-nav sidemenuscontainer hidden-xs" style="<?php if (!$showSideMenu): echo 'display: none;'; endif; ?>">
 
                     <!-- Question & Groups-->
                     <li class="panel panel-default dropdownlvl1" id="dropdown">
@@ -126,19 +141,21 @@
                                     <?php endif; ?>
 
                                     <!-- Organize questions -->
-                                    <?php if($surveycontent):?>
+                                    <?php if($surveycontentupdate):?>
                                         <?php if ($activated):?>
                                             <li class="disabled">
                                                 <a href='#'>
                                                     <span class="icon-organize"></span>
-                                                    <?php eT("Question group/question organizer disabled"); ?> - <?php eT("This survey is currently active."); ?>
+                                                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo gT("Question group/question organizer disabled").' - '.gT("This survey is currently active."); ?>">
+                                                        <?php eT("Question organizer"); ?>
+                                                    </span>
                                                 </a>
                                             </li>
                                         <?php else: ?>
                                             <li>
                                                 <a href="<?php echo $this->createUrl("admin/survey/sa/organize/surveyid/$surveyid"); ?>">
                                                     <span class="icon-organize"></span>
-                                                    <?php eT("Reorder question groups / questions"); ?>
+                                                    <?php eT("Question organizer"); ?>
                                                 </a>
                                             </li>
                                         <?php endif; ?>
@@ -153,7 +170,7 @@
                         <li id="tokensidemenu" class="toWhite  <?php if( isset($sidemenu["token_menu"]) ) echo 'active'; ?> ">
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>">
                                 <span class="glyphicon glyphicon-user"></span>
-                                <?php eT("Token management");?>
+                                <?php eT("Survey participants");?>
                             </a>
                         </li>
                     <?php endif; ?>

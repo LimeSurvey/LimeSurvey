@@ -51,23 +51,29 @@ class Index extends Survey_Common_Action
         // the sid of this question : last_question_sid_1
         $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
         $lastquestionsid = getGlobalSetting($setting_entry);
-
-        if( $lastquestion != null && $lastquestiongroup != null && $survey)
+        $survey = Survey::model()->findByPk($lastquestionsid);
+        if( $lastquestion && $lastquestiongroup && $survey)
         {
+
             $baselang = $survey->language;
             $aData['showLastQuestion'] = true;
             $qid = $lastquestion;
             $gid = $lastquestiongroup;
             $sid = $lastquestionsid;
             $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $sid, 'language' => $baselang));
-
-            $aData['last_question_name'] = $qrrow['title'];
-            if($qrrow['question'])
+            if($qrrow)
             {
-                $aData['last_question_name'] .= ' : '.$qrrow['question'];
+                $aData['last_question_name'] = $qrrow['title'];
+                if($qrrow['question'])
+                {
+                    $aData['last_question_name'] .= ' : '.$qrrow['question'];
+                }
+                $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$sid/gid/$gid/qid/$qid");
             }
-
-            $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$iSurveyID/gid/$gid/qid/$qid");
+            else
+            {
+                $aData['showLastQuestion'] = false;
+            }
         }
         else
         {
@@ -76,6 +82,14 @@ class Index extends Survey_Common_Action
 
         $aData['countSurveyList'] = count(getSurveyList(true));
 
+        // We get the home page display setting
+        $aData['bShowSurveyList'] = (getGlobalSetting('show_survey_list')=="show");
+        $aData['bShowSurveyListSearch'] = (getGlobalSetting('show_survey_list_search')=="show");
+        $aData['bShowLogo'] = (getGlobalSetting('show_logo')=="show");
+        $aData['oSurveySearch'] = new Survey('search');
+        $aData['bShowLastSurveyAndQuestion'] = (getGlobalSetting('show_last_survey_and_question')=="show");
+        $aData['iBoxesByRow']=(int) getGlobalSetting('boxes_by_row');
+        $aData['sBoxesOffSet']=(string) getGlobalSetting('boxes_offset');
         $this->_renderWrappedTemplate('super', 'welcome', $aData);
     }
 

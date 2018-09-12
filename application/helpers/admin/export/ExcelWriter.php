@@ -12,6 +12,7 @@ class ExcelWriter extends Writer
     private $separator;
     private $hasOutputHeader;
     private $rowCounter;
+    private $forceDownload=true;
 
     //Indicates if the Writer is outputting to a file rather than sending via HTTP.
     private $outputToFile = false;
@@ -25,7 +26,7 @@ class ExcelWriter extends Writer
     */
     public function __construct($filename = null)
     {
-        require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
+        require_once(APPPATH.'/third_party/xlsx_writer/xlsxwriter.class.php');
         $this->separator = '~|';
         $this->hasOutputHeader = false;
         $this->rowCounter = 0;
@@ -35,28 +36,16 @@ class ExcelWriter extends Writer
     {
         parent::init($survey, $sLanguageCode, $oOptions);
 
-        if ($oOptions->output=='file')
-        {
-            $this->workbook = new xlswriter($this->filename);
-            $this->outputToFile = true;
-        }
-        else
-        {
-            $this->workbook = new xlswriter;
-        }
-        $this->workbook->setTempDir(Yii::app()->getConfig("tempdir"));
-
-        if ($oOptions->output=='display') {
-            $this->workbook->send('results-survey'.$survey->id.'.xls');
-  
-        }
+        $this->workbook = new XLSXWriter();
+        $this->workbook->setTempDir(Yii::app()->getConfig('tempdir'));
         $worksheetName = $survey->languageSettings['surveyls_title'];
-        $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
-
-        $this->workbook->setVersion(8);
-        $sheet =$this->workbook->addWorksheet($worksheetName); // do not translate/change this - the library does not support any special chars in sheet name
-        $sheet->setInputEncoding('utf-8');
-        $this->currentSheet = $sheet;
+        $worksheetName=mb_substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31,'utf-8'); // Remove invalid characters
+        if ($worksheetName=='')
+        {
+            $worksheetName='survey_'.$survey->id;
+        }
+        $this->currentSheet = $worksheetName;
+        $this->forceDownload=!($oOptions->output=='file');
     }
 
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
@@ -64,35 +53,21 @@ class ExcelWriter extends Writer
         if (!$this->hasOutputHeader)
         {
             $columnCounter = 0;
-            foreach ($headers as $header)
-            {
-                $this->currentSheet->write($this->rowCounter,$columnCounter,str_replace('?', '-', $this->excelEscape($header)));
-                $columnCounter++;
-            }
+            $this->workbook->writeSheetRow($this->currentSheet, $headers );
             $this->hasOutputHeader = true;
-            $this->rowCounter++;
         }
-        $columnCounter = 0;
-        foreach ($values as $value)
-        {
-            $this->currentSheet->write($this->rowCounter, $columnCounter, $this->excelEscape($value));
-            $columnCounter++;
-        }
-        $this->rowCounter++;
-    }
-
-    private function excelEscape($value)
-    {
-        if ((substr($value, 0, 1) == '=') || (substr($value, 0, 1) == '@'))
-        {
-            $value = '"'.$value.'"';
-        }
-        return $value;
+        $this->workbook->writeSheetRow($this->currentSheet, $values );
     }
 
     public function close()
     {
-        $this->workbook->close();
+        $this->workbook->writeToFile($this->filename);
+        if ($this->forceDownload){
+            header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            header("Content-Disposition: attachment; filename=\"{$this->webfilename}.xlsx\"");
+            header('Content-Length: ' . filesize($this->filename));
+            readfile($this->filename);
+        }
         return $this->workbook;
     }
 }

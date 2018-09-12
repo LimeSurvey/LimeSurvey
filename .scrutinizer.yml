@@ -1,5 +1,5 @@
 filter:
-    excluded_paths: [framework/*, locale/*, docs/*, fonts/*, third_party/*, application/third_party/*, images/*, styles/*, styles-public/*, templates/*, themes/*, tmp/*, upload/*]
+    excluded_paths: [framework/*, locale/*, docs/*, fonts/*, third_party/*, application/extensions/*, application/third_party/*, images/*, styles/*, styles-public/*, templates/*, themes/*, tmp/*, upload/*]
     paths: [application/*]
 checks:
     php:

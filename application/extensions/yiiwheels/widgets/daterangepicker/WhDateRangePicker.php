@@ -114,7 +114,7 @@ class WhDateRangePicker extends CInputWidget
         $assetsUrl = $this->getAssetsUrl($path);
 
         /* register required moment.js */
-        $this->getYiiWheels()->registerAssetJs('moment.min.js');
+        $this->getYiiWheels()->registerAssetJs('moment-with-locales.js');
 
         /* @var $cs CClientScript */
         $cs = Yii::app()->getClientScript();

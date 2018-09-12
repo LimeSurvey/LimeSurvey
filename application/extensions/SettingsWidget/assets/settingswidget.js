@@ -12,7 +12,7 @@ $(document).ready(function() {
     var addRow = function()
     {
         var baseRow = $(this).closest('tr');
-        // Create new row, hidden and with empty inputs.
+        // Create row, hidden and with empty inputs.
         var newRow = baseRow.clone(true);
         newRow.find('input').each(function() { $(this).val(''); });
 

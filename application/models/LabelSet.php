@@ -95,4 +95,65 @@ class LabelSet extends LSActiveRecord
         }
         return false;
     }
+
+    public function getbuttons()
+        {
+
+            // View labelset
+            $url = Yii::app()->createUrl("admin/labels/sa/view/lid/$this->lid");
+            $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View labels').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+
+            // Edit labelset
+            if(Permission::model()->hasGlobalPermission('labelsets','update'))
+            {
+                $url = Yii::app()->createUrl("admin/labels/sa/editlabelset/lid/$this->lid");
+                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit label set').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+            }
+
+            // Export labelset
+            if(Permission::model()->hasGlobalPermission('labelsets','export'))
+            {
+                $url = Yii::app()->createUrl("admin/export/sa/dumplabel/lid/$this->lid");
+                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Export label set').'" href="'.$url.'" role="button"><span class="icon-export" ></span></a>';
+            }
+
+            // Delete labelset
+            if(Permission::model()->hasGlobalPermission('labelsets','delete'))
+            {
+                $url = Yii::app()->createUrl("admin/labels/sa/delete/lid/$this->lid");
+                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete label set').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this label set?').'"><span class="glyphicon glyphicon-trash text-warning"></span></a>';
+            }
+
+            return $button;
+        }
+
+    public function search()
+    {
+        $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+
+        $sort = new CSort();
+        $sort->attributes = array(
+          'labelset_id'=>array(
+            'asc'=>'lid',
+            'desc'=>'lid desc',
+          ),
+          'name'=>array(
+            'asc'=>'label_name',
+            'desc'=>'label_name desc',
+          ),
+          'languages'=>array(
+            'asc'=>'languages',
+            'desc'=>'languages desc',
+          ),
+        );
+
+        $dataProvider=new CActiveDataProvider('LabelSet', array(
+            'sort'=>$sort,
+            'pagination'=>array(
+                'pageSize'=>$pageSize,
+            ),
+        ));
+
+        return $dataProvider;
+    }
 }

@@ -7,7 +7,7 @@
                       <span class="glyphicon glyphicon-chevron-left"></span>
                   </a>
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                 <?php eT("General option");?>
+                 <?php eT("General options");?>
                 </a>
               </h4>
             </div>
@@ -91,19 +91,18 @@
                         <div  class="form-group">
                             <label for='gid'><?php eT("Question group:"); ?></label>
                             <select name='gid' id='gid' class="form-control">
-
                                 <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                             </select>
                         </div>
 
                         <div  class="form-group" id="OtherSelection">
                             <label><?php eT("Option 'Other':"); ?></label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'optionother'));?>
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'optionother', 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                         </div>
 
                         <div id='MandatorySelection'  class="form-group">
                             <label><?php eT("Mandatory:"); ?></label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'switchbuttontest'));?>
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'switchbuttontest', 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                         </div>
 
                         <div  class="form-group">

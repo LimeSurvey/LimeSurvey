@@ -2196,7 +2196,7 @@ Node.prototype.changeType = function (newType) {
       this.expanded = false;
     }
 
-    // create new DOM
+    // create DOM
     if (table) {
       if (nextTr) {
         table.insertBefore(this.getDom(), nextTr);

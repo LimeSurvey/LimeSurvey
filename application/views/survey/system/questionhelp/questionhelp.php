@@ -5,7 +5,7 @@
  */
 ?>
 <!-- views/survey/system/questionhelp -->
-<div class="alert alert-info questionhelp">
-    <span class="glyphicon glyphicon-question-sign"></span>
+<div class="text-info questionhelp">
+    <span class="fa fa-question-circle" aria-hidden="true"></span>
     &nbsp;<?php echo $questionHelp; ?>
 </div>

@@ -1,52 +1,41 @@
 <h3 class="pagetitle"><?php eT("Editing user");?></h3>
-        
+
 <div class="row" style="margin-bottom: 100px">
-    <div class="col-lg-12 content-right">
-<?php echo CHtml::form(array("admin/user/sa/moduser"), 'post', array('name'=>'moduserform', 'id'=>'moduserform')); ?>
+<div class="col-lg-12 content-right">
+<?php echo CHtml::form(array("admin/user/sa/moduser"), 'post', array('name'=>'moduserform', 'id'=>'moduserform','class'=>'form-horizontal')); ?>
 
-<table class='edituser table'><thead><tr>
-<th><?php eT("Username");?></th>
-<th><?php eT("Email");?></th>
-<th><?php eT("Full name");?></th>
-<th><?php eT("Password");?></th>
-</tr></thead>
-<tbody><tr>
-<?php
-function rsdsl($mur) {
-    foreach ($mur as $mds) {
-        if(is_array($mds)) {
-            return TRUE;
-        }else{
-            return FALSE;
-        }
-    }
-}
-if(rsdsl($mur)) {
-foreach ($mur as $mrw) { ?>
-    <td ><strong><?php echo $mrw['users_name'];?></strong></td>
-    <td > <input type='email' size='30' name='email' value="<?php echo $mrw['email'];?>" /></td>
-    <td > <input type='text' size='30' name='full_name' value="<?php echo $mrw['full_name'];?>" />
-    <input type='hidden' name='user' value="<?php echo $mrw['users_name'];?>" />
-    <input type='hidden' name='uid' value="<?php echo $mrw['uid'];?>" /></td>
-    <td > <input type='password' name='pass' value="%%unchanged%%" /></td>
-<?php }}else{
-    $mur = array_map('htmlspecialchars', $mur); ?>
-    <td ><strong><?php echo $mur['users_name'];?></strong></td>
-    <td > <input type='email' size='30' name='email' value="<?php echo $mur['email'];?>" /></td>
-    <td > <input type='text' size='30' name='full_name' value="<?php echo $mur['full_name'];?>" />
-    <input type='hidden' name='user' value="<?php echo $mur['users_name'];?>" />
-    <input type='hidden' name='uid' value="<?php echo $mur['uid'];?>" /></td>
-    <td > <input type='password' name='pass' value="%%unchanged%%" /></td>
-<?php } ?>
-</tr>
-</tbody>
-</table>
-<p>
-<input type='submit' class="hidden" value='<?php eT("Save");?>' />
-<input type='hidden' name='action' value='moduser' />
-</p>
-</form>
-
+<div class="form-group">
+    <label for="user" class="col-sm-2 control-label"><?php eT("Username");?></label>
+    <div class="col-sm-3">
+        <?php echo CHtml::textField('user',$aUserData['users_name'],array('class'=>"form-control",'readonly'=>'readonly'));?>
+    </div>
+     <div class="col-sm-3">
+        <span class='text-info'><?php eT("The user name cannot be changed."); ?></span>
+     </div>
+</div>
+<div class="form-group">
+    <label for="email" class="col-sm-2 control-label"><?php eT("Email");?></label>
+    <div class="col-sm-3">
+        <?php echo CHtml::emailField('email',$aUserData['email'],array('class'=>"form-control"));?>
     </div>
 </div>
+<div class="form-group">
+    <label for="full_name" class="col-sm-2 control-label"><?php eT("Full name");?></label>
+    <div class="col-sm-3">
+        <?php echo CHtml::textField('full_name',$aUserData['full_name'],array('class'=>"form-control"));?>
+    </div>
+</div>
+<div class="form-group">
+    <label for="password" class="col-sm-2 control-label"><?php eT("Password");?></label>
+    <div class="col-sm-3">
+        <?php echo CHtml::passwordField('password','',array('class'=>"form-control",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+        <input type='hidden' name='uid' value="<?php echo $aUserData['uid'];?>" />
+    </div>
+</div>
+
+<p>
+    <input type='submit' class="hidden" value='<?php eT("Save");?>' />
+    <input type='hidden' name='action' value='moduser' />
+</p>
+</form>
 

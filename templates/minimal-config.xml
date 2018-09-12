@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadatas>
+        <description>A pre 2.5 template.</description>
+    </metadatas>
+    <files>
+        <!-- Css used in different template from 2.05/06 -->
+        <css>
+            <filename>jquery-ui-custom.css</filename>
+            <filename>jquery-ui.css</filename>
+            <filename>template.css</filename>
+        </css>
+        <js>
+            <filename>template.js</filename>            
+        </js>
+        <rtl>
+            <css>
+                <filename>template-rtl.css</filename>
+            </css>
+        </rtl>
+    </files>
+
+    <!-- For template editor : need fix : allow edit even if not exist-->
+    <files_editable>
+            <css>
+                <filename>template.css</filename>
+                <filename>template-rtl.css</filename>
+                <filename>jquery-ui.css</filename>
+                <filename>jquery-ui-custom.css</filename>
+            </css>
+            <js>
+                <filename>template.js</filename>
+            </js>
+    </files_editable>
+
+    <engine>
+        <filesdirectory>.</filesdirectory>
+        <cssframework>206</cssframework>
+        <pstpldirectory>.</pstpldirectory> <!-- Broken edit pstpl file in template editor actually -->
+        <packages>
+            <package>jqueryui</package>
+            <package>jquery-touch-punch</package>
+        </packages>
+    </engine>
+</config>

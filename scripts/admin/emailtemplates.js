@@ -13,14 +13,21 @@ $(document).ready(function(){
         var newval = $(this).attr('data-value');
         var target = $('#' + $(this).attr('data-target'));
         $(target).val(newval);
-        updateCKeditor($(this).attr('data-target'),newval);
+        try{
+            updateCKeditor($(this).attr('data-target'),newval);
+        }
+        catch(err) {}
     });
 
 });
 
 function KCFinder_callback(url)
 {
-    addAttachment(window.KCFinder.target, url);
+    // Get target table with class "attachments"
+    var target = $.grep(window.KCFinder.target, function(e) {
+        return e.className === 'attachments';
+    });
+    addAttachment(target, url);
     window.KCFinder = null;
 }
 

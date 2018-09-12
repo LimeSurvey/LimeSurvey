@@ -1,0 +1,24 @@
+/**
+ * Specific configuration for Ubuntu Orange template
+ *
+ * It's the very last file to be loaded.
+ * N.B for internal team: this file will not be RTL. Any defintion specific to left/right positionning should be placed on template.css
+ */
+
+ .answer-container,.question-help-container {
+     border: none;
+ }
+
+ .radio label::after {
+   background-color: #dd4814;
+ }
+
+
+ .checkbox label::after {
+   color: #dd4814;
+ }
+
+.question-text{
+    color: #333333;
+    font-size: 18px;
+}

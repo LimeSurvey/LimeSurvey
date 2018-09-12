@@ -16,21 +16,14 @@
             </a>
         </li>
     <?php endforeach;?>
-</ul>   
+</ul>
 
-<br/>   
-                
+<br/>
+
 <div class="tab-content">
 <?php foreach ($aTabContents as $i=>$sTabContent):?>
-    <?php 
+    <?php
         echo $sTabContent;
     ?>
 <?php endforeach; ?>
 </div>
-<?php if($has_permissions): ?>
-    <p>
-        <input type="hidden" name="action" value="updatesurveylocalesettings" />
-        <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" />
-        <input type="hidden" name="language" value="<?php echo $surveyls_language; ?>" />
-    </p>
-<?php endif; ?>

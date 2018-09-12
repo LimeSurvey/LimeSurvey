@@ -69,6 +69,9 @@ class STATAxmlWriter extends Writer
     }
 
 
+    /**
+     * @param string $content
+     */
     protected function out($content)
     {
         fwrite($this->handle, $content . "\n");
@@ -88,6 +91,11 @@ class STATAxmlWriter extends Writer
      *
      * Some things depending on the responses (eg. STATA data type and format, some reoding),
      * are done later in updateResponsemap()
+     */
+
+    /**
+     * @param SurveyObj $survey
+     * @param FormattingOptions $oOptions
      */
     function createStataFieldmap($survey, $sLanguage, $oOptions)
     {
@@ -430,6 +438,17 @@ class STATAxmlWriter extends Writer
                             break;
                         case "D": //replace in customResponsemap: date/time as string with STATA-timestamp
                             $response = strtotime($response . ' GMT') * 1000 + 315619200000; // convert seconds since 1970 (UNIX) to milliseconds since 1960 (STATA)
+                            break;
+                        case "L":
+                            // For radio lists, user wants code, not label
+                            // TODO: We could skip this loop if we had answer code
+                            foreach ($this->customFieldmap['answers'][$iQID][$iScaleID] as $answer) {
+                                if ($answer['answer'] == $response)
+                                {
+                                    $response = $answer['code'];
+                                    break;
+                                }
+                            }
                             break;
                     }
                     

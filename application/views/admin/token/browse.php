@@ -40,13 +40,13 @@
             if($aData['mandatory'] == 'Y'){
                 $customEdit = ', editrules:{custom:true, custom_func:checkMandatoryAttr}';
             }
-            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"left", "editable":true, "width":75' . $customEdit . '}';
+            $uidNames[] = '{ "name":"' . $sFieldname . '", "index":"' . $sFieldname . '", "sorttype":"string", "sortable": true, "align":"left", "editable":true, "width":100' . $customEdit . '}';
             $aColumnHeaders[]=$aData['description'];
         }
         $columnNames='"'.implode('","',$aColumnHeaders).'"';
     }
     $sJsonColumnInformation=json_encode($aTokenColumns);
-    // Build the javasript variables to pass to the jqGrid
+    // Build the javasript variables to pass to the page
 ?>
 <script type="text/javascript">
     var sAddParticipantToCPDBText = '<?php eT("Add participants to central database",'js');?>';
@@ -95,6 +95,8 @@
     var showBounceButton = <?php echo $showBounceButton; ?>;
     var showInviteButton = <?php echo $showInviteButton; ?>;
     var showRemindButton = <?php echo $showRemindButton; ?>;
+    var sDelete = "<?php eT('Delete this search criteria'); ?>";
+    var sAdd = "<?php eT("Add another search criteria"); ?>";
     <?php if (!Permission::model()->hasGlobalPermission('participantpanel','read')){?>
     var bParticipantPanelPermission=false;
     <?php
@@ -111,20 +113,20 @@
     var colNames = ["ID","<?php eT("Action") ?>","<?php eT("First name") ?>","<?php eT("Last name") ?>","<?php eT("Email address") ?>","<?php eT("Email status") ?>","<?php eT("Token") ?>","<?php eT("Language") ?>","<?php eT("Invitation sent?") ?>","<?php eT("Reminder sent?") ?>","<?php eT("Reminder count") ?>","<?php eT("Completed?") ?>","<?php eT("Uses left") ?>","<?php eT("Valid from") ?>","<?php eT("Valid until") ?>"<?php if (count($columnNames)) echo ','.$columnNames; ?>];
     var colModels = [
     { "name":"tid", "index":"tid", "width":30, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":false},
-    { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":100, "align":"center", "editable":false},
+    { "name":"action", "index":"action", "sorttype":"string", "sortable": false, "width":120, "align":"center", "editable":false},
     { "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":100, "align":"left", "editable":true},
     { "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":100, "align":"left", "editable":true},
-    { "name":"email", "index":"email","align":"left","width":120, "sorttype":"string", "sortable": true, "editable":true},
-    { "name":"emailstatus", "index":"emailstatus","align":"left","sorttype":"string", "sortable": true, "editable":true},
-    { "name":"token", "index":"token","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true},
-    { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":55,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $aLanguageNames; ?>"}},
-    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"editable":true},
-    { "name":"remindersent", "index":"remindersent","align":"left", "sorttype":"int", "sortable": true,"width":85,"editable":true},
-    { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":85,"editable":true},
-    { "name":"completed", "index":"completed","align":"left", "sorttype":"int", "sortable": true,"width":65,"editable":true},
-    { "name":"usesleft", "index":"usesleft","align":"right", "sorttype":"int", "sortable": true,"width":50,"editable":true},
-    { "name":"validfrom", "index":"validfrom","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true},
-    { "name":"validuntil", "index":"validuntil","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true}
+    { "name":"email", "index":"email","align":"left","width":170, "sorttype":"string", "sortable": true, "editable":true},
+    { "name":"emailstatus", "index":"emailstatus","align":"left","width": 80,"sorttype":"string", "sortable": true, "editable":true},
+    { "name":"token", "index":"token","align":"left", "sorttype":"int", "sortable": true,"width":150,"editable":true},
+    { "name":"language", "index":"language","align":"left", "sorttype":"int", "sortable": true,"width":100,"editable":true, "formatter":'select', "edittype":"select", "editoptions":{"value":"<?php echo $aLanguageNames; ?>"}},
+    { "name":"sent", "index":"sent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"remindersent", "index":"remindersent","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"remindercount", "index":"remindercount","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true, "classes": "jqgrid-tokens-number-padding"},
+    { "name":"completed", "index":"completed","align":"left", "sorttype":"int", "sortable": true,"width":80,"editable":true},
+    { "name":"usesleft", "index":"usesleft","align":"right", "sorttype":"int", "sortable": true,"width":80,"editable":true, "classes": "jqgrid-tokens-number-padding"},
+    { "name":"validfrom", "index":"validfrom","align":"left", "sorttype":"int", "sortable": true,"width":160,"editable":true},
+    { "name":"validuntil", "index":"validuntil","align":"left", "sorttype":"int", "sortable": true,"width":160,"editable":true}
     <?php if (count($uidNames)) echo ','.implode(",\n", $uidNames); ?>];
     var colInformation=<?php echo $sJsonColumnInformation ?>
 
@@ -136,90 +138,101 @@
     }
 </script>
 
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
+    <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Display"))); ?>
+    <h3><?php eT("Survey participants"); ?></h3>
 
-<div class="side-body">
-	<h3><?php eT("Survey participants",'js'); ?></h3>
+        <p class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
+            <span class="fa fa-info-circle"></span>
+            <?php eT("You can use operators in the search filters (eg: >, <, >=, <=, = )");?>
+        </p>
 
-	<div  class="row">
-		<div class="col-lg-12" style="margin-top: 1em;">
-			<?php
-			    // Add some script for gridsearch
-			    App()->getClientScript()->registerPackage('jquery-bindWithDelay');
-			    App()->getClientScript()->registerPackage('jqgrid.addons');
-			?>
-			<table id="displaytokens"></table>
-			<div id="pager"></div>
 
-			<div id ="search" style="display:none">
-			    <?php
-			        $aOptionSearch = array('' => gT('Select...'));
-			        foreach($aTokenColumns as $sTokenColumn => $aTokenInformation)
-			        {
-			            if($aTokenInformation['search'])
-			            {
-			                $aOptionSearch[$sTokenColumn]=$aTokenInformation['description'];
-			            }
-			        }
-			        $aOptionCondition = array('' => gT('Select...'),
-			        'equal' => gT("Equals"),
-			        'contains' => gT("Contains"),
-			        'notequal' => gT("Not equal"),
-			        'notcontains' => gT("Not contains"),
-			        'greaterthan' => gT("Greater than"),
-			        'lessthan' => gT("Less than"));
-			    ?>
-			    <table id='searchtable'>
-			        <tr>
-			            <td><?php echo CHtml::dropDownList('field_1', 'id="field_1"', $aOptionSearch); ?></td>
-			            <td><?php echo CHtml::dropDownList('condition_1', 'id="condition_1"', $aOptionCondition); ?></td>
-			            <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-			            <td>
-                            <span title='<?php eT("Add another search criteria");?>' class="addcondition-button icon-add text-success" style="margin-bottom:4px">
-                        </td>
-			        </tr>
-			    </table>
-			</div>
+    <!-- CGridView -->
+    <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 
-			<?php if (Permission::model()->hasGlobalPermission('participantpanel','read')) { ?>
-			    <div id="addcpdb" title="addsurvey" style="display:none">
-			        <p><?php eT("Please select the attributes that are to be added to the central database"); ?></p>
-			        <p>
-			            <select id="attributeid" name="attributeid" multiple="multiple">
-			                <?php
-			                    if(!empty($attrfieldnames))
-			                    {
-			                        foreach($attrfieldnames as $key=>$value)
-			                        {
-			                            echo "<option value='".$key."'>".$value."</option>";
-			                        }
-			                    }
+        <!-- Todo : search boxes -->
 
-			                ?>
-			            </select>
-			        </p>
+        <!-- Grid -->
+        <div class="row">
+            <div class="content-right scrolling-wrapper"    >
+                <?php
+                    $this->widget('bootstrap.widgets.TbGridView', array(
+                        'dataProvider' => $model->search(),
+                        'filter'=>$model,
+                        'id' => 'token-grid',
+                        'emptyText'=>gT('No survey participants found.'),
+                        'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                            CHtml::dropDownList(
+                                'pageSize',
+                                $pageSize,
+                                Yii::app()->params['pageSizeOptionsTokens'],
+                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
+                        'itemsCssClass' =>'table-striped',
+                        'columns' => $model->attributesForGrid,
 
-			    </div>
-			<?php } ?>
+                        'ajaxUpdate'=>true,
+                        'afterAjaxUpdate' => 'reinstallParticipantsFilterDatePicker'
+                    ));
+                ?>
+            </div>
+        </div>
 
-			<div id="fieldnotselected" title="<?php eT("Error") ?>" style="display:none">
-			    <p>
-			        <?php eT("Please select a field."); ?>
-			    </p>
-			</div>
-			<div id="conditionnotselected" title="<?php eT("Error") ?>" style="display:none">
-			    <p>
-			        <?php eT("Please select a condition."); ?>
-			    </p>
-			</div>
-			<div id="norowselected" title="<?php eT("Error") ?>" style="display:none">
-			    <p>
-			        <?php eT("Please select at least one participant."); ?>
-			    </p>
-			</div>
-			<div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none"></div>
-			<div>
-			<div id ='dialog-modal'></div>
-		</div>
-		</div>
-	</div>
+        <!-- To update rows per page via ajax -->
+        <script type="text/javascript">
+            jQuery(function($) {
+                reinstallParticipantsFilterDatePicker();
+                jQuery(document).on("change", '#pageSize', function(){
+                    $.fn.yiiGridView.update('token-grid',{ data:{ pageSize: $(this).val() }});
+                });
+            });
+        </script>
+    </div>
+</div>
+
+
+<!-- Edit Token Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="editTokenModal">
+    <div class="modal-dialog" style="width: 1100px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php eT('Edit survey participant');?></h4>
+            </div>
+            <div class="modal-body">
+                <!-- the ajax loader -->
+                <div id="ajaxContainerLoading2" class="ajaxLoading" >
+                    <p><?php eT('Please wait, loading data...');?></p>
+                    <div class="preloader loading">
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                        <span class="slice"></span>
+                    </div>
+                </div>
+                <div id="modal-content">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                <button type="button" class="btn btn-primary" id="save-edittoken"><?php eT("Save");?></button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div style="display: none;">
+<?php
+Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+    'name' => "no",
+    'id'   => "no",
+    'value' => '',
+
+));
+?>
 </div>

@@ -1,0 +1,79 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Video plugin</title>
+<link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h1>Video Plugin for CKEditor</h1>
+
+<h2>Introduction</h2>
+<p>This is a plugin to create HTML5 &lt;video&gt; elements in <a href="http://www.ckeditor.com">CKEditor</a>.</p>
+
+<h3 id="contact">Author:</h3>
+<p><a href="mailto:amla70@gmail.com">Alfonso Mart&iacute;nez de Lizarrondo</a></p>
+<h3>Sponsored by:</h3>
+<p><a href="http://dmlogic.net/">DM logic</a></p>
+<h3>Version history: </h3>
+<ol>
+  <li>1.0: 19-January-2011. First version.</li>
+  <li>1.1: 21-January-2011. Several bug fixes. Detect poster image dimensions. Complete localization.</li>
+  <li>1.2: 24-January-2011. Better dialog layout, specific filebrowserVideoBrowseUrl entry.</li>
+</ol>
+<p>Check for latest version and other <a href="http://alfonsoml.blogspot.com">CKEditor plugins</a></p>
+
+<h2>Installation</h2>
+<h3>1. Copying the files</h3>
+<p>Extract the contents of the zip in you plugins directory, so it ends up like
+    this<br>
+    <!--<img src="installation.png" alt="Screenshot of installation" width="311" height="346" longdesc="#install">-->
+    </p>
+<pre id="--install">
+ckeditor\
+	...
+	images\
+	lang\
+	plugins\
+		...
+		video\
+			plugin.js
+			dialogs\
+				video.js
+			docs\
+				install.html
+			images\
+				icon.png
+				placeholder.png
+		...
+	skins\
+	themes\
+</pre>
+<h3>2. Adding it to CKEditor</h3>
+<p>Now add the plugin in your <em>config.js</em> or custom js configuration
+file:
+<code>config.extraPlugins='video'; </code>
+</p>
+
+<h3>3. Add it to your toolbar</h3>
+<p>In your toolbar configuration, add a new 'Video' item in the place where you want the button to show up.</p>
+
+<h3>4. Configure server browser for video</h3>
+<p>You can use the <code>config.filebrowserVideoBrowseUrl</code> entry to specify a url so the file browser shows just video elements (as long as your configure properly your file browser).</p>
+
+<h3>5. Use it</h3>
+<p>Now empty the cache of your browser and reload the editor, the new button should show up and you can add &lt;video&gt; elements into the content. Here's a <a href="http://www.youtube.com/watch?v=DVKuGO-2-LY">short video of the plugin in action</a>.</p>
+
+<h2>Final notes</h2>
+<p>This plugin has been coded for CKEditor 3.5. It might be possible to backport it for older versions, but I don't think that it's worth the effort as sooner
+or later those installs will (or should) be upgraded to the current version.</p>
+<p>Please, note that only newer browsers support the Video element, in older ones a simple text linking to the source videos is provided, you might want to
+use some javascript or css to customize the final behavior of these elements.</p>
+
+
+<h2>Disclaimers</h2>
+<p>CKEditor is  &copy; CKSource.com</p>
+</body>
+</html>

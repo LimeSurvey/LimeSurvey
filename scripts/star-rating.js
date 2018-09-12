@@ -8,60 +8,115 @@
  * Update answers part for Star rating
  *
  * @author Denis Chenu (Shnoulle)
+ * @author Markus Fluer (lacrioque)
+ * 
  * @param {number} qId The qid of the question where apply.
  */
 function doRatingStar(qID) {
 
-
-  // Return quick
+  // get Item to be extended
   var answersList=$('#question'+qID+' .answers-list.radio-list:not(.starred-list)');
-  if(!answersList){return;}
-  // See to http://www.visualjquery.com/rating/rating_redux.html
+  //Close method if no item is found
+  if(answersList.length<1){
+    return;
+  }
+
+  //Get number of Items
+   var numberOfPossibleAnswers = $('#question'+qID).find('input[type=radio]').length;
+
+  //This is deprecated and should be removed, but stays for backwards compatibility
   if ((!$.support.opacity && !$.support.style)) try { document.execCommand("BackgroundImageCache", false, true)} catch(e) { };
 
+  //Check if there is a "no answer" option
+  var itemNoAnswer=$('#question'+qID).find('.noanswer-item').length >0;
 
-  var asNoAnswer=$('#question'+qID+' .noanswer-item input.radio').length;
-  var starsHtmlElement="<div class='stars-list answers-list noread'>";
-  if(asNoAnswer){ starsHtmlElement= starsHtmlElement+"<div class='star-rating star-cancel' title='"+$('#question'+qID+' .noanswer-item label').html()+"'></div>";}
-  for (i=1; i<6; i++) {
-    starsHtmlElement= starsHtmlElement+"<div class='star-rating star star-"+i+"' title='"+i+"'></div>"
-  }
-  starsHtmlElement= starsHtmlElement+"</div>";
-  answersList.after(starsHtmlElement);
+  //Define stars-element container
+  var starsHtmlElement=$("<div class='stars-list answers-list noread' ></div>");
 
-  var starsElement=$('#question'+qID+' .stars-list');
-  starsElement.on("mouseout mouseover", ".star-rating", function(event){
-    var thisnum=$(this).index();
-    if(event.type=='mouseover'){
-      starsElement.children('.star-rating').removeClass("star-rated-on");
-      starsElement.children('.star-rating:lt('+thisnum+')').addClass("star-drained");
-      starsElement.children('.star-rating:eq('+thisnum+')').addClass("star-drained star-hover");
-    }else{
-      starsElement.children('.star-rated').addClass("star-rated-on");
-      starsElement.children('.star-rating:lt('+thisnum+')').removeClass("star-drained");
-      starsElement.children('.star-rating:eq('+thisnum+')').removeClass("star-drained star-hover");
-    }
-  });
-  starsElement.on("click", ".star-rating.star", function(event){
-    var thischoice=thisnum=$(this).index();
-    if(!asNoAnswer){thischoice++;}
-    answersList.find("input.radio[value='"+thischoice+"']").click();
-    starsElement.children('.star-rating').removeClass("star-rated")
-    starsElement.children('.star-rating:lt('+thisnum+')').addClass("star-rated");
-    starsElement.children('.star-rating:eq('+thisnum+')').addClass("star-rated star-thisrated");
-  });
-  starsElement.on("click", ".star-rating.star-cancel", function(event){
-    starsElement.children('.star-rating').removeClass("star-rated")
-    answersList.find("input.radio[value='']").click();
-
-  });
-  answersList.addClass("starred-list hide read");
+  //Check if there is a given answer  
   var openValue=answersList.find("input:radio:checked").val();
-  if(openValue){
-    var thisnum=openValue-1;
-    if(asNoAnswer){thisnum++;}
-    starsElement.children('.star-rating:lt('+thisnum+')').addClass("star-rated");
-    starsElement.children('.star-rating:eq('+thisnum+')').addClass("star-rated star-thisrated");
-    starsElement.children('.star-rated').addClass("star-rated-on");
+
+  //Reset openValue to null, when no Answer is chosen
+  if(openValue == numberOfPossibleAnswers){
+    openValue = null;
   }
+
+  //Add no-answer-option to stars List
+  if(itemNoAnswer){ 
+    starsHtmlElement
+      .append("<div class='star-rating star-cancel' data-star='"+(numberOfPossibleAnswers)+"' title='"+$('#question'+qID+' .noanswer-item label').html()+"'><i class='fa fa-ban'></i></div>");
+  } else {
+    numberOfPossibleAnswers++;
+  }
+
+  //Add stars to the container
+  for (i=1; i<numberOfPossibleAnswers; i++) {
+    //if there is a selected answer, add the fitting classes
+    var classes = openValue!=null ?  "star-rated-on star-rating star " : "star-rating star ";
+    //light all stars lower thgan the selected
+    if(i<=openValue){
+      classes+=" star-rated";
+    }
+    //Add this-rated class to selected star
+    if(i==openValue){
+      classes+=" star-thisrated";
+    }
+    //append the element
+    starsHtmlElement.append("<div class='star-"+i+" "+classes+"' data-star='"+i+"' title='"+i+"'><i class='fa fa-star'></i></div>");
+  }
+
+  answersList.after(starsHtmlElement);
+  //get all stars
+  var starElements = starsHtmlElement.find('.star-rating')
+    //Define the animation on mouseover
+    .on("mouseenter",  function(){
+      var thisnum=$(this).data('star');
+        //mar the current star
+        $(this).addClass("star-drained").addClass("star-hover");
+        //add/remove classes from sibling-elements
+        $(this).siblings('.star-rating').each(function(){
+          //smaller than the chosen and not "no answer" => add class to emphasize them
+          if($(this).data('star') < thisnum && thisnum != numberOfPossibleAnswers){ 
+            $(this).addClass("star-drained");
+          } else {
+            $(this).addClass("star-stub");
+          }
+        });
+    })
+    //define animation on mouseleave
+    .on("mouseleave",  function(){
+      var thisnum=$(this).data('star');
+        //remove hover-classes from this element
+        $(this).removeClass("star-drained star-hover star-stub");
+        //remove the selector classes from the siblings
+        $(this).siblings('.star-rating').each(function(){
+            $(this).removeClass("star-stub");
+            $(this).removeClass("star-drained");
+        });
+    })
+    //define the click-event
+    .on("click", function(event){
+      var thischoice=$(this).data('star');
+      //toggle the em-action on the hidden input
+      answersList.find("input[type=radio]").prop('checked',false);
+      answersList.find("input[value='"+thischoice+"']").prop('checked',true).trigger('click');
+      //clean up classes
+      $(this).siblings('.star-rating').removeClass("star-rated").removeClass("star-rated-on");
+      //mark the chosen star
+      $(this).addClass("star-rated").addClass("star-thisrated").addClass("star-rated-on");
+      //iterate through the siblings to mark the stars lower than the current
+      $(this).siblings('.star-rating').each(function(){
+        if($(this).data("star") < thischoice){ 
+          $(this).addClass("star-rated").addClass("star-rated-on");
+        }
+      });
+      // if cancel, remove all classes 
+      if($(this).hasClass('star-cancel')){
+        $(this).siblings('.star-rating').removeClass("star-rated-on").removeClass("star-rated");
+      }
+
+    });
+
+  //hide the standard-items
+  answersList.addClass("starred-list hide read");
 }

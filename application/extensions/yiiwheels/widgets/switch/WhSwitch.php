@@ -84,6 +84,12 @@ class WhSwitch extends CInputWidget
         if (!$this->animated) {
             $this->htmlOptions['data-animate'] = 'false';
         }
+
+        if (!isset($this->htmlOptions['uncheckValue']))
+        {
+            $this->htmlOptions['uncheckValue']='0';
+        }
+
         $this->htmlOptions['data-on-text'] = $this->onLabel;
         $this->htmlOptions['data-off-text'] = $this->offLabel;
         $this->htmlOptions['data-label-text'] = $this->textLabel;
@@ -124,6 +130,7 @@ class WhSwitch extends CInputWidget
 
     /**
      * Registers required client script for bootstrap typeahead. It is not used through bootstrap->registerPlugin
+     * NOT NEEDED ANYMORE BECAUSE THE BOOTSTRAP SWITCH IS IN OFFICIAL THIRD PARTY
      * in order to attach events if any
      */
     public function registerClientScript()
@@ -133,24 +140,7 @@ class WhSwitch extends CInputWidget
         $assetsUrl = $this->getAssetsUrl($path);
         $id = TbArray::getValue('id', $this->htmlOptions);
 
-        /* @var $cs CClientScript */
-        $cs = Yii::app()->getClientScript();
-
-        $min = $this->debugMode
-            ? '.min'
-            : '';
-
-        if (getLanguageRTL($_SESSION['adminlang']))
-        {
-            $cs->registerCssFile($assetsUrl . '/css/bootstrap-switch-rtl.css');
-        }
-        else
-        {
-            $cs->registerCssFile($assetsUrl . '/css/bootstrap-switch.css');
-        }
-
-
-        $cs->registerScriptFile($assetsUrl . '/js/bootstrap-switch' . $min . '.js', CClientScript::POS_END);
+        yii::app()->clientScript->registerPackage('bootstrap-switch');
         $selector = '#' . $id;
 
         $this->getApi()->registerPlugin('bootstrapSwitch', $selector);

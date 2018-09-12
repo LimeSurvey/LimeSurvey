@@ -14,6 +14,9 @@
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
+// Namespace
+var LS = LS || {};
+
 /* Set a variable to test if browser have HTML5 form ability
  * Need to be replaced by some polyfills see #8009
  */
@@ -24,32 +27,7 @@ $(document).ready(function(){
     initializeAjaxProgress();
     tableCellAdapters();
     linksInDialog();
-
-    if(typeof(userdateformat) !== 'undefined')
-        {
-        $(".popupdate").each(function(i,e) {
-            format=$('#dateformat'+e.name).val();
-            if(!format) format = userdateformat;
-            $(e).datepicker({ dateFormat: format,
-                showOn: 'button',
-                changeYear: true,
-                changeMonth: true,
-                duration: 'fast'
-            }, $.datepicker.regional[LS.data.language]);
-        });
-        $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',
-            showOn: 'button',
-            changeYear: true,
-            changeMonth: true,
-            duration: 'fast'
-        }, $.datepicker.regional[LS.data.language]);
-    }
     doToolTip();
-    $('.btntooltip').tooltip();
-
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
 
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
@@ -69,11 +47,27 @@ $(document).ready(function(){
     });
 
 
+
+    if($('#survey-grid').length>0)
+    {
+        $(document).on('click', '.has-link', function () {
+            $linkUrl = $(this).find('a').attr('href');
+            window.location.href=$linkUrl;
+            console.log($linkUrl);
+        });
+    }
+
     /* Switch format group */
     if ($('#switchchangeformat').length>0){
-        $('#switchchangeformat').on('switchChange.bootstrapSwitch', function(event, state) {
-            //alert('ok');
-            $url = $('#switch-url').attr('data-url');
+        $('#switchchangeformat button').on('click', function(event, state) {
+            $('#switchchangeformat button.active').removeClass('active');
+            $(this).addClass('active');
+            $value = $(this).data('value');
+            $url = $('#switch-url').attr('data-url')+'/format/'+$value;
+
+            console.log('required format: '+$value);
+            console.log('format url: '+$url);
+
             $.ajax({
                 url : $url,
                 type : 'GET',
@@ -100,8 +94,10 @@ $(document).ready(function(){
 
             // html contains the buttons
             success : function(html, statut){
-                $('#survey-action-container').toggle();
-                $('#survey-action-chevron').toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+                $('#survey-action-container').animate({
+            "height": "toggle", "opacity": "toggle"
+        });
+                $('#survey-action-chevron').toggleClass('glyphicon-chevron-right').toggleClass('glyphicon-chevron-down');
             },
             error :  function(html, statut){
                 alert('error');
@@ -133,12 +129,6 @@ $(document).ready(function(){
         $(".btn:first-child .buttontext").text($(this).text());
         $('#question_type').val($(this).data('value'));
 
-        if($(this).data('module')==1){
-            $('#question_module_name').val($(this).data('modulename'));
-        }
-        else {
-            $('#question_module_name').val('');
-        }
         updatequestionattributes();
        });
 
@@ -180,6 +170,96 @@ $(document).ready(function(){
         });
         $("#question_type.none").change();
     }
+
+    /**
+     * Confirmation modal
+     *
+     * Either provide a data-href to redirect after OK button is clicked,
+     * or data-onclick to be run when OK is clicked.
+     */
+    $('#confirmation-modal').on('show.bs.modal', function(e) {
+
+        var onclick = null;
+        var href = null;
+
+        if ($(this).data('href')) {
+            href = $(this).data('href');    // When calling modal from javascript
+        }
+        else {
+            href = $(e.relatedTarget).data('href');
+        }
+
+        if ($(this).data('onclick')) {
+            onclick = $(this).data('onclick');
+        }
+        else {
+            onclick = $(e.relatedTarget).data('onclick');
+        }
+
+        // Get message
+        var message = $(this).data('message');
+        if (message) {
+            $(this).find('.modal-body-text').html(message);
+        }
+
+        $keepopen = $(this).data('keepopen');
+        if (href != '' && href !== undefined) {
+            $(this).find('.btn-ok').attr('href', href);
+        }
+        else if (onclick != '' && onclick !== undefined) {
+
+            var onclick_fn = eval(onclick);
+
+            if (typeof onclick_fn == 'function') {
+                $(this).find('.btn-ok').off('click');
+                $(this).find('.btn-ok').on('click', function(ev) {
+                    if(! $keepopen )
+                    {
+                        $('#confirmation-modal').modal('hide');
+                    }
+                    onclick_fn();
+                });
+            }
+            else {
+                throw "Confirmation modal: onclick is not a function. Wrap data-onclick content in (function() { ... }).";
+            }
+
+        }
+        else if ($(e.relatedTarget).data('ajax-url')) {
+            var postDatas   = $(e.relatedTarget).data('post');
+            var gridid      = $(e.relatedTarget).data('gridid');
+
+            $(this).find('.btn-ok').on('click', function(ev)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: $(e.relatedTarget).data('ajax-url'),
+                    data: postDatas,
+
+                    success : function(html, statut)
+                    {
+                        $.fn.yiiGridView.update(gridid);                   // Update the surveys list
+                        $('#confirmation-modal').modal('hide');
+                    },
+                    error :  function(html, statut){
+                        $('#confirmation-modal .modal-body-text').append(html.responseText);
+                    }
+
+                });
+            });
+        }
+        else {
+            throw "Confirmation modal: Found neither data-href or data-onclick.";
+        }
+
+        $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
+    });
+
+    // Error modal
+    $('#error-modal').on('show.bs.modal', function(e) {
+        $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
+    });
+
 });
 
 function qTypeDropdownInit()
@@ -251,6 +331,9 @@ function getToolTip(type){
 
 function updatequestionattributes()
 {
+    var type = $('#question_type').val();
+    OtherSelection(type);
+
     $('.loader').show();
     $('#advancedquestionsettings').html('');
     var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
@@ -285,7 +368,7 @@ function updatequestionattributes()
 function validatefilename (form, strmessage )
 {
     if (form.the_file.value == "") {
-        alert( strmessage );
+        $('#pleaseselectfile-popup').modal();
         form.the_file.focus();
         return false ;
     }
@@ -294,6 +377,15 @@ function validatefilename (form, strmessage )
 
 function doToolTip()
 {
+    $('.btntooltip').tooltip();
+
+    // Since you can only have one option per data-toggle,
+    // we need this to enable both modal and toggle on one
+    // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
+    $('[data-tooltip="true"]').tooltip();
+
+    $('[data-toggle="tooltip"]').tooltip()
+
     // ToolTip on menu
     $(".sf-menu li").each(function() {
         tipcontent=$(this).children("a").children("img").attr('alt');
@@ -341,6 +433,23 @@ function arrHasDupes( A ) {                          // finds any duplicate arra
     return false;
 }
 
+/**
+ * Like arrHasDupes, but returns the duplicated item
+ *
+ * @param {array} A
+ * @return {mixed|boolean} Array item] or false if no duplicate is found
+ */
+function arrHasDupesWhich(A) {
+    var i, j, n;
+    n=A.length;
+    // to ensure the fewest possible comparisons
+    for (i=0; i<n; i++) {                        // outer loop uses each item i at 0 through n
+        for (j=i+1; j<n; j++) {              // inner loop only compares items j at i+1 to n
+            if (A[i]==A[j]) return A[i];
+    }}
+    return false;
+}
+
 
 // (c) 2006 Simon Wunderlin, License: GPL, hacks want to be free ;)
 // This fix forces Firefox to fire the onchange event if someone changes select box with cursor keys
@@ -353,13 +462,6 @@ function ev_gecko_select_keyup_ev(Ev) {
     return true;
 }
 
-function init_gecko_select_hack() {
-    return true;
-    var selects = document.getElementsByTagName("SELECT");
-    for(i=0; i<selects.length; i++)
-        selects.item(i).addEventListener("keyup", ev_gecko_select_keyup_ev, false);
-    return true;
-}
 
 
 function getkey(e)
@@ -666,10 +768,12 @@ function linksInDialog()
             iframe.attr({
                 src: src,
             });
-            dialog.dialog("option", "title", title).dialog("open");
+            dialog.dialog("option", "title", title);
+            dialog.dialog("open");
         });
     });
 }
+
 function initializeAjaxProgress()
 {
     $('#ajaxprogress').dialog({
@@ -729,6 +833,7 @@ function sendPost(myaction,checkcode,arrayparam,arrayval)
     $form.appendTo("body");
     $form.submit();
 }
+
 function addHiddenElement(theform,thename,thevalue)
 {
     var myel = document.createElement('input');
@@ -738,8 +843,171 @@ function addHiddenElement(theform,thename,thevalue)
     myel.value = thevalue;
     return myel;
 }
+
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-// @license-end
+/**
+ * A method to use the implemented notifier, via ajax or javascript
+ * 
+ * @param text string  | The text to be displayed
+ * @param classes string | The classes that will be put onto the inner container
+ * @param styles object | An object of css-attributes that will be put onto the inner container
+ * @param customOptions | possible options are: 
+ *                         useHtml (boolean) -> use the @text as html
+ *                         timeout (int) -> the timeout in milliseconds until the notifier will fade/slide out 
+ *                         inAnimation (string) -> The jQuery animation to call for the notifier [fadeIn||slideDown]
+ *                         outAnimation (string) -> The jQuery animation to remove the notifier [fadeOut||slideUp]
+ *                         animationTime (int) -> The time in milliseconds the animation will last             
+ */
+function NotifyFader(){
+    var count = 0;
+    
+    var increment = function(){count = count+1;},
+        decrement = function(){count = count-1;},
+        getCount = function(){return count;};
+
+    var create = function(text, classes, styles, customOptions){
+        increment();
+        customOptions = customOptions || {};
+        styles = styles || {};
+        classes = classes || "well well-lg";
+
+        var options = {
+            useHtml : customOptions.useHtml || true,
+            timeout : customOptions.timeout || 3500,
+            inAnimation : customOptions.inAnimation || "slideDown", 
+            outAnimation : customOptions.outAnimation || "slideUp", 
+            animationTime : customOptions.animationTime || 450
+        };
+        var container = $("<div> </div>");
+        container.addClass(classes);
+        container.css(styles);
+        if(options.useHtml){
+            container.html(text);
+        } else {
+            container.text(text);
+        }
+        var newID = "notif-container_"+getCount();
+        $('#notif-container').clone()
+            .attr('id', newID)
+            .css({
+                display: 'none',
+                top : (8*((getCount())))+"%",
+                position: 'fixed',
+                left : "15%",
+                width : "70%",
+                'z-index':3500 
+            })
+            .appendTo($('#notif-container').parent())
+            .html(container);
+
+        $('#'+newID)[options.inAnimation](options.animationTime, function(){
+            var remove = function(){
+                $('#'+newID)[options.outAnimation](options.animationTime, function(){
+                    $('#'+newID).remove();
+                    decrement();
+                });
+            }
+            $(this).on('click', remove);
+            setTimeout(remove, options.timeout);
+        });
+    };
+
+    return {
+        create : create,
+        increment: function(){count = count+1;},
+        decrement: function(){count = count-1;},
+        getCount: function(){return count;}
+        };
+};
+var LsGlobalNotifier = new NotifyFader();
+
+function notifyFader(text, classes, styles, customOptions) {
+
+    // Hide all modals
+    // TODO: Where is this needed?
+    // TODO: Commented, because doesn't work quick condition quick-add where modal should stay open
+    //$('.modal').modal('hide');
+
+    LsGlobalNotifier.create(text, classes, styles, customOptions);
+}
+
+/**
+ * Part of ajax helper
+ * @param {object} JSON object from server
+ * @return {boolean} true if the original success method should be run after this (always, except on failed login)
+ * @todo Localization
+ * @todo Branch on message type?
+ */
+LS.ajaxHelperOnSuccess = function(response) {
+    // Check type of response and take action accordingly
+    if (response == '') {
+        alert('No response from server');
+    }
+    else if (!response.loggedIn) {
+
+        // Hide any modals that might be open
+        $('.modal').modal('hide');
+
+        $('#ajax-helper-modal .modal-content').html(response.html);
+        $('#ajax-helper-modal').modal('show');
+        return false;
+    }
+    // No permission
+    else if (!response.hasPermission) {
+        notifyFader(response.noPermissionText, 'well-lg bg-danger text-center');
+    }
+    // Error popup
+    else if (response.error) {
+        notifyFader(response.error.message, 'well-lg bg-danger text-center');
+    }
+    // Success popup
+    else if (response.success) {
+        notifyFader(response.success, 'well-lg bg-primary text-center');
+    }
+    // Modal popup
+    else if (response.html) {
+        $('#ajax-helper-modal .modal-content').html(response.html);
+        $('#ajax-helper-modal').modal('show');
+    }
+
+    return true;
+}
+
+/**
+ * Like $.ajax, but with checks for errors,
+ * permission etc. Should be used together
+ * with the PHP AjaxHelper.
+ * @todo Handle error from server (500)?
+ * @param {object} options - Exactly the same as $.ajax options
+ * @return {object} ajax promise
+ */
+LS.ajax = function(options) {
+
+    var oldSuccess = options.success;
+    var oldError = options.error;
+    options.success = function(response) {
+
+        $('#ls-loading').hide();
+
+        // User-supplied success is always run EXCEPT when login fails
+        var runOldSuccess = LS.ajaxHelperOnSuccess(response);
+
+        if (oldSuccess && runOldSuccess) {
+            oldSuccess(response);
+        }
+    }
+
+    options.error = function(response) {
+        $('#ls-loading').hide();
+        if (oldError) {
+            oldError();
+        }
+    }
+
+    $('#ls-loading').show();
+
+    return $.ajax(options);
+}

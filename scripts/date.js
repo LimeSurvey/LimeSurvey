@@ -6,18 +6,17 @@ $(document).ready(function(){
         doPopupDate(name);
     });
 });
-/*
+
+/**
  * Function to launch timepicker in question id
  */
-function doPopupDate(qId){
-    console.log('doPopupDate qId:'+qId);
+function doPopupDate(qId) {
+
     if($("#question"+qId+" .popupdate").length){
-        console.log($("#question"+qId+" .popupdate"));
         var basename = $("#question"+qId+" .popupdate").attr("id").substr(6);
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
-        $("#question"+qId+" .popupdate").datetimepicker({
-            showOn: 'both',
+        var $dp = $("#question"+qId+" .popupdate").datetimepicker({
             changeYear: true,
             changeMonth: true,
             defaultDate: +0,
@@ -25,11 +24,17 @@ function doPopupDate(qId){
             firstDay: "1",
             duration: 'fast',
             // set more options at "runtime"
-            beforeShow: setPickerOptions
+            show: setPickerOptions,
+            onShow: setPickerOptions,
         }, $.datepicker.regional[language]);
     }
+    
+    $("#question"+qId).find('div.input-group.date').on('dp.change', function(){
+        $(this).find('input').trigger('change');
+    });
 }
-/*
+
+/**
  * Function to launch timepicker in question id
  */
 function doDropDownDate(qId){
@@ -39,12 +44,14 @@ function doDropDownDate(qId){
         //dateUpdater();
     });
 }
-/* This function is called each time shortly before the picker pops up.
- *  Here we set all the picker options that can be different from question to question.
+
+/**
+ * This function is called each time shortly before the picker pops up.
+ * Here we set all the picker options that can be different from question to question.
+ * @param {object} input
  */
-function setPickerOptions(input)
+function setPickerOptions(basename)
 {
-    var basename = input.id.substr(6);
     var format=$('#dateformat'+basename).val();
 
     //split format into a date part and a time part
@@ -116,14 +123,21 @@ function setPickerOptions(input)
     }
 
     // set minimum and maximum dates for calender
-    datemin=$('#datemin'+basename).text();
-    datemax=$('#datemax'+basename).text();
+    var datemin=$('#datemin'+basename).text();
+    var datemax=$('#datemax'+basename).text();
+    datemin2 = moment(datemin.substr(0,10), "YYYY-MM-DD");
+    datemax2 = moment(datemax.substr(0,10), "YYYY-MM-DD");
 
+    var $dp = $('#answer' + basename + '_datetimepicker');
+    $dp.data('DateTimePicker').minDate(datemin2);
+    $dp.data('DateTimePicker').maxDate(datemax2);
+
+    // TODO: Not used, since BS datepicker
     return {
         // set minimum and maximum date
         // remove the time component for Firefox
-        minDate: Date.parseString(datemin.substr(0,10), "yyyy-mm-dd"),
-        maxDate: Date.parseString(datemax.substr(0,10), "yyyy-mm-dd"),
+        minDate: moment(datemin.substr(0,10), "YYYY-MM-DD"),
+        maxDate: moment(datemax.substr(0,10), "YYYY-MM-DD"),
         yearRange: datemin.substr(0,4)+':'+datemax.substr(0,4),
         //set the other options so datetimepicker is either a datepicker or a timepicker or both
         showTimepicker: bshowTimepicker,
@@ -166,6 +180,7 @@ function validateInput(basename)
 
 
 function dateUpdater() {
+    var thisid = "", iFormatDate = "", iYear,iMonth,iDay,iHour,iMinute,parseddate,format;
     if(this.id.substr(0,3)=='yea')
     {
         thisid=this.id.substr(4);
@@ -250,12 +265,16 @@ function dateUpdater() {
             {
                 iMinute=$('#minute'+thisid).val();
             }
-            ValidDate(this,iYear+'-'+iMonth+'-'+iDay);
-            parseddate=Date.parseString(trim(iDay+'-'+iMonth+'-'+iYear+' '+iHour+':'+iMinute), 'dd-mm-yy H:M');
-            parseddate=parseddate.format($('#dateformat'+thisid).val());
-            $('#answer'+thisid).val(parseddate);
+
+            parseddate= new moment(iDay+'-'+iMonth+'-'+iYear+' '+iHour+':'+iMinute, 'DD-MM-YYYY HH:mm');
+            format = $('#dateformat'+thisid).val();
+
+            iFormatDate = moment(parseddate).format(format);
+
+            $('#answer'+thisid).val(iFormatDate);
             $('#answer'+thisid).change();
         }
+        return true;
 }
 
 function pad (str, max) {

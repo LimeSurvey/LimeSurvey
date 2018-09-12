@@ -14,6 +14,12 @@
  */
 
 /**
+ * Specific exception for our purpose
+ * Used to spit out error messages if mapping attributes doesn't work.
+ */
+class CPDBException extends Exception {}
+
+/**
  * This is the model class for table "{{participants}}".
  *
  * The followings are the available columns in table '{{participants}}':
@@ -27,6 +33,9 @@
  */
 class Participant extends LSActiveRecord
 {
+    public $extraCondition;
+    public $countActiveSurveys;
+    public $id;
 
     /**
      * Returns the static model of Settings table
@@ -64,9 +73,8 @@ class Participant extends LSActiveRecord
             array('firstname, lastname, language', 'LSYii_Validators'),
             array('email', 'length', 'max' => 254),
             array('blacklisted', 'length', 'max' => 1),
-            // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('participant_id, firstname, lastname, email, language, blacklisted, owner_uid', 'safe', 'on' => 'search'),
+            array('participant_id, firstname, lastname, email, language, countActiveSurveys, blacklisted, owner.full_name', 'safe', 'on' => 'search'),
         );
     }
 
@@ -78,7 +86,129 @@ class Participant extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'owner' => array(self::HAS_ONE, 'User', array('uid' => 'owner_uid')),
+            'surveylinks' => array(self::HAS_MANY, 'SurveyLink', 'participant_id'),
+            'participantAttributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'participant_id'),
+            'shares' => array(self::HAS_MANY, 'ParticipantShare', 'participant_id')
         );
+    }
+    // public function getCountActiveSurveys(){
+
+    //     $count =  count($this->surveylinks);
+    //     return $count ;
+    //     return ($count!==0 ? $count : '');
+    // }
+
+    /**
+     * @return string
+     */
+    public function getButtons(){
+        $buttons = "<div style='white-space: nowrap'>";
+        $raw_button_template = ""
+            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<span class='fa fa-%s' ></span>" //icon class
+            . "</button>";
+
+        if ($this->userHasPermissionToEdit()) {
+            // Edit button
+            $editData = array(
+                'action_participant_editModal',
+                '',
+                gT("Edit this participant"),
+                'edit'
+            );
+            $buttons .= vsprintf($raw_button_template, $editData);
+
+            // Only owner or superadmin can delete
+            $userId = Yii::app()->user->id;
+            $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+            if ($this->owner_uid == $userId || $isSuperAdmin) {
+                // Delete button
+                $deleteData = array(
+                    'action_participant_deleteModal',
+                    'text-danger',
+                    gT("Delete this participant"),
+                    'trash text-danger'
+                );
+                $buttons .= vsprintf($raw_button_template, $deleteData);
+
+                // Share this participant
+                $infoData = array(
+                    'action_participant_shareParticipant',
+                    '',
+                    gT("Share this participant"),
+                    'share'
+                );
+                $buttons .= vsprintf($raw_button_template, $infoData);
+
+            }
+            else {
+                // Invisible button
+                $deleteData = array(
+                    'action_participant_deleteModal invisible',
+                    'text-danger',
+                    gT("Delete this participant"),
+                    'trash text-danger'
+                );
+                $buttons .= vsprintf($raw_button_template, $deleteData);
+                $infoData = array(
+                    'action_participant_shareParticipant invisible',
+                    '',
+                    gT("Share this participant"),
+                    'share'
+                );
+                $buttons .= vsprintf($raw_button_template, $infoData);
+            }
+
+        }
+        else {
+            // Three empty buttons for correct alignment
+            // TODO: For some reason, the delete button is smaller than the others
+            $editData = array(
+                'action_participant_editModal invisible',
+                '',
+                gT("Edit this participant"),
+                'edit'
+            );
+            $buttons .= vsprintf($raw_button_template, $editData);
+            $buttons .= vsprintf($raw_button_template, $editData);
+            $deleteData = array(
+                'action_participant_deleteModal invisible',
+                'text-danger',
+                gT("Delete this participant"),
+                'trash text-danger'
+            );
+            $buttons .= vsprintf($raw_button_template, $deleteData);
+        }
+
+        // Survey information
+        $infoData = array(
+            'action_participant_infoModal',
+            '',
+            gT("List active surveys"),
+            'search'
+        );
+        $buttons .= vsprintf($raw_button_template, $infoData);
+
+        // Add participant to survey
+        $infoData = array(
+            'action_participant_addToSurvey',
+            '',
+            gT("Add participant to survey"),
+            'user-plus'
+        );
+        $buttons .= vsprintf($raw_button_template, $infoData);
+
+        $buttons .= "</div>";
+        return $buttons;
+    }
+
+    /**
+     * @return string html
+     */
+    public function getCheckbox()
+    {
+        return "<input type='checkbox' class='selector_participantCheckbox' name='selectedParticipant[]' value='".$this->id."' >";
     }
 
     /**
@@ -86,45 +216,339 @@ class Participant extends LSActiveRecord
      */
     public function attributeLabels()
     {
-        return array(
-            'participant_id' => 'Participant',
-            'firstname' => 'Firstname',
-            'lastname' => 'Lastname',
-            'email' => 'Email',
-            'language' => 'Language',
-            'blacklisted' => 'Blacklisted',
-            'owner_uid' => 'Owner Uid',
+        $returnArray = array(
+            'participant_id' => gT('Participant'),
+            'firstname' => gT('First name'),
+            'lastname' => gT('Last name'),
+            'email' => gT('Email address'),
+            'language' => gT('Language'),
+            'blacklisted' => gT('Blacklisted'),
+            'owner_uid' => gT('Owner ID'),
+            'surveyid' => gT('Active survey ID')
         );
+        foreach($this->allExtraAttributes as $name => $attribute)
+        {
+            $returnArray[$name] = $attribute['defaultname'];
+        }
+        return $returnArray;
+        
     }
 
+    /**
+     * @return array
+     */
+    public function getAllExtraAttributes(){
+        $allAttributes =  ParticipantAttributeName::model()->getAllAttributes();
+        $extraAttributes = array();
+        foreach($allAttributes  as $attribute){
+            $extraAttributes["ea_".$attribute['attribute_id']] = $attribute;
+        }
+        return $extraAttributes;
+    }
+
+    /**
+     * Get options for a drop-down attribute
+     * @return array
+     */
+    public function getOptionsForAttribute($attribute_id) {
+
+        //if ($this->attribute_type != 'DD') {
+            //throw new \CInvalidArgumentException('Only drop-down attributes have options');
+        //}
+
+        //$attribute_id = $this->attribute_id;
+        $result = Yii::app()->db->createCommand()
+            ->select('*')
+            ->from('{{participant_attribute_values}}')
+            ->where('attribute_id=:attribute_id', array('attribute_id' => $attribute_id))
+            ->queryAll();
+        return $result;
+    }
+
+    public function getAllUsedLanguagesWithRealName(){
+        $lang_array = array();
+        $languages = $this->findAll(array(
+            'select'=>'t.language',
+            'group'=>'t.language',
+            'distinct'=>true,
+        ));
+        foreach($languages as $language){
+            $lang_array[$language['language']] = getLanguageNameFromCode($language['language'], false);
+        }
+        return $lang_array;
+    }
+
+    /**
+     * @param string $attributeTextId E.g. ea_145
+     * @param mixed $attribute_id
+     * @return
+     */
+    public function getParticipantAttribute($attributeTextId, $attribute_id=false)
+    {
+        if($attribute_id == false) {
+            list(,$attribute_id) = explode('_',$attributeTextId);
+        }
+
+        $participantAttributes = ParticipantAttribute::model()->getAttributeInfo($this->participant_id);
+        foreach($participantAttributes as $singleAttribute) {
+            if($singleAttribute['attribute_id'] == $attribute_id) {
+                return $singleAttribute['value']; 
+            }
+        }
+        return "";
+    }
+
+    public function getCountActiveSurveys(){
+        $activeSurveys = $this->surveylinks;
+        return count($activeSurveys)>0 ? count($activeSurveys) : "";
+    }
+
+    /**
+     * @return string HTML
+     */
+    public function getBlacklistSwitchbutton(){
+        if ($this->userHasPermissionToEdit()) {
+            $inputHtml = "<input type='checkbox' data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeBlacklistStatus' "
+                . ($this->blacklisted == "Y" ? "checked" : "")
+                . "/>";
+            return  $inputHtml;
+        }
+        else {
+            if ($this->blacklisted == 'Y') {
+                return gT('Yes');
+            }
+            else {
+                return gT('No');
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumns(){
+        $cols = array(
+            array(
+                "name" => 'checkbox',
+                "type" => 'raw',
+                "header" => "<input type='checkbox' id='action_toggleAllParticipant' />",
+                "filter" => false
+            ),
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
+            array(
+                "name" => 'lastname'
+            ),
+            array(
+                "name" => 'firstname'
+            ),
+            array(
+                "name" => 'email'
+            ),
+            array(
+                "name" => 'language',
+                "value" => 'getLanguageNameFromCode($data->language, false)',
+                'filter' => $this->allUsedLanguagesWithRealName
+            ),
+            array(
+                "name" => 'countActiveSurveys',
+                "value" => '$data->getCountActiveSurveys()',
+                "header" => gT("Active surveys"),
+                "htmlOptions" => array('width' => '80px')
+            ),
+            array(
+                "name" => 'owner.full_name',
+                "header" => gT("Owner"),
+                "filter" => $this->getOwnersList($this->owner_uid)
+            ),
+            array(
+                "name" => 'blacklisted',
+                "value" => '$data->getBlacklistSwitchbutton()',
+                "type" => "raw",
+                "filter" => array('N' => gT("No"), 'Y'=>gT('Yes'))
+            ),
+            array(
+                'name' => 'created',
+                'value' => '$data->createdFormatted',
+                'type' => 'raw',
+            )
+        );
+
+        $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
+        foreach($this->allExtraAttributes as $name => $attribute){
+            if($attribute['visible'] == "FALSE") continue;
+            $col_array = array(
+                "value" => '$data->getParticipantAttribute($this->id)',
+                "id" => $name,
+                "header" => $attribute['defaultname'],
+                "type" => "raw",
+               
+            );
+            if($attribute['attribute_type'] == "TB") //textbox
+            {
+                 $col_array["filter"] = TbHtml::textField("extraAttribute[".$name."]", $extraAttributeParams[$name]);
+            }
+            else if($attribute['attribute_type'] == "DD") //dropdown
+            {
+                $options_raw = $this->getOptionsForAttribute($attribute['attribute_id']);
+                $options_array = array(
+                    ''=>''
+                );
+                foreach($options_raw as $option)
+                {
+                    $options_array[$option['value']] = $option['value'];
+                }
+
+                $col_array["filter"] = TbHtml::dropDownList("extraAttribute[".$name."]", $extraAttributeParams[$name], $options_array);
+            }
+            else if($attribute['attribute_type'] == "DP") //date -> still a text field, too many errors with the gridview
+            {
+                 $col_array["filter"] = TbHtml::textField("extraAttribute[".$name."]", $extraAttributeParams[$name]);
+            }
+            $cols[] = $col_array;
+        }
+        return $cols;
+    }
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
     public function search()
     {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
+        $sort = new CSort;
+        $sort->defaultOrder = 'lastname';
+        $sortAttributes = array(
+            'lastname'=>array(
+                'asc'=>'t.lastname',
+                'desc'=>'t.lastname desc',
+            ),
+            'firstname'=>array(
+                'asc'=>'t.firstname',
+                'desc'=>'t.firstname desc',
+            ),
+            'email'=>array(
+                'asc'=>'t.email',
+                'desc'=>'t.email desc',
+            ),
+            'language'=>array(
+                'asc'=>'t.language',
+                'desc'=>'t.language desc',
+            ),
+            'owner.full_name'=>array(
+                'asc'=>'owner.full_name',
+                'desc'=>'owner.full_name desc',
+            ),
+            'blacklisted'=>array(
+                'asc'=>'t.blacklisted',
+                'desc'=>'t.blacklisted desc',
+            ),
+            'countActiveSurveys'=>array(
+                'asc'=>'countActiveSurveys',
+                'desc'=>'countActiveSurveys desc',
+            ),
+            'created' => array(
+                'asc' => 't.created asc',
+                'desc' => 't.created desc'
+            )
+        );
 
         $criteria = new CDbCriteria;
+        $criteria->join = 'LEFT JOIN {{participant_shares}} AS shares ON t.participant_id = shares.participant_id AND (shares.share_uid = ' . Yii::app()->user->id . ' OR shares.share_uid = -1)';
+        $criteria->compare('t.firstname', $this->firstname, true, 'AND' ,true);
+        $criteria->compare('t.lastname', $this->lastname, true, 'AND' ,true);
+        $criteria->compare('t.email', $this->email, true, 'AND' ,true);
+        $criteria->compare('t.language', $this->language, true);
+        $criteria->compare('t.blacklisted', $this->blacklisted, true);
+        $criteria->compare('t.owner_uid', $this->owner_uid);
+        $extraAttributeParams = Yii::app()->request->getParam('extraAttribute');
+        $extraAttributeValues = array();
 
-        $criteria->compare('participant_id', $this->participant_id, true);
-        $criteria->compare('firstname', $this->firstname, true);
-        $criteria->compare('lastname', $this->lastname, true);
-        $criteria->compare('email', $this->email, true);
-        $criteria->compare('language', $this->language, true);
-        $criteria->compare('blacklisted', $this->blacklisted, true);
-        $criteria->compare('owner_uid', $this->owner_uid);
+        //Create the filter for the extra attributes
+        foreach($this->allExtraAttributes as $name => $attribute) {
+            if(isset($extraAttributeParams[$name]) && $extraAttributeParams[$name]) {
+                $extraAttributeValues[$name] =  $extraAttributeParams[$name];
+            }
+        }
 
+        // Include a query for each extra attribute to filter
+        foreach ($extraAttributeValues as $attributeId => $value) {
+
+            $attributeType = $this->allExtraAttributes[$attributeId]['attribute_type'];
+            $attributeId = (int) substr($attributeId, 3);
+
+            // Use "LIKE" for text-box, equal for other types
+            if ($attributeType == 'TB') {
+                $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '" . $attributeId . "' AND value LIKE '%" . $value . "%'";
+            }
+            else {
+                $callParticipantAttributes = "SELECT DISTINCT pa.participant_id FROM {{participant_attribute}} AS pa WHERE attribute_id = '" . $attributeId . "' AND value = '" . $value . "'";
+            }
+
+            $criteria->addCondition( 't.participant_id IN ('. $callParticipantAttributes .')');
+        }
+
+        $DBCountActiveSurveys = SurveyLink::model()->tableName();
+        $sqlCountActiveSurveys = "(SELECT COUNT(*) FROM ".$DBCountActiveSurveys." cas WHERE cas.participant_id = t.participant_id )";
+
+        $criteria->select = array(
+            '*',
+            $sqlCountActiveSurveys . ' AS countActiveSurveys',
+            't.participant_id',
+            't.participant_id AS id',   // This is need to avoid confusion between t.participant_id and shares.participant_id
+        );
+        if($this->extraCondition) {
+            $criteria->mergeWith($this->extraCondition);
+        }
+        $sort->attributes = $sortAttributes;
+        $sort->defaultOrder = 't.lastname ASC';
+
+        // Users can only see: 1) Participants they own; 2) participants shared with them; and 3) participants shared with everyone
+        // Superadmins can see all users.
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        if (!$isSuperAdmin) {
+            $criteria->addCondition('t.owner_uid = ' . Yii::app()->user->id . ' OR ' . Yii::app()->user->id . ' = shares.share_uid OR shares.share_uid = -1');
+        }
+
+        $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);      
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            'sort' => $sort,
+            'pagination' => array(
+                'pageSize' => $pageSize
+            )
         ));
     }
 
-    /*
-     * funcion for generation of unique id
+    /**
+     * @param int $selected Owner id
+     * @return string HTML
      */
+    public function getOwnersList($selected){
+        $owner_ids = Yii::app()->db->createCommand()
+            ->selectDistinct('owner_uid')
+            ->from('{{participants}}')
+            ->queryAll();
+        $ownerList = array(''=>"");
+        foreach($owner_ids as $id){
+            $user = User::model()->getName($id['owner_uid']);
+            $ownerList[$id['owner_uid']] = $user['full_name'];
+        }
+        return TbHtml::dropDownList('Participant[owner_uid]',$selected, $ownerList);
+        
+    }
 
+    public function addSurveyFilter($conditions){
+        $this->extraCondition = $this->getParticipantsSearchMultipleCondition($conditions);
+    }
+
+    /**
+     * Funcion for generation of unique id
+     * @return string
+     */
     static function gen_uuid()
     {
         return sprintf(
@@ -140,27 +564,48 @@ class Participant extends LSActiveRecord
         );
     }
 
-    /*
+    /**
      * This function is responsible for adding the participant to the database
-     * Parameters : participant data
-     * Return Data : true on success, false on failure
+     * @param array $aData Participant data
+     * @return string|Participant Error message on failure, participant object on success
      */
-     function insertParticipant($aData)
-     {
-         $oParticipant = new self;
-         foreach ($aData as $sField => $sValue){
-             $oParticipant->$sField = $sValue;
-         }
-         try
-         {
-             $oParticipant->save();
-             return true;
-         }
-         catch(Exception $e)
-         {
-             return false;
-         }
-     }
+    public function insertParticipant($aData)
+    {
+        $oParticipant = new self;
+        foreach ($aData as $sField => $sValue)
+        {
+            $oParticipant->$sField = $sValue;
+        }
+        try
+        {
+            $result = $oParticipant->save();
+            if (!$result)
+            {
+                return $this->flattenErrorMessages($oParticipant->getErrors());
+            }
+            return $oParticipant;
+        }
+        catch(Exception $e)
+        {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * Takes result from model->getErrors() and creates a
+     * long string of all messages.
+     * @param array $errors
+     * @return string
+     */
+    private function flattenErrorMessages(array $errors)
+    {
+        $result = '';
+        foreach ($errors as $error)
+        {
+            $result .= $error[0] . ' ';
+        }
+        return $result;
+    }
 
     /**
      * Returns the primary key of this table
@@ -173,11 +618,12 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * This function updates the data edited in the jqgrid
+     * This function updates the data edited in the view
      *
      * @param aray $data
+     * @return void
      */
-    function updateRow($data)
+    public function updateRow($data)
     {
         $record = $this->findByPk($data['participant_id']);
         foreach ($data as $key => $value)
@@ -195,7 +641,7 @@ class Participant extends LSActiveRecord
      *
      * @return object containing all the users
      */
-    function getParticipantsOwner($userid)
+    public function getParticipantsOwner($userid)
     {
         $subquery = Yii::app()->db->createCommand()
             ->select('{{participants}}.participant_id,{{participant_shares}}.can_edit')
@@ -214,7 +660,10 @@ class Participant extends LSActiveRecord
         return $command->queryAll();
     }
 
-    function getParticipantsOwnerCount($userid)
+    /**
+     * @return int
+     */
+    public function getParticipantsOwnerCount($userid)
     {
         $command = Yii::app()->db->createCommand()
                         ->select('count(*)')
@@ -231,12 +680,15 @@ class Participant extends LSActiveRecord
      *
      * @return int
      */
-    function getParticipantsCountWithoutLimit()
+    public function getParticipantsCountWithoutLimit()
     {
         return Participant::model()->count();
     }
 
-    function getParticipantsWithoutLimit()
+    /**
+     * @return Participant[]
+     */
+    public function getParticipantsWithoutLimit()
     {
         return Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
     }
@@ -249,13 +701,22 @@ class Participant extends LSActiveRecord
      * @param  int $userid The id of the owner
      * @return int The number of participants owned by $userid who are shared
      */
-    function getParticipantsSharedCount($userid)
+    public function getParticipantsSharedCount($userid)
     {
         $count = Yii::app()->db->createCommand()->select('count(*)')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
         return $count;
     }
 
-    function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)
+    /**
+     * @param int $page
+     * @param int $limit
+     * @param array $attid
+     * @param order
+     * @param search
+     * @param userid
+     * @return array
+     */
+    public function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)
     {
         $data = $this->getParticipantsSelectCommand(false, $attid, $search, $userid, $page, $limit, $order);
 
@@ -267,18 +728,23 @@ class Participant extends LSActiveRecord
     /**
      * Duplicated from getparticipants, only to have a count
      *
-     * @param type $attid
-     * @param type $order
+     * @param int $attid
      * @param CDbCriteria $search
-     * @param type $userid
-     * @return type
+     * @param int $userid
+     * @return int
      */
-    function getParticipantsCount($attid, $search = null, $userid = null) {
+    public function getParticipantsCount($attid, $search = null, $userid = null) {
         $data = $this->getParticipantsSelectCommand(true, $attid, $search, $userid);
 
         return $data->queryScalar();
     }
 
+    /**
+     * @param boolean $count
+     * @param integer $page
+     * @param integer $limit
+     * @return CDbCommand
+     */
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
     {
         $selectValue = array();
@@ -322,7 +788,7 @@ class Participant extends LSActiveRecord
             // We are not superadmin so we need to limit to our own or shared with us
             $selectValue[] = '{{participant_shares}}.can_edit';
             $joinValue[]   = 'LEFT JOIN {{participant_shares}} ON p.participant_id={{participant_shares}}.participant_id';
-            $aConditions[] = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2';
+            $aConditions[] = 'p.owner_uid = :userid1 OR {{participant_shares}}.share_uid = :userid2 OR {{participant_shares}}.share_uid = 0';
         }
 
         if ($count) {
@@ -379,7 +845,10 @@ class Participant extends LSActiveRecord
         return $data;
     }
 
-    function getSurveyCount($participant_id)
+    /**
+     * @return int
+     */
+    public function getSurveyCount($participant_id)
     {
         $count = Yii::app()->db->createCommand()->select('count(*)')->from('{{survey_links}}')->where('participant_id = :participant_id')->bindParam(":participant_id", $participant_id, PDO::PARAM_INT)->queryScalar();
         return $count;
@@ -390,24 +859,32 @@ class Participant extends LSActiveRecord
      * references in the survey_links table (but not in matching tokens tables)
      * and then all the participants attributes.
      * @param $rows Participants ID separated by comma
-     * @return void
+     * @return int
      **/
-    function deleteParticipants($rows, $bFilter=true)
+    public function deleteParticipants($rows, $bFilter=true)
     {
         // Converting the comma separated IDs to an array and assign chunks of 100 entries to have a reasonable query size
         $aParticipantsIDChunks = array_chunk(explode(",", $rows),100);
+        $deletedParticipants = 0;
         foreach ($aParticipantsIDChunks as $aParticipantsIDs)
         {
-
             if ($bFilter)
             {
-                $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
+                $aParticipantsIDs = $this->filterParticipantIDs($aParticipantsIDs);
             }
             foreach($aParticipantsIDs as $aID){
                 $oParticipant=Participant::model()->findByPk($aID);
                 if ($oParticipant)
                 {
                     $oParticipant->delete();
+                    $deletedParticipants++;
+                }
+                $oParticipantShare = ParticipantShare::model()->findByAttributes(array(
+                    'participant_id' => $aID
+                ));
+                if ($oParticipantShare)
+                {
+                    $oParticipantShare->delete();
                 }
             }
 
@@ -418,31 +895,38 @@ class Participant extends LSActiveRecord
             // Delete participant attributes
             Yii::app()->db->createCommand()->delete(ParticipantAttribute::model()->tableName(), array('in', 'participant_id', $aParticipantsIDs));
         }
+        return $deletedParticipants;
     }
 
 
     /**
     * Filter an array of participants IDs according to permissions of the person being logged in
     *
-    * @param mixed $aParticipantsIDs
+    * @param mixed $aParticipantIDs
+    * @return int[]
     */
-    function filterParticipantIDs($aParticipantIDs)
+    public function filterParticipantIDs($aParticipantIDs)
     {
-            if (!Permission::model()->hasGlobalPermission('superadmin','read')) // If not super admin filter the participant IDs first to owner only
-            {
-                $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
-                $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);
-                $aParticipantIDs=Yii::app()->db->createCommand()->select('participant_id')->from(Participant::model()->tableName())->where($aCondition, $aParameter)->queryColumn();
-            }
-            return $aParticipantIDs;
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) // If not super admin filter the participant IDs first to owner only
+        {
+            $aCondition=array('and','owner_uid=:owner_uid',array('in', 'participant_id', $aParticipantIDs));
+            $aParameter=array(':owner_uid'=>Yii::app()->session['loginID']);
+            $aParticipantIDs = Yii::app()->db->createCommand()
+                ->select('participant_id')
+                ->from(Participant::model() ->tableName())
+                ->where($aCondition, $aParameter)
+                ->queryColumn();
+        }
+        return $aParticipantIDs;
     }
 
     /**
     * Deletes CPDB participants identified by their participant ID from token tables
     *
     * @param mixed $sParticipantsIDs
+    * @return void
     */
-    function deleteParticipantToken($sParticipantsIDs)
+    public function deleteParticipantToken($sParticipantsIDs)
     {
         /* This function deletes the participant from the participants table,
            the participant from any tokens table they're in (using the survey_links table to find them)
@@ -468,14 +952,15 @@ class Participant extends LSActiveRecord
     }
 
     /**
-    * This function deletes the participant from the participants table,
-    * the participant from any tokens table they're in (using the survey_links table to find them),
-    * all responses in surveys they've been linked to,
-    * and then all the participants attributes.
-    *
-    * @param mixed $sParticipantsIDs
-    */
-    function deleteParticipantTokenAnswer($sParticipantsIDs)
+     * This function deletes the participant from the participants table,
+     * the participant from any tokens table they're in (using the survey_links table to find them),
+     * all responses in surveys they've been linked to,
+     * and then all the participants attributes.
+     *
+     * @param mixed $sParticipantsIDs
+     * @return void
+     */
+    public function deleteParticipantTokenAnswer($sParticipantsIDs)
     {
         $aParticipantsIDs = explode(",", $sParticipantsIDs);
         $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
@@ -518,7 +1003,7 @@ class Participant extends LSActiveRecord
                                           ->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
                         }
                     }
-                    if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete'))
+                    if (Permission::model()->hasSurveyPermission($value['survey_id'], 'tokens', 'delete'))
                     {
 
                         Yii::app()->db->createCommand()
@@ -530,7 +1015,7 @@ class Participant extends LSActiveRecord
         }
     }
 
-    /*
+    /**
      * Function builds a select query for searches through participants using the $condition field passed
      * which is in the format "firstfield||sqloperator||value||booleanoperator||secondfield||sqloperator||value||booleanoperator||etc||etc||etc"
      * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
@@ -539,11 +1024,9 @@ class Participant extends LSActiveRecord
      * @param int $page Which page number to display
      * @param in $limit The limit/number of reords to return
      *
-     * @returns array $output
-     *
-     *
-     * */
-    function getParticipantsSearchMultiple($condition, $page, $limit)
+     * @return array $output
+     */
+    public function getParticipantsSearchMultiple($condition, $page, $limit)
     {
         //http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
         //First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
@@ -749,12 +1232,10 @@ class Participant extends LSActiveRecord
      * for example: "firstname||equal||Jason||and||lastname||equal||Cleeland" will produce SQL along the lines of "WHERE firstname = 'Jason' AND lastname=='Cleeland'"
      *
      * @param array $condition an array containing the search string exploded using || so that "firstname||equal||jason" is $condition(1=>'firstname', 2=>'equal', 3=>'jason')
-     * @param int $page Which page number to display
-     * @param in $limit The limit/number of reords to return
      *
-     * @returns CDbCriteria $output
+     * @return CDbCriteria $output
      */
-    function getParticipantsSearchMultipleCondition($condition)
+    public function getParticipantsSearchMultipleCondition($condition)
     {
         //http://localhost/limesurvey_yii/admin/participants/getParticipantsResults_json/search/email||contains||gov||and||firstname||contains||AL
         //First contains fieldname, second contains method, third contains value, fourth contains BOOLEAN SQL and, or
@@ -825,7 +1306,7 @@ class Participant extends LSActiveRecord
                 ->join('{{surveys_languagesettings}} sls', 'sl.survey_id = sls.surveyls_survey_id')
                 ->where('sls.surveyls_title '. $operator.' '.$param)
                 ->group('sl.participant_id');
-                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);
+                $command->addCondition('t.participant_id IN ('.$subQuery->getText().')', $booloperator);
             }
             elseif($sFieldname=="surveyid")
             {
@@ -834,7 +1315,7 @@ class Participant extends LSActiveRecord
                 ->from('{{survey_links}} sl')
                 ->where('sl.survey_id '. $operator.' '.$param)
                 ->group('sl.participant_id');
-                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);
+                $command->addCondition('t.participant_id IN ('.$subQuery->getText().')', $booloperator);
             }
             elseif($sFieldname=="surveys") //Search by quantity of linked surveys
             {
@@ -843,7 +1324,7 @@ class Participant extends LSActiveRecord
                 ->from('{{survey_links}} sl')
                 ->having('count(*) '. $operator.' '.$param)
                 ->group('sl.participant_id');
-                $command->addCondition('p.participant_id IN ('.$subQuery->getText().')', $booloperator);
+                $command->addCondition('t.participant_id IN ('.$subQuery->getText().')', $booloperator);
             }
             elseif($sFieldname=="owner_name")
             {
@@ -851,7 +1332,7 @@ class Participant extends LSActiveRecord
             }
             elseif($sFieldname=="participant_id")
             {
-                $command->addCondition('p.participant_id ' . $operator . ' '.$param, $booloperator);
+                $command->addCondition('t.participant_id ' . $operator . ' '.$param, $booloperator);
             }
             elseif (is_numeric($sFieldname)) //Searching for an attribute
             {
@@ -885,16 +1366,41 @@ class Participant extends LSActiveRecord
     }
 
     /**
-    * Returns true if participant_id has ownership or shared rights over this participant false if not
-    *
-    * @param mixed $participant_id
-    * @returns bool true/false
-    */
-    function is_owner($participant_id)
+     * Returns true if participant_id has ownership or shared rights over this participant false if not
+     *
+     * @param mixed $participant_id
+     * @return bool true/false
+     */
+    public function is_owner($participant_id)
     {
+        // Superadmins can edit all participants
+        if (Permission::model()->hasGlobalPermission('superadmin'))
+        {
+            return true;
+        }
+
         $userid = Yii::app()->session['loginID'];
-        $is_owner = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND owner_uid = :userid')->from('{{participants}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
-        $is_shared = Yii::app()->db->createCommand()->select('count(*)')->where('participant_id = :participant_id AND share_uid = :userid')->from('{{participant_shares}}')->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)->bindParam(":userid", $userid, PDO::PARAM_INT)->queryScalar();
+
+        $is_owner = Yii::app()
+            ->db
+            ->createCommand()
+            ->select('count(*)')
+            ->where('participant_id = :participant_id AND owner_uid = :userid')
+            ->from('{{participants}}')
+            ->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)
+            ->bindParam(":userid", $userid, PDO::PARAM_INT)
+            ->queryScalar();
+
+        $is_shared = Yii::app()
+            ->db
+            ->createCommand()
+            ->select('count(*)')
+            ->where('participant_id = :participant_id AND ( share_uid = :userid OR share_uid = 0)')
+            ->from('{{participant_shares}}')
+            ->bindParam(":participant_id", $participant_id, PDO::PARAM_STR)
+            ->bindParam(":userid", $userid, PDO::PARAM_INT)
+            ->queryScalar();
+
         if ($is_shared > 0 || $is_owner > 0)
         {
             return true;
@@ -905,208 +1411,300 @@ class Participant extends LSActiveRecord
         }
     }
 
-    /*
+    /**
      * This funciton is responsible for showing all the participant's shared by a particular user based on the user id
      */
-
-    function getParticipantShared($userid)
+    public function getParticipantShared($userid)
     {
         return Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = :userid')->bindParam(":userid", $userid, PDO::PARAM_INT)->queryAll();
     }
 
-    /*
+    /**
      * This funciton is responsible for showing all the participant's shared to the superadmin
      */
-
-    function getParticipantSharedAll()
+    public function getParticipantSharedAll()
     {
         return Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}', '{{participant_shares}}.participant_id = {{participants}}.participant_id')->queryAll();
     }
 
-    /*
-     * Copies central attributes/participants to an individual survey token table
+    /**
+     * Get column names from token attributes for a survey.
      *
-     * @param int $surveyid The survey id
-     * @param array $mapped An array containing a list of already existing/mapped attributes in the form of "token_field_name"=>"participant_attribute_id"
-     * @param array $newcreate An array containing new attributes to create in the tokens table
-     * @param string $participantid A comma separated string containing the participant ids of the participants we are adding
-     * @param bool $overwriteauto If true, overwrite automatically mapped data
-     * @param bool $overwriteman If true, overwrite manually mapped data
-     * @param bool $overwritest If true, overwrite standard fields (ie: names, email, participant_id, token)
-     * @param bool $createautomap If true, rename the fieldnames of automapped attributes so that in future they are automatically mapped
-     * */
-    function copyCPBDAttributesToTokens($surveyid, $mapped, $newcreate, $participantid, $overwriteauto=false, $overwriteman=false, $overwritest=false, $createautomap=true)
+     * A token attribute has id (auto increment), attribute field (always "attribte_" + number),
+     * and field description (e.g. "my attribute" or "gender")
+     *
+     * @param int $surveyId
+     * @return array E.g. [11 => 'attribute_36', ...]
+     */
+    private function getTokenAttributes($surveyId)
     {
-        Yii::app()->loadHelper('common');
-        $duplicate = 0;
-        $sucessfull = 0;
-        $iBlacklistSkipped = 0;
-        $participantid = explode(",", $participantid); //List of participant ids to add to tokens table
-        if ($participantid[0] == "") { $participantid = array_slice($participantid, 1); }
-        $number2add = sanitize_int(count($newcreate)); //Number of tokens being created
-        $tokenattributefieldnames=array(); //Will contain descriptions of existing token attribute fields
-        $tokenfieldnames=array(); //Will contain the actual field names of existing token attribute fields
-        $attributesadded = array(); //Will contain the actual field name of any new token attribute fields
-        $attributeidadded = array(); //Will contain the description of any new token attribute fields
-        $fieldcontents = array(); //Will contain serialised info for the surveys.attributedescriptions field
-        $surveyinfo=getSurveyInfo($surveyid);
-        $defaultsurveylang=$surveyinfo['surveyls_language'];
+        $tokenTableSchema = Yii::app()->db
+            ->schema
+            ->getTable("{{tokens_$surveyId}}");
 
-        $arr = Yii::app()->db
-                         ->createCommand()
-                         ->select('*')
-                         ->from("{{tokens_$surveyid}}")
-                         ->queryRow();
-        if (is_array($arr))
+        $result = array();
+
+        $i = 1;
+        foreach ($tokenTableSchema->columns as $columnName => $columnObject)
         {
-            $tokenfieldnames = array_keys($arr);
-            $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
+            if (strpos($columnName, 'attribute_') !== false)
+            {
+                $result[$i] = $columnName;
+            }
+            $i += 1;
         }
 
-        // If automapping is enabled then update the token field properties with the mapped CPDB field ID
+        return $result;
+    }
 
-        if($createautomap=="true") {
-            foreach($mapped as $key=>$iIDAttributeCPDB) {
-                if(is_numeric($iIDAttributeCPDB)) {
-                    /* Update the attributedescriptions info */
-                    $aTokenAttributes=Survey::model()->findByPk($surveyid)->tokenattributes;
-                    $aTokenAttributes[$key]['cpdbmap']=$iIDAttributeCPDB;
-                    Yii::app()->db
+    /**
+     * Update stuff?
+     * If automapping is enabled then update the token field properties with the mapped CPDB field ID
+     * TODO: What is this?
+     *
+     * @param int surveyId
+     * @param array $mappedAttributes
+     * @param integer $surveyId
+     * @return void
+     */
+    private function updateTokenFieldProperties($surveyId, array $mappedAttributes)
+    {
+        foreach($mappedAttributes as $key => $iIDAttributeCPDB)
+        {
+            if(is_numeric($iIDAttributeCPDB))
+            {
+                /* Update the attributedescriptions info */
+                $tokenAttributes = Survey::model()->findByPk($surveyId)->tokenattributes;
+                $tokenAttributes[$key]['cpdbmap'] = $iIDAttributeCPDB;
+                Yii::app()->db
                     ->createCommand()
-                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($aAttributes)), 'sid = '.$surveyid);                }
+                    ->update('{{surveys}}', array("attributedescriptions" => json_encode($tokenAttributes)), 'sid = ' . $surveyId);
             }
         }
-        foreach ($tokenattributefieldnames as $key => $value)
+    }
+
+    /**
+     * Check for column duplicates from CPDB to token attributes
+     * Throws error message if an attribute already exists; otherwise false.
+     *
+     * @param int $surveyId
+     * @param string[] $newAttributes Array of CPDB attributes ids like ['42', '32', ...]
+     * @return boolean
+     * @throws CPDBException with error message
+     */
+    private function checkColumnDuplicates($surveyId, array $newAttributes)
+    {
+        $tokenTableSchema = Yii::app()->db
+            ->schema
+            ->getTable("{{tokens_$surveyId}}");
+
+
+        foreach ($tokenTableSchema->columns as $columnName => $columnObject)
         {
-            $mapped[$key]=$value;
-        }
-        if (!empty($newcreate)) //Create new fields in the tokens table
-        {
-            foreach ($newcreate as $key => $value)
+            if (strpos($columnName, 'attribute_') !== false)
             {
-                $newfieldname='attribute_'.$value;
-                $fields[$newfieldname] = array('type' => 'string');
-                $attname = Yii::app()->db
-                                     ->createCommand()
-                                     ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
-                                     ->from('{{participant_attribute_names}}')
-                                     ->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
-                                     ->where('{{participant_attribute_names}}.attribute_id = :attrid ')
-                                     ->bindParam(":attrid", $value, PDO::PARAM_INT);
-                $attributename = $attname->queryAll();
-                foreach($attributename as $att) {
-                    $languages[$att['lang']]=$att['attribute_name'];
+                $id = substr($columnName, 10);
+                if (in_array($id, $newAttributes))
+                {
+                    $name = ParticipantAttributeName::model()->getAttributeName($id, $_SESSION['adminlang']);
+                    if (empty($name)) {
+                        $name = array('attribute_name' => '[Found no name]');
+                    }
+                    throw new CPDBException(sprintf("Token attribute already exists: %s", $name['attribute_name']));
                 }
-                //Check first for the default survey language
-                if(isset($languages[$defaultsurveylang])) {
-                    $newname=$languages[$defaultsurveylang];
-                } elseif (isset($language[Yii::app()->session['adminlang']])) {
-                    $newname=$languages[Yii::app()->session['adminlang']];
-                } else {
-                    $newname=$attributename[0]['attribute_name']; //Choose the first item in the list
-                }
-                $tokenattributefieldnames[] = $newfieldname;
-                $fieldcontents[$newfieldname]=array("description"=>$newname,
-                                                    "mandatory"=>"N",
-                                                    "show_register"=>"N");
-                array_push($attributeidadded, 'attribute_' . $value);
-                array_push($attributesadded, $value);
             }
-            //Update the attributedescriptions in the survey table to include the newly created attributes
-            $previousatt = Yii::app()->db
-                                     ->createCommand()
-                                     ->select('attributedescriptions')
-                                     ->where("sid = :sid")
-                                     ->from('{{surveys}}')
-                                     ->bindParam(":sid", $surveyid, PDO::PARAM_INT);
-            $aTokenAttributes = $previousatt->queryRow();
-            $aTokenAttributes = decodeTokenAttributes($aTokenAttributes['attributedescriptions']);
-            foreach($fieldcontents as $key=>$iIDAttributeCPDB) {
-                $aTokenAttributes[$key]=$iIDAttributeCPDB;
-            }
-            $aTokenAttributes = serialize($aTokenAttributes);
-            Yii::app()->db
-                      ->createCommand()
-                      ->update('{{surveys}}',
-                                array("attributedescriptions" => $aTokenAttributes), 'sid = '.intval($surveyid)); // load description in the surveys table
-
-            //Actually create the fields in the tokens table
-            Yii::app()->loadHelper('update/updatedb');
-            foreach ($fields as $key => $value)
-            {
-                addColumn("{{tokens_$surveyid}}", $key, $value['type']);
-            }
-            Yii::app()->db->schema->getTable("{{tokens_$surveyid}}", true); // Refresh schema cache just
-
         }
 
-        //Write each participant to the survey token table
-        foreach ($participantid as $key => $sParticipantUID)
-        {
-            $writearray = array();
-            $participantdata = Yii::app()->db->createCommand()->select('firstname,lastname,email,language,blacklisted')->where('participant_id = :pid')->from('{{participants}}')->bindParam(":pid", $sParticipantUID, PDO::PARAM_INT);
-            $tobeinserted = $participantdata->queryRow();
+        return false;
 
-            if (Yii::app()->getConfig('blockaddingtosurveys')=='Y' && $tobeinserted=='Y')
+    }
+
+    /**
+     * Create new "fields"? in which table?
+     *
+     * @param int $surveyId
+     * @param array $newAttributes
+     * @return array [addedAttributes, addedAttributeIds]
+     */
+    private function createColumnsInTokenTable($surveyId, array $newAttributes)
+    {
+        // Get default language
+        $surveyInfo = getSurveyInfo($surveyId);
+        $defaultsurveylang = $surveyInfo['surveyls_language'];
+
+        //Will contain serialised info for the surveys.attributedescriptions field
+        $fieldcontents = array();
+
+        // ??
+        $fields = array();
+
+        //Will contain the actual field name of any new token attribute fields
+        $addedAttributes = array();
+
+        //Will contain the description of any new token attribute fields
+        $addedAttributeIds = array();
+
+        foreach ($newAttributes as $value)
+        {
+            $newfieldname = 'attribute_'.$value;
+            $fields[$newfieldname] = array('type' => 'string');  // TODO: Always string??
+            $attname = Yii::app()->db
+                ->createCommand()
+                ->select('{{participant_attribute_names_lang}}.attribute_name, {{participant_attribute_names_lang}}.lang')
+                ->from('{{participant_attribute_names}}')
+                ->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')
+                ->where('{{participant_attribute_names}}.attribute_id = :attrid ')
+                ->bindParam(":attrid", $value, PDO::PARAM_INT);
+
+            $attributename = $attname->queryAll();
+            foreach($attributename as $att) {
+                $languages[$att['lang']]=$att['attribute_name'];
+            }
+
+            //Check first for the default survey language
+            if(isset($languages[$defaultsurveylang]))
             {
-                $iBlacklistSkipped++;
+                $newname=$languages[$defaultsurveylang];
+            }
+            elseif (isset($language[Yii::app()->session['adminlang']]))
+            {
+                $newname=$languages[Yii::app()->session['adminlang']];
+            }
+            else
+            {
+                $newname=$attributename[0]['attribute_name']; //Choose the first item in the list
+            }
+
+            $tokenAttributeFieldNames[] = $newfieldname;
+            $fieldcontents[$newfieldname] = array(
+                "description"=>$newname,
+                "mandatory"=>"N",
+                "show_register"=>"N"
+            );
+            array_push($addedAttributeIds, 'attribute_' . $value);
+            array_push($addedAttributes, $value);
+        }
+
+        //Update the attributedescriptions in the survey table to include the newly created attributes
+        $previousatt = Yii::app()->db
+                                 ->createCommand()
+                                 ->select('attributedescriptions')
+                                 ->where("sid = :sid")
+                                 ->from('{{surveys}}')
+                                 ->bindParam(":sid", $surveyId, PDO::PARAM_INT);
+        $aTokenAttributes = $previousatt->queryRow();
+        $aTokenAttributes = decodeTokenAttributes($aTokenAttributes['attributedescriptions']);
+
+        foreach($fieldcontents as $key=>$iIDAttributeCPDB) {
+            $aTokenAttributes[$key]=$iIDAttributeCPDB;
+        }
+
+        $aTokenAttributes = serialize($aTokenAttributes);
+
+        Yii::app()->db
+            ->createCommand()
+            ->update('{{surveys}}', array( "attributedescriptions" => $aTokenAttributes), 'sid = '.intval($surveyId)); // load description in the surveys table
+
+        //Actually create the fields in the tokens table
+        Yii::app()->loadHelper('update/updatedb');
+        foreach ($fields as $key => $value)
+        {
+            addColumn("{{tokens_$surveyId}}", $key, $value['type']);
+        }
+        Yii::app()->db->schema->getTable("{{tokens_$surveyId}}", true); // Refresh schema cache just
+
+        return array($addedAttributes, $addedAttributeIds);
+    }
+
+    /**
+     * Write participtants as tokens or something
+     *
+     * @param int $surveyId
+     * @param array $participantIds
+     * @param array $mappedAttributes
+     * @param array $newAttributes
+     * @param array $addedAttributes ?? Result from createColumnsInTokenTable
+     * @param array $addedAttributeIds ?? Result from createColumnsInTokenTable
+     * @param array $options As in calling function
+     * @return integer[] (success, duplicate, blacklistSkipped)
+     */
+    private function writeParticipantsToTokenTable(
+        $surveyId,
+        array $participantIds,
+        array $mappedAttributes,
+        array $newAttributes,
+        array $addedAttributes,
+        array $addedAttributeIds,
+        array $options)
+    {
+        $duplicate = 0;
+        $successful = 0;
+        $blacklistSkipped = 0;
+
+        foreach ($participantIds as $participantId)
+        {
+            $participant = Yii::app()->db
+                ->createCommand()
+                ->select('firstname,lastname,email,language,blacklisted')
+                ->where('participant_id = :pid')
+                ->from('{{participants}}')
+                ->bindParam(":pid", $participantId, PDO::PARAM_INT)
+                ->queryRow();
+
+            if (Yii::app()->getConfig('blockaddingtosurveys') == 'Y'
+                && $participant['blacklisted'] == 'Y')
+            {
+                $blacklistSkipped++;
                 continue;
             }
 
-            /* Search for matching participant name/email in the survey token table */
-            $sQuery = Yii::app()->db->createCommand()->select('*')->from('{{tokens_' . $surveyid . '}}')
-            ->where('firstname = :firstname AND lastname = :lastname AND email = :email AND participant_id = :participant_id')
-            ->bindParam(":firstname", $tobeinserted['firstname'], PDO::PARAM_STR)
-            ->bindParam(":lastname", $tobeinserted['lastname'], PDO::PARAM_STR)
-            ->bindParam(":email", $tobeinserted['email'], PDO::PARAM_STR)
-            ->bindParam(":participant_id", $sParticipantUID, PDO::PARAM_STR)
-            ->queryAll();
-            if (count($sQuery) > 0)
+            // Search for matching participant name/email in the survey token table
+            $matchingParticipant = Yii::app()->db->createCommand()->select('tid')->from('{{tokens_' . $surveyId . '}}')
+                ->where('(firstname = :firstname AND lastname = :lastname AND email = :email) OR participant_id = :participant_id')
+                ->bindParam(":firstname", $participant['firstname'], PDO::PARAM_STR)
+                ->bindParam(":lastname", $participant['lastname'], PDO::PARAM_STR)
+                ->bindParam(":email", $participant['email'], PDO::PARAM_STR)
+                ->bindParam(":participant_id", $participantId, PDO::PARAM_STR)
+                ->queryAll();
+
+            if (count($matchingParticipant) > 0)
             {
                 //Participant already exists in token table - don't copy
                 $duplicate++;
+
                 // Here is where we can put code for overwriting the attribute data if so required
-                if($overwriteauto=="true") {
+                if ($options['overwriteauto'] == "true") {
                     //If there are new attributes created, add those values to the token entry for this participant
-                    if (!empty($newcreate))
+                    if (!empty($newAttributes))
                     {
-                        $numberofattributes = count($attributesadded);
+                        $numberofattributes = count($addedAttributes);
                         for ($a = 0; $a < $numberofattributes; $a++)
                         {
-                            Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID,$attributesadded[$a],$attributeidadded[$a]);
+                            Participant::model()->updateTokenAttributeValue($surveyId, $participantId,$addedAttributes[$a],$addedAttributeIds[$a]);
                         }
                     }
                     //If there are automapped attributes, add those values to the token entry for this participant
-                    if (!empty($mapped))
+                    foreach ($mappedAttributes as $key => $value)
                     {
-                        foreach ($mapped as $key => $value)
-                        {
-                            if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
-                                Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
-                            }
+                        if ($key[10] == 'c') { //We know it's automapped because the 11th letter is 'c'
+                            Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
                         }
                     }
                 }
-                if($overwriteman=="true") {
+                if ($options['overwriteman'] == "true") {
                     //If there are any manually mapped attributes, add those values to the token entry for this participant
-                    if (!empty($mapped))
+                    foreach ($mappedAttributes as $key => $value)
                     {
-                        foreach ($mapped as $key => $value)
-                        {
-                            if ($key[10] != 'c' && $key[9]=='_') { //It's not an auto field because it's 11th character isn't 'c'
-                                Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
-                            }
+                        if ($key[10] != 'c' && $key[9]=='_') { //It's not an auto field because it's 11th character isn't 'c'
+                            Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
                         }
                     }
                 }
-                if($overwritest=="true") {
-                    if(!empty($mapped))
+                if ($options['overwritest'] == "true") {
+                    foreach($mappedAttributes as $key=>$value)
                     {
-                        foreach($mapped as $key=>$value)
-                        {
-                            if((strlen($key) > 8 && $key[10] != 'c' && $key[9] !='_') || strlen($key) < 9) {
-                                Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
-                            }
+                        if((strlen($key) > 8 && $key[10] != 'c' && $key[9] !='_') || strlen($key) < 9) {
+                            Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
                         }
                     }
                 }
@@ -1114,48 +1712,127 @@ class Participant extends LSActiveRecord
             else
             {
                 //Create a new token entry for this participant
-                $writearray = array('participant_id' => $sParticipantUID,
-                                    'firstname' => $tobeinserted['firstname'],
-                                    'lastname' => $tobeinserted['lastname'],
-                                    'email' => $tobeinserted['email'],
-                                    'emailstatus' => 'OK',
-                                    'language' => $tobeinserted['language']);
-                Yii::app()->db
-                          ->createCommand()
-                          ->insert('{{tokens_' . $surveyid . '}}', $writearray);
-                $insertedtokenid = getLastInsertID('{{tokens_' . $surveyid . '}}');
+                $writearray = array(
+                    'participant_id' => $participantId,
+                    'firstname' => $participant['firstname'],
+                    'lastname' => $participant['lastname'],
+                    'email' => $participant['email'],
+                    'emailstatus' => 'OK',
+                    'language' => $participant['language']
+                );
 
-                $time = time();
+                Yii::app()->db
+                    ->createCommand()
+                    ->insert('{{tokens_' . $surveyId . '}}', $writearray);
+
+                $insertedtokenid = getLastInsertID('{{tokens_' . $surveyId . '}}');
 
                 //Create a survey link for the new token entry
                 $data = array(
-                    'participant_id' => $sParticipantUID,
+                    'participant_id' => $participantId,
                     'token_id' => $insertedtokenid,
-                    'survey_id' => $surveyid,
-                    'date_created' => date('Y-m-d H:i:s', $time));
+                    'survey_id' => $surveyId,
+                    'date_created' => date('Y-m-d H:i:s', time()));
                 Yii::app()->db->createCommand()->insert('{{survey_links}}', $data);
 
                 //If there are new attributes created, add those values to the token entry for this participant
-                if (!empty($newcreate))
+                if (!empty($newAttributes))
                 {
-                    $numberofattributes = count($attributesadded);
+                    $numberofattributes = count($addedAttributes);
                     for ($a = 0; $a < $numberofattributes; $a++)
                     {
-                        Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID,$attributesadded[$a],$attributeidadded[$a]);
+                        try
+                        {
+                            Participant::model()->updateTokenAttributeValue($surveyId, $participantId,$addedAttributes[$a],$addedAttributeIds[$a]);
+                        }
+                        catch(Exception $e)
+                        {
+                            throw new Exception(gT("Could not update token attribute value: " . $e->getMessage()));
+                        }
                     }
                 }
                 //If there are any automatically mapped attributes, add those values to the token entry for this participant
-                if (!empty($mapped))
+                foreach ($mappedAttributes as $key => $value)
                 {
-                    foreach ($mapped as $key => $value)
+                    try
                     {
-                        Participant::model()->updateTokenAttributeValue($surveyid, $sParticipantUID, $value, $key);
+                        // $value can be 'attribute_<number>' here
+                        // TODO: Weird...
+                        if (strpos($value, 'attribute_') !== false)
+                        {
+                            $value = substr($value, 10);
+                        }
+
+                        Participant::model()->updateTokenAttributeValue($surveyId, $participantId, $value, $key);
+                    }
+                    catch (Exception $e)
+                    {
+                        throw new Exception(gT("Could not update token attribute value: " . $e->getMessage()));
                     }
                 }
-                $sucessfull++;
+                $successful++;
             }
         }
-        $returndata = array('success' => $sucessfull, 'duplicate' => $duplicate, 'blacklistskipped'=>$iBlacklistSkipped, 'overwriteauto'=>$overwriteauto, 'overwriteman'=>$overwriteman);
+
+        return array($successful, $duplicate, $blacklistSkipped);
+    }
+
+    /**
+     * Copies central attributes/participants to an individual survey token table
+     *
+     * @param int $surveyId The survey id
+     * @param string $participantIds Array containing the participant ids of the participants we are adding
+     * @param array $mappedAttributes An array containing a list of /mapped attributes in the form of "token_field_name" => "participant_attribute_id"
+     * @param array $newAttributes An array containing new attributes to create in the tokens table
+     * @param array $options Array with following options:
+     *                overwriteauto - If true, overwrite automatically mapped data
+     *                overwriteman - If true, overwrite manually mapped data
+     *                overwritest - If true, overwrite standard fields (ie: names, email, participant_id, token)
+     *                createautomap - If true, rename the fieldnames of automapped attributes so that in future they are automatically mapped
+     */
+    public function copyCPDBAttributesToTokens($surveyId, array $participantIds, array $mappedAttributes, array $newAttributes, array $options)
+    {
+        Yii::app()->loadHelper('common');
+
+        // Existing token attribute columns, from table tokens_{surveyId}
+        $tokenAttributeColumns = $this->getTokenAttributes($surveyId);
+
+        // If automapping is enabled then update the token field properties with the mapped CPDB field ID
+        if($options['createautomap']) {
+            $this->updateTokenFieldProperties($surveyId, $mappedAttributes);
+        }
+
+        // Add existing attribute columns to mappedAttributes. TODO: Why?
+        // TODO: What is id here? Could it overwrite something?
+        //foreach ($tokenAttributeColumns as $id => $columnName)
+        //{
+            //$mappedAttributes[$id] = $columnName;  // $name is 'attribute_1', which will clash with postgres
+        //}
+
+        // Check for duplicates. Will throw CPDBException if duplicate is found.
+        $this->checkColumnDuplicates($surveyId, $newAttributes);
+
+        // TODO: Why use two variables for this?
+        list($addedAttributes, $addedAttributeIds) = $this->createColumnsInTokenTable($surveyId, $newAttributes);
+
+        //Write each participant to the survey token table
+        list($successful, $duplicate, $blacklistSkipped) = $this->writeParticipantsToTokenTable(
+            $surveyId,
+            $participantIds,
+            $mappedAttributes,
+            $newAttributes,
+            $addedAttributes,
+            $addedAttributeIds,
+            $options
+        );
+
+        $returndata = array(
+            'success' => $successful,
+            'duplicate' => $duplicate,
+            'blacklistskipped' => $blacklistSkipped,
+            'overwriteauto' => $options['overwriteauto'],
+            'overwriteman' => $options['overwriteman']
+        );
         return $returndata;
     }
 
@@ -1163,29 +1840,36 @@ class Participant extends LSActiveRecord
      * Updates a field in the token table with a value from the participant attributes table
      *
      * @param int $surveyId Survey ID number
-     * @param int $participantId unique key for the participant
+     * @param string $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
-     * @param int $tokenFieldName fieldname in the token table
+     * @param int $tokenFieldname fieldname in the token table
      *
      * @return bool true/false
      */
-    function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
+    public function updateTokenAttributeValue($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
+
+        if (intval($participantAttributeId) === 0)  // OBS: intval returns 0 at fail, but also at intval("0"). lolphp.
+        {
+            throw new InvalidArgumentException(sprintf('$participantAttributeId has to be an integer. Given: %s (%s)', gettype($participantAttributeId), $participantAttributeId));
+        }
+
         //Get the value from the participant_attribute field
         $val = Yii::app()->db
-                         ->createCommand()
-                         ->select('value')
-                         ->where('participant_id = :participant_id AND attribute_id = :attrid')
-                         ->from('{{participant_attribute}}')
-                         ->bindParam("participant_id", $participantId, PDO::PARAM_STR)
-                         ->bindParam("attrid", $participantAttributeId, PDO::PARAM_INT);
+            ->createCommand()
+            ->select('value')
+            ->where('participant_id = :participant_id AND attribute_id = :attrid')
+            ->from('{{participant_attribute}}')
+            ->bindParam("participant_id", $participantId, PDO::PARAM_STR)
+            ->bindParam("attrid", $participantAttributeId, PDO::PARAM_INT);
         $value = $val->queryRow();
+
         //Update the token entry with those values
         if (isset($value['value']))
         {
             $data = array($tokenFieldname => $value['value']);
             Yii::app()->db
-                      ->createCommand()
-                      ->update("{{tokens_$surveyId}}", $data, "participant_id = '$participantId'");
+                ->createCommand()
+                ->update("{{tokens_$surveyId}}", $data, "participant_id = '$participantId'");
         }
         return true;
     }
@@ -1196,11 +1880,11 @@ class Participant extends LSActiveRecord
      * @param int $surveyId Survey ID number
      * @param int $participantId unique key for the participant
      * @param int $participantAttributeId the unique key for the participant_attribute table
-     * @param int $tokenFieldName fieldname in the token table
+     * @param int $tokenFieldname fieldname in the token table
      *
-     * @return bool true/false
+     * @return boolean|null true/false
      */
-     function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
+     public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
         $val = Yii::app()->db
                          ->createCommand()
                          ->select($tokenFieldname)
@@ -1225,18 +1909,18 @@ class Participant extends LSActiveRecord
                             ->bindParam(":attribute_id", $participantAttributeId, PDO::PARAM_INT)
                             ->queryRow();
             if($test['count'] > 0) {
-                $sql=Yii::app()->db
-                               ->createCommand()
-                               ->update('{{participant_attribute}}', array("value"=>$value2[$tokenFieldname]), "participant_id='$participantId' AND attribute_id=$participantAttributeId");
+                Yii::app()->db
+                    ->createCommand()
+                    ->update('{{participant_attribute}}', array("value"=>$value2[$tokenFieldname]), "participant_id='$participantId' AND attribute_id=$participantAttributeId");
             } else {
-                $sql=Yii::app()->db
-                               ->createCommand()
-                               ->insert('{{participant_attribute}}', $data);
+                Yii::app()->db
+                    ->createCommand()
+                    ->insert('{{participant_attribute}}', $data);
             }
         }
-    }
+     }
 
-    /*
+    /**
      * Copies token participants to the central participants table, and also copies
      * token attribute values where applicable. It checks for matching entries using
      * firstname/lastname/email combination.
@@ -1250,18 +1934,14 @@ class Participant extends LSActiveRecord
      * @param bool $overwriteauto If true, overwrites existing automatically mapped attribute values
      * @param bool $overwriteman If true, overwrites manually mapped attribute values (where token fieldname=attribute_n)
      * @param bool $createautomap If true, updates tokendescription field with new mapping
-     * @param array $tokenid is assumed, saved by an earlier script as a session string called "participantid". It holds a list of token_ids
-     *                       for the token participants we are copying to the central db
-     *
      * @return array An array contaning list of successful and list of failed ids
      */
-
-    function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
+    public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
     {
-        $tokenid = Yii::app()->session['participantid']; //List of token_id's to add to participants table
+        $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participants table
+        $tokenid = json_decode($tokenid_string);
         $duplicate = 0;
         $sucessfull = 0;
-        $writearray = array();
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
         $pid = "";
 
@@ -1276,7 +1956,7 @@ class Participant extends LSActiveRecord
         {
             $tokenattributefieldnames = array();
         }
-        /* Create new CPDB attributes */
+        /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated))
         {
             foreach ($aAttributesToBeCreated as $key => $value) //creating new central attribute
@@ -1284,7 +1964,7 @@ class Participant extends LSActiveRecord
                 /* $key is the fieldname from the token table (ie "attribute_1")
                  * $value is the 'friendly name' for the attribute (ie "Gender")
                  */
-                $insertnames = array('attribute_type' => 'TB', 'visible' => 'Y');
+                $insertnames = array('attribute_type' => 'TB', 'visible' => 'Y', 'defaultname' => $value);
                 Yii::app()->db
                           ->createCommand()
                           ->insert('{{participant_attribute_names}}', $insertnames);
@@ -1421,13 +2101,19 @@ class Participant extends LSActiveRecord
         return $returndata;
     }
 
-    /*
+    /**
      * The purpose of this function is to check for duplicate in participants
+     * @param array $fields
+     * @param string $output
+     * @return mixed
      */
-
-    function checkforDuplicate($fields, $output="bool")
+    public function checkforDuplicate($fields, $output="bool")
     {
-        $query = Yii::app()->db->createCommand()->select('participant_id')->where($fields)->from('{{participants}}')->queryAll();
+        $query = Yii::app()->db->createCommand()
+            ->select('participant_id')
+            ->where($fields)
+            ->from('{{participants}}')
+            ->queryAll();
         if (count($query) > 0)
         {
             if($output=="bool") {return true;}
@@ -1439,7 +2125,11 @@ class Participant extends LSActiveRecord
         }
     }
 
-    function insertParticipantCSV($data)
+    /**
+     * @param array $data
+     * @return void
+     */
+    public function insertParticipantCSV($data)
     {
         $insertData = array(
             'participant_id' => $data['participant_id'],
@@ -1451,5 +2141,71 @@ class Participant extends LSActiveRecord
             'created_by' => $data['owner_uid'],
             'owner_uid' => $data['owner_uid']);
         Yii::app()->db->createCommand()->insert('{{participants}}', $insertData);
+    }
+
+    /**
+     * Returns true if logged in user has edit rights to this participant
+     * @return boolean
+     */
+    public function userHasPermissionToEdit()
+    {
+        $userId = Yii::app()->user->id;
+
+        $shared = ParticipantShare::model()->findByAttributes(array(
+            'participant_id' => $this->participant_id
+        ));
+
+        $owner = $this->owner_uid == $userId;
+
+        if (Permission::model()->hasGlobalPermission('superadmin')) {
+            // Superadmins can do anything
+            return true;
+        }
+        else if ($shared && $shared->share_uid == -1 && $shared->can_edit) {
+            // -1 = shared with everyone
+            return true;
+        }
+        else if ($shared && $shared->share_uid == $userId && $shared->can_edit) {
+            // Shared with this particular user
+            return true;
+        }
+        else if ($owner) {
+            // User owns this participant
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns true if user is either owner of this participant or superadmin
+     * Used to decide is user can change owner of participant
+     * @return boolean
+     */
+    public function isOwnerOrSuperAdmin()
+    {
+        $userId = Yii::app()->user->id;
+        $owner = $this->owner_uid == $userId;
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin');
+
+        return $owner || $isSuperAdmin;
+    }
+
+    /**
+     * 'created' field formatted; empty string if no timestamp in database
+     * @return string
+     */
+    public function getCreatedFormatted()
+    {
+        if ($this->created) {
+            $timestamp = strtotime($this->created);
+            $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
+            $date = date($dateformatdetails['phpdate'], $timestamp);
+            return $date;
+        }
+        else {
+            return '';
+        }
     }
 }

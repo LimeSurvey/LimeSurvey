@@ -43,9 +43,6 @@ class WhSelect2 extends CInputWidget
      */
     public function init()
     {
-        if (empty($this->data) && $this->asDropDownList === true) {
-            throw new CException(Yii::t('zii', '"data" attribute cannot be blank'));
-        }
 
         $this->attachBehavior('ywplugin', array('class' => 'yiiwheels.behaviors.WhPlugin'));
     }
@@ -95,19 +92,20 @@ class WhSelect2 extends CInputWidget
         $cs = Yii::app()->getClientScript();
 
         $cs->registerCssFile($assetsUrl . '/css/select2.css');
+        $cs->registerCssFile($assetsUrl . '/css/select2-bootstrap.css');
         $cs->registerScriptFile($assetsUrl . '/js/select2.js');
 
 
         if ($this->language) {
             $cs->registerScriptFile(
-                $assetsUrl . '/js/locale/select2_locale_' . $this->language . '.js',
+                $assetsUrl . '/js/i18n/' . $this->language . '.js',
                 CClientScript::POS_END
             );
         }
 
         /* initialize plugin */
         $selector = '#' . TbArray::getValue('id', $this->htmlOptions, $this->getId());
-
+        $this->pluginOptions['theme']='bootstrap';
         $this->getApi()->registerPlugin('select2', $selector, $this->pluginOptions, CClientScript::POS_READY);
         $this->getApi()->registerEvents($selector, $this->events, CClientScript::POS_READY);
     }

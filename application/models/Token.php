@@ -69,22 +69,22 @@
             return $result;
         }
 
-        public static function createTable($surveyId, array $extraFields = array())
+        public static function createTable($surveyId, array $extraFields  = array())
         {
             $surveyId=intval($surveyId);
             // Specify case sensitive collations for the token
             $sCollation='';
-            if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
-                $sCollation="COLLATE 'utf8_bin'";
+            if  (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqli'){
+                $sCollation="COLLATE 'utf8mb4_bin'";
             }
-            if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
+            if  (Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib' || Yii::app()->db->driverName=='mssql'){
                 $sCollation="COLLATE SQL_Latin1_General_CP1_CS_AS";
             }
             $fields = array(
                 'tid' => 'pk',
                 'participant_id' => 'string(50)',
-                'firstname' => 'string(40)',
-                'lastname' => 'string(40)',
+                'firstname' => 'string(150)',
+                'lastname' => 'string(150)',
                 'email' => 'text',
                 'emailstatus' => 'text',
                 'token' => "string(35) {$sCollation}",
@@ -108,7 +108,7 @@
             foreach($tokenattributefieldnames as $attrname=>$attrdetails)
             {
                 if (!isset($fields[$attrname])) {
-                    $fields[$attrname] = 'string(255)';
+                    $fields[$attrname] = 'text';
                 }
             }
 
@@ -137,12 +137,12 @@
          */
         public function generateToken()
         {
-            $length = $this->survey->tokenlength;
-            $this->token = \Yii::app()->securityManager->generateRandomString($length);
+            $iTokenLength = $this->survey->tokenlength;
+            $this->token = $this::generateRandomToken($iTokenLength);
             $counter = 0;
-            while (!$this->validate('token'))
+            while (!$this->validate(array('token')))
             {
-                $this->token = \Yii::app()->securityManager->generateRandomString($length);
+                $this->token = $this::generateRandomToken($iTokenLength);
                 $counter++;
                 // This is extremely unlikely.
                 if ($counter > 10)
@@ -151,6 +151,16 @@
                 }
             }
         }
+
+        /**
+        * Creates a random token string without special characters
+        *
+        * @param mixed $iTokenLength
+        */
+        public static function generateRandomToken($iTokenLength){
+            return str_replace(array('~','_'),array('a','z'),Yii::app()->securityManager->generateRandomString($iTokenLength));
+        }
+
         /**
          * Sanitize token show to the user (replace sanitize_helper sanitize_token)
          * @param string token to sanitize
@@ -170,7 +180,7 @@
                 throw new \Exception("This function should only be called like: Token::model(12345)->generateTokens");
             }
             $surveyId = $this->dynamicId;
-            $tokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
+            $iTokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
 
             $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
             //Exit early if there are not empty tokens
@@ -183,13 +193,11 @@
             $criteria = $this->getDbCriteria();
             $criteria->select = 'token';
             $ntresult = $this->findAllAsArray($criteria);   //Use AsArray to skip active record creation
-
             // select all existing tokens
             foreach ($ntresult as $tkrow)
             {
                 $existingtokens[$tkrow['token']] = true;
             }
-
             $newtokencount = 0;
             $invalidtokencount=0;
             foreach ($tkresult as $tkrow)
@@ -197,7 +205,7 @@
                 $bIsValidToken = false;
                 while ($bIsValidToken == false && $invalidtokencount<50)
                 {
-                    $newtoken = Yii::app()->securityManager->generateRandomString($tokenLength);
+                    $newtoken =$this::generateRandomToken($iTokenLength);
                     if (!isset($existingtokens[$newtoken]))
                     {
                         $existingtokens[$newtoken] = true;
@@ -252,6 +260,15 @@
             return $result;
         }
 
+        public function save($runValidation = true, $attributes = null)
+        {
+            $beforeTokenSave = new PluginEvent('beforeTokenSave');
+            $beforeTokenSave->set('model',$this);
+            $beforeTokenSave->set('iSurveyID',$this->dynamicId);
+            App()->getPluginManager()->dispatchEvent($beforeTokenSave);
+            return parent::save($runValidation, $attributes);
+        }
+
         public function rules()
         {
             $aRules= array(
@@ -269,7 +286,7 @@
             );
             foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info)
             {
-                 $aRules[]=array($key,'LSYii_Validators');
+                 $aRules[]=array($key,'LSYii_Validators','except'=>'FinalSubmit');
             }
             return $aRules;
         }

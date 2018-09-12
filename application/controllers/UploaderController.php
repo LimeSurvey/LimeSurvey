@@ -14,7 +14,7 @@
 
 class UploaderController extends SurveyController {
     function run($actionID)
-    {   
+    {
         $surveyid=Yii::app()->session['LEMsid'];
         $oSurvey=Survey::model()->findByPk($surveyid);
         if(!$oSurvey)
@@ -182,7 +182,7 @@ class UploaderController extends SurveyController {
                                 "name"          => rawurlencode(basename($filename)),
                                 "ext"           => $ext,
                                 "filename"      => $randfilename,
-                                "msg"           => gT("The file has been successfuly uploaded.")
+                                "msg"           => gT("The file has been successfully uploaded.")
                             );
                     // TODO : unlink this file since this is just a preview. But we can do it only if it's not needed, and still needed to have the file content
                     // Maybe use a javascript 'onunload' on preview question/group
@@ -193,7 +193,7 @@ class UploaderController extends SurveyController {
                 }
             }
             else
-            {    // if everything went fine and the file was uploaded successfuly,
+            {    // if everything went fine and the file was uploaded successfully,
                  // send the file related info back to the client
                  $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
                 if ($size > $maxfilesize)
@@ -224,7 +224,7 @@ class UploaderController extends SurveyController {
                         "name"    => rawurlencode(basename($filename)),
                         "ext"     => $ext,
                         "filename"      => $randfilename,
-                        "msg"     => gT("The file has been successfuly uploaded.")
+                        "msg"     => gT("The file has been successfully uploaded.")
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
@@ -313,9 +313,9 @@ class UploaderController extends SurveyController {
         App()->clientScript->registerScript('sLangScriptVar',$sLangScriptVar,CClientScript::POS_HEAD);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js');
-        App()->getClientScript()->registerScriptFile("{$sTemplateUrl}template.js");
         App()->clientScript->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
+        App()->bootstrap->register();
 
         if (file_exists($sTemplateDir .DIRECTORY_SEPARATOR.'jquery-ui-custom.css'))
         {
@@ -329,7 +329,17 @@ class UploaderController extends SurveyController {
         {
             Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."jquery-ui.css");
         }
-        App()->clientScript->registerCssFile("{$sTemplateUrl}template.css");
+
+        $oTemplate = Template::model()->getInstance('', $aSurveyInfo['sid']);
+        foreach ($oTemplate->packages as $package)
+        {
+            App()->getClientScript()->registerPackage((string) $package);
+        }
+        foreach ($oTemplate->config->files->css->filename as $cssFile)
+        {
+            App()->clientScript->registerCssFile("{$sTemplateUrl}" . (string) $cssFile);
+        }
+
         $header = getHeader($meta);
 
         echo $header;
@@ -341,7 +351,7 @@ class UploaderController extends SurveyController {
         $qidattributes=getQuestionAttributeValues($qid);
         $qidattributes['max_filesize']=floor(min($qidattributes['max_filesize']*1024,getMaximumFileUploadSize())/1024);
         $body = '</head><body class="uploader">
-                <div id="notice"></div>
+                <div id="notice" class="text-center"></div>
                 <input type="hidden" id="ia"                value="'.$fn.'" />
                 <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
                 <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$maxfiles.'" />
@@ -355,7 +365,7 @@ class UploaderController extends SurveyController {
 
                 <!-- The upload button -->
                 <div class="upload-div">
-                    <button id="button1" class="button upload-button" type="button" >'.gT("Select file").'</button>
+                    <button id="button1" class="btn btn-default" type="button" >'.gT("Select file").'</button>
                 </div>
 
                 <p class="uploadmsg">'.sprintf(gT("You can upload %s under %s KB each."),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>

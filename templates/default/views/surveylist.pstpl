@@ -1,6 +1,17 @@
-<div class="row">
+
+{CHECKJAVASCRIPT}
+
+<div class="row" id="surveys-list-container">
+    <div class="jumbotron" id="surveys-list-jumbotron">
+        {SITELOGO}
+        <p class="">
+            {SITENAME}
+        </p>
+    </div>
+
+
     <div class="col-xs-12 site-name">
-        <h1>{SITENAME}</h1>
+
     </div>
     <div class="col-xs-12 survey-list-heading">
         {SURVEYLISTHEADING}
@@ -11,10 +22,21 @@
     <div class="col-xs-12 survey-contact">
         {SURVEYCONTACT}
     </div>
-    <div class="col-xs-12 language-changer">
 
-        <p>{LANGUAGECHANGER}</p>
-        <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}poweredby.png" border="0" title="LimeSurvey Survey Software" /></a><br />
-        <a href="http://www.limesurvey.org" target="_blank">The Online Survey Tool</a> - Free & Open Source<br />
+</div>
+
+<div id="surveyListFooter" class="well">
+    <div class="container">
+        <p>
+            <a href="http://www.limesurvey.org" target="_blank">
+                <img src="{TEMPLATEURL}poweredby.png" alt="LimeSurvey Survey Software" />
+                </a>
+                <br />
+                <a href="http://www.limesurvey.org" target="_blank">
+                The Online Survey Tool
+                </a>
+                - Free & Open Source
+                <br />
+        </p>
     </div>
 </div>

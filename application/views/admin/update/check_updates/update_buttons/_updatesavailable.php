@@ -6,32 +6,40 @@
  * @var obj $clang : the translate object, now moved to global function TODO : remove it
  */
 ?>
+<?php
+    // First we check if the server provided a specific HTML message
+    if(isset($updateInfos->html))
+    {
+        if($updateInfos->html != "")
+            echo $updateInfos->html;
+        // And we unset this html message for the loop on update versions don't crush on it
+        unset($updateInfos->html);
+    }
+?>
 
-<!-- Updates available -->
-<label>
-    <span style="font-weight: bold;"><?php echo gT('The following LimeSurvey updates are available:');?></span>
-</label>
+<?php if(isset($updateInfos->alert)): // First we check if the server provided a specific alert message ?>
+    <?php if($updateInfos->alert != ""):?>
+        <!-- Alert from server -->
+        <div class="alert alert-warning" role="alert">
+            <?php echo $updateInfos->alert; ?>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
+
+
+<div>
+    <strong><?php echo gT('The following LimeSurvey updates are available:');?></strong>
+</div>
 <br/>
 <br/>
 
-<!-- table -->
+
 <table class="items table">
-    <?php
-        // First we check if the server provided a specific HTML message
-        if(isset($updateInfos->html))
-        {
-            if($updateInfos->html != "")
-                echo '<tr><td>'.$updateInfos->html.'</tr></td>';
-            // And we unset this html message for the loop on update versions don't crush on it
-            unset($updateInfos->html);
-        }
-    ?>
-
     <!-- header -->
     <thead>
         <tr>
             <th>
-                <?php eT('LimeSurvey Version'); ?>
+                <?php eT('LimeSurvey version'); ?>
             </th>
             <th>
                 <?php eT('Branch'); ?>
@@ -55,6 +63,12 @@
                  <?php
                      // display infos about the update. e.g : "2.05+ (150508) (stable)"
                      echo $aUpdateVersion['versionnumber'];?> (<?php echo $aUpdateVersion['build'];?>)
+
+                <?php if(isset($aUpdateVersion['html'])):?>
+                    <?php if($aUpdateVersion['html']!=''):?>
+                        <?php echo $aUpdateVersion['html'];?>
+                    <?php endif;?>
+                <?php endif;?>
             </td>
 
             <!-- stable / unstable -->
@@ -71,7 +85,7 @@
             <!-- security / regular -->
             <?php if($aUpdateVersion['security_update']):?>
             <td class="text-warning">
-                    <?php eT("Security Udpdate");?>
+                    <?php eT("Security update");?>
             </td>
             <?php else: ?>
             <td>
@@ -82,7 +96,7 @@
             <!-- button -->
             <td class="text-right">
                 <!-- The form launching an update process. First step is the welcome message. The form is not submitted, but catch by the javascript inserted in the end of this file -->
-                <?php echo CHtml::beginForm('update/sa/getwelcome', 'post', array('class'=>'launchUpdateForm')); ?>
+                <?php echo CHtml::beginForm(App()->createUrl('admin/update/sa/getwelcome'), 'post', array('class'=>'launchUpdateForm')); ?>
                     <?php echo CHtml::hiddenField('destinationBuild' , $aUpdateVersion['build']); ?>
 
                     <!-- the button launching the update -->
@@ -103,8 +117,8 @@
     <?php endforeach; ?>
 </table>
 
-<!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdater for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
+<!-- this javascript code manage the step changing. It will catch the form submission, then load the comfortupdate for the required build -->
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('.launchUpdateForm').comfortUpdateNextStep({'step': 0});
 </script>

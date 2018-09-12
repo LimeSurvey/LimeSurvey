@@ -53,12 +53,31 @@
                 //                            $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
                 $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                 ?>
-            <div class="col-sm-10">
+            <div class="col-sm-10 has-feedback">
                 <?php if(canShowDatePicker($dateformatdetails)): ?>
-                    <?php
-                    $goodchars = str_replace( array("m","d","y", "H", "M"), "", $dateformatdetails['dateformat']);
-                    $goodchars = "0123456789".$goodchars[0]; ?>
-                    <input type='text' class='popupdate' size='12' name='<?php echo $fieldname; ?>' onkeypress="return goodchars(event,'<?php echo $goodchars; ?>')"/>
+                    <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+                        'name' => $fieldname,
+                        'pluginOptions' => array(
+                            'format' => $dateformatdetails['jsdate'] . " HH:mm",
+                            'allowInputToggle' =>true,
+                            'showClear' => true,
+                            'tooltips' => array(
+                                'clear'=> gT('Clear selection'),
+                                'prevMonth'=> gT('Previous month'),
+                                'nextMonth'=> gT('Next month'),
+                                'selectYear'=> gT('Select year'),
+                                'prevYear'=> gT('Previous year'),
+                                'nextYear'=> gT('Next year'),
+                                'selectDecade'=> gT('Select decade'),
+                                'prevDecade'=> gT('Previous decade'),
+                                'nextDecade'=> gT('Next decade'),
+                                'prevCentury'=> gT('Previous century'),
+                                'nextCentury'=> gT('Next century'),
+                                'selectTime'=> gT('Select time')
+                            ),
+                            'locale' => convertLStoDateTimePickerLocale(Yii::app()->session['adminlang'])
+                        )
+                    )); ?>
                     <input type='hidden' name='dateformat<?php echo $fieldname; ?>' id='dateformat<?php echo $fieldname; ?>' value='<?php echo $dateformatdetails['jsdate']; ?>'  />
                 <?php else:?>
                     <input type='text' name='<?php echo $fieldname; ?>'/>
@@ -246,7 +265,9 @@
                 choicetitle: '<?php echo gT("Your Choices",'js') ?>',
                 ranktitle: '<?php echo gT("Your Ranking",'js') ?>'
             };
-            function checkconditions(){};
+            function checkconditions(){
+                // Some space so the EM won't kick in
+            };
             $(function() {
                 doDragDropRank(<?php echo $thisqid ?>,0,true,true);
             });
@@ -262,7 +283,13 @@
         <div class="col-sm-10">
             <?php
             if ($deqrow['other'] == "Y") {$meacount++;}
-            if ($dcols > 0 && $meacount >= $dcols)
+
+            /* This caused a regression in 2.5, BUT: code below ($mearesult->FetchRow())
+             * assumes that $mearesult sometimes could be an object,
+             * which is never true even in 2.06.
+             */
+            //if ($dcols > 0 && $meacount >= $dcols)
+            if (true)
             {
                 $width=sprintf("%0d", 100/$dcols);
                 $maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
@@ -289,16 +316,23 @@
             <?php }
             else
             {
-                while ($mearow = $mearesult->FetchRow())
-                { ?>
-                <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname.$mearow['code']; ?>' id='answer<?php echo $fieldname.$mearow['code']; ?>' value='Y'
-                    <?php if ($mearow['default_value'] == "Y") {  ?>checked<?php } ?>
-                    /><label for='<?php $fieldname.$mearow['code']; ?>'><?php echo $mearow['answer']; ?></label><br />
-                <?php }
-                if ($deqrow['other'] == "Y")
-                { ?>
-                <?php eT("Other",'html',$sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
-                <?php }
+                if (is_object($mearesult))
+                {
+                    while ($mearow = $mearesult->FetchRow())
+                    { ?>
+                    <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname.$mearow['code']; ?>' id='answer<?php echo $fieldname.$mearow['code']; ?>' value='Y'
+                        <?php if ($mearow['default_value'] == "Y") {  ?>checked<?php } ?>
+                        /><label for='<?php $fieldname.$mearow['code']; ?>'><?php echo $mearow['answer']; ?></label><br />
+                    <?php }
+                    if ($deqrow['other'] == "Y")
+                    { ?>
+                    <?php eT("Other",'html',$sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
+                    <?php }
+                }
+                else
+                {
+                    throw new CException("\$mearesult should be an object here");
+                }
             }?>
         </div><?php
             break;

@@ -21,59 +21,75 @@
 
         public function run($sArgument)
         {
-            if (!isset($sArgument) || !isset($sArgument[0]) || !isset($sArgument[1]) || !isset($sArgument[2]) || !isset($sArgument[3])) die('You have to set admin/password/full name and email address on the command line like this: php starter.php adminname mypassword fullname emailaddress');
-            Yii::import('application.helpers.common_helper', true);
-
-            try
+            if ( isset($sArgument) && isset($sArgument[0]) && isset($sArgument[1]) && isset($sArgument[2]) && isset($sArgument[3]))
             {
-                $this->connection = App()->getDb();
-                $this->connection->active=true;
-            }
-            catch(CDbException $e){
-                $this->createDatabase();
-            };
+                Yii::import('application.helpers.common_helper', true);
 
-            $this->connection->charset = 'utf8';
-            switch ($this->connection->driverName) {
-                case 'mysql':
-                case 'mysqli':
-                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname')) ." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;")->execute();
-                    $sql_file = 'mysql';
+                try
+                {
+                    $this->connection = App()->getDb();
+                    $this->connection->active=true;
+                }
+                catch(CDbException $e)
+                {
+                    $this->createDatabase();
+                };
+
+                $this->connection->charset = 'utf8';
+
+                switch ($this->connection->driverName)
+                {
+                    case 'mysql':
+                    case 'mysqli':
+                        $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname')) ." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
+                        $sql_file = 'mysql';
                     break;
-                case 'pgsql':
-                    $sql_file = 'pgsql';
+
+                    case 'pgsql':
+                        $sql_file = 'pgsql';
                     break;
-                case 'dblib':
-                case 'mssql':
-                case 'sqlsrv':
-                    $sql_file = 'mssql';
+
+                    case 'dblib':
+                    case 'mssql':
+                    case 'sqlsrv':
+                        $sql_file = 'mssql';
                     break;
-                default:
-                    throw new Exception(sprintf('Unknown database type "%s".', $this->connection->driverName));
+
+                    default:
+                        throw new Exception(sprintf('Unknown database type "%s".', $this->connection->driverName));
+                    }
+                    $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql');
+                    $this->connection->createCommand()->insert($this->connection->tablePrefix.'users', array(
+                        'users_name'=>$sArgument[0],
+                        'password'=>hash('sha256',$sArgument[1]),
+                        'full_name'=>$sArgument[2],
+                        'parent_id'=>0,
+                        'lang'=>'auto',
+                        'email'=>$sArgument[3]
+                    ));
+                    $this->connection->createCommand()->insert($this->connection->tablePrefix.'permissions', array(
+                        'entity'=>'global',
+                        'entity_id'=>0,
+                        'uid'=>1,
+                        'permission'=>'superadmin',
+                        'create_p'=>0,
+                        'read_p'=>1,
+                        'update_p'=>0,
+                        'delete_p'=>0,
+                        'import_p'=>0,
+                        'export_p'=>0
+                    ));
             }
-            $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql');
-            $this->connection->createCommand()->insert($this->connection->tablePrefix.'users', array(
-            'users_name'=>$sArgument[0],
-            'password'=>hash('sha256',$sArgument[1]),
-            'full_name'=>$sArgument[2],
-            'parent_id'=>0,
-            'lang'=>'auto',
-            'email'=>$sArgument[3]
-            ));
-            $this->connection->createCommand()->insert($this->connection->tablePrefix.'permissions', array(
-            'entity'=>'global',
-            'entity_id'=>0,
-            'uid'=>1,
-            'permission'=>'superadmin',
-            'create_p'=>0,
-            'read_p'=>1,
-            'update_p'=>0,
-            'delete_p'=>0,
-            'import_p'=>0,
-            'export_p'=>0
-            ));
+            else
+            {
+                // TODO: a valid error process
+                echo 'You have to set admin/password/full name and email address on the command line like this: php starter.php adminname mypassword fullname emailaddress';
+            }
         }
 
+        /**
+         * @param string $sFileName
+         */
         function _executeSQLFile($sFileName)
         {
             echo   $sFileName;
@@ -90,8 +106,8 @@
                 $iLineLength = strlen($sLine);
 
                 if ($iLineLength && $sLine[0] != '#' && substr($sLine,0,2) != '--') {
-                    if (substr($sLine, $iLineLength-1, 1) == ';') {
-                        $line = substr($sLine, 0, $iLineLength-1);
+                    if (substr($sLine, $iLineLength-1, 1) == ';')
+                    {
                         $sCommand .= $sLine;
                         $sCommand = str_replace('prefix_', $this->connection->tablePrefix, $sCommand); // Table prefixes
 
@@ -112,6 +128,9 @@
 
         }
 
+        /**
+         * @param string $sProperty
+         */
         function getDBConnectionStringProperty($sProperty, $connectionString = null)
         {
             if (!isset($connectionString))
@@ -145,7 +164,7 @@
                 {
                     case 'mysqli':
                     case 'mysql':
-                        $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci")->execute();
+                        $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
                         break;
                     case 'dblib':
                     case 'mssql':

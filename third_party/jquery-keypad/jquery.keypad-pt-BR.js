@@ -2,7 +2,7 @@
    brazilian portuguese initialisation for the jQuery keypad extension
    Written by Israel Rodriguez (yzraeu{at}gmail.com) July 2009. */
 (function($) { // hide the namespace
-    $.keypad.regional['pt-BR'] = {
+    $.keypad.regionalOptions['pt-BR'] = {
         buttonText: '...', buttonStatus: 'Abrir o teclado',
         closeText: 'Fechar', closeStatus: 'Fechar o teclado',
         clearText: 'Limpar', clearStatus: 'Limpar todo o texto',
@@ -17,5 +17,5 @@
         isNumeric: $.keypad.isNumeric,
 		toUpper: $.keypad.toUpper,
         isRTL: false};
-    $.keypad.setDefaults($.keypad.regional['pt-BR']);
+    $.keypad.setDefaults($.keypad.regionalOptions['pt-BR']);
 })(jQuery);

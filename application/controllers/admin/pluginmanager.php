@@ -60,7 +60,38 @@ class PluginManager extends Survey_Common_Action
             }
         }
 
-        $this->_renderWrappedTemplate('pluginmanager', 'index', array('data' => $data));
+        if(Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSize', intval(Yii::app()->request->getParam('pageSize')));
+        }
+
+        $aData['fullpagebar']['returnbutton']['url'] = 'index';
+        $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
+        $aData['data'] = $data;
+        $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
+        if(!Permission::model()->hasGlobalPermission('settings','read'))
+        {
+            Yii::app()->setFlashMessage(gT("No permission"), 'error');
+            $this->getController()->redirect(array('/admin'));
+        }
+    }
+
+    /**
+     * Activate or deactivate a plugin
+     *
+     * @return void
+     */
+    public function changestate(){
+        //Yii::app()->request->validateCsrfToken();
+        $id = Yii::app()->request->getPost('id');
+        $type = Yii::app()->request->getPost('type');
+        if($type=="activate")
+        {
+            $this->activate($id);
+        }
+        else if($type=="deactivate")
+        {
+            $this->deactivate($id);
+        }
     }
 
     /**
@@ -70,8 +101,13 @@ class PluginManager extends Survey_Common_Action
      * @param int $id Plugin id
      * @return void
      */
-    public function activate($id)
+    private function activate($id)
     {
+        if(!Permission::model()->hasGlobalPermission('settings','update'))
+        {
+            Yii::app()->setFlashMessage(gT("No permission"), 'error');
+            $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
+        }
         $oPlugin = Plugin::model()->findByPk($id);
         if (!is_null($oPlugin))
         {
@@ -86,13 +122,22 @@ class PluginManager extends Survey_Common_Action
                     $iStatus = 1;
                 } else
                 {
-                    Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
+                    $customMessage = $result->get('message');
+                    if ($customMessage)
+                    {
+                        Yii::app()->user->setFlash('error', $customMessage);
+                    }
+                    else
+                    {
+                        Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
+                    }
+
                     $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
                 }
             }
             $oPlugin->active = $iStatus;
             $oPlugin->save();
-            Yii::app()->user->setFlash('success', gT('Plugin was activated'));
+            Yii::app()->user->setFlash('success', gT('Plugin was activated.'));
         }
         $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
     }
@@ -103,8 +148,13 @@ class PluginManager extends Survey_Common_Action
      * @param int $id
      * @return void
      */
-    public function deactivate($id)
+    private function deactivate($id)
     {
+        if(!Permission::model()->hasGlobalPermission('settings','update'))
+        {
+            Yii::app()->setFlashMessage(gT("No permission"), 'error');
+            $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
+        }
         $oPlugin = Plugin::model()->findByPk($id);
         if (!is_null($oPlugin))
         {
@@ -117,13 +167,22 @@ class PluginManager extends Survey_Common_Action
                     $iStatus = 0;
                 } else
                 {
-                    Yii::app()->user->setFlash('error', gT('Failed to deactivate the plugin.'));
+                    $customMessage = $result->get('message');
+                    if ($customMessage)
+                    {
+                        Yii::app()->user->setFlash('error', $customMessage);
+                    }
+                    else
+                    {
+                        Yii::app()->user->setFlash('error', gT('Failed to activate the plugin.'));
+                    }
+
                     $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
                 }
             }
             $oPlugin->active = $iStatus;
             $oPlugin->save();
-            Yii::app()->user->setFlash('success', gT('Plugin was deactivated'));
+            Yii::app()->user->setFlash('success', gT('Plugin was deactivated.'));
         }
         $this->getController()->redirect(array('admin/pluginmanager/sa/index/'));
     }
@@ -133,21 +192,29 @@ class PluginManager extends Survey_Common_Action
      */
     public function configure($id)
     {
-        App()->getClientScript()->registerPackage('select2');
+        if(!Permission::model()->hasGlobalPermission('settings','read'))
+        {
+            Yii::app()->setFlashMessage(gT("No permission"), 'error');
+            $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
+        }
 
         $arPlugin      = Plugin::model()->findByPk($id)->attributes;
         $oPluginObject = App()->getPluginManager()->loadPlugin($arPlugin['name'], $arPlugin['id']);
 
         if ($arPlugin === null)
         {
-            Yii::app()->user->setFlash('error', gT('Plugin not found'));
+            Yii::app()->user->setFlash('error', gT('The plugin was not found.'));
             $this->getController()->redirect(array('admin/pluginmanager/sa/index'));
         }
 
         // If post handle data, yt0 seems to be the submit button
         if (App()->request->isPostRequest)
         {
-
+            if(!Permission::model()->hasGlobalPermission('settings','update'))
+            {
+                Yii::app()->setFlashMessage(gT("No permission"), 'error');
+                $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
+            }
             $aSettings = $oPluginObject->getPluginSettings(false);
             $aSave     = array();
             foreach ($aSettings as $name => $setting)
@@ -155,7 +222,7 @@ class PluginManager extends Survey_Common_Action
                 $aSave[$name] = App()->request->getPost($name, null);
             }
             $oPluginObject->saveSettings($aSave);
-            Yii::app()->user->setFlash('success', gT('Settings saved'));
+            Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
             if(App()->request->getPost('redirect'))
             {
                 $this->getController()->redirect(App()->request->getPost('redirect'), true);
@@ -167,7 +234,7 @@ class PluginManager extends Survey_Common_Action
         if (empty($aSettings))
         {
             // And show a message
-            Yii::app()->user->setFlash('notice', gt('This plugin has no settings'));
+            Yii::app()->user->setFlash('notice', gt('This plugin has no settings.'));
             $this->getController()->redirect('admin/pluginmanager/sa/index', true);
         }
 
@@ -181,7 +248,7 @@ class PluginManager extends Survey_Common_Action
     * Renders template(s) wrapped in header and footer
     *
     * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
+    * @param string $aViewUrls View url(s)
     * @param array $aData Data to be passed on. Optional.
     */
     protected function _renderWrappedTemplate($sAction = 'pluginmanager', $aViewUrls = array(), $aData = array())

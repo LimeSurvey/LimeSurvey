@@ -116,7 +116,7 @@ class Zend_Server_Method_Definition
     /**
      * Set method callback
      *
-     * @param  array|Zend_Server_Method_Callback $callback
+     * @param  Zend_Server_Method_Callback $callback
      * @return Zend_Server_Method_Definition
      */
     public function setCallback($callback)

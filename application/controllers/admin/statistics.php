@@ -111,8 +111,8 @@ class statistics extends Survey_Common_Action {
 
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'statistics.js' ));
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'json-js/json2.min.js'));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'statistics.js');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'json-js/json2.min.js');
 
         $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 
@@ -158,9 +158,11 @@ class statistics extends Survey_Common_Action {
         //put the question information into the filter array
         $filters = array();
         $aGroups = array();
+        $keyone = 0;
         foreach ($rows as $row)
         {
             //store some column names in $filters array
+
             $filters[]=array($row['qid'],
             $row['gid'],
             $row['type'],
@@ -174,12 +176,13 @@ class statistics extends Survey_Common_Action {
                 $aGroups[$row['group_name']]['gid'] = $row['gid'];
                 $aGroups[$row['group_name']]['name'] = $row['group_name'];
             }
-            $aGroups[$row['group_name']]['questions'][] = array($row['qid'],
+            $aGroups[$row['group_name']]['questions'][$keyone] = array($row['qid'],
             $row['gid'],
             $row['type'],
             $row['title'],
             $row['group_name'],
             flattenText($row['question'])); ;
+            $keyone = $keyone+1;
         }
         $aData['filters'] = $filters;
         $aData['aGroups'] = $aGroups;
@@ -514,6 +517,12 @@ class statistics extends Survey_Common_Action {
         $aData['error'] = $error;
         $aData['oStatisticsHelper'] = $helper;
         $aData['fresults'] = (isset($aData['fresults']))?$aData['fresults']:false;
+        $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+
+        if (!isset($aData['result']))
+        {
+            $aData['result'] = null;
+        }
 
         $this->_renderWrappedTemplate('export', 'statistics_view', $aData);
 
@@ -621,6 +630,7 @@ class statistics extends Survey_Common_Action {
                     QuestionAttribute::model()->setQuestionAttribute($qqid, 'statistics_graphtype', 0);
 
                     $adata = Yii::app()->session['stats'][$_POST['id']];
+
                     $aData['chartdata'] =  createChart($qqid, $qsid, 0, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache, $sStatisticsLanguage, $qtype);
 
                     break;
@@ -655,6 +665,7 @@ class statistics extends Survey_Common_Action {
      */
      public function simpleStatistics($surveyid)
      {
+         $usegraph=1;
          $iSurveyId =  sanitize_int($surveyid);
          $aData['surveyid'] = $iSurveyId;
          $showcombinedresults = 0;
@@ -681,13 +692,93 @@ class statistics extends Survey_Common_Action {
         foreach($rows as $row)
         {
             $type=$row['type'];
-            if($type=="M" || $type=="P" || $type=="T" || $type=="S" || $type=="Q" || $type=="R" ||  $type=="|" ||  $type=="" ||  $type=="N" ||  $type=="K" || $type=="D")
+            if( $type=="T" ||  $type=="N")
             {
                 $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
             }
-            else // single question
+            switch ( $type )
             {
-                $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+
+                // Double scale cases
+                case ":":
+                    $qidattributes=getQuestionAttributeValues($row['qid']);
+                    if(!$qidattributes['input_boxes'])
+                    {
+                        $qid = $row['qid'];
+                        $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}' AND scale_id = 0", 'question_order, title');
+                        $fresults = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}' AND scale_id = 1", 'question_order, title');
+                        foreach($results as $row1)
+                        {
+                            foreach($fresults as $row2)
+                            {
+                                $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'_'.$row2['title'];
+                            }
+                        }
+                    }
+                break;
+
+                case "1":
+                    $qid = $row['qid'];
+                    $results = Question::model()->getQuestionsForStatistics('*', "parent_qid='$qid' AND language = '{$language}'", 'question_order, title');
+                    foreach($results as $row1)
+                    {
+                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'#0';
+                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'].'#1';
+                    }
+
+                break;
+
+                case "R": //RANKING
+                    $qid = $row['qid'];
+                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
+                    $count = count($results);
+                    //loop through all answers. if there are 3 items to rate there will be 3 statistics
+                    for ($i=1; $i<=$count; $i++)
+                    {
+                        $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'].'-'.$i;
+                    }
+                break;
+
+                // Cases with subquestions
+                case "A":
+                case "F": // FlEXIBLE ARRAY
+                case "H": // ARRAY (By Column)
+                case "E":
+                case "B":
+                case "C":
+                    //loop through all answers. if there are 3 items to rate there will be 3 statistics
+                    $qid = $row['qid'];
+                    $results = Question::model()->getQuestionsForStatistics('title, question', "parent_qid='$qid' AND language = '{$language}'", 'question_order');
+                    foreach($results as $row1)
+                    {
+                        $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'].$row1['title'];
+                    }
+                break;
+
+                // Cases with subanwsers, need a question type as first letter
+                case "P":  //P - Multiple choice with comments
+                case "M":  //M - Multiple choice
+                case "S":
+                    $summary[] = $type.$iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+                break;
+
+                // Not shown (else would only show 'no answer' )
+                case "K":
+                case "*":
+                case "D":
+                case "T": // Long free text
+                case "U": // Huge free text
+                case "|": // File Upload, we don't show it
+                case "N":
+                case "Q":
+                case ';':
+
+                    break;
+
+
+                default:
+                    $summary[] = $iSurveyId.'X'.$row['gid'].'X'.$row['qid'];
+                break;
             }
         }
 
@@ -700,13 +791,11 @@ class statistics extends Survey_Common_Action {
         $aData['showtextinline'] = $showtextinline;
 
         //Show Summary results
-        $usegraph=1;
         $aData['usegraph'] = $usegraph;
         $outputType = 'html';
         $statlang=returnGlobal('statlang');
         $statisticsoutput .=  $helper->generate_simple_statistics($surveyid,$summary,$summary,$usegraph,$outputType,'DD',$statlang);
 
-        $aData['usegraph'] = 1;
         $aData['sStatisticsLanguage']=$statlang;
         $aData['output'] = $statisticsoutput;
         $aData['summary'] = $summary;
@@ -714,27 +803,36 @@ class statistics extends Survey_Common_Action {
         $aData['menu']['expertstats'] =  true;
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'statistics.js' ));
-        App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'json-js/json2.min.js'));
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'statistics.js');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'json-js/json2.min.js');
+        yii::app()->clientScript->registerPackage('jspdf');
         echo $this->_renderWrappedTemplate('export', 'statistics_user_view', $aData);
      }
+
+
+    public function setIncompleteanswers()
+    {
+        $sIncompleteAnswers = Yii::app()->request->getPost('state');
+        if (in_array($sIncompleteAnswers,array('all', 'complete', 'incomplete')))
+        {
+            Yii::app()->session['incompleteanswers']= $sIncompleteAnswers;            
+        }
+
+    }
 
     /**
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
+     * @param string $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
     protected function _renderWrappedTemplate($sAction = 'export', $aViewUrls = array(), $aData = array())
     {
-        //$switch = realpath(__DIR__ . '/../..').'/widgets/switch/assets/js/bootstrap-switch.min.js ';
-        $switch = Yii::app()->getBaseUrl(true).'/application/extensions/yiiwheels/widgets/switch/assets/js/bootstrap-switch.min.js ';
-        //var_dump($switch);
-        //App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $switch) );
-        App()->getClientScript()->registerScriptFile( $switch );
+        yii::app()->clientScript->registerPackage('bootstrap-switch');
+        yii::app()->clientScript->registerPackage('jspdf');
 
-        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']), array('simpleStatistics', 'admin/statistics/sa/index') );
+        $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']) );
 
         $aData['display'] = array();
         $aData['display']['menu_bars'] = false;

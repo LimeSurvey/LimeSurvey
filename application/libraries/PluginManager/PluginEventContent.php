@@ -9,6 +9,11 @@ class PluginEventContent {
     protected $_cssClass = array('pluginblock'=>'pluginblock');
     protected $_cssId = '';
     
+    /**
+     * @param string $content
+     * @param string $cssClass
+     * @param string $id
+     */
     public function __construct($content = null, $cssClass = null, $id = null) {
         $this->setContent($content);
         $this->setCssClass($cssClass);

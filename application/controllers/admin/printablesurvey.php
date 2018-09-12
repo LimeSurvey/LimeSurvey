@@ -33,7 +33,7 @@ class printablesurvey extends Survey_Common_Action
         {
             $aData['surveyid'] = $surveyid;
             $message['title']= gT('Access denied!');
-            $message['message']= gT('You do not have sufficient rights to access this page.');
+            $message['message']= gT('You do not have permission to access this page.');
             $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
@@ -79,7 +79,9 @@ class printablesurvey extends Survey_Common_Action
                 $surveyexpirydate='';
             }
             //Fix $templatename : control if print_survey.pstpl exist
-            if(is_file(getTemplatePath($templatename).DIRECTORY_SEPARATOR.'print_survey.pstpl'))
+            $oTemplate = Template::model()->getTemplateConfiguration($templatename);
+            $sFullTemplatePath = $oTemplate->path;
+            if($oTemplate->viewPath . DIRECTORY_SEPARATOR . 'print_survey.pstpl')
             {
                 $templatename = $templatename;// Change nothing
             }
@@ -91,8 +93,8 @@ class printablesurvey extends Survey_Common_Action
             {
                 $templatename="default";
             }
-            $sFullTemplatePath = getTemplatePath($templatename).DIRECTORY_SEPARATOR;
-            $sFullTemplateUrl = getTemplateURL($templatename)."/";
+            $sFullTemplatePath = $oTemplate->path . DIRECTORY_SEPARATOR;
+            $sFullTemplateUrl = Template::model()->getTemplateURL($templatename)."/";
             define('PRINT_TEMPLATE_DIR' , $sFullTemplatePath , true);
             define('PRINT_TEMPLATE_URL' , $sFullTemplateUrl , true);
 
@@ -1493,12 +1495,12 @@ class printablesurvey extends Survey_Common_Action
                         }
 
                         $question['QUESTION_TYPE_HELP'] = self::_star_replace($question['QUESTION_TYPE_HELP']);
-                        $group['QUESTIONS'] .= self::_populate_template( 'question' , $question);
+                        $group['QUESTIONS'] .= self::_populate_template( $oTemplate, 'question' , $question);
 
                     }
                     if ($bGroupHasVisibleQuestions)
                     {
-                        $survey_output['GROUPS'] .= self::_populate_template( 'group' , $group );
+                        $survey_output['GROUPS'] .= self::_populate_template( $oTemplate, 'group' , $group );
                     }
             }
 
@@ -1575,8 +1577,7 @@ class printablesurvey extends Survey_Common_Action
 
             // END recursive empty tag stripping.
 
-            echo self::_populate_template( 'survey' , $survey_output );
-
+            echo self::_populate_template( $oTemplate, 'survey' , $survey_output );
         }// End print
     }
 
@@ -1591,10 +1592,11 @@ class printablesurvey extends Survey_Common_Action
      * keywords replaced by variables.
      *
      * How:
+     * @param string $template
      */
-    private function _populate_template( $template , $input  , $line = '')
+    private function _populate_template( $oTemplate, $template , $input  , $line = '')
     {
-        $full_path = PRINT_TEMPLATE_DIR.'/views/print_'.$template.'.pstpl';
+        $full_path = $oTemplate->viewPath.DIRECTORY_SEPARATOR.'print_'.$template.'.pstpl';
         $full_constant = 'TEMPLATE'.$template.'.pstpl';
         if(!defined($full_constant))
         {
@@ -1660,6 +1662,9 @@ class printablesurvey extends Survey_Common_Action
     }
 
 
+    /**
+     * @param string $type
+     */
     private function _input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
     {
         if($type == 'other' or $type == 'othercomment')
@@ -1706,11 +1711,11 @@ class printablesurvey extends Survey_Common_Action
             case 'radio':
             case 'checkbox':if(!defined('IMAGE_'.$type.'_SIZE'))
             {
-                $image_dimensions = getimagesize(PRINT_TEMPLATE_DIR.'print_img_'.$type.'.png');
+                $image_dimensions = getimagesize(PRINT_TEMPLATE_DIR.'files/print_img_'.$type.'.png');
                 // define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
                 define('IMAGE_'.$type.'_SIZE' , ' width="14" height="14"');
             }
-            $output = '<img src="'.PRINT_TEMPLATE_URL.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.htmlspecialchars($title).'" class="input-'.$type.'" />';
+            $output = '<img src="'.PRINT_TEMPLATE_URL.'files/print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.htmlspecialchars($title).'" class="input-'.$type.'" />';
             break;
 
             case 'rank':
@@ -1742,13 +1747,13 @@ class printablesurvey extends Survey_Common_Action
             $aFilter=explode(';',$qidattributes['array_filter']);
             $output .= "\n<p class='extrahelp'>";
             foreach ($aFilter as $sFilter)
-            {                       
+            {
                 $oQuestion=Question::model()->findByAttributes(array('title' => $sFilter, 'language' => $sLanguageCode, 'sid' => $surveyid));
                 if ($oQuestion)
                 {
                     $sNewQuestionText = flattenText(breakToNewline($oQuestion->getAttribute('question')));
                     $output .= sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], $sNewQuestionText );
-                    
+
                 }
             }
             $output .= "</p>\n";
@@ -1767,7 +1772,7 @@ class printablesurvey extends Survey_Common_Action
                 }
             }
             $output .= "</p>\n";
-        }        
+        }
         return $output;
     }
 

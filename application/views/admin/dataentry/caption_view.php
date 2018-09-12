@@ -1,7 +1,7 @@
 <!--
     dataentry/caption_view.php
 -->
-<div class="side-body">
+<div class="side-body <?php echo getSideBodyClass(false); ?>">
     <h3><?php eT("Data entry"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -44,15 +44,17 @@
                 <script type="text/javascript"><!--
                 function activateSubmit(me)
                 {
-                    if (me.value != '')
+                    if (me && me.value != '')
                     {
-                        $('#submitdata').button("option", "disabled", false);
-                        $('#save-button').prop('disabled', false);
+                        $('#submitdata').removeAttr('disabled');
+                        $('#save-button').removeAttr('disabled');
+                        $('#save-and-close-button').removeAttr('disabled');
                     }
                     else
                     {
-                        $('#submitdata').button("option", "disabled", true);
-                        $('#save-button').prop('disabled', true);
+                        $('#submitdata').attr('disabled', 'disabled');
+                        $('#save-button').attr('disabled', 'disabled');
+                        $('#save-and-close-button').attr('disabled', 'disabled');
                     }
                 }
                 //--></script>

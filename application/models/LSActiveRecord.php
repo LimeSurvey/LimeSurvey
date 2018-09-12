@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
-  * 	Extensions to the CActiveRecord class
+  *     Extensions to the CActiveRecord class
  */
 class LSActiveRecord extends CActiveRecord
 {
@@ -23,9 +23,10 @@ class LSActiveRecord extends CActiveRecord
      * @see PluginEventBehavior
      * @return array
      */
-    public function behaviors(){
+    public function behaviors()
+    {
         $aBehaviors=array();
-		$sCreateFieldName=($this->hasAttribute('created')?'created':null);
+        $sCreateFieldName=($this->hasAttribute('created')?'created':null);
         $sUpdateFieldName=($this->hasAttribute('modified')?'modified':null);
         $sDriverName = Yii::app()->db->getDriverName();
         if ($sDriverName=='sqlsrv' || $sDriverName=='dblib')
@@ -112,7 +113,8 @@ class LSActiveRecord extends CActiveRecord
      * @param boolean $forceRefresh Don't use value from static cache but always requery the database
      * @return false|int
      */
-    public function getMaxId($field = null, $forceRefresh = false) {
+    public function getMaxId($field = null, $forceRefresh = false)
+    {
         static $maxIds = array();
 
         if (is_null($field)) {
@@ -138,28 +140,29 @@ class LSActiveRecord extends CActiveRecord
         return $maxIds[$field];
     }
 
-	/**
-	 * @todo This should also be moved to the behavior at some point.
-	 * This method overrides the parent in order to raise PluginEvents for Bulk delete operations.
-	 *
-	 * Filter Criteria are wrapped into a CDBCriteria instance so we have a single instance responsible for holding the filter criteria
-	 * to be passed to the PluginEvent,
-	 * this also enables us to pass the fully configured CDBCriteria instead of the original Parameters.
-	 *
-	 * See {@link find()} for detailed explanation about $condition and $params.
-	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
-	 * An attribute value can be an array which will be used to generate an IN condition.
-	 * @param mixed $condition query condition or criteria.
-	 * @param array $params parameters to be bound to an SQL statement.
-	 * @return integer number of rows affected by the execution.
-	 */
-	public function deleteAllByAttributes($attributes,$condition='',$params=array())
-	{
-		$builder=$this->getCommandBuilder();
-		$table=$this->getTableSchema();
-		$criteria=$builder->createColumnCriteria($table,$attributes,$condition,$params);
-		$this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $criteria);
-		$this->dispatchPluginModelEvent('beforeModelDeleteMany',				$criteria);
-		return parent::deleteAllByAttributes(array(), $criteria, array());
-	}
+    /**
+     * @todo This should also be moved to the behavior at some point.
+     * This method overrides the parent in order to raise PluginEvents for Bulk delete operations.
+     *
+     * Filter Criteria are wrapped into a CDBCriteria instance so we have a single instance responsible for holding the filter criteria
+     * to be passed to the PluginEvent,
+     * this also enables us to pass the fully configured CDBCriteria instead of the original Parameters.
+     *
+     * See {@link find()} for detailed explanation about $condition and $params.
+     * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+     * An attribute value can be an array which will be used to generate an IN condition.
+     * @param mixed $condition query condition or criteria.
+     * @param array $params parameters to be bound to an SQL statement.
+     * @return integer number of rows affected by the execution.
+     */
+    public function deleteAllByAttributes($attributes,$condition='',$params=array())
+    {
+        $builder=$this->getCommandBuilder();
+        $table=$this->getTableSchema();
+        $criteria=$builder->createColumnCriteria($table,$attributes,$condition,$params);
+        $this->dispatchPluginModelEvent('before'.get_class($this).'DeleteMany', $criteria);
+        $this->dispatchPluginModelEvent('beforeModelDeleteMany',                $criteria);
+        return parent::deleteAllByAttributes(array(), $criteria, array());
+    }
+
 }

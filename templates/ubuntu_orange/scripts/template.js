@@ -42,40 +42,49 @@ $(document).ready(function(){
 */
 
 
-
-function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
+$(document).ready(function()
 {
-   var arVersion = navigator.appVersion.split("MSIE")
-   var version = parseFloat(arVersion[1])
-   if ((version >= 5.5) && (version<7) && (document.body.filters))
-   {
-      for(var i=0; i<document.images.length; i++)
-      {
-         var img = document.images[i]
-         var imgName = img.src.toUpperCase()
-         if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
-         {
-            var imgID = (img.id) ? "id='" + img.id + "' " : "";
-            var imgClass = (img.className) ? "class='" + img.className + "' " : "";
-            var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' ";
-            var imgStyle = "display:inline-block;" + img.style.cssText;
-            if (img.align == "left") imgStyle = "float:left;" + imgStyle;
-            if (img.align == "right") imgStyle = "float:right;" + imgStyle;
-            if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle;
-            var strNewHTML = "<span " + imgID + imgClass + imgTitle
-            + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
-            + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
-            + "(src='" + img.src + "', sizingMethod='scale');\"></span>"
-            img.outerHTML = strNewHTML
-            i = i-1
-         }
-      }
-   }
-}
 
-$(document).ready(function(){
+    // Scroll to first error
+    if($(".input-error").length > 0) {
+        $('#bootstrap-alert-box-modal').on('hidden.bs.modal', function () {
+            console.log('answer error found');
+            $firstError = $(".input-error").first();
+            $pixToScroll = ( $firstError.offset().top - 100 );
+            $('html, body').animate({
+                 scrollTop: $pixToScroll + 'px'
+             }, 'fast');
+        });
+    }
 
-    var outerframeDistanceFromTop = 50;
+
+    // Make the label clickable
+    $('.label-clickable').each(function(){
+        var $that    = $(this);
+        var attrId = $that.attr('id');
+        if(attrId!=undefined){
+            attrId = attrId.replace("label-", "");
+        } else {
+            attrId = "";
+        }
+        var $inputEl = $("#"+attrId);
+        $that.on('click', function(){
+            console.log($inputEl.attr('id'));
+            $inputEl.trigger( "click" );
+        });
+    });
+
+    $('.if-no-js').hide();
+
+    if($(window).width() < 768 )
+    {
+        // nothing
+    }
+
+    //var outerframeDistanceFromTop = 50;
+    //topsurveymenubar
+    var topsurveymenubarHeight = $('#topsurveymenubar').innerHeight();
+    var outerframeDistanceFromTop = topsurveymenubarHeight;
     // Manage top container
     if(!$.trim($('#topContainer .container').html()))
     {
@@ -83,6 +92,10 @@ $(document).ready(function(){
     }
     else
     {
+        $('#topContainer').css({
+            top: topsurveymenubarHeight+'px',
+        });
+
         $topContainerHeight = $('#topContainer').height();
         outerframeDistanceFromTop += $topContainerHeight;
     }
@@ -113,6 +126,7 @@ $(document).ready(function(){
         }
     });
 
+    // Hide question help container if empty
     $('.questionhelp').each(function(){
         $that = $(this);
         if(!$.trim($that.html()))
@@ -156,4 +170,92 @@ $(document).ready(function(){
         });
     }
 
+
+    // Errors
+    if($('.emtip').length>0)
+    {
+        // On Document Load
+        $('.emtip').each(function(){
+            if($(this).hasClass('error'))
+            {
+                $(this).parents('div.questionhelp').removeClass('text-info').addClass('text-danger');
+            }
+        });
+
+        // On em change
+        $('.emtip').each(function(){
+            $(this).on('classChangeError', function() {
+                $parent = $(this).parent('div.questionhelp');
+                $parent.removeClass('text-info',1);
+                $parent.addClass('text-danger',1);
+
+                if ($parent.hasClass('hide-tip'))
+                {
+                    $parent.removeClass('hide-tip',1);
+                    $parent.addClass('tip-was-hidden',1);
+                }
+
+                $questionContainer = $(this).parents('div.question-container');
+                $questionContainer.addClass('input-error');
+            });
+
+            $(this).on('classChangeGood', function() {
+                $parent = $(this).parents('div.questionhelp');
+                $parent.removeClass('text-danger');
+                $parent.addClass('text-info');
+                if ($parent.hasClass('tip-was-hidden'))
+                {
+                    $parent.removeClass('tip-was-hidden').addClass('hide-tip');
+                }
+                $questionContainer = $(this).parents('div.question-container');
+                $questionContainer.removeClass('input-error');
+            });
+        });
+    }
+
+    // Hide the menu buttons at the end of the Survey
+    if($(".hidemenubutton").length>0)
+    {
+        $('.navbar-right').hide();
+    }
+
+    // Survey list footer
+    if($('#surveyListFooter').length>0)
+    {
+        $surveyListFooter = $('#surveyListFooter');
+        $('#outerframeContainer').after($surveyListFooter);
+    }
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
 });
+
+
+window.alert = function(message, title) {
+    if($("#bootstrap-alert-box-modal").length == 0) {
+        $("body").append('<div id="bootstrap-alert-box-modal" class="modal fade">\
+            <div class="modal-dialog">\
+                <div class="modal-content">\
+                    <div class="modal-header" style="min-height:40px;">\
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>\
+                        <h4 class="modal-title"></h4>\
+                    </div>\
+                    <div class="modal-body"><p></p></div>\
+                    <div class="modal-footer">\
+                        <a href="#" data-dismiss="modal" class="btn btn-default">Close</a>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>');
+    }
+    $("#bootstrap-alert-box-modal .modal-header h4").text(title || "");
+    $("#bootstrap-alert-box-modal .modal-body p").text(message || "");
+
+    $(document).ready(function()
+    {
+        $("#bootstrap-alert-box-modal").modal('show');
+    });
+};

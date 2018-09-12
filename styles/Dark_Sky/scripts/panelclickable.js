@@ -6,7 +6,12 @@ $(document).ready(function(){
     $(".panel-clickable").click(function(){
         $that = $(this);
         if($that.data('url')!=''){
-            window.location.href = $that.data('url');
+        	if($that.data('target') === '_blank') {
+        		window.open($that.data('url'))
+            }
+            else {
+            	window.location.href = $that.data('url');
+            }
         }
     });
 });

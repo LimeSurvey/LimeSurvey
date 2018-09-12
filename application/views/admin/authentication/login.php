@@ -3,25 +3,24 @@
  * Login Form
  */
 ?>
+<noscript>If you see this you have probably JavaScript deactivated. LimeSurvey does not work without Javascript being activated in the browser!</noscript>
 <div class="container-fluid welcome">
     <div class="row text-center">
-        <div class="col-lg-3 col-lg-offset-4 col-sm-6 col-sm-offset-3">
+        <div id="login-panel">
             <div class="panel panel-primary login-pannel" id="pannel-1">
 
                 <!-- Header -->
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-12">
-                          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />                                  
-                             <p>Dashboard</p>
-                        </div>
+                          <img alt="logo" id="profile-img" class="profile-img-card center-block" src="<?php echo LOGO_URL;?>" />
+                             <p><?php eT("Administration");?></p>
                     </div>
                 </div>
 
                 <!-- Action Name -->
                 <div class="row login-title login-content">
                       <div class="col-lg-12">
-                       <h3><?php eT("Log In");?></h3>
+                       <h3><?php eT("Log in");?></h3>
                     </div>
                 </div>
 
@@ -59,8 +58,8 @@
                                     $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                         'name' => 'authMethod',
                                         'data' => $possibleAuthMethods,
+                                        'value' => $selectedAuth,
                                         'pluginOptions' => array(
-                                            'value' => $selectedAuth,
                                             'options' => array(
                                                     'onChange'=>'this.form.submit();'
                                                     )
@@ -89,8 +88,6 @@
                                 }
                                 echo CHtml::label(gT('Language'), 'loginlang');
 
-                                //$this->widget('bootstrap.widgets.TbSelect2', array(
-
                                 $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'name' => 'loginlang',
                                     'data' => $languageData,
@@ -117,7 +114,8 @@
                     <div class="row login-submit login-content">
                         <div class="col-lg-12">
                                 <p><input type='hidden' name='action' value='login' />
-                                    <button type="submit" class="btn btn-default" name='login_submit' value='<?php eT("Login"); ?>' >Submit</button><br />
+                                   <input type='hidden' id='width' name='width' value='' />
+                                    <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Log in');?></button><br />
                                     <br/>
                                     <?php
                                     if (Yii::app()->getConfig("display_user_password_in_email") === true)
@@ -139,5 +137,8 @@
 
 <!-- Set focus on user input -->
 <script type='text/javascript'>
-    document.getElementById('user').focus();
+$( document ).ready(function() {
+    $('#user').focus();
+    $("#width").val($(window).width());
+});
 </script>

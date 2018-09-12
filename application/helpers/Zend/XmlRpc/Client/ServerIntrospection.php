@@ -155,7 +155,6 @@ class Zend_XmlRpc_Client_ServerIntrospection
     /**
      * Call system.listMethods()
      *
-     * @param  array  $method
      * @return array  array(method, method, method...)
      */
     public function listMethods()

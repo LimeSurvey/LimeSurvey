@@ -43,38 +43,54 @@ function isvalidCoord(val){
 
 // OSMap functions
 function OSGeoInitialize(question,latLng){
+		var tileServerURL = {
+			OSM : "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}",
+			HUM : "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}",
+			CYC : "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}",
+			TRA : "http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}"
+		};
 		var name = question.substr(0,question.length - 2);
 		// tiles layers def
+		// If not latLng is set the Map will center to Hamburg
 		var MapOption=LSmaps[name];
 		if(isNaN(MapOption.latitude) || MapOption.latitude==""){
-			MapOption.latitude=0;
+			MapOption.latitude=53.582665; 
 		}
 		if(isNaN(MapOption.longitude) || MapOption.longitude==""){
-			MapOption.longitude=0;
+			MapOption.longitude=10.018924;
 		}
-		var mapquestOSM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", {
+		var mapOSM = L.tileLayer(tileServerURL.OSM+".png", {
 			maxZoom: 19,
-			subdomains: ["otile1", "otile2", "otile3", "otile4"],
-			attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+			subdomains: ["a", "b", "c"],
+			attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
 		});
-		var mapquestOAM = L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-			maxZoom: 10,
-			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-			attribution: 'Tiles courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
-		});
-		var mapquestHYB = L.layerGroup([L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg", {
-			maxZoom: 10,
-			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"]
-		}), L.tileLayer("http://{s}.mqcdn.com/tiles/1.0.0/hyb/{z}/{x}/{y}.png", {
+		var mapCYC = L.tileLayer(tileServerURL.CYC+".png", {
 			maxZoom: 19,
-			subdomains: ["oatile1", "oatile2", "oatile3", "oatile4"],
-			attribution: 'Labels courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a>. Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA. Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+			subdomains: ["a", "b", "c"],
+			attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+		});
+		var mapHOT = L.layerGroup([L.tileLayer(tileServerURL.HUM+".png", {
+			maxZoom: 20,
+			subdomains: ["a", "b", "c"],
+		}), L.tileLayer(tileServerURL+".png", {
+			maxZoom: 19,
+			subdomains: ["a", "b", "c"],
+			attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
+		})]);
+		var mapTRA = L.layerGroup([L.tileLayer(tileServerURL.TRA+".png", {
+			maxZoom: 19,
+			subdomains: ["a", "b", "c"],
+		}), L.tileLayer(tileServerURL+".png", {
+			maxZoom: 19,
+			subdomains: ["a", "b", "c"],
+			attribution: 'Map data © <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> contributors, CC-BY-SA.'
 		})]);
 
 		var baseLayers = {
-			"Street Map": mapquestOSM,
-			"Aerial Imagery": mapquestOAM,
-			"Imagery with Streets": mapquestHYB
+			"Street Map": mapOSM,
+			"Humanitarian": mapHOT,
+			"Cyclemap": mapCYC,
+			"Traffic Map" : mapTRA
 		};
 		var overlays = {
 		};
@@ -83,7 +99,7 @@ function OSGeoInitialize(question,latLng){
 			minZoom:1,
 			center: [MapOption.latitude, MapOption.longitude] ,
 			maxBounds: ([[-90, -180],[90, 180]]),
-			layers: [mapquestOSM]
+			layers: [mapOSM]
 		});
 		//function zoomExtent(){ // todo: restrict to rect ?
 		//	map.setView([15, 15],1);
@@ -127,6 +143,26 @@ function OSGeoInitialize(question,latLng){
 				UI_update(e.latlng.lat,e.latlng.lng)
 			}	
 		)
+
+        // Zoom to 11 when switching to Aerial or Hybrid views - bug 10589 
+        var layer2Name, layer3Name, layerIndex = 0;
+        for (var key in baseLayers) {
+            if (!baseLayers.hasOwnProperty(key)) {
+                continue;
+            }
+            if(layerIndex == 1) {
+                layer2Name = key;
+            }
+            else if(layerIndex == 2) {
+                layer3Name = key;
+            }
+            layerIndex++;
+        }
+        map.on('baselayerchange', function(e) {
+            if(e.name == layer2Name || e.name == layer3Name) {
+                map.setZoom(11);
+            }
+        });
 		
 		marker.on('dragend', function(e){
 				var marker = e.target;

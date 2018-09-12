@@ -1,202 +1,136 @@
 /*
 * JavaScript functions for LimeSurvey response browse
-*
 */
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
+// Module
+LS.resp = (function() {
 
-/*
-* Scroll the pager and the footer when scrolling horizontally
-* Maybe for token table too
-*/
-$(document).ready(function(){
-    $('#displayResponsesContainer').scroll(function(){
-        $('#pager').css({
-            'left': $(this).scrollLeft() ,
-        });
-    });
-});
+    /**
+     * Needed to calculate correct pager position at RTL language
+     * @var {number}
+     */
+    var initialScrollValue = 0;
 
-$(document).on("click","[data-delete]",function(event){
-    event.preventDefault();
-    var responseid=$(this).data("delete");
-    var url=$(this).attr("href"); // Or replace responseid  by post if needed
-    var buttons = {};
-    buttons[sDelCaption] = function(){
-        $.ajax({
-            url : url,
-            type : "POST"
-        })
-        .done(function() {
-            jQuery("#displayresponses").delRowData(responseid);
-        });
-        $( this ).dialog( "close" );
-    };
-    buttons[sCancel] = function(){ $( this ).dialog( "close" ); };
-    var dialog=$("<p>"+strdeleteconfirm+"</p>").dialog({
-        modal:true,
-        buttons: buttons
-    });
-});
-$(function() {
+    /**
+     * True if admin uses an RTL language
+     * @var {boolean}
+     */
+    var useRtl = false;
 
-    /* Launch jqgrid */
-    jQuery("#displayresponses").jqGrid({
-        recordtext : sRecordText,
-        emptyrecords : sEmptyRecords,
-        pgtext : sPageText,
-        loadtext : sLoadText,
-        align : "center",
-        url : jsonUrl,
-        editurl : jsonActionUrl,
-        datatype : "json",
-        mtype : "POST",
-        colNames : colNames,
-        colModel : colModels,
-        toppager : false,
-        height : "100%",
-        //shrinkToFit : false,
-        ignoreCase : true,
-        rowNum : 25,
-        editable : false,
-        scrollOffset : 0,
-        sortable : true,
-        hidegrid : false,
-        sortname : 'id',
-        sortorder : 'asc',
-        viewrecords : true,
-        rowList : [ 25, 50, 100, 250, 500, 1000 ],
-        multiselect : true,
-        loadonce : false, // use ajax request
-        pager : "#pager",
-        caption : sCaption,
-        beforeRequest: function(){
-            /* activate tooltip on header */
-            for (i = 0; i < colModels.length; i++) {
-                var col=i+1;
-                $("tr.ui-jqgrid-labels th:eq("+col+") .questiontext").attr('title',colModels[i]['title']);
-            }
-            $(".ui-jqgrid-labels").tooltip();
-        },
-        loadComplete: function(){
-            /* activate tooltip on answers : must be limited ? */
-            $("#displayresponses").tooltip({ tooltipClass: "tooltip-text" });
-        },
-        beforeSelectRow: function(rowid, event) {
-            /* deactivate row select on tools */
-            if($(event.target).is("a") || $(event.target).closest("a").length )
-                return false;
-            return true;
+    /**
+     * Scroll the pager and the footer when scrolling horizontally
+     * @return
+     */
+    function setListPagerPosition() {
+        var $elListPager = $('#ListPager');
+
+        if (useRtl) {
+            var scrollAmount = Math.abs($('.scrolling-wrapper').scrollLeft() - initialScrollValue);
+            $elListPager.css({
+                'position': 'relative',
+                'right': scrollAmount
+            });
         }
-    });
-    /* Add navgrid */
-    jQuery("#displayresponses").jqGrid(
-        'navGrid',
-        '#pager',
-        {
-            searchtitle : sSearchTitle,
-            refreshtitle : sRefreshTitle,
-            edit: false,
-            add: false,
-            del: true,
-            search: false, //true when https://github.com/LimeSurvey/LimeSurvey/commit/c710ac795b471c4370cc45027542c54f791e5950#diff-15547196721577f485345c4a68f0c5d0R629 is done
-            refresh: true,
-            view: false,
-            position: "left"
-        },
-        {}, // edit options
-        {}, // add options
-        {
-            msg : strDeleteAllConfirm,
-            bSubmit : sDelCaption,
-            caption : sDelCaption,
-            bCancel : sCancel,
-            width : 700,
-            afterShowForm: function($form) {
-                var dialog = $form.closest('div.ui-jqdialog'),
-                selRowId = jQuery("#displayresponses").jqGrid('getGridParam', 'selrow'),
-                selRowCoordinates = $('#'+selRowId).offset();
-                dialog.offset(selRowCoordinates);
-                $(document).scrollTop(selRowCoordinates.top);
-            },
-        },
-        { // Deactivate actually, leave the option.
-            caption : sSearchCaption,
-            Find : sFind,
-            multipleSearch: true,
-            odata : [ sOperator1, sOperator2, sOperator3,
-                sOperator4, sOperator5, sOperator6,
-                sOperator7, sOperator8, sOperator9,
-                sOperator10, sOperator11, sOperator12,
-                sOperator13, sOperator14 ],
-            Reset : sReset
-        } // search options - define multiple search : TODO
-    );
-    /* quick search toolbar */
-    jQuery("#displayresponses").jqGrid('filterToolbar', {
-        searchOnEnter : false,
-        defaultSearch : 'cn'
-    });
-    /* Column button */
-    jQuery("#displayresponses").jqGrid(
-        'navButtonAdd',
-        '#pager',
-        {
-            buttonicon : "ui-icon-calculator",
-            caption : "",
-            title : sSelectColumns,
-            onClickButton : function() {
-                jQuery("#displayresponses").jqGrid(
-                    'columnChooser',
-                    {
-                        caption : sSelectColumns,
-                        bSubmit : sSubmit,
-                        bCancel : sCancel,
-                        done : function(perm) {
-                            if (perm) {
-                                this.jqGrid("remapColumns",perm,true);
-                                var hidden = [];
-                                $.each($("#displayresponses").getGridParam("colModel"),
-                                    function(i,obj) {
-                                        if(obj.hasOwnProperty('index') && obj.hidden){
-                                            hidden.push(obj.index);
-                                        }
-                                });
-                                $.post( jsonBaseUrl+"&sa=setHiddenColumns", { aHiddenFields: hidden.join("|") } );
-                            }
-                        }
-                });
-            }
+        else {
+            $elListPager.css({
+                'position': 'relative',
+                'left': $('.scrolling-wrapper').scrollLeft()
+            });
         }
-    );
-    if(typeof sDownLoad!=="undefined")
-    {
-        jQuery("#displayresponses").navButtonAdd('#pager',{
-            //caption:sDownLoad, // Remove it ? no it's more clear ;)
-            caption:'',
-            title:sDownLoad, // Todo dynamically update download selected , download all
-            buttonicon:"glyphicon glyphicon-download-alt",
-            onClickButton: function(){
-                selectedlist=jQuery("#displayresponses").getGridParam('selarrrow').join(",");//  Or send like an array ?
-                if(selectedlist!="")
-                {
-                    sendPost(jsonActionUrl,null,["oper","responseid"],["downloadzip",selectedlist]);
-                }
-                else
-                {
-                    if(confirm(sConfirmationArchiveMessage))
-                        sendPost(jsonActionUrl,null,["oper"],["downloadzip"]);;
-                    //sendPost(sDownloadUrl,null,"responseid",0);
-                }
-            },
-            position:"last",
-        });
     }
 
-    /* Grid resize : only heigth ? */
-    jQuery("#displayresponses").jqGrid('gridResize', {
-        handles: "n, s",
-        minHeight : 100
+    // Return public functions for this module
+    return {
+
+        /**
+         * Bind fixing pager position on scroll event
+         * @return
+         */
+        bindScrollWrapper: function () {
+            setListPagerPosition();
+            $(document).find('.scrolling-wrapper').scroll(function() {
+                setListPagerPosition();
+            });
+
+            reinstallResponsesFilterDatePicker();
+        },
+
+        /**
+         * Set value of module private variable initialScrollValue
+         * @param {number} val
+         */
+        setInitialScrollValue: function(val) {
+            initialScrollValue = val;
+        },
+
+        /**
+         * @param {boolean} val
+         */
+        setUseRtl: function(val) {
+            useRtl = val;
+        }
+    };
+})();
+
+$(document).ready(function(){
+
+    LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
+    LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
+
+    LS.resp.bindScrollWrapper();
+
+    $('#display-mode').click(function(event){
+        event.preventDefault();
+
+        var $that        = $(this);
+        var $actionUrl   = $(this).data('url');
+        var $display     = $that.find('input:not(:checked)').val();
+        var $postDatas   = {state:$display};
+
+        $.ajax({
+            url  : encodeURI($actionUrl),
+            type : 'POST',
+            data :  $postDatas,
+
+            // html contains the buttons
+            success : function(html, statut){
+                location.reload();
+            },
+            error :  function(html, statut){
+                console.log(html);
+            }
+        });
+
     });
+
 });
+
+/**
+ * When date-picker is used in responses gridview
+ * @return
+ */
+function reinstallResponsesFilterDatePicker() {
+
+    // Since grid view is updated with Ajax, we need to fetch date format each update
+    var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
+
+    $('#SurveyDynamic_startdate').datetimepicker({
+        format: dateFormatDetails.jsdate
+    });
+    $('#SurveyDynamic_datestamp').datetimepicker({
+        format: dateFormatDetails.jsdate
+    });
+
+    $('#SurveyDynamic_startdate').on('focusout', function() {
+        var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
+        $.fn.yiiGridView.update('responses-grid', {data: data});
+    });
+
+    $('#SurveyDynamic_datestamp').on('focusout', function() {
+        var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
+        $.fn.yiiGridView.update('responses-grid', {data: data});
+    });
+
+}

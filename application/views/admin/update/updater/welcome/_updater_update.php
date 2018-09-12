@@ -18,18 +18,17 @@
 
 
 
-
 <!-- The form launching the update of the updater. -->
-<?php echo CHtml::beginForm('update/sa/updateUptader', 'post', array('id'=>'launchUpdateUpdaterForm')); ?>
+<?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/update/sa/updateUpdater'), 'post', array('id'=>'launchUpdateUpdaterForm')); ?>
     <?php  echo CHtml::hiddenField('destinationBuild' , $serverAnswer->destinationBuild); ?>
     <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>
     </a>
-    <?php echo CHtml::submitButton(gT("Continue"), array('class'=>"ajax_button btn btn-default",)); ?>
+    <?php echo CHtml::submitButton(gT("Continue",'unescaped'), array('class'=>"ajax_button btn btn-default",)); ?>
 <?php echo CHtml::endForm(); ?>
 
-<!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdater for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
+<!-- this javascript code manage the step changing. It will catch the form submission, then load the comfortupdate for the required build -->
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#launchUpdateUpdaterForm').comfortUpdateNextStep({'step': 0});
 </script>

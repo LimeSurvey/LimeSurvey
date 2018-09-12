@@ -8,11 +8,10 @@
 <div class='menubar' id="fullpagebar">
     <div class='row container-fluid'>
 
-        <!-- Right Actions -->
+        <!-- Left Actions -->
         <div class="col-md-8">
-
             <!-- Create a new survey  -->
-            <?php if (isset($fullpagebar['button']['newsurvey'])):?>
+            <?php if (isset($fullpagebar['button']['newsurvey']) && Permission::model()->hasGlobalPermission('surveys','create')):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>" role="button">
                     <span class="icon-add text-success"></span>
                     <?php eT("Create a new survey");?>
@@ -20,7 +19,7 @@
             <?php endif;?>
         </div>
 
-        <!-- Left actions -->
+        <!-- Right actions -->
         <div class="col-md-4 text-right">
 
             <!-- Save -->
@@ -31,11 +30,29 @@
                 </a>
             <?php endif;?>
 
+            <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
+                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
+                    <span class="glyphicon glyphicon-saved"></span>
+                    <?php eT("Save and close");?>
+                </a>
+            <?php endif; ?>
+
             <!-- Close -->
             <?php if(isset($fullpagebar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
                     <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+
+            <?php if(isset($fullpagebar['boxbuttons'])):?>
+                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/create/');?>" class="btn btn-default">
+                    <span class="icon-add  text-success"></span>
+                    <?php eT("Create a new box");?>
+                </a>
+                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/resetall/');?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">
+                    <span class="fa fa-refresh"></span>
+                    <?php eT("Reset to default boxes");?>
                 </a>
             <?php endif;?>
 

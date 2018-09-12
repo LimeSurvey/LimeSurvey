@@ -1,5 +1,6 @@
 <?php
-use ls\pluginmanager\PluginEvent;
+// see: https://scrutinizer-ci.com/g/LimeSurvey/LimeSurvey/issues/master/files/application/controllers/admin/authentication.php?selectedSeverities[0]=10&orderField=path&order=asc&honorSelectedPaths=0
+// use ls\pluginmanager\PluginEvent;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -28,22 +29,65 @@ class Authentication extends Survey_Common_Action
 {
 
     /**
-    * Reused email message
-    *
-    * @var string
-    * @access private
-    */
-    private $sent_email_message = 'If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you';
-
-    /**
-    * Show login screen and parse login data
-    */
+     * Show login screen and parse login data
+     * Will redirect or echo json depending on ajax call
+     * This function is called while accessing the login page: index.php/admin/authentication/sa/login
+     */
     public function index()
     {
+        // The page should be shown only for non logged in users
         $this->_redirectIfLoggedIn();
 
-        // Make sure after first run / update the authdb plugin is registered and active
-        // it can not be deactivated
+        // Result can be success, fail or data for template
+        $result = self::prepareLogin();
+
+        $isAjax = isset($_GET['ajax']) && $_GET['ajax'] == 1;
+        $succeeded = isset($result[0]) && $result[0] == 'success';
+        $failed = isset($result[0]) && $result[0] == 'failed';
+
+        // If Ajax, echo success or failure json
+        if ($isAjax) {
+            Yii::import('application.helpers.admin.ajax_helper', true);
+            if ($succeeded) {
+                ls\ajax\AjaxHelper::outputSuccess(gT('Successful login'));
+                return;
+            }
+            else if ($failed) {
+                ls\ajax\AjaxHelper::outputError(gT('Incorrect username and/or password!'));
+                return;
+            }
+        }
+        // If not ajax, redirect to admin startpage or again to login form
+        else {
+            if ($succeeded) {
+                self::doRedirect();
+            }
+            else if ($failed) {
+                $message = $result[1];
+                App()->user->setFlash('error', $message);
+                App()->getController()->redirect(array('/admin/authentication/sa/login'));
+            }
+        }
+
+        // Neither success nor failure, meaning no form submission - result = template data from plugin
+        $aData = $result;
+
+        // If for any reason, the plugin bugs, we can't let the user with a blank screen.
+        $this->_renderWrappedTemplate('authentication', 'login', $aData);
+    }
+
+    /**
+     * Prepare login and return result
+     * It checks if the authdb plugin is registered and active
+     * @return array Either success, failure or plugin data (used in login form)
+     */
+    public static function prepareLogin()
+    {
+        $aData = array();
+
+        // Plugins, include core plugins, can't be activated by default.
+        // So after a fresh installation, core plugins are not activated
+        // They need to be manually loaded.
         if (!class_exists('Authdb', false)) {
             $plugin = Plugin::model()->findByAttributes(array('name'=>'Authdb'));
             if (!$plugin) {
@@ -58,56 +102,82 @@ class Authentication extends Survey_Common_Action
             }
         }
 
+        // In Authdb, the plugin event "beforeLogin" checks if the url param "onepass" is set
+        // if yes, it will call  AuthPluginBase::setAuthPlugin to set to true the plugin private parameter "_stop", so the form will not be displayed
+        // @see: application/core/plugins/Authdb/Authdb.php: function beforeLogin()
         $beforeLogin = new PluginEvent('beforeLogin');
         $beforeLogin->set('identity', new LSUserIdentity('', ''));
-
         App()->getPluginManager()->dispatchEvent($beforeLogin);
-        /* @var $identity LSUserIdentity */
-        $identity = $beforeLogin->get('identity');
 
-        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')))
+        /* @var $identity LSUserIdentity */
+        $identity = $beforeLogin->get('identity');                              // Why here?
+
+        // If the plugin private parameter "_stop" is false and the login form has not been submitted: render the login form
+        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')) )
         {
+            // First step: set the value of $aData['defaultAuth']
+            // This variable will be used to select the default value of the Authentication method selector
+            // which is shown only if there is more than one plugin auth on...
+            // @see application/views/admin/authentication/login.php
+
+            // First it checks if the current plugin force the authentication default value...
+            // NB: A plugin SHOULD NOT be able to over pass the configuration file
+            // @see: http://img.memecdn.com/knees-weak-arms-are-heavy_c_3011277.jpg
             if (!is_null($beforeLogin->get('default'))) {
                 $aData['defaultAuth'] = $beforeLogin->get('default');
             }
             else {
+                // THen, it checks if the the user set a different default plugin auth in application/config/config.php
+                // eg: 'config'=>array()'debug'=>2,'debugsql'=>0, 'default_displayed_auth_method'=>'muh_auth_method')
                 if (App()->getPluginManager()->isPluginActive(Yii::app()->getConfig('default_displayed_auth_method'))) {
                         $aData['defaultAuth'] = Yii::app()->getConfig('default_displayed_auth_method');
-                    }
-                    else {
+                    }else {
                         $aData['defaultAuth'] = 'Authdb';
                     }
             }
+
+            // Call the plugin method newLoginForm
+            // For Authdb:  @see: application/core/plugins/Authdb/Authdb.php: function newLoginForm()
             $newLoginForm = new PluginEvent('newLoginForm');
-            App()->getPluginManager()->dispatchEvent($newLoginForm);
-            $aData['summary'] = $this->_getSummary('logout');
-            $aData['pluginContent'] = $newLoginForm->getAllContent();
-            $this->_renderWrappedTemplate('authentication', 'login', $aData);
-        } else {
+            App()->getPluginManager()->dispatchEvent($newLoginForm);            // inject the HTML of the form inside the private varibale "_content" of the plugin
+            $aData['summary'] = self::getSummary('logout');
+            $aData['pluginContent'] = $newLoginForm->getAllContent();           // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
+        }else{
+            // The form has been submited, or the plugin has been stoped (so normally, the value of login/password are available)
+
              // Handle getting the post and populating the identity there
-            $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin);
+            $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin);      // If form has been submitted, $_POST['authMethod'] is set, else  $identity->plugin should be set, ELSE: TODO error
             $identity->plugin = $authMethod;
 
+            // Call the function afterLoginFormSubmit of the plugin.
+            // For Authdb, it calls AuthPluginBase::afterLoginFormSubmit()
+            // which set the plugin's private variables _username and _password with the POST informations if it's a POST request else it does nothing
             $event = new PluginEvent('afterLoginFormSubmit');
             $event->set('identity', $identity);
             App()->getPluginManager()->dispatchEvent($event, array($authMethod));
             $identity = $event->get('identity');
 
             // Now authenticate
-            if ($identity->authenticate())
-            {
+            // This call LSUserIdentity::authenticate() (application/core/LSUserIdentity.php))
+            // which will call the plugin function newUserSession() (eg: Authdb::newUserSession() )
+            // TODO: for sake of clarity, the plugin function should be renamed to authenticate().
+            if ($identity->authenticate()){
                 FailedLoginAttempt::model()->deleteAttempts();
                 App()->user->setState('plugin', $authMethod);
-                $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
+
+                // This call to AdminController::_GetSessionUserRights() ;
+                // NB 1:calling another controller method from a controller method is a bad pratice
+                // NB 2: this function only check if logged in user is super admin to set in session USER_RIGHT_INITIALSUPERADMIN
+                // TODO: move this function to the user object
+                Yii::app()->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
                 Yii::app()->session['just_logged_in'] = true;
-                Yii::app()->session['loginsummary'] = $this->_getSummary();
+                Yii::app()->session['loginsummary'] = self::getSummary();
 
                 $event = new PluginEvent('afterSuccessfulLogin');
                 App()->getPluginManager()->dispatchEvent($event);
 
-                $this->_doRedirect();
-
-            } else {
+                return array('success');
+            }else{
                 // Failed
                 $event = new PluginEvent('afterFailedLoginAttempt');
                 $event->set('identity', $identity);
@@ -118,15 +188,17 @@ class Authentication extends Survey_Common_Action
                     // If no message, return a default message
                     $message = gT('Incorrect username and/or password!');
                 }
-                App()->user->setFlash('loginError', $message);
-                $this->getController()->redirect(array('/admin/authentication/sa/login'));
+                return array('failed', $message);
             }
         }
+
+        return $aData;
     }
 
     /**
-    * Logout user
-    */
+     * Logout user
+     * @return void
+     */
     public function logout()
     {
         /* Adding beforeLogout event */
@@ -134,7 +206,7 @@ class Authentication extends Survey_Common_Action
         App()->getPluginManager()->dispatchEvent($beforeLogout);
         // Expire the CSRF cookie
         $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
-        $cookie->expire = time()-3600; 
+        $cookie->expire = time()-3600;
         Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
         App()->user->logout();
         App()->user->setFlash('loginmessage', gT('Logout successful.'));
@@ -147,8 +219,9 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Forgot Password screen
-    */
+     * Forgot Password screen
+     * @return void
+     */
     public function forgotpassword()
     {
         $this->_redirectIfLoggedIn();
@@ -170,7 +243,7 @@ class Authentication extends Survey_Common_Action
             if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid'])))
             {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>'.gT($this->sent_email_message).'<br>';
+                $aData['message'] = '<br>'.gT('If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you').'<br>';
             }
             else
             {
@@ -181,11 +254,11 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Send the forgot password email
-    *
-    * @param string $sEmailAddr
-    * @param array $aFields
-    */
+     * Send the forgot password email
+     *
+     * @param string $sEmailAddr
+     * @param array $aFields
+     */
     private function _sendPasswordEmail($sEmailAddr, $aFields)
     {
         $sFrom = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
@@ -196,7 +269,6 @@ class Authentication extends Survey_Common_Action
         $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
 
         $username = sprintf(gT('Username: %s'), $aFields[0]['users_name']);
-        $email    = sprintf(gT('Email: %s'), $sEmailAddr);
         $password = sprintf(gT('New password: %s'), $sNewPass);
 
         $body   = array();
@@ -209,7 +281,7 @@ class Authentication extends Survey_Common_Action
         {
             User::model()->updatePassword($aFields[0]['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
-            $sMessage = gT($this->sent_email_message);
+            $sMessage = gT('If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you');
         }
         else
         {
@@ -220,12 +292,12 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Get's the summary
-    * @param string $sMethod login|logout
-    * @param string $sSummary Default summary
-    * @return string Summary
-    */
-    private function _getSummary($sMethod = 'login', $sSummary = '')
+     * Get's the summary
+     * @param string $sMethod login|logout
+     * @param string $sSummary Default summary
+     * @return string Summary
+     */
+    private static function getSummary($sMethod = 'login', $sSummary = '')
     {
         if (!empty($sSummary))
         {
@@ -254,8 +326,8 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Redirects a logged in user to the administration page
-    */
+     * Redirects a logged in user to the administration page
+     */
     private function _redirectIfLoggedIn()
     {
         if (!Yii::app()->user->getIsGuest())
@@ -265,9 +337,9 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Check if a user can log in
-    * @return bool|array
-    */
+     * Check if a user can log in
+     * @return bool|array
+     */
     private function _userCanLogin()
     {
         $failed_login_attempts = FailedLoginAttempt::model();
@@ -284,21 +356,23 @@ class Authentication extends Survey_Common_Action
     }
 
     /**
-    * Redirect after login
-    */
-    private function _doRedirect()
+     * Redirect after login
+     * @return void
+     */
+    private static function doRedirect()
     {
         $returnUrl = App()->user->getReturnUrl(array('/admin'));
-        $this->getController()->redirect($returnUrl);
+        Yii::app()->getController()->redirect($returnUrl);
     }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     * @return void
+     */
     protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;

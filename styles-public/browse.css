@@ -1,0 +1,54 @@
+
+/*!
+ * Style for browsing response : in Cgrid
+ */
+
+/* Note: The child selector is necessary to not affect date time picker */
+ #responses-grid > table > thead > tr > th {
+     min-width: 120px;
+     text-align: center;
+ }
+
+ .grid-view .table .filters > td .filter-container
+ {
+     padding: 0;
+ }
+
+#responses-grid table tbody tr td  {
+    text-align: center;
+}
+
+#responses-grid table thead tr th.checkbox-column {
+    min-width: 40px;
+}
+
+#responses-grid table tbody tr td.checkbox-column {
+    text-align: left;
+}
+
+
+/*!
+ * Style for browsing response : in jqgrid
+ */
+
+#gview_displayresponses th .qcode {
+    display: block;
+    height: auto;
+    padding-right: 16px;/* Place for icon : but ui-icon is not here*/
+}
+
+#gview_displayresponses th .questiontext {
+    display: block;
+    height: 2.5em;
+    overflow: hidden;
+    font-weight:400;
+}
+#gview_displayresponses th .s-ico {
+    position: absolute;
+    right: 18px;
+    top: 0;
+}
+#gview_displayresponses tr.ui-search-toolbar th {
+    border-top-width: 0 !important; /* Default css from jquery-ui add a top !important width */
+    border-bottom:1px
+}

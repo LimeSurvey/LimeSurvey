@@ -1,13 +1,13 @@
-<div class="side-body">
+<div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3>
-        <span style='font-weight:bold;'><?php eT('Saved Responses'); ?></span>
-        <?php echo $sSurveyName . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>
+        <span style='font-weight:bold;'><?php eT('Saved responses'); ?></span>
+        <?php echo flattenText($sSurveyName) . ' ' . sprintf(gT('ID: %s'), $iSurveyId); ?>
     </h3>
 
         <div class="row">
             <div class="col-lg-12 content-right">
                 <div class="alert alert-info" role="alert">
-                    <?php eT('Saved Responses:'); ?> <?php echo getSavedCount($iSurveyId); ?>
+                    <?php eT('Total:'); ?> <?php echo getSavedCount($iSurveyId); ?>
                 </div>
 
                 <p>
@@ -18,7 +18,7 @@
                                 <th><?php eT('Actions'); ?></th>
                                 <th><?php eT('Identifier'); ?></th>
                                 <th><?php eT('IP address'); ?></th>
-                                <th><?php eT('Date Saved'); ?></th>
+                                <th><?php eT('Date saved'); ?></th>
                                 <th><?php eT('Email address'); ?></th>
                             </tr>
                         </thead>

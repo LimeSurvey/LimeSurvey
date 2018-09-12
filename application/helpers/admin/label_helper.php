@@ -17,12 +17,11 @@
 
 function updateset($lid)
 {
-    
+
 
     // Get added and deleted languagesid arrays
-    $postlanguageids=Yii::app()->getRequest()->getPost('languageids');
+    $newlanidarray=Yii::app()->getRequest()->getPost('languageids');
     $postlabel_name=Yii::app()->getRequest()->getPost('label_name');
-    $newlanidarray = explode(" ",trim($postlanguageids));
 
     $oldlangidsarray = array();
     $labelset = LabelSet::model()->findByAttributes(array('lid' => $lid));
@@ -65,7 +64,7 @@ function updateset($lid)
 
     // Update the label set itself
     $labelset->label_name = $postlabel_name;
-    $labelset->languages = $postlanguageids;
+    $labelset->languages = implode(' ',$newlanidarray);
     $labelset->save();
 }
 
@@ -88,19 +87,12 @@ function deletelabelset($lid)
 
 function insertlabelset()
 {
-    //global $labelsoutput;
-    //	$labelsoutput.= $_POST['languageids'];  For debug purposes
-    
-
-    $postlanguageids=sanitize_languagecodeS(Yii::app()->getRequest()->getPost('languageids'));
     $postlabel_name=flattenText(Yii::app()->getRequest()->getPost('label_name'),false,true,'UTF-8',true);
 
     $data = array(
-    'label_name' => $postlabel_name,
-    'languages' => $postlanguageids
+        'label_name' => $postlabel_name,
+        'languages' => sanitize_languagecodeS(implode(' ',Yii::app()->getRequest()->getPost('languageids',array('en'))))
     );
-
-    //$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$postlabel_name},{$postlanguageids})";
     $result=LabelSet::model()->insertRecords($data);
     if (!$result)
     {
@@ -110,7 +102,6 @@ function insertlabelset()
     {
         return $result;
     }
-
 }
 
 function modlabelsetanswers($lid)
@@ -118,7 +109,7 @@ function modlabelsetanswers($lid)
 
     //global  $labelsoutput;
 
-    
+
 
     $ajax = false;
 
@@ -130,10 +121,10 @@ function modlabelsetanswers($lid)
     }
 
     $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
-    $sPostData=str_replace("\t", '', $sPostData); 
+    $sPostData=str_replace("\t", '', $sPostData);
     if (get_magic_quotes_gpc())
     {
-        $data = json_decode(stripslashes($sPostData));    
+        $data = json_decode(stripslashes($sPostData));
     }
     else
     {
@@ -206,7 +197,7 @@ function modlabelsetanswers($lid)
 */
 function fixorder($lid) {
 
-    
+
 
     $qulabelset = "SELECT * FROM {{labelsets}} WHERE lid=$lid";
     $rslabelset = Yii::app()->db->createCommand($qulabelset)->query();

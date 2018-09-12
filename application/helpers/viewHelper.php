@@ -28,7 +28,7 @@ class viewHelper
      * @param string $linkUrl Url we want to go to, uses CController->createUrl()
      * @param string $linkTxt Text to show for the link
      * @param string $linkTarget Optional target to use for the link
-     * @param string $linkclass Optional class to add to the link
+     * @param string $linkClass Optional class to add to the link
      * @param array  $attribs Optional array of attirbutes to set on the link
      */
     public static function getImageLink($imgName, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
@@ -65,7 +65,7 @@ class viewHelper
      * @param string $linkUrl Url we want to go to, uses CController->createUrl()
      * @param string $linkTxt Text to show for the link
      * @param string $linkTarget Optional target to use for the link
-     * @param string $linkclass Optional class to add to the link
+     * @param string $linkClass Optional class to add to the link
      * @param array  $attribs Optional array of attirbutes to set on the link
      */
     public static function getIconLink($icoClasses, $linkUrl, $linkTxt, $linkTarget = null, $linkClass = 'imagelink', $attribs = array())
@@ -191,7 +191,7 @@ class viewHelper
 
     /**
     * Return a string with the good separator before and after
-    * 
+    *
     * @param $sString :the string
     * @param : string/array : the string to put before of the array (before,after)
     */
@@ -207,18 +207,19 @@ class viewHelper
     }
     /**
     * Return a string fixed according to option
-    * 
+    *
     * @param $sString :the string
     * @param $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
     * @param $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
     * @param $sEllipsis if abbreviated : the char to put at end (or middle)
     * @param $fPosition if abbreviated position to split (in % : 0 to 1)
-    * 
+    *
     */
-    public static function flatEllipsizeText($sString,$bFlat,$iAbbreviated,$sEllipsis='...',$fPosition = 1){
+    public static function flatEllipsizeText($sString,$bFlat=true,$iAbbreviated=0,$sEllipsis='...',$fPosition = 1)
+    {
         if($bFlat || $iAbbreviated)
         {
-            $sString = flattenText($sString);
+            $sString = flattenText($sString, false, true);
         }
         if($iAbbreviated)
         {
@@ -248,6 +249,7 @@ class viewHelper
      * @todo : filter inline javascript (onclick etc ..., but don't filter EM javascript)
      * Maybe doing it directly in LEM->GetLastPrettyPrintExpression();
      * @param string : Html to filter
+     * @param string $sHtml
      * @return string
      * @author Denis Chenu
      */
@@ -257,6 +259,7 @@ class viewHelper
     /**
      * Show purified html
      * @param string : Html to purify
+     * @param string $sHtml
      * @return string
      */
      public static function purified($sHtml){

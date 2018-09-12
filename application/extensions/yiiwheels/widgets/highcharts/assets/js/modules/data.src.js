@@ -8,7 +8,7 @@
 
 /*
  * The Highcharts Data plugin is a utility to ease parsing of input sources like
- * CSV, HTML tables or grid views into basic configuration options for use 
+ * CSV, HTML tables or grid views into basic configuration options for use
  * directly in the Highcharts constructor.
  *
  * Demo: http://jsfiddle.net/highcharts/SnLFj/
@@ -22,36 +22,36 @@
  * are interpreted as series. See also the rows option.
  *
  * - complete : Function(chartOptions)
- * The callback that is evaluated when the data is finished loading, optionally from an 
+ * The callback that is evaluated when the data is finished loading, optionally from an
  * external source, and parsed. The first argument passed is a finished chart options
  * object, containing the series. Thise options
- * can be extended with additional options and passed directly to the chart constructor. This is 
+ * can be extended with additional options and passed directly to the chart constructor. This is
  * related to the parsed callback, that goes in at an earlier stage.
  *
  * - csv : String
  * A comma delimited string to be parsed. Related options are startRow, endRow, startColumn
- * and endColumn to delimit what part of the table is used. The lineDelimiter and 
+ * and endColumn to delimit what part of the table is used. The lineDelimiter and
  * itemDelimiter options define the CSV delimiter formats.
  *
  * - dateFormat: String
  * Which of the predefined date formats in Date.prototype.dateFormats to use to parse date
  * columns, for example "dd/mm/YYYY" or "YYYY-mm-dd". Defaults to a best guess based on
  * what format gives valid dates, and prefers ordered dates.
- * 
+ *
  * - endColumn : Integer
- * In tabular input data, the first row (indexed by 0) to use. Defaults to the last 
+ * In tabular input data, the first row (indexed by 0) to use. Defaults to the last
  * column containing data.
  *
  * - endRow : Integer
  * In tabular input data, the last row (indexed by 0) to use. Defaults to the last row
  * containing data.
  *
- * - googleSpreadsheetKey : String 
+ * - googleSpreadsheetKey : String
  * A Google Spreadsheet key. See https://developers.google.com/gdata/samples/spreadsheet_sample
  * for general information on GS.
  *
- * - googleSpreadsheetWorksheet : String 
- * The Google Spreadsheet worksheet. The available id's can be read from 
+ * - googleSpreadsheetWorksheet : String
+ * The Google Spreadsheet worksheet. The available id's can be read from
  * https://spreadsheets.google.com/feeds/worksheets/{key}/public/basic
  *
  * - itemDelimiter : String
@@ -80,7 +80,7 @@
  * property should be taken from.
  *
  * - startColumn : Integer
- * In tabular input data, the first column (indexed by 0) to use. 
+ * In tabular input data, the first column (indexed by 0) to use.
  *
  * - startRow : Integer
  * In tabular input data, the first row (indexed by 0) to use.
@@ -95,7 +95,7 @@
  */
 
 /*
- * TODO: 
+ * TODO:
  * - Handle various date formats
  *     - http://jsfiddle.net/highcharts/114wejdx/
  *     - http://jsfiddle.net/highcharts/ryv67bkq/
@@ -105,22 +105,22 @@
 /*global jQuery, HighchartsAdapter */
 
 (function (Highcharts) { // docs
-	
+
 	// Utilities
 	var each = Highcharts.each,
 		inArray = HighchartsAdapter.inArray,
 		splat = Highcharts.splat,
 		SeriesBuilder;
-	
-	
+
+
 	// The Data constructor
 	var Data = function (dataOptions, chartOptions) {
 		this.init(dataOptions, chartOptions);
 	};
-	
+
 	// Set the prototype properties
 	Highcharts.extend(Data.prototype, {
-		
+
 	/**
 	 * Initialize the Data object with the given options
 	 */
@@ -144,18 +144,18 @@
 
 			// Parse a CSV string if options.csv is given
 			this.parseCSV();
-			
+
 			// Parse a HTML table if options.table is given
 			this.parseTable();
 
-			// Parse a Google Spreadsheet 
-			this.parseGoogleSpreadsheet();	
+			// Parse a Google Spreadsheet
+			this.parseGoogleSpreadsheet();
 		}
 
 	},
 
 	/**
-	 * Get the column distribution. For example, a line series takes a single column for 
+	 * Get the column distribution. For example, a line series takes a single column for
 	 * Y values. A range series takes two columns for low and high values respectively,
 	 * and an OHLC series takes four columns.
 	 */
@@ -242,7 +242,7 @@
 	 * continue with other operations.
 	 */
 	dataFound: function () {
-		
+
 		if (this.options.switchRowsAndColumns) {
 			this.columns = this.rowsToColumns(this.columns);
 		}
@@ -252,19 +252,19 @@
 
 		// Interpret the values into right types
 		this.parseTypes();
-		
+
 		// Use first row for series names?
 		this.findHeaderRow();
-		
+
 		// Handle columns if a handleColumns callback is given
 		if (this.parsed() !== false) {
-		
+
 			// Complete if a complete callback is given
 			this.complete();
 		}
-		
+
 	},
-	
+
 	/**
 	 * Parse a CSV input string
 	 */
@@ -280,30 +280,30 @@
 			itemDelimiter,
 			lines,
 			activeRowNo = 0;
-			
+
 		if (csv) {
-			
+
 			lines = csv
 				.replace(/\r\n/g, "\n") // Unix
 				.replace(/\r/g, "\n") // Mac
 				.split(options.lineDelimiter || "\n");
 
 			itemDelimiter = options.itemDelimiter || (csv.indexOf('\t') !== -1 ? '\t' : ',');
-			
+
 			each(lines, function (line, rowNo) {
 				var trimmed = self.trim(line),
 					isComment = trimmed.indexOf('#') === 0,
 					isBlank = trimmed === '',
 					items;
-				
+
 				if (rowNo >= startRow && rowNo <= endRow && !isComment && !isBlank) {
 					items = line.split(itemDelimiter);
 					each(items, function (item, colNo) {
 						if (colNo >= startColumn && colNo <= endColumn) {
 							if (!columns[colNo - startColumn]) {
-								columns[colNo - startColumn] = [];					
+								columns[colNo - startColumn] = [];
 							}
-							
+
 							columns[colNo - startColumn][activeRowNo] = item;
 						}
 					});
@@ -314,7 +314,7 @@
 			this.dataFound();
 		}
 	},
-	
+
 	/**
 	 * Parse a HTML table
 	 */
@@ -328,19 +328,19 @@
 			endColumn = options.endColumn || Number.MAX_VALUE;
 
 		if (table) {
-			
+
 			if (typeof table === 'string') {
 				table = document.getElementById(table);
 			}
-			
+
 			each(table.getElementsByTagName('tr'), function (tr, rowNo) {
 				if (rowNo >= startRow && rowNo <= endRow) {
 					each(tr.children, function (item, colNo) {
 						if ((item.tagName === 'TD' || item.tagName === 'TH') && colNo >= startColumn && colNo <= endColumn) {
 							if (!columns[colNo - startColumn]) {
-								columns[colNo - startColumn] = [];					
+								columns[colNo - startColumn] = [];
 							}
-							
+
 							columns[colNo - startColumn][rowNo - startRow] = item.innerHTML;
 						}
 					});
@@ -367,8 +367,8 @@
 
 		if (googleSpreadsheetKey) {
 			jQuery.ajax({
-				dataType: 'json', 
-				url: 'https://spreadsheets.google.com/feeds/cells/' + 
+				dataType: 'json',
+				url: 'https://spreadsheets.google.com/feeds/cells/' +
 				  googleSpreadsheetKey + '/' + (options.googleSpreadsheetWorksheet || 'od6') +
 					  '/public/values?alt=json-in-script&callback=?',
 				error: options.error,
@@ -380,26 +380,26 @@
 						colCount = 0,
 						rowCount = 0,
 						i;
-				
-					// First, find the total number of columns and rows that 
+
+					// First, find the total number of columns and rows that
 					// are actually filled with data
 					for (i = 0; i < cellCount; i++) {
 						cell = cells[i];
 						colCount = Math.max(colCount, cell.gs$cell.col);
-						rowCount = Math.max(rowCount, cell.gs$cell.row);			
+						rowCount = Math.max(rowCount, cell.gs$cell.row);
 					}
-				
+
 					// Set up arrays containing the column data
 					for (i = 0; i < colCount; i++) {
 						if (i >= startColumn && i <= endColumn) {
-							// Create new columns with the length of either end-start or rowCount
+							// Create columns with the length of either end-start or rowCount
 							columns[i - startColumn] = [];
 
 							// Setting the length to avoid jslint warning
 							columns[i - startColumn].length = Math.min(rowCount, endRow - startRow);
 						}
 					}
-					
+
 					// Loop over the cells and assign the value to the right
 					// place in the column arrays
 					for (i = 0; i < cellCount; i++) {
@@ -419,10 +419,10 @@
 			});
 		}
 	},
-	
+
 	/**
 	 * Find the header row. For now, we just check whether the first row contains
-	 * numbers or strings. Later we could loop down and find the first row with 
+	 * numbers or strings. Later we could loop down and find the first row with
 	 * numbers.
 	 */
 	findHeaderRow: function () {
@@ -434,21 +434,21 @@
 		});
 		this.headerRow = headerRow;
 	},
-	
+
 	/**
 	 * Trim a string from whitespace
 	 */
 	trim: function (str) {
 		return typeof str === 'string' ? str.replace(/^\s+|\s+$/g, '') : str;
 	},
-	
+
 	/**
 	 * Parse numeric cells in to number types and date types in to true dates.
 	 */
 	parseTypes: function () {
 		var columns = this.columns,
-			rawColumns = this.rawColumns, 
-			col = columns.length, 
+			rawColumns = this.rawColumns,
+			col = columns.length,
 			row,
 			val,
 			floatVal,
@@ -480,23 +480,23 @@
 				} else if (trimVal == floatVal) { // is numeric
 				/*jslint eqeq: false*/
 					columns[col][row] = floatVal;
-					
+
 					// If the number is greater than milliseconds in a year, assume datetime
 					if (floatVal > 365 * 24 * 3600 * 1000) {
 						columns[col].isDatetime = true;
 					} else {
 						columns[col].isNumeric = true;
-					}					
-				
+					}
+
 				} else { // string, continue to determine if it is a date string or really a string
 					dateVal = this.parseDate(val);
 					// Only allow parsing of dates if this column is an x-column
 					if (isXColumn && typeof dateVal === 'number' && !isNaN(dateVal)) { // is date
-						backup[row] = val; 
+						backup[row] = val;
 						columns[col][row] = dateVal;
 						columns[col].isDatetime = true;
 
-						// Check if the dates are uniformly descending or ascending. If they 
+						// Check if the dates are uniformly descending or ascending. If they
 						// are not, chances are that they are a different time format, so check
 						// for alternative.
 						if (columns[col][row + 1] !== undefined) {
@@ -512,7 +512,7 @@
 							}
 							descending = diff;
 						}
-					
+
 					} else { // string
 						columns[col][row] = trimVal === '' ? null : trimVal;
 						if (row !== 0 && (columns[col].isDatetime || columns[col].isNumeric)) {
@@ -523,15 +523,15 @@
 			}
 
 			// If strings are intermixed with numbers or dates in a parsed column, it is an indication
-			// that parsing went wrong or the data was not intended to display as numbers or dates and 
-			// parsing is too aggressive. Fall back to categories. Demonstrated in the 
+			// that parsing went wrong or the data was not intended to display as numbers or dates and
+			// parsing is too aggressive. Fall back to categories. Demonstrated in the
 			// highcharts/demo/column-drilldown sample.
 			if (isXColumn && columns[col].mixed) {
 				columns[col] = rawColumns[col];
 			}
 		}
 
-		// If the 0 column is date and descending, reverse all columns. 
+		// If the 0 column is date and descending, reverse all columns.
 		// TODO: probably this should apply to xColumns, not 0 column alone.
 		if (columns[0].isDatetime && descending) {
 			hasHeaderRow = typeof columns[0][0] !== 'number';
@@ -543,7 +543,7 @@
 			}
 		}
 	},
-	
+
 	/**
 	 * A collection of available date formats, extendable from the outside to support
 	 * custom date formats.
@@ -583,7 +583,7 @@
 			}
 		}
 	},
-	
+
 	/**
 	 * Parse a date and return it as a number. Overridable through options.parseDate.
 	 */
@@ -598,7 +598,7 @@
 		if (parseDate) {
 			ret = parseDate(val);
 		}
-		
+
 		if (typeof val === 'string') {
 			// Auto-detect the date format the first time
 			if (!dateFormat) {
@@ -620,14 +620,14 @@
 					ret = format.parser(match);
 				}
 			}
-			// Fall back to Date.parse		
+			// Fall back to Date.parse
 			if (!match) {
 				match = Date.parse(val);
 				// External tools like Date.js and MooTools extend Date object and
 				// returns a date.
 				if (typeof match === 'object' && match !== null && match.getTime) {
 					ret = match.getTime() - match.getTimezoneOffset() * 60000;
-				
+
 				// Timestamp
 				} else if (typeof match === 'number' && !isNaN(match)) {
 					ret = match - (new Date(match)).getTimezoneOffset() * 60000;
@@ -636,7 +636,7 @@
 		}
 		return ret;
 	},
-	
+
 	/**
 	 * Reorganize rows into columns
 	 */
@@ -662,7 +662,7 @@
 		}
 		return columns;
 	},
-	
+
 	/**
 	 * A hook for working directly on the parsed columns
 	 */
@@ -702,13 +702,13 @@
 
 		return freeIndexValues;
 	},
-	
+
 	/**
-	 * If a complete callback function is provided in the options, interpret the 
+	 * If a complete callback function is provided in the options, interpret the
 	 * columns into a Highcharts options object.
 	 */
 	complete: function () {
-		
+
 		var columns = this.columns,
 			xColumns = [],
 			type,
@@ -735,7 +735,7 @@
 					columns[i].name = columns[i].shift();
 				}
 			}
-			
+
 			// Use the next columns for series
 			series = [];
 			freeIndexes = this.getFreeIndexes(columns.length, this.valueCount.seriesBuilders);
@@ -754,7 +754,7 @@
 			while (freeIndexes.length > 0) {
 				builder = new SeriesBuilder();
 				builder.addColumnReader(0, 'x');
-				
+
 				// Mark index as used (not free)
 				index = inArray(0, freeIndexes);
 				if (index !== -1) {
@@ -835,7 +835,7 @@
 		}
 	}
 	});
-	
+
 	// Register the Data prototype and data function on Highcharts
 	Highcharts.Data = Data;
 	Highcharts.data = function (options, chartOptions) {
@@ -852,7 +852,7 @@
 
 				afterComplete: function (dataOptions) {
 					var i, series;
-					
+
 					// Merge series configs
 					if (userOptions.hasOwnProperty('series')) {
 						if (typeof userOptions.series === 'object') {
@@ -883,7 +883,7 @@
 	 * Ex: A series builder can be constructed to read column 3 as 'x' and
 	 * column 7 and 8 as 'y1' and 'y2'.
 	 * The output would then be points/rows of the form {x: 11, y1: 22, y2: 33}
-	 * 
+	 *
 	 * The name of the builder is taken from the second column. In the above
 	 * example it would be the column with index 7.
 	 * @constructor
@@ -944,7 +944,7 @@
 			if (pointIsArray) {
 				point.push(value);
 			} else {
-				point[reader.configName] = value; 
+				point[reader.configName] = value;
 			}
 		});
 
@@ -975,7 +975,7 @@
 	 */
 	SeriesBuilder.prototype.addColumnReader = function (columnIndex, configName) {
 		this.readers.push({
-			columnIndex: columnIndex, 
+			columnIndex: columnIndex,
 			configName: configName
 		});
 
@@ -993,7 +993,7 @@
 		var i,
 			referencedColumnIndexes = [],
 			columnReader;
-		
+
 		for (i = 0; i < this.readers.length; i = i + 1) {
 			columnReader = this.readers[i];
 			if (columnReader.columnIndex !== undefined) {

@@ -49,7 +49,7 @@ function isNumericExtended($value)  {
 * Returns splitted unicode string correctly
 * source: http://www.php.net/manual/en/function.str-split.php#107658
 *
-* @param $str
+* @param string $str
 * @param $l
 * @return string
 */
@@ -71,15 +71,15 @@ function strSplitUnicode($str, $l = 0) {
 * Exports CSV response data for SPSS and R
 *
 * @param mixed $iSurveyID The survey ID
-* @param mixed $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
-* @param mixed $na Value for N/A data
+* @param string $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
+* @param string $na Value for N/A data
 * @param sep Quote separator. Use '\'' for SPSS, '"' for R
 * @param logical $header If TRUE, adds SQGA code as column headings (used by export to R)
 */
-function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE) {
+function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE, $sLanguage='') {
 
     // Build array that has to be returned
-    $fields = SPSSFieldMap($iSurveyID);
+    $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
 
     // Now see if we have parameters for from (offset) & num (limit)
     $limit = App()->getRequest()->getParam('limit');
@@ -96,10 +96,6 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
         $rownr++;
         if ($rownr == 1) {
             $num_fields = count($row);
-
-            //This shouldn't occur, but just to be safe:
-            if (count($fields)<>$num_fields) safeDie("Database inconsistency error");
-
             // Add column headers (used by R export)
             if($header==TRUE)
             {
@@ -184,9 +180,11 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
                                 if ($row[$fieldno] == 'Y')
                                 {
                                     echo($q. 1 .$q);
-                                } else
+                                } elseif(isset($row[$fieldno]))
                                 {
                                     echo($q. 0 .$q);
+                                } else {
+                                    echo($na);
                                 }
                             } elseif (!$field['hide']) {
                                 $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
@@ -217,6 +215,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE)
 * Check it the gives field has a labelset and return it as an array if true
 *
 * @param $field array field from SPSSFieldMap
+* @param string $language
 * @return array or false
 */
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
@@ -328,7 +327,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 * @param $prefix string prefix for the variable ID
 * @return array
 */
-function SPSSFieldMap($iSurveyID, $prefix = 'V')
+function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
 {
     $typeMap = array(
         '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -364,28 +363,26 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
         '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
     );
 
-    $fieldmap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+    if (empty($sLanguage)){
+        $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
+    }
+    $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
 
     #See if tokens are being used
     $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
+    // ... and if the survey uses anonymized responses
+    $sSurveyAnonymized=Survey::model()->findByPk($iSurveyID)->anonymized;
 
-    #Lookup the names of the attributes
-    $query="SELECT sid, anonymized, language FROM {{surveys}} WHERE sid=$iSurveyID";
-    $aRow=Yii::app()->db->createCommand($query)->queryRow();  //Checked
-    $surveyprivate=$aRow['anonymized'];
-    $language=$aRow['language'];
-
-    $fieldno=0;
-
+    $iFieldNumber=0;
     $fields=array();
-    if ($bTokenTableExists && $surveyprivate == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
+    if ($bTokenTableExists && $sSurveyAnonymized == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
         foreach ($tokenattributes as $attributefield=>$attributedescription)
         {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
-                $fieldno++;
-                $fields[] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
+                $iFieldNumber++;
+                $fields[] = array('id'=>"{$prefix}{$iFieldNumber}",'name'=>mb_substr($attributefield, 0, 8),
                 'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
                 'VariableLabel'=>$attributedescription['description'],'sql_name'=>$attributefield,'size'=>'100',
                 'title'=>$attributefield,'hide'=>0, 'scale'=>'');
@@ -394,7 +391,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
     }
 
     $tempArray = array();
-    $fieldnames = Yii::app()->db->schema->getTable("{{survey_$iSurveyID}}")->getColumnNames();
+    $fieldnames = array_keys($fieldmap);
     $num_results = count($fieldnames);
     $num_fields = $num_results;
     $diff = 0;
@@ -482,15 +479,15 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V')
             }
 
         }
-        $fieldno++;
-        $fid = $fieldno - $diff;
+        $iFieldNumber++;
+        $fid = $iFieldNumber - $diff;
         $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
         $tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
         'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
         'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
         'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
         //Now check if we have to retrieve value labels
-        $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $language);
+        $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $sLanguage);
         if (is_array($answers)) {
             //Ok we have answers
             if (isset($answers['size'])) {
@@ -550,6 +547,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
     {
         $query->limit((int) $limit,  (int) $offset);
     }
+    $query->order('id ASC');
 
     return $query;
 }
@@ -559,8 +557,8 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
 *
 * @param mixed $xmlwriter  The existing XMLWriter object
 * @param mixed $Query  The table query to build from
-* @param mixed $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
-* @param array $excludes array of columnames not to include in export
+* @param string $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
+* @param string[] $excludes array of columnames not to include in export
 */
 function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 {
@@ -610,7 +608,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
                         if (!$xmlwriter->startElement($Key)) safeDie('Invalid element key: '.$Key);
                         // Remove invalid XML characters
                         if ($Value!=='') {
-                            $Value=str_replace(']]>','',$Value);
+                            $Value=str_replace(']]>',']] >',$Value);
                             $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
                         }
                         $xmlwriter->endElement();
@@ -777,11 +775,11 @@ function surveyGetXMLData($iSurveyID, $exclude = array())
 /**
 * Exports a single table to XML
 *
-* @param inetger $iSurveyID The survey ID
+* @param integer $iSurveyID The survey ID
 * @param string $sTableName The database table name of the table to be export
 * @param string $sDocType What doctype should be written
-* @param string $sXMLTableName Name of the tag table name in the XML file
-* @return object XMLWriter object
+* @param string $sXMLTableTagName Name of the tag table name in the XML file
+* @return string|boolean XMLWriter object
 */
 function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTagName='', $sFileName='', $bSetIndent=true)
 {
@@ -1276,23 +1274,23 @@ function quexml_export($surveyi, $quexmllan)
                 $question->appendChild($directive);
             }
 
-			if (Yii::app()->getConfig('quexmlshowprintablehelp')==true)
-			{
+            if (Yii::app()->getConfig('quexmlshowprintablehelp')==true)
+            {
 
-				$RowQ['printable_help']=quexml_get_lengthth($qid,"printable_help","", $quexmllang);
+                $RowQ['printable_help']=quexml_get_lengthth($qid,"printable_help","", $quexmllang);
 
-				if (!empty($RowQ['printable_help']))
-				{
-					$directive = $dom->createElement("directive");
-					$position = $dom->createElement("position","before");
-					$text = $dom->createElement("text", '['.gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
-					$administration = $dom->createElement("administration","self");
-					$directive->appendChild($position);
-					$directive->appendChild($text);
-					$directive->appendChild($administration);
-					$question->appendChild($directive);
-				}
-			}
+                if (!empty($RowQ['printable_help']))
+                {
+                    $directive = $dom->createElement("directive");
+                    $position = $dom->createElement("position","before");
+                    $text = $dom->createElement("text", '['.gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
+                    $administration = $dom->createElement("administration","self");
+                    $directive->appendChild($position);
+                    $directive->appendChild($text);
+                    $directive->appendChild($administration);
+                    $question->appendChild($directive);
+                }
+            }
 
             $response = $dom->createElement("response");
             $sgq = $RowQ['title'];
@@ -1491,7 +1489,7 @@ function quexml_export($surveyi, $quexmllan)
 *
 * Usage: $db->Concat($str1,$str2);
 *
-* @return concatenated string
+* @return string string
 */
 function concat()
 {
@@ -1504,6 +1502,9 @@ function concat()
 // 1. questions
 // 2. answers
 
+/**
+ * @param string $action
+ */
 function group_export($action, $iSurveyID, $gid)
 {
     $fn = "limesurvey_group_$gid.lsg";
@@ -1536,6 +1537,9 @@ function group_export($action, $iSurveyID, $gid)
     $xml->endDocument();
 }
 
+/**
+ * @param XMLWriter $xml
+ */
 function groupGetXMLStructure($xml,$gid)
 {
     // QuestionGroup
@@ -1607,6 +1611,9 @@ function groupGetXMLStructure($xml,$gid)
 //  - Answer
 //  - Question attributes
 //  - Default values
+/**
+ * @param string $action
+ */
 function questionExport($action, $iSurveyID, $gid, $qid)
 {
     $fn = "limesurvey_question_$qid.lsq";
@@ -1640,6 +1647,9 @@ function questionExport($action, $iSurveyID, $gid, $qid)
     exit;
 }
 
+/**
+ * @param XMLWriter $xml
+ */
 function questionGetXMLStructure($xml,$gid,$qid)
 {
     // Questions table
@@ -1702,62 +1712,61 @@ function tokensExport($iSurveyID)
     $oSurvey=Survey::model()->findByPk($iSurveyID);
     $bIsNotAnonymous= ($oSurvey->anonymized=='N' && $oSurvey->active=='Y');// db table exist (survey_$iSurveyID) ?
 
-    $bquery = "SELECT * FROM {{tokens_$iSurveyID}} where 1=1";
+    $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}}");
     $databasetype = Yii::app()->db->getDriverName();
-    if (trim($sEmailFiter)!='')
+    $oRecordSet->where("1=1");
+    if ($sEmailFiter!='')
     {
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib')))
         {
-            $bquery .= ' and CAST(email as varchar) like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
+            $oRecordSet->andWhere("CAST(email as varchar) like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
         }
         else
         {
-            $bquery .= ' and email like '.dbQuoteAll('%'.$_POST['filteremail'].'%', true);
+            $oRecordSet->andWhere("email like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
         }
     }
-    if ($_POST['tokenstatus']==1)
+    if ($iTokenStatus==1)
     {
-        $bquery .= " and completed<>'N'";
+        $oRecordSet->andWhere("completed<>'N'");
     }
     elseif ($iTokenStatus==2)
     {
-        $bquery .= " and completed='N'";
+        $oRecordSet->andWhere("completed='N'");
+        if ($bIsNotAnonymous)
+        {
+            $oRecordSet->andWhere("token not in (select token from {{survey_$iSurveyID}} group by token)");
+        }
     }
-    elseif($iTokenStatus==3 && $bIsNotAnonymous)
+    if ($iTokenStatus==3 && $bIsNotAnonymous)
     {
-        $bquery .= " and completed='N' and token not in (select token from {{survey_$iSurveyID}} group by token)";
-    }
-    elseif($iTokenStatus==4 && $bIsNotAnonymous)
-    {
-        $bquery .= " and completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)";
+        $oRecordSet->andWhere("completed='N' and token in (select token from {{survey_$iSurveyID}} group by token)");
     }
 
     if ($iInvitationStatus==1)
     {
-        $bquery .= " and sent<>'N'";
+        $oRecordSet->andWhere("sent<>'N'");
     }
     if ($iInvitationStatus==2)
     {
-        $bquery .= " and sent='N'";
+        $oRecordSet->andWhere("sent='N'");
     }
 
     if ($iReminderStatus==1)
     {
-        $bquery .= " and remindersent<>'N'";
+        $oRecordSet->andWhere("remindersent<>'N'");
     }
     if ($iReminderStatus==2)
     {
-        $bquery .= " and remindersent='N'";
+        $oRecordSet->andWhere("remindersent='N'");
     }
 
     if ($sTokenLanguage!='')
     {
-        $bquery .= " and language=".dbQuoteAll($sTokenLanguage);
+        $oRecordSet->andWhere("language=".dbQuoteAll($sTokenLanguage));
     }
-    $bquery .= " ORDER BY tid";
-    Yii::app()->loadHelper('database');
-
-    $bresult = Yii::app()->db->createCommand($bquery)->query(); //dbExecuteAssoc($bquery) is faster but deprecated!
+    $oRecordSet->order("tid");
+    $bresult = $oRecordSet->query();
     //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
     header("Content-Disposition: attachment; filename=tokens_".$iSurveyID.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
@@ -1823,10 +1832,13 @@ function tokensExport($iSurveyID)
 
     if (Yii::app()->request->getPost('tokendeleteexported') && !empty($aExportedTokens))
     {
-		Token::model($iSurveyID)->deleteByPk($aExportedTokens);
+        Token::model($iSurveyID)->deleteByPk($aExportedTokens);
     }
 }
 
+/**
+ * @param string $filename
+ */
 function CPDBExport($data,$filename)
 {
 

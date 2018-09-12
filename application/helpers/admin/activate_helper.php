@@ -16,6 +16,7 @@
 * fixes the numbering of questions
 * This can happen if question 1 have subquestion code 1 and have question 11 in same survey and group (then same SGQA)
 * @param int $fixnumbering
+* @param integer $iSurveyID
 * @todo can call this function (no $_GET, but getParam) AND do it with Yii
 */
 function fixNumbering($iQuestionID, $iSurveyID)
@@ -79,6 +80,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
 }
 /**
 * checks consistency of groups
+* @param integer $postsid
 * @return <type>
 */
 function checkGroup($postsid)
@@ -103,8 +105,8 @@ function checkGroup($postsid)
 }
 /**
 * checks questions in a survey for consistency
-* @param <type> $postsid
-* @param <type> $iSurveyID
+* @param integer $postsid
+* @param integer $iSurveyID
 * @return array $faildcheck
 */
 function checkQuestions($postsid, $iSurveyID, $qtypes)
@@ -254,11 +256,8 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 */
 function activateSurvey($iSurveyID, $simulate = false)
 {
-    $createsurvey='';
-    $activateoutput='';
-    $createsurveytimings='';
-    $fieldstiming = array();
-    $createsurveydirectory=false;
+    $aTableDefinition=array();
+    $bCreateSurveyDir=false;
     // Specify case sensitive collations for the token
     $sCollation='';
     if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
@@ -267,54 +266,53 @@ function activateSurvey($iSurveyID, $simulate = false)
     if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
         $sCollation=" COLLATE SQL_Latin1_General_CP1_CS_AS";
     }
-
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $prow = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
-
+    $arSurvey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
     //Get list of questions for the base language
-    $fieldmap = createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID));
-
-    $createsurvey = array();
-
-    foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
+    $sFieldMap = createFieldMap($iSurveyID,'full',true,false,$arSurvey->language);
+    //For each question, create the appropriate field(s)
+    foreach ($sFieldMap as $j=>$aRow)
     {
-        switch($arow['type'])
+        switch($aRow['type'])
         {
+            case 'seed':
+                $aTableDefinition[$aRow['fieldname']] = "string(31)";
+                break;
             case 'startlanguage':
-                $createsurvey[$arow['fieldname']] = "string(20) NOT NULL";
+                $aTableDefinition[$aRow['fieldname']] = "string(20) NOT NULL";
                 break;
             case 'id':
-                $createsurvey[$arow['fieldname']] = "pk";
+                $aTableDefinition[$aRow['fieldname']] = "pk";
                 break;
             case "startdate":
             case "datestamp":
-                $createsurvey[$arow['fieldname']] = "datetime NOT NULL";
+                $aTableDefinition[$aRow['fieldname']] = "datetime NOT NULL";
                 break;
             case "submitdate":
-                $createsurvey[$arow['fieldname']] = "datetime";
+                $aTableDefinition[$aRow['fieldname']] = "datetime";
                 break;
             case "lastpage":
-                $createsurvey[$arow['fieldname']] = "integer";
+                $aTableDefinition[$aRow['fieldname']] = "integer";
                 break;
             case "N":  //Numerical
             case "K":  //Multiple Numerical
-                $createsurvey[$arow['fieldname']] = "decimal (30,10)";
+                $aTableDefinition[$aRow['fieldname']] = "decimal (30,10)";
                 break;
             case "S":  //SHORT TEXT
-                $createsurvey[$arow['fieldname']] = "text";
+                $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
             case "L":  //LIST (RADIO)
             case "!":  //LIST (DROPDOWN)
             case "M":  //Multiple choice
             case "P":  //Multiple choice with comment
             case "O":  //DROPDOWN LIST WITH COMMENT
-                if ($arow['aid'] != 'other' && strpos($arow['aid'],'comment')===false && strpos($arow['aid'],'othercomment')===false)
+                if ($aRow['aid'] != 'other' && strpos($aRow['aid'],'comment')===false && strpos($aRow['aid'],'othercomment')===false)
                 {
-                    $createsurvey[$arow['fieldname']] = "string(5)";
+                    $aTableDefinition[$aRow['fieldname']] = "string(5)";
                 }
                 else
                 {
-                    $createsurvey[$arow['fieldname']] = "text";
+                    $aTableDefinition[$aRow['fieldname']] = "text";
                 }
                 break;
             case "U":  //Huge text
@@ -322,49 +320,77 @@ function activateSurvey($iSurveyID, $simulate = false)
             case "T":  //LONG TEXT
             case ";":  //Multi Flexi
             case ":":  //Multi Flexi
-                $createsurvey[$arow['fieldname']] = "text";
+                $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
             case "D":  //DATE
-                $createsurvey[$arow['fieldname']] = "datetime";
+                $aTableDefinition[$aRow['fieldname']] = "datetime";
                 break;
             case "5":  //5 Point Choice
             case "G":  //Gender
             case "Y":  //YesNo
             case "X":  //Boilerplate
-                $createsurvey[$arow['fieldname']] = "string(1)";
+                $aTableDefinition[$aRow['fieldname']] = "string(1)";
                 break;
             case "I":  //Language switch
-                $createsurvey[$arow['fieldname']] = "string(20)";
+                $aTableDefinition[$aRow['fieldname']] = "string(20)";
                 break;
             case "|":
-                $createsurveydirectory = true;
-                if (strpos($arow['fieldname'], "_"))
-                    $createsurvey[$arow['fieldname']] = "integer";
+                $bCreateSurveyDir = true;
+                if (strpos($aRow['fieldname'], "_"))
+                    $aTableDefinition[$aRow['fieldname']] = "integer";
                 else
-                    $createsurvey[$arow['fieldname']] = "text";
+                    $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
             case "ipaddress":
-                if ($prow->ipaddr == "Y")
-                    $createsurvey[$arow['fieldname']] = "string";
+                if ($arSurvey->ipaddr == "Y")
+                    $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
             case "url":
-                if ($prow->refurl == "Y")
-                    $createsurvey[$arow['fieldname']] = "string";
+                if ($arSurvey->refurl == "Y")
+                    $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
             case "token":
-                $createsurvey[$arow['fieldname']] = 'string(35)'.$sCollation;
+                $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$sCollation;
                 break;
             case '*': // Equation
-                $createsurvey[$arow['fieldname']] = "text";
+                $aTableDefinition[$aRow['fieldname']] = "text";
+                break;
+            case 'R':
+                /**
+                 * See bug #09828: Ranking question : update allowed can broke Survey DB
+                 * If max_subquestions is not set or is invalid : set it to actual answers numbers
+                 */
+
+                $nrOfAnswers = Answer::model()->countByAttributes(
+                    array('qid' => $aRow['qid'],'language'=>Survey::model()->findByPk($iSurveyID)->language)
+                );
+                $oQuestionAttribute = QuestionAttribute::model()->find(
+                    "qid = :qid AND attribute = 'max_subquestions'",
+                    array(':qid' => $aRow['qid'])
+                );
+                if (empty($oQuestionAttribute))
+                {
+                    $oQuestionAttribute = new QuestionAttribute();
+                    $oQuestionAttribute->qid = $aRow['qid'];
+                    $oQuestionAttribute->attribute = 'max_subquestions';
+                    $oQuestionAttribute->value = $nrOfAnswers;
+                    $oQuestionAttribute->save();
+                }
+                elseif(intval($oQuestionAttribute->value)<1) // Fix it if invalid : disallow 0, but need a sub question minimum for EM
+                {
+                    $oQuestionAttribute->value = $nrOfAnswers;
+                    $oQuestionAttribute->save();
+                }
+                $aTableDefinition[$aRow['fieldname']] = "string(5)";
                 break;
             default:
-                $createsurvey[$arow['fieldname']] = "string(5)";
+                $aTableDefinition[$aRow['fieldname']] = "string(5)";
         }
-        if ($prow->anonymized == 'N' && !array_key_exists('token',$createsurvey)){
-            $createsurvey['token'] = 'string(35)'.$sCollation;
+        if ($arSurvey->anonymized == 'N' && !array_key_exists('token',$aTableDefinition)){
+            $aTableDefinition['token'] = 'string(35)'.$sCollation;
         }
         if ($simulate){
-            $tempTrim = trim($createsurvey);
+            $tempTrim = trim($aTableDefinition);
             $brackets = strpos($tempTrim,"(");
             if ($brackets === false){
                 $type = substr($tempTrim,0,2);
@@ -383,12 +409,12 @@ function activateSurvey($iSurveyID, $simulate = false)
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     //$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
-    $tabname = "{{survey_{$iSurveyID}}}";
+    $sTableName = "{{survey_{$iSurveyID}}}";
     Yii::app()->loadHelper("database");
     try
     {
-        $execresult = Yii::app()->db->createCommand()->createTable($tabname, $createsurvey);
-        Yii::app()->db->schema->getTable($tabname, true); // Refresh schema cache just in case the table existed in the past
+        Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition);
+        Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
     }
     catch (CDbException $e)
     {
@@ -403,14 +429,14 @@ function activateSurvey($iSurveyID, $simulate = false)
     }
     try
     {
-        if (isset($createsurvey['token'])) Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1,50000),$tabname,'token');
+        if (isset($aTableDefinition['token'])) Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1,50000),$sTableName,'token');
     }
         catch (CDbException $e)
     {
     }
 
-    $anquery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$iSurveyID}";
-    $iAutoNumberStart=Yii::app()->db->createCommand($anquery)->queryScalar();
+    $sQuery = "SELECT autonumber_start FROM {{surveys}} WHERE sid={$iSurveyID}";
+    $iAutoNumberStart=Yii::app()->db->createCommand($sQuery)->queryScalar();
     //if there is an autonumber_start field, start auto numbering here
     if ($iAutoNumberStart!==false && $iAutoNumberStart>0)
     {
@@ -428,31 +454,31 @@ function activateSurvey($iSurveyID, $simulate = false)
         elseif (Yii::app()->db->driverName=='pgsql')
         {
             $sQuery = "SELECT setval(pg_get_serial_sequence('{{survey_{$iSurveyID}}}', 'id'),{$iAutoNumberStart},false);";
-            $result = @Yii::app()->db->createCommand($sQuery)->execute();
+            @Yii::app()->db->createCommand($sQuery)->execute();
         }
         else
         {
             $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} AUTO_INCREMENT = {$iAutoNumberStart}";
-            $result = @Yii::app()->db->createCommand($sQuery)->execute();
+            @Yii::app()->db->createCommand($sQuery)->execute();
         }
     }
 
-    if ($prow->savetimings == "Y")
+    if ($arSurvey->savetimings == "Y")
     {
         $timingsfieldmap = createTimingsFieldMap($iSurveyID,"full",false,false,getBaseLanguageFromSurveyID($iSurveyID));
 
-        $column = array();
-        $column['id'] = $createsurvey['id'];
+        $aTimingTableDefinition = array();
+        $aTimingTableDefinition['id'] = $aTableDefinition['id'];
         foreach ($timingsfieldmap as $field=>$fielddata)
         {
-            $column[$field] = 'FLOAT';
+            $aTimingTableDefinition[$field] = 'FLOAT';
         }
 
-        $tabname = "{{survey_{$iSurveyID}_timings}}";
+        $sTableName = "{{survey_{$iSurveyID}_timings}}";
         try
         {
-            $execresult = Yii::app()->db->createCommand()->createTable($tabname,$column);
-            Yii::app()->db->schema->getTable($tabname, true); // Refresh schema cache just in case the table existed in the past
+            Yii::app()->db->createCommand()->createTable($sTableName,$aTimingTableDefinition);
+            Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         }
         catch (CDbException $e)
         {
@@ -462,7 +488,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     }
     $aResult=array('status'=>'OK');
     // create the survey directory where the uploaded files can be saved
-    if ($createsurveydirectory)
+    if ($bCreateSurveyDir)
     {
         if (!file_exists(Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files"))
         {
@@ -474,11 +500,15 @@ function activateSurvey($iSurveyID, $simulate = false)
             }
         }
     }
-    $acquery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$iSurveyID;
-    $acresult = Yii::app()->db->createCommand($acquery)->query();
+    $sQuery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$iSurveyID;
+    $acresult = Yii::app()->db->createCommand($sQuery)->query();
     return $aResult;
 }
 
+/**
+ * @param string $fieldname
+ * @param string $tablename
+ */
 function mssql_drop_constraint($fieldname, $tablename)
 {
     global $modifyoutput;
@@ -501,6 +531,9 @@ function mssql_drop_constraint($fieldname, $tablename)
 }
 
 
+/**
+ * @param string $tablename
+ */
 function mssql_drop_primary_index($tablename)
 {
     global $modifyoutput;

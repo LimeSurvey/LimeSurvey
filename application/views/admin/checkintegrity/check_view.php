@@ -1,5 +1,5 @@
 <h3 class="pagetitle"><?php eT("Check data integrity");?></h3>
-        
+
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-12">
         <div class="jumbotron message-box">
@@ -24,7 +24,7 @@
                     { ?>
                     <li><?php eT("All conditions meet consistency standards."); ?></li><?php
                 } ?>
-        
+
                 <?php
                     if (isset($questionattributes)) { ?>
                     <li><?php printf(gT("There are %s orphaned question attributes."),count($questionattributes)); ?> </li>
@@ -33,7 +33,7 @@
                     { ?>
                     <li><?php eT("All question attributes meet consistency standards."); ?> </li> <?php
                 } ?>
-        
+
                 <?php
                     if ($defaultvalues) { ?>
                     <li><?php printf(gT("There are %s orphaned default value entries which can be deleted."),$defaultvalues); ?> </li>
@@ -42,7 +42,7 @@
                     { ?>
                     <li><?php eT("All default values meet consistency standards."); ?> </li> <?php
                 } ?>
-        
+
                 <?php
                     if ($quotas) { ?>
                     <li><?php printf(gT("There are %s orphaned quota entries which can be deleted."),$quotas); ?> </li>
@@ -51,7 +51,7 @@
                     { ?>
                     <li><?php eT("All quotas meet consistency standards."); ?> </li> <?php
                 } ?>
-        
+
                 <?php
                     if ($quotals) { ?>
                     <li><?php printf(gT("There are %s orphaned quota language settings which can be deleted."),$quotals); ?> </li>
@@ -60,7 +60,7 @@
                     { ?>
                     <li><?php eT("All quota language settings meet consistency standards."); ?> </li> <?php
                 } ?>
-        
+
                 <?php
                     if ($quotamembers) { ?>
                     <li><?php printf(gT("There are %s orphaned quota members which can be deleted."),$quotamembers); ?> </li>
@@ -69,7 +69,7 @@
                     { ?>
                     <li><?php eT("All quota quota members meet consistency standards."); ?> </li> <?php
                 } ?>
-        
+
                 <?php
                     if (isset($assessments))
                     {?>
@@ -87,7 +87,7 @@
                     { ?>
                     <li><?php eT("All assessments meet consistency standards."); ?></li><?php
                 } ?>
-        
+
                 <?php
                     if (isset($answers))
                     {?>
@@ -105,7 +105,7 @@
                     { ?>
                     <li><?php eT("All answers meet consistency standards."); ?></li><?php
                 } ?>
-        
+
                 <?php
                     if (isset($surveys))
                     {?>
@@ -123,7 +123,7 @@
                     { ?>
                     <li><?php eT("All surveys meet consistency standards."); ?></li><?php
                 } ?>
-        
+
                 <?php
                     if (isset($surveylanguagesettings))
                     {?>
@@ -141,7 +141,7 @@
                     { ?>
                     <li><?php eT("All survey language settings meet consistency standards."); ?></li><?php
                 } ?>
-        
+
                 <?php
                     if (isset($questions))
                     {?>
@@ -159,7 +159,7 @@
                     { ?>
                     <li><?php eT("All questions meet consistency standards."); ?></li><?php
                 } ?>
-        
+
                 <?php
                     if (isset($groups))
                     {?>
@@ -177,7 +177,7 @@
                     { ?>
                     <li><?php eT("All groups meet consistency standards."); ?></li><?php
                 } ?>
-        
+
                 <?php
                     if (isset($orphansurveytables))
                     {?>
@@ -195,7 +195,7 @@
                     { ?>
                     <li><?php eT("All old survey tables meet consistency standards."); ?></li><?php
                 } ?>
-        
+
                 <?php
                     if (isset($orphantokentables))
                     {?>
@@ -214,22 +214,21 @@
                     <li><?php eT("All old token tables meet consistency standards."); ?></li><?php
                 } ?>
             </ul>
-        
+
             <?php if ($integrityok) { ?>
                 <br /> <?php eT("No database action required!"); ?>
                 <?php } else
                 {?>
                 <br /><?php eT("Should we proceed with the delete?"); ?> <br />
-                <?php echo CHtml::form(array("admin/checkintegrity/fixintegrity"), 'post');?>
-                    <input type='hidden' name='ok' value='Y' />
-                    <input type='submit' value='<?php eT("Yes - Delete Them!"); ?>' class="btn btn-default" />
+                <?php echo CHtml::form(array("admin/checkintegrity","sa"=>'fixintegrity'), 'post');?>
+                    <button type='submit' value='Y' name='ok' class="btn btn-default" ><?php eT("Yes - Delete Them!"); ?></button>
                 </form>
                 <?php
             } ?>
         </div>
-                    
-        
-        
+
+
+
         <div class="jumbotron message-box">
                 <h2><?php eT("Data redundancy check"); ?></h2>
                 <p class="lead"><?php eT("The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."); ?></p>
@@ -247,13 +246,13 @@
                                 <ul class='response-tables-list list-unstyled'>
                                     <?php
                                         foreach ($redundantsurveytables as $surveytable) {?>
-                                        <li><input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]' /><label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label></li><?php
+                                        <li><input type='checkbox' id='cbox_<?php echo $surveytable['table']?>' value='<?php echo $surveytable['table']?>' name='oldsmultidelete[]' /> <label for='cbox_<?php echo $surveytable['table']?>'><?php echo $surveytable['details']?></label></li><?php
                                     }?>
                                 </ul>
                             </li>
                             <?php
                         } ?>
-        
+
                         <?php
                             if (isset($redundanttokentables) && count($redundanttokentables)>0)
                             {?>
@@ -261,7 +260,7 @@
                                 <ul class='token-tables-list list-unstyled'>
                                     <?php
                                         foreach ($redundanttokentables as $tokentable) {?>
-                                        <li><input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' /><label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label></li><?php
+                                        <li><input type='checkbox' id='cbox_<?php echo $tokentable['table']?>' value='<?php echo $tokentable['table']?>' name='oldsmultidelete[]' /> <label for='cbox_<?php echo $tokentable['table']?>'><?php echo $tokentable['details']?></label></li><?php
                                     }?>
                                 </ul>
                             </li>
@@ -272,8 +271,7 @@
                         <input type='submit' value='<?php eT("Delete checked items!"); ?>' class="btn btn-default" /> <br />
                         <span class='hint warning'><?php eT("Note that you cannot undo a delete if you proceed. The data will be gone."); ?></span></p>
                 </form><?php
-            } ?>            
-                </p>
-        </div>        
+            } ?>
+        </div>
     </div>
-</div>    
+</div>

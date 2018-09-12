@@ -1,6 +1,6 @@
 <?php
 /**
- * Create new survey
+ * Create survey
  */
 ?>
 <!-- new survey view -->

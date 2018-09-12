@@ -1,6 +1,6 @@
 <div class='menubar surveybar' id="browsermenubarid">
     <div class='row container-fluid'>
-        <?php if(isset($menu) && !$menu['edition']): ?>
+        <?php if(isset($menu) && isset($menu['edition']) && !$menu['edition']): ?>
             <div class="col-md-12">
             <!-- Show summary information -->
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')): ?>
@@ -17,7 +17,7 @@
                 <?php if (count($tmp_survlangs) < 2): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
                         <span class="glyphicon glyphicon-list text-success"></span>
-                        <?php eT("Display Responses"); ?>
+                        <?php eT("Display responses"); ?>
                     </a>
                 <?php else:?>
                 <div class="btn-group">
@@ -36,31 +36,6 @@
                     </ul>
                 </div>
                 <?php endif;?>
-
-
-                <!-- Display Last 50 Responses -->
-                <?php if (count($tmp_survlangs) < 2): ?>
-                    <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/0/limit/50/order/desc"); ?>' role="button">
-                        <span class="icon-viewlast text-success"></span>
-                        <?php eT("Last 50 Responses"); ?>
-                    </a>
-                <?php else:?>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="icon-viewlast text-success"></span>
-                        <?php eT("Last 50 Responses");?> <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <?php foreach ($tmp_survlangs as $tmp_lang):?>
-                                <li>
-                                    <a href="<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/start/0/limit/50/order/desc/browselang/$tmp_lang"); ?>" accesskey='b'>
-                                        <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
-                                    </a>
-                                </li>
-                        <?php endforeach;?>
-                    </ul>
-                </div>
-                <?php endif;?>
             <?php endif;?>
 
 
@@ -68,7 +43,7 @@
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')): ?>
                 <a class="btn btn-default" href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid"); ?>' role="button">
                     <span class="fa fa-keyboard-o text-success"></span>
-                    <?php eT("Dataentry"); ?>
+                    <?php eT("Data entry"); ?>
                 </a>
             <?php endif;?>
 
@@ -83,7 +58,7 @@
                 <?php if ($thissurvey['savetimings'] == "Y"):?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/time/surveyid/$surveyid"); ?>' role="button">
                         <span class="glyphicon glyphicon-time text-success"></span>
-                        <?php eT("Get time statistics from these responses"); ?>
+                        <?php eT("Timing statistics"); ?>
                     </a>
                 <?php endif;?>
             <?php endif;?>
@@ -171,13 +146,13 @@
             <?php endif;?>
         </div>
         <?php else: ?>
-        <div class="col-md-5 text-right col-md-offset-7">
+        <div class="col-md-7 text-right col-md-offset-5">
             <?php if(isset($menu['save'])): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="glyphicon glyphicon-ok"></span>
                     <?php eT("Save");?>
                 </a>
-                <a class="btn btn-default" href="#" role="button">
+                <a class="btn btn-default" href="#" role="button" id="save-and-close-button">
                     <span class="glyphicon glyphicon-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
@@ -243,24 +218,22 @@
 
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid/id/$id"); ?>' role="button" >
                         <span class="icon-export text-success downloadfile"></span>
-                        <?php eT("Export this Response"); ?>
+                        <?php eT("Export this response"); ?>
                     </a>
                 <?php endif;?>
 
-            <?php if($previous) { ?>
-            <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$previous"); ?>' title='<?php eT("Show previous..."); ?>' >
-                <span class="icon-databack text-success" title='<?php eT("Show previous..."); ?>'></span>
+            <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$previous"); ?>' title='<?php eT("Show previous..."); ?>'
+                class="btn btn-default <?php if (!$previous) {echo 'disabled';}?>">
+                <span class="icon-databack text-success" title='<?php eT("Show previous..."); ?>'></span> <?php eT("Show previous..."); ?>
             </a>
-            <?php } ?>
-            <?php if($next) { ?>
-                <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$next"); ?>' title='<?php eT("Show next..."); ?>'>
-                    <span class="icon-dataforward text-success" title='<?php eT("Show next..."); ?>'></span>
-                </a>
-            <?php } ?>
+            <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/$next"); ?>' title='<?php eT("Show next..."); ?>'
+            class="btn btn-default <?php if (!$next) {echo 'disabled';}?>">
+                <span class="icon-dataforward text-success" title='<?php eT("Show next..."); ?>'></span> <?php eT("Show next..."); ?>
+            </a>
 
             <?php endif;?>
 
-            <?php if(isset($menu) && $menu['close']): ?>
+            <?php if(isset($menu) && isset($menu['close']) && $menu['close']): ?>
                 <a class="btn btn-danger" href="<?php echo  $menu['closeurl'];  ?>" role="button">
                     <span class="glyphicon glyphicon-close"></span>
                     <?php eT("Close");?>

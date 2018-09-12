@@ -1,7 +1,7 @@
 <tr class="evenrow">
     <td align="center">&nbsp;</td>
-    <td align="center"><?php echo @$question_answers[$quota_questions['code']]['Title'];?></td>
-    <td align="center"><?php echo @$question_answers[$quota_questions['code']]['Display'];?></td>
+    <td align="center"><?php echo $question_answers[$quota_questions['code']]['Title'];?></td>
+    <td align="center"><?php echo flattenText($question_answers[$quota_questions['code']]['Display']);?></td>
     <td align="center">&nbsp;</td>
     <td align="center">&nbsp;</td>
     <td style="padding: 3px;" align="center">

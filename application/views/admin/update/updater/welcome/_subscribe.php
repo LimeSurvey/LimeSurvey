@@ -6,6 +6,11 @@
 ?>
 <h2 class="maintitle"><?php eT("Subscribe to ComfortUpdate!");?></h2>
 
+<?php
+    if( isset($serverAnswer->html) )
+        echo $serverAnswer->html;
+?>
+
 <div class="updater-background">
     <br/>
     <p>
@@ -18,27 +23,35 @@
     <?php
         $aopen  = '<a href="https://www.limesurvey.org/en/cb-registration/registers">';
         $aclose = '</a>';
-    ?><br>
+        ?><br>
     <?php echo sprintf(gT("If you don't have an account on limesurvey.org, please %sregister first%s."),$aopen, $aclose);?></p>
 
     <?php
-        $url = Yii::app()->createUrl('/admin/update/sa/submitkey');
-        echo CHtml::beginForm($url, 'post', array("id"=>"submitKeyForm"));
-        echo CHtml::hiddenField('destinationBuild', $_REQUEST['destinationBuild']);
-        echo CHtml::textField('keyid', '', array("id"=>"inputKey"));
-        echo CHtml::submitButton('submit', array("class"=>"btn btn-default", "id"=>"submitKeyButton"));
+    $url = Yii::app()->createUrl('/admin/update/sa/submitkey');
+    echo CHtml::beginForm($url, 'post', array("id"=>"submitKeyForm"));
+    echo CHtml::hiddenField('destinationBuild', $_REQUEST['destinationBuild']);?>
+    <div class="form-group">
+        <?php
+        echo CHtml::label(gT('Enter your update key:'),'inputKey', array('class'=>'col-sm-2'));
+        ?>
+        <div class='col-sm-1'>
+        <?php
+        echo CHtml::textField('keyid', '', array("id"=>"inputKey",'class'=>'form-control'));
+        ?>
+        </div>
+    </div>
+    <?php
+    echo CHtml::submitButton('submit', array("class"=>"btn btn-default", "id"=>"submitKeyButton"));
     ?>
-
     <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>
     </a>
-
     <?php echo CHtml::endForm();?>
 
 </div>
 
 <!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdate for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#submitKeyForm').comfortUpdateNextStep({'step': 0});
 </script>

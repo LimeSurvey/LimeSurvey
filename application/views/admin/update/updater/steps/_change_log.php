@@ -6,7 +6,6 @@
  * @var obj $serverAnswer the object returned by the server
  * @var int $destinationBuild the destination build
  */
-
 ?>
 
 
@@ -37,7 +36,7 @@
             $tempfromversion=$changelogentry->versionnumber;
             $tempfrombuild=$changelogentry->build;
 
-            $changelog.="Changes from $tempfromversion Build $tempfrombuild to {$changelogentry->versionnumber} Build {$changelogentry->build} --- Legend: + New feature, # Updated feature, - Bug fix\n";
+            $changelog.="Changes from ".Yii::app()->getConfig("versionnumber")." Build ".Yii::app()->getConfig("buildnumber")." to {$changelogentry->versionnumber} Build {$changelogentry->build} --- Legend: + New feature, # Updated feature, - Bug fix\n";
             $changelog.=$changelogentry->changelog;
         }
    }
@@ -68,14 +67,14 @@ echo $changelog;
 
 
     <?php
-        echo CHtml::submitButton(gT('Continue'), array('id'=>'step2launch', "class"=>"btn btn-default ajax_button launch_update"));
+        echo CHtml::submitButton(gT('Continue','unescaped'), array('id'=>'step2launch', "class"=>"btn btn-default ajax_button launch_update"));
         echo CHtml::endForm();
     ?>
 
     </div>
 </div>
-<!-- this javascript code manage the step changing. It will catch the form submission, then load the ComfortUpdater for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdater/comfortUpdateNextStep.js"></script>
+<!-- this javascript code manage the step changing. It will catch the form submission, then load the comfortupdate for the required build -->
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
 $('#launchFileSystemForm').comfortUpdateNextStep({'step': 2});
 </script>

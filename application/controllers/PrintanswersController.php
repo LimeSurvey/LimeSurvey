@@ -65,9 +65,11 @@
             }
             SetSurveyLanguage($iSurveyID, $sLanguage);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
-            //SET THE TEMPLATE DIRECTORY
-             $sTemplate = $aSurveyInfo['template'];
-
+            $oTemplate = Template::model()->getInstance(null, $iSurveyID);
+            if($oTemplate->cssFramework == 'bootstrap')
+            {
+                App()->bootstrap->register();
+            }
 
 
             //Survey is not finished or don't exist
@@ -78,7 +80,6 @@
                 doHeader();
 
                 /// $oTemplate is a global variable defined in controller/survey/index
-                global $oTemplate;
                 echo templatereplace(file_get_contents($oTemplate->viewPath.'/startpage.pstpl'),array());
                 echo "<center><br />\n"
                 ."\t<font color='RED'><strong>".gT("Error")."</strong></font><br />\n"
@@ -108,7 +109,7 @@
             if ($sExportType != 'pdf')
             {
                 $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
-                ."<center><input type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+                ."<center><input class='btn btn-default' type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
                 $sOutput .= "\t<div class='printouttitle'><strong>".gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
@@ -138,7 +139,7 @@
                     {
                         if($sAnonymized != 'Y')
                         {
-                                $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]} {$sFieldname}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                                $sOutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
                         }
                     }
                     elseif (substr($sFieldname,0,4) != 'qid_') // Question text is already in subquestion text, skipping it

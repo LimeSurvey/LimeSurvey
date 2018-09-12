@@ -1,5 +1,5 @@
 <?php
-if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if (! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -59,15 +59,24 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 */
 class update extends Survey_Common_Action
 {
+    /**
+     * First function to be called, when comming to admin/update
+     *
+     */
     public function index()
     {
-        //$buttons = ( getGlobalSetting('updatenotification') == "both" )?1:0;
         $buttons = 1;
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
+
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/comfortupdate.js');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/buildComfortButtons.js');
+        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/displayComfortStep.js');
+
         $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
     }
+
     /**
      * This function return the update buttons for stable branch
      * @return html the button code
@@ -95,11 +104,10 @@ class update extends Survey_Common_Action
      */
     public function getwelcome()
     {
-        if(Permission::model()->hasGlobalPermission('superadmin'))
+        if (Permission::model()->hasGlobalPermission('superadmin'))
         {
             // We get the update key in the database. If it's empty, getWelcomeMessage will return subscription
             $updateKey = getGlobalSetting("update_key");
-            //$updateKey = SettingGlobal::model()->findByPk('update_key')->stg_value;
             $updateModel = new UpdateForm();
             $destinationBuild = $_REQUEST['destinationBuild'];
                $welcome = (array) $updateModel->getWelcomeMessage($updateKey, $destinationBuild);
@@ -116,10 +124,10 @@ class update extends Survey_Common_Action
      */
     public function checkLocalErrors()
     {
-        if(Permission::model()->hasGlobalPermission('superadmin'))
+        if (Permission::model()->hasGlobalPermission('superadmin'))
         {
             // We use request rather than post, because this step can be called by url by displayComfortStep.js
-            if( isset($_REQUEST['destinationBuild']) )
+            if (isset($_REQUEST['destinationBuild']) )
             {
                 $destinationBuild = $_REQUEST['destinationBuild'];
                 $access_token     = $_REQUEST['access_token'];
@@ -143,33 +151,32 @@ class update extends Survey_Common_Action
     */
     public function changeLog()
     {
-        if(Permission::model()->hasGlobalPermission('superadmin'))
+        if (Permission::model()->hasGlobalPermission('superadmin'))
         {
 
             // We use request rather than post, because this step can be called by url by displayComfortStep.js
-            if( isset($_REQUEST['destinationBuild']) )
+            if (isset($_REQUEST['destinationBuild']) )
             {
-
                 $destinationBuild = $_REQUEST['destinationBuild'];
                 $access_token     = $_REQUEST['access_token'];
 
-                    // We get the change log from the ComfortUpdate server
-                    $updateModel = new UpdateForm();
-                    $changelog = $updateModel->getChangeLog( $destinationBuild );
+                // We get the change log from the ComfortUpdate server
+                $updateModel = new UpdateForm();
+                $changelog = $updateModel->getChangeLog( $destinationBuild );
 
-                    if( $changelog->result )
-                    {
-                        $aData['errors'] = FALSE;
-                        $aData['changelogs'] = $changelog;
-                        $aData['html_from_server'] = $changelog->html;
-                        $aData['destinationBuild'] = $destinationBuild;
-                        $aData['access_token'] = $access_token;
-                    }
-                    else
-                    {
-                        return $this->_renderError($changelog);
-                    }
-                    return $this->controller->renderPartial('update/updater/steps/_change_log', $aData, false, false);
+                if ($changelog->result )
+                {
+                    $aData['errors'] = FALSE;
+                    $aData['changelogs'] = $changelog;
+                    $aData['html_from_server'] = $changelog->html;
+                    $aData['destinationBuild'] = $destinationBuild;
+                    $aData['access_token'] = $access_token;
+                }
+                else
+                {
+                    return $this->_renderError($changelog);
+                }
+                return $this->controller->renderPartial('update/updater/steps/_change_log', $aData, false, false);
             }
             return $this->_renderErrorString("unknown_destination_build");
         }
@@ -182,10 +189,10 @@ class update extends Survey_Common_Action
      */
     public function fileSystem()
     {
-        if(Permission::model()->hasGlobalPermission('superadmin'))
+        if (Permission::model()->hasGlobalPermission('superadmin'))
         {
 
-            if( isset($_REQUEST['destinationBuild']))
+            if (isset($_REQUEST['destinationBuild']))
             {
                 $tobuild = $_REQUEST['destinationBuild'];
                 $access_token     = $_REQUEST['access_token'];
@@ -194,9 +201,8 @@ class update extends Survey_Common_Action
                 $updateModel = new UpdateForm();
                 $changedFiles = $updateModel->getChangedFiles($tobuild);
 
-                if( $changedFiles->result )
+                if ($changedFiles->result )
                 {
-                    //TODO : clean that
                     $aData = $updateModel->getFileStatus($changedFiles->files);
 
                     $aData['html_from_server'] = ( isset($changedFiles->html) )?$changedFiles->html:'';
@@ -219,21 +225,21 @@ class update extends Survey_Common_Action
      */
     public function backup()
     {
-        if(Permission::model()->hasGlobalPermission('superadmin'))
+        if (Permission::model()->hasGlobalPermission('superadmin'))
         {
-            if(Yii::app()->request->getPost('destinationBuild'))
+            if (Yii::app()->request->getPost('destinationBuild'))
             {
                 $destinationBuild = Yii::app()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
 
-                if(Yii::app()->request->getPost('datasupdateinfo'))
+                if (Yii::app()->request->getPost('datasupdateinfo'))
                 {
-                    $updateinfos= unserialize ( base64_decode( ( Yii::app()->request->getPost('datasupdateinfo') )));
+                    $updateinfos= json_decode( base64_decode( Yii::app()->request->getPost('datasupdateinfo') ),true);
 
                     $updateModel = new UpdateForm();
                     $backupInfos = $updateModel->backupFiles($updateinfos);
 
-                    if( $backupInfos->result )
+                    if ($backupInfos->result )
                     {
                         $dbBackupInfos = $updateModel->backupDb($destinationBuild);
                         // If dbBackup fails, it will just provide a warning message : backup manually
@@ -278,21 +284,21 @@ class update extends Survey_Common_Action
                 $destinationBuild = Yii::app()->request->getPost('destinationBuild');
                 $access_token     = $_REQUEST['access_token'];
 
-                if( Yii::app()->request->getPost('datasupdateinfo') )
+                if ( Yii::app()->request->getPost('datasupdateinfo') )
                 {
-                    $updateinfos = unserialize ( base64_decode( ( Yii::app()->request->getPost('datasupdateinfo') )));
+                    $updateinfos = json_decode ( base64_decode ( Yii::app()->request->getPost('datasupdateinfo') ), true);
 
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
                     $updateModel = new UpdateForm();
                     $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
 
-                    if( $file->result )
+                    if ($file->result )
                     {
                         $unzip = $updateModel->unzipUpdateFile();
-                        if( $unzip->result )
+                        if ($unzip->result )
                         {
                             $remove = $updateModel->removeDeletedFiles($updateinfos);
-                            if( $remove->result )
+                            if ($remove->result )
                             {
                                 // Should never bug (version.php is checked before))
                                 $updateModel->updateVersion($destinationBuild);
@@ -300,13 +306,16 @@ class update extends Survey_Common_Action
                                 $updateModel->removeTmpFile('update.zip');
                                 $updateModel->removeTmpFile('comfort_updater_cookie.txt');
 
+                                // Force asset manager to republish the assets for all templates
+                                Template::model()->forceAssets();
+
                                 Yii::app()->session['update_result'] = null;
                                 Yii::app()->session['security_update'] = null;
                                 $today = new DateTime("now");
                                 Yii::app()->session['next_update_check'] = $today->add(new DateInterval('PT6H'));
 
                                 // TODO : aData should contains information about each step
-                                return $this->controller->renderPartial('update/updater/steps/_final', array(), false, false);
+                                return $this->controller->renderPartial('update/updater/steps/_final', array('destinationBuild'=>$destinationBuild), false, false);
                             }
                             else
                             {
@@ -346,24 +355,29 @@ class update extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('superadmin'))
         {
-            if( Yii::app()->request->getPost('destinationBuild') )
+            if ( Yii::app()->request->getPost('destinationBuild') )
             {
                 $destinationBuild = Yii::app()->request->getPost('destinationBuild');
                 $updateModel = new UpdateForm();
 
                 $localChecks = $updateModel->getLocalChecksForUpdater();
 
-                if( $localChecks->result )
+                if ($localChecks->result )
                 {
                     $file = $updateModel->downloadUpdateUpdaterFile($destinationBuild);
 
-                    if( $file->result )
+                    if ($file->result )
                     {
                         $unzip = $updateModel->unzipUpdateUpdaterFile();
-                        if( $unzip->result )
+                        if ($unzip->result )
                         {
                             $updateModel->removeTmpFile('update_updater.zip');
                             $updateModel->removeTmpFile('comfort_updater_cookie.txt');
+                            setGlobalSetting('updateavailable','0');
+                            setGlobalSetting('updatebuild','');
+                            setGlobalSetting('updaterversions','');
+                            Yii::app()->session['update_result']=null;
+                            Yii::app()->session['next_update_check']=null;
                             return $this->controller->renderPartial('update/updater/steps/_updater_updated', array('destinationBuild'=>$destinationBuild), false, false);
                         }
                         else
@@ -394,7 +408,12 @@ class update extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('superadmin'))
         {
-            echo $this->controller->renderPartial('//admin/update/updater/welcome/_subscribe', array(),  false, false);
+            // We want to call the server to display the subscribe message
+            // So if needed, we can display a specific html message (like we do for update to LTS with a free key)
+            // To force server to render the subscribe message, we call for the last 2.06+ release (which need at least a free key)
+            $updateModel = new UpdateForm();
+            $welcome = $updateModel->getWelcomeMessage(null, '160129'); //$updateKey
+            echo $this->_renderWelcome($welcome);
         }
     }
 
@@ -407,14 +426,14 @@ class update extends Survey_Common_Action
 
         if (Permission::model()->hasGlobalPermission('superadmin'))
         {
-            if( Yii::app()->request->getPost('keyid') )
+            if ( Yii::app()->request->getPost('keyid') )
             {
                 // We trim it, just in case user added a space...
                 $submittedUpdateKey = trim(Yii::app()->request->getPost('keyid'));
 
                 $updateModel = new UpdateForm();
                 $check = $updateModel->checkUpdateKeyonServer($submittedUpdateKey);
-                if( $check->result )
+                if ($check->result )
                 {
                     // If the key is validated by server, we update the local database with this key
                     $updateKey = $updateModel->setUpdateKey($submittedUpdateKey);
@@ -440,7 +459,7 @@ class update extends Survey_Common_Action
     public function db($continue = null)
     {
         Yii::app()->loadHelper("update/update");
-        if(isset($continue) && $continue=="yes")
+        if (isset($continue) && $continue=="yes")
         {
             $aViewUrls['output'] = CheckForDBUpgrades($continue);
             $aData['display']['header'] = false;
@@ -481,7 +500,7 @@ class update extends Survey_Common_Action
     }
     /**
      * this function render the update buttons
-     * @param object $serverAnswer the update server answer (getInfo)
+     * @param string $crosscheck
      */
     private function _getButtons($crosscheck)
     {
@@ -492,7 +511,7 @@ class update extends Survey_Common_Action
 
             // TODO : if no update available, set session about  it...
 
-            if( $serverAnswer->result )
+            if ($serverAnswer->result )
             {
                 unset($serverAnswer->result);
                 return $this->controller->renderPartial('//admin/update/check_updates/update_buttons/_updatesavailable', array('updateInfos' => $serverAnswer), false, false);
@@ -508,13 +527,18 @@ class update extends Survey_Common_Action
      */
     private function _renderWelcome($serverAnswer)
     {
-        if( $serverAnswer->result )
+        if ($serverAnswer->result )
         {
             // Available views (in /admin/update/welcome/ )
             $views = array('welcome', 'subscribe', 'key_updated', 'updater_update');
-            if( in_array($serverAnswer->view, $views) )
+            if (in_array($serverAnswer->view, $views) )
             {
-                return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer),  false, false);
+                $sValidityDate = '';
+                if (isset($serverAnswer->key_infos->validuntil))
+                {
+                    $sValidityDate = convertToGlobalSettingFormat( $serverAnswer->key_infos->validuntil );
+                }
+                return $this->controller->renderPartial('//admin/update/updater/welcome/_'.$serverAnswer->view, array('serverAnswer' => $serverAnswer, 'sValidityDate'=>$sValidityDate),  false, false);
             }
             else
             {
@@ -553,12 +577,12 @@ class update extends Survey_Common_Action
     /**
      * This function convert the huge updateinfos array to a base64 string, so it can be parsed to the view to be inserted in an hidden input element.
      *
-     * @param array $udpateinfos the udpadte infos array returned by the update server
+     * @param array $updateinfos the udpadte infos array returned by the update server
      * @return $string
      */
     private function _parseToView($updateinfos)
     {
-        $data=serialize($updateinfos);
+        $data=json_encode($updateinfos);
         return base64_encode($data);
     }
 

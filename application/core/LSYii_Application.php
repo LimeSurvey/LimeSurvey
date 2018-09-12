@@ -29,18 +29,39 @@ class LSYii_Application extends CWebApplication
      * @var LimesurveyApi
      */
     protected $api;
+
+    /**
+     * If a plugin action is accessed through the PluginHelper,
+     * store it here.
+     * @var iPlugin
+     */
+    protected $plugin;
+
     /**
      *
     * Initiates the application
     *
     * @access public
-    * @param array $config
     * @return void
     */
-    public function __construct($config = null)
+    public function __construct($aApplicationConfig = null)
     {
-        parent::__construct($config);
         // Load the default and environmental settings from different files into self.
+        $settings = require(__DIR__ . '/../config/config-defaults.php');
+
+        if(file_exists(__DIR__ . '/../config/config.php'))
+        {
+            $ls_config = require(__DIR__ . '/../config/config.php');
+            if(is_array($ls_config['config']))
+            {
+                $settings = array_merge($settings, $ls_config['config']);
+            }
+        }
+        // Runtime path has to be set before  parent constructor is executed
+        $aApplicationConfig['runtimePath']=$settings['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+
+        parent::__construct($aApplicationConfig);
+
         $ls_config = require(__DIR__ . '/../config/config-defaults.php');
         $email_config = require(__DIR__ . '/../config/email.php');
         $version_config = require(__DIR__ . '/../config/version.php');
@@ -57,12 +78,20 @@ class LSYii_Application extends CWebApplication
             }
         }
 
+
+
         foreach ($settings as $key => $value)
+        {
             $this->setConfig($key, $value);
+        }
+        App()->getAssetManager()->linkAssets = true;
+        // Asset manager path can only be set after App was constructed because it relies on App()
+        App()->getAssetManager()->setBaseUrl($settings['tempurl']. '/assets');
+        App()->getAssetManager()->setBasePath($settings['tempdir'] . '/assets');
 
-        App()->getAssetManager()->setBaseUrl(Yii::app()->getBaseUrl(false) . '/tmp/assets');
+
+
     }
-
 
     public function init() {
         parent::init();
@@ -79,6 +108,10 @@ class LSYii_Application extends CWebApplication
         if ($this->request->getParam('lang') !== null)
         {
             $this->setLanguage($this->request->getParam('lang'));
+        }
+        elseif (isset(App()->session['_lang']))                                 // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
+        {
+            $this->setLanguage(App()->session['_lang']);
         }
 
     }
@@ -98,7 +131,6 @@ class LSYii_Application extends CWebApplication
     * Loads a library
     *
     * @access public
-    * @param string $helper
     * @return void
     */
     public function loadLibrary($library)
@@ -129,11 +161,11 @@ class LSYii_Application extends CWebApplication
      * $this->widget('application.extensions.FlashMessage.FlashMessage');
      * </code>
      *
-     * @param string $message
-     * @param string $type
+     * @param string $message The message you want to show on next page load
+     * @param string $type Type can be 'success','info','warning','danger','error' which relate to the particular bootstrap alert classes - see http://getbootstrap.com/components/#alerts . Note: Option 'error' is synonymous to 'danger'
      * @return LSYii_Application Provides a fluent interface
      */
-    public function setFlashMessage($message,$type='default')
+    public function setFlashMessage($message,$type='success')
     {
         $aFlashMessage=$this->session['aFlashMessage'];
         $aFlashMessage[]=array('message'=>$message,'type'=>$type);
@@ -182,6 +214,7 @@ class LSYii_Application extends CWebApplication
     {
         $sLanguage=preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
         $this->messages->catalog = $sLanguage;
+        App()->session['_lang'] = $sLanguage;                                   // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
         parent::setLanguage($sLanguage);
     }
 
@@ -206,5 +239,48 @@ class LSYii_Application extends CWebApplication
         return $this->getComponent('pluginManager');
     }
 
+    /**
+     * The pre-filter for controller actions.
+     * This method is invoked before the currently requested controller action and all its filters
+     * are executed. You may override this method with logic that needs to be done
+     * before all controller actions.
+     * @param CController $controller the controller
+     * @param CAction $action the action
+     * @return boolean whether the action should be executed.
+     */
+    public function beforeControllerAction($controller,$action)
+    {
+        /**
+         * Plugin event done before all web controller action
+         * Can set run to false to deactivate action
+         */
+        $event = new PluginEvent('beforeControllerAction');
+        $event->set('controller',$controller->getId());
+        $event->set('action',$action->getId());
+        App()->getPluginManager()->dispatchEvent($event);
+        return $event->get("run",parent::beforeControllerAction($controller,$action));
+    }
 
+
+    /**
+     * Used by PluginHelper to make the controlling plugin
+     * available from everywhere, e.g. from the plugin's models.
+     * Corresponds to Yii::app()->getController()
+     *
+     * @param $plugin
+     * @return void
+     */
+    public function setPlugin($plugin)
+    {
+        $this->plugin = $plugin;
+    }
+
+    /**
+     * Return plugin, if any
+     * @return object
+     */
+    public function getPlugin()
+    {
+        return $this->plugin;
+    }
 }

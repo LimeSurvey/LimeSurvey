@@ -1,35 +1,83 @@
 <?php
+    $outputSurveys = 0;
+    $list = "<div class='container'>";
+    $list .= "<div class='row'>";
+    $divideToggle = true;
 
-    $list = '';
     foreach($publicSurveys as $survey)
     {
-        $list .= CHtml::openTag('li');
-
-        $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle'));
+         $outputSurveys++;
+                //echo "IKI :";var_dump( $survey->localizedTitle);
+        $divider = ($divideToggle ? " vertical-divider right " : "");
         if ($survey->publicstatistics == "Y")
         {
-            $list .= CHtml::link('(' . gT('View statistics') . ')', array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->language));
+            $statistics = "<div class='col-md-1 col-sm-2 col-xs-2 no-divide ls-custom-padding five ".$divider."'>";
+            $statistics .= CHtml::link('<span class="fa fa-bar-chart" aria-hidden="true"></span><span class="sr-only">'. gT('View statistics') .'</span>',
+                        array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->language),
+                        array(
+                            'class'=>'view-stats btn btn-success btn-block',
+                            'title'=>gT('View statistics'),
+                            'data-toggle'=>'tooltip',
+                        )
+                    );
+            $statistics .= "</div>";
+            $list .= "<div class='col-md-5 col-sm-10 col-xs-10 ls-custom-padding five'>";
         }
-        $list .= CHtml::closeTag('li');
+        else
+        {
+            $statistics = "";
+            $list .= "<div class='col-md-6 col-xs-12 ls-custom-padding five ".$divider."'>";
+        }
+        //@TODO Make $allowTooltips a global configuration setting
+        $allowTooltips = "Y";
 
+        $content = $survey->localizedTitle;
+        $list .= CHtml::link(
+            $content,
+            array(
+                'survey/index',
+                'sid' => $survey->sid,
+                'lang' => App()->language,
+                'encode' => false
+                ),
+                array(
+                    'class' => 'surveytitle btn btn-primary btn-block'
+                )
+                );
+        $list .= "</div>";
+        $list .= $statistics;
+        $divideToggle = !$divideToggle;
     }
+
+    $list .= "</div>";
+    $list .= "</div>";
+
     if (!empty($futureSurveys))
     {
-        $list .= "</ul><div class=\"survey-list-heading\">".  gT("Following survey(s) are not yet active but you can register for them.")."</div><ul>";
+        $list .= "<div class=\"survey-list-heading\">".  gT("Following survey(s) are not yet active but you can register for them.")."</div>";
+        $list .= "<div class='container'>";
+        $list .= "<div class='row'>";
         foreach($futureSurveys as $survey)
         {
-            $list .= CHtml::openTag('li');
+            $outputSurveys++;
+            $list .= CHtml::openTag('div', array('class'=>'col-xs-12'));
             $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle'));
-            $list .= CHtml::closeTag('li');
+            $list .= CHtml::closeTag('div');
             $list .= CHtml::tag('div', array(
                 'data-regformsurvey' => $survey->sid,
-
+                'class' => 'col-xs-12'
             ));
         }
     }
-    if(empty($list))
+
+    $listheading="<div class='container'>
+                    <div class='h3'>
+                    ".gT("The following surveys are available:")."
+                    </div>
+                    </div>";
+    if( $outputSurveys==0)
     {
-        $list=CHtml::openTag('li',array('class'=>'surveytitle')).gT("No available surveys").CHtml::closeTag('li');
+        $list=CHtml::openTag('div',array('class'=>'col-xs-12')).gT("No available surveys").CHtml::closeTag('div');
     }
     $data['surveylist'] = array(
         "nosid"=> "",
@@ -37,23 +85,15 @@
             Yii::app()->getConfig("siteadminname"),
             encodeEmail(Yii::app()->getConfig("siteadminemail"))
         ),
-        "listheading"=> gT("The following surveys are available:"),
+        "listheading"=> $listheading,
         "list"=> $list,
     );
 
-    global $oTemplate;
-    if(isset($survey))
-    {
-        $oTemplate = Template::model()->getTemplateConfiguration('',$survey->sid);
-    }
-    else
-    {
-        $oTemplate = Template::model()->getTemplateConfiguration('default');
-    }
+    $oTemplate = Template::model()->getInstance("default");
 
-    $data['templatedir'] = getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
-    $data['templateurl'] = getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
-    $data['templatename'] = Yii::app()->getConfig("defaulttemplate");
+    $data['templatedir'] = Template::getTemplatePath(Yii::app()->getConfig("defaulttemplate"));
+    $data['templateurl'] = Template::getTemplateURL(Yii::app()->getConfig("defaulttemplate"))."/";
+    $data['templatename'] = $oTemplate->name;
     $data['sitename'] = Yii::app()->getConfig("sitename");
     $data['languagechanger'] = makeLanguageChanger(App()->language);
 

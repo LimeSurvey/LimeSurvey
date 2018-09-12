@@ -1,7 +1,7 @@
 /*!
  * jQuery blockUI plugin
- * Version 2.64.0-2013.07.18
- * @requires jQuery v1.7 or later
+ * Version 2.70.0-2014.11.23
+ * Requires jQuery v1.7 or later
  *
  * Examples at: http://malsup.com/jquery/block/
  * Copyright (c) 2007-2013 M. Alsup
@@ -107,7 +107,7 @@
 			});
 		};
 
-		$.blockUI.version = 2.60; // 2nd generation blocking at no extra cost!
+		$.blockUI.version = 2.70; // 2nd generation blocking at no extra cost!
 
 		// override these in your code to change the default behavior and style
 		$.blockUI.defaults = {
@@ -426,7 +426,7 @@
 				if (msg)
 					lyr3.show();
 				if (opts.onBlock)
-					opts.onBlock();
+					opts.onBlock.bind(lyr3)();
 			}
 
 			// bind key and mouse events
@@ -515,6 +515,7 @@
 			if (data && data.el) {
 				data.el.style.display = data.display;
 				data.el.style.position = data.position;
+				data.el.style.cursor = 'default'; // #59
 				if (data.parent)
 					data.parent.appendChild(data.el);
 				$el.removeData('blockUI.history');
@@ -576,7 +577,7 @@
 			var opts = e.data;
 			var target = $(e.target);
 			if (target.hasClass('blockOverlay') && opts.onOverlayClick)
-				opts.onOverlayClick();
+				opts.onOverlayClick(e);
 
 			// allow events within the message content
 			if (target.parents('div.' + opts.blockMsgClass).length > 0)

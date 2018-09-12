@@ -30,7 +30,7 @@
             </th>
 
             <?php foreach ($headings as $head):?>
-	           <th><?php echo $head; ?></th>
+               <th><?php echo $head; ?></th>
             <?php endforeach; ?>
 
             <th>
@@ -84,11 +84,11 @@
 
                 <!-- Total || Question group -->
                 <?php if ($assess['scope'] == "T") { ?>
-                	<td><?php eT("Total");?></td>
-                	<td>-</td>
+                    <td><?php eT("Total");?></td>
+                    <td>-</td>
                 <?php } else { ?>
-                	<td><?php eT("Question group");?></td>
-                	<td><?php echo $groups[$assess['gid']]." (".$assess['gid'].")";?></td>
+                    <td><?php eT("Question group");?></td>
+                    <td><?php echo $groups[$assess['gid']]." (".$assess['gid'].")";?></td>
                 <?php } ?>
 
                 <!-- minimum -->
@@ -126,7 +126,7 @@
 
             <!-- Scope, Total, Group -->
             <div class='form-group'>
-                <label class='control-label col-sm-2'><?php eT("Scope");?></label>
+                <label class='control-label col-sm-2'><?php eT("Scope:");?></label>
                 <div class='col-sm-10'>
                     <div class='radio'>
                         <label class='radio-inline'><input class='' type='radio' id='radiototal' name='scope' value='T' <?php if (!isset($editdata) || $editdata['scope'] == "T") {echo "checked='checked' ";} ?>/><?php eT("Total"); ?></label>
@@ -140,7 +140,7 @@
 
             <!-- Question group -->
             <div class='form-group'>
-                <label class='control-label col-sm-2' for='gid'><?php eT("Question group");?></label>
+                <label class='control-label col-sm-2' for='gid'><?php eT("Question group:");?></label>
                 <div class='col-sm-4'>
                     <?php
                     if (isset($groups))
@@ -148,7 +148,7 @@
                         <select name='gid' id='gid' class="form-control">
                             <?php
                             foreach ($groups as $groupId => $groupName) {
-                                echo '<option value="' . $groupId . '"'.(isset($editdata['gid']) && $editdata['gid']== $groupId ? ' selected' : '').'>' . $groupName . '</option>';
+                                echo '<option value="' . $groupId . '"'.(isset($editdata['gid']) && $editdata['gid']== $groupId ? ' selected' : '').'>' . flattenText($groupName) . '</option>';
                             }
                             ?>
                         </select>
@@ -163,7 +163,7 @@
 
             <!-- Minimum -->
             <div class='form-group'>
-                <label class='control-label col-sm-2' for='minimum'><?php eT("Minimum");?></label>
+                <label class='control-label col-sm-2' for='minimum'><?php eT("Minimum:");?></label>
                 <div class='col-sm-4'>
                     <input class='form-control' type='text' id='minimum' name='minimum' class='numbersonly'<?php if (isset($editdata)) {echo " value='{$editdata['minimum']}' ";} ?>/>
                 </div>
@@ -172,7 +172,7 @@
 
             <!-- Maximum -->
             <div class='form-group'>
-                <label class='control-label col-sm-2' for='maximum'><?php eT("Maximum");?></label>
+                <label class='control-label col-sm-2' for='maximum'><?php eT("Maximum:");?></label>
                 <div class='col-sm-4'>
                     <input class='form-control' type='text' id='maximum' name='maximum' class='numbersonly'<?php if (isset($editdata)) {echo " value='{$editdata['maximum']}' ";} ?>/>
                 </div>
@@ -181,55 +181,66 @@
 
         <!-- Languages tabs -->
         <div id="languagetabs">
-            <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all  list-unstyled">
+            <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
                 <?php foreach ($assessmentlangs as $assessmentlang)
                 {
                     $position=0;
-                    echo '<li class="ui-state-default ui-corner-top" style="clear: none;"><a href="#tablang'.$assessmentlang.'">'.getLanguageNameFromCode($assessmentlang, false);
-                    if ($assessmentlang==$baselang) {echo ' ('.gT("Base language").')';}
+                    echo '<li role="presentation" class="';
+                    if ($assessmentlang==$baselang)
+                    {
+                        echo 'active';
+                    }
+                    echo '">
+                            <a data-toggle="tab"  href="#tablang'.$assessmentlang.'">'.getLanguageNameFromCode($assessmentlang, false);
+                    if ($assessmentlang==$baselang)
+                    {
+                        echo ' ('.gT("Base language").')';
+                    }
                     echo '</a></li>';
                 } ?>
             </ul>
 
-            <?php foreach ($assessmentlangs as $assessmentlang)
-            {
-                $heading=''; $message='';
-                if ($action == "assessmentedit")
+            <div class="tab-content">
+
+                <?php
+                $count = 0;
+                foreach ($assessmentlangs as $assessmentlang)
                 {
-                	$results = Assessment::model()->findAllByAttributes(array('id' => $editId, 'language' => $assessmentlang));
-            	    foreach ($results as $row)
+                    $heading=''; $message='';
+                    if ($action == "assessmentedit")
                     {
-            	        $editdata=$row->attributes;
-            	    }
-            	    $heading=htmlspecialchars($editdata['name'],ENT_QUOTES);
-            	    $message=htmlspecialchars($editdata['message']);
-                } ?>
-                <div id="tablang<?php echo $assessmentlang;?>">
-                    <div class='col-sm-12'></div>
-                    <div class='form-group'>
-                        <label class='control-label col-sm-2' for='name_<?php echo $assessmentlang;?>'><?php eT("Heading");?>:</label>
-                        <div class='col-sm-4'>
-                            <input class='form-control' type='text' name='name_<?php echo $assessmentlang;?>' id='name_<?php echo $assessmentlang;?>' size='80' value='<?php echo $heading;?>'/>
+                        $results = Assessment::model()->findAllByAttributes(array('id' => $editId, 'language' => $assessmentlang));
+                        foreach ($results as $row)
+                        {
+                            $editdata=$row->attributes;
+                        }
+                        $heading=htmlspecialchars($editdata['name'],ENT_QUOTES);
+                        $message=htmlspecialchars($editdata['message']);
+                    } ?>
+                    <div id="tablang<?php echo $assessmentlang;?>" class="tab-pane fade in <?php if($count==0){ echo " active "; $count++;}?>">
+                        <div class='col-sm-12'></div>
+                        <div class='form-group'>
+                            <label class='control-label col-sm-2' for='name_<?php echo $assessmentlang;?>'><?php eT("Heading");?>:</label>
+                            <div class='col-sm-4'>
+                                <input class='form-control' type='text' name='name_<?php echo $assessmentlang;?>' id='name_<?php echo $assessmentlang;?>' size='80' value='<?php echo $heading;?>'/>
+                            </div>
+                        </div>
+                        <div class='form-group'>
+                            <label class='control-label col-sm-2' for='assessmentmessage_<?php echo $assessmentlang;?>'><?php eT("Message");?>:</label>
+                            <div class='col-sm-4'>
+                                <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea>
+                            </div>
+                        </div>
+                        <?php echo getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
+                        <div class='form-group'>
+                            <div class='col-sm-2'></div>
+                            <div class='col-sm-4'>
+                                <input type='submit' class="btn btn-default hidden" value='<?php eT("Save");?>'/>
+                            </div>
                         </div>
                     </div>
-                    <div class='form-group'>
-                        <label class='control-label col-sm-2' for='assessmentmessage_<?php echo $assessmentlang;?>'><?php eT("Message");?>:</label>
-                        <div class='col-sm-4'>
-                            <textarea name='assessmentmessage_<?php echo $assessmentlang;?>' id='assessmentmessage_<?php echo $assessmentlang;?>' rows='10' cols='80'><?php echo $message;?></textarea>
-                        </div>
-                    </div>
-                    <?php echo getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
-                    <div class='form-group'>
-                        <div class='col-sm-2'></div>
-                        <div class='col-sm-4'>
-                            <?php if ($action == "assessmentedit"): ?>
-                                <input class='btn btn-danger' type='submit' value='<?php echo gT('Cancel'); ?>' onclick=\"document.assessmentsform.action.value='assessments'\" />
-                            <?php endif; ?>
-                            <input type='submit' class="btn btn-default" value='<?php eT("Save");?>'/>
-                        </div>
-                    </div>
-                </div>
-            <?php } ?>
+                <?php } ?>
+            </div>
         </div>
 
         <!-- action buttons -->

@@ -1,7 +1,7 @@
 <script src="<?php echo Yii::app()->getConfig('adminscripts') . "userControl.js" ?>" type="text/javascript"></script>
 
 <div class="col-lg-12 list-surveys">
-    <h3><?php eT("Blacklist control"); ?></h3>
+    <h3><?php eT("Blacklist settings"); ?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -11,57 +11,100 @@
         <?php
         if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            $attribute = array('class' => 'col-md-6 col-md-offset-3');
+            $attribute = array('class' => 'col-md-6 col-md-offset-1 form-horizontal');
             echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeBlacklistValues'), 'post', $attribute);
-            $options = array('Y' => gT('Yes'), 'N' => gT('No'));
+            $options = array('Y' => gT('Yes','unescaped'), 'N' => gT('No','unescaped'));
             ?>
                 <div class="form-group">
-                    <label for='blacklistallsurveys' id='blacklistallsurveys'>
+                    <label class='control-label col-sm-8'>
                         <?php eT('Blacklist all current surveys for participant once the global field is set:'); ?>
                     </label>
-                    <?php echo CHtml::dropDownList('blacklistallsurveys', $blacklistallsurveys, $options, array('class' => 'form-control' )); ?>
+                    <div class='col-sm-3'>
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'blacklistallsurveys',
+                            'onLabel' => gT('Yes'),
+                            'offLabel' => gT('No'),
+                            'value' => $blacklistallsurveys == 'Y' ? '1' : 0
+                        )); ?>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for='blacklistnewsurveys' id='blacklistnewsurveys'>
+                    <label class='control-label col-sm-8'>
                         <?php eT('Blacklist participant for any new added survey once the global field is set:'); ?>
                     </label>
-                    <?php echo CHtml::dropDownList('blacklistnewsurveys', $blacklistnewsurveys, $options, array('class' => 'form-control' ) ); ?>
+                    <div class='col-sm-3'>
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'blacklistnewsurveys',
+                            'onLabel' => gT('Yes'),
+                            'offLabel' => gT('No'),
+                            'value' => $blacklistnewsurveys == 'Y' ? '1' : 0
+                        )); ?>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for='blockaddingtosurveys' id='blockaddingtosurveys'>
+                    <label class='control-label col-sm-8'>
                         <?php eT('Allow blacklisted participants to be added to a survey:'); ?>
                     </label>
-                    <?php echo CHtml::dropDownList('blockaddingtosurveys', $blockaddingtosurveys, $options, array('class' => 'form-control' ) ); ?>
+                    <div class='col-sm-3'>
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'blockaddingtosurveys',
+                            'onLabel' => gT('Yes'),
+                            'offLabel' => gT('No'),
+                            'value' => $blockaddingtosurveys == 'Y' ? '1' : 0
+                        )); ?>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for='hideblacklisted' id='hideblacklisted'>
+                    <label class='control-label col-sm-8'>
                         <?php eT('Hide blacklisted participants:'); ?>
                     </label>
-                    <?php echo CHtml::dropDownList('hideblacklisted', $hideblacklisted, $options, array('class' => 'form-control' ) ); ?>
+                    <div class='col-sm-3'>
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'hideblacklisted',
+                            'onLabel' => gT('Yes'),
+                            'offLabel' => gT('No'),
+                            'value' => $hideblacklisted == 'Y' ? '1' : 0
+                        )); ?>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for='deleteblacklisted' id='deleteblacklisted'>
+                    <label class='control-label col-sm-8'>
                         <?php eT('Delete globally blacklisted participant from the database:'); ?>
                     </label>
-                    <?php echo CHtml::dropDownList('deleteblacklisted', $deleteblacklisted, $options, array('class' => 'form-control' ) ); ?>
+                    <div class='col-sm-3'>
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'deleteblacklisted',
+                            'onLabel' => gT('Yes'),
+                            'offLabel' => gT('No'),
+                            'value' => $deleteblacklisted == 'Y' ? '1' : 0
+                        )); ?>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for='allowunblacklist' id='allowunblacklist'>
+                    <label class='control-label col-sm-8'>
                         <?php eT('Allow participant to unblacklist himself/herself:'); ?>
                     </label>
-                    <?php echo CHtml::dropDownList('allowunblacklist', $allowunblacklist, $options, array('class' => 'form-control' ) ); ?>
+                    <div class='col-sm-3'>
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'allowunblacklist',
+                            'onLabel' => gT('Yes'),
+                            'offLabel' => gT('No'),
+                            'value' => $allowunblacklist == 'Y' ? '1' : 0
+                        )); ?>
+                    </div>
                 </div>
-            <p>
-                <?php
-                echo CHtml::submitButton('submit', array('value' => gT('Save'), 'class'=>'btn btn-default'));
-                ?>
-            </p>
+                <div class="form-group">
+                    <div class='col-sm-8'></div>
+                    <div class='col-sm-3'>
+                        <?php echo CHtml::submitButton('submit', array('value' => gT('Save'), 'class'=>'btn btn-default')); ?>
+                    </div>
+                </div>
             <?php
             echo CHtml::endForm();
         }
         else
         {
-            echo "<div class='messagebox ui-corner-all'>" . gT("You don't have sufficient permissions.") . "</div>";
+            echo "<div class='messagebox ui-corner-all'>" . gT("We are sorry but you don't have permissions to do this.") . "</div>";
         }
         ?>
     </div>
@@ -69,7 +112,7 @@
 
         </div>
     </div>
-    
-</div>    
+
+</div>
 
 

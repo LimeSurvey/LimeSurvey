@@ -160,7 +160,7 @@ PRIMARY KEY  ([attribute_id],[lang])
 CREATE TABLE [prefix_participant_attribute_names] (
 [attribute_id] int NOT NULL IDENTITY (1,1),
 [attribute_type] varchar(4) NOT NULL,
-[defaultname] nvarchar(50) NOT NULL,
+[defaultname] nvarchar(255) NOT NULL,
 [visible] varchar(5) NOT NULL,
 PRIMARY KEY  ([attribute_id],[attribute_type])
 );
@@ -195,7 +195,7 @@ CREATE TABLE [prefix_participants] (
 [participant_id] varchar(50) NOT NULL,
 [firstname] nvarchar(150) NULL,
 [lastname] nvarchar(150) NULL,
-[email] nvarchar(254) NULL,
+[email] nvarchar(max) NULL,
 [language] varchar(40) NULL,
 [blacklisted] varchar(1) NOT NULL,
 [owner_uid] int NOT NULL,
@@ -521,7 +521,7 @@ PRIMARY KEY ([ugid],[uid])
 CREATE TABLE [prefix_users] (
 [uid] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
 [users_name] nvarchar(64) NOT NULL UNIQUE default '',
-[password] ntext NOT NULL,
+[password] nvarchar(max) NOT NULL,
 [full_name] nvarchar(50) NOT NULL,
 [parent_id] int NOT NULL,
 [lang] varchar(20) NULL,
@@ -529,7 +529,7 @@ CREATE TABLE [prefix_users] (
 [htmleditormode] varchar(7) NULL default 'default',
 [templateeditormode] varchar(7) NOT NULL default 'default',
 [questionselectormode] varchar(7)  NOT NULL default 'default',
-[one_time_pw] ntext NULL,
+[one_time_pw] nvarchar(max) NULL,
 [dateformat] int NOT NULL DEFAULT 1,
 [created] datetime NULL,
 [modified] datetime NULL
@@ -540,7 +540,7 @@ CREATE TABLE [prefix_users] (
 -- Table structure for table templates
 --
 CREATE TABLE [prefix_templates] (
-[folder] nvarchar(255) NOT NULL,
+[folder] nvarchar(50) NOT NULL,
 [creator] int NOT NULL,
 PRIMARY KEY  ([folder])
 );
@@ -554,20 +554,20 @@ CREATE TABLE prefix_boxes (
   [position] int DEFAULT NULL ,
   [url] varchar(max) NOT NULL ,
   [title] varchar(max) NOT NULL ,
-  [img] varchar(max) NOT NULL ,
   [ico] varchar(max) DEFAULT NULL,
   [desc] varchar(max) NOT NULL ,
   [page] varchar(max) NOT NULL ,
+  [usergroup] int NOT NULL,
   PRIMARY KEY ([id])
-)  CHARACTER SET @utf8 COLLATE utf8_unicode_ci;
+);
 
-INSERT INTO prefix_boxes ([id], [position], [url], [title], [img], [desc], [page]) VALUES
-(1, 1, 'admin/survey/sa/newsurvey', 'Create survey', 'add.png', 'add', 'Create a new survey', 'welcome'),
-(2, 2, 'admin/survey/sa/listsurveys', 'List surveys', 'surveylist.png', 'list', 'List available surveys', 'welcome'),
-(3, 3, 'admin/globalsettings', 'Global settings', 'global.png', 'settings', 'Edit global settings', 'welcome'),
-(4, 4, 'admin/update', 'ComfortUpdate', 'shield&#45;update.png', 'shield', 'Stay safe and up to date', 'welcome'),
-(5, 5, 'admin/labels/sa/view', 'Label sets', 'labels.png', 'label','Edit label sets', 'welcome'),
-(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates.png','templates', 'Edit LimeSurvey templates', 'welcome');
+INSERT INTO prefix_boxes ([position], [url], [title], [ico], [desc], [page], [usergroup]) VALUES
+(1, 'admin/survey/sa/newsurvey', 'Create survey', 'add', 'Create a new survey', 'welcome', '-2'),
+(2, 'admin/survey/sa/listsurveys', 'List surveys', 'list', 'List available surveys', 'welcome', '-1'),
+(3, 'admin/globalsettings', 'Global settings', 'settings', 'Edit global settings', 'welcome', '-2'),
+(4, 'admin/update', 'ComfortUpdate', 'shield', 'Stay safe and up to date', 'welcome', '-2'),
+(5, 'admin/labels/sa/view', 'Label sets', 'label','Edit label sets', 'welcome', '-2'),
+(6, 'admin/templates/sa/view', 'Template editor', 'templates', 'Edit LimeSurvey templates', 'welcome', '-2');
 
 
 
@@ -590,6 +590,24 @@ create index [saved_control_idx2] on [prefix_saved_control] ([sid]);
 create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 
 --
+-- Notification table
+--
+CREATE TABLE prefix_notifications (
+    [id] int NOT NULL IDENTITY,
+    [entity] nvarchar(15) NOT NULL,
+    [entity_id] int NOT NULL,
+    [title] nvarchar(255) NOT NULL,
+    [message] nvarchar(max) NOT NULL,
+    [status] nvarchar(15) NOT NULL DEFAULT 'new',
+    [importance] int NOT NULL DEFAULT 1,
+    [display_class] nvarchar(31) DEFAULT 'default',
+    [created] datetime NOT NULL,
+    [first_read] datetime DEFAULT NULL,
+    PRIMARY KEY ([id])
+);
+CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[status]);
+
+--
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '252');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '260');

@@ -42,7 +42,7 @@ class saved extends Survey_Common_Action
         if (count($aViewUrls['savedlist_view'][0]['aResults']))
         {
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( ADMIN_SCRIPT_PATH . 'saved.js' ));       
+            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'saved.js');
         }
 
 
@@ -64,7 +64,7 @@ class saved extends Survey_Common_Action
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from
-     * @param string|array $aViewUrls View url(s)
+     * @param string[] $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
     protected function _renderWrappedTemplate($sAction = 'saved', $aViewUrls = array(), $aData = array())
