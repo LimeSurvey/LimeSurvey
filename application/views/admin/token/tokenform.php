@@ -136,7 +136,7 @@ foreach ($tokendata as $Key => $Value) {
                         </div>
                         <?php endif; ?>
                     </div>
-                    <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completedDBFormat)) {echo $completedDBFormat; } else {echo " N "; }?>" />
+                    <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)) {echo $completed; } else {echo " N "; }?>" />
                 </div>
 
             </div>

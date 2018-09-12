@@ -758,6 +758,12 @@ class tokens extends Survey_Common_Action
                 $datetimeobj = new Date_Time_Converter(trim($request->getPost('validuntil')), $dateformatdetails['phpdate'].' H:i');
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
+            if (trim($request->getPost('completed')) == 'N') {
+                $_POST['completed'] = 'N';
+            } else {
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed')), $dateformatdetails['phpdate'].' H:i');
+                $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
+            }
 
             $aTokenData['firstname'] = flattenText($request->getPost('firstname'));
             $aTokenData['lastname'] = flattenText($request->getPost('lastname'));
