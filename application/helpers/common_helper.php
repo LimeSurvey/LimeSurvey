@@ -95,6 +95,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 *
 * @param string $SelectedCode Value of the Question Type (defaults to "T")
 * @param string $ReturnType Type of output from this function (defaults to selector)
+* @param string $language Language for translation
 *
 * @return array|string depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
 *
@@ -105,10 +106,10 @@ function quoteText($sText, $sEscapeMode = 'html')
 * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
 * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
 */
-function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
+function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector", $sLanguage='')
 {
 
-    $qtypes = Question::typeList();
+    $qtypes = Question::typeList($sLanguage);
 
     if ($ReturnType == "array") {
         return $qtypes;

@@ -9431,7 +9431,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $moveResult = LimeExpressionManager::NavigateForwards();
             }
 
-            $qtypes=getQuestionTypeList('','array');
+            $qtypes=getQuestionTypeList('','array',Yii::app()->session["adminlang"]);
 
             if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
                 return array(
