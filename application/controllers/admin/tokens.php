@@ -2540,6 +2540,7 @@ class tokens extends Survey_Common_Action
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['display']['menu_bars'] = false;
+        $aData['subaction'] = gT('Survey participants');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
 
