@@ -465,11 +465,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         // We retreive the definition of the core class and attributes (in the future, should be template dependant done via XML file)
         $aDatas["aSurveyInfo"] = array_merge($aDatas["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 
-        $languagecode = Yii::app()->getConfig('defaultlang');
-        if (!empty($aDatas['aSurveyInfo']['sid'])) {
-            if (Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang']) {
-                $languagecode = Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'];
-            } elseif ($aDatas['aSurveyInfo']['sid'] && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])) {
+        $languagecode = Yii::app()->getLanguage();
+        if (!empty($aDatas['aSurveyInfo']['sid']) && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid']) ) {
+            if(!in_array($languagecode,Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->getAllLanguages())) {
                 $languagecode = Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->language;
             }
         }
