@@ -510,9 +510,9 @@ class database extends Survey_Common_Action
 
         //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag();
-        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID); 
+        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
         $this->_resetEM();
-        
+
         if (!isset($aErrors) || !count($aErrors)) {
             if (!Yii::app()->request->getPost('bFullPOST')) {
                 Yii::app()->session['flashmessage'] = gT("Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
@@ -520,7 +520,7 @@ class database extends Survey_Common_Action
                 Yii::app()->session['flashmessage'] = gT("Subquestions were successfully saved.");
             }
         }
-        
+
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
             $this->getController()->redirect(array('/admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         }
@@ -744,7 +744,7 @@ class database extends Survey_Common_Action
 
 
                 // Update the group ID on subquestions, too
-                if ($oldgid != $this->iQuestionGroupID) { 
+                if ($oldgid != $this->iQuestionGroupID) {
                     Question::model()->updateAll(array('gid'=>$this->iQuestionGroupID), 'parent_qid=:qid and parent_qid>0', array(':qid'=>$this->iQuestionID));
                     // if the group has changed then fix the sortorder of old and new group
                     Question::model()->updateQuestionOrder($oldgid, $iSurveyID);
@@ -824,7 +824,7 @@ class database extends Survey_Common_Action
                     $dataseclabel = Yii::app()->request->getPost('dataseclabel_'.$langname, null);
                     $dateformat = Yii::app()->request->getPost('dateformat_'.$langname, null);
                     $numberformat = Yii::app()->request->getPost('numberformat_'.$langname, null);
-                    
+
                     if ($short_title !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
@@ -1147,7 +1147,7 @@ class database extends Survey_Common_Action
         //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag();
         $this->_resetEM();
-        
+
         // This will force the generation of the entry for survey group
         TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
 
@@ -1317,7 +1317,7 @@ class database extends Survey_Common_Action
                 if (Yii::app()->request->getPost('action') == 'copyquestion') {
                     /** @var Question $oOldQuestion */
                     $oldQID = returnGlobal('oldqid');
-                    
+
                     if (returnGlobal('copysubquestions') == 1) {
                         $aSubquestionIds = array();
                         if ($oldQID) {
@@ -1338,9 +1338,9 @@ class database extends Survey_Common_Action
                                     if ($sLanguageIndex == 0){ // main language
                                         $aInsertData['qid'] = null;
                                     } else {  // additional languages
-                                        $aInsertData['qid'] = $aSubquestionIds[$sSubquestionIndex]; // get qid from array 
+                                        $aInsertData['qid'] = $aSubquestionIds[$sSubquestionIndex]; // get qid from array
                                     }
-                                    
+
                                     $aInsertData['parent_qid'] = $this->iQuestionID;
                                     if (Question::model()->insertRecords($aInsertData)){
                                         if ($sLanguageIndex == 0){ // main language
@@ -1348,8 +1348,8 @@ class database extends Survey_Common_Action
                                         }
                                     }
                                 }
-                            } 
-                                
+                            }
+
                         }
                     }
                     if (returnGlobal('copyanswers') == 1) {
@@ -1492,7 +1492,7 @@ class database extends Survey_Common_Action
         LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
         LimeExpressionManager::SetPreviewMode('database');// Deactivate _UpdateValuesInDatabase
         LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
-        LimeExpressionManager::StartProcessingPage(true,true); 
+        LimeExpressionManager::StartProcessingPage(true,true);
         $aGrouplist = QuestionGroup::model()->getGroups($this->iSurveyID);
         foreach ($aGrouplist as $iGID => $aGroup) {
             LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $this->iSurveyID);
