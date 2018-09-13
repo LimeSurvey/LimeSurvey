@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-09-13 13:00:26+00:00\n"
+"POT-Creation-Date: 2018-09-13 13:26:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11755,7 +11755,7 @@ msgid "Permission to create/view/update/delete/import/export the questions, grou
 msgstr ""
 
 #: application/models/Permission.php:136
-msgid "Permission to view/update the survey text elements : survey title, survey description, welcome and end message â€¦"
+msgid "Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"
 msgstr ""
 
 #: application/models/Permission.php:142 application/models/Permission.php:756
