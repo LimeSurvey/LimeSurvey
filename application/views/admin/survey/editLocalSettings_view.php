@@ -57,7 +57,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
                 <div class="form-group">
                     <label class="control-label "><?php eT("End URL:"); ?></label>
                     <div class="">
-                        <?php echo htmlspecialchars_decode ( CHtml::textField("url_{$aSurveyLanguageSettings['surveyls_language']}", $aSurveyLanguageSettings['surveyls_url'],array('class'=>'form-control','size'=>"80",'placeholder'=>'http://','id'=>"url_{$aSurveyLanguageSettings['surveyls_language']}"))); ?>
+                        <?php echo CHtml::textField("url_{$aSurveyLanguageSettings['surveyls_language']}", htmlspecialchars_decode ( $aSurveyLanguageSettings['surveyls_url'] ) ,array('class'=>'form-control','size'=>"80",'placeholder'=>'http://','id'=>"url_{$aSurveyLanguageSettings['surveyls_language']}")); ?>
                     </div>
                 </div>
 
