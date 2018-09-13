@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-09-13 12:52:22+00:00\n"
+"POT-Creation-Date: 2018-09-13 13:00:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5904,7 +5904,7 @@ msgid ""
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:132
-#: application/models/Permission.php:151
+#: application/models/Permission.php:151 application/models/Permission.php:757
 msgid "Survey settings"
 msgstr ""
 
@@ -11738,7 +11738,7 @@ msgstr ""
 msgid "Permission to delete a survey"
 msgstr ""
 
-#: application/models/Permission.php:121
+#: application/models/Permission.php:121 application/models/Permission.php:753
 msgid "Survey activation"
 msgstr ""
 
@@ -11746,7 +11746,7 @@ msgstr ""
 msgid "Permission to activate/deactivate a survey"
 msgstr ""
 
-#: application/models/Permission.php:126
+#: application/models/Permission.php:126 application/models/Permission.php:754
 msgid "Survey content"
 msgstr ""
 
@@ -11755,10 +11755,10 @@ msgid "Permission to create/view/update/delete/import/export the questions, grou
 msgstr ""
 
 #: application/models/Permission.php:136
-msgid "Permission to view/update the survey text elements : survey title, survey description, welcome and end message …"
+msgid "Permission to view/update the survey text elements : survey title, survey description, welcome and end message â€¦"
 msgstr ""
 
-#: application/models/Permission.php:142
+#: application/models/Permission.php:142 application/models/Permission.php:756
 msgid "Survey security"
 msgstr ""
 
@@ -11855,24 +11855,8 @@ msgstr ""
 msgid "Use internal database authentication"
 msgstr ""
 
-#: application/models/Permission.php:753
-msgid "Surveyactivation"
-msgstr ""
-
-#: application/models/Permission.php:754
-msgid "Surveycontent"
-msgstr ""
-
 #: application/models/Permission.php:755
-msgid "Surveylocale"
-msgstr ""
-
-#: application/models/Permission.php:756
-msgid "Surveysecurity"
-msgstr ""
-
-#: application/models/Permission.php:757
-msgid "Surveysettings"
+msgid "Survey locale"
 msgstr ""
 
 #: application/models/Permission.php:759
@@ -18623,11 +18607,11 @@ msgid "You are editing an entry of the main menu!"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:54
-msgid "This will be shown by hovering over the menu"
+msgid "This will be shown when hovering over the menu."
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:61
-msgid "Just use the fontawesome classname, or a link to the image"
+msgid "Use a fontawesome classname, or a link to the image."
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:74
@@ -18635,7 +18619,7 @@ msgid "If the external-option is not set, this will be appended to the current a
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:95
-msgid "Remove Link"
+msgid "Remove link"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:99
@@ -18651,15 +18635,15 @@ msgid "Add SurveyId to link"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:111
-msgid "Add SurveyGroupId to link"
+msgid "Add survey group ID to link"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:115
-msgid "Add QuestionGroupId to link"
+msgid "Add question group ID to link"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:119
-msgid "Add QuestionId to link"
+msgid "Add question ID to link"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:124
@@ -18668,15 +18652,15 @@ msgid "Toggle advanced options"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:137
-msgid "The name must be unique to all menu entries throughout the software."
+msgid "The name must be unique for all menu entries throughout the software."
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:144
-msgid "This is the content of the link in the menu, leave blank to use the title"
+msgid "This is the content of the menu link - leave blank to use the title."
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:151
-msgid "If the link should have any extra classes, please insert them here"
+msgid "If the link should have any extra classes, please insert them here."
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/create.php:6
