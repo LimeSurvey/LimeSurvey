@@ -133,7 +133,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey text elements"),
-                'description' => gT("Permission to view/update the survey text elements : survey title, survey description, welcome and end message …"),
+                'description' => gT("Permission to view/update the survey text elements : survey title, survey description, welcome and end message â€¦"),
                 'img'=>'edit'
             ),
             'surveysecurity' => array(
@@ -750,11 +750,11 @@ class Permission extends LSActiveRecord
             'responses' => gT('Responses'),
             'statistics' => gT('Statistics'),
             'survey' => gT('Survey'),
-            'surveyactivation' => gT('Surveyactivation'),
-            'surveycontent' => gT('Surveycontent'),
-            'surveylocale' => gT('Surveylocale'),
-            'surveysecurity' => gT('Surveysecurity'),
-            'surveysettings' => gT('Surveysettings'),
+            'surveyactivation' => gT('Survey activation'),
+            'surveycontent' => gT('Survey content'),
+            'surveylocale' => gT('Survey locale'),
+            'surveysecurity' => gT('Survey security'),
+            'surveysettings' => gT('Survey settings'),
             'tokens' => gT('Tokens'),
             'translations' => gT('Translations')
         ];

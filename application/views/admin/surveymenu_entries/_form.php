@@ -51,14 +51,14 @@
 
 		<div class="form-group">
 			<?php echo $form->labelEx($model, 'menu_description'); ?>
-			<p class="selector_infoBox alert alert-info hidden"><?=gT('This will be shown by hovering over the menu')?></p>
+			<p class="selector_infoBox alert alert-info hidden"><?=gT('This will be shown when hovering over the menu.')?></p>
 			<?php echo $form->textArea($model, 'menu_description', array('class' => 'selector__hasInfoBox', 'rows'=>6, 'cols'=>50)); ?>
 			<?php echo $form->error($model, 'menu_description'); ?>
 		</div>
 
 		<div class="form-group">
 			<?php echo $form->labelEx($model, 'menu_icon'); ?>
-			<p class="selector_infoBox alert alert-info hidden"><?=gT('Just use the fontawesome classname, or a link to the image')?></p>
+			<p class="selector_infoBox alert alert-info hidden"><?=gT('Use a fontawesome classname, or a link to the image.')?></p>
 			<?php echo $form->textField($model, 'menu_icon', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 			<?php echo $form->error($model, 'menu_icon'); ?>
 		</div>
@@ -92,7 +92,7 @@
 			<div class="list-group">
 				<label class="list-group-item col-sm-6">
 					<div class="col-sm-1 text-right"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel selector__disable_following" data-priority="6" data-option='["render","link","placeholder"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Remove Link")?></div>
+					<div class="col-sm-10 text-left"><?=gT("Remove link")?></div>
 				</label>
 				<label class="list-group-item col-sm-6">
 					<div class="col-sm-1 text-right"><input type="checkbox" data-value="1" class="checkbox selector__dataOptionModel selector__disable_following" data-priority="5" data-option='["render","link","external"]' /></div>
@@ -108,15 +108,15 @@
 				</label>
 				<label class="list-group-item col-sm-6">
 					<div class="col-sm-1 text-right"><input type="checkbox" data-value='["survey", "gsid"]' class="checkbox selector__dataOptionModel" data-priority="3" data-option='["render","link","data","gsid"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Add SurveyGroupId to link")?></div>
+					<div class="col-sm-10 text-left"><?=gT("Add survey group ID to link")?></div>
 				</label>
 				<label class="list-group-item col-sm-6">
 					<div class="col-sm-1 text-right"><input type="checkbox" data-value='["questiongroup", "gid"]' class="checkbox selector__dataOptionModel" data-priority="2" data-option='["render","link","data","gid"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Add QuestionGroupId to link")?></div>
+					<div class="col-sm-10 text-left"><?=gT("Add question group ID to link")?></div>
 				</label>
 				<label class="list-group-item col-sm-6">
 					<div class="col-sm-1 text-right"><input type="checkbox" data-value='["question", "qid"]' class="checkbox selector__dataOptionModel" data-priority="1" data-option='["render","link","data","qid"]' /></div>
-					<div class="col-sm-10 text-left"><?=gT("Add QuestionId to link")?></div>
+					<div class="col-sm-10 text-left"><?=gT("Add question ID to link")?></div>
 				</label>
 			</div>
 		</div>
@@ -134,21 +134,21 @@
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'name'); ?>
-				<p class="selector_infoBox alert alert-info hidden"><?=gT('The name must be unique to all menu entries throughout the software.')?></p>
+				<p class="selector_infoBox alert alert-info hidden"><?=gT('The name must be unique for all menu entries throughout the software.')?></p>
 				<?php echo $form->textField($model, 'name', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'name'); ?>
 			</div>
 			
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'menu_title'); ?>
-				<p class="selector_infoBox alert alert-info hidden"><?=gT('This is the content of the link in the menu, leave blank to use the title')?></p>
+				<p class="selector_infoBox alert alert-info hidden"><?=gT('This is the content of the menu link - leave blank to use the title.')?></p>
 				<?php echo $form->textField($model, 'menu_title', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'menu_title'); ?>
 			</div>
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model, 'menu_class'); ?>
-				<p class="selector_infoBox alert alert-warning hidden"><?=gT('If the link should have any extra classes, please insert them here')?></p>
+				<p class="selector_infoBox alert alert-warning hidden"><?=gT('If the link should have any extra classes, please insert them here.')?></p>
 				<?php echo $form->textField($model, 'menu_class', array('class' => 'selector__hasInfoBox', 'size'=>60,'maxlength'=>255)); ?>
 				<?php echo $form->error($model, 'menu_class'); ?>
 			</div>
