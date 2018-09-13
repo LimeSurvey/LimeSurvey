@@ -133,7 +133,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey text elements"),
-                'description' => gT("Permission to view/update the survey text elements : survey title, survey description, welcome and end message â€¦"),
+                'description' => gT("Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"),
                 'img'=>'edit'
             ),
             'surveysecurity' => array(
