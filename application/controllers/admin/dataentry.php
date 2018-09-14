@@ -320,11 +320,19 @@ class dataentry extends Survey_Common_Action
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
                 }
 
+                if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])){
+                    $targetResponse['startdate'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                }
+
+                if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])){
+                    $targetResponse['datestamp'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                }
+
                 $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
                 $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
                 $beforeDataEntryImport->set('oModel', $targetResponse);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
-
+ 
                 $imported++;
                 $targetResponse->save();
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
