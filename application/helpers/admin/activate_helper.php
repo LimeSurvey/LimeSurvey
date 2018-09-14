@@ -301,8 +301,10 @@ function activateSurvey($iSurveyID, $simulate = false)
                 $aTableDefinition[$aRow['fieldname']] = "pk";
                 break;
             case "startdate":
+                $aTableDefinition[$aRow['fieldname']] = "datetime NULL";
+                break;
             case "datestamp":
-                $aTableDefinition[$aRow['fieldname']] = "datetime NOT NULL";
+                $aTableDefinition[$aRow['fieldname']] = "datetime NULL";
                 break;
             case "submitdate":
                 $aTableDefinition[$aRow['fieldname']] = "datetime";
