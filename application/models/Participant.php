@@ -1631,7 +1631,7 @@ class Participant extends LSActiveRecord
                 continue;
             }
             $isDuplicate = array_reduce($oTokens, function($carry, $oToken) use ($oParticipant) {
-                return $carry ? $carry : ($oTokens->tid == $oParticipant->participant_id);
+                return $carry ? $carry : ($oToken->participant_id == $oParticipant->participant_id);
             }, false);
             if($isDuplicate) {
                 //Participant already exists in survey participants table - don't copy
