@@ -20,17 +20,19 @@ Yii::import('application.helpers.sanitize_helper', true);
  * @param string $sToTranslate
  * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped)
  * @param string $sLanguage
- * @return mixed|string
+ * @param string $source
+ * @return string
  */
-function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null)
+function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null, $source = null)
 {
-    return quoteText(Yii::t('', $sToTranslate, array(), null, $sLanguage), $sEscapeMode);
+    return quoteText(Yii::t('', $sToTranslate, array(), $source, $sLanguage), $sEscapeMode);
 }
 
 /**
  * Translation helper function which outputs right away.
  * @param string $sToTranslate
  * @param string $sEscapeMode
+ * @return string
  */
 function eT($sToTranslate, $sEscapeMode = 'html')
 {
@@ -42,11 +44,13 @@ function eT($sToTranslate, $sEscapeMode = 'html')
  * @param string $sTextToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
+ * @param string $sLanguage
+ * @param string $source
  * @return string
  */
-function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
+function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html', $sLanguage = null, $source = null)
 {
-    return quoteText(Yii::t('', $sTextToTranslate, $iCount), $sEscapeMode);
+    return quoteText(Yii::t('', $sTextToTranslate, $iCount, $source, $sLanguage), $sEscapeMode);
 }
 
 /**

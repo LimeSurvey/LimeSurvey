@@ -8,13 +8,11 @@ namespace LimeSurvey\PluginManager;
 abstract class PluginBase implements iPlugin
 {
     /**
-     *
      * @var LimesurveyApi
      */
     protected $api = null;
 
     /**
-     *
      * @var PluginEvent
      */
     protected $event = null;
@@ -69,9 +67,8 @@ abstract class PluginBase implements iPlugin
         if (!file_exists($basePath)) {
             return;
         }
-
         // Set plugin specific locale file to locale/<lang>/<lang>.mo
-        \Yii::app()->setComponent('pluginMessages'.$this->id, array(
+        \Yii::app()->setComponent('pluginMessages'.get_class($this), array(
             'class' => 'LSCGettextMessageSource',
             'cachingDuration' => 3600,
             'forceTranslation' => true,
@@ -324,33 +321,11 @@ abstract class PluginBase implements iPlugin
      */
     public function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = null)
     {
-        $translation = \quoteText(
-            \Yii::t(
-                '',
-                $sToTranslate,
-                array(),
-                'pluginMessages'.$this->id,
-                $sLanguage
-            ),
-            $sEscapeMode
-        );
-
-        // If we don't have a translation from the plugin, check core translations
-        if ($translation == $sToTranslate) {
-            $translationFromCore = \quoteText(
-                \Yii::t(
-                    '',
-                    $sToTranslate,
-                    array(),
-                    null,
-                    $sLanguage
-                ),
-                $sEscapeMode
-            );
-
-            return $translationFromCore;
+        $translation = gT($sToTranslate, $sEscapeMode, $sLanguage,'pluginMessages'.get_class($this));
+        if ($translation === $sToTranslate) {
+            /* translation from core */
+            return gT($sToTranslate, $sEscapeMode, $sLanguage,null);
         }
-
         return $translation;
 
     }
