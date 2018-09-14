@@ -996,43 +996,54 @@ class Participant extends LSActiveRecord
                 ->where('participant_id = :row')
                 ->bindParam(":row", $row, PDO::PARAM_INT)
                 ->queryAll();
-
+		
+			
             foreach ($tokens as $key => $surveyLink) {
-                $survey = $surveyLink->survey;
+				$surveyId = $surveyLink['survey_id'];
+				$survey = Survey::model()->findByPk($surveyId);
+				
                 $tokentable = $survey->tokensTableName;
                 if (Yii::app()->db->schema->getTable($tokentable)) {
                     $tokenid = Yii::app()->db->createCommand()
                         ->select('token')
                         ->from($survey->tokensTableName)
                         ->where('participant_id = :pid')
-                        ->bindParam(":pid", $surveyLink->participant_id, PDO::PARAM_INT)
+                        ->bindParam(":pid", $surveyLink['participant_id'], PDO::PARAM_INT)
                         ->queryAll();
+						
+					if(!isset($tokenid[0])) {
+						continue;
+					}
                     $token = $tokenid[0];
                     $surveytable = $survey->responsesTableName;
                     if ($datas = Yii::app()->db->schema->getTable($surveytable)) {
                         //Make sure we have a token value, and that tokens are used to link to the survey
-                        if (!empty($token['token']) && isset($datas->columns['token']) && Permission::model()->hasSurveyPermission($surveyLink->survey_id, 'responses', 'delete')) {
+                        if (!empty($token['token']) && isset($datas->columns['token']) && Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
                             $gettoken = Yii::app()->db->createCommand()
                                 ->select('*')
                                 ->from($survey->responsesTableName)
                                 ->where('token = :token')
                                 ->bindParam(":token", $token['token'], PDO::PARAM_STR)
                                 ->queryAll();
-                            $gettoken = $gettoken[0];
-                            Yii::app()->db->createCommand()
-                                ->delete($survey->responsesTableName, 'token = :token')
-                                ->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
+								
+							if(isset($gettoken[0])) {
+								$gettoken = $gettoken[0];
+								Yii::app()->db->createCommand()
+									->delete($survey->responsesTableName, 'token = :token')
+									->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
+							}
                         }
                     }
-                    if (Permission::model()->hasSurveyPermission($surveyLink->survey_id, 'tokens', 'delete')) {
-
+                    if (Permission::model()->hasSurveyPermission($surveyId, 'tokens', 'delete')) {
                         Yii::app()->db->createCommand()
-                            ->delete($survey->tokensTableName, 'participant_id = :pid', array(':pid'=>$surveyLink->participant_id)); // Deletes matching survey participants table entries
+                            ->delete($survey->tokensTableName, 'participant_id = :pid', array(':pid'=>$surveyLink['participant_id'])); // Deletes matching survey participants table entries
                     }
                 }
             }
-            $iDeletedParticipants += $this->deleteParticipants($sParticipantsIDs, false);
         }
+		
+        $iDeletedParticipants = $this->deleteParticipants($sParticipantsIDs, false);
+		
         return $iDeletedParticipants;
     }
 
