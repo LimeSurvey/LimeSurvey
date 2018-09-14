@@ -744,29 +744,19 @@ class Permission extends LSActiveRecord
     }
 
     public static function getPermissionList(){
-        return [
-            'assessments' => gT('Assessments'),
-            'quotas' => gT('Quotas'),
-            'responses' => gT('Responses'),
-            'statistics' => gT('Statistics'),
-            'survey' => gT('Survey'),
-            'surveyactivation' => gT('Survey activation'),
-            'surveycontent' => gT('Survey content'),
-            'surveylocale' => gT('Survey locale'),
-            'surveysecurity' => gT('Survey security'),
-            'surveysettings' => gT('Survey settings'),
-            'tokens' => gT('Tokens'),
-            'translations' => gT('Translations')
-        ];
+        $aPermissions = self::getSurveyBasePermissions();
+        return array_map(function($aPermission){
+            return $aPermission['title'];
+        }, $aPermissions);
     }
     public static function getPermissionGradeList(){
         return [
-            'create' => gT('Create'),
-            'read' => gT('Read'),
-            'update' => gT('Update'),
-            'delete' => gT('Delete'),
-            'import' => gT('Import'),
-            'export' => gT('Export'),
+            'create' => gT("Create"),
+            'read' => gT("View/read"),
+            'update' => gT("Update"),
+            'delete' => gT("Delete"),
+            'import' => gT("Import"),
+            'export' => gT("Export"),
         ];
     }
 }
