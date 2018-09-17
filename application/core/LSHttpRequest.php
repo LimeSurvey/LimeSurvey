@@ -151,6 +151,7 @@ class LSHttpRequest extends CHttpRequest
         }
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
+
         if ($this->enableCsrfValidation) {
             
             $validationRoutes = $this->noCsrfValidationRoutes;
@@ -168,7 +169,7 @@ class LSHttpRequest extends CHttpRequest
             }
 
             foreach ($validationParams as $key => $value) {
-                if (isset($_GET[$key]) && $_GET[$key] === $value) {
+                if ($this->getParam($key) === $value) {
                     Yii::app()->detachEventHandler('onBeginRequest',
                         array($this, 'validateCsrfToken'));
                     Yii::trace('Route "'.$route.' passed without CSRF validation');
