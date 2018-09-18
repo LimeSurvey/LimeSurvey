@@ -266,6 +266,7 @@ $internalConfig = array(
                 'getEditor'               => 'getEditor',
                 'darkencss'               => 'LS_Twig_Extension::darkencss',
                 'lightencss'              => 'LS_Twig_Extension::lightencss',
+                'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -371,6 +372,7 @@ $internalConfig = array(
                     'getEditor',
                     'darkencss',
                     'lightencss',
+                    'getAllTokenAnswers',
                 ),
             ),
 
