@@ -15,7 +15,7 @@
                     'id'       =>'uploadpluginzip',
                     'name'     =>'uploadpluginzip',
                     'enctype'  =>'multipart/form-data',
-                    'onsubmit' =>'return validatefilename(this,"'.gT('Please select a plugin to install!', 'js').'");'
+                    'onsubmit' =>'return window.LS.validatefilename(this,"'.gT('Please select a plugin to install!', 'js').'");'
                 ]
             ); ?>
             <div class="modal-body">
@@ -31,7 +31,7 @@
                 <?php if (!function_exists("zip_open")): ?>
                     <?php eT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") ?>
                 <?php else: ?>
-                    <input class="btn btn-success" type='button' value='<?php eT("Install") ?>' onclick='if (validatefilename(this.form,"<?php eT('Please select a file to import!', 'js') ?>")) { this.form.submit();}' />
+                    <input class="btn btn-success" type='button' value='<?php eT("Install") ?>' onclick='if (window.LS.validatefilename(this.form,"<?php eT('Please select a file to import!', 'js') ?>")) { this.form.submit();}' />
                 <?php endif; ?>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
             </div>
