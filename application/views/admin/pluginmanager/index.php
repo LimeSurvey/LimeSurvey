@@ -39,7 +39,6 @@ echo viewHelper::getViewTestTag('pluginManager');
                     <i class='fa fa-cloud-download '></i>&nbsp;
                     <?php eT('Install ZIP'); ?>
                 </a>
-                &nbsp;
                 <a 
                     href='<?php echo $scanFilesUrl; ?>'
                     class='btn btn-default'

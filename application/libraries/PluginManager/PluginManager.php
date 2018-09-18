@@ -107,11 +107,19 @@ class PluginManager extends \CApplicationComponent
      */
     public function installUploadedPlugin($destdir)
     {
+        $configFile = $destdir . '/config.xml';
         if (file_exists($configFile)) {
             libxml_disable_entity_loader(false);
             $xml = simplexml_load_file(realpath($configFile));
             libxml_disable_entity_loader(true);
             $pluginConfig = new \PluginConfiguration($xml);
+            if (empty($pluginConfig)) {
+                return [false, gT('Could not parse the plugin congig.xml into a configuration object')];
+            } else {
+                return $this->installPlugin($pluginConfig, 'user');
+            }
+        } else {
+            return [false, gT('Could not find the plugin config.xml file')];
         }
     }
 
