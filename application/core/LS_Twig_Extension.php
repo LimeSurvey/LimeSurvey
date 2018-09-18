@@ -42,7 +42,6 @@
 
 class LS_Twig_Extension extends Twig_Extension
 {
-
     /**
      * Publish a css file from public style directory, using or not the asset manager (depending on configuration)
      * In any twig file, you can register a public css file doing: {{ registerPublicCssFile($sPublicCssFileName) }}
@@ -112,7 +111,7 @@ class LS_Twig_Extension extends Twig_Extension
      * In any twig file, you can register a script doing: {{ registerScript($sId, $sScript) }}
      *
      * NOTE: this function is not recursive, so don't use it to register a script located inside a theme folder, or inherited themes will be broken.
-     * NOTE! to register a script located inside a theme folder, registerTemplateScript() 
+     * NOTE! to register a script located inside a theme folder, registerTemplateScript()
      *
      */
     public static function registerScript($id, $script, $position = null, array $htmlOptions = array())
@@ -172,7 +171,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @param mixed $element
      * @return void
      */
-    public static function safecount($element) 
+    public static function safecount($element)
     {
         $isCountable = is_array($element) || $element instanceof Countable;
         if($isCountable) {
@@ -608,4 +607,35 @@ class LS_Twig_Extension extends Twig_Extension
     {
         return Yii::app()->getConfig($item);
     }
+
+
+    /**
+     * Retreive all the previous answers from a given token
+     * To use it:
+     *  {% set aResponses = getAllTokenAnswers(aSurveyInfo.sid) %}
+     *  {{ dump(aResponses) }}
+     *
+     *  Of course, the survey must use token. If you want to show it after completion, the you must turn on public statistics
+     */
+    public static function getAllTokenAnswers( $iSurveyID )
+    {
+
+        $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
+                            array(
+                                'condition' => 'token = :token',
+                                'params'    => array( ':token'=>$_SESSION['survey_'.$iSurveyID]['token']),
+                            )
+
+                        );
+
+        $aResponses = array();
+
+        if( count($oResponses) > 0 ){
+            foreach($oResponses as $oResponse)
+                array_push($aResponses,$oResponse->attributes);
+        }
+
+        return $aResponses;
+    }
+
 }

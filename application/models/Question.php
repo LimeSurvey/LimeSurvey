@@ -474,6 +474,7 @@ class Question extends LSActiveRecord
 
     /**
      * This function contains the question type definitions.
+     * @param string $language Language for translation
      * @return array The question type definitions
      *
      * Explanation of questiontype array:
@@ -484,7 +485,7 @@ class Question extends LSActiveRecord
      * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
      * @deprecated use QuestionType::modelsAttributes() instead
      */
-    public static function typeList()
+    public static function typeList($language = '')
     {
         $questionTypes = QuestionType::modelsAttributes();
 

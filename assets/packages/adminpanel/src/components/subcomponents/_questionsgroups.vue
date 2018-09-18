@@ -142,18 +142,21 @@ export default {
         },
         dragoverQuestiongroup($event, questiongroupObject) {
             if(this.draggedQuestion == undefined || this.draggedQuestion == null) {
-                this.$log.error({
+                this.$log.log({
                     this: this, 
-                    event: $event, 
                     questiongroupObject: questiongroupObject,
                     draggedQuestion: this.draggedQuestion
                     });
             }
                 
             if (this.questiongroupDragging) {
-                const orderSwap = questiongroupObject.group_order;
-                questiongroupObject.group_order = this.draggedQuestionGroup.group_order;
-                this.draggedQuestionGroup.group_order = orderSwap;
+                const targetPosition = parseInt(questiongroupObject.group_order);
+                const currentPosition = parseInt(this.draggedQuestionGroup.group_order);
+                if(Math.abs(parseInt(targetPosition)-parseInt(currentPosition)) == 1){
+                    questiongroupObject.group_order = currentPosition;
+                    this.draggedQuestionGroup.group_order = targetPosition
+                } 
+                
             } else {
                 this.addActive(questiongroupObject.gid);
                 if (this.draggedQuestion.gid !== questiongroupObject.gid) {

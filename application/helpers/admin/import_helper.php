@@ -2487,6 +2487,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                     $oSurvey->submitdate = $aResponses[$iSubmitdateKey];
                 }
             }
+
             foreach ($aKeyForFieldNames as $sFieldName=>$iFieldKey) {
                 if ($aResponses[$iFieldKey] == '{question_not_shown}') {
                     $oSurvey->$sFieldName = new CDbExpression('NULL');
@@ -2495,6 +2496,16 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                     $oSurvey->$sFieldName = $sResponse;
                 }
             }
+
+            //Check if datestamp is set => throws no default error on importing
+            if(!isset($oSurvey->datestamp)){
+                $oSurvey->datestamp = '1980-01-01 00:00:01';
+            } 
+            //Check if startdate is set => throws no default error on importing
+            if(!isset($oSurvey->startdate)){
+                $oSurvey->startdate = '1980-01-01 00:00:01';
+            } 
+
             // We use transaction to prevent DB error
             $oTransaction = Yii::app()->db->beginTransaction();
             try {
@@ -2527,8 +2538,8 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                 $oTransaction->rollBack();
                 $aResponsesError[] = $aResponses[$iIdReponsesKey];
                 // Show some error to user ?
-                // $CSVImportResult['errors'][]=$oException->getMessage(); // Show it in view
-                // tracevar($oException->getMessage());// Show it in console (if debug is set)
+                $CSVImportResult['errors'][]=$oException->getMessage(); // Show it in view
+                tracevar($oException->getMessage());// Show it in console (if debug is set)
             }
 
         }

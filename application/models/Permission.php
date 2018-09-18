@@ -133,7 +133,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey text elements"),
-                'description' => gT("Permission to view/update the survey text elements : survey title, survey description, welcome and end message …"),
+                'description' => gT("Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"),
                 'img'=>'edit'
             ),
             'surveysecurity' => array(
@@ -745,29 +745,19 @@ class Permission extends LSActiveRecord
     }
 
     public static function getPermissionList(){
-        return [
-            'assessments' => gT('Assessments'),
-            'quotas' => gT('Quotas'),
-            'responses' => gT('Responses'),
-            'statistics' => gT('Statistics'),
-            'survey' => gT('Survey'),
-            'surveyactivation' => gT('Surveyactivation'),
-            'surveycontent' => gT('Surveycontent'),
-            'surveylocale' => gT('Surveylocale'),
-            'surveysecurity' => gT('Surveysecurity'),
-            'surveysettings' => gT('Surveysettings'),
-            'tokens' => gT('Tokens'),
-            'translations' => gT('Translations')
-        ];
+        $aPermissions = self::getSurveyBasePermissions();
+        return array_map(function($aPermission){
+            return $aPermission['title'];
+        }, $aPermissions);
     }
     public static function getPermissionGradeList(){
         return [
-            'create' => gT('Create'),
-            'read' => gT('Read'),
-            'update' => gT('Update'),
-            'delete' => gT('Delete'),
-            'import' => gT('Import'),
-            'export' => gT('Export'),
+            'create' => gT("Create"),
+            'read' => gT("View/read"),
+            'update' => gT("Update"),
+            'delete' => gT("Delete"),
+            'import' => gT("Import"),
+            'export' => gT("Export"),
         ];
     }
 }

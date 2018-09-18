@@ -38,7 +38,7 @@ $.fn.YesNoDate = function(options)
             {
                 // Show date
                 $elDateContainer.show();
-                $elHiddenInput.attr('value', moment().format($elDateContainer.data('date-format')));
+                $elHiddenInput.attr('value', moment().format($elDate.data('date-format')));
             }
             else
             {
@@ -50,7 +50,7 @@ $.fn.YesNoDate = function(options)
 
         // When user change date
         $elDate.on('dp.change', function(e){
-            $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:mm'));
+            $elHiddenInput.attr('value', e.date.format($elDate.data('date-format')));
         })
     };
     return that;

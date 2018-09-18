@@ -83,10 +83,10 @@ echo viewHelper::getViewTestTag('usersIndex');
                  <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post', array('class'=>''));?>
                     <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
                         echo "<div class=\"form-group\">";
-                          echo "<label  class='col-md-4 control-label'>";
+                          echo "<label  class='control-label'>";
                             eT("Central database");
                           echo "</label>";
-                          echo "<div class='col-md-8'>";
+                          echo "<div class=''>";
                             echo CHtml::dropDownList('user_type',
                                 'DB',
                                 array(

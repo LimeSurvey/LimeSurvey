@@ -535,7 +535,7 @@ $url .= "_view"; });
         $operation = Yii::app()->request->getPost('oper');
         $aData = Yii::app()->request->getPost('Participant');
 
-        if (isset($aData['blacklisted']) && ($aData['blacklisted'] == 'on' || $aData['blacklisted'] == '1')) {
+        if (isset($aData['blacklisted']) && ($aData['blacklisted'] == 'on' || $aData['blacklisted'] == '1' || $aData['blacklisted'] == 'Y')) {
             $aData['blacklisted'] = 'Y';
         } else {
             $aData['blacklisted'] = 'N';

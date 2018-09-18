@@ -92,7 +92,7 @@ $surveyid = $aTabContents['surveyid'];
             </div>
         </div>
     </div>
-    <div class="row">    
+    <div class="row">
         <div class="col-sm-12 col-md-6">
             <!-- Description -->
             <div class="form-group">

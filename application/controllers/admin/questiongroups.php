@@ -410,8 +410,9 @@ class questiongroups extends Survey_Common_Action
                         $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
                         $success = $success && $oQuestiongroup->save();
                     }, $oQuestiongroups);
-
                     
+                    $aQuestiongroup['questions'] = isset($aQuestiongroup['questions']) ? $aQuestiongroup['questions'] : [];
+
                     foreach ($aQuestiongroup['questions'] as $aQuestion) {
                         $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]);
                         array_map(function($oQuestion) use ($aQuestion, $success)

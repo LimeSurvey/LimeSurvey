@@ -14,7 +14,7 @@
     );
 ?>
     <input type="hidden" name="oper" value="<?php echo $editType; ?>" />
-    <input type="hidden" name="Participant[participant_id]" value="<?php echo $model->participant_id; ?>" />
+    <?=$form->hiddenField($model, 'participant_id')?>
     <?php
         echo "<legend>".gT("Basic attributes")."</legend>";
         $baseControlGroupHtmlOptions = array(
@@ -28,13 +28,13 @@
                 <?php eT('First name:'); ?>
             </label>
             <div class=''>
-                <input class='form-control' name='Participant[firstname]' value='<?php echo $model->firstname; ?>' />
+                <?=$form->textField($model, 'firstname')?>
             </div>
             <label class='control-label '>
                 <?php eT('Last name:'); ?>
             </label>
             <div class=''>
-                <input class='form-control' name='Participant[lastname]' value='<?php echo $model->lastname; ?>' />
+                <?=$form->textField($model, 'lastname')?>
             </div>
         </div>
         <div class='form-group'>
@@ -42,28 +42,35 @@
                 <?php eT('E-mail:'); ?>
             </label>
             <div class='0'>
-                <input class='form-control' name='Participant[email]' value='<?php echo $model->email; ?>' />
+                <?=$form->textField($model, 'email')?>
             </div>
         </div>
         <div class='form-group'>
             <label class='control-label '><?php eT("Language:"); ?></label>
             <div class=''>
-                &nbsp;
-                <select name='Participant[language]' class='action_changeLanguage'>
-                    <?php foreach($model->languageOptions as $language_code => $language_name) {
-                    ?>
-                        <option value="<?=$language_code?>" <?=($model->language == $language_code?' selected=true ':'')?>>
-                            <?=$language_name?>
-                        </option>
-                    <?php } ?>
-                </select>
+                <?=$form->dropDownList($model, 'language', $model->languageOptions, ['empty' => gT('Select language...')])?>
             </div>
         </div>
         <div class='form-group'>
             <label class='control-label '><?php eT("Blacklist user:"); ?></label>
             <div class=''>
                 &nbsp;
-                <input name='Participant[blacklisted]' type='checkbox' <?php if ($model->blacklisted == 'Y'): echo ' checked="checked" '; endif; ?> data-size='small' data-on-color='warning' data-off-color='primary' data-off-text='<?php eT('No'); ?>' data-on-text='<?php eT('Yes'); ?>' class='action_changeBlacklistStatus ls-bootstrap-switch' />
+                <?php $this->widget(
+                'yiiwheels.widgets.switch.WhSwitch',
+                array(
+                    'attribute' => 'blacklisted',
+                    'model' => $model,
+                    'htmlOptions'=>array(
+                        'class'=>'bootstrap-switch',
+                        'value' => 'Y'
+                    ),
+                    'onLabel'=>gT('Yes'),
+                    'offLabel'=>gT('No'),
+                    'onColor'=> 'warning',
+                    'offColor'=> 'primary'
+                )
+            );
+            ?>
             </div>
         </div>
 
@@ -133,6 +140,9 @@
     <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close') ?></button>
     <button type="button" class="btn btn-primary action_save_modal_editParticipant"><?php eT("Save")?></button>
 </div>
+<script>
+$('#editPartcipantActiveForm .bootstrap-switch').bootstrapSwitch();
+</script>
 <?php
 $this->endWidget();
 ?>
