@@ -116,7 +116,7 @@ class PluginManager extends \CApplicationComponent
             if (empty($pluginConfig)) {
                 return [false, gT('Could not parse the plugin congig.xml into a configuration object')];
             } else {
-                return $this->installPlugin($pluginConfig, 'user');
+                return $this->installPlugin($pluginConfig, 'upload');
             }
         } else {
             return [false, gT('Could not find the plugin config.xml file')];
@@ -415,7 +415,7 @@ class PluginManager extends \CApplicationComponent
                     }
                 }
             } else {
-                if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName)) {
+                if (!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName) {
                     if ($this->getPluginInfo($pluginName) !== false) {
                         if (class_exists($pluginName)) {
                             $this->plugins[$id] = new $pluginName($this, $id);

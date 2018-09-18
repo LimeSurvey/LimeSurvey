@@ -196,6 +196,11 @@ class PluginManagerController extends Survey_Common_Action
         $plugin      = Plugin::model()->findByPk($id);
         $oPluginObject = App()->getPluginManager()->loadPlugin($plugin->name, $plugin->id);
 
+        if (empty($oPluginObject)) {
+            Yii::app()->user->setFlash('error', gT('Could not load plugin'));
+            $this->getController()->redirect($url);
+        }
+
         if (!$oPluginObject->readConfigFile()) {
             Yii::app()->user->setFlash('error', gT('Found no configuration file for this plugin.'));
             $this->getController()->redirect($url);
