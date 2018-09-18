@@ -90,8 +90,6 @@ function quoteText($sText, $sEscapeMode = 'html')
     }
 }
 
-* @param string $language Language for translation
-
 /**
 * getSurveyList() Queries the database (survey table) for a list of existing surveys
 *
