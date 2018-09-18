@@ -487,7 +487,7 @@ class Question extends LSActiveRecord
      */
     public static function typeList($language = '')
     {
-        $questionTypes = QuestionType::modelsAttributes();
+        $questionTypes = QuestionType::modelsAttributes($language);
 
         /**
          * @todo Check if this actually does anything, since the values are arrays.
