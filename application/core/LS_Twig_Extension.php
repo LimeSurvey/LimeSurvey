@@ -564,16 +564,40 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function getAllTokenAnswers( $iSurveyID )
     {
-
-        $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
-                            array(
-                                'condition' => 'token = :token',
-                                'params'    => array( ':token'=>$_SESSION['survey_'.$iSurveyID]['token']),
-                            )
-
-                        );
-
         $aResponses = array();
+        $sToken     = (empty($_SESSION['survey_'.$iSurveyID]['token']))?'':$_SESSION['survey_'.$iSurveyID]['token'] ;
+
+        if (!empty($sToken)) {
+            $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
+                                array(
+                                    'condition' => 'token = :token',
+                                    'params'    => array( ':token'=> $sToken ),
+                                )
+
+                            );
+
+            if( count($oResponses) > 0 ){
+                foreach($oResponses as $oResponse)
+                    array_push($aResponses,$oResponse->attributes);
+            }
+        }
+
+        return $aResponses;
+    }
+
+
+    /**
+     * Retreive all the previous answers from a given survey (can be a different survey)
+     * To use it:
+     *  {% set aResponses = getAllAnswers(aSurveyInfo.sid) %}
+     *  {{ dump(aResponses) }}
+     *
+     *  If you want to show it after completion, the you must turn on public statistics
+     */
+    public static function getAllAnswers( $iSurveyID )
+    {
+        $aResponses = array();
+        $oResponses = SurveyDynamic::model($iSurveyID)->findAll();
 
         if( count($oResponses) > 0 ){
             foreach($oResponses as $oResponse)
@@ -581,6 +605,7 @@ class LS_Twig_Extension extends Twig_Extension
         }
 
         return $aResponses;
+
     }
 
 }
