@@ -108,18 +108,11 @@ class PluginManager extends \CApplicationComponent
     public function installUploadedPlugin($destdir)
     {
         $configFile = $destdir . '/config.xml';
-        if (file_exists($configFile)) {
-            libxml_disable_entity_loader(false);
-            $xml = simplexml_load_file(realpath($configFile));
-            libxml_disable_entity_loader(true);
-            $pluginConfig = new \PluginConfiguration($xml);
-            if (empty($pluginConfig)) {
-                return [false, gT('Could not parse the plugin congig.xml into a configuration object')];
-            } else {
-                return $this->installPlugin($pluginConfig, 'upload');
-            }
+        $pluginConfig = \PluginConfiguration::loadConfigFromFile($configFile);
+        if (empty($pluginConfig)) {
+            return [false, gT('Could not parse the plugin congig.xml into a configuration object')];
         } else {
-            return [false, gT('Could not find the plugin config.xml file')];
+            return $this->installPlugin($pluginConfig, 'upload');
         }
     }
 
@@ -140,7 +133,7 @@ class PluginManager extends \CApplicationComponent
         }
 
         $newName = (string) $pluginConfig->xml->metadata->name;
-        $otherPlugin = Plugin::findAllByAttributes(['name' => $newName]);
+        $otherPlugin = Plugin::model()->findAllByAttributes(['name' => $newName]);
         if (!empty($otherPlugin)) {
             return [false, sprintf(gT('Plugin "%s" is already installed.'), $newName)];
         }
@@ -365,17 +358,11 @@ class PluginManager extends \CApplicationComponent
                     $configFile = Yii::getPathOfAlias($pluginDir)
                         . DIRECTORY_SEPARATOR . $pluginClass
                         . DIRECTORY_SEPARATOR .'config.xml';
-                    if (file_exists($configFile)) {
-                        libxml_disable_entity_loader(false);
-                        $xml = simplexml_load_file(realpath($configFile));
-                        libxml_disable_entity_loader(true);
-                        $pluginConfig = new \PluginConfiguration($xml);
+                    $pluginConfig = \PluginConfiguration::loadConfigFromFile($configFile);
+                    if ($pluginConfig) {
                         $pluginType = $type;
-                    } else {
-                        $pluginConfig = null;
+                        $found = true;
                     }
-
-                    $found = true;
                     break;
                 }
             }

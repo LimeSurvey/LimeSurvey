@@ -49,6 +49,23 @@ class PluginConfiguration
     }
 
     /**
+     * @param string $file Full file path.
+     * @return PluginConfiguration
+     */
+    public static function loadConfigFromFile($file)
+    {
+        if (!file_exists($file)) {
+            return null;
+        } else {
+            libxml_disable_entity_loader(false);
+            $xml = simplexml_load_file(realpath($file));
+            libxml_disable_entity_loader(true);
+            $pluginConfig = new \PluginConfiguration($xml);
+            return $pluginConfig;
+        }
+    }
+
+    /**
      * Returns true if this plugin config is compatible with this version of LS.
      * @return boolean
      */

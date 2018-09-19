@@ -454,7 +454,7 @@ class PluginManagerController extends Survey_Common_Action
                 );
             } else {
                 Yii::app()->user->setFlash(
-                    'success',
+                    'error',
                     gT('The plugin could not be installed:')
                     . ' '
                     . $errorMessage
