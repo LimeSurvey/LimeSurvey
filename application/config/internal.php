@@ -62,7 +62,22 @@ $internalConfig = array(
         // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
     ),
 
+    /*
+
+
+    here you can load the different modules
+    more about YII modules :
+    https://www.yiiframework.com/doc/guide/1.1/en/basics.module
+
+
+
+
     'modules'=>array(
+            'yourmodule'=array(
+            'class' => 'Use a yii Alias',
+
+        )
+
             'gii'=>array(
                 'class'=>'system.gii.GiiModule',
                 'password'=>'toto',
@@ -70,6 +85,10 @@ $internalConfig = array(
                     'newDirMode'=>0777,
             ),
         ),
+
+
+
+    */
 
     'params'=>array(
         'defaultPageSize'=>10, // Default page size for most of the grids
@@ -275,6 +294,7 @@ $internalConfig = array(
                 'darkencss'               => 'LS_Twig_Extension::darkencss',
                 'lightencss'              => 'LS_Twig_Extension::lightencss',
                 'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
+                'getAllAnswers'           => 'LS_Twig_Extension::getAllAnswers',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -307,6 +327,7 @@ $internalConfig = array(
                     'lower',
                     'upper',
                     'strip_tags',
+                    'number_format',
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox"),
@@ -390,6 +411,7 @@ $internalConfig = array(
                     'darkencss',
                     'lightencss',
                     'getAllTokenAnswers',
+                    'getAllAnswers',
                 ),
             ),
         ),
