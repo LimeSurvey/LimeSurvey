@@ -139,8 +139,14 @@ class PluginManager extends \CApplicationComponent
             return [false, gT('Plugin is not compatible with your LimeSurvey version.')];
         }
 
+        $newName = (string) $pluginConfig->xml->metadata->name;
+        $otherPlugin = Plugin::findAllByAttributes(['name' => $newName]);
+        if (!empty($otherPlugin)) {
+            return [false, sprintf(gT('Plugin "%s" is already installed.'), $newName)];
+        }
+
         $plugin = new Plugin();
-        $plugin->name        = (string) $pluginConfig->xml->metadata->name;
+        $plugin->name        = $newName;
         $plugin->version     = (string) $pluginConfig->xml->metadata->version;
         $plugin->active      = 0;
         $plugin->plugin_type = $pluginType;
