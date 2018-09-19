@@ -19,6 +19,7 @@ echo viewHelper::getViewTestTag('pluginManager');
         <div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
         <div class='col-sm-12'>
             <div class='pull-right'>
+                <?php /* Disabled for prototype 1.
                 <a
                     href=''
                     class='btn btn-default '
@@ -28,6 +29,7 @@ echo viewHelper::getViewTestTag('pluginManager');
                     <i class='fa fa-shopping-cart'></i>&nbsp;
                     <?php eT('Browse the shop'); ?>
                 </a>
+                 */ ?>
                 <a
                     href=''
                     class='btn btn-success '
