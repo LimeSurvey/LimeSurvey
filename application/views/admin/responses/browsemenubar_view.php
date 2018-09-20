@@ -1,3 +1,6 @@
+<?php
+/* @var Survey $oSurvey */
+?>
 <div class='menubar surveybar' id="browsermenubarid">
     <div class='row container-fluid'>
         <?php if(isset($menu) && isset($menu['edition']) && !$menu['edition']): ?>
@@ -14,7 +17,7 @@
 
 
                 <!-- Display Responses -->
-                <?php if (count($tmp_survlangs) < 2): ?>
+                <?php if (count($oSurvey->allLanguages) < 2): ?>
                     <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
                         <span class="fa fa-list text-success"></span>
                         <?php eT("Display responses"); ?>
@@ -26,7 +29,7 @@
                         <?php eT("Responses"); ?> <span class="fa fa-caret-down"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <?php foreach ($tmp_survlangs as $tmp_lang): ?>
+                        <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
                         <li>
                             <a class="pjax" href="<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/browselang/$tmp_lang"); ?>" accesskey='b'>
                                 <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
