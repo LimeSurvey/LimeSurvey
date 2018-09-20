@@ -1128,12 +1128,6 @@ class Survey_Common_Action extends CAction
             $aData['thissurvey'] = getSurveyInfo($iSurveyID);
             $aData['surveyid'] = $iSurveyID;
 
-            $tmp_survlangs = $oSurvey->additionalLanguages;
-            $baselang = $oSurvey->language;
-            $tmp_survlangs[] = $baselang;
-            rsort($tmp_survlangs);
-            $aData['tmp_survlangs'] = $tmp_survlangs;
-
             if (!isset($aData['menu']['closeurl'])) {
                 $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/responses/sa/browse/surveyid/".$aData['surveyid']));
             }
