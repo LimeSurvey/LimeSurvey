@@ -1123,7 +1123,6 @@ class Survey_Common_Action extends CAction
         if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid'])) {
             //BROWSE MENU BAR
             $iSurveyID = $aData['surveyid'];
-            $oSurvey = $aData['oSurvey'];
             $aData['title'] = $aData['display']['menu_bars']['browse'];
             $aData['thissurvey'] = getSurveyInfo($iSurveyID);
             $aData['surveyid'] = $iSurveyID;
