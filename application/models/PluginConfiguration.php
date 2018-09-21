@@ -49,20 +49,44 @@ class PluginConfiguration
     }
 
     /**
-     * @param string $file Full file path.
-     * @return PluginConfiguration
+     * @return string
      */
-    public static function loadConfigFromFile($file)
+    public function getName()
     {
-        if (!file_exists($file)) {
-            return null;
-        } else {
-            libxml_disable_entity_loader(false);
-            $xml = simplexml_load_file(realpath($file));
-            libxml_disable_entity_loader(true);
-            $pluginConfig = new \PluginConfiguration($xml);
-            return $pluginConfig;
-        }
+        return $this->xml->metadata->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->xml->metadata->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->xml->metadata->author;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLicense()
+    {
+        return $this->xml->metadata->license;
+    }
+
+    /**
+     * Version is a string, not number, due to semantic versioning.
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->xml->metadata->version;
     }
 
     /**
@@ -89,5 +113,22 @@ class PluginConfiguration
             }
         }
         return false;
+    }
+
+    /**
+     * @param string $file Full file path.
+     * @return PluginConfiguration
+     */
+    public static function loadConfigFromFile($file)
+    {
+        if (!file_exists($file)) {
+            return null;
+        } else {
+            libxml_disable_entity_loader(false);
+            $xml = simplexml_load_file(realpath($file));
+            libxml_disable_entity_loader(true);
+            $pluginConfig = new \PluginConfiguration($xml);
+            return $pluginConfig;
+        }
     }
 }
