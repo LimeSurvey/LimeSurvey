@@ -120,6 +120,7 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_policy_notice', 'LSYii_Validators'),
             array('surveyls_policy_error', 'LSYii_Validators'),
             array('surveyls_policy_notice_label', 'LSYii_Validators'),
+            array('surveyls_url', 'filter', 'filter'=>'trim'),
             array('surveyls_url', 'LSYii_Validators', 'isUrl'=>true),
             array('surveyls_urldescription', 'LSYii_Validators'),
 
