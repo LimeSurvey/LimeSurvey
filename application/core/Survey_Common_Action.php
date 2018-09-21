@@ -1104,16 +1104,9 @@ class Survey_Common_Action extends CAction
         if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid'])) {
             //BROWSE MENU BAR
             $iSurveyID = $aData['surveyid'];
-            $oSurvey = $aData['oSurvey'];
             $aData['title'] = $aData['display']['menu_bars']['browse'];
             $aData['thissurvey'] = getSurveyInfo($iSurveyID);
             $aData['surveyid'] = $iSurveyID;
-
-            $tmp_survlangs = $oSurvey->additionalLanguages;
-            $baselang = $oSurvey->language;
-            $tmp_survlangs[] = $baselang;
-            rsort($tmp_survlangs);
-            $aData['tmp_survlangs'] = $tmp_survlangs;
 
             if (!isset($aData['menu']['closeurl'])) {
                 $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/responses/sa/browse/surveyid/".$aData['surveyid']));
