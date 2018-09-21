@@ -390,6 +390,8 @@ class PluginManagerController extends Survey_Common_Action
             $this->getController()->redirect($this->getPluginManagerUrl());
         }
 
+        Yii::import('application.helpers.common_helper', true);
+
         Yii::app()->loadLibrary('admin.pclzip');
         $pluginManager = App()->getPluginManager();
 
@@ -399,18 +401,22 @@ class PluginManagerController extends Survey_Common_Action
         // Redirect back at file size error.
         $this->checkFileSizeError();
 
+        // Redirect back at zip bomb.
+        $this->checkZipBom();
+
         $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
-        // TODO: Customize folders from config.php?
-        $uploadDir = Yii::getPathOfAlias($pluginManager->pluginDirs['upload']);
-        $destdir = $uploadDir . DIRECTORY_SEPARATOR . $sNewDirectoryName;
+
+        //$uploadDir = Yii::getPathOfAlias($pluginManager->pluginDirs['upload']);
+        //$destdir = $uploadDir . DIRECTORY_SEPARATOR . $sNewDirectoryName;
+        $tempdir = Yii::app()->getConfig("tempdir");
+        $destdir = createRandomTempDir($tempdir, 'install_');
 
         // Redirect back if $destdir is not writable OR if it already exists.
-        $this->checkDestDir($destdir, $sNewDirectoryName);
+        //$this->checkDestDir($destdir, $sNewDirectoryName);
 
         // All OK if we're here.
-        mkdir($destdir);
-
         $this->extractZipFile($destdir);
+
     }
 
     /**
@@ -420,12 +426,10 @@ class PluginManagerController extends Survey_Common_Action
     protected function extractZipFile($destdir)
     {
         if (!is_file($_FILES['the_file']['tmp_name'])) {
-            Yii::app()->setFlashMessage(
-                gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),
-                'error'
-            );
             rmdirr($destdir);
-            $this->getController()->redirect($this->getPluginManagerUrl());
+            $this->errorAndRedirect(
+                gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.")
+            );
         }
 
         $zip = new PclZip($_FILES['the_file']['tmp_name']);
@@ -437,31 +441,88 @@ class PluginManagerController extends Survey_Common_Action
         );
 
         if ($aExtractResult === 0) {
-            Yii::app()->user->setFlash(
-                'error',
+            rmdirr($destdir);
+            $this->errorAndRedirect(
                 gT("This file is not a valid ZIP file archive. Import failed.")
                 . ' ' . $zip->error_string
             );
-            rmdirr($destdir);
-            $this->getController()->redirect($this->getPluginManagerUrl());
         } else {
-            $pluginManager = App()->getPluginManager();
-            list($result, $errorMessage) = $pluginManager->installUploadedPlugin($destdir);
-            if ($result) {
-                Yii::app()->user->setFlash(
-                    'success',
-                    gT('The plugin was successfully uploaded.')
-                );
-            } else {
-                Yii::app()->user->setFlash(
-                    'error',
-                    gT('The plugin could not be installed:')
-                    . ' '
-                    . $errorMessage
-                );
-            }
+            // Carry destdir to next page (but not in URL).
+            App()->user->setState('destdir', $destdir);
+            $this->getController()->redirect(
+                $this->getPluginManagerUrl('uploadConfirm')
+            );
+        }
+    }
+
+    /**
+     * Show confirm page after a plugin zip archive was successfully
+     * uploaded.
+     * @return void
+     */
+    public function uploadConfirm()
+    {
+        $destdir = App()->user->getState('destdir');
+
+        $pluginManager = App()->getPluginManager();
+
+        $data = [];
+
+        $configFile = $destdir . '/config.xml';
+        if (file_exists($configFile)) {
+            $config = PluginConfiguration::loadConfigFromFile($destdir . '/config.xml');
+            $data['config'] = $config;
+        }
+
+        $abortUrl = $this->getPluginManagerUrl('abortUploadedPlugin');
+
+        $data['destdir'] = $destdir;
+        $data['abortUrl'] = $abortUrl;
+        $this->_renderWrappedTemplate(
+            'pluginmanager',
+            'uploadConfirm',
+            $data
+        );
+    }
+
+    /**
+     * After clicking "Install" on upload confirm page, run this action
+     * and then redirect to plugin manager start page.
+     * @return void
+     */
+    public function installUploadedPlugin()
+    {
+        $request = Yii::app()->request;
+        $destdir = $request->getPost('destdir');
+
+        if (!file_exists($destdir)) {
+            throw new \Exception('Plugin destination folder not found');
+        }
+
+        $pluginManager = App()->getPluginManager();
+        list($result, $errorMessage) = $pluginManager->installUploadedPlugin($destdir);
+        if ($result) {
+            Yii::app()->user->setFlash(
+                'success',
+                gT('The plugin was successfully installed.')
+            );
+        } else {
+            Yii::app()->user->setFlash(
+                'error',
+                gT('The plugin could not be installed:')
+                . ' '
+                . $errorMessage
+            );
         }
         $this->getController()->redirect($this->getPluginManagerUrl());
+    }
+
+    /**
+     * @return void
+     */
+    public function abortUploadedPlugin()
+    {
+        die('here');
     }
 
     /**
@@ -516,31 +577,67 @@ class PluginManagerController extends Survey_Common_Action
      */
     protected function checkFileSizeError()
     {
+        if (!isset($_FILES['the_file'])) {
+            $this->errorAndRedirect(
+                gT('Found no file')
+            );
+        }
+
         if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-            Yii::app()->setFlashMessage(
+            $this->errorAndRedirect(
                 sprintf(
                     gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
                     getMaximumFileUploadSize() / 1024 / 1024
-                ),
+                )
+            );
+        }
+    }
+
+    /**
+     * Check if uploaded zip file is a zip bomb.
+     * @return void
+     */
+    protected function checkZipBom()
+    {
+        // Check zip bomb.
+        if (isZipBomb($_FILES['the_file']['name'])) {
+            Yii::app()->setFlashMessage(
+                gT('Unzipped file is superior to upload_max_filesize or to post_max_size'),
                 'error'
             );
             $this->getController()->redirect($this->getPluginManagerUrl());
         }
     }
 
-
     /**
      * Return URL to plugin manager index..
+     * @param string $sa Controller subaction.
+     * @param array $extraParam
      * @return string
      */
-    protected function getPluginManagerUrl()
+    protected function getPluginManagerUrl($sa = null, $extraParams = [])
     {
+        $params = [
+            'sa' => $sa ? $sa : 'index'
+        ];
+        if ($extraParams) {
+            $params = array_merge($params, $extraParams);
+        }
         return $this->getController()->createUrl(
             '/admin/pluginmanager',
-            [
-                'sa' => 'index'
-            ]
+            $params
         );
+    }
+
+    /**
+     * Sets an error flash message and redirects to plugin manager start page.
+     * @param string $msg Error message.
+     * @return void
+     */
+    protected function errorAndRedirect($msg)
+    {
+        Yii::app()->setFlashMessage($msg, 'error');
+        $this->getController()->redirect($this->getPluginManagerUrl());
     }
 
     /**

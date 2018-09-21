@@ -38,7 +38,7 @@ echo viewHelper::getViewTestTag('pluginManager');
                     data-tooltip='true'
                     title='<?php eT('Install plugin by ZIP archive'); ?>'
                 >
-                    <i class='fa fa-cloud-download '></i>&nbsp;
+                    <i class='fa fa-file-zip-o'></i>&nbsp;
                     <?php eT('Install ZIP'); ?>
                 </a>
                 <a 
