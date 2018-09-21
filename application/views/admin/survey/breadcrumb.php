@@ -18,7 +18,10 @@
                             <li>
                                 <div>
                                     <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid]); ?>">
-                                    <i class="fa fa-home"></i> <?php echo viewHelper::flatEllipsizeText($oSurvey->defaultlanguage->surveyls_title,1,60,"…"); ?>
+                                    <i class="fa fa-home"></i> <?php 
+                                    debugbreak();
+                                    echo viewHelper::flatEllipsizeText($oSurvey->defaultlanguage->surveyls_title,1,60,"..."); ?>
+                                    <i class="fa fa-home"></i> <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?>
                                         (<?php echo $oSurvey->sid; ?>)
                                     </a>
                                 </div>
@@ -61,7 +64,7 @@
                             <li>
                                 <div>
                                     <a id="breadcrumb__group--detail" class="pjax animate" href="<?php echo App()->createUrl('admin/questiongroups/sa/view/', ['surveyid' => $oQuestionGroup->sid, 'gid'=>$oQuestionGroup->gid]); ?>">
-                                        <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->group_name,1,60,"…"); ?>
+                                        <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->group_name,1,60,"â€¦"); ?>
                                     </a>
                                 </div>
                             </li>  
