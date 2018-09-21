@@ -61,7 +61,7 @@
                             <li>
                                 <div>
                                     <a id="breadcrumb__group--detail" class="pjax animate" href="<?php echo App()->createUrl('admin/questiongroups/sa/view/', ['surveyid' => $oQuestionGroup->sid, 'gid'=>$oQuestionGroup->gid]); ?>">
-                                        <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->group_name,1,60,"Ã¢â‚¬Â¦"); ?>
+                                        <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->group_name,1,60,"..."); ?>
                                     </a>
                                 </div>
                             </li>  
