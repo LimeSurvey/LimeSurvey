@@ -4642,10 +4642,12 @@ function regenerateCSRFToken()
 /**
 * A function to remove ../ or ./ from paths to prevent directory traversal
 *
-* @param mixed $path
+* @param string $path
+* @return string
 */
 function get_absolute_path($path)
 {
+    $startsWithSeparator = $path[0] === '/';
     $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
     $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
     $absolutes = array();
@@ -4659,7 +4661,7 @@ function get_absolute_path($path)
             $absolutes[] = $part;
         }
     }
-    return implode(DIRECTORY_SEPARATOR, $absolutes);
+    return ($startsWithSeparator ? '/' : '') . implode(DIRECTORY_SEPARATOR, $absolutes);
 }
 
 /**
@@ -4699,7 +4701,6 @@ function isAssociativeArray($array){
 */
 function createRandomTempDir($dir=null, $prefix = '', $mode = 0700)
 {
-
     $sDir = (empty($dir)) ? Yii::app()->getConfig('tempdir') : get_absolute_path ($dir);
 
     if (substr($sDir, -1) != DIRECTORY_SEPARATOR) {
