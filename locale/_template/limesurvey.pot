@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-09-17 08:21:24+00:00\n"
+"POT-Creation-Date: 2018-09-24 08:13:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1109,7 +1109,7 @@ msgstr ""
 #: application/views/admin/quotas/viewquotas_quota_actions.php:41
 #: application/views/admin/quotas/viewquotas_quota_actions.php:42
 #: application/views/admin/responses/browseallfiltered_view.php:12
-#: application/views/admin/responses/browsemenubar_view.php:265
+#: application/views/admin/responses/browsemenubar_view.php:268
 #: application/views/admin/responses/listResponses_view.php:277
 #: application/views/admin/super/footer.php:163
 #: application/views/admin/super/footer.php:183
@@ -2263,7 +2263,7 @@ msgstr ""
 #: application/controllers/admin/dataentry.php:2191
 #: application/views/admin/dataentry/caption_view.php:5
 #: application/views/admin/dataentry/dataentry_header_view.php:3
-#: application/views/admin/responses/browsemenubar_view.php:46
+#: application/views/admin/responses/browsemenubar_view.php:49
 msgid "Data entry"
 msgstr ""
 
@@ -2450,7 +2450,7 @@ msgstr ""
 #: application/views/admin/participants/modal_subviews/_editParticipant.php:141
 #: application/views/admin/participants/viewAttribute_view.php:135
 #: application/views/admin/pluginmanager/configure.php:27
-#: application/views/admin/responses/browsemenubar_view.php:175
+#: application/views/admin/responses/browsemenubar_view.php:178
 #: application/views/admin/responses/listResponses_view.php:278
 #: application/views/admin/super/fullpagebar_view.php:21
 #: application/views/admin/survey/Question/editQuestion_view.php:377
@@ -2501,7 +2501,7 @@ msgid "Follow the following link to update it"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1471
-#: application/views/admin/responses/browsemenubar_view.php:228
+#: application/views/admin/responses/browsemenubar_view.php:231
 msgid "Edit this entry"
 msgstr ""
 
@@ -2751,7 +2751,7 @@ msgstr ""
 #: application/controllers/admin/export.php:610
 #: application/controllers/admin/export.php:611
 #: application/views/admin/export/vv_view.php:2
-#: application/views/admin/responses/browsemenubar_view.php:93
+#: application/views/admin/responses/browsemenubar_view.php:96
 msgid "Export a VV survey file"
 msgstr ""
 
@@ -3025,10 +3025,10 @@ msgstr ""
 #: application/controllers/admin/participantsaction.php:791
 #: application/controllers/admin/surveyadmin.php:1943
 #: application/controllers/admin/themes.php:285
-#: application/core/Survey_Common_Action.php:1219
+#: application/core/Survey_Common_Action.php:1212
 #: application/extensions/LimeScript/LimeScript.php:25
 #: application/helpers/SurveyRuntimeHelper.php:1301
-#: application/helpers/frontend_helper.php:2171
+#: application/helpers/frontend_helper.php:2177
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
@@ -3036,7 +3036,7 @@ msgid "OK"
 msgstr ""
 
 #: application/controllers/admin/participantsaction.php:792
-#: application/views/admin/responses/browsemenubar_view.php:9
+#: application/views/admin/responses/browsemenubar_view.php:12
 msgid "Summary"
 msgstr ""
 
@@ -3374,8 +3374,8 @@ msgstr ""
 #: application/models/Permission.php:758
 #: application/views/admin/dataentry/vvimport.php:120
 #: application/views/admin/participants/participantsPanel_view.php:73
-#: application/views/admin/responses/browsemenubar_view.php:107
-#: application/views/admin/responses/browsemenubar_view.php:195
+#: application/views/admin/responses/browsemenubar_view.php:110
+#: application/views/admin/responses/browsemenubar_view.php:198
 #: application/views/admin/survey/subview/tab_survey_view.php:38
 #: application/views/admin/themeoptions/import_modal.php:32
 #: application/views/admin/themeoptions/surveythememenu.php:15
@@ -3791,7 +3791,7 @@ msgstr ""
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:17
 #: application/views/admin/export/statistics_view.php:18
-#: application/views/admin/responses/browsemenubar_view.php:54
+#: application/views/admin/responses/browsemenubar_view.php:57
 #: application/views/admin/survey/subview/_survey_quickaction.php:260
 #: application/views/admin/survey/subview/_survey_quickaction.php:266
 msgid "Statistics"
@@ -3984,7 +3984,7 @@ msgid "Edit permissions"
 msgstr ""
 
 #: application/controllers/admin/surveypermission.php:131
-#: application/views/admin/responses/browsemenubar_view.php:232
+#: application/views/admin/responses/browsemenubar_view.php:235
 #: application/views/admin/saved/savedlist_view.php:39
 #: application/views/admin/usergroup/usergroupbar_view.php:35
 #: application/views/admin/usergroup/viewUserGroup_view.php:56
@@ -4138,8 +4138,8 @@ msgstr ""
 #: application/views/admin/participants/massive_actions/_selector.php:70
 #: application/views/admin/participants/modal_subviews/_exportCSV.php:32
 #: application/views/admin/participants/participantsPanel_view.php:8
-#: application/views/admin/responses/browsemenubar_view.php:72
-#: application/views/admin/responses/browsemenubar_view.php:188
+#: application/views/admin/responses/browsemenubar_view.php:75
+#: application/views/admin/responses/browsemenubar_view.php:191
 #: application/views/admin/responses/massive_actions/_selector.php:76
 #: application/views/admin/survey/surveybar_displayexport.php:152
 #: application/views/admin/themeoptions/index.php:103
@@ -5523,7 +5523,7 @@ msgstr ""
 msgid "This file is not a supported image - please only upload JPG,PNG,GIF or SVG type images."
 msgstr ""
 
-#: application/core/LS_Twig_Extension.php:242
+#: application/core/LS_Twig_Extension.php:241
 #: application/views/survey/frontpage/captchaForm/form.php:17
 #: application/views/survey/frontpage/registerForm/form.php:39
 #: application/views/survey/frontpage/tokenForm/form.php:34
@@ -5531,7 +5531,7 @@ msgstr ""
 msgid "Reload image"
 msgstr ""
 
-#: application/core/LS_Twig_Extension.php:431
+#: application/core/LS_Twig_Extension.php:430
 msgid "Usage of processString without a string in your template"
 msgstr ""
 
@@ -5659,7 +5659,7 @@ msgstr ""
 #: application/core/LsDefaultDataSets.php:26
 #: application/models/Permission.php:92
 #: application/views/admin/export/exportresult_panels/_responses.php:4
-#: application/views/admin/responses/browsemenubar_view.php:26
+#: application/views/admin/responses/browsemenubar_view.php:29
 #: application/views/admin/survey/importSurvey_view.php:127
 #: application/views/admin/survey/surveybar_statistics.php:18
 #: application/views/admin/survey/surveybar_statistics.php:23
@@ -6617,15 +6617,15 @@ msgstr ""
 msgid "You need to add questions"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1200
+#: application/core/Survey_Common_Action.php:1193
 msgid "Extracted files not found - maybe a permission problem?"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1214
+#: application/core/Survey_Common_Action.php:1207
 msgid "Copy failed"
 msgstr ""
 
-#: application/core/Survey_Common_Action.php:1226
+#: application/core/Survey_Common_Action.php:1219
 msgid "Forbidden Extension"
 msgstr ""
 
@@ -6753,7 +6753,7 @@ msgstr ""
 #: application/core/plugins/extendedStartPage/views/publicSurveyList_extended.php:20
 #: application/views/admin/export/statistics_view.php:53
 #: application/views/admin/export/statistics_view.php:97
-#: application/views/admin/responses/browsemenubar_view.php:212
+#: application/views/admin/responses/browsemenubar_view.php:215
 #: application/views/admin/themes/templateeditor_surveylist_view.php:38
 #: application/views/admin/themes/templateeditor_surveylist_view.php:42
 msgid "View statistics"
@@ -9280,28 +9280,28 @@ msgstr ""
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1393
-#: application/helpers/frontend_helper.php:1418
+#: application/helpers/frontend_helper.php:1399
+#: application/helpers/frontend_helper.php:1424
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1397 tmp/twig_translate.php:167
+#: application/helpers/frontend_helper.php:1403 tmp/twig_translate.php:167
 msgid "There are no questions in this survey."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1401
+#: application/helpers/frontend_helper.php:1407
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2170
+#: application/helpers/frontend_helper.php:2176
 msgid "This website uses cookies. By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2172
+#: application/helpers/frontend_helper.php:2178
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2173
+#: application/helpers/frontend_helper.php:2179
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -12101,20 +12101,20 @@ msgstr ""
 msgid "Quota action"
 msgstr ""
 
-#: application/models/QuotaLanguageSetting.php:82
+#: application/models/QuotaLanguageSetting.php:83
 msgid "URL must be set if autoload URL is turned on!"
 msgstr ""
 
-#: application/models/QuotaLanguageSetting.php:89
+#: application/models/QuotaLanguageSetting.php:90
 msgid "Quota message:"
 msgstr ""
 
-#: application/models/QuotaLanguageSetting.php:90
+#: application/models/QuotaLanguageSetting.php:91
 #: application/views/admin/global_settings/_interfaces.php:25
 msgid "URL:"
 msgstr ""
 
-#: application/models/QuotaLanguageSetting.php:91
+#: application/models/QuotaLanguageSetting.php:92
 msgid "URL Description:"
 msgstr ""
 
@@ -13085,7 +13085,7 @@ msgstr ""
 #: application/views/admin/conditions/includes/form_editconditions_header.php:216
 #: application/views/admin/export/statistics_view.php:54
 #: application/views/admin/export/statistics_view.php:98
-#: application/views/admin/responses/browsemenubar_view.php:217
+#: application/views/admin/responses/browsemenubar_view.php:220
 msgid "Clear"
 msgstr ""
 
@@ -13265,7 +13265,7 @@ msgid "Record Deleted"
 msgstr ""
 
 #: application/views/admin/dataentry/import.php:8
-#: application/views/admin/responses/browsemenubar_view.php:114
+#: application/views/admin/responses/browsemenubar_view.php:117
 msgid "Import responses from a deactivated survey table"
 msgstr ""
 
@@ -13322,7 +13322,7 @@ msgid "View this record"
 msgstr ""
 
 #: application/views/admin/dataentry/iteratesurvey.php:2
-#: application/views/admin/responses/browsemenubar_view.php:143
+#: application/views/admin/responses/browsemenubar_view.php:146
 msgid "Iterate survey"
 msgstr ""
 
@@ -15919,67 +15919,67 @@ msgstr ""
 msgid "Total records"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:20
+#: application/views/admin/responses/browsemenubar_view.php:23
 msgid "Display responses"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:61
+#: application/views/admin/responses/browsemenubar_view.php:64
 msgid "Timing statistics"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:79
+#: application/views/admin/responses/browsemenubar_view.php:82
 msgid "Export responses"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:86
+#: application/views/admin/responses/browsemenubar_view.php:89
 msgid "Export responses to SPSS"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:121
+#: application/views/admin/responses/browsemenubar_view.php:124
 msgid "Import a VV survey file"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:133
+#: application/views/admin/responses/browsemenubar_view.php:136
 msgid "View Saved but not submitted Responses"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:158
+#: application/views/admin/responses/browsemenubar_view.php:161
 msgid "Enter a list of response IDs that are to be deleted, separated by comma."
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:159
-#: application/views/admin/responses/browsemenubar_view.php:163
+#: application/views/admin/responses/browsemenubar_view.php:162
+#: application/views/admin/responses/browsemenubar_view.php:166
 msgid "Batch deletion"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:203
+#: application/views/admin/responses/browsemenubar_view.php:206
 msgid "Expert mode"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:208
+#: application/views/admin/responses/browsemenubar_view.php:211
 msgid "Simple mode"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:234
+#: application/views/admin/responses/browsemenubar_view.php:237
 msgid "Delete this entry"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:241
+#: application/views/admin/responses/browsemenubar_view.php:244
 #: application/views/admin/responses/massive_actions/_selector.php:62
 msgid "Download files"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:247
+#: application/views/admin/responses/browsemenubar_view.php:250
 msgid "Export this response"
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:251
-#: application/views/admin/responses/browsemenubar_view.php:253
+#: application/views/admin/responses/browsemenubar_view.php:254
+#: application/views/admin/responses/browsemenubar_view.php:256
 msgid "Show previous..."
 msgstr ""
 
-#: application/views/admin/responses/browsemenubar_view.php:255
-#: application/views/admin/responses/browsemenubar_view.php:257
+#: application/views/admin/responses/browsemenubar_view.php:258
+#: application/views/admin/responses/browsemenubar_view.php:260
 msgid "Show next..."
 msgstr ""
 
