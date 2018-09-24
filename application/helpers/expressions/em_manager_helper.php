@@ -8570,6 +8570,8 @@ EOD;
                                         // Check all possible file uploads
                                         for ($i = 0; $i < count($phparray); $i++)
                                         {
+                                            /* Sanitize filename on same way than UploaderController */
+                                            $phparray[$i]->filename = preg_replace('/[^a-zA-Z0-9_]/', '',$phparray[$i]->filename);
                                             if (file_exists($tmp . $phparray[$i]->filename))
                                             {
                                                 $sDestinationFileName = 'fu_' . randomChars(15);
