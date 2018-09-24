@@ -462,7 +462,15 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function uploadConfirm()
     {
+        // NB: destdir is location of tmp/ folder.
         $destdir = App()->user->getState('destdir');
+
+        if (empty($destdir)) {
+            $this->errorAndRedirect(gT('Could not find plugin destination folder.'));
+        }
+
+        // Clear destdir.
+        App()->user->setState('destdir', null);
 
         $pluginManager = App()->getPluginManager();
 
