@@ -1,5 +1,8 @@
 <?php
 
+use \LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
+use \LimeSurvey\ExtensionInstaller\ExtensionInstallerPlugin;
+
 /**
  * @todo Apply new permission 'extensions' instead of 'settings'.
  */
@@ -390,24 +393,25 @@ class PluginManagerController extends Survey_Common_Action
             $this->getController()->redirect($this->getPluginManagerUrl());
         }
 
-        Yii::import('application.helpers.common_helper', true);
-
-        Yii::app()->loadLibrary('admin.pclzip');
-        $pluginManager = App()->getPluginManager();
-
         // Redirect back if demo mode is set.
         $this->checkDemoMode();
 
-        // Redirect back at file size error.
-        $this->checkFileSizeError();
+        Yii::import('application.helpers.common_helper', true);
+        Yii::app()->loadLibrary('admin.pclzip');
 
-        // Redirect back at zip bomb.
-        $this->checkZipBom();
+        $fileFetcher = new FileFetcherUploadZip();
+        $installer = new ExtensionInstallerPlugin();
+        $installer->setFileFetcher($fileFetcher);
+        try {
+            $installer->fetchFiles();
+            // Carry destdir to next page (but not in URL).
+            App()->user->setState('destdir', $destdir);
+            $this->getController()->redirect(
+                $this->getPluginManagerUrl('uploadConfirm')
+            );
+        } catch (Exception $ex) {
+        }
 
-        $sNewDirectoryName = sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME));
-
-        //$uploadDir = Yii::getPathOfAlias($pluginManager->pluginDirs['upload']);
-        //$destdir = $uploadDir . DIRECTORY_SEPARATOR . $sNewDirectoryName;
         $tempdir = Yii::app()->getConfig("tempdir");
         $destdir = createRandomTempDir($tempdir, 'install_');
 
@@ -416,7 +420,6 @@ class PluginManagerController extends Survey_Common_Action
 
         // All OK if we're here.
         $this->extractZipFile($destdir);
-
     }
 
     /**
@@ -447,11 +450,6 @@ class PluginManagerController extends Survey_Common_Action
                 . ' ' . $zip->error_string
             );
         } else {
-            // Carry destdir to next page (but not in URL).
-            App()->user->setState('destdir', $destdir);
-            $this->getController()->redirect(
-                $this->getPluginManagerUrl('uploadConfirm')
-            );
         }
     }
 

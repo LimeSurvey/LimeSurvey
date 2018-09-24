@@ -19,7 +19,12 @@ class FileFetcherUploadZip
      */
     public function fetch()
     {
-        
+        // Redirect back at file size error.
+        $this->checkFileSizeError();
+
+        // Redirect back at zip bomb.
+        $this->checkZipBom();
+
     }
 
     /**

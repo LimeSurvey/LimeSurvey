@@ -15,7 +15,7 @@ namespace LimeSurvey\ExtensionInstaller;
  * @since 2018-09-24
  * @author Olle Haerstedt
  */
-class ExtensionInstaller
+abstract class ExtensionInstaller
 {
     /**
      * @var FileFetcher
@@ -23,10 +23,16 @@ class ExtensionInstaller
     public $fileFetcher;
 
     /**
-     * 
+     * @param FileFetcher $fileFetcher
+     * @return void
      */
     public function setFileFetcher(FileFetcher $fileFetcher)
     {
         $this->fileFetcher = $fileFetcher;
     }
+
+    /**
+     * @return array [boolean $result, string $errorMessage]
+     */
+    abstract public function fetchFiles();
 }
