@@ -18,7 +18,7 @@
                             <li>
                                 <div>
                                     <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid]); ?>">
-                                    <i class="fa fa-home"></i> <?php echo viewHelper::flatEllipsizeText($oSurvey->defaultlanguage->surveyls_title,1,60,"…"); ?>
+                                    <i class="fa fa-home"></i> <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?>
                                         (<?php echo $oSurvey->sid; ?>)
                                     </a>
                                 </div>
