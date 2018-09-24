@@ -34,7 +34,6 @@ abstract class LSYii_Controller extends CController
         $this->_checkInstallation();
 
         //Yii::app()->session->init();
-        $this->loadLibrary('LS.LS');
         // This will setConfig from database
         $this->loadHelper('globalsettings');
         $this->loadHelper('common');
