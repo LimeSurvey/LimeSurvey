@@ -87,7 +87,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
  * @property Question[] $quotableQuestions
- * @property bool $hasQuota
+ * @property bool $hasQuota Whether survey has implemented quotas. Chekcs either currently set quotas or any token results that have been closed by quota
  *
  * @property array $fullAnswers
  * @property array $partialAnswers
@@ -1941,6 +1941,7 @@ return $s->hasTokensTable; });
     }
 
     /**
+     * Whether survey has implemented quotas. Chekcs either currently set quotas or any token results that have been closed by quota
      * @return bool
      */
     public function getHasQuota()
