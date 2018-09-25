@@ -2410,7 +2410,7 @@ class tokens extends Survey_Common_Action
 
         $aData['thissurvey'] = $thissurvey;
         $aData['surveyid'] = $iSurveyId;
-        $aData['subaction'] = $subaction;
+        $aData['token_subaction'] = $subaction;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
         $aData['sidemenu']['state'] = false;
