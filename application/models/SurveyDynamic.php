@@ -632,7 +632,7 @@ class SurveyDynamic extends LSActiveRecord
             $criteria->addCondition('t.submitdate IS NULL');
         }
         if ($this->completed_filter == "Q") {
-            $criteria->addCondition('tokens.completed = \'Q\'');
+            $criteria->addCondition('tokens.completed = ' . Yii::app()->getDb()->quoteValue('Q'));
         }
 
         // When selection of responses come from statistics

@@ -1952,7 +1952,7 @@ return $s->hasTokensTable; });
         $dynamic = SurveyDynamic::model($this->sid);
         if ($dynamic->bHaveToken) {
             $criteria = new CDbCriteria;
-            $criteria->addCondition('tokens.completed = \'Q\'');
+            $criteria->addCondition('tokens.completed = ' . Yii::app()->getDb()->quoteValue('Q'));
             $dynamic->with('tokens')->count($criteria);
             return intval($dynamic->with('tokens')->count($criteria)) > 0;
         }
