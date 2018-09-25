@@ -6,6 +6,11 @@
      */
     abstract class Response extends Dynamic
     {
+
+        /**
+         * @inheritdoc
+         * and delete related files before delete response
+         */
         public function beforeDelete()
         {
             if (parent::beforeDelete()) {
@@ -15,7 +20,6 @@
             return false;
         }
         /**
-         *
          * @param mixed $className Either the classname or the survey id.
          * @return Response
          */
@@ -164,6 +168,7 @@
             return array($success, $errors);
         }
 
+        /* @inheritdoc */
         public function delete($deleteFiles = false)
         {
             if ($deleteFiles) {
@@ -171,6 +176,8 @@
             }
             return parent::delete();
         }
+
+        /* @inheritdoc */
         public function relations()
         {
             $result = array(
@@ -179,10 +186,28 @@
             );
             return $result;
         }
+
+        /* @inheritdoc */
         public function tableName()
         {
             return '{{survey_'.$this->dynamicId.'}}';
         }
+
+        /* @inheritdoc */
+        public function rules()
+        {
+            $rules = array();
+            if($this->survey->isDateStamp) {
+                /* Since there are not default set an disable not null : set default to current datetime , see mantis #14050 */
+                /* but more : seems clean that current value is set by default to actual datetime (if not set) */
+                $rules = array_merge($rules,array(
+                    array('startdate', 'default', 'value'=>new CDbExpression('NOW()')),
+                    array('datestamp', 'default', 'value'=>new CDbExpression('NOW()')),
+                ));
+            }
+            return $rules;
+        }
+
         public function getSurveyId()
         {
             return $this->dynamicId;
