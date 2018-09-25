@@ -464,7 +464,7 @@ class PluginManagerController extends Survey_Common_Action
             $installer->install();
             Yii::app()->user->setFlash(
                 'success',
-                gT('The plugin was successfully installed.')
+                gT('The plugin was successfully installed. You need to activate it before you can use it.')
             );
         } catch (Throwable $ex) {
             $installer->abort();
@@ -477,32 +477,6 @@ class PluginManagerController extends Survey_Common_Action
         }
 
         $this->getController()->redirect($this->getPluginManagerUrl());
-
-        /*
-        $request = Yii::app()->request;
-        $destdir = $request->getPost('destdir');
-
-        if (!file_exists($destdir)) {
-            throw new \Exception('Plugin destination folder not found');
-        }
-
-        $pluginManager = App()->getPluginManager();
-        list($result, $errorMessage) = $pluginManager->installUploadedPlugin($destdir);
-        if ($result) {
-            Yii::app()->user->setFlash(
-                'success',
-                gT('The plugin was successfully installed.')
-            );
-        } else {
-            Yii::app()->user->setFlash(
-                'error',
-                gT('The plugin could not be installed:')
-                . ' '
-                . $errorMessage
-            );
-        }
-        $this->getController()->redirect($this->getPluginManagerUrl());
-         */
     }
 
     /**
@@ -512,8 +486,11 @@ class PluginManagerController extends Survey_Common_Action
     {
         $installer = $this->getInstaller();
         $installer->abort();
-
-        die('aborted');
+        Yii::app()->user->setFlash(
+            'warning',
+            gT('Installation aborted.')
+        );
+        $this->getController()->redirect($this->getPluginManagerUrl());
     }
 
     /**
