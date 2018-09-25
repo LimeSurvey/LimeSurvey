@@ -10,7 +10,7 @@ namespace LimeSurvey\ExtensionInstaller;
  * - Read config.xml
  * - If config.xml is valid and the extension compatible with current version of LimeSurvey, then
  * -- Copy files to correct folder (depends on extension type)
- * -- Install database row (depends on extension type)
+ * -- Insert database row (depends on extension type)
  *
  * @since 2018-09-24
  * @author Olle Haerstedt
@@ -18,6 +18,7 @@ namespace LimeSurvey\ExtensionInstaller;
 abstract class ExtensionInstaller
 {
     /**
+     * Class responsible for fetching files from source.
      * @var FileFetcher
      */
     public $fileFetcher;
@@ -32,22 +33,31 @@ abstract class ExtensionInstaller
     }
 
     /**
-     * @return array [boolean $result, string $errorMessage]
+     * Order the file fetcher to fetch files.
+     * @return void
+     * @throws Exception
      */
     abstract public function fetchFiles();
 
     /**
-     * @todo Should return wrapper class for XML.
-     * @return SimpleXMLElement
+     * Get the configuration from temp dir.
+     * Before an extension is installed, we need to read the config
+     * file. That's why the extension if fetched into a temp folder
+     * first.
+     * @return ExtensionConfig
      */
     abstract public function getConfig();
 
     /**
+     * Install extension, which includes moving files
+     * from temp dir to final dir, and creating the necessary
+     * database changes.
      * @return void
      */
     abstract public function install();
 
     /**
+     * Installation procedure was not completed, abort changes.
      * @return void
      */
     abstract public function abort();

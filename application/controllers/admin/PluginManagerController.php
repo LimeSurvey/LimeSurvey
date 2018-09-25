@@ -448,19 +448,6 @@ class PluginManagerController extends Survey_Common_Action
             $installer->abort();
             $this->errorAndRedirect($ex->getMessage());
         }
-
-        /*
-        // NB: destdir is location of tmp/ folder.
-
-        if (empty($destdir)) {
-            $this->errorAndRedirect(gT('Could not find plugin destination folder.'));
-        }
-
-        // Clear destdir.
-
-        $abortUrl = $this->getPluginManagerUrl('abortUploadedPlugin');
-
-         */
     }
 
     /**

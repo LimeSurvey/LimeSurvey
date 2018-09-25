@@ -19,18 +19,26 @@ class PluginInstaller extends ExtensionInstaller
     public function fetchFiles()
     {
         if (empty($this->fileFetcher)) {
-            throw new \InvalidArgumentException('fileFetcher is not set');
+            throw new \InvalidArgumentException(gT('fileFetcher is not set'));
         }
 
         $this->fileFetcher->fetch();
     }
 
     /**
-     * 
+     * Install unzipped package into correct folder.
+     * @return void
      */
     public function install()
     {
-        
+        if (empty($this->fileFetcher)) {
+            throw new \InvalidArgumentException(gT('fileFetcher is not set'));
+        }
+
+        $this->fileFetcher->move($destdir);
+
+        $pluginManager = App()->getPluginManager();
+        list($result, $errorMessage) = $pluginManager->installUploadedPlugin($destdir);
     }
 
     /**

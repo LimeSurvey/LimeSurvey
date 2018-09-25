@@ -21,6 +21,7 @@ abstract class FileFetcher
      * Set source for this file fetcher.
      * Can be ZIP file name, git repo URL, folder name, etc.
      * @param string $source
+     * @return void
      */
     abstract public function setSource($source);
 
@@ -31,13 +32,20 @@ abstract class FileFetcher
     abstract public function fetch();
 
     /**
-     * @todo Should return wrapper class for XML.
-     * @return SimpleXMLElement|null
+     * Move files from tmp/ folder to final destination.
+     * @param string $destdir
+     * @return void
+     */
+    abstract public function move($destdir);
+
+    /**
+     * @return ExtensionConfig
      * @throws Exception if config cannot be parsed.
      */
     abstract public function getConfig();
 
     /**
+     * Abort procedure, remove temporary files.
      * @return void
      */
     abstract public function abort();

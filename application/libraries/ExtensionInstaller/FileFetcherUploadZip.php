@@ -35,7 +35,14 @@ class FileFetcherUploadZip extends FileFetcher
     {
         $this->checkFileSizeError();
         $this->checkZipBom();
-        $this->extractZipFile($this->getDestdir());
+        $this->extractZipFile($this->getTempdir());
+    }
+
+    /**
+     * @param string $destdir
+     */
+    public function move($destdir)
+    {
     }
 
     /**
@@ -44,12 +51,12 @@ class FileFetcherUploadZip extends FileFetcher
      */
     public function getConfig()
     {
-        $destdir = $this->getDestdir();
-        if (empty($destdir)) {
+        $tmpdir = $this->getTempdir();
+        if (empty($tmpdir)) {
             throw new \Exception(gT('No destination folder, cannot read configuration file.'));
         }
 
-        $configFile = $destdir . '/config.xml';
+        $configFile = $tmpdir . '/config.xml';
 
         if (!file_exists($configFile)) {
             throw new \Exception(gT('Configuration file config.xml does not exist.'));
@@ -80,39 +87,39 @@ class FileFetcherUploadZip extends FileFetcher
     public function abort()
     {
         // Remove any files.
-        $destdir = $this->getDestdir();
-        if ($destdir) {
-            rmdirr($destdir);
+        $tmpdir = $this->getTempdir();
+        if ($tmpdir) {
+            rmdirr($tmpdir);
         }
 
         // Reset user state.
-        $this->clearDestdir();
+        $this->clearTmpdir();
     }
 
     /**
-     * Get tmp destdir for extension to unzip in.
+     * Get tmp tmpdir for extension to unzip in.
      * @return string
      */
-    protected function getDestdir()
+    protected function getTempdir()
     {
         // NB: Since the installation procedure can span several page reloads,
-        // we save the destdir in the user session.
-        $destdir = App()->user->getState('filefetcheruploadzip_destdir');
-        if (empty($destdir)) {
+        // we save the tmpdir in the user session.
+        $tmpdir = App()->user->getState('filefetcheruploadzip_tmpdir');
+        if (empty($tmpdir)) {
             $tempdir = \Yii::app()->getConfig("tempdir");
-            $destdir = createRandomTempDir($tempdir, 'install_');
-            App()->user->setState('filefetcheruploadzip_destdir', $destdir);
+            $tmpdir = createRandomTempDir($tempdir, 'install_');
+            App()->user->setState('filefetcheruploadzip_tmpdir', $tmpdir);
         }
-        return $destdir;
+        return $tmpdir;
     }
 
     /**
-     * Set user session destdir to null.
+     * Set user session tmpdir to null.
      * @return void
      */
-    protected function clearDestdir()
+    protected function clearTmpdir()
     {
-        App()->user->setState('filefetcheruploadzip_destdir', null);
+        App()->user->setState('filefetcheruploadzip_tmpdir', null);
     }
 
     /**
@@ -150,10 +157,10 @@ class FileFetcherUploadZip extends FileFetcher
     }
 
     /**
-     * @param string $destdir
+     * @param string $tmpdir
      * @return void
      */
-    protected function extractZipFile($destdir)
+    protected function extractZipFile($tmpdir)
     {
         \Yii::import('application.helpers.common_helper', true);
         \Yii::app()->loadLibrary('admin.pclzip');
@@ -171,7 +178,7 @@ class FileFetcherUploadZip extends FileFetcher
         $zip = new \PclZip($_FILES['the_file']['tmp_name']);
         $aExtractResult = $zip->extract(
             PCLZIP_OPT_PATH,
-            $destdir,
+            $tmpdir,
             PCLZIP_CB_PRE_EXTRACT,
             $this->filterName
         );
