@@ -20,7 +20,7 @@
  * @property integer $tid
  * @property string $participant_id
  * @property string $firstname
- * @property string $lasttname
+ * @property string $lastname
  * @property string $email
  * @property string $emailstatus
  * @property string $token
