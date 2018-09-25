@@ -13,9 +13,9 @@
  */
 
 /**
- * Thin wrapper class around the plugin config.xml file.
+ * Thin wrapper class around extension config.xml file.
  */
-class PluginConfiguration
+class ExtensionConfig
 {
     /**
      * @var SimpleXMLElement
@@ -44,8 +44,7 @@ class PluginConfiguration
             && isset($this->xml->metadata->license)
             && isset($this->xml->metadata->version)
             && isset($this->xml->compatibility)
-            && isset($this->xml->metadata->type)
-            && (string) $this->xml->metadata->type === 'plugin';
+            && isset($this->xml->metadata->type);
     }
 
     /**
@@ -90,7 +89,7 @@ class PluginConfiguration
     }
 
     /**
-     * Returns true if this plugin config is compatible with this version of LS.
+     * Returns true if this extension config is compatible with this version of LS.
      * @return boolean
      */
     public function isCompatible()
@@ -104,11 +103,11 @@ class PluginConfiguration
         }
 
         $lsVersion = require \Yii::app()->getBasePath() . '/config/version.php';
-        foreach ($this->xml->compatibility->version as $pluginVersion) {
-            if (substr($lsVersion['versionnumber'], 0, 1) != substr($pluginVersion, 0, 1)) {
+        foreach ($this->xml->compatibility->version as $version) {
+            if (substr($lsVersion['versionnumber'], 0, 1) != substr($version, 0, 1)) {
                 // 2 is not compatible with 3, etc.
                 continue;
-            } elseif (version_compare($lsVersion['versionnumber'], $pluginVersion) >= 0) {
+            } elseif (version_compare($lsVersion['versionnumber'], $version) >= 0) {
                 return true;
             }
         }
@@ -117,7 +116,7 @@ class PluginConfiguration
 
     /**
      * @param string $file Full file path.
-     * @return PluginConfiguration
+     * @return ExtensionConfig
      */
     public static function loadConfigFromFile($file)
     {
@@ -127,8 +126,8 @@ class PluginConfiguration
             libxml_disable_entity_loader(false);
             $xml = simplexml_load_file(realpath($file));
             libxml_disable_entity_loader(true);
-            $pluginConfig = new \PluginConfiguration($xml);
-            return $pluginConfig;
+            $config = new \ExtensionConfig($xml);
+            return $config;
         }
     }
 }
