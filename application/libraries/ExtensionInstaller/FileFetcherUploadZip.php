@@ -12,6 +12,12 @@ namespace LimeSurvey\ExtensionInstaller;
 class FileFetcherUploadZip extends FileFetcher
 {
     /**
+     * Filter to apply to unzipping.
+     * @var string
+     */
+    protected $filterName;
+
+    /**
      * @param string $source
      * @return void
      */
@@ -34,10 +40,32 @@ class FileFetcherUploadZip extends FileFetcher
 
     /**
      * @return SimpleXMLElement
+     * @throws Exception
      */
     public function getConfig()
     {
-        
+        $destdir = $this->getDestdir();
+        if (empty($destdir)) {
+            throw new \Exception(gT('No destination folder, cannot read configuration file.'));
+        }
+
+        $configFile = $destdir . '/config.xml';
+
+        if (!file_exists($configFile)) {
+            throw new \Exception(gT('Configuration file config.xml does not exist.'));
+        }
+
+        $config = \PluginConfiguration::loadConfigFromFile($configFile);
+        return $config;
+    }
+
+    /**
+     * @param string $filterName
+     * @return void
+     */
+    public function setUnzipFilter($filterName)
+    {
+        $this->filterName = $filterName;
     }
 
     /**
@@ -126,10 +154,13 @@ class FileFetcherUploadZip extends FileFetcher
         \Yii::app()->loadLibrary('admin.pclzip');
 
         if (!is_file($_FILES['the_file']['tmp_name'])) {
-            rmdirr($destdir);
             throw new \Exception(
                 gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.")
             );
+        }
+
+        if (empty($this->filterName)) {
+            throw new \Exception(gT("No filter name is set, can't unzip."));
         }
 
         $zip = new \PclZip($_FILES['the_file']['tmp_name']);
@@ -137,7 +168,7 @@ class FileFetcherUploadZip extends FileFetcher
             PCLZIP_OPT_PATH,
             $destdir,
             PCLZIP_CB_PRE_EXTRACT,
-            'pluginExtractFilter'
+            $this->filterName
         );
 
         if ($aExtractResult === 0) {

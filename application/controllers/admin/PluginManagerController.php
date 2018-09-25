@@ -425,38 +425,38 @@ class PluginManagerController extends Survey_Common_Action
     {
         $installer = $this->getInstaller();
 
-        $config = $installer->getConfig();
-        if ($config) {
-            // Show confirmation page.
-            $abortUrl = $this->getPluginManagerUrl('abortUploadedPlugin');
-            $data = [
-                'config'   => $config,
-                'abortUrl' => $abortUrl
-            ];
-            $this->_renderWrappedTemplate(
-                'pluginmanager',
-                'uploadConfirm',
-                $data
-            );
-        } else {
-            // Abort.
+        try {
+            $config = $installer->getConfig();
+            if ($config) {
+                // Show confirmation page.
+                $abortUrl = $this->getPluginManagerUrl('abortUploadedPlugin');
+                $data = [
+                    'config'   => $config,
+                    'abortUrl' => $abortUrl
+                ];
+                $this->_renderWrappedTemplate(
+                    'pluginmanager',
+                    'uploadConfirm',
+                    $data
+                );
+            } else {
+                // Abort.
+                $installer->abort();
+                $this->errorAndRedirect(gT('Could not read plugin configuration file.'));
+            }
+        } catch (Exception $ex) {
             $installer->abort();
-            $this->errorAndRedirect(gT('Could not read plugin configuration file.'));
+            $this->errorAndRedirect($ex->getMessage());
         }
 
         /*
         // NB: destdir is location of tmp/ folder.
-        $destdir = App()->user->getState('destdir');
 
         if (empty($destdir)) {
             $this->errorAndRedirect(gT('Could not find plugin destination folder.'));
         }
 
         // Clear destdir.
-        App()->user->setState('destdir', null);
-
-        $pluginManager = App()->getPluginManager();
-
 
         $configFile = $destdir . '/config.xml';
         if (file_exists($configFile)) {
@@ -528,6 +528,7 @@ class PluginManagerController extends Survey_Common_Action
     protected function getInstaller()
     {
         $fileFetcher = new FileFetcherUploadZip();
+        $fileFetcher->setUnzipFilter('pluginExtractFilter');
         $installer = new PluginInstaller();
         $installer->setFileFetcher($fileFetcher);
         return $installer;
