@@ -387,6 +387,20 @@ class PluginManager extends \CApplicationComponent
     }
 
     /**
+     * @param ExtensionConfig $config
+     * @param string $pluginType User, core or upload
+     */
+    public function getPluginFolder(\ExtensionConfig $config, $pluginType)
+    {
+        $alias = $this->pluginDirs[$pluginType];
+        if (empty($alias)) {
+            return null;
+        }
+        $folder = Yii::getPathOfAlias($alias) . '/' . $config->getName();
+        return $folder;
+    }
+
+    /**
      * Returns the instantiated plugin
      *
      * @param string $pluginName

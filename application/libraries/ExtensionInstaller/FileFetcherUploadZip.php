@@ -34,15 +34,38 @@ class FileFetcherUploadZip extends FileFetcher
     public function fetch()
     {
         $this->checkFileSizeError();
-        $this->checkZipBom();
         $this->extractZipFile($this->getTempdir());
     }
 
     /**
+     * Move files from tempdir to final destdir.
      * @param string $destdir
+     * @return boolean
      */
     public function move($destdir)
     {
+        if (empty($destdir)) {
+            throw new \InvalidArgumentException('Missing destdir argument');
+        }
+
+        $tempdir = $this->getTempdir();
+        if (empty($tempdir)) {
+            throw new \Exception(gT('No temporary folder set, cannot move files.'));
+        }
+
+        if (!file_exists($tempdir)) {
+            throw new \Exception(gT('Temporary folder does not exist.'));
+        }
+
+        if (!is_writable(dirname($destdir))) {
+            throw new \Exception(gT('Cannot move files due to permission problem.'));
+        }
+
+        if (file_exists($destdir) && !rmdirr($destdir)) {
+            throw new \Exception('Could not clear old files.');
+        }
+
+        return @rename($tempdir, $destdir);
     }
 
     /**
@@ -51,12 +74,12 @@ class FileFetcherUploadZip extends FileFetcher
      */
     public function getConfig()
     {
-        $tmpdir = $this->getTempdir();
-        if (empty($tmpdir)) {
-            throw new \Exception(gT('No destination folder, cannot read configuration file.'));
+        $tempdir = $this->getTempdir();
+        if (empty($tempdir)) {
+            throw new \Exception(gT('No temporary folder, cannot read configuration file.'));
         }
 
-        $configFile = $tmpdir . '/config.xml';
+        $configFile = $tempdir . '/config.xml';
 
         if (!file_exists($configFile)) {
             throw new \Exception(gT('Configuration file config.xml does not exist.'));
@@ -87,9 +110,9 @@ class FileFetcherUploadZip extends FileFetcher
     public function abort()
     {
         // Remove any files.
-        $tmpdir = $this->getTempdir();
-        if ($tmpdir) {
-            rmdirr($tmpdir);
+        $tempdir = $this->getTempdir();
+        if ($tempdir) {
+            rmdirr($tempdir);
         }
 
         // Reset user state.
@@ -97,24 +120,24 @@ class FileFetcherUploadZip extends FileFetcher
     }
 
     /**
-     * Get tmp tmpdir for extension to unzip in.
+     * Get tmp tempdir for extension to unzip in.
      * @return string
      */
     protected function getTempdir()
     {
         // NB: Since the installation procedure can span several page reloads,
-        // we save the tmpdir in the user session.
-        $tmpdir = App()->user->getState('filefetcheruploadzip_tmpdir');
-        if (empty($tmpdir)) {
+        // we save the tempdir in the user session.
+        $tempdir = App()->user->getState('filefetcheruploadzip_tmpdir');
+        if (empty($tempdir)) {
             $tempdir = \Yii::app()->getConfig("tempdir");
-            $tmpdir = createRandomTempDir($tempdir, 'install_');
-            App()->user->setState('filefetcheruploadzip_tmpdir', $tmpdir);
+            $tempdir = createRandomTempDir($tempdir, 'install_');
+            App()->user->setState('filefetcheruploadzip_tmpdir', $tempdir);
         }
-        return $tmpdir;
+        return $tempdir;
     }
 
     /**
-     * Set user session tmpdir to null.
+     * Set user session tempdir to null.
      * @return void
      */
     protected function clearTmpdir()
@@ -157,13 +180,15 @@ class FileFetcherUploadZip extends FileFetcher
     }
 
     /**
-     * @param string $tmpdir
+     * @param string $tempdir
      * @return void
      */
-    protected function extractZipFile($tmpdir)
+    protected function extractZipFile($tempdir)
     {
         \Yii::import('application.helpers.common_helper', true);
         \Yii::app()->loadLibrary('admin.pclzip');
+
+        $this->checkZipBom();
 
         if (!is_file($_FILES['the_file']['tmp_name'])) {
             throw new \Exception(
@@ -178,7 +203,7 @@ class FileFetcherUploadZip extends FileFetcher
         $zip = new \PclZip($_FILES['the_file']['tmp_name']);
         $aExtractResult = $zip->extract(
             PCLZIP_OPT_PATH,
-            $tmpdir,
+            $tempdir,
             PCLZIP_CB_PRE_EXTRACT,
             $this->filterName
         );

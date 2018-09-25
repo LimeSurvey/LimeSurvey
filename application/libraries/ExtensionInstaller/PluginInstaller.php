@@ -14,6 +14,12 @@ class PluginInstaller extends ExtensionInstaller
     public $fileFetcher;
 
     /**
+     * Core, upload or user.
+     * @var string
+     */
+    protected $pluginType;
+
+    /**
      * @return void
      */
     public function fetchFiles()
@@ -35,10 +41,20 @@ class PluginInstaller extends ExtensionInstaller
             throw new \InvalidArgumentException(gT('fileFetcher is not set'));
         }
 
-        $this->fileFetcher->move($destdir);
-
+        $config = $this->getConfig();
         $pluginManager = App()->getPluginManager();
-        list($result, $errorMessage) = $pluginManager->installUploadedPlugin($destdir);
+        $destdir = $pluginManager->getPluginFolder($config, $this->pluginType);
+
+        if ($this->fileFetcher->move($destdir)) {
+            list($result, $errorMessage) = $pluginManager->installUploadedPlugin($destdir);
+            if ($result) {
+                // Do nothing.
+            } else {
+                throw new \Exception($errorMessage);
+            }
+        } else {
+            throw new \Exception('Could not move files.');
+        }
     }
 
     /**
@@ -54,12 +70,21 @@ class PluginInstaller extends ExtensionInstaller
     }
 
     /**
-     * 
+     * @return void
      */
     public function abort()
     {
         if ($this->fileFetcher) {
             $this->fileFetcher->abort();
         }
+    }
+
+    /**
+     * @param string $pluginType
+     * @return void
+     */
+    public function setPluginType($pluginType)
+    {
+        $this->pluginType = $pluginType;
     }
 }

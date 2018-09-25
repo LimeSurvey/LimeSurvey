@@ -460,9 +460,23 @@ class PluginManagerController extends Survey_Common_Action
         $installer = $this->getInstaller();
 
         try {
+            $installer->setPluginType('upload');
             $installer->install();
-        } catch (Exception $ex) {
+            Yii::app()->user->setFlash(
+                'success',
+                gT('The plugin was successfully installed.')
+            );
+        } catch (Throwable $ex) {
+            $installer->abort();
+            Yii::app()->user->setFlash(
+                'error',
+                gT('The plugin could not be installed:')
+                . ' '
+                . $ex->getMessage()
+            );
         }
+
+        $this->getController()->redirect($this->getPluginManagerUrl());
 
         /*
         $request = Yii::app()->request;

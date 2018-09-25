@@ -34,7 +34,7 @@ abstract class FileFetcher
     /**
      * Move files from tmp/ folder to final destination.
      * @param string $destdir
-     * @return void
+     * @return boolean
      */
     abstract public function move($destdir);
 
