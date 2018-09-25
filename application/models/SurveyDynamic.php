@@ -14,6 +14,12 @@
  *
   * 	Files Purpose: lots of common functions
  */
+
+/**
+ * Class SurveyDynamic
+ * @property TokenDynamic $tokens
+ * @property Survey $survey
+ */
 class SurveyDynamic extends LSActiveRecord
 {
     /** @var string $completed_filter */
@@ -87,6 +93,7 @@ class SurveyDynamic extends LSActiveRecord
             TokenDynamic::sid(self::$sid);
             return array(
                 'survey'   => array(self::HAS_ONE, 'Survey', array(), 'condition'=>('sid = '.self::$sid)),
+                /** TODO make tokens singular. Its ONE token. */
                 'tokens'   => array(self::HAS_ONE, 'TokenDynamic', array('token' => 'token'))
             );
         } else {
@@ -627,6 +634,9 @@ class SurveyDynamic extends LSActiveRecord
 
         if ($this->completed_filter == "N") {
             $criteria->addCondition('t.submitdate IS NULL');
+        }
+        if ($this->completed_filter == "Q") {
+            $criteria->addCondition('tokens.completed = \'Q\'');
         }
 
         // When selection of responses come from statistics

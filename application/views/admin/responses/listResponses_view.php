@@ -117,8 +117,13 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'type'=>'raw',
                             'filter'=>TbHtml::dropDownList(
                                 'SurveyDynamic[completed_filter]',
-                                $model->completed_filter,
-                                array(''=>gT('All'),'Y'=>gT('Yes'),'N'=>gT('No')))
+                                $model->completed_filter,[
+                                    ''=>gT('All'),
+                                    'Y'=>gT('Yes'),
+                                    'Q'=>gT('Out of quota'),
+                                    'N'=>gT('No'),
+                                    ]
+                                )
                         );
 
                         //add token to top of list if survey is not private
