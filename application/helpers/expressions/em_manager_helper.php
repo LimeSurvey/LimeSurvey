@@ -9526,7 +9526,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $_gseq = $gseq;
                     $ginfo = $LEM->gseq2info[$gseq];
                     $sGroupRelevance= '{'.($ginfo['grelevance']=='' ? 1 : $ginfo['grelevance']).'}';
-                    $LEM->ProcessString($sGroupRelevance, $qid,NULL,1,1,false,false);
+                    $LEM->ProcessString($sGroupRelevance, $qid,array('GID'=>$ginfo['gid']),1,1,false,false);
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
                     $sGroupRelevance= viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                     $sGroupText = ((trim($ginfo['description']) == '') ? '&nbsp;' : $ginfo['description']);
@@ -9555,9 +9555,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $typedesc = $qtypes[$type]['description'];
 
                 $sgqas = explode('|',$q['sgqa']);
+                $qReplacement = array(
+                    'QID' => $q['info']['qid'],
+                    'GID' => $q['info']['gid'],
+                    'SGQ' => end($sgqas),
+                );
                 if (count($sgqas) == 1 && !is_null($q['info']['default']))
                 {
-                    $LEM->ProcessString($q['info']['default'], $qid,NULL,1,1,false,false);// Default value is Y or answer code or go to input/textarea, then we can filter it
+                    $LEM->ProcessString($q['info']['default'], $qid,$qReplacement,1,1,false,false);// Default value is Y or answer code or go to input/textarea, then we can filter it
                     $_default = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                     if ($LEM->em->HasErrors())
                     {
@@ -9571,7 +9576,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
 
                 $sQuestionText = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '&nbsp');
-                $LEM->ProcessString($sQuestionText, $qid,NULL,1,1,false,false);
+                $LEM->ProcessString($sQuestionText, $qid,$qReplacement,1,1,false,false);
                 $sQuestionText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                 if ($LEM->em->HasErrors())
                 {
@@ -9581,7 +9586,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if(trim($q['info']['help'])!="")
                 {
                     $sQuestionHelp=$q['info']['help'];
-                    $LEM->ProcessString($sQuestionHelp, $qid,NULL,1,1,false,false);
+                    $LEM->ProcessString($sQuestionHelp, $qid,$qReplacement,1,1,false,false);
                     $sQuestionHelp = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     if ($LEM->em->HasErrors())
                     {
@@ -9627,7 +9632,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             if($aAttributesDefinitions[$key]['expression']>1){
                                 $value = '{' . $value . '}';
                             }
-                            $LEM->ProcessString($value, $qid,NULL,1,1,false,false);
+                            $LEM->ProcessString($value, $qid,$qReplacement,1,1,false,false);
                             $value = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                             if ($LEM->em->HasErrors())
                             {
@@ -9856,14 +9861,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $sgqaInfo = $LEM->knownVars[$sgqa];
                     $subqText = $sgqaInfo['subqtext'];
 
-                    $LEM->ProcessString($subqText, $qid,NULL,1,1,false,false);
+                    $LEM->ProcessString($subqText, $qid,$qReplacement,1,1,false,false);
                     $subqText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
                     }
                     if (isset($sgqaInfo['default']) && $sgqaInfo['default'] !== '')
                     {
-                        $LEM->ProcessString($sgqaInfo['default'], $qid,NULL,1,1,false,false);
+                        $LEM->ProcessString($sgqaInfo['default'], $qid,$qReplacement,1,1,false,false);
                         $_default = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                         if ($LEM->em->HasErrors())
                         {
@@ -9921,7 +9926,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             }
                         }
                         $sAnswerText=$valInfo[1];
-                        $LEM->ProcessString($sAnswerText, $qid,NULL,1,1,false,false);
+                        $LEM->ProcessString($sAnswerText, $qid,$qReplacement,1,1,false,false);
                         $sAnswerText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                         if ($LEM->em->HasErrors()) {
                             ++$errorCount;
