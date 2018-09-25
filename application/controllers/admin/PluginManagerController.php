@@ -325,7 +325,7 @@ class PluginManagerController extends Survey_Common_Action
             $this->getController()->redirect($this->getPluginManagerUrl());
         } else {
             list($result, $errorMessage) = $pluginManager->installPlugin(
-                $pluginInfo['pluginConfig'],
+                $pluginInfo['extensionConfig'],
                 $pluginInfo['pluginType']
             );
             if ($result) {
@@ -457,12 +457,6 @@ class PluginManagerController extends Survey_Common_Action
         }
 
         // Clear destdir.
-
-        $configFile = $destdir . '/config.xml';
-        if (file_exists($configFile)) {
-            $config = PluginConfiguration::loadConfigFromFile($destdir . '/config.xml');
-            $data['config'] = $config;
-        }
 
         $abortUrl = $this->getPluginManagerUrl('abortUploadedPlugin');
 

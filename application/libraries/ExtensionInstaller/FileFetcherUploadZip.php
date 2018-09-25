@@ -55,7 +55,12 @@ class FileFetcherUploadZip extends FileFetcher
             throw new \Exception(gT('Configuration file config.xml does not exist.'));
         }
 
-        $config = \PluginConfiguration::loadConfigFromFile($configFile);
+        $config = \ExtensionConfig::loadConfigFromFile($configFile);
+
+        if (empty($config)) {
+            throw new \Exception(gT('Could not parse config.xml file.'));
+        }
+
         return $config;
     }
 
