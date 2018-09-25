@@ -35,4 +35,20 @@ abstract class ExtensionInstaller
      * @return array [boolean $result, string $errorMessage]
      */
     abstract public function fetchFiles();
+
+    /**
+     * @todo Should return wrapper class for XML.
+     * @return SimpleXMLElement
+     */
+    abstract public function getConfig();
+
+    /**
+     * @return void
+     */
+    abstract public function install();
+
+    /**
+     * @return void
+     */
+    abstract public function abort();
 }

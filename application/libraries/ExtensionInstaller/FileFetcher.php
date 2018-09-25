@@ -10,6 +10,7 @@ namespace LimeSurvey\ExtensionInstaller;
  * - Enter git repo
  * - Etc.
  * Each method is its own subclass of this class.
+ * Each extension type can support a number of different file fetch methods.
  *
  * @since 2018-09-24
  * @author Olle Haerstedt
@@ -25,7 +26,7 @@ abstract class FileFetcher
 
     /**
      * Move files from source to tmp/ folder.
-     * @tood
+     * @return void
      */
     abstract public function fetch();
 
@@ -34,5 +35,10 @@ abstract class FileFetcher
      * @return SimpleXMLElement|null
      * @throws Exception if config cannot be parsed.
      */
-    abstract public function getExtensionConfig();
+    abstract public function getConfig();
+
+    /**
+     * @return void
+     */
+    abstract public function abort();
 }

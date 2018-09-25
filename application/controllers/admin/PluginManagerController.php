@@ -1,7 +1,7 @@
 <?php
 
 use \LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
-use \LimeSurvey\ExtensionInstaller\ExtensionInstallerPlugin;
+use \LimeSurvey\ExtensionInstaller\PluginInstaller;
 
 /**
  * @todo Apply new permission 'extensions' instead of 'settings'.
@@ -396,61 +396,24 @@ class PluginManagerController extends Survey_Common_Action
         // Redirect back if demo mode is set.
         $this->checkDemoMode();
 
-        Yii::import('application.helpers.common_helper', true);
-        Yii::app()->loadLibrary('admin.pclzip');
+        $installer = $this->getInstaller();
 
-        $fileFetcher = new FileFetcherUploadZip();
-        $installer = new ExtensionInstallerPlugin();
-        $installer->setFileFetcher($fileFetcher);
         try {
             $installer->fetchFiles();
-            // Carry destdir to next page (but not in URL).
-            App()->user->setState('destdir', $destdir);
-            $this->getController()->redirect(
-                $this->getPluginManagerUrl('uploadConfirm')
-            );
+            $this->getController()->redirect($this->getPluginManagerUrl('uploadConfirm'));
         } catch (Exception $ex) {
+            $installer->abort();
+            $this->errorAndRedirect(gT('Could not fetch files.') . ' ' . $ex->getMessage());
         }
 
-        $tempdir = Yii::app()->getConfig("tempdir");
-        $destdir = createRandomTempDir($tempdir, 'install_');
+        //$tempdir = Yii::app()->getConfig("tempdir");
+        //$destdir = createRandomTempDir($tempdir, 'install_');
 
         // Redirect back if $destdir is not writable OR if it already exists.
         //$this->checkDestDir($destdir, $sNewDirectoryName);
 
         // All OK if we're here.
-        $this->extractZipFile($destdir);
-    }
-
-    /**
-     * @param string $destdir
-     * @return void
-     */
-    protected function extractZipFile($destdir)
-    {
-        if (!is_file($_FILES['the_file']['tmp_name'])) {
-            rmdirr($destdir);
-            $this->errorAndRedirect(
-                gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.")
-            );
-        }
-
-        $zip = new PclZip($_FILES['the_file']['tmp_name']);
-        $aExtractResult = $zip->extract(
-            PCLZIP_OPT_PATH,
-            $destdir,
-            PCLZIP_CB_PRE_EXTRACT,
-            'pluginExtractFilter'
-        );
-
-        if ($aExtractResult === 0) {
-            rmdirr($destdir);
-            $this->errorAndRedirect(
-                gT("This file is not a valid ZIP file archive. Import failed.")
-                . ' ' . $zip->error_string
-            );
-        } else {
-        }
+        //$this->extractZipFile($destdir);
     }
 
     /**
@@ -460,6 +423,28 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function uploadConfirm()
     {
+        $installer = $this->getInstaller();
+
+        $config = $installer->getConfig();
+        if ($config) {
+            // Show confirmation page.
+            $abortUrl = $this->getPluginManagerUrl('abortUploadedPlugin');
+            $data = [
+                'config'   => $config,
+                'abortUrl' => $abortUrl
+            ];
+            $this->_renderWrappedTemplate(
+                'pluginmanager',
+                'uploadConfirm',
+                $data
+            );
+        } else {
+            // Abort.
+            $installer->abort();
+            $this->errorAndRedirect(gT('Could not read plugin configuration file.'));
+        }
+
+        /*
         // NB: destdir is location of tmp/ folder.
         $destdir = App()->user->getState('destdir');
 
@@ -472,7 +457,6 @@ class PluginManagerController extends Survey_Common_Action
 
         $pluginManager = App()->getPluginManager();
 
-        $data = [];
 
         $configFile = $destdir . '/config.xml';
         if (file_exists($configFile)) {
@@ -482,13 +466,7 @@ class PluginManagerController extends Survey_Common_Action
 
         $abortUrl = $this->getPluginManagerUrl('abortUploadedPlugin');
 
-        $data['destdir'] = $destdir;
-        $data['abortUrl'] = $abortUrl;
-        $this->_renderWrappedTemplate(
-            'pluginmanager',
-            'uploadConfirm',
-            $data
-        );
+         */
     }
 
     /**
@@ -498,6 +476,14 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function installUploadedPlugin()
     {
+        $installer = $this->getInstaller();
+
+        try {
+            $installer->install();
+        } catch (Exception $ex) {
+        }
+
+        /*
         $request = Yii::app()->request;
         $destdir = $request->getPost('destdir');
 
@@ -521,6 +507,7 @@ class PluginManagerController extends Survey_Common_Action
             );
         }
         $this->getController()->redirect($this->getPluginManagerUrl());
+         */
     }
 
     /**
@@ -528,7 +515,22 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function abortUploadedPlugin()
     {
-        die('here');
+        $installer = $this->getInstaller();
+        $installer->abort();
+
+        die('aborted');
+    }
+
+    /**
+     * @return PluginInstaller
+     * @todo Might have different file fetcher.
+     */
+    protected function getInstaller()
+    {
+        $fileFetcher = new FileFetcherUploadZip();
+        $installer = new PluginInstaller();
+        $installer->setFileFetcher($fileFetcher);
+        return $installer;
     }
 
     /**
@@ -572,45 +574,6 @@ class PluginManagerController extends Survey_Common_Action
     {
         if (Yii::app()->getConfig('demoMode')) {
             Yii::app()->user->setFlash('error', gT("Demo mode: Uploading plugins is disabled."));
-            $this->getController()->redirect($this->getPluginManagerUrl());
-        }
-    }
-
-    /**
-     * Redirect if file size is too big.
-     * @return void
-     * @todo Duplicate from themes.php.
-     */
-    protected function checkFileSizeError()
-    {
-        if (!isset($_FILES['the_file'])) {
-            $this->errorAndRedirect(
-                gT('Found no file')
-            );
-        }
-
-        if ($_FILES['the_file']['error'] == 1 || $_FILES['the_file']['error'] == 2) {
-            $this->errorAndRedirect(
-                sprintf(
-                    gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."),
-                    getMaximumFileUploadSize() / 1024 / 1024
-                )
-            );
-        }
-    }
-
-    /**
-     * Check if uploaded zip file is a zip bomb.
-     * @return void
-     */
-    protected function checkZipBom()
-    {
-        // Check zip bomb.
-        if (isZipBomb($_FILES['the_file']['name'])) {
-            Yii::app()->setFlashMessage(
-                gT('Unzipped file is superior to upload_max_filesize or to post_max_size'),
-                'error'
-            );
             $this->getController()->redirect($this->getPluginManagerUrl());
         }
     }

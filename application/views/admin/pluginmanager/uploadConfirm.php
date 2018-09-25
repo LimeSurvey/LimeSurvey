@@ -12,8 +12,6 @@
             'post'
         ); ?>
 
-            <input type="hidden" name="destdir" value="<?php echo $destdir; ?>" />
-
             <?php // If compatible, show info and buttons. If not, show only cancel button and warning. ?>
             <?php if ($config->isCompatible()): ?>
                 <div class='alert alert-info'>
