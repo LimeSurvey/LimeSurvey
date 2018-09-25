@@ -87,6 +87,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
  * @property Question[] $quotableQuestions
+ * @property bool $hasQuota
  *
  * @property array $fullAnswers
  * @property array $partialAnswers
@@ -1936,6 +1937,26 @@ return $s->hasTokensTable; });
         }
 
         return $dataSecurityNoticeLabel;
+
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHasQuota()
+    {
+        if (!empty($this->quotas)) {
+            return true;
+        }
+        // check if any tokens have Quota completes (quota models deleted)
+        $dynamic = SurveyDynamic::model($this->sid);
+        if ($dynamic->bHaveToken) {
+            $criteria = new CDbCriteria;
+            $criteria->addCondition('tokens.completed = \'Q\'');
+            $dynamic->with('tokens')->count($criteria);
+            return intval($dynamic->with('tokens')->count($criteria)) > 0;
+        }
+        return false;
 
     }
 }

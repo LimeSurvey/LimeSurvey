@@ -1,6 +1,12 @@
 <?php
 /**
  * @var $this AdminController
+ * @var SurveyDynamic $model
+ * @var Survey $survey
+ * @var bool $bHaveToken
+ * @var array $aDefaultColumns
+ * @var string $language
+ * @var array $fieldmap
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -110,6 +116,15 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                                 $model->lastpage)
                         );
 
+                        $completeOptions = [
+                            ''=>gT('All'),
+                            'Y'=>gT('Yes'),
+                            'N'=>gT('No'),
+                        ];
+                        if ($survey->hasQuota) {
+                            $completeOptions['Q'] = gT('Out of quota');
+                        }
+
                         $aColumns[] = array(
                             'header'=>gT("completed"),
                             'name'=>'completed_filter',
@@ -117,13 +132,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'type'=>'raw',
                             'filter'=>TbHtml::dropDownList(
                                 'SurveyDynamic[completed_filter]',
-                                $model->completed_filter,[
-                                    ''=>gT('All'),
-                                    'Y'=>gT('Yes'),
-                                    'Q'=>gT('Out of quota'),
-                                    'N'=>gT('No'),
-                                    ]
-                                )
+                                $model->completed_filter, $completeOptions
+                            )
                         );
 
                         //add token to top of list if survey is not private

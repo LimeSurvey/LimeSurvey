@@ -457,6 +457,7 @@ class responses extends Survey_Common_Action
             }
 
             // rendering
+            $aData['survey']             = $survey;
             $aData['model']             = $model;
             $aData['bHaveToken']        = $bHaveToken;
             $aData['aDefaultColumns']   = $model->defaultColumns; // Some specific columns

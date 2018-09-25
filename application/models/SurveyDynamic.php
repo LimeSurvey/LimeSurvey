@@ -19,6 +19,7 @@
  * Class SurveyDynamic
  * @property TokenDynamic $tokens
  * @property Survey $survey
+ * @property boolean $bHaveToken
  */
 class SurveyDynamic extends LSActiveRecord
 {
@@ -39,8 +40,6 @@ class SurveyDynamic extends LSActiveRecord
     /** @var Survey $survey */
     protected static $survey;
 
-    /** @var  boolean $bHaveToken */
-    protected $bHaveToken;
 
     /**
      * @inheritdoc
@@ -525,12 +524,9 @@ class SurveyDynamic extends LSActiveRecord
     /**
      * @return bool
      */
-    private function getbHaveToken()
+    public function getbHaveToken()
     {
-        if (!isset($this->bHaveToken)) {
-            $this->bHaveToken = tableExists('tokens_'.self::$sid) && Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'read'); // Boolean : show (or not) the token;
-        }
-        return $this->bHaveToken;
+        return tableExists('tokens_'.self::$sid) && Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'read'); // Boolean : show (or not) the token;
     }
 
 
