@@ -16,7 +16,7 @@
  * Thin wrapper around extension update info.
  * Used by VersionFetcher.
  */
-class ExtensionUpdate
+class ExtensionUpdateInfo
 {
     /**
      * @param string
