@@ -303,10 +303,7 @@ class PluginManagerController extends Survey_Common_Action
     public function installPluginFromFile()
     {
         // Check permissions.
-        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
-            Yii::app()->setFlashMessage(gT('No permission'), 'error');
-            $this->getController()->redirect($this->getPluginManagerUrl());
-        }
+        $this->checkUpdatePermission();
 
         $request = Yii::app()->request;
         $pluginName = $request->getPost('pluginName');
@@ -350,10 +347,7 @@ class PluginManagerController extends Survey_Common_Action
     public function uninstallPlugin()
     {
         // Check permissions.
-        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
-            Yii::app()->setFlashMessage(gT('No permission'), 'error');
-            $this->getController()->redirect($this->getPluginManagerUrl());
-        }
+        $this->checkUpdatePermission();
 
         // Get plugin id from post.
         $request = Yii::app()->request;
@@ -387,11 +381,7 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function upload()
     {
-        // Check permissions.
-        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
-            Yii::app()->setFlashMessage(gT('No permission'), 'error');
-            $this->getController()->redirect($this->getPluginManagerUrl());
-        }
+        $this->checkUpdatePermission();
 
         // Redirect back if demo mode is set.
         $this->checkDemoMode();
@@ -423,6 +413,8 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function uploadConfirm()
     {
+        $this->checkUpdatePermission();
+
         $installer = $this->getInstaller();
 
         try {
@@ -457,6 +449,8 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function installUploadedPlugin()
     {
+        $this->checkUpdatePermission();
+
         $installer = $this->getInstaller();
 
         try {
@@ -484,6 +478,8 @@ class PluginManagerController extends Survey_Common_Action
      */
     public function abortUploadedPlugin()
     {
+        $this->checkUpdatePermission();
+
         $installer = $this->getInstaller();
         $installer->abort();
         Yii::app()->user->setFlash(
@@ -580,6 +576,18 @@ class PluginManagerController extends Survey_Common_Action
     {
         Yii::app()->setFlashMessage($msg, 'error');
         $this->getController()->redirect($this->getPluginManagerUrl());
+    }
+
+    /**
+     * Blocks action if user has no setting update permission.
+     * @return void
+     */
+    protected function checkUpdatePermission()
+    {
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            $this->getController()->redirect($this->getPluginManagerUrl());
+        }
     }
 
     /**
