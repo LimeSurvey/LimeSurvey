@@ -14,7 +14,7 @@
 <select id="hour{{ hourId }}" name="hour{{ hourId }}" class="hour form-control">
     <option value="">{{ gT('Hour') }}</option>
     {% for i in 0..23 %}
-        <option value="{{ i }}" {% if i is same as(currenthour) %} 'selected' {% endif %} >
+        <option value="{{ i }}"{% if i  == intval(currenthour) %} selected{% endif %}>
             {% if (datepart=='H') %}
                 {{sprintf('%02d', i)}}
             {% else %}
