@@ -58,6 +58,14 @@ class PluginInstaller extends ExtensionInstaller
     }
 
     /**
+     * @todo
+     */
+    public function uninstall()
+    {
+        throw new \Exception('Not implemented');
+    }
+
+    /**
      * @return SimpleXMLElement
      */
     public function getConfig()

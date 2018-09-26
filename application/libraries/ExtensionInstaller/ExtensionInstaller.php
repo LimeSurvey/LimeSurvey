@@ -21,7 +21,7 @@ abstract class ExtensionInstaller
      * Class responsible for fetching files from source.
      * @var FileFetcher
      */
-    public $fileFetcher;
+    protected $fileFetcher;
 
     /**
      * @param FileFetcher $fileFetcher
@@ -55,6 +55,12 @@ abstract class ExtensionInstaller
      * @return void
      */
     abstract public function install();
+
+    /**
+     * Uninstall the extension.
+     * @return void
+     */
+    abstract public function uninstall();
 
     /**
      * Installation procedure was not completed, abort changes.
