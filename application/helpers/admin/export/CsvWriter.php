@@ -44,8 +44,8 @@ class CsvWriter extends Writer
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
         $sRecord = '';
-        if (!empty($oOptions->headCodeTextSeparator)){
-            $this->separator = $oOptions->headCodeTextSeparator;
+        if (!empty($oOptions->csvFieldSeparator)){
+            $this->separator = $oOptions->csvFieldSeparator;
         }
         if (!$this->hasOutputHeader) {
             if ($oOptions->output == 'display') {

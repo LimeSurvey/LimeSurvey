@@ -1311,13 +1311,19 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey['include_content']  = 'userforms';
 
 
+
             // Language selector
             if ($aSurveyInfo['alanguageChanger']['show']){
                 $aSurveyInfo['alanguageChanger']['datas']['targetUrl'] = $thissurvey['surveyUrl'];
             }
             $thissurvey['alanguageChanger'] = $aSurveyInfo['alanguageChanger'];
 
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('aSurveyInfo'=>$thissurvey), false);
+            $aData['aSurveyInfo'] = $thissurvey;
+
+            $aSurveyInfo  =  getsurveyinfo($surveyid);
+            $aData['aSurveyInfo'] = array_merge($aSurveyInfo, $aData['aSurveyInfo']);
+
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", $aData, false);
             break;
 
         case "register": //Register new user

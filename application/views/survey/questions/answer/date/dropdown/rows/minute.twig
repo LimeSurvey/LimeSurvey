@@ -18,7 +18,8 @@
     </option>
     {% for i in 0..59 %}
         {% if i is divisible by(dropdown_dates_minute_step)  %}
-            <option value="{{ i }}" {% if i is same as(currentminute) %} 'selected' {% endif %} >
+            {# currentminute are sent as padded integer ( '00','01'), i is integer, need testing !== '' and intval #}
+            <option value="{{ i }}"{% if (currentminute is not same as('') and i == intval(currentminute)) %} selected{% endif %}>
                 {% if datepart is same as('i') %}
                     {{ sprintf('%02d', i) }}
                 {% else %}

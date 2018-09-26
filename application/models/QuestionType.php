@@ -97,12 +97,16 @@ class QuestionType extends StaticModel
     }
 
 
-    public static function modelsAttributes()
+    /**
+     * @param string $language
+     * @return array
+     */
+    public static function modelsAttributes($language = '')
     {
         return [
             self::QT_1_ARRAY_MULTISCALE => [
                 'code' => self::QT_1_ARRAY_MULTISCALE,
-                'description' => gT("Array dual scale"),
+                'description' => gT("Array dual scale", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'assessable' => 1,
@@ -112,7 +116,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_5_POINT_CHOICE => [
                 'code' => self::QT_5_POINT_CHOICE,
-                'description' => gT("5 Point Choice"),
+                'description' => gT("5 Point Choice", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -122,7 +126,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_A_ARRAY_5_CHOICE_QUESTIONS => [
                 'code' => self::QT_A_ARRAY_5_CHOICE_QUESTIONS,
-                'description' => gT("Array (5 Point Choice)"),
+                'description' => gT("Array (5 Point Choice)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -132,7 +136,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_B_ARRAY_10_CHOICE_QUESTIONS => [
                 'code' => self::QT_B_ARRAY_10_CHOICE_QUESTIONS,
-                'description' => gT("Array (10 Point Choice)"),
+                'description' => gT("Array (10 Point Choice)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -142,7 +146,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_C_ARRAY_YES_UNCERTAIN_NO => [
                 'code' => self::QT_C_ARRAY_YES_UNCERTAIN_NO,
-                'description' => gT("Array (Yes/No/Uncertain)"),
+                'description' => gT("Array (Yes/No/Uncertain)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -152,7 +156,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_D_DATE => [
                 'code' => self::QT_D_DATE,
-                'description' => gT("Date/Time"),
+                'description' => gT("Date/Time", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -162,7 +166,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS => [
                 'code' => self::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS,
-                'description' => gT("Array (Increase/Same/Decrease)"),
+                'description' => gT("Array (Increase/Same/Decrease)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -172,7 +176,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_F_ARRAY_FLEXIBLE_ROW => [
                 'code' => self::QT_F_ARRAY_FLEXIBLE_ROW,
-                'description' => gT("Array"),
+                'description' => gT("Array", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -182,7 +186,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_G_GENDER_DROPDOWN => [
                 'code' => self::QT_G_GENDER_DROPDOWN,
-                'description' => gT("Gender"),
+                'description' => gT("Gender", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -192,7 +196,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_H_ARRAY_FLEXIBLE_COLUMN => [
                 'code' => self::QT_H_ARRAY_FLEXIBLE_COLUMN,
-                'description' => gT("Array by column"),
+                'description' => gT("Array by column", "html", $language),
                 'group' => gT('Arrays'),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 1,
@@ -202,7 +206,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_I_LANGUAGE => [
                 'code' => self::QT_I_LANGUAGE,
-                'description' => gT("Language Switch"),
+                'description' => gT("Language Switch", "html", $language),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 0,
@@ -212,7 +216,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_K_MULTIPLE_NUMERICAL_QUESTION => [
                 'code' => self::QT_K_MULTIPLE_NUMERICAL_QUESTION,
-                'description' => gT("Multiple Numerical Input"),
+                'description' => gT("Multiple Numerical Input", "html", $language),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 1,
                 'subquestions' => 1,
@@ -222,7 +226,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_L_LIST_DROPDOWN => [
                 'code' => self::QT_L_LIST_DROPDOWN,
-                'description' => gT("List (Radio)"),
+                'description' => gT("List (Radio)", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -232,7 +236,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_M_MULTIPLE_CHOICE => [
                 'code' => self::QT_M_MULTIPLE_CHOICE,
-                'description' => gT("Multiple choice"),
+                'description' => gT("Multiple choice", "html", $language),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
@@ -242,7 +246,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_N_NUMERICAL => [
                 'code' => self::QT_N_NUMERICAL,
-                'description' => gT("Numerical Input"),
+                'description' => gT("Numerical Input", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -252,7 +256,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_O_LIST_WITH_COMMENT => [
                 'code' => self::QT_O_LIST_WITH_COMMENT,
-                'description' => gT("List with comment"),
+                'description' => gT("List with comment", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -262,7 +266,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS => [
                 'code' => self::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS,
-                'description' => gT("Multiple choice with comments"),
+                'description' => gT("Multiple choice with comments", "html", $language),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
@@ -272,7 +276,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_Q_MULTIPLE_SHORT_TEXT => [
                 'code' => self::QT_Q_MULTIPLE_SHORT_TEXT,
-                'description' => gT("Multiple Short Text"),
+                'description' => gT("Multiple Short Text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
@@ -282,7 +286,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_R_RANKING_STYLE => [
                 'code' => self::QT_R_RANKING_STYLE,
-                'description' => gT("Ranking"),
+                'description' => gT("Ranking", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -292,7 +296,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_S_SHORT_FREE_TEXT => [
                 'code' => self::QT_S_SHORT_FREE_TEXT,
-                'description' => gT("Short Free Text"),
+                'description' => gT("Short Free Text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -302,7 +306,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_T_LONG_FREE_TEXT => [
                 'code' => self::QT_T_LONG_FREE_TEXT,
-                'description' => gT("Long Free Text"),
+                'description' => gT("Long Free Text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -312,7 +316,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_U_HUGE_FREE_TEXT => [
                 'code' => self::QT_U_HUGE_FREE_TEXT,
-                'description' => gT("Huge Free Text"),
+                'description' => gT("Huge Free Text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -322,7 +326,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_X_BOILERPLATE_QUESTION => [
                 'code' => self::QT_X_BOILERPLATE_QUESTION,
-                'description' => gT("Text display"),
+                'description' => gT("Text display", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -332,7 +336,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_Y_YES_NO_RADIO => [
                 'code' => self::QT_Y_YES_NO_RADIO,
-                'description' => gT("Yes/No"),
+                'description' => gT("Yes/No", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -342,7 +346,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_EXCLAMATION_LIST_DROPDOWN => [
                 'code' => self::QT_EXCLAMATION_LIST_DROPDOWN,
-                'description' => gT("List (Dropdown)"),
+                'description' => gT("List (Dropdown)", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -352,7 +356,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS => [
                 'code' => self::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
-                'description' => gT("Array (Numbers)"),
+                'description' => gT("Array (Numbers)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
                 'hasdefaultvalues' => 0,
@@ -362,7 +366,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT => [
                 'code' => self::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT,
-                'description' => gT("Array (Texts)"),
+                'description' => gT("Array (Texts)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
                 'hasdefaultvalues' => 0,
@@ -372,7 +376,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_VERTICAL_FILE_UPLOAD => [
                 'code' => self::QT_VERTICAL_FILE_UPLOAD,
-                'description' => gT("File upload"),
+                'description' => gT("File upload", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -382,7 +386,7 @@ class QuestionType extends StaticModel
             ],
             self::QT_ASTERISK_EQUATION => [
                 'code' => self::QT_ASTERISK_EQUATION,
-                'description' => gT("Equation"),
+                'description' => gT("Equation", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,

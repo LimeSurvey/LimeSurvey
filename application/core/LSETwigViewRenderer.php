@@ -437,18 +437,17 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     private function getPluginsData($sString, $aDatas)
     {
         $event = new PluginEvent('beforeTwigRenderTemplate');
+        $aDatas['aSurveyInfo']['bShowClearAll'] = false; // default to not show "Exit and clear survey" button
 
         if (!empty($aDatas['aSurveyInfo']['sid'])) {
             $surveyid = $aDatas['aSurveyInfo']['sid'];
             $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
 
+            // show "Exit and clear survey" button whenever there is 'srid' key set, 
+            // button won't be rendered on welcome and final page because 'srid' key doesn't exist on those pages
             if (isset($_SESSION['survey_'.$surveyid]['srid']) && $aDatas['aSurveyInfo']['active']=='Y') {
-                $isCompleted = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
-            } else {
-                $isCompleted = false;
+                $aDatas['aSurveyInfo']['bShowClearAll'] = true;
             }
-
-            $aDatas['aSurveyInfo']['bShowClearAll'] = !$isCompleted;
         }
 
         App()->getPluginManager()->dispatchEvent($event);
@@ -472,11 +471,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         // We retreive the definition of the core class and attributes (in the future, should be template dependant done via XML file)
         $aDatas["aSurveyInfo"] = array_merge($aDatas["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 
-        $languagecode = Yii::app()->getConfig('defaultlang');
-        if (!empty($aDatas['aSurveyInfo']['sid'])) {
-            if (Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang']) {
-                $languagecode = Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'];
-            } elseif ($aDatas['aSurveyInfo']['sid'] && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])) {
+        $languagecode = Yii::app()->getLanguage();
+        if (!empty($aDatas['aSurveyInfo']['sid']) && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid']) ) {
+            if(!in_array($languagecode,Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->getAllLanguages())) {
                 $languagecode = Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->language;
             }
         }

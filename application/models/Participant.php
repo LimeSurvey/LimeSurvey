@@ -2134,4 +2134,23 @@ class Participant extends LSActiveRecord
             return '';
         }
     }
+
+    public function getLanguageOptions(){
+        $allLanguages = getLanguageData();
+        $restrictToLanguages = Yii::app()->getConfig('restrictToLanguages');
+        if(empty($restrictToLanguages))
+        {
+            return array_map(function($lngArr){ return $lngArr['description'];}, $allLanguages);
+        }
+        $usedLanguages = explode(' ',$restrictToLanguages);
+        $returner = [];
+        array_walk($usedLanguages, function($lngKey) use(&$returner, $allLanguages){
+            $returner[$lngKey] = $allLanguages[$lngKey]['description'];
+        });
+        return $returner;
+    }
+    public function getOwnerOptions(){
+        
+        return [];
+    }
 }

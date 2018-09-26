@@ -35,6 +35,90 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.14.9 (build 180917) to 3.14.10 (build 180924) September 24, 2018
+-New Feature: added Twig function getAllAnswers() (LouisGac) 
+-Fix trailing quotes (#1122) (Tõnis Ormisson)
+-Fixed issue #13944: Template variable for survey title is empty when the survey is prompting for a token (LouisGac)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Czech by VBraun, jelen1, c_schmitz
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by b00z00
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Spanish (Spain) by larjona, aesteban
+
+Changes from 3.14.8 (build 180829) to 3.14.9 (build 180917) September 17, 2018
+
+-[security] fixed issue:  possible xss via last survey visited (reported by Ismail Tasdelen ) (LouisGac)
+-Fixed issue #14042: Group filter on Survey list page to show only own survey groups (Dominik Vitt)
+-Fixed issue #12605: Redirect bug when creating dummy participant with mandatory attribute (Dominik Vitt)
+-Fixed issue #13337: Fail on CSV token import when import file with Mac line endings (Carsten Schmitz)
+-Fixed issue #13903: Get parameters do not work with tokenized survey (Dominik Vitt)
+-Fixed issue #13967: Installed Themes overview (Dominik Vitt)
+-Fixed issue #13982 : (partial) some existing Yii cacche can not be used (Casey Lucas)
+-Fixed issue #13987: Bug after try adding multiple token attributes (Dominik Vitt)
+-Fixed issue #13990: Empty error message if token's "Completed" date not chosen (Dominik Vitt)
+-Fixed issue #13992: Error when installing LimeSurvey and using MSSQL (message: "Error converting nvarchar to datetime") (Carsten Schmitz)
+-Fixed issue #13993: Batch-edit participants is missing the language field (Dominik Vitt)
+-Fixed issue #13994: Question validation equation along with "Hide tip" (Dominik Vitt)
+-Fixed issue #13998: Survey breadcrumb bar disappears when adding/deleting participant table (Dominik Vitt)
+-Fixed issue #13999: Incorrect translation in Logic File (Dominik Vitt)
+-Fixed issue #14019: The API call "get_uploaded_files" is not returning all uploaded files (Dominik Vitt)
+-Fixed issue #14020: Subquestions GIDs not updated when moving between groups (Dominik Vitt)
+-Fixed issue #14029: Breadcrumb shows "Add a new question", also when editing a saved question (Dominik Vitt)
+-Fixed issue #14030: Group relevance equations are lost when exporting a survey in tab-separated text format (Dominik Vitt)
+-Fixed issue #14033: Re-ordering groups when a group is open using Structure drag & drop fails (Markus Flür)
+-Fixed issue #14037: Bad display on "Add a new survey administrator" form (Dominik Vitt)
+-Fixed issue #14042: Inappropriate display of "Survey Groups" (Dominik Vitt)
+-Fixed issue #14050: Unable to import all responses if startdate added (Dominik Vitt)
+-Fixed issue #14052: Can't export response statistics to XLS with debug=2 (Dominik Vitt)
+-Fixed issue #14058: vvimport failing because of missing default values on newer MariaDB databases (Markus Flür)
+-Fixed issue: Array(numbers) does not allow to set decimal step width on certain browsers (Carsten Schmitz)
+-Fixed issue: Better "Exit and clear survey" button functionality (Dominik Vitt)
+-Fixed issue: PASSTHRU was broken when using other replacements in the end url (LouisGac)
+-Fixed issue: Step value was hardcoded to 1 for Array(Number) question (Carsten Schmitz)
+-Fixed issue: wrong encoding of end URL (LouisGac)
+-New translation: Montenegrin (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Chinese (Simplified) by yanglaw, johnxan
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by b00z00
+#Updated translation: French (France) by c_schmitz
+#Updated translation: Galician by c_schmitz, Calidonia
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German by actxcellence, c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Montenegrin by c_schmitz
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Thai by tomzt
+
+Changes from 3.14.7 (build 180827) to 3.14.8 (build 180829) August 29, 2018
+
+-Fixed issue #14000: "Export this response" button in view response page is broken (Dominik Vitt)
+-Fixed issue #13283: Survey Groups title should be mandatory (Dominik Vitt)
+-Fixed issue #13747: CSV Export of Survey Responses no longer valid CSV (Dominik Vitt)
+-Fixed issue #14013: Cannot Add Conditions - Total Failure (#1114) (Tõnis Ormisson)
+-Fixed issue: "Strip HTML code" option for response export
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+
 Changes from 3.14.6 (build 180821) to 3.14.7 (build 180827) August 27, 2018
 
 -[security] fixed issue: admin user can read arbitrary file that is readable via upload question type  (reported by Matej Zidek and Miloslav Homer) (LouisGac)

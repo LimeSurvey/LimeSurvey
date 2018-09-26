@@ -87,6 +87,12 @@ class SurveysGroupsController extends Survey_Common_Action
         $oTemplateOptions->scenario = 'surveygroup';
         $aData['templateOptionsModel'] = $oTemplateOptions;
 
+        // Page size
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
+        }
+        $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
+
         $this->_renderWrappedTemplate('surveysgroups', 'update', $aData);
     }
 

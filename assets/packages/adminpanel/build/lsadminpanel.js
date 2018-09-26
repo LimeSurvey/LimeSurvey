@@ -28318,18 +28318,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         dragoverQuestiongroup($event, questiongroupObject) {
             if (this.draggedQuestion == undefined || this.draggedQuestion == null) {
-                this.$log.error({
+                this.$log.log({
                     this: this,
-                    event: $event,
                     questiongroupObject: questiongroupObject,
                     draggedQuestion: this.draggedQuestion
                 });
             }
 
             if (this.questiongroupDragging) {
-                const orderSwap = questiongroupObject.group_order;
-                questiongroupObject.group_order = this.draggedQuestionGroup.group_order;
-                this.draggedQuestionGroup.group_order = orderSwap;
+                const targetPosition = parseInt(questiongroupObject.group_order);
+                const currentPosition = parseInt(this.draggedQuestionGroup.group_order);
+                if (Math.abs(parseInt(targetPosition) - parseInt(currentPosition)) == 1) {
+                    questiongroupObject.group_order = currentPosition;
+                    this.draggedQuestionGroup.group_order = targetPosition;
+                }
             } else {
                 this.addActive(questiongroupObject.gid);
                 if (this.draggedQuestion.gid !== questiongroupObject.gid) {
@@ -28951,6 +28953,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.getLinkClass(menuItem),
       attrs: {
         "href": menuItem.link,
+        "target": menuItem.link_external == true ? '_blank' : '',
         "id": 'sidemenu_' + menuItem.name
       },
       on: {
@@ -28978,7 +28981,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       domProps: {
         "innerHTML": _vm._s(menuItem.menu_title)
       }
-    })], 1), _vm._v(" "), _c('div', {
+    }), _vm._v(" "), (menuItem.link_external == true) ? _c('i', {
+      staticClass: "fa fa-external-link"
+    }, [_vm._v(" ")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
       directives: [{
         name: "show",
         rawName: "v-show",

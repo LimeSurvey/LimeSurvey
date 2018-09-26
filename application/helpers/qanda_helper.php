@@ -915,18 +915,17 @@ function do_date($ia)
             $datetimeobj   = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
             $currentyear   = $datetimeobj->years;
             $currentmonth  = $datetimeobj->months;
-            $currentdate   = $datetimeobj->days;
+            $currentday   = $datetimeobj->days;
             $currenthour   = $datetimeobj->hours;
             $currentminute = $datetimeobj->minutes;
         } else {
             // If date is invalid get the POSTED value
-            $currentdate   = App()->request->getPost("day{$ia[1]}", '');
+            $currentday   = App()->request->getPost("day{$ia[1]}", '');
             $currentmonth  = App()->request->getPost("month{$ia[1]}", '');
             $currentyear   = App()->request->getPost("year{$ia[1]}", '');
             $currenthour   = App()->request->getPost("hour{$ia[1]}", '');
             $currentminute = App()->request->getPost("minute{$ia[1]}", '');
         }
-
         $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'], -1, PREG_SPLIT_DELIM_CAPTURE);
 
         $sRows = '';
@@ -936,7 +935,7 @@ function do_date($ia)
                 // Show day select box
                 case 'j':
                 case 'd':
-                    $sRows .= doRender('/survey/questions/answer/date/dropdown/rows/day', array('dayId'=>$ia[1], 'currentdate'=>$currentdate), true);
+                    $sRows .= doRender('/survey/questions/answer/date/dropdown/rows/day', array('dayId'=>$ia[1], 'currentday'=>$currentday), true);
                     break;
                     // Show month select box
                 case 'n':

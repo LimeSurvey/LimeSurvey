@@ -23,7 +23,7 @@
                 <div class="form-group">
                     <label  class=" control-label" for='amount'><?php eT("Number of participants:"); ?></label>
                     <div class="">
-                        <input class='form-control' type='text' size='20' id='amount' name='amount' value="100" />
+                        <input class='form-control' type='text' size='20' id='amount' name='amount' value="<?php echo $amount; ?>" />
                     </div>
                 </div>
 
@@ -39,7 +39,7 @@
                 <div class="form-group">
                     <label  class=" control-label" for='firstname'><?php eT("First name"); ?>:</label>
                     <div class="">
-                        <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="" />
+                        <input class='form-control' type='text' size='30' id='firstname' name='firstname' value="<?php echo $firstname; ?>" />
                     </div>
                 </div>
 
@@ -47,7 +47,7 @@
                 <div class="form-group">
                     <label  class=" control-label" for='lastname'><?php eT("Last name"); ?>:</label>
                     <div class="">
-                        <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="" />
+                        <input class='form-control' type='text' size='30'  id='lastname' name='lastname' value="<?php echo $lastname; ?>" />
                     </div>
                 </div>
 
@@ -55,7 +55,7 @@
                 <div class="form-group">
                     <label  class=" control-label" for='email'><?php eT("Email address:"); ?></label>
                     <div class="">
-                        <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' value="" />
+                        <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' value="<?php echo $email; ?>" />
                     </div>
                 </div>
 
@@ -63,7 +63,7 @@
                 <div class="form-group">
                     <label  class=" control-label" for='language'><?php eT("Language"); ?>:</label>
                     <div class="">
-                        <?php echo languageDropdownClean($surveyid, Survey::model()->findByPk($surveyid)->language); ?>
+                        <?php echo languageDropdownClean($surveyid, $language); ?>
                     </div>
                 </div>
 
@@ -71,10 +71,21 @@
                 <div class="form-group">
                     <label  class=" control-label" for='usesleft'><?php eT("Uses left:"); ?></label>
                     <div class="">
-                        <input class='form-control' type='text' size='20' id='usesleft' name='usesleft' value="1" />
+                        <input class='form-control' type='text' size='20' id='usesleft' name='usesleft' value="<?php echo $usesleft; ?>" />
                     </div>
                 </div>
 
+            <?php
+                if (isset($validfrom) && $validfrom != 'N')
+                {
+                    $validfrom = convertToGlobalSettingFormat($validfrom, true);
+                }
+
+                if (isset($validuntil) && $validuntil != 'N')
+                {
+                    $validuntil = convertToGlobalSettingFormat($validuntil, true);
+                }
+            ?>
                 <!--  Validity -->
                 <div class="form-group">
                     <label  class=" control-label" for='validfrom'><?php eT("Valid from"); ?>:</label>

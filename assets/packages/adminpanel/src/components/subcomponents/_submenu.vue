@@ -87,6 +87,7 @@ export default {
             v-bind:key="menuItem.id" 
             v-on:click.stop="setActiveMenuItemIndex(menuItem)"  
             :href="menuItem.link" 
+            :target="menuItem.link_external == true ? '_blank' : ''"
             :id="'sidemenu_'+menuItem.name" 
             class="list-group-item"
             :class="getLinkClass(menuItem)" >
@@ -97,10 +98,12 @@ export default {
                 <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
                     <span v-html="menuItem.menu_title"></span>
+                    <i class="fa fa-external-link" v-if="menuItem.link_external == true">&nbsp;</i>
                 </div>
                 <div class="col-sm-2 text-center ls-space padding all-0 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
                     <i class="fa fa-chevron-right">&nbsp;</i>
                 </div>
+                
             </div>
         </a>
         <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.capture.stop="setActiveMenuIndex(submenu)" >

@@ -107,11 +107,12 @@ class PluginManager extends \CApplicationComponent
      */
     public function installUploadedPlugin($destdir)
     {
-        if (file_exists($configFile)) {
-            libxml_disable_entity_loader(false);
-            $xml = simplexml_load_file(realpath($configFile));
-            libxml_disable_entity_loader(true);
-            $pluginConfig = new \PluginConfiguration($xml);
+        $configFile = $destdir . '/config.xml';
+        $extensionConfig = \ExtensionConfig::loadConfigFromFile($configFile);
+        if (empty($extensionConfig)) {
+            return [false, gT('Could not parse the plugin congig.xml into a configuration object')];
+        } else {
+            return $this->installPlugin($extensionConfig, 'upload');
         }
     }
 
@@ -121,19 +122,25 @@ class PluginManager extends \CApplicationComponent
      * @param string $pluginType 'user' or 'core', depending on location of folder.
      * @return array [boolean $result, string $errorMessage]
      */
-    public function installPlugin(\PluginConfiguration $pluginConfig, $pluginType)
+    public function installPlugin(\ExtensionConfig $extensionConfig, $pluginType)
     {
-        if (!$pluginConfig->validate()) {
+        if (!$extensionConfig->validate()) {
             return [false, gT('Plugin configuration file is not valid.')];
         }
 
-        if (!$pluginConfig->isCompatible()) {
+        if (!$extensionConfig->isCompatible()) {
             return [false, gT('Plugin is not compatible with your LimeSurvey version.')];
         }
 
+        $newName = (string) $extensionConfig->xml->metadata->name;
+        $otherPlugin = Plugin::model()->findAllByAttributes(['name' => $newName]);
+        if (!empty($otherPlugin)) {
+            return [false, sprintf(gT('Plugin "%s" is already installed.'), $newName)];
+        }
+
         $plugin = new Plugin();
-        $plugin->name        = (string) $pluginConfig->xml->metadata->name;
-        $plugin->version     = (string) $pluginConfig->xml->metadata->version;
+        $plugin->name        = $newName;
+        $plugin->version     = (string) $extensionConfig->xml->metadata->version;
         $plugin->active      = 0;
         $plugin->plugin_type = $pluginType;
         $plugin->save();
@@ -332,7 +339,7 @@ class PluginManager extends \CApplicationComponent
     {
         $result       = [];
         $class        = "{$pluginClass}";
-        $pluginConfig = null;
+        $extensionConfig = null;
         $pluginType   = null;
 
         if (!class_exists($class, false)) {
@@ -351,17 +358,11 @@ class PluginManager extends \CApplicationComponent
                     $configFile = Yii::getPathOfAlias($pluginDir)
                         . DIRECTORY_SEPARATOR . $pluginClass
                         . DIRECTORY_SEPARATOR .'config.xml';
-                    if (file_exists($configFile)) {
-                        libxml_disable_entity_loader(false);
-                        $xml = simplexml_load_file(realpath($configFile));
-                        libxml_disable_entity_loader(true);
-                        $pluginConfig = new \PluginConfiguration($xml);
+                    $extensionConfig = \ExtensionConfig::loadConfigFromFile($configFile);
+                    if ($extensionConfig) {
                         $pluginType = $type;
-                    } else {
-                        $pluginConfig = null;
+                        $found = true;
                     }
-
-                    $found = true;
                     break;
                 }
             }
@@ -377,12 +378,26 @@ class PluginManager extends \CApplicationComponent
             $result['description']  = call_user_func(array($class, 'getDescription'));
             $result['pluginName']   = call_user_func(array($class, 'getName'));
             $result['pluginClass']  = $class;
-            $result['pluginConfig'] = $pluginConfig;
-            $result['isCompatible'] = $pluginConfig == null ? false : $pluginConfig->isCompatible();
+            $result['extensionConfig'] = $extensionConfig;
+            $result['isCompatible'] = $extensionConfig == null ? false : $extensionConfig->isCompatible();
             $result['load_error']   = 0;
             $result['pluginType']   = $pluginType;
             return $result;
         }
+    }
+
+    /**
+     * @param ExtensionConfig $config
+     * @param string $pluginType User, core or upload
+     */
+    public function getPluginFolder(\ExtensionConfig $config, $pluginType)
+    {
+        $alias = $this->pluginDirs[$pluginType];
+        if (empty($alias)) {
+            return null;
+        }
+        $folder = Yii::getPathOfAlias($alias) . '/' . $config->getName();
+        return $folder;
     }
 
     /**
@@ -407,7 +422,7 @@ class PluginManager extends \CApplicationComponent
                     }
                 }
             } else {
-                if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName)) {
+                if (!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName) {
                     if ($this->getPluginInfo($pluginName) !== false) {
                         if (class_exists($pluginName)) {
                             $this->plugins[$id] = new $pluginName($this, $id);

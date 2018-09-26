@@ -90,7 +90,6 @@ function quoteText($sText, $sEscapeMode = 'html')
     }
 }
 
-
 /**
 * getSurveyList() Queries the database (survey table) for a list of existing surveys
 *
@@ -114,7 +113,7 @@ function getSurveyList($bReturnArray = false)
         foreach ($surveyidresult as $result) {
             $surveynames[] = array_merge($result->attributes, $result->languagesettings[$result->language]->attributes);
         }
-        
+
         usort($surveynames, function($a, $b)
         {
                 return strcmp($a['surveyls_title'], $b['surveyls_title']);
@@ -335,7 +334,7 @@ function getGroupOrder($gid)
 
 /**
 * Queries the database for the maximum sort order of questions inside question group.
-* 
+*
 * @param integer $gid
 * @return integer
 */
@@ -763,9 +762,9 @@ function getSurveyInfo($surveyid, $languagecode = '')
 */
 function templateDefaultTexts($sLanguage, $mode = 'html', $sNewlines = 'text')
 {
-    
+
     $aDefaultTexts = LsDefaultDataSets::getTemplateDefaultTexts($mode, $sLanguage);
-    
+
     if ($sNewlines == 'html') {
         $aDefaultTexts = array_map('nl2br', $aDefaultTexts);
     }
@@ -1389,7 +1388,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             }
 
             $fieldmap[$fieldname] = array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
-            
+
             if ($style == "full") {
                 $fieldmap[$fieldname]['title'] = $arow['title'];
                 $fieldmap[$fieldname]['question'] = $arow['question'];
@@ -2652,7 +2651,7 @@ function breakToNewline($data)
 
 /**
 * Provides a safe way to end the application
-* 
+*
 * @param mixed $sText
 * @returns boolean Fake return so Scrutinizes shuts up
 */
@@ -2852,7 +2851,7 @@ function stripJavaScript($sContent)
 */
 function showJavaScript($sContent)
 {
-    $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si', 
+    $text = preg_replace_callback('@<script[^>]*?>.*?</script>@si',
         function($matches)
         {
             return htmlspecialchars($matches[0]);
@@ -2870,14 +2869,14 @@ function cleanTempDirectory()
     $dp = opendir($dir) or safeDie('Could not open temporary directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
-            /** @scrutinizer ignore-unhandled */ @unlink($dir.$file); 
+            /** @scrutinizer ignore-unhandled */ @unlink($dir.$file);
         }
     }
     $dir = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR;
     $dp = opendir($dir) or safeDie('Could not open temporary upload directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file != 'index.html' && $file != '.gitignore' && $file != 'readme.txt') {
-            /** @scrutinizer ignore-unhandled */ @unlink($dir.$file); 
+            /** @scrutinizer ignore-unhandled */ @unlink($dir.$file);
         }
     }
     closedir($dp);
@@ -4246,7 +4245,7 @@ function getSurveyUserList($bIncludeSuperAdmins = true, $surveyid)
  * Return HTML <option> list of user groups
  * @param string $outputformat
  * @param int $surveyid
- * @return string|array 
+ * @return string|array
  */
 function getSurveyUserGroupList($outputformat = 'htmloptions', $surveyid)
 {
@@ -4550,7 +4549,7 @@ function humanFilesize($bytes, $decimals = 2)
 
 /**
 * This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
-* 
+*
 * @param string $sSize
 * @return integer The value in bytes
 */
@@ -4559,8 +4558,8 @@ function convertPHPSizeToBytes($sSize)
     //
     $sSuffix = strtoupper(substr($sSize, -1));
     if (!in_array($sSuffix, array('P', 'T', 'G', 'M', 'K'))) {
-        return (int) $sSize;  
-    } 
+        return (int) $sSize;
+    }
     $iValue = substr($sSize, 0, -1);
     switch ($sSuffix) {
         case 'P':
@@ -4643,10 +4642,12 @@ function regenerateCSRFToken()
 /**
 * A function to remove ../ or ./ from paths to prevent directory traversal
 *
-* @param mixed $path
+* @param string $path
+* @return string
 */
 function get_absolute_path($path)
 {
+    $startsWithSeparator = $path[0] === '/';
     $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
     $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
     $absolutes = array();
@@ -4660,7 +4661,7 @@ function get_absolute_path($path)
             $absolutes[] = $part;
         }
     }
-    return implode(DIRECTORY_SEPARATOR, $absolutes);
+    return ($startsWithSeparator ? '/' : '') . implode(DIRECTORY_SEPARATOR, $absolutes);
 }
 
 /**
@@ -4700,7 +4701,6 @@ function isAssociativeArray($array){
 */
 function createRandomTempDir($dir=null, $prefix = '', $mode = 0700)
 {
-
     $sDir = (empty($dir)) ? Yii::app()->getConfig('tempdir') : get_absolute_path ($dir);
 
     if (substr($sDir, -1) != DIRECTORY_SEPARATOR) {

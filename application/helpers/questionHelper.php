@@ -655,7 +655,7 @@ class questionHelper
         "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
             'category'=>gT('Display'),
             'sortorder'=>111,
-            'inputtype'=>'integer',
+            'inputtype'=>'float',
             'default'=>'',
             "help"=>gT('Step value'),
             "caption"=>gT('Step value')

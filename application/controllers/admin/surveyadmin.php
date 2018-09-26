@@ -1443,6 +1443,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             $aLanguageData['aSurveyLanguageSettings'] = $aSurveyLanguageSettings;
             $aLanguageData['action'] = "surveygeneralsettings";
+            $aLanguageData['subaction'] = gT('Add a new question');
             $aLanguageData['i'] = $i;
             $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
             $aLanguageData['oSurvey'] = $survey;

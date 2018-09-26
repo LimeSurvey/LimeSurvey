@@ -42,7 +42,7 @@
                 <option value="">
                     {{ gT('...') }}
                 </option>
-                {% for i in range(minvalue, maxvalue, 1) %}
+                {% for i in range(minvalue, maxvalue, stepvalue) %}
                     {% set selected = value is not empty and value|t == i|t?'SELECTED':'' %}
                     <option value="{{ i|replace({'.' : sSeparator }) }}" {{ selected }}>
                         {{ i|replace({'.':sSeparator }) }}

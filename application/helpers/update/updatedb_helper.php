@@ -33,7 +33,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
      * @link https://manual.limesurvey.org/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
-    $aCriticalDBVersions = array(310, 350);
+    $aCriticalDBVersions = array(310, 400);
     $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
     // If trying to update silenty check if it is really possible
@@ -2539,9 +2539,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
     // Try to clear tmp/runtime (database cache files).
     // Related to problems like https://bugs.limesurvey.org/view.php?id=13699.
-    if (!(defined('YII_DEBUG') && YII_DEBUG)) {
+    // Some cache implementations may not have 'flush' method. Only call flush if method exists.
+    if (method_exists(Yii::app()->cache, 'flush')) {
         Yii::app()->cache->flush();
-        // NB: CDummyCache does not have a gc method (used if debug > 0).
+    }
+    // Some cache implementations (ex: CRedisCache, CDummyCache) may not have 'gc' method. Only call gc if method exists.
+    if (method_exists(Yii::app()->cache, 'gc')) {
         Yii::app()->cache->gc();
     }
 

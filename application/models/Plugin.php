@@ -71,7 +71,7 @@ class Plugin extends LSActiveRecord
 
     /**
      * @return xml
-     * @todo Use PluginConfiguration.
+     * @todo Use ExtensionConfig
      * @throws Exception if file does not exist.
      */
     public function getConfig()

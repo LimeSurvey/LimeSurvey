@@ -1,3 +1,6 @@
+<?php
+/* @var Survey $oSurvey */
+?>
 <div class='menubar surveybar' id="browsermenubarid">
     <div class='row container-fluid'>
         <?php if(isset($menu) && isset($menu['edition']) && !$menu['edition']): ?>
@@ -14,7 +17,7 @@
 
 
                 <!-- Display Responses -->
-                <?php if (count($tmp_survlangs) < 2): ?>
+                <?php if (count($oSurvey->allLanguages) < 2): ?>
                     <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
                         <span class="fa fa-list text-success"></span>
                         <?php eT("Display responses"); ?>
@@ -26,7 +29,7 @@
                         <?php eT("Responses"); ?> <span class="fa fa-caret-down"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <?php foreach ($tmp_survlangs as $tmp_lang): ?>
+                        <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
                         <li>
                             <a class="pjax" href="<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid/browselang/$tmp_lang"); ?>" accesskey='b'>
                                 <?php echo getLanguageNameFromCode($tmp_lang, false); ?>
@@ -149,7 +152,7 @@
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')): ?>
                 <a
                     id="response-batch-deletion"
-                    href="<?php echo $this->createUrl("/admin/responses/sa/actionDelete/", array("surveyid" => $_GET['surveyid'] )); ?>"
+                    href="<?php echo $this->createUrl("/admin/responses/sa/actionDelete/", array("surveyid" => $surveyid )); ?>"
                     data-post="{}"
                     data-show-text-area="true"
                     data-use-ajax="true"
@@ -229,7 +232,7 @@
                     </a>
                     <?php endif;?>
                     <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete') && isset($rlanguage)): ?>
-                    <a class="btn btn-default" href='#' role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl("admin/dataentry/sa/delete/", ['id' => $id, 'sid' => $surveyid])); ?>}">
+                    <a class="btn btn-default" href='#' role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?", "js"); ?>")) { <?php echo convertGETtoPOST($this->createUrl("admin/dataentry/sa/delete/", ['id' => $id, 'sid' => $surveyid])); ?>}'>
                         <span class="fa fa-trash text-warning"></span>
                         <?php eT("Delete this entry"); ?>
                     </a>

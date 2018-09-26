@@ -44,6 +44,23 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
         // Separator
         array('type'  => 'separator'),
 
+        // Mass Edit
+        array(
+            'type' => 'action',
+            'action' => 'batchEdit',
+            'url' => App()->createUrl('/admin/participants/sa/batchEdit/'),
+            'iconClasses' => 'fa fa-pencil',
+            'text' => gT('Batch edit'),
+            'grid-reload' => 'yes',
+            //modal
+            'actionType' => 'modal',
+            'modalType'     => 'yes-no',
+            'keepopen'      => 'yes',
+            'yes'           => gT('Apply'),
+            'no'            => gT('Cancel'),
+            'sModalTitle'   => gT('Batch edit the participants'),
+            'htmlModalBody' => $this->renderPartial('./participants/massive_actions/_update', [], true)
+        ),
         // Export
         array(
             'type' => 'action',
