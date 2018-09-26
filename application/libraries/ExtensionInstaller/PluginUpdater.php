@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * LimeSurvey
  * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -18,27 +18,23 @@ namespace LimeSurvey\ExtensionInstaller;
  * @since 2018-09-26
  * @author Olle Haerstedt
  */
-abstract class VersionFetcher
+class PluginUpdater extends ExtensionUpdater
 {
     /**
-     * @var string
+     * @return PluginUpdater[]
      */
-    protected $source;
-
-    /**
-     * Set source to fetch version information. Can be URL to REST API, git repo, etc.
-     * @param string $source
-     * @return void
-     */
-    public function setSource($source)
+    public static function createUpdaters()
     {
-        $this->source = $source;
-    }
+        // Get all installed plugins (both active and non-active).
+        $plugins = \Plugin::model()->findAll();
 
-    /**
-     * Get latest version for this extension.
-     * @param string $extensionName
-     * @return string Semantic versioning string.
-     */
-    abstract public function getLatestVersion($extensionName);
+        $versionFetcherFactory = new VersionFetcherFactory();
+
+        $updaters = [];
+        foreach ($plugins as $plugin) {
+            $updater = new PluginUpdater($plugin);
+            $updater->setVersionFetcher();
+            $updaters[] = $updater;
+        }
+    }
 }

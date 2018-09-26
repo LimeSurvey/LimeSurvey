@@ -12,24 +12,34 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-use \LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
-use \LimeSurvey\ExtensionInstaller\PluginInstaller;
+use \LimeSurvey\ExtensionInstaller\ExtensionUpdaterFactory;
 
 /**
  */
 class ExtensionUpdaterController extends Survey_Common_Action
 {
-    public function init()
-    {
-    }
-
     /**
      * Used to check for available updates for all plugins.
+     * This method should be run at super admin login, max once every day.
+     * Run by Ajax to avoid increased page load time.
      * @return void
      */
     public function checkAll()
     {
-        // get all extensions
-        // for each extension, if update is available, save notification
+        $factory = new ExtensionUpdaterFactory();
+
+        // Get one updater class for each extension type (PluginUpdater, ThemeUpdater, etc).
+        $updaters = $factory->getAllUpdaters();
+
+        // Get an extension updater for each extension installed.
+        // TODO: Too many objects?
+        $extensionUpdaters = [];
+        foreach ($updaters as $updater) {
+            $extensionUpdaters[] = array_merge($updater->createUpdaters(), $extensionUpdaters);
+        }
+
+        foreach ($extensionUpdaters as $extensionUpdater) {
+            
+        }
     }
 }

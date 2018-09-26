@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * LimeSurvey
  * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -26,6 +26,21 @@ abstract class ExtensionUpdater
     protected $versionFetcher;
 
     /**
+     * Extension model, e.g. Theme or Plugin class.
+     * @todo Create super class ExtensionModel?
+     * @var mixed
+     */
+    protected $model;
+
+    /**
+     * @param mixed $model
+     */
+    public function __construct($model)
+    {
+        $this->model = $model;
+    }
+
+    /**
      * @param VersionFetcher $vf
      * @return void
      */
@@ -47,4 +62,9 @@ abstract class ExtensionUpdater
 
         return [$this->versionFetcher->getLatestVersion()];
     }
+
+    /**
+     * @return ExtensionUpdater[]
+     */
+    abstract public static function createUpdaters();
 }

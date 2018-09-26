@@ -8,4 +8,12 @@ namespace LimeSurvey\ExtensionInstaller;
  */
 class RESTVersionFetcher extends VersionFetcher
 {
+    /**
+     * @param string $extensionName
+     * @return ExtensionUpdateInfo
+     */
+    public function getLatestVersion($extensionName)
+    {
+        // curl into source for this extension name.
+    }
 }

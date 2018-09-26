@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * LimeSurvey
  * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -18,27 +18,20 @@ namespace LimeSurvey\ExtensionInstaller;
  * @since 2018-09-26
  * @author Olle Haerstedt
  */
-abstract class VersionFetcher
+class VersionFetcherFactory
 {
     /**
-     * @var string
+     * @param string $type
+     * @return VersionFetcher
      */
-    protected $source;
-
-    /**
-     * Set source to fetch version information. Can be URL to REST API, git repo, etc.
-     * @param string $source
-     * @return void
-     */
-    public function setSource($source)
+    public function getVersionFetcher($type)
     {
-        $this->source = $source;
+        switch ($type) {
+            case 'rest':
+                return new RESTVersionFetcher();
+                break;
+            default:
+                throw new \InvalidArgumentException('Did not find version fetcher of type ' . $type);
+        }
     }
-
-    /**
-     * Get latest version for this extension.
-     * @param string $extensionName
-     * @return string Semantic versioning string.
-     */
-    abstract public function getLatestVersion($extensionName);
 }
