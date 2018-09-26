@@ -25,8 +25,8 @@
         <div class="ls-input-group">
     {% endif %}
         <!-- Prefix -->
-        {% if prefix != '' %}
-            <div class='ls-input-group-extra prefix-text prefix'>{{ prefix }}</div>
+        {% if processString("trim(" ~ prefix ~ ")") != '' %}
+            <div class='ls-input-group-extra prefix-text prefix'>{{ processString(prefix) }}</div>
         {% endif %}
 
         <!-- Input -->
@@ -42,8 +42,8 @@
         />
 
         <!-- Suffix -->
-        {% if suffix != '' %}
-            <div class='ls-input-group-extra suffix-text suffix'>{{ suffix }}</div>
+        {% if processString("trim(" ~ suffix ~ ")") != '' %}
+            <div class='ls-input-group-extra suffix-text suffix'>{{ processString(suffix) }}</div>
         {% endif %}
     {% if prefix != '' or suffix != '' %}
         </div>

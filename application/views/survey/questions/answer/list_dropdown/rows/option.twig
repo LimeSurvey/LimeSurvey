@@ -10,6 +10,6 @@
 
 <!-- option -->
 <option value='{{ value }}' {{ opt_select }} {% if classes is not empty %} class="{{ classes }}" {% endif %} >
-    {{ answer }}
+    {{ flatString(processString(answer,1),1) }}
 </option>
 <!-- end of option -->

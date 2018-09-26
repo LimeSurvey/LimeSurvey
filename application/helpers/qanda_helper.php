@@ -762,7 +762,7 @@ function do_equation($ia)
         'name'      => $ia[1],
         'basename'  => $ia[1],
         'sValue'    => $sValue,
-        'sEquation' => $sEquation,
+        'sEquation' => LimeExpressionManager::ProcessString($sEquation,$ia[0]), /* Must do update of html string, else updated action is done before html is updated */
         'coreClass' => 'ls-answers answer-item hidden-item ',
         'insideClass' => 'em_equation',
         ), true);
@@ -1812,7 +1812,6 @@ function do_ranking($ia)
     } else {
         $max_answers = $max_subquestions;
     }
-    $max_answers = LimeExpressionManager::ProcessString("{{$max_answers}}", $ia[0]);
     // Get the max number of line needed
     if (ctype_digit($max_answers) && intval($max_answers) < $max_subquestions) {
         $iMaxLine = $max_answers;
@@ -1824,7 +1823,6 @@ function do_ranking($ia)
     } else {
         $min_answers = 0;
     }
-    $min_answers = LimeExpressionManager::ProcessString("{{$min_answers}}", $ia[0]);
 
     $inputnames = [];
     $sSelects   = '';
@@ -1859,7 +1857,7 @@ function do_ranking($ia)
                 'value' => $aAnswer['code'],
                 'selected'=>$selected,
                 'classes'=>'',
-                'optiontext'=>flattenText($aAnswer->answerL10ns[$sSurveyLanguage]->answer)
+                'optiontext'=>$aAnswer->answerL10ns[$sSurveyLanguage]->answer
             );
 
         }
@@ -4302,7 +4300,7 @@ function do_array($ia)
                 $options[] = array(
                     'value'=>$aAnswer['code'],
                     'selected'=>($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $aAnswer['code']) ? SELECTED :'',
-                    'text'=> flattenText($aAnswer['answer'])
+                    'text'=> $aAnswer['answer']
                 );
             }
             /* Add the now answer if needed */

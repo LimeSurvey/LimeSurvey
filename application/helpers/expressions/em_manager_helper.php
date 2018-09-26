@@ -118,6 +118,7 @@
 
         /**
         * variables temporarily set for substitution purposes
+        * temporarily mean for this page, until resetted. Not for next page
         *
         * These are typically the LimeReplacement Fields passed in via templatereplace()
         * Each has the following structure:  array(
@@ -4512,19 +4513,8 @@
                 $LEM->em->SetPrettyPrintSource($string);
                 return $string;
             }
-
-            if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
-            {
-                $replaceArray = array();
-                foreach ($replacementFields as $key => $value) {
-                    $replaceArray[$key] = array(
-                    'code'=>$value,
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
-                    );
-                }
-                $LEM->tempVars = $replaceArray;
+            if(!empty($replacementFields) && is_array($replacementFields)) {
+                self::updateReplacementFields($replacementFields);
             }
             $questionSeq = -1;
             $groupSeq = -1;
@@ -4559,17 +4549,8 @@
             $LEM =& LimeExpressionManager::singleton();
 
             // Fill tempVars if needed
-            if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0) {
-                $replaceArray = array();
-                foreach ($replacementFields as $key => $value) {
-                    $replaceArray[$key] = array(
-                    'code'=>$value,
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
-                    );
-                }
-                $LEM->tempVars = $replaceArray;
+            if(!empty($replacementFields) && is_array($replacementFields)) {
+                self::updateReplacementFields($replacementFields);
             }
             // Get current seq for question and group*/
             $questionSeq = $LEM->currentQuestionSeq;
@@ -4954,7 +4935,7 @@
             $LEM->processedRelevance=false;
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting']=true;    // this will be temporary - should be reset in running survey
             $LEM->qid2exclusiveAuto=array();
-
+            self::resetTempVars();
             $surveyinfo = (isset($LEM->sid) ? getSurveyInfo($LEM->sid) : null);
             if (isset($surveyinfo['assessments']) && $surveyinfo['assessments']=='Y')
             {
@@ -7288,13 +7269,12 @@
             } else if($applyJavaScriptAnyway && !self::isInitialized()){
                 $LEM =& LimeExpressionManager::singleton();
                 $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
-                
                 $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
                 Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
                 Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
                 Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/      
-                
             }
+            self::resetTempVars();
         }
 
         /*
@@ -7753,7 +7733,8 @@
                         $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
                         // Note, this will destroy embedded HTML in the equation (e.g. if it is a report, can use {QCODE.question} for this purpose)
                         // This make same than flattenText to be same in JS and in PHP
-                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('change');\n";
+                        // Launch updated event after update value to allow equation update propagation
+                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('updated');\n";
                     }
                     $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
@@ -7838,15 +7819,14 @@
                     //     $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     // }
 
-                    //Normally trigger reevaluation only for relevant questions except for equation questions
-                    if($arg['type'] != '*') {
-                        $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
-                        $qrelJS .= "  return;\n }\n";
-                    }
+                    /* Trigger reevaluation only for relevant questions */
+                    /* even for equation question : using updated specific event, this allow update previous text too, see mantis #14047 */
+                    /* And this disable launch again equation update if equation is not updated */
+                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+                    $qrelJS .= "  return;\n }\n";
 
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
-
                     $relEqns[] = $qrelJS;
 
                     $gseq_qidList[$arg['gseq']][$arg['qid']] = '1';   // means has an explicit LEMrel() function
@@ -8187,6 +8167,33 @@
         {
             $LEM =& LimeExpressionManager::singleton();
             $LEM->tempVars = $vars;
+        }
+
+        /**
+         * @param array $vars
+         */
+        public static function updateReplacementFields($replacementFields)
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            $replaceArray = array();
+            foreach($replacementFields as $key => $value) {
+                $replaceArray[$key] = array(
+                    'code'=>$value,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
+            }
+            $LEM->tempVars = array_merge($LEM->tempVars,$replaceArray);
+        }
+
+        /**
+         * @param array $vars
+         */
+        public static function resetTempVars()
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            $LEM->tempVars = array();
         }
 
         /**

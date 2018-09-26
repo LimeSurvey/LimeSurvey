@@ -20,7 +20,7 @@
 <!--answer_row_inputtext -->
 <li id="javatbd{{ myfname }}" class="question-item answer-item text-item form-group{% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }} >
     <label class="control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth is empty %} hidden{% endif %}" for="answer{{ myfname }}">
-        {{ question }}
+        {{ processString(question) }}
     </label>
     <div class="col-xs-12 col-sm-{{ sInputContainerWidth }}">
         
@@ -29,7 +29,7 @@
         {% endif %}
             {% if prefix != '' %}
                 <div class="ls-input-group-extra prefix-text prefix">
-                    {{ prefix }}
+                    {{ processString(prefix) }}
                 </div>
             {% endif %}
             <input
@@ -44,7 +44,7 @@
                 />
             {% if suffix != '' %}
                 <div class="ls-input-group-extra suffix-text suffix">
-                    {{ suffix }}
+                    {{ processString(suffix) }}
                 </div>
             {% endif %}
         {% if prefix != '' or suffix != '' %}

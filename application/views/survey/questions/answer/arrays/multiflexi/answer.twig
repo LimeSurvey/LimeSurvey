@@ -33,7 +33,7 @@
             <td></td>
 
             {% for ld in labelans %}
-                <th>{{ ld }}</th>
+                <th>{{ processString(ld) }}</th>
             {% endfor %}
 
             {% if right_exists %}

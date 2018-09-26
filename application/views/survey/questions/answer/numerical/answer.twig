@@ -28,7 +28,7 @@
     {% endif %} 
     <!-- Prefix -->
     {% if prefix != '' %}
-        <div class='ls-input-group-extra prefix-text prefix'>{{ prefix }}</div>
+        <div class='ls-input-group-extra prefix-text prefix'>{{ processString(prefix) }}</div>
     {% endif %} 
     
     {# Want to use HTML5 number type? Think again: Doesn't work as we want with locale: http://stackoverflow.com/questions/13412204/localization-of-input-type-number #}
@@ -46,7 +46,7 @@
     }}
     <!-- Suffix -->
     {% if suffix != '' %}
-        <div class='ls-input-group-extra suffix-text suffix'>{{ suffix }}</div>
+        <div class='ls-input-group-extra suffix-text suffix'>{{ processString(suffix) }}</div>
     {% endif %} 
     {% if prefix != '' or suffix != '' %}
         </div>

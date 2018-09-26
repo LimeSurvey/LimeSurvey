@@ -47,7 +47,7 @@ $(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* hidden item */
-$(document).on("change",".answer-item :hidden",function(event){
+$(document).on("updated",".answer-item :hidden",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
 });
 /**

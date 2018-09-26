@@ -10,6 +10,6 @@
 <!-- optgroup -->
 <optgroup class="dropdowncategory" label="{{ categoryname }}">
         {# rows/option.php #}
-        {{ sOptGroupOptions }}
+        {{ flatString(processString(sOptGroupOptions,1),1) }}
 </optgroup>
 <!-- end of optgroup -->
