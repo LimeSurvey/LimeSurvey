@@ -411,7 +411,6 @@ foreach ($tokendata as $Key => $Value) {
   <!-- Buttons -->
   <p>
     <?php
-    var_dump($token_subaction);
     switch ($token_subaction)
     {
         case "edit":?>
