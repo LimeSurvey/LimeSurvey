@@ -21,7 +21,7 @@
     </option>
     {% for i in yearmin..(yearmax) %}
         {% if loop.index is divisible by(step) %}
-            <option value="{{ i }}"{% if i is same as(intval(currentyear)) %} selected {% endif %} >
+            <option value="{{ i }}"{% if i == intval(currentyear) %} selected{% endif %}>
                 {{ i }}
             </option>
         {% endif %}
