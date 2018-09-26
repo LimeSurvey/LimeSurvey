@@ -36,13 +36,12 @@ class themeoptions  extends Survey_Common_Action
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
             $this->_renderWrappedTemplate('themeoptions', 'read', array(
-                'model'=>$this->loadModel($id),
+                'model'=>$model,
             ));
-        } else {
-            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(App()->createUrl("/admin"));
+            return;
         }
-
+        Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+        $this->getController()->redirect(App()->createUrl("/admin"));
     }
 
     /**
@@ -78,8 +77,10 @@ class themeoptions  extends Survey_Common_Action
      */
     public function update($id)
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
-            $model = $this->loadModel($id);
+        $model = $this->loadModel($id);
+        $hasPermission = $model->sid ? (Permission::model()->hasSurveyPermission($model->sid, 'surveysettings', 'update')) : false;
+
+        if ($hasPermission || (Permission::model()->hasGlobalPermission('templates', 'update'))) {
             if (isset($_POST['TemplateConfiguration'])) {
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
@@ -87,8 +88,8 @@ class themeoptions  extends Survey_Common_Action
                     $this->getController()->redirect(array('admin/themeoptions/sa/update/id/'.$model->id));
                 }
             }
-
             $this->_updateCommon($model);
+
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions"));
@@ -102,9 +103,8 @@ class themeoptions  extends Survey_Common_Action
      */
     public function updatesurvey($sid)
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'update')) {
+        if ( Permission::model()->hasGlobalPermission('templates', 'update') || Permission::model()->hasSurveyPermission($sid,'surveysettings','update') ) {
             $model = TemplateConfiguration::getInstance(null, null, $sid);
-
             if (isset($_POST['TemplateConfiguration'])) {
                 $model->attributes = $_POST['TemplateConfiguration'];
                 if ($model->save()) {
