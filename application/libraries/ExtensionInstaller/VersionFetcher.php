@@ -49,9 +49,8 @@ abstract class VersionFetcher
     }
 
     /**
-     * Get latest version for this extension.
-     * @param string $extensionName
+     * Get latest version for configured source.
      * @return string Semantic versioning string.
      */
-    abstract public function getLatestVersion($extensionName);
+    abstract public function getLatestVersion();
 }

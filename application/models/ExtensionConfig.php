@@ -150,7 +150,7 @@ class ExtensionConfig
             try {
                 $fetchers[] = $factory->getVersionFetcher($updaterXml);
             } catch (\Exception $ex) {
-                $errors[] = $ex->getMessage();
+                $errors[] = $this->getName() . ': ' . $ex->getMessage();
             }
         }
 

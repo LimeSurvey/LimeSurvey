@@ -57,15 +57,15 @@ class VersionFetcherFactory
      */
     protected function validateXml(\SimpleXMLElement $xml)
     {
-        if (empty($updaterXml->type)) {
+        if (empty((string) $xml->type)) {
             throw new \Exception('Missing type tag in updater xml');
         }
 
-        if (empty($updaterXml->source)) {
+        if (empty((string) $xml->source)) {
             throw new \Exception('Missing source tag in updater xml');
         }
 
-        if (empty($updaterXml->stable)) {
+        if (empty((string) $xml->stable)) {
             throw new \Exception('Missing stable tag in updater xml');
         }
     }
