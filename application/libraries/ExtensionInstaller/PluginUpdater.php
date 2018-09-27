@@ -21,20 +21,43 @@ namespace LimeSurvey\ExtensionInstaller;
 class PluginUpdater extends ExtensionUpdater
 {
     /**
-     * @return PluginUpdater[]
+     * Create a PluginUpdater for every plugin installed.
+     * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
     public static function createUpdaters()
     {
         // Get all installed plugins (both active and non-active).
         $plugins = \Plugin::model()->findAll();
 
-        $versionFetcherFactory = new VersionFetcherFactory();
-
         $updaters = [];
+        $errors   = [];
         foreach ($plugins as $plugin) {
-            $updater = new PluginUpdater($plugin);
-            $updater->setVersionFetcher();
-            $updaters[] = $updater;
+            try {
+                $updater = new PluginUpdater($plugin);
+                $updater->getVersionFetchers();
+                $updaters[] = $updater;
+            } catch (\Exception $ex) {
+                $errors[] = $ex->getMessage();
+            }
         }
+
+        return [$updaters, $errors];
+    }
+
+    /**
+     * Read config of this plugin and return version fetcher type.
+     * @return string
+     */
+    public function getVersionFetchers()
+    {
+        if (empty($this->model)) {
+            throw new \InvalidArgumentException('No model');
+        }
+
+        // Get config
+        $config = new \ExtensionConfig($this->model->getConfig());
+        $config->getVersionFetchers();
+        // Read updater
+        // Read updater type for stable/unstable
     }
 }

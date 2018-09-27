@@ -21,17 +21,22 @@ namespace LimeSurvey\ExtensionInstaller;
 class VersionFetcherFactory
 {
     /**
-     * @param string $type
+     * @param SimpleXMLElement $updaterXml
      * @return VersionFetcher
      */
-    public function getVersionFetcher($type)
+    public function getVersionFetcher(\SimpleXMLElement $updaterXml)
     {
+        if (empty($updaterXml->type)) {
+            throw new \Exception('Missing type tag in updater xml');
+        }
+        $type = (string) $updaterXml->type;
+
         switch ($type) {
             case 'rest':
                 return new RESTVersionFetcher();
                 break;
             default:
-                throw new \InvalidArgumentException('Did not find version fetcher of type ' . $type);
+                throw new \InvalidArgumentException('Did not find version fetcher of type ' . json_encode($type));
         }
     }
 }

@@ -21,12 +21,31 @@ namespace LimeSurvey\ExtensionInstaller;
 class ExtensionUpdaterFactory
 {
     /**
+     * @var string[]
+     */
+    protected $classNames = [];
+
+    /**
+     * @param string $name Updater class name, like 'PluginUpdater', or 'ExtensionUpdater'.
+     * @return void
+     */
+    public function addUpdaterClassNames($names)
+    {
+        $this->classNames = array_merge($names, $this->classNames);
+    }
+
+    /**
      * @return ExtensionUpdater[]
      */
     public function getAllUpdaters()
     {
+        // Get an extension updater for each extension installed.
         $updaters = [];
-        $updaters[] = new PluginUpdater();
-        return $updaters;
+        $errors = [];
+        foreach ($this->classNames as $className) {
+            list($newUpdaters, $errors) = $className::createUpdaters();
+            $updaters = array_merge($newUpdaters, $updaters);
+        }
+        return [$updaters, $errors];
     }
 }

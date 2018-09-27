@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * LimeSurvey
  * Copyright (C) 2007-2018 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -129,5 +129,31 @@ class ExtensionConfig
             $config = new \ExtensionConfig($xml);
             return $config;
         }
+    }
+
+    /**
+     * Parse <updater> tag in config.xml and return objects and potential error messages.
+     * @return array [VersionFetcher[] $fetchers, string[] $errorMessages]
+     */
+    public function getVersionFetchers()
+    {
+        if (empty($this->xml->updaters)) {
+            return null;
+        }
+
+        $fetchers = [];
+        $errors   = [];
+
+        $factory = new LimeSurvey\ExtensionInstaller\VersionFetcherFactory();
+
+        foreach ($this->xml->updaters->updater as $updaterXml) {
+            try {
+                $fetchers[] = $factory->getVersionFetcher($updaterXml);
+            } catch (\Exception $ex) {
+                $errors[] = $ex->getMessage();
+            }
+        }
+
+        return [$fetchers, $errors];
     }
 }

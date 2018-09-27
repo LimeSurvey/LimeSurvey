@@ -13,11 +13,19 @@
  */
 
 use \LimeSurvey\ExtensionInstaller\ExtensionUpdaterFactory;
+use \LimeSurvey\ExtensionInstaller\ExtensionUpdater;
 
 /**
  */
 class ExtensionUpdaterController extends Survey_Common_Action
 {
+    /**
+     * @var string[]
+     */
+    protected $updaterClassNames = [
+        'LimeSurvey\ExtensionInstaller\PluginUpdater'
+    ];
+
     /**
      * Used to check for available updates for all plugins.
      * This method should be run at super admin login, max once every day.
@@ -27,19 +35,14 @@ class ExtensionUpdaterController extends Survey_Common_Action
     public function checkAll()
     {
         $factory = new ExtensionUpdaterFactory();
+        $factory->addUpdaterClassNames($this->updaterClassNames);
 
         // Get one updater class for each extension type (PluginUpdater, ThemeUpdater, etc).
-        $updaters = $factory->getAllUpdaters();
+        // Only static methods will be used for this updaters.
+        list($updaters, $errors) = $factory->getAllUpdaters();
 
-        // Get an extension updater for each extension installed.
-        // TODO: Too many objects?
-        $extensionUpdaters = [];
         foreach ($updaters as $updater) {
-            $extensionUpdaters[] = array_merge($updater->createUpdaters(), $extensionUpdaters);
-        }
-
-        foreach ($extensionUpdaters as $extensionUpdater) {
-            
+            $updates = $updater->getAvailableUpdates();
         }
     }
 }

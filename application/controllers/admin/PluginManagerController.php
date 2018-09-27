@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * LimeSurvey
  * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.

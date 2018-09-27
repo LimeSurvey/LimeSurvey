@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * LimeSurvey
  * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -14,7 +14,7 @@
 
 /**
  * Thin wrapper around extension update info.
- * Used by VersionFetcher.
+ * Used by VersionFetcher to push around update info.
  */
 class ExtensionUpdateInfo
 {

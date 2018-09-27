@@ -21,16 +21,30 @@ namespace LimeSurvey\ExtensionInstaller;
 abstract class ExtensionUpdater
 {
     /**
-     * @var VersionFetcher
+     * The version fetchers gets remote update information.
+     * The type of version fetcher is configured in config.xml.
+     * @var VersionFetcher[]
      */
-    protected $versionFetcher;
+    protected $versionFetchers;
 
     /**
      * Extension model, e.g. Theme or Plugin class.
-     * @todo Create super class ExtensionModel?
+     * @todo Create super class ExtensionModel that all extension model classes inherit from.
      * @var mixed
      */
     protected $model;
+
+    /**
+     * If true, fetch stable version info.
+     * @var boolean
+     */
+    protected $useStable = true;
+
+    /**
+     * If true, fetch unstable version info.
+     * @var boolean
+     */
+    protected $useUnstable = false;
 
     /**
      * @param mixed $model
@@ -41,30 +55,41 @@ abstract class ExtensionUpdater
     }
 
     /**
-     * @param VersionFetcher $vf
-     * @return void
-     */
-    public function setVersionFetcher(VersionFetcher $vf)
-    {
-        $this->versionFetcher = $vf;
-    }
-
-    /**
      * Use the version fetcher to get info about available updates for 
      * this extension.
      * @return ExtensionUpdate[]
      */
     public function getAvailableUpdates()
     {
-        if (empty($this->versionFetcher)) {
-            throw new \InvalidArgumentException('version fetcher is not set');
+        if (empty($this->versionFetchers)) {
+            // No fetchers, can't fetch remote version.
+            return [];
         }
 
-        return [$this->versionFetcher->getLatestVersion()];
+        foreach ($this->versionFetcher as $fetcher) {
+            die('here');
+        }
     }
 
     /**
-     * @return ExtensionUpdater[]
+     * @return void
+     */
+    public function setUseUnstable()
+    {
+        $this->useUnstable = true;
+    }
+
+    /**
+     * @param VersionFetcher $vf
+     * @return void
+     */
+    public function addVersionFetcher(VersionFetcher $vf)
+    {
+        $this->versionFetchers[] = $vf;
+    }
+
+    /**
+     * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
     abstract public static function createUpdaters();
 }
