@@ -26,6 +26,11 @@ abstract class VersionFetcher
     protected $source;
 
     /**
+     * @var boolean
+     */
+    protected $stable;
+
+    /**
      * Set source to fetch version information. Can be URL to REST API, git repo, etc.
      * @param string $source
      * @return void
@@ -33,6 +38,14 @@ abstract class VersionFetcher
     public function setSource($source)
     {
         $this->source = $source;
+    }
+
+    /**
+     * @param boolean $stable
+     */
+    public function setStable($stable)
+    {
+        $this->stable = $stable;
     }
 
     /**
