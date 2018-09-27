@@ -66,9 +66,13 @@ abstract class ExtensionUpdater
             return [];
         }
 
-        foreach ($this->versionFetcher as $fetcher) {
-            die('here');
+        foreach ($this->versionFetchers as $fetcher) {
+            $version = $fetcher->getLatestVersion();
+            // TODO: Check if version is relevant.
+            // TODO: Stable or unstable?
         }
+
+        return $version;
     }
 
     /**
@@ -80,12 +84,12 @@ abstract class ExtensionUpdater
     }
 
     /**
-     * @param VersionFetcher $vf
+     * @param VersionFetcher[] $vfs
      * @return void
      */
-    public function addVersionFetcher(VersionFetcher $vf)
+    public function setVersionFetchers(array $vfs)
     {
-        $this->versionFetchers[] = $vf;
+        $this->versionFetchers = $vfs;
     }
 
     /**

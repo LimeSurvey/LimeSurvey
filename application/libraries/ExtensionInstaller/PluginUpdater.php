@@ -34,8 +34,16 @@ class PluginUpdater extends ExtensionUpdater
         foreach ($plugins as $plugin) {
             try {
                 $updater = new PluginUpdater($plugin);
-                $updater->getVersionFetchers();
-                $updaters[] = $updater;
+                list($fetchers, $fetcherErrors) = $updater->getVersionFetchers();
+                $errors = array_merge($fetcherErrors, $errors);
+
+                if ($fetchers) {
+                    $updater->setVersionFetchers($fetchers);
+                    $updaters[] = $updater;
+                } else {
+                    $errors[] = gT('No version fetcher found for plugin ' . $plugin->name);
+                }
+
             } catch (\Exception $ex) {
                 $errors[] = $ex->getMessage();
             }
@@ -46,7 +54,7 @@ class PluginUpdater extends ExtensionUpdater
 
     /**
      * Read config of this plugin and return version fetcher type.
-     * @return string
+     * @return array [VersionFetcher[] $fetchers, string[] $errors]
      */
     public function getVersionFetchers()
     {
@@ -54,10 +62,7 @@ class PluginUpdater extends ExtensionUpdater
             throw new \InvalidArgumentException('No model');
         }
 
-        // Get config
         $config = new \ExtensionConfig($this->model->getConfig());
-        $config->getVersionFetchers();
-        // Read updater
-        // Read updater type for stable/unstable
+        return $config->getVersionFetchers();
     }
 }

@@ -138,7 +138,7 @@ class ExtensionConfig
     public function getVersionFetchers()
     {
         if (empty($this->xml->updaters)) {
-            return null;
+            return [[], []];
         }
 
         $fetchers = [];

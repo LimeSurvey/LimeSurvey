@@ -40,6 +40,7 @@ class ExtensionUpdaterController extends Survey_Common_Action
         // Get one updater class for each extension type (PluginUpdater, ThemeUpdater, etc).
         // Only static methods will be used for this updaters.
         list($updaters, $errors) = $factory->getAllUpdaters();
+        echo '<pre>'; var_dump($errors); echo '</pre>';
 
         foreach ($updaters as $updater) {
             $updates = $updater->getAvailableUpdates();
