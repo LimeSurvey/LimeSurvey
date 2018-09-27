@@ -21,22 +21,52 @@ namespace LimeSurvey\ExtensionInstaller;
 class VersionFetcherFactory
 {
     /**
-     * @param SimpleXMLElement $updaterXml
+     * @param SimpleXMLElement $updaterXml <updater> tag from config.xml.
      * @return VersionFetcher
      */
     public function getVersionFetcher(\SimpleXMLElement $updaterXml)
     {
-        if (empty($updaterXml->type)) {
-            throw new \Exception('Missing type tag in updater xml');
-        }
+        $this->validateXml($updaterXml);
+
         $type = (string) $updaterXml->type;
 
         switch ($type) {
             case 'rest':
-                return new RESTVersionFetcher();
+                $fetcher = new RESTVersionFetcher();
+                break;
+            case 'git':
+                $fetcher = new GitVersionFetcher();
                 break;
             default:
                 throw new \InvalidArgumentException('Did not find version fetcher of type ' . json_encode($type));
+        }
+
+        $source = (string) $updaterXml->source;
+        $stable = (string) $updaterXml->stable;
+
+        $fetcher->setSource($source);
+        $fetcher->setStable($stable === "1");
+
+        return $fetcher;
+    }
+
+    /**
+     * @param SimpleXMLElement $xml
+     * @return void
+     * @throws Exception on invalid xml.
+     */
+    protected function validateXml(\SimpleXMLElement $xml)
+    {
+        if (empty($updaterXml->type)) {
+            throw new \Exception('Missing type tag in updater xml');
+        }
+
+        if (empty($updaterXml->source)) {
+            throw new \Exception('Missing source tag in updater xml');
+        }
+
+        if (empty($updaterXml->stable)) {
+            throw new \Exception('Missing stable tag in updater xml');
         }
     }
 }
