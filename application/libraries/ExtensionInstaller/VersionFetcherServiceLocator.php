@@ -33,7 +33,7 @@ class VersionFetcherServiceLocator
      * All Yii components need an init() method.
      * @return void
      */
-    public function init() : void
+    public function init()
     {
         // Add RESTVersionFetcher, available by default.
         $this->addVersionFetcher(
@@ -57,7 +57,7 @@ class VersionFetcherServiceLocator
      * @return VersionFetcher
      * @throws Exception if version fetcher is not found.
      */
-    public function getVersionFetcher(\SimpleXMLElement $updaterXml) : VersionFetcher
+    public function getVersionFetcher(\SimpleXMLElement $updaterXml)
     {
         $this->validateXml($updaterXml);
 
@@ -77,7 +77,7 @@ class VersionFetcherServiceLocator
      * @return void
      * @throws Exception if version fetcher with name $name already exists.
      */
-    public function addVersionFetcher(string $name, callable $vfCreator) : void
+    public function addVersionFetcher(string $name, callable $vfCreator)
     {
         if (isset($this->strategies[$name])) {
             // NB: Internal error, don't need to translate.
@@ -92,7 +92,7 @@ class VersionFetcherServiceLocator
      * @return void
      * @throws Exception on invalid xml.
      */
-    protected function validateXml(\SimpleXMLElement $xml) : void
+    protected function validateXml(\SimpleXMLElement $xml)
     {
         if (empty((string) $xml->type)) {
             throw new \Exception(gT('Missing type tag in updater xml'));

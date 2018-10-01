@@ -29,7 +29,7 @@ class ExtensionUpdaterServiceLocator
      * All Yii components need an init() method.
      * @return void
      */
-    public function init() : void
+    public function init()
     {
         $this->addUpdater(
             'plugin',
@@ -44,7 +44,7 @@ class ExtensionUpdaterServiceLocator
      * @param callable $creator Callable that returns an ExtensionUpdater array.
      * @return void
      */
-    public function addUpdater(string $name, callable $creator) : void
+    public function addUpdater(string $name, callable $creator)
     {
         if (isset($this->updaters[$name])) {
             throw new \Exception("Extension installer with name $name already exists");
@@ -53,10 +53,11 @@ class ExtensionUpdaterServiceLocator
     }
 
     /**
+     * Get created updaters for one updater class.
      * @param string $name
      * @return ExtensionUpdater
      */
-    public function getUpdater(string $name) : ?ExtensionUpdater
+    public function getUpdater(string $name)
     {
         if (isset($this->updaters[$name])) {
             $updater =  $this->updaters[$name]();
@@ -67,14 +68,14 @@ class ExtensionUpdaterServiceLocator
     }
 
     /**
+     * Get all created updaters for all updater types (plugins, themes, ...).
      * @return ExtensionUpdater[]
      */
     public function getAllUpdaters()
     {
         // Get an extension updater for each extension installed.
         $updaters = [];
-        $errors = [];
-        foreach ($this->updaters as $name => $creator) {
+        foreach ($this->updaters as $creator) {
             $updaters = array_merge($creator(), $updaters);
         }
         return $updaters;
