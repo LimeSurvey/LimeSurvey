@@ -35,8 +35,22 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.14.10 (build 180924) to 3.14.11 (build 180926) September 26, 2018
+#Updated translation: Chinese (Taiwan) (Traditional) by sylsylsylvie, joyce
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by tbart
+-DEV: Fix TokenDynamic parameter PhpDoc (#1128) (Tõnis Ormisson)
+-Fixed issue #13817: Add scenario - display issues (Markus Flür)
+-Fixed issue #14048: Valid Expression Manager placeholders are wrongly marked as invalid variables at survey logic file (Denis Chenu)
+-Fixed issue #14054: Lil design issue with set expiry date (Markus Flür)
+-Fixed issue #14080: moving backwards clears answer (Date/Time question) (Denis Chenu)
+-Fixed issue #14081: Save button on the "Add participants" window not working. (Markus Flür)
+-Fixed issue14100: Export to excel crashes when run from advanced statistics (Markus Flür)
+-Fixed issue: end url not decoded for automatic redirection (LouisGac)
+-Fixed issue: permission for theme option in survey not working (Markus Flür)
+
 Changes from 3.14.9 (build 180917) to 3.14.10 (build 180924) September 24, 2018
--New Feature: added Twig function getAllAnswers() (LouisGac) 
+-New Feature: added Twig function getAllAnswers() (LouisGac)
 -Fix trailing quotes (#1122) (Tõnis Ormisson)
 -Fixed issue #13944: Template variable for survey title is empty when the survey is prompting for a token (LouisGac)
 #Updated translation: Catalan by qualitatuvic

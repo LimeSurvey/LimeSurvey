@@ -1305,7 +1305,8 @@ class SurveyRuntimeHelper
 
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
                 //Automatically redirect the page to the "url" setting for the survey
-                $headToSurveyUrl = $this->aSurveyInfo['surveyls_url'];
+                $headToSurveyUrl = htmlspecialchars_decode ($this->aSurveyInfo['surveyls_url']);
+
                 $actualRedirect = $headToSurveyUrl;
                 header("Access-Control-Allow-Origin: *");
 
