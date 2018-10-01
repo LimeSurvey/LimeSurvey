@@ -34,12 +34,11 @@ class ExtensionUpdaterController extends Survey_Common_Action
      */
     public function checkAll()
     {
-        $factory = new ExtensionUpdaterFactory();
-        $factory->addUpdaterClassNames($this->updaterClassNames);
+        $service = \Yii::app()->extensionUpdaterServiceLocator;
 
         // Get one updater class for each extension type (PluginUpdater, ThemeUpdater, etc).
         // Only static methods will be used for this updaters.
-        list($updaters, $errors) = $factory->getAllUpdaters();
+        list($updaters, $errors) = $service->getAllUpdaters();
 
         $errors = [];
         foreach ($updaters as $updater) {

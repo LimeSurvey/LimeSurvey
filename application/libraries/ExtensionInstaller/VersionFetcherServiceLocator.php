@@ -69,27 +69,6 @@ class VersionFetcherServiceLocator
         } else {
             throw new \Exception('Did not find version fetcher of type ' . json_encode($type));
         }
-
-        /*
-        switch ($type) {
-            case 'rest':
-                $fetcher = new RESTVersionFetcher();
-                break;
-            case 'git':
-                $fetcher = new GitVersionFetcher();
-                break;
-            default:
-                throw new \Exception('Did not find version fetcher of type ' . json_encode($type));
-        }
-
-        $source = (string) $updaterXml->source;
-        $stable = (string) $updaterXml->stable;
-
-        $fetcher->setSource($source);
-        $fetcher->setStable($stable === "1");
-
-        return $fetcher;
-         */
     }
 
     /**
