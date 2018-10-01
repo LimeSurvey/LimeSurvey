@@ -415,6 +415,9 @@ $internalConfig = array(
                 ),
             ),
         ),
+        'versionFetcherServiceLocator' => array(
+            'class' => "\\LimeSurvey\\ExtensionInstaller\\VersionFetcherServiceLocator",
+        )
     )
 );
 

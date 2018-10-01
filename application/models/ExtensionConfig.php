@@ -133,27 +133,32 @@ class ExtensionConfig
 
     /**
      * Parse <updater> tag in config.xml and return objects and potential error messages.
-     * @return array [VersionFetcher[] $fetchers, string[] $errorMessages]
+     * @return array VersionFetcher[]
      */
     public function getVersionFetchers()
     {
         if (empty($this->xml->updaters)) {
-            return [[], []];
+            throw new \Exception(
+                sprintf(
+                    gT('Extension %s has no updater defined in config.xml'),
+                    $this->getName()
+                )
+            );
         }
 
         $fetchers = [];
-        $errors   = [];
 
-        $factory = new LimeSurvey\ExtensionInstaller\VersionFetcherFactory();
+        $service = \Yii::app()->versionFetcherServiceLocator;
 
         foreach ($this->xml->updaters->updater as $updaterXml) {
             try {
-                $fetchers[] = $factory->getVersionFetcher($updaterXml);
+                $fetchers[] = $service->getVersionFetcher($updaterXml);
             } catch (\Exception $ex) {
-                $errors[] = $this->getName() . ': ' . $ex->getMessage();
+                // Include extension name in error message.
+                throw new \Exception($this->getName() . ': ' . $ex->getMessage(), 0, $ex);
             }
         }
 
-        return [$fetchers, $errors];
+        return $fetchers;
     }
 }

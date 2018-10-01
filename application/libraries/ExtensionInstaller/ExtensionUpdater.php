@@ -25,14 +25,14 @@ abstract class ExtensionUpdater
      * The type of version fetcher is configured in config.xml.
      * @var VersionFetcher[]
      */
-    protected $versionFetchers;
+    protected $versionFetchers = [];
 
     /**
      * Extension model, e.g. Theme or Plugin class.
      * @todo Create super class ExtensionModel that all extension model classes inherit from.
      * @var mixed
      */
-    protected $model;
+    protected $model = null;
 
     /**
      * If true, fetch stable version info.
@@ -59,37 +59,45 @@ abstract class ExtensionUpdater
      * this extension.
      * @return ExtensionUpdate[]
      */
-    public function getAvailableUpdates()
+    public function getAvailableUpdates() : array
     {
+        $this->setupVersionFetchers();
+
         if (empty($this->versionFetchers)) {
             // No fetchers, can't fetch remote version.
             return [];
         }
 
+        $versions = [];
         foreach ($this->versionFetchers as $fetcher) {
-            $version = $fetcher->getLatestVersion();
+            $versions[] = $fetcher->getLatestVersion();
             // TODO: Check if version is relevant.
             // TODO: Stable or unstable?
         }
 
-        return $version;
+        return $versions;
     }
 
     /**
      * @return void
      */
-    public function setUseUnstable()
+    public function setUseUnstable() : void
     {
         $this->useUnstable = true;
     }
 
     /**
-     * @param VersionFetcher[] $vfs
+     * Parse config.xml and instantiate all version fetchers.
      * @return void
      */
-    public function setVersionFetchers(array $vfs)
+    public function setupVersionFetchers() : void
     {
-        $this->versionFetchers = $vfs;
+        if (empty($this->model)) {
+            throw new \InvalidArgumentException('No model');
+        }
+
+        $config = new \ExtensionConfig($this->model->getConfig());
+        $this->versionFetchers = $config->getVersionFetchers();
     }
 
     /**

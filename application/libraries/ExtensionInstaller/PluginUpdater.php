@@ -24,7 +24,7 @@ class PluginUpdater extends ExtensionUpdater
      * Create a PluginUpdater for every plugin installed.
      * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
-    public static function createUpdaters()
+    public static function createUpdaters() : array
     {
         // Get all installed plugins (both active and non-active).
         $plugins = \Plugin::model()->findAll();
@@ -33,36 +33,12 @@ class PluginUpdater extends ExtensionUpdater
         $errors   = [];
         foreach ($plugins as $plugin) {
             try {
-                $updater = new PluginUpdater($plugin);
-                list($fetchers, $fetcherErrors) = $updater->getVersionFetchers();
-                $errors = array_merge($fetcherErrors, $errors);
-
-                if ($fetchers) {
-                    $updater->setVersionFetchers($fetchers);
-                    $updaters[] = $updater;
-                } else {
-                    $errors[] = gT('No version fetcher found for plugin ' . $plugin->name);
-                }
-
+                $updaters[] = new PluginUpdater($plugin);
             } catch (\Exception $ex) {
                 $errors[] = $ex->getMessage();
             }
         }
 
         return [$updaters, $errors];
-    }
-
-    /**
-     * Read config of this plugin and return version fetcher type.
-     * @return array [VersionFetcher[] $fetchers, string[] $errors]
-     */
-    public function getVersionFetchers()
-    {
-        if (empty($this->model)) {
-            throw new \InvalidArgumentException('No model');
-        }
-
-        $config = new \ExtensionConfig($this->model->getConfig());
-        return $config->getVersionFetchers();
     }
 }

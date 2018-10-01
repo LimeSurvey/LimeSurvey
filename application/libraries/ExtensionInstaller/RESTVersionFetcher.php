@@ -15,6 +15,6 @@ class RESTVersionFetcher extends VersionFetcher
     public function getLatestVersion()
     {
         // curl into source for this extension name.
-        die('here');
+        echo 'curling...<br/>';
     }
 }
