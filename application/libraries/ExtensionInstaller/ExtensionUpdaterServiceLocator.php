@@ -69,15 +69,22 @@ class ExtensionUpdaterServiceLocator
 
     /**
      * Get all created updaters for all updater types (plugins, themes, ...).
-     * @return ExtensionUpdater[]
+     * @return array [ExtensionUpdater[] $updaters, string[] $errors]
      */
     public function getAllUpdaters()
     {
         // Get an extension updater for each extension installed.
         $updaters = [];
+        $errors   = [];
         foreach ($this->updaters as $creator) {
-            $updaters = array_merge($creator(), $updaters);
+            list($newUpdaters, $newErrors) = $creator();
+            if ($newUpdaters) {
+                $updaters = array_merge($newUpdaters, $updaters);
+            }
+            if ($errors) {
+                $errors = array_merge($newErrors, $errors);
+            }
         }
-        return $updaters;
+        return [$updaters, $errors];
     }
 }
