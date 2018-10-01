@@ -20,13 +20,6 @@ use \LimeSurvey\ExtensionInstaller\ExtensionUpdater;
 class ExtensionUpdaterController extends Survey_Common_Action
 {
     /**
-     * @var string[]
-     */
-    protected $updaterClassNames = [
-        'LimeSurvey\ExtensionInstaller\PluginUpdater'
-    ];
-
-    /**
      * Used to check for available updates for all plugins.
      * This method should be run at super admin login, max once every day.
      * Run by Ajax to avoid increased page load time.
