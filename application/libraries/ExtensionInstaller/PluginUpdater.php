@@ -54,19 +54,27 @@ class PluginUpdater extends ExtensionUpdater
             return [];
         }
 
+        $allowUnstable = getGlobalSetting('allow_unstable_extension_update');
+
         $versions = [];
         foreach ($this->versionFetchers as $fetcher) {
             $fetcher->setExtensionName($this->getExtensionName());
             $fetcher->setExtensionType($this->getExtensionType());
             $newVersion = $fetcher->getLatestVersion();
+
+            // If this version is unstable and we're not allowed to use it, continue.
+            if (!$allowUnstable && !$this->versionIsStable($newVersion)) {
+                continue;
+            }
+
             if (version_compare($newVersion, $this->model->version, '>')) {
+                $versions[] = $newVersion;
             } else {
                 // Ignore.
             }
         }
-        echo $this->model->version;
 
-        return $versions;
+        return [$this->model->name, 'plugin', $versions];
     }
 
     /**

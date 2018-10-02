@@ -37,8 +37,22 @@ class ExtensionUpdaterController extends Survey_Common_Action
 
         foreach ($updaters as $updater) {
             try {
-                $updates = $updater->getAvailableUpdates();
-                echo '<pre>'; var_dump($updates); echo '</pre>';
+                list($extensionName, $extensionType, $updates) = $updater->getAvailableUpdates();
+                if ($updates) {
+                    $superadmins = User::model()->getSuperAdmins();
+                    Notification::broadcast(
+                        [
+                            'title' => gT('Updates available'),
+                            'message' => sprintf(
+                                gT('There are updates available for %s %s, new version number(s): %s.'),
+                                $extensionType,
+                                $extensionName,
+                                implode(', ', $updates)
+                            )
+                        ],
+                        $superadmins
+                    );
+                }
             } catch (\Exception $ex) {
                 echo $ex->getMessage() . '<br/>';
             }
