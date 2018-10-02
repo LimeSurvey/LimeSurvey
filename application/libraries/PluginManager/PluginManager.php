@@ -288,7 +288,7 @@ class PluginManager extends \CApplicationComponent
                         $plugin = Plugin::model()->find('name = :name', [':name' => $pluginName]);
                         if (empty($plugin)
                             || ($includeInstalledPlugins && $plugin->load_error == 0)) {
-                            if (file_exists($file)) {
+                            if (file_exists($file) && $this->_checkWhitelist($pluginName)) {
                                 try {
                                     $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
                                 } catch (\Throwable $ex) {
@@ -572,9 +572,13 @@ class PluginManager extends \CApplicationComponent
         $this->loadPlugins();
     }
 
-
-    private function _checkWhitelist($pluginName){
-        if(App()->getConfig('usePluginWhitelist')) {
+    /**
+     * @param string $pluginName
+     * @return boolean
+     */
+    private function _checkWhitelist($pluginName)
+    {
+        if (App()->getConfig('usePluginWhitelist')) {
 
             $whiteList = App()->getConfig('pluginWhitelist');
             $coreList = App()->getConfig('pluginCoreList');
