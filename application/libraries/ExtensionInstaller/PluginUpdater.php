@@ -43,6 +43,33 @@ class PluginUpdater extends ExtensionUpdater
     }
 
     /**
+     * @return
+     */
+    public function getAvailableUpdates()
+    {
+        $this->setupVersionFetchers();
+
+        if (empty($this->versionFetchers)) {
+            // No fetchers, can't fetch remote version.
+            return [];
+        }
+
+        $versions = [];
+        foreach ($this->versionFetchers as $fetcher) {
+            $fetcher->setExtensionName($this->getExtensionName());
+            $fetcher->setExtensionType($this->getExtensionType());
+            $newVersion = $fetcher->getLatestVersion();
+            if (version_compare($newVersion, $this->model->version, '>')) {
+            } else {
+                // Ignore.
+            }
+        }
+        echo $this->model->version;
+
+        return $versions;
+    }
+
+    /**
      * @return string
      */
     public function getExtensionName()

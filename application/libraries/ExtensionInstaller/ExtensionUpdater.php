@@ -57,28 +57,9 @@ abstract class ExtensionUpdater
     /**
      * Uses the version fetcher to get info about available updates for
      * this extension.
-     * @return ExtensionUpdateInfo[]
+     * @return ?
      */
-    public function getAvailableUpdates()
-    {
-        $this->setupVersionFetchers();
-
-        if (empty($this->versionFetchers)) {
-            // No fetchers, can't fetch remote version.
-            return [];
-        }
-
-        $versions = [];
-        foreach ($this->versionFetchers as $fetcher) {
-            $fetcher->setExtensionName($this->getExtensionName());
-            $fetcher->setExtensionType($this->getExtensionType());
-            $versions[] = $fetcher->getLatestVersion();
-            // TODO: Check if version is relevant.
-            // TODO: Stable or unstable?
-        }
-
-        return $versions;
-    }
+    abstract public function getAvailableUpdates();
 
     /**
      * @return void
@@ -101,6 +82,38 @@ abstract class ExtensionUpdater
         $config = new \ExtensionConfig($this->model->getConfig());
         $this->versionFetchers = $config->getVersionFetchers();
     }
+
+    /**
+     * Returns true if this extension update version is higher than $currentVersion.
+     * @param string $currentVersion
+     * @return int
+     */
+    public function versionHigherThan($currentVersion)
+    {
+        return version_compare($this->version, $currentVersion, '>');
+    }
+
+    /**
+     * The version is stable IF it does not contain
+     * alpha, beta or rc suffixes.
+     * @return boolean
+     */
+    public function versionIsStable($version)
+    {
+        $suffixes = [
+            'alpha',
+            'beta',
+            'rc',
+        ];
+        $version = strtolower($version);
+        foreach ($suffixes as $suffix) {
+            if (strpos($version, $suffix) !== false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * Create an updater object for every extension of corresponding type.

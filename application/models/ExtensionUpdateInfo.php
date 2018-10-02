@@ -15,6 +15,9 @@
 /**
  * Thin wrapper around extension update info.
  * Used by VersionFetcher to push around update info.
+ *
+ * @since 2018-10-01
+ * @author Olle Haerstedt
  */
 class ExtensionUpdateInfo
 {
@@ -24,9 +27,9 @@ class ExtensionUpdateInfo
     protected $extensionType;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $version;
+    protected $versions;
 
     /**
      * @var boolean
@@ -38,42 +41,11 @@ class ExtensionUpdateInfo
      * @param string $version
      * @param boolean $security
      */
-    public function __construct($type, $version, $security = false)
+    public function __construct($type, $versions, $security = false)
     {
         $this->extensionType    = $type;
-        $this->version          = $version;
+        $this->versions          = $versions;
         $this->isSecurityUpdate = $security;
-    }
-
-    /**
-     * The version is stable IF it does not contain
-     * alpha, beta or rc suffixes.
-     * @return boolean
-     */
-    public function versionIsStable()
-    {
-        $suffixes = [
-            'alpha',
-            'beta',
-            'rc',
-        ];
-        $version = strtolower($this->version);
-        foreach ($suffixes as $suffix) {
-            if (strpos($version, $suffix) !== false) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Returns true if this extension update version is higher than $currentVersion.
-     * @param string $currentVersion
-     * @return int
-     */
-    public function versionHigherThan($currentVersion)
-    {
-        return version_compare($this->version, $currentVersion, '>');
     }
 
     /**
