@@ -870,6 +870,10 @@ class SurveyDynamic extends LSActiveRecord
                 $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
             }
         }
+        
+        if ($oQuestion->type=='N' && isset($attributes['num_value_int_only']) && $attributes['num_value_int_only'] == 1) {
+            $aQuestionAttributes['answervalue'] = number_format($aQuestionAttributes['answervalue'], 0, '', '');
+        }
 
         return $aQuestionAttributes;
     }
