@@ -41,4 +41,20 @@ class PluginUpdater extends ExtensionUpdater
 
         return [$updaters, $errors];
     }
+
+    /**
+     * @return string
+     */
+    public function getExtensionName()
+    {
+        return $this->model->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtensionType()
+    {
+        return 'plugin';
+    }
 }

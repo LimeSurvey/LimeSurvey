@@ -27,7 +27,7 @@ class VersionFetcherServiceLocator
      * Array of callables that return a version fetcher.
      * @var array<string, callable>
      */
-    protected $strategies;
+    protected $versionFetcherCreators;
 
     /**
      * All Yii components need an init() method.
@@ -37,9 +37,11 @@ class VersionFetcherServiceLocator
     {
         // Add RESTVersionFetcher, available by default.
         $this->addVersionFetcher(
-            'rest',
+            'limesurvey.org',
             function () {
-                return new RESTVersionFetcher();
+                $vf = new RESTVersionFetcher();
+                $vf->setSource('https://comfortupdate.limesurvey.org/index.php?r=limeshoprest');
+                return $vf;
             }
         );
 
@@ -63,8 +65,8 @@ class VersionFetcherServiceLocator
 
         $type = (string) $updaterXml->type;
 
-        if (isset($this->strategies[$type])) {
-            $fileFetcher =  $this->strategies[$type]();
+        if (isset($this->versionFetcherCreators[$type])) {
+            $fileFetcher =  $this->versionFetcherCreators[$type]();
             return $fileFetcher;
         } else {
             throw new \Exception('Did not find version fetcher of type ' . json_encode($type));
@@ -79,12 +81,12 @@ class VersionFetcherServiceLocator
      */
     public function addVersionFetcher(string $name, callable $vfCreator)
     {
-        if (isset($this->strategies[$name])) {
+        if (isset($this->versionFetcherCreators[$name])) {
             // NB: Internal error, don't need to translate.
             throw new \Exception("Version fetcher with name $name already exists");
         }
 
-        $this->strategies[$name] = $vfCreator;
+        $this->versionFetcherCreators[$name] = $vfCreator;
     }
 
     /**

@@ -31,21 +31,49 @@ abstract class VersionFetcher
     protected $stable;
 
     /**
+     * @var string
+     */
+    protected $extensionName;
+
+    /**
+     * @var string
+     */
+    protected $extensionType;
+
+    /**
      * Set source to fetch version information. Can be URL to REST API, git repo, etc.
      * @param string $source
      * @return void
      */
-    public function setSource($source)
+    public function setSource(string $source)
     {
         $this->source = $source;
     }
 
     /**
      * @param boolean $stable
+     * @return void
      */
-    public function setStable($stable)
+    public function setStable(bool $stable)
     {
         $this->stable = $stable;
+    }
+
+    /**
+     * @param string $name
+     * @return void
+     */
+    public function setExtensionName(string $name)
+    {
+        $this->extensionName = $name;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setExtensionType(string $type)
+    {
+        $this->extensionType = $type;
     }
 
     /**

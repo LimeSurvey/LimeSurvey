@@ -55,11 +55,11 @@ abstract class ExtensionUpdater
     }
 
     /**
-     * Use the version fetcher to get info about available updates for 
+     * Uses the version fetcher to get info about available updates for
      * this extension.
-     * @return ExtensionUpdate[]
+     * @return ExtensionUpdateInfo[]
      */
-    public function getAvailableUpdates() : array
+    public function getAvailableUpdates()
     {
         $this->setupVersionFetchers();
 
@@ -70,6 +70,8 @@ abstract class ExtensionUpdater
 
         $versions = [];
         foreach ($this->versionFetchers as $fetcher) {
+            $fetcher->setExtensionName($this->getExtensionName());
+            $fetcher->setExtensionType($this->getExtensionType());
             $versions[] = $fetcher->getLatestVersion();
             // TODO: Check if version is relevant.
             // TODO: Stable or unstable?
@@ -81,7 +83,7 @@ abstract class ExtensionUpdater
     /**
      * @return void
      */
-    public function setUseUnstable() : void
+    public function setUseUnstable()
     {
         $this->useUnstable = true;
     }
@@ -90,7 +92,7 @@ abstract class ExtensionUpdater
      * Parse config.xml and instantiate all version fetchers.
      * @return void
      */
-    public function setupVersionFetchers() : void
+    public function setupVersionFetchers()
     {
         if (empty($this->model)) {
             throw new \InvalidArgumentException('No model');
@@ -101,7 +103,22 @@ abstract class ExtensionUpdater
     }
 
     /**
+     * Create an updater object for every extension of corresponding type.
      * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
     abstract public static function createUpdaters();
+
+    /**
+     * Fetch extension name from extension model.
+     * Extension type specific implementation.
+     * @return string
+     */
+    abstract public function getExtensionName();
+
+    /**
+     * Fetch extension type from extension model.
+     * Extension type specific implementation.
+     * @return string
+     */
+    abstract public function getExtensionType();
 }

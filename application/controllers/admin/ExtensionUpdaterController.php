@@ -33,9 +33,12 @@ class ExtensionUpdaterController extends Survey_Common_Action
         // Only static methods will be used for this updaters.
         list($updaters, $errors) = $service->getAllUpdaters();
 
+        echo '<pre>'; var_dump($errors); echo '</pre>';
+
         foreach ($updaters as $updater) {
             try {
                 $updates = $updater->getAvailableUpdates();
+                echo '<pre>'; var_dump($updates); echo '</pre>';
             } catch (\Exception $ex) {
                 echo $ex->getMessage() . '<br/>';
             }
