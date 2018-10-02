@@ -311,8 +311,10 @@ class Survey extends LSActiveRecord
     {
         if (isset($this->languagesettings[App()->language])) {
             return $this->languagesettings[App()->language];
-        } else {
+        } else if(isset($this->languagesettings[$this->language])){
             return $this->languagesettings[$this->language];
+        } else {
+            throw new Exception('Selected Surveys language not found');
         }
     }
 

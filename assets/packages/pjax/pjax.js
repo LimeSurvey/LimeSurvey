@@ -1240,7 +1240,7 @@ module.exports = function(elements, oldElements) {
   forEachEls(elements, function(newEl, i) {
     var oldElementsArray = toArray(oldElements);
     var resemblingOld = oldElementsArray.reduce(function(acc, oldEl){
-      acc = ((oldEl.href === newEl.href) ? oldEl : acc);
+      acc = ((oldEl.href.indexOf(newEl.href) != -1 ? oldEl : acc));
       return acc;
     }, null);
 

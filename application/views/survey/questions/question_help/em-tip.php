@@ -8,7 +8,7 @@
  * @var $vtip
  */
 ?>
-<?php if ($hideTip === false){ ?>
+<?php if (isset($hideTip) && $hideTip === false){ ?>
 <div id='<?php echo $coreId; ?>' class='ls-question-message <?php echo $coreClass; ?>'>
     <span class='fa fa-exclamation-circle' aria-hidden="true"></span>
     <?php echo $vtip; ?>

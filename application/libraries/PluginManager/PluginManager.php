@@ -571,4 +571,16 @@ class PluginManager extends \CApplicationComponent
         $this->subscriptions = array();
         $this->loadPlugins();
     }
+
+
+    private function _checkWhitelist($pluginName){
+        if(App()->getConfig('usePluginWhitelist')) {
+
+            $whiteList = App()->getConfig('pluginWhitelist');
+            $coreList = App()->getConfig('pluginCoreList');
+            $allowedPlugins =  array_merge($coreList, $whiteList);
+            return array_search($pluginName, $allowedPlugins) !== false;
+        }
+        return true;
+    }
 }
