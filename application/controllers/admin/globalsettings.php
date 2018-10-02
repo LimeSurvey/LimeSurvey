@@ -237,6 +237,11 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('javascriptdebugbcknd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugbcknd', false)));
         SettingGlobal::setSetting('javascriptdebugfrntnd', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('javascriptdebugfrntnd', false)));
 
+        // Unstable extensions can only be changed by super admin.
+        if (Permission::model()->hasGlobalPermission('superadmin', 'delete')) {
+            SettingGlobal::setSetting('allow_unstable_extension_update', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('allow_unstable_extension_update', false)));
+        }
+
         if (!Yii::app()->getConfig('demoMode')) {
             $sTemplate = Yii::app()->getRequest()->getPost("defaulttheme");
             if (array_key_exists($sTemplate, Template::getTemplateList())) {

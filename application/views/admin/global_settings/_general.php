@@ -295,6 +295,32 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 </div>
             </div>
         </div>
+
+        <!-- Allow unstable extension updates (only visible for super admin)-->
+        <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
+            <div class="row ls-space margin top-10">
+                <div class="form-group col-xs-12">
+                    <label class="col-sm-12 text-left control-label" for='allow_unstable_extension_update'>
+                        <?php eT('Allow unstable extension updates:'); ?>
+                    </label>
+                    <div class="col-sm-12">
+                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'allow_unstable_extension_update',
+                            'id'=>'allow_unstable_extension_update',
+                            'value' => getGlobalSetting('allow_unstable_extension_update'),
+                            'onLabel'=>gT('On'),
+                            'offLabel' => gT('Off')
+                            ));
+                        ?>
+                    </div>
+                    <div class="col-sm-12 control-label ">
+                        <p class="text-info text-left">
+                            <?php eT("Enabling unstable updates will allow you to try alpha and beta versions of extensions. Talk to the extension author for more information.");?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
