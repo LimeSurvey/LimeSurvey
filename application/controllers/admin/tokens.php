@@ -746,23 +746,45 @@ class tokens extends Survey_Common_Action
             Yii::import('application.helpers.admin.ajax_helper', true);
             Yii::import('application.libraries.Date_Time_Converter', true);
             $aTokenData = [];
+            
+            // validfrom
             if (trim($request->getPost('validfrom')) == '') {
                 $_POST['validfrom'] = null;
             } else {
                 $datetimeobj = new Date_Time_Converter(trim($request->getPost('validfrom')), $dateformatdetails['phpdate'].' H:i');
                 $_POST['validfrom'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
+
+            // validuntil
             if (trim($request->getPost('validuntil')) == '') {
                 $_POST['validuntil'] = null;
             } else {
                 $datetimeobj = new Date_Time_Converter(trim($request->getPost('validuntil')), $dateformatdetails['phpdate'].' H:i');
                 $_POST['validuntil'] = $datetimeobj->convert('Y-m-d H:i:s');
             }
+
+            // completed
             if (trim($request->getPost('completed')) == 'N') {
                 $_POST['completed'] = 'N';
             } else {
                 $datetimeobj = new Date_Time_Converter(trim($request->getPost('completed')), $dateformatdetails['phpdate'].' H:i');
                 $_POST['completed'] = $datetimeobj->convert('Y-m-d H:i');
+            }
+
+            //sent
+            if (trim($request->getPost('sent')) == 'N') {
+                $_POST['sent'] = 'N';
+            } else {
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('sent')), $dateformatdetails['phpdate'].' H:i');
+                $_POST['sent'] = $datetimeobj->convert('Y-m-d H:i');
+            }
+
+            // remindersent
+            if (trim($request->getPost('remindersent')) == 'N') {
+                $_POST['remindersent'] = 'N';
+            } else {
+                $datetimeobj = new Date_Time_Converter(trim($request->getPost('remindersent')), $dateformatdetails['phpdate'].' H:i');
+                $_POST['remindersent'] = $datetimeobj->convert('Y-m-d H:i');
             }
 
             $aTokenData['firstname'] = flattenText($request->getPost('firstname'));
