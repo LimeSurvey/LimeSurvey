@@ -1406,7 +1406,7 @@ class questionHelper
             'sortorder'=>100,
             "inputtype"=>"integer",
             'default'=>1,
-            "help"=>gT("Minute step interval when using select boxes"),
+            "help"=>gT("Visual minute step interval"),
             "caption"=>gT("Minute step interval")
         );
 
