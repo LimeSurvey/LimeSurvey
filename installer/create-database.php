@@ -824,9 +824,8 @@ function createDatabase($oDB){
         $oTransaction->commit();
         return true;
     }catch(Exception $e){
-
         $oTransaction->rollback();
-        throw new CHttpException(500, $e->getMessage()." ".$e->getTraceAsString());
+        throw new CHttpException(500, $e->getMessage());
     }
     return false;
 }

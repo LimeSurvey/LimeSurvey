@@ -230,10 +230,16 @@ class InstallerController extends CController
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
         $aData['model'] = $oModel = new InstallerConfigForm;
-        if (isset(Yii::app()->session['populateerror'])) {
-            $oModel->addError('dblocation', Yii::app()->session['populateerror']);
-            $oModel->addError('dbpwd', '');
-            $oModel->addError('dbuser', '');
+        if (!empty(Yii::app()->session['populateerror'])) {
+            if(is_string(Yii::app()->session['populateerror'])) {
+                $oModel->addError('dblocation', Yii::app()->session['populateerror']);
+            } else {
+                foreach(Yii::app()->session['populateerror'] as $error) {
+                    $oModel->addError('dblocation', $error);
+                }
+            }
+            //~ $oModel->addError('dbpwd', '');
+            //~ $oModel->addError('dbuser', '');
             unset(Yii::app()->session['populateerror']);
         }
 
@@ -520,13 +526,7 @@ class InstallerController extends CController
             //$data1['adminoutput'] .= "<input type='submit' value='Main Admin Screen' onclick=''>";
             $sConfirmation = sprintf(gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', Yii::app()->session['dbname']));
         } elseif (is_array($aErrors) && count($aErrors) > 0) {
-            $sConfirmation = gT('There were errors when trying to populate the database:').'<p><ul>';
-            foreach ($aErrors as $sError) {
-                $sConfirmation .= '<li>'.htmlspecialchars($sError).'</li>';
-            }
-            $sConfirmation .= '</ul>';
-            Yii::app()->session['populateerror'] = $sConfirmation;
-
+            Yii::app()->session['populateerror'] = $aErrors;
             $this->redirect(array('installer/database'));
         } else {
             throw new UnexpectedValueException('_setup_tables is expected to return true, false or an array of strings');
@@ -908,7 +908,11 @@ class InstallerController extends CController
             return array($e->getMessage());
         }
         require_once($sFileName);
-        createDatabase($this->connection);
+        try {
+            createDatabase($this->connection);
+        } catch (Exception $e) {
+            return array($e->getMessage());
+        }
         return true;
     }
 
