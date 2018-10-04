@@ -54,7 +54,7 @@ class ExtensionUpdaterController extends Survey_Common_Action
 
         if ($messages) {
             $superadmins = User::model()->getSuperAdmins();
-            Notification::broadcast(
+            UniqueNotification::broadcast(
                 [
                     'title' => gT('Updates available'),
                     'message' => implode('<br/>', $messages)
