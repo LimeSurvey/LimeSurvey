@@ -354,54 +354,56 @@ class questionHelper
         );
 
         // Map Options
+        $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey",""));
+        if($sGoogleMapsAPIKey) {
+          self::$attributes["location_city"] = array(
+              "types"=>"S",
+              'readonly_when_active'=>true,
+              'category'=>gT('Location'),
+              'sortorder'=>100,
+              'inputtype'=>'singleselect',
+              'default'=>0,
+              'options'=>array(1=>gT('Yes'), 0=>gT('No')),
+              "help"=>gT("Store the city?"),
+              "caption"=>gT("Save city")
+          );
 
-        self::$attributes["location_city"] = array(
-            "types"=>"S",
-            'readonly_when_active'=>true,
-            'category'=>gT('Location'),
-            'sortorder'=>100,
-            'inputtype'=>'singleselect',
-            'default'=>0,
-            'options'=>array(1=>gT('Yes'), 0=>gT('No')),
-            "help"=>gT("Store the city?"),
-            "caption"=>gT("Save city")
-        );
+          self::$attributes["location_state"] = array(
+              "types"=>"S",
+              'readonly_when_active'=>true,
+              'category'=>gT('Location'),
+              'sortorder'=>100,
+              'default'=>0,
+              'inputtype'=>'singleselect',
+              'options'=>array(1=>gT('Yes'), 0=>gT('No')),
+              "help"=>gT("Store the state?"),
+              "caption"=>gT("Save state")
+          );
 
-        self::$attributes["location_state"] = array(
-            "types"=>"S",
-            'readonly_when_active'=>true,
-            'category'=>gT('Location'),
-            'sortorder'=>100,
-            'default'=>0,
-            'inputtype'=>'singleselect',
-            'options'=>array(1=>gT('Yes'), 0=>gT('No')),
-            "help"=>gT("Store the state?"),
-            "caption"=>gT("Save state")
-        );
+          self::$attributes["location_postal"] = array(
+              "types"=>"S",
+              'readonly_when_active'=>true,
+              'category'=>gT('Location'),
+              'sortorder'=>100,
+              'inputtype'=>'singleselect',
+              'default'=>0,
+              'options'=>array(1=>gT('Yes'), 0=>gT('No')),
+              "help"=>gT("Store the postal code?"),
+              "caption"=>gT("Save postal code")
+          );
 
-        self::$attributes["location_postal"] = array(
-            "types"=>"S",
-            'readonly_when_active'=>true,
-            'category'=>gT('Location'),
-            'sortorder'=>100,
-            'inputtype'=>'singleselect',
-            'default'=>0,
-            'options'=>array(1=>gT('Yes'), 0=>gT('No')),
-            "help"=>gT("Store the postal code?"),
-            "caption"=>gT("Save postal code")
-        );
-
-        self::$attributes["location_country"] = array(
-            "types"=>"S",
-            'readonly_when_active'=>true,
-            'category'=>gT('Location'),
-            'sortorder'=>100,
-            'inputtype'=>'singleselect',
-            'default'=>0,
-            'options'=>array(1=>gT('Yes'), 0=>gT('No')),
-            "help"=>gT("Store the country?"),
-            "caption"=>gT("Save country")
-        );
+          self::$attributes["location_country"] = array(
+              "types"=>"S",
+              'readonly_when_active'=>true,
+              'category'=>gT('Location'),
+              'sortorder'=>100,
+              'inputtype'=>'singleselect',
+              'default'=>0,
+              'options'=>array(1=>gT('Yes'), 0=>gT('No')),
+              "help"=>gT("Store the country?"),
+              "caption"=>gT("Save country")
+          );
+        }
 
         self::$attributes["statistics_showmap"] = array(
             "types"=>"S",
@@ -442,30 +444,22 @@ class questionHelper
             'caption'=>gT("Chart type"),
             'default'=>0
         );
-
+        $locationMapserviceOptions = array(
+          0=>gT('Off'),
+          100=>gT('OpenStreetMap via MapQuest', 'unescaped'),
+        );
+        if(!empty($sGoogleMapsAPIKey)) {
+          $locationMapserviceOptions['1'] = gT('Google Maps', 'unescaped');
+        }
         self::$attributes["location_mapservice"] = array(
             "types"=>"S",
             'category'=>gT('Location'),
             'sortorder'=>90,
             'inputtype'=>'buttongroup',
-            'options'=>array(
-                0=>gT('Off'),
-                100=>gT('OpenStreetMap via MapQuest', 'unescaped'),
-                1=>gT('Google Maps', 'unescaped')
-            ),
+            'options'=>$locationMapserviceOptions,
             'default' => 0,
             "help"=>gT("Activate this to show a map above the input field where the user can select a location"),
             "caption"=>gT("Use mapping service")
-        );
-
-        self::$attributes["location_mapwidth"] = array(
-            "types"=>"S",
-            'category'=>gT('Location'),
-            'sortorder'=>102,
-            'inputtype'=>'text',
-            'default'=>'500',
-            "help"=>gT("Map width in pixel"),
-            "caption"=>gT("Map width")
         );
 
         self::$attributes["location_mapheight"] = array(
@@ -478,6 +472,7 @@ class questionHelper
             "caption"=>gT("Map height")
         );
 
+        $ipInfoDbAPIKey = Yii::app()->getConfig('ipInfoDbAPIKey');
         self::$attributes["location_nodefaultfromip"] = array(
             "types"=>"S",
             'category'=>gT('Location'),
@@ -486,7 +481,8 @@ class questionHelper
             'options'=>array(0=>gT('Yes'), 1=>gT('No')),
             'default' => 0,
             "help"=>gT("Get the default location using the user's IP address?"),
-            "caption"=>gT("IP as default location")
+            "caption"=> !empty($ipInfoDbAPIKey) ? gT("IP as default location") : gT("IP as default location need an IP Info DB API Key"),
+            'readonly' => empty($ipInfoDbAPIKey),
         );
 
         self::$attributes["location_defaultcoordinates"] = array(

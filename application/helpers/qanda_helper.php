@@ -3032,6 +3032,11 @@ function do_shortfreetext($ia)
     $answer = "";
     $sQuestionHelpText = '';
 
+    /* Fix map service according to google map API key */
+    if($aQuestionAttributes['location_mapservice'] == 1 && empty($sGoogleMapsAPIKey)) {
+        $aQuestionAttributes['location_mapservice'] = 100;
+    }
+
     if (trim($aQuestionAttributes['display_rows']) != '') {
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
         $drows = $aQuestionAttributes['display_rows'];
@@ -3092,29 +3097,30 @@ function do_shortfreetext($ia)
         }
         // 2 - city; 3 - state; 4 - country; 5 - postal
         $strBuild = "";
-        if ($aQuestionAttributes['location_city']) {
+        if (!empty($aQuestionAttributes['location_city'])) {
                     $strBuild .= "2";
         }
-        if ($aQuestionAttributes['location_state']) {
+        if (!empty($aQuestionAttributes['location_state'])) {
                     $strBuild .= "3";
         }
-        if ($aQuestionAttributes['location_country']) {
+        if (!empty($aQuestionAttributes['location_country'])) {
                     $strBuild .= "4";
         }
-        if ($aQuestionAttributes['location_postal']) {
+        if (!empty($aQuestionAttributes['location_postal'])) {
                     $strBuild .= "5";
         }
 
         $currentLocation = $currentLatLong[0]." ".$currentLatLong[1];
 
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js", LSYii_ClientScript::POS_END);
-        if ($aQuestionAttributes['location_mapservice'] == 1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
-                    Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
-        } else if ($aQuestionAttributes['location_mapservice'] == 1) {
-                    Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
-        } elseif ($aQuestionAttributes['location_mapservice'] == 2) {
-                            Yii::app()->getClientScript()->registerScriptFile("http://www.openlayers.org/api/OpenLayers.js", LSYii_ClientScript::POS_BEGIN);
+        if($aQuestionAttributes['location_mapservice'] == 1) {
+            if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
+                Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
+            } else {
+                Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
             }
+        }
+
 
             $questionHelp = false;
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0) {
