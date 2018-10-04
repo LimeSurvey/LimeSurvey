@@ -6,10 +6,9 @@
         <?php echo CHtml::beginForm($this->createUrl('installer/database'), 'post', array('class' => '')); ?>
         <h2><?php echo $title; ?></h2>
         <p><?php echo $descp; ?></p>
-        <?php if (CHtml::errorSummary($model, null, null, array('class' => 'errors'))): ?>
+        <?php if (!empty($model->getErrors())): ?>
             <div class='alert alert-danger'>
-                <?php echo CHtml::errorSummary($model, gT("Please fix the following input errors:"), null, array('class' => 'errors')); ?>
-                
+                <?php echo CHtml::errorSummary($model, gT("Please fix the following errors:"), null, array('class' => 'errors')); ?>
             </div>
         <?php endif; ?>
             <hr/>
