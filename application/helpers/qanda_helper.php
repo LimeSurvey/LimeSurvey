@@ -2582,7 +2582,6 @@ function do_multiplenumeric($ia)
     $prefixclass = "numeric";
     $sliders = 0;
     $slider_position = '';
-    $sliderWidth = 12;
     $slider_default_set = false;
     
     if ($aQuestionAttributes['slider_layout'] == 1) {
@@ -2680,6 +2679,7 @@ function do_multiplenumeric($ia)
             }
 
             if ($slider_layout) {
+                $sliderWidth = 12;
                 if ($slider_separator != '') {
                     $aAnswer     = explode($slider_separator, $sQuestionText);
                     $theanswer   = (isset($aAnswer[0])) ? $aAnswer[0] : "";
