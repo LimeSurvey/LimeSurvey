@@ -43,7 +43,8 @@ class PluginUpdater extends ExtensionUpdater
     }
 
     /**
-     * @return
+     * Fetch all new available version from each version fetcher.
+     * @return array [string $extensionName, string $extensionType, string[] $versions]
      */
     public function getAvailableUpdates()
     {
@@ -51,7 +52,7 @@ class PluginUpdater extends ExtensionUpdater
 
         if (empty($this->versionFetchers)) {
             // No fetchers, can't fetch remote version.
-            return [];
+            return [$this->model->name, 'plugin', []];
         }
 
         $allowUnstable = getGlobalSetting('allow_unstable_extension_update');
