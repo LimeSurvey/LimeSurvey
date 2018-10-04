@@ -33,29 +33,34 @@ class ExtensionUpdaterController extends Survey_Common_Action
         // Only static methods will be used for this updaters.
         list($updaters, $errors) = $service->getAllUpdaters();
 
-        echo '<pre>'; var_dump($errors); echo '</pre>';
+        /** @var string[] */
+        $messages = [];
 
         foreach ($updaters as $updater) {
             try {
-                list($extensionName, $extensionType, $updates) = $updater->getAvailableUpdates();
-                if ($updates) {
-                    $superadmins = User::model()->getSuperAdmins();
-                    Notification::broadcast(
-                        [
-                            'title' => gT('Updates available'),
-                            'message' => sprintf(
-                                gT('There are updates available for %s %s, new version number(s): %s.'),
-                                $extensionType,
-                                $extensionName,
-                                implode(', ', $updates)
-                            )
-                        ],
-                        $superadmins
+                list($extensionName, $extensionType, $availableVersions) = $updater->getAvailableUpdates();
+                if ($availableVersions) {
+                    $messages[] = sprintf(
+                        gT('There are updates available for %s %s, new version number(s): %s.'),
+                        $extensionType,
+                        $extensionName,
+                        implode(', ', $availableVersions)
                     );
                 }
             } catch (\Exception $ex) {
-                echo $ex->getMessage() . '<br/>';
+                $errors[] = $ex->getMessage();
             }
+        }
+
+        if ($messages) {
+            $superadmins = User::model()->getSuperAdmins();
+            Notification::broadcast(
+                [
+                    'title' => gT('Updates available'),
+                    'message' => implode('<br/>', $messages)
+                ],
+                $superadmins
+            );
         }
     }
 }
