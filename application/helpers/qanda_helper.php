@@ -2680,6 +2680,7 @@ function do_multiplenumeric($ia)
         $answer = doRender('/survey/questions/answer/multiplenumeric/empty', array(), true);
     } else {
         foreach ($aSubquestions as $ansrow) {
+            $sliderWidth = 12; /* reset sliderWidth for each row : left and right can be different for each #14127 */
             $labelText = $ansrow['question'];
             $myfname   = $ia[1].$ansrow['title'];
 
@@ -2694,6 +2695,7 @@ function do_multiplenumeric($ia)
                     $labelText   = $theanswer;
                     $sliderleft  = (isset($aAnswer[1])) ? $aAnswer[1] : null;
                     $sliderright = (isset($aAnswer[2])) ? $aAnswer[2] : null;
+
                     /* sliderleft and sliderright is in input, but is part of answers then take label width */
                     if (!empty($sliderleft)) {
                         $sliderWidth = 10;
