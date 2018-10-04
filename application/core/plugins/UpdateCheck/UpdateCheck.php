@@ -35,4 +35,49 @@ class UpdateCheck extends PluginBase
     public function afterSuccessfulLogin()
     {
     }
+
+    /**
+     * Used to check for available updates for all plugins.
+     * This method should be run at super admin login, max once every day.
+     * Run by Ajax to avoid increased page load time.
+     * @return void
+     */
+    public function checkAll()
+    {
+        $service = \Yii::app()->extensionUpdaterServiceLocator;
+
+        // Get one updater class for each extension type (PluginUpdater, ThemeUpdater, etc).
+        // Only static methods will be used for this updaters.
+        list($updaters, $errors) = $service->getAllUpdaters();
+
+        /** @var string[] */
+        $messages = [];
+
+        foreach ($updaters as $updater) {
+            try {
+                list($extensionName, $extensionType, $availableVersions) = $updater->getAvailableUpdates();
+                if ($availableVersions) {
+                    $messages[] = sprintf(
+                        gT('There are updates available for %s %s, new version number(s): %s.'),
+                        $extensionType,
+                        $extensionName,
+                        implode(', ', $availableVersions)
+                    );
+                }
+            } catch (\Exception $ex) {
+                $errors[] = $ex->getMessage();
+            }
+        }
+
+        if ($messages) {
+            $superadmins = User::model()->getSuperAdmins();
+            UniqueNotification::broadcast(
+                [
+                    'title' => gT('Updates available'),
+                    'message' => implode('<br/>', $messages)
+                ],
+                $superadmins
+            );
+        }
+    }
 }
