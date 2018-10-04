@@ -2590,7 +2590,6 @@ function do_multiplenumeric($ia)
     $prefixclass = "numeric";
     $sliders = 0;
     $slider_position = '';
-    $sliderWidth = 12;
     $slider_default_set = false;
     
     if ($aQuestionAttributes['slider_layout'] == 1) {
