@@ -37,7 +37,7 @@ class UpdateCheck extends PluginBase
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
             // Set flag.
-            Yii::app()->session['do_update_check'] = true;
+            Yii::app()->session['do_extensions_update_check'] = true;
         }
     }
 
@@ -47,13 +47,13 @@ class UpdateCheck extends PluginBase
     public function beforeControllerAction()
     {
         $controller = $this->getEvent()->get('controller');
-        $doUpdateCheck = Yii::app()->session['do_update_check'];
+        $doUpdateCheck = Yii::app()->session['do_extensions_update_check'];
 
         if ($controller == 'admin' && $doUpdateCheck) {
             $this->spitOutUrl();
             $this->registerScript();
             // Unset flag.
-            Yii::app()->session['do_update_check'] = false;
+            Yii::app()->session['do_extensions_update_check'] = false;
         }
     }
 
