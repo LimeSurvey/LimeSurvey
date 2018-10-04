@@ -115,7 +115,8 @@ class UpdateCheck extends PluginBase
                     'plugin' => 'updateCheck',
                     'method' => 'checkAll'
                 )
-            )
+            ),
+            'notificationUpdateUrl' => Notification::getUpdateUrl()
         ];
         echo $this->api->renderTwig(__DIR__ . '/views/index.twig', $data);
     }
