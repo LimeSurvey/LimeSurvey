@@ -375,8 +375,8 @@ class PluginManager extends \CApplicationComponent
         if (!class_exists($class)) {
             return null;
         } else {
-            $result['description']  = call_user_func(array($class, 'getDescription'));
-            $result['pluginName']   = call_user_func(array($class, 'getName'));
+            $result['description']  = $this->getPluginDescription($class, $extensionConfig);
+            $result['pluginName']   = $this->getPluginName($class, $extensionConfig);
             $result['pluginClass']  = $class;
             $result['extensionConfig'] = $extensionConfig;
             $result['isCompatible'] = $extensionConfig == null ? false : $extensionConfig->isCompatible();
@@ -570,6 +570,60 @@ class PluginManager extends \CApplicationComponent
         $this->plugins = array();
         $this->subscriptions = array();
         $this->loadPlugins();
+    }
+
+    /**
+     * Get plugin description.
+     * First look in config.xml, then in plugin class.
+     * @param string $class
+     * @param ExtensionConfig $extensionConfig
+     * @return string
+     * @todo Localization.
+     */
+    protected function getPluginDescription(string $class, \ExtensionConfig $extensionConfig = null)
+    {
+        $desc = null;
+
+        if ($extensionConfig) {
+            $desc = $extensionConfig->getDescription();
+        }
+
+        if (empty($desc)) {
+            $desc = call_user_func(array($class, 'getDescription'));
+        }
+
+        if (empty($desc)) {
+            $desc = gT('N/A');
+        }
+
+        return $desc;
+    }
+
+    /**
+     * Get plugin name.
+     * First look in config.xml, then in plugin class.
+     * @param string $class
+     * @param ExtensionConfig $extensionConfig
+     * @return string
+     * @todo Localization.
+     */
+    protected function getPluginName(string $class, \ExtensionConfig $extensionConfig = null)
+    {
+        $name = null;
+
+        if ($extensionConfig) {
+            $name = $extensionConfig->getName();
+        }
+
+        if (empty($name)) {
+            $name = call_user_func(array($class, 'getName'));
+        }
+
+        if (empty($name)) {
+            $name = gT('N/A');
+        }
+
+        return $name;
     }
 
     /**
