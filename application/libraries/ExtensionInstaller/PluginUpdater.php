@@ -48,9 +48,10 @@ class PluginUpdater extends ExtensionUpdater
      */
     public function fetchVersions()
     {
-        $this->setupVersionFetchers();
+        $config = $this->getExtensionConfig();
+        $versionFetchers = $config->createVersionFetchers();
 
-        if (empty($this->versionFetchers)) {
+        if (empty($versionFetchers)) {
             // No fetchers, can't fetch remote version.
             return [];
         }
@@ -58,7 +59,7 @@ class PluginUpdater extends ExtensionUpdater
         $allowUnstable = getGlobalSetting('allow_unstable_extension_update');
 
         $versions = [];
-        foreach ($this->versionFetchers as $fetcher) {
+        foreach ($versionFetchers as $fetcher) {
             $fetcher->setExtensionName($this->getExtensionName());
             $fetcher->setExtensionType($this->getExtensionType());
             $newVersion = $fetcher->getLatestVersion();
@@ -103,5 +104,13 @@ class PluginUpdater extends ExtensionUpdater
     public function getExtensionType()
     {
         return 'plugin';
+    }
+
+    /**
+     * @return ExtensionConfig
+     */
+    public function getExtensionConfig()
+    {
+        return $this->model->extensionConfig;
     }
 }

@@ -21,13 +21,6 @@ namespace LimeSurvey\ExtensionInstaller;
 abstract class ExtensionUpdater
 {
     /**
-     * The version fetchers gets remote update information.
-     * The type of version fetcher is configured in config.xml.
-     * @var VersionFetcher[]
-     */
-    protected $versionFetchers = [];
-
-    /**
      * Extension model, e.g. Theme or Plugin class.
      * @todo Create super class ExtensionModel that all extension model classes inherit from.
      * @var mixed
@@ -60,20 +53,6 @@ abstract class ExtensionUpdater
     public function setUseUnstable()
     {
         $this->useUnstable = true;
-    }
-
-    /**
-     * Parse config.xml and instantiate all version fetchers.
-     * @return void
-     */
-    public function setupVersionFetchers()
-    {
-        if (empty($this->model)) {
-            throw new \InvalidArgumentException('No model');
-        }
-
-        $config = new \ExtensionConfig($this->model->getConfig());
-        $this->versionFetchers = $config->getVersionFetchers();
     }
 
     /**
@@ -154,12 +133,15 @@ abstract class ExtensionUpdater
         $extensionName = $this->getExtensionName();
         $extensionType = $this->getExtensionType();
         if ($this->foundSecurityVersion($versions)) {
-            $message = gT('There are security updates available for %s %s, new version number(s): %s.');
+            $message = gT('There are <b>security updates</b> available for %s %s, new version number(s): %s.', 'js');
         } else {
             $message = gT('There are updates available for %s %s, new version number(s): %s.');
         }
+
+        $manualUpdateUrl = $this->getExtensionConfig();
+
         return sprintf(
-            $message,
+            '<p>' . $message . '</p>',
             $extensionType,
             $extensionName,
             $this->implodeVersions($versions)
@@ -167,8 +149,7 @@ abstract class ExtensionUpdater
     }
 
     /**
-     * Uses the version fetcher to fetch info about available updates for
-     * this extension.
+     * Uses the version fetchers to fetch info about available updates for this extension.
      * @return array
      */
     abstract public function fetchVersions();
@@ -192,4 +173,10 @@ abstract class ExtensionUpdater
      * @return string
      */
     abstract public function getExtensionType();
+
+    /**
+     * Get extension config object for this extension.
+     * @return ExtensionConfig
+     */
+    abstract public function getExtensionConfig();
 }

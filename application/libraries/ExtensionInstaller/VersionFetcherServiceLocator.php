@@ -59,7 +59,7 @@ class VersionFetcherServiceLocator
      * @return VersionFetcher
      * @throws Exception if version fetcher is not found.
      */
-    public function getVersionFetcher(\SimpleXMLElement $updaterXml)
+    public function createVersionFetcher(\SimpleXMLElement $updaterXml)
     {
         $this->validateXml($updaterXml);
 

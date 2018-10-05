@@ -135,7 +135,7 @@ class ExtensionConfig
      * Parse <updater> tag in config.xml and return objects and potential error messages.
      * @return array VersionFetcher[]
      */
-    public function getVersionFetchers()
+    public function createVersionFetchers()
     {
         if (empty($this->xml->updaters)) {
             throw new \Exception(
@@ -152,7 +152,7 @@ class ExtensionConfig
 
         foreach ($this->xml->updaters->updater as $updaterXml) {
             try {
-                $fetchers[] = $service->getVersionFetcher($updaterXml);
+                $fetchers[] = $service->createVersionFetcher($updaterXml);
             } catch (\Exception $ex) {
                 // Include extension name in error message.
                 throw new \Exception($this->getName() . ': ' . $ex->getMessage(), 0, $ex);
