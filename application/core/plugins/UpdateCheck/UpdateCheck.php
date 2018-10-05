@@ -87,7 +87,7 @@ class UpdateCheck extends PluginBase
     {
         $service = \Yii::app()->extensionUpdaterServiceLocator;
 
-        // Get one updater class for each extension type (PluginUpdater, ThemeUpdater, etc).
+        // Get one updater class for each extension.
         list($updaters, $errors) = $service->getAllUpdaters();
 
         /** @var string[] */
@@ -106,10 +106,11 @@ class UpdateCheck extends PluginBase
                     $messages[] = $updater->getVersionMessage($versions);
                 }
             } catch (\Throwable $ex) {
-                $errors[] = $ex->getMessage();
+                $errors[] = $updater->getExtensionName() . ': ' . $ex->getMessage();
             }
         }
 
+        // Compose notification.
         if ($messages || $errors) {
             $superadmins = User::model()->getSuperAdmins();
             $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
@@ -117,7 +118,8 @@ class UpdateCheck extends PluginBase
             $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
             $message = implode($messages);
             if ($errors) {
-                $message .= '<hr/><i class="fa fa-warning"></i>&nbsp;' . gT('Errors happened during the update check. Please notify the extension authors for support.')
+                $message .= '<hr/><i class="fa fa-warning"></i>&nbsp;'
+                    . gT('Errors happened during the update check. Please notify the extension authors for support.')
                     . '<ul>'
                     . '<li>' . implode('</li><li>', $errors) . '</li>';
             }
