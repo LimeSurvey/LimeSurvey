@@ -132,7 +132,7 @@ class ExtensionConfig
     }
 
     /**
-     * Parse <updater> tag in config.xml and return objects and potential error messages.
+     * Create a version fetcher for every <updater> tag in config.xml.
      * @return array VersionFetcher[]
      */
     public function createVersionFetchers()

@@ -163,15 +163,6 @@ abstract class ExtensionUpdater
     }
 
     /**
-     * Get description of how to update to latest version, based on available
-     * information in <updater> XML.
-     * @return string
-     */
-    public function getUpdateMethodsDescription(array $versions)
-    {
-    }
-
-    /**
      * @return array
      */
     public function getLatestVersion(array $versions)
@@ -190,16 +181,16 @@ abstract class ExtensionUpdater
     }
 
     /**
-     * Uses the version fetchers to fetch info about available updates for this extension.
-     * @return array
-     */
-    abstract public function fetchVersions();
-
-    /**
      * Create an updater object for every extension of corresponding type.
      * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
     abstract public static function createUpdaters();
+
+    /**
+     * Uses the version fetchers to fetch info about available updates for this extension.
+     * @return array
+     */
+    abstract public function fetchVersions();
 
     /**
      * Fetch extension name from extension model.

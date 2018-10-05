@@ -36,7 +36,7 @@ class VersionFetcherServiceLocator
     public function init()
     {
         // Add RESTVersionFetcher, available by default.
-        $this->addVersionFetcher(
+        $this->addVersionFetcherType(
             'rest',
             function (\SimpleXMLElement $updaterXml) {
                 $vf = new RESTVersionFetcher($updaterXml);
@@ -45,7 +45,7 @@ class VersionFetcherServiceLocator
         );
 
         // TODO: Not implemented.
-        $this->addVersionFetcher(
+        $this->addVersionFetcherType(
             'git',
             function (\SimpleXMLElement $updaterXml) {
                 return new GitVersionFetcher($updaterXml);
@@ -54,6 +54,7 @@ class VersionFetcherServiceLocator
     }
 
     /**
+     * Creates a version fetcher based on xml $updaterXml.
      * @param SimpleXMLElement $updaterXml <updater> tag from config.xml.
      * @return VersionFetcher
      * @throws Exception if version fetcher is not found.
@@ -65,8 +66,8 @@ class VersionFetcherServiceLocator
         $type = (string) $updaterXml->type;
 
         if (isset($this->versionFetcherCreators[$type])) {
-            $fileFetcher =  $this->versionFetcherCreators[$type]($updaterXml);
-            return $fileFetcher;
+            $versionFetcher =  $this->versionFetcherCreators[$type]($updaterXml);
+            return $versionFetcher;
         } else {
             throw new \Exception('Did not find version fetcher of type ' . json_encode($type));
         }
@@ -78,7 +79,7 @@ class VersionFetcherServiceLocator
      * @return void
      * @throws Exception if version fetcher with name $name already exists.
      */
-    public function addVersionFetcher(string $name, callable $vfCreator)
+    public function addVersionFetcherType(string $name, callable $vfCreator)
     {
         if (isset($this->versionFetcherCreators[$name])) {
             // NB: Internal error, don't need to translate.

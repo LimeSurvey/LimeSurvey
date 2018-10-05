@@ -45,6 +45,7 @@ class PluginUpdater extends ExtensionUpdater
     /**
      * Fetch all new available version from each version fetcher.
      * @return array $versions
+     * @todo Move to parent class?
      */
     public function fetchVersions()
     {

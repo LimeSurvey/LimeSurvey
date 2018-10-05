@@ -31,7 +31,7 @@ class ExtensionUpdaterServiceLocator
      */
     public function init()
     {
-        $this->addUpdater(
+        $this->addUpdaterType(
             'plugin',
             function () {
                 return PluginUpdater::createUpdaters();
@@ -44,7 +44,7 @@ class ExtensionUpdaterServiceLocator
      * @param callable $creator Callable that returns an ExtensionUpdater array.
      * @return void
      */
-    public function addUpdater(string $name, callable $creator)
+    public function addUpdaterType(string $name, callable $creator)
     {
         if (isset($this->updaters[$name])) {
             throw new \Exception("Extension installer with name $name already exists");
