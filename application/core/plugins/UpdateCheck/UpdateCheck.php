@@ -21,6 +21,13 @@
  */
 class UpdateCheck extends PluginBase
 {
+
+    /**
+     * Where to save plugin settings etc.
+     * @var string
+     */
+    protected $storage = 'DbStorage';
+
     /**
      * @return void
      */
@@ -36,8 +43,14 @@ class UpdateCheck extends PluginBase
     public function afterSuccessfulLogin()
     {
         if (Permission::model()->hasGlobalPermission('superadmin')) {
-            // Set flag.
-            Yii::app()->session['do_extensions_update_check'] = true;
+            // NB: $nextCheck will be set to "now" if next_extension_update_check is empty.
+            // Hence it needs to be initialised *before* today.
+            $nextCheck = new DateTime($this->get('next_extension_update_check'));
+            $today = new DateTime("now");
+            if ($nextCheck <= $today) {
+                // Set flag.
+                Yii::app()->session['do_extensions_update_check'] = true;
+            }
         }
     }
 
@@ -47,13 +60,20 @@ class UpdateCheck extends PluginBase
     public function beforeControllerAction()
     {
         $controller = $this->getEvent()->get('controller');
-        $doUpdateCheck = Yii::app()->session['do_extensions_update_check'];
+        $doUpdateCheckFlag = Yii::app()->session['do_extensions_update_check'];
 
-        if ($controller == 'admin' && $doUpdateCheck) {
+        if ($controller == 'admin' && $doUpdateCheckFlag) {
+
+            // Render some JavaScript that will Ajax call update check.
             $this->spitOutUrl();
             $this->registerScript();
+
             // Unset flag.
             Yii::app()->session['do_extensions_update_check'] = false;
+
+            // Set date for next check.
+            $today = new DateTime("now");
+            $this->set('next_extension_update_check', $today->add(new DateInterval('P1D'))->format('Y-m-d H:i:s'));
         }
     }
 
@@ -68,7 +88,6 @@ class UpdateCheck extends PluginBase
         $service = \Yii::app()->extensionUpdaterServiceLocator;
 
         // Get one updater class for each extension type (PluginUpdater, ThemeUpdater, etc).
-        // Only static methods will be used for this updaters.
         list($updaters, $errors) = $service->getAllUpdaters();
 
         /** @var string[] */
