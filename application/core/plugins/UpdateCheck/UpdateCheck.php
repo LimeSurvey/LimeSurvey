@@ -93,28 +93,34 @@ class UpdateCheck extends PluginBase
         /** @var string[] */
         $messages = [];
 
+        /** @var boolean */
+        $foundSecurityVersion = false;
+
         foreach ($updaters as $updater) {
             try {
-                list($extensionName, $extensionType, $availableVersions) = $updater->getAvailableUpdates();
-                if ($availableVersions) {
-                    $messages[] = sprintf(
-                        gT('There are updates available for %s %s, new version number(s): %s.'),
-                        $extensionType,
-                        $extensionName,
-                        implode(', ', $availableVersions)
-                    );
+                $versions = $updater->fetchVersions();
+                if ($updater->foundSecurityVersion($versions)) {
+                    $foundSecurityVersion = true;
+                }
+                if ($versions) {
+                    $messages[] = $updater->getVersionMessage($versions);
                 }
             } catch (\Throwable $ex) {
                 $errors[] = $ex->getMessage();
             }
         }
 
-        if ($messages) {
+        if ($messages || $errors) {
             $superadmins = User::model()->getSuperAdmins();
+            $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
+            $displayClass = $foundSecurityVersion ? 'danger' : '';
+            $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
             UniqueNotification::broadcast(
                 [
-                    'title' => gT('Updates available'),
-                    'message' => implode('<br/>', $messages) . '<br/>' . implode('<br/>', $errors)
+                    'title'         => $title,
+                    'display_class' => $displayClass,
+                    'message'       => implode('<br/>', $messages) . '<br/>' . implode('<br/>', $errors),
+                    'importance'    => $importance
                 ],
                 $superadmins
             );

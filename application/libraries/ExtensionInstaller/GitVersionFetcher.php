@@ -10,9 +10,17 @@ class GitVersionFetcher extends VersionFetcher
 {
     /**
      * @param string $extensionName
-     * @return ExtensionUpdateInfo
+     * @return string
      */
     public function getLatestVersion()
+    {
+        // todo
+    }
+
+    /**
+     * 
+     */
+    public function getLatestSecurityVersion()
     {
         // todo
     }

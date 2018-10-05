@@ -55,13 +55,6 @@ abstract class ExtensionUpdater
     }
 
     /**
-     * Uses the version fetcher to get info about available updates for
-     * this extension.
-     * @return ?
-     */
-    abstract public function getAvailableUpdates();
-
-    /**
      * @return void
      */
     public function setUseUnstable()
@@ -94,12 +87,18 @@ abstract class ExtensionUpdater
     }
 
     /**
+     * Returns true if $version is stable.
      * The version is stable IF it does not contain
      * alpha, beta or rc suffixes.
+     * @param string $version
      * @return boolean
      */
     public function versionIsStable($version)
     {
+        if (empty($version)) {
+            return false;
+        }
+
         $suffixes = [
             'alpha',
             'beta',
@@ -114,6 +113,65 @@ abstract class ExtensionUpdater
         return true;
     }
 
+    /**
+     * Returns true if $versions contain a security version.
+     * @param array $versions Each version has keys 'version' and 'isSecurityVersion'.
+     * @return boolean
+     */
+    public function foundSecurityVersion(array $versions)
+    {
+        foreach ($versions as $version) {
+            if ($version['isSecurityVersion']) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Implode $versions into string, stripping security version field.
+     * @param array $versions Each version has keys 'version' and 'isSecurityVersion'.
+     * @return string
+     */
+    public function implodeVersions(array $versions)
+    {
+        $versions = array_map(
+            function ($version) {
+                return $version['version'];
+            },
+            $versions
+        );
+        return implode(', ', $versions);
+    }
+
+    /**
+     * Compose version message to display of $versions.
+     * @param array $versions Each version has keys 'version' and 'isSecurityVersion'.
+     * @return string
+     */
+    public function getVersionMessage(array $versions)
+    {
+        $extensionName = $this->getExtensionName();
+        $extensionType = $this->getExtensionType();
+        if ($this->foundSecurityVersion($versions)) {
+            $message = gT('There are security updates available for %s %s, new version number(s): %s.');
+        } else {
+            $message = gT('There are updates available for %s %s, new version number(s): %s.');
+        }
+        return sprintf(
+            $message,
+            $extensionType,
+            $extensionName,
+            $this->implodeVersions($versions)
+        );
+    }
+
+    /**
+     * Uses the version fetcher to fetch info about available updates for
+     * this extension.
+     * @return array
+     */
+    abstract public function fetchVersions();
 
     /**
      * Create an updater object for every extension of corresponding type.

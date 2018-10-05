@@ -44,15 +44,15 @@ class PluginUpdater extends ExtensionUpdater
 
     /**
      * Fetch all new available version from each version fetcher.
-     * @return array [string $extensionName, string $extensionType, string[] $versions]
+     * @return array $versions
      */
-    public function getAvailableUpdates()
+    public function fetchVersions()
     {
         $this->setupVersionFetchers();
 
         if (empty($this->versionFetchers)) {
             // No fetchers, can't fetch remote version.
-            return [$this->model->name, 'plugin', []];
+            return [];
         }
 
         $allowUnstable = getGlobalSetting('allow_unstable_extension_update');
@@ -62,6 +62,14 @@ class PluginUpdater extends ExtensionUpdater
             $fetcher->setExtensionName($this->getExtensionName());
             $fetcher->setExtensionType($this->getExtensionType());
             $newVersion = $fetcher->getLatestVersion();
+            $lastSecurityVersion = $fetcher->getLatestSecurityVersion();
+
+            if (version_compare($lastSecurityVersion, $this->model->version, '>')) {
+                $versions[] = [
+                    'isSecurityVersion' => true,
+                    'version' => $lastSecurityVersion
+                ];
+            }
 
             // If this version is unstable and we're not allowed to use it, continue.
             if (!$allowUnstable && !$this->versionIsStable($newVersion)) {
@@ -69,13 +77,16 @@ class PluginUpdater extends ExtensionUpdater
             }
 
             if (version_compare($newVersion, $this->model->version, '>')) {
-                $versions[] = $newVersion;
+                $versions[] = [
+                    'isSecurityVersion' => false,
+                    'version' => $newVersion
+                ];
             } else {
                 // Ignore.
             }
         }
 
-        return [$this->model->name, 'plugin', $versions];
+        return $versions;
     }
 
     /**

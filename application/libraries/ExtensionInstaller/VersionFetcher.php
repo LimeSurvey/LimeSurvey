@@ -81,4 +81,10 @@ abstract class VersionFetcher
      * @return string Semantic versioning string.
      */
     abstract public function getLatestVersion();
+
+    /**
+     * Get latest security version for configured source.
+     * @return string Semantic versioning string.
+     */
+    abstract public function getLatestSecurityVersion();
 }
