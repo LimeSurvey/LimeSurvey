@@ -55,6 +55,7 @@ abstract class PluginBase implements iPlugin
 
     /**
      * config.xml
+     * @todo Use ExtensionConfig
      * @var \SimpleXMLElement|null
      */
     public $config = null;
