@@ -131,6 +131,14 @@ function submitEditToken(){
     var $datas      = $form.serialize();
     var $actionUrl  = $form.attr('action');
     var $modal      = $('#editTokenModal');
+    var $gridId     = '';
+
+    // check which grid id exists on the page, to be able to update grid successfully
+    if ($('#token-grid').length > 0) {
+        $gridId = 'token-grid';
+    } else if ($('#responses-grid').length > 0) {
+        $gridId = 'responses-grid';
+    }
 
     // Ajax request
     $.ajax({
@@ -147,7 +155,7 @@ function submitEditToken(){
 
             // Using Try/Catch here to catch errors if there is no grid
             try {
-                $.fn.yiiGridView.update('token-grid', {
+                $.fn.yiiGridView.update($gridId, {
                     complete: function(s){
                         $modal.modal('hide');
                     } // Update the surveys list
