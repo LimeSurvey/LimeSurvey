@@ -115,11 +115,17 @@ class UpdateCheck extends PluginBase
             $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
             $displayClass = $foundSecurityVersion ? 'danger' : '';
             $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
+            $message = implode($messages);
+            if ($errors) {
+                $message .= '<hr/><i class="fa fa-warning"></i>&nbsp;' . gT('Errors happened during the update check. Please notify the extension authors for support.')
+                    . '<ul>'
+                    . '<li>' . implode('</li><li>', $errors) . '</li>';
+            }
             UniqueNotification::broadcast(
                 [
                     'title'         => $title,
                     'display_class' => $displayClass,
-                    'message'       => implode('<br/>', $messages) . '<br/>' . implode('<br/>', $errors),
+                    'message'       => $message,
                     'importance'    => $importance
                 ],
                 $superadmins
