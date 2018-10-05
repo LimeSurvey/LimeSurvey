@@ -138,7 +138,7 @@ abstract class ExtensionUpdater
             $message = gT('There are updates available for %s %s, new version number(s): %s.');
         }
 
-        $manualUpdateUrl = $this->getExtensionConfig();
+        $config = $this->getExtensionConfig();
 
         return sprintf(
             '<p>' . $message . '</p>',

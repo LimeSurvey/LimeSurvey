@@ -21,24 +21,46 @@ namespace LimeSurvey\ExtensionInstaller;
 abstract class VersionFetcher
 {
     /**
+     * <updater> XML tag from config.xml.
+     * @var SimpleXMLElement
+     */
+    protected $updaterXml;
+
+    /**
+     * Source.
+     * From <source> tag.
      * @var string
      */
     protected $source;
 
     /**
+     * Is this fetcher marked as stable or not?
+     * From <stable> tag.
      * @var boolean
      */
     protected $stable;
 
     /**
+     * Which extension name this fetcher belongs to.
      * @var string
      */
     protected $extensionName;
 
     /**
+     * Which extension type this fetcher belongs to.
      * @var string
      */
     protected $extensionType;
+
+    /**
+     * @param SimpleXMLElement $updaterXml
+     */
+    public function __construct(\SimpleXMLElement $updaterXml)
+    {
+        $this->updaterXml = $updaterXml;
+        $this->setSource((string) $updaterXml->source);
+        $this->setStable((string) $updaterXml->stable === '1');
+    }
 
     /**
      * Set source to fetch version information. Can be URL to REST API, git repo, etc.

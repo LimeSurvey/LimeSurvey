@@ -39,8 +39,7 @@ class VersionFetcherServiceLocator
         $this->addVersionFetcher(
             'rest',
             function (\SimpleXMLElement $updaterXml) {
-                $vf = new RESTVersionFetcher();
-                $vf->setSource((string) $updaterXml->source);
+                $vf = new RESTVersionFetcher($updaterXml);
                 return $vf;
             }
         );
@@ -49,7 +48,7 @@ class VersionFetcherServiceLocator
         $this->addVersionFetcher(
             'git',
             function (\SimpleXMLElement $updaterXml) {
-                return new GitVersionFetcher();
+                return new GitVersionFetcher($updaterXml);
             }
         );
     }

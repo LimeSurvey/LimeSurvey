@@ -60,9 +60,13 @@ class PluginUpdater extends ExtensionUpdater
 
         $versions = [];
         foreach ($versionFetchers as $fetcher) {
+
+            // Setup fetcher.
             $fetcher->setExtensionName($this->getExtensionName());
             $fetcher->setExtensionType($this->getExtensionType());
-            $newVersion = $fetcher->getLatestVersion();
+
+            // Fetch versions.
+            $newVersion          = $fetcher->getLatestVersion();
             $lastSecurityVersion = $fetcher->getLatestSecurityVersion();
 
             if (version_compare($lastSecurityVersion, $this->model->version, '>')) {
