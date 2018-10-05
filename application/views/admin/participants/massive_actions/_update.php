@@ -20,7 +20,7 @@
         </div>
         <?php 
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')
-            || $this->uid == Yii::app()->session['loginID']
+            || $this->user_id == Yii::app()->session['loginID']
             || (Permission::model()->hasGlobalPermission('users', 'update')
                 && $this->parent_id == Yii::app()->session['loginID']
             )
