@@ -82,7 +82,7 @@ $categoryNum=0;
                         break;
                         // Text
                     case 'text':
-                        if($aAttribute['expression']>=2) {
+                        if(isset($aAttribute['expression']) && $aAttribute['expression']>=2) {
                             echo CHtml::tag('div',array('class'=>"input-group"),"",false);
                             echo CHtml::tag('div',array('class'=>"input-group-addon"),"{");
                         }
@@ -90,7 +90,7 @@ $categoryNum=0;
                             'class'=>"form-control",
                             'disabled'=>$readonly,
                         ));
-                        if($aAttribute['expression']>=2) {
+                        if(isset($aAttribute['expression']) && $aAttribute['expression']>=2) {
                             echo CHtml::tag('div',array('class'=>"input-group-addon"),"}");
                             echo CHtml::closeTag('div');
                         }
