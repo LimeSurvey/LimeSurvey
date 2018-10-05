@@ -69,10 +69,11 @@ class PluginUpdater extends ExtensionUpdater
             $newVersion          = $fetcher->getLatestVersion();
             $lastSecurityVersion = $fetcher->getLatestSecurityVersion();
 
-            if (version_compare($lastSecurityVersion, $this->model->version, '>')) {
+            if (version_compare($lastSecurityVersion, $this->getCurrentVersion(), '>')) {
                 $versions[] = [
                     'isSecurityVersion' => true,
-                    'version' => $lastSecurityVersion
+                    'version'           => $lastSecurityVersion,
+                    'manualUpdateUrl'   => $fetcher->getManualUpdateUrl()
                 ];
             }
 
@@ -81,10 +82,11 @@ class PluginUpdater extends ExtensionUpdater
                 continue;
             }
 
-            if (version_compare($newVersion, $this->model->version, '>')) {
+            if (version_compare($newVersion, $this->getCurrentVersion(), '>')) {
                 $versions[] = [
                     'isSecurityVersion' => false,
-                    'version' => $newVersion
+                    'version'           => $newVersion,
+                    'manualUpdateUrl'   => $fetcher->getManualUpdateUrl()
                 ];
             } else {
                 // Ignore.
@@ -116,5 +118,14 @@ class PluginUpdater extends ExtensionUpdater
     public function getExtensionConfig()
     {
         return $this->model->extensionConfig;
+    }
+
+    /**
+     * Get this extension's current version.
+     * @return string
+     */
+    public function getCurrentVersion()
+    {
+        return $this->model->version;
     }
 }

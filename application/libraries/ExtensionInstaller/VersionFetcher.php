@@ -99,6 +99,18 @@ abstract class VersionFetcher
     }
 
     /**
+     * @return string
+     */
+    public function getManualUpdateUrl()
+    {
+        if (empty($this->updaterXml->manualUpdateUrl)) {
+            return null;
+        } else {
+            return (string) $this->updaterXml->manualUpdateUrl;
+        }
+    }
+
+    /**
      * Get latest version for configured source.
      * @return string Semantic versioning string.
      */

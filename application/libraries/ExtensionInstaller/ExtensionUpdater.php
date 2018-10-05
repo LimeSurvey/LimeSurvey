@@ -125,7 +125,7 @@ abstract class ExtensionUpdater
 
     /**
      * Compose version message to display of $versions.
-     * @param array $versions Each version has keys 'version' and 'isSecurityVersion'.
+     * @param array $versions Each version has keys 'version' and 'isSecurityVersion', etc.
      * @return string
      */
     public function getVersionMessage(array $versions)
@@ -133,19 +133,60 @@ abstract class ExtensionUpdater
         $extensionName = $this->getExtensionName();
         $extensionType = $this->getExtensionType();
         if ($this->foundSecurityVersion($versions)) {
-            $message = gT('There are <b>security updates</b> available for %s %s, new version number(s): %s.', 'js');
+            $message = gT('There are <b>security updates</b> available for %s <b>%s</b>.', 'js');
         } else {
-            $message = gT('There are updates available for %s %s, new version number(s): %s.');
+            $message = gT('There are updates available for %s <b>%s</b>.', 'js');
         }
 
-        $config = $this->getExtensionConfig();
-
-        return sprintf(
-            '<p>' . $message . '</p>',
+        $message = sprintf(
+            $message,
             $extensionType,
-            $extensionName,
-            $this->implodeVersions($versions)
+            $extensionName
         );
+
+        $latestVersion = $this->getLatestVersion($versions);
+
+        $message .= ' ' . sprintf(
+            gT('The latest available version is <i>%s</i>.', 'js'),
+            $latestVersion['version']
+        );
+
+        if (!empty($latestVersion['manualUpdateUrl'])) {
+            $message .= ' ' . sprintf(
+                gT('Please visit <a href="%s">%s</a> to download the update.', 'js'),
+                $latestVersion['manualUpdateUrl'],
+                $latestVersion['manualUpdateUrl']
+            );
+        }
+
+        return '<p>' . $message . '</p>';
+    }
+
+    /**
+     * Get description of how to update to latest version, based on available
+     * information in <updater> XML.
+     * @return string
+     */
+    public function getUpdateMethodsDescription(array $versions)
+    {
+    }
+
+    /**
+     * @return array
+     */
+    public function getLatestVersion(array $versions)
+    {
+        if (empty($versions)) {
+            return null;
+        }
+
+        $highestVersion = $versions[0];
+        foreach ($versions as $version) {
+            if (version_compare($version['version'], $highestVersion['version'], '>')) {
+                $highestVersion = $version;
+            }
+        }
+        return $highestVersion;
     }
 
     /**
