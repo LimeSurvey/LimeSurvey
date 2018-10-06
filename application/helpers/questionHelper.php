@@ -1631,14 +1631,15 @@ class questionHelper
     public static function getQuestionThemeAttributeValues($sQuestionThemeName = null, $question_template = null)
     {
         libxml_disable_entity_loader(false);
-        
+
         $sCoreThemeXmlPath = Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
         $sUserThemeXmlPath = Yii::app()->getConfig("userquestionthemerootdir").'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
 
         $xml_config = is_file($sCoreThemeXmlPath) ? simplexml_load_file($sCoreThemeXmlPath) :  simplexml_load_file($sUserThemeXmlPath);
         $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), TRUE);
-        libxml_disable_entity_loader(true); 
-        return $custom_attributes['attribute'];
+        libxml_disable_entity_loader(true);
+        // no need recursive QuestionAttribute::getDefaultSettings() is array of string or null
+        return array_merge(QuestionAttribute::getDefaultSettings(),$custom_attributes['attribute']);
     }
 
     /**

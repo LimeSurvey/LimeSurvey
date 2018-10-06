@@ -298,8 +298,8 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
-     * Get default settings for an attribut
-     * @return array
+     * Get default settings for an attribute, return an array of string|null
+     * @return string|null[] 
      */
     public static function getDefaultSettings()
     {
