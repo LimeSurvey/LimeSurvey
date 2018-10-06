@@ -50,7 +50,7 @@
             {
                 $oPluginEvent = new PluginEvent($when.get_parent_class($this->owner).$what, $this);
                 $oPluginEvent->set('model', $this->owner);
-                $oPluginEvent->set('dynamicId', $this->owner->dynamicId);
+                $oPluginEvent->set('dynamicId', $this->owner->getDynamicId());
                 return App()->getPluginManager()->dispatchEvent($oPluginEvent);
             }
         }
@@ -66,7 +66,7 @@
         {
             $oPluginEvent = new PluginEvent($sEventName, $this);
             $oPluginEvent->set('model', $this->owner);
-            if(method_exists('getSurveyId',$this->owner)) {
+            if(method_exists($this->owner,'getSurveyId')) {
                 $oPluginEvent->set('iSurveyID', $this->owner->getSurveyId());
                 $oPluginEvent->set('surveyId', $this->owner->getSurveyId());
             }
