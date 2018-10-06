@@ -95,7 +95,7 @@ class Timing extends LSActiveRecord
      * @return int
      */
     public function getSurveyId() {
-        return $this->sid;
+        return $this->surveyId;
     }
 
 }
