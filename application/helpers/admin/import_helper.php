@@ -933,7 +933,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
 
         if (!in_array($insertdata['surveyls_language'], $aLanguagesSupported)) {
-                continue;
+            continue;
         }
 
         // Assign new survey ID
@@ -995,7 +995,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $iOldSID = $insertdata['sid'];
             $insertdata['sid'] = $iNewSID;
             $oldgid = $insertdata['gid']; unset($insertdata['gid']); // save the old qid
-
+            if(strlen($insertdata['group_name']) > 100 ) { // see #14133 since this function didn't have good error system … must fix it silently …
+                $results['importwarnings'][] = sprintf(gT("Group “%s“ was set to “%s“"),CHtml::encode($insertdata['group_name']),CHtml::encode(substr($insertdata['group_name'],0,100)));
+                $insertdata['group_name'] = substr($insertdata['group_name'],0,100);
+            }
             // now translate any links
             if ($bTranslateInsertansTags) {
                 $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
@@ -1007,8 +1010,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 switchMSSQLIdentityInsert('groups', true);
                 $insertdata['gid'] = $aGIDReplacements[$oldgid];
             }
-
-            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
+            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");// This thrown safedie …
             if (!isset($aGIDReplacements[$oldgid])) {
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
                 $results['groups']++;
@@ -1040,7 +1042,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $iOldSID = $insertdata['sid'];            
             $iOldGID = $insertdata['gid'];
             $insertdata['sid'] = $iNewSID;
-            $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
+            $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']]; // Can add question with invalid gid … $newgid can be false …
             $oldqid = $insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
             // now translate any links
@@ -1058,7 +1060,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if ($insertdata) {
                 XSSFilterArray($insertdata);
             }
-
 
             if (!$bConvertInvalidQuestionCodes) {
                 $sScenario = 'archiveimport';
