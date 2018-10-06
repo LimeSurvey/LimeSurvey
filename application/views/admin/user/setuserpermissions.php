@@ -37,7 +37,7 @@ echo viewHelper::getViewTestTag('setUserPermissions');
                     <tr>
                         <!-- Icon -->
                         <td>
-                            <span class="icon-<?php echo $aCRUDPermissions['img']; ?> text-success"></span>
+                            <i class="<?php echo $aCRUDPermissions['img']; ?> text-success"></i>
                             <?php echo $aCRUDPermissions['description'];?>
                         </td>
 
