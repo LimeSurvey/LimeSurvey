@@ -308,11 +308,9 @@ return array(
     /* An empty package to be extended for EM (after core expressions) */
     'expression-extend' =>array(
         'depends' => array(
-            // Empty, 'expressions' for 4.0
+            'expressions',
         )
     ),
-        ),
-
     'decimalcustom' => array(
         'devBaseUrl' => 'assets/packages/decimalcustom/',
         'basePath' => 'core.decimalcustom',
@@ -323,5 +321,5 @@ return array(
         'depends' => array(
             'decimal',
         )
-    )
+    ),
 );
