@@ -46,21 +46,4 @@ class demoAddEmFunction extends PluginBase
         );
         $this->getEvent()->append('packages', $newPackage);
     }
-
-    /**
-     * If we use beforeControllerAction to register file and package :
-     * we don't need the event again when loading em core from $_SESSION
-     *
-     * This is a not tested solution ;)
-     */
-    public function beforeControllerAction() {
-        Yii::setPathOfAlias('demoAddEmFunction',dirname(__FILE__));
-        Yii::app()->clientScript->addPackage('demoAddEmFunction',
-            array(
-                'basePath' => "demoAddEmFunction.assets",
-                'js' => array("demoAddEmFunction.js"),
-            )
-        );
-        array_push(Yii::app()->clientScript->packages['expression-extend']['depends'],'demoAddEmFunction');
-    }
 }
