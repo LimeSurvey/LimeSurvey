@@ -183,8 +183,11 @@
         {
             return '{{survey_'.$this->dynamicId.'}}';
         }
-        public function getSurveyId()
-        {
+        /**
+         * Get current surveyId for other model/function
+         * @return int
+         */
+        public function getSurveyId() {
             return $this->dynamicId;
         }
         public function browse()

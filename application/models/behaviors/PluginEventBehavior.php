@@ -50,9 +50,6 @@
             {
                 $oPluginEvent = new PluginEvent($when.get_parent_class($this->owner).$what, $this);
                 $oPluginEvent->set('model', $this->owner);
-                if(in_array(get_parent_class($this->owner),array("Token","Response"))) { // We know dynamicId is survey
-                    $oPluginEvent->set('iSurveyID', $this->owner->dynamicId);
-                }
                 $oPluginEvent->set('dynamicId', $this->owner->dynamicId);
                 return App()->getPluginManager()->dispatchEvent($oPluginEvent);
             }
@@ -69,7 +66,10 @@
         {
             $oPluginEvent = new PluginEvent($sEventName, $this);
             $oPluginEvent->set('model', $this->owner);
-            Yii::log(CVarDumper::dumpAsString([get_class($this->owner)], 3, false), 'info','application.plugins.event');;
+            if(method_exists('getSurveyId',$this->owner)) {
+                $oPluginEvent->set('iSurveyID', $this->owner->getSurveyId());
+                $oPluginEvent->set('surveyId', $this->owner->getSurveyId());
+            }
             if (isset($criteria)) {
                 $oPluginEvent->set('filterCriteria', $criteria);
             }

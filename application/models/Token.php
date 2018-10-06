@@ -379,4 +379,12 @@ abstract class Token extends Dynamic
     {
         return '{{tokens_'.$this->dynamicId.'}}';
     }
+
+    /**
+     * Get current surveyId for other model/function
+     * @return int
+     */
+    public function getSurveyId() {
+        return $this->dynamicId;
+    }
 }

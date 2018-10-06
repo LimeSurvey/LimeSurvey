@@ -1013,4 +1013,12 @@ class TokenDynamic extends LSActiveRecord
         return $dataProvider;
 
     }
+
+    /**
+     * Get current surveyId for other model/function
+     * @return int
+     */
+    public function getSurveyId() {
+        return $this->sid;
+    }
 }
