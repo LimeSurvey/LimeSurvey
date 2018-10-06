@@ -113,23 +113,23 @@ class questions extends Survey_Common_Action
 
         // Last question visited : By user (only one by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $qid);
+        SettingGlobal::setSetting($setting_entry, $qid);
 
         // we need to set the sid for this question
         $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $iSurveyID);
+        SettingGlobal::setSetting($setting_entry, $iSurveyID);
 
         // we need to set the gid for this question
         $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $gid);
+        SettingGlobal::setSetting($setting_entry, $gid);
 
         // Last question for this survey (only one by survey, many by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
-        setGlobalSetting($setting_entry, $qid);
+        SettingGlobal::setSetting($setting_entry, $qid);
 
         // we need to set the gid for this question
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
-        setGlobalSetting($setting_entry, $gid);
+        SettingGlobal::setSetting($setting_entry, $gid);
 
         $aData['surveyIsActive'] = $survey->active !== 'N';
 
@@ -1043,7 +1043,7 @@ class questions extends Survey_Common_Action
         $aData['copying'] = false;
 
         $aData['aqresult'] = '';
-        $aData['action'] = 'addquestion';
+        $aData['action'] = 'newquestion';
 
         ///////////
         // sidemenu
@@ -1055,8 +1055,6 @@ class questions extends Survey_Common_Action
         $aViewUrls = [];
         $aViewUrls['editQuestion_view'][] = $aData;
         App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$oQuestion->gid.'new', "OtherSelection('".$oQuestion->type."');", LSYii_ClientScript::POS_POSTSCRIPT);            
-        
-
 
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
@@ -1110,9 +1108,10 @@ class questions extends Survey_Common_Action
             // if (isset($_POST['sortorder']))
             //     $postsortorder = sanitize_int($_POST['sortorder']);
 
-            $aData['adding'] = $adding = $action == 'addquestion';
+            $aData['adding'] = $adding = $action == 'newquestion';
             $aData['copying'] = $copying = $action == 'copyquestion';
-            $aData['subaction'] = $copying ? gT('Copy question') : gT('Add a new question');
+            $aData['editing'] = $editing = $action == 'editquestion';
+            $aData['subaction'] = $copying ? gT('Copy question') : ($editing ? gT('Edit question') : gT('Add a new question'));
 
             $questlangs = $oSurvey->additionalLanguages;
             $baselang = $oSurvey->language;
@@ -1213,7 +1212,8 @@ class questions extends Survey_Common_Action
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
             $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $oQuestion->type, $surveyid);
-            $aData['aQuestionTemplateAttributes'] = $questionTemplateAttributes['question_template'];
+            // TODO: No index 'question_template'
+            $aData['aQuestionTemplateAttributes'] = []; //$questionTemplateAttributes['question_template'];
             $aData['aQuestionTemplateAttributes']['core'] = array('title'=>'Default', 'preview' => questionHelper::getQuestionThemePreviewUrl($oQuestion->type));
                 $aData['aQuestionTemplateAttributes']['value'] = 'core';
 
@@ -1246,7 +1246,7 @@ class questions extends Survey_Common_Action
              * Since is moved via ajax call only : it's not needed, when we have time : readd it for no-js solution
              */
             //~ if (!$adding)
-                //~ $qattributes = questionHelper::getQuestionAttributesSettings(($aqresult->type); //(or Question::getAdvancedSettingsWithValues )
+                //~ $qattributes = QuestionAttribute::getQuestionAttributesSettings(($aqresult->type); //(or Question::getAdvancedSettingsWithValues )
             //~ else
                 //~ $qattributes = array();
 
@@ -1264,6 +1264,7 @@ class questions extends Survey_Common_Action
 
             $aData['addlanguages'] = $oSurvey->additionalLanguages;
 
+            $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($oQuestion->type);
             $aViewUrls['editQuestion_view'][] = $aData;
             App()->getClientScript()->registerScript("EditQuestionView_question_jsviews_".$surveyid.$gid.$qid, "OtherSelection('".$oQuestion->type."');", LSYii_ClientScript::POS_POSTSCRIPT);            
         } else {
@@ -1358,10 +1359,10 @@ class questions extends Survey_Common_Action
                 $oQuestion->delete();
                 $sMessage = gT("Question was successfully deleted.");
             }
-
+            $redirectUrl = array('admin/survey/sa/listquestions/', 'surveyid' => $surveyid, 'gid' => $gid_search);
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
+                $this->getController()->redirect($redirectUrl);
             } else {
                 return array('status'=>true, 'message'=>$sMessage);
             }
@@ -1369,7 +1370,7 @@ class questions extends Survey_Common_Action
             $sMessage = gT("You are not authorized to delete questions.");
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid.'?gid='.$gid_search));
+                $this->getController()->redirect($redirectUrl);
             } else {
                 return array('status'=>false, 'message'=>$sMessage);
             }
@@ -1553,8 +1554,10 @@ class questions extends Survey_Common_Action
         $surveyid           = (int) Yii::app()->request->getParam('sid', 0);
         $qid                = (int) Yii::app()->request->getParam('qid', 0);
         $type               = Yii::app()->request->getParam('question_type');
-        $question_template  = Yii::app()->request->getParam('question_template', '');
+        $sQuestionTemplate  = Yii::app()->request->getParam('question_template', '');
+        $sOldQuestionTemplate  = Yii::app()->request->getParam('old_question_template', '');
         $oSurvey = Survey::model()->findByPk($surveyid);
+        $questionTypeList = QuestionTemplate::getTypeToFolder();
 
         if ($oSurvey === null) {
             App()->end();
@@ -1563,36 +1566,57 @@ class questions extends Survey_Common_Action
         $aLanguages = $oSurvey->allLanguages;
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
-        // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
-        if (!empty($question_template) && $question_template !== 'core') {
-            $questionTypeList = QuestionTemplate::getTypeToFolder();
-            $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($question_template, $questionTypeList[$type]);
-            // CHECK TO SEE IF ARRAY CONTAINS INDEX 0, IF NOT - INDEX 0 WOULD BE CREATED ( OTHERWISE DATA MERGE WOULD FAIL IF INDEX ÍS MISSING )
-            if (!array_key_exists('0', $themeAttributes)){$themeTemp[0] = $themeAttributes; $themeAttributes = $themeTemp;}
+        // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible  
+        if (!empty($sOldQuestionTemplate) && $sOldQuestionTemplate !== 'core'){
+            // get old custom question theme attributes
+            $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sOldQuestionTemplate, $questionTypeList[$type]);
+            if (!empty($aOldQuestionThemeAttributes)){ 
+                if (!array_key_exists('0', $aOldQuestionThemeAttributes)){
+                    unset($aAttributesWithValues[$aOldQuestionThemeAttributes['name']]);
+                } else {
+                    foreach ($aOldQuestionThemeAttributes as $key => $value) {
+                        unset($aAttributesWithValues[$value['name']]);
+                    }
+                }
+            }
+        }
 
-            foreach ($themeAttributes as $key => $attribute) {
+        // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
+        if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
+                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionTemplate, $questionTypeList[$type]);
+                // CHECK TO SEE IF ARRAY CONTAINS INDEX 0, IF NOT - INDEX 0 WOULD BE CREATED ( OTHERWISE DATA MERGE WOULD FAIL IF INDEX ÍS MISSING )
+                if (!array_key_exists('0', $themeAttributes)){$themeTemp[0] = $themeAttributes; $themeAttributes = $themeTemp;}
+                
                 // INSERTING EACH OF THIS KEYS TO THE ARRAY IF KEYS ARE MISSING
-                if (empty($attribute['name'])){$attribute['name'] = 'default_theme_attribute_name';}
-                if (empty($attribute['readonly'])){$attribute['readonly'] = '';}
-                if (empty($attribute['default'])){$attribute['default'] = '';}
-                if (empty($attribute['readonly_when_active'])){$attribute['readonly_when_active'] = '';}
-                if (empty($attribute['value'])){$attribute['value'] = '';}
-                if (empty($attribute['i18n'])){$attribute['i18n'] = '';}
-                if (empty($attribute['category'])){$attribute['category'] = 'Display Theme Options';}
-                if (empty($attribute['sortorder'])){$attribute['sortorder'] = '';}
-                if (empty($attribute['help'])){$attribute['help'] = '';}
-                if (empty($attribute['caption'])){$attribute['caption'] = '';}
-                if (empty($attribute['inputtype'])){$attribute['inputtype'] = '';}
-                $aAttributesWithValues[$attribute['name']] = $attribute;
-            }              
+                foreach ($themeAttributes as $key =>$attribute) {
+                    // remove attribute if inputtype is empty 
+                    if (empty($attribute['inputtype'])){
+                        unset($aAttributesWithValues[$attribute['name']]);
+                        continue;
+                    }
+
+                    if (empty($attribute['name'])){$attribute['name'] = 'default_theme_attribute_name';}
+                    if (empty($attribute['readonly'])){$attribute['readonly'] = '';}
+                    if (empty($attribute['default'])){$attribute['default'] = '';}
+                    if (empty($attribute['readonly_when_active'])){$attribute['readonly_when_active'] = '';}
+                    if (empty($attribute['value'])){$attribute['value'] = '';}
+                    if (empty($attribute['i18n'])){$attribute['i18n'] = '';}
+                    if (empty($attribute['category'])){$attribute['category'] = 'Display Theme Options';}
+                    if (empty($attribute['sortorder'])){$attribute['sortorder'] = '';}
+                    if (empty($attribute['help'])){$attribute['help'] = '';}
+                    if (empty($attribute['caption'])){$attribute['caption'] = '';}
+                    if (empty($attribute['expression'])){$attribute['expression'] = '';}
+                    $aAttributesWithValues[$attribute['name']] = $attribute;
+                }              
         }
         uasort($aAttributesWithValues, 'categorySort');
         unset($aAttributesWithValues['question_template']);
+
         $aAttributesPrepared = array();
         foreach ($aAttributesWithValues as $aAttribute) {
-            // SET QUESTION TEMPLATE FORM ATTRIBUTES WHEN $question_template VARIABLE IS SET
-            if (!empty($question_template) && isset($aAttribute['name']) && $aAttribute['name'] == 'question_template') {
-                $aAttribute['value'] = $question_template;
+            // SET QUESTION TEMPLATE FORM ATTRIBUTES WHEN $sQuestionTemplate VARIABLE IS SET
+            if (!empty($sQuestionTemplate) && isset($aAttribute['name']) && $aAttribute['name'] == 'question_template') {
+                $aAttribute['value'] = $sQuestionTemplate;
                 $aAttributesPrepared[] = $aAttribute;
             } elseif (isset($aAttribute['i18n']) && $aAttribute['i18n'] == false) {
                 $aAttributesPrepared[] = $aAttribute;

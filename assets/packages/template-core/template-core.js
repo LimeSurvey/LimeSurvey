@@ -21,9 +21,11 @@ var TemplateCoreClass = function () {
         },
         /* alertSurveyDialog @see application/core/package/limesurvey */
         alertSurveyDialog: function (text, title) {
-            $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title || "");
-            $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" || "");
-            $("#bootstrap-alert-box-modal").modal('show');
+            if (LSvar.showpopup===1) {
+                $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title || "");
+                $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" || "");
+                $("#bootstrap-alert-box-modal").modal('show');
+            }
         },
         /* confirmSurveyDialog @see application/core/package/limesurvey */
         confirmSurveyDialog: function (text, title, submits) {

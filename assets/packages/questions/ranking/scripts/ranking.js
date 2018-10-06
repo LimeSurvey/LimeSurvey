@@ -31,6 +31,7 @@ var RankingQuestion = function (options) {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
             sort: false,
+            scroll: false,
             onMove: function(ev) {
                 if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
                     //sortableAlert();
@@ -124,14 +125,14 @@ var RankingQuestion = function (options) {
             alertSurveyDialog(txtAlert, '');
         }
     },
-    loadDragDropRank = function (questionId) {
+    loadDragDropRank = function () {
         
         // Update #relevance
         $("[id^=" + relevancename + "]").val('0');
         $('#sortable-rank-' + questionId + ' li').each(function () {
             $(this).appendTo('#sortable-choice-' + questionId );
         });
-        $('#question' + questionId + ' .select-item select').each(function (index) {
+        $('#question' + questionId + ' .select-item select :selected').each(function (index) {
             if ($(this).val() != '') {
                 $("#" + relevancename + (index+1)).val("1");
                 $('#sortable-choice-' + questionId + ' li#' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);

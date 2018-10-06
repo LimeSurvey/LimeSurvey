@@ -545,7 +545,7 @@ class userstatistics_helper
     /**
      * The current Excel workbook we are working on
      *
-     * @var Xlswriter
+     * @var Writer
      */
     protected $workbook;
 
@@ -2680,13 +2680,13 @@ class userstatistics_helper
             /**
              * Initiate the Spreadsheet_Excel_Writer
              */
-            require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
+            require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Writer.php');
 
             if ($pdfOutput == 'F') {
                 $sFileName = $sTempDir.'/statistic-survey'.$surveyid.'.xls';
-                $this->workbook = new Xlswriter($sFileName);
+                $this->workbook = new Spreadsheet_Excel_Writer($sFileName);
             } else {
-                            $this->workbook = new Xlswriter();
+                            $this->workbook = new Spreadsheet_Excel_Writer();
             }
 
             $this->workbook->setVersion(8);

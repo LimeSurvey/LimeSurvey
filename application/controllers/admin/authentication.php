@@ -173,6 +173,7 @@ class Authentication extends Survey_Common_Action
                 Yii::app()->session['loginsummary'] = self::getSummary();
 
                 $event = new PluginEvent('afterSuccessfulLogin');
+                $event->set('identity', $identity);
                 App()->getPluginManager()->dispatchEvent($event);
 
                 return array('success');

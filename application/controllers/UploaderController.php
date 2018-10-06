@@ -252,10 +252,22 @@ class UploaderController extends SurveyController
         $meta = '';
         // App()->getClientScript()->registerPackage('jqueryui');
         // App()->getClientScript()->registerPackage('jquery-superfish');
+        
+        $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
+        $oEvent = new PluginEvent('beforeSurveyPage');
+        $oEvent->set('surveyId', $surveyid);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        if (!is_null($oEvent->get('template'))) {
+            $aSurveyInfo['templatedir'] = $event->get('template');
+        }
+        $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
+        $sTemplateUrl = getTemplateURL($aSurveyInfo['template'])."/";
+        $oTemplate = Template::model()->getInstance('', $surveyid);
         $sNeededScriptVar = '
             var uploadurl = uploadurl || "'.$this->createUrl('/uploader/index/mode/upload/').'";
             var imageurl = imageurl || "'.Yii::app()->getConfig('imageurl').'/";
             var surveyid = surveyid || "'.$surveyid.'";
+            showpopups="'.$oTemplate->showpopups.'";
         ';
         $sLangScriptVar = "
                 uploadLang = {
@@ -274,15 +286,6 @@ class UploaderController extends SurveyController
                      editFile : '".gT('Edit', 'js')."',
                     };
         ";
-        $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
-        // $oEvent = new PluginEvent('beforeSurveyPage');
-        // $oEvent->set('surveyId', $surveyid);
-        // App()->getPluginManager()->dispatchEvent($oEvent);
-        // if (!is_null($oEvent->get('template'))) {
-        //     $aSurveyInfo['templatedir'] = $event->get('template');
-        // }
-        // $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
-        // $sTemplateUrl = getTemplateURL($aSurveyInfo['template'])."/";
         // $oTemplate = Template::model()->getInstance('', $surveyid);
         // Yii::app()->clientScript->registerPackage('survey-template-'.$oTemplate->sTemplateName);
         

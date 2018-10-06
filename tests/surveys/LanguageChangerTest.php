@@ -40,8 +40,16 @@ class LanguageChangerTest extends TestBaseClassWeb
             // Open survey.
             $web->get($url);
 
+            // Dump for debugging.
+            //$web->dumpBody();
+
             // Change to Deutsch.
             $web->changeLanguageSelect('de');
+
+            // Dump for debugging.
+            //$web->dumpBody();
+
+            sleep(2);
 
             // Check so that we see German text.
             $text = $web->findElement(
@@ -51,6 +59,8 @@ class LanguageChangerTest extends TestBaseClassWeb
 
             // Click next.
             $web->next();
+
+            sleep(1);
 
             // Fill in first question.
             $web->answerTextQuestion($sgqa, 'This is an answer');

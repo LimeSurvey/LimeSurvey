@@ -14,6 +14,11 @@
     This file generates the top container for the participant registration page.
 
 #}
+
+<div class="pull-right ls-no-js-hidden">
+    {{ include('./subviews/navigation/language_changer.twig') }}
+</div>
+
 <div class="{{ aSurveyInfo.class.registerhead }} row h2" {{ aSurveyInfo.attr.registerhead }}>
     {{aSurveyInfo.registration.head}}
 </div>

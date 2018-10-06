@@ -15,6 +15,11 @@
      -moz-box-sizing: content-box;
           box-sizing: content-box;
 }
+
+.ls-choice.list-group-item.grabable.sortable-enable {
+    touch-action: none;
+}
+
 .sortable-list .ls-choice {
     border-radius:0;
 }

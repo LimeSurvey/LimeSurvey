@@ -320,11 +320,19 @@ class dataentry extends Survey_Common_Action
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
                 }
 
+                if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])){
+                    $targetResponse['startdate'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                }
+
+                if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])){
+                    $targetResponse['datestamp'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                }
+
                 $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
                 $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
                 $beforeDataEntryImport->set('oModel', $targetResponse);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
-
+ 
                 $imported++;
                 $targetResponse->save();
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
@@ -466,7 +474,7 @@ class dataentry extends Survey_Common_Action
                 }
             } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 if (isset($_GET['public']) && $_GET['public'] == "true") {
-                    $password = md5(Yii::app()->request->getParam('accesscode'));
+                    $password = hash('sha256',Yii::app()->request->getParam('accesscode'));
                 } else {
                     $password = Yii::app()->request->getParam('accesscode');
                 }
@@ -616,7 +624,7 @@ class dataentry extends Survey_Common_Action
                                 array(
                                 'class' => 'popupdate',
                                 'size' => '12',
-                                'onkeypress' => 'return goodchars(event,\''.$goodchars.'\')'
+                                'onkeypress' => 'return window.LS.goodchars(event,\''.$goodchars.'\')'
                                 )
                                 );
                                 /*
@@ -648,7 +656,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= CHtml::hiddenField('dateformat'.$fname['fieldname'], $dateformatdetails['jsdate'],
                                 array('id' => "dateformat{$fname['fieldname']}")
                                 );
-                                // $aDataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' onkeypress=\"return goodchars(event,'".$goodchars."')\"/>\n";
+                                // $aDataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' onkeypress=\"return window.LS.goodchars(event,'".$goodchars."')\"/>\n";
                                 // $aDataentryoutput .= "\t<input type='hidden' name='dateformat{$fname['fieldname']}' id='dateformat{$fname['fieldname']}' value='{$dateformatdetails['jsdate']}'  />\n";
                             } else {
                                 $aDataentryoutput .= CHtml::textField($fname['fieldname'], $thisdate);
@@ -932,7 +940,7 @@ class dataentry extends Survey_Common_Action
                             break;
                         case Question::QT_N_NUMERICAL: //NUMERICAL TEXT
                             $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}' "
-                            ."onkeypress=\"return goodchars(event,'0123456789.,')\" />\n";
+                            ."onkeypress=\"return window.LS.goodchars(event,'0123456789.,')\" />\n";
                             break;
                         case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
                             $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"

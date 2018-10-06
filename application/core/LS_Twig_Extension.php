@@ -42,7 +42,6 @@
 
 class LS_Twig_Extension extends Twig_Extension
 {
-
     /**
      * Publish a css file from public style directory, using or not the asset manager (depending on configuration)
      * In any twig file, you can register a public css file doing: {{ registerPublicCssFile($sPublicCssFileName) }}
@@ -110,6 +109,10 @@ class LS_Twig_Extension extends Twig_Extension
     /**
      * Publish a script
      * In any twig file, you can register a script doing: {{ registerScript($sId, $sScript) }}
+     *
+     * NOTE: this function is not recursive, so don't use it to register a script located inside a theme folder, or inherited themes will be broken.
+     * NOTE! to register a script located inside a theme folder, registerTemplateScript()
+     *
      */
     public static function registerScript($id, $script, $position = null, array $htmlOptions = array())
     {
@@ -161,6 +164,21 @@ class LS_Twig_Extension extends Twig_Extension
         return $position;
     }
 
+    /**
+     * since count with a noncountable element is throwing a warning in latest php versions
+     * we have to be sure not to kill rendering by a wrong variable
+     *
+     * @param mixed $element
+     * @return void
+     */
+    public static function safecount($element)
+    {
+        $isCountable = is_array($element) || $element instanceof Countable;
+        if($isCountable) {
+            return count($element);
+        }
+        return 0;
+    }
     /**
      * Retreive the question classes for a given question id
      * Use in survey template question.twig file.
@@ -262,7 +280,7 @@ class LS_Twig_Extension extends Twig_Extension
         if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
             $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
         }
-        
+
 
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
     }
@@ -278,11 +296,11 @@ class LS_Twig_Extension extends Twig_Extension
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
         $sUrlImgAsset =  $sImagePath;
-        
-        
+
+
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
-        } 
+        }
 
         if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
             $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
@@ -395,7 +413,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function registerScriptFile($path, $position = null)
     {
 
-        Yii::app()->getClientScript()->registerScriptFile($path, ($position === null ? CClientScript::POS_BEGIN : $position));
+        Yii::app()->getClientScript()->registerScriptFile($path, ($position === null ? LSYii_ClientScript::POS_BEGIN : self::getPosition($position)));
     }
 
     public static function registerCssFile($path)
@@ -405,7 +423,7 @@ class LS_Twig_Extension extends Twig_Extension
 
     public static function registerPackage($name)
     {
-        Yii::app()->getClientScript()->registerPackage($name, CClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerPackage($name, LSYii_ClientScript::POS_BEGIN);
     }
 
     /**
@@ -548,12 +566,28 @@ class LS_Twig_Extension extends Twig_Extension
         }
 
         return 'rgba('.join(', ', $return).','.$alpha.')';
-        
-
-
     }
-    
-    public static function lightencss($cssColor, $grade=10, $alpha=1){
+
+    /**
+     * Check if a needle is in a multidimensional array
+     * @param mixed $needle The searched value.
+     * @param array $haystack The array.
+     * @param bool $strict If the third parameter strict is set to TRUE then the in_array() function will also check the types of the needle in the haystack.
+     */
+    function in_multiarray($needle, $haystack, $strict = false) {
+
+        foreach ($haystack as $item) {
+            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    public static function lightencss($cssColor, $grade=10, $alpha=1)
+    {
         $aColors = str_split(substr($cssColor,1), 2);
         $return = [];
         foreach ($aColors as $color) {
@@ -568,4 +602,65 @@ class LS_Twig_Extension extends Twig_Extension
 
         return 'rgba('.join(', ', $return).','.$alpha.')';
     }
+
+    public static function getConfig($item)
+    {
+        return Yii::app()->getConfig($item);
+    }
+
+
+    /**
+     * Retreive all the previous answers from a given token
+     * To use it:
+     *  {% set aResponses = getAllTokenAnswers(aSurveyInfo.sid) %}
+     *  {{ dump(aResponses) }}
+     *
+     *  Of course, the survey must use token. If you want to show it after completion, the you must turn on public statistics
+     */
+    public static function getAllTokenAnswers( $iSurveyID )
+    {
+        $aResponses = array();
+        $sToken     = (empty($_SESSION['survey_'.$iSurveyID]['token']))?'':$_SESSION['survey_'.$iSurveyID]['token'] ;
+
+        if (!empty($sToken)) {
+            $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
+                                array(
+                                    'condition' => 'token = :token',
+                                    'params'    => array( ':token'=> $sToken ),
+                                )
+
+                            );
+
+            if( count($oResponses) > 0 ){
+                foreach($oResponses as $oResponse)
+                    array_push($aResponses,$oResponse->attributes);
+            }
+        }
+
+        return $aResponses;
+    }
+
+
+    /**
+     * Retreive all the previous answers from a given survey (can be a different survey)
+     * To use it:
+     *  {% set aResponses = getAllAnswers(aSurveyInfo.sid) %}
+     *  {{ dump(aResponses) }}
+     *
+     *  If you want to show it after completion, the you must turn on public statistics
+     */
+    public static function getAllAnswers( $iSurveyID )
+    {
+        $aResponses = array();
+        $oResponses = SurveyDynamic::model($iSurveyID)->findAll();
+
+        if( count($oResponses) > 0 ){
+            foreach($oResponses as $oResponse)
+                array_push($aResponses,$oResponse->attributes);
+        }
+
+        return $aResponses;
+
+    }
+
 }

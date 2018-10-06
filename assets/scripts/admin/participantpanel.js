@@ -37,7 +37,7 @@ LS.CPDB = (function() {
                 e.preventDefault();
                 var action = $(baseModal).find('#'+formId).attr('action');
                 var formData = $(baseModal).find('#'+formId).serializeArray();
-                LS.ajax({
+                $.ajax({
                     url: action,
                     data: formData,
                     method: 'POST',
@@ -50,7 +50,7 @@ LS.CPDB = (function() {
         };
 
 
-        return LS.ajax({
+        return $.ajax({
             url: url, 
             data: data,
             method: 'POST',
@@ -435,7 +435,7 @@ LS.CPDB = (function() {
      * @return
      */
     deleteSingleParticipantShare = function(url) {
-        LS.ajax({
+        $.ajax({
             url: url,
             method: "GET",
             dataType: 'json',
@@ -463,7 +463,7 @@ LS.CPDB = (function() {
          */
         $('#export').click(function() { onClickExport(true); });
 
-        doToolTip();
+        window.LS.doToolTip();
         $(document).trigger('pjax:refresh');
     };
 
@@ -495,7 +495,7 @@ function rejectParticipantShareAjax(participant_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                notifyFader(result.successMessage, 'well-lg bg-primary text-center');
+                window.LS.notifyFader(result.successMessage, 'well-lg bg-primary text-center');
                 $.fn.yiiGridView.update('share_central_participants',{});
             }
         })
@@ -514,7 +514,7 @@ function deleteAttributeAjax(attribute_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                notifyFader(result.successMessage, 'well-lg bg-primary text-center');
+                window.LS.notifyFader(result.successMessage, 'well-lg bg-primary text-center');
                 $.fn.yiiGridView.update('list_attributes',{});
             }
         })

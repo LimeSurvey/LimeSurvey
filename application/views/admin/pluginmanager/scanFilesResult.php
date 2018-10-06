@@ -14,11 +14,11 @@
                     </button>
                 </form>
             <?php elseif ($scannedPlugin['load_error'] == 0
-                          && $scannedPlugin['pluginConfig'] != null
+                          && $scannedPlugin['extensionConfig'] != null
                           && !$scannedPlugin['isCompatible']): ?>
                 <i class='fa fa-ban text-warning'></i>&nbsp;
                 <span class='text-warning'><?php eT('Plugin is not compatible with your LimeSurvey version.'); ?></span>
-            <?php elseif ($scannedPlugin['load_error'] == 0 && $scannedPlugin['pluginConfig'] == null): ?>
+            <?php elseif ($scannedPlugin['load_error'] == 0 && $scannedPlugin['extensionConfig'] == null): ?>
                 <i class='fa fa-ban text-warning'></i>&nbsp;
                 <span class='text-warning'><?php eT('Missing configuration file.'); ?></span>
             <?php else: ?>

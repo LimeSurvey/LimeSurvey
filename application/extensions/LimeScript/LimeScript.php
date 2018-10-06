@@ -19,7 +19,12 @@
             $data['replacementFields']['path']  = App()->createUrl("admin/limereplacementfields/sa/index/");
             $json = json_encode($data, JSON_FORCE_OBJECT);
             $script = "LS.data = $json;\n"
-                    . "LS.lang = {};\n"
+                    . "LS.lang = {
+                        confirm: {
+                            confirm_cancel: '".gT('Cancel')."',
+                            confirm_ok: '".gT('OK')."'
+                        }
+                    };\n"
                     . "$.ajaxSetup({data: {YII_CSRF_TOKEN: LS.data.csrfToken}});";
             App()->getClientScript()->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
         }

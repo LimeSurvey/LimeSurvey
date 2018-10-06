@@ -22,6 +22,9 @@
     {{aSurveyInfo.registerform.hiddeninputs}}
 
     <div class='{{ aSurveyInfo.class.registerformcol }} col-md-8 col-md-offset-2' {{ aSurveyInfo.attr.registerformcol }}>
+        <div class="ls-js-hidden form-group row">
+            {{ include('./subviews/navigation/language_changer.twig') }}
+        </div>
         {# Participants first name #}
         <div class='{{ aSurveyInfo.class.registerformcolrow }} form-group row' {{ aSurveyInfo.attr.registerformcolrow }}>
             <label for='register_firstname' class='{{ aSurveyInfo.class.registerformcolrowlabel }} control-label '>{{ gT("First name:") }}</label>
@@ -52,7 +55,7 @@
                 {% set registerKey = "register_" ~ key %}
                 <label for="{{ registerKey }}" class='{{ aSurveyInfo.class.registerformextraslabel }} control-label '> {{ aExtraAttribute.caption }} {% if aExtraAttribute.mandatory == 'Y' %}{{ include('./subviews/registration/required.twig') }}{% endif %}</label>
                 <div {{ aSurveyInfo.attr.registerformcolrowcdiv }} >
-                    {{ C.Html.textField(registerKey, aAttribute[key],({'id' : "register_{$key}",'class' : 'form-control input-sm'})) }}
+                    {{ C.Html.textField(registerKey, aSurveyInfo.aAttribute[key],({'id' : "register_{$key}",'class' : 'form-control input-sm'})) }}
                 </div>
             </div>
         {% endfor %}
@@ -79,7 +82,7 @@
                 {{ gT('Fields marked with an asterisk are mandatory.')}}
         </div>
 
-        {# Save button #}
+        {# Submit register button #}
         <div class='{{ aSurveyInfo.class.registersave }} form-group row' {{ aSurveyInfo.attr.registersave }} >
             <div class='{{ aSurveyInfo.class.registersavediv }} col-md-offset-7' {{ aSurveyInfo.attr.registersavediv }} >
                 {% set continue = gT("Continue",'unescaped') %}
@@ -90,6 +93,8 @@
         </div>
 
         {# If there is additional form parts, a.e. trhough a plugin render it out here #}
+    </div>
+    <div class='{{ aSurveyInfo.class.registerformcoladdidtions }} col-md-8 col-md-offset-2' {{ aSurveyInfo.attr.registerformcoladdidtions }}>
         {{ aSurveyInfo.formAdditions | raw  }}
     </div>
 

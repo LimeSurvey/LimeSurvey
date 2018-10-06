@@ -149,7 +149,7 @@ class SurveyLink extends LSActiveRecord
     {
         $TokenDynamic = TokenDynamic::model($this->survey_id);
         return $TokenDynamic->findByPk($this->token_id);
-    } 
+    }
 
     /**
      * @return string
@@ -172,7 +172,7 @@ class SurveyLink extends LSActiveRecord
         }
         return null;
     }
-    
+
     /**
      * @return string
      */

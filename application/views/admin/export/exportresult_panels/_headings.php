@@ -22,6 +22,22 @@
       </div>
     </div>
 
+    <!-- Strip HTML -->
+    <div class="form-group row">
+      <label class="col-sm-12 control-label" for='striphtmlcode'>
+        <?php eT("Strip HTML code:"); ?>
+      </label>
+      <div class='col-sm-12'>
+        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+            'name' => 'striphtmlcode',
+            'id'=>'striphtmlcode',
+            'value' => 1,
+            'onLabel'=>gT('On'),
+            'offLabel' => gT('Off')));
+        ?>
+      </div>
+    </div>
+
     <!-- Convert spaces -->
     <div class="form-group row">
       <label class="col-sm-12 control-label" for='headspacetounderscores'>

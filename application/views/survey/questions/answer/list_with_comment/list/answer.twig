@@ -35,7 +35,7 @@
 
     <div class="form-group answer-item text-item col-sm-6 col-xs-12">
         <label class="control-label" for="{{ id }}">
-            {{ hint_comment }}:
+            {{ processString(hint_comment) }}:
         </label>
         {{ C.Html.textArea(name,comment_saved,({
             'id' : id,

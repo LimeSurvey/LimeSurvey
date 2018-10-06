@@ -19,14 +19,14 @@
 {% endif %}
 
 <!-- answer_row -->
-<li id="javatbd{{ myfname }}" class="button-item btn btn-primary {{ button_size_class }} {% if fChecked!='' %} active {% endif %}">
+<li id="javatbd{{ myfname }}" class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %}">
     <input
         class="radio bootstrap-radio"
         type="radio"
         name="{{ name }}"
         id="answer{{ name }}{{ code }}"
         value={{ code }}
-        {{ fChecked }}
+        {{ checkedState }}
     />
     <label for="answer{{ name }}">
         <span class="" aria-hidden="true"></span> {{ answer }}

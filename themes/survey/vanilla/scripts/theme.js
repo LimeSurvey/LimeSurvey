@@ -107,23 +107,24 @@ var ThemeScripts = function(){
         });
     };
 
-    /*
-    var initLanguageChanger = function(selectorItem, selectorGlobalForm){
-        $(selectorItem).on('change',function() {
+    var initLanguageChanger = function(selectorItem){
+        $(selectorItem).on('change',function(e) {
             var lang = $(this).val();
+            var parser = document.createElement('a');
+            parser.href = window.location.href;
+            var url = parser.protocol+'//'+parser.host+parse.search;
             logObject.log(lang, 'changed');
             // If there are no form : we can't use it
             // No form, not targeturl : just see what happen
-            var target = window.location.href;
-            $("<form>", {
-                "class":'ls-js-hidden',
-                "html": '<input type="hidden" name="lang" value="' + lang + '" />',
-                "action": target,
-                "method": 'get'
+            
+            $('<form>', {
+                'class':'ls-js-hidden',
+                'html': '<input type="hidden" name="lang" value="' + lang + '" />',
+                'action' : url,
+                'method': 'get'
             }).appendTo('body').submit();
         });
     };
-    */
 
     var initTopMenuLanguageChanger = function(selectorItem, selectorGlobalForm){
         // $(selectorContainer).height($('#main-row').height());
@@ -242,7 +243,7 @@ var ThemeScripts = function(){
                 }
                 $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
             } else if (code==13 && e.ctrlKey == true) {
-                $('.ls-move-btn').trigger('click');
+                $('.action--ls-button-submit').trigger('click');
             }
         };
 
@@ -258,7 +259,7 @@ var ThemeScripts = function(){
                 }
                 $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
             } else if (code==13 && e.ctrlKey == true) {
-                $('.ls-move-btn').trigger('click');
+                $('.action--ls-button-submit').trigger('click');
             }
         };
 
@@ -281,6 +282,7 @@ var ThemeScripts = function(){
     var initWelcomePage = function(){
         logObject.log('Starting up for first page');
         if($('#datasecurity_accepted').length >0) {
+            $('#ls-button-submit').prop('disabled', true);
             /* 
             * #### Animation function doesn't work on IE -> Deactivate until now.
             * $('#ls-button-submit').prop('disabled', true).parent().on('mouseenter', function(e){
@@ -310,6 +312,7 @@ var ThemeScripts = function(){
         initUserForms: initUserForms,
         initGlobal: initGlobal,
         initWelcomePage: initWelcomePage,
+        initLanguageChanger: initLanguageChanger,
         focusFirst: focusFirst,
         sliderSuffixClone : sliderSuffixClone,
         fixBodyPadding : fixBodyPadding,

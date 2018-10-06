@@ -205,6 +205,7 @@ body {
 {
     display: block;
     clear: both;
+    margin-right: 3rem;
 }
 .question-item .other-label
 {

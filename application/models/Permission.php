@@ -133,7 +133,7 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey text elements"),
-                'description' => gT("Permission to view/update the survey text elements : survey title, survey description, welcome and end message …"),
+                'description' => gT("Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"),
                 'img'=>'edit'
             ),
             'surveysecurity' => array(
@@ -742,5 +742,22 @@ class Permission extends LSActiveRecord
             return $sEntityName::Model()->findByPk($iEntityID)->owner_id; // ALternative : if owner_id exist in $sEntityName::model()->findByPk($iEntityID), but unsure actually $sEntityName have always a model
         }
         return null;
+    }
+
+    public static function getPermissionList(){
+        $aPermissions = self::getSurveyBasePermissions();
+        return array_map(function($aPermission){
+            return $aPermission['title'];
+        }, $aPermissions);
+    }
+    public static function getPermissionGradeList(){
+        return [
+            'create' => gT("Create"),
+            'read' => gT("View/read"),
+            'update' => gT("Update"),
+            'delete' => gT("Delete"),
+            'import' => gT("Import"),
+            'export' => gT("Export"),
+        ];
     }
 }

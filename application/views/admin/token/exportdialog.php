@@ -116,14 +116,8 @@
 
 
 </div>
-
-
-    <?php /*
-    $this->widget('ext.SettingsWidget.SettingsWidget', array(
-        'settings' => $aSettings,
-        'action'=>$sAction,
-        'form' => true,
-        'title' => gT("Survey Survey participant settings"),
-        'buttons' => $aButtons,
-    ));*/
-    ?>
+<?php
+App()->getClientScript()->registerScript('ExportDialogViewBSSwitcher', "
+LS.renderBootstrapSwitch();
+", LSYii_ClientScript::POS_POSTSCRIPT);
+?>

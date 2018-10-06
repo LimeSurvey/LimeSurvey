@@ -58,27 +58,29 @@ export default {
 }
 </script>
 <template>
-    <div class='ls-column fill'>
-        <div class="btn-group-vertical"  v-for="menu in sortedMenues" :title="menu.title" v-bind:key="menu.title" >
-            <a v-for="(menuItem, index) in sortedMenuEntries(menu.entries)" 
-            @click="setActiveMenuIndex(menuItem)"
-             v-bind:key="menuItem.id" 
-            :href="menuItem.link" :title="menuItem.menu_description" 
-            :target="menuItem.link_external ? '_blank' : '_self'"
-            data-toggle="tooltip" 
-            class="btn btn-icon"
-            :class="compileEntryClasses(menuItem)"
-            >
-                <template v-if="menuItem.menu_icon_type == 'fontawesome'">
-                    <i class="quickmenuIcon fa" :class="'fa-'+menuItem.menu_icon"></i>
-                </template>
-                <template v-else-if="menuItem.menu_icon_type == 'image'">
-                    <img width="32px" :src="menuItem.menu_icon" ></img>
-                </template>
-                <template v-else-if="menuItem.menu_icon_type == 'iconclass'">
-                    <i class="quickmenuIcon"  :class="menuItem.menu_icon" ></i>
-                </template>
-            </a>
+    <div class='ls-flex-column fill'>
+        <div class="ls-space margin top-10"  v-for="menu in sortedMenues" :title="menu.title" v-bind:key="menu.title" >
+            <div class="btn-group-vertical ls-space padding right-10">
+                <a v-for="(menuItem, index) in sortedMenuEntries(menu.entries)" 
+                @click="setActiveMenuIndex(menuItem)"
+                v-bind:key="menuItem.id" 
+                :href="menuItem.link" :title="menuItem.menu_description" 
+                :target="menuItem.link_external ? '_blank' : '_self'"
+                data-toggle="tooltip" 
+                class="btn btn-icon"
+                :class="compileEntryClasses(menuItem)"
+                >
+                    <template v-if="menuItem.menu_icon_type == 'fontawesome'">
+                        <i class="quickmenuIcon fa" :class="'fa-'+menuItem.menu_icon"></i>
+                    </template>
+                    <template v-else-if="menuItem.menu_icon_type == 'image'">
+                        <img width="32px" :src="menuItem.menu_icon" ></img>
+                    </template>
+                    <template v-else-if="menuItem.menu_icon_type == 'iconclass'">
+                        <i class="quickmenuIcon"  :class="menuItem.menu_icon" ></i>
+                    </template>
+                </a>
+            </div>
         </div>
     </div>
 </template>

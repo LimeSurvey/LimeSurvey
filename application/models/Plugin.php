@@ -58,30 +58,22 @@ class Plugin extends LSActiveRecord
      */
     public function isCompatible()
     {
-        $config = $this->getConfig();
-        $lsVersion = require \Yii::app()->getBasePath() . '/config/version.php';
-        foreach ($config->compatibility->version as $pluginVersion) {
-            // At least one $v in config.xml must be higher or equal to versionnumber.
-            if (version_compare($lsVersion['versionnumber'], $pluginVersion) >= 0) {
-                return true;
-            }
-        }
-        return false;
+        $config = $this->getExtensionConfig();
+        return $config->isCompatible();
     }
 
     /**
-     * @return xml
-     * @todo Use PluginConfiguration.
+     * @return ExtensionConfig
      * @throws Exception if file does not exist.
      */
-    public function getConfig()
+    public function getExtensionConfig()
     {
         $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
         if (file_exists($file)) {
             libxml_disable_entity_loader(false);
             $config = simplexml_load_file(realpath($file));
             libxml_disable_entity_loader(true);
-            return $config;
+            return new ExtensionConfig($config);
         } else {
             throw new \Exception('Missing configuration file for plugin ' . $this->name);
         }

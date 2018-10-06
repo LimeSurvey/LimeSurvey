@@ -21,20 +21,22 @@
             </div>
         </div>
         <!-- Scenario selection -->
-        <div class="row">
+        <div class="row ">
             <!-- Condition -->
-            <div class='form-group col-xs-12'>
-                <label class='control-label'><?php eT('Scenario'); ?></label>
-                <div class='add-scenario-column'>
+            <div class='form-group'>
+                <label class='control-label col-xs-12'><?php eT('Scenario'); ?></label>
+                <div class='add-scenario-column col-xs-12  ls-space padding bottom-15'>
                     <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if($showScenario):?> style='display: none;' <?php endif;?>/>
                     <?php if($showScenario):?>
-                        <span id='defaultscenariotxt'>
-                            <?php eT("Default scenario"); ?>
-                        </span>
-                        &nbsp;
-                        <button class='btn btn-default' id='scenarioaddbtn' onclick="scenarioaddbtnOnClickAction(); return false;" >
-                            <span class='icon-add'></span>&nbsp;<?php eT('Add scenario'); ?>
-                        </button>
+                        <div id="defaultscenarioshow" class="col-xs-12">
+                            <span>
+                                <?php eT("Default scenario"); ?>
+                            </span>
+                            &nbsp;
+                            <button class='btn btn-default' onclick="scenarioaddbtnOnClickAction(); return false;" >
+                                <span class='icon-add'></span>&nbsp;<?php eT('Add scenario'); ?>
+                            </button>
+                        </div>
                     <?php endif;?>
                 </div>
             </div>

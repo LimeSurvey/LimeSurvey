@@ -541,7 +541,7 @@ class statistics_helper
     /**
      * The current Excel workbook we are working on
      *
-     * @var Xlswriter
+     * @var Writer
      */
     protected $workbook;
 
@@ -1102,9 +1102,7 @@ class statistics_helper
                         case 'html':
 
                             //output
-                            $statisticsoutput .= "\t<tr>\n"
-                            ."\t\t<td align='right'  colspan='4'>".gT("Not enough values for calculation")."</td>\n"
-                            ."\t</tr>\n</table><br />\n";
+                            $statisticsoutput .= "<p class='printable'>".gT("Not enough values for calculation")."</p>\n";
 
                             break;
                         default:
@@ -3244,7 +3242,7 @@ class statistics_helper
                                 $graphLbl[] = $al[1];
                                 break;
                             case 'both':
-                                if (empty($al[0]) == "") {
+                                if ($al[0] == "") {
                                     $graphLbl[] =  gT("No answer") . ': ' . $al[1];
                                 } else {
                                     $graphLbl[] = $al[0] . ': ' . $al[1];
@@ -3860,15 +3858,14 @@ class statistics_helper
             /**
              * Initiate the Spreadsheet_Excel_Writer
              */
-            require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
+            require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Writer.php');
 
             if ($outputTarget == 'F') {
                 $sFileName = $sTempDir.'/statistic-survey'.$surveyid.'.xls';
-                $this->workbook = new Xlswriter($sFileName);
+                $this->workbook = new Spreadsheet_Excel_Writer($sFileName);
             } else {
-                $this->workbook = new Xlswriter();
+                $this->workbook = new Spreadsheet_Excel_Writer();
             }
-
             $this->workbook->setVersion(8);
             // Inform the module that our data will arrive as UTF-8.
             // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
@@ -3879,15 +3876,16 @@ class statistics_helper
             if (!empty($sTempDir)) {
                 $this->workbook->setTempDir($sTempDir);
             }
+
             if ($outputTarget != 'F') {
                 $this->workbook->send('statistic-survey'.$surveyid.'.xls');
             }
 
             // Creating the first worksheet
             $this->sheet = $this->workbook->addWorksheet(utf8_decode('results-survey'.$surveyid));
-            $this->xlsPercents = &$this->workbook->addFormat();
+            $this->xlsPercents = $this->workbook->addFormat();
             $this->xlsPercents->setNumFormat('0.00%');
-            $this->formatBold = &$this->workbook->addFormat(array('Bold'=>1));
+            $this->formatBold = $this->workbook->addFormat(array('Bold'=>1));
             $this->sheet->setInputEncoding('utf-8');
             $this->sheet->setColumn(0, 20, 20);
         }

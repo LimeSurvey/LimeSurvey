@@ -42,7 +42,7 @@
 </div>
 
 <div class='hidden' style='display:none'>
-    <!-- Obs: No spaces in the div - it will mess up Javascript string parsing -->
+    <!-- Obs: No spaces in the div - it will mess up Javascript string parsing , EM replacement done in qanda -->
     <div id='datemin{{name}}'>{{ mindate }}</div>
     <div id='datemax{{name}}'>{{ maxdate }}</div>
     <div id='dateformat{{name}}'>{{ dateformatdetailsjs }}</div>
@@ -54,6 +54,7 @@
             'format' : dateformatdetailsjs,
             'minDate' : mindate[0] == '{' ? '1900-01-01' : mindate,
             'maxDate' : maxdate[0] == '{' ? '2037-12-31' : maxdate,
+            'stepping' : minuteStep,
             'sideBySide' :  true
         })
     %}

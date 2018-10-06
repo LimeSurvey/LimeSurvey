@@ -28,7 +28,7 @@
             <td></td>
             {% for i, question in aQuestions %}
                 <th id="answertext{{ question.myfname }}" class="answertext control-label {% if question.errormandatory %} has-error error-mandatory{% endif %}">
-                    {{ question.question }}
+                    {{ processString(question.question) }}
                 </th>
             {% endfor %}
         </tr>
@@ -37,7 +37,7 @@
         {% for ansrow in labels %}
             <tr id="javatbd{{ ansrow.code }}" class="answers-list">
                 <th id="label-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} sr-only{% endif %}">
-                    {{ ansrow.answer }}
+                    {{ processString(ansrow.answer) }}
                 </th>
                 {% for i, ld in anscode %}
                     <td class="answer_cell_{{ ld }} answer-item radio-item">
@@ -49,7 +49,7 @@
                                 {{ checked[ansrow.code][ld] }}
                                  />
                                 <label class="ls-label-xs-visibility " for="answer{{ aQuestions[i].myfname }}-{{ ansrow.code }}">
-                                    {{ aQuestions[i].question }}
+                                    {{ processString(aQuestions[i].question) }}
                                 </label>
                     </td>
                 {% endfor %}

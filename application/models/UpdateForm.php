@@ -2,17 +2,18 @@
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
+
 /*
-* LimeSurvey
-* Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
-* All rights reserved.
-* License: GNU/GPL License v2 or later, see LICENSE.php
-* LimeSurvey is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * LimeSurvey
+ * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ */
 
 /**
 * Update Form Model
@@ -384,7 +385,7 @@ class UpdateForm extends CFormModel
     public function updateVersion($destinationBuild)
     {
         $destinationBuild = (int) $destinationBuild;
-        @ini_set('auto_detect_line_endings', true);
+        @ini_set('auto_detect_line_endings', '1');
         $versionlines = file($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php');
         $handle = fopen($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php', "w");
         foreach ($versionlines as $line) {
@@ -403,9 +404,9 @@ class UpdateForm extends CFormModel
      */
     public function destroyGlobalSettings()
     {
-        setGlobalSetting('updateavailable', '0');
-        setGlobalSetting('updatebuild', '');
-        setGlobalSetting('updateversions', '');
+        SettingGlobal::setSetting('updateavailable', '0');
+        SettingGlobal::setSetting('updatebuild', '');
+        SettingGlobal::setSetting('updateversions', '');
         Yii::app()->session['security_update'] = null;
         Yii::app()->session['update_result'] = null;
         Yii::app()->session['next_update_check'] = null;
@@ -552,7 +553,7 @@ class UpdateForm extends CFormModel
 
         if ($iAssetVersionNumber != $iCurrentAssetVersion) {
             self::republishAssets();
-            setGlobalSetting('AssetsVersion', $iAssetVersionNumber);
+            SettingGlobal::setSetting('AssetsVersion', $iAssetVersionNumber);
         }
         return false;
     }
@@ -578,20 +579,24 @@ class UpdateForm extends CFormModel
 
                 $updates = $this->getUpdateInfo('1');
                 $update_available = false;
+
                 if ($updates->result) {
                     unset($updates->result);
 
-                    if (count($updates) > 0) {
-                        $update_available = true;
-                        $security_update_available = false;
-                        $unstable_update_available = false;
-                        foreach ($updates as $update) {
-                            if ($update->security_update) {
-                                $security_update_available = true;
-                            }
+                    $security_update_available = false;
+                    $unstable_update_available = false;
 
-                            if ($update->branch != 'master') {
-                                $unstable_update_available = true;
+                    if (is_array($updates) || $updates instanceof Countable) {
+                        if (count($updates) > 0) {
+                            $update_available = true;
+                            foreach ($updates as $update) {
+                                if ($update->security_update) {
+                                    $security_update_available = true;
+                                }
+
+                                if ($update->branch != 'master') {
+                                    $unstable_update_available = true;
+                                }
                             }
                         }
                     }

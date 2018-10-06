@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "uglifyjs": "^2.4.11"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-env": "^1.7.0",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.12.2",
+    "webpack-cli": "^3.0.8"
+  }
+}

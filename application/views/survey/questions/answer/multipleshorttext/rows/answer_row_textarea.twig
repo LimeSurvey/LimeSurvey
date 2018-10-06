@@ -20,7 +20,7 @@
 <li id="javatbd{{ myfname }}" class="question-item answer-item text-item form-group {% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }}>
         <!--  color code missing mandatory questions red -->
         <label class="control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth==0 %} hidden {% endif %}" for="answer{{ myfname }}">
-            {{ question }}
+            {{ processString(question) }}
         </label>
 
 
@@ -30,7 +30,7 @@
         {% endif %}
             {% if prefix != '' %}
                 <div class="ls-input-group-extra prefix-text prefix">
-                    {{ prefix }}
+                    {{ processString(prefix) }}
                 </div>
             {% endif %}
             <textarea
@@ -44,7 +44,7 @@
             >{{ dispVal }}</textarea>
             {% if suffix != '' %}
                 <div class="ls-input-group-extra suffix-text suffix">
-                    {{ suffix }}
+                    {{ processString(suffix) }}
                 </div>
             {% endif %}
         {% if prefix != '' or suffix != '' %}

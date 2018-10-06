@@ -160,6 +160,7 @@ class questiongroups extends Survey_Common_Action
 
             $aData['sidemenu']['state'] = false;
             $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+            $aData['subaction'] = gT('Add question group');
             $aData['surveybar']['importquestiongroup'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid; // Close button
             $aData['surveybar']['savebutton']['form'] = true;
@@ -364,6 +365,7 @@ class questiongroups extends Survey_Common_Action
             $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$surveyid.'/gid/'.$gid; // Close button
 
             $aData['action'] = $aData['display']['menu_bars']['gid_action'] = 'editgroup';
+            $aData['subaction'] = gT('Edit group');
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
             $aData['tabtitles'] = $aTabTitles;
@@ -395,35 +397,41 @@ class questiongroups extends Survey_Common_Action
     public function updateOrder($surveyid)
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
+        $success = true;
         if(!$oSurvey->isActive) {
             $grouparray = Yii::app()->request->getPost('grouparray', []);
-            foreach ($grouparray as $aQuestiongroup) {
-                
-                //first set up the ordering for questiongroups
-                $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
-                array_map(function($oQuestiongroup) use ($aQuestiongroup)
-                {
-                    $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
-                    $oQuestiongroup->save();
-                }, $oQuestiongroups);
-
-                
-                foreach ($aQuestiongroup['questions'] as $aQuestion) {
-                    $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]);
-                    array_map(function($oQuestion) use ($aQuestion)
+            if(!empty($grouparray)) { 
+                foreach ($grouparray as $aQuestiongroup) {
+                    
+                    //first set up the ordering for questiongroups
+                    $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
+                    array_map(function($oQuestiongroup) use ($aQuestiongroup, $success)
                     {
-                        $oQuestion->question_order = $aQuestion['question_order'];
-                        $oQuestion->gid = $aQuestion['gid'];
-                        $oQuestion->save(true);
-                    }, $oQuestions);
+                        $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
+                        $success = $success && $oQuestiongroup->save();
+                    }, $oQuestiongroups);
+                    
+                    $aQuestiongroup['questions'] = isset($aQuestiongroup['questions']) ? $aQuestiongroup['questions'] : [];
+
+                    foreach ($aQuestiongroup['questions'] as $aQuestion) {
+                        $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid]);
+                        array_map(function($oQuestion) use ($aQuestion, $success)
+                        {
+                            $oQuestion->question_order = $aQuestion['question_order'];
+                            $oQuestion->gid = $aQuestion['gid'];
+                            $success = $success && $oQuestion->save(true);
+                        }, $oQuestions);
+                    }
                 }
             }
+
+            QuestionGroup::model()->cleanOrder($surveyid);
 
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
                 array(
                     'data' => [
-                        'success' => true,
+                        'success' => $success,
                         'DEBUG' => ['POST'=>$_POST, 'grouparray' => $grouparray]
                     ],
                 ),

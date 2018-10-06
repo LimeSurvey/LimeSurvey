@@ -30,8 +30,12 @@ class questionHelper
     /**
      * Return all the definitions of Question attributes core+extended value
      * @return array[]
+     * 
+     * DEPRECATED, used only as fall back method
+     * use QuestionAttribute::getQuestionAttributesSettings function to get attributes
      */
-    public static function getAttributesDefinitions()
+    public static function getAttributesDefinitions() 
+
     {
         if (self::$attributes) {
             return self::$attributes;
@@ -340,7 +344,7 @@ class questionHelper
             'category'=>gT('Logic'),
             'sortorder'=>130,
             'inputtype'=>'text',
-            "help"=>gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semikolon.'),
+            "help"=>gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semicolon.'),
             "caption"=>gT('Exclusive option')
         );
 
@@ -651,7 +655,7 @@ class questionHelper
         "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS,
             'category'=>gT('Display'),
             'sortorder'=>111,
-            'inputtype'=>'integer',
+            'inputtype'=>'float',
             'default'=>'',
             "help"=>gT('Step value'),
             "caption"=>gT('Step value')
@@ -1402,7 +1406,7 @@ class questionHelper
             'sortorder'=>100,
             "inputtype"=>"integer",
             'default'=>1,
-            "help"=>gT("Minute step interval when using select boxes"),
+            "help"=>gT("Visual minute step interval"),
             "caption"=>gT("Minute step interval")
         );
 
@@ -1576,31 +1580,6 @@ class questionHelper
         return self::$attributes;
     }
 
-    /**
-     * Return the question attributes definition by question type
-     * @param $sType: type pof question
-     * @return array : the attribute settings for this question type
-     */
-    public static function getQuestionAttributesSettings($sType)
-    {
-        if (!isset(self::$questionAttributesSettings[$sType])) {
-            self::$questionAttributesSettings[$sType] = array();
-            self::getAttributesDefinitions(); /* we need to have self::$attributes */
-            /* Filter to get this question type setting */
-            $aQuestionTypeAttributes = array_filter(self::$attributes, function($attribute) use ($sType) {
-                return stripos($attribute['types'], $sType) !== false;
-            });
-            foreach ($aQuestionTypeAttributes as $attribute=>$settings) {
-                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
-                      QuestionAttribute::getDefaultSettings(),
-                      array("category"=>gT("Plugins")),
-                      $settings,
-                      array("name"=>$attribute)
-                  );
-            }
-        }
-        return self::$questionAttributesSettings[$sType];
-    }
 
     /**
      * Return the question Theme custom attributes values

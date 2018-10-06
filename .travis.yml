@@ -30,7 +30,8 @@ before_script:
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
     # Enable debug=2 in config file. OBS: This assumes debug is on line 59.
-    - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
+    # TODO: Disable, a lines was added to config file and some tests started to fail.
+    # - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
 
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
@@ -72,4 +73,4 @@ before_script:
 
 script:
     # Run tests.
-    - DOMAIN=localhost phpunit --stop-on-failure
+    - DOMAIN=localhost phpunit # --stop-on-failure

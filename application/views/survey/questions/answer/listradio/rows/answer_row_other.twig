@@ -29,7 +29,7 @@
         onclick="{{ checkconditionFunction }}(this.value, this.name, this.type)"
         />
 
-        <label for="SOTH{{ name }}" class="control-label label-radio" id="label-id-{{ name }}">{{ othertext }}</label>
+        <label for="SOTH{{ name }}" class="control-label label-radio" id="label-id-{{ name }}">{{ processString(othertext) }}</label>
     </div>
 
     <!-- comment -->
@@ -39,7 +39,7 @@
         class="form-control {{ kpclass }} input-sm"
         id="answer{{ name }}othertext"
         name="{{ name }}other"
-        title="{{ gT('Other') }}"
+        title="{{ flatString(processString(othertext,1),1) }}"
         {{ answer_other }}
         onkeyup="if($.trim($(this).val())!=''){ $('#SOTH{{ name }}').click(); };"
         aria-labelledby="label-id-{{ name }}"

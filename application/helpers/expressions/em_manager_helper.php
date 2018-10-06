@@ -118,6 +118,7 @@
 
         /**
         * variables temporarily set for substitution purposes
+        * temporarily mean for this page, until resetted. Not for next page
         *
         * These are typically the LimeReplacement Fields passed in via templatereplace()
         * Each has the following structure:  array(
@@ -850,10 +851,11 @@
         **/
         public static function getLEMqcode2sgqa($iSurveyId){
                 $LEM =& LimeExpressionManager::singleton();
-
-                $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);
-                $LEM->SetSurveyId($iSurveyId);
-                $LEM->StartProcessingPage(true,true);
+                $LEM->SetSurveyId($iSurveyId); // This update session only if needed
+                if( !in_array(Yii::app()->session['LEMlang'],Survey::model()->findByPk($iSurveyId)->getAllLanguages()) ) {
+                    $LEM->SetEMLanguage(Survey::model()->findByPk($iSurveyId)->language);// Reset language only if needed
+                }
+                $LEM->setVariableAndTokenMappingsForExpressionManager($iSurveyId);
                 return $LEM->qcode2sgqa;
         }
 
@@ -4513,19 +4515,8 @@
                 $LEM->em->SetPrettyPrintSource($string);
                 return $string;
             }
-
-            if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
-            {
-                $replaceArray = array();
-                foreach ($replacementFields as $key => $value) {
-                    $replaceArray[$key] = array(
-                    'code'=>$value,
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
-                    );
-                }
-                $LEM->tempVars = $replaceArray;
+            if(!empty($replacementFields) && is_array($replacementFields)) {
+                self::updateReplacementFields($replacementFields);
             }
             $questionSeq = -1;
             $groupSeq = -1;
@@ -4560,17 +4551,8 @@
             $LEM =& LimeExpressionManager::singleton();
 
             // Fill tempVars if needed
-            if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0) {
-                $replaceArray = array();
-                foreach ($replacementFields as $key => $value) {
-                    $replaceArray[$key] = array(
-                    'code'=>$value,
-                    'jsName_on'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>'N',
-                    );
-                }
-                $LEM->tempVars = $replaceArray;
+            if(!empty($replacementFields) && is_array($replacementFields)) {
+                self::updateReplacementFields($replacementFields);
             }
             // Get current seq for question and group*/
             $questionSeq = $LEM->currentQuestionSeq;
@@ -4955,7 +4937,7 @@
             $LEM->processedRelevance=false;
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting']=true;    // this will be temporary - should be reset in running survey
             $LEM->qid2exclusiveAuto=array();
-
+            self::resetTempVars();
             $surveyinfo = (isset($LEM->sid) ? getSurveyInfo($LEM->sid) : null);
             if (isset($surveyinfo['assessments']) && $surveyinfo['assessments']=='Y')
             {
@@ -5045,6 +5027,11 @@
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
 
+            // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF 
+            if (array_key_exists('startingValues', $_SESSION[$LEM->sessid]) && !array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])){
+                $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';  
+            }
+            
             // NOTE: now that we use a seed, count($_SESSION[$LEM->sessid]['startingValues']) start at 1
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 1)
             {
@@ -5663,7 +5650,6 @@
                     else
                     {
                         if ($finished && ($response->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y')) {
-                            $sQuery = 'UPDATE '.$this->surveyOptions['tablename'] . " SET ";
                             if($this->surveyOptions['datestamp'])
                             {
                                 // Replace with date("Y-m-d H:i:s") ? See timeadjust
@@ -5674,8 +5660,6 @@
                             $aResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
                             $aResponse->submitdate = $submitdate;
                             $aResponse->save();
-                            Yii::app()->db->createCommand($sQuery)->query();
-                            //dbExecuteAssoc($sQuery);   // Checked
                         }
                     }
 
@@ -6752,13 +6736,19 @@
                         // Only add non-empty tip
                         if (trim($vtip) != "")
                         {
+                            // set hideTip from question atrribute
+                            $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
+                            $hideTip = array_key_exists('hide_tip', $qattr)?$qattr['hide_tip']:0;
+
                             $tipsDatas = array(
                                 'qid'       =>$qid,
                                 'coreId'    =>"vmsg_{$qid}_{$vclass}", // If it's not this id : EM is broken
                                 'coreClass' =>"ls-em-tip em_{$vclass}",
                                 'vclass'    =>$vclass,
                                 'vtip'      =>$vtip,
+                                'hideTip'   =>($vclass == 'default' && $hideTip == 1)?true:false  // hide default tip if attribute hide_tip is set to 1
                             );
+
                             $stringToParse .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/em-tip', $tipsDatas, true);
                         }
                     }
@@ -7274,7 +7264,7 @@
                 Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
                 App()->getClientScript()->registerPackage('expression-extend'); // Must have a another place for develop
                 Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
-                Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_POSTSCRIPT);
+                Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
                 Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/      
 
                 $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
@@ -7284,13 +7274,12 @@
             } else if($applyJavaScriptAnyway && !self::isInitialized()){
                 $LEM =& LimeExpressionManager::singleton();
                 $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
-                
                 $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
                 Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
-                Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_POSTSCRIPT);
+                Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
                 Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/      
-                
             }
+            self::resetTempVars();
         }
 
         /*
@@ -7311,16 +7300,23 @@
             /* All function for expression manager */
             App()->getClientScript()->registerPackage("expressions"); // Be sure to load, think we can remove ALL other call
             /* Call the function when trigerring event */
-            App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END);
+            App()->getClientScript()->registerScript("triggerEmClassChange","
+            try{ 
+                triggerEmClassChange(); 
+            } catch(e) {
+                console.ls.warn('triggerEmClassChange could not be run. Is survey.js correctly loaded?');
+            }\n",LSYii_ClientScript::POS_END);
 
             if (!$bReturnArray) {
                 $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
             }
 
             $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
-            if ($LEM->surveyMode == 'group')
+            if ($LEM->surveyMode == 'group' && $LEM->currentGroupSeq != '')
             {
                 $jsParts[] = "var LEMgseq=" . $LEM->currentGroupSeq . ";\n";
+            } else {
+                $jsParts[] = "var LEMgseq='';\n";
             }
             if ($LEM->surveyMode == 'question' && isset($LEM->currentQID))
             {
@@ -7614,8 +7610,8 @@
                             if ($validationEqn == '') {
                                 continue;
                             }
-
-                            $LEM->em->ProcessBooleanExpression($validationEqn,$arg['gseq'],$LEM->questionId2questionSeq[$arg['qid']]);
+                            $relQuestionSeq = isset($LEM->questionId2questionSeq[$arg['qid']]) ? $LEM->questionId2questionSeq[$arg['qid']] : null;
+                            $LEM->em->ProcessBooleanExpression($validationEqn,$arg['gseq'],$relQuestionSeq);
                             $_vars = $LEM->em->GetJSVarsUsed();
                             $allJsVarsUsed = array_merge($allJsVarsUsed,$_vars);
                             $valJsVarsUsed = array_merge($valJsVarsUsed,$_vars);
@@ -7742,7 +7738,8 @@
                         $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
                         // Note, this will destroy embedded HTML in the equation (e.g. if it is a report, can use {QCODE.question} for this purpose)
                         // This make same than flattenText to be same in JS and in PHP
-                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('change');\n";
+                        // Launch updated event after update value to allow equation update propagation
+                        $relParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val($.trim($('#question" . $arg['qid'] . " .em_equation').text())).trigger('updated');\n";
                     }
                     $relParts[] = "  relChange" . $arg['qid'] . "=true;\n"; // any change to this value should trigger a propagation of changess
                     $relParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
@@ -7827,15 +7824,14 @@
                     //     $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
                     // }
 
-                    //Normally trigger reevaluation only for relevant questions except for equation questions
-                    if($arg['type'] != '*') {
-                        $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
-                        $qrelJS .= "  return;\n }\n";
-                    }
+                    /* Trigger reevaluation only for relevant questions */
+                    /* even for equation question : using updated specific event, this allow update previous text too, see mantis #14047 */
+                    /* And this disable launch again equation update if equation is not updated */
+                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+                    $qrelJS .= "  return;\n }\n";
 
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
-
                     $relEqns[] = $qrelJS;
 
                     $gseq_qidList[$arg['gseq']][$arg['qid']] = '1';   // means has an explicit LEMrel() function
@@ -8176,6 +8172,33 @@
         {
             $LEM =& LimeExpressionManager::singleton();
             $LEM->tempVars = $vars;
+        }
+
+        /**
+         * @param array $vars
+         */
+        public static function updateReplacementFields($replacementFields)
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            $replaceArray = array();
+            foreach($replacementFields as $key => $value) {
+                $replaceArray[$key] = array(
+                    'code'=>$value,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
+            }
+            $LEM->tempVars = array_merge($LEM->tempVars,$replaceArray);
+        }
+
+        /**
+         * @param array $vars
+         */
+        public static function resetTempVars()
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            $LEM->tempVars = array();
         }
 
         /**
@@ -8914,6 +8937,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                         // Check all possible file uploads
                                         for ($i = 0; $i < $iSize; $i++)
                                         {
+                                            $aFiles[$i]->filename = get_absolute_path ($aFiles[$i]->filename) ;
                                             if (file_exists($tmp . $aFiles[$i]->filename))
                                             {
                                                 $sDestinationFileName = 'fu_' . randomChars(15);
@@ -9442,6 +9466,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 'html'=>sprintf($LEM->gT('Invalid question - probably missing sub-questions or language-specific settings for language %s'),$_SESSION['LEMlang'])
                 );
             }
+            
+            /* return app language to adminlang, otherwise admin interface get rendered in survey language #13814 */
+            Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
 
             $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title'])));
 
@@ -9526,7 +9553,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $_gseq = $gseq;
                     $ginfo = $LEM->gseq2info[$gseq];
                     $sGroupRelevance= '{'.($ginfo['grelevance']=='' ? 1 : $ginfo['grelevance']).'}';
-                    $LEM->ProcessString($sGroupRelevance, $qid,NULL,1,1,false,false);
+                    $LEM->ProcessString($sGroupRelevance, $qid,array('GID'=>$ginfo['gid']),1,1,false,false);
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
                     $sGroupRelevance= viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                     $sGroupText = ((trim($ginfo['description']) == '') ? '&nbsp;' : $ginfo['description']);
@@ -9555,9 +9582,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $typedesc = $qtypes[$type]['description'];
 
                 $sgqas = explode('|',$q['sgqa']);
+                $qReplacement = array(
+                    'QID' => $q['info']['qid'],
+                    'GID' => $q['info']['gid'],
+                    'SGQ' => end($sgqas),
+                );
                 if (count($sgqas) == 1 && !is_null($q['info']['default']))
                 {
-                    $LEM->ProcessString($q['info']['default'], $qid,NULL,1,1,false,false);// Default value is Y or answer code or go to input/textarea, then we can filter it
+                    $LEM->ProcessString($q['info']['default'], $qid,$qReplacement,1,1,false,false);// Default value is Y or answer code or go to input/textarea, then we can filter it
                     $_default = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                     if ($LEM->em->HasErrors())
                     {
@@ -9571,7 +9603,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
 
                 $sQuestionText = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '&nbsp');
-                $LEM->ProcessString($sQuestionText, $qid,NULL,1,1,false,false);
+                $LEM->ProcessString($sQuestionText, $qid,$qReplacement,1,1,false,false);
                 $sQuestionText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                 if ($LEM->em->HasErrors())
                 {
@@ -9581,7 +9613,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 if(trim($q['info']['help'])!="")
                 {
                     $sQuestionHelp=$q['info']['help'];
-                    $LEM->ProcessString($sQuestionHelp, $qid,NULL,1,1,false,false);
+                    $LEM->ProcessString($sQuestionHelp, $qid,$qReplacement,1,1,false,false);
                     $sQuestionHelp = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     if ($LEM->em->HasErrors())
                     {
@@ -9627,7 +9659,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             if($aAttributesDefinitions[$key]['expression']>1){
                                 $value = '{' . $value . '}';
                             }
-                            $LEM->ProcessString($value, $qid,NULL,1,1,false,false);
+                            $LEM->ProcessString($value, $qid,$qReplacement,1,1,false,false);
                             $value = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                             if ($LEM->em->HasErrors())
                             {
@@ -9856,14 +9888,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $sgqaInfo = $LEM->knownVars[$sgqa];
                     $subqText = $sgqaInfo['subqtext'];
 
-                    $LEM->ProcessString($subqText, $qid,NULL,1,1,false,false);
+                    $LEM->ProcessString($subqText, $qid,$qReplacement,1,1,false,false);
                     $subqText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     if ($LEM->em->HasErrors()) {
                         ++$errorCount;
                     }
                     if (isset($sgqaInfo['default']) && $sgqaInfo['default'] !== '')
                     {
-                        $LEM->ProcessString($sgqaInfo['default'], $qid,NULL,1,1,false,false);
+                        $LEM->ProcessString($sgqaInfo['default'], $qid,$qReplacement,1,1,false,false);
                         $_default = viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                         if ($LEM->em->HasErrors())
                         {
@@ -9921,7 +9953,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             }
                         }
                         $sAnswerText=$valInfo[1];
-                        $LEM->ProcessString($sAnswerText, $qid,NULL,1,1,false,false);
+                        $LEM->ProcessString($sAnswerText, $qid,$qReplacement,1,1,false,false);
                         $sAnswerText = viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                         if ($LEM->em->HasErrors()) {
                             ++$errorCount;
@@ -10002,356 +10034,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 'errors'=>$allErrors,
                 'html'=>$out
             );
-        }
-
-        /**
-        * TSV survey definition in format readable by TSVSurveyImport
-        * one line each per group, question, sub-question, and answer
-        * does not use SGQA naming at all.
-        * @param int $sid
-        * @return array
-        */
-        static public function &TSVSurveyExport($sid)
-        {
-
-            $aBaseFields = array(
-                'class',
-                'type/scale',
-                'name',
-                'relevance',
-                'text',
-                'help',
-                'language',
-                'validation',
-                'mandatory',
-                'other',
-                'default',
-                'same_default',
-            );
-
-            // Advanced question attributes : @todo get used question attribute by question in survey ?
-            $aQuestionAttributes=array_keys(questionHelper::getAttributesDefinitions());
-            sort($aQuestionAttributes);
-            $fields=array_merge($aBaseFields,$aQuestionAttributes);
-
-            $rows = array();
-            $primarylang='en';
-            $otherlangs='';
-
-            // Export survey-level information
-            $arSurveyData = Survey::model()->findByPk($sid);
-            //$data = dbExecuteAssoc($query);
-            $data = Yii::app()->db->createCommand($query)->query();
-            foreach ($arSurveyData as $r)
-            {
-                foreach ($r as $key=>$value)
-                {
-                    if ($value != '')
-                    {
-                        $row = array();
-                        $row['class'] = 'S';
-                        $row['name'] = $key;
-                        $row['text'] = $value;
-                        $rows[] = $row;
-                    }
-                    if ($key=='language')
-                    {
-                        $primarylang = $value;
-                    }
-                    if ($key=='additional_languages')
-                    {
-                        $otherlangs = $value;
-                    }
-                }
-            }
-            $langs = explode(' ',$primarylang . ' ' . $otherlangs);
-            $langs = array_unique($langs);
-
-            // Export survey language settings
-            $arSurveyLanguageData = SurveyLanguageSetting::findAll("surveyls_survey_id = " . $sid);
-            //$data = dbExecuteAssoc($query);
-            $data = Yii::app()->db->createCommand($query)->query();
-            foreach ($arSurveyLanguageData as $r)
-            {
-                $_lang = $r['surveyls_language'];
-                foreach ($r as $key=>$value)
-                {
-                    if ($value != '' && $key != 'surveyls_language' && $key != 'surveyls_survey_id')
-                    {
-                        $row = array();
-                        $row['class'] = 'SL';
-                        $row['name'] = $key;
-                        $row['text'] = $value;
-                        $row['language'] = $_lang;
-                        $rows[] = $row;
-                    }
-                }
-            }
-
-            $surveyinfo = getSurveyInfo($sid);
-            $assessments = false;
-            if (isset($surveyinfo['assessments']) && $surveyinfo['assessments']=='Y')
-            {
-                $assessments = true;
-            }
-
-            foreach($langs as $lang)
-            {
-                if (trim($lang) == '')
-                {
-                    continue;
-                }
-                SetSurveyLanguage($sid,$lang);
-                LimeExpressionManager::StartSurvey($sid, 'survey', array('sgqaNaming'=>'N','assessments'=>$assessments), true);
-                $moveResult = LimeExpressionManager::NavigateForwards();
-                $LEM =& LimeExpressionManager::singleton();
-
-                if (is_null($moveResult) || is_null($LEM->currentQset) || count($LEM->currentQset) == 0) {
-                    continue;
-                }
-
-                $_gseq=-1;
-                foreach ($LEM->currentQset as $q) {
-                    $gseq = $q['info']['gseq'];
-                    $gid = $q['info']['gid'];
-                    $qid = $q['info']['qid'];
-
-                    //////
-                    // SHOW GROUP-LEVEL INFO
-                    //////
-                    if ($gseq != $_gseq) {
-                        $_gseq = $gseq;
-                        $ginfo = $LEM->gseq2info[$gseq];
-
-                        // if relevance equation is using SGQA coding, convert to qcoding
-                        $grelevance = (($ginfo['grelevance']=='') ? 1 : $ginfo['grelevance']);
-                        $LEM->em->ProcessBooleanExpression($grelevance, $gseq, 0);    // $qseq
-                        $grelevance = trim(strip_tags($LEM->em->GetPrettyPrintString()));
-                        $gtext = ((trim($ginfo['description']) == '') ? '' : $ginfo['description']);
-
-                        $row = array();
-                        $row['class'] = 'G';
-                        //create a group code to allow proper importing of multi-lang survey TSVs
-                        $row['type/scale']='G'.$gseq;
-                        $row['name'] = $ginfo['group_name'];
-                        $row['relevance'] = $grelevance;
-                        $row['text'] = $gtext;
-                        $row['language'] = $lang;
-                        $row['random_group'] = $ginfo['randomization_group'];
-                        $rows[] = $row;
-                    }
-
-                    //////
-                    // SHOW QUESTION-LEVEL INFO
-                    //////
-                    $row = array();
-
-                    $mandatory = (($q['info']['mandatory']=='Y') ? 'Y' : '');
-                    $type = $q['info']['type'];
-
-                    $sgqas = explode('|',$q['sgqa']);
-                    if (count($sgqas) == 1 && !is_null($q['info']['default']))
-                    {
-                        $default = $q['info']['default'];
-                    }
-                    else
-                    {
-                        $default = '';
-                    }
-
-                    $qtext = (($q['info']['qtext'] != '') ? $q['info']['qtext'] : '');
-                    $help = (($q['info']['help'] != '') ? $q['info']['help']: '');
-
-                    //////
-                    // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
-                    //////
-                    if (isset($LEM->qattr[$qid]) && count($LEM->qattr[$qid]) > 0) {
-                        foreach ($LEM->qattr[$qid] as $key=>$value) {
-                            if (is_null($value) || trim($value) == '') {
-                                continue;
-                            }
-                            switch ($key)
-                            {
-                                default:
-                                case 'exclude_all_others':
-                                case 'exclude_all_others_auto':
-                                case 'hidden':
-                                    if ($value == false || $value == '0') {
-                                        $value = NULL; // so can skip this one - just using continue here doesn't work.
-                                    }
-                                    break;
-                                case 'relevance':
-                                    $value = NULL;  // means an outdate database structure
-                                    break;
-                            }
-                            if (is_null($value) || trim($value) == '') {
-                                continue;   // since continuing from within a switch statement doesn't work
-                            }
-                            $row[$key] = $value;
-                        }
-                    }
-
-                    // if relevance equation is using SGQA coding, convert to qcoding
-                    $relevanceEqn = (($q['info']['relevance'] == '') ? 1 : $q['info']['relevance']);
-                    $LEM->em->ProcessBooleanExpression($relevanceEqn, $gseq, $q['info']['qseq']);    // $qseq
-                    $relevanceEqn = trim(preg_replace("#</(span|a)>#i", "", preg_replace("#<(span|a)[^>]+\>#i", "", $LEM->em->GetPrettyPrintString()))); // Relevance can not have HTML : only span and a are returned from GetPrettyPrintString
-                    $rootVarName = $q['info']['rootVarName'];
-                    $preg = '';
-                    if (isset($LEM->q2subqInfo[$q['info']['qid']]['preg']))
-                    {
-                        $preg = $LEM->q2subqInfo[$q['info']['qid']]['preg'];
-                        if (is_null($preg))
-                        {
-                            $preg = '';
-                        }
-                    }
-
-                    $row['class'] = 'Q';
-                    $row['type/scale'] = $type;
-                    $row['name'] = $rootVarName;
-                    $row['relevance'] = $relevanceEqn;
-                    $row['text'] = $qtext;
-                    $row['help'] = $help;
-                    $row['language'] = $lang;
-                    $row['validation'] = $preg;
-                    $row['mandatory'] = $mandatory;
-                    $row['other'] = $q['info']['other'];
-                    $row['default'] = $default;
-                    $row['same_default'] = 1;   // TODO - need this: $q['info']['same_default'];
-
-                    $rows[] = $row;
-
-                    //////
-                    // SHOW ALL SUB-QUESTIONS
-                    //////
-                    $sawThis = array(); // array of rowdivids already seen so only show them once
-                    foreach ($sgqas as $sgqa)
-                    {
-                        if ($LEM->knownVars[$sgqa]['qcode'] == $rootVarName) {
-                            continue;   // so don't show the main question as a sub-question too
-                        }
-                        $rowdivid=$sgqa;
-                        $varName=(string)$LEM->knownVars[$sgqa]['qcode'];
-
-                        // if SQrelevance equation is using SGQA coding, convert to qcoding
-                        $SQrelevance = (($LEM->knownVars[$sgqa]['SQrelevance'] == '') ? 1 : $LEM->knownVars[$sgqa]['SQrelevance']);
-                        $LEM->em->ProcessBooleanExpression($SQrelevance, $gseq, $q['info']['qseq']);
-                        $SQrelevance = trim(preg_replace("#</(span|a)>#i", "", preg_replace("#<(span|a)[^>]+\>#i", "", $LEM->em->GetPrettyPrintString()))); // Relevance can not have HTML : only span and a are returned from GetPrettyPrintString
-
-                        switch  ($q['info']['type'])
-                        {
-                            case Question::QT_1_ARRAY_MULTISCALE:
-                                if (preg_match('/#1$/',$sgqa)) {
-                                    $rowdivid = NULL;   // so that doesn't show same message for second scale
-                                }
-                                else {
-                                    $rowdivid = substr($sgqa,0,-2); // strip suffix
-                                    $varName = substr($LEM->knownVars[$sgqa]['qcode'],0,-2);
-                                }
-                                break;
-                            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
-                                if (preg_match('/comment$/',$sgqa)) {
-                                    $rowdivid = NULL;
-                                }
-                                break;
-                            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
-                            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
-                                $_rowdivid = $LEM->knownVars[$sgqa]['rowdivid'];
-                                if (isset($sawThis[$qid . '~' . $_rowdivid])) {
-                                    $rowdivid = NULL;   // so don't show again
-                                }
-                                else {
-                                    $sawThis[$qid . '~' . $_rowdivid] = true;
-                                    $rowdivid = $_rowdivid;
-                                    $sgqa_len = strlen($sid . 'X'. $gid . 'X' . $qid);
-                                    $varName = $rootVarName . '_' . substr($_rowdivid,$sgqa_len);
-                                }
-                                break;
-                        }
-                        if (is_null($rowdivid)) {
-                            continue;
-                        }
-
-                        $sgqaInfo = $LEM->knownVars[$sgqa];
-                        $subqText = $sgqaInfo['subqtext'];
-
-                        if (isset($sgqaInfo['default']))
-                        {
-                            $default = $sgqaInfo['default'];
-                        }
-                        else
-                        {
-                            $default = '';
-                        }
-
-                        $row = array();
-                        $row['class'] = 'SQ';
-                        $row['type/scale'] = 0;
-                        $row['name'] = substr($varName,strlen($rootVarName)+1);
-                        $row['relevance'] = $SQrelevance;
-                        $row['text'] = $subqText;
-                        $row['language'] = $lang;
-                        $row['default'] = $default;
-                        $rows[] = $row;
-                    }
-
-                    //////
-                    // SHOW ANSWER OPTIONS FOR ENUMERATED LISTS, AND FOR MULTIFLEXI
-                    //////
-                    if (isset($LEM->qans[$qid]) || isset($LEM->multiflexiAnswers[$qid]))
-                    {
-                        $_scale=-1;
-                        if (isset($LEM->multiflexiAnswers[$qid])) {
-                            $ansList = $LEM->multiflexiAnswers[$qid];
-                        }
-                        else {
-                            $ansList = $LEM->qans[$qid];
-                        }
-                        foreach ($ansList as $ans=>$value)
-                        {
-                            $ansInfo = explode('~',$ans);
-                            $valParts = explode('|',$value);
-                            $valInfo = array();
-                            $valInfo[0] = array_shift($valParts);
-                            $valInfo[1] = implode('|',$valParts);
-                            if ($_scale != $ansInfo[0]) {
-                                $_scale = $ansInfo[0];
-                            }
-
-                            $row = array();
-                            if ($type == Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS || $type == Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT)
-                            {
-                                $row['class'] = 'SQ';
-                            }
-                            else
-                            {
-                                $row['class'] = 'A';
-                            }
-                            $row['type/scale'] = $_scale;
-                            $row['name'] = $ansInfo[1];
-                            $row['relevance'] = $assessments==true ? $valInfo[0] : '';
-                            $row['text'] = $valInfo[1];
-                            $row['language'] = $lang;
-                            $rows[] = $row;
-                        }
-                    }
-                }
-            }
-            // Now generate the array out output data
-            $out = array();
-            $out[] = $fields;
-
-            foreach ($rows as $row)
-            {
-                $tsv = array();
-                foreach ($fields as $field)
-                {
-                    $val = (isset($row[$field]) ? $row[$field] : '');
-                    $tsv[] = $val;
-                }
-                $out[] = $tsv;
-            }
-            return $out;
         }
 
         /**

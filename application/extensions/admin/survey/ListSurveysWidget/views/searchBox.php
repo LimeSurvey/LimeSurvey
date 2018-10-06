@@ -51,9 +51,9 @@
                 <?php echo $form->label($this->model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
                     <select name="gsid" id='Survey_gsid' class="form-control">
                         <option value=""><?php eT('(Any group)');?></option>
-                        <?php foreach( SurveysGroups::model()->findAll() as $group): ?>
-                            <option value="<?php echo $group->gsid;?>" <?php if( $group->gsid == $this->model->gsid){echo 'selected';} ?>>
-                                <?php echo flattenText($group->title);?>
+                        <?php foreach( SurveysGroups::getSurveyGroupsList() as $gsid=>$group_title): ?>
+                            <option value="<?php echo $gsid;?>" <?php if( $gsid == $this->model->gsid){echo 'selected';} ?>>
+                                <?php echo flattenText($group_title);?>
                             </option>
                         <?php endforeach?>
                     </select>

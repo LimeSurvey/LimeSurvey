@@ -130,37 +130,31 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderQuestion($sView, $aData)
     {
         $this->_twig  = parent::getTwig(); // Twig object
-        $loader       = $this->_twig->getLoader(); // Twig Template loader
-        $requiredView = Yii::getPathOfAlias('application.views').$sView; // By default, the required view is the core view
-        $loader->setPaths(App()->getBasePath().'/views/'); // Core views path
 
         $oQuestionTemplate   = QuestionTemplate::getInstance(); // Question template instance has been created at top of qanda_helper::retrieveAnswers()
-
+        $extraPath = array();
         // check if this method is called from theme editor
+        $sTemplateFolderName = null;
         if (empty($aData['bIsThemeEditor'])){
             $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName(); // Get the name of the folder for that question type.
-        } else {
-            $sTemplateFolderName = null;
         }
         // Check if question use a custom template and that it provides its own twig view
+        $sDirName = null; // Extra dir name to readed from template before question template
         if ($sTemplateFolderName) {
             $bTemplateHasThisView = $oQuestionTemplate->checkIfTemplateHasView($sView); // A template can change only one of the view of the question type. So other views should be rendered by core.
-
             if ($bTemplateHasThisView) {
-                $sQTemplatePath = $oQuestionTemplate->getTemplatePath(); // Question template views path
-                $loader->setPaths($sQTemplatePath); // Loader path
-                $requiredView = $sQTemplatePath.ltrim($sView, '/'); // Complete path of the view
+                $sDirName = 'question'.DIRECTORY_SEPARATOR.$sTemplateFolderName;
+                $extraPath[] = $oQuestionTemplate->getTemplatePath(); // Question template views path
             }
         }
 
         // We check if the file is a twig file or a php file
         // This allow us to twig the view one by one, from PHP to twig.
         // The check will be removed when 100% of the views will have been twig
-        if (file_exists($requiredView.'.twig')) {
+        if ($this->getPathOfFile($sView.'.twig',null,$extraPath,$sDirName)) {
             // We're not using the Yii Theming system, so we don't use parent::renderFile
             // current controller properties will be accessible as {{ this.property }}
-            
-            //  aData and surveyInfo variables are accessible from question type twig files
+                        //  aData and surveyInfo variables are accessible from question type twig files
             $aData['aData'] = $aData;
             
             // check if this method is called from theme editor
@@ -287,6 +281,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $this->_twig = $twig = parent::getTwig();
         $this->addRecursiveTemplatesPath($oRTemplate);
         $renderArray['optionsPath'] = $sOptionsPath;
+        $renderArray['showpopups_disabled'] = (int)Yii::app()->getConfig('showpopups') < 2 ? 'disabled' : '';
+        $renderArray['showpopups_disabled_qtip'] = (int)Yii::app()->getConfig('showpopups') < 2 ? 'data-hasqtip="true" title="'.gT("Disabled by configuration. Set 'showpopups' option in config.php file to enable this option. ").'"' : '';
         // Twig rendering
         $line         = file_get_contents($oRTemplate->path.$sOptionFile);
         $oTwigTemplate = $twig->createTemplate($line);
@@ -357,7 +353,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Find which template should be used to render a given view
      * @param  string    $sView           the view (layout) to render
-     * @param  Template  $oRTemplate    the template where the custom option page should be looked for
+     * @param  TemplateConfiguration  $oRTemplate    the template where the custom option page should be looked for
      * @return Template|boolean
      */
     private function getTemplateForView($sView, $oRTemplate)
@@ -377,12 +373,15 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Twig can look for twig path in different path. This function will add the path of the template and all its parents to the load path
      * So if a twig file is inclueded, it will look in the local template directory and all its parents
-     * @param Template $oTemplate  the template where to start
+     * @param TemplateConfiguration $oTemplate  the template where to start
+     * @param string[] $extraPaths to be added before template, parent template plugin add and core views. Example : question template
+     * @param string|null $dirName directory name to be added as extra directory inside template view
      */
-    private function addRecursiveTemplatesPath($oTemplate)
+    private function addRecursiveTemplatesPath($oTemplate,$extraPaths=array(),$dirName=null)
     {
         $oRTemplate   = $oTemplate;
         $loader       = $this->_twig->getLoader();
+        $loader->setPaths(array()); /* Always reset (needed for Question template / $extraPaths, maybe in some other situation) */
         /* Event to add or replace twig views */
         $oEvent = new PluginEvent('getPluginTwigPath');
         App()->getPluginManager()->dispatchEvent($oEvent);
@@ -395,6 +394,26 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                 $loader->addPath($configTwigExtendReplace);
             }
         }
+        if(!empty($dirName)) {
+            /* This template for dirName template*/
+            if(is_dir($oRTemplate->viewPath.$dirName)) {
+                $loader->addPath($oRTemplate->viewPath.$dirName.DIRECTORY_SEPARATOR);
+            }
+            /* Parent template (for question)*/
+            while ($oRTemplate->oMotherTemplate instanceof TemplateConfiguration) {
+                $oRTemplate = $oRTemplate->oMotherTemplate;
+                if(is_dir($oRTemplate->viewPath.$dirName)) {
+                    $loader->addPath($oRTemplate->viewPath.$dirName.DIRECTORY_SEPARATOR);
+                }
+            }
+        }
+        /* Extra path (Question template Path for example)*/
+        if(!empty($extraPaths)) {
+            foreach($extraPaths as $extraPath) {
+                $loader->addPath($extraPath);
+            }
+        }
+        $oRTemplate   = $oTemplate;
         /* This template */
         $loader->addPath($oRTemplate->viewPath);
         /* Parent template */
@@ -402,12 +421,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $oRTemplate = $oRTemplate->oMotherTemplate;
             $loader->addPath($oRTemplate->viewPath);
         }
-        /* Added twig by plugins, replaced by any template file*/
+        /* Added twig by plugins, replaced by any template file or question template file*/
         foreach($configTwigExtendsAdd as $configTwigExtendAdd) {
             if(is_string($configTwigExtendAdd)) {
                 $loader->addPath($configTwigExtendAdd);
             }
         }
+        $loader->addPath(App()->getBasePath().'/views/'); // Core views path
     }
 
     /**
@@ -417,18 +437,17 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     private function getPluginsData($sString, $aDatas)
     {
         $event = new PluginEvent('beforeTwigRenderTemplate');
+        $aDatas['aSurveyInfo']['bShowClearAll'] = false; // default to not show "Exit and clear survey" button
 
         if (!empty($aDatas['aSurveyInfo']['sid'])) {
             $surveyid = $aDatas['aSurveyInfo']['sid'];
             $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
 
+            // show "Exit and clear survey" button whenever there is 'srid' key set, 
+            // button won't be rendered on welcome and final page because 'srid' key doesn't exist on those pages
             if (isset($_SESSION['survey_'.$surveyid]['srid']) && $aDatas['aSurveyInfo']['active']=='Y') {
-                $isCompleted = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
-            } else {
-                $isCompleted = false;
+                $aDatas['aSurveyInfo']['bShowClearAll'] = true;
             }
-
-            $aDatas['aSurveyInfo']['bShowClearAll'] = !$isCompleted;
         }
 
         App()->getPluginManager()->dispatchEvent($event);
@@ -452,11 +471,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         // We retreive the definition of the core class and attributes (in the future, should be template dependant done via XML file)
         $aDatas["aSurveyInfo"] = array_merge($aDatas["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 
-        $languagecode = Yii::app()->getConfig('defaultlang');
-        if (!empty($aDatas['aSurveyInfo']['sid'])) {
-            if (Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang']) {
-                $languagecode = Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'];
-            } elseif ($aDatas['aSurveyInfo']['sid'] && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])) {
+        $languagecode = Yii::app()->getLanguage();
+        if (!empty($aDatas['aSurveyInfo']['sid']) && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid']) ) {
+            if(!in_array($languagecode,Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->getAllLanguages())) {
                 $languagecode = Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->language;
             }
         }
@@ -513,16 +530,37 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
     /**
      * get a twig file and return html produced
-     * @param string $twigView twigfile to be used (without twig extension) (example ./subviews/ajax/messages)
+     * @todo find a way to fix in beforeCloseHtml @see https://bugs.limesurvey.org/view.php?id=13889
+     * @param string $twigView twigfile to be used (with twig extension)
      * @param array $aData to be used
      * @return string
      */
     public function renderPartial($twigView,$aData)
     {
         $oTemplate = Template::model()->getInstance();
-        $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
+        $aData = $this->getAdditionalInfos($aData, $oTemplate);
         $this->addRecursiveTemplatesPath($oTemplate);
-        return $this->_twig->loadTemplate($twigView.'.twig')->render($aData);
+        return $this->_twig->loadTemplate($twigView)->render($aData);
     }
 
+    /**
+     * Get the final source file for current context
+     * Currently used in theme editor
+     * @param string $twigView twigfile to be used (with twig extension)
+     * @param TemplateConfiguration $oTemplate
+     * @param string[] $extraPath path to be added before plugins add and core views
+     * @param string|null $dirName directory name to be added as extra directory inside template view
+     * @return string complete filename to be used
+     */
+    public function getPathOfFile($twigView,$oTemplate=null,$extraPath=array(),$dirName = null)
+    {
+        if(!$oTemplate) {
+            $oTemplate = Template::model()->getInstance();
+        }
+        $this->addRecursiveTemplatesPath($oTemplate,$extraPath,$dirName);
+        if(!$this->_twig->getLoader()->exists($twigView)) {
+            return null;
+        }
+        return $this->_twig->getLoader()->getSourceContext($twigView)->getPath();
+    }
 }

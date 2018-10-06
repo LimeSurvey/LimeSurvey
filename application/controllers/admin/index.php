@@ -30,10 +30,14 @@ class Index extends Survey_Common_Action
         $lastsurvey = getGlobalSetting($setting_entry);
         $survey = Survey::model()->findByPk($lastsurvey);
         if ($lastsurvey != null && $survey) {
+            try {
             $aData['showLastSurvey'] = true;
             $iSurveyID = $lastsurvey;
             $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
             $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
+            } catch(Exception $e){
+                $aData['showLastSurvey'] = false;
+            }
         } else {
             $aData['showLastSurvey'] = false;
         }

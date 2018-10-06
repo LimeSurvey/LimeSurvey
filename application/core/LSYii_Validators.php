@@ -64,7 +64,6 @@ class LSYii_Validators extends CValidator
         // Note that URL checking only checks basic URL properties. As a URL can contain EM expression there needs to be a lot of freedom.
         if ($this->isUrl) {
             if ($object->$attribute == 'http://' || $object->$attribute == 'https://') {$object->$attribute = ""; }
-            $object->$attribute = html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8");
         }
         if ($this->isLanguage) {
             $object->$attribute = $this->languageFilter($object->$attribute);
@@ -148,7 +147,7 @@ class LSYii_Validators extends CValidator
                 $aParsedExpressions = $oExpressionManager->Tokenize($sExpression, true);
                 foreach ($aParsedExpressions as $aParsedExpression) {
                     if ($aParsedExpression[2] == 'DQ_STRING') {
-                        $sNewValue .= "\"".(string) $filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS 
+                        $sNewValue .= "\"".(string) $filter->purify($aParsedExpression[0])."\""; // This disallow complex HTML construction with XSS
                     } elseif ($aParsedExpression[2] == 'SQ_STRING') {
                         $sNewValue .= "'".(string) $filter->purify($aParsedExpression[0])."'";
                     } else {

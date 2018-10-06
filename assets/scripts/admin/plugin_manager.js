@@ -32,4 +32,4 @@ LS.pluginManager = (function() {
     return module;
 })();
 
-$(document).on('ready  pjax:scriptcomplete', LS.pluginManager.init);
+$(document).on('ready pjax:scriptcomplete', LS.pluginManager.init);

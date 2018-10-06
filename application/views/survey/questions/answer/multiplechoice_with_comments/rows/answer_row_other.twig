@@ -29,7 +29,7 @@
     <!-- Checkbox + label -->
     <div class="col-sm-{{ sLabelWidth }} col-xs-12">
         <div class="form-group answer-item text-item other-text-item ls-input-group"><!-- input-group from BS seems OK too -->
-            <label for="{{ id }}" class="label-text control-label ls-input-group-extra" id="label-{{ id }}" >{{ labeltext }}</label>
+            <label for="{{ id }}" class="label-text control-label ls-input-group-extra" id="label-{{ id }}" >{{ processString(labeltext) }}</label>
             <input
                class="other-text form-control input multipleco-other-topic {{ classes }} {{ kpclass }}"
                type="text"

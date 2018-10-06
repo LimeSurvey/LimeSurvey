@@ -47,7 +47,7 @@ $(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* hidden item */
-$(document).on("change",".answer-item :hidden",function(event){
+$(document).on("updated",".answer-item :hidden",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
 });
 /**
@@ -786,9 +786,12 @@ function LEMval(alias)
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
             else if (attr.type=='D')  {
                 // get date format pattern of referenced question
-                var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).text();
-                // if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
-                sdatetimePattern =typeof sdatetimePattern == 'undefined'? 'YYYY-MM-DD HH:mm': sdatetimePattern;
+                var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).val();
+                if (sdatetimePattern == ''){
+                    sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).text();
+                }
+                // if empty (eg., variable on a previous page), set default format yy-mm-dd HH:MM
+                sdatetimePattern = sdatetimePattern == ''? 'YYYY-MM-DD HH:mm': sdatetimePattern;
 
                 if (sdatetimePattern==null) {
                     sdatetimePattern="";

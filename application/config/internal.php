@@ -62,7 +62,22 @@ $internalConfig = array(
         // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
     ),
 
+    /*
+
+
+    here you can load the different modules
+    more about YII modules :
+    https://www.yiiframework.com/doc/guide/1.1/en/basics.module
+
+
+
+
     'modules'=>array(
+            'yourmodule'=array(
+            'class' => 'Use a yii Alias',
+
+        )
+
             'gii'=>array(
                 'class'=>'system.gii.GiiModule',
                 'password'=>'toto',
@@ -70,6 +85,10 @@ $internalConfig = array(
                     'newDirMode'=>0777,
             ),
         ),
+
+
+
+    */
 
     'params'=>array(
         'defaultPageSize'=>10, // Default page size for most of the grids
@@ -131,6 +150,7 @@ $internalConfig = array(
             'class'=>'LSHttpRequest',
             'enableCsrfValidation'=>true, // CSRF protection
             'enableCookieValidation'=>false, // Enable to activate cookie protection
+            'noCsrfValidationParams'=>array(),
             'noCsrfValidationRoutes'=>array(
                 'remotecontrol',
                 'plugins/unsecure',
@@ -237,17 +257,20 @@ $internalConfig = array(
                 'ellipsizeString'         => 'LS_Twig_Extension::ellipsizeString',
                 'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText', /* Temporary keep it */
                 'str_replace'             => 'str_replace',
+                'getConfig'               => 'LS_Twig_Extension::getConfig',
                 'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',/* Not in 3.X */
                 'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',/* Not in 3.X */
-
                 'checkPermission'         => 'LS_Twig_Extension::checkPermission',/* Not in 3.X */
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
 
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
-                'count'                   => 'count',
+                'count'                   => 'LS_Twig_Extension::safecount',
                 'reset'                   => 'reset',
+                'in_array'                => 'in_array',
+                'in_multiarray'           => 'LS_Twig_Extension::in_multiarray',
+                'array_search'            => 'array_search',
                 'renderCaptcha'           => 'LS_Twig_Extension::renderCaptcha',
                 'getPost'                 => 'LS_Twig_Extension::getPost',
                 'getParam'                => 'LS_Twig_Extension::getParam',
@@ -270,6 +293,8 @@ $internalConfig = array(
                 'getEditor'               => 'getEditor',
                 'darkencss'               => 'LS_Twig_Extension::darkencss',
                 'lightencss'              => 'LS_Twig_Extension::lightencss',
+                'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
+                'getAllAnswers'           => 'LS_Twig_Extension::getAllAnswers',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -296,11 +321,13 @@ $internalConfig = array(
                     'round',
                     'replace',
                     'last',
+                    'first',
                     'url_encode',
                     'capitalize',
                     'lower',
                     'upper',
                     'strip_tags',
+                    'number_format',
                 ),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox"),
@@ -343,9 +370,9 @@ $internalConfig = array(
                     'flatEllipsizeText',
                     'str_replace',
                     'flattenText',
+                    'getConfig',
                     'getExpressionManagerOutput',
                     'getTextDisplayWidget',
-
                     'getLanguageNameFromCode',
                     'getAllQuestionClasses',
                     'checkPermission',
@@ -353,6 +380,9 @@ $internalConfig = array(
                     'empty',
                     'count',
                     'reset',
+                    'in_array',
+                    'array_search',
+                    'in_multiarray',
                     'renderCaptcha',
                     'getPost',
                     'getParam',
@@ -380,8 +410,16 @@ $internalConfig = array(
                     'getEditor',
                     'darkencss',
                     'lightencss',
+                    'getAllTokenAnswers',
+                    'getAllAnswers',
                 ),
             ),
+        ),
+        'extensionUpdaterServiceLocator' => array(
+            'class' => '\LimeSurvey\ExtensionInstaller\ExtensionUpdaterServiceLocator',
+        ),
+        'versionFetcherServiceLocator' => array(
+            'class' => '\LimeSurvey\ExtensionInstaller\VersionFetcherServiceLocator',
         ),
     )
 );

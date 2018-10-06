@@ -4,7 +4,7 @@ var path = require('path');
 
 // Naming and path settings
 var appName = 'lsadminpanel';
-var entryPoint = ['babel-polyfill','./src/main.js'];
+var entryPoint = ['./src/main.js'];
 var exportPath = path.resolve(__dirname, './build');
 
 // Enviroment flag
