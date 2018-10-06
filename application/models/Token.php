@@ -315,16 +315,6 @@ abstract class Token extends Dynamic
     }
 
     /** @inheritdoc */
-    public function save($runValidation = true, $attributes = null)
-    {
-        $beforeTokenSave = new PluginEvent('beforeTokenSave');
-        $beforeTokenSave->set('model', $this);
-        $beforeTokenSave->set('iSurveyID', $this->dynamicId);
-        App()->getPluginManager()->dispatchEvent($beforeTokenSave);
-        return parent::save($runValidation, $attributes);
-    }
-
-    /** @inheritdoc */
     public function rules()
     {
         $aRules = array(
