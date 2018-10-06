@@ -188,8 +188,9 @@
          * @return int
          */
         public function getSurveyId() {
-            return $this->dynamicId;
+            return $this->getDynamicId();
         }
+
         public function browse()
         {
         }

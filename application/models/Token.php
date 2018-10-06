@@ -385,6 +385,6 @@ abstract class Token extends Dynamic
      * @return int
      */
     public function getSurveyId() {
-        return $this->dynamicId;
+        return $this->getDynamicId();
     }
 }

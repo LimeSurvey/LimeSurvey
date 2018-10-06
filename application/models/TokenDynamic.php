@@ -1019,6 +1019,6 @@ class TokenDynamic extends LSActiveRecord
      * @return int
      */
     public function getSurveyId() {
-        return $this->sid;
+        return self::$sid;
     }
 }

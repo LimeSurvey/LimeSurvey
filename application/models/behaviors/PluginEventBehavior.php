@@ -45,13 +45,13 @@
          * @param string $what
          * @return PluginEvent the dispatched event
          */
-        private function _dispatchDynamic($when,$what) {
-            if(is_subclass_of($this->owner,'Dynamic'))
-            {
-                $oPluginEvent = new PluginEvent($when.get_parent_class($this->owner).$what, $this);
-                $oPluginEvent->set('model', $this->owner);
-                $oPluginEvent->set('dynamicId', $this->owner->getDynamicId());
-                return App()->getPluginManager()->dispatchEvent($oPluginEvent);
+        private function _dispatchDynamic($when,$what)
+        {
+            if(is_subclass_of($this->owner,'Dynamic')) {
+                $params = array(
+                    'dynamicId' => $this->owner->getDynamicId()
+                );
+                return $this->dispatchPluginModelEvent($when.get_parent_class($this->owner).$what,null,$params);
             }
         }
         /**
@@ -59,16 +59,20 @@
          *
          * See {@link find()} for detailed explanation about $condition and $params.
          * @param string $sEventName event name to dispatch
-         * @param array	$criteria array containing attributes, conditions and params for the filter query
+         * @param array $criteria array containing attributes, conditions and params for the filter query
+         * @param array $eventParams array of params for event
          * @return PluginEvent the dispatched event
          */
-        public function dispatchPluginModelEvent($sEventName, $criteria = null)
+        public function dispatchPluginModelEvent($sEventName, $criteria = null, $eventParams = array())
         {
             $oPluginEvent = new PluginEvent($sEventName, $this);
             $oPluginEvent->set('model', $this->owner);
             if(method_exists($this->owner,'getSurveyId')) {
                 $oPluginEvent->set('iSurveyID', $this->owner->getSurveyId());
                 $oPluginEvent->set('surveyId', $this->owner->getSurveyId());
+            }
+            foreach($eventParams as $param => $value) {
+                $oPluginEvent->set($param, $value);
             }
             if (isset($criteria)) {
                 $oPluginEvent->set('filterCriteria', $criteria);
