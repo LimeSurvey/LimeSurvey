@@ -28,7 +28,7 @@ class PluginEventBehavior extends CModelBehavior
     {
         $pluginManager = App()->getPluginManager();
         // Don't propagate event if we're in a shutdown, since it will lead to an infinite loop.
-        if (!$pluginManager->shutdownObject->isEnabled()) {
+        if ($pluginManager->shutdownObject->isEnabled()) {
             return;
         }
         $this->dispatchPluginModelEvent('after'.get_class($this->owner).'Save');
@@ -49,7 +49,7 @@ class PluginEventBehavior extends CModelBehavior
     {
         $pluginManager = App()->getPluginManager();
         // Don't propagate event if we're in a shutdown, since it will lead to an infinite loop.
-        if (!$pluginManager->shutdownObject->isEnabled()) {
+        if ($pluginManager->shutdownObject->isEnabled()) {
             return;
         }
         $this->dispatchPluginModelEvent('before'.get_class($this->owner).'Save');
