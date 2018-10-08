@@ -38,6 +38,7 @@ class UpdateCheck extends PluginBase
     }
 
     /**
+     * After super admin log in, check date of next update check and set flag.
      * @return void
      */
     public function afterSuccessfulLogin()
@@ -55,6 +56,8 @@ class UpdateCheck extends PluginBase
     }
 
     /**
+     * If we're in an admin controller and the flag is set, render the JavaScript that
+     * will Ajax the checkAll() URL and push a notification.
      * @return void
      */
     public function beforeControllerAction()
@@ -81,6 +84,7 @@ class UpdateCheck extends PluginBase
      * Used to check for available updates for all plugins.
      * This method should be run at super admin login, max once every day.
      * Run by Ajax to avoid increased page load time.
+     * This method can also be run manually for testing.
      * @return void
      */
     public function checkAll()
