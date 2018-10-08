@@ -2705,7 +2705,7 @@ function createXMLfromData($aData = array()){
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType', 'Survey');
-    $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+    $xml->writeElement('DBVersion', App()->getConfig("DBVersion"));
    
     $xml->startElement('languages');
     foreach ($surveylanguages as $surveylanguage) {
