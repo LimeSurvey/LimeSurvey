@@ -34,6 +34,9 @@
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
+    public $group_name;
+    public $language;
+    public $description;
     /**
      * @inheritdoc
      * @return QuestionGroup
@@ -313,6 +316,8 @@ class QuestionGroup extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
+        $criteria->with = array('questionGroupL10ns'=>array("select"=>"group_name, description"));
+        $criteria->together = true;
         $criteria->condition = 'sid=:surveyid AND language=:language';
         $criteria->params = (array(':surveyid'=>$this->sid, ':language'=>$this->language));
         $criteria->compare('group_name', $this->group_name, true);
@@ -327,6 +332,28 @@ class QuestionGroup extends LSActiveRecord
             ),
         ));
         return $dataProvider;
+    }
+
+    /*
+     * Get primary Question group title
+     */
+    public function getPrimaryTitle()
+    {
+        $survey = Survey::model()->findByPk($this->sid);
+        $baselang = $survey->language;
+        $oQuestionGroup = $this->with('questionGroupL10ns')->find('t.gid = :gid AND language = :language', array(':gid' => $this->gid, ':language' => $baselang));
+        return $oQuestionGroup->questionGroupL10ns[$baselang]->group_name;
+    }
+
+    /*
+     * Get primary Question group description
+     */
+    public function getPrimaryDescription()
+    {
+        $survey = Survey::model()->findByPk($this->sid);
+        $baselang = $survey->language;
+        $oQuestionGroup = $this->with('questionGroupL10ns')->find('t.gid = :gid AND language = :language', array(':gid' => $this->gid, ':language' => $baselang));
+        return $oQuestionGroup->questionGroupL10ns[$baselang]->description;
     }
 
     /**
