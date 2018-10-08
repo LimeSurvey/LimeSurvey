@@ -914,4 +914,12 @@ class SurveyDynamic extends LSActiveRecord
 
         return $aGroupArray;
     }
+
+    /**
+     * Get current surveyId for other model/function
+     * @return int
+     */
+    public function getSurveyId() {
+        return self::$sid;
+    }
 }

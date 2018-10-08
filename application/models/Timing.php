@@ -90,4 +90,12 @@ class Timing extends LSActiveRecord
         }
     }
 
+    /**
+     * Get current surveyId for other model/function
+     * @return int
+     */
+    public function getSurveyId() {
+        return $this->surveyId;
+    }
+
 }
