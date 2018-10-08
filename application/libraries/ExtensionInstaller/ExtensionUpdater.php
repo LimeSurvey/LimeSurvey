@@ -147,7 +147,7 @@ abstract class ExtensionUpdater
         $latestVersion = $this->getLatestVersion($versions);
 
         $message .= ' ' . sprintf(
-            gT('The latest available version is <i>%s</i>.', 'js'),
+            gT('The latest available version is %s.', 'js'),
             $latestVersion['version']
         );
 
