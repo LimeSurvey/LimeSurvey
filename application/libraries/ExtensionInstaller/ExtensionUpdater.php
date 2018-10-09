@@ -40,7 +40,7 @@ abstract class ExtensionUpdater
     protected $useUnstable = false;
 
     /**
-     * @param mixed $model
+     * @param mixed $model Plugin model, theme model, etc, depending on extension type.
      */
     public function __construct($model)
     {
