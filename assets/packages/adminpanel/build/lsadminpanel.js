@@ -27375,7 +27375,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/subcomponents/_menuicon.vue"
+Component.options.__file = "C:\\IISPages\\LimeSurvey\\assets\\packages\\adminpanel\\src\\components\\subcomponents\\_menuicon.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _menuicon.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -27607,7 +27607,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/sidebar.vue"
+Component.options.__file = "C:\\IISPages\\LimeSurvey\\assets\\packages\\adminpanel\\src\\components\\sidebar.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] sidebar.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -27665,7 +27665,7 @@ exports = module.exports = __webpack_require__(1)(true);
 
 
 // module
-exports.push([module.i, "\n.sidebar_loader[data-v-3ebf670a] {\n  height: 100%;\n  position: absolute;\n  width: 100%;\n  background: rgba(231, 231, 231, 0.3);\n  z-index: 4501;\n  box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);\n  top: 0;\n}\n", "", {"version":3,"sources":["/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/sidebar.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,mBAAmB;EACnB,YAAY;EACZ,qCAAqC;EACrC,cAAc;EACd,kDAAkD;EAClD,OAAO;CAAE","file":"sidebar.vue","sourcesContent":[".sidebar_loader {\n  height: 100%;\n  position: absolute;\n  width: 100%;\n  background: rgba(231, 231, 231, 0.3);\n  z-index: 4501;\n  box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);\n  top: 0; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.sidebar_loader[data-v-3ebf670a] {\n  height: 100%;\n  position: absolute;\n  width: 100%;\n  background: rgba(231, 231, 231, 0.3);\n  z-index: 4501;\n  box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);\n  top: 0;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurvey/assets/packages/adminpanel/src/components/sidebar.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,mBAAmB;EACnB,YAAY;EACZ,qCAAqC;EACrC,cAAc;EACd,kDAAkD;EAClD,OAAO;CAAE","file":"sidebar.vue","sourcesContent":[".sidebar_loader {\n  height: 100%;\n  position: absolute;\n  width: 100%;\n  background: rgba(231, 231, 231, 0.3);\n  z-index: 4501;\n  box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);\n  top: 0; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -28129,7 +28129,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/subcomponents/_questionsgroups.vue"
+Component.options.__file = "C:\\IISPages\\LimeSurvey\\assets\\packages\\adminpanel\\src\\components\\subcomponents\\_questionsgroups.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _questionsgroups.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -28187,7 +28187,7 @@ exports = module.exports = __webpack_require__(1)(true);
 
 
 // module
-exports.push([module.i, "\n.display-as-container {\n  display: block;\n}\n#questionexplorer {\n  overflow: auto;\n}\n", "", {"version":3,"sources":["/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/subcomponents/_questionsgroups.vue"],"names":[],"mappings":";AAAA;EACE,eAAe;CAAE;AAEnB;EACE,eAAe;CAAE","file":"_questionsgroups.vue","sourcesContent":[".display-as-container {\n  display: block; }\n\n#questionexplorer {\n  overflow: auto; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.display-as-container {\n  display: block;\n}\n#questionexplorer {\n  overflow: auto;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurvey/assets/packages/adminpanel/src/components/subcomponents/_questionsgroups.vue"],"names":[],"mappings":";AAAA;EACE,eAAe;CAAE;AAEnB;EACE,eAAe;CAAE","file":"_questionsgroups.vue","sourcesContent":[".display-as-container {\n  display: block; }\n\n#questionexplorer {\n  overflow: auto; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -28578,7 +28578,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/subcomponents/_sidemenu.vue"
+Component.options.__file = "C:\\IISPages\\LimeSurvey\\assets\\packages\\adminpanel\\src\\components\\subcomponents\\_sidemenu.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _sidemenu.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -28780,7 +28780,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/subcomponents/_submenu.vue"
+Component.options.__file = "C:\\IISPages\\LimeSurvey\\assets\\packages\\adminpanel\\src\\components\\subcomponents\\_submenu.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _submenu.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -29101,7 +29101,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/subcomponents/_quickmenu.vue"
+Component.options.__file = "C:\\IISPages\\LimeSurvey\\assets\\packages\\adminpanel\\src\\components\\subcomponents\\_quickmenu.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _quickmenu.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -29494,7 +29494,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/topbar.vue"
+Component.options.__file = "C:\\IISPages\\LimeSurvey\\assets\\packages\\adminpanel\\src\\components\\topbar.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] topbar.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -29600,7 +29600,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/subcomponents/_dropdown.vue"
+Component.options.__file = "C:\\IISPages\\LimeSurvey\\assets\\packages\\adminpanel\\src\\components\\subcomponents\\_dropdown.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _dropdown.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -29936,7 +29936,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/parameter-table.vue"
+Component.options.__file = "C:\\IISPages\\LimeSurvey\\assets\\packages\\adminpanel\\src\\components\\parameter-table.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] parameter-table.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -30107,7 +30107,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/parameter-popup.vue"
+Component.options.__file = "C:\\IISPages\\LimeSurvey\\assets\\packages\\adminpanel\\src\\components\\parameter-popup.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] parameter-popup.vue: functional components are not supported with templates, they should use render functions.")}
 

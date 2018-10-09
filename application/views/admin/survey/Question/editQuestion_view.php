@@ -367,6 +367,7 @@ foreach ( $aQuestionTypeList as $key => $questionType)
             <input type='hidden' name='action' value='insertquestion' />
             <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />
             <p><input type='submit'  class="hidden" value='<?php eT("Add question"); ?>' /></p>
+            <div id="loader" class="blocker-loading"><div class="blocker-loading-container"><i class="loading-icon-fa fa fa-cog fa-spin"></i></div></div>
         <?php elseif ($copying): ?>
             <input type='hidden' name='action' value='copyquestion' />
             <input type='hidden' id='oldqid' name='oldqid' value='<?php echo $qid; ?>' />
