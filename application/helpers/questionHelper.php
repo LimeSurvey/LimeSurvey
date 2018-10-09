@@ -1639,7 +1639,14 @@ class questionHelper
         $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), TRUE);
         libxml_disable_entity_loader(true);
         // no need recursive QuestionAttribute::getDefaultSettings() is array of string or null
-        return array_merge(QuestionAttribute::getDefaultSettings(),$custom_attributes['attribute']);
+        $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
+        
+        $additionalAttributes = array_map(function($arr) use ($defaultQuestionAttributeValues){
+            return array_merge($defaultQuestionAttributeValues, $arr);
+        },$custom_attributes['attribute']);
+
+        return $additionalAttributes;
+        
     }
 
     /**

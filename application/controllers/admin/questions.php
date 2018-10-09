@@ -1693,18 +1693,6 @@ class questions extends Survey_Common_Action
                 if (!array_key_exists('0', $themeAttributes)){$themeTemp[0] = $themeAttributes; $themeAttributes = $themeTemp;}
                 
                 foreach ($themeAttributes as $key =>$attribute) {
-                    // INSERTING EACH OF THIS KEYS TO THE ARRAY IF KEYS ARE MISSING
-                    if (empty($attribute['name'])){$attribute['name'] = 'default_theme_attribute_name';}
-                    if (empty($attribute['readonly'])){$attribute['readonly'] = '';}
-                    if (empty($attribute['default'])){$attribute['default'] = '';}
-                    if (empty($attribute['readonly_when_active'])){$attribute['readonly_when_active'] = '';}
-                    if (empty($attribute['value'])){$attribute['value'] = '';}
-                    if (empty($attribute['i18n'])){$attribute['i18n'] = '';}
-                    if (empty($attribute['category'])){$attribute['category'] = 'Display Theme Options';}
-                    if (empty($attribute['sortorder'])){$attribute['sortorder'] = '';}
-                    if (empty($attribute['help'])){$attribute['help'] = '';}
-                    if (empty($attribute['caption'])){$attribute['caption'] = '';}
-                    if (empty($attribute['inputtype'])){$attribute['inputtype'] = '';}
                     $aAttributesWithValues[$attribute['name']] = $attribute;
                 }              
         }
@@ -1713,6 +1701,12 @@ class questions extends Survey_Common_Action
 
         $aAttributesPrepared = array();
         foreach ($aAttributesWithValues as $aAttribute) {
+            //Set default for a new question
+            if(empty($aAttribute['value']) && $qid===0) {
+                //Empty strings are arrays because of some reason no one understands.
+                $aAttribute['value'] = is_array($aAttribute['default']) ? '' : $aAttribute['default'];
+            }
+
             // SET QUESTION TEMPLATE FORM ATTRIBUTES WHEN $sQuestionTemplate VARIABLE IS SET
             if (!empty($sQuestionTemplate) && isset($aAttribute['name']) && $aAttribute['name'] == 'question_template') {
                 $aAttribute['value'] = $sQuestionTemplate;
@@ -1732,7 +1726,6 @@ class questions extends Survey_Common_Action
                     $aAttributesPrepared[] = $aAttributeModified;
                 }
             }
-
         }
 
         $aData = [];
