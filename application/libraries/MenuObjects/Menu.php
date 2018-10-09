@@ -39,26 +39,26 @@ class Menu implements MenuInterface
 
     public function isDropDown()
     {
-        return $this->isDropDown; 
+        return $this->isDropDown;
     }
     
     public function getLabel()
     {
-        return $this->label; 
+        return $this->label;
     }
     
     public function getHref()
     {
-        return $this->href; 
+        return $this->href;
     }
     
     public function getMenuItems()
     {
-        return $this->menuItems; 
+        return $this->menuItems;
     }
     
     public function getIconClass()
     {
-        return $this->iconClass; 
+        return $this->iconClass;
     }
 }
