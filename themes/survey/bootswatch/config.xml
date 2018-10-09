@@ -12,7 +12,7 @@
     <metadata>
         <name>bootswatch</name>
         <title>Bootswatch Theme</title>
-
+        <type>theme</type>
         <creationDate>08/01/2016</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>
@@ -254,5 +254,9 @@
             </screens>
         </template_editor>
     </engine>
+
+    <!-- Disable the updater system for core themes. -->
+    <updaters disabled="disabled">
+    </updaters>
 
 </config>
