@@ -592,6 +592,22 @@ class LsDefaultDataSets
             array(
                 'teid' => 18,
                 'ordering' => 18,
+                'title' => gT('Set your question type.'),
+                'content' => gT("LimeSurvey offers you a lot of different question types.").'<br/>'
+                .gT("As you can see, the preselected question type is the 'Long free text' one. We will use in this example the 'Array' question type.").'<br/>'
+                .gT("This type of question allows you to add multiple subquestions and a set of answers.")
+                .'<p class="alert bg-warning">'.gT("Please select the 'Array'-type.").'</p>',
+                'settings' => json_encode(array(
+                    'element' => '#selector__questionTypeSelector-modal',
+                    'delay' => 500,
+                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
+                    'placement' => 'left',
+                    'redirect' => false,
+                ))
+            ),
+            array(
+                'teid' => 19,
+                'ordering' => 19,
                 'title' => gT('The title of your question'),
                 'content' =>
                 gT("This code is normally not shown to your participants, still it is necessary and has to be unique for the survey.").'<br>'
@@ -606,8 +622,8 @@ class LsDefaultDataSets
                 ))
             ),
             array(
-                'teid' => 19,
-                'ordering' => 19,
+                'teid' => 20,
+                'ordering' => 20,
                 'title' => gT('The actual question text'),
                 'content' => gT('The content of this box is the actual question text shown to your participants. It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine.'),
                 'settings' => json_encode(array(
@@ -618,29 +634,14 @@ class LsDefaultDataSets
                 ))
             ),
             array(
-                'teid' => 20,
-                'ordering' => 20,
+                'teid' => 21,
+                'ordering' => 21,
                 'title' => gT('An additional help text for your question'),
                 'content' => gT('You can add some additional help text to your question. If you decide not to offer any additional question hints, then no help text will be displayed to your respondents.'),
                 'settings' => json_encode(array(
                     'element' => '#cke_help_en',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'top',
-                    'redirect' => false,
-                ))
-            ),
-            array(
-                'teid' => 21,
-                'ordering' => 21,
-                'title' => gT('Set your question type.'),
-                'content' => gT("LimeSurvey offers you a lot of different question types.").'<br/>'
-                .gT("As you can see, the preselected question type is the 'Long free text' one. We will use in this example the 'Array' question type.").'<br/>'
-                .gT("This type of question allows you to add multiple subquestions and a set of answers.")
-                .'<p class="alert bg-warning">'.gT("Please select the 'Array'-type.").'</p>',
-                'settings' => json_encode(array(
-                    'element' => '#trigger_questionTypeSelector_button',
-                    'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
-                    'placement' => 'left',
                     'redirect' => false,
                 ))
             ),
