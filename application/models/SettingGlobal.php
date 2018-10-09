@@ -65,7 +65,7 @@ class SettingGlobal extends LSActiveRecord
             array('stg_name', 'required'),
             array('stg_name', 'unique'),
             array('stg_value', 'default', 'value' => ''),
-            array('stg_name', 'in', 'not'=>true,'range' => $disableDbUpdate),
+            array('stg_name', 'in', 'not'=>true,'range' => $disableByDb),
         );
 
         return $aRules;
