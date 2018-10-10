@@ -14,6 +14,8 @@
 
 use \LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
 use \LimeSurvey\ExtensionInstaller\PluginInstaller;
+use \LimeSurvey\Menu\Menu;
+use \LimeSurvey\Menu\MenuItem;
 
 /**
  * @todo Apply new permission 'extensions' instead of 'settings'.
@@ -61,11 +63,24 @@ class PluginManagerController extends Survey_Common_Action
             ]
         );
 
+        $aData['extraMenus'] = $this->getExtraMenus();
+
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin'));
         }
         $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
+    }
+
+    /**
+     * @return Menu[]
+     */
+    protected function getExtraMenus()
+    {
+        $event = new PluginEvent('beforePluginManagerMenuRender', $this);
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        $extraMenus = $result->get('extraMenus');
+        return $extraMenus;
     }
 
     /**

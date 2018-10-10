@@ -12,6 +12,8 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
+use \LimeSurvey\Menu\Menu;
+
 /**
  * Plugin to check for extension updates after a super admin logs in.
  * Uses the ExtensionInstaller library.
@@ -35,6 +37,7 @@ class UpdateCheck extends PluginBase
     {
         $this->subscribe('afterSuccessfulLogin');
         $this->subscribe('beforeControllerAction');
+        $this->subscribe('beforePluginManagerMenuRender');
     }
 
     /**
@@ -78,6 +81,22 @@ class UpdateCheck extends PluginBase
             $today = new DateTime("now");
             $this->set('next_extension_update_check', $today->add(new DateInterval('P1D'))->format('Y-m-d H:i:s'));
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function beforePluginManagerMenuRender()
+    {
+        $event = $this->event;
+        $event->append(
+            'extraMenus',
+            new Menu(
+                [
+                    'href' = ''
+                ]
+            )
+        );
     }
 
     /**
