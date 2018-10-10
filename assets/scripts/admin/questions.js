@@ -93,7 +93,10 @@ var QuestionFunctions = function () {
                 return prev + '<img src="' + curr + '" />';
             }, '');
         },
-
+        triggerModal = function(){
+            $('#questionTypeSelector').trigger('change');
+            $('#trigger_questionTypeSelector_button').children('button').trigger('click');
+        },
         init = function () {
         var oldQuestionTemplate = '';
             updatequestionattributes('');
@@ -134,9 +137,16 @@ var QuestionFunctions = function () {
                     return false;
                 }
             });
+            if($('input[name=action]').val() == 'insertquestion') {
+                setTimeout(function(){
+                    $('#loader').remove();
+                    triggerModal();
+                }, 400);
+            }
         };
     return {
-        init: init
+        init: init,
+        triggerModal: triggerModal
     };
 }
 

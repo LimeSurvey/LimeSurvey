@@ -329,6 +329,7 @@ class QuestionAttribute extends LSActiveRecord
             "category" => gT("Attribute"),
             "default" => '',
             "help" => '',
+            "value" => '',
             "sortorder" => 1000,
             "i18n"=> false,
             "readonly" => false,
