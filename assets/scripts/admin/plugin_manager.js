@@ -25,6 +25,7 @@ LS.pluginManager = (function() {
      * Init this module.
      */
     module.init = function() {
+        LS.doToolTip();
         // Bound event to uninstall plugin button (plugin list).
         //$('.ls-pm-uninstall-plugin').on('click', module.uninstallPlugin);
     };

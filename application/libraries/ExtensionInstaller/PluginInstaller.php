@@ -33,7 +33,9 @@ class PluginInstaller extends ExtensionInstaller
 
     /**
      * Install unzipped package into correct folder.
+     * Assumes file fetcher and config is set.
      * @return void
+     * @throws Exception
      */
     public function install()
     {
@@ -52,6 +54,36 @@ class PluginInstaller extends ExtensionInstaller
             } else {
                 throw new \Exception($errorMessage);
             }
+        } else {
+            throw new \Exception('Could not move files.');
+        }
+    }
+
+    /**
+     * Update the plugin.
+     * Assumes file fetcher and config is set.
+     * @return void
+     * @throws Exception
+     */
+    public function update()
+    {
+        if (empty($this->fileFetcher)) {
+            throw new \InvalidArgumentException(gT('fileFetcher is not set'));
+        }
+        
+        $config = $this->getConfig();
+        $plugin = \Plugin::model()->find('name = :name', [':name' => $config->getName()]);
+
+        if (empty($plugin)) {
+            throw new \Exception('Plugin is not installed, cannot update.');
+        }
+
+        $pluginManager = App()->getPluginManager();
+        $destdir = $pluginManager->getPluginFolder($config, $this->pluginType);
+
+        if ($this->fileFetcher->move($destdir)) {
+            $plugin->version = $config->getVersion();
+            $plugin->update();
         } else {
             throw new \Exception('Could not move files.');
         }

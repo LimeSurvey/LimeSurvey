@@ -35,6 +35,28 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.14.11 (build 180926) to 3.15.0 (build 181008) October 8, 2018
+-New feature #14119: minute step for datetimepicker (Denis Chenu)
+-New feature: Added Italian language to multilingual sample survey (Luciano Fanfoni) (Carsten Schmitz)
+-Fixed issue #13850: Missing favicon.ico for fruity theme (Dominik Vitt)
+-Fixed issue #13975: Error if scope is not selected while editing assessments (Dominik Vitt)
+-Fixed issue #14072: Integer values in pdf report shown as decimals (Dominik Vitt)
+-Fixed issue #14094: Token modal not opening while having filters in responses view (Dominik Vitt)
+-Fixed issue #14105: Unable to open Central participant database if logged in as survey administrator (Dominik Vitt)
+-Fixed issue #14114: no background color while executing the survey (Dominik Vitt)
+-Fixed issue #14124: Changing invitation/reminder dates for a certain tokens changes the date format at the database (Dominik Vitt)
+-Fixed issue #14125: DB user with insufficient right can show white page when installing (#1133) (Denis Chenu)
+-Fixed issue #14127: Slider with only right part broken (#1134) (Denis Chenu)
+-Fixed issue #14127: Slider with only right part broken (Denis Chenu)
+-Fixed issue: Montenegrin translation causing error with file upload questions (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: German by tbart, c_schmitz
+#Updated translation: Spanish (Spain) by aesteban, gabrieljenik, rodrirokr
+#Updated translation: Galician by Calidonia
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: German (Informal) by tbart, c_schmitz
+
 Changes from 3.14.10 (build 180924) to 3.14.11 (build 180926) September 26, 2018
 #Updated translation: Chinese (Taiwan) (Traditional) by sylsylsylvie, joyce
 #Updated translation: German (Informal) by c_schmitz

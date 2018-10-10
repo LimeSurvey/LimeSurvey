@@ -12,6 +12,8 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
+use \LimeSurvey\Menu\Menu;
+
 /**
  * Plugin to check for extension updates after a super admin logs in.
  * Uses the ExtensionInstaller library.
@@ -35,9 +37,11 @@ class UpdateCheck extends PluginBase
     {
         $this->subscribe('afterSuccessfulLogin');
         $this->subscribe('beforeControllerAction');
+        $this->subscribe('beforePluginManagerMenuRender');
     }
 
     /**
+     * After super admin log in, check date of next update check and set flag.
      * @return void
      */
     public function afterSuccessfulLogin()
@@ -55,6 +59,8 @@ class UpdateCheck extends PluginBase
     }
 
     /**
+     * If we're in an admin controller and the flag is set, render the JavaScript that
+     * will Ajax the checkAll() URL and push a notification.
      * @return void
      */
     public function beforeControllerAction()
@@ -78,9 +84,47 @@ class UpdateCheck extends PluginBase
     }
 
     /**
+     * @return void
+     */
+    public function beforePluginManagerMenuRender()
+    {
+        $notificationUpdateUrl = Notification::getUpdateUrl();
+        $event = $this->event;
+        $event->append(
+            'extraMenus',
+            [
+                new Menu(
+                    [
+                        'href'      => $this->getCheckUrl(),
+                        'iconClass' => 'fa fa-refresh',
+                        'label'     => gT('Check updates'),
+                        'tooltip'   => gT('Check all extensions for available updates.'),
+                        'onClick'   => <<<JS
+$("#ls-loading").show();
+$.ajax(
+    {
+        url: this.href,
+        data: {},
+        method: "GET",
+        success: function() {
+            $("#ls-loading").hide();
+            LS.updateNotificationWidget("$notificationUpdateUrl", false);
+        },
+    }
+);
+return false;
+JS
+                    ]
+                )
+            ]
+        );
+    }
+
+    /**
      * Used to check for available updates for all plugins.
      * This method should be run at super admin login, max once every day.
      * Run by Ajax to avoid increased page load time.
+     * This method can also be run manually for testing.
      * @return void
      */
     public function checkAll()
@@ -112,27 +156,40 @@ class UpdateCheck extends PluginBase
 
         // Compose notification.
         if ($messages || $errors) {
-            $superadmins = User::model()->getSuperAdmins();
-            $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
-            $displayClass = $foundSecurityVersion ? 'danger' : '';
-            $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
-            $message = implode($messages);
-            if ($errors) {
-                $message .= '<hr/><i class="fa fa-warning"></i>&nbsp;'
-                    . gT('Errors happened during the update check. Please notify the extension authors for support.')
-                    . '<ul>'
-                    . '<li>' . implode('</li><li>', $errors) . '</li>';
-            }
-            UniqueNotification::broadcast(
-                [
-                    'title'         => $title,
-                    'display_class' => $displayClass,
-                    'message'       => $message,
-                    'importance'    => $importance
-                ],
-                $superadmins
-            );
+            $this->composeNotification($messages, $errors, $foundSecurityVersion);
         }
+    }
+
+    /**
+     * Compose messages and errors into a nice notification message. Extra annoying if
+     * $foundSecurityVersion is set to true.
+     * @param string[] $messages
+     * @param string[] $errors
+     * @param bool $foundSecurityVersion
+     * @return void
+     */
+    protected function composeNotification(array $messages, array $errors, bool $foundSecurityVersion)
+    {
+        $superadmins = User::model()->getSuperAdmins();
+        $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
+        $displayClass = $foundSecurityVersion ? 'danger' : '';
+        $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
+        $message = implode($messages);
+        if ($errors) {
+            $message .= '<hr/><i class="fa fa-warning"></i>&nbsp;'
+                . gT('Errors happened during the update check. Please notify the extension authors for support.')
+                . '<ul>'
+                . '<li>' . implode('</li><li>', $errors) . '</li>';
+        }
+        UniqueNotification::broadcast(
+            [
+                'title'         => $title,
+                'display_class' => $displayClass,
+                'message'       => $message,
+                'importance'    => $importance
+            ],
+            $superadmins
+        );
     }
 
     /**
@@ -141,17 +198,25 @@ class UpdateCheck extends PluginBase
     protected function spitOutUrl()
     {
         $data = [
-            'url' => Yii::app()->createUrl(
-                'admin/pluginhelper',
-                array(
-                    'sa'     => 'ajax',
-                    'plugin' => 'updateCheck',
-                    'method' => 'checkAll'
-                )
-            ),
+            'url' => $this->getCheckUrl(),
             'notificationUpdateUrl' => Notification::getUpdateUrl()
         ];
         echo $this->api->renderTwig(__DIR__ . '/views/index.twig', $data);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCheckUrl()
+    {
+        return Yii::app()->createUrl(
+            'admin/pluginhelper',
+            [
+                'sa'     => 'ajax',
+                'plugin' => 'updateCheck',
+                'method' => 'checkAll'
+            ]
+        );
     }
 
     /**

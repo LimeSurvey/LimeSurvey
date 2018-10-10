@@ -40,7 +40,7 @@ abstract class ExtensionUpdater
     protected $useUnstable = false;
 
     /**
-     * @param mixed $model
+     * @param mixed $model Plugin model, theme model, etc, depending on extension type.
      */
     public function __construct($model)
     {
@@ -147,7 +147,7 @@ abstract class ExtensionUpdater
         $latestVersion = $this->getLatestVersion($versions);
 
         $message .= ' ' . sprintf(
-            gT('The latest available version is <i>%s</i>.', 'js'),
+            gT('The latest available version is %s.', 'js'),
             $latestVersion['version']
         );
 
@@ -181,16 +181,65 @@ abstract class ExtensionUpdater
     }
 
     /**
+     * Fetch all new available version from each version fetcher.
+     * @return array $versions
+     * @todo Move to parent class?
+     */
+    public function fetchVersions()
+    {
+        $config = $this->getExtensionConfig();
+        $versionFetchers = $config->createVersionFetchers();
+
+        if (empty($versionFetchers)) {
+            // No fetchers, can't fetch remote version.
+            return [];
+        }
+
+        $allowUnstable = getGlobalSetting('allow_unstable_extension_update');
+
+        $versions = [];
+        foreach ($versionFetchers as $fetcher) {
+
+            // Setup fetcher.
+            $fetcher->setExtensionName($this->getExtensionName());
+            $fetcher->setExtensionType($this->getExtensionType());
+
+            // Fetch versions.
+            $newVersion          = $fetcher->getLatestVersion();
+            $lastSecurityVersion = $fetcher->getLatestSecurityVersion();
+
+            if (version_compare($lastSecurityVersion, $this->getCurrentVersion(), '>')) {
+                $versions[] = [
+                    'isSecurityVersion' => true,
+                    'version'           => $lastSecurityVersion,
+                    'manualUpdateUrl'   => $fetcher->getManualUpdateUrl()
+                ];
+            }
+
+            // If this version is unstable and we're not allowed to use it, continue.
+            if (!$allowUnstable && !$this->versionIsStable($newVersion)) {
+                continue;
+            }
+
+            if (version_compare($newVersion, $this->getCurrentVersion(), '>')) {
+                $versions[] = [
+                    'isSecurityVersion' => false,
+                    'version'           => $newVersion,
+                    'manualUpdateUrl'   => $fetcher->getManualUpdateUrl()
+                ];
+            } else {
+                // Ignore.
+            }
+        }
+
+        return $versions;
+    }
+
+    /**
      * Create an updater object for every extension of corresponding type.
      * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
     abstract public static function createUpdaters();
-
-    /**
-     * Uses the version fetchers to fetch info about available updates for this extension.
-     * @return array
-     */
-    abstract public function fetchVersions();
 
     /**
      * Fetch extension name from extension model.

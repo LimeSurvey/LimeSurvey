@@ -14,6 +14,8 @@
 
 use \LimeSurvey\ExtensionInstaller\FileFetcherUploadZip;
 use \LimeSurvey\ExtensionInstaller\PluginInstaller;
+use \LimeSurvey\Menu\Menu;
+use \LimeSurvey\Menu\MenuItem;
 
 /**
  * @todo Apply new permission 'extensions' instead of 'settings'.
@@ -61,11 +63,24 @@ class PluginManagerController extends Survey_Common_Action
             ]
         );
 
+        $aData['extraMenus'] = $this->getExtraMenus();
+
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin'));
         }
         $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
+    }
+
+    /**
+     * @return Menu[]
+     */
+    protected function getExtraMenus()
+    {
+        $event = new PluginEvent('beforePluginManagerMenuRender', $this);
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        $extraMenus = $result->get('extraMenus') ?? [];
+        return $extraMenus;
     }
 
     /**
@@ -427,27 +442,39 @@ class PluginManagerController extends Survey_Common_Action
     {
         $this->checkUpdatePermission();
 
+        /** @var PluginInstaller */
         $installer = $this->getInstaller();
 
         try {
+
+            /** @var ExtensionConfig */
             $config = $installer->getConfig();
-            if ($config) {
-                // Show confirmation page.
-                $abortUrl = $this->getPluginManagerUrl('abortUploadedPlugin');
-                $data = [
-                    'config'   => $config,
-                    'abortUrl' => $abortUrl
-                ];
-                $this->_renderWrappedTemplate(
-                    'pluginmanager',
-                    'uploadConfirm',
-                    $data
-                );
-            } else {
-                // Abort.
+
+            if (empty($config)) {
                 $installer->abort();
                 $this->errorAndRedirect(gT('Could not read plugin configuration file.'));
             }
+
+            if (!$config->isCompatible()) {
+                $installer->abort();
+                $this->errorAndRedirect(gT('The plugin is not compatible with your version of LimeSurvey.'));
+            }
+
+            // Show confirmation page.
+            $abortUrl = $this->getPluginManagerUrl('abortUploadedPlugin');
+            $plugin = Plugin::model()->find('name = :name', [':name' => $config->getName()]);
+            $data = [
+                'config'   => $config,
+                'abortUrl' => $abortUrl,
+                'plugin'   => $plugin,
+                'isUpdate' => !empty($plugin)
+            ];
+            $this->_renderWrappedTemplate(
+                'pluginmanager',
+                'uploadConfirm',
+                $data
+            );
+
         } catch (Exception $ex) {
             $installer->abort();
             $this->errorAndRedirect($ex->getMessage());
@@ -463,20 +490,35 @@ class PluginManagerController extends Survey_Common_Action
     {
         $this->checkUpdatePermission();
 
+        /** @var LSHttpRequest */
+        $request = Yii::app()->request;
+
+        /** @var boolean */
+        $isUpdate = $request->getPost('isUpdate') == 'true';
+
+        /** @var PluginInstaller */
         $installer = $this->getInstaller();
+        $installer->setPluginType('upload');
 
         try {
-            $installer->setPluginType('upload');
-            $installer->install();
-            Yii::app()->user->setFlash(
-                'success',
-                gT('The plugin was successfully installed. You need to activate it before you can use it.')
-            );
+            if ($isUpdate) {
+                $installer->update();
+                Yii::app()->user->setFlash(
+                    'success',
+                    gT('The plugin was successfully updated. You might need to deactivate it and activate it again to apply changes.')
+                );
+            } else {
+                $installer->install();
+                Yii::app()->user->setFlash(
+                    'success',
+                    gT('The plugin was successfully installed. You need to activate it before you can use it.')
+                );
+            }
         } catch (Throwable $ex) {
             $installer->abort();
             Yii::app()->user->setFlash(
                 'error',
-                gT('The plugin could not be installed:')
+                gT('The plugin could not be installed or updated:')
                 . ' '
                 . $ex->getMessage()
             );

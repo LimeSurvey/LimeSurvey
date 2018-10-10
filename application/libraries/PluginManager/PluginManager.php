@@ -59,9 +59,8 @@ class PluginManager extends \CApplicationComponent
 
     /**
      * Creates the plugin manager.
-     *
-     *
-     * a reference to an already constructed reference.
+     * Loads all active plugins.
+     * @return void
      */
     public function init()
     {

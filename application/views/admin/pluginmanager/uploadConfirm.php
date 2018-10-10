@@ -7,24 +7,27 @@
         <?php echo CHtml::form(
             Yii::app()->getController()->createUrl(
                 '/admin/pluginmanager',
-                ['sa' => 'installUploadedPlugin']
+                [
+                    'sa'       => 'installUploadedPlugin'
+                ]
             ),
             'post'
         ); ?>
 
-            <?php // If compatible, show info and buttons. If not, show only cancel button and warning. ?>
-            <?php if ($config->isCompatible()): ?>
+            <input type="hidden" name="isUpdate" value="<?php echo json_encode($isUpdate); ?>" />
+
+            <?php if ($isUpdate): ?>
+                <div class='alert alert-info'>
+                    <p>
+                        <i class='fa fa-info'></i>&nbsp;
+                        <?php eT('The following plugin will be updated. Please click "Update" to update the plugin, or "Abort" to abort.'); ?>
+                    </p>
+                </div>
+            <?php else: ?>
                 <div class='alert alert-info'>
                     <p>
                         <i class='fa fa-info'></i>&nbsp;
                         <?php eT('The following plugin will be installed. Please click "Install" to install the plugin, or "Abort" to abort. Aborting will remove the files from the file system.'); ?>
-                    </p>
-                </div>
-            <?php else: ?>
-                <div class='alert alert-warning'>
-                    <p>
-                        <i class='fa fa-warning'></i>&nbsp;
-                        <?php eT('The plugin is not compatible with your version of LimeSurvey.'); ?>
                     </p>
                 </div>
             <?php endif; ?>
@@ -67,7 +70,9 @@
             <div class="form-group col-sm-12">
                 <label class="col-sm-4 control-label"></label>
                 <div class="col-sm-4">
-                    <?php if ($config->isCompatible()): ?>
+                    <?php if ($isUpdate): ?>
+                        <input type="submit" class="btn btn-success" value="<?php eT("Update");?>" />
+                    <?php else: ?>
                         <input type="submit" class="btn btn-success" value="<?php eT("Install");?>" />
                     <?php endif; ?>
                     <a href="<?php echo $abortUrl; ?>" class="btn btn-warning" data-dismiss="modal"><?php eT("Abort");?></a>

@@ -12,7 +12,7 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-     *	Files Purpose: lots of common functions
+   * Files Purpose: lots of common functions
 */
 
 /**
@@ -317,7 +317,7 @@ class QuestionAttribute extends LSActiveRecord
 
     /**
      * Get default settings for an attribute, return an array of string|null
-     * @return string|null[] 
+     * @return (string|bool|null)[]
      */
     public static function getDefaultSettings()
     {

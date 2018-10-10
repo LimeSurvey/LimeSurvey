@@ -146,6 +146,11 @@ class ExtensionConfig
             );
         }
 
+        // Don't create any fetchers if updaters are disabled.
+        if ((string) $this->xml->updaters['disabled'] === 'disabled') {
+            return [];
+        }
+
         $fetchers = [];
 
         $service = \Yii::app()->versionFetcherServiceLocator;

@@ -47,9 +47,14 @@ class Plugin extends LSActiveRecord
      */
     public function setLoadError(array $error)
     {
-        $this->load_error = 1;
-        $this->load_error_message = $error['message'] . ' ' . $error['file'];
-        return $this->update();
+        // NB: Don't use ActiveRecord here, since it will trigger events and
+        // load the plugin system all over again.
+        // TODO: Works on all SQL systems?
+        $sql = sprintf(
+            "UPDATE {{plugins}} SET load_error = 1, load_error_message = '%s' WHERE id = " . $this->id,
+            addslashes($error['message'] . ' ' . $error['file'])
+        );
+        return \Yii::app()->db->createCommand($sql)->execute();
     }
 
     /**
@@ -248,6 +253,7 @@ class Plugin extends LSActiveRecord
         if ($plugin) {
             $result = $plugin->setLoadError($error);
         } else {
+            // TODO: Use raw SQL insteadl of active records.
             $plugin = new \Plugin();
             $plugin->name = $pluginName;
             $plugin->active = 0;

@@ -37,6 +37,13 @@ class ExtensionUpdaterServiceLocator
                 return PluginUpdater::createUpdaters();
             }
         );
+
+        $this->addUpdaterType(
+            'theme',
+            function () {
+                return ThemeUpdater::createUpdaters();
+            }
+        );
     }
 
     /**

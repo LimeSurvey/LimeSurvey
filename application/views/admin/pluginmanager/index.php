@@ -30,6 +30,24 @@ echo viewHelper::getViewTestTag('pluginManager');
                     <?php eT('Browse the shop'); ?>
                 </a>
                  */ ?>
+                <?php foreach ($extraMenus as $menu): ?>
+                    <a
+                        href='<?php echo $menu->getHref(); ?>'
+                        <?php if ($menu->getOnClick()): ?>
+                            onclick='<?php echo $menu->getOnClick(); ?>'
+                        <?php endif; ?>
+                        <?php if ($menu->getTooltip()): ?>
+                            data-toggle='tooltip'
+                            data-title='<?php echo $menu->getTooltip(); ?>'
+                        <?php endif; ?>
+                        class='btn btn-default'
+                    >
+                        <?php if ($menu->getIconClass()): ?>
+                            <i class='<?php echo $menu->getIconClass(); ?>'></i>&nbsp;
+                        <?php endif; ?>
+                        <?php echo $menu->getLabel(); ?>
+                    </a>
+                <?php endforeach; ?>
                 <a
                     href=''
                     class='btn btn-success '

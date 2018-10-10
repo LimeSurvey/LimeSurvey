@@ -15,25 +15,24 @@
 namespace LimeSurvey\ExtensionInstaller;
 
 /**
- * @since 2018-09-26
+ * @since 2018-10-09
  * @author Olle Haerstedt
  */
-class PluginUpdater extends ExtensionUpdater
+class ThemeUpdater extends ExtensionUpdater
 {
     /**
      * Create a PluginUpdater for every plugin installed.
      * @return array [ExtensionUpdater[] $updaters, string[] $errorMessages]
      */
-    public static function createUpdaters() : array
+    public static function createUpdaters()
     {
-        // Get all installed plugins (both active and non-active).
-        $plugins = \Plugin::model()->findAll();
+        $themes = \Template::model()->findAll();
 
         $updaters = [];
         $errors   = [];
-        foreach ($plugins as $plugin) {
+        foreach ($themes as $theme) {
             try {
-                $updaters[] = new PluginUpdater($plugin);
+                $updaters[] = new ThemeUpdater($theme);
             } catch (\Exception $ex) {
                 $errors[] = $ex->getMessage();
             }
@@ -55,7 +54,7 @@ class PluginUpdater extends ExtensionUpdater
      */
     public function getExtensionType()
     {
-        return 'plugin';
+        return 'theme';
     }
 
     /**
@@ -63,15 +62,29 @@ class PluginUpdater extends ExtensionUpdater
      */
     public function getExtensionConfig()
     {
-        return $this->model->extensionConfig;
-    }
+        $templateDirs  = \Template::getAllTemplatesDirectories();
+        $templateName  = $this->getExtensionName();
+        $templateDir   = $templateDirs[$this->getExtensionName()];
 
-    /**
-     * Get this extension's current version.
-     * @return string
-     */
-    public function getCurrentVersion()
-    {
-        return $this->model->version;
+        if (empty($templateDir)) {
+            throw new \Exception('Found no theme dir for theme ' . $templateName);
+        }
+
+        $file = $templateDir . '/config.xml';
+
+        if (!file_exists($file)) {
+            throw new \Exception(
+                sprintf(
+                    'Theme %s has no config file',
+                    json_encode($templateName)
+                )
+            );
+        }
+
+        libxml_disable_entity_loader(false);
+        $config = simplexml_load_file(realpath($file));
+        libxml_disable_entity_loader(true);
+
+        return new \ExtensionConfig($config);
     }
 }

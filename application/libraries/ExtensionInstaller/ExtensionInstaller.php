@@ -57,6 +57,12 @@ abstract class ExtensionInstaller
     abstract public function install();
 
     /**
+     * Update extension.
+     * @return void
+     */
+    abstract public function update();
+
+    /**
      * Uninstall the extension.
      * @return void
      */

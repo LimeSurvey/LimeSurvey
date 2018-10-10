@@ -14,6 +14,7 @@
     <metadata>
         <name>vanilla</name>
         <title>Bootstrap Vanilla</title>
+        <type>theme</type>
         <creationDate>16/10/2017</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>
@@ -269,4 +270,8 @@
             </screens>
         </template_editor>
     </engine>
+
+    <!-- Disable the updater system for core themes. -->
+    <updaters disabled="disabled">
+    </updaters>
 </config>

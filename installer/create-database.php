@@ -284,7 +284,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{plugins}}', array(
             'id' =>  "pk",
             'name' =>  "string(50) NOT NULL",
-            'plugin_type' =>  "string(4) default 'user'",
+            'plugin_type' =>  "string(6) default 'user'",
             'active' =>  "int NOT NULL default 0",
             'version' =>  "string(32) NULL",
             'load_error' => 'int default 0',
@@ -837,6 +837,11 @@ function createDatabase($oDB){
             'path' => 'text NOT NULL',
             'version' => 'integer NOT NULL',
         ));
+
+        // Install default plugins.
+        foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {
+            $oDB->createCommand()->insert("{{plugins}}", $plugin);
+        }
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
