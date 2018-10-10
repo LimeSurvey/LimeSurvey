@@ -838,6 +838,11 @@ function createDatabase($oDB){
             'version' => 'integer NOT NULL',
         ));
 
+        // Install default plugins.
+        foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {
+            $oDB->createCommand()->insert("{{plugins}}", $plugin);
+        }
+
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
 

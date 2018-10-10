@@ -924,4 +924,24 @@ class LsDefaultDataSets
 
         return $returnArray;
     }
+
+    /**
+     * Get data for plugins installed by default.
+     * Note: Authdb is installed during first login.
+     * @return array
+     */
+    public static function getDefaultPluginsData()
+    {
+        return [
+            [
+                'id' => null,
+                'name'               => 'UpdateCheck',
+                'plugin_type'        => 'core',
+                'active'             => 1,
+                'version'            => '1.0.0',
+                'load_error'         => 0,
+                'load_error_message' => null
+            ]
+        ];
+    }
 }
