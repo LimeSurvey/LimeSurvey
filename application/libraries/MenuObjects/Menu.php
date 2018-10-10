@@ -34,7 +34,7 @@ class Menu implements MenuInterface
     /**
      * @var string
      */
-    protected $onCLick = "";
+    protected $onClick = "";
 
     /**
      * @param array $options - Options for either dropdown menu or plain link
@@ -63,7 +63,7 @@ class Menu implements MenuInterface
         }
 
         if (isset($options['onClick'])) {
-            $this->iconClass = $options['onCLick'];
+            $this->onClick = $options['onClick'];
         }
     }
 
@@ -112,6 +112,6 @@ class Menu implements MenuInterface
      */
     public function getOnClick()
     {
-        return $this->onCLick;
+        return $this->onClick;
     }
 }

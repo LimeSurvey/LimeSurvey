@@ -88,14 +88,34 @@ class UpdateCheck extends PluginBase
      */
     public function beforePluginManagerMenuRender()
     {
+        $notificationUpdateUrl = Notification::getUpdateUrl();
         $event = $this->event;
         $event->append(
             'extraMenus',
-            new Menu(
-                [
-                    'href' => ''
-                ]
-            )
+            [
+                new Menu(
+                    [
+                        'href'      => $this->getCheckUrl(),
+                        'iconClass' => 'fa fa-refresh',
+                        'label'     => gT('Check updates'),
+                        'onClick'   => <<<JS
+$("#ls-loading").show();
+$.ajax(
+    {
+        url: this.href,
+        data: {},
+        method: "GET",
+        success: function() {
+            $("#ls-loading").hide();
+            LS.updateNotificationWidget("$notificationUpdateUrl", false);
+        },
+    }
+);
+return false;
+JS
+                    ]
+                )
+            ]
         );
     }
 
@@ -177,17 +197,25 @@ class UpdateCheck extends PluginBase
     protected function spitOutUrl()
     {
         $data = [
-            'url' => Yii::app()->createUrl(
-                'admin/pluginhelper',
-                array(
-                    'sa'     => 'ajax',
-                    'plugin' => 'updateCheck',
-                    'method' => 'checkAll'
-                )
-            ),
+            'url' => $this->getCheckUrl(),
             'notificationUpdateUrl' => Notification::getUpdateUrl()
         ];
         echo $this->api->renderTwig(__DIR__ . '/views/index.twig', $data);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCheckUrl()
+    {
+        return Yii::app()->createUrl(
+            'admin/pluginhelper',
+            [
+                'sa'     => 'ajax',
+                'plugin' => 'updateCheck',
+                'method' => 'checkAll'
+            ]
+        );
     }
 
     /**
