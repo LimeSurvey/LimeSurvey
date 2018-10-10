@@ -93,7 +93,7 @@ class UpdateCheck extends PluginBase
             'extraMenus',
             new Menu(
                 [
-                    'href' = ''
+                    'href' => ''
                 ]
             )
         );
@@ -135,27 +135,40 @@ class UpdateCheck extends PluginBase
 
         // Compose notification.
         if ($messages || $errors) {
-            $superadmins = User::model()->getSuperAdmins();
-            $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
-            $displayClass = $foundSecurityVersion ? 'danger' : '';
-            $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
-            $message = implode($messages);
-            if ($errors) {
-                $message .= '<hr/><i class="fa fa-warning"></i>&nbsp;'
-                    . gT('Errors happened during the update check. Please notify the extension authors for support.')
-                    . '<ul>'
-                    . '<li>' . implode('</li><li>', $errors) . '</li>';
-            }
-            UniqueNotification::broadcast(
-                [
-                    'title'         => $title,
-                    'display_class' => $displayClass,
-                    'message'       => $message,
-                    'importance'    => $importance
-                ],
-                $superadmins
-            );
+            $this->composerNotification($messages, $errors, $foundSecurityVersion);
         }
+    }
+
+    /**
+     * Compose messages and errors into a nice notification message. Extra annoying if
+     * $foundSecurityVersion is set to true.
+     * @param string[] $messages
+     * @param string[] $errors
+     * @param bool $foundSecurityVersion
+     * @return void
+     */
+    protected function composerNotification(array $messages, array $errors, bool $foundSecurityVersion)
+    {
+        $superadmins = User::model()->getSuperAdmins();
+        $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
+        $displayClass = $foundSecurityVersion ? 'danger' : '';
+        $importance   = $foundSecurityVersion ? Notification::HIGH_IMPORTANCE : Notification::NORMAL_IMPORTANCE;
+        $message = implode($messages);
+        if ($errors) {
+            $message .= '<hr/><i class="fa fa-warning"></i>&nbsp;'
+                . gT('Errors happened during the update check. Please notify the extension authors for support.')
+                . '<ul>'
+                . '<li>' . implode('</li><li>', $errors) . '</li>';
+        }
+        UniqueNotification::broadcast(
+            [
+                'title'         => $title,
+                'display_class' => $displayClass,
+                'message'       => $message,
+                'importance'    => $importance
+            ],
+            $superadmins
+        );
     }
 
     /**

@@ -253,6 +253,7 @@ class Plugin extends LSActiveRecord
         if ($plugin) {
             $result = $plugin->setLoadError($error);
         } else {
+            // TODO: Use raw SQL insteadl of active records.
             $plugin = new \Plugin();
             $plugin->name = $pluginName;
             $plugin->active = 0;
