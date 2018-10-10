@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>demoAddEmFunction</name>
+        <type>plugin</type>
+        <creationDate>2018-04-15</creationDate>
+        <last_update>2018-10-08</last_update>
+        <author>Denis Chenu</author>
+        <authorUrl>https://www.limesurvey.org</authorUrl>
+        <version>0.0.2</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[Demo: add a new function for expression manager]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

@@ -9,7 +9,7 @@ class demoAddEmFunction extends PluginBase
 
     public function init()
     {
-        $this->subscribe('newValidFunctions');
+        $this->subscribe('ExpressionManagerStart','newValidFunctions');
     }
 
     public function newValidFunctions()
@@ -19,7 +19,7 @@ class demoAddEmFunction extends PluginBase
         $newFunctions = array(
             'doHtmlList' => array(
                 '\demoAddEmFunction\exampleFunctions::doHtmlList', // PHP function, no need Class if function is directly added here
-                'doHtmlList', // Javascript function
+                'demoAddEmFunction.doHtmlList', // Javascript function
                 $this->gT("Show an html list with elements"), // Description for admin
                 'string doHtmlList(arg1, arg2, ... argN)', // Extra description
                 'https://www.limesurvey.org', // Help url
@@ -27,7 +27,7 @@ class demoAddEmFunction extends PluginBase
             ),
             'sayHello' => array(
                 '\demoAddEmFunction\exampleFunctions::sayHello', // PHP function, no need Class if function is directly added here
-                'sayHello', // Javascript function
+                'demoAddEmFunction.sayHello', // Javascript function
                 $this->gT("Say hello"), // Description for admin
                 'string sayHello(string)', // Extra description
                 'https://www.limesurvey.org', // Help url

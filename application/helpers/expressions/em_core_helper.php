@@ -258,14 +258,16 @@ class ExpressionManager
      */
     public function ExpressionManagerStartEvent()
     {
-        $event = new \LimeSurvey\PluginManager\PluginEvent('newValidFunctions');
+        $event = new \LimeSurvey\PluginManager\PluginEvent('ExpressionManagerStart');
         $result = App()->getPluginManager()->dispatchEvent($event);
         $newValidFunctions = (array) $result->get('functions');
         $newPackages = (array) $result->get('packages'); // package added to expression-extend['depends'] : maybe don't add it in event, but add an helper ?
+
         $this->RegisterFunctions($newValidFunctions); // No validation : plugin dev can break all easily
         foreach($newPackages as $name => $definition) {
             $this->addPackageForExpressionManager($name,$definition);
         }
+        App()->getClientScript()->registerPackage('expression-extend');
     }
 
     /**
