@@ -36,6 +36,10 @@ echo viewHelper::getViewTestTag('pluginManager');
                         <?php if ($menu->getOnClick()): ?>
                             onclick='<?php echo $menu->getOnClick(); ?>'
                         <?php endif; ?>
+                        <?php if ($menu->getTooltip()): ?>
+                            data-toggle='tooltip'
+                            data-title='<?php echo $menu->getTooltip(); ?>'
+                        <?php endif; ?>
                         class='btn btn-default'
                     >
                         <?php if ($menu->getIconClass()): ?>

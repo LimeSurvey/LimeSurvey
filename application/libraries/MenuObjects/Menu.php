@@ -37,6 +37,11 @@ class Menu implements MenuInterface
     protected $onClick = "";
 
     /**
+     * @var string
+     */
+    protected $tooltip = "";
+
+    /**
      * @param array $options - Options for either dropdown menu or plain link
      * @return void
      */
@@ -64,6 +69,10 @@ class Menu implements MenuInterface
 
         if (isset($options['onClick'])) {
             $this->onClick = $options['onClick'];
+        }
+
+        if (isset($options['tooltip'])) {
+            $this->tooltip = $options['tooltip'];
         }
     }
 
@@ -113,5 +122,13 @@ class Menu implements MenuInterface
     public function getOnClick()
     {
         return $this->onClick;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTooltip()
+    {
+        return $this->tooltip;
     }
 }

@@ -98,6 +98,7 @@ class UpdateCheck extends PluginBase
                         'href'      => $this->getCheckUrl(),
                         'iconClass' => 'fa fa-refresh',
                         'label'     => gT('Check updates'),
+                        'tooltip'   => gT('Check all extensions for available updates.'),
                         'onClick'   => <<<JS
 $("#ls-loading").show();
 $.ajax(
@@ -155,7 +156,7 @@ JS
 
         // Compose notification.
         if ($messages || $errors) {
-            $this->composerNotification($messages, $errors, $foundSecurityVersion);
+            $this->composeNotification($messages, $errors, $foundSecurityVersion);
         }
     }
 
@@ -167,7 +168,7 @@ JS
      * @param bool $foundSecurityVersion
      * @return void
      */
-    protected function composerNotification(array $messages, array $errors, bool $foundSecurityVersion)
+    protected function composeNotification(array $messages, array $errors, bool $foundSecurityVersion)
     {
         $superadmins = User::model()->getSuperAdmins();
         $title        = $foundSecurityVersion ? gT('Security updates available') : gT('Updates available');
