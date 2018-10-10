@@ -63,7 +63,7 @@ class PluginManagerController extends Survey_Common_Action
             ]
         );
 
-        $aData['extraMenus'] = $this->getExtraMenus() ?? [];
+        $aData['extraMenus'] = $this->getExtraMenus();
 
         if (!Permission::model()->hasGlobalPermission('settings', 'read')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
@@ -79,7 +79,7 @@ class PluginManagerController extends Survey_Common_Action
     {
         $event = new PluginEvent('beforePluginManagerMenuRender', $this);
         $result = App()->getPluginManager()->dispatchEvent($event);
-        $extraMenus = $result->get('extraMenus');
+        $extraMenus = $result->get('extraMenus') ?? [];
         return $extraMenus;
     }
 
