@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-10-08 09:40:19+00:00\n"
+"POT-Creation-Date: 2018-10-11 07:45:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2449,8 +2449,8 @@ msgstr ""
 #: application/views/admin/responses/browsemenubar_view.php:178
 #: application/views/admin/responses/listResponses_view.php:278
 #: application/views/admin/super/fullpagebar_view.php:21
-#: application/views/admin/survey/Question/editQuestion_view.php:377
-#: application/views/admin/survey/Question/editQuestion_view.php:383
+#: application/views/admin/survey/Question/editQuestion_view.php:378
+#: application/views/admin/survey/Question/editQuestion_view.php:384
 #: application/views/admin/survey/Question/editdefaultvalues_view.php:194
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:125
 #: application/views/admin/survey/Question/questionbar_view.php:227
@@ -3470,12 +3470,12 @@ msgid "Checked"
 msgstr ""
 
 #: application/controllers/admin/questions.php:607
-#: application/core/LsDefaultDataSets.php:775
+#: application/core/LsDefaultDataSets.php:776
 msgid "Edit answer options"
 msgstr ""
 
 #: application/controllers/admin/questions.php:843
-#: application/core/LsDefaultDataSets.php:707
+#: application/core/LsDefaultDataSets.php:708
 msgid "Edit subquestions"
 msgstr ""
 
@@ -3488,7 +3488,7 @@ msgstr ""
 
 #: application/controllers/admin/questions.php:1171
 #: application/views/admin/survey/Question/editQuestion_view.php:80
-#: application/views/admin/survey/Question/editQuestion_view.php:373
+#: application/views/admin/survey/Question/editQuestion_view.php:374
 msgid "Copy question"
 msgstr ""
 
@@ -3515,31 +3515,31 @@ msgstr ""
 msgid "You are not authorized to delete questions."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1837
+#: application/controllers/admin/questions.php:1830
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1837
+#: application/controllers/admin/questions.php:1830
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1840
+#: application/controllers/admin/questions.php:1833
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1840
+#: application/controllers/admin/questions.php:1833
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1846
+#: application/controllers/admin/questions.php:1839
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1848
+#: application/controllers/admin/questions.php:1841
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1850
+#: application/controllers/admin/questions.php:1843
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_select_survey_theme.php:24
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:91
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:109
@@ -3548,7 +3548,7 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1935
+#: application/controllers/admin/questions.php:1928
 #: application/views/admin/super/_question_explorer.php:74
 msgid "You can't add questions while the survey is active."
 msgstr ""
@@ -4959,7 +4959,7 @@ msgid "Saved"
 msgstr ""
 
 #: application/controllers/admin/translate.php:269
-#: application/core/LsDefaultDataSets.php:808
+#: application/core/LsDefaultDataSets.php:809
 #: application/core/Survey_Common_Action.php:681
 #: application/views/admin/survey/Question/questionbar_view.php:19
 #: application/views/admin/survey/Question/questionbar_view.php:79
@@ -6227,274 +6227,274 @@ msgid "Now click on 'Save and add question'."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:595
-msgid "The title of your question"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:597
-msgid "This code is normally not shown to your participants, still it is necessary and has to be unique for the survey."
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:598
-msgid "This code is also the name of the variable that will be exported to SPSS or Excel."
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:599
-msgid "Please type in a code that consists only of letters and numbers, and doesn't start with a number."
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:611
-msgid "The actual question text"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:612
-msgid "The content of this box is the actual question text shown to your participants. It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine."
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:623
-msgid "An additional help text for your question"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:624
-msgid "You can add some additional help text to your question. If you decide not to offer any additional question hints, then no help text will be displayed to your respondents."
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:635
 msgid "Set your question type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:636
+#: application/core/LsDefaultDataSets.php:596
 msgid "LimeSurvey offers you a lot of different question types."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:637
+#: application/core/LsDefaultDataSets.php:597
 msgid "As you can see, the preselected question type is the 'Long free text' one. We will use in this example the 'Array' question type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:638
+#: application/core/LsDefaultDataSets.php:598
 msgid "This type of question allows you to add multiple subquestions and a set of answers."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:639
+#: application/core/LsDefaultDataSets.php:599
 msgid "Please select the 'Array'-type."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:650
-msgid "Now save the created question"
+#: application/core/LsDefaultDataSets.php:611
+msgid "The title of your question"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:613
+msgid "This code is normally not shown to your participants, still it is necessary and has to be unique for the survey."
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:614
+msgid "This code is also the name of the variable that will be exported to SPSS or Excel."
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:615
+msgid "Please type in a code that consists only of letters and numbers, and doesn't start with a number."
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:627
+msgid "The actual question text"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:628
+msgid "The content of this box is the actual question text shown to your participants. It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine."
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:639
+msgid "An additional help text for your question"
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:640
+msgid "You can add some additional help text to your question. If you decide not to offer any additional question hints, then no help text will be displayed to your respondents."
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:651
-msgid "Next, we will create subquestions and answer options."
+msgid "Now save the created question"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:652
+msgid "Next, we will create subquestions and answer options."
+msgstr ""
+
+#: application/core/LsDefaultDataSets.php:653
 msgid "Please remember that in order to have a valid code, it must contain only letters and numbers, also please check that it starts with a letter."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:670
+#: application/core/LsDefaultDataSets.php:671
 msgid "The question bar"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:671
+#: application/core/LsDefaultDataSets.php:672
 msgid "This is the question bar."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:672
+#: application/core/LsDefaultDataSets.php:673
 msgid "The most important question-related options are displayed here."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:673
+#: application/core/LsDefaultDataSets.php:674
 msgid "The availability of options is related to the type of question you previously chose."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:686
+#: application/core/LsDefaultDataSets.php:687
 msgid "Add some subquestions to your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:687
+#: application/core/LsDefaultDataSets.php:688
 msgid "The array question is a type that creates a matrix for the participant."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:688
+#: application/core/LsDefaultDataSets.php:689
 msgid "To fully use it, you have to add subquestions as well as answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:689
+#: application/core/LsDefaultDataSets.php:690
 msgid "Let's start with subquestions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:690
+#: application/core/LsDefaultDataSets.php:691
 msgid "Click on the 'Edit subquestions' button."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:708
+#: application/core/LsDefaultDataSets.php:709
 msgid "You should add some subquestions for your question here."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:709
+#: application/core/LsDefaultDataSets.php:710
 msgid "Every row is one subquestion. We recommend the usage of logical or numerical codes for subquestions. Your participants cannot see the subquestion code, only the subquestion text itself."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:710
+#: application/core/LsDefaultDataSets.php:711
 msgid "Pro tip: The subquestion may even contain HTML code."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:722
+#: application/core/LsDefaultDataSets.php:723
 msgid "Add subquestion row"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:723
+#: application/core/LsDefaultDataSets.php:724
 msgid "Click on the plus sign %s to add another subquestion to your question."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:724
+#: application/core/LsDefaultDataSets.php:725
 msgid "Please add at least two subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:735
+#: application/core/LsDefaultDataSets.php:736
 msgid "Now save the subquestions"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:736
+#: application/core/LsDefaultDataSets.php:737
 msgid "You may save empty subquestions, but that would be pointless."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:737
+#: application/core/LsDefaultDataSets.php:738
 msgid "Save and close now and let's edit the answer options."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:754
+#: application/core/LsDefaultDataSets.php:755
 msgid "Add some answer options to your question"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:755
+#: application/core/LsDefaultDataSets.php:756
 msgid "Now that we've got some subquestions, we have to add answer options as well."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:756
+#: application/core/LsDefaultDataSets.php:757
 msgid "The answer options will be shown for each subquestion."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:757
+#: application/core/LsDefaultDataSets.php:758
 msgid "Click on the 'Edit answer options' button."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:776
+#: application/core/LsDefaultDataSets.php:777
 msgid "As you can see, editing answer options is quite similar to editing subquestions."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:777
+#: application/core/LsDefaultDataSets.php:778
 msgid "Remember the plus button"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:790
+#: application/core/LsDefaultDataSets.php:791
 msgid "Now save the answer options"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:791
+#: application/core/LsDefaultDataSets.php:792
 msgid "Click on 'Save and close' or 'Next' to proceed."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:809
+#: application/core/LsDefaultDataSets.php:810
 msgid "Let's have a look at your first survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:810
+#: application/core/LsDefaultDataSets.php:811
 msgid "Just click on this button and a new window will open, where you can test run your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:811
+#: application/core/LsDefaultDataSets.php:812
 msgid "Please be aware that your answers will not be saved, because the survey isn't active yet."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:812
+#: application/core/LsDefaultDataSets.php:813
 msgid "Click on 'Preview survey' and return to this window when you are done testing."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:824
+#: application/core/LsDefaultDataSets.php:825
 msgid "Easy navigation with the \"breadcrumbs\""
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:825
+#: application/core/LsDefaultDataSets.php:826
 msgid "You can see the \"breadcrumbs\" In the top bar of the admin interface."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:826
+#: application/core/LsDefaultDataSets.php:827
 msgid "They represent an easy way to get back to any previous setting, and provide a general overview of where you are."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:827
+#: application/core/LsDefaultDataSets.php:828
 msgid "Click on the name of your survey to get back to the survey settings overview."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:844
+#: application/core/LsDefaultDataSets.php:845
 msgid "Finally, activate your survey"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:845
+#: application/core/LsDefaultDataSets.php:846
 msgid "Now, activate your survey."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:846
+#: application/core/LsDefaultDataSets.php:847
 msgid "You can create as many surveys as you like."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:847
+#: application/core/LsDefaultDataSets.php:848
 msgid "Click on 'Activate this survey'"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:865
+#: application/core/LsDefaultDataSets.php:866
 msgid "Activation settings"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:866
+#: application/core/LsDefaultDataSets.php:867
 msgid "These settings cannot be changed once the survey is online."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:867
+#: application/core/LsDefaultDataSets.php:868
 msgid "For this simple survey the default settings are ok, but read the disclaimer carefully when you activate your own surveys."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:868
+#: application/core/LsDefaultDataSets.php:869
 msgid "For more information consult our manual, or our forums."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:869
+#: application/core/LsDefaultDataSets.php:870
 msgid "Now click on \"Save & activate survey\""
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:887
+#: application/core/LsDefaultDataSets.php:888
 msgid "Activate survey participants table"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:888
+#: application/core/LsDefaultDataSets.php:889
 msgid "Here you can select to start your survey in closed access mode."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:889
+#: application/core/LsDefaultDataSets.php:890
 msgid "For our simple survey it is better to start in open access mode."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:890
+#: application/core/LsDefaultDataSets.php:891
 msgid "The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:891
+#: application/core/LsDefaultDataSets.php:892
 msgid "For more information please consult our manual or our forum."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:892
+#: application/core/LsDefaultDataSets.php:893
 msgid "Click on 'No, thanks'"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:910
+#: application/core/LsDefaultDataSets.php:911
 msgid "Share this link"
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:911
+#: application/core/LsDefaultDataSets.php:912
 msgid "Just share this link with some of your friends and of course, test it yourself."
 msgstr ""
 
-#: application/core/LsDefaultDataSets.php:912
+#: application/core/LsDefaultDataSets.php:913
 msgid "Thank you for taking the tour!"
 msgstr ""
 
@@ -11225,7 +11225,7 @@ msgid "Persian"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:543
-msgid "Papiamento (CuraÃ§ao & Bonaire)"
+msgid "Papiamento (Curaçao & Bonaire)"
 msgstr ""
 
 #: application/helpers/surveytranslator_helper.php:551
@@ -12949,8 +12949,8 @@ msgstr ""
 #: application/views/admin/emailtemplates/emailtemplates_view.php:63
 #: application/views/admin/pluginmanager/configure.php:28
 #: application/views/admin/super/fullpagebar_view.php:29
-#: application/views/admin/survey/Question/editQuestion_view.php:378
-#: application/views/admin/survey/Question/editQuestion_view.php:384
+#: application/views/admin/survey/Question/editQuestion_view.php:379
+#: application/views/admin/survey/Question/editQuestion_view.php:385
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:126
 #: application/views/admin/survey/Question/questionbar_view.php:233
 #: application/views/admin/survey/Question/questionbar_view.php:281

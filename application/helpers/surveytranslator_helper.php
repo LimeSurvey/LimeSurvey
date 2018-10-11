@@ -540,7 +540,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['fa']['radixpoint'] = 0;
 
     // Papiamento (Curacao and Bonaire)
-    $supportedLanguages['pap-CW']['description'] = gT('Papiamento (CuraÃ§ao & Bonaire)');
+    $supportedLanguages['pap-CW']['description'] = gT('Papiamento (Curaçao & Bonaire)');
     $supportedLanguages['pap-CW']['nativedescription'] = 'Papiamentu';
     $supportedLanguages['pap-CW']['rtl'] = false;
     $supportedLanguages['pap-CW']['dateformat'] = 2;
