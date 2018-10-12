@@ -1647,6 +1647,7 @@ class questionHelper
         $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
         $additionalAttributes = array_map(function($arr) use ($defaultQuestionAttributeValues){
             // no need recursive QuestionAttribute::getDefaultSettings() is array of string or null
+            // TODO : add key for name, but need update on controllers/question too. Since core/plugin attribute have name for key, theme must return same
             return array_merge($defaultQuestionAttributeValues, $arr);
         },$custom_attributes['attribute']);
 
