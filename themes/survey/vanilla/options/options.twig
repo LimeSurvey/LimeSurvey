@@ -27,7 +27,7 @@
 
 {# For surveyspecific settings add an inherit option #}
 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-    {% set fontOptions = fontOptions ~ '<option value = "inherit" > Inherit</option>' %}
+    {% set fontOptions = fontOptions ~ '<option value="inherit">'~ gT("Inherit")  ~' ( '~ gT("Inherited value:")~' '~ oParentOptions.font ~' )</option>' %}
 {% endif %}
 
 {% set fontOptions %}
@@ -109,7 +109,7 @@
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-default">
+                                    <label class="btn btn-default" title="{{ gT("Inherited value:") }} ">
                                         <input name='ajaxmode' type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
                                         {{ gT("Inherit") }}
                                     </label>
@@ -137,7 +137,7 @@
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-default">
+                                    <label class="btn btn-default" title="{{ gT("Inherited value:") }} ">
                                         <input type='radio' name='container' value='inherit' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
                                         {{ gT("Inherit") }}
                                     </label>
@@ -163,7 +163,7 @@
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-default">
+                                    <label class="btn btn-default" title="{{ gT("Inherited value:") }} ">
                                         <input type='radio' name='hideprivacyinfo' value='inherit' class='selector_option_radio_field simple_edit_options_hideprivacyinfo ' data-id='hideprivacyinfo'/>
                                         {{ gT("Inherit") }}
                                     </label>
@@ -193,7 +193,7 @@
                                     </label>
                                     {# If this is a root template setting, don't show the inherit button #}
                                     {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                        <label class="btn btn-default" {{ showpopups_disabled }}>
+                                        <label class="btn btn-default" title="{{ gT("Inherited value:") }} " {{ showpopups_disabled }}>
                                             <input type='radio' name='showpopups' value='inherit' class='selector_option_radio_field simple_edit_options_showpopups ' data-id='showpopups'/>
                                             {{ gT("Inherit") }}
                                         </label>
@@ -226,7 +226,7 @@
                                 </label>
                                 {# If this is a root template setting, don't show the inherit button #}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-default">
+                                    <label class="btn btn-default" title="{{ gT("Inherited value:") }} ">
                                         <input type='radio' name='brandlogo' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_brandlogo'/>
                                         {{ gT("Inherit") }}
                                     </label>
@@ -242,7 +242,7 @@
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <option value="inherit">Inherit</option>
+                                    <option value="inherit">{{ gT("Inherit") }} ( {{ gT("Inherited value:") }} {{ oParentOptions.brandlogofile }} )</option>
                                 {% endif %}
 
                                 {% for image in templateConfiguration.imageFileList %}

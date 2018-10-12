@@ -186,6 +186,11 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                                 <?php echo $form->hiddenField($model,'gsid'); ?>
                                 <?php echo $form->hiddenField($model,'uid'); ?>
 
+                                <?php echo CHtml::hiddenField('optionInheritedValues' , json_encode($optionInheritedValues)); ?>
+                                <?php echo CHtml::hiddenField('optionCssFiles' , json_encode($optionCssFiles)); ?>
+                                <?php echo CHtml::hiddenField('optionCssFramework' , json_encode($optionCssFramework)); ?>
+                                <?php echo CHtml::hiddenField('translationInheritedValue' , gT("Inherited value:").' '); ?>
+
                                 <div class="row">
                                     <div class="form-group">
                                         <?php echo $form->labelEx($model,'files_css'); ?>
