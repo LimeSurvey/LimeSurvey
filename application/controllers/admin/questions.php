@@ -1676,12 +1676,8 @@ class questions extends Survey_Common_Action
             // get old custom question theme attributes
             $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sOldQuestionTemplate, $questionTypeList[$type]);
             if (!empty($aOldQuestionThemeAttributes)){ 
-                if (!array_key_exists('0', $aOldQuestionThemeAttributes)){
-                    unset($aAttributesWithValues[$aOldQuestionThemeAttributes['name']]);
-                } else {
-                    foreach ($aOldQuestionThemeAttributes as $key => $value) {
-                        unset($aAttributesWithValues[$value['name']]);
-                    }
+                foreach ($aOldQuestionThemeAttributes as $key => $value) {
+                    unset($aAttributesWithValues[$value['name']]);
                 }
             }
         }
@@ -1689,12 +1685,7 @@ class questions extends Survey_Common_Action
         // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
         if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
                 $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionTemplate, $questionTypeList[$type]);
-                // CHECK TO SEE IF ARRAY CONTAINS INDEX 0, IF NOT - INDEX 0 WOULD BE CREATED ( OTHERWISE DATA MERGE WOULD FAIL IF INDEX ÍS MISSING )
-                if (!array_key_exists('0', $themeAttributes)){$themeTemp[0] = $themeAttributes; $themeAttributes = $themeTemp;}
-                
-                foreach ($themeAttributes as $key =>$attribute) {
-                    $aAttributesWithValues[$attribute['name']] = $attribute;
-                }              
+                $aAttributesWithValues = array_merge_recursive($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
         }
         uasort($aAttributesWithValues, 'categorySort');
         unset($aAttributesWithValues['question_template']);
