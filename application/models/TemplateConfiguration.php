@@ -437,8 +437,16 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->together = true; 
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
-        $criteria->addCondition('t.gsid IS NULL');
         $criteria->addCondition('template.name IS NOT NULL');
+
+        // check if survey group id is present
+        $gsid = Yii::app()->request->getQuery('id', null);
+        if ($gsid !== null){
+            $criteria->addCondition('t.gsid = ' . $gsid);
+        } else {
+            $criteria->addCondition('t.gsid IS NULL');
+        }
+        
 
         $criteria->compare('id', $this->id);
         $criteria->compare('template_name', $this->template_name, true);
