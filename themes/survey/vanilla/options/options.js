@@ -14,6 +14,7 @@ var ThemeOptions = function(){
     //get the global form
     var globalForm = $('.action_update_options_string_form');
 
+    var optionObjectInheritedValues = null;
 
     /////////////////
     // Define methods run on startup
@@ -28,6 +29,7 @@ var ThemeOptions = function(){
         if($('#TemplateConfiguration_options').length>0 && !generalInherit()){
             try{
                 optionObject = JSON.parse($('#TemplateConfiguration_options').val());
+                optionObjectInheritedValues = JSON.parse($('#optionInheritedValues').val());
             } catch(e){ console.ls ? console.ls.error('No valid option field!') : console.log('No valid option field!'); }
         }
     };
@@ -72,6 +74,13 @@ var ThemeOptions = function(){
             if($(item).attr('type') == 'radio'){
                 if($(item).prop('checked')){
                     optionObject[$(item).attr('name')] = $(item).val();
+                }
+
+                // display inherited option values for tooltip
+                if ($(item).val() == 'inherit'){
+                    var element = $(item).parent();
+                    element.attr('title', element.attr('title')+optionObjectInheritedValues[$(item).attr('name')]);    
+                    element.tooltip();
                 }
             }
 

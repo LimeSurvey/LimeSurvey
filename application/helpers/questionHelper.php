@@ -1607,6 +1607,7 @@ class questionHelper
         // Create array of attribute with name as key
         foreach($custom_attributes['attribute'] as $customAttribute) {
             if(!empty($customAttribute['name'])) {
+                // inputtype is text by default
                 $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
             }
         }

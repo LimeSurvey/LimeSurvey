@@ -12,6 +12,8 @@ var ThemeOptions = function () {
         "general_inherit": 1
     }
 
+    var optionObjectInheritedValues = JSON.parse($('#optionInheritedValues').val());
+    var optionCssFiles = JSON.parse(JSON.parse($('#optionCssFiles').val()));
     //get the global form
     var globalForm = $('.action_update_options_string_form');
 
@@ -123,6 +125,34 @@ var ThemeOptions = function () {
             }
         }
     }
+
+    // display inherited options as tooltips
+    var showInheritedValue = function () {
+        $.each($("#simple_edit_add_css > option"), function (i, option) {
+            $.each(optionCssFiles.add, function (i, item) {
+                if (option.value == item && $("#simple_edit_add_css option:first").val() == 'inherit'){
+                    $("#simple_edit_add_css option:first").text($("#simple_edit_add_css option:first").text()+' '+option.text+' )');
+                }
+            });
+        });
+
+        globalForm.find('.selector-numerical-input, .selector__color-picker').each(function (i, item) {
+            var element = $(item);
+            element.attr('title', element.attr('title')+optionObjectInheritedValues[$(item).attr('name')]);
+            element.tooltip();
+        });
+
+        globalForm.find('.selector_option_radio_field ').each(function (i, item) {
+            if ($(item).val() == 'inherit'){ 
+                var element = $(item).parent();
+                var elementPrefix = $('#translationInheritedValue').val();
+                var elementTitle = elementPrefix + optionObjectInheritedValues[$(item).attr('name')];
+                element.attr('title', elementTitle);
+                element.tooltip();
+            }
+        });
+
+    };
 
     //Parses the option value for an item
     var parseOptionValue = function (item, fallbackValue) {
@@ -370,6 +400,7 @@ var ThemeOptions = function () {
         parseParentSwitchFields();
         prepareFontField();
         prepareFruityThemeField();
+        showInheritedValue();
 
         bind();
     };

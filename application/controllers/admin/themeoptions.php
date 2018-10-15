@@ -343,7 +343,10 @@ class themeoptions  extends Survey_Common_Action
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         $aData = array(
             'model'=>$model,
-            'templateOptionPage' => $templateOptionPage
+            'templateOptionPage' => $templateOptionPage,
+            'optionInheritedValues' => $oModelWithInheritReplacement->oOptions,
+            'optionCssFiles' => $oModelWithInheritReplacement->files_css,
+            'optionCssFramework' => $oModelWithInheritReplacement->cssframework_css
         );
 
         if ($sid !== null) {

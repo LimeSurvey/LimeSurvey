@@ -5,7 +5,9 @@ var prepare = function(){
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
     var inheritPossible = ($('#general_inherit_active').length > 0 ) ;
     //get option Object from Template configuration options
-    var optionObject = {"general_inherit" : 1}
+    var optionObject = {"general_inherit" : 1};
+    var optionObjectInheritedValues = null;
+    var optionCssFramework = null;
     var generalInherit = function(){return $('#TemplateConfiguration_options').val() === 'inherit'; };
     var updateFieldSettings = function(){
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
@@ -16,6 +18,18 @@ var prepare = function(){
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
     };
+
+    optionObjectInheritedValues = JSON.parse($('#optionInheritedValues').val());
+    optionCssFramework = JSON.parse(JSON.parse($('#optionCssFramework').val())).replace[0];
+
+    // display inherited option values in dropdown list
+    $.each($("#simple_edit_cssframework > option"), function (i, option) {
+        $.each(optionCssFramework, function (i, item) {
+            if (option.value == item && $("#simple_edit_cssframework option:first").val() == 'inherit'){
+                $("#simple_edit_cssframework option:first").text($("#simple_edit_cssframework option:first").text()+' '+option.text+' )');
+            }
+        });
+    });
 
     if(generalInherit()){
         $('#general_inherit_on').prop('checked',true).trigger('change').closest('label').addClass('active');
@@ -82,6 +96,15 @@ var prepare = function(){
             if($(item).val() == itemValue){
                 $(item).prop('checked', true).trigger('change');
                 $(item).closest('label').addClass('active');
+            }
+
+            // display inherited option values for tooltip
+            if ($(item).val() == 'inherit'){ 
+                var element = $(item).parent();
+                var elementPrefix = $('#translationInheritedValue').val();
+                var elementTitle = elementPrefix + optionObjectInheritedValues[$(item).attr('name')];
+                element.attr('title', elementTitle);
+                element.tooltip();
             }
         });
 

@@ -437,8 +437,16 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->together = true; 
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
-        $criteria->addCondition('t.gsid IS NULL');
         $criteria->addCondition('template.name IS NOT NULL');
+
+        // check if survey group id is present
+        $gsid = Yii::app()->request->getQuery('id', null);
+        if ($gsid !== null){
+            $criteria->addCondition('t.gsid = ' . $gsid);
+        } else {
+            $criteria->addCondition('t.gsid IS NULL');
+        }
+        
 
         $criteria->compare('id', $this->id);
         $criteria->compare('template_name', $this->template_name, true);
@@ -828,15 +836,18 @@ class TemplateConfiguration extends TemplateConfig
 
         $renderArray = array('templateConfiguration' => $oTemplate->getOptionPageAttributes());
 
+        $oTemplate->setToInherit();
         $oTemplate->setOptions();
         $oTemplate->setOptionInheritance();
 
         //We add some extra values to the option page
         //This is just a dirty hack, and somewhere in the future we will correct it
         $renderArray['oParentOptions'] = array_merge(
-            ((array) $oSimpleInheritanceTemplate->oOptions),
-            array('packages_to_load' =>  $oTemplate->packages_to_load,
-            'files_css' => $oTemplate->files_css)
+            ((array) $oTemplate->oOptions),
+            array(
+                'packages_to_load' =>  $oTemplate->packages_to_load,
+                'files_css' => $oTemplate->files_css
+            )
         );
 
         return Yii::app()->twigRenderer->renderOptionPage($oTemplate, $renderArray);
