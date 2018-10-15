@@ -48,15 +48,26 @@ class SettingGlobal extends LSActiveRecord
     /** @inheritdoc */
     public function rules()
     {
+        /* settings that must only comme from php files */
+        $disableByDb = array(
+            'versionnumber', // Come and leave it in version.php
+            'dbversionnumber', // Must keep it out of DB
+            'updatable', // If admin with ftp access disable updatable : leave it
+            'debug', // Currently not accessible, seem better
+            'debugsql', // Currently not accessible, seem better
+            'forcedsuperadmin', // This is for security
+        );
+        /* Specific disable settings for demo mode */
+        if (Yii::app()->getConfig("demoMode")) {
+            $disableByDb = array_merge($disableByDb,array('sitename','defaultlang','defaulthtmleditormode','filterxsshtml'));
+        }
         $aRules = array(
             array('stg_name', 'required'),
             array('stg_name', 'unique'),
-            array('stg_value', 'default', 'value'=>''),
+            array('stg_value', 'default', 'value' => ''),
+            array('stg_name', 'in', 'not'=>true,'range' => $disableByDb),
         );
-        /* Specific rules for demo mode */
-        if (Yii::app()->getConfig("demoMode")) {
-            $aRules[] = array('stg_name', 'in', 'not'=>true,'range'=>array('sitename','defaultlang','defaulthtmleditormode','filterxsshtml'));
-        }
+
         return $aRules;
     }
 
@@ -100,7 +111,7 @@ class SettingGlobal extends LSActiveRecord
      */
     static public function increaseAssetsversionnumber()
     {
-        @ini_set('auto_detect_line_endings', true);
+        @ini_set('auto_detect_line_endings', '1');
         $sRootdir      = Yii::app()->getConfig("rootdir");
         $versionlines = file($sRootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php');
         $handle       = fopen($sRootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php', "w");

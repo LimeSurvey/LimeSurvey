@@ -113,6 +113,7 @@
                 <?php if(!empty($aImportResults['plugin_settings'])) { ?>
                     <tr><td><?php eT("Plugin settings:");?></td><td><?php echo $aImportResults['plugin_settings'];?></td></tr>
                 <?php } ?>
+                <tr><td><?php eT("Themes:");?></td><td><?php echo $aImportResults['themes'];?></td></tr>
             </table>
             </div>
             </div>
@@ -151,5 +152,39 @@
         <p>
             <input type='submit' class="btn btn-default btn-large" value='<?php eT("Go to survey");?>' onclick="window.open('<?php echo $sLink; ?>', '_top')"><br /><br />
         </p>
+
+        <!-- Theme doesn't exist -->
+        <?php if (!empty($aImportResults['template_deleted'])): ?>
+            <p class="lead"><?php echo eT("Warning: original survey theme doesn't exist!"); ?></p>
+        <?php endif; ?>
+
+        <!-- Theme options differences warnings -->
+        <?php if (!empty($aImportResults['theme_options_differences'])): ?>
+            <p class="lead"><?php echo eT('Warning: There are some differences between current theme options and original theme options!'); ?></p>
+            <p class="lead"><?php echo eT('Current theme options are applied for this survey.'); ?></p>
+            <h2 class="warning"><?php eT("Theme options differences");?>:</h2>
+            <div class="container-fluid">
+            <div class="row center-block">
+            <div class="col-md-4 col-md-offset-4">
+            <table class="table table-striped table-condensed ">
+                <tr><th class="text-center"><?php echo gT('Option');?></th><th class="text-center"><?php echo gT('Current value');?></th><th class="text-center"><?php echo gT('Original value');?></th></tr>
+                <?php
+                    foreach ($aImportResults['theme_options_differences'] as $warning)
+                    { ?>
+                    <tr><td><?php echo $warning['option'];?></td><td><?php echo $warning['current_value'];?></td><td><?php echo $warning['original_value'];?></td></tr>
+                    <?php
+                } ?>
+            </table>
+            </div>
+            </div>
+            </div>
+
+            <?php echo CHtml::form(array($sLinkApplyThemeOptions), 'post', array());?>
+                <label><?php echo eT('If you want to apply original theme options, click here: '); ?></label>
+                <input type="hidden" name="themeoptions" value='<?php echo $aImportResults['theme_options_original_data']; ?>' />
+                <input type="submit" class="btn btn-default btn-large" value="<?php eT("Apply and go to survey");?>"><br /><br />
+            </form>
+
+        <?php endif; ?>
     </div>
 <?php endif;?>

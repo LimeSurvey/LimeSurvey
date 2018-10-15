@@ -2933,7 +2933,7 @@ class remotecontrol_handle
 
 
     /**
-     * Obtain all uploaded files for a single response
+     * Obtain all uploaded files for all responses
      *
      * @access public
      *
@@ -2960,24 +2960,26 @@ class remotecontrol_handle
             return array('status' => 'No permission');
         }
 
-        $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $sToken));
-
-        if (!($oResponse instanceof Response)) {
-            return array('status' => 'Could not find response for given token');
-        }
+        $oResponses = Response::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
 
         $uploaded_files = array();
-        foreach ($oResponse->getFiles() as $aFile) {
-            $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
-
-            if (!file_exists($sFileRealName)) {
-                return array('status' => 'Could not find uploaded files');
+        foreach ($oResponses as $key => $oResponse) {
+            if (!($oResponse instanceof Response)) {
+                return array('status' => 'Could not find response for given token');
             }
+            
+            foreach ($oResponse->getFiles() as $aFile) {
+                $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
 
-            $uploaded_files[$aFile['filename']] = array(
-                'meta'    => $aFile,
-                'content' => base64_encode(file_get_contents($sFileRealName))
-            );
+                if (!file_exists($sFileRealName)) {
+                    return array('status' => 'Could not find uploaded files');
+                }
+
+                $uploaded_files[$aFile['filename']] = array(
+                    'meta'    => $aFile,
+                    'content' => base64_encode(file_get_contents($sFileRealName))
+                );
+            }
         }
 
         return $uploaded_files;

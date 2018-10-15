@@ -635,7 +635,7 @@ function sendSubmitNotifications($surveyid)
         foreach ($aEmailNotificationTo as $sRecipient) {
         if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments)) {
                 if ($debug > 0) {
-                    echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';
+                    echo '<br />Email could not be sent. Reason: '.CHtml::encode($maildebug).'<br/>';
                 }
             }
         }
@@ -661,7 +661,7 @@ function sendSubmitNotifications($surveyid)
         foreach ($aEmailResponseTo as $sRecipient) {
         if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments)) {
                 if ($debug > 0) {
-                    echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';
+                    echo '<br />Email could not be sent. Reason: '.CHtml::encode($maildebug).'<br/>';
                 }
             }
         }
@@ -750,19 +750,28 @@ function buildsurveysession($surveyid, $preview = false)
     // Reset all the session variables and start again
     resetAllSessionVariables($surveyid);
 
-    // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
-    if (returnGlobal('lang', true)) {
-        $language_to_set = returnGlobal('lang', true);
-    } elseif (isset($oTokenEntry) && $oTokenEntry) {
-        // If survey have token : we have a $oTokenEntry
-        // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
-        $language_to_set = $oTokenEntry->language;
-    } else {
-        $language_to_set = $thissurvey['language'];
+    // NOTE: All of this is already done in survey controller.
+    // We keep it here only for Travis Tested thar are still not using Selenium
+    // As soon as the tests are rewrote to use selenium, those lines can be removed
+    $lang       = $_SESSION['survey_'.$surveyid]['s_lang'];
+    if (empty($lang)){
+
+        // Multi lingual support order : by REQUEST, if not by Token->language else by survey default language
+
+           if (returnGlobal('lang', true)) {
+               $language_to_set = returnGlobal('lang', true);
+           } elseif (isset($oTokenEntry) && $oTokenEntry) {
+               // If survey have token : we have a $oTokenEntry
+               // Can use $oTokenEntry = Token::model($surveyid)->findByAttributes(array('token'=>$clienttoken)); if we move on another function : this par don't validate the token validity
+               $language_to_set = $oTokenEntry->language;
+           } else {
+               $language_to_set = $thissurvey['language'];
+           }
+            // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
+           SetSurveyLanguage($surveyid, $language_to_set);
     }
 
-    // Always SetSurveyLanguage : surveys controller SetSurveyLanguage too, if different : broke survey (#09769)
-    SetSurveyLanguage($surveyid, $language_to_set);
+
     UpdateGroupList($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
     $totalquestions               = $survey->countTotalQuestions;
@@ -1282,7 +1291,7 @@ function getRenderWay($renderToken, $renderCaptcha)
  * @param int $surveyid
  * @return void
  */
-function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid)
+function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $aEnterTokenData, $surveyid, $aSurveyInfo=null)
 {
     switch ($renderWay) {
         case "main": //Token required, maybe Captcha required
@@ -1296,6 +1305,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
                 Yii::app()->getController()->createAction('captcha');
             }
             $oSurvey = Survey::model()->findByPk($surveyid);
+
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
@@ -1303,7 +1313,19 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey['include_content']  = 'userforms';
 
 
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('aSurveyInfo'=>$thissurvey), false);
+
+            // Language selector
+            if ($aSurveyInfo['alanguageChanger']['show']){
+                $aSurveyInfo['alanguageChanger']['datas']['targetUrl'] = $thissurvey['surveyUrl'];
+            }
+            $thissurvey['alanguageChanger'] = $aSurveyInfo['alanguageChanger'];
+
+            $aData['aSurveyInfo'] = $thissurvey;
+
+            $aSurveyInfo  =  getsurveyinfo($surveyid);
+            $aData['aSurveyInfo'] = array_merge($aSurveyInfo, $aData['aSurveyInfo']);
+
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", $aData, false);
             break;
 
         case "register": //Register new user
@@ -1661,6 +1683,7 @@ function doAssessment($surveyid)
 
         $assessment['subtotal_score'] = (isset($subtotal)) ? $subtotal : '';
         $assessment['total_score']    = (isset($total)) ? $total : '';
+
         //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
         return array('show'=>($assessment['subtotal']['show'] || $assessment['total']['show']), 'datas' => $assessment);
 
@@ -1891,7 +1914,7 @@ function checkCompletedQuota($surveyid, $return = false)
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
     $thissurvey['active']                        = 'Y';
-    
+
 
     $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="'.$surveyid.'" />
                                               <input type="hidden" name="token"    value="'.$thissurvey['aQuotas']['sClientToken'].'" />

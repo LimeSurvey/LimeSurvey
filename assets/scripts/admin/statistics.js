@@ -1,6 +1,3 @@
-var LS = LS || {
-    onDocumentReady: {}
-};
 
 function toggleSection(chevron, section) {
     section.toggle();
@@ -164,7 +161,7 @@ function init_chart_js_graph_with_datas($type, $qid) {
     );
 }
 
-LS.onDocumentReady.Statistics2 = function () {
+LS.Statistics2 = function () {
 
     if ($('#completionstateSimpleStat').length > 0) {
         $actionUrl = $('#completionstateSimpleStat').data('grid-display-url');
@@ -758,7 +755,7 @@ var exportImages = function () {
 };
 
 $(document).on('ready  pjax:scriptcomplete', function () {
-    LS.onDocumentReady.Statistics2();
+    LS.Statistics2();
     $('body').addClass('onStatistics');
     var exportImagesButton = $('#statisticsExportImages');
     exportImagesButton.on('click', exportImages);
@@ -793,4 +790,4 @@ $(document).on('ready  pjax:scriptcomplete', function () {
     });
 });
 
-$(document).on('triggerReady', LS.onDocumentReady.Statistics2);
+$(document).on('triggerReady', LS.Statistics2);

@@ -320,11 +320,19 @@ class dataentry extends Survey_Common_Action
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
                 }
 
+                if (isset($targetSchema->columns['startdate']) && empty($targetResponse['startdate'])){
+                    $targetResponse['startdate'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                }
+
+                if (isset($targetSchema->columns['datestamp']) && empty($targetResponse['datestamp'])){
+                    $targetResponse['datestamp'] = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                }
+
                 $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
                 $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
                 $beforeDataEntryImport->set('oModel', $targetResponse);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
-
+ 
                 $imported++;
                 $targetResponse->save();
                 $aSRIDConversions[$iOldID] = $targetResponse->id;
@@ -484,7 +492,7 @@ class dataentry extends Survey_Common_Action
                 }
             } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 if (isset($_GET['public']) && $_GET['public'] == "true") {
-                    $password = md5(Yii::app()->request->getParam('accesscode'));
+                    $password = hash('sha256',Yii::app()->request->getParam('accesscode'));
                 } else {
                     $password = Yii::app()->request->getParam('accesscode');
                 }

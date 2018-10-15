@@ -572,6 +572,7 @@ class responses extends Survey_Common_Action
             }
 
         }
+        $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$iSurveyId));
     }
 
     /**
@@ -713,6 +714,7 @@ class responses extends Survey_Common_Action
             // No permission.
             ls\ajax\AjaxHelper::outputNoPermission();
         }
+        $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$surveyId));
     }
 
     /**
@@ -1030,7 +1032,6 @@ class responses extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $aData['display']['menu_bars'] = false;
         $aData['subaction'] = gT("Responses and statistics");
-        $aData['title_bar']['subaction'] = gT("Responses and statistics");
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);

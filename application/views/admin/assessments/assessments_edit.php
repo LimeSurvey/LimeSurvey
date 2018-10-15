@@ -20,7 +20,7 @@
                 <div class='col-sm-10 ls-flex wrap'>
                   <div class='col-md-4 col-sm-5 col-xs-6'>
                     <label class='radio-inline'>
-                      <input class='' type='radio' id='radiototal' name='scope' value='T' />
+                      <input class='' type='radio' id='radiototal' name='scope' value='T' checked='checked' />
                       <?php eT("Total"); ?>
                     </label>
                   </div>

@@ -649,7 +649,7 @@ class questionHelper
             "types"=>":",
             'category'=>gT('Display'),
             'sortorder'=>111,
-            'inputtype'=>'integer',
+            'inputtype'=>'float',
             'default'=>'',
             "help"=>gT('Step value'),
             "caption"=>gT('Step value')
@@ -1423,7 +1423,7 @@ class questionHelper
             'sortorder'=>100,
             "inputtype"=>"integer",
             'default'=>1,
-            "help"=>gT("Minute step interval when using select boxes"),
+            "help"=>gT("Visual minute step interval"),
             "caption"=>gT("Minute step interval")
         );
 
@@ -1632,10 +1632,27 @@ class questionHelper
     {
         libxml_disable_entity_loader(false);
 
-        $xml_config = simplexml_load_file(Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml');
+        $sCoreThemeXmlPath = Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
+        $sUserThemeXmlPath = Yii::app()->getConfig("userquestionthemerootdir").'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
+
+        $xml_config = is_file($sCoreThemeXmlPath) ? simplexml_load_file($sCoreThemeXmlPath) :  simplexml_load_file($sUserThemeXmlPath);
         $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), TRUE);
-        libxml_disable_entity_loader(true); 
-        return $custom_attributes['attribute'];
+        libxml_disable_entity_loader(true);
+
+        if(!empty($custom_attributes['attribute']['name'])) {
+            // Only one attribute set in config : need an array of attributes
+            $custom_attributes['attribute'] = array($custom_attributes['attribute']);
+        }
+
+        $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
+        $additionalAttributes = array();
+        // Create array of attribute with name as key
+        foreach($custom_attributes['attribute'] as $customAttribute) {
+            if(!empty($customAttribute['name'])) {
+                $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
+            }
+        }
+        return $additionalAttributes;
     }
 
     /**

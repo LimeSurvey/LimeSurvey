@@ -2,6 +2,7 @@
 /**
  * Set subquestion/answer order
  */
+$surveyid = App()->request->getParam('surveyid', 0);
 ?>
 <form class="custom-modal-datas">
     <div  class="form-group" id="CssClass">
@@ -12,7 +13,7 @@
                 <option value="1"><?php eT('Randomize on each page load');?></option>
             </select>
         </div>
-        <input type="hidden" name="sid" value="<?php echo $_GET['surveyid']; ?>" class="custom-data"/>
+        <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" class="custom-data"/>
         <input type="hidden" name="aValidQuestionTypes" value="!ABCEFHKLMOPQRWZ1:;" class="custom-data"/>
     </div>
 </form>

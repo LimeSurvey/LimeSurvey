@@ -656,12 +656,12 @@ function XMLImportLabelsets($sFullFilePath, $options)
                 $row2 = array_values($row2);
                 $thisset .= implode('.', $row2);
             } // while
-            $newcs = dechex(crc32($thisset) * 1);
+            $newcs = hash('sha256', $thisset);
             unset($lsmatch);
 
             if (isset($csarray) && $options['checkforduplicates'] == 'on') {
                 foreach ($csarray as $key=>$val) {
-                    if ($val == $newcs) {
+                    if (hash_equals($val,$newcs)) {
                         $lsmatch = $key;
                     }
                 }
@@ -829,8 +829,12 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $results['quotals'] = 0;
     $results['quotamembers'] = 0;
     $results['plugin_settings'] = 0;
+    $results['themes'] = 0;
     $results['survey_url_parameters'] = 0;
     $results['importwarnings'] = array();
+    $results['theme_options_original_data'] = '';
+    $results['theme_options_differences'] = array();
+    $sTemplateName = '';
 
 
     $aLanguagesSupported = array();
@@ -850,6 +854,9 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             // Set survey group id to 1. Makes no sense to import it without the actual survey group.
             if ($key == 'gsid') {
                 $value = 1;
+            }
+            if ($key == 'template') {
+                $sTemplateName = (string)$value;
             }
             $insertdata[(string) $key] = (string) $value;
         }
@@ -926,7 +933,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
 
         if (!in_array($insertdata['surveyls_language'], $aLanguagesSupported)) {
-                continue;
+            continue;
         }
 
         // Assign new survey ID
@@ -988,7 +995,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $iOldSID = $insertdata['sid'];
             $insertdata['sid'] = $iNewSID;
             $oldgid = $insertdata['gid']; unset($insertdata['gid']); // save the old qid
-
+            if(strlen($insertdata['group_name']) > 100 ) { // see #14133 since this function didn't have good error system … must fix it silently …
+                $results['importwarnings'][] = sprintf(gT("Group “%s“ was set to “%s“"),CHtml::encode($insertdata['group_name']),CHtml::encode(substr($insertdata['group_name'],0,100)));
+                $insertdata['group_name'] = substr($insertdata['group_name'],0,100);
+            }
             // now translate any links
             if ($bTranslateInsertansTags) {
                 $insertdata['group_name'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['group_name']);
@@ -1000,8 +1010,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 switchMSSQLIdentityInsert('groups', true);
                 $insertdata['gid'] = $aGIDReplacements[$oldgid];
             }
-
-            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
+            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");// This thrown safedie …
             if (!isset($aGIDReplacements[$oldgid])) {
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
                 $results['groups']++;
@@ -1033,7 +1042,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $iOldSID = $insertdata['sid'];            
             $iOldGID = $insertdata['gid'];
             $insertdata['sid'] = $iNewSID;
-            $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
+            $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']]; // Can add question with invalid gid … $newgid can be false …
             $oldqid = $insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
             // now translate any links
@@ -1051,7 +1060,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if ($insertdata) {
                 XSSFilterArray($insertdata);
             }
-
 
             if (!$bConvertInvalidQuestionCodes) {
                 $sScenario = 'archiveimport';
@@ -1558,6 +1566,83 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
     }
 
+    //// Import Survey theme settings
+    $aTemplateConfiguration = array();
+
+    // original theme
+    if (isset($xml->themes_inherited)) {
+        foreach ($xml->themes_inherited->theme as $theme_key => $theme_row) {
+            if ((string)$theme_row->template_name === $sTemplateName){
+                $aTemplateConfiguration['theme_original']['options'] = (array)$theme_row->config->options;
+                $results['theme_original'] = json_encode($theme_row->config->options);
+            }
+        }
+    }
+
+
+    if (isset($xml->themes)) {
+
+        // current theme options
+        if (!empty($sTemplateName)){
+            $oTemplateConfigurationCurrent = TemplateConfiguration::getInstance($sTemplateName);
+            //$oTemplateConfigurationCurrent->bUseMagicInherit = true;
+            $aTemplateConfiguration['theme_current']['options'] = (array)json_decode($oTemplateConfigurationCurrent->attributes['options']);
+        }
+
+        // survey theme options
+        foreach ($xml->themes->theme as $theme_key => $theme_row) { 
+            // skip if theme doesn't exist
+            if (!Template::checkIfTemplateExists((string)$theme_row->template_name)) {
+                // show warning if survey theme doesn't exist
+                if ((string)$theme_row->template_name === $sTemplateName){
+                    $results['template_deleted'] = '1';
+                }
+                continue;
+            }
+            // insert into Template configuration table
+            $result = TemplateManifest::importManifestLss($iNewSID, $theme_row);
+            if ($result) {
+                $results['themes']++;
+                if ((string)$theme_row->template_name === $sTemplateName){
+
+                    if (isset($theme_row->config->options)){
+                        $options = $theme_row->config->options;
+
+                        // set each key value to 'inherit' if options are set to 'inherit'
+                        if ((string)$options === 'inherit' && isset($aTemplateConfiguration['theme_current']['options'])){
+                            $options = $aTemplateConfiguration['theme_current']['options'];
+                            $options = array_fill_keys(array_keys($options), 'inherit');
+                        }
+
+                        $aThemeOptionsData = array();
+                        foreach ((array)$options as $key => $value) {
+                            if ($value == 'inherit'){ 
+                                $sOldValue = isset($aTemplateConfiguration['theme_original']['options'][$key])?$aTemplateConfiguration['theme_original']['options'][$key]:'';
+                                $sNewValue = isset($aTemplateConfiguration['theme_current']['options'][$key])?$aTemplateConfiguration['theme_current']['options'][$key]:'';
+                                if (!empty($sOldValue) && !empty($sNewValue) && $sOldValue !== $sNewValue){
+                                    // used to send original theme options data to controller action if client wants to restore original theme options                                 
+                                    $aThemeOptionsData[$key] = $aTemplateConfiguration['theme_original']['options'][$key];
+                                    // used to display difference between options
+                                    $aThemeOptionsDifference = array();
+                                    $aThemeOptionsDifference['option'] = $key;
+                                    $aThemeOptionsDifference['current_value'] = $aTemplateConfiguration['theme_current']['options'][$key];
+                                    $aThemeOptionsDifference['original_value'] = $aTemplateConfiguration['theme_original']['options'][$key];
+                                    $results['theme_options_differences'][] = $aThemeOptionsDifference;
+                                }
+                            }
+                        }
+
+                        $results['theme_options_original_data'] = json_encode($aThemeOptionsData);
+                    }
+
+                $aTemplateConfiguration['theme_survey']['options'] = (array)$theme_row->config->options;
+                }
+            } else {
+                $results['importwarnings'][] = gT("Error").": Failed to insert data[18]<br />";
+            }
+        }
+    }
+
     // Set survey rights
     Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSID);
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
@@ -1928,6 +2013,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                     $oSurvey->submitdate = $aResponses[$iSubmitdateKey];
                 }
             }
+
             foreach ($aKeyForFieldNames as $sFieldName=>$iFieldKey) {
                 if ($aResponses[$iFieldKey] == '{question_not_shown}') {
                     $oSurvey->$sFieldName = new CDbExpression('NULL');
@@ -1936,6 +2022,16 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                     $oSurvey->$sFieldName = $sResponse;
                 }
             }
+
+            //Check if datestamp is set => throws no default error on importing
+            if(!isset($oSurvey->datestamp)){
+                $oSurvey->datestamp = '1980-01-01 00:00:01';
+            } 
+            //Check if startdate is set => throws no default error on importing
+            if(!isset($oSurvey->startdate)){
+                $oSurvey->startdate = '1980-01-01 00:00:01';
+            } 
+
             // We use transaction to prevent DB error
             $oTransaction = Yii::app()->db->beginTransaction();
             try {
@@ -1968,8 +2064,8 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                 $oTransaction->rollBack();
                 $aResponsesError[] = $aResponses[$iIdReponsesKey];
                 // Show some error to user ?
-                // $CSVImportResult['errors'][]=$oException->getMessage(); // Show it in view
-                // tracevar($oException->getMessage());// Show it in console (if debug is set)
+                $CSVImportResult['errors'][]=$oException->getMessage(); // Show it in view
+                tracevar($oException->getMessage());// Show it in console (if debug is set)
             }
 
         }
@@ -2610,7 +2706,7 @@ function createXMLfromData($aData = array()){
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType', 'Survey');
-    $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
+    $xml->writeElement('DBVersion', App()->getConfig("DBVersion"));
    
     $xml->startElement('languages');
     foreach ($surveylanguages as $surveylanguage) {

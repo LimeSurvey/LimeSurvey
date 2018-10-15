@@ -37,7 +37,7 @@ LS.CPDB = (function() {
                 e.preventDefault();
                 var action = $(baseModal).find('#'+formId).attr('action');
                 var formData = $(baseModal).find('#'+formId).serializeArray();
-                LS.ajax({
+                $.ajax({
                     url: action,
                     data: formData,
                     method: 'POST',
@@ -50,7 +50,7 @@ LS.CPDB = (function() {
         };
 
 
-        return LS.ajax({
+        return $.ajax({
             url: url, 
             data: data,
             method: 'POST',
@@ -435,7 +435,7 @@ LS.CPDB = (function() {
      * @return
      */
     deleteSingleParticipantShare = function(url) {
-        LS.ajax({
+        $.ajax({
             url: url,
             method: "GET",
             dataType: 'json',

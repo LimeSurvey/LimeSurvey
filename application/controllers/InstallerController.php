@@ -230,10 +230,16 @@ class InstallerController extends CController
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
         $aData['model'] = $oModel = new InstallerConfigForm;
-        if (isset(Yii::app()->session['populateerror'])) {
-            $oModel->addError('dblocation', Yii::app()->session['populateerror']);
-            $oModel->addError('dbpwd', '');
-            $oModel->addError('dbuser', '');
+        if (!empty(Yii::app()->session['populateerror'])) {
+            if(is_string(Yii::app()->session['populateerror'])) {
+                $oModel->addError('dblocation', Yii::app()->session['populateerror']);
+            } else {
+                foreach(Yii::app()->session['populateerror'] as $error) {
+                    $oModel->addError('dblocation', $error);
+                }
+            }
+            //~ $oModel->addError('dbpwd', '');
+            //~ $oModel->addError('dbuser', '');
             unset(Yii::app()->session['populateerror']);
         }
 
@@ -321,12 +327,6 @@ class InstallerController extends CController
                         }
                             /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET CHARACTER SET 'utf8mb4'")->execute(); 
                             /** @scrutinizer ignore-unhandled */ @$this->connection->createCommand("SET NAMES 'utf8mb4'")->execute();
-                    }
-
-                    // Setting date format for mssql driver. It seems if you don't do that the in- and output format could be different
-                    if (in_array($oModel->dbtype, array('mssql', 'sqlsrv', 'dblib'))) {
-                        @$this->connection->createCommand('SET DATEFORMAT ymd;')->execute();
-                        @$this->connection->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();
                     }
 
                     //$aData array won't work here. changing the name
@@ -514,7 +514,7 @@ class InstallerController extends CController
         if (!in_array($sDatabaseType, ['mysqli', 'mysql', 'dblib', 'sqlsrv', 'mssql', 'pgsql'])) {
             throw new Exception(sprintf('Unknown database type "%s".', $sDatabaseType));
         }
-
+  
         //checking DB Connection
         $aErrors = $this->_setup_tables(dirname(APPPATH).'/installer/create-database.php');
         if ($aErrors === false) {
@@ -526,13 +526,7 @@ class InstallerController extends CController
             //$data1['adminoutput'] .= "<input type='submit' value='Main Admin Screen' onclick=''>";
             $sConfirmation = sprintf(gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', Yii::app()->session['dbname']));
         } elseif (is_array($aErrors) && count($aErrors) > 0) {
-            $sConfirmation = gT('There were errors when trying to populate the database:').'<p><ul>';
-            foreach ($aErrors as $sError) {
-                $sConfirmation .= '<li>'.htmlspecialchars($sError).'</li>';
-            }
-            $sConfirmation .= '</ul>';
-            Yii::app()->session['populateerror'] = $sConfirmation;
-
+            Yii::app()->session['populateerror'] = $aErrors;
             $this->redirect(array('installer/database'));
         } else {
             throw new UnexpectedValueException('_setup_tables is expected to return true, false or an array of strings');
@@ -914,7 +908,11 @@ class InstallerController extends CController
             return array($e->getMessage());
         }
         require_once($sFileName);
-        createDatabase($this->connection);
+        try {
+            createDatabase($this->connection);
+        } catch (Exception $e) {
+            return array($e->getMessage());
+        }
         return true;
     }
 
@@ -1283,6 +1281,9 @@ class InstallerController extends CController
             $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
             if ($sDatabaseType != 'sqlsrv' && $sDatabaseType != 'dblib') {
                 $this->connection->emulatePrepare = true;
+            }
+            if (in_array($sDatabaseType, array('mssql', 'sqlsrv', 'dblib'))) {
+                $this->connection->initSQLs=array('SET DATEFORMAT ymd;', 'SET QUOTED_IDENTIFIER ON;');
             }
             $this->connection->active = true;
             $this->connection->tablePrefix = $sDatabasePrefix;

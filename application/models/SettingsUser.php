@@ -79,7 +79,7 @@ class SettingsUser extends LSActiveRecord
 
     public static function setUserSetting($stg_name, $stg_value, $uid = null, $entity = null, $entity_id = null)
     {
-        if ($uid === null) { $uid = Yii::app()->user->getId(); }        
+        if ($uid === null) { $uid = Yii::app()->user->getId(); }
 
         $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
 
@@ -91,7 +91,7 @@ class SettingsUser extends LSActiveRecord
                 'uid' => $uid,
                 'entity' => $entity,
                 'entity_id' => $entity_id
-            ]);  
+            ]);
         }
         $setting->setAttribute('stg_value', $stg_value);
 
@@ -109,14 +109,14 @@ class SettingsUser extends LSActiveRecord
      */
     public static function getUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null)
     {
-        if ($uid === null) { $uid = Yii::app()->user->getId(); }        
+        if ($uid === null) { $uid = Yii::app()->user->getId(); }
         $searchCriteria = new CDbCriteria;
         $searchParams = [];
 
         $searchCriteria->addCondition('uid=:uid');
         $searchParams[':uid'] = $uid;
         $searchCriteria->addCondition('stg_name=:stg_name');
-        $searchParams[':stg_name'] = $stg_name; 
+        $searchParams[':stg_name'] = $stg_name;
         if ($entity != null) {
             $searchCriteria->addCondition('entity=:entity');
             $searchParams[':entity'] = $entity;
@@ -131,7 +131,7 @@ class SettingsUser extends LSActiveRecord
         }
 
         $searchCriteria->params = $searchParams;
-        
+
         $setting = self::model()->find($searchCriteria);
 
         return $setting;

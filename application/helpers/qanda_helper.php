@@ -865,6 +865,16 @@ function do_date($ia)
     alertInvalidDate: '" . gT('Date entered is invalid!', 'js')."',
     };";
 
+    $dateparts = [
+        'year' => gT('Year'),
+        'month' => gT('Month'),
+        'day' => gT('Day'),
+        'hour' => gT('Hour'),
+        'minute' => gT('Minute'),
+        'second' => gT('Second'),
+        'millisecond' => gT('Millisecond')
+    ];
+
     App()->getClientScript()->registerScript("sDateLangvarJS", $sDateLangvarJS, CClientScript::POS_BEGIN);
     App()->getClientScript()->registerPackage('moment');
     App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
@@ -915,18 +925,17 @@ function do_date($ia)
             $datetimeobj   = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
             $currentyear   = $datetimeobj->years;
             $currentmonth  = $datetimeobj->months;
-            $currentdate   = $datetimeobj->days;
+            $currentday   = $datetimeobj->days;
             $currenthour   = $datetimeobj->hours;
             $currentminute = $datetimeobj->minutes;
         } else {
             // If date is invalid get the POSTED value
-            $currentdate   = App()->request->getPost("day{$ia[1]}", '');
+            $currentday   = App()->request->getPost("day{$ia[1]}", '');
             $currentmonth  = App()->request->getPost("month{$ia[1]}", '');
             $currentyear   = App()->request->getPost("year{$ia[1]}", '');
             $currenthour   = App()->request->getPost("hour{$ia[1]}", '');
             $currentminute = App()->request->getPost("minute{$ia[1]}", '');
         }
-
         $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'], -1, PREG_SPLIT_DELIM_CAPTURE);
 
         $sRows = '';
@@ -936,7 +945,7 @@ function do_date($ia)
                 // Show day select box
                 case 'j':
                 case 'd':
-                    $sRows .= doRender('/survey/questions/answer/date/dropdown/rows/day', array('dayId'=>$ia[1], 'currentdate'=>$currentdate), true);
+                    $sRows .= doRender('/survey/questions/answer/date/dropdown/rows/day', array('dayId'=>$ia[1], 'currentday'=>$currentday), true);
                     break;
                     // Show month select box
                 case 'n':
@@ -1124,7 +1133,8 @@ function do_date($ia)
             'maxdate'                => $maxdate,
             'dateformatdetails'      => $dateformatdetails['dateformat'],
             'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
-            'dateformatdetailsphp'    => $dateformatdetails['phpdate'],
+            'dateformatdetailsphp'   => $dateformatdetails['phpdate'],
+            'minuteStep'             => $aQuestionAttributes['dropdown_dates_minute_step'],
             'goodchars'              => "", // "return window.LS.goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
             'language'               => App()->language,
@@ -2590,7 +2600,6 @@ function do_multiplenumeric($ia)
     $prefixclass = "numeric";
     $sliders = 0;
     $slider_position = '';
-    $sliderWidth = 12;
     $slider_default_set = false;
     
     if ($aQuestionAttributes['slider_layout'] == 1) {
@@ -2680,6 +2689,7 @@ function do_multiplenumeric($ia)
         $answer = doRender('/survey/questions/answer/multiplenumeric/empty', array(), true);
     } else {
         foreach ($aSubquestions as $ansrow) {
+            $sliderWidth = 12; /* reset sliderWidth for each row : left and right can be different for each #14127 */
             $labelText = $ansrow['question'];
             $myfname   = $ia[1].$ansrow['title'];
 
@@ -2694,6 +2704,7 @@ function do_multiplenumeric($ia)
                     $labelText   = $theanswer;
                     $sliderleft  = (isset($aAnswer[1])) ? $aAnswer[1] : null;
                     $sliderright = (isset($aAnswer[2])) ? $aAnswer[2] : null;
+
                     /* sliderleft and sliderright is in input, but is part of answers then take label width */
                     if (!empty($sliderleft)) {
                         $sliderWidth = 10;

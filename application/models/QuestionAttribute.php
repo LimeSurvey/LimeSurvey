@@ -298,8 +298,8 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
-     * Get default settings for an attribut
-     * @return array
+     * Get default settings for an attribute, return an array of string|null
+     * @return (string|bool|null)[]
      */
     public static function getDefaultSettings()
     {
@@ -311,6 +311,7 @@ class QuestionAttribute extends LSActiveRecord
             "category" => gT("Attribute"),
             "default" => '',
             "help" => '',
+            "value" => '',
             "sortorder" => 1000,
             "i18n"=> false,
             "readonly" => false,

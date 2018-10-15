@@ -29,6 +29,21 @@
     <!--
         Here the list of the css/js files to add to the template package.
         About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
+
+        NOTE: The "add" tag also count as a "replace" tag.
+              Eg: You can't just "add" a file in the extended theme with the same name as a file here. It will always "replace" it. You must use a diffrent file name.
+              Eg: Vanilla manifest already has "<add>css/theme.css</add>". So if you use "<add>css/theme.css</add>" in an extended theme, it will replace the vanilla css/theme.css
+
+        NOTE: If an extended theme, if you don't change a file that is defined here, you don't need to add it again.
+              Eg: css/ajaxify.css is already added in vanilla. Nor fruity nor bootswatch modify it, so ne need to add / replace it in fruity or bootswatch.
+                  Even if no mention at all about  "css/ajaxify.css" is theme extending vanilla, it will still be added because it's added here
+
+        NOTE: To easy test changes in config file, you can force the use of the XML file rather than DB. To do so, turn debug mode on, and in config.php config array, on bottom of debug mode, add:
+              'force_xmlsettings_for_survey_rendering' => true,
+
+              Then, you will not need anymore to reset your theme each time you change the config file.
+              But, once turning the setting off, You will still must reset the theme to the changes are pushed to DB 
+
     -->
     <files>
         <css>

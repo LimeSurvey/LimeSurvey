@@ -37,6 +37,7 @@ class LSHttpRequest extends CHttpRequest
     private $_pathInfo;
     
     public $noCsrfValidationRoutes = array();
+    public $noCsrfValidationParams = array();
 
     /**
      * Return the referal url,
@@ -150,19 +151,13 @@ class LSHttpRequest extends CHttpRequest
         }
 
         $route = Yii::app()->getUrlManager()->parseUrl($this);
+
         if ($this->enableCsrfValidation) {
             
             $validationRoutes = $this->noCsrfValidationRoutes;
-            $validationParams = [];
-
-            // if(preg_match('/admin/', $route)){
-            //     $beforeUrlCheck = new PluginEvent('beforeUrlCheck');
-            //     $beforeUrlCheck->set('routes', $validationRoutes);
-            //     $beforeUrlCheck->set('params', $validationParams);
-            //     App()->getPluginManager()->dispatchEvent($beforeUrlCheck);
-            //     $validationRoutes = $beforeUrlCheck->get('routes');
-            //     $validationParams = $beforeUrlCheck->get('params', []);
-            // } 
+            $validationParams = $this->noCsrfValidationParams;
+            // $validationRoutes[] = 'plugins/direct/plugin/AuthSAML/function/acs';
+            // $validationParams['request'] = 'acs';
 
             foreach ($validationRoutes as $cr) {
                 if (preg_match('#'.$cr.'#', $route)) {
@@ -174,7 +169,7 @@ class LSHttpRequest extends CHttpRequest
             }
 
             foreach ($validationParams as $key => $value) {
-                if (isset($_GET[$key]) && $_GET[$key] === $value) {
+                if ($this->getParam($key) === $value) {
                     Yii::app()->detachEventHandler('onBeginRequest',
                         array($this, 'validateCsrfToken'));
                     Yii::trace('Route "'.$route.' passed without CSRF validation');

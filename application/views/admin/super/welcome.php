@@ -119,7 +119,7 @@ echo viewHelper::getViewTestTag('index');
                 <?php if($showLastSurvey):?>
                     <span id="last_survey" class="rotateShown">
                     <?php eT("Last visited survey:");?>
-                    <a href="<?php echo $surveyUrl;?>" class=""><?php echo $surveyTitle;?></a>
+                    <a href="<?php echo $surveyUrl;?>" class=""><?php echo viewHelper::flatEllipsizeText($surveyTitle, true, 60);?></a>
                     </span>
                 <?php endif; ?>
 

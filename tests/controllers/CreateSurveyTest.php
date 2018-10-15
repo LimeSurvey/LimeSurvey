@@ -156,6 +156,21 @@ class CreateSurveyTest extends TestBaseClassWeb
             $save->click();
             sleep(3);
 
+            // Close question type selector
+            try {
+                $button = self::$webDriver->wait(2)->until(
+                    WebDriverExpectedCondition::elementToBeClickable(
+                        WebDriverBy::cssSelector('#selector__questionTypeSelector-modal button.btn-default')
+                    )
+                );
+                $button->click();
+            } catch (TimeOutException $ex) {
+                // Do nothing.
+            } catch (NoSuchElementException $ex) {
+                // Do nothing.
+            }
+            sleep(1);
+
             // Add question title.
             $groupname = self::$webDriver->findElement(WebDriverBy::id('title'));
             $groupname->clear()->sendKeys('question1');

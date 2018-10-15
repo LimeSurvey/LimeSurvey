@@ -1,0 +1,3 @@
+<FilesMatch "^fu_[a-z0-9]*$">
+    deny from all
+</FilesMatch>

@@ -114,14 +114,14 @@
   font-family: 'Roboto';
   font-weight: 400;
   font-style: italic;
-  src: url('./font-src/roboto-v18-latin_latin-ext/Roboto-italic.eot');
-  src: url('./font-src/roboto-v18-latin_latin-ext/Roboto-italic.eot?#iefix') format('embedded-opentype'),
-       local('Roboto Italic'),
-       local('Roboto-italic'),
-       url('./font-src/roboto-v18-latin_latin-ext/Roboto-italic.woff2') format('woff2'),
-       url('./font-src/roboto-v18-latin_latin-ext/Roboto-italic.woff') format('woff'),
-       url('./font-src/roboto-v18-latin_latin-ext/Roboto-italic.ttf') format('truetype'),
-       url('./font-src/roboto-v18-latin_latin-ext/Roboto-italic.svg#Roboto') format('svg');
+  src: url('./font-src/roboto-v18-latin_latin-ext/roboto-v18-latin_latin-ext-300italic.eot');
+  src: url('./font-src/roboto-v18-latin_latin-ext/roboto-v18-latin_latin-ext-300italic.eot?#iefix') format('embedded-opentype'),
+       local('Roboto Light Italic'),
+       local('Roboto-300italic'),
+       url('./font-src/roboto-v18-latin_latin-ext/roboto-v18-latin_latin-ext-300italic.woff2') format('woff2'),
+       url('./font-src/roboto-v18-latin_latin-ext/roboto-v18-latin_latin-ext-300italic.woff') format('woff'),
+       url('./font-src/roboto-v18-latin_latin-ext/roboto-v18-latin_latin-ext-300italic.ttf') format('truetype'),
+       url('./font-src/roboto-v18-latin_latin-ext/roboto-v18-latin_latin-ext-300italic.svg#Roboto') format('svg');
 }
 
 @font-face {

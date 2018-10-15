@@ -1178,8 +1178,8 @@ class SurveyRuntimeHelper
 
             $this->aSurveyInfo['aCompleted']['sPluginHTML']  = implode("\n", $blocks)."\n";
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
-            $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
             $this->aSurveyInfo['surveyls_url']               = passthruReplace($this->aSurveyInfo['surveyls_url'], $this->aSurveyInfo);
+            $this->aSurveyInfo['surveyls_url']               = $this->processString($this->aSurveyInfo['surveyls_url']);
             $this->aSurveyInfo['surveyls_url']               = templatereplace($this->aSurveyInfo['surveyls_url'], array(), $redata, 'URLReplace', false, null, array(), true); // to do INSERTANS substitutions
             $this->aSurveyInfo['aCompleted']['sSurveylsUrl'] = $this->aSurveyInfo['surveyls_url'];
 
@@ -1193,7 +1193,8 @@ class SurveyRuntimeHelper
 
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
                 //Automatically redirect the page to the "url" setting for the survey
-                $headToSurveyUrl = $this->aSurveyInfo['surveyls_url'];
+                $headToSurveyUrl = htmlspecialchars_decode ($this->aSurveyInfo['surveyls_url']);
+
                 $actualRedirect = $headToSurveyUrl;
                 header("Access-Control-Allow-Origin: *");
 
@@ -1526,7 +1527,7 @@ class SurveyRuntimeHelper
         $renderWay                          = getRenderWay($renderToken, $renderCaptcha);
 
         /* This funtion end if an form need to be shown */
-        renderRenderWayForm($renderWay, $scenarios, $this->sTemplateViewPath, $aEnterTokenData, $this->iSurveyid);
+        renderRenderWayForm($renderWay, $scenarios, $this->sTemplateViewPath, $aEnterTokenData, $this->iSurveyid, $this->aSurveyInfo);
 
     }
 
