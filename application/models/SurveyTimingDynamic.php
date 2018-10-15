@@ -204,4 +204,12 @@ class SurveyTimingDynamic extends LSActiveRecord
         return $buttons;
     }
 
+    /**
+     * Get current surveyId for other model/function
+     * @return int
+     */
+    public function getSurveyId() {
+        return self::$sid;
+    }
+
 }

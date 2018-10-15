@@ -30161,7 +30161,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  }), _vm._v(" \n            " + _vm._s(_vm.translate.createQuestionGroup) + "\n        ")]) : _vm._e(), _vm._v(" "), (_vm.createQuestionAllowed) ? _c('a', {
+  }), _vm._v(" \n            " + _vm._s(_vm.translate.createQuestionGroup) + "\n        ")]) : _vm._e(), _vm._v(" "), (_vm.createQuestionAllowed) ? _c('a', {
     staticClass: "btn btn-small btn-default ls-space margin right-10 pjax",
     attrs: {
       "id": "adminpanel__sidebar--selectorCreateQuestion",
@@ -30169,7 +30169,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-plus-circle"
-  }), _vm._v(" \n            " + _vm._s(_vm.translate.createQuestion) + "\n        ")]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('div', {
+  }), _vm._v(" \n            " + _vm._s(_vm.translate.createQuestion) + "\n        ")]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "ls-flex-row ls-space padding all-0"
   }, [_c('ul', {
     staticClass: "list-group col-12",
@@ -30208,7 +30208,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           return (function () { return false; })($event)
         }
       }
-    }, [_vm._v("\n                         \n                    ")]) : _vm._e(), _vm._v(" "), _c('a', {
+    }, [_vm._v("\n                         \n                    ")]) : _vm._e(), _vm._v(" "), _c('a', {
       staticClass: "col-12 pjax",
       attrs: {
         "href": questiongroup.link
@@ -30235,7 +30235,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.toggleActivation(questiongroup.gid)
         }
       }
-    }, [_vm._v(" ")])]), _vm._v(" "), _c('transition', {
+    }, [_vm._v(" ")])]), _vm._v(" "), _c('transition', {
       attrs: {
         "name": "slide-fade-down"
       }
@@ -30278,7 +30278,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             return (function () { return false; })($event)
           }
         }
-      }, [_vm._v("\n                                     \n                                ")]) : _vm._e(), _vm._v(" "), _c('a', {
+      }, [_vm._v("\n                                     \n                                ")]) : _vm._e(), _vm._v(" "), _c('a', {
         staticClass: "col-12 pjax question-question-list-item-link display-as-container",
         attrs: {
           "href": question.link
@@ -30492,14 +30492,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return (_vm.iconType == 'fontawesome') ? _c('i', {
     staticClass: "fa",
     class: 'fa-' + _vm.icon
-  }, [_vm._v(" ")]) : (_vm.iconType == 'image') ? _c('img', {
+  }, [_vm._v(" ")]) : (_vm.iconType == 'image') ? _c('img', {
     attrs: {
       "width": "32px",
       "src": _vm.icon
     }
   }) : (_vm.iconType == 'iconclass') ? _c('i', {
     class: _vm.icon
-  }, [_vm._v(" ")]) : _c('span')
+  }, [_vm._v(" ")]) : _c('span')
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -30733,7 +30733,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }), _vm._v(" "), (menuItem.link_external == true) ? _c('i', {
       staticClass: "fa fa-external-link"
-    }, [_vm._v(" ")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
+    }, [_vm._v(" ")]) : _vm._e()], 1), _vm._v(" "), _c('div', {
       directives: [{
         name: "show",
         rawName: "v-show",
@@ -30743,7 +30743,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "col-sm-2 text-center ls-space padding all-0 background white"
     }, [_c('i', {
       staticClass: "fa fa-chevron-right"
-    }, [_vm._v(" ")])])])])
+    }, [_vm._v(" ")])])])])
   }), _vm._v(" "), _vm._l((_vm.menu.submenus), function(submenu, index) {
     return _c('li', {
       key: submenu.id,

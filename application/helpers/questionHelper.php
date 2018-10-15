@@ -1596,8 +1596,21 @@ class questionHelper
         $xml_config = is_file($sCoreThemeXmlPath) ? simplexml_load_file($sCoreThemeXmlPath) :  simplexml_load_file($sUserThemeXmlPath);
         $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), TRUE);
         libxml_disable_entity_loader(true);
-        // no need recursive QuestionAttribute::getDefaultSettings() is array of string or null
-        return array_merge(QuestionAttribute::getDefaultSettings(),$custom_attributes['attribute']);
+
+        if(!empty($custom_attributes['attribute']['name'])) {
+            // Only one attribute set in config : need an array of attributes
+            $custom_attributes['attribute'] = array($custom_attributes['attribute']);
+        }
+
+        $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
+        $additionalAttributes = array();
+        // Create array of attribute with name as key
+        foreach($custom_attributes['attribute'] as $customAttribute) {
+            if(!empty($customAttribute['name'])) {
+                $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
+            }
+        }
+        return $additionalAttributes;
     }
 
     /**

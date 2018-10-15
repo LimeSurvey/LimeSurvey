@@ -781,7 +781,6 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         $fieldname = $oQuestion->basicFieldName;
-
         //If question is of any Array-Type  or a subquestion
         if (in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
             || ($oQuestion->type=='T' && $oQuestion->parent_qid != 0)
@@ -872,8 +871,10 @@ class SurveyDynamic extends LSActiveRecord
             }
         }
         
-        if ($oQuestion->type=='N' && isset($attributes['num_value_int_only']) && $attributes['num_value_int_only'] == 1) {
-            $aQuestionAttributes['answervalue'] = number_format($aQuestionAttributes['answervalue'], 0, '', '');
+        if ($oQuestion->type=='N' || ($oQuestion->parent_qid != 0 && $oQuestion->parents['type'] === "K")) {
+            if (strpos($aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
+                $aQuestionAttributes['answervalue'] = rtrim(rtrim($aQuestionAttributes['answervalue'], "0"), ".");
+            }
         }
 
         return $aQuestionAttributes;

@@ -865,6 +865,16 @@ function do_date($ia)
     alertInvalidDate: '" . gT('Date entered is invalid!', 'js')."',
     };";
 
+    $dateparts = [
+        'year' => gT('Year'),
+        'month' => gT('Month'),
+        'day' => gT('Day'),
+        'hour' => gT('Hour'),
+        'minute' => gT('Minute'),
+        'second' => gT('Second'),
+        'millisecond' => gT('Millisecond')
+    ];
+
     App()->getClientScript()->registerScript("sDateLangvarJS", $sDateLangvarJS, CClientScript::POS_BEGIN);
     App()->getClientScript()->registerPackage('moment');
     App()->getClientScript()->registerPackage('bootstrap-datetimepicker');

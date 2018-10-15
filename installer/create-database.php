@@ -139,7 +139,7 @@ function createDatabase($oDB){
             'group_name' =>  "text NOT NULL",
             'description' =>  "text",
             'language' =>  "string(20) NOT NULL"
-        ));        
+        ));
         $oDB->createCommand()->createIndex('{{idx1_group_ls}}', '{{group_l10ns}}', ['gid', 'language'], true);
 
         // labels
