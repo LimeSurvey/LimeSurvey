@@ -726,10 +726,6 @@ function LEMval(alias)
                     break;
                 case 'N': //NUMERICAL QUESTION TYPE
                 case 'K': //MULTIPLE NUMERICAL QUESTION
-                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                case ':': //ARRAY (Multi Flexi) 1 to 10
-                case '5': //5 POINT CHOICE radio-buttons
                 case 'Q': //MULTIPLE SHORT TEXT
                 case ';': //ARRAY (Multi Flexi) Text
                 case 'S': //SHORT FREE TEXT
@@ -737,9 +733,7 @@ function LEMval(alias)
                 case 'U': //HUGE FREE TEXT
                 case 'D': //DATE
                 case '*': //Equation
-                case 'I': //Language Question
-                case '|': //File Upload
-                case 'X': //BOILERPLATE QUESTION
+                case '|': //File Upload (unsure need to be htmlentities ?)
                         value = htmlentities(value);
                     break;
                 case 'M': //Multiple choice checkbox
@@ -748,6 +742,12 @@ function LEMval(alias)
                         value = htmlentities(value);
                     }
                     break;
+                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                case ':': //ARRAY (Multi Flexi) 1 to 10
+                case '5': //5 POINT CHOICE radio-buttons
+                case 'I': //Language Question
+                case 'X': //BOILERPLATE QUESTION
                 default:
                     // Nothing to update
             }
