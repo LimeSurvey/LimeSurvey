@@ -68,6 +68,7 @@ class QuestionGroup extends LSActiveRecord
                 'message'=>'{attribute} "{value}" is already in use.'),
             array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
             array('group_name,description', 'LSYii_Validators'),
+            array('group_name', 'length', 'min' => 0, 'max'=>100),
             array('group_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
         );
     }
