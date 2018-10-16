@@ -359,7 +359,8 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                         </div>
                     </div>
                     <?php if (!$copying): ?>
-                        <div id="container-advanced-question-settings">
+                        <div id="container-advanced-question-settings" class="custom custom-margin top-5">
+                            <div class="panel"></div>
                             <!-- Advanced settings -->
                         </div>
                         <div class="loader-advancedquestionsettings text-center">
