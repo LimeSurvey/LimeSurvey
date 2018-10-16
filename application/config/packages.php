@@ -304,8 +304,13 @@ return array(
         'depends' => array(
             'adminbasics',
         )
-        ),
-
+    ),
+    /* An empty package to be extended for EM (after core expressions) */
+    'expression-extend' =>array(
+        'depends' => array(
+            'expressions',
+        )
+    ),
     'decimalcustom' => array(
         'devBaseUrl' => 'assets/packages/decimalcustom/',
         'basePath' => 'core.decimalcustom',
@@ -316,7 +321,5 @@ return array(
         'depends' => array(
             'decimal',
         )
-    )
-
-
+    ),
 );

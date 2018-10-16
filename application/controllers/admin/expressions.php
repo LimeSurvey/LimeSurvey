@@ -46,6 +46,8 @@ class Expressions extends Survey_Common_Action
             App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
             App()->getClientScript()->registerPackage('decimal');
             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'survey_runtime.js');
+            App()->getClientScript()->registerPackage('expression-extend');
+
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle'] = "ExpressionManager:  {$aData['sa']}";
             $aData['subaction'] = $this->_printTitle($aData['sa']);
@@ -129,6 +131,7 @@ class Expressions extends Survey_Common_Action
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
         App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
+        App()->getClientScript()->registerPackage('expression-extend');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'expressionlogicfile.css');
 
         SetSurveyLanguage($sid, $language);
@@ -173,6 +176,8 @@ class Expressions extends Survey_Common_Action
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
         App()->getClientScript()->registerPackage('expressions');
+        App()->getClientScript()->registerPackage('expression-extend');
+
 
         
         $this->_renderWrappedTemplate('expressions', 'test/survey_logic_form', $aData);        

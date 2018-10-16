@@ -673,6 +673,7 @@
         {
             self::$instance =& $this;
             $this->em = new ExpressionManager();
+            $this->em->ExpressionManagerStartEvent();
             if (!isset($_SESSION['LEMlang'])) {
                 $_SESSION['LEMlang'] = 'en';    // so that there is a default
             }
@@ -689,19 +690,18 @@
                 $c = __CLASS__;
                 self::$instance = new $c;
                 unset($_SESSION['LEMdirtyFlag']);
-            }
-            else if (!isset(self::$instance)) {
-                    if (isset($_SESSION['LEMsingleton'])) {
-                        self::$instance = unserialize($_SESSION['LEMsingleton']);
-                    }
-                    else {
-                        $c = __CLASS__;
-                        self::$instance = new $c;
-                    }
+            } elseif (!isset(self::$instance)) {
+                if (isset($_SESSION['LEMsingleton'])) {
+                    self::$instance = unserialize($_SESSION['LEMsingleton']);
+                    /* Since we get it via session, need to launch core event again */
+                    self::$instance->em->ExpressionManagerStartEvent();
+                } else {
+                    $c = __CLASS__;
+                    self::$instance = new $c;
                 }
-                else {
-                    // does exist, and OK to cache
-                    return self::$instance;
+            } else {
+                // does exist, and OK to cache
+                return self::$instance;
             }
             // only record duration if have to create (or unserialize) an instance
             self::$instance->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
@@ -4373,7 +4373,6 @@
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
             $this->numQuestions = count($this->questionSeq2relevance);
             $this->numGroups = count($this->groupSeqInfo);
-
             return true;
         }
 
@@ -7256,21 +7255,21 @@
                 $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
                 $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
                 $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
-                
                 $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
-                Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
+                Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+
                 Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
                 Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/      
-                
+
                 $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
                 $LEM->FinishProcessingPage();
-                
                 return $sHiddenInputs;
             } else if($applyJavaScriptAnyway && !self::isInitialized()){
                 $LEM =& LimeExpressionManager::singleton();
                 $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
                 $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
                 Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
+
                 Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
                 Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/      
             }
