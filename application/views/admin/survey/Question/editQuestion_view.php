@@ -127,7 +127,6 @@ foreach ( $aQuestionTypeList as $key => $questionType)
             <?php // TODO : find why the $groups can't be generated from controller?>
             <div id='questionbottom'>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-
                     <!-- Copy options -->
                     <?php if ($copying): ?>
                         <div class="panel panel-default">
@@ -220,16 +219,14 @@ foreach ( $aQuestionTypeList as $key => $questionType)
 
 
                                 <div  class="form-group">
-                                    <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
+                                    <label class=" control-label" for="question_type_button">
                                         <?php
                                             eT("Question type:");
                                         ?>
                                     </label>
                                     <?php if( $activated != "Y") : ?>
-                                        <div>
                                         <?=$oQuestionSelector->getButtonOrSelect();?>
                                         <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                        </div>
                                     <?php elseif($activated == "Y") : ?>
                                         <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                         <!-- TODO : control if we can remove, disable update type must be done by PHP -->
@@ -253,73 +250,82 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                                 <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
 
                                 <!-- Question selector end -->
-
-                               <div  class="form-group" id="QuestionTemplateSelection">
-                                    <label class=" control-label" for='gid' title="<?php eT("Use a customized question theme for this question");?>"><?php eT("Question theme:"); ?></label>
-                                    <div class="">
-                                        <select id="question_template" name="question_template" class="form-control">
-                                            <?php 
-                                            foreach ($aQuestionTemplateList as $code => $value) { 
-                                                    if (!empty($aQuestionTemplateAttributes) && isset($aQuestionTemplateAttributes['value'])){
-                                                        $question_template_preview = $aQuestionTemplateAttributes['value'] == $code ? $value['preview'] : $question_template_preview;
-                                                        $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
-                                                    }
-                                                    if(YII_DEBUG) {
-                                                        echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, $value['title'], $code);
-                                                    } else {
-                                                        echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, $value['title']);
-                                                    }
-
-                                            } 
-                                            ?>
-                                        </select> 
-                                        <?php if ($activated == "Y"): ?>
-                                            <input type='hidden' name='gid' value='<?php echo $eqrow['gid'];?>' />
-                                            <?php endif; ?>
+                               <div class="form-group" id="QuestionTemplateSelection">
+                                    <label class=" control-label" for='question_template'>
+                                        <?php eT("Question theme:"); ?>
+                                        <a class="text-primary show-help" data-toggle="collapse" href="#help_question_template" aria-expanded="false" aria-controls="help_question_template" aria-hidden=true>
+                                            <span class="fa fa-info-circle" ></span>
+                                        </a>
+                                    </label>
+                                    <p class="help-block collapse" id="help_question_template"><?php eT("Use a customized question theme for this question");?></p> 
+                                    <select id="question_template" name="question_template" class="form-control">
+                                        <?php 
+                                        foreach ($aQuestionTemplateList as $code => $value) { 
+                                                if (!empty($aQuestionTemplateAttributes) && isset($aQuestionTemplateAttributes['value'])){
+                                                    $question_template_preview = $aQuestionTemplateAttributes['value'] == $code ? $value['preview'] : $question_template_preview;
+                                                    $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
+                                                }
+                                                if(YII_DEBUG) {
+                                                    echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, $value['title'], $code);
+                                                } else {
+                                                    echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, $value['title']);
+                                                }
+                                        }
+                                        ?>
+                                    </select>
+                                    <div class="help-block" id="QuestionTemplatePreview">
+                                            <strong><?php eT("Preview:"); ?></strong>
+                                            <div class="">
+                                                <img src="<?php echo $question_template_preview; ?>" class="img-thumbnail img-responsive center-block">
+                                            </div>
                                     </div>
                                 </div>
 
-                                <div  class="form-group" id="QuestionTemplatePreview">
-                                        <label class=" control-label" for='gid' title="<?php eT("Question theme preview");?>"><?php eT("Question theme preview:"); ?></label>
-                                        <div class="">
-                                            <img src="<?php echo $question_template_preview; ?>" style="border: 1px solid gray; padding: 10px; max-width: 100%;">
-                                        </div>
-                                </div>
+
 
                                 <div  class="form-group">
-                                    <label class=" control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
+                                    <label class=" control-label" for='gid'><?php eT("Question group:"); ?></label>
                                     <div class="">
                                         <select name='gid' id='gid' class="form-control" <?php if ($activated == "Y"){echo " disabled ";} ?> >
                                             <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                                         </select>
                                         <?php if ($activated == "Y"): ?>
                                             <input type='hidden' name='gid' value='<?php echo $eqrow['gid'];?>' />
-                                            <?php endif; ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
                                 <div  class="form-group" id="OtherSelection">
-                                    <label class=" control-label" title="<?php eT("Option 'Other':");?>"><?php eT("Option 'Other':"); ?></label>
-                                    <?php if ($activated != "Y"): ?>
+                                    <label class=" control-label" for="other"><?php eT("Option 'Other':"); ?></label>
                                         <div class="">
-                                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $eqrow['other'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+                                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                'name' => 'other',
+                                                'id' => 'other',
+                                                'value'=> $eqrow['other'] === "Y",
+                                                'onLabel'=>gT('On'),
+                                                'offLabel'=>gT('Off'),
+                                                'htmlOptions'=>array(
+                                                    'disabled'=>$activated == "Y",
+                                                ),
+                                            ));?>
                                         </div>
-                                    <?php else:?>
-                                        <?php eT("Cannot be changed (survey is active)");?>
-                                        <input type='hidden' name='other' value="<?php echo ($eqrow['other']=='Y' ? 1 : 0); ?>" />
-                                    <?php endif;?>
                                 </div>
 
                                 <div id='MandatorySelection' class="form-group">
-                                <label class=" control-label" title="<?php eT("Set \"Mandatory\" state");?>"><?php eT("Mandatory:"); ?></label>
+                                <label class=" control-label" for="mandatory"><?php eT("Mandatory:"); ?></label>
+                                        <a class="text-primary show-help" data-toggle="collapse" href="#help_mandatory" aria-expanded="false" aria-controls="help_mandatory" aria-hidden=true>
+                                            <span class="fa fa-info-circle" ></span>
+                                        </a>
+                                    </label>
+                                    <p class="help-block collapse" id="help_mandatory"><?php eT("Set \"Mandatory\" state");?></p> 
                                     <div class="">
                                         <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> $eqrow['mandatory'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'id' => 'mandatory','value'=> $eqrow['mandatory'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                     </div>
                                 </div>
 
                                 <div class="form-group" id="relevanceContainer">
-                                    <label class=" control-label" for='relevance' title="<?php eT("Relevance equation");?>"><?php eT("Relevance equation:"); ?></label>
+                                    <label class=" control-label" for='relevance'><?php eT("Relevance equation:"); ?></label>
                                     <div class="">
                                         <div class="input-group">
                                             <div class="input-group-addon">{</div>
@@ -333,7 +339,7 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                                 </div>
 
                                 <div id='Validation'  class="form-group">
-                                    <label class=" control-label" for='preg'  title="<?php eT("Validation:");?>"><?php eT("Validation:"); ?></label>
+                                    <label class=" control-label" for='preg'><?php eT("Validation:"); ?></label>
                                     <div class="">
                                         <input class="form-control" type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
                                     </div>
@@ -352,9 +358,8 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                             </div>
                         </div>
                     </div>
-                    <hr/>
                     <?php if (!$copying): ?>
-                        <div id="container-advanced-question-settings" class="custom custom-margin top-5">
+                        <div id="container-advanced-question-settings">
                             <!-- Advanced settings -->
                         </div>
                         <div class="loader-advancedquestionsettings text-center">
