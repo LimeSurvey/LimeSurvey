@@ -1,0 +1,168 @@
+{#
+/**
+ * Dual-scale array with dropdown representation
+
+ * @var $answerwidth
+ * @var $cellwidth
+ * @var $ddprefix
+ * @var $ddsuffix
+ */
+
+#}
+
+<!-- answer -->
+<table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+
+<!-- Column groups -->
+<colgroup>
+    <col class="answertext" style='width: {{ answerwidth }}%;' />
+    <col class="dsheader" style='width: {{ cellwidth }}%;' />
+    <col class="ddarrayseparator" style='width: {{ separatorwidth }}%'/>
+    <col class="dsheader"  style='width: {{ cellwidth }}%;' />
+</colgroup>
+<!-- Header -->
+{% if leftheader != '' or rightheader !='' %}
+    <thead>
+        <tr class="ls-heading">
+            <td></td>
+            <th class='left-header'>{{ leftheader }}</th>
+            <td></td>
+            <th class='right-header'>{{ rightheader }}</th>
+        </tr>
+    </thead>
+{% endif %}
+
+<tbody>
+
+    <!-- Sub questions -->
+
+    {% for ansrow in aSubQuestions %}
+        <!-- <tr> -->
+        <tr id="javatbd{{ ansrow.myfname }}" role="group" class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.mandatoryviolation %} ls-error-mandatory {% endif %}">
+            <!-- Answer text (actual question) -->
+
+            <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if ansrow.mandatoryviolation %} text-danger{% endif %}">
+                <label class="control-label" for="answer{{ ansrow.myfid0 }}" id="label-{{ ansrow.myfname }}">
+                    {{ ansrow.question }}
+                </label>
+                {# Value for expression manager javascript (use id) ; no need to submit #}
+                {{ C.Html.hiddenField("java"~ansrow.myfid0,ansrow.sActualAnswer0,({
+                    'id' : "java"~ansrow.myfid0,
+                    'disabled' : true,
+                }))
+                }}
+                {{ C.Html.hiddenField("java"~ansrow.myfid1,ansrow.sActualAnswer1,({
+                    'id' : "java"~ansrow.myfid1,
+                    'disabled' : true,
+                }))
+                }}
+            </th>
+
+            <!-- First dropdown -->
+
+            <td class="answer-item dropdown-item{% if ansrow.mandatoryviolation and ansrow.sActualAnswer0=='' %} has-error{% endif %}">
+                {% if leftheader != '' %}
+                    <div  class='visible-xs leftheader control-label'>{{ leftheader }}</div>
+                {% endif %}
+                {% if ddsuffix != '' or ddprefix != '' %}
+                    <div class="ls-input-group">
+                {% endif %}
+                {% if ddprefix != '' %}
+                    <div class="ddprefix ls-input-group-extra">
+                        {{ ddprefix }}
+                    </div>
+                {% endif %}
+                <select
+                    class='form-control'
+                    name="{{ ansrow.myfname0 }}"
+                    id="answer{{ ansrow.myfid0 }}"
+                    aria-labelledby="answertext{{ ansrow.myfname }}"
+                >
+                    <!-- Please choose... -->
+                    {% if ansrow.sActualAnswer0 == '' %}
+                        <option value="" selected="selected">
+                            {{ gT('Please choose...') }}
+                        </option>
+                    {% endif %}
+
+                    <!-- First label set -->
+                    {% for lrow in labels0 %}
+                        <option
+                            value="{{ lrow.code }}"
+                            {% if ansrow.sActualAnswer0 == lrow.code %} selected="selected"{% endif %}>
+
+                            {{ flattenText(lrow.title) }}
+
+                        </option>
+                    {% endfor %}
+
+                    <!-- No answer -->
+                    {% if ansrow.showNoAnswer0 and ansrow.sActualAnswer0 != '' %}
+                        <option value="">{{ gT('No answer') }}</option>
+                    {% endif %}
+                </select>
+                {% if ddsuffix != '' %}
+                    <div class="ddsuffix ls-input-group-extra">
+                        {{ ddsuffix }}
+                    </div>
+                {% endif %}
+                {% if ddsuffix != '' or ddprefix != '' %}
+                    </div>
+                {% endif %}
+            </td>
+
+
+            <!-- Separator -->
+
+            <td class="ddarrayseparator information-item">{{ interddSep }}</td>
+
+            <!-- Second dropdown -->
+
+            <td class="answer-item dropdown-item{% if ansrow.mandatoryviolation and ansrow.sActualAnswer1=='' %} has-error{% endif %}">
+                {% if rightheader != '' %}
+                    <div  class='visible-xs rightheader control-label'>{{ rightheader }}</div>
+                {% endif %}
+                <!-- We don't need another label : aria-labelledby for accessibility, and we have only 2 line in phone and no-more-table -->
+                {% if ddprefix != '' or ddsuffix != '' %}
+                    <div class="ls-input-group">
+                {% endif %}
+                {% if ddprefix != '' %}
+                    <div class="ddprefix ls-input-group-extra">{{ ddprefix }}</div>
+                {% endif %}
+                <select class='form-control' name="{{ ansrow.myfname1 }}" id="answer{{ ansrow.myfid1 }}" aria-labelledby="label-{{ ansrow.myfname }}">
+                    <!-- Please choose... -->
+                    {% if ansrow.sActualAnswer1 is empty %}
+                        <option value="" selected="selected">{{ gT('Please choose...') }}</option>
+                    {% endif %}
+
+                    <!-- Second label set -->
+                    {% for lrow in labels1 %}
+                        <option
+                            value="{{ lrow.code }}"
+                            {% if ansrow.sActualAnswer1 == lrow.code %} selected="selected"{% endif %}>
+                            {{  flattenText(lrow.title) }}
+
+                        </option>
+                    {% endfor %}
+
+                    <!-- No answer -->
+                    {% if ansrow.showNoAnswer1 and ansrow.sActualAnswer1 != '' %}
+                        <option value="">{{ gT('No answer') }}</option>
+                    {% endif %}
+
+                </select>
+                {% if ddsuffix != '' %}
+                    <div class="ddsuffix ls-input-group-extra">{{ ddsuffix }}</div>
+                {% endif %}
+                {% if ddprefix != '' or ddsuffix != '' %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+
+</tbody>
+
+</table>
+
+<!-- end of answer -->

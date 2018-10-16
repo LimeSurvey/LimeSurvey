@@ -36,7 +36,7 @@
                   <!-- Export resources as ZIP archive -->
                   <li>
                     <label>&nbsp;</label>
-                    <input class="btn btn-default" type='button' <?php echo hasResources($lid, 'label')===f alse ? ' disabled="disabled"' : '' ?> onclick='window.open("
+                    <input class="btn btn-default" type='button' <?php echo hasResources($lid, 'label')===false ? ' disabled="disabled"' : '' ?> onclick='window.open("
                     <?php echo $this->createUrl("/admin/export/sa/resources/export/label/lid/$lid"); ?>", "_blank")' value="
                       <?php eT("Export resources as ZIP archive") ?>" />
                   </li>
@@ -54,7 +54,7 @@
                             'class'=>'form30',
                             'name'=>'importlabelresources',
                             'enctype'=>'multipart/form-data',
-                            'onsubmit'=>'return validatefilename(this, "'.gT('Please select a file to import!', 'js').'");'
+                            'onsubmit'=>'return window.LS.validatefilename(this, "'.gT('Please select a file to import!', 'js').'");'
                         )
                     ); 
                 ?>
@@ -74,7 +74,7 @@
                         <input class="btn btn-default" type='button' value='<?php eT("Import resources ZIP archive") ?>' <?php 
                         echo !function_exists("zip_open") 
                             ? "onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'" 
-                            : "onclick='if (validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" 
+                            : "onclick='if (window.LS.validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" 
                         ?>/>
                       </div>
                     </li>

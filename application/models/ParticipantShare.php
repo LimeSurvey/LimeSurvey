@@ -69,7 +69,7 @@ class ParticipantShare extends LSActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'participant' => array(self::HAS_ONE, 'Participant', array('participant_id' => 'participant_id')), 
+            'participant' => array(self::HAS_ONE, 'Participant', array('participant_id' => 'participant_id')),
             'shared_by' => array(self::HAS_ONE, 'User', array('uid' => 'share_uid')),
             'surveylinks' => array(self::HAS_ONE, 'SurveyLink', 'participant_id'),
             'participantAttributes' => array(self::HAS_MANY, 'ParticipantAttribute', 'participant_id', 'with'=>'participant_attribute_names', 'joinType'=> 'LEFT JOIN')
@@ -350,7 +350,7 @@ class ParticipantShare extends LSActiveRecord
         $criteria->addCondition("share_uid = '{$data['share_uid']}' ");
         ParticipantShare::model()->updateAll($data, $criteria);
     }
-    
+
     /**
      * @param string $rows Comma-separated list of something
      * @return void

@@ -112,23 +112,23 @@ class questions extends Survey_Common_Action
 
         // Last question visited : By user (only one by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $qid);
+        SettingGlobal::setSetting($setting_entry, $qid);
 
         // we need to set the sid for this question
         $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $iSurveyID);
+        SettingGlobal::setSetting($setting_entry, $iSurveyID);
 
         // we need to set the gid for this question
         $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
-        setGlobalSetting($setting_entry, $gid);
+        SettingGlobal::setSetting($setting_entry, $gid);
 
         // Last question for this survey (only one by survey, many by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
-        setGlobalSetting($setting_entry, $qid);
+        SettingGlobal::setSetting($setting_entry, $qid);
 
         // we need to set the gid for this question
         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
-        setGlobalSetting($setting_entry, $gid);
+        SettingGlobal::setSetting($setting_entry, $gid);
 
         $aData['surveyIsActive'] = $survey->active !== 'N';
 
@@ -992,7 +992,7 @@ class questions extends Survey_Common_Action
         }
 
         $html = '<!-- Inserted Row -->';
-        $html .= $this->getController()->renderPartial('/admin/survey/Question/subquestionsAndAnswers/'.$view, $aData, true, false);
+        $html .= App()->twigRenderer->renderAnswerOptions('/admin/survey/Question/subquestionsAndAnswers/'.$view, $aData);
         $html .= '<!-- end of Inserted Row -->';
         return $html;
     }
@@ -1055,6 +1055,9 @@ class questions extends Survey_Common_Action
         }
         $aData['eqrow'] = $eqrow;
         $aData['groupid'] = $eqrow['gid'];
+        $qid = null;
+        $aData['aQuestionTemplateAttributes'] = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid)['question_template'];
+        $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
 
         $sumresult1 = Survey::model()->findByPk($surveyid);
         if (is_null($sumresult1)) {
@@ -1096,7 +1099,7 @@ class questions extends Survey_Common_Action
         $aData['copying'] = false;
 
         $aData['aqresult'] = '';
-        $aData['action'] = 'addquestion';
+        $aData['action'] = 'newquestion';
 
         ///////////
         // sidemenu
@@ -1162,9 +1165,10 @@ class questions extends Survey_Common_Action
             // if (isset($_POST['sortorder']))
             //     $postsortorder = sanitize_int($_POST['sortorder']);
 
-            $aData['adding'] = $adding = $action == 'addquestion';
+            $aData['adding'] = $adding = $action == 'newquestion';
             $aData['copying'] = $copying = $action == 'copyquestion';
-            $aData['subaction'] = $copying ? gT('Copy question') : gT('Add a new question');
+            $aData['editing'] = $editing = $action == 'editquestion';
+            $aData['subaction'] = $copying ? gT('Copy question') : ($editing ? gT('Edit question') : gT('Add a new question'));
 
             $questlangs = $oSurvey->additionalLanguages;
             $baselang = $oSurvey->language;
@@ -1280,6 +1284,14 @@ class questions extends Survey_Common_Action
             $aData['eqrow'] = $eqrow;
             $aData['surveyid'] = $surveyid;
             $aData['gid'] = $gid;
+            $questionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($qid, $eqrow['type'], $surveyid);
+            if (!empty($questionTemplateAttributes['question_template'])){
+                $aData['aQuestionTemplateAttributes'] = $questionTemplateAttributes['question_template'];
+            } else {
+                $aData['aQuestionTemplateAttributes']['value'] = 'core';
+            }
+
+            $aData['aQuestionTemplateList'] = \QuestionTemplate::getQuestionTemplateList($eqrow['type']);
 
             if (!$adding) {
                 $criteria = new CDbCriteria;
@@ -1388,11 +1400,15 @@ class questions extends Survey_Common_Action
      * @param int $qid
      * @return array
      */
-    public function delete($surveyid, $qid, $ajax = false)
+    public function delete($surveyid, $qid, $ajax = false, $gid = 0)
     {
         $surveyid = sanitize_int($surveyid);
         $qid = (int) $qid;
         $rqid = $qid;
+        $gid_search = sanitize_int($gid); // gid from search filter
+        if ($gid_search == 0){
+            $gid_search = '';
+        }
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
             if ($qid == 0) {
@@ -1445,10 +1461,10 @@ class questions extends Survey_Common_Action
             $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
             $oCriteria->compare('stg_value', $rqid, false, 'AND');
             SettingGlobal::model()->deleteAll($oCriteria);
-
+            $redirectUrl = array('admin/survey/sa/listquestions/', 'surveyid' => $surveyid, 'gid' => $gid_search);
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
+                $this->getController()->redirect($redirectUrl);
             } else {
                 return array('status'=>true, 'message'=>$sMessage);
             }
@@ -1456,7 +1472,7 @@ class questions extends Survey_Common_Action
             $sMessage = gT("You are not authorized to delete questions.");
             if (!$ajax) {
                 Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
+                $this->getController()->redirect($redirectUrl);
             } else {
                 return array('status'=>false, 'message'=>$sMessage);
             }
@@ -1640,7 +1656,10 @@ class questions extends Survey_Common_Action
         $surveyid           = (int) Yii::app()->request->getParam('sid', 0);
         $qid                = (int) Yii::app()->request->getParam('qid', 0);
         $type               = Yii::app()->request->getParam('question_type');
+        $sQuestionTemplate  = Yii::app()->request->getParam('question_template', '');
+        $sOldQuestionTemplate  = Yii::app()->request->getParam('old_question_template', '');
         $oSurvey = Survey::model()->findByPk($surveyid);
+        $questionTypeList = QuestionTemplate::getTypeToFolder();
 
         if ($oSurvey === null) {
             App()->end();
@@ -1652,11 +1671,38 @@ class questions extends Survey_Common_Action
             );
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
+        // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible  
+        if (!empty($sOldQuestionTemplate) && $sOldQuestionTemplate !== 'core'){
+            // get old custom question theme attributes
+            $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sOldQuestionTemplate, $questionTypeList[$type]);
+            if (!empty($aOldQuestionThemeAttributes)){ 
+                foreach ($aOldQuestionThemeAttributes as $key => $value) {
+                    unset($aAttributesWithValues[$value['name']]);
+                }
+            }
+        }
+
+        // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
+        if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
+                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionTemplate, $questionTypeList[$type]);
+                $aAttributesWithValues = array_merge_recursive($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
+        }
         uasort($aAttributesWithValues, 'categorySort');
+        unset($aAttributesWithValues['question_template']);
 
         $aAttributesPrepared = array();
         foreach ($aAttributesWithValues as $aAttribute) {
-            if ($aAttribute['i18n'] == false) {
+            //Set default for a new question
+            if(empty($aAttribute['value']) && $qid===0) {
+                //Empty strings are arrays because of some reason no one understands.
+                $aAttribute['value'] = is_array($aAttribute['default']) ? '' : $aAttribute['default'];
+            }
+
+            // SET QUESTION TEMPLATE FORM ATTRIBUTES WHEN $sQuestionTemplate VARIABLE IS SET
+            if (!empty($sQuestionTemplate) && isset($aAttribute['name']) && $aAttribute['name'] == 'question_template') {
+                $aAttribute['value'] = $sQuestionTemplate;
+                $aAttributesPrepared[] = $aAttribute;
+            } elseif (isset($aAttribute['i18n']) && $aAttribute['i18n'] == false) {
                 $aAttributesPrepared[] = $aAttribute;
             } else {
                 foreach ($aLanguages as $sLanguage) {
@@ -1672,6 +1718,7 @@ class questions extends Survey_Common_Action
                 }
             }
         }
+
         $aData = [];
         $aData['bIsActive'] = ($oSurvey->active == 'Y');
         $aData['attributedata'] = $aAttributesPrepared;
@@ -1823,7 +1870,7 @@ class questions extends Survey_Common_Action
         echo CJSON::encode($oQuestion->getErrors());
         Yii::app()->end();
     }
-    /**
+     /**
      * Todo : update whole view to use CActiveForm
      */
 #    protected function performAjaxValidation($model)
@@ -1833,7 +1880,21 @@ class questions extends Survey_Common_Action
 #            echo CActiveForm::validate($model);
 #            Yii::app()->end();
 #        }
-#    }
+#    }    
+
+    /**
+     * @param string $question_type
+     * @return string JSON data
+     */
+    public function ajaxGetQuestionTemplateList()
+    {
+        $type = Yii::app()->request->getParam('type');
+        $questionTemplateList = \QuestionTemplate::getQuestionTemplateList($type);
+        header('Content-type: application/json');
+        echo CJSON::encode($questionTemplateList);
+        Yii::app()->end();
+    }
+
     /**
      * Renders template(s) wrapped in header and footer
      *

@@ -535,7 +535,7 @@ $url .= "_view"; });
         $operation = Yii::app()->request->getPost('oper');
         $aData = Yii::app()->request->getPost('Participant');
 
-        if (isset($aData['blacklisted']) && ($aData['blacklisted'] == 'on' || $aData['blacklisted'] == '1')) {
+        if (isset($aData['blacklisted']) && ($aData['blacklisted'] == 'on' || $aData['blacklisted'] == '1' || $aData['blacklisted'] == 'Y')) {
             $aData['blacklisted'] = 'Y';
         } else {
             $aData['blacklisted'] = 'N';
@@ -555,6 +555,61 @@ $url .= "_view"; });
                 assert(false, 'Unknown operation: '.$operation);
                 break;
         }
+    }
+
+    public function batchEdit() {
+        if (!Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->createUrl('/admin'));
+            return;
+        }
+
+        $aParticipantIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aResults = array();
+        $oBaseModel = Surveymenu::model();
+        // First we create the array of fields to update
+        $aData = array();
+        $aResults['global']['result'] = true;
+
+        // Core Fields
+        $aCoreTokenFields = array('language', 'owner_uid','blacklisted');
+        foreach ($aCoreTokenFields as $sCoreTokenField) {
+            if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
+                $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
+            }
+        }
+        
+
+        if (count($aData) > 0) {
+            foreach ($aParticipantIds as $sParticipantId) {
+                $oParticipant = Participant::model()->findByPk($sParticipantId);
+                
+                
+                
+                foreach ($aData as $key => $value) {
+                    // Make sure no-one hacks owner_uid into form
+                    if (!$oParticipant->isOwnerOrSuperAdmin() && $key=='owner_uid') {
+                        continue;
+                    }
+                    $oParticipant->$key = $value;
+                }
+
+                $bUpdateSuccess = $oParticipant->save();
+                if ($bUpdateSuccess) {
+                    $aResults[$sParticipantId]['status']    = true;
+                    $aResults[$sParticipantId]['message']   = gT('Updated');
+                } else {
+                    $aResults[$sParticipantId]['status']    = false;
+                    $aResults[$sParticipantId]['message']   = $oParticipant->error;
+                }
+            }
+        } else {
+            $aResults['global']['result']  = false;
+            $aResults['global']['message'] = gT('Nothing to update');
+        }
+
+        Yii::app()->getController()->renderPartial('/admin/surveymenu/massive_action/_update_results', array('aResults'=>$aResults));
+
     }
 
     /**
@@ -738,7 +793,7 @@ $url .= "_view"; });
             ."var summary = '".gT("Upload summary")."';\n"
             ."var notPairedErrorTxt = '".gT("You have to pair this field with an existing attribute.")."';\n"
             ."var onlyOnePairedErrorTxt = '".gT("Only one CSV attribute is mapped with central attribute.")."';\n"
-            ."var cannotAcceptErrorTxt='".gT("This list cannot accept token attributes.")."';\n"
+            ."var cannotAcceptErrorTxt='".gT("This list cannot accept survey participant attributes.")."';\n"
             ."var separator = '".sanitize_paranoid_string($_POST['separatorused'])."';\n"
             ."var thefilepath = '".$sRandomFileName."';\n"
             ."var filterblankemails = '".sanitize_paranoid_string($filterblankemails)."';\n";

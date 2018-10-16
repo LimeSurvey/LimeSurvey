@@ -81,30 +81,31 @@ class Assessment extends LSActiveRecord
     {
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
-            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<i class='fa fa-%s' ></i>" //icon class
+            . "<button class='btn btn-default btn-xs %s %s' role='button' title='%s' type='button'>" //extra class //title
+            . "<i class='fa fa-%s' aria-hidden='true' ></i><span class='sr-only'>%s</span>" //icon class
             . "</button>";
-		
-        if (Permission::model()->hasGlobalPermission('assessments', 'update')) {
-            $editData = array(
-                'action_assessments_editModal',
-                'text-danger',
-                gT("Edit this assessment rule"),
-                'edit'
-            );
-            $deleteData = array(
-                'action_assessments_deleteModal',
-                'text-danger',
-                gT("Delete this assessment rule"),
-                'trash text-danger'
-            );
-
+        $editData = array(
+            'action_assessments_editModal',
+            'text-info',
+            gT("Edit this assessment rule"),
+            'edit',
+            gT("Edit")
+        );
+        $deleteData = array(
+            'action_assessments_deleteModal',
+            'text-danger',
+            gT("Delete this assessment rule"),
+            'trash text-danger',
+            gT("Delete")
+        );
+        if (Permission::model()->hasSurveyPermission($this->sid,'assessments', 'delete')) {
             $buttons .= vsprintf($raw_button_template, $deleteData);
+        }
+        if (Permission::model()->hasSurveyPermission($this->sid,'assessments', 'update')) {
             $buttons .= vsprintf($raw_button_template, $editData);
         }
-
         $buttons .= '</div>';
-		
+
         return $buttons;
     }
 
@@ -164,7 +165,7 @@ class Assessment extends LSActiveRecord
         $criteria->compare('maximum', $this->maximum);
         $criteria->compare('message', $this->message, true);
         $criteria->compare('language', $survey->language);
-        
+
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);
         return new CActiveDataProvider(
             $this,

@@ -42,7 +42,7 @@
                                 <?php eT('Not enough space'); ?>
                             </h3>
                         </td>
-                        <?php $errors = true; $ignore = true; ?>
+                        <?php $errors = true; $cant_ignore = false; $ignore = true; ?>
                     <?php endif; ?>
                 </tr>
             <?php endif; ?>

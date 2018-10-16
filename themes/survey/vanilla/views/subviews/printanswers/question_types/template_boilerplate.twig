@@ -3,7 +3,7 @@
 {% block question_name %}
     <div class="col-xs-10">
         <p>({{question.qid}}) <br/>{{question.question}}</p>
-        <small>{{ "Type:" | t }} ({{question.questionclass}})</small>
+        <small>{{ gT("Type:") }} ({{question.questionclass}})</small>
     </div>
 {% endblock %}
 {% block question_answer %}

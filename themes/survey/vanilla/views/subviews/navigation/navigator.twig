@@ -31,8 +31,8 @@
         {# Previous button must be set to ON in survey settings (and it's not shown in first page, in All in One survey mode, etc) #}
         {% if aNavigator.aMovePrev.show %}
             <!-- Button previous -->
-            <button  {{ aSurveyInfo.attr.navigatorbuttonprev }}  class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-default  " >
-                {{ "Previous" | t }}
+            <button {{ aSurveyInfo.attr.navigatorbuttonprev }} accesskey="p" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-default " >
+                {{ gT("Previous") }}
             </button>
         {% endif %}
     </div>
@@ -44,15 +44,17 @@
             {# On last page, Next button become submit button. #}
             {% if aNavigator.aMoveNext.value == "movesubmit" %}
                 <!-- Button submit -->
-                <button type="submit"  {{ aSurveyInfo.attr.navigatorbuttonsubmit }} class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }} btn btn-lg btn-primary">
-                    {{ "Submit" | t }}
+                <button {{ aSurveyInfo.attr.navigatorbuttonsubmit }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }} btn btn-lg btn-primary">
+                    {{ gT("Submit") }}
                 </button>
             {% else %}
                 <!-- Button Next -->
-                <button type="submit" {{ aSurveyInfo.attr.navigatorbuttonnext }}  class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-lg btn-primary " >
-                    {{ "Next" | t }}
+                <button {{ aSurveyInfo.attr.navigatorbuttonnext }} accesskey="n" class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-lg btn-primary " >
+                    {{ gT("Next") }}
                 </button>
             {% endif %}
         {% endif %}
     </div>
 </div>
+<!-- Extra navigator part -->
+{{ include('./subviews/navigation/navigator_complement.twig') }}

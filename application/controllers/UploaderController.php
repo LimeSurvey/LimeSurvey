@@ -248,6 +248,17 @@ class UploaderController extends SurveyController
         $meta = '';
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-superfish');
+        
+        $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
+        $oEvent = new PluginEvent('beforeSurveyPage');
+        $oEvent->set('surveyId', $surveyid);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        if (!is_null($oEvent->get('template'))) {
+            $aSurveyInfo['templatedir'] = $event->get('template');
+        }
+        $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
+        $sTemplateUrl = getTemplateURL($aSurveyInfo['template'])."/";
+        $oTemplate = Template::model()->getInstance('', $surveyid);
         $sNeededScriptVar = '
             var uploadurl = "'.$this->createUrl('/uploader/index/mode/upload/').'";
             var imageurl = "'.Yii::app()->getConfig('imageurl').'/";
@@ -255,7 +266,7 @@ class UploaderController extends SurveyController
             var fieldname = "'.$sFieldName.'";
             var questgrppreview  = '.$sPreview.';
             csrfToken = '.ls_json_encode(Yii::app()->request->csrfToken).';
-            showpopups="'.Yii::app()->getConfig("showpopups").'";
+            showpopups="'.$oTemplate->showpopups.'";
         ';
         $sLangScriptVar = "
                 uploadLang = {
@@ -274,18 +285,8 @@ class UploaderController extends SurveyController
                      editFile : '".gT('Edit', 'js')."',
                     };
         ";
-        $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
-        $oEvent = new PluginEvent('beforeSurveyPage');
-        $oEvent->set('surveyId', $surveyid);
-        App()->getPluginManager()->dispatchEvent($oEvent);
-        if (!is_null($oEvent->get('template'))) {
-            $aSurveyInfo['templatedir'] = $event->get('template');
-        }
-        $sTemplateDir = getTemplatePath($aSurveyInfo['template']);
-        $sTemplateUrl = getTemplateURL($aSurveyInfo['template'])."/";
         App()->clientScript->registerScript('sNeededScriptVar', $sNeededScriptVar, CClientScript::POS_HEAD);
         App()->clientScript->registerScript('sLangScriptVar', $sLangScriptVar, CClientScript::POS_HEAD);
-        $oTemplate = Template::model()->getInstance('', $surveyid);
         Yii::app()->clientScript->registerPackage('survey-template-'.$oTemplate->sTemplateName);
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js');

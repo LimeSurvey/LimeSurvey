@@ -75,29 +75,19 @@ class LSYii_Application extends CWebApplication
         parent::__construct($aApplicationConfig);
 
         /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl) */
-        $coreConfig = require(__DIR__.'/../config/config-defaults.php');
-        $emailConfig = require(__DIR__.'/../config/email.php');
-        $versionConfig = require(__DIR__.'/../config/version.php');
-        $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
-        $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
-        if (file_exists(__DIR__.'/../config/config.php')) {
-            $userConfigs = require(__DIR__.'/../config/config.php');
-            if (is_array($userConfigs['config'])) {
-                $lsConfig = array_merge($lsConfig, $userConfigs['config']);
-            }
-        }
+        $this->setConfigs();
+
         /* Update asset manager path and url only if not directly set in aApplicationConfig (from config.php),
          *  must do after reloading to have valid publicurl (the tempurl) */
         if (!isset($aApplicationConfig['components']['assetManager']['baseUrl'])) {
-            App()->getAssetManager()->setBaseUrl($lsConfig['tempurl'].'/assets');
+            App()->getAssetManager()->setBaseUrl($this->config['tempurl'].'/assets');
         }
         if (!isset($aApplicationConfig['components']['assetManager']['basePath'])) {
-            App()->getAssetManager()->setBasePath($lsConfig['tempdir'].'/assets');
+            App()->getAssetManager()->setBasePath($this->config['tempdir'].'/assets');
         }
-
-        $this->config = array_merge($this->config, $lsConfig);
     }
 
+    /* @inheritdoc */
     public function init()
     {
         parent::init();
@@ -108,16 +98,57 @@ class LSYii_Application extends CWebApplication
         ClassFactory::registerClass('Response_', 'Response');
     }
 
+    /* @inheritdoc */
     public function initLanguage()
     {
         // Set language to use.
         if ($this->request->getParam('lang') !== null) {
             $this->setLanguage($this->request->getParam('lang'));
         } elseif (isset(App()->session['_lang'])) {
-// See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
+            // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
             $this->setLanguage(App()->session['_lang']);
         }
+    }
 
+    /**
+     * Set the LimeSUrvey config array according to files and DB
+     * @return void
+     */
+    public function setConfigs() {
+        /* Default config */
+        $coreConfig = require(__DIR__.'/../config/config-defaults.php');
+        $emailConfig = require(__DIR__.'/../config/email.php');
+        $versionConfig = require(__DIR__.'/../config/version.php');
+        $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
+        $this->config = array_merge($this->config,$coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+        if(!file_exists(__DIR__.'/../config/config.php')) {
+            /* Set up not done : then no other part to update */
+            return;
+        }
+        /* User file config */
+        $userConfigs = require(__DIR__.'/../config/config.php');
+        if (is_array($userConfigs['config'])) {
+             $this->config = array_merge($this->config, $userConfigs['config']);
+        }
+        /* Database config */
+        try {
+            $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
+            if (is_object($settingsTableExist)) {
+                $dbConfig = CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
+                $this->config = array_merge($this->config, $dbConfig);
+            }
+        } catch (Exception $exception) {
+            /* Even if database can exist : don't throw exception, */
+            /* @todo : find when settings_global was created with stg_name and stg_value, maybe can Throw Exception ? */
+            Yii::log("Table settings_global not found");// Log it as LEVEL_INFO , application category
+        }
+        /* Add some specific config using exiting other configs */
+        $this->setConfig('globalAssetsVersion', /* Or create a new var ? */
+            $this->getConfig('assetsversionnumber',0).
+            $this->getConfig('versionnumber',0).
+            $this->getConfig('dbversionnumber',0).
+            $this->getConfig('customassetversionnumber',1)
+        );
     }
     /**
      * Loads a helper
@@ -307,11 +338,15 @@ class LSYii_Application extends CWebApplication
     public function onException($event)
     {
         if (Yii::app() instanceof CWebApplication) {
-            if (defined('PHP_ENV') && PHP_ENV == 'test') {
+            $configExists = file_exists(__DIR__.'/../config/config.php');
+            $usingTestEnv = defined('PHP_ENV') && PHP_ENV == 'test';
+            if ($usingTestEnv || !$configExists) {
                 // If run from phpunit, die with exception message.
                 die($event->exception->getMessage());
             } else {
-                if ($event->exception->statusCode == '404') {
+                /* Here we have different possibility : maybe 400/401/403/404 with debug < 2 except for forced superadmin (currently : the 4 part don't show intersting information with debug*/
+                /* 500 always if debug and for (forced) superadmin even if no debug is set (and try to show complete error in this case (see issue by olle about white page and log */
+                if ((Yii::app()->getConfig('debug')<1  /* || Permission::hasGlobalPermission('superadmin') */) || $event->exception->statusCode=='404') {
                     Yii::app()->setComponent('errorHandler', array(
                         'errorAction'=>'surveys/error',
                     ));

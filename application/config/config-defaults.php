@@ -90,8 +90,11 @@ $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,g
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
-$config['showpopups']         = 1; // Show popup messages if mandatory or conditional questions have not been answered correctly.
-// 1=Show popup message, 0=Show message on page instead.
+$config['showpopups']         = 2; // Show popup messages if mandatory or conditional questions have not been answered correctly.
+//  2 = defined by Theme option (default)
+//  1 = Show popup message
+//  0 = Show message on page instead;
+// -1 = Do not show the message at all (in this case, users will still see the question-specific tips indicating which questions must be answered).
 
 $config['maxemails']          = 50; // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
@@ -680,8 +683,32 @@ $config['sideMenuBehaviour'] = 'adaptive';
 // Hide update key
 $config['hide_update_key'] = false;
 
+// Dev part
+// 1 : looking for errors, 2 : PHP STRICT error messages
+$config['debug'] = 0;
+//1 to enable sql logging, only active when debug = 2
+$config['debugsql'] = 0;
+//Try to set if able PHP max_execution_time
+$config['max_execution_time'] = 1200;
+
+// When this parameter is true, the configuration of the XML file will be used instead of the database to display the themes (default behavior in 2.50+).
+// This is useful when developing a theme, so changes to XML files are immediately applied without the need to uninstall and reinstall the theme.
 $config['force_xmlsettings_for_survey_rendering'] = false;
-$config['force_dbsettings_for_survey_rendering'] = false;
+
+$config['usePluginWhitelist'] = false;
+
+$config['pluginCoreList'] = [
+    'AuditLog',
+    'ExportR',
+    'ExportSTATAxml',
+    'extendedStartPage',
+    'oldUrlCompat',
+    'AuthLDAP',
+    'Authdb',
+    'Authwebserver'
+];
+
+$config['pluginWhitelist'] = [];
 
 return $config;
 //settings deleted

@@ -235,9 +235,9 @@ class Authentication extends Survey_Common_Action
             $aData = [];
             if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $aFields[0]['uid']))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>'.gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you').'<br>';
+                $aData['message'] = '<br>'.gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.').'<br>';
             } else {
-                $aData['message'] = '<br>'.$this->_sendPasswordEmail($sEmailAddr, $aFields[0]).'</br>';
+                $aData['message'] = '<br>'.$this->_sendPasswordEmail($aFields[0]).'</br>';
             }
             $this->_renderWrappedTemplate('authentication', 'message', $aData);
         }
@@ -261,19 +261,18 @@ class Authentication extends Survey_Common_Action
     /**
      * Send the forgot password email
      *
-     * @param string $sEmailAddr
-     * @param CActiveRecord $aFields
+     * @param CActiveRecord User 
      */
-    private function _sendPasswordEmail($sEmailAddr, $aFields)
+    private function _sendPasswordEmail( $arUser)
     {
         $sFrom = Yii::app()->getConfig("siteadminname")." <".Yii::app()->getConfig("siteadminemail").">";
-        $sTo = $sEmailAddr;
+        $sTo = $arUser->email;
         $sSubject = gT('User data');
         $sNewPass = createPassword();
         $sSiteName = Yii::app()->getConfig('sitename');
         $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
 
-        $username = sprintf(gT('Username: %s'), $aFields['users_name']);
+        $username = sprintf(gT('Username: %s'), $arUser['users_name']);
         $password = sprintf(gT('New password: %s'), $sNewPass);
 
         $body   = array();
@@ -283,9 +282,9 @@ class Authentication extends Survey_Common_Action
         $body   = implode("\n", $body);
 
         if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce)) {
-            User::updatePassword($aFields['uid'], $sNewPass);
+            User::updatePassword($arUser['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
-            $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you');
+            $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.');
         } else {
             $sMessage = gT('Email failed');
         }

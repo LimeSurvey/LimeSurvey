@@ -510,9 +510,9 @@ class database extends Survey_Common_Action
 
         //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag();
-        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID); 
+        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
         $this->_resetEM();
-        
+
         if (!isset($aErrors) || !count($aErrors)) {
             if (!Yii::app()->request->getPost('bFullPOST')) {
                 Yii::app()->session['flashmessage'] = gT("Not all subquestions were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator.");
@@ -520,7 +520,7 @@ class database extends Survey_Common_Action
                 Yii::app()->session['flashmessage'] = gT("Subquestions were successfully saved.");
             }
         }
-        
+
         if (Yii::app()->request->getPost('close-after-save') === 'true') {
             $this->getController()->redirect(array('/admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         }
@@ -569,7 +569,7 @@ class database extends Survey_Common_Action
         $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
         foreach ($validAttributes as $validAttribute) {
             /* Readonly attribute : disable save */
-            if($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive()) ) {
+            if( $validAttribute['readonly'] || ( $validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive() ) ) {
                 continue;
             }
             if ($validAttribute['i18n']) {
@@ -745,7 +745,7 @@ class database extends Survey_Common_Action
 
                 // Update the group ID on subquestions, too
                 if ($oldgid != $this->iQuestionGroupID) {
-                    Question::model()->updateAll(array('gid'=>$this->iQuestionGroupID), 'qid=:qid and parent_qid>0', array(':qid'=>$this->iQuestionID));
+                    Question::model()->updateAll(array('gid'=>$this->iQuestionGroupID), 'parent_qid=:qid and parent_qid>0', array(':qid'=>$this->iQuestionID));
                     // if the group has changed then fix the sortorder of old and new group
                     Question::model()->updateQuestionOrder($oldgid, $iSurveyID);
                     Question::model()->updateQuestionOrder($this->iQuestionGroupID, $iSurveyID);
@@ -824,7 +824,7 @@ class database extends Survey_Common_Action
                     $dataseclabel = Yii::app()->request->getPost('dataseclabel_'.$langname, null);
                     $dateformat = Yii::app()->request->getPost('dateformat_'.$langname, null);
                     $numberformat = Yii::app()->request->getPost('numberformat_'.$langname, null);
-                    
+
                     if ($short_title !== null) {
                         // Fix bug with FCKEditor saving strange BR types
                         $short_title = $this->oFixCKeditor->fixCKeditor($short_title);
@@ -859,10 +859,10 @@ class database extends Survey_Common_Action
                         $data['surveyls_policy_notice_label'] = $dataseclabel;
                     }
                     if ($sURL !== null) {
-                        $data['surveyls_url'] = html_entity_decode($sURL, ENT_QUOTES, "UTF-8");
+                        $data['surveyls_url'] = htmlspecialchars($sURL);
                     }
                     if ($sURLDescription !== null) {
-                        $data['surveyls_urldescription'] = html_entity_decode($sURLDescription, ENT_QUOTES, "UTF-8");
+                        $data['surveyls_urldescription'] = htmlspecialchars($sURLDescription);
                     }
                     if ($dateformat !== null) {
                         $data['surveyls_dateformat'] = $dateformat;
@@ -944,10 +944,20 @@ class database extends Survey_Common_Action
             $oSurvey->printanswers = $this->_filterEmptyFields($oSurvey, 'printanswers');
             $oSurvey->publicstatistics = $this->_filterEmptyFields($oSurvey, 'publicstatistics');
             $oSurvey->autoredirect = $this->_filterEmptyFields($oSurvey, 'autoredirect');
-            $oSurvey->showxquestions = $this->_filterEmptyFields($oSurvey, 'showxquestions');
-            $oSurvey->showgroupinfo = $this->_filterEmptyFields($oSurvey, 'showgroupinfo');
-            $oSurvey->showqnumcode = $this->_filterEmptyFields($oSurvey, 'showqnumcode');
-            $oSurvey->shownoanswer = $this->_filterEmptyFields($oSurvey, 'shownoanswer');
+
+            // save into the database only if global settings are off
+            if (getGlobalSetting('showxquestions') === 'choose'){
+                $oSurvey->showxquestions = $this->_filterEmptyFields($oSurvey, 'showxquestions');
+            }
+            if (getGlobalSetting('showgroupinfo') === 'choose'){
+                $oSurvey->showgroupinfo = $this->_filterEmptyFields($oSurvey, 'showgroupinfo');
+            }
+            if (getGlobalSetting('showqnumcode') === 'choose'){
+                $oSurvey->showqnumcode = $this->_filterEmptyFields($oSurvey, 'showqnumcode');
+            }
+            if (getGlobalSetting('shownoanswer') == 2){  // Don't do exact comparison because the value could be from global settings table (string) or from config (integer)
+                $oSurvey->shownoanswer = $this->_filterEmptyFields($oSurvey, 'shownoanswer');
+            }
             $oSurvey->showwelcome = $this->_filterEmptyFields($oSurvey, 'showwelcome');
             $oSurvey->showsurveypolicynotice = $this->_filterEmptyFields($oSurvey, 'showsurveypolicynotice');
             $oSurvey->allowprev = $this->_filterEmptyFields($oSurvey, 'allowprev');
@@ -995,9 +1005,9 @@ class database extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         // Url params in json
-        $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams'), true);
-        SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyID));
-        if (!empty($aURLParams)) {
+        if (Yii::app()->request->getPost('allurlparams',false)!==false) {
+            $aURLParams = json_decode(Yii::app()->request->getPost('allurlparams'), true);
+            SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyID));
             foreach ($aURLParams as $aURLParam) {
                 $aURLParam['parameter'] = trim($aURLParam['parameter']);
                 if ($aURLParam['parameter'] == '' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $aURLParam['parameter']) || $aURLParam['parameter'] == 'sid' || $aURLParam['parameter'] == 'newtest' || $aURLParam['parameter'] == 'token' || $aURLParam['parameter'] == 'lang') {
@@ -1042,7 +1052,7 @@ class database extends Survey_Common_Action
                         'updated'=> $updatedFields,
                         'DEBUG' => ['POST'=>$_POST,
                                     'reloaded'=>$oSurvey->attributes,
-                                    'aURLParams' => $aURLParams,
+                                    'aURLParams' => isset($aURLParams) ? $aURLParams : '',
                                     'initial'=>isset($aOldAttributes) ? $aOldAttributes : '',
                                     'afterApply'=>isset($aAfterApplyAttributes) ? $aAfterApplyAttributes : '']
                     ],
@@ -1093,9 +1103,6 @@ class database extends Survey_Common_Action
                 $oSurvey->sid
             );
 
-            if (is_a($currentConfiguration, "TemplateConfiguration")) {
-                TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);
-            }
         }
         $oSurvey->template = $new_template;
 
@@ -1140,7 +1147,7 @@ class database extends Survey_Common_Action
         //This is SUPER important! Recalculating the Expression Manager state!
         LimeExpressionManager::SetDirtyFlag();
         $this->_resetEM();
-        
+
         // This will force the generation of the entry for survey group
         TemplateConfiguration::checkAndcreateSurveyConfig($iSurveyID);
 
@@ -1310,32 +1317,39 @@ class database extends Survey_Common_Action
                 if (Yii::app()->request->getPost('action') == 'copyquestion') {
                     /** @var Question $oOldQuestion */
                     $oldQID = returnGlobal('oldqid');
-                    if ($oldQID) {
-                        $oOldQuestion = Question::model()->findByPk(
-                            array(
-                                'qid' => $oldQID,
-                                'language' => $survey->language
-                            )
-                        );
-                    }
-                    if (returnGlobal('copysubquestions') == 1 && isset($oOldQuestion)) {
-                        $aSQIDMappings = [];
-                        foreach ($oOldQuestion->subquestions as $qr1) {
-                            $arQuestion = new Question();
-                            $arQuestion->attributes = $qr1->attributes;
-                            $arQuestion->parent_qid = $this->iQuestionID;
-                            $oldqid = '';
-                            if (isset($aSQIDMappings[$qr1->qid])) {
-                                $arQuestion->qid = $aSQIDMappings[$qr1->qid];
-                            } else {
-                                $oldqid = $qr1->qid;
-                                $arQuestion->qid = null;
+
+                    if (returnGlobal('copysubquestions') == 1) {
+                        $aSubquestionIds = array();
+                        if ($oldQID) {
+                            // get all survey languages
+                            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+                            foreach ($aLanguages as $sLanguageIndex => $sLanguage) {
+                                // create a Question model for each language
+                                $oOldQuestion = Question::model()->findByPk(
+                                    array(
+                                        'qid' => $oldQID,
+                                        'language' => $sLanguage
+                                    )
+                                );
+
+                                // subquestions
+                                foreach ($oOldQuestion->subquestions as $sSubquestionIndex => $qr1) {
+                                    $aInsertData = $qr1->attributes;
+                                    if ($sLanguageIndex == 0){ // main language
+                                        $aInsertData['qid'] = null;
+                                    } else {  // additional languages
+                                        $aInsertData['qid'] = $aSubquestionIds[$sSubquestionIndex]; // get qid from array
+                                    }
+
+                                    $aInsertData['parent_qid'] = $this->iQuestionID;
+                                    if (Question::model()->insertRecords($aInsertData)){
+                                        if ($sLanguageIndex == 0){ // main language
+                                            $aSubquestionIds[$sSubquestionIndex] = Yii::app()->db->getLastInsertID(); // save qid into the array
+                                        }
+                                    }
+                                }
                             }
 
-                            $arQuestion->gid = $this->iQuestionGroupID;
-                            if ($arQuestion->save()) {
-                                $aSQIDMappings[$oldqid] = $arQuestion->gid;
-                            }
                         }
                     }
                     if (returnGlobal('copyanswers') == 1) {
@@ -1350,6 +1364,18 @@ class database extends Survey_Common_Action
                                 'sortorder' => $qr1['sortorder'],
                                 'language' => $qr1['language'],
                                 'scale_id' => $qr1['scale_id']
+                            ));
+                        }
+                    }
+                    if (returnGlobal('copydefaultanswers') == 1) {
+                        $aDefaultAnswers = DefaultValue::model()->findAll("qid=:qid", array("qid"=>returnGlobal('oldqid')));
+                        foreach ($aDefaultAnswers as $qr1) {
+                            DefaultValue::model()->insertRecords(array(
+                                'qid' => $this->iQuestionID,
+                                'scale_id' => $qr1['scale_id'],
+                                'language' => $qr1['language'],
+                                'specialtype' => $qr1['specialtype'],
+                                'defaultvalue' => $qr1['defaultvalue']
                             ));
                         }
                     }
@@ -1461,11 +1487,12 @@ class database extends Survey_Common_Action
 
     private function _resetEM(){
         $oSurvey = Survey::model()->findByPk($this->iSurveyID);
-        LimeExpressionManager::SetDirtyFlag();
         $oEM =& LimeExpressionManager::singleton();
+        LimeExpressionManager::SetDirtyFlag(); // UpgradeConditionsToRelevance SetDirtyFlag too
         LimeExpressionManager::UpgradeConditionsToRelevance($this->iSurveyID);
+        LimeExpressionManager::SetPreviewMode('database');// Deactivate _UpdateValuesInDatabase
         LimeExpressionManager::StartSurvey($oSurvey->sid,'survey',$oSurvey->attributes,true);
-        LimeExpressionManager::StartProcessingPage(true,true); 
+        LimeExpressionManager::StartProcessingPage(true,true);
         $aGrouplist = QuestionGroup::model()->getGroups($this->iSurveyID);
         foreach ($aGrouplist as $iGID => $aGroup) {
             LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $this->iSurveyID);

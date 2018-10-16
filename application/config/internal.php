@@ -62,7 +62,22 @@ $internalConfig = array(
         // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
     ),
 
+    /*
+
+
+    here you can load the different modules
+    more about YII modules :
+    https://www.yiiframework.com/doc/guide/1.1/en/basics.module
+
+
+
+
     'modules'=>array(
+            'yourmodule'=array(
+            'class' => 'Use a yii Alias',
+
+        )
+
             'gii'=>array(
                 'class'=>'system.gii.GiiModule',
                 'password'=>'toto',
@@ -70,6 +85,10 @@ $internalConfig = array(
                     'newDirMode'=>0777,
             ),
         ),
+
+
+
+    */
 
     'params'=>array(
         'defaultPageSize'=>10, // Default page size for most of the grids
@@ -130,6 +149,7 @@ $internalConfig = array(
             'class'=>'LSHttpRequest',
             'enableCsrfValidation'=>true, // CSRF protection
             'enableCookieValidation'=>false, // Enable to activate cookie protection
+            'noCsrfValidationParams'=>array(),
             'noCsrfValidationRoutes'=>array(
                 'remotecontrol',
                 'plugins/unsecure',
@@ -147,6 +167,7 @@ $internalConfig = array(
                 'vardump' => array(
                     'class' => 'CWebLogRoute',
                     'categories' => 'vardump', // tracevar function
+                    'enabled' => isset($userConfig['config']['debug']) && $userConfig['config']['debug'] >= 1,
                 ),
                 'profile' => array(
                     'class' => 'CProfileLogRoute'
@@ -210,10 +231,11 @@ $internalConfig = array(
                 'html' => 'CHtml'
             ),
             'functions' => array(
-                'flatEllipsizeText'       => 'viewHelper::flatEllipsizeText',
                 'getLanguageData'         => 'viewHelper::getLanguageData',
                 'array_flip'              => 'array_flip',
                 'array_intersect_key'     => 'array_intersect_key',
+
+                /* clientScript */
                 'registerPublicCssFile'   => 'LS_Twig_Extension::registerPublicCssFile',
                 'registerTemplateCssFile' => 'LS_Twig_Extension::registerTemplateCssFile',
                 'registerGeneralScript'   => 'LS_Twig_Extension::registerGeneralScript',
@@ -227,17 +249,26 @@ $internalConfig = array(
                 'unregisterScriptForAjax' => 'LS_Twig_Extension::unregisterScriptForAjax',
                 'listCoreScripts'         => 'LS_Twig_Extension::listCoreScripts',
                 'listScriptFiles'         => 'LS_Twig_Extension::listScriptFiles',
+                /* String management */
+                'processString'           => 'LS_Twig_Extension::processString',
+                'flatString'              => 'LS_Twig_Extension::flatString',
+                'ellipsizeString'         => 'LS_Twig_Extension::ellipsizeString',
+                'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText',
+                'str_replace'             => 'str_replace',
+                'getConfig'               => 'LS_Twig_Extension::getConfig',
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
-                'count'                   => 'count',
+                'count'                   => 'LS_Twig_Extension::safecount',
                 'reset'                   => 'reset',
+                'in_array'                => 'in_array',
+                'in_multiarray'           => 'LS_Twig_Extension::in_multiarray',
+                'array_search'            => 'array_search',
                 'renderCaptcha'           => 'LS_Twig_Extension::renderCaptcha',
                 'getPost'                 => 'LS_Twig_Extension::getPost',
                 'getParam'                => 'LS_Twig_Extension::getParam',
                 'getQuery'                => 'LS_Twig_Extension::getQuery',
                 'isset'                   => 'isset',
-                'str_replace'             => 'str_replace',
                 'assetPublish'            => 'LS_Twig_Extension::assetPublish',
                 'image'                   => 'LS_Twig_Extension::image',
                 'imageSrc'                => 'LS_Twig_Extension::imageSrc',
@@ -247,6 +278,15 @@ $internalConfig = array(
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',
+                'getLanguageNameFromCode' => 'getLanguageNameFromCode',
+                'checkconditionFunction'  => 'checkconditionFunction',
+                'doRender'                => 'doRender',
+                'flattenText'             => 'flattenText',
+                'getEditor'               => 'getEditor',
+                'darkencss'               => 'LS_Twig_Extension::darkencss',
+                'lightencss'              => 'LS_Twig_Extension::lightencss',
+                'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
+                'getAllAnswers'           => 'LS_Twig_Extension::getAllAnswers',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -256,9 +296,31 @@ $internalConfig = array(
 
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set', 'autoescape', 'block', 'embed', 'use', 'include', 'macro', 'import'),
-                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys', 'date', 'format','nl2br','split','trim','json_encode'),
+                'filters' => array(
+                    'escape',
+                    'raw',
+                    't',
+                    'merge',
+                    'length',
+                    'gT',
+                    'keys',
+                    'date',
+                    'format',
+                    'nl2br',
+                    'split',
+                    'trim',
+                    'json_encode',
+                    'replace',
+                    'last',
+                    'first',
+                    'capitalize',
+                    'lower',
+                    'upper',
+                    'strip_tags',
+                    'number_format',
+                ),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield"),
+                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut")
@@ -271,7 +333,69 @@ $internalConfig = array(
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'registerPackage', 'unregisterPackage', 'registerCssFile', 'registerScriptFile', 'unregisterScriptFile', 'unregisterScriptForAjax', 'listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses', 'intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost', 'getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'imageSrc', 'sprintf', 'gT', 'ngT', 'createUrl', 'json_decode', 'json_encode'),
+                'functions' => array(
+                    'getLanguageData',
+                    'array_flip',
+                    'array_intersect_key',
+
+                    'registerPublicCssFile',
+                    'registerTemplateCssFile',
+                    'registerGeneralScript',
+                    'registerTemplateScript',
+                    'registerScript',
+                    'registerPackage',
+                    'unregisterPackage',
+                    'registerCssFile',
+                    'registerScriptFile',
+                    'unregisterScriptFile',
+                    'unregisterScriptForAjax',
+                    'listCoreScripts',
+                    'listScriptFiles',
+                    'processString',
+
+                    'flatEllipsizeText',
+                    'flatString',
+                    'ellipsizeString',
+                    'flatEllipsizeText',
+                    'str_replace',
+                    'getConfig',
+                    'getAllQuestionClasses',
+                    'intval',
+                    'empty',
+                    'count',
+                    'reset',
+                    'in_array',
+                    'array_search',
+                    'in_multiarray',
+                    'renderCaptcha',
+                    'getPost',
+                    'getParam',
+                    'getQuery',
+                    'isset',
+                    'assetPublish',
+                    'image',
+                    'imageSrc',
+                    'sprintf',
+                    'gT',
+                    'ngT',
+                    'createUrl',
+                    'json_decode',
+                    'json_encode',
+                    'strip_tags',
+                    /* Not in twigRenderer[functions] */
+                    'include',
+                    'dump',
+                    'getLanguageNameFromCode',
+                    'checkconditionFunction',
+                    'doRender',
+                    'flattenText',
+                    'range',
+                    'getEditor',
+                    'darkencss',
+                    'lightencss',
+                    'getAllTokenAnswers',
+                    'getAllAnswers',
+                ),
             ),
 
         ),

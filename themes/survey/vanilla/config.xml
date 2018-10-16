@@ -23,15 +23,31 @@
         <version>3.0</version>
         <apiVersion>3</apiVersion>
         <description><![CDATA[<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.]]></description>
-        <last_update>2017-10-16 17:21:00</last_update>
+        <last_update>2018-04-11 17:00:00</last_update>
     </metadata>
 
     <!--
         Here the list of the css/js files to add to the template package.
         About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
+
+        NOTE: The "add" tag also count as a "replace" tag.
+              Eg: You can't just "add" a file in the extended theme with the same name as a file here. It will always "replace" it. You must use a diffrent file name.
+              Eg: Vanilla manifest already has "<add>css/theme.css</add>". So if you use "<add>css/theme.css</add>" in an extended theme, it will replace the vanilla css/theme.css
+
+        NOTE: If an extended theme, if you don't change a file that is defined here, you don't need to add it again.
+              Eg: css/ajaxify.css is already added in vanilla. Nor fruity nor bootswatch modify it, so ne need to add / replace it in fruity or bootswatch.
+                  Even if no mention at all about  "css/ajaxify.css" is theme extending vanilla, it will still be added because it's added here
+
+        NOTE: To easy test changes in config file, you can force the use of the XML file rather than DB. To do so, turn debug mode on, and in config.php config array, on bottom of debug mode, add:
+              'force_xmlsettings_for_survey_rendering' => true,
+
+              Then, you will not need anymore to reset your theme each time you change the config file.
+              But, once turning the setting off, You will still must reset the theme to the changes are pushed to DB 
+
     -->
     <files>
         <css>
+            <add>css/base.css</add>
             <add>css/ajaxify.css</add>
             <add>css/theme.css</add>
             <add>css/custom.css</add>
@@ -51,11 +67,13 @@
     <options>
         <ajaxmode>on</ajaxmode>
         <animatebody>off</animatebody>
+        <hideprivacyinfo>off</hideprivacyinfo>
         <container>on</container>
         <bodyanimation>fadeInRight</bodyanimation>
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
         <font>noto</font>
+        <showpopups>1</showpopups>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
@@ -87,6 +105,7 @@
             <screens>
                 <question>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
                     <file type="view" role="subview">./subviews/survey/group.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_container.twig</file>
@@ -107,8 +126,10 @@
 
                 <surveylist>
                     <file type="view" role="layout">layout_survey_list.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_form.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -117,6 +138,7 @@
 
                 <welcome>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/firstpage.twig</file>
@@ -128,7 +150,7 @@
                     <file type="view" role="subview">./subviews/messages/warnings.twig</file>
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
-                    <file type="view" role="subview">./subviews/navigation/language_changer_first_page.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -137,6 +159,7 @@
 
                 <completed>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/submit.twig</file>
@@ -148,6 +171,7 @@
 
                 <assessments>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/submit.twig</file>
@@ -160,10 +184,12 @@
 
                 <error>
                     <file type="view" role="layout">layout_errors.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                 </error>
 
                 <clearall>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/clearall.twig</file>
@@ -175,6 +201,7 @@
 
                 <load>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/load.twig</file>
@@ -186,6 +213,7 @@
 
                 <save>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/save.twig</file>
@@ -197,11 +225,13 @@
 
                 <register>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/register.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_error.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_head.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_message.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_success.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_form.twig</file>
                     <file type="view" role="subview">./subviews/registration/required.twig</file>
                 </register>
 
@@ -219,13 +249,21 @@
 
                 <navigation>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
                     <file type="view" role="subview">./subviews/navigation/ajax_indicator.twig</file>
                     <file type="view" role="subview">./subviews/navigation/clearall_links.twig</file>
-                    <file type="view" role="subview">./subviews/navigation/language_changer_top_menu.twig</file>
-                    <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
-                    <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
                     <file type="view" role="subview">./subviews/navigation/save_links.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_top_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator_complement.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/clearall_buttons.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/save_buttons.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_buttons.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_questions_buttons.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_groups_buttons.twig</file>
                 </navigation>
 
             </screens>

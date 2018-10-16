@@ -32,8 +32,8 @@
     <li class="{{ aSurveyInfo.class.lctli }} dropdown" {{ aSurveyInfo.attr.lctli }} >
         <a class="{{ aSurveyInfo.class.lctla }} dropdown-toggle animate" {{ aSurveyInfo.attr.lctla }} >
 
-            {# NOTE:  {{ aLCD.aListLang[aLCD.sSelected] | t }}: retreives the language name of the selected language and translates it #}
-            {{ "Language:" | t }} {{ aLCD.aListLang[aLCD.sSelected] | t }}
+            {# NOTE:  {{gT( aLCD.aListLang[aLCD.sSelected] )}}: retreives the language name of the selected language and translates it #}
+            {{ gT("Language:") }} {{ aLCD.aListLang[aLCD.sSelected] }}
             <span class="{{ aSurveyInfo.class.lctspan }} caret" {{ aSurveyInfo.attr.lctspan }} ></span>
         </a>
 
@@ -42,7 +42,7 @@
             {% for value, lang in aLCD.aListLang %}
                 <li class="{{ aSurveyInfo.class.lctdropdownli }}" {{ aSurveyInfo.attr.lctdropdownli }}>
                     <a href='#' data-limesurvey-lang='{{ value }}' class="{{ aSurveyInfo.class.lctdropdownlia }} animate" {{ aSurveyInfo.attr.lctdropdownlia }}>
-                        {{ lang | t }}
+                        {{gT( lang )}}
                     </a>
                 </li>
             {% endfor %}
@@ -51,5 +51,5 @@
 
 {% endif %}
 
-{{ registerScript("BasicThemeScripts-TopLanguageChanger", "basicThemeScripts.initTopMenuLanguageChanger('." ~ aSurveyInfo.class.lctdropdownlia ~ "', 'form#limesurvey'); ", POS_READY) }}
+{{ registerScript("BasicThemeScripts-TopLanguageChanger", "basicThemeScripts.initTopMenuLanguageChanger('." ~ aSurveyInfo.class.lctdropdownlia ~ "', 'form#limesurvey'); ", "POS_POSTSCRIPT") }}
 

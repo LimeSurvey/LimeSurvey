@@ -5,7 +5,7 @@
 
 /* Note: The child selector is necessary to not affect date time picker */
  #responses-grid > table > thead > tr > th {
-     min-width: 120px;
+     min-width: 125px;
      text-align: center;
  }
 

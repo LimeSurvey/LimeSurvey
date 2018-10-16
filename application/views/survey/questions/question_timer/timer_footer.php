@@ -14,13 +14,8 @@
  * @var $time_limit_warning_2_display_time
  * @var $disable
  */
+Yii::app()->getClientScript()->registerScript("TimerQuestion".$iQid, "
+    countdown($iQid, $time_limit, $time_limit_action, $time_limit_warning, $time_limit_warning_2, $time_limit_warning_display_time, $time_limit_warning_2_display_time, '$disable');
+", LSYii_ClientScript::POS_POSTSCRIPT);
 ?>
-    <!-- Call the countdown script -->
-    <script type='text/javascript'>
-        $(document).on('ready pjax:scriptcomplete', function()
-        {
-            countdown(<?php echo $iQid; ?>, <?php echo $time_limit; ?>, <?php echo $time_limit_action; ?>, <?php echo $time_limit_warning; ?>, <?php echo $time_limit_warning_2; ?>, <?php echo $time_limit_warning_display_time; ?>, <?php echo $time_limit_warning_2_display_time; ?>, '<?php echo $disable; ?>');
-        });
-    </script>
-
 </div>

@@ -479,7 +479,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable = null)
     global $thissurvey;
 
     Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js', CClientScript::POS_BEGIN);
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'timer.js', CClientScript::POS_BEGIN);
+    Yii::app()->getClientScript()->registerPackage('timer-addition');
 
     $langTimer = array(
         'hours'=>gT("hours"),
@@ -743,6 +743,7 @@ function do_boilerplate($ia)
 
     $answer .= doRender('/survey/questions/answer/boilerplate/answer', array(
         'ia'=>$ia,
+        'name'=>$ia[1],
         'basename'=>$ia[1], /* is this needed ? */
         'coreClass'=>'ls-answers hidden',
         ), true);
@@ -864,6 +865,16 @@ function do_date($ia)
     alertInvalidDate: '" . gT('Date entered is invalid!', 'js')."',
     };";
 
+    $dateparts = [
+        'year' => gT('Year'),
+        'month' => gT('Month'),
+        'day' => gT('Day'),
+        'hour' => gT('Hour'),
+        'minute' => gT('Minute'),
+        'second' => gT('Second'),
+        'millisecond' => gT('Millisecond')
+    ];
+
     App()->getClientScript()->registerScript("sDateLangvarJS", $sDateLangvarJS, CClientScript::POS_BEGIN);
     App()->getClientScript()->registerPackage('moment');
     App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
@@ -914,18 +925,17 @@ function do_date($ia)
             $datetimeobj   = new Date_Time_Converter($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]], "Y-m-d H:i:s");
             $currentyear   = $datetimeobj->years;
             $currentmonth  = $datetimeobj->months;
-            $currentdate   = $datetimeobj->days;
+            $currentday   = $datetimeobj->days;
             $currenthour   = $datetimeobj->hours;
             $currentminute = $datetimeobj->minutes;
         } else {
             // If date is invalid get the POSTED value
-            $currentdate   = App()->request->getPost("day{$ia[1]}", '');
+            $currentday   = App()->request->getPost("day{$ia[1]}", '');
             $currentmonth  = App()->request->getPost("month{$ia[1]}", '');
             $currentyear   = App()->request->getPost("year{$ia[1]}", '');
             $currenthour   = App()->request->getPost("hour{$ia[1]}", '');
             $currentminute = App()->request->getPost("minute{$ia[1]}", '');
         }
-
         $dateorder = preg_split('/([-\.\/ :])/', $dateformatdetails['phpdate'], -1, PREG_SPLIT_DELIM_CAPTURE);
 
         $sRows = '';
@@ -935,7 +945,7 @@ function do_date($ia)
                 // Show day select box
                 case 'j':
                 case 'd':
-                    $sRows .= doRender('/survey/questions/answer/date/dropdown/rows/day', array('dayId'=>$ia[1], 'currentdate'=>$currentdate), true);
+                    $sRows .= doRender('/survey/questions/answer/date/dropdown/rows/day', array('dayId'=>$ia[1], 'currentday'=>$currentday), true);
                     break;
                     // Show month select box
                 case 'n':
@@ -1075,28 +1085,10 @@ function do_date($ia)
         $hideCalendar = strpos($dateformatdetails['jsdate'], 'Y') === false
         && strpos($dateformatdetails['jsdate'], 'D') === false
         && strpos($dateformatdetails['jsdate'], 'M') === false;
-
-        // HTML for date question using datepicker
-        $answer = doRender('/survey/questions/answer/date/selector/answer', array(
-            'name'                   => $ia[1],
-            'basename'               => $ia[1],
-            'coreClass'              => $coreClass,
-            'iLength'                => $iLength,
-            'mindate'                => $mindate,
-            'maxdate'                => $maxdate,
-            'dateformatdetails'      => $dateformatdetails['dateformat'],
-            'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
-            'goodchars'              => "", // "return goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
-            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-            'language'               => App()->language,
-            'hidetip'                => trim($aQuestionAttributes['hide_tip']) == 0,
-            'dateoutput'             => $dateoutput,
-            'qid'                    => $ia[0],
-            'hideCalendar'           => $hideCalendar
-            ), true);
-        if (!App()->getClientScript()->isScriptRegistered("setDatePickerGlobalOption")) {
+        /* Global datepicker configuration, muts be done before view (and twig from template can extend it then :) */
+        if (!App()->getClientScript()->isScriptRegistered("setDatePickerGlobalOption", LSYii_ClientScript::POS_POSTSCRIPT)) {
             App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
-            /* Global datepicker configuration */
+            
             $aDefaultDatePicker = array(
                 'locale'=>convertLStoDateTimePickerLocale(App()->language),
                 'tooltips' => array(
@@ -1131,6 +1123,26 @@ function do_date($ia)
             );
             App()->getClientScript()->registerScript("setDatePickerGlobalOption", "$.extend( $.fn.datetimepicker.defaults, ".json_encode($aDefaultDatePicker)." )", LSYii_ClientScript::POS_POSTSCRIPT);
         }
+        // HTML for date question using datepicker
+        $answer = doRender('/survey/questions/answer/date/selector/answer', array(
+            'name'                   => $ia[1],
+            'basename'               => $ia[1],
+            'coreClass'              => $coreClass,
+            'iLength'                => $iLength,
+            'mindate'                => $mindate,
+            'maxdate'                => $maxdate,
+            'dateformatdetails'      => $dateformatdetails['dateformat'],
+            'dateformatdetailsjs'    => $dateformatdetails['jsdate'],
+            'dateformatdetailsphp'   => $dateformatdetails['phpdate'],
+            'minuteStep'             => $aQuestionAttributes['dropdown_dates_minute_step'],
+            'goodchars'              => "", // "return window.LS.goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
+            'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
+            'language'               => App()->language,
+            'hidetip'                => trim($aQuestionAttributes['hide_tip']) == 0,
+            'dateoutput'             => $dateoutput,
+            'qid'                    => $ia[0],
+            'hideCalendar'           => $hideCalendar
+            ), true);
         App()->getClientScript()->registerScript('doPopupDate'.$ia[0], "doPopupDate({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
     }
     $inputnames[] = $ia[1];
@@ -2119,7 +2131,7 @@ function do_multiplechoice_withcomments($ia)
 /* old system or imported */
         $attributeLabelWidth = null;
     }
-    if (!$attributeInputContainerWidth !== null && !$attributeLabelWidth !== null) {
+    if ($attributeInputContainerWidth === null && $attributeLabelWidth === null) {
         $sInputContainerWidth = 8;
         $sLabelWidth = 4;
     } else {
@@ -2588,7 +2600,6 @@ function do_multiplenumeric($ia)
     $prefixclass = "numeric";
     $sliders = 0;
     $slider_position = '';
-    $sliderWidth = 12;
     $slider_default_set = false;
     
     if ($aQuestionAttributes['slider_layout'] == 1) {
@@ -2678,6 +2689,7 @@ function do_multiplenumeric($ia)
         $answer = doRender('/survey/questions/answer/multiplenumeric/empty', array(), true);
     } else {
         foreach ($aSubquestions as $ansrow) {
+            $sliderWidth = 12; /* reset sliderWidth for each row : left and right can be different for each #14127 */
             $labelText = $ansrow['question'];
             $myfname   = $ia[1].$ansrow['title'];
 
@@ -2692,6 +2704,7 @@ function do_multiplenumeric($ia)
                     $labelText   = $theanswer;
                     $sliderleft  = (isset($aAnswer[1])) ? $aAnswer[1] : null;
                     $sliderright = (isset($aAnswer[2])) ? $aAnswer[2] : null;
+
                     /* sliderleft and sliderright is in input, but is part of answers then take label width */
                     if (!empty($sliderleft)) {
                         $sliderWidth = 10;
@@ -3078,8 +3091,8 @@ function do_shortfreetext($ia)
             if (!isset($currentLatLong) || $currentLatLong == false) {
                 $floatLat = 0;
                 $floatLng = 0;
-                $LatLong  = explode(" ", trim($aQuestionAttributes['location_defaultcoordinates']));
-
+                $sDefaultcoordinates=trim(LimeExpressionManager::ProcessString($aQuestionAttributes['location_defaultcoordinates'], $ia[0], array(), 3, 1, false, false, true));/* static var is the last one */
+                $LatLong = explode(" ", $sDefaultcoordinates);
                 if (isset($LatLong[0]) && isset($LatLong[1])) {
                     $floatLat = $LatLong[0];
                     $floatLng = $LatLong[1];
@@ -3124,7 +3137,7 @@ function do_shortfreetext($ia)
             'coreClass'              => $coreClass,
             'freeTextId'             => 'answer'.$ia[1],
             'name'                   => $ia[1],
-            'qid'=>$ia[0],
+            'qid'                    => $ia[0],
             'basename'               => $ia[1],
             'checkconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
             'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
@@ -3144,7 +3157,6 @@ function do_shortfreetext($ia)
         $coreClass       = "ls-answers map-item geoloc-item";
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentCenter   = $currentLatLong = null;
-
         // Get the latitude/longtitude for the point that needs to be displayed by default
         if (strlen($currentLocation) > 2 && strpos($currentLocation, ";")) {
             $currentLatLong = explode(';', $currentLocation);
@@ -3156,7 +3168,8 @@ function do_shortfreetext($ia)
         // If it's not set : set the center to the default position, but don't set the marker
         if (!$currentLatLong) {
             $currentLatLong = array("", "");
-            $currentCenter = explode(" ", trim($aQuestionAttributes['location_defaultcoordinates']));
+            $sDefaultcoordinates=trim(LimeExpressionManager::ProcessString($aQuestionAttributes['location_defaultcoordinates'], $ia[0], array(), 3, 1, false, false, true));/* static var is the last one */
+            $currentCenter = explode(" ", $sDefaultcoordinates);
             if (count($currentCenter) != 2) {
                 $currentCenter = array("", "");
             }
@@ -4646,7 +4659,6 @@ function do_array_texts($ia)
             } else {
                 $radix = 'X'; // to indicate that should not try to change entered values
             }
-            Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-totalsum.js");
         }
 
         $answer = doRender('/survey/questions/answer/arrays/texts/answer', array(
@@ -5542,9 +5554,10 @@ function do_array_dual($ia)
         $answer = "<p class='error'>".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames = "";
     }
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js", CClientScript::POS_BEGIN);
+    if(!Yii::app()->getClientScript()->isScriptFileRegistered(Yii::app()->getConfig('generalscripts')."dualscale.js", LSYii_ClientScript::POS_BEGIN)) {
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js", LSYii_ClientScript::POS_BEGIN);
+    }
     Yii::app()->getClientScript()->registerScript('doDualScaleFunction'.$ia[0], "{$doDualScaleFunction}({$ia[0]});", LSYii_ClientScript::POS_POSTSCRIPT);
-
     return array($answer, $inputnames);
 }
 

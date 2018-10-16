@@ -20,29 +20,31 @@ class Expressions extends Survey_Common_Action
     {
         $aData = array();
         $needpermission = false;
-
+        
         $iSurveyID = sanitize_int(Yii::app()->request->getQuery('surveyid', false));
         if (!$iSurveyID) {
             $iSurveyID = sanitize_int(Yii::app()->request->getQuery('sid'));
         }
         
         $aData['sa'] = $sa = sanitize_paranoid_string(Yii::app()->request->getQuery('sa', 'index'));
-
+        
         $aData['fullpagebar']['closebutton']['url'] = 'admin/'; // Close button
-
+        
         if (($aData['sa'] == 'survey_logic_file' || $aData['sa'] == 'navigation_test') && $iSurveyID) {
             $needpermission = true;
         }
-
+        
         if ($needpermission && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         } else {
+            
+            
             App()->getClientScript()->registerPackage('jqueryui');
+            
             App()->getClientScript()->registerPackage('decimal');
-
             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'survey_runtime.js');
             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'/expressions/em_javascript.js');
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
@@ -113,7 +115,7 @@ class Expressions extends Survey_Common_Action
 
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$sid;
 
-        if ($gid !== null) {
+        if ($gid !== null && $qid === null) {
             $gid = sanitize_int($gid);
             $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$sid.'/gid/'.$gid;
             $aData['gid'] = $gid;

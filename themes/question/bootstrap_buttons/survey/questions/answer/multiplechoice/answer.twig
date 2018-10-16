@@ -1,0 +1,46 @@
+{# 
+/**
+ * Multiple Choice question item Html
+ *
+ * @var $sRows      : the rows, generated with the views rows/answer_row*.php
+ *
+ * @var $name
+ * @var $anscount
+ */
+ #}
+<!-- Multiple Choice -->
+
+<!-- answer -->
+
+<input type="hidden" name="MULTI{{name}}" value="{{anscount}}" />
+<div class="{{coreClass}} row" role="group" aria-labelledby="ls-question-text-{{basename}}">
+    <ul class="list-unstyled form-inline btn-group col-sm-12" data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{basename }}">
+        {% for aRow in aRows %}
+            {% if loop.index0 is divisible by(iMaxRowsByColumn) and loop.index0 != 0  %}
+                </ul>
+                <ul class="list-unstyled col-xs-12 col-sm-{{iColumnWidth}}">
+            {% endif %}
+            {% set aRow = aRow|merge({'button_size': question_template_attribute.button_size}) %}
+            {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
+            {% include rowTemplate with aRow only %}
+
+        {% endfor %}
+    </ul>
+
+</div>
+<!-- comment -->
+<div class="row {{ extraclass }} col-sm-4 hide" id="{{ name }}other-div">
+        <div class="form-group text-item other-text-item">
+            {{ gT('Other:') }}
+            <input
+                class="form-control input-sm {{kpclass}} bootstrap-other-input"
+                type="text"
+                name="{{name}}other"
+                id="answer{{name}}other"
+                value="{{sValue}}"
+                aria-labelledby="label-{{myfname}}-other"
+                data-name="{{ name }}other"
+            />
+        </div>
+</div>
+<!-- end of answer -->

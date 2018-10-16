@@ -231,6 +231,7 @@ class UserGroup extends LSActiveRecord
      * @param integer $ugId
      * @param integer $ownerId
      * @return bool
+     * @deprecated since 2018-04-21 use $this->delete and do the permissions check in controller!!
      */
     public function deleteGroup($ugId, $ownerId)
     {
@@ -246,10 +247,23 @@ class UserGroup extends LSActiveRecord
         $group->delete();
 
         if ($group->getErrors()) {
-                    return false;
+            return false;
         } else {
-                    return true;
+            return true;
         }
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete()
+    {
+        if (parent::delete()) {
+            UserInGroup::model()->deleteAllByAttributes(['ugid'=>$this->primaryKey]);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -298,14 +312,14 @@ class UserGroup extends LSActiveRecord
                 'value'=> '$data->countUsers',
                 'htmlOptions' => array('class' => 'col-md-1'),
             ),
-            
+
             array(
                 'header'=>'',
                 'name'=>'actions',
                 'type'=>'raw',
                 'value'=>'',
                 'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
-            ),                            
+            ),
 
         );
     }
@@ -344,9 +358,9 @@ class UserGroup extends LSActiveRecord
      * This function search usergroups for a user
      * If $isMine = true then usergroups are those that have been created by the current user
      * else this function provides usergroups which contain the current user
-     * 
+     *
      * The object \CActiveDataProvider returned is used to generate the view in application/views/admin/usergroup/usergroups_view.php
-     * 
+     *
      * @param bool $isMine
      * @return \CActiveDataProvider
      */
@@ -399,7 +413,7 @@ class UserGroup extends LSActiveRecord
                 $criteria->addCondition("t.ugid IN (SELECT ugid FROM $user_in_groups_table WHERE ".$user_in_groups_table.".uid = ".App()->user->getId().")", "AND");
             }
         }
-        
+
         $dataProvider = new CActiveDataProvider('UserGroup', array(
             'sort'=>$sort,
             'criteria'=>$criteria,
@@ -429,5 +443,5 @@ class UserGroup extends LSActiveRecord
         }
         return false;
     }
-      
+
 }

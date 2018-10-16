@@ -1,13 +1,13 @@
-    <label class=" control-label" for="datepickerInputField_[<?php echo $name; ?>]"><?php echo $defaultname; ?></label>
+    <label class=" control-label" for="datepickerInputField_[<?=CHtml::encode($name)?>]"><?php echo $defaultname; ?></label>
     <div>
         <div class=''>
-        <input class="form-control" name="datepickerInputField_<?php echo $name; ?>" id="datepickerInputField_<?php echo $name; ?>" type="text" value="<?php echo $value; ?>">
-        <input name="Attributes[<?php echo $name; ?>]" id="Attributes_<?php echo $name; ?>" type="hidden" value="<?php echo $value; ?>">
+        <input class="form-control" name="datepickerInputField_<?=CHtml::encode($name)?>" id="datepickerInputField_<?=CHtml::encode($name)?>" type="text" value="<?=CHtml::encode($value)?>">
+        <input name="Attributes[<?=CHtml::encode($name)?>]" id="Attributes_<?=CHtml::encode($name)?>" type="hidden" value="<?=CHtml::encode($value)?>">
             <script type="text/javascript">
                 $(function () {
-                    $('#datepickerInputField_<?php echo $name; ?>').datetimepicker(datepickerConfig.initDatePickerObject);
-                    $('#datepickerInputField_<?php echo $name; ?>').on("dp.change", function(e){
-                        $("#Attributes_<?php echo $name; ?>").val(e.date.format(datepickerConfig.dateformatdetailsjs));
+                    $('#datepickerInputField_<?=CHtml::encode($name)?>').datetimepicker(datepickerConfig.initDatePickerObject);
+                    $('#datepickerInputField_<?=CHtml::encode($name)?>').on("dp.change", function(e){
+                        $("#Attributes_<?=CHtml::encode($name)?>").val(e.date.format(datepickerConfig.dateformatdetailsjs));
                     })
                 });
             </script>

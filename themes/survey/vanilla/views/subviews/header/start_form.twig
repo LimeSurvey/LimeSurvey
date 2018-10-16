@@ -53,7 +53,13 @@
 }}
 
 <!-- Ajax value -->
-<input type='hidden' name='ajax' value='{{ aSurveyInfo.options.ajaxmode }}' id='ajax' />
+<!-- Needs to be set by javascript! Because if JavaScript is disabled, ajaxmode will completely fail! -->
+{{
+    registerScript("AJAXACTIVATE", "
+    $('#limesurvey').append('<input type=\"hidden\" name=\"ajax\" value=\"" ~ aSurveyInfo.options.ajaxmode ~ "\" id=\"ajax\" />');
+    ", "POS_POSTSCRIPT")
+}}
+
 
 <!-- Field Names -->
 <input type='hidden' name='fieldnames' value='{{ aSurveyInfo.hiddenfieldnames }}' id='fieldnames' />
@@ -62,4 +68,4 @@
 {{ aSurveyInfo.hiddenInputs }}
 
 <!-- Submit button -->
-<button type="submit" id="defaultbtn" value="default" name="move" class="submit hidden" style="display:none">{{'default'|t}}</button>
+<button type="submit" id="defaultbtn" value="default" name="move" class="submit hidden" style="display:none">{{gT('default')}}</button>

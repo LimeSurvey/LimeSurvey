@@ -17,7 +17,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'iconClasses' => 'text-danger fa fa-trash',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
-            'on-success'  => "(function(result) { LS.ajaxHelperOnSuccess(result); })",
+            'on-success'  => "(function(result) { LS.AjaxHelper.onSuccess(result); })",
 
             // Modal
             'actionType'    => 'modal',
@@ -44,6 +44,23 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
         // Separator
         array('type'  => 'separator'),
 
+        // Mass Edit
+        array(
+            'type' => 'action',
+            'action' => 'batchEdit',
+            'url' => App()->createUrl('/admin/participants/sa/batchEdit/'),
+            'iconClasses' => 'fa fa-pencil',
+            'text' => gT('Batch edit'),
+            'grid-reload' => 'yes',
+            //modal
+            'actionType' => 'modal',
+            'modalType'     => 'yes-no',
+            'keepopen'      => 'yes',
+            'yes'           => gT('Apply'),
+            'no'            => gT('Cancel'),
+            'sModalTitle'   => gT('Batch edit the participants'),
+            'htmlModalBody' => $this->renderPartial('./participants/massive_actions/_update', [], true)
+        ),
         // Export
         array(
             'type' => 'action',

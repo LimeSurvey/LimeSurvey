@@ -5,11 +5,11 @@
         <div class="row">
             <div class="col-md-4 text-right">
             {% if subquestion.answervalue is sameas("I") %}
-                {{ "Increase" | t }} <i class="fa fa-plus"></i>
+                {{ gT("Increase") }} <i class="fa fa-plus"></i>
             {% elseif subquestion.answervalue is sameas("S") %}
-                {{ "Same" | t }} <i class="fa fa-circle"></i>
+                {{ gT("Same") }} <i class="fa fa-circle"></i>
             {% elseif subquestion.answervalue is sameas("D") %}
-                {{ "Decrease" | t }} <i class="fa fa-minus"></i>
+                {{ gT("Decrease") }} <i class="fa fa-minus"></i>
             {% else %}
 
             {% endif %}

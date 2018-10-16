@@ -28,7 +28,7 @@ class printablesurvey extends Survey_Common_Action
      * Show printable survey
      * @param string $lang
      */
-    function index($surveyid, $lang = null)
+    function index($surveyid, $lang = null, $bReturn = false)
     {
         $surveyid = sanitize_int($surveyid);
         $oSurvey = Survey::model()->findByPk($surveyid);
@@ -132,6 +132,7 @@ class printablesurvey extends Survey_Common_Action
                 'sitename' => Yii::app()->getConfig("sitename"),
                 'therearexquestions' => 0,
                 'submit_text' => gT("Submit Your Survey."),
+                'end' => $end,
                 'submit_by' => $surveyexpirydate,
                 'thanks' => gT("Thank you for completing this survey."),
                 'privacy' => '',
@@ -1305,7 +1306,7 @@ class printablesurvey extends Survey_Common_Action
             // Previous version of PHP needs two regular expressions to do the same thing and thus will run a bit slower.
             $server_is_newer = version_compare(PHP_VERSION, '5.1.0', '>');
             $rounds = 0;
-            Yii::app()->twigRenderer->renderTemplateFromFile('layout_print.twig', ['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray], false);
+            return Yii::app()->twigRenderer->renderTemplateFromFile('layout_print.twig', ['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray], $bReturn);
             // die(print_r(['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray], true));
             // echo self::_populate_template($oTemplate, 'survey', ['aSurveyInfo' => $aSurveyInfo, 'print' => $printarray]);
         }// End print
@@ -1427,16 +1428,17 @@ class printablesurvey extends Survey_Common_Action
         if (intval($labelBaseWidth) < 1 || intval($labelBaseWidth) > 12) {
             $labelBaseWidth = null;
         }
+        
         if (!$answerBaseWidth && !$labelBaseWidth) {
             $sInputContainerWidth = 8;
             $sLabelWidth = 4;
         } else {
             if ($answerBaseWidth) {
                 $sInputContainerWidth = $answerBaseWidth;
-            } elseif ($attributeLabelWidth == 12) {
+            } elseif ($labelBaseWidth == 12) {
                 $sInputContainerWidth = 12;
             } else {
-                $sInputContainerWidth = 12 - $attributeLabelWidth;
+                $sInputContainerWidth = 12 - $labelBaseWidth;
             }
             if ($labelBaseWidth) {
                 $sLabelWidth = $labelBaseWidth;

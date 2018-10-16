@@ -62,6 +62,7 @@ var LSSlider = function (options) {
          */
         slideStartEvent = function () {
             listItemObject.find('.slider-container').removeClass('slider-untouched').removeClass('slider-reset').addClass('slider-touched');
+            sliderObject.$sliderElem.removeClass('slider-untouched').removeClass('slider-reset').addClass('slider-touched');
             listItemObject.find('div.tooltip').show(); // Show the tooltip
             var currentValue = elementObject.val(); // We get the current value of the bootstrapSlider
             var displayValue = currentValue.toString().replace('.', separator); // We format it with the right separator
@@ -98,12 +99,18 @@ var LSSlider = function (options) {
             value = value || position;
             sliderObject.setValue(position, true, true);
             elementObject.val(value.toString().replace('.', separator)).trigger('keyup');
-            writeToRootElement(displayValue);
+            writeToRootElement(value);
             triggerChanges();
         },
 
         triggerChanges = function () {
-            ExprMgr_process_relevance_and_tailoring('keyup', rootElementName, 'change');
+            try{
+                ExprMgr_process_relevance_and_tailoring('keyup', rootElementName, 'change');
+            } catch(e) {
+                console.ls.warn(e);
+                rootElementObject.trigger('change');
+                rootElementObject.trigger('keyup');
+            }
             if (debugMode > 0) {
                 console.ls.log('sliderDebug triggered change', rootElementObject);
             }
@@ -119,10 +126,12 @@ var LSSlider = function (options) {
             return sliderSettings;
         },
         bindResetAction = function () {
-            $('#answer' + elementName + '_resetslider').on('click', function (e) {
+            console.ls.log('wiring reset slider:', '#answer' + rootElementName + '_resetslider');
+            $('#answer' + rootElementName + '_resetslider').on('click', function (e) {
                 e.preventDefault();
                 /* Position slider button at position */
                 listItemObject.find('.slider-container').removeClass('slider-touched').addClass('slider-reset');
+                sliderObject.$sliderElem.removeClass('slider-touched').addClass('slider-reset');
                 rootElementObject.addClass('slider-untouched');
                 setValue(null, true, true);
                 /* if don't set position : reset to '' */
@@ -148,7 +157,7 @@ var LSSlider = function (options) {
             }
             
             sliderObject = new Slider(elementObject[0], createSliderSettings());
-
+            sliderObject.$sliderElem.addClass('slider-untouched');
             triggerChanges();
             
             

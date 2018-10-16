@@ -218,6 +218,7 @@ body {
 
 html {
   font-family: Roboto;
+  font-weight: 400;
   position: relative;
   min-height: 100%; }
 
@@ -1493,13 +1494,13 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-righ
   margin: 1em 0 1em 0; }
 
 #systemoverview .info div {
-	font-size: 14px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	font-weight: 500;
-	line-height: 1.1;
-	color: inherit;
-	text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    text-align: center;
 }
 
 /**
@@ -2238,7 +2239,7 @@ table#responsedetail tr td{
 }
 
 .welcome .panel-title {
-	font-weight: 500;
+    font-weight: 500;
 }
 
 .welcome .panel-body {
@@ -2274,15 +2275,21 @@ input[type="file"].form-control {
 
 /* To make Statistics printable really easy */
 
-@page {
-  size: A4 portrait;
-  margin-left: 0.8cm;
-  margin-right: 0.8cm;
-  margin-top: 1.4cm;
-  margin-bottom: 1.8cm;
-}
 
 @media print{
+
+  @page {
+    size: A4 portrait;
+    margin-left: 1.0cm;
+    margin-right: 1.5cm;
+    margin-top:1.2cm;
+    margin-bottom: 1cm;
+    overflow: visible;
+  }
+
+  * {
+    overflow: visible !important;
+    }
 
   html,body {
     margin: 0;
@@ -2290,11 +2297,13 @@ input[type="file"].form-control {
   }
   body{
     text-align: left;
-    padding: 12px;
+    margin: 0;
+    padding:0;
     overflow: visible;
-    position: absolute;
-    top: 24px;
-    left: 14px;
+    min-width: 19.0cm !important;
+    min-height: 27.7cm;
+    width: 100% !important;
+    height:100%;
   }
 
   body.onStatistics a:not(.printable),
@@ -2310,96 +2319,152 @@ input[type="file"].form-control {
   body.onStatistics h5:not(.printable),
   body.onStatistics .jumbotron,
   body.onStatistics .menubar,
-  body.onStatistics>div:not(#in_survey_common),
-  body.onStatistics>div#in_survey_common>div>div:not(#statisticsview)
+  body.onStatistics>div:not(#vue-app-main-container),
+  body.onStatistics div#vue-app-main-container>div:not(#pjax-content),
+  body.onStatistics div#vue-app-main-container>div#pjax-content>div:not(#in_survey_common),
+  body.onStatistics div#in_survey_common>div:not(#statisticsview)
   {
     display: none !important;
-    visibility: none !important;
+    visibility: hidden !important;
     overflow: hidden !important;
     padding: 0;
     position: absolute;
-    left: 0;
+    left: -1000px;
+    top: -1000px;
     margin: 0 !important;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  body.onStatistics div:not(.printable) {
-    margin: 0 !important;
-    padding: 0 !important;
+    width: 0px !important;
   }
 
+  body.onStatistics div.row {
+    display: block !important;
+    position: static;
+  }
+  body.onStatistics div[class^="col-"] {
+    display: block !important;
+    float: none !important;
+    position: static;
+  }
+
+  body.onStatistics>div#vue-app-main-container,
+  body.onStatistics div#in_survey_common,
+  body.onStatistics>div#vue-app-main-container>div#pjax-content,
+  body.onStatistics #statisticsview {
+    display: block;
+    position: static;
+    width: 99% !important;
+    max-width: 95% !important;
+    min-width: 19.6cm !important;
+    min-height: 29.7cm !important;
+    height: 100% !important;
+    overflow: visible;
+    page-break-inside: auto;
+    break-inside: auto;
+  }
+  body.onStatistics #statisticsview div,
+  body.onStatistics #statisticsview table {
+    position: static;
+  }
 
   /*body.onStatistics td:not(.printable),
   body.onStatistics th:not(.printable),*/
   /*body.onStatistics table:not(.printable),*/
 
-  body.onStatistics a.printable,
-  body.onStatistics p.printable,
-  body.onStatistics div.printable,
-  body.onStatistics div.printable table,
-  body.onStatistics table.printable,
-  body.onStatistics h1.printable,
-  body.onStatistics h2.printable,
-  body.onStatistics h3.printable,
-  body.onStatistics h4.printable,
-  body.onStatistics h5.printable{
+  body.onStatistics #statisticsview div:not(#statsContainerLoading) {
+    width: 99% !important;
+    max-width: 100% !important;
+    float: none !important;
+    display: block;
+  }
+
+  body.onStatistics #statisticsview a.printable,
+  body.onStatistics #statisticsview p.printable,
+  body.onStatistics #statisticsview span.printable,
+  body.onStatistics #statisticsview table.printable,
+  body.onStatistics #statisticsview table.statisticstable,
+  body.onStatistics #statisticsview h1.printable,
+  body.onStatistics #statisticsview h2.printable,
+  body.onStatistics #statisticsview h3.printable,
+  body.onStatistics #statisticsview h4.printable,
+  body.onStatistics #statisticsview h5.printable{
     width: 95% !important;
     max-width: 100%;
     float: none;
-    margin: auto;
-    padding-left: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 1cm;
+    margin-bottom: 1cm;
+    position: static;
+
   }
 
   body.onStatistics div.printable{
-    page-break-after  : always;
-    page-break-before : avoid;
+    position: static;
+    page-break-after  : auto;
+    break-after  : auto;
     page-break-inside : avoid;
-    display: block;
+    break-inside : avoid;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 1cm;
+    margin-bottom: 1cm;
+    padding: 0 !important;
   }
-  body.onStatistics table.printable{
-    page-break-after  : always;
-    page-break-before : avoid;
+  body.onStatistics div.printable table{
+    position: static;
     page-break-inside : avoid;
+    break-inside : avoid;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 1cm;
+    margin-bottom: 1cm;
+    padding: 0 !important;
   }
 
-  body.onStatistics div.printable table.printable{
-    page-break-after  : avoid ;
-    page-break-before : avoid;
-  }
 
   body.onStatistics table.printable thead,
   body.onStatistics table.printable tbody,
   body.onStatistics table.printable tr{
     width: 100% !important;
-    margin:0;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  body.onStatistics table.printable canvas{
+  body.onStatistics table.printable *{
     page-break-after  : avoid;
+    break-after  : avoid;
     page-break-before : avoid;
+    break-before : avoid;
     page-break-inside : avoid;
+    break-inside : avoid;
   }
 
   body.onStatistics .side-body{
     max-width: 100%;
     margin: 0 !important;
+    padding: 0 !important;
   }
   body.onStatistics .side-menu{
     display: none !important;
     visibility: none !important;
     overflow: hidden !important;
-    padding: 0;
-    margin: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-left: 0 px !important;
   }
   body.onStatistics .absolute-wrapper{
     display: none !important;
     visibility: none !important;
     overflow: hidden !important;
-    padding: 0;
-    margin: 0;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 }
-//custom margin and padding
+
+.currentQuestionTypeImageContainer img {
+  max-width: 100%;
+}
+/*custom margin and padding*/
+
 .custom.custom-no-padding {
   padding: 0;
 }

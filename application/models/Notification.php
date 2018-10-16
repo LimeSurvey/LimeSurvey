@@ -364,7 +364,7 @@ class Notification extends LSActiveRecord
         $criteria->params = $params;
         $criteria->order = 'id DESC';
         $criteria->limit = 50;
-        
+
         return $criteria;
     }
 

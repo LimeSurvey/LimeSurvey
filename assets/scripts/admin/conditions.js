@@ -373,8 +373,7 @@ function quickAddSelectTabFromOper() {
  * @return
  */
 function scenarioaddbtnOnClickAction() {
-    $('#scenarioaddbtn').hide();
-    $('#defaultscenariotxt').hide('slow');
+    $('#defaultscenarioshow').hide('slow');
     $('.add-scenario-column').removeClass('col-sm-4').addClass('col-sm-2');
     $('#scenario').show('slow');
 }

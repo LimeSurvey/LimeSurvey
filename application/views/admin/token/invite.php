@@ -102,8 +102,10 @@
                         <?php
                         $c = true;
                         foreach ($oSurvey->allLanguages as $language) {
-                                $fieldsarray["{ADMINNAME}"] = $oSurvey->admin;
-                                $fieldsarray["{ADMINEMAIL}"] = $oSurvey->adminemail;
+                                $admin_name = (empty($oSurvey->admin))?(Yii::app()->getConfig("siteadminname")):($oSurvey->admin);
+                                $admin_email  = (empty($oSurvey->adminemail))?(Yii::app()->getConfig("siteadminemail")):($oSurvey->adminemail);
+                                $fieldsarray["{ADMINNAME}"] = $admin_name;
+                                $fieldsarray["{ADMINEMAIL}"] = $admin_email;
                                 $fieldsarray["{SURVEYNAME}"] = $oSurvey->languagesettings[$language]->surveyls_title;
                                 $fieldsarray["{SURVEYDESCRIPTION}"] = $oSurvey->languagesettings[$language]->surveyls_description;
                                 $fieldsarray["{EXPIRY}"] = $oSurvey->expires;
@@ -119,7 +121,7 @@
                                 <div class='form-group'>
                                     <label class='control-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
                                     <div class=''>
-                                        <?php echo CHtml::textField("from_{$language}",$oSurvey->admin." <".$oSurvey->adminemail.">",array('class' => 'form-control')); ?>
+                                        <?php echo CHtml::textField("from_{$language}",$admin_name." <".$admin_email.">",array('class' => 'form-control')); ?>
                                     </div>
                                 </div>
 
@@ -166,7 +168,9 @@
 </div>
 
 <?php
+
 App()->getClientScript()->registerScript("Tokens:BindInviteView", "
+        LS.renderBootstrapSwitch();
         $('#send-invitation-button').on('click', function(){
             $('#sendinvitation').submit();
         })

@@ -94,4 +94,26 @@ return array(
             'emoji'
         ]
     ),
+    /* array-numeric question */
+    'question-array-numeric'=>array(
+        'devBaseUrl'  => 'assets/packages/questions/arraynumeric/',
+        'basePath' => 'core.questions.arraynumeric',
+        'position' => CClientScript::POS_BEGIN,
+        'css'=> array(
+        ),
+        'js'=>array(
+            'scripts/array-totalsum'.$minVersion.'.js',
+        ),
+    ),
+    /* array-numeric question */
+    'timer-addition'=>array(
+        'devBaseUrl'  => 'assets/packages/questions/timer/',
+        'basePath' => 'core.questions.timer',
+        'position' => CClientScript::POS_BEGIN,
+        'css'=> array(
+        ),
+        'js'=>array(
+            'timer'.$minVersion.'.js',
+        ),
+    ),
 );

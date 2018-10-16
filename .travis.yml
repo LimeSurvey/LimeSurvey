@@ -22,7 +22,6 @@ before_script:
       #- rm composer.lock
       #- rm -r third_party
     - composer install
-      #- composer install
     - chmod -R 777 tmp
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
@@ -30,12 +29,16 @@ before_script:
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
     # Enable debug=2 in config file. OBS: This assumes debug is on line 59.
-    - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
+    # TODO: Disable, a lines was added to config file and some tests started to fail.
+    # - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
 
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
     - sudo apt-get update > /dev/null
     - sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs firefox
+    - sudo cp /usr/bin/firefox /usr/local/bin/firefox
+    - sudo cp /usr/bin/firefox /usr/local/bin/firefox-bin
+    - which firefox
     - firefox -v
     - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
     - if [[ ${TRAVIS_PHP_VERSION:0:3} != "5.6" ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf; fi
@@ -47,6 +50,9 @@ before_script:
     - sudo cp -f tests/travis/travis-ci-apache /etc/apache2/sites-available/000-default.conf
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
+
+    # Check for syntax errors.
+    - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
 
     # Test server.
     - wget localhost
@@ -65,4 +71,5 @@ before_script:
     - java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
 
 script:
-    - DOMAIN=localhost phpunit
+    # Run tests.
+    - DOMAIN=localhost phpunit # --stop-on-failure

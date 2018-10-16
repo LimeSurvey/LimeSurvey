@@ -120,6 +120,7 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_policy_notice', 'LSYii_Validators'),
             array('surveyls_policy_error', 'LSYii_Validators'),
             array('surveyls_policy_notice_label', 'LSYii_Validators'),
+            array('surveyls_url', 'filter', 'filter'=>'trim'),
             array('surveyls_url', 'LSYii_Validators', 'isUrl'=>true),
             array('surveyls_urldescription', 'LSYii_Validators'),
 
@@ -127,11 +128,11 @@ class SurveyLanguageSetting extends LSActiveRecord
             array('surveyls_numberformat', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'1', 'allowEmpty'=>true),
         );
     }
-    
+
     public  function defaultScope()
     {
         return array('index'=>'surveyls_language');
-    }        
+    }
 
     /**
      * Defines the customs validation rule lsdefault

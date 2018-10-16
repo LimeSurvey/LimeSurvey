@@ -16,22 +16,20 @@
 
             <!-- Save -->
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
-                <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+                <a class="btn btn-success" href="#" role="button" id="save-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
                 </a>
             <?php endif;?>
 
-            <?php /*
+            
             <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
-                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
+                <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" onclick="$(this).addClass('disabled').attr('onclick', 'return false;');" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
             <?php endif; ?>
-            */ ?>
 
-            <?php /*
             <!-- Close -->
             <?php if(isset($fullpagebar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
@@ -39,7 +37,6 @@
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
-            */ ?>
 
             <?php if(isset($fullpagebar['boxbuttons'])):?>
                 <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/create/');?>" class="btn btn-default">

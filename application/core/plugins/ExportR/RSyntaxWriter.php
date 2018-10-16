@@ -147,7 +147,7 @@ class RSyntaxWriter extends Writer
                 $str .= '),labels=c(';
 
                 foreach ($answers as $answer) {
-                    $str .= '"'.addslashes($answer['value']).'", ';
+                    $str .= '"'.addslashes(!empty($answer['value'])?$answer['value']:$answer['code']).'", ';
                 }
 
                 $str = mb_substr($str, 0, -2);

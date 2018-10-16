@@ -1,0 +1,95 @@
+{#
+/**
+ * Global container for the answer
+ *
+ * @var $q_table_id_HTML
+ * @var $classes
+ * @var $extraclass
+ * @var $num_class
+ * @var $totals_class
+ * @var $answerwidth
+ * @var $cellwidth
+ * @var $labelans
+ * @var $right_exists
+ * @var $showGrandTotal
+ * @var $showtotals,
+ * @var $row_head,
+ * @var $total,
+ * @var $q_table_id
+ * @var $radix
+ * @var $name
+ * @var $sRows
+ */
+#}
+
+<!-- Multi Text -->
+
+<!-- answer -->
+<table {{ q_table_id_HTML }} class="{{ coreClass }} {{ extraclass }} table table-bordered table-hover {{ totals_class }}" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <colgroup class="col-responses">
+
+        <!-- Column for answer label -->
+        <col class="answertext" style='width: {{ answerwidth }}%;'/>
+
+        <!-- columns for answers -->
+        {% for i, ld in labelans %}
+            <col class="{# {# TODO: array2 alternation #} {# classes #}" style='width: {{ cellwidth }}%;' />
+        {% endfor %}
+
+        <!-- columns for right -->
+        {% if right_exists %}
+            <col class="answertextright {# TODO: array2 alternation #}" style='width: {{ cellwidth }}%;' />
+        {% endif %}
+
+        <!-- columns for Grand Total -->
+        {% if showGrandTotal %}
+            <col class="grandtotal {# TODO: array2 alternation #}" style='width: {{ cellwidth }}%;' />
+        {% endif %}
+    </colgroup>
+
+    <thead aria-hidden="true">
+        <tr class="ls-heading">
+            <td>
+                &nbsp;
+            </td>
+            {% for i, ld in labelans %}
+                <th>
+                    {{ ld }}
+                </th>
+            {% endfor %}
+
+            {% if right_exists %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {{ col_head }}
+        </tr>
+    </thead>
+
+    <tbody>
+
+            {# Defined in answer_row view #}
+            {{ sRows }}
+
+        {% if showtotals %}
+            <tr class="total">
+                {{ row_head }}
+                {{ total }}
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+
+{% if q_table_id is empty %}
+    {{ registerScript('ArrayTypeScript_' ~ name, "
+$('#question" ~ name ~ "').find('input[type=text]').on('blur keyup', function(event){
+    " ~ checkconditionFunction ~ "($(this).val(), $(this).attr('name'), 'text');
+    return true;
+})
+", "POS_POSTSCRIPT") }}
+{% endif %}
+<!-- end of answer -->
+
+{% if (showGrandTotal == true) or (showtotals == true) %}
+    {{ registerPackage('question-array-numeric') }}
+{% endif %}

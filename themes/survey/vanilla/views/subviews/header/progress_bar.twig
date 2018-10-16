@@ -17,18 +17,20 @@
 
 #}
 
-
-<!-- Top container -->
-<div class="{{ aSurveyInfo.class.topcontainer  }} space-col"  {{ aSurveyInfo.attr.topcontainer  }} >
-    <div class="{{ aSurveyInfo.class.topcontent  }} container-fluid" {{ aSurveyInfo.attr.topcontent  }} >
-        {% if aSurveyInfo.format != 'A' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
-            {{  registerPublicCssFile('lime-progress.css') }}
-            {% set progressValue  = ( aSurveyInfo.progress.total > 0 ) ? intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 ) : 0 %}
-            <div class="{{ aSurveyInfo.class.progress  }}" {{ aSurveyInfo.attr.progress  }}>
-                <div class="{{ aSurveyInfo.class.progressbar  }}" {{ aSurveyInfo.attr.progressbar  }} role="progressbar" aria-valuenow="{{ progressValue }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: {{ progressValue }}%;">
-                    {{ progressValue }}%
+{# do not show on "completed/thank you page" page #}
+{% if not aSurveyInfo.aCompleted %}
+    <!-- Top container -->
+    <div class="{{ aSurveyInfo.class.topcontainer  }} space-col"  {{ aSurveyInfo.attr.topcontainer  }} >
+        <div class="{{ aSurveyInfo.class.topcontent  }} container-fluid" {{ aSurveyInfo.attr.topcontent  }} >
+            {% if aSurveyInfo.format != 'A' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
+                {{  registerPublicCssFile('lime-progress.css') }}
+                {% set progressValue  = ( aSurveyInfo.progress.total > 0 ) ? intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 ) : 0 %}
+                <div class="{{ aSurveyInfo.class.progress  }}" {{ aSurveyInfo.attr.progress  }}>
+                    <div class="{{ aSurveyInfo.class.progressbar  }}" {{ aSurveyInfo.attr.progressbar  }} role="progressbar" aria-valuenow="{{ progressValue }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: {{ progressValue }}%;">
+                        {{ progressValue }}%
+                    </div>
                 </div>
-            </div>
-        {% endif %}
-    </div> <!-- must hide it without javascript -->
-</div>
+            {% endif %}
+        </div> <!-- must hide it without javascript -->
+    </div>
+{% endif %}

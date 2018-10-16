@@ -259,7 +259,7 @@ class UpdateForm extends CFormModel
      */
     public function downloadUpdateUpdaterFile($tobuild)
     {
-        $getters = '/index.php?r=updates/download-updater&tobuild='.$tobuild;
+        $getters = '/index.php?r=updates/download-updater&tobuild='.$tobuild.'&frombuild='.$this->build;
         $file = $this->_performDownload($getters, 'update_updater');
         return $file;
     }
@@ -384,7 +384,7 @@ class UpdateForm extends CFormModel
     public function updateVersion($destinationBuild)
     {
         $destinationBuild = (int) $destinationBuild;
-        @ini_set('auto_detect_line_endings', true);
+        @ini_set('auto_detect_line_endings', '1');
         $versionlines = file($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php');
         $handle = fopen($this->rootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'version.php', "w");
         foreach ($versionlines as $line) {
@@ -403,9 +403,9 @@ class UpdateForm extends CFormModel
      */
     public function destroyGlobalSettings()
     {
-        setGlobalSetting('updateavailable', '0');
-        setGlobalSetting('updatebuild', '');
-        setGlobalSetting('updateversions', '');
+        SettingGlobal::setSetting('updateavailable', '0');
+        SettingGlobal::setSetting('updatebuild', '');
+        SettingGlobal::setSetting('updateversions', '');
         Yii::app()->session['security_update'] = null;
         Yii::app()->session['update_result'] = null;
         Yii::app()->session['next_update_check'] = null;
@@ -552,7 +552,7 @@ class UpdateForm extends CFormModel
 
         if ($iAssetVersionNumber != $iCurrentAssetVersion) {
             self::republishAssets();
-            setGlobalSetting('AssetsVersion', $iAssetVersionNumber);
+            SettingGlobal::setSetting('AssetsVersion', $iAssetVersionNumber);
         }
         return false;
     }
@@ -578,20 +578,24 @@ class UpdateForm extends CFormModel
 
                 $updates = $this->getUpdateInfo('1');
                 $update_available = false;
+
                 if ($updates->result) {
                     unset($updates->result);
 
-                    if (count($updates) > 0) {
-                        $update_available = true;
-                        $security_update_available = false;
-                        $unstable_update_available = false;
-                        foreach ($updates as $update) {
-                            if ($update->security_update) {
-                                $security_update_available = true;
-                            }
+                    $security_update_available = false;
+                    $unstable_update_available = false;
 
-                            if ($update->branch != 'master') {
-                                $unstable_update_available = true;
+                    if (is_array($updates) || $updates instanceof Countable) {
+                        if (count($updates) > 0) {
+                            $update_available = true;
+                            foreach ($updates as $update) {
+                                if ($update->security_update) {
+                                    $security_update_available = true;
+                                }
+
+                                if ($update->branch != 'master') {
+                                    $unstable_update_available = true;
+                                }
                             }
                         }
                     }
@@ -812,9 +816,8 @@ class UpdateForm extends CFormModel
         } else {
             $check->writable = 'pass';
         }
-
         if ($obj->freespaceCheck) {
-            $check->freespace = (disk_free_space($obj->name) > $obj->minfreespace);
+            $check->freespace = (@disk_free_space($obj->name) > $obj->minfreespace);
         } else {
             $check->freespace = 'pass';
         }

@@ -131,6 +131,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                             unset($actionUrlArray['id']);
                             $actionBaseUrl = 'admin/themeoptions/sa/updatesurveygroup/';
                             $actionUrlArray['gsid'] = $model->gsid;
+                            $actionUrlArray['id'] = $model->id;
                         }
 
                         $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl,$actionUrlArray);
@@ -265,6 +266,7 @@ Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
             var $progressBar = $(options.progress);
 
             var onSuccess = options.onSuccess || function(){};
+            var onBeforeSend = options.onBeforeSend || function(){};
 
             var progressHandling = function(event){
                 var percent = 0;
@@ -295,6 +297,7 @@ Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
                         }
                         return myXhr;
                     },
+                    beforeSend : onBeforeSend,
                     success: function (data) {
                         console.log(data);
                         if(data.success === true){

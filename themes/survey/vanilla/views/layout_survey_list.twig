@@ -58,7 +58,7 @@
     {{ dump(aSurveyInfo) }}
 
     To echo a variable, just insert                      : {{ variable }}
-    To translate a string, just insert                   : {{ string | t }}
+    To translate a string, just insert                   : {{gT( string )}}
 
     NOTE: aSurveyInfo should be cleaned to remove the unnecessary data.
 
@@ -125,11 +125,14 @@
                         <div id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
                             {{ image('./files/survey_list_header.png', aSurveyInfo.name, {"class": "img-responsive center-block"}) }}
                             {{ aSurveyInfo.sSiteName }}
+                            <div class="ls-js-hidden">
+                                {{ include('./subviews/navigation/language_changer_form.twig') }}
+                            </div>
                         </div>
 
                         <div class="{{ aSurveyInfo.class.surveylistrowdiva }} col-xs-12" {{ aSurveyInfo.attr.surveylistrowdiva }}>
                             <div class='{{ aSurveyInfo.class.surveylistrowdivadiv }} h3' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
-                                {{ "The following surveys are available:" | t }}
+                                {{ gT("The following surveys are available:") }}
                             </div>
                         </div>
 
@@ -141,7 +144,7 @@
                                     <li class="{{ aSurveyInfo.class.surveylistrowdivbdivulli }} btn-group col-sm-6 col-xs-12" {{ aSurveyInfo.attr.surveylistrowdivbdivulli }}>
                                         <a
                                         href="{{ oSurvey.sSurveyUrl }}"
-                                        title="{{ "Start survey" | t }}"
+                                        title="{{ gT("Start survey") }}"
                                         lang="{{ oSurvey.language }}"
                                         class="{{ aSurveyInfo.class.surveylistrowdivbdivullia }} btn btn-primary col-xs-12"  >
                                         {{ oSurvey.localizedTitle }}
@@ -185,11 +188,14 @@
 
 
             {# Basic ThemeScript options  #}
-            {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", POS_END) }}
+            {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", "POS_END") }}
 
             {% endblock %}
             </div>
         </article>
+        {% block footer %}
+            {{ include('./subviews/footer/footer.twig') }}
+        {% endblock %}
         <div id="bottomScripts">
             <###end###>
         </div>

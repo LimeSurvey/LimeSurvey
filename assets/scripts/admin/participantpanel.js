@@ -37,7 +37,7 @@ LS.CPDB = (function() {
                 e.preventDefault();
                 var action = $(baseModal).find('#'+formId).attr('action');
                 var formData = $(baseModal).find('#'+formId).serializeArray();
-                LS.ajax({
+                $.ajax({
                     url: action,
                     data: formData,
                     method: 'POST',
@@ -50,12 +50,12 @@ LS.CPDB = (function() {
         };
 
 
-        return LS.ajax({
+        return $.ajax({
             url: url, 
             data: data,
             method: 'POST',
             success: firstSuccess,
-            error: console.ls.log
+            error: function(){ console.ls.log(arguments) }
         });
     },
 
@@ -170,7 +170,7 @@ LS.CPDB = (function() {
             return false;
         });
 
-        $('.action_participant_editModal').on('click', function(e){
+        $('#list_central_participants').on('click', '.action_participant_editModal', function(e){
             e.preventDefault();
             var data = {modalTarget: 'editparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
@@ -186,7 +186,7 @@ LS.CPDB = (function() {
             });
         });
 
-        $('.action_participant_deleteModal').on('click', function(e) {
+        $('#list_central_participants').on('click', '.action_participant_deleteModal', function(e) {
             e.preventDefault();
             var data = {modalTarget: 'showdeleteparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
@@ -198,7 +198,7 @@ LS.CPDB = (function() {
                     'list_central_participants' 
                     );
         });
-        $('.action_participant_infoModal').on('click', function(e) {
+        $('#list_central_participants').on('click', '.action_participant_infoModal', function(e) {
             e.preventDefault();
             var data = {
                 modalTarget: 'showparticipantsurveys',
@@ -213,7 +213,7 @@ LS.CPDB = (function() {
                     'list_central_participants' 
                     );
         });
-        $('.action_participant_shareParticipant').on('click', function(e) {
+        $('#list_central_participants').on('click', '.action_participant_shareParticipant', function(e) {
             e.preventDefault();
             var data = {modalTarget: 'shareparticipant', 'participant_id' : $(this).closest('tr').data('participant_id')};
             //url, data, idString, actionButtonClass, formId, gridViewId
@@ -248,7 +248,7 @@ LS.CPDB = (function() {
         /**
          * Small icon, add participant to a survey
          */
-        $('.action_participant_addToSurvey').on('click', function(e) {
+        $('#list_central_participants').on('click', '.action_participant_addToSurvey', function(e) {
             var data = {
                 modalTarget: 'addToSurvey',
                 participant_id: $(this).closest('tr').data('participant_id')
@@ -435,7 +435,7 @@ LS.CPDB = (function() {
      * @return
      */
     deleteSingleParticipantShare = function(url) {
-        LS.ajax({
+        $.ajax({
             url: url,
             method: "GET",
             dataType: 'json',
@@ -463,7 +463,7 @@ LS.CPDB = (function() {
          */
         $('#export').click(function() { onClickExport(true); });
 
-        doToolTip();
+        window.LS.doToolTip();
         $(document).trigger('pjax:refresh');
     };
 
@@ -495,7 +495,7 @@ function rejectParticipantShareAjax(participant_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                notifyFader(result.successMessage, 'well-lg bg-primary text-center');
+                window.LS.notifyFader(result.successMessage, 'well-lg bg-primary text-center');
                 $.fn.yiiGridView.update('share_central_participants',{});
             }
         })
@@ -514,7 +514,7 @@ function deleteAttributeAjax(attribute_id){
             method: "POST",
             dataType: 'json',
             success: function(result){
-                notifyFader(result.successMessage, 'well-lg bg-primary text-center');
+                window.LS.notifyFader(result.successMessage, 'well-lg bg-primary text-center');
                 $.fn.yiiGridView.update('list_attributes',{});
             }
         })

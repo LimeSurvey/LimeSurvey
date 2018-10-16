@@ -60,7 +60,8 @@ class labels extends Survey_Common_Action
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
-            $extractdir = $this->_tempdir(Yii::app()->getConfig('tempdir'));
+            Yii::import('application.helpers.common_helper', true);
+            $extractdir = createRandomTempDir();
             $zipfilename = $_FILES['the_file']['tmp_name'];
             $basedestdir = Yii::app()->getConfig('uploaddir')."/labels";
             $destdir = $basedestdir."/$lid/";

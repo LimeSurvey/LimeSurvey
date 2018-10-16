@@ -42,7 +42,6 @@
 
 class LS_Twig_Extension extends Twig_Extension
 {
-
     /**
      * Publish a css file from public style directory, using or not the asset manager (depending on configuration)
      * In any twig file, you can register a public css file doing: {{ registerPublicCssFile($sPublicCssFileName) }}
@@ -110,6 +109,10 @@ class LS_Twig_Extension extends Twig_Extension
     /**
      * Publish a script
      * In any twig file, you can register a script doing: {{ registerScript($sId, $sScript) }}
+     *
+     * NOTE: this function is not recursive, so don't use it to register a script located inside a theme folder, or inherited themes will be broken.
+     * NOTE! to register a script located inside a theme folder, registerTemplateScript()
+     *
      */
     public static function registerScript($id, $script, $position = null, array $htmlOptions = array())
     {
@@ -162,12 +165,28 @@ class LS_Twig_Extension extends Twig_Extension
     }
 
     /**
+     * since count with a noncountable element is throwing a warning in latest php versions
+     * we have to be sure not to kill rendering by a wrong variable
+     *
+     * @param mixed $element
+     * @return void
+     */
+    public static function safecount($element)
+    {
+        $isCountable = is_array($element) || $element instanceof Countable;
+        if($isCountable) {
+            return count($element);
+        }
+        return 0;
+    }
+    /**
      * Retreive the question classes for a given question id
      * Use in survey template question.twig file.
      * TODO: we'd rather provide a oQuestion object to the twig view with a method getAllQuestion(). But for now, this public static function respect the old way of doing
      *
      * @param  int      $iQid the question id
      * @return string   the classes
+     * @deprecated must be removed when allow to broke template. Since it was in 3.0 , it was in API (and question.twig are surely be updated).
      */
     public static function getAllQuestionClasses($iQid)
     {
@@ -247,13 +266,16 @@ class LS_Twig_Extension extends Twig_Extension
     {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
+        $sUrlImgAsset = '';
 
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
-        } else {
-            $sUrlImgAsset = '';
-            // TODO: publish a default image "not found"
         }
+
+        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
+            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
+        }
+
 
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
     }
@@ -268,14 +290,17 @@ class LS_Twig_Extension extends Twig_Extension
     {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
-        $sUrlImgAsset = '';
+        $sUrlImgAsset =  $sImagePath;
+
 
         if ($oTemplate) {
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
-        } else {
-            // TODO: publish a default image "not found"
         }
 
+        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
+            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
+        }
+        $myTemplateAsset = $sUrlImgAsset;
         return $sUrlImgAsset;
     }
 
@@ -333,7 +358,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function registerScriptFile($path, $position = null)
     {
 
-        Yii::app()->getClientScript()->registerScriptFile($path, ($position === null ? CClientScript::POS_BEGIN : $position));
+        Yii::app()->getClientScript()->registerScriptFile($path, ($position === null ? LSYii_ClientScript::POS_BEGIN : self::getPosition($position)));
     }
 
     public static function registerCssFile($path)
@@ -343,7 +368,7 @@ class LS_Twig_Extension extends Twig_Extension
 
     public static function registerPackage($name)
     {
-        Yii::app()->getClientScript()->registerPackage($name, CClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerPackage($name, LSYii_ClientScript::POS_BEGIN);
     }
 
     /**
@@ -387,6 +412,200 @@ class LS_Twig_Extension extends Twig_Extension
             var_dump($file);
 
         }
+    }
+
+    /**
+     * Process any string with current page
+     * @param string to be processed
+     * @param boolean $static return static string (or not)
+     * @param integer $numRecursionLevels recursion (max) level to do
+     * @param array $aReplacement replacement out of EM
+     * @return string
+     */
+    public static function processString($string,$static=false,$numRecursionLevels=3,$aReplacement = array())
+    {
+        if(!is_string($string)) {
+            /* Add some errors in template editor , see #13532 too */
+            if(Yii::app()->getController()->getId() == 'admin' && Yii::app()->getController()->getAction()->getId() == 'themes') {
+                Yii::app()->setFlashMessage(gT("Usage of processString without a string in your template"),'error');
+            }
+            return;
+        }
+        return LimeExpressionManager::ProcessStepString($string, $aReplacement,$numRecursionLevels, $static);
+    }
+
+    /**
+     * Get html text and remove whole not clean string
+     * @param string $string to flatten
+     * @param boolean $encode html entities
+     * @return string
+     */
+    public static function flatString($string,$encode=false)
+    {
+        // Remove script before removing tag, no tag : no other script (onload, on error etc …
+        $string = strip_tags(stripJavaScript($string));
+        // Remove new lines
+        if (version_compare(substr(PCRE_VERSION, 0, strpos(PCRE_VERSION, ' ')), '7.0') > -1) {
+            $string = preg_replace(array('~\R~u'), array(' '), $string);
+        } else {
+            $string = str_replace(array("\r\n", "\n", "\r"), array(' ', ' ', ' '), $string);
+        }
+        // White space to real space
+        $string = preg_replace('/\s+/', ' ', $string);
+
+        if($encode) {
+            return \CHtml::encode($string);
+        }
+        return $string;
+    }
+
+    /**
+     * get flat and ellipsize string
+     * @param string $string to ellipsize
+     * @param integer $maxlength of the final string
+     * @param float $position of the ellipsis in string (between 0 and 1)
+     * @param string $ellipsis string to shown in place of removed part
+     * @return string
+     */
+    public static function ellipsizeString($string, $maxlength, $position = 1, $ellipsis = '…')
+    {
+        $string = self::flatString($string,false);
+        $string = ellipsize($string, $maxlength, $position, $ellipsis);// Use common_helper function
+        return $string;
+    }
+
+    /**
+     * flat and ellipsize text, for template compatibility
+     * @deprecated (4.0)
+     * @param string $sString :the string
+     * @param boolean $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
+     * @param integer $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
+     * @param string $sEllipsis if abbreviated : the char to put at end (or middle)
+     * @param integer $fPosition if abbreviated position to split (in % : 0 to 1)
+     * @return string
+     */
+    public static function flatEllipsizeText($sString, $bFlat = true, $iAbbreviated = 0, $sEllipsis = '...', $fPosition = 1)
+    {
+        if (!$bFlat && !$iAbbreviated) {
+            return $sString;
+        }
+        $sString = self::flatString($sString);
+        if ($iAbbreviated > 0) {
+            $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
+        }
+        return $sString;
+    }
+
+    public static function darkencss($cssColor, $grade=10, $alpha=1){
+
+        $aColors = str_split(substr($cssColor,1), 2);
+        $return = [];
+        foreach ($aColors as $color) {
+            $decColor = hexdec($color);
+            $decColor = $decColor-$grade;
+            $decColor = $decColor<0 ? 0 : ($decColor>255 ? 255 : $decColor);
+            $return[] = $decColor;
+        }
+        if($alpha === 1) {
+            return '#'.join('', array_map(function($val){ return dechex($val);}, $return));
+        }
+
+        return 'rgba('.join(', ', $return).','.$alpha.')';
+    }
+
+    /**
+     * Check if a needle is in a multidimensional array
+     * @param mixed $needle The searched value.
+     * @param array $haystack The array.
+     * @param bool $strict If the third parameter strict is set to TRUE then the in_array() function will also check the types of the needle in the haystack.
+     */
+    function in_multiarray($needle, $haystack, $strict = false) {
+
+        foreach ($haystack as $item) {
+            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    public static function lightencss($cssColor, $grade=10, $alpha=1)
+    {
+        $aColors = str_split(substr($cssColor,1), 2);
+        $return = [];
+        foreach ($aColors as $color) {
+            $decColor = hexdec($color);
+            $decColor = $decColor+$grade;
+            $decColor = $decColor<0 ? 0 : ($decColor>255 ? 255 : $decColor);
+            $return[] = $decColor;
+        }
+        if($alpha === 1) {
+            return '#'.join('', array_map(function($val){ return dechex($val);}, $return));
+        }
+
+        return 'rgba('.join(', ', $return).','.$alpha.')';
+    }
+
+    public static function getConfig($item)
+    {
+        return Yii::app()->getConfig($item);
+    }
+
+
+    /**
+     * Retreive all the previous answers from a given token
+     * To use it:
+     *  {% set aResponses = getAllTokenAnswers(aSurveyInfo.sid) %}
+     *  {{ dump(aResponses) }}
+     *
+     *  Of course, the survey must use token. If you want to show it after completion, the you must turn on public statistics
+     */
+    public static function getAllTokenAnswers( $iSurveyID )
+    {
+        $aResponses = array();
+        $sToken     = (empty($_SESSION['survey_'.$iSurveyID]['token']))?'':$_SESSION['survey_'.$iSurveyID]['token'] ;
+
+        if (!empty($sToken)) {
+            $oResponses = SurveyDynamic::model($iSurveyID)->findAll(
+                                array(
+                                    'condition' => 'token = :token',
+                                    'params'    => array( ':token'=> $sToken ),
+                                )
+
+                            );
+
+            if( count($oResponses) > 0 ){
+                foreach($oResponses as $oResponse)
+                    array_push($aResponses,$oResponse->attributes);
+            }
+        }
+
+        return $aResponses;
+    }
+
+
+    /**
+     * Retreive all the previous answers from a given survey (can be a different survey)
+     * To use it:
+     *  {% set aResponses = getAllAnswers(aSurveyInfo.sid) %}
+     *  {{ dump(aResponses) }}
+     *
+     *  If you want to show it after completion, the you must turn on public statistics
+     */
+    public static function getAllAnswers( $iSurveyID )
+    {
+        $aResponses = array();
+        $oResponses = SurveyDynamic::model($iSurveyID)->findAll();
+
+        if( count($oResponses) > 0 ){
+            foreach($oResponses as $oResponse)
+                array_push($aResponses,$oResponse->attributes);
+        }
+
+        return $aResponses;
+
     }
 
 }

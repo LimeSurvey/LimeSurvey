@@ -19,6 +19,15 @@
 
 */
 
+//Check if we have to work on IE10 *sigh*
+var isIE10 = false;
+/*@cc_on
+    if (/^10/.test(@_jscript_version)) {
+        isIE10 = true;
+    }
+@*/
+console.ls.log("isIE10: ", isIE10);
+
 // Submit the form with Ajax
 var AjaxSubmitObject = function () {
     var activeSubmit = false;
@@ -28,7 +37,7 @@ var AjaxSubmitObject = function () {
     var startLoadingBar = function () {
         //Scroll to the top of the page
         window.scrollTo(0, 0);
-        $('#ajax_loading_indicator').css('display','block').find('#ajax_loading_indicator_bar').css({
+        $('#ajax_loading_indicator').css('display', 'block').find('#ajax_loading_indicator_bar').css({
             'width': '20%',
             'display': 'block'
         });
@@ -36,81 +45,111 @@ var AjaxSubmitObject = function () {
 
 
     var endLoadingBar = function () {
-        $('#ajax_loading_indicator').css('opacity','0').find('#ajax_loading_indicator_bar').css('width', '100%');
+        $('#ajax_loading_indicator').css('opacity', '0').find('#ajax_loading_indicator_bar').css('width', '100%');
         setTimeout(function () {
-            $('#ajax_loading_indicator').css({'display': 'none', 'opacity': 1}).find('#ajax_loading_indicator_bar').css({
+            $('#ajax_loading_indicator').css({
+                'display': 'none',
+                'opacity': 1
+            }).find('#ajax_loading_indicator_bar').css({
                 'width': '0%',
                 'display': 'none'
             });
         }, 1800);
     };
 
-    var checkScriptNotLoaded = function(scriptNode){
-        if(scriptNode.src){
-            return ($('head').find('script[src="'+scriptNode.src+'"]').length > 0);
+    var checkScriptNotLoaded = function (scriptNode) {
+        if (scriptNode.src) {
+            return ($('head').find('script[src="' + scriptNode.src + '"]').length > 0);
         }
         return true;
     };
 
-    var appendScript = function(scriptText, scriptPosition, src){
-        src = src || '';
-        scriptPosition = scriptPosition || null;
-        var scriptNode = document.createElement('script');
-        scriptNode.type  = 'text/javascript';
-        if(src != false){
-            scriptNode.src   = src;
-        }
-        scriptNode.text  = scriptText;
-        scriptNode.attributes.class = 'toRemoveOnAjax';
-        switch(scriptPosition) {
-        case 'head': if(checkScriptNotLoaded(scriptNode)){ document.head.appendChild(scriptNode); } break;
-        case 'body': document.body.appendChild(scriptNode); break;
-        case 'beginScripts': document.getElementById('beginScripts').appendChild(scriptNode); break;
-        case 'bottomScripts': //fallthrough
-        default: document.getElementById('bottomScripts').appendChild(scriptNode); break;
-
-        }
-    };
-
     var bindActions = function () {
+        var logFunction = new ConsoleShim('PJAX-LOG', (LSvar.debugMode < 1));
+
+        var pjaxErrorHandler = function (href, options, requestData) {
+            logFunction.log('requestData', requestData);
+            if (requestData.status >= 500) {
+                document.getElementsByTagName('html')[0].innerHTML = requestData.responseText;
+                throw new Error(JSON.stringify({
+                    state: requestData.status,
+                    message: 'Error in PHP!',
+                    data: requestData
+                }));
+            }
+
+            if (requestData.status >= 404) {
+                window.location.href = href;
+                return false;
+            }
+            if (requestData.status >= 300 || requestData.status == 0) {
+                logFunction.log('responseURL', requestData.responseURL);
+                var responseHeaders = requestData.getAllResponseHeaders().trim().split(/[\r\n]+/);
+                var headerMap = {};
+                responseHeaders.forEach(function (line) {
+                    var parts = line.split(': ');
+                    var header = parts.shift();
+                    var value = parts.join(': ');
+                    headerMap[header.toLowerCase()] = value;
+                });
+                window.location = headerMap['x-redirect'] || headerMap.location || href;
+                return false;
+            }
+        };
+
         var globalPjax = new Pjax({
-            elements: '#limesurvey', // default is "a[href], form[action]"
+            elements: ['form#limesurvey'], // default is "a[href], form[action]"
             selectors: ['#dynamicReloadContainer', '#beginScripts', '#bottomScripts'],
-            debug: window.debugState.frontend,
+            debug: true,
             forceRedirectOnFail: true,
-            reRenderCSS : true,
-            logObject : console.ls ? (window.debugState.frontend ? console.ls : console.ls.silent) : console,
-            scriptloadtimeout: 1500
+            pjaxErrorHandler: pjaxErrorHandler,
+            reRenderCSS: true,
+            logObject: logFunction,
+            scriptloadtimeout: 1500,
         });
         // Always bind to document to not need to bind again
-        $(document).on('click', '.ls-move-btn',function (e) {
-            e.preventDefault();    
-            $('#limesurvey').append('<input name=\''+$(this).attr('name')+'\' value=\''+$(this).attr('value')+'\' type=\'hidden\' />');
-            $('#limesurvey').trigger('submit');
-            return false;
+        // Restrict to [type=submit]:not([data-confirmedby])
+        // - :submit is the default if button don't have type (reset button on slider for example),
+        // - confirmedby have their own javascript system
+        $(document).on('click', '.action--ls-button-submit, .action--ls-button-previous', function (e) {
+            $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $(this).attr('name') + '\' value=\'' + $(this).attr('value') + '\' type=\'hidden\' />');
+            if (isIE10 || /Edge\/\d+\.\d+/.test(navigator.userAgent)) {
+                e.preventDefault();
+                $('#limesurvey').trigger('submit');
+                return false;
+            }
         });
-
+        
         // If the user try to submit the form
         // Always bind to document to not need to bind again
         $(document).on('submit', '#limesurvey', function (e) {
             // Prevent multiposting
             //Check if there is an active submit
             //If there is -> return immediately
-            if(activeSubmit) return;
+            if (activeSubmit) {
+                e.preventDefault();
+                return false;
+            }
             //block further submissions
             activeSubmit = true;
+            $('.action--ls-button-submit, .action--ls-button-previous').prop('disabled', true).addClass('btn-disabled');
+            if ($('#onsubmitbuttoninput').length == 0) {
+                $('#limesurvey').append('<input id="onsubmitbuttoninput" name=\'' + $('#limesurvey [type=submit]:not([data-confirmedby])').attr('name') + '\' value=\'' + $('#limesurvey [type=submit]:not([data-confirmedby])').attr('value') + '\' type=\'hidden\' />');
+            }
             //start the loading animation
             startLoadingBar();
 
-            $(document).on('pjax:scriptcomplete.onreload', function(){
+            $(document).on('pjax:scriptcomplete.onreload', function () {
                 // We end the loading animation
                 endLoadingBar();
                 //free submitting again
                 activeSubmit = false;
+                $('.action--ls-button-submit, .action--ls-button-previous').prop('disabled', false).removeClass('btn-disabled');
+
                 if (/<###begin###>/.test($('#beginScripts').text())) {
                     $('#beginScripts').text('');
                 }
-                if (/<###end###>/.test($('#bottomScripts').text())){
+                if (/<###end###>/.test($('#bottomScripts').text())) {
                     $('#bottomScripts').text('');
                 }
 
@@ -125,7 +164,11 @@ var AjaxSubmitObject = function () {
         bindActions: bindActions,
         startLoadingBar: startLoadingBar,
         endLoadingBar: endLoadingBar,
-        unsetSubmit: function(){activeSubmit = false;},
-        blockSubmit: function(){activeSubmit = true;}
+        unsetSubmit: function () {
+            activeSubmit = false;
+        },
+        blockSubmit: function () {
+            activeSubmit = true;
+        }
     };
 };

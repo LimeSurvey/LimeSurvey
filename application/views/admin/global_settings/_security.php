@@ -67,7 +67,11 @@
 </div>
 
 <div class="form-group">
-    <label class=" control-label"  for="force_ssl"><?php eT('Force HTTPS:'); ?></label>
+    <label class=" control-label"  for="force_ssl">
+    <?php if (Yii::app()->getConfig("demoMode")==true){ ?>
+    <span class="text-danger asterisk"></span>
+    <?php }; ?>    
+    <?php eT('Force HTTPS:'); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
             'name' => 'force_ssl',

@@ -509,7 +509,9 @@ function LEMval(alias)
     var varName = alias;
     var suffix = 'code';    // the default
     var value = "";
-    if(typeof bNumRealValue == 'undefined'){bNumRealValue=false;} // Allow to update {QCODE} even with text
+    if(typeof bNumRealValue == 'undefined'){
+        bNumRealValue=false;
+    } // Allow to update {QCODE} even with text
 
     /* If passed a number, return that number */
     if (str == '') return '';
@@ -706,6 +708,49 @@ function LEMval(alias)
             if (value === '') {
                 return '';
             }
+            // Always htmlentities user entered values, see #13928
+            switch(attr.type)
+            {
+                case '!': //List - dropdown
+                case 'L': //LIST drop-down/radio-button list
+                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                case 'H': //ARRAY (Flexible) - Column Format
+                case 'F': //ARRAY (Flexible) - Row Format
+                case 'R': //RANKING STYLE
+                    if (attr.type == 'O' && varName.match(/comment$/)) {
+                        value = htmlentities(value);
+                    }
+                    else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
+                        value = htmlentities(value);
+                    }
+                    break;
+                case 'N': //NUMERICAL QUESTION TYPE
+                case 'K': //MULTIPLE NUMERICAL QUESTION
+                case 'Q': //MULTIPLE SHORT TEXT
+                case ';': //ARRAY (Multi Flexi) Text
+                case 'S': //SHORT FREE TEXT
+                case 'T': //LONG FREE TEXT
+                case 'U': //HUGE FREE TEXT
+                case 'D': //DATE
+                case '*': //Equation
+                case '|': //File Upload (unsure need to be htmlentities ?)
+                        value = htmlentities(value);
+                    break;
+                case 'M': //Multiple choice checkbox
+                case 'P': //Multiple choice with comments checkbox + text
+                    if (attr.type == 'P' && varName.match(/comment$/)) {
+                        value = htmlentities(value);
+                    }
+                    break;
+                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                case ':': //ARRAY (Multi Flexi) 1 to 10
+                case '5': //5 POINT CHOICE radio-buttons
+                case 'I': //Language Question
+                case 'X': //BOILERPLATE QUESTION
+                default:
+                    // Nothing to update
+            }
 
             if (suffix == 'value' || suffix == 'valueNAOK') {
                 // if in assessment mode, this returns the assessment value
@@ -783,10 +828,12 @@ function LEMval(alias)
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
             else if (attr.type=='D')  {
                 // get date format pattern of referenced question
-                var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).attr('value');
-
-                // if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
-                sdatetimePattern =typeof sdatetimePattern == 'undefined'? 'YYYY-MM-DD HH:mm': sdatetimePattern;
+                var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).val();
+                if (sdatetimePattern == ''){
+                    sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).text();
+                }
+                // if empty (eg., variable on a previous page), set default format yy-mm-dd HH:MM
+                sdatetimePattern = sdatetimePattern == ''? 'YYYY-MM-DD HH:mm': sdatetimePattern;
 
                 if (sdatetimePattern==null) {
                     sdatetimePattern="";
@@ -805,16 +852,18 @@ function LEMval(alias)
                 }
                 return value;
             }
-            else {
+            else if(!isNaN(parseFloat(newval)) && isFinite(newval))
+            {
                 // If it's not a decimal number, just return value
                 try {
                     var decimal_safe = new Decimal(value);
-                    return pad(decimal_safe,value.length);
+                    return decimal_safe.toPrecision(value.length);
                 }
                 catch (ex) {
-                    return value;
                 }
             }
+
+            return value;
         }
         case 'rowdivid':
             if (typeof attr.rowdivid === 'undefined' || attr.rowdivid == '') {
@@ -826,17 +875,18 @@ function LEMval(alias)
     }
 }
 
+
 /** Display number with comma as radix separator, if needed
  */
 function LEMfixnum(value)
 {
     if (LEMradix===',') {
         var newval = String(value);
-        if (parseFloat(newval) != value) {
-            return value;   // unchanged
+        if (!isNaN(parseFloat(newval)) && isFinite(newval)) {
+            newval= newval.split('.').join(',');
+            return newval;
         }
-        newval= newval.split('.').join(',');
-        return newval;
+        return value;   // unchanged
     }
     return value;
 }

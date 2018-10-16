@@ -85,10 +85,10 @@
                         ."</div>\n";?>
 
                         <span class='smalltext'><?php eT("Number greater than");?>:</span><br />
-                        <?php echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('onkeypress'=>"return goodchars(event,'0123456789.,')"));?>
+                        <?php echo CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array('onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')"));?>
                         <br>
                         <span class='smalltext'><?php eT("Number less than");?>:</span><br>
-                        <?php echo CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array('onkeypress'=>"return goodchars(event,'0123456789.,')"));?>
+                        <?php echo CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array('onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')"));?>
                         <br>
                         <?php
                     }
@@ -194,10 +194,10 @@
                 $myfield2="{$myfield}G";
                 $myfield3="{$myfield}L";
                 echo "\t<span class='smalltext'>".gT("Number greater than").":</span><br />\n"
-                .CHtml::textField('N'.$myfield2,isset($_POST[$myfield2])?'N'.$_POST[$myfield2]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
+                .CHtml::textField('N'.$myfield2,isset($_POST[$myfield2])?'N'.$_POST[$myfield2]:'',array( 'onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')" ))
                 ."\t<br />\n"
                 ."\t<span class='smalltext'>".gT("Number less than").":</span><br />\n"
-                .CHtml::textField('N'.$myfield3,isset($_POST[$myfield3])?'N'.$_POST[$myfield3]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
+                .CHtml::textField('N'.$myfield3,isset($_POST[$myfield3])?'N'.$_POST[$myfield3]:'',array( 'onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')" ))
                 ."\t<br />\n";
 
                 //put field names into array
@@ -211,10 +211,10 @@
                 $myfield2 = "{$myfield}G";
                 $myfield3 = "{$myfield}L";
                 echo "\t<span class='smalltext'>".gT("Number of files greater than").":</span><br />\n"
-                .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
+                .CHtml::textField($myfield2,isset($_POST[$myfield2])?$_POST[$myfield2]:'',array( 'onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')" ))
                 ."<br />\n"
                 ."\t<span class='smalltext'>".gT("Number of files less than").":</span><br />\n"
-                .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'onkeypress'=>"return goodchars(event,'0123456789.,')" ))
+                .CHtml::textField($myfield3,isset($_POST[$myfield3])?$_POST[$myfield3]:'',array( 'onkeypress'=>"returnwindow.LS.goodchars(event,'0123456789.,')" ))
                 ."<br />\n";
                 break;
 

@@ -41,7 +41,7 @@
                     </td>
                     <td>
                         <?php
-                            templatereplace($qrrow['question'],array(),$aReplacementData,'Unspecified', false ,$qid);
+                            templatereplace($qrrow['question'],array('QID'=>$qrrow['qid']),$aReplacementData,'Unspecified', false ,$qid);
                             echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                         ?>
                     </td>
@@ -59,7 +59,7 @@
                         <?php
                             if (trim($qrrow['help'])!='')
                             {
-                                templatereplace($qrrow['help'],array(),$aReplacementData,'Unspecified', false ,$qid);
+                                templatereplace($qrrow['help'],array('QID'=>$qrrow['qid']),$aReplacementData,'Unspecified', false ,$qid);
                                 echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             }
                         ?>

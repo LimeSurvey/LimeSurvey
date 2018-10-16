@@ -98,7 +98,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($thissurvey['templatedir'])) {
         $templatename = $thissurvey['templatedir'];
     } else {
-        $templatename = getGlobalSetting('defaulttheme');
+        $templatename = App()->getConfig('defaulttheme');
     }
     if (!isset($templateurl)) {
         $templateurl = getTemplateURL($templatename)."/";
@@ -230,7 +230,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $iscompleted = $thissurvey['iscompleted'] = false;
     }
 
-    if (isset($surveyid)) {
+    if (isset($surveyid) && isset($_SESSION['survey_'.$surveyid]['srid'])) {
         $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-toggle'=>'tooltip', 'data-placement'=>'right', 'title'=>gT("Note: Print will not include items on this page")));
     } else {
         $_quexmlpdf = "";
@@ -250,7 +250,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_return_to_survey = "";
 
     if (isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999") {
-        $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
+        $_googleAnalyticsAPIKey = trim(App()->getConfig('googleanalyticsapikey'));
     } else if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '') {
         $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
     } else {
@@ -342,10 +342,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
-    if (!isset($replacements['QID'])) {
-        Yii::import('application.helpers.SurveyRuntimeHelper');
-        $coreReplacements = array_merge($coreReplacements, SurveyRuntimeHelper::getQuestionReplacement(null)); // so $replacements overrides core values
-    }
     if (!is_null($replacements) && is_array($replacements)) {
         $doTheseReplacements = array_merge($coreReplacements, $replacements); // so $replacements overrides core values
     } else {
@@ -435,16 +431,17 @@ function getStandardsReplacementFields($thissurvey)
     }
 
     $_assessment_current_total = '';
-    if (!empty($thissurvey['aAssessments'])) {
-        if (!empty($thissurvey['aAssessments']['total'])) {
-            $_assessment_current_total = $thissurvey['aAssessments']['total'];
-        }
-
+    if (!empty($thissurvey['assessments']) && $thissurvey['assessments']=="Y") {
+        $assessmentdata = doAssessment($surveyid, true);
+        $_assessment_current_total = (!empty($assessmentdata['datas']['total_score']))?$assessmentdata['datas']['total_score']:gT("Unkown");
     }
 
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
+    $coreReplacements['FLASHMESSAGE'] = makeFlashMessage();
+    $coreReplacements['NUMBEROFGROUPS'] = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
+    $coreReplacements['NUMBEROFQUESTIONS'] = $_SESSION['survey_'.$surveyid]['totalquestions'];
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['EXPIRY'] = $_dateoutput;
@@ -478,6 +475,7 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
+    $coreReplacements['TEMPLATEURL'] = Template::model()->getInstance()->templateURL;
 
     return $coreReplacements;
 }

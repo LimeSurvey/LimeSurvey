@@ -37,7 +37,6 @@ class index extends CAction
         }
 
         $this->_loadRequiredHelpersAndLibraries();
-
         $param       = $this->_getParameters(func_get_args(), $_POST);
         $surveyid    = $param['sid'];
         $thisstep    = $param['thisstep'];
@@ -70,26 +69,82 @@ class index extends CAction
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
 
-        $this->_loadLimesurveyLang($surveyid);
 
+        $previewmode = false;
+        if (isset($param['action']) && (in_array($param['action'], array('previewgroup', 'previewquestion')))) {
+
+            if (!$this->_canUserPreviewSurvey($surveyid)) {
+
+                // @todo : throw a 401
+                $aErrors  = array(gT('Error'));
+                $message = gT("We are sorry but you don't have permissions to do this.");
+                if(Permission::getUserId()) {
+                    throw new CHttpException(403, $message);
+                }
+                throw new CHttpException(401, $message);
+            } else {
+                if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
+                    $previewmode = 'question';
+                }
+                if ((intval($param['gid']) && $param['action'] == 'previewgroup')) {
+                    $previewmode = 'group';
+                }
+            }
+        }
+
+        Yii::app()->setConfig('previewmode', $previewmode);
+
+
+        // Token Object
+        // Get token
+        if (!isset($token) && isset($clienttoken)) {
+            $token = $clienttoken;
+        }
+
+        //SEE IF SURVEY USES TOKENS
+        if ($oSurvey->hasTokensTable) {
+            $tokensexist = 1;
+        }
+
+
+        if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
+
+            // check also if it is allowed to change survey after completion
+            if ($thissurvey['alloweditaftercompletion'] == 'Y') {
+                $oToken = $tokenInstance = Token::model($surveyid)->editable()->findByAttributes(array('token' => $token));
+            } else {
+                $oToken = $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
+            }
+            if (empty($tokenInstance)) {
+                $oToken = Token::model($surveyid)->findByAttributes(array('token' => $token));
+            }
+        }
+
+        $this->_loadLimesurveyLang($surveyid);
 
         // Set the language of the survey, either from POST, GET parameter of session var
         // Keep the old value, because SetSurveyLanguage update $_SESSION
         $sOldLang = isset($_SESSION['survey_'.$surveyid]['s_lang']) ? $_SESSION['survey_'.$surveyid]['s_lang'] : ""; // Keep the old value, because SetSurveyLanguage update $_SESSION
 
+        $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
         if (!empty($param['lang'])) {
             $sDisplayLanguage = $param['lang']; // $param take lang from returnGlobal and returnGlobal sanitize langagecode
         } elseif (isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        } elseif (Survey::model()->findByPk($surveyid)) {
+        } elseif ( !empty($clienttoken) ) {
+            $sDisplayLanguage = $oToken->language;
+        }elseif (Survey::model()->findByPk($surveyid)) {
             $sDisplayLanguage = Survey::model()->findByPk($surveyid)->language;
-        } else {
-            $sDisplayLanguage = Yii::app()->getConfig('defaultlang');
         }
 
         if ($surveyid && $surveyExists) {
             SetSurveyLanguage($surveyid, $sDisplayLanguage);
         }
+
+        /* Launch beforeSurveyPage before all renderExitMessage */
+        $beforeSurveyPageEvent = new PluginEvent('beforeSurveyPage');
+        $beforeSurveyPageEvent->set('surveyId', $surveyid);
+        App()->getPluginManager()->dispatchEvent($beforeSurveyPageEvent);
 
         if ($this->_isClientTokenDifferentFromSessionToken($clienttoken, $surveyid)) {
             $sReloadUrl = $this->getController()->createUrl("/survey/index/sid/{$surveyid}", array('token'=>$clienttoken, 'lang'=>App()->language, 'newtest'=>'Y'));
@@ -115,6 +170,14 @@ class index extends CAction
 
         } elseif (!$clienttoken) {
             $clienttoken = isset($_SESSION['survey_'.$surveyid]['token']) ? $_SESSION['survey_'.$surveyid]['token'] : ""; // Fix for #12003
+        }
+
+        if ($tokensexist != 1){
+            $tokensexist = 0;
+            unset($_POST['token']);
+            unset($param['token']);
+            unset($token);
+            unset($clienttoken);
         }
 
         // No test for response update
@@ -143,53 +206,19 @@ class index extends CAction
             );
         }
 
-        $previewmode = false;
-        if (isset($param['action']) && (in_array($param['action'], array('previewgroup', 'previewquestion')))) {
-
-            if (!$this->_canUserPreviewSurvey($surveyid)) {
-
-                // @todo : throw a 401
-                $aErrors  = array(gT('Error'));
-                $aMessage = array(gT("We are sorry but you don't have permissions to do this."),);
-
-                App()->getController()->renderExitMessage(
-                    $surveyid,
-                    'norights-401',
-                    $aMessage,
-                    null,
-                    $aErrors
-                    );
-            } else {
-                if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
-                    $previewmode = 'question';
-                }
-                if ((intval($param['gid']) && $param['action'] == 'previewgroup')) {
-                    $previewmode = 'group';
-                }
-            }
-        }
-
-        Yii::app()->setConfig('previewmode', $previewmode);
-
         if ($this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists)) {
             $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
 
             if ($bPreviewRight === false) {
-                // @todo : throw a 401
-                $aErrors  = array(gT('Error'));
-                $aMessage = array(gT("We are sorry but you don't have permissions to do this."),);
                 $event    = new PluginEvent('onSurveyDenied');
                 $event->set('surveyId', $surveyid);
                 $event->set('reason', 'noPreviewPermission');
 
                 App()->getPluginManager()->dispatchEvent($event);
-                App()->getController()->renderExitMessage(
-                    $surveyid,
-                    'norights-410',
-                    $aMessage,
-                    null,
-                    $aErrors
-                    );
+                if(Permission::getUserId()) {
+                    throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this."));
+                }
+                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this."));
             }
         }
 
@@ -253,38 +282,26 @@ class index extends CAction
             $event->set('surveyId', $surveyid);
             $event->set('reason', 'surveyDoesNotExist');
             App()->getPluginManager()->dispatchEvent($event);
+            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
+            /* Alt solution */
+            //~ header("HTTP/1.0 404 Not Found",true,404);
+            //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
+                //~ array('aSurveyInfo' =>array(
+                    //~ 'aError'=>array(
+                        //~ 'error'=>gT('404: Not Found'),
+                        //~ 'title'=>gT('This survey does not seem to exist'),
+                        //~ 'message'=>gT("The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.")
 
-            $aError['title'] = "Not Found!";
-            $aError['message'] = "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.";
+                    //~ ),
+                //~ )), false);
 
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aSurveyInfo' => array('aError' => $aError, 'adminemail' => Yii::app()->getConfig('siteadminemail'))), false);
-        }
-
-        // Get token
-        if (!isset($token)) {
-            $token = $clienttoken;
         }
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $thissurvey = getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-
-        $event = new PluginEvent('beforeSurveyPage');
-        $event->set('surveyId', $surveyid);
-        App()->getPluginManager()->dispatchEvent($event);
-
-        if (!is_null($event->get('template'))) {
-            $thissurvey['templatedir'] = $event->get('template');
-        }
-
-        //SEE IF SURVEY USES TOKENS
-        if ($oSurvey->hasTokensTable) {
-            $tokensexist = 1;
-        } else {
-            $tokensexist = 0;
-            unset($_POST['token']);
-            unset($param['token']);
-            unset($token);
-            unset($clienttoken);
+        /* Unsure it still work, and surely better in afterFindSurvey */
+        if (!is_null($beforeSurveyPageEvent->get('template'))) {
+            $thissurvey['templatedir'] = $beforeSurveyPageEvent->get('template');
         }
 
         //SET THE TEMPLATE DIRECTORY
@@ -429,40 +446,16 @@ class index extends CAction
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
         }
 
-
+        //check if token is in a valid time frame
         //Check if TOKEN is used for EVERY PAGE
         //This function fixes a bug where users able to submit two surveys/votes
         //by checking that the token has not been used at each page displayed.
         // bypass only this check at first page (Step=0) because
         // this check is done in buildsurveysession and error message
         // could be more interresting there (takes into accound captcha if used)
-        if ($tokensexist == 1 && isset($token) && $token != "" &&
-            isset($_SESSION['survey_'.$surveyid]['step']) && $_SESSION['survey_'.$surveyid]['step'] > 0 && tableExists("tokens_{$surveyid}}}")) {
-
-            // check also if it is allowed to change survey after completion
-            if ($thissurvey['alloweditaftercompletion'] == 'Y') {
-                $tokenInstance = Token::model($surveyid)->findByAttributes(array('token' => $token));
-            } else {
-                $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
-            }
-        }
-
-        //check if token is in a valid time frame
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
-
-            // check also if it is allowed to change survey after completion
-            if ($thissurvey['alloweditaftercompletion'] == 'Y') {
-                $tokenInstance = Token::model($surveyid)->editable()->findByAttributes(array('token' => $token));
-            } else {
-                $tokenInstance = Token::model($surveyid)->usable()->incomplete()->findByAttributes(array('token' => $token));
-            }
-
             if (empty($tokenInstance)) {
-
-                $oToken = Token::model($surveyid)->findByAttributes(array('token' => $token));
-
                 if ($oToken) {
-
                     $now = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"));
 
                     // This can not happen (TokenInstance must fix this)
@@ -495,7 +488,7 @@ class index extends CAction
                         $aMessage,
                         null,
                         array($sError)
-                        );
+                    );
                 } else {
                     $sError = gT("This is a controlled survey. You need a valid token to participate.");
                 }
@@ -601,10 +594,6 @@ class index extends CAction
         // } catch (WrongTemplateVersionException $ex) {
         //     echo $ex->getMessage();
         // }
-
-        if (App()->request->getPost('saveall')) {
-            App()->clientScript->registerScript("saveflashmessage", "alert('".gT("Your responses were successfully saved.", "js")."');", CClientScript::POS_READY);
-        }
     }
 
     private function _getParameters($args = array(), $post = array())

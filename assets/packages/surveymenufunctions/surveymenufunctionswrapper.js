@@ -138,6 +138,11 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
                         ajax: true
                     });
                 });
+
+                $('#pageSize').on("change", function(e){
+                    console.log('pageSizeChanged', $(this).val());
+                    $.fn.yiiGridView.update(targetGrid,{ data:{ pageSize: $(this).val() }});
+                });
             };
         },
         getBindActionForSurveymenus : function () {
@@ -180,6 +185,11 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
                         menuid: $(this).closest('tr').data('surveymenu-id'),
                         ajax: true
                     });
+                });
+
+                $('#pageSize').on("change", function(e){
+                    console.log('pageSizeChanged', $(this).val());
+                    $.fn.yiiGridView.update(targetGrid,{ data:{ pageSize: $(this).val() }});
                 });
             }
         }

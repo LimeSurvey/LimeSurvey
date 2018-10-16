@@ -42,14 +42,14 @@ class SurveyTimingDynamic extends LSActiveRecord
 
         /** @var self $model */
         $model = parent::model(__CLASS__);
-        
+
         //We need to refresh if we changed sid
         if ($refresh === true) {
             $model->refreshMetaData();
         }
         return $model;
     }
-    
+
     /**
      * Sets the survey ID for the next model
      *
@@ -202,6 +202,14 @@ class SurveyTimingDynamic extends LSActiveRecord
         }
 
         return $buttons;
+    }
+
+    /**
+     * Get current surveyId for other model/function
+     * @return int
+     */
+    public function getSurveyId() {
+        return self::$sid;
     }
 
 }

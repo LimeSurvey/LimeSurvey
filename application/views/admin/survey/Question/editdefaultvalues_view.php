@@ -13,7 +13,6 @@
     <div class="row">
         <div class="col-lg-8 content-right">
             <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'','id'=>'frmdefaultvalues','name'=>'frmdefaultvalues')); ?>
-
                     <ul class="nav nav-tabs">
                         <?php
                             foreach ($oSurvey->allLanguages as $i=>$language) {
@@ -44,13 +43,16 @@
                                                         <option value=''<?php is_null($opts['defaultvalue']) ? ' selected="selected"' : '' ?>>
                                                             <?php eT('<No default value>') ?>
                                                         </option>
-                                                        <?php
-                                                            foreach ($opts['answers'] as $answer) {
-                                                                $answer = $answer->attributes;
-                                                            ?>                          <option<?php if ($answer['code'] == $opts['defaultvalue']){ ?> selected="selected" <?php } ?> value="<?php echo $answer['code'] ?>"><?php echo $answer['answer'] ?></option>
-                                                            <?php
-                                                            }
-                                                        ?>
+                                                        <?php foreach ($opts['answers'] as $answer) {
+                                                            $answer = $answer->attributes;
+                                                        ?>                          
+                                                            <option 
+                                                                <?=($answer['code'] == $opts['defaultvalue'] ? 'selected="selected"' : '')?> 
+                                                                value="<?php echo $answer['code'] ?>"
+                                                            >
+                                                                <?php echo $answer['answer'] ?>
+                                                            </option>
+                                                        <?php } ?>
                                                     </select>
                                                 </div>
                                             </div>
@@ -153,14 +155,13 @@
                                             ?>
                                             <?php if ($questionrow['type'] != 'Y'): //temporary solution - until everything is move to widgets?>
                                                 <div class="form-group">
-                                                    <label class="col-sm-12 control-label"for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
+                                                    <label class="col-sm-12 control-label" for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
                                                         <?php eT("Default value:")?>
                                                     </label>
                                                     <div class="col-sm-12">
                                                         <textarea <?php echo $hasUpdatePermission; ?> cols='50' name='defaultanswerscale_<?php echo "0_{$language}_0" ?>'
                                                             id='defaultanswerscale_<?php echo "0_{$language}_0" ?>'><?php
-                                                            echo htmlspecialchars($langopts[$language][$questionrow['type']][0]); ?>
-                                                        </textarea>
+                                                            echo htmlspecialchars($langopts[$language][$questionrow['type']][0]); ?></textarea>
                                                     </div>
                                                 </div>
                                             <?php endif;  //temporary solution?>

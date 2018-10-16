@@ -17,57 +17,63 @@
 // | Based on OLE::Storage_Lite by Kawai, Takanori                        |
 // +----------------------------------------------------------------------+
 //
-// $Id: File.php,v 1.8 2003/12/12 21:10:10 xnoguer Exp $
+// $Id$
 
-if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'PPS.php';
 
+if (!class_exists('OLE_PPS')) {
+    require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'PPS.php';
+}
+
+if (!class_exists('System')) {
+    require_once 'System.php';
+}
 
 /**
- * Class for creating File PPS's for OLE containers
- *
- * @author   Xavier Noguer <xnoguer@php.net>
- * @category Structures
- * @package  OLE
- */
+* Class for creating File PPS's for OLE containers
+*
+* @author   Xavier Noguer <xnoguer@php.net>
+* @category Structures
+* @package  OLE
+*/
 class OLE_PPS_File extends OLE_PPS
 {
     /**
-     * The temporary dir for storing the OLE file
-     * @var string
-     */
+    * The temporary dir for storing the OLE file
+    * @var string
+    */
     var $_tmp_dir;
 
     /**
-     * The constructor
-     *
-     * @access public
-     * @param string $name The name of the file (in Unicode)
-     * @see OLE::Asc2Ucs()
-     */
-    function OLE_PPS_File($name)
+    * The constructor
+    *
+    * @access public
+    * @param string $name The name of the file (in Unicode)
+    * @see OLE::Asc2Ucs()
+    */
+    function __construct($name)
     {
-        $this->_tmp_dir = '';
-        $this->OLE_PPS(
-        null,
-        $name,
-        OLE_PPS_TYPE_FILE,
-        null,
-        null,
-        null,
-        null,
-        null,
+        $system = new System();
+        $this->_tmp_dir = $system->tmpdir();
+        parent::__construct(
+            null, 
+            $name,
+            OLE_PPS_TYPE_FILE,
+            null,
+            null,
+            null,
+            null,
+            null,
             '',
-        array());
+            array());
     }
 
     /**
-     * Sets the temp dir used for storing the OLE file
-     *
-     * @access public
-     * @param string $dir The dir to be used as temp dir
-     * @return true if given dir is valid, false otherwise
-     */
+    * Sets the temp dir used for storing the OLE file
+    *
+    * @access public
+    * @param string $dir The dir to be used as temp dir
+    * @return true if given dir is valid, false otherwise
+    */
     function setTempDir($dir)
     {
         if (is_dir($dir)) {
@@ -78,11 +84,11 @@ class OLE_PPS_File extends OLE_PPS
     }
 
     /**
-     * Initialization method. Has to be called right after OLE_PPS_File().
-     *
-     * @access public
-     * @return mixed true on success. PEAR_Error on failure
-     */
+    * Initialization method. Has to be called right after OLE_PPS_File().
+    *
+    * @access public
+    * @return mixed true on success. PEAR_Error on failure
+    */
     function init()
     {
         $this->_tmp_filename = tempnam($this->_tmp_dir, "OLE_PPS_File");
@@ -94,22 +100,32 @@ class OLE_PPS_File extends OLE_PPS
         if ($this->_PPS_FILE) {
             fseek($this->_PPS_FILE, 0);
         }
-    }
 
+        return true;
+    }
+    
     /**
-     * Append data to PPS
-     *
-     * @access public
-     * @param string $data The data to append
-     */
+    * Append data to PPS
+    *
+    * @access public
+    * @param string $data The data to append
+    */
     function append($data)
     {
         if ($this->_PPS_FILE) {
             fwrite($this->_PPS_FILE, $data);
-        }
-        else {
+        } else {
             $this->_data .= $data;
         }
+    }
+
+    /**
+     * Returns a stream for reading this file using fread() etc.
+     * @return  resource  a read-only stream
+     */
+    function getStream()
+    {
+        $this->ole->getStream($this);
     }
 }
 ?>

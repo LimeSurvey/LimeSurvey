@@ -242,7 +242,7 @@ var TimerConstructor = function(options){
      * redirect to the next page
      */
     _redirectOut = function(){
-        $('.ls-move-btn').trigger('click');
+        $('.action--ls-button-submit').trigger('click');
     },
     /**
      * Binds the reset of the localStorage as soon as the participant has submitted the form

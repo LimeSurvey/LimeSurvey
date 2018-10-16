@@ -1,0 +1,35 @@
+{#
+/**
+ * List radio Html : item row
+ *
+ * @var $name
+ * @var $code
+ * @var $answer
+ * @var $checkedState
+ * @var $myfname
+ */
+#}
+
+{% set button_size=question_template_attribute.button_size %}
+
+{% if button_size == 'default' or button_size == '' %}
+    {% set button_size_class='' %}
+{% else %}
+    {% set button_size_class= "btn-"~button_size %}
+{% endif %}
+
+<!-- answer_row -->
+<li id="javatbd{{ myfname }}" class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %}">
+    <input
+        class="radio bootstrap-radio"
+        type="radio"
+        name="{{ name }}"
+        id="answer{{ name }}{{ code }}"
+        value={{ code }}
+        {{ checkedState }}
+    />
+    <label for="answer{{ name }}">
+        <span class="" aria-hidden="true"></span> {{ answer }}
+    </label>
+</li>
+<!-- end of answer_row -->

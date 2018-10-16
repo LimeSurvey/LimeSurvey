@@ -1,0 +1,30 @@
+{#
+/**
+ * File upload question Html
+ * @var $fileid
+ * @var $value
+ * @var $filecountvalue
+ */
+#}
+
+<!-- File Upload  -->
+
+<!--answer -->
+<div class="{{ coreClass }}">
+    <div class='upload-button'>
+        <a
+            id='upload_{{ fileid }}'
+            class='btn btn-primary upload'
+            href='#'
+            onclick='javascript:upload_{{ fileid }}();'
+        >
+            <span class='fa fa-upload'></span>&nbsp;{{ gT('Upload files') }}
+        </a>
+    </div>
+    <input type='hidden' id='{{ fileid }}' name='{{ fileid }}' value='{{ value }}' />
+    <input type='hidden' id='{{ fileid }}_filecount' name='{{ fileid }}_filecount' value="{{ filecountvalue }}" />
+    <div id='{{ fileid }}_uploadedfiles'>
+
+    </div>
+</div>
+<!-- end of answer -->

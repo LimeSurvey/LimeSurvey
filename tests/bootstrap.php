@@ -216,6 +216,20 @@ if (!file_exists(APPPATH . 'config/config' . EXT)) {
     }
 }
 
+// Check that tmp and upload are set to 777 permission (OK on test system).
+if (substr(sprintf('%o', fileperms(BASEPATH . '../tmp/')), -4) != '0777') {
+    die('tmp folder not set to 777');
+}
+if (substr(sprintf('%o', fileperms(BASEPATH . '../tmp/runtime/')), -4) != '0777') {
+    die('tmp/runtime folder not set to 777');
+}
+if (substr(sprintf('%o', fileperms(BASEPATH . '../upload/')), -4) != '0777') {
+    die('upload folder not set to 777');
+}
+if (substr(sprintf('%o', fileperms(BASEPATH . '../tests/tmp/')), -4) != '0777') {
+    die('tests/tmp folder not set to 777');
+}
+
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
 

@@ -703,7 +703,7 @@ protected function insertCondition(array $args)
         } else {
             Yii::app()->setFlashMessage(
             gT(
-            "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
+            "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
             "js"
             ),
             'error'
@@ -715,35 +715,36 @@ protected function insertCondition(array $args)
         $posted_condition_value = null;
         
         // Other conditions like constant, other question or token field
-        if ($request->getPost('editTargetTab') == "#CONST") {
-            $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
-        } elseif ($request->getPost('editTargetTab') == "#PREVQUESTIONS") {
-            $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
-        } elseif ($request->getPost('editTargetTab') == "#TOKENATTRS") {
-            $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
-        } elseif ($request->getPost('editTargetTab') == "#REGEXP") {
-            $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
+        switch($request->getPost('editTargetTab')) {
+            case '#CONST':
+                $posted_condition_value = Yii::app()->request->getPost('ConditionConst','');
+                break;
+            case '#PREVQUESTIONS':
+                $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA','');
+                break;
+            case '#TOKENATTRS':
+                $posted_condition_value = Yii::app()->request->getPost('tokenAttr','');
+                break;
+            case '#REGEXP':
+                $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp','');
+                break;
+            default:
+                $posted_condition_value = null;
         }
-        
-        if ($posted_condition_value) {
+
+        $result = null;
+        if ($posted_condition_value !=='') {
             $condition_data['value'] = $posted_condition_value;
             $result = Condition::model()->insertRecords($condition_data);
-        } else {
-            $result = null;
         }
-        
-        if ($result === false) {
-            Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
-        } else if ($result === true) {
+        if($result) {
             Yii::app()->setFlashMessage(gT('Condition added.'), 'success');
         } else {
-            Yii::app()->setFlashMessage(
-            gT(
-            "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
-            "js"
-            ),
-            'error'
-            );
+            if($result === false) {
+                Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
+            } else {
+                Yii::app()->setFlashMessage(gT("The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."),'error');
+            }
         }
     }
     
@@ -767,7 +768,7 @@ protected function insertConditionAjax($args)
     } elseif (isset($csrctoken) && $csrctoken != '') {
         $conditionCfieldname = $csrctoken;
     } else {
-        return array(gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
+        return array(gT("The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."), 'error');
     }
     
     $condition_data = array(
@@ -803,7 +804,7 @@ protected function insertConditionAjax($args)
         } else {
             return array(
             gT(
-            "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
+            "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
             "js"
             ),
             'error'
@@ -839,7 +840,7 @@ protected function insertConditionAjax($args)
         } else {
             return array(
             gT(
-            "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
+            "The condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
             "js"
             ),
             'error'
@@ -946,42 +947,46 @@ protected function updateCondition(array $args)
             Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
         }
     } else {
-        $posted_condition_value = null;
-        
-        // Please note that autoUnescape is already applied in database.php included above
-        // so we only need to db_quote _POST variables
-        if ($request->getPost('editTargetTab') == "#CONST") {
-            $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
-        } elseif ($request->getPost('editTargetTab') == "#PREVQUESTIONS") {
-            $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
-        } elseif ($request->getPost('editTargetTab') == "#TOKENATTRS") {
-            $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
-        } elseif ($request->getPost('editTargetTab') == "#REGEXP") {
-            $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
+        switch($request->getPost('editTargetTab')) {
+            case "#CONST":
+                $posted_condition_value = Yii::app()->request->getPost('ConditionConst','');
+                break;
+            case "#PREVQUESTIONS":
+                $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA','');
+                break;
+            case "#TOKENATTRS":
+                $posted_condition_value = Yii::app()->request->getPost('tokenAttr','');
+                break;
+            case "#REGEXP":
+                $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp','');
+                break;
+            default:
+                $posted_condition_value = null;
         }
-        
+
         $result = null;
-        
-        if ($posted_condition_value) {
+        if ($posted_condition_value !== '') {
             $updated_data = array(
-            'qid' => $qid,
-            'scenario' => $p_scenario,
-            'cqid' => $p_cqid,
-            'cfieldname' => $conditionCfieldname,
-            'method' => $p_method,
-            'value' => $posted_condition_value
+                'qid' => $qid,
+                'scenario' => $p_scenario,
+                'cqid' => $p_cqid,
+                'cfieldname' => $conditionCfieldname,
+                'method' => $p_method,
+                'value' => $posted_condition_value
             );
             $result = Condition::model()->insertRecords($updated_data, true, array('cid'=>$p_cid));
         }
-        
         if ($result) {
             Yii::app()->setFlashMessage(gT('Condition updated.'), 'success');
         } else {
-            Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
+            if($result === false) {
+                Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
+            } else {
+                Yii::app()->setFlashMessage(gT("The condition could not be updated! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."),'error');
+            }
         }
-        
     }
-    
+
     LimeExpressionManager::UpgradeConditionsToRelevance(null, $qid);
     $this->redirectToConditionStart($qid, $gid);
 }
@@ -1779,15 +1784,9 @@ protected function getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers)
 protected function getEDITConditionConst($subaction)
 {
     $request = Yii::app()->request;
-    $EDITConditionConst = '';
-    if ($subaction == "editthiscondition") {
-        if ($request->getPost('EDITConditionConst') != '') {
-            $EDITConditionConst = HTMLEscape($request->getPost('EDITConditionConst'));
-        }
-    } else {
-        if ($request->getPost('ConditionConst') != '') {
-            $EDITConditionConst = HTMLEscape($request->getPost('ConditionConst'));
-        }
+    $EDITConditionConst = HTMLEscape($request->getPost('ConditionConst',''));
+    if ($subaction == "editthiscondition" && $request->getPost('EDITConditionConst','') !== '') {
+        $EDITConditionConst = HTMLEscape($request->getPost('EDITConditionConst',''));
     }
     return $EDITConditionConst;
 }
@@ -1823,7 +1822,7 @@ protected function getEditFormJavascript($subaction)
     $aViewUrls = array('output' => '');
     if ($subaction == "editthiscondition") {
         // in edit mode we read previous values in order to dusplay them in the corresponding inputs
-        if ($request->getPost('EDITConditionConst') != '') {
+        if ($request->getPost('EDITConditionConst','') !== '') {
             // In order to avoid issues with backslash escaping, I don't use javascript to set the value
             // Thus the value is directly set when creating the Textarea element
             //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($request->getPost('EDITConditionConst'))."';\n";
@@ -1853,7 +1852,7 @@ protected function getEditFormJavascript($subaction)
         }
     } else {
 // in other modes, for the moment we do the same as for edit mode
-        if ($request->getPost('ConditionConst') != '') {
+        if ($request->getPost('ConditionConst','') !== '') {
             // In order to avoid issues with backslash escaping, I don't use javascript to set the value
             // Thus the value is directly set when creating the Textarea element
             //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($request->getPost('ConditionConst'))."';\n";
@@ -1909,7 +1908,7 @@ protected function getEditSourceTab()
 protected function getEditTargetTab()
 {
     $request = Yii::app()->request;
-    if ($request->getPost('EDITConditionConst') != '') {
+    if ($request->getPost('EDITConditionConst','') !== '') {
         return '#CONST';
     } elseif ($request->getPost('EDITprevQuestionSGQA') != '') {
         return '#PREVQUESTIONS';

@@ -2022,7 +2022,7 @@ class quexmlpdf extends pdf
                     $sqtmp['varname'] = $sq['varName'];
 
                     if (isset($sq['defaultValue'])) {
-                        $sqtmp['defaultvalue'] = $sq['defaultValue'];
+                        $sqtmp['defaultvalue'] = current($sq['defaultValue']);
                     }
 
                     if (isset($sq->contingentQuestion)) {
@@ -2038,7 +2038,7 @@ class quexmlpdf extends pdf
                         }
 
                         if (isset($sq->contingentQuestion['defaultValue'])) {
-                            $oarr['defaultvalue'] = $sq->contingentQuestion['defaultValue'];
+                            $oarr['defaultvalue'] = current($sq->contingentQuestion['defaultValue']);
                         }
 
                         $oarr['varname'] = $sq->contingentQuestion['varName'];
@@ -2063,7 +2063,7 @@ class quexmlpdf extends pdf
                     }
 
                     if (isset($r['defaultValue'])) {
-                        $rstmp['defaultvalue'] = $r['defaultValue'];
+                        $rstmp['defaultvalue'] = current($r['defaultValue']);
                     }
 
                     if (isset($r->fixed)) {
@@ -2101,7 +2101,7 @@ class quexmlpdf extends pdf
                                 }
 
                                 if (isset($c->contingentQuestion['defaultValue'])) {
-                                    $oarr['defaultvalue'] = $c->contingentQuestion['defaultValue'];
+                                    $oarr['defaultvalue'] = current($c->contingentQuestion['defaultValue']);
                                 }
 
                                 $oarr['varname'] = $c->contingentQuestion['varName'];
@@ -3009,7 +3009,7 @@ class quexmlpdf extends pdf
 
             $string = false;
             if ($defaultvalue !== false) {
-                $string = substr($defaultvalue, $startstring, $cells);
+                $string = mb_substr($defaultvalue, $startstring, $cells, "UTF-8");
             }
 
             $this->drawCells($cells, $string);
@@ -3073,10 +3073,7 @@ class quexmlpdf extends pdf
             //Add the box to the layout scheme
             $this->addBox($this->GetX(), $this->GetY(), $this->GetX() + $this->textResponseWidth, $this->GetY() + $this->textResponseHeight);
 
-            $text = '';
-            if (isset($string[$j])) {
-                $text = $string[$j];
-            }
+            $text = mb_substr($string,$j,1,"UTF-8");
 
             //Draw the box
             $this->Cell($this->textResponseWidth, $this->textResponseHeight, $text, $border, 0, '', true, '', 0, false, 'T', 'C');
@@ -3139,7 +3136,7 @@ class quexmlpdf extends pdf
             if ($bgtype != 6) {
                 $string = false;
                 if (isset($s['defaultvalue'])) {
-                    $string = substr($s['defaultvalue'], 0, $width);
+                    $string = mb_substr($s['defaultvalue'], 0, $width,"UTF-8");
                 }
 
                 //Draw the cells

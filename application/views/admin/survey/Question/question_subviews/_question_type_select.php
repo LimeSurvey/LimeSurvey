@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12" id="selector__currentQuestionTypeImage">
+                    <div class="col-sm-12 currentQuestionTypeImageContainer" id="selector__currentQuestionTypeImage">
                         <img src="<?php echo Yii::app()->getConfig('imageurl')?>/screenshots/<?php echo $currentType?>.png" />
                     </div>
                 </div>

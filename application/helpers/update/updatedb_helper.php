@@ -58,7 +58,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     try {
 
         // Version 1.80 had database version 132
-        // This is currently the oldest version we need support to update from 
+        // This is currently the oldest version we need support to update from
         if ($iOldDBVersion < 133)
         {
             $oTransaction = $oDB->beginTransaction();
@@ -215,7 +215,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 143)
         {
-            
+
             $oTransaction = $oDB->beginTransaction();
             addColumn('{{questions}}','parent_qid','integer NOT NULL default 0');
             addColumn('{{answers}}','scale_id','integer NOT NULL default 0');
@@ -613,7 +613,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createIndex('question_attributes_idx3','{{question_attributes}}','attribute');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>152),"stg_name='DBVersion'");
-            $oTransaction->commit();   
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 153)
@@ -680,7 +680,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             catch(Exception $e)
             {
                 // do nothing
-            }            
+            }
             if (Yii::app()->db->driverName=='mysql')
             {
                 $oDB->createCommand()->createTable('{{sessions}}',array(
@@ -705,16 +705,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             upgradeSurveys156();
 
             // If a survey has an deleted owner, re-own the survey to the superadmin
-            $oDB->schema->refresh();
-            Survey::model()->refreshMetaData();
-            $surveys = Survey::model();
-            $surveys = $surveys->with(array('owner'))->findAll();
-            foreach ($surveys as $row)
-            {
-                if (!isset($row->owner->attributes))
-                {
-                    Survey::model()->updateByPk($row->sid,array('owner_id'=>1));
-                }
+            $sSurveyQuery = "SELECT sid, uid  from {{surveys}} LEFT JOIN {{users}} ON uid=owner_id WHERE uid IS null";
+            $oSurveyResult = $oDB->createCommand($sSurveyQuery)->queryAll();
+            foreach ( $oSurveyResult as $row ) {
+                    $oDB->createCommand("UPDATE {{surveys}} SET owner_id=1 WHERE sid={$row['sid']}")->execute();
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>156),"stg_name='DBVersion'");
             $oTransaction->commit();
@@ -915,7 +909,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{conditions}}','value','string',false,'');
             alterColumn('{{participant_shares}}','can_edit',"string(5)",false);
 
-            alterColumn('{{users}}','password',"binary",false);
+             alterColumn('{{users}}','password',"binary",false);
             dropColumn('{{users}}','one_time_pw');
             addColumn('{{users}}','one_time_pw','binary');
 
@@ -969,7 +963,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
         if ($iOldDBVersion < 163) {
-            // Removed because it was obsolete template changes           
+            // Removed because it was obsolete template changes
         }
 
         if ($iOldDBVersion < 164)
@@ -1342,7 +1336,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     $sSubstringCommand = 'substring';
             }
             $oDB->createCommand("UPDATE {{templates}} set folder={$sSubstringCommand}(folder,1,50)")->execute();
-            dropPrimaryKey('templates');
+            try { dropPrimaryKey('templates'); } catch(Exception $e){};
             alterColumn('{{templates}}', 'folder', "string(50)", false);
             addPrimaryKey('templates', 'folder');
             dropPrimaryKey('participant_attribute_names_lang');
@@ -1647,7 +1641,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 314) {
             $oTransaction = $oDB->beginTransaction();
 
-     
+
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>314), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -1723,7 +1717,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 321) {
             $oTransaction = $oDB->beginTransaction();
-        
+
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>321), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -1886,20 +1880,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>331), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
+
         if ($iOldDBVersion < 332) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>332), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
+
         if ($iOldDBVersion < 333) {
             $oTransaction = $oDB->beginTransaction();
             upgrade333($oDB);
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>333), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        
+
         if ($iOldDBVersion < 334) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->addColumn('{{tutorials}}', 'title', 'string(192)');
@@ -1926,7 +1920,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>337), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-      
+
         if ($iOldDBVersion < 338) {
             $oTransaction = $oDB->beginTransaction();
             $rowToRemove = $oDB->createCommand()->select("position, id")->from("{{boxes}}")->where('ico=:ico', [':ico' => 'templates'])->queryRow();
@@ -1951,7 +1945,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>338), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-      
+
         if ($iOldDBVersion < 339) {
             $oTransaction = $oDB->beginTransaction();
 
@@ -1973,11 +1967,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
          */
         If ($iOldDBVersion < 341) {
             $oTransaction = $oDB->beginTransaction();
-            
+
             $oDB->createCommand()->truncateTable('{{tutorials}}');
             $oDB->createCommand()->truncateTable('{{tutorial_entries}}');
             $oDB->createCommand()->truncateTable('{{tutorial_entry_relation}}');
-           
+
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>341), "stg_name='DBVersion'");
             $oTransaction->commit();
@@ -2098,7 +2092,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
                         'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
                         'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                        'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3"}',
+                        'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1"}',
                         'cssframework_name' => 'bootstrap',
                         'cssframework_css'  => '{}',
                         'cssframework_js'   => '',
@@ -2115,7 +2109,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'files_css'         => '{"add":["css/ajaxify.css","css/animate.css","css/variations/sea_green.css","css/theme.css","css/custom.css"]}',
                     'files_js'          => '{"add":["scripts/theme.js","scripts/ajaxify.js","scripts/custom.js"]}',
                     'files_print_css'   => '{"add":["css/print_theme.css"]}',
-                    'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3"}',
+                    'options'           => '{"ajaxmode":"off","brandlogo":"on","brandlogofile":"./files/logo.png","container":"on","backgroundimage":"off","backgroundimagefile":"./files/pattern.png","animatebody":"off","bodyanimation":"fadeInRight","bodyanimationduration":"1.0","animatequestion":"off","questionanimation":"flipInX","questionanimationduration":"1.0","animatealert":"off","alertanimation":"shake","alertanimationduration":"1.0","font":"noto","bodybackgroundcolor":"#ffffff","fontcolor":"#444444","questionbackgroundcolor":"#ffffff","questionborder":"on","questioncontainershadow":"on","checkicon":"f00c","animatecheckbox":"on","checkboxanimation":"rubberBand","checkboxanimationduration":"0.5","animateradio":"on","radioanimation":"zoomIn","radioanimationduration":"0.3","showpopups":"1"}',
                     'cssframework_name' => 'bootstrap',
                     'cssframework_css'  => '{}',
                     'cssframework_js'   => '',
@@ -2209,6 +2203,141 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 349) {
+            $oTransaction = $oDB->beginTransaction();
+            dropColumn('{{users}}','one_time_pw');
+            addColumn('{{users}}','one_time_pw','text');
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>349], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Adding asset version to allow to reset asset without write inside
+         */
+        if ($iOldDBVersion < 350) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->createTable('{{asset_version}}',array(
+                'id' => 'pk',
+                'path' => 'text NOT NULL',
+                'version' => 'integer NOT NULL',
+            ));
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>350], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Turning on ajax mode at global level for all themes (survey level not affected)
+         */
+        if ($iOldDBVersion < 351) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $aTHemes = TemplateConfiguration::model()->findAll();
+
+            foreach ($aTHemes as $oTheme){
+                $oTheme->setGlobalOption("ajaxmode", "on");
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>351], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 352) {
+            $oTransaction = $oDB->beginTransaction();
+            dropColumn('{{sessions}}','data');
+            addColumn('{{sessions}}','data','binary');
+
+            $aTHemes = TemplateConfiguration::model()->findAll();
+
+            foreach ($aTHemes as $oTheme){
+                $oTheme->setGlobalOption("ajaxmode", "off");
+            }
+
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>352], "stg_name='DBVersion'");
+        }
+
+        if ($iOldDBVersion < 353) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $aTHemes = TemplateConfiguration::model()->findAll();
+
+            foreach ($aTHemes as $oTheme){
+                $oTheme->addOptionFromXMLToLiveTheme();
+            }
+
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>353], "stg_name='DBVersion'");
+        }
+
+
+        if ($iOldDBVersion < 354) {
+            $oTransaction = $oDB->beginTransaction();
+            $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            
+            if (!isset($surveymenuTable->columns['showincollapse'])) {
+                $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
+            }
+
+            $surveymenuEntryTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
+            if (!isset($surveymenuEntryTable->columns['showincollapse'])) {
+                $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'showincollapse', 'integer DEFAULT 0');
+            }
+
+            $aIdMap = [];
+            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
+            foreach($aDefaultSurveyMenus as $i => $aSurveymenu) {
+                $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
+                $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
+                $aIdMap[$aSurveymenu['name']] = $oDB->getCommandBuilder()->getLastInsertID('{{surveymenu}}');
+            }
+            
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
+                $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
+                switch($aSurveymenuentry['menu_id']) {
+                    case 1: $aSurveymenuentry['menu_id'] = $aIdMap['settings']; break;
+                    case 2: $aSurveymenuentry['menu_id'] = $aIdMap['mainmenu']; break;
+                    case 3: $aSurveymenuentry['menu_id'] = $aIdMap['quickmenu']; break;
+                    case 4: $aSurveymenuentry['menu_id'] = $aIdMap['pluginmenu']; break;
+                }
+                $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+            }
+
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>354], "stg_name='DBVersion'");
+        }
+
+        if ($iOldDBVersion < 355) {
+            $oTransaction = $oDB->beginTransaction();
+
+            $aIdMap = [];
+            $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
+            foreach($aDefaultSurveyMenus as $i => $aSurveymenu) {
+                $aIdMap[$aSurveymenu['name']] = $oDB->createCommand()
+                ->select(['id'])
+                ->from('{{surveymenu}}')
+                ->where('name=:name', [':name' => $aSurveymenu['name']])
+                ->queryScalar();
+            }
+            
+            $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
+            foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
+                $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
+                switch($aSurveymenuentry['menu_id']) {
+                    case 1: $aSurveymenuentry['menu_id'] = $aIdMap['settings']; break;
+                    case 2: $aSurveymenuentry['menu_id'] = $aIdMap['mainmenu']; break;
+                    case 3: $aSurveymenuentry['menu_id'] = $aIdMap['quickmenu']; break;
+                    case 4: $aSurveymenuentry['menu_id'] = $aIdMap['pluginmenu']; break;
+                }
+                $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
+            }
+
+
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>355], "stg_name='DBVersion'");
+        }
+
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -2229,6 +2358,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             .'</p><br />'
             . sprintf(gT('File %s, line %s.'), $file, $trace[1]['line'])
         );
+        // If we're debugging, re-throw the exception.
+        if (defined('YII_DEBUG') && YII_DEBUG) {
+            throw $e;
+        }
         return false;
     }
 
@@ -2248,11 +2381,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Survey::model()->refreshMetaData();
     Notification::model()->refreshMetaData();
 
+    // Try to clear tmp/runtime (database cache files).
+    // Related to problems like https://bugs.limesurvey.org/view.php?id=13699.
+    // Some cache implementations may not have 'flush' method. Only call flush if method exists.
+    if (method_exists(Yii::app()->cache, 'flush')) {
+        Yii::app()->cache->flush();
+    }
+    // Some cache implementations (ex: CRedisCache, CDummyCache) may not have 'gc' method. Only call gc if method exists.
+    if (method_exists(Yii::app()->cache, 'gc')) {
+        Yii::app()->cache->gc();
+    }
+
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
     $currentDbVersion = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'DBVersion'))->queryRow();
-    // Update the global config object because it is caching the old version
-    setGlobalSetting('DBVersion', $currentDbVersion['stg_value']);
+    // Update the global config object because it is static and set at start of App
+    Yii::app()->setConfig('DBVersion', $currentDbVersion['stg_value']);
 
     Notification::broadcast(array(
         'title' => gT('Database update'),
@@ -2475,7 +2619,8 @@ function createSurveyMenuTable(CDbConnection $oDB)
         'title' => "string(168)  NOT NULL DEFAULT ''",
         'position' => "string(192)  NOT NULL DEFAULT 'side'",
         'description' => "text ",
-        'active' => "boolean NOT NULL DEFAULT '0'",
+        'active' => "integer NOT NULL DEFAULT '0'",
+        'showincollapse' =>  "integer DEFAULT 0",
         'changed_at' => "datetime",
         'changed_by' => "integer NOT NULL DEFAULT '0'",
         'created_at' => "datetime",
@@ -2512,7 +2657,8 @@ function createSurveyMenuTable(CDbConnection $oDB)
         'data' =>  "text ",
         'getdatamethod' =>  "string(192)  NOT NULL DEFAULT ''",
         'language' =>  "string(32)  NOT NULL DEFAULT 'en-GB'",
-        'active' =>  "boolean NOT NULL DEFAULT '0'",
+        'active' =>  "integer NOT NULL DEFAULT '0'",
+        'showincollapse' =>  "integer DEFAULT 0",
         'changed_at' =>  "datetime NULL",
         'changed_by' =>  "integer NOT NULL DEFAULT '0'",
         'created_at' =>  "datetime NULL",
@@ -3108,15 +3254,19 @@ function upgradeSurveys177()
 function upgradeTokens176()
 {
     $oDB = Yii::app()->db;
-    $arSurveys = Survey::model()->findAll();
+    $arSurveys = $oDB
+    ->createCommand()
+    ->select('*')
+    ->from('surveys')
+    ->queryAll();
     // Fix any active token tables
     foreach ( $arSurveys as $arSurvey )
     {
-        $sTokenTableName='tokens_'.$arSurvey->sid;
+        $sTokenTableName='tokens_'.$arSurvey['sid'];
         if (tableExists($sTokenTableName))
-        {                                        
+        {
             $aColumnNames=$aColumnNamesIterator=$oDB->schema->getTable('{{'.$sTokenTableName.'}}')->columnNames;
-            $aAttributes = $arSurvey->tokenAttributes;
+            $aAttributes = $arSurvey['attributedescriptions'];
             foreach($aColumnNamesIterator as $sColumnName)
             {
                 // Check if an old atttribute_cpdb column exists in that token table
@@ -3136,7 +3286,7 @@ function upgradeTokens176()
                     }
                 }
             }
-            Survey::model()->updateByPk($arSurvey->sid, array('attributedescriptions' => serialize($aAttributes)));
+            $oDB->createCommand()->update('{{surveys}}',array('attributedescriptions'=>serialize($aAttributes)),"sid=".$arSurvey['sid']);
         }
     }
     unset($arSurveys);
@@ -3348,14 +3498,13 @@ function upgradeTokens148()
 
 function upgradeQuestionAttributes148()
 {
-    $sSurveyQuery = "SELECT sid FROM {{surveys}}";
+    $sSurveyQuery = "SELECT sid,language,additional_languages FROM {{surveys}}";
     $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
     $aAllAttributes=\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
     foreach ( $oSurveyResult->readAll()  as $aSurveyRow)
     {
         $iSurveyID=$aSurveyRow['sid'];
-        $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-
+        $aLanguages=array_merge(array($aSurveyRow['language']), explode(' ',$aSurveyRow['additional_languages']));
         $sAttributeQuery = "select q.qid,attribute,value from {{question_attributes}} qa , {{questions}} q where q.qid=qa.qid and sid={$iSurveyID}";
         $oAttributeResult = dbExecuteAssoc($sAttributeQuery);
         foreach ( $oAttributeResult->readAll() as $aAttributeRow)
@@ -3542,7 +3691,7 @@ function upgradeTables143()
     $answerresult = Yii::app()->getDb()->createCommand($answerquery)->queryAll();
     foreach ( $answerresult as $row )
     {
-        modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".dbQuoteAll($row['language']).",'',".dbQuoteAll($row['code']).")"); 
+        modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},0,".dbQuoteAll($row['language']).",'',".dbQuoteAll($row['code']).")");
     }
 
     // Convert answers to subquestions
@@ -3578,17 +3727,17 @@ function upgradeTables143()
         }
         if (($row['type']=='M' || $row['type']=='P') && $row['default_value']=='Y')
         {
-            modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, sqid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},{$iSaveSQID},0,".dbQuoteAll($row['language']).",'','Y')"); 
+            modifyDatabase("","INSERT INTO {{defaultvalues}} (qid, sqid, scale_id,language,specialtype,defaultvalue) VALUES ({$row['qid']},{$iSaveSQID},0,".dbQuoteAll($row['language']).",'','Y')");
         }
     }
     // Sanitize data
     if (Yii::app()->db->driverName=='pgsql')
     {
-        modifyDatabase("","delete from {{answers}} USING {{questions}} WHERE {{answers}}.qid={{questions}}.qid AND {{questions}}.type in ('1','F','H','M','P','W','Z')"); 
+        modifyDatabase("","delete from {{answers}} USING {{questions}} WHERE {{answers}}.qid={{questions}}.qid AND {{questions}}.type in ('1','F','H','M','P','W','Z')");
     }
     else
     {
-        modifyDatabase("","delete {{answers}} from {{answers}} LEFT join {{questions}} ON {{answers}}.qid={{questions}}.qid where {{questions}}.type in ('1','F','H','M','P','W','Z')"); 
+        modifyDatabase("","delete {{answers}} from {{answers}} LEFT join {{questions}} ON {{answers}}.qid={{questions}}.qid where {{questions}}.type in ('1','F','H','M','P','W','Z')");
     }
 
     // Convert labels to answers
@@ -3600,7 +3749,7 @@ function upgradeTables143()
         $labelresult = Yii::app()->getDb()->createCommand($labelquery)->queryAll();
         foreach ( $labelresult as $lrow )
         {
-            modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",{$lrow['assessment_value']})"); 
+            modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",{$lrow['assessment_value']})");
             //$labelids[]
         }
         if ($row['type']=='1')
@@ -3609,7 +3758,7 @@ function upgradeTables143()
             $labelresult = Yii::app()->getDb()->createCommand($labelquery)->queryAll();
             foreach ( $labelresult as $lrow )
             {
-                modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, scale_id, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",1,{$lrow['assessment_value']})"); 
+                modifyDatabase("","INSERT INTO {{answers}} (qid, code, answer, sortorder, language, scale_id, assessment_value) VALUES ({$row['qid']},".dbQuoteAll($lrow['code']).",".dbQuoteAll($lrow['title']).",{$lrow['sortorder']},".dbQuoteAll($lrow['language']).",1,{$lrow['assessment_value']})");
             }
         }
     }
@@ -3649,9 +3798,9 @@ function upgradeTables143()
 
 
     $updatequery = "update {{questions}} set type='!' where type='W'";
-    modifyDatabase("",$updatequery); 
+    modifyDatabase("",$updatequery);
     $updatequery = "update {{questions}} set type='L' where type='Z'";
-    modifyDatabase("",$updatequery); 
+    modifyDatabase("",$updatequery);
 }
 
 
@@ -3666,7 +3815,7 @@ function upgradeQuestionAttributes142()
         {
             //Select all affected question attributes
             $attributevalues=Yii::app()->getDb()->createCommand("SELECT value from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid)->queryColumn();
-            modifyDatabase("","delete from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid); 
+            modifyDatabase("","delete from {{question_attributes}} where attribute='exclude_all_other' and qid=".$questionid);
             $record['value']=implode(';',$attributevalues);
             $record['attribute']='exclude_all_other';
             $record['qid']=$questionid;
@@ -3943,7 +4092,7 @@ function dropColumn($sTableName, $sColumnName)
     } catch (Exception $e) {
        // If it cannot be dropped we assume it is already gone
     };
-        
+
 }
 
 

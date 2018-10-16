@@ -1,0 +1,50 @@
+{#
+/**
+ * Multiple Choice Html : item 'other' row
+ *
+ * @var $sDisable
+ * @var $myfname
+ * @var $othertext
+ * @var $checkedState
+ * @var $kpclass
+ * @var $sValue
+ * @var $oth_checkconditionFunction
+ * @var $checkconditionFunction
+ * @var $sValueHidden
+ * @var $wrapper
+ */
+#}
+
+{% if button_size == 'default' or button_size == '' %}
+    {% set button_size_class='' %}
+{% else %}
+    {% set button_size_class= "btn-"~button_size %}
+{% endif %}
+
+<!-- answer_row_other -->
+    <li id='javatbd{{myfname}}' class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %}">
+
+        <!-- Checkbox + label -->
+            <!-- checkbox -->
+            <input
+                class="other-checkbox bootstrap-checkbox-other"
+                type="checkbox"
+                name="{{myfname}}cbox"
+                id="answer{{myfname}}cbox"
+                data-name="{{myfname}}"
+                {{checkedState}}
+                aria-hidden="true"
+            />
+            <label for="answer{{myfname}}cbox" class="checkbox-label control-label" id="label-{{myfname}}-other">{{othertext}}</label>
+
+        <!-- hidden input -->
+        <input
+            type="hidden"
+            name="java{{myfname}}"
+            id="java{{myfname}}"
+            value="{{sValueHidden}}"
+            class="bootstrap-checkbox-other-value"
+            data-name="{{myfname}}"
+        />
+</li> <!-- Form group ; item row -->
+<!-- end of answer_row_other -->

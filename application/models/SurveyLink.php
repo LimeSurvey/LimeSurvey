@@ -67,7 +67,7 @@ class SurveyLink extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'participant' => array(self::HAS_ONE, 'Particiant', 'participant_id'),
-            'survey' => array(self::HAS_ONE, 'Survey', array('survey_id'=>'sid'))
+            'survey' => array(self::HAS_ONE, 'Survey', array('sid'=>'survey_id'))
         );
     }
 
@@ -149,7 +149,7 @@ class SurveyLink extends LSActiveRecord
     {
         $TokenDynamic = TokenDynamic::model($this->survey_id);
         return $TokenDynamic->findByPk($this->token_id);
-    } 
+    }
 
     /**
      * @return string
@@ -171,7 +171,7 @@ class SurveyLink extends LSActiveRecord
             return $date->format($this->dateFormat);
         }
     }
-    
+
     /**
      * @return string
      */

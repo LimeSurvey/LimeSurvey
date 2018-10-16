@@ -1,5 +1,5 @@
 
-{# <?php
+{#
 /**
  * Multiple short texts question, item input text Html
  * @var $tip
@@ -28,7 +28,7 @@
  * @var $slider_reversed
  * @var $sSeparator
  */
-?> #}
+#}
 
 <li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item slider-item form-group {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
     <label id="label-{{ myfname }}" class='control-label col-xs-12 col-sm-{{ sLabelWidth }}{{ sLabelWidth == 0 ? " hidden":"" }}' for="answer{{myfname}}">
@@ -38,6 +38,7 @@
             {% if sliderleft is not empty %}
                 <div class='col-xs-12 col-sm-2 slider-left text-right'>{{ sliderleft }}</div>
             {% endif %}
+
             <div class="slider-container ls-input-group col-xs-12 col-sm-{{sliderWidth}}" style="min-height:15px;">
                     {{ C.Html.textField( myfname ~ 'slid', dispVal ,{
                             'class': 'form-control answer-item numeric-item',
@@ -57,7 +58,7 @@
                 {% if slider_reset %}
                     <div class="ls-input-group-extra ls-no-js-hidden ls-input-group-reset">
                     <button id="answer{{ myfname }}_resetslider" class='btn btn-default btn-sm btn-slider-reset'>
-                        <i class='fa fa-times slider-reset-icon' aria-hidden='true'></i><span class="slider-reset-text">&nbsp;{{ "Reset" | t }}</span>
+                        <i class='fa fa-times slider-reset-icon' aria-hidden='true'></i><span class="slider-reset-text">&nbsp;{{ gT("Reset") }}</span>
                     </button>
                     </div>
                 {% endif %}

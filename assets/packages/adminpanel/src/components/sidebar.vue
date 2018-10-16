@@ -19,7 +19,9 @@ export default {
         getMenuUrl: { type: String },
         createQuestionGroupLink: { type: String },
         createQuestionLink: { type: String },
-        updateOrderLink: { type: String }
+        updateOrderLink: { type: String },
+        isActive: {type: String},
+        basemenus: {type: Object}
     },
     data: () => {
         return {
@@ -28,7 +30,7 @@ export default {
             openSubpanelId: 0,
             questiongroups: [],
             menues: [],
-            "$store.state.isCollapsed": false,
+            collapsed: false,
             sideBarWidth: "315",
             initialPos: { x: 0, y: 0 },
             isMouseDown: false,
@@ -37,7 +39,8 @@ export default {
             collapsedmenus: {},
             topmenus: {},
             bottommenus: {},
-            sideBarHeight: "400px"
+            sideBarHeight: "400px",
+            showLoader: false
         };
     },
     computed: {
@@ -71,6 +74,9 @@ export default {
         },
         getWindowHeight() {
             return screen.height * 2 + "px";
+        },
+        getloaderHeight() {
+            return $("#sidebar").height();
         }
     },
     methods: {
@@ -105,15 +111,26 @@ export default {
                 }
             );
             this.$log.log("QuestionGroup order changed");
+            this.showLoader = true;
             this.post(this.updateOrderLink, {
                 grouparray: onlyGroupsArray,
                 surveyid: this.$store.surveyid
             }).then(
                 result => {
                     self.$log.log("questiongroups updated");
+                    self.getQuestions().then(() => {
+                        self.showLoader = false;
+                    });
                 },
                 error => {
                     self.$log.error("questiongroups updating error!");
+                    this.post(this.updateOrderLink, {
+                        surveyid: this.$store.surveyid
+                    }).then(()=>{
+                        self.getQuestions().then(() => {
+                            self.showLoader = false;
+                        });
+                    });
                 }
             );
         },
@@ -290,6 +307,7 @@ export default {
             }
         },
         getQuestions() {
+            this.questiongroups = [];
             return this.get(this.getQuestionsUrl).then(result => {
                 this.$log.log("Questions", result);
                 this.questiongroups = result.data.groups;
@@ -298,7 +316,52 @@ export default {
                 this.updatePjaxLinks();
             });
         },
+        setBaseMenuPosition(entries, position){
+            switch(position) {
+                case 'side' : 
+                    this.sidemenus = _.orderBy(
+                        entries,
+                        a => {
+                            return parseInt(a.order || 999999);
+                        },
+                        ["desc"]
+                    );
+                    this.$store.commit("updateSidemenus", this.sidemenus);
+                    break;
+                case 'collapsed':
+                    this.collapsedmenus = _.orderBy(
+                        entries,
+                        a => {
+                            return parseInt(a.order || 999999);
+                        },
+                        ["desc"]
+                    );
+                    this.$store.commit("updateCollapsedmenus", this.collapsedmenus);
+                    break;
+                case 'top':
+                    this.topmenus = _.orderBy(
+                        entries,
+                        a => {
+                            return parseInt(a.order || 999999);
+                        },
+                        ["desc"]
+                    );
+                    this.$store.commit("updateTopmenus", this.topmenus);
+                    break;
+                case 'bottom':
+                    this.bottommenus = _.orderBy(
+                        entries,
+                        a => {
+                            return parseInt(a.order || 999999);
+                        },
+                        ["desc"]
+                    );
+                    this.$store.commit("updateBottommenus", this.bottommenus);
+                    break;
+            };
+        },
         getSidemenus() {
+            this.sidemenus = [];
             return this.get(this.getMenuUrl, { position: "side" }).then(
                 result => {
                     this.$log.log("sidemenues", result);
@@ -316,6 +379,7 @@ export default {
             );
         },
         getCollapsedmenus() {
+            this.collapsedmenus = [];
             return this.get(this.getMenuUrl, { position: "collapsed" }).then(
                 result => {
                     this.$log.log("quickmenu", result);
@@ -372,6 +436,8 @@ export default {
     },
     created() {
         const self = this;
+        
+        self.$store.commit('setSurveyActiveState', (parseInt(this.isActive)===1));
         // self.$log.debug(this.$store.state);
         this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
@@ -380,6 +446,13 @@ export default {
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
+        _.each(this.basemenus, this.setBaseMenuPosition)
+        //retrieve the current menues via ajax
+        this.getQuestions();
+        this.getSidemenus();
+        this.getCollapsedmenus();
+        this.getTopmenus();
+        this.getBottommenus();
     },
     mounted() {
         const self = this;
@@ -390,12 +463,7 @@ export default {
         window.addEventListener("resize", () => {
             self.calculateHeight(self);
         });
-        //retrieve the current menues via ajax
-        this.getQuestions();
-        this.getSidemenus();
-        this.getCollapsedmenus();
-        this.getTopmenus();
-        this.getBottommenus();
+        
 
         $(document).on("vue-sidemenu-update-link", () => {
             this.controlActiveLink();
@@ -432,6 +500,7 @@ export default {
 </script>
 <template>
     <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}" @mouseleave="mouseleave" @mouseup="mouseup">
+        <div class="sidebar_loader" :style="{width: getSideBarWidth, height: getloaderHeight}" v-if="showLoader"><div class="ls-flex ls-flex-column fill align-content-center align-items-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></div></div>
         <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
             <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
                 <div class="ls-space margin bottom-15 top-5 col-12" style="height: 40px;">
@@ -473,5 +542,14 @@ export default {
     </div>
     
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
+.sidebar_loader {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    background: rgba(231, 231, 231, 0.3);
+    z-index: 4501;
+    box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
+    top: 0;
+}
 </style>

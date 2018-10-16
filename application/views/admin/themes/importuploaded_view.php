@@ -29,7 +29,7 @@
     <div class="col-sm-11 col-sm-offset-1 content-right">
         <!-- Message box from super admin -->
         <div class="jumbotron message-box <?php echo $class;?>">
-            <div class="h2><?php eT("Import template result:") ?></div>
+            <div class="h2"><?php eT("Import theme result:") ?></div>
 
             <p class='lead <?php echo $statusClass;?>'>
                 <?php echo $status ?>
@@ -82,7 +82,7 @@
                 </ul>
             </p>
             <p>
-                <input type='submit' class="btn btn-default btn-lg" value='<?php eT("Open imported template") ?>' onclick="window.open('<?php echo $this->createUrl('admin/themes/sa/view/templatename/' . $newdir) ?>', '_top')" />
+                <input type='submit' class="btn btn-default btn-lg" id="button-open-theme" value='<?php eT("Open imported theme") ?>' onclick="window.open('<?php echo $this->createUrl('admin/themes/sa/view/templatename/' . $newdir) ?>', '_top')" />
             </p>
         </div>
     </div>
