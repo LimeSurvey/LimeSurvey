@@ -220,17 +220,19 @@ foreach ( $aQuestionTypeList as $key => $questionType)
 
 
                                 <div  class="form-group">
+                                    <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
+                                        <?php
+                                            eT("Question type:");
+                                        ?>
+                                    </label>
                                     <?php if( $activated != "Y") : ?>
-                                        <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
+                                        <div>
                                         <?=$oQuestionSelector->getButtonOrSelect();?>
+                                        <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
+                                        </div>
                                     <?php elseif($activated == "Y") : ?>
                                         <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                         <!-- TODO : control if we can remove, disable update type must be done by PHP -->
-                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
-                                            <?php
-                                                eT("Question type:");
-                                            ?>
-                                        </label>
                                         <div class=" btn-group" id="question_type_button">
                                             <button type="button" class="btn btn-default" disabled  aria-haspopup="true" aria-expanded="false" >
                                                 <span class="buttontext" id="selector__editView_question_type_description">

@@ -459,7 +459,7 @@ class Question extends LSActiveRecord
      * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
      * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
      */
-    public static function typeList($language = '')
+    public static function typeList($language = null)
     {
         $questionTypes = array(
             "1" => array(
