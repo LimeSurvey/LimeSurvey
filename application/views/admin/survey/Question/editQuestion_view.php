@@ -336,7 +336,12 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                     </label>
                                     <div class="help-block collapse" id="help_relevance">
                                         <p>
-                                            <?php eT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be."); ?>
+                                            <?php eT("The relevance equation can be used to add branching logic."); ?>
+                                            <?php echo CHtml::link(
+                                                gT("Condition editor can help you to create this equation."),
+                                                array('admin/conditions','sa'=>'index','subaction'=>'editconditionsform','qid'=>$oQuestion->qid)
+                                            ); ?>
+                                            <!-- Add a way to show in a dialog ? Or _blank ? using $("[rel='help').on('click') -->
                                             <a href="https://manual.limesurvey.org/Expression_Manager" rel="help"><?php eT("More on relevance and the Expression Manager."); ?></a>
                                         </p>
                                     </div> 
