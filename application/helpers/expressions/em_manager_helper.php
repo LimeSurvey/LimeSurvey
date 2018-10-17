@@ -60,13 +60,13 @@
         * sum of LEM_DEBUG constants - use bitwise AND comparisons to identify which parts to use
         * @var int
         */
-        private $debugLevel=0;
+        private $debugLevel = 0;
          /**
         * sPreviewMode used for relevance equation force to 1 in preview mode
         * Maybe we can set it public
         * @var string|boolean
         */
-        private $sPreviewMode=false;
+        private $sPreviewMode = false;
         /**
         * Collection of variable attributes, indexed by SGQA code
         *
@@ -106,13 +106,13 @@
         *
         * @var array
         */
-        private $knownVars;
+        private $knownVars = array();
 
         /**
         * maps qcode varname to SGQA code
         *
         * @example ['gender'] = '38612X10X145'
-        * @var array
+        * @var array|null
         */
         private $qcode2sgqa;
 
@@ -130,7 +130,7 @@
         *
         * @var array
         */
-        private $tempVars;
+        private $tempVars = array();
 
         /**
         * Array of relevance information for each page (gseq), indexed by gseq.
@@ -160,12 +160,12 @@
         * internally set to true (1) for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
         * @var boolean
         */
-        private $allOnOnePage=false;
+        private $allOnOnePage = false;
         /**
         * survey mode.  One of 'survey', 'group', or 'question'
         * @var string
         */
-        private $surveyMode='group';
+        private $surveyMode = 'group';
         /**
         * a set of global survey options passed from LimeSurvey
         *
@@ -190,7 +190,7 @@
         *
         * @var array
         */
-        private $surveyOptions=array();
+        private $surveyOptions = array();
         /**
         * array of mappings of Question # (qid) to pipe-delimited list of SGQA codes used within it
         *
