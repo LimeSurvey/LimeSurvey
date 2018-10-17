@@ -77,7 +77,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         $oldgid = $insertdata['gid']; unset($insertdata['gid']); // save the old qid
         $aDataL10n = array();
 
-        if ($iDBVersion < 350) {
+        if ($iDBVersion < 400) {
             $aDataL10n['group_name'] = $insertdata['group_name'];
             $aDataL10n['description'] = $insertdata['description'];
             $aDataL10n['language'] = $insertdata['language'];
@@ -157,7 +157,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
                 XSSFilterArray($insertdata);
             }            
             // now translate any links
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 if ($bTranslateInsertansTags) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
@@ -243,7 +243,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             if (!isset($insertdata['help'])) {
                 $insertdata['help'] = '';
             }            // now translate any links
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 if ($bTranslateInsertansTags) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
@@ -352,7 +352,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            if ($iDBVersion >= 350) {
+            if ($iDBVersion >= 400) {
                 $iOldAID = $insertdata['aid'];
                 unset($insertdata['aid']);
             }
@@ -362,7 +362,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
             
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 $oAnswerL10n = new AnswerL10n();
                 $oAnswerL10n->answer = $insertdata['answer'];
                 $oAnswerL10n->language = $insertdata['language'];
@@ -372,7 +372,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             
             $oAnswer = new Answer();
             $oAnswer->setAttributes($insertdata, false);
-            if ($oAnswer->save() && $iDBVersion >= 350) {
+            if ($oAnswer->save() && $iDBVersion >= 400) {
                 $aAIDReplacements[$iOldAID] = $oAnswer->aid;
             }
             $results['answers']++;
@@ -594,7 +594,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
         unset($insertdata['qid']); 
 
         // now translate any links
-        if ($iDBVersion < 350) {
+        if ($iDBVersion < 400) {
             $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
             $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
             $oQuestionL10n = new QuestionL10n();
@@ -655,7 +655,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
                 $insertdata[(string) $key] = (string) $value;
             }
 
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
                 }
@@ -677,7 +677,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
             if (!isset($insertdata['help'])) {
                 $insertdata['help'] = '';
             }            // now translate any links
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 if ($bTranslateInsertansTags) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
@@ -784,7 +784,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            if ($iDBVersion >= 350) {
+            if ($iDBVersion >= 400) {
                 $iOldAID = $insertdata['aid'];
                 unset($insertdata['aid']);
             }
@@ -794,7 +794,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
             
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 // now translate any links
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
@@ -811,7 +811,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
             
             $oAnswer = new Answer();
             $oAnswer->setAttributes($insertdata, false);
-            if ($oAnswer->save() && $iDBVersion >= 350) {
+            if ($oAnswer->save() && $iDBVersion >= 400) {
                 $aAIDReplacements[$iOldAID] = $oAnswer->aid;
             }
             $results['answers']++;
@@ -975,7 +975,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
                 $insertdata[(string) $key] = (string) $value;
             }
             $insertdata['lid'] = $aLSIDReplacements[$insertdata['lid']];
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 $insertdataLS['title'] = $insertdata['title']; 
                 $insertdataLS['language'] = $insertdata['language']; 
                 unset ($insertdata['title']);
@@ -985,7 +985,7 @@ function XMLImportLabelsets($sFullFilePath, $options)
             }
             unset ($insertdata['id']);
             
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 $findLabel = Label::model()->findByAttributes($insertdata);
                 if (empty($findLabel)) {
                     $arLabel = new Label();
@@ -1346,7 +1346,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata['sid'] = $iNewSID;
             $oldgid = $insertdata['gid']; unset($insertdata['gid']); // save the old qid
             $aDataL10n = array();
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
                 }
@@ -1425,7 +1425,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata[(string) $key] = (string) $value;
             }
 
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
                 }
@@ -1445,7 +1445,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             unset($insertdata['qid']); 
 
             // now translate any links
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 if ($bTranslateInsertansTags) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
@@ -1513,7 +1513,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             }
 
             // question codes in format "38612X105X3011" are collected for replacing
-            $aQuestionsMapping[$iOldSID.'X'.$iOldGID.'X'.$oldqid] = $iNewSID.'X'.$oQuestion->gid.'X'.$oQuestion->qid;
+            $aQuestionsMapping[$iOldSID.'X'.$iOldGID.'X'.$iOldQID] = $iNewSID.'X'.$oQuestion->gid.'X'.$oQuestion->qid;
         }
     }
 
@@ -1526,7 +1526,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata[(string) $key] = (string) $value;
             }
 
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
                 }
@@ -1548,7 +1548,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             if (!isset($insertdata['help'])) {
                 $insertdata['help'] = '';
             }            // now translate any links
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 if ($bTranslateInsertansTags) {
                     $insertdata['question'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['question']);
                     $insertdata['help'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['help']);
@@ -1658,7 +1658,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
-            if ($iDBVersion >= 350) {
+            if ($iDBVersion >= 400) {
                 $iOldAID = $insertdata['aid'];
                 unset($insertdata['aid']);
             }
@@ -1668,7 +1668,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the parent_qid
             
-            if ($iDBVersion < 350) {
+            if ($iDBVersion < 400) {
                 // now translate any links
                 if (!in_array($insertdata['language'], $aLanguagesSupported)) {
                     continue;
@@ -1685,7 +1685,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             
             $oAnswer = new Answer();
             $oAnswer->setAttributes($insertdata, false);
-            if ($oAnswer->save() && $iDBVersion >= 350) {
+            if ($oAnswer->save() && $iDBVersion >= 400) {
                 $aAIDReplacements[$iOldAID] = $oAnswer->aid;
             }
             $results['answers']++;

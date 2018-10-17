@@ -577,7 +577,7 @@ class statistics_helper
         $qtitle = "";
         $qquestion = "";
         $qtype = "";
-        $firstletter = substr($rt, 0, 1);
+        $sQuestionType = substr($rt, 0, 1);
         $fieldmap = createFieldMap($survey, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput = "";
@@ -597,7 +597,7 @@ class statistics_helper
         }
 
         //M - Multiple choice, therefore multiple fields - one for each answer
-        if ($firstletter == "M" || $firstletter == "P") {
+        if ($sQuestionType == "M" || $sQuestionType == "P") {
             //get SGQ data
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
@@ -625,9 +625,7 @@ class statistics_helper
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
         }
-
-        //S - Short Free Text and T - Long Free Text
-        elseif ($firstletter == "T" || $firstletter == "S") {
+        elseif ($sQuestionType == Question::QT_T_LONG_FREE_TEXT || $sQuestionType == Question::QT_S_SHORT_FREE_TEXT) {
             //Short and long text
             //search for key
             $fld = substr($rt, 1, strlen($rt));
@@ -650,7 +648,7 @@ class statistics_helper
         }
 
         //Q - Multiple short text
-        elseif ($firstletter == "Q") {
+        elseif ($sQuestionType == "Q") {
             //Build an array of legitimate qid's for testing later
             $aQuestionInfo = $fieldmap[substr($rt, 1)];
             $qqid = $aQuestionInfo['qid'];
@@ -683,7 +681,7 @@ class statistics_helper
         }
 
         //RANKING OPTION
-        elseif ($firstletter == "R") {
+        elseif ($sQuestionType == "R") {
             //getting the needed IDs somehow
             $lengthofnumeral = substr($rt, strpos($rt, "-") + 1, 1);
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-") - ($lengthofnumeral + 1)), 3);
@@ -711,7 +709,7 @@ class statistics_helper
                 $mfield = substr($rt, 1, strpos($rt, "-") - 1);
                 $alist[] = array("$row[0]", flattenText($row[1]), $mfield);
             }
-        } else if ($firstletter == "|") {
+        } else if ($sQuestionType == "|") {
             // File Upload
 
             //get SGQ data
@@ -829,7 +827,7 @@ class statistics_helper
 
         //N = numerical input
         //K = multiple numerical input
-        elseif ($firstletter == "N" || $firstletter == "K") {
+        elseif ($sQuestionType == "N" || $sQuestionType == "K") {
             //NUMERICAL TYPE
             //Zero handling
             if (!isset($excludezeros)) {
@@ -1120,7 +1118,7 @@ class statistics_helper
         }    //end else-if -> multiple numerical types
 
         //is there some "id", "datestamp" or "D" within the type?
-        elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || ($firstletter == "D")) {
+        elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || ($sQuestionType == "D")) {
             /*
             * DON'T show anything for date questions
             * because there aren't any statistics implemented yet!

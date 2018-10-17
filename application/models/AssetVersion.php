@@ -61,7 +61,7 @@ class AssetVersion extends LSActiveRecord
      */
     public static function getAssetVersion($path)
     {
-        if(Yii::app()->getConfig('DBVersion') < 350) {
+        if(Yii::app()->getConfig('DBVersion') < 400) {
             return 0;
         }
         $oAssetVersion = self::model()->find('path = :path',array(":path"=>$path));
@@ -78,10 +78,10 @@ class AssetVersion extends LSActiveRecord
      */
     public static function incrementAssetVersion($path)
     {
-        if(Yii::app()->getConfig('DBVersion') < 350) {
+        if(Yii::app()->getConfig('DBVersion') < 400) {
             return 0;
         }
-        /* This increment case insensitivity , (extend_vanilla at same time than Extend_Vanilla) no real issue (update 2 assets in one) , but … */
+        /* This increment case insensitivity , (extend_vanilla at same time than Extend_Vanilla) no real issue (update 2 assets in one) , but â€¦ */
         $oAssetVersion = self::model()->find('path = :path',array(":path"=>$path));
         if(!$oAssetVersion) {
             $oAssetVersion = new self;
@@ -100,7 +100,7 @@ class AssetVersion extends LSActiveRecord
      */
     public static function deleteAssetVersion($path)
     {
-        if(Yii::app()->getConfig('DBVersion') < 350) {
+        if(Yii::app()->getConfig('DBVersion') < 400) {
             return 0;
         }
         return self::model()->deleteAll('path = :path',array(":path"=>$path));

@@ -18,7 +18,7 @@ class QuestionType extends StaticModel
     const QT_1_ARRAY_MULTISCALE = '1'; //ARRAY (Flexible Labels) multi scale
     const QT_5_POINT_CHOICE = '5';
     const QT_A_ARRAY_5_CHOICE_QUESTIONS = 'A'; // ARRAY OF 5 POINT CHOICE QUESTIONS
-    const QT_B_ARRAY_10_CHOICE_QUESTIONS = 'B'; // ARRAY OF 10 POINT CHOICE QUESTIONS
+    const QT_B_ARRAY_10_POINT = 'B'; // ARRAY OF 10 POINT CHOICE QUESTIONS
     const QT_C_ARRAY_YES_UNCERTAIN_NO = 'C'; // ARRAY OF YES\No\gT("Uncertain") QUESTIONS
     const QT_D_DATE = 'D';
     const QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS = 'E';
@@ -134,8 +134,8 @@ class QuestionType extends StaticModel
                 'answerscales' => 0,
                 'class' => 'array-5-pt'
             ],
-            self::QT_B_ARRAY_10_CHOICE_QUESTIONS => [
-                'code' => self::QT_B_ARRAY_10_CHOICE_QUESTIONS,
+            self::QT_B_ARRAY_10_POINT => [
+                'code' => self::QT_B_ARRAY_10_POINT,
                 'description' => gT("Array (10 Point Choice)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
