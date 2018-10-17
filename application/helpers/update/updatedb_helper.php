@@ -263,7 +263,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $aFailedTemplates=array();
             // get each entry
             while($entryName = readdir($hTemplateDirectory)) {
-                if (!in_array($entryName,array('.','..','.svn')) && is_dir($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$entryName) && !Template::isStandardTemplate($entryName))
+                if (!in_array($entryName,array('.','..','.svn')) && is_dir($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$entryName) && !isStandardTemplate($entryName))
                 {
                     if (!rename($sStandardTemplateRootDir.DIRECTORY_SEPARATOR.$entryName,$sUserTemplateRootDir.DIRECTORY_SEPARATOR.$entryName))
                     {

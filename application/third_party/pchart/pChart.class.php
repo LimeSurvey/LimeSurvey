@@ -500,6 +500,8 @@
        if ( !isset($Divisions) )
         $Divisions = 2;
 
+       if ($Scale == 1 && $Divisions%2 == 1)
+        $Divisions--;
       }
      else
       $Divisions = $this->Divisions;
