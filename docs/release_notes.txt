@@ -35,6 +35,32 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 3.15.0 (build 181008) to 3.15.1 (build 181017) to  October 17, 2018
+-Fixed issue #13928: script (and tag) are not filtered or encoded if question is in same group (Denis Chenu)
+-Fixed issue #14061: Duplication check when adding participant to survey not working (#1119) (Thomas Singer)
+-Fixed issue #14122: Missing translation for question type labels/dialog/buttons (Carsten Schmitz)
+-Fixed issue #14133: lss with long group name broke when import (#1138) (Denis Chenu)
+-Fixed issue #14142: Integer values in pdf report in multiple numerical input (Denis Chenu)
+-Fixed issue #14146: Graphs in pdf not correctly displayed (Dominik Vitt)
+-Fixed issue : Disable direct access to uploaded files (apache only) (Denis Chenu)
+-Fixed issue: Statistics export as PDF opens the PDF in the current tab. It should create a download like the Excel export. (#982) (kw-pr)
+-Fixed issue: Statistics show error 500 when exporting to Excel (Carsten Schmitz)
+-Fixed issue: {SID} placeholder does not work in email templates (#1139) (Anton Victorson)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Czech by jelen1
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Spanish (Spain) by c_schmitz, aesteban
+
 Changes from 3.14.11 (build 180926) to 3.15.0 (build 181008) October 8, 2018
 -New feature #14119: minute step for datetimepicker (Denis Chenu)
 -New feature: Added Italian language to multilingual sample survey (Luciano Fanfoni) (Carsten Schmitz)
