@@ -36,12 +36,16 @@ $categoryNum=0;
     <div class="form-group">
     <!-- Form Group -->
         <!-- Label -->
-        <label class="control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
+        <label class="control-label" for='<?php echo $aAttribute['name'];?>'>
             <?php
                 echo $aAttribute['caption'];
                 if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }
             ?>:
+            <a class="text-primary show-help" data-toggle="collapse" href="#help<?php echo $aAttribute['name'];?>" aria-expanded="false" aria-controls="help<?php echo $aAttribute['name'];?>" aria-hidden=true>
+                <span class="fa fa-info-circle" ></span>
+            </a>
         </label>
+        <p class="help-block collapse" id="help<?php echo $aAttribute['name'];?>"><?php echo $aAttribute['help'];?></p>
 
         <!-- Input -->
         <div class="">
@@ -58,6 +62,7 @@ $categoryNum=0;
                             'offLabel'=>gT('Off'),
                             'htmlOptions'=>array(
                                 'disabled'=>$readonly,
+                                'aria-describedby'=>"help{$aAttribute['name']}",
                             ),
                         ));
                         break;
@@ -69,6 +74,7 @@ $categoryNum=0;
                             'selectOptions'=>$aAttribute['options'],
                             'htmlOptions'=>array(
                                 'disabled'=>$readonly,
+                                'aria-describedby'=>"help{$aAttribute['name']}",
                             ),
                         ));
                         break;
@@ -78,6 +84,7 @@ $categoryNum=0;
                             'class'=>"form-control",
                             'disabled'=>$readonly,
                             'encode'=>false, // gt encode it by default
+                            'aria-describedby'=>"help{$aAttribute['name']}",
                         ));
                         break;
                         // Text
@@ -89,6 +96,7 @@ $categoryNum=0;
                          echo CHtml::textField($aAttribute['name'],$aAttribute['value'],array(
                             'class'=>"form-control",
                             'disabled'=>$readonly,
+                            'aria-describedby'=>"help{$aAttribute['name']}",
                         ));
                         if($aAttribute['expression']>=2) {
                             echo CHtml::tag('div',array('class'=>"input-group-addon"),"}");
@@ -104,7 +112,8 @@ $categoryNum=0;
                             'step'=>1,
                             'pattern'=>'\d+',
                             'min'=>(isset($aAttribute['min'])?$aAttribute['min']:1),
-                            'max'=>(isset($aAttribute['max'])?$aAttribute['max']:null)
+                            'max'=>(isset($aAttribute['max'])?$aAttribute['max']:null),
+                            'aria-describedby'=>"help{$aAttribute['name']}",
                         ));
                         break;
 
@@ -129,7 +138,8 @@ $categoryNum=0;
                             'step'=>1,
                             'pattern'=>'\d+',
                             'min'=>1,
-                            'max'=>12
+                            'max'=>12,
+                            'aria-describedby'=>"help{$aAttribute['name']}",
                         ));
                         break;
                     // Textarea
@@ -141,6 +151,7 @@ $categoryNum=0;
                         echo CHtml::textArea($aAttribute['name'],$aAttribute['value'],array(
                             'class'=>"form-control",
                             'disabled'=>$readonly,
+                            'aria-describedby'=>"help{$aAttribute['name']}",
                         ));
                         if ($aAttribute['expression']>=2) {
                             echo CHtml::tag('div',array('class'=>"input-group-addon"),"}");
@@ -153,6 +164,7 @@ $categoryNum=0;
                         echo CHtml::dropDownList($aAttribute['name'],$aAttribute['value'],$aQuestionTemplates,array(
                             'class'=>"form-control",
                             'disabled'=>$readonly,
+                            'aria-describedby'=>"help{$aAttribute['name']}",
                         ));
                         break;
 
@@ -166,8 +178,11 @@ $categoryNum=0;
 /* Launch all needed script (here after load) needed for widget */
 foreach (Yii::app()->clientScript->scripts as $index=>$script)
 {
+    // Add specific view script
+    $script[] = "$('.show-help').tooltip({ html:true, title : function() { return $($(this).attr('href')).html(); }, trigger: 'hover' });";
     echo CHtml::script(implode("\n",$script));
 }
 Yii::app()->clientScript->reset();
 ?>
+
 <!-- end of Advanced Settings -->
