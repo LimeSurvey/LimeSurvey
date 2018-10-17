@@ -105,7 +105,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         }
     }
 
-    if ($iDBVersion >= 350 && isset($xml->group_l10ns->rows->row)) {
+    if ($iDBVersion >= 400 && isset($xml->group_l10ns->rows->row)) {
         foreach ($xml->group_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -322,7 +322,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
     
     //  Import question_l10ns
-    if ($iDBVersion >= 350 && isset($xml->question_l10ns->rows->row)) {
+    if ($iDBVersion >= 400 && isset($xml->question_l10ns->rows->row)) {
         foreach ($xml->question_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -386,7 +386,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     }
 
     //  Import answer_l10ns
-    if ($iDBVersion >= 350 && isset($xml->answer_l10ns->rows->row)) {
+    if ($iDBVersion >= 400 && isset($xml->answer_l10ns->rows->row)) {
         foreach ($xml->answer_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -754,7 +754,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
     }
     
     //  Import question_l10ns
-    if ($iDBVersion >= 350 && isset($xml->question_l10ns->rows->row)) {
+    if ($iDBVersion >= 400 && isset($xml->question_l10ns->rows->row)) {
         foreach ($xml->question_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -825,7 +825,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
     }
 
     //  Import answer_l10ns
-    if ($iDBVersion >= 350 && isset($xml->answer_l10ns->rows->row)) {
+    if ($iDBVersion >= 400 && isset($xml->answer_l10ns->rows->row)) {
         foreach ($xml->answer_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -1383,7 +1383,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
         }
     }
-    if ($iDBVersion >= 350 && isset($xml->group_l10ns->rows->row)) {
+    if ($iDBVersion >= 400 && isset($xml->group_l10ns->rows->row)) {
         foreach ($xml->group_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -1625,7 +1625,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     }
     
     //  Import question_l10ns
-    if ($iDBVersion >= 350 && isset($xml->question_l10ns->rows->row)) {
+    if ($iDBVersion >= 400 && isset($xml->question_l10ns->rows->row)) {
         foreach ($xml->question_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
@@ -1699,7 +1699,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     }
 
     //  Import answer_l10ns
-    if ($iDBVersion >= 350 && isset($xml->answer_l10ns->rows->row)) {
+    if ($iDBVersion >= 400 && isset($xml->answer_l10ns->rows->row)) {
         foreach ($xml->answer_l10ns->rows->row as $row) {
             $insertdata = array();
             foreach ($row as $key=>$value) {
