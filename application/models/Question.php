@@ -485,7 +485,7 @@ class Question extends LSActiveRecord
      * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
      * @deprecated use QuestionType::modelsAttributes() instead
      */
-    public static function typeList($language = '')
+    public static function typeList($language = null)
     {
         $questionTypes = QuestionType::modelsAttributes($language);
 

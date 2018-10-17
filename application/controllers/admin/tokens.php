@@ -1361,6 +1361,7 @@ class tokens extends Survey_Common_Action
                         $to[] = ($emrow['firstname']." ".$emrow['lastname']." <{$sEmailaddress}>");
                     }
 
+                    $fieldsarray["{SID}"] = $iSurveyId;
                     foreach ($emrow as $attribute => $value) {
                         $fieldsarray['{'.strtoupper($attribute).'}'] = $value;
                     }
