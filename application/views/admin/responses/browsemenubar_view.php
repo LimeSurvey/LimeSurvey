@@ -215,7 +215,7 @@
                         <?php eT("View statistics"); ?>
                     </a>
 
-                    <a class="btn btn-default" href="#" role="button" id="save-button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')">
+                    <a class="btn btn-default" href="#" role="button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')">
                         <span class="fa fa-refresh text-success"></span>
                         <?php eT("Clear"); ?>
                     </a>

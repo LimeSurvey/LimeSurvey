@@ -2373,7 +2373,7 @@ function incompleteAnsFilterState()
         return Yii::app()->session['incompleteanswers'];
     } else {
 // last resort is to prevent filtering
-        return false;
+        return 'all';
     }
 }
 

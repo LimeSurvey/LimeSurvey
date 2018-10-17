@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <div class="panel panel-primary" id="panel-1" style="opacity: 1; top: 0px;">
+                <div class="panel panel-primary" id="panel-extension" style="opacity: 1; top: 0px;">
                     <div class="panel-heading">
                         <div class="panel-title h4">
                             <?php eT("Format");?>

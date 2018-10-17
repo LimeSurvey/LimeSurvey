@@ -1,4 +1,4 @@
-    <div class="panel panel-primary" id="panel-1">
+    <div class="panel panel-primary" id="panel-response-id">
         <div class="panel-heading">
             <div class="panel-title h4"><?php eT("Response ID"); ?></div>
         </div>
