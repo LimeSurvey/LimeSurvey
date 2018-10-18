@@ -12,16 +12,19 @@
 <!-- answer -->
 {{ sTimer }}
 
-<div class="ls-answers answers-list row" role="radiogroup" aria-labelledby="ls-question-text-{{ name }}">
+<div class="{{coreClass}} row " role="toolbar" aria-labelledby="ls-question-text-{{name}}">
+    <div class="list-unstyled form-inline btn-toolbar col-sm-12 " data-toggle="buttons" role="toolbar" aria-labelledby="ls-question-text-{{name }}">
+
     {# rows/answer_row.php #}
     {{ sRows }}
 
-{# Value for expression manager javascript (use id) ; no need to submit #}
-{{ C.Html.hiddenField("java"~name,value,({
-    'id' : "java"~name,
-    'disabled' : true,
-}))
-}}
+    {# Value for expression manager javascript (use id) ; no need to submit #}
+    {{ C.Html.hiddenField("java"~name,value,({
+        'id' : "java"~name,
+        'disabled' : true,
+    }))
+    }}
+    </div>
 </div>
 <div class="row {{ extraclass }} col-sm-4 hide" id="{{ name }}-div">
     <label for="SOTH{{ name }}" class="control-label" id="label-id-{{ name }}">{{ othertext }}</label>

@@ -1,5 +1,5 @@
-.bootstrap-item label::before, .bootstrap-item label::after {
-    display: none !important;
+.bootstrap-item input {
+    visibility:hidden;
 }
 
  .bootstrap-item {

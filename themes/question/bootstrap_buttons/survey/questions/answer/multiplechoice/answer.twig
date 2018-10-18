@@ -12,20 +12,19 @@
 
 <!-- answer -->
 
+{% set button_size_class = (question_template_attribute.button_size == 'default' or question_template_attribute.button_size is empty) ? '' : "btn-"~question_template_attribute.button_size %}
+{% set max_buttons_row = (question_template_attribute.max_buttons_row == 'default' or question_template_attribute.max_buttons_row is empty) ? 'col-sm-2' : question_template_attribute.max_buttons_row %}
+
 <input type="hidden" name="MULTI{{name}}" value="{{anscount}}" />
-<div class="{{coreClass}} row" role="group" aria-labelledby="ls-question-text-{{basename}}">
-    <ul class="list-unstyled form-inline btn-group col-sm-12" data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{basename }}">
+<div class="{{coreClass}} row " role="toolbar" aria-labelledby="ls-question-text-{{basename}}">
+    <div class="list-unstyled form-inline btn-toolbar col-sm-12 " data-toggle="buttons" role="toolbar" aria-labelledby="ls-question-text-{{basename }}">
         {% for aRow in aRows %}
-            {% if loop.index0 is divisible by(iMaxRowsByColumn) and loop.index0 != 0  %}
-                </ul>
-                <ul class="list-unstyled col-xs-12 col-sm-{{iColumnWidth}}">
-            {% endif %}
-            {% set aRow = aRow|merge({'button_size': question_template_attribute.button_size}) %}
+            {% set aRow = aRow|merge({'button_size_class': button_size_class})|merge({'max_buttons_row': max_buttons_row}) %}
             {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice/rows/answer_row.twig' %}
             {% include rowTemplate with aRow only %}
 
         {% endfor %}
-    </ul>
+    </div>
 
 </div>
 <!-- comment -->

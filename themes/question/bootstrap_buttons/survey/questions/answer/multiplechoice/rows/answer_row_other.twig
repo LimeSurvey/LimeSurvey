@@ -15,14 +15,9 @@
  */
 #}
 
-{% if button_size == 'default' or button_size == '' %}
-    {% set button_size_class='' %}
-{% else %}
-    {% set button_size_class= "btn-"~button_size %}
-{% endif %}
-
 <!-- answer_row_other -->
-    <li id='javatbd{{myfname}}' class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %}">
+<div class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
+    <div id='javatbd{{ myfname }}' class="bootstrap-item btn btn-primary checkbox-item {{ button_size_class }} {% if checkedState!='' %} active {% endif %} col-xs-12 col-sm-12">
 
         <!-- Checkbox + label -->
             <!-- checkbox -->
@@ -46,5 +41,7 @@
             class="bootstrap-checkbox-other-value"
             data-name="{{myfname}}"
         />
-</li> <!-- Form group ; item row -->
+    </div>
+</div>
+ <!-- Form group ; item row -->
 <!-- end of answer_row_other -->
