@@ -1002,7 +1002,7 @@ class Question extends LSActiveRecord
         $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
         if ($this->gid != '') {
-            $criteria->compare('groups.gid', $this->gid, true, 'AND');
+            $criteria->compare('groups.gid', $this->gid, false, 'AND');
         }
 
         $criteria->mergeWith($criteria2, 'AND');
