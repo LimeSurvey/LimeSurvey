@@ -19,29 +19,25 @@
  */
 #}
 
-{% if button_size == 'default' or button_size == '' %}
-    {% set button_size_class='' %}
-{% else %}
-    {% set button_size_class= "btn-"~button_size %}
-{% endif %}
-
 <!-- answer_row -->
-<li id='javatbd{{ myfname }}' class="button-item btn btn-primary checkbox-item {{ button_size_class }} {% if checkedState!='' %} active {% endif %}">
-    <input
-        type="checkbox"
-        name="{{ myfname }}"
-        data-name="{{myfname}}"
-        class="bootstrap-checkbox"
-        id="answer{{ myfname }}"
-        {{ checkedState }}
-        value="Y"
-    />
-    <label for="answer{{ myfname }}" class="checkbox-label control-label">{{ question }}</label>
-    <input
-        type="hidden"
-        name="java{{ myfname }}"
-        id="java{{ myfname }}"
-        value="{{ C.Html.encode( sValue ) }}"
-    />
-</li>
+<div class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
+    <div id='javatbd{{ myfname }}' class="bootstrap-item btn btn-primary checkbox-item {{ button_size_class }} {% if checkedState!='' %} active {% endif %} col-xs-12 col-sm-12">
+        <input
+            type="checkbox"
+            name="{{ myfname }}"
+            data-name="{{myfname}}"
+            class="bootstrap-checkbox"
+            id="answer{{ myfname }}"
+            {{ checkedState }}
+            value="Y"
+        />
+        <label for="answer{{ myfname }}" class="checkbox-label control-label">{{ question }}</label>
+        <input
+            type="hidden"
+            name="java{{ myfname }}"
+            id="java{{ myfname }}"
+            value="{{ C.Html.encode( sValue ) }}"
+        />
+    </div>
+</div>
 <!-- end of answer_row -->

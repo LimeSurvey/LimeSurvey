@@ -277,7 +277,7 @@ foreach ($tokendata as $Key => $Value) {
                     </div>
                 </div>
                 </div>
-                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sentDBValue)) {echo $sentDBValue; } else {echo " N "; }?>" />
+                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo " N "; }?>" />
             </div>
             </div>
             <div class="form-group">
@@ -323,7 +323,7 @@ foreach ($tokendata as $Key => $Value) {
                     </div>
                 </div>
                 </div>
-                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersentDBValue)) {echo $remindersentDBValue; } else {echo " N "; }?>" />
+                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent)) {echo $remindersent; } else {echo " N "; }?>" />
             </div>
                 
             <!-- Reminder count, Uses left -->

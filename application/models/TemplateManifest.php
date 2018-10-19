@@ -856,7 +856,10 @@ class TemplateManifest extends TemplateConfiguration
         $packageActionFromEngineSection = json_decode(json_encode($this->config->engine->packages));
         if (!empty($packageActionFromEngineSection)) {
             if (!empty($packageActionFromEngineSection->add)) {
-                $this->packages = array_merge($packageActionFromEngineSection->add, $this->packages);
+                $this->packages = array_merge(
+                    !is_array($packageActionFromEngineSection->add) ? [$packageActionFromEngineSection->add] : $packageActionFromEngineSection->add,
+                    $this->packages
+                );
             }
             if (!empty($packageActionFromEngineSection->remove)) {
                 $this->packages =  array_diff($this->packages, $packageActionFromEngineSection->remove);

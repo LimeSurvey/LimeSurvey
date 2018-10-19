@@ -49,7 +49,25 @@
             </options>
             <default></default>
             <help>Change button size</help>
-            <caption>Button size:</caption>
+            <caption>Button size</caption>
+        </attribute>
+        <attribute>
+            <name>max_buttons_row</name>
+            <category>Display theme options</category>
+            <sortorder>91</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <default>Default</default>
+                <col-sm-12>1</col-sm-12>
+                <col-sm-6>2</col-sm-6>
+                <col-sm-4>3</col-sm-4>
+                <col-sm-3>4</col-sm-3>
+                <col-sm-2>6</col-sm-2>
+                <col-sm-1>12</col-sm-1>
+            </options>
+            <default></default>
+            <help>Choose maximum number of buttons in a row</help>
+            <caption>Maximum number of buttons in a row</caption>
         </attribute>
     </custom_attributes>
 
