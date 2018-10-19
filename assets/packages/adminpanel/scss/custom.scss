@@ -335,31 +335,3 @@ ol.breadcrumb.title-bar-breadcrumb {
         }
     }
 }
-
-.blocker-loading {
-    display: block;
-    height: 96%;
-    width: 96%;
-    top:3%;
-    left:3%;
-    box-shadow: 0 0 3% rgba(255,255,255,0.3);
-    background-color: rgba(255,255,255,0.3);
-    z-index: 9997;
-    position: fixed;
-    justify-content: center;
-    align-items: center;
-    
-    .blocker-loading-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        width: 100%;
-        
-        .loading-icon-fa {
-            display: flex;
-            z-index: 9999;
-            font-size: 13rem;
-        }
-    }
-}
