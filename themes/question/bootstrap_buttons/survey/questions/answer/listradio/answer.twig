@@ -12,8 +12,8 @@
 <!-- answer -->
 {{ sTimer }}
 
-<div class="{{coreClass}} row " role="toolbar" aria-labelledby="ls-question-text-{{name}}">
-    <div class="list-unstyled form-inline btn-toolbar col-sm-12 " data-toggle="buttons" role="toolbar" aria-labelledby="ls-question-text-{{name }}">
+<div class="row {{coreClass}} {{ extraclass }}" role="group">
+    <div class="list-unstyled form-inline btn-toolbar col-sm-12 " data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
 
     {# rows/answer_row.php #}
     {{ sRows }}
@@ -25,21 +25,21 @@
     }))
     }}
     </div>
+    {# Must add it only of other is set ! #}
+    <div class="col-sm-12 hide" id="{{ name }}-div">
+        <label for="answer{{ name }}othertext" class="control-label" id="label-id-{{ name }}">{{ othertext }}</label>
+        <!-- comment -->
+        {{ gT('Other:') }}
+        <input
+        type="text"
+        class="form-control {{ kpclass }} input-sm col-sm-4"
+        id="answer{{ name }}othertext"
+        name="{{ name }}other"
+        title="{{ gT('Other') }}"
+        onkeyup="checkconditions(this.value, this.name, this.type);"
+        >
+        </label>
+    </div>
 </div>
-<div class="row {{ extraclass }} col-sm-4 hide" id="{{ name }}-div">
-    <label for="SOTH{{ name }}" class="control-label" id="label-id-{{ name }}">{{ othertext }}</label>
-    <!-- comment -->
 
-    {{ gT('Other:') }}
-    <input
-    type="text"
-    class="form-control {{ kpclass }} input-sm col-sm-4"
-    id="answer{{ name }}othertext"
-    name="{{ name }}other"
-    title="{{ gT('Other') }}"
-    onkeyup="checkconditions(this.value, this.name, this.type);"
-    aria-labelledby="label-id-{{ name }}"
-    >
-    </label>
-</div>
 <!-- end of answer -->
