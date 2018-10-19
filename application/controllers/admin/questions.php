@@ -44,7 +44,7 @@ class questions extends Survey_Common_Action
 
         $aData['qct'] = count($qrr);
 
-        //Count sub-questions for this question
+        //Count subquestions for this question
         $sqrq = Question::model()->findAllByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
         $aData['sqct'] = count($sqrq);
 

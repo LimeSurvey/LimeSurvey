@@ -535,7 +535,7 @@ class Survey_Common_Action extends CAction
                 //Count answer-options for this question
                 $aData['qct'] = Answer::model()->countByAttributes(array('qid' => $qid, 'language' => $baselang));
 
-                //Count sub-questions for this question
+                //Count subquestions for this question
                 $aData['sqct'] = Question::model()->countByAttributes(array('parent_qid' => $qid, 'language' => $baselang));
 
                 $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
