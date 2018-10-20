@@ -3310,10 +3310,16 @@ class statistics_helper
                             break;
                         case 'pdf':
 
-                            $this->pdf->AddPage('P', 'A4');
+                            $graphPositionYIfOnSamePage = 297-160;
+                            $newPageNeeded = ($this->pdf->getY() > $graphPositionYIfOnSamePage);
+                            if ($newPageNeeded) {
+                                $this->pdf->AddPage('P', 'A4');
+                            } else {
+                                $this->pdf->setY($graphPositionYIfOnSamePage);
+                            }
 
                             $this->pdf->titleintopdf($pdfTitle, $titleDesc);
-                            $this->pdf->Image($tempdir."/".$cachefilename, 0, 70, 180, 0, '', Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$surveyid), 'B', true, 150, 'C', false, false, 0, true);
+                            $this->pdf->Image($tempdir."/".$cachefilename, 0, $newPageNeeded ? 70 : 190, 180, 0, '', Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$surveyid), 'B', true, 150, 'C', false, false, 0, true);
 
                             break;
                         case 'html':
