@@ -167,7 +167,6 @@ class QuestionAttribute extends LSActiveRecord
         $iQuestionID = (int) $iQuestionID;
         static $aQuestionAttributesStatic = array(); // TODO : replace by Yii::app()->cache
         // Limit the size of the attribute cache due to memory usage
-        $aQuestionAttributesStatic = array_splice($aQuestionAttributesStatic, -1000, null, true);
         if (isset($aQuestionAttributesStatic[$iQuestionID])) {
             return $aQuestionAttributesStatic[$iQuestionID];
         }
@@ -296,5 +295,28 @@ class QuestionAttribute extends LSActiveRecord
     public function getSurvey()
     {
         return $this->question->survey;
+    }
+
+    /**
+     * Get default settings for an attribute, return an array of string|null
+     * @return (string|bool|null)[]
+     */
+    public static function getDefaultSettings()
+    {
+        return array(
+            "name" => null,
+            "caption" => '',
+            "inputtype" => "text",
+            "options" => null,
+            "category" => gT("Attribute"),
+            "default" => '',
+            "help" => '',
+            "value" => '',
+            "sortorder" => 1000,
+            "i18n"=> false,
+            "readonly" => false,
+            "readonly_when_active" => false,
+            "expression"=> null,
+        );
     }
 }

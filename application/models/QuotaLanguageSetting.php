@@ -73,6 +73,7 @@ class QuotaLanguageSetting extends LSActiveRecord
             array('quotals_message', 'LSYii_Validators'),
             array('quotals_url', 'LSYii_Validators', 'isUrl'=>true),
             array('quotals_urldescrip', 'LSYii_Validators'),
+            array('quotals_url', 'filter', 'filter'=>'trim'),
             array('quotals_url', 'urlValidator'),
         );
     }
@@ -96,7 +97,11 @@ class QuotaLanguageSetting extends LSActiveRecord
     {
         $settings = new self;
         foreach ($data as $k => $v) {
-                    $settings->$k = $v;
+            if ($k === 'autoload_url'){
+                $settings->quota->autoload_url = $v;
+            } else {
+                $settings->$k = $v;
+            }
         }
         return $settings->save();
     }

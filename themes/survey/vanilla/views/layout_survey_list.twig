@@ -125,6 +125,9 @@
                         <div id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
                             {{ image('./files/survey_list_header.png', aSurveyInfo.name, {"class": "img-responsive center-block"}) }}
                             {{ aSurveyInfo.sSiteName }}
+                            <div class="ls-js-hidden">
+                                {{ include('./subviews/navigation/language_changer_form.twig') }}
+                            </div>
                         </div>
 
                         <div class="{{ aSurveyInfo.class.surveylistrowdiva }} col-xs-12" {{ aSurveyInfo.attr.surveylistrowdiva }}>
@@ -185,11 +188,14 @@
 
 
             {# Basic ThemeScript options  #}
-            {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", POS_END) }}
+            {{ registerScript("BasicThemeScripts", " if(window.basicThemeScripts === undefined){ window.basicThemeScripts = new ThemeScripts(); } basicThemeScripts.initGlobal(); ", "POS_END") }}
 
             {% endblock %}
             </div>
         </article>
+        {% block footer %}
+            {{ include('./subviews/footer/footer.twig') }}
+        {% endblock %}
         <div id="bottomScripts">
             <###end###>
         </div>

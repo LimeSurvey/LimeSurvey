@@ -1,0 +1,11 @@
+.bootstrap-item input {
+    visibility:hidden;
+}
+
+ .bootstrap-item {
+    margin: 2px 2px; 
+}
+
+ .bootstrap-buttons-div {
+    padding: 0 2px;
+ }

@@ -27,6 +27,9 @@ class TemplateManifest extends TemplateConfiguration
     public $templateEditor;
     public $sPreviewImgTag;
 
+    /* There is no option inheritance on Manifest mode: values from XML are always used. So no: $bUseMagicInherit */
+
+
     /**
      * Public interface specific to TemplateManifest
      * They are used in TemplateEditor
@@ -70,6 +73,13 @@ class TemplateManifest extends TemplateConfiguration
             }
         }
 
+        $oEvent = new PluginEvent('getValidScreenFiles');
+        $oEvent->set('type', $sType);
+        $oEvent->set('screen',$sScreen);
+        //$oEvent->set('files',$aScreenFiles); // Not needed since we have remove and add event
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $aScreenFiles = array_values(array_diff($aScreenFiles, (array) $oEvent->get('remove')));
+        $aScreenFiles = array_merge($aScreenFiles, (array)$oEvent->get('add'));
         $aScreenFiles = array_unique($aScreenFiles);
         return $aScreenFiles;
     }
@@ -162,12 +172,16 @@ class TemplateManifest extends TemplateConfiguration
         if (!file_exists($this->path.$sFile) && !file_exists($this->viewPath.$sFile)) {
 
             // Copy file from mother template to local directory
-            $sRfilePath = $this->getFilePath($sFile, $this);
-            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath.$sFile : $this->path.$sFile;
-            copy($sRfilePath, $sLfilePath);
+            $sSourceFilePath = $this->getFilePath($sFile, $this);
+            $sDestinationFilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig') ? $this->viewPath.$sFile : $this->path.$sFile;
+
+            //PHP 7 seems not to create the folder on copy automatically.
+            @mkdir(dirname($sDestinationFilePath), 0775, true);
+
+            copy($sSourceFilePath, $sDestinationFilePath);
 
             // If it's a css or js file from config... must update DB and XML too....
-            $sExt = pathinfo($sLfilePath, PATHINFO_EXTENSION);
+            $sExt = pathinfo($sDestinationFilePath, PATHINFO_EXTENSION);
             if ($sExt == "css" || $sExt == "js") {
 
                 // Check if that CSS/JS file is in DB/XML
@@ -259,7 +273,6 @@ class TemplateManifest extends TemplateConfiguration
     public function getButtons()
     {
         $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->sTemplateName));
-        $sLoadUrl    = Yii::app()->getController()->createUrl('admin/themeoptions/sa/importmanifest/', array("templatename"=>$this->sTemplateName));
         $sDeleteUrl  = Yii::app()->getController()->createUrl('admin/themeoptions/sa/deleteTemplate/', array("templatename"=>$this->sTemplateName));
 
         // TODO: load to DB
@@ -275,13 +288,14 @@ class TemplateManifest extends TemplateConfiguration
 
         $sLoadLink = '';
 
-        $sLoadLink .= "<a
-                id='template_options_link_".$this->sTemplateName."'
-                href='".$sLoadUrl."'
+        $sLoadLink .= CHtml::form( array("/admin/themeoptions/sa/importmanifest/"), 'post',array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
+                "<input type='hidden' name='templatename' value='".$this->sTemplateName."'>
+                <button id='template_options_link_".$this->sTemplateName."'
                 class='btn btn-default btn-block'>
                     <span class='fa fa-download text-warning'></span>
                     ".gT('Install')."
-                </a>";
+                </button>
+                </form>";
 
         $sDeleteLink = "<a
                 id='template_options_link_".$this->sTemplateName."'
@@ -345,6 +359,36 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['aOptions'] = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0) ? array() : $oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
 
         return parent::importManifest($sTemplateName, $aDatas);
+    }
+
+    /**
+     * Create a new entry in {{template_configuration}} table using the survey theme options from lss export file
+     * @param     $iSurveyId      int    the id of the survey
+     * @param $xml SimpleXMLElement
+     * @return boolean true on success
+     */
+    public static function importManifestLss($iSurveyId = 0, $xml =null)
+    {
+        if ((int)$iSurveyId > 0 && !empty($xml)){
+            $oTemplateConfiguration = new TemplateConfiguration;
+            $oTemplateConfiguration->setToInherit();
+
+            $oTemplateConfiguration->bJustCreated = true;
+            $oTemplateConfiguration->isNewRecord = true;
+            $oTemplateConfiguration->id = null;
+            $oTemplateConfiguration->template_name = $xml->template_name->__toString();
+            $oTemplateConfiguration->sid = $iSurveyId;
+
+            if (isAssociativeArray((array)$xml->config->options)){
+                $oTemplateConfiguration->options  = TemplateConfig::formatToJsonArray($xml->config->options);
+            }
+
+            if ($oTemplateConfiguration->save()){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -494,7 +538,7 @@ class TemplateManifest extends TemplateConfiguration
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
         $ometadata = $oConfig->getElementsByTagName('metadata')->item(0);
         $oOldMailNode   = $ometadata->getElementsByTagName('authorEmail')->item(0);
-        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(getGlobalSetting('siteadminemail')));
+        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(Yii::app()->getConfig('siteadminemail')));
         $ometadata->replaceChild($oNvMailNode, $oOldMailNode);
     }
 
@@ -591,12 +635,12 @@ class TemplateManifest extends TemplateConfiguration
         // If the template directory doesn't exist, we just set Default as the template to use
         // TODO: create a method "setToDefault"
         if (!is_dir($this->path)) {
-            $this->sTemplateName = getGlobalSetting('defaulttheme');
+            $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
             $this->isStandard    = true;
             $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             if (!$this->iSurveyId) {
                 // Why?
-                setGlobalSetting('defaulttheme', 'fruity');
+                \SettingGlobal::setSetting('defaulttheme','fruity');
             }
         }
 
@@ -622,7 +666,7 @@ class TemplateManifest extends TemplateConfiguration
         // If it is called for survey taking, a survey id will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
             /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
-            $sTemplateName = getGlobalSetting('defaulttheme');
+            $sTemplateName = App()->getConfig('defaulttheme');
         }
 
         $this->sTemplateName = $sTemplateName;
@@ -645,33 +689,29 @@ class TemplateManifest extends TemplateConfiguration
      */
 
 
-    /**
-     * Constructs a template configuration object
-     * If any problem (like template doesn't exist), it will load the default template configuration
-     *
-     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
-     * @param  string $iSurveyId the id of the survey. If
-     * @return $this
-     */
-    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true)
+    public function setBasics($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = false)
     {
-        $this->setBasics($sTemplateName, $iSurveyId);
-        $this->setMotherTemplates(); // Recursive mother templates configuration
-
-        $this->setThisTemplate(); // Set the main config values of this template
-        $this->createTemplatePackage($this); // Create an asset package ready to be loaded
-
-
-        return $this;
-    }
-
-
-    public function setBasics($sTemplateName = '', $iSurveyId = '')
-    {
+        // In manifest mode, we always use the default value from manifest, so no inheritance, no $bUseMagicInherit set needed
         $this->setTemplateName($sTemplateName, $iSurveyId); // Check and set template name
         $this->setIsStandard(); // Check if  it is a CORE template
         $this->setPath(); // Check and set path
         $this->readManifest(); // Check and read the manifest to set local params
+    }
+
+    /**
+     * Get showpopups value from config or template configuration
+     */
+    public function getshowpopups(){
+        $config = (int)Yii::app()->getConfig('showpopups');
+        if ($config == 2){
+            if (isset($this->oOptions->showpopups)){
+                $this->showpopups = (int)$this->oOptions->showpopups;
+            } else {
+               $this->showpopups = 1;
+           }
+        } else {
+            $this->showpopups = $config;
+        }
     }
 
     /**
@@ -717,54 +757,21 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
      *
-     * @var $jFiles string json
+     * @var $sType string js or css ?
      * @return array
      */
-    protected function getFilesToLoad($oTemplate, $sType)
+    protected function getFilesTo($oTemplate, $sType, $sAction)
     {
         $aFiles = array();
         $oRFilesTemplate = (!empty($bExtends)) ? self::getTemplateForXPath($oTemplate, 'files') : $oTemplate;
 
-        if (isset($oRFilesTemplate->config->files->$sType->add)) {
-            // TODO: "replace" and "remove"
-            $aFiles = (array) $oTemplate->config->files->$sType->add;
+        if (isset($oRFilesTemplate->config->files->$sType->$sAction)) {
+            $aFiles = (array) $oTemplate->config->files->$sType->$sAction;
         }
+
         return $aFiles;
     }
 
-    /**
-     * Change the mother template configuration depending on template settings
-     * @param $sType     string   the type of settings to change (css or js)
-     * @param $aSettings array    array of local setting
-     * @return array
-     */
-    protected function changeMotherConfiguration($sType, $aSettings)
-    {
-
-        if (is_object($this->oMotherTemplate)) {
-
-
-            // Check if each file exist in this template path
-            // If the file exists in local template, we can remove it from mother template package.
-            // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
-            // (and leave it in moter template definition if it already exists.)
-            foreach ($aSettings as $key => $sFileName) {
-                if (file_exists($this->path.$sFileName)) {
-                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
-
-                } else {
-                    // File doesn't exist locally, so it should be removed
-                    $key = array_search($sFileName, $aSettings);
-                    //Yii::app()->clientScript->removeFileFromPackage($this->sPackageName, $sType, $sFileName);
-                    unset($aSettings[$key]);
-                    Yii::app()->clientScript->addFileToPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
-                }
-            }
-        }
-
-
-        return $aSettings;
-    }
 
     /**
      * Proxy for Yii::app()->clientScript->removeFileFromPackage()
@@ -796,7 +803,7 @@ class TemplateManifest extends TemplateConfiguration
                 $instance->prepareTemplateRendering($sMotherTemplateName);
                 $this->oMotherTemplate = $instance; // $instance->prepareTemplateRendering($sMotherTemplateName, null);
             }
-        
+
         }
     }
 
@@ -843,13 +850,16 @@ class TemplateManifest extends TemplateConfiguration
         $this->cssFramework             = (!empty($this->config->xpath("//cssframework"))) ? $this->config->engine->cssframework : '';
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
-        
+
         //Add extra packages from xml
         $this->packages                 = array();
         $packageActionFromEngineSection = json_decode(json_encode($this->config->engine->packages));
         if (!empty($packageActionFromEngineSection)) {
             if (!empty($packageActionFromEngineSection->add)) {
-                $this->packages = array_merge($packageActionFromEngineSection->add, $this->packages);
+                $this->packages = array_merge(
+                    !is_array($packageActionFromEngineSection->add) ? [$packageActionFromEngineSection->add] : $packageActionFromEngineSection->add,
+                    $this->packages
+                );
             }
             if (!empty($packageActionFromEngineSection->remove)) {
                 $this->packages =  array_diff($this->packages, $packageActionFromEngineSection->remove);

@@ -41,13 +41,13 @@
                                 <table class='{{ aSurveyInfo.class.assessmentstable }} table' {{ aSurveyInfo.attr.assessmentstable }}>
                                     <tr {{ aSurveyInfo.attr.assessmentstabletr }} >
                                         <th {{ aSurveyInfo.attr.assessmentstableth }} >
-                                            {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.name)  }}
+                                            {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}" ], [ val, aAssessments.total_score, aAssessments.total_score ], assessed.name)  }}
                                         </th>
                                     </tr>
 
                                     <tr  {{ aSurveyInfo.attr.assessmentstabletr }} >
                                         <td {{ aSurveyInfo.attr.assessmentstabletd }} >
-                                            {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.message)  }}
+                                            {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}" ], [ val, aAssessments.total_score, aAssessments.total_score  ], assessed.message)  }}
                                         </td>
                                     </tr>
                                 </table>
@@ -59,7 +59,7 @@
                 {% endfor %}
             {% endif %}
 
-
+            {% set val = aAssessments.subtotal.datas | last  %}
 
             {% if aAssessments.total.show %}
                 {% for assessed in aAssessments.total %}
@@ -68,12 +68,12 @@
                             <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
                                 <th {{ aSurveyInfo.attr.assessmentstabletth }}>
                                     {# Beleive it or not, val is defined in previous loop... -_- #}
-                                    {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.name)  }}
+                                    {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}" ], [ val, aAssessments.total_score, aAssessments.total_score ], assessed.name)  }}
                                 </th>
                             </tr>
                             <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
                                 <td {{ aSurveyInfo.attr.assessmentstablettd }}>
-                                    {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.message)  }}
+                                    {{ str_replace( [ "{PERC}", "{TOTAL}", "{ASSESSMENT_CURRENT_TOTAL}" ], [ val, aAssessments.total_score, aAssessments.total_score ], assessed.message)  }}
                                 </td>
                             </tr>
                         </table>

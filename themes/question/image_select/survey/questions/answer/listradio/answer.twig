@@ -1,0 +1,26 @@
+{#
+/**
+ * List Radio Html
+ *
+ * @var $name
+ * @var $value
+ */
+#}
+
+<!-- List Radio -->
+
+<!-- answer -->
+{{ sTimer }}
+
+<div class="{{ coreClass }} row" role="radio-group" aria-labelledby="ls-question-text-{{ name }}">
+	{# rows/answer_row.php #}
+    {{ sRows }}
+</div>
+<input
+    type="hidden"
+    name="java{{ name }}"
+    id="java{{ name }}"
+    value="{{ value }}"
+    disabled
+/>
+<!-- end of answer -->

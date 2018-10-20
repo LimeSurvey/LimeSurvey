@@ -19,7 +19,7 @@
 
 <!--answer_row_inputtext -->
 <li id="javatbd{{ myfname }}" class="question-item answer-item text-item form-group{% if alert %} ls-error-mandatory has-error{% endif %}{{ extraclass }}" {{ sDisplayStyle }} >
-    <label class="control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth===0 %} hidden{% endif %}" for="answer{{ myfname }}">
+    <label class="control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth is empty %} hidden{% endif %}" for="answer{{ myfname }}">
         {{ question }}
     </label>
     <div class="col-xs-12 col-sm-{{ sInputContainerWidth }}">

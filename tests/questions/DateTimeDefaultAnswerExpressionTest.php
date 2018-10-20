@@ -33,6 +33,9 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
         \Yii::app()->setController(new DummyController('dummyid'));
+
+        // NOTE: This block us. We can't refactore buildsurveysession
+        // So as soon as the test are rewrote to use selenium, buildsurveysession TODOs can be done    
         buildsurveysession(self::$surveyId);
         $surveyMode = 'group';
         $LEMdebugLevel = 0;

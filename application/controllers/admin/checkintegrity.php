@@ -134,6 +134,10 @@ class CheckIntegrity extends Survey_Common_Action
                 $aData = $this->_deleteGroups($aDelete['groups'], $aData);
             }
 
+            if (isset($aDelete['user_in_groups'])) {
+                $aData = $this->_deleteUserInGroups($aDelete['user_in_groups'], $aData);
+            }
+
             if (isset($aDelete['orphansurveytables'])) {
                 $aData = $this->_dropOrphanSurveyTables($aDelete['orphansurveytables'], $aData);
             }
@@ -174,11 +178,28 @@ class CheckIntegrity extends Survey_Common_Action
         $criteria = new CDbCriteria;
         $criteria->addInCondition('gid', $gids);
         QuestionGroup::model()->deleteAll($criteria);
+        // TODO all this type of checks is meaningless since the code above will a) not put errors in model and b) its not the same model instance anyway
         if (QuestionGroup::model()->hasErrors()) {
             safeDie(join('<br>', QuestionGroup::model()->getErrors()));
         }
         $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), count($groups));
 
+        return $aData;
+    }
+
+    private function _deleteUserInGroups(array $userInGroups, array $aData)
+    {
+        $ugids = array();
+        foreach ($userInGroups as $group) {
+            $ugids[] = $group['ugid'];
+        }
+
+        $criteria = new CDbCriteria;
+        $criteria->addInCondition('ugid', $ugids);
+        $deletedRows = UserInGroup::model()->deleteAll($criteria);
+        if ($deletedRows === count($userInGroups)) {
+            $aData['messages'][] = sprintf(gT('Deleting orphaned user group assignments: %u assignments deleted'), count($userInGroups));
+        }
         return $aData;
     }
 
@@ -357,7 +378,7 @@ class CheckIntegrity extends Survey_Common_Action
     /**
      * This function checks the LimeSurvey database for logical consistency and returns an according array
      * containing all issues in the particular tables.
-     * @returns Array with all found issues.
+     * @returns array Array with all found issues.
      */
     protected function _checkintegrity()
     {
@@ -390,6 +411,10 @@ class CheckIntegrity extends Survey_Common_Action
 
         // Deactivate surveys that have a missing response table
         $oSurveys = Survey::model()->findAll();
+        $oDB = Yii::app()->getDb();
+        $oDB->schemaCachingDuration = 0; // Deactivate schema caching
+        Yii::app()->setConfig('Updating', true);
+
         foreach ($oSurveys as $oSurvey) {
 
             if ($oSurvey->isActive && !$oSurvey->hasResponsesTable) {
@@ -397,6 +422,83 @@ class CheckIntegrity extends Survey_Common_Action
                 $bDirectlyFixed = true;
             }
         }
+
+        /** Check for active surveys if questions are in the correct group **/
+        foreach ($oSurveys as $oSurvey) {
+
+            // We get the active surveys
+            if ($oSurvey->isActive && $oSurvey->hasResponsesTable) {
+
+                $model    = SurveyDynamic::model($oSurvey->sid);
+                $aColumns = $model->getMetaData()->columns;
+                $aQids    = array();
+
+                // We get the columns of the reponses table
+                foreach ($aColumns as $oColumn) {
+
+                    // Question columns start with the SID
+                    if (strpos($oColumn->name, $oSurvey->sid) !== false) {
+
+                        // Fileds are separated by X
+                        $aFields   = explode('X', $oColumn->name);
+
+
+                        if ( isset($aFields[1]) ){
+
+                            $sGid      = $aFields[1];
+
+                            // QID field can be more than just QID, like: 886other or 886A1
+                            // So we clean it by finding the first alphabetical character
+                            $sDirtyQid = $aFields[2];
+                            preg_match('~[a-zA-Z_]~i', $sDirtyQid, $match, PREG_OFFSET_CAPTURE);
+
+                            if (isset($match[0][1])){
+                                $sQID      =  substr ($sDirtyQid, 0, $match[0][1]);
+                            }else{
+                                // It was just the QID....
+                                $sQID      =  $sDirtyQid;
+                            }
+
+                            // Here, we get the question as defined in backend
+                            $oQuestion = Question::model()->findByPk([ 'qid' => $sQID , 'language' => $oSurvey->language]);
+                            if (is_a($oQuestion, 'Question')){
+
+                                // We check if its GID is the same as the one defined in the column name
+                                if ($oQuestion->gid != $sGid){
+
+                                    // If not, we change the column name
+                                    $sNvColName = $oSurvey->sid . 'X'. $oQuestion->groups->gid . 'X' . $sDirtyQid;
+                                    $oTransaction = $oDB->beginTransaction();
+                                    $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name , $sNvColName);
+                                    $oTransaction->commit();
+                                }
+                            }else{
+                                // QID not found: we should do something...
+                                // $aUnfoundQIDs[] = $sQID;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $oDB->schemaCachingDuration = 3600;
+        $oDB->schema->getTables();
+        $oDB->schema->refresh();
+        $oDB->active = false;
+        $oDB->active = true;
+        User::model()->refreshMetaData();
+        Yii::app()->db->schema->getTable('{{surveys}}', true);
+        Yii::app()->db->schema->getTable('{{templates}}', true);
+        Survey::model()->refreshMetaData();
+
+        if (!(defined('YII_DEBUG') && YII_DEBUG)) {
+            Yii::app()->cache->flush();
+            Yii::app()->cache->gc();
+        }
+
+        Yii::app()->setConfig('Updating', false);
+
         unset($oSurveys);
 
 
@@ -475,7 +577,7 @@ class CheckIntegrity extends Survey_Common_Action
             if ($condition['cfieldname']) {
                 // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
                 if (preg_match('/^\+{0,1}[0-9]+X[0-9]+X*$/', $condition['cfieldname'])) {
-                    
+
                     list ($surveyid, $gid, $rest) = explode('X', $condition['cfieldname']);
 
                     $iRowCount = count(QuestionGroup::model()->findAllByAttributes(array('gid'=>$gid)));
@@ -576,7 +678,7 @@ class CheckIntegrity extends Survey_Common_Action
         $assessments = Assessment::model()->findAll($oCriteria);
         if (Assessment::model()->hasErrors()) {
             safeDie(join('<br>', Assessment::model()->getErrors()));
-            
+
         }
         foreach ($assessments as $assessment) {
             $iAssessmentCount = count(QuestionGroup::model()->findAllByPk(array('gid'=>$assessment['gid'], 'language'=>$assessment['language'])));
@@ -667,6 +769,18 @@ class CheckIntegrity extends Survey_Common_Action
         /** @var QuestionGroup $group */
         foreach ($groups as $group) {
             $aDelete['groups'][] = array('gid' => $group['gid'], 'reason' => gT('There is no matching survey.').' SID:'.$group['sid']);
+        }
+
+        /**********************************************************************/
+        /*     Check orphan user_in_groups                                    */
+        /**********************************************************************/
+        $oCriteria = new CDbCriteria;
+        $oCriteria->join = 'LEFT JOIN {{user_groups}} ug ON t.ugid=ug.ugid';
+        $oCriteria->condition = '(ug.ugid IS NULL)';
+        $userInGroups = UserInGroup::model()->findAll($oCriteria);
+        /** @var UserInGroup[] $userInGroups */
+        foreach ($userInGroups as $userInGroup) {
+            $aDelete['user_in_groups'][] = array('ugid' => $userInGroup->ugid,'uid' => $userInGroup->uid, 'reason' => sprintf(gT('There is no matching user %s in group %s.'),$userInGroup->uid,$userInGroup->ugid));
         }
 
         /**********************************************************************/
@@ -862,7 +976,7 @@ class CheckIntegrity extends Survey_Common_Action
     protected function checkGroupOrderDuplicates()
     {
         $sQuery = "
-            SELECT 
+            SELECT
                 g.sid
             FROM {{groups}} g
             JOIN {{surveys}} s ON s.sid = g.sid
@@ -894,12 +1008,13 @@ class CheckIntegrity extends Survey_Common_Action
             SELECT
                 q.sid,
                 q.gid,
-                q.parent_qid
+                q.parent_qid,
+                q.scale_id
             FROM {{questions}} q
             JOIN {{groups}} g ON q.gid = g.gid
             JOIN {{surveys}} s ON s.sid = q.sid
             WHERE q.language = s.language AND g.language = s.language
-            GROUP BY q.sid, q.gid, q.parent_qid
+            GROUP BY q.sid, q.gid, q.parent_qid, q.scale_id
             HAVING COUNT(DISTINCT question_order) != COUNT(qid);
             ";
         $result = Yii::app()->db->createCommand($sQuery)->queryAll();

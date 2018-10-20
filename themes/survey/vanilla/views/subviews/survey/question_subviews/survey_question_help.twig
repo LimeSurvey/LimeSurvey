@@ -23,5 +23,7 @@
         <div class="{{ aSurveyInfo.class.lsquestionhelp }}">
             {{ aQuestion.help.text | raw }}
         </div>
+    {% else %}
+            {{ aQuestion.help.text | raw }}
     {% endif %}
 </div>

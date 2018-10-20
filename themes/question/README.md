@@ -1,30 +1,35 @@
 # Question templates for LimeSurvey
 
 Coming with the 3.X Verson of LimeSurvey you will be able to create your 
-own set of questiontypes and alternative views for questions.
+own set of question types and alternative views for questions.
 
 All you need to know is a little HTML and XML.
 (And for the more advanced stuff also JavaScript and CSS would help.)
 
 ## The config.xml
 
-XML config files are very common, a.e. Joomla. The config file for the question-template 
-should contain a few basic things.
+XML config files are very common, a.e. Joomla. The config file for the question-template should contain a few basic things.
 
 ### Metadata - Or, what is this about and who has written it?
 
 Your question view or type should have your name and your email on it, so people can ask questions and congratulate you to 
 your awesome question type
 
-Also you should give some informatione about the used licence (remember LimeSurvey is GPL) and a short description.
+Also you should give some information about the used licence (remember LimeSurvey is GPL) and a short description.
 
-It makes a lot of sense to write wich version of the view it is, to let people know If they would have to update
+It makes a lot of sense to write which version of the view it is, to let people know If they would have to update.
 
-The `metadatas` part should therefor look something like this:
+Also, there is a difference between `name` and `title` tags.
+`name` tag is used to enter a question theme code, without spaces.
+`title` tag is used to enter a nice title which would be visible on Question theme dropdown on edit question page.
+Both tags are required.
+
+The `metadatas` part should therefore look something like this:
 
 ```xml
     <metadatas>
         <name>MyAwesomeQuestionView</name> 
+        <title>My Awesome Question View</title> 
         <creationDate>23/12/2016</creationDate>
         <author>LimeSurvey Programmer</author>
         <authorEmail>info@limesurvey.org</authorEmail>
@@ -33,7 +38,7 @@ The `metadatas` part should therefor look something like this:
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>1</apiVersion>
-        <description>Everything will be better with this questiontype</description>
+        <description>Everything will be better with this question type</description>
     </metadatas>
 ```
 
@@ -41,9 +46,11 @@ The `metadatas` part should therefor look something like this:
 
 You can add additional files to the question view. 
 
+`preview` tag is used to show a preview image for question type on edit question page right side accordion. If this tag is missing or empty, default question type preview image would be used.
+
 Please make sure, that you put your own files in an `asset` folder in the base folder of your question view.
 
-The `files` part should look somnething like this:
+The `files` part should look something like this:
 ```xml
 <files>
     <css>
@@ -52,6 +59,9 @@ The `files` part should look somnething like this:
     <js>
         <filename>scripts/myscript.js</filename>
     </js>
+    <preview>
+        <filename>question_theme_preview.png</filename>
+    </preview>
 </files>
 ```
 
@@ -66,7 +76,9 @@ Or fixed width and height of images in the question. Anything you can think of.
 
 You can have as many extra attributes as you want. But be careful not to flood the question edit view with a million new attributes.
 
-For a full list of possible inputtypes please have a look at the questionHelper in application/helpers
+<category> tag is used to categorize attributes into different categories on edit question page right side accordion.
+
+For a full list of possible input types please have a look at the questionHelper in application/helpers.
 
 A full list is coming someday.
 
@@ -81,6 +93,7 @@ The `custom attributes` part should look something like this:
         <default>defaulttext</default>
         <help>Describing what this custom attribute will do.</help>
         <caption>My custom Attribute: </caption>
+        <i18n>en</i18n>
     </attribute>
 </custom_attributes>
 ```
@@ -115,7 +128,8 @@ Just take this as a base and build on top of it.
 <config>
 
     <metadatas>
-        <name>YourAwesomeQuestionView</name> 
+        <name>MyAwesomeQuestionView</name>  
+        <title>My Awesome Question View</title>
         <creationDate>23/12/2016</creationDate>
         <author>LimeSurvey Programmer</author>
         <authorEmail>info@limesurvey.org</authorEmail>
@@ -124,7 +138,7 @@ Just take this as a base and build on top of it.
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>1</apiVersion>
-        <description>Everything will be better with this questiontype</description>
+        <description>Everything will be better with this question type</description>
     </metadatas>
 
     <files>
@@ -134,17 +148,31 @@ Just take this as a base and build on top of it.
         <js>
             <filename>scripts/myscript.js</filename>
         </js>
+        <preview>
+            <filename>question_theme_preview.png</filename>
+        </preview>
     </files>
 
     <custom_attributes>
         <attribute>
-            <name>myCustomAttribute</name>
-            <category>Display</category>
-            <sortorder>90</sortorder>
+            <name>customAttribute1</name>
+            <category>My attributes</category>
+            <sortorder>1</sortorder>
             <inputtype>text</inputtype>
             <default>defaulttext</default>
             <help>Describing what this custom attribute will do.</help>
-            <caption>My custom Attribute: </caption>
+            <caption>My custom Attribute 1: </caption>
+            <i18n>en</i18n>
+        </attribute>
+        <attribute>
+            <name>customAttribute2</name>
+            <category>My attributes</category>
+            <sortorder>2</sortorder>
+            <inputtype>text</inputtype>
+            <default>defaulttext</default>
+            <help>Describing what this custom attribute will do.</help>
+            <caption>My custom Attribute 2: </caption>
+            <i18n>en</i18n>
         </attribute>
     </custom_attributes>
 
@@ -178,8 +206,9 @@ upload/
                         ├── assets
                         │   ├── css
                         │   │   └── my_awesome_template.css
-                        │   └── scripts
-                        │       └── my_awesome_template.js
+                        │   ├── scripts
+                        │   |   └── my_awesome_template.js
+                        |   └── question_theme_preview.png
                         ├── columns
                         │   ├── column_footer.php
                         │   └── column_header.php

@@ -11,8 +11,10 @@ echo viewHelper::getViewTestTag('addQuestion');
 <?php
 $aQuestionTypeGroups = array();
 $aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
+$question_template_preview = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($eqrow['type']);
+$selected = null;
 
-foreach ( $aQuestionTypeList as $key=> $questionType)
+foreach ( $aQuestionTypeList as $key => $questionType)
 {
     $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
     if (!isset($aQuestionTypeGroups[$htmlReadyGroup]))
@@ -21,9 +23,48 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
             'questionGroupName' => $questionType['group']
         );
     }
+        $imageName = $key;
+        if ($imageName == ":") $imageName = "COLON";
+        else if ($imageName == "|") $imageName = "PIPE";
+        else if ($imageName == "*") $imageName = "EQUATION";
+
+    $questionType['detailpage'] = '
+    <div class="col-sm-12 currentImageContainer">
+        <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
+    </div>';
+    if ($imageName == 'S') {
+        $questionType['detailpage'] = '
+        <div class="col-sm-12 currentImageContainer">
+            <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
+            <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'2.png" />
+        </div>';
+    }
     $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
 }
 ?>
+<?php
+    $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
+        'widgetsJsName' => "questionTypeSelector",
+        'renderType' =>  (isset($selectormodeclass) && $selectormodeclass == "none") ? "group-simple" : "group-modal",
+        'modalTitle' => "Select question type",
+        'groupTitleKey' => "questionGroupName",
+        'groupItemsKey' => "questionTypes",
+        'debugKeyCheck' => "Type: ",
+        'previewWindowTitle' => gT("Preview question type"),
+        'groupStructureArray' => $aQuestionTypeGroups,
+        'value' => $eqrow['type'],
+        'debug' => YII_DEBUG,
+        'currentSelected' => Question::getQuestionTypeName($eqrow['type']),
+        'optionArray' => [
+            'selectedClass' => Question::getQuestionClass($eqrow['type']),
+            'onUpdate' => [
+                'value',
+                "console.ls.log(value); $('#question_type').val(value); updatequestionattributes(''); updateQuestionTemplateOptions();"
+            ]
+        ]
+    ));
+?>
+<?=$oQuestionSelector->getModal();?>
 
 <?php PrepareEditorScript(true, $this); ?>
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
@@ -86,7 +127,6 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
             <?php // TODO : find why the $groups can't be generated from controller?>
             <div id='questionbottom'>
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-
                     <!-- Copy options -->
                     <?php if ($copying): ?>
                         <div class="panel panel-default">
@@ -128,6 +168,18 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                         </div>
                                     </div>
                                     <div  class="form-group">
+                                        <label class=" control-label" for='copydefaultanswers'><?php eT("Copy default answers?"); ?></label>
+                                        <div class="">
+                                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                'name' => 'copydefaultanswers',
+                                                'id' => 'copydefaultanswers',
+                                                'value' => 'Y',
+                                                'onLabel' => gT('Yes'),
+                                                'offLabel' => gT('No')));
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <div  class="form-group">
                                         <label class=" control-label" for='copyattributes'><?php eT("Copy advanced settings?"); ?></label>
                                         <div class="">
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -162,58 +214,22 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                         <div id="collapse-question" class="panel-collapse collapse <?php if (!$copying){echo ' in '; } ?>" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
                                 <!-- Question selector start -->
+                                        <?php //Question::getQuestionTypeName($eqrow['type']); ?>
+                                        <?php //elseif($activated != "Y" && (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
+
+
                                 <div  class="form-group">
-                                    <?php if( $activated != "Y" && isset($selectormodeclass) && $selectormodeclass != "none"): ?>
+                                    <label class=" control-label" for="question_type_button">
+                                        <?php
+                                            eT("Question type:");
+                                        ?>
+                                    </label>
+                                    <?php if( $activated != "Y") : ?>
+                                        <?=$oQuestionSelector->getButtonOrSelect();?>
                                         <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
-                                            <?php
-                                            eT("Question type:");
-                                            ?>
-                                        </label>
-                                        <div class=" btn-group" id="question_type_button">
-                                            <button type="button" class="btn btn-default " data-target="#selector__modal_select-question-type" data-toggle="modal" aria-haspopup="true" aria-expanded="false" >
-                                                <span class="buttontext" id="selector__editView_question_type_description">
-                                                    <?=Question::getQuestionTypeName($eqrow['type']); ?>
-                                                    <?php if(YII_DEBUG):?>
-                                                        <em class="small">
-                                                            Type code: <?php echo $eqrow['type']; ?>
-                                                        </em>
-                                                    <?php  endif;?>
-                                                </span>
-                                                &nbsp;&nbsp;&nbsp;
-                                                <i class="fa fa-folder-open"></i>                                       
-                                            </button>
-                                        </div>
-                                    <?php elseif($activated != "Y" && (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
-                                        <label class=" control-label" for="question_type" title="<?php eT("Question type");?>">
-                                            <?php
-                                            eT("Question type:");
-                                            ?>
-                                        </label>                                       
-                                        <select id="question_type" name="type" class="form-control">
-                                            <?php 
-                                            foreach ($aQuestionTypeGroups as $sGroupHTMLConformString => $aQuestionTypeGroup) { 
-                                                echo sprintf("<optgroup label='%s'>", $aQuestionTypeGroup['questionGroupName']);
-                                                foreach ($aQuestionTypeGroup['questionTypes'] as $sQuestionTypeKey => $aQuestionType) {
-                                                    $selected = $eqrow['type'] == $sQuestionTypeKey ? 'selected' : '';
-                                                    if(YII_DEBUG) {
-                                                        echo sprintf("<option value='%s' %s>%s (%s)</option>", $sQuestionTypeKey, $selected, $aQuestionType['description'], $sQuestionTypeKey);
-                                                    } else {
-                                                        echo sprintf("<option value='%s' %s>%s</option>", $sQuestionTypeKey, $selected, $aQuestionType['description']);
-                                                    }
-                                                }
-                                                echo "</optgroup>"; 
-                                            } 
-                                            ?>
-                                        </select> 
                                     <?php elseif($activated == "Y") : ?>
                                         <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
                                         <!-- TODO : control if we can remove, disable update type must be done by PHP -->
-                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
-                                            <?php
-                                                eT("Question type:");
-                                            ?>
-                                        </label>
                                         <div class=" btn-group" id="question_type_button">
                                             <button type="button" class="btn btn-default" disabled  aria-haspopup="true" aria-expanded="false" >
                                                 <span class="buttontext" id="selector__editView_question_type_description">
@@ -230,41 +246,86 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                         </div>
                                     <?php endif; ?>
                                 </div>
+
+                                <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
+
                                 <!-- Question selector end -->
+                               <div class="form-group" id="QuestionTemplateSelection">
+                                    <label class=" control-label" for='question_template'>
+                                        <?php eT("Question theme:"); ?>
+                                        <a class="text-primary show-help" data-toggle="collapse" href="#help_question_template" aria-expanded="false" aria-controls="help_question_template" aria-hidden=true>
+                                            <span class="fa fa-info-circle" ></span>
+                                        </a>
+                                    </label>
+                                    <p class="help-block collapse" id="help_question_template"><?php eT("Use a customized question theme for this question");?></p> 
+                                    <select id="question_template" name="question_template" class="form-control">
+                                        <?php 
+                                        foreach ($aQuestionTemplateList as $code => $value) { 
+                                                if (!empty($aQuestionTemplateAttributes) && isset($aQuestionTemplateAttributes['value'])){
+                                                    $question_template_preview = $aQuestionTemplateAttributes['value'] == $code ? $value['preview'] : $question_template_preview;
+                                                    $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
+                                                }
+                                                if(YII_DEBUG) {
+                                                    echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, $value['title'], $code);
+                                                } else {
+                                                    echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, $value['title']);
+                                                }
+                                        }
+                                        ?>
+                                    </select>
+                                    <div class="help-block" id="QuestionTemplatePreview">
+                                            <strong><?php eT("Preview:"); ?></strong>
+                                            <div class="">
+                                                <img src="<?php echo $question_template_preview; ?>" class="img-thumbnail img-responsive center-block">
+                                            </div>
+                                    </div>
+                                </div>
+
+
+
                                 <div  class="form-group">
-                                    <label class=" control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
+                                    <label class=" control-label" for='gid'><?php eT("Question group:"); ?></label>
                                     <div class="">
                                         <select name='gid' id='gid' class="form-control" <?php if ($activated == "Y"){echo " disabled ";} ?> >
                                             <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                                         </select>
                                         <?php if ($activated == "Y"): ?>
                                             <input type='hidden' name='gid' value='<?php echo $eqrow['gid'];?>' />
-                                            <?php endif; ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
                                 <div  class="form-group" id="OtherSelection">
-                                    <label class=" control-label" title="<?php eT("Option 'Other':");?>"><?php eT("Option 'Other':"); ?></label>
-                                    <?php if ($activated != "Y"): ?>
+                                    <label class=" control-label" for="other"><?php eT("Option 'Other':"); ?></label>
                                         <div class="">
-                                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $eqrow['other'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+                                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                'name' => 'other',
+                                                'id' => 'other',
+                                                'value'=> $eqrow['other'] === "Y",
+                                                'onLabel'=>gT('On'),
+                                                'offLabel'=>gT('Off'),
+                                                'htmlOptions'=>array(
+                                                    'disabled'=>$activated == "Y",
+                                                ),
+                                            ));?>
                                         </div>
-                                    <?php else:?>
-                                        <?php eT("Cannot be changed (survey is active)");?>
-                                        <input type='hidden' name='other' value="<?php echo ($eqrow['other']=='Y' ? 1 : 0); ?>" />
-                                    <?php endif;?>
                                 </div>
 
                                 <div id='MandatorySelection' class="form-group">
-                                <label class=" control-label" title="<?php eT("Set \"Mandatory\" state");?>"><?php eT("Mandatory:"); ?></label>
+                                <label class=" control-label" for="mandatory"><?php eT("Mandatory:"); ?></label>
+                                        <a class="text-primary show-help" data-toggle="collapse" href="#help_mandatory" aria-expanded="false" aria-controls="help_mandatory" aria-hidden=true>
+                                            <span class="fa fa-info-circle" ></span>
+                                        </a>
+                                    </label>
+                                    <p class="help-block collapse" id="help_mandatory"><?php eT("Set \"Mandatory\" state");?></p> 
                                     <div class="">
                                         <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> $eqrow['mandatory'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'id' => 'mandatory','value'=> $eqrow['mandatory'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class=" control-label" for='relevance' title="<?php eT("Relevance equation");?>"><?php eT("Relevance equation:"); ?></label>
+                                <div class="form-group" id="relevanceContainer">
+                                    <label class=" control-label" for='relevance'><?php eT("Relevance equation:"); ?></label>
                                     <div class="">
                                         <div class="input-group">
                                             <div class="input-group-addon">{</div>
@@ -278,7 +339,7 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                                 </div>
 
                                 <div id='Validation'  class="form-group">
-                                    <label class=" control-label" for='preg'  title="<?php eT("Validation:");?>"><?php eT("Validation:"); ?></label>
+                                    <label class=" control-label" for='preg'><?php eT("Validation:"); ?></label>
                                     <div class="">
                                         <input class="form-control" type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
                                     </div>
@@ -298,10 +359,13 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
                         </div>
                     </div>
                     <?php if (!$copying): ?>
+                        <div id="container-advanced-question-settings" class="custom custom-margin top-5">
+                            <div class="panel"></div>
+                            <!-- Advanced settings -->
+                        </div>
                         <div class="loader-advancedquestionsettings text-center">
                             <span class="fa fa-refresh" style="font-size:3em;" aria-hidden='true'></span>
                         </div>
-                            <!-- Advanced settings -->
                     <?php endif; ?>
                 </div>
             </div>
@@ -323,16 +387,11 @@ foreach ( $aQuestionTypeList as $key=> $questionType)
         <?php endif; ?>
         <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
         </form>
+        <div id='questionactioncopy' class='extra-action'>
+            <button type='submit' class="btn btn-primary saveandreturn hidden"  name="redirection" value="edit"><?php eT("Save") ?> </button>
+            <input type='submit' value='<?php eT("Save and close"); ?>'  class="btn btn-default hidden"/>
+        </div>
+
     </div>
 </div>
 
-
-<?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
-    <div class="modal fade" tabindex="-1" role="dialog" id="selector__modal_select-question-type" style="z-index: 1250">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <?php Yii::app()->getController()->renderPartial('/admin/survey/Question/question_subviews/_question_type_select', ['currentType' => $eqrow['type'], 'aQuestionTypeGroups' => $aQuestionTypeGroups]); ?>
-        </div>
-    </div>
-    </div>
-<?php endif; ?>

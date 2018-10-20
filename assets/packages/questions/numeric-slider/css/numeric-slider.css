@@ -15,6 +15,17 @@
   -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
   box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
 }
+
+.slider.slider-reset .slider-handle,
+.slider.slider-untouched .slider-handle {
+  background-color: grey;
+}
+.slider.slider-reset .slider-track .slider-selection,
+.slider.slider-untouched .slider-track .slider-selection {
+  background: transparent;
+  box-shadow: none;
+}
+
 /* FA for custom */
 .slider-handle.custom::before {
 font-family: FontAwesome;

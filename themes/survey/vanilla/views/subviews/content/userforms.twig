@@ -26,5 +26,8 @@
                 {% set sUserformContent =  './subviews/logincomponents/' ~ aSurveyInfo.aForm.sType ~ '.twig' %}
                 {% include sUserformContent %}
         </div>
+
+        {{ include('./subviews/navigation/language_changer.twig') }}
+
     </div> <!-- main col -->
 </div> <!-- main row -->

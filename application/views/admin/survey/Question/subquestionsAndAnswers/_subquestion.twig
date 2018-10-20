@@ -1,0 +1,140 @@
+{#
+/**
+ * subquestion row view
+ *
+ * @var $row
+ * @var $position
+ * @var $scale_id
+ * @var $activated
+ * @var $first
+ * @var $surveyid
+ * @var $gid
+ * @var $qid
+ * @var $language
+ * @var $title
+ * @var $question
+ * @var $relevance
+ * @var $oldCode
+ *
+ * NB : !!! If you edit this view, remember to check if answer option row view need also to be updated !!!
+ */
+#}
+
+<!-- subquestion row -->
+<tr id='row_{{ language }}_{{ qid }}_{{ scale_id }}' class="row-container" data-common-id="{{ qid }}_{{ scale_id }}">
+    {# If survey is active : no move button, code not editable #}
+    {% if activated == 'Y' %}
+        <!-- Move icon -->
+        <td class="move-icon-disable">
+            &nbsp;
+        </td>
+
+        <!-- Code (title) -->
+        <td class="code-title" style="vertical-align: middle;">
+            <input
+                class="code-title"
+                type='hidden'
+                name='code_{{ position }}_{{ scale_id }}'   {# TODO: uniformisation with  $scale_id and  $position #}
+                value="{{ title }}"
+                maxlength='20'
+                size='5'
+            />
+            {{ title }}
+        </td>
+
+    {# If survey is not activated and first language : move button, code editable   #}
+    {% elseif first %}
+
+        {% set sPattern = (title)?"^([a-zA-Z0-9]*|"~title~")$":"^[a-zA-Z0-9]*$" %}
+
+        <!-- Move icon -->
+        <td class="move-icon" >
+            <span class="fa fa-bars bigIcons"></span>
+        </td>
+
+        <!-- Code (title) -->
+        <td  class="code-title" style="vertical-align: middle;">
+            {% if oldCode %}
+                <input
+                    type='hidden'
+                    class='oldcode code-title'
+                    id='oldcode_{{ qid }}_{{ scale_id }}'
+                    name='oldcode_{{ qid }}_{{ scale_id }}'
+                    value="{{ title }}"
+                />
+            {% endif %}
+
+            <input
+                type='text'
+                class="code form-control input"
+                id='code_{{ qid }}_{{ scale_id }}'
+                class='code code-title'
+                name='code_{{ qid }}_{{ scale_id }}'
+                value="{{ title }}"
+                maxlength='20' size='20'
+                pattern='{{ sPattern }}'
+                required='required'
+            />
+        </td>
+
+    {# If survey is not active, and it's not the first language : no move button, code not editable #}
+    {% else %}
+
+        <!-- Move icon -->
+        <td class="move-icon-disable">
+            &nbsp;
+        </td>
+
+        <!-- Code (title) -->
+        <td  class="code-title" style="vertical-align: middle;">
+            {{ title }}
+        </td>
+    {% endif %}
+
+
+    <!-- No assessment values for subQuestions -->
+
+    <!-- Answer (Subquestion Text) -->
+    <td  class="subquestion-text" style="vertical-align: middle;">
+        <div class="input-group">        
+            <input
+            type='text'
+            size='20'
+            class='answer form-control input'
+            id='answer_{{ language }}_{{ qid }}_{{ scale_id }}'
+            name='answer_{{ language }}_{{ qid }}_{{ scale_id }}'
+            placeholder='{{ gT("Some example subquestion","js") }}'
+            value="{{ question }}"
+            onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
+            />
+            <span class="input-group-addon">
+                {{ getEditor("editanswer","answer_"~language~"_"~qid~"_"~scale_id, "["~gT("Subquestion:", "js")~"]("~language~")",surveyid,gid,qid,'editanswer') }}
+            </span>
+        </div>
+    </td>
+
+    <!-- Relevance equation -->
+    {% if first and scale_id == 0 %}
+        <td class="relevance-equation">
+            <input data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='relevance_{{ qid }}_{{ scale_id }}' name='relevance_{{ qid }}_{{ scale_id }}' value="{{ relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
+        </td>
+    {%  else %}
+        <span style="display: none" class="relevance relevance-equation">
+            {{ relevance }}
+        </span>
+    {%  endif %}
+
+
+    <!-- Icons add/edit/delete -->
+    <td style="vertical-align: middle;" class="subquestion-actions">
+
+
+        {%  if activated != 'Y' and first %}
+            {# TODO : to merge subquestion and answer options,  implies : define in controller titles #}
+
+            <button class="btn btn-default btn-sm btnaddanswer"><i class="icon-add text-success" data-code="{{ title }}" data-toggle="tooltip" data-scale-id="{{ scale_id }}" data-placement="bottom" title="{{ gT("Insert a new subquestion after this one") }}"></i></button>
+            <button class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash text-danger"  data-toggle="tooltip" data-placement="bottom" title="{{ gT("Delete this subquestion") }}"></i></button>
+        {%  endif %}
+
+    </td>
+</tr>

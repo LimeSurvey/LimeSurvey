@@ -445,7 +445,8 @@ function createDatabase($oDB){
             'title' => "string(168)  NOT NULL DEFAULT ''",
             'position' => "string(192)  NOT NULL DEFAULT 'side'",
             'description' => "text ",
-            'active' => "boolean NOT NULL DEFAULT '0'",
+            'showincollapse' => 'integer DEFAULT 0',
+            'active' => "integer NOT NULL DEFAULT '0'",
             'changed_at' => "datetime",
             'changed_by' => "integer NOT NULL DEFAULT '0'",
             'created_at' => "datetime",
@@ -484,7 +485,8 @@ function createDatabase($oDB){
             'data' =>  "text ",
             'getdatamethod' =>  "string(192)  NOT NULL DEFAULT ''",
             'language' =>  "string(32)  NOT NULL DEFAULT 'en-GB'",
-            'active' =>  "boolean NOT NULL DEFAULT '0'",
+            'showincollapse' => 'integer DEFAULT 0',
+            'active' =>  "integer NOT NULL DEFAULT '0'",
             'changed_at' =>  "datetime NULL",
             'changed_by' =>  "integer NOT NULL DEFAULT '0'",
             'created_at' =>  "datetime NULL",
@@ -789,7 +791,7 @@ function createDatabase($oDB){
             'htmleditormode' => "string(7) default 'default'",
             'templateeditormode' => "string(7) NOT NULL default 'default'",
             'questionselectormode' => "string(7) NOT NULL default 'default'",
-            'one_time_pw' => "binary",
+            'one_time_pw' => "text",
             'dateformat' => "integer NOT NULL DEFAULT 1",
             'created' => "datetime",
             'modified' => "datetime",
@@ -809,6 +811,12 @@ function createDatabase($oDB){
 
         $oDB->createCommand()->createIndex('{{idx1_user_groups}}', '{{user_groups}}', 'name', true);
 
+        // asset version
+        $oDB->createCommand()->createTable('{{asset_version}}',array(
+            'id' => 'pk',
+            'path' => 'text NOT NULL',
+            'version' => 'integer NOT NULL',
+        ));
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
@@ -816,9 +824,8 @@ function createDatabase($oDB){
         $oTransaction->commit();
         return true;
     }catch(Exception $e){
-
         $oTransaction->rollback();
-        throw new CHttpException(500, $e->getMessage()." ".$e->getTraceAsString());
+        throw new CHttpException(500, $e->getMessage());
     }
     return false;
 }

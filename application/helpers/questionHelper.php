@@ -12,7 +12,8 @@
 *
 */
 namespace LimeSurvey\Helpers;
-
+use QuestionAttribute;
+use Yii;
 /**
  * General helper class for question + question setting system
  */
@@ -86,8 +87,8 @@ class questionHelper
             'sortorder'=>100,
             'inputtype'=>'integer',
             'default'=>'',
-            "help"=>gT('Repeat headings every X subquestions (Set to 0 to deactivate heading repeat, deactivate minimum repeat headings from config).'),
-            "caption"=>gT('Repeat headers')
+            "help"=>gT('Repeat answer options every X subquestions (Set to 0 to deactivate answer options repeat, deactivate minimum answer options repeat from config).'),
+            "caption"=>gT('Repeat answer options')
         );
 
         self::$attributes["array_filter"] = array(
@@ -116,7 +117,7 @@ class questionHelper
             'options'=>array(0=>gT('Hidden', 'unescaped'),
             1=>gT('Disabled', 'unescaped')),
             'default'=>0,
-            "help"=>gT("Specify how array-filtered sub-questions should be displayed"),
+            "help"=>gT("Specify how array-filtered subquestions should be displayed"),
             "caption"=>gT('Array filter style')
         );
 
@@ -291,7 +292,7 @@ class questionHelper
         );
 
         self::$attributes["em_validation_q"] = array(
-            "types"=>":;ABCDEFHKMNOPQRSTU"."L!", // separate question with REAL subqs (in EM) and with FALSE subsq (where subqs are answer …)
+            "types"=>":;ABCDEFHKMNOPQRSTU"."L!", // separate question with REAL subqs (in EM) and with FALSE subsq (where subqs are answer â€¦)
             'category'=>gT('Logic'),
             'sortorder'=>200,
             'inputtype'=>'textarea',
@@ -317,8 +318,8 @@ class questionHelper
             'sortorder'=>220,
             'inputtype'=>'textarea',
             'expression'=>2,
-            "help"=>gT('Enter a boolean equation to validate each sub-question.'),
-            "caption"=>gT('Sub-question validation equation')
+            "help"=>gT('Enter a boolean equation to validate each subquestion.'),
+            "caption"=>gT('Subquestion validation equation')
         );
 
         self::$attributes["em_validation_sq_tip"] = array(
@@ -328,8 +329,8 @@ class questionHelper
             'inputtype'=>'textarea',
             'expression'=>1,
             'i18n'=>true,
-            "help"=>gT('This is a tip shown to the participant describing the sub-question validation equation.'),
-            "caption"=>gT('Sub-question validation tip')
+            "help"=>gT('This is a tip shown to the participant describing the subquestion validation equation.'),
+            "caption"=>gT('Subquestion validation tip')
         );
 
         self::$attributes["exclude_all_others"] = array(
@@ -337,7 +338,7 @@ class questionHelper
             'category'=>gT('Logic'),
             'sortorder'=>130,
             'inputtype'=>'text',
-            "help"=>gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semikolon.'),
+            "help"=>gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) separated with a semicolon.'),
             "caption"=>gT('Exclusive option')
         );
 
@@ -648,7 +649,7 @@ class questionHelper
             "types"=>":",
             'category'=>gT('Display'),
             'sortorder'=>111,
-            'inputtype'=>'integer',
+            'inputtype'=>'float',
             'default'=>'',
             "help"=>gT('Step value'),
             "caption"=>gT('Step value')
@@ -1422,7 +1423,7 @@ class questionHelper
             'sortorder'=>100,
             "inputtype"=>"integer",
             'default'=>1,
-            "help"=>gT("Minute step interval when using select boxes"),
+            "help"=>gT("Visual minute step interval"),
             "caption"=>gT("Minute step interval")
         );
 
@@ -1607,33 +1608,73 @@ class questionHelper
             self::$questionAttributesSettings[$sType] = array();
             self::getAttributesDefinitions(); /* we need to have self::$attributes */
             /* Filter to get this question type setting */
-            $aQuestionTypeAttribute = array_filter(self::$attributes, function($attribute) use ($sType)
-            {
+            $aQuestionTypeAttributes = array_filter(self::$attributes, function($attribute) use ($sType) {
                 return stripos($attribute['types'], $sType) !== false;
             });
-
-            $default = array(
-                "caption"=>'',
-                "inputtype"=>"text",
-                "options"=>'',
-                "category"=>gT("Plugins"),
-                "default"=>'',
-                "help"=>'',
-                "sortorder"=>1000,
-                "i18n"=>false,
-                "readonly"=>false,
-                "readonly_when_active"=>false,
-                "expression"=>null,
-            );
-            foreach ($aQuestionTypeAttribute as $attribute=>$settings) {
-                self::$questionAttributesSettings[$sType][$attribute] = array_merge(
-                    $default,
-                    $settings,
-                    array("name"=>$attribute)
-                );
+            foreach ($aQuestionTypeAttributes as $attribute=>$settings) {
+                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
+                      QuestionAttribute::getDefaultSettings(),
+                      array("category"=>gT("Plugins")),
+                      $settings,
+                      array("name"=>$attribute)
+                  );
             }
         }
         return self::$questionAttributesSettings[$sType];
+    }
+
+    /**
+     * Return the question Theme custom attributes values
+     * @param $sQuestionThemeName: question theme name
+     * @return array : the attribute settings for this question type
+     */
+    public static function getQuestionThemeAttributeValues($sQuestionThemeName = null, $question_template = null)
+    {
+        libxml_disable_entity_loader(false);
+
+        $sCoreThemeXmlPath = Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
+        $sUserThemeXmlPath = Yii::app()->getConfig("userquestionthemerootdir").'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
+
+        $xml_config = is_file($sCoreThemeXmlPath) ? simplexml_load_file($sCoreThemeXmlPath) :  simplexml_load_file($sUserThemeXmlPath);
+        $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), TRUE);
+        libxml_disable_entity_loader(true);
+
+        if(!empty($custom_attributes['attribute']['name'])) {
+            // Only one attribute set in config : need an array of attributes
+            $custom_attributes['attribute'] = array($custom_attributes['attribute']);
+        }
+
+        $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
+        $additionalAttributes = array();
+        // Create array of attribute with name as key
+        foreach($custom_attributes['attribute'] as $customAttribute) {
+            if(!empty($customAttribute['name'])) {
+                $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
+            }
+        }
+        return $additionalAttributes;
+    }
+
+    /**
+     * Return the question Theme preview URL
+     * @param $sType: type pof question
+     * @return string : question theme preview URL
+     */
+    public static function getQuestionThemePreviewUrl($sType = null)
+    {
+        if ($sType == '*'){
+            $preview_filename = 'EQUATION.png';
+        } elseif ($sType == ':'){
+            $preview_filename = 'COLON.png';
+        } elseif ($sType == '|'){
+            $preview_filename = 'PIPE.png';
+        } elseif (!empty($sType)) {
+            $preview_filename = $sType.'.png';
+        } else {
+            $preview_filename = '.png';
+        }
+
+        return Yii::app()->getConfig("imageurl").'/screenshots/'.$preview_filename;
     }
 
 }

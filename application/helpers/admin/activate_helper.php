@@ -77,6 +77,24 @@ function fixNumbering($iQuestionID, $iSurveyID)
     LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
 }
 /**
+* checks if any group exists
+* @param integer $postsid
+* @return <type>
+*/
+function checkHasGroup($postsid)
+{
+
+    $groupquery = "SELECT 1 as count from {{groups}} as g WHERE g.sid=$postsid;";
+    $groupresult = Yii::app()->db->createCommand($groupquery)->query()->readAll();
+
+    if (count($groupresult) == 0) {
+        return gT("This survey does not contain any question groups.");
+    } else {
+            return false;
+    }
+
+}
+/**
 * checks consistency of groups
 * @param integer $postsid
 * @return <type>

@@ -61,14 +61,14 @@ class GTranslate
 	* @access private
 	* @var String 
 	*/
-	private $url = "http://ajax.googleapis.com/ajax/services/language/translate";
+	private $url = "https://www.googleapis.com/language/translate/v2";
 	
         /**
         * Google Translate (TM) Api Version
         * @access private
         * @var String 
         */	
-	private $api_version = "1.0";
+	private $api_version = "2";
 
         /**
         * Comunication Transport Method
@@ -163,9 +163,9 @@ class GTranslate
 	private function urlFormat($lang_pair,$string)
 	{
 		$parameters = array(
-			"v" => $this->api_version,
 			"q" => $string,
-			"langpair"=> implode("|",$lang_pair)
+			"source" => $lang_pair[0],
+            "target" => $lang_pair[1],
 		);
 
 		if(!empty($this->api_key))
@@ -173,16 +173,10 @@ class GTranslate
 			$parameters["key"] = $this->api_key;
 		}
 
-		if( empty($this->user_ip) ) 
-		{
-			if( !empty($_SERVER["REMOTE_ADDR"]) ) 
-			{
-				$parameters["userip"]	=	$_SERVER["REMOTE_ADDR"];
-			}
-		} else 
-		{
-			$parameters["userip"]   =	$this->user_ip;
-		}
+		 else
+        {
+            $parameters["key"] = getGlobalSetting('googletranslateapikey');
+        }
 
 		$url  = "";
 
@@ -274,8 +268,11 @@ class GTranslate
 
 	private function requestHttp($url)
 	{
-
-		return GTranslate::evalResponse(json_decode(file_get_contents($this->url."?".$url)));
+        $fullurl = $this->url."?".$url;
+        $return = file_get_contents($fullurl);
+        $json = json_decode($return);
+		return GTranslate::evalResponse($json);
+		
 	}
 
         /**     
@@ -308,16 +305,14 @@ class GTranslate
 
 	private function evalResponse($json_response)
 	{
-
-		switch($json_response->responseStatus)
-		{
-			case 200:
-				return $json_response->responseData->translatedText;
-				break;
-			default:
-				throw new GTranslateException("Unable to perform Translation:".$json_response->responseDetails);
-			break;
-		}
+        if (isset($json_response->data->translations))
+        {
+            return $json_response->data->translations[0]->translatedText;
+        }
+        else
+        {
+            throw new GTranslateException("Unable to perform Translation:".$json_response->data);
+        }
 	}
 
 

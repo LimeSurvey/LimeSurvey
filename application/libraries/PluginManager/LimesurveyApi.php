@@ -420,6 +420,20 @@ class LimesurveyApi
         }
     }
 
+    /**
+     * @param string $file
+     * @param array $data
+     * @return string
+     */
+    public function renderTwig($file, array $data)
+    {
+        return Yii::app()->twigRenderer->renderViewFromFile(
+            $file,
+            $data,
+            // Don't echo.
+            true,
+            // Don't append application dir.
+            false
+        );
+    }
 }
-
-?>

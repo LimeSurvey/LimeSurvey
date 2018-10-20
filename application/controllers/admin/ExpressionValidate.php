@@ -84,7 +84,7 @@ class ExpressionValidate extends Survey_Common_Action
         $this->getController()->layout = $this->layout;
         $this->getController()->pageTitle = gT("Validate quota");
 
-        $this->getController()->render("/admin/expressions/validationList", $aData);
+        $this->getController()->renderPartial("/admin/expressions/validationList", $aData);
     }
     /**
      * Check the Expression in email

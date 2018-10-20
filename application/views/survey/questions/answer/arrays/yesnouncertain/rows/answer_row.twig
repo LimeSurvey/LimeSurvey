@@ -1,0 +1,90 @@
+{#
+/**
+ * Generate a row for the table
+ *
+ * @var $myfname
+ * @var $sDisplayStyle
+ * @var $answertext
+ * @var $Ychecked
+ * @var $Uchecked
+ * @var $Nchecked
+ * @var $NAchecked
+ * @var $value
+ * @var $checkconditionFunction
+ * @var $no_answer
+ * @var $error
+ */
+#}
+
+<!-- answer_row -->
+<tr id="javatbd{{ myfname }}" class="answers-list radio-list {% if odd %}ls-odd {% else %}ls-even{% endif %} {% if error %} has-error{% endif %}" role="radiogroup" aria-labelledby="answertext{{ myfname }}">
+    <!-- Answer text /  Errors -->
+    <th class="answertext control-label{% if error %} error-mandatory{% endif %}{% if answerwidth==0 %} sr-only{% endif %}" id="answertext{{ myfname }}">
+        {{ answertext }}
+        {# Value for expression manager javascript (use id) ; no need to submit #}
+        {{ C.Html.hiddenField("java"~myfname,value,({
+            'id' : "java"~myfname,
+            'disabled' : true,
+        }))
+        }}
+    </th>
+
+    <!-- Yes -->
+    <td class="answer_cell_Y answer-item radio-item">
+        <input
+            type="radio"
+            name="{{ myfname }}"
+            id="answer{{ myfname }}-Y"
+            value="Y"
+            {{ Ychecked }}
+            />
+        <label for="answer{{ myfname }}-Y" class="ls-label-xs-visibility">
+            {{ gT("Yes") }}
+        </label>
+    </td>
+
+    <!-- Uncertain -->
+    <td class="answer_cell_U answer-item radio-item">
+        <input
+            type="radio"
+            name="{{ myfname }}"
+            id="answer{{ myfname }}-U"
+            value="U"
+            {{ Uchecked }}
+        />
+        <label for="answer{{ myfname }}-U" class="ls-label-xs-visibility">
+            {{ gT("Uncertain") }}
+        </label>
+    </td>
+
+    <!-- No -->
+    <td class="answer_cell_N answer-item radio-item">
+        <input
+            type="radio"
+            name="{{ myfname }}"
+            id="answer{{ myfname }}-N"
+            value="N"
+            {{ Nchecked }}
+        />
+        <label for="answer{{ myfname }}-N" class="ls-label-xs-visibility">
+            {{ gT("No") }}
+        </label>
+    </td>
+
+    <!-- No Answer -->
+    {% if no_answer %}
+        <td class="answer_cell_ answer-item noanswer-item radio-item">
+            <input
+                type="radio"
+                name="{{ myfname }}"
+                id="answer{{ myfname }}-"
+                value=""
+                {{ NAchecked }}
+            />
+            <label for="answer{{ myfname }}-" class="ls-label-xs-visibility">
+                {{ gT("No answer") }}
+            </label>
+        </td>
+    {% endif %}
+</tr>
+<!-- end of answer_row -->

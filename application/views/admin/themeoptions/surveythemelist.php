@@ -1,13 +1,17 @@
 
 <div class="row">
     <div class="col-sm-12 content-right">
-
+        
         <?php $this->widget('bootstrap.widgets.TbGridView', array(
-            'dataProvider' => $oSurveyTheme->search(),
+            'dataProvider' => $oSurveyTheme->searchGrid(),
+            'filter'        => $oSurveyTheme,
+            'id'            => 'themeoptions-grid',
+            'ajaxUpdate'    => true,
+            'ajaxType'      => 'POST',
             'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                 CHtml::dropDownList(
                     'pageSize',
-                    10,
+                    $pageSize,
                     Yii::app()->params['pageSizeOptions'],
                     array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
                 )
@@ -19,6 +23,7 @@
                     'value'=> '$data->preview',
                     'type'=>'raw',
                     'htmlOptions' => array('class' => 'col-md-1'),
+                    'filter' => false,
                 ),
 
                 array(
@@ -30,7 +35,7 @@
 
                 array(
                     'header' => gT('Description'),
-                    'name' => 'template_name',
+                    'name' => 'template_description',
                     'value'=>'$data->template->description',
                     'htmlOptions' => array('class' => 'col-md-3'),
                     'type'=>'raw',
@@ -38,15 +43,16 @@
 
                 array(
                     'header' => gT('Type'),
-                    'name' => 'templates_type',
+                    'name' => 'template_type',
                     'value'=>'$data->typeIcon',
                     'type' => 'raw',
                     'htmlOptions' => array('class' => 'col-md-2'),
+                    'filter' =>  array('core' => 'Core theme', 'user' => 'User theme'),
                 ),
 
                 array(
                     'header' => gT('Extends'),
-                    'name' => 'templates_extends',
+                    'name' => 'template_extends',
                     'value'=>'$data->template->extends',
                     'htmlOptions' => array('class' => 'col-md-2'),
                 ),
@@ -57,10 +63,22 @@
                     'value'=>'$data->buttons',
                     'type'=>'raw',
                     'htmlOptions' => array('class' => 'col-md-1'),
+                    'filter' => false,
                 ),
 
             )));
         ?>
+
+        <!-- To update rows per page via ajax setSession-->
+            <?php
+
+            $script = '
+                jQuery(document).on("change", "#pageSize", function(){
+                    $.fn.yiiGridView.update("themeoptions-grid",{ data:{ pageSize: $(this).val() }});
+                });
+                ';
+            App()->getClientScript()->registerScript('themeoptions-grid', $script, LSYii_ClientScript::POS_POSTSCRIPT);
+            ?>
 
     </div>
 </div>

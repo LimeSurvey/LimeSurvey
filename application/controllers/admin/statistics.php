@@ -468,7 +468,7 @@ class statistics extends Survey_Common_Action
                     $statisticsoutput .= $helper->generate_html_chartjs_statistics($surveyid, $summary, $summary, $usegraph, $outputType, 'DD', $statlang);
                     break;
                 case 'pdf':
-                    $helper->generate_statistics($surveyid, $summary, $summary, $usegraph, $outputType, 'I', $statlang);
+                    $helper->generate_statistics($surveyid, $summary, $summary, $usegraph, $outputType, 'D', $statlang);
                     exit;
                     break;
                 case 'xls':
@@ -816,7 +816,6 @@ class statistics extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $iSurveyId = $aData['surveyid'];
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
-        $aData['title_bar']['subaction'] = gT('Statistics');
         $aData['subaction'] = gT('Statistics');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }

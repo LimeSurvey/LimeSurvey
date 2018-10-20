@@ -40,7 +40,7 @@ class YiiBase
 	private static $_logger;
 	public static function getVersion()
 	{
-		return '1.1.18';
+		return '1.1.19';
 	}
 	public static function createWebApplication($config=null)
 	{
@@ -2799,7 +2799,7 @@ class CHttpRequest extends CApplicationComponent
 					if($q)
 						$languages[]=array((float)$q,$matches[1][$i]);
 				}
-				usort($languages,function($a,$b) {if($a[0]==$b[0]) {return 0;} return ($a[0]<$b[0]) ? 1 : -1;});
+				usort($languages,create_function('$a,$b','if($a[0]==$b[0]) {return 0;} return ($a[0]<$b[0]) ? 1 : -1;'));
 				foreach($languages as $language)
 					$sortedLanguages[]=$language[1];
 			}
@@ -5729,7 +5729,7 @@ EOD;
 				foreach($errors as $error)
 				{
 					if($error!='')
-						$content.="<li>$error</li>\n";
+						$content.= '<li>'.self::encode($error)."</li>\n";
 					if($firstError)
 						break;
 				}
@@ -5749,7 +5749,7 @@ EOD;
 	public static function error($model,$attribute,$htmlOptions=array())
 	{
 		self::resolveName($model,$attribute); // turn [a][b]attr into attr
-		$error=$model->getError($attribute);
+		$error=self::encode($model->getError($attribute));
 		if($error!='')
 		{
 			if(!isset($htmlOptions['class']))

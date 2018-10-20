@@ -138,7 +138,18 @@
     }
     .question-question-list {
         .question-question-list-item {
+            padding: 0;
+            .question-question-list-item-drag {
+                margin: 10px 15px;
+            }
+            &.selected {
+                padding-left: 20px;
+                .question-question-list-item-drag {
+                    margin: 10px 10px 10px 5px;
+                }
+            }
             .question-question-list-item-link {
+                padding: 10px 25px 10px 10px;
                 display: inline-flex;
                 flex-wrap: wrap;
             }
@@ -156,6 +167,7 @@
 .bigIcons {
     font-size: 18px;
     line-height: 21px;
+    height: 24px;
 }
 
 .quickmenuIcon {
@@ -258,6 +270,12 @@ ol.breadcrumb.title-bar-breadcrumb {
         >div {
             display: inline-block;
         }
+    }
+    .menu-label {
+        width: 100%;
+        display: block;
+        font-size: 85%;
+        font-style: normal;
     }
 }
 

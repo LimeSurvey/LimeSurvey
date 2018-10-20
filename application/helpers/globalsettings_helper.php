@@ -29,9 +29,10 @@ function injectglobalsettings()
         }
     }
 }
-
 /**
  * Returns a global setting
+ * @deprecated : use App()->getConfig($settingname)
+ * since all config are set at start of App : no need to read and test again 
  *
  * @param string $settingname
  * @return string
@@ -53,32 +54,10 @@ function getGlobalSetting($settingname)
         if (Yii::app()->getConfig($settingname) !== false) {
             // If the setting was not found in the setting table but exists as a variable (from config.php)
             // get it and save it to the table
-            setGlobalSetting($settingname, Yii::app()->getConfig($settingname));
+            SettingGlobal::setSetting($settingname, Yii::app()->getConfig($settingname));
             $dbvalue = Yii::app()->getConfig($settingname);
         }
     }
 
     return $dbvalue;
-}
-
-/**
- * @param string $settingname
- */
-function setGlobalSetting($settingname, $settingvalue)
-{
-    if (Yii::app()->getConfig("demoMode") == true && ($settingname == 'sitename' || $settingname == 'defaultlang' || $settingname == 'defaulthtmleditormode' || $settingname == 'filterxsshtml')) {
-        return; //don't save
-    }
-
-    if ($record = SettingGlobal::model()->findByPk($settingname)) {
-        $record->stg_value = $settingvalue;
-        $record->save();
-    } else {
-        $record = new SettingGlobal;
-        $record->stg_name = $settingname;
-        $record->stg_value = $settingvalue;
-        $record->save();
-    }
-
-    Yii::app()->setConfig($settingname, $settingvalue);
 }

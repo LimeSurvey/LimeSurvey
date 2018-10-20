@@ -7,13 +7,39 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 ?>
 <div class="container-fluid">
-<div class="pagetitle h3"><?php eT("User control");?></div>
     <div class="row">
-        <div class="col-md-2 col-sm-4 col-xs-12  col-md-offset-10 col-sm-offset-8">
-            <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-primary btn-block"><?php eT("Add user");?></button>
+        <div class="col-12">
+            <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-default"><span class="icon-add text-success"></span> <?php eT("Add user");?></button>
         </div>
-
     </div>
+<div class="pagetitle h3"><?php eT("User control");?></div>
+    <!-- Search Box -->
+    <div class="row">
+        <div class="pull-right">
+            <div class="form text-right">
+                <!-- Begin Form -->
+                <?php $form  =  $this->beginWidget('CActiveForm', array(
+                    'action' => Yii::app()->createUrl($formUrl),
+                    'method' => 'get',
+                    'htmlOptions'=>array(
+                        'class'=>'form-inline',
+                    ),
+                )); ?>
+
+                <!-- search input -->
+                <div class="form-group">
+                    <?php echo $form->label($model, 'searched_value', array('label'=>gT('Search:'),'class'=>'control-label')); ?>
+                    <?php echo $form->textField($model, 'searched_value', array('class'=>'form-control')); ?>
+                </div>
+
+                <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
+                <a href="<?php echo Yii::app()->createUrl('admin/user/sa/index');?>" class="btn btn-warning"><?php eT('Reset');?></a>
+
+                <?php $this->endWidget(); ?>
+            </div>
+        </div>
+    </div>
+
     <div class="row" style="margin-bottom: 100px">
         <div class="container-fluid">
             <?php
@@ -57,10 +83,10 @@ echo viewHelper::getViewTestTag('usersIndex');
                  <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post', array('class'=>''));?>
                     <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
                         echo "<div class=\"form-group\">";
-                          echo "<label  class='col-md-4 control-label'>";
+                          echo "<label  class='control-label'>";
                             eT("Central database");
                           echo "</label>";
-                          echo "<div class='col-md-8'>";
+                          echo "<div class=''>";
                             echo CHtml::dropDownList('user_type',
                                 'DB',
                                 array(

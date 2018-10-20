@@ -91,9 +91,9 @@ class RegisterController extends LSYii_Controller
     {
 
         if (!is_null($sid)) {
-                    $iSurveyId = $sid;
+            $iSurveyId = $sid;
         } else {
-                    $iSurveyId = Yii::app()->request->getPost('sid');
+            $iSurveyId = Yii::app()->request->getPost('sid');
         }
 
         $oSurvey = Survey::model()->find("sid=:sid", array(':sid'=>$iSurveyId));
@@ -132,7 +132,7 @@ class RegisterController extends LSYii_Controller
             $directLogin = $event->get('directLogin', false);
             if ($directLogin == true) {
                 $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
-                $redirectUrl = Yii::app()->getController()->createUrl('/'.$iSurveyId.'/', array('token' => $oToken->token, 'lang'=>$sLanguage));
+                $redirectUrl = Yii::app()->getController()->createUrl('/survey/', array('sid' => $iSurveyId,'token' => $oToken->token, 'lang'=>$sLanguage));
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
             }
@@ -232,7 +232,7 @@ class RegisterController extends LSYii_Controller
         if (!is_null($event->get('registerForm'))) {
             $registerFormEvent = $event->get('registerForm');
             if (!isset($registerFormEvent['append']) || $registerFormEvent['append'] == false) {
-                            return $event->get('registerForm');
+                return $event->get('registerForm');
             }
         }
         $aFieldValue = $this->getFieldValue($iSurveyId);
@@ -502,6 +502,7 @@ class RegisterController extends LSYii_Controller
         $this->aReplacementData['sMessage'] = $this->sMessage;
 
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
+        $aSurveyInfo  =  getsurveyinfo($iSurveyId);
 
         if ($iTokenId !== null) {
             $aData['aSurveyInfo'] = self::getRegisterSuccess($iSurveyId, $iTokenId);
@@ -512,8 +513,19 @@ class RegisterController extends LSYii_Controller
 
         $aData['aSurveyInfo']['registration_view'] = $registerContent;
 
-        $aData['aSurveyInfo']['registerform']['hiddeninputs'] = '<input value="'.$aData['aSurveyInfo']['sLanguage'].'"  type="hidden" name="lang" id="register_lang" /><input  value="true" type="hidden" name="register"id="register_register" />';
+        $aData['aSurveyInfo']['registerform']['hiddeninputs'] = '<input value="'.$aData['aSurveyInfo']['sLanguage'].'"  type="hidden" name="lang" id="register_lang" />';
         $aData['aSurveyInfo']['include_content'] = 'register';
+
+        $aData['aSurveyInfo'] = array_merge($aSurveyInfo, $aData['aSurveyInfo']);
+
+        $aData['aSurveyInfo']['alanguageChanger']['show'] = false;
+        $alanguageChangerDatas = getLanguageChangerDatas(App()->language);
+
+        if ($alanguageChangerDatas) {
+            $aData['aSurveyInfo']['alanguageChanger']['show']  = true;
+            $aData['aSurveyInfo']['alanguageChanger']['datas'] = $alanguageChangerDatas;
+        }
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_global.twig', $aData, false);
 
     }

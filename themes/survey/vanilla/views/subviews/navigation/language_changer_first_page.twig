@@ -17,59 +17,6 @@
     @see: http://www.yiiframework.com/wiki/48/by-example-chtml/#hh5
 
 #}
-
-{% if aSurveyInfo.alanguageChanger.show == true %}
-
-    {# set a shortcut for aSurveyInfo.alanguageChanger.datas #}
-    {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
-
-    {#
-        array of attributes of the Drop Down list.
-        To add a new attribute, just add an entry:
-        'attribute' : 'value',
-    #}
-    {% set htmlOptions = {
-            'id'             : 'langchangerSelectMain',
-            'class'          : 'form-control',
-            'data-targeturl' : aLCD.targetUrl,
-        }
-    %}
-    <!-- Language Changer -->
-    <div class=" {{ aSurveyInfo.class.formgroup }} form-group " {{ aSurveyInfo.attr.formgroup }} >
-        <label class="{{ aSurveyInfo.class.controllabel }} control-label" {{ aSurveyInfo.attr.controllabel }} for="langchangerSelectMain">
-            <span class="{{ aSurveyInfo.class.languagechanger }} form-inline" {{ aSurveyInfo.attr.languagechanger }}>{{ gT("Language:") }}</span>
-            {{
-                C.Html.dropDownList(
-                    'lang',
-                    aLCD.sSelected,
-                    aLCD.aListLang,
-                    htmlOptions
-                )
-            }}
-        </label>
-
-    </div>
-        {% if aLCD.withForm == true %}
-            <!-- for no js functionality (need form) -->
-            {% set buttonhtmlOptions = {
-                    'type'          : 'submit',
-                    'value'         : 'changelang',
-                    'name'          : 'move',
-                    'class'         : aSurveyInfo.class.aLCDWithForm,
-                    'data-toggle'   : "dropdown"
-                }
-            %}
-
-            {{
-                C.Html.htmlButton(
-                    ("Change the language" | gT ),
-                    htmlOptions
-                )
-            }}
-            {% endif %}
-
-    {# Activate the language changer  #}
-    {{ registerScript("BasicThemeScripts-LanguageChanger", "basicThemeScripts.initLanguageChanger('#langchangerSelectMain', 'form#limesurvey'); ", POS_POSTSCRIPT) }}
+{{ include('./subviews/navigation/language_changer.twig') }}
 
 
-{% endif %}

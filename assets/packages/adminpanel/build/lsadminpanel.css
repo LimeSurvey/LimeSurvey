@@ -110,9 +110,18 @@
     height: 100%; }
   #sidebar .dragPointer {
     cursor: move; }
-  #sidebar .question-question-list .question-question-list-item .question-question-list-item-link {
-    display: inline-flex;
-    flex-wrap: wrap; }
+  #sidebar .question-question-list .question-question-list-item {
+    padding: 0; }
+    #sidebar .question-question-list .question-question-list-item .question-question-list-item-drag {
+      margin: 10px 15px; }
+    #sidebar .question-question-list .question-question-list-item.selected {
+      padding-left: 20px; }
+      #sidebar .question-question-list .question-question-list-item.selected .question-question-list-item-drag {
+        margin: 10px 10px 10px 5px; }
+    #sidebar .question-question-list .question-question-list-item .question-question-list-item-link {
+      padding: 10px 25px 10px 10px;
+      display: inline-flex;
+      flex-wrap: wrap; }
   #sidebar .question_text_ellipsize {
     display: inline-block;
     text-overflow: ellipsis;
@@ -122,7 +131,8 @@
 
 .bigIcons {
   font-size: 18px;
-  line-height: 21px; }
+  line-height: 21px;
+  height: 24px; }
 
 .quickmenuIcon {
   font-size: "28px"; }
@@ -193,6 +203,11 @@ ol.breadcrumb.title-bar-breadcrumb {
       font-style: italic; }
     ol.breadcrumb.title-bar-breadcrumb li > div {
       display: inline-block; }
+  ol.breadcrumb.title-bar-breadcrumb .menu-label {
+    width: 100%;
+    display: block;
+    font-size: 85%;
+    font-style: normal; }
 
 .breadcrumb-title {
   line-height: 24px;

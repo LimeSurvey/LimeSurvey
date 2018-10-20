@@ -1,0 +1,25 @@
+{#
+/**
+ * Array 5 point choice
+ * @var $i
+ * @var $myfname
+ * @var $CHECKED
+ * @var $checkconditionFunction
+ * @var $value
+ */
+#}
+
+<!-- answer_td_input -->
+<td class="answer_cell_{{ i }}{% if i=="" %} noanswer-item{% endif %} answer-item radio-item">
+    <input
+        type="radio"
+        name="{{ myfname }}"
+        id="answer{{ myfname }}-{{ i }}"
+        value="{{ value }}"
+        {{ CHECKED }}
+     />
+    <label for="answer{{ myfname }}-{{ i }}"  class="ls-label-xs-visibility">
+        {{ labelText }}
+    </label>
+</td>
+<!-- end of answer_td_input -->

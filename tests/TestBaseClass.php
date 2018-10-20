@@ -35,6 +35,15 @@ class TestBaseClass extends TestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+
+        //$lt = ini_get('session.gc_maxlifetime');
+        //var_dump('gc_maxlifetime = ' . $lt);
+        //die;
+
+        // This did not fix the langchang test failure on Travis.
+        //session_destroy();
+        //session_start();
+
         self::$testHelper = new TestHelper();
 
         self::$dataFolder = __DIR__.'/data';
@@ -73,7 +82,9 @@ class TestBaseClass extends TestCase
         }
     }
 
-
+    /**
+     * @return void
+     */
     public static function tearDownAfterClass()
     {
         parent::tearDownAfterClass();

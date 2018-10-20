@@ -40,6 +40,7 @@ class User extends LSActiveRecord
      * @var string $lang Default value for user language
      */
     public $lang = 'auto';
+    public $searched_value;
 
 
     /**
@@ -137,14 +138,14 @@ class User extends LSActiveRecord
     {
         $dateFormat = getDateFormatData(Yii::app()->session['dateformat']);
         return $dateFormat['phpdate'];
-    }    
+    }
 
     public function getFormattedDateCreated()
     {
         $dateCreated = $this->created;
         $date = new DateTime($dateCreated);
         return $date->format($this->dateFormat);
-    }    
+    }
     /**
      * Returns onetime password
      *
@@ -494,12 +495,12 @@ class User extends LSActiveRecord
             "name" =>"parentUserName",
             "header" => gT("Created by"),
         );
-        
+
         $cols[] = array(
             "name" =>"created",
             "header" => gT("Created on"),
             "value" => '$data->formattedDateCreated',
-            
+
         );
         return $cols;
     }
@@ -511,13 +512,14 @@ class User extends LSActiveRecord
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
 
+        $criteria->compare('full_name',$this->searched_value,true);
+        $criteria->compare('users_name',$this->searched_value,true, 'OR');
+        $criteria->compare('email',$this->searched_value,true, 'OR');
+
         // $criteria->compare('uid',$this->uid);
-        // $criteria->compare('users_name',$this->users_name,true);
         // $criteria->compare('password',$this->password,true);
-        // $criteria->compare('full_name',$this->full_name,true);
         // $criteria->compare('parent_id',$this->parent_id);
         // $criteria->compare('lang',$this->lang,true);
-        // $criteria->compare('email',$this->email,true);
         // $criteria->compare('htmleditormode',$this->htmleditormode,true);
         // $criteria->compare('templateeditormode',$this->templateeditormode,true);
         // $criteria->compare('questionselectormode',$this->questionselectormode,true);

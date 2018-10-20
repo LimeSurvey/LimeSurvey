@@ -62,7 +62,22 @@ $internalConfig = array(
         // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
     ),
 
+    /*
+
+
+    here you can load the different modules
+    more about YII modules :
+    https://www.yiiframework.com/doc/guide/1.1/en/basics.module
+
+
+
+
     'modules'=>array(
+            'yourmodule'=array(
+            'class' => 'Use a yii Alias',
+
+        )
+
             'gii'=>array(
                 'class'=>'system.gii.GiiModule',
                 'password'=>'toto',
@@ -70,6 +85,10 @@ $internalConfig = array(
                     'newDirMode'=>0777,
             ),
         ),
+
+
+
+    */
 
     'params'=>array(
         'defaultPageSize'=>10, // Default page size for most of the grids
@@ -130,6 +149,7 @@ $internalConfig = array(
             'class'=>'LSHttpRequest',
             'enableCsrfValidation'=>true, // CSRF protection
             'enableCookieValidation'=>false, // Enable to activate cookie protection
+            'noCsrfValidationParams'=>array(),
             'noCsrfValidationRoutes'=>array(
                 'remotecontrol',
                 'plugins/unsecure',
@@ -235,12 +255,15 @@ $internalConfig = array(
                 'ellipsizeString'         => 'LS_Twig_Extension::ellipsizeString',
                 'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText',
                 'str_replace'             => 'str_replace',
-
+                'getConfig'               => 'LS_Twig_Extension::getConfig',
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
-                'count'                   => 'count',
+                'count'                   => 'LS_Twig_Extension::safecount',
                 'reset'                   => 'reset',
+                'in_array'                => 'in_array',
+                'in_multiarray'           => 'LS_Twig_Extension::in_multiarray',
+                'array_search'            => 'array_search',
                 'renderCaptcha'           => 'LS_Twig_Extension::renderCaptcha',
                 'getPost'                 => 'LS_Twig_Extension::getPost',
                 'getParam'                => 'LS_Twig_Extension::getParam',
@@ -256,7 +279,14 @@ $internalConfig = array(
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',
                 'getLanguageNameFromCode' => 'getLanguageNameFromCode',
-                'checkconditionFunction'  => 'checkconditionFunction'  
+                'checkconditionFunction'  => 'checkconditionFunction',
+                'doRender'                => 'doRender',
+                'flattenText'             => 'flattenText',
+                'getEditor'               => 'getEditor',
+                'darkencss'               => 'LS_Twig_Extension::darkencss',
+                'lightencss'              => 'LS_Twig_Extension::lightencss',
+                'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
+                'getAllAnswers'           => 'LS_Twig_Extension::getAllAnswers',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -279,10 +309,18 @@ $internalConfig = array(
                     'nl2br',
                     'split',
                     'trim',
-                    'json_encode'
+                    'json_encode',
+                    'replace',
+                    'last',
+                    'first',
+                    'capitalize',
+                    'lower',
+                    'upper',
+                    'strip_tags',
+                    'number_format',
                 ),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea"),
+                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut")
@@ -320,12 +358,15 @@ $internalConfig = array(
                     'ellipsizeString',
                     'flatEllipsizeText',
                     'str_replace',
-
+                    'getConfig',
                     'getAllQuestionClasses',
                     'intval',
                     'empty',
                     'count',
                     'reset',
+                    'in_array',
+                    'array_search',
+                    'in_multiarray',
                     'renderCaptcha',
                     'getPost',
                     'getParam',
@@ -340,11 +381,20 @@ $internalConfig = array(
                     'createUrl',
                     'json_decode',
                     'json_encode',
+                    'strip_tags',
                     /* Not in twigRenderer[functions] */
                     'include',
                     'dump',
                     'getLanguageNameFromCode',
-                    'checkconditionFunction'
+                    'checkconditionFunction',
+                    'doRender',
+                    'flattenText',
+                    'range',
+                    'getEditor',
+                    'darkencss',
+                    'lightencss',
+                    'getAllTokenAnswers',
+                    'getAllAnswers',
                 ),
             ),
 

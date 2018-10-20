@@ -1,4 +1,4 @@
-﻿/*
+/*
  Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  For licensing, see LICENSE.md or http://ckeditor.com/license
 */
@@ -26,7 +26,7 @@ CKEDITOR.editorConfig = function (a) {
         a.toolbar_popup = [
             ["Save", "Source", "Createlimereplacementfields"],
             ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "),
-            "Image VideoDetector Flash Table HorizontalRule Smiley SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
+            "Image Html5video VideoDetector Flash Table HorizontalRule Smiley SpecialChar".split(" "), "/", "Bold Italic Underline Strike - Subscript Superscript".split(" "), 
             "NumberedList BulletedList - Outdent Indent Blockquote CreateDiv".split(" "), ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
             ["BidiLtr", "BidiRtl"],
             ["Link", "Unlink", "Anchor", "Iframe"], "/", ["Styles", "Format", "Font", "FontSize"],
@@ -37,7 +37,7 @@ CKEDITOR.editorConfig = function (a) {
             ["Maximize", "Source", "Createlimereplacementfields"],
             ["Cut",
                 "Copy", "Paste", "PasteText", "PasteFromWord"
-            ], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "), ["Image", "VideoDetector", "Flash"],
+            ], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "), ["Image", "Html5video", "VideoDetector", "Flash"],
             ["Table", "HorizontalRule", "Smiley", "SpecialChar"],
             ["Bold", "Italic", "Underline", "Strike"],
             ["Subscript", "Superscript"],
@@ -64,7 +64,7 @@ CKEDITOR.editorConfig = function (a) {
             ["Source", "Createlimereplacementfields"],
             ["Cut",
                 "Copy", "Paste", "PasteText", "PasteFromWord"
-            ], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "), ["Image", "VideoDetector", "Flash"],
+            ], "Undo Redo - Find Replace - SelectAll RemoveFormat".split(" "), ["Image", "Html5video","VideoDetector", "Flash"],
             ["Table", "HorizontalRule", "Smiley", "SpecialChar"],
             ["Bold", "Italic", "Underline", "Strike"],
             ["Subscript", "Superscript"],

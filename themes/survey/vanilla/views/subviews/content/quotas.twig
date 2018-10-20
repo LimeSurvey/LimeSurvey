@@ -76,20 +76,20 @@
                                 <!-- Previous button container -->
                                 <div class="{{ aSurveyInfo.class.navigatorcoll }} col-xs-6 text-left" {{ aSurveyInfo.attr.navigatorcoll }}>
                                     <!-- Button previous -->
-                                    <button  value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" class=" {{ aSurveyInfo.class.navigatorcollbutton }}  btn btn-lg btn-default " {{ aSurveyInfo.attr.navigatorcollbutton }} >
+                                    <button {{ aSurveyInfo.attr.navigatorcollbutton }} value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" class=" {{ aSurveyInfo.class.navigatorcollbutton }}  btn btn-lg btn-default " accesskey="p">
                                         {{ gT("Previous") }}
                                     </button>
                                 </div>
 
                                 <div class=" {{ aSurveyInfo.class.navigatorcolr }} col-xs-6 text-right " {{ aSurveyInfo.attr.navigatorcolr }}>
                                     <!-- Button submit -->
-                                    <button  {{ aSurveyInfo.attr.navigatorcolrbutton}} class=" {{ aSurveyInfo.class.navigatorcolrbutton}}  btn btn-lg btn-primary " >
+                                    <button  {{ aSurveyInfo.attr.navigatorcolrbutton}} class=" {{ aSurveyInfo.class.navigatorcolrbutton}}  btn btn-lg btn-primary " accesskey="n">
                                         {{ gT("Submit") }}
                                     </button>
                                 </div>
                             </div>
 
-                            {{ aSurveyInfo.hiddeninputs }}
+                            {{ aSurveyInfo.aQuotas.hiddeninputs }}
 
                         </form>
                 {% endif %}

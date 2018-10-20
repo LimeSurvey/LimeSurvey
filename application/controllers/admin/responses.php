@@ -151,7 +151,7 @@ class responses extends Survey_Common_Action
             $message['class'] = "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
-    }   
+    }
 
     /**
      * View a single response in detail
@@ -397,7 +397,7 @@ class responses extends Survey_Common_Action
     {
         $survey = Survey::model()->findByPk($iSurveyId);
         $displaymode = Yii::app()->request->getPost('displaymode', null);
-        
+
         if ($displaymode !== null) {
             $this->set_grid_display($displaymode);
         }
@@ -522,7 +522,18 @@ class responses extends Survey_Common_Action
 
         $iSurveyId = (int) $surveyid;
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) {
+
             $ResponseId  = (Yii::app()->request->getPost('sItems') != '') ? json_decode(Yii::app()->request->getPost('sItems')) : json_decode(Yii::app()->request->getPost('sResponseId'), true);
+
+
+            if (  Yii::app()->request->getPost('modalTextArea') != '' ){
+                $ResponseId = explode(',', Yii::app()->request->getPost('modalTextArea'));
+
+                foreach($ResponseId as $key => $sResponseId){
+                    $ResponseId[$key] = str_replace(' ', '', $sResponseId);
+                }
+            }
+
             $aResponseId = (is_array($ResponseId)) ? $ResponseId : array($ResponseId);
 
             $errors = 0;
@@ -561,6 +572,7 @@ class responses extends Survey_Common_Action
             }
 
         }
+        $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$iSurveyId));
     }
 
     /**
@@ -702,6 +714,7 @@ class responses extends Survey_Common_Action
             // No permission.
             ls\ajax\AjaxHelper::outputNoPermission();
         }
+        $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$surveyId));
     }
 
     /**
@@ -1019,7 +1032,6 @@ class responses extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $aData['display']['menu_bars'] = false;
         $aData['subaction'] = gT("Responses and statistics");
-        $aData['title_bar']['subaction'] = gT("Responses and statistics");
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);

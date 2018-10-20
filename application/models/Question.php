@@ -186,7 +186,7 @@ class Question extends LSActiveRecord
             array('gid' => $gid, 'sid' => $surveyid, 'parent_qid'=>0, 'language' => Survey::model()->findByPk($surveyid)->language),
             array('order'=>'question_order')
         );
-        
+
         $p = 0;
         foreach ($questions as $question) {
             $question->question_order = $p;
@@ -288,18 +288,13 @@ class Question extends LSActiveRecord
                 if ($oQuestionTemplate->bHasCustomAttributes) {
                     // Add the custom attributes to the list
                     foreach ($oQuestionTemplate->oConfig->custom_attributes->attribute as $oCustomAttribute) {
-
                         $sAttributeName = (string) $oCustomAttribute->name;
                         $aCustomAttribute = json_decode(json_encode((array) $oCustomAttribute), 1);
-
-                        if (!isset($aCustomAttribute['i18n'])) {
-                            $aCustomAttribute['i18n'] = false;
-                        }
-
-                        if (!isset($aCustomAttribute['readonly'])) {
-                            $aCustomAttribute['readonly'] = false;
-                        }
-
+                        $aCustomAttribute = array_merge(
+                            QuestionAttribute::getDefaultSettings(),
+                            array("category"=>gT("Template")),
+                            $aCustomAttribute
+                        );
                         $aAttributeNames[$sAttributeName] = $aCustomAttribute;
                     }
                 }
@@ -310,7 +305,7 @@ class Question extends LSActiveRecord
 
     public function getTypeGroup()
     {
-        
+
     }
 
     /**
@@ -454,6 +449,7 @@ class Question extends LSActiveRecord
 
     /**
      * This function contains the question type definitions.
+     * @param string $language Language for translation
      * @return array The question type definitions
      *
      * Explanation of questiontype array:
@@ -463,11 +459,11 @@ class Question extends LSActiveRecord
      * answerscales : 0= Does not need answers x=Number of answer scales (usually 1, but e.g. for dual scale question set to 2)
      * assessable : 0=Does not support assessment values when editing answerd 1=Support assessment values
      */
-    public static function typeList()
+    public static function typeList($language = null)
     {
         $questionTypes = array(
             "1" => array(
-                'description' => gT("Array dual scale"),
+                'description' => gT("Array dual scale", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'assessable' => 1,
@@ -476,7 +472,7 @@ class Question extends LSActiveRecord
                 'class' => 'array-flexible-duel-scale',
             ),
             "5" => array(
-                'description' => gT("5 Point Choice"),
+                'description' => gT("5 Point Choice", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -485,7 +481,7 @@ class Question extends LSActiveRecord
                 'class' => "choice-5-pt-radio"
             ),
             "A" => array(
-                'description' => gT("Array (5 Point Choice)"),
+                'description' => gT("Array (5 Point Choice)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -494,7 +490,7 @@ class Question extends LSActiveRecord
                 'class' => 'array-5-pt'
             ),
             "B" => array(
-                'description' => gT("Array (10 Point Choice)"),
+                'description' => gT("Array (10 Point Choice)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -503,7 +499,7 @@ class Question extends LSActiveRecord
                 'class' => 'array-10-pt'
             ),
             "C" => array(
-                'description' => gT("Array (Yes/No/Uncertain)"),
+                'description' => gT("Array (Yes/No/Uncertain)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -512,7 +508,7 @@ class Question extends LSActiveRecord
                 'class' => 'array-yes-uncertain-no'
             ),
             "D" => array(
-                'description' => gT("Date/Time"),
+                'description' => gT("Date/Time", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -521,7 +517,7 @@ class Question extends LSActiveRecord
                 'class' => 'date'
             ),
             "E" => array(
-                'description' => gT("Array (Increase/Same/Decrease)"),
+                'description' => gT("Array (Increase/Same/Decrease)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -530,7 +526,7 @@ class Question extends LSActiveRecord
                 'class' => 'array-increase-same-decrease'
             ),
             "F" => array(
-                'description' => gT("Array"),
+                'description' => gT("Array", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 0,
@@ -539,7 +535,7 @@ class Question extends LSActiveRecord
                 'class' => 'array-flexible-row'
             ),
             "G" => array(
-                'description' => gT("Gender"),
+                'description' => gT("Gender", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -548,7 +544,7 @@ class Question extends LSActiveRecord
                 'class' => 'gender'
             ),
             "H" => array(
-                'description' => gT("Array by column"),
+                'description' => gT("Array by column", "html", $language),
                 'group' => gT('Arrays'),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 1,
@@ -557,7 +553,7 @@ class Question extends LSActiveRecord
                 'class' => 'array-flexible-column'
             ),
             "I" => array(
-                'description' => gT("Language Switch"),
+                'description' => gT("Language Switch", "html", $language),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 0,
                 'subquestions' => 0,
@@ -566,7 +562,7 @@ class Question extends LSActiveRecord
                 'class' => 'language'
             ),
             "K" => array(
-                'description' => gT("Multiple Numerical Input"),
+                'description' => gT("Multiple Numerical Input", "html", $language),
                 'group' => gT("Mask questions"),
                 'hasdefaultvalues' => 1,
                 'subquestions' => 1,
@@ -575,7 +571,7 @@ class Question extends LSActiveRecord
                 'class' => 'numeric-multi'
             ),
             "L" => array(
-                'description' => gT("List (Radio)"),
+                'description' => gT("List (Radio)", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -584,7 +580,7 @@ class Question extends LSActiveRecord
                 'class' => 'list-radio'
             ),
             "M" => array(
-                'description' => gT("Multiple choice"),
+                'description' => gT("Multiple choice", "html", $language),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
@@ -593,7 +589,7 @@ class Question extends LSActiveRecord
                 'class' => 'multiple-opt'
             ),
             "N" => array(
-                'description' => gT("Numerical Input"),
+                'description' => gT("Numerical Input", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -602,7 +598,7 @@ class Question extends LSActiveRecord
                 'class' => 'numeric'
             ),
             "O" => array(
-                'description' => gT("List with comment"),
+                'description' => gT("List with comment", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -611,7 +607,7 @@ class Question extends LSActiveRecord
                 'class' => 'list-with-comment'
             ),
             "P" => array(
-                'description' => gT("Multiple choice with comments"),
+                'description' => gT("Multiple choice with comments", "html", $language),
                 'group' => gT("Multiple choice questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
@@ -620,7 +616,7 @@ class Question extends LSActiveRecord
                 'class' => 'multiple-opt-comments'
             ),
             "Q" => array(
-                'description' => gT("Multiple Short Text"),
+                'description' => gT("Multiple Short Text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 1,
                 'hasdefaultvalues' => 1,
@@ -629,7 +625,7 @@ class Question extends LSActiveRecord
                 'class' => 'multiple-short-txt'
             ),
             "R" => array(
-                'description' => gT("Ranking"),
+                'description' => gT("Ranking", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -638,7 +634,7 @@ class Question extends LSActiveRecord
                 'class' => 'ranking'
             ),
             "S" => array(
-                'description' => gT("Short Free Text"),
+                'description' => gT("Short Free Text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -647,7 +643,7 @@ class Question extends LSActiveRecord
                 'class' => 'text-short'
             ),
             "T" => array(
-                'description' => gT("Long Free Text"),
+                'description' => gT("Long Free Text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -656,7 +652,7 @@ class Question extends LSActiveRecord
                 'class' => 'text-long'
             ),
             "U" => array(
-                'description' => gT("Huge Free Text"),
+                'description' => gT("Huge Free Text", "html", $language),
                 'group' => gT("Text questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -665,7 +661,7 @@ class Question extends LSActiveRecord
                 'class' => 'text-huge'
             ),
             "X" => array(
-                'description' => gT("Text display"),
+                'description' => gT("Text display", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -674,7 +670,7 @@ class Question extends LSActiveRecord
                 'class' => 'boilerplate'
             ),
             "Y" => array(
-                'description' => gT("Yes/No"),
+                'description' => gT("Yes/No", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -683,7 +679,7 @@ class Question extends LSActiveRecord
                 'class' => 'yes-no'
             ),
             "!" => array(
-                'description' => gT("List (Dropdown)"),
+                'description' => gT("List (Dropdown)", "html", $language),
                 'group' => gT("Single choice questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 1,
@@ -692,7 +688,7 @@ class Question extends LSActiveRecord
                 'class' => 'list-dropdown'
             ),
             ":" => array(
-                'description' => gT("Array (Numbers)"),
+                'description' => gT("Array (Numbers)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
                 'hasdefaultvalues' => 0,
@@ -701,7 +697,7 @@ class Question extends LSActiveRecord
                 'class' => 'array-multi-flexi'
             ),
             ";" => array(
-                'description' => gT("Array (Texts)"),
+                'description' => gT("Array (Texts)", "html", $language),
                 'group' => gT('Arrays'),
                 'subquestions' => 2,
                 'hasdefaultvalues' => 0,
@@ -710,7 +706,7 @@ class Question extends LSActiveRecord
                 'class' => 'array-multi-flexi-text'
             ),
             "|" => array(
-                'description' => gT("File upload"),
+                'description' => gT("File upload", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -719,7 +715,7 @@ class Question extends LSActiveRecord
                 'class' => 'upload-files'
             ),
             "*" => array(
-                'description' => gT("Equation"),
+                'description' => gT("Equation", "html", $language),
                 'group' => gT("Mask questions"),
                 'subquestions' => 0,
                 'hasdefaultvalues' => 0,
@@ -825,12 +821,16 @@ class Question extends LSActiveRecord
         }
 
         $oSurvey = Survey::model()->findByPk($this->sid);
+        $gid_search = Yii::app()->request->getParam('gid');
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
-            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
-                        onclick="if (confirm(\' '.gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "js").' \' )){ '.convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/surveyid/$this->sid/qid/$this->qid")).'} ">
-                            <span class="text-danger fa fa-trash"></span>
-                            </a>';
+            $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"'
+                ." onclick='$.bsconfirm(\"".gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js")
+                            ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
+                            . convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $this->sid, "qid" => $this->qid, "gid" => $gid_search]))
+                        ."});'>"
+                    .' <i class="text-danger fa fa-trash"></i>
+                </a>';
         }
 
         return $button;
@@ -882,7 +882,7 @@ class Question extends LSActiveRecord
                 if (($answer['title'] == trim($exclude_all_others))) {
                     if ($position == $answer['question_order'] - 1) {
 //already in the right position
-                        break; 
+                        break;
                     }
                     $tmp = array_splice($ansresult, $position, 1);
                     array_splice($ansresult, $answer['question_order'] - 1, 0, $tmp);
@@ -1092,6 +1092,22 @@ class Question extends LSActiveRecord
         $criteria->addCondition('qid=:qid');
         $criteria->params = [':qid'=>$this->qid];
         return QuestionAttribute::model()->findAll($criteria);
+    }
+
+    /**
+     * @param array $data
+     * @return boolean|null
+     */
+    public function insertRecords($data)
+    {
+        $oRecord = new self;
+        foreach ($data as $k => $v) {
+            $oRecord->$k = $v;
+        }
+        if ($oRecord->validate()) {
+            return $oRecord->save();
+        }
+        Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
     }
 
 }

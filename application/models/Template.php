@@ -101,7 +101,8 @@ class Template extends LSActiveRecord
 
     /**
      * @return array customized attribute labels (name=>label)
-     */
+    */
+
     public function attributeLabels()
     {
         return array(
@@ -151,7 +152,7 @@ class Template extends LSActiveRecord
         }
 
         $sRequestedTemplate = $sTemplateName;
-        $sDefaultTemplate = getGlobalSetting('defaulttheme');
+        $sDefaultTemplate = App()->getConfig('defaulttheme');
 
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate = self::model()->findByPk($sTemplateName);
@@ -179,8 +180,8 @@ class Template extends LSActiveRecord
         }
 
         if (!empty($sTemplateName)) {
-            setGlobalSetting('defaulttheme', $sTemplateName);
-            $sDefaultTemplate = getGlobalSetting('defaulttheme');
+            SettingGlobal::setSetting('defaulttheme', $sTemplateName);
+            $sDefaultTemplate = App()->getConfig('defaulttheme');
 
             if(method_exists(Yii::app(), 'setFlashMessage'))
                 Yii::app()->setFlashMessage(sprintf(gT("Default survey theme %s is not installed. Now %s is the new default survey theme"), $sRequestedTemplate, $sTemplateName), 'error');
@@ -218,12 +219,16 @@ class Template extends LSActiveRecord
         if (!empty($this->extends)) {
             $oRTemplate = self::model()->findByPk($this->extends);
             if (empty($oRTemplate)) {
-                throw new Exception(
+
+                // Why? it blocks the user at login screen....
+                // It should return false and show a nice warning message.
+
+                /*throw new Exception(
                     sprintf(
                         'Extended template "%s" is not installed.',
                         $this->extends
                     )
-                );
+                );*/
             }
         }
         return true;
@@ -307,14 +312,14 @@ class Template extends LSActiveRecord
      * @param boolean $bForceXML        the id of the survey.
      * @return TemplateConfiguration
      */
-    public static function getTemplateConfiguration($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = false)
+    public static function getTemplateConfiguration($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = false, $abstractInstance = false)
     {
 
         // First we try to get a confifuration row from DB
         if (!$bForceXML) {
             // The name need to be filtred only for DB version. From TemplateEditor, the template is not installed.
             $sTemplateName = (empty($sTemplateName)) ? null : self::templateNameFilter($sTemplateName);
-            $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId, $abstractInstance);
         }
 
 
@@ -475,11 +480,11 @@ class Template extends LSActiveRecord
      * @param boolean $bForceXML
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null)
+    public static function getInstance($sTemplateName = null, $iSurveyId = null, $iSurveyGroupId = null, $bForceXML = null, $abstractInstance = false)
     {
         // The error page from default template can be called when no survey found with a specific ID.
         if ($sTemplateName === null && $iSurveyId === null) {
-            $sTemplateName = getGlobalSetting('defaulttheme');
+            $sTemplateName = App()->getConfig('defaulttheme');
         }
 
         if ($bForceXML === null) {
@@ -489,6 +494,10 @@ class Template extends LSActiveRecord
             } elseif (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG) {
                 $bForceXML = false;
             }
+        }
+
+        if($abstractInstance === true) {
+            return self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML, true);
         }
 
         if (empty(self::$instance)) {
@@ -510,13 +519,32 @@ class Template extends LSActiveRecord
     }
 
     /**
+     * Reset assets for this template
+     * Using DB only
+     * @return void
+     */
+    public function resetAssetVersion()
+    {
+        AssetVersion::incrementAssetVersion(self::getTemplatePath($this->name));
+    }
+
+    /**
+     * Delete asset related to this template
+     * Using DB only
+     * @return integer (0|1)
+     */
+    public function deleteAssetVersion()
+    {
+        return AssetVersion::deleteAssetVersion(self::getTemplatePath($this->name));
+    }
+
+    /**
      * Return the standard template list
      * @return string[]
      * @throws Exception
      */
     public static function getStandardTemplateList()
     {
-
         $standardTemplates = array('vanilla', 'bootswatch', 'fruity');
         return $standardTemplates;
     }
@@ -583,6 +611,7 @@ class Template extends LSActiveRecord
     public function renameTo($sNewName)
     {
         Yii::import('application.helpers.sanitize_helper', true);
+        $this->deleteAssetVersion();
         Survey::model()->updateAll(array('template' => $sNewName), "template = :oldname", array(':oldname'=>$this->name));
         Template::model()->updateAll(array('name' => $sNewName, 'folder' => $sNewName), "name = :oldname", array(':oldname'=>$this->name));
         TemplateConfiguration::rename($this->name, $sNewName);
@@ -629,6 +658,54 @@ class Template extends LSActiveRecord
             'criteria'=>$criteria,
         ));
     }
+
+    /**
+     * Retrieves a list of deprecated templates (the templates in upload/templates/)
+     */
+    static public function getDeprecatedTemplates()
+    {
+        $usertemplaterootdir     = Yii::app()->getConfig("uploaddir").DIRECTORY_SEPARATOR."templates";
+        $aTemplateList = array();
+
+        if ( (is_dir($usertemplaterootdir)) && $usertemplaterootdir && $handle = opendir($usertemplaterootdir)){
+            while (false !== ($file = readdir($handle))){
+                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn"){
+                    $aTemplateList[$file]['directory']  = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+                    $aTemplateList[$file]['name']       = $file;
+                }
+            }
+            closedir($handle);
+        }
+        ksort($aTemplateList);
+
+        return $aTemplateList;
+    }
+
+    /**
+     * Retrieves a list of broken themes
+     */
+    public static function getBrokenThemes($sFolder=null)
+    {
+        $aBrokenTemplateList = array();
+        $sFolder    =  (empty($sFolder))?Yii::app()->getConfig("userthemerootdir"):$sFolder;
+
+        if ($sFolder && $handle = opendir($sFolder)) {
+            while (false !== ($sFileName = readdir($handle))) {
+                if (!is_file("$sFolder/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName != ".svn" && $sFileName != 'generalfiles' ) {
+
+                    try {
+                        $oTheme = Template::getTemplateConfiguration($sFileName, null, null, true); // Get the manifest;
+                    }catch (Exception $e) {
+                        $aBrokenTemplateList[$sFileName] = $e;
+                    }
+                }
+            }
+            closedir($handle);
+        }
+        ksort($aBrokenTemplateList);
+        return  $aBrokenTemplateList;
+    }
+
 
     /**
      * Returns the static model of the specified AR class.

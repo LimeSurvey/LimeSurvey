@@ -20,7 +20,7 @@
                 <div class='col-sm-10 ls-flex wrap'>
                   <div class='col-md-4 col-sm-5 col-xs-6'>
                     <label class='radio-inline'>
-                      <input class='' type='radio' id='radiototal' name='scope' value='T' />
+                      <input class='' type='radio' id='radiototal' name='scope' value='T' checked='checked' />
                       <?php eT("Total"); ?>
                     </label>
                   </div>
@@ -138,8 +138,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-success" id="selector__assessments-save-modal">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+            <button type="button" class="btn btn-success" id="selector__assessments-save-modal"><?php eT('Save'); ?></button>
           </div>
           </form>
       </div>

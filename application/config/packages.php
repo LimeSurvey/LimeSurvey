@@ -104,7 +104,7 @@ return array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
         'js' => array(
-            $debug > 0 ? 'pjax.js' : 'min/pjax.min.js',
+            'pjax.js',
         ),
         'depends' => array(
             'lslog',
@@ -182,14 +182,12 @@ return array(
             'css/displayParticipants.css',
         ),
         'js' => array(
-            'js/confirmdeletemodal.js',
-            'js/bootstrap-remote-modals.js',
-            'js/admin_core.js',
-            'js/notifications.js',
+            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.js',
         ),
         'depends' => array(
             'jquery',
             'pjaxbackend',
+            'lslog',
         )
     ),
 
@@ -206,8 +204,7 @@ return array(
             'css/rtl/displayParticipants-rtl.css',
         ),
         'js' => array(
-            'js/admin_core.js',
-            'js/notifications.js',
+            'build/adminbasics.js',
         ),
         'depends' => array(
             'jquery',
@@ -220,14 +217,11 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'js' => array(
-            'js/notify.js',
-            'js/panelclickable.js',
-            'js/panelsanimation.js',
-            'js/save.js',
         ),
         'depends' => array(
             'jquery',
             'pjaxbackend',
+            'adminbasics'
         )
     ),
 
@@ -236,6 +230,7 @@ return array(
         'basePath' => 'core.surveymenufunctions',
         'js' => array(
             'surveymenufunctionswrapper'.$minVersion.'.js',
+            'surveymenuentryfunctions'.$minVersion.'.js',
         ),
         'depends' => array(
             'adminbasics',
@@ -269,6 +264,18 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
+        )
+        ),
+
+    'decimalcustom' => array(
+        'devBaseUrl' => 'assets/packages/decimalcustom/',
+        'basePath' => 'core.decimalcustom',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'decimalcustom.js',
+        ),
+        'depends' => array(
+            'decimal',
         )
     )
 

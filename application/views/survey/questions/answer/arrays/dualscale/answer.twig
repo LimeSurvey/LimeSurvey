@@ -1,0 +1,227 @@
+{#
+
+/**
+ * Array dual-scale, no dropdown
+
+ * @var answerwidth
+ */
+
+#}
+
+<!-- answer -->
+<table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <col class="col-answers" style='width: {{ answerwidth }}%;' >
+    {% if leftheader != '' or rightheader !='' %}
+        <col style='width: 0%;'  class="hidden"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
+    {% endif %}
+    <colgroup class="col-responses group-1">
+        {% for ld in labelans0 %}
+            <col style='width: {{ cellwidth }}%;' >
+        {% endfor %}
+    </colgroup>
+    {% if labelans1|length > 1 %}
+        <col class="separator" style="width: {{ separatorwidth }}%">
+        {% if leftheader != '' or rightheader !='' %}
+            <col style='width: 0%;'  class="hidden"> <!-- see https://bugs.limesurvey.org/view.php?id=11863 -->
+        {% endif %}
+        <colgroup class="col-responses group-2">
+            {% for ld in labelans1 %}
+                <col style='width: {{ cellwidth }}%;' >
+            {% endfor %}
+        </colgroup>
+    {% endif %}
+    {% if shownoanswer or rightexists %}
+        <col class="separator right_separator" style="width: {{ rightwidth }}%">
+    {% endif %}
+    {% if shownoanswer %}
+        <col class="col-no-answer"  style="width: {{ cellwidth }}%;" />
+    {% endif %}
+
+    <thead>
+        {% if leftheader != '' or rightheader !='' %}
+            <tr class="ls-heading groups header_row">
+                <th class="header_answer_text"></th>
+                {% if leftheader != '' or rightheader !='' %}
+                    <td class="hidden"></td>
+                {% endif %}
+                <th colspan="{{ labelans0|length }}" class="dsheader">{{ leftheader }}</th>
+                {% if labelans1|length > 0 %}
+                    <td class="header_separator"></td>  <!-- // Separator -->
+                    {% if leftheader != '' or rightheader !='' %}
+                        <td class="hidden"></td>
+                    {% endif %}
+                    <th colspan="{{ labelans1|length }}" class="dsheader">{{ rightheader }}</th>
+                {% endif %}
+
+                {% if shownoanswer or rightexists %}
+                    <td class="header_separator {{ rightclass }}"></td>
+                    {% if shownoanswer %}
+                        <th class="header_no_answer"></th>
+                    {% endif %}
+                {% endif %}
+            </tr>
+        {% endif %}
+
+        <!-- Render header -->
+        {{ doRender('/survey/questions/answer/arrays/dualscale/answer_header',
+                ({
+                    'labelans0'    : labelans0,
+                    'labelans1'    : labelans1,
+                    'shownoanswer' : shownoanswer,
+                    'rightexists'  : rightexists,
+                    'leftheader'   : leftheader,
+                    'rightheader'  : rightheader,
+                    'class'        : ''
+                }),
+                true
+            )
+        }}
+
+    </thead>
+
+    <tbody>
+        <!-- Loop all subquestions -->
+        {% for ansrow in aSubQuestions %}
+            <!-- Check for repeat headings -->
+            {% if ansrow.repeatheadings %}
+                <!-- Close body and open another one -->
+                </tbody>
+                <tbody>
+                    <!-- Render repeated header -->
+                    {{ doRender('/survey/questions/answer/arrays/dualscale/answer_header',
+                            ({
+                                'labelans0'    : labelans0,
+                                'labelans1'    : labelans1,
+                                'shownoanswer' : shownoanswer,
+                                'rightexists'  : rightexists,
+                                'leftheader'   : leftheader,
+                                'rightheader'  : rightheader,
+                                'class'        : 'hidden-xs repeat headings'
+                            }),
+                            true
+                        )
+                    }}
+            {% endif %}
+
+            <!-- tr -->
+            <tr id="javatbd{{ ansrow.myfname }}" role="group" aria-labelledby="answertext{{ ansrow.myfname }}"
+                class="answers-list radio-list {% if ansrow.odd %}ls-odd{% else %}ls-even{% endif %}{% if ansrow.showmandatoryviolation %} ls-error-mandatory has-error{% endif %}"
+            >
+            <th id="answertext{{ ansrow.myfname }}" class="answertext control-label{% if answerwidth==0 %} sr-only{% endif %}">
+                {{ ansrow.answertext }}
+                {# Value for expression manager javascript (use id) ; no need to submit #}
+                {{ C.Html.hiddenField("java"~ansrow.myfid0,ansrow.sessionfname0,({
+                    'id' : "java"~ansrow.myfid0,
+                    'disabled' : true,
+                }))
+                }}
+                {% if labelans1|length > 0 %}
+                    {{ C.Html.hiddenField("java"~ansrow.myfid1,ansrow.sessionfname1,({
+                        'id' : "java"~ansrow.myfid1,
+                        'disabled' : true,
+                    }))
+                    }}
+                {% endif %}
+
+            </th>
+
+            <!-- First label set -->
+            {% for j, ld in labelcode0 %}
+                {% if j == 0 and (leftheader != '' or rightheader !='') %}
+                    <td class='visible-xs leftheader information-item'>{{ leftheader }}</td>
+                {% endif %}
+                <td class="answer_cell_1_{{ ld }} answer-item radio-item">
+                    <input
+                        type="radio"
+                        name="{{ ansrow.myfname0 }}"
+                        value="{{ ld }}"
+                        id="answer{{ ansrow.myfid0 }}-{{ ld }}"
+                        {{ labelcode0_checked[ansrow.title][ld] }}
+                    />
+                    <label for="answer{{ ansrow.myfid0 }}-{{ ld }}" class="ls-label-xs-visibility">
+                        {{ labelans0[j] }}
+                    </label>
+                </td>
+            {% endfor %}
+
+            {% if labelans1|length > 0 %}  {# if second label set is used #}
+                <td class="dual_scale_separator information-item {% if shownoanswer %}answer_cell_1_ radio-item noanswer-item {% endif %}{% if separatorwidth==0 %} sr-only{% endif %}">
+                    {% if shownoanswer %} {# No answer for accessibility and no javascript (but visible-xs-block visible-xs-block even with no js: need reworking) #}
+                    <div class="ls-js-hidden">
+                        <input
+                            type='radio'
+                            name='{{ ansrow.myfname0 }}'
+                            value=''
+                            id='answer{{ ansrow.myfid0 }}-'
+                            {{ myfname0_notset }}
+                        />
+                        <label for='answer{{ ansrow.myfid0 }}-' class='ls-label-xs-visibility'>
+                            {{ gT("No answer") }}
+                        </label>
+                    </div>
+                    {% endif %}
+                    {{ ansrow.answertextcenter }}
+                </td>
+
+                <!-- Second label set -->
+                {% for k, ld in labelcode1 %}
+                    {% if k == 0 and (leftheader != '' or rightheader !='') %}
+                        <td class='visible-xs rightheader information-item'>{{ rightheader }}</td>
+                    {% endif %}
+                    <td class="answer_cell_2_{{ ld }} answer-item radio-item">
+                        <input
+                            type="radio"
+                            name="{{ ansrow.myfname1 }}"
+                            value="{{ ld }}"
+                            id="answer{{ ansrow.myfid1 }}-{{ ld }}"
+                            {{ labelcode1_checked[ansrow.title][ld] }}
+                        />
+                        <label for="answer{{ ansrow.myfid1 }}-{{ ld }}" class="ls-label-xs-visibility">
+                            {{ labelans1[k] }}
+                        </label>
+                    </td>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Separator for no-answer -->
+            {% if shownoanswer or rightexists %}
+                <td class="answertextright dual_scale_separator information-item">{{ ansrow.answertextright }}</td>
+            {% endif %}
+
+            <!-- No answer column -->
+            {% if shownoanswer %}
+                <td class="answer_cell_2_ answer-item radio-item noanswer-item">
+                    {% if labelans1|length > 0 %}
+                            <input
+                                type='radio'
+                                name='{{ ansrow.myfname1 }}'
+                                value=''
+                                id='answer{{ ansrow.myfid1 }}-'
+                                {{ myfname1_notset }}
+                            />
+                        <label for='answer{{ ansrow.myfid1 }}-' class="ls-label-xs-visibility">
+                            {{ gT("No answer") }}
+                        </label>
+                    {% else %}
+                            <input
+                                type='radio'
+                                name='{{ ansrow.myfname0 }}'
+                                value=''
+                                id='answer{{ ansrow.myfid0 }}-'
+                                {{ myfname0_notset }}
+                            />
+                        <label for='answer{{ ansrow.myfid0 }}-' class="ls-label-xs-visibility">
+                            {{ gT("No answer") }}
+                        </label>
+                    {% endif %}
+                </td>
+            {% endif %}
+
+            </tr>
+
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<!-- end of answer -->

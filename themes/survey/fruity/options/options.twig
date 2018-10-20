@@ -220,7 +220,8 @@
 <option value="css/variations/black_pearl.css">Black Pearl</option>
 <option value="css/variations/free_magenta.css">Free Magenta</option>
 <option value="css/variations/purple_tentacle.css">Purple Tentacle</option>
-<option value="css/variations/sunset_orange.css">Sunset_Orange</option>
+<option value="css/variations/sunset_orange.css">Sunset Orange</option>
+<option value="css/variations/skyline_blue.css">Skyline Blue</option>
 {% endset %}
 
 {% set checkIconOptions = '' %}
@@ -319,7 +320,7 @@
 
             {# First settings row #}
             <div class='row action_hide_on_inherit'>
-                <div class='col-sm-12 col-md-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
 
                     {# Ajaxmode setting #}
                     <div class='form-group row'>
@@ -347,7 +348,7 @@
                 </div>
 
                 {# Container #}
-                <div class='col-sm-12 col-md-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_container' class='control-label'> {{ gT("Survey container") }} </label>
                         <div class='col-sm-12'>
@@ -373,7 +374,7 @@
                 </div>
 
                 {# Question Border #}
-                <div class='col-sm-12 col-md-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_questionborder' class='control-label'>{{ gT("Question borders") }}</label>
                         <div class='col-sm-12'>
@@ -400,7 +401,7 @@
                 </div>
 
                 {# Question Shadow #}
-                <div class='col-sm-12 col-md-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_questioncontainershadow' class='control-label'>{{ gT("Question shadow") }}</label>
                         <div class='col-sm-12'>
@@ -424,7 +425,167 @@
                         </div>
                     </div>
                 </div>
+
+                {# Show popups #}
+                <div class='col-sm-12 col-md-4 col-lg-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_showpopups' class='control-label' {{ showpopups_disabled_qtip }}>{{ gT("Show popups") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default control-label" {{ showpopups_disabled }}>
+                                        <input type='radio' name='showpopups' value='1' {{ showpopups_disabled }} class='selector_option_radio_field simple_edit_options_showpopups ' data-id='showpopups'/>
+                                        {{ gT("Popup") }}
+                                    </label>
+                                    <label class="btn btn-default" {{ showpopups_disabled }}>
+                                        <input type='radio' name='showpopups' value='0' {{ showpopups_disabled }} class='selector_option_radio_field simple_edit_options_showpopups ' data-id='showpopups'/>
+                                        {{ gT("On page") }}
+                                    </label>
+                                    <label class="btn btn-default" {{ showpopups_disabled }}>
+                                        <input type='radio' name='showpopups' value='-1' {{ showpopups_disabled }} class='selector_option_radio_field simple_edit_options_showpopups ' data-id='showpopups'/>
+                                        {{ gT("Off") }}
+                                    </label>
+                                    {# If this is a root template setting, don't show the inherit button #}
+                                    {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                        <label class="btn btn-default" {{ showpopups_disabled }}>
+                                            <input type='radio' name='showpopups' value='inherit' class='selector_option_radio_field simple_edit_options_showpopups ' data-id='showpopups'/>
+                                            {{ gT("Inherit") }}
+                                        </label>
+                                    {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
+            {# Second settings row #}
+            <div class='row action_hide_on_inherit'>
+                {# zebrastriping #}
+                <div class='col-sm-12 col-md-4 col-lg-2'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_zebrastriping' class='control-label'>{{ gT("Zebra-striped questions") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='zebrastriping' value='on' class='selector_option_radio_field simple_edit_options_zebrastriping ' data-id='zebrastriping'/>
+                                    {{ gT("Yes") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='zebrastriping' value='off' class='selector_option_radio_field simple_edit_options_zebrastriping ' data-id='zebrastriping'/>
+                                    {{ gT("No") }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='zebrastriping' value='inherit' class='selector_option_radio_field simple_edit_options_zebrastriping ' data-id='zebrastriping'/>
+                                        {{ gT("Inherit") }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# stickymatrixheaders #}
+                <div class='col-sm-12 col-md-4 col-lg-2'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_stickymatrixheaders' class='control-label'>{{ gT("Sticky array headers") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='stickymatrixheaders' value='on' class='selector_option_radio_field simple_edit_options_stickymatrixheaders ' data-id='stickymatrixheaders'/>
+                                    {{ gT("Yes") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='stickymatrixheaders' value='off' class='selector_option_radio_field simple_edit_options_stickymatrixheaders ' data-id='stickymatrixheaders'/>
+                                    {{ gT("No") }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='stickymatrixheaders' value='inherit' class='selector_option_radio_field simple_edit_options_stickymatrixheaders ' data-id='stickymatrixheaders'/>
+                                        {{ gT("Inherit") }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# greyoutselected #}
+                <div class='col-sm-12 col-md-4 col-lg-2'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_greyoutselected' class='control-label'>{{ gT("Dim answered array rows") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='greyoutselected' value='on' class='selector_option_radio_field simple_edit_options_greyoutselected ' data-id='greyoutselected'/>
+                                    {{ gT("Yes") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='greyoutselected' value='off' class='selector_option_radio_field simple_edit_options_greyoutselected ' data-id='greyoutselected'/>
+                                    {{ gT("No") }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='greyoutselected' value='inherit' class='selector_option_radio_field simple_edit_options_greyoutselected ' data-id='greyoutselected'/>
+                                        {{ gT("Inherit") }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# hideprivacyinfo #}
+                <div class='col-sm-12 col-md-4 col-lg-2'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_hideprivacyinfo' class='control-label'>{{ gT("Hide privacy info") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='hideprivacyinfo' value='on' class='selector_option_radio_field simple_edit_options_hideprivacyinfo ' data-id='hideprivacyinfo'/>
+                                    {{ gT("Yes") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='hideprivacyinfo' value='off' class='selector_option_radio_field simple_edit_options_hideprivacyinfo ' data-id='hideprivacyinfo'/>
+                                    {{ gT("No") }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='hideprivacyinfo' value='inherit' class='selector_option_radio_field simple_edit_options_hideprivacyinfo ' data-id='hideprivacyinfo'/>
+                                        {{ gT("Inherit") }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {# crosshover #}
+                <div class='col-sm-12 col-md-4 col-lg-2'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_crosshover' class='control-label'>{{ gT("Cross-hover in matrix questions") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='crosshover' value='on' class='selector_option_radio_field simple_edit_options_crosshover ' data-id='crosshover'/>
+                                    {{ gT("Yes") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='crosshover' value='off' class='selector_option_radio_field simple_edit_options_crosshover ' data-id='crosshover'/>
+                                    {{ gT("No") }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='crosshover' value='inherit' class='selector_option_radio_field simple_edit_options_crosshover ' data-id='crosshover'/>
+                                        {{ gT("Inherit") }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class='row action_hide_on_inherit'>
                 <hr/>
             </div>
@@ -436,15 +597,16 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_bodybackgroundcolor' class='control-label'>{{ gT("Background color") }}</label>
                         <div class="input-group">
-                            <div class="input-group-addon">
-                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.bodybackgroundcolor}}">&nbsp;</span>
+                            <div class="input-group-addon style__colorpicker">
+                                <input type="color" name="bodybackgroundcolor_picker" data-value="{{oParentOptions.bodybackgroundcolor}}" class="selector__colorpicker-inherit-value"/>
                             </div>
-                            <input type="text" name="bodybackgroundcolor" data-inheritvalue="{{oParentOptions.bodybackgroundcolor}}" value="inherit" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_bodybackgroundcolor" data-id="bodybackgroundcolor" />
+                            <input type="text" name="bodybackgroundcolor" data-inheritvalue="{{oParentOptions.bodybackgroundcolor}}" value="inherit" class="selector_option_value_field selector__color-picker form-control simple_edit_options_bodybackgroundcolor" data-id="bodybackgroundcolor" />
                             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                 <div class="input-group-addon">
                                     <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
                                 </div>
                             {% endif %}
+
                         </div>
                     </div>
                 </div>
@@ -454,10 +616,10 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_fontcolor' class='control-label'>{{ gT("Font color") }}</label>
                         <div class="input-group">
-                            <div class="input-group-addon">
-                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.fontcolor}}">&nbsp;</span>
+                            <div class="input-group-addon style__colorpicker">
+                                <input type="color" name="fontcolor_picker" data-value="{{oParentOptions.fontcolor}}" class="selector__colorpicker-inherit-value"/>
                             </div>
-                            <input type="text" name="fontcolor" value="inherit" data-inheritvalue="{{oParentOptions.fontcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_fontcolor" data-id="fontcolor" />
+                            <input type="text" name="fontcolor" value="inherit" data-inheritvalue="{{oParentOptions.fontcolor}}" class="selector_option_value_field selector__color-picker form-control simple_edit_options_fontcolor" data-id="fontcolor" />
                             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                 <div class="input-group-addon">
                                     <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
@@ -472,10 +634,10 @@
                     <div class='form-group row'>
                         <label for='simple_edit_options_questionbackgroundcolor' class='control-label'>{{ gT("Question background color") }}</label>
                         <div class="input-group">
-                            <div class="input-group-addon">
-                                <span class="selector__show-inherit-value" style="height:16px; width: 16px; display: inline-block; background-color: {{oParentOptions.questionbackgroundcolor}}">&nbsp;</span>
+                            <div class="input-group-addon style__colorpicker">
+                                <input type="color" name="questionbackgroundcolor_picker" data-value="{{oParentOptions.questionbackgroundcolor}}" class="selector__colorpicker-inherit-value"/>
                             </div>
-                            <input type="text" name="questionbackgroundcolor" value="inherit" data-inheritvalue="{{oParentOptions.questionbackgroundcolor}}" class="selector_option_value_field selector__colorpicker-field form-control simple_edit_options_questionbackgroundcolor" data-id="questionbackgroundcolor" />
+                            <input type="text" name="questionbackgroundcolor" value="inherit" data-inheritvalue="{{oParentOptions.questionbackgroundcolor}}" class="selector_option_value_field selector__color-picker form-control simple_edit_options_questionbackgroundcolor" data-id="questionbackgroundcolor" />
                             {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                 <div class="input-group-addon">
                                     <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
@@ -545,7 +707,7 @@
                                 {% endif %}
 
                                 {% for image in templateConfiguration.imageFileList %}
-                                    <option data-lightbox-src="{{imageSrc(image.filepath)}}" value="{{image.filepath}}">{{image.filename}}</option>
+                                    <option data-lightbox-src="{{image.preview}}" value="{{image.filepath}}">{{image.filename}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -553,7 +715,7 @@
                 </div>
                 <div class='col-sm-4 col-md-2'>
                     <br/>
-                    <button class="btn btn-default selector__open_lightbox" data-target="#simple_edit_options_backgroundimagefile"> {{ gT('Preview Image')}}</button>
+                    <button class="btn btn-default selector__open_lightbox" data-target="#simple_edit_options_backgroundimagefile"> {{ gT('Preview image')}}</button>
                 </div>
             </div>
             <div class='row action_hide_on_inherit'>
@@ -593,7 +755,7 @@
                                 {% endif %}
 
                                 {% for image in templateConfiguration.imageFileList %}
-                                    <option data-lightbox-src="{{imageSrc(image.filepathOptions)}}" value="{{image.filepath}}">{{image.filename}}</option>
+                                    <option data-lightbox-src="{{image.preview}}" value="{{image.filepath}}">{{image.filename}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -601,7 +763,7 @@
                 </div>
                 <div class='col-sm-4 col-md-2'>
                     <br/>
-                    <button class="btn btn-default selector__open_lightbox" data-target="#simple_edit_options_brandlogofile"> {{ gT('Preview Image')}}</button>
+                    <button class="btn btn-default selector__open_lightbox" data-target="#simple_edit_options_brandlogofile"> {{ gT('Preview image')}}</button>
                 </div>
             </div>
             <div class='row action_hide_on_inherit'>
@@ -857,7 +1019,7 @@
             <div class='row action_hide_on_inherit'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>{{ gT("Fruity fonts") }}</div>
+                        <div class='panel-heading'>{{ sprintf( gT("%s fonts"), templateConfiguration.template_name)|capitalize }}</div>
                         <div class='panel-body'>
                             <div class='form-group row'>
                                 <label for='simple_edit_font' class='control-label'>{{ gT("Select font:") }}</label>
@@ -879,7 +1041,7 @@
             <div class='row'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>{{ gT("Fruity variations") }} </div>
+                        <div class='panel-heading'>{{ sprintf( gT("%s variations"), templateConfiguration.template_name)|capitalize }} </div>
                         <div class='panel-body'>
                             <div class='form-group row'>
                                 <label for='simple_edit_add_css' class='control-label'>{{ gT("Select variation:") }}</label>

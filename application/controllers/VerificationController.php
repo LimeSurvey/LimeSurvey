@@ -29,7 +29,7 @@ class VerificationController extends LSYii_Controller
         $rootdir = Yii::app()->getConfig('rootdir');
 
         // header for png
-        Header("Content-Type: image/png");
+        //Header("Content-Type: image/png");
 
         // Create Image
         $im = ImageCreate(75, 20);
@@ -60,11 +60,13 @@ class VerificationController extends LSYii_Controller
             $font_color = $blue;
         }
 
-        $font_rand = rand(1, 2); //Maybe add other specific hard font
-        if ($font_rand == 1) {
-            $font = $rootdir."/assets/fonts/FreeSans.ttf";
-        } else {
-            $font = $rootdir."/assets/fonts/DejaVuSans.ttf";
+        $font_rand = rand(1,5); //Maybe add other specific hard font
+        switch ($font_rand) {
+            case 1: $font = $rootdir."/assets/fonts/font-src/FreeSans.ttf"; break;
+            case 2: $font = $rootdir."/assets/fonts/DejaVuSans.ttf"; break;
+            case 3: $font = $rootdir."/assets/fonts/font-src/lato-v11-latin-700.ttf"; break;
+            case 4: $font = $rootdir."/assets/fonts/font-src/news-cycle-v13-latin-regular.ttf"; break;
+            case 5: $font = $rootdir."/assets/fonts/font-src/ubuntu-v9-latin-regular.ttf"; break;
         }
 
         $line_rand = rand(1, 3);
