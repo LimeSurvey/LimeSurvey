@@ -6,7 +6,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2018 LimeSurvey Team <http://www.limesurvey.org>
  * @license GPL v3
- * @version 3.0.0
+ * @version 1.0.0
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,11 @@ class tableClassQuestionAttribute extends PluginBase {
         $this->subscribe('newQuestionAttributes','addClassTableAttribute');
     }
 
+    /**
+     * @see https://manual.limesurvey.org/NewQuestionAttributes
+     * Wrap the answer part with a div with needed class name
+     * @return void
+     */
     public function addClassTableAttribute() {
         $extraAttributes = array(
             'table_class'=>array(
@@ -54,6 +59,11 @@ class tableClassQuestionAttribute extends PluginBase {
         $this->getEvent()->append('questionAttributes', $extraAttributes);
     }
 
+    /**
+     * @see https://manual.limesurvey.org/BeforeQuestionRender
+     * Wrap the answer part with a div with needed class name
+     * @return void
+     */
     public function setClassTableAttribute()
     {
         
