@@ -278,6 +278,9 @@ function createDatabase($oDB){
             'version' =>  "string(32) NULL",
         ));
 
+        foreach( $boxesData=LsDefaultDataSets::getPluginActivated() as $plugins){
+            $oDB->createCommand()->insert("{{plugins}}", $plugins);
+        }
 
         // plugin_settings
         $oDB->createCommand()->createTable('{{plugin_settings}}', array(
