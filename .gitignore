@@ -21,7 +21,7 @@
 /upload/*.*
 /upload/uploadsave/**/*.*
 !/upload/index.html
-!/upload/admintheme/
+/upload/admintheme/**/*
 !/upload/admintheme/index.html
 /upload/labels/**/*.*
 !/upload/labels/index.html
