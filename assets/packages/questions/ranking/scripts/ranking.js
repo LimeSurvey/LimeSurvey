@@ -149,23 +149,23 @@ var RankingQuestion = function (options) {
     fixChoiceListHeight = function() {
         if (samechoiceheight) {
             var maxHeight = 0;
-            $('#sortable-choice-' + questionId + ' .ls-choice').each(function () {
+            $('#question' + questionId + ' .list-samechoiceheight .ls-choice').each(function () {
                 if ($(this).actual('height') > maxHeight) {
                     maxHeight = $(this).actual('height');
                 }
             });
-            $('#sortable-choice-' + questionId + ' .ls-choice').height(maxHeight);
+            $('#question' + questionId + ' .list-samechoiceheight .ls-choice').height(maxHeight);
         }
 
         if (samelistheight) {
             var totalHeight = 0;
-            $('#sortable-choice-' + questionId + ' li,#sortable-rank-' + questionId + ' li').each(function () {
+            $('#question' + questionId + ' .list-samelistheight .ls-choice').each(function () {
                 totalHeight = totalHeight + $(this).actual('outerHeight', {
                     includeMargin: true
                 }); /* Border not inside */
             });
             /* Add the padding to min-height */
-            $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css('min-height', totalHeight + 'px').addClass("ls-sameheight");
+            $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).height(totalHeight);
         }
     },
 
