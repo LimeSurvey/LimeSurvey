@@ -40,13 +40,16 @@ $categoryNum=0;
             <?php
                 echo $aAttribute['caption'];
                 if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }
-            ?>:
+            ?>
+            <?php if (!empty($aAttribute['help'])): ?>
             <a class="text-primary show-help" data-toggle="collapse" href="#help<?php echo $aAttribute['name'];?>" aria-expanded="false" aria-controls="help<?php echo $aAttribute['name'];?>" aria-hidden=true>
                 <span class="fa fa-info-circle" ></span>
             </a>
+            <?php endif; ?>
         </label>
+        <?php if (!empty($aAttribute['help'])): ?>
         <p class="help-block collapse" id="help<?php echo $aAttribute['name'];?>"><?php echo $aAttribute['help'];?></p>
-
+        <?php endif; ?>
         <!-- Input -->
         <div class="">
             <?php
