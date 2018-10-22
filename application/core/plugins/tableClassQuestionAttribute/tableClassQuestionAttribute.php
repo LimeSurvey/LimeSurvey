@@ -72,10 +72,11 @@ class tableClassQuestionAttribute extends PluginBase {
             switch ($aQuestionAttributes['table_class']) {
                 case 'no-more-table':
                 default:
-                    $this->addAndRegisterPackage();
+                    $this->addAndRegisterNomoretablePackage();
                     $className = "no-more-table";
                     break;
                 case 'table-responsive':
+                $this->addAndRegisterTableresponsivePackage();
                     $className = "table-responsive";
                     break;
                 case 'none':
@@ -91,10 +92,10 @@ class tableClassQuestionAttribute extends PluginBase {
     }
 
     /**
-     * register needed package (currently only no-more-table is needed)
+     * Register no-more-table package 
      * @return void
      */
-    public function addAndRegisterPackage()
+    public function addAndRegisterNomoretablePackage()
     {
         /* Quit if is done */
         if(array_key_exists('no-more-table',Yii::app()->getClientScript()->packages)) {
@@ -104,11 +105,34 @@ class tableClassQuestionAttribute extends PluginBase {
         if(!Yii::app()->clientScript->hasPackage('no-more-table')) {
             Yii::setPathOfAlias(get_class($this), dirname(__FILE__));
             Yii::app()->clientScript->addPackage('no-more-table', array(
-                'basePath'    => get_class($this).'.assets',
+                'basePath'    => get_class($this).'.assets.no-more-table',
                 'css'          => array('no-more-table.css'),
                 'depends'      =>array('limesurvey-public'),
             ));
         }
         Yii::app()->getClientScript()->registerPackage('no-more-table');
     }
+
+    /**
+     * Register table-responsive package 
+     * @return void
+     */
+    public function addAndRegisterTableresponsivePackage()
+    {
+        /* Quit if is done */
+        if(array_key_exists('table-responsive',Yii::app()->getClientScript()->packages)) {
+            return;
+        }
+        /* Add package only if don't exist currently (can be replaced by user config) */
+        if(!Yii::app()->clientScript->hasPackage('table-responsive')) {
+            Yii::setPathOfAlias(get_class($this), dirname(__FILE__));
+            Yii::app()->clientScript->addPackage('table-responsive', array(
+                'basePath'    => get_class($this).'.assets.table-responsive',
+                'css'          => array('table-responsive.css'),
+                'depends'      =>array('limesurvey-public','bootstrap'),
+            ));
+        }
+        Yii::app()->getClientScript()->registerPackage('table-responsive');
+    }
+
 }
