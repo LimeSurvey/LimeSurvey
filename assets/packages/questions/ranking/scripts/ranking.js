@@ -147,32 +147,26 @@ var RankingQuestion = function (options) {
     },
 
     fixChoiceListHeight = function() {
-        //Keep the target field as big as the source field
-        var minHeight = $('#sortable-choice-' + questionId).height();
-        $('#sortable-choice-' + questionId).css('min-height', minHeight);
-        $('#sortable-rank-' + questionId).css('min-height', minHeight);
+        if (samechoiceheight) {
+            var maxHeight = 0;
+            $('#sortable-choice-' + questionId + ' .ls-choice').each(function () {
+                if ($(this).actual('height') > maxHeight) {
+                    maxHeight = $(this).actual('height');
+                }
+            });
+            $('#sortable-choice-' + questionId + ' .ls-choice').height(maxHeight);
+        }
 
-        // if (samechoiceheight) {
-        //     var maxHeight = 0;
-        //     $('#sortable-choice-' + questionId + ' li,#sortable-rank-' + questionId + ' li').each(function () {
-        //         if ($(this).actual('height') > maxHeight) {
-        //             maxHeight = $(this).actual('height');
-        //         }
-        //     });
-        //     $('#sortable-choice-' + questionId + ' li,#sortable-rank-' + questionId + ' li').css('min-height', maxHeight + 'px');
-        // }
-
-        // if (samelistheight) {
-        //     var totalHeight = 0;
-        //     $('#sortable-choice-' + questionId + ' li,#sortable-rank-' + questionId + ' li').each(function () {
-        //         totalHeight = totalHeight + $(this).actual('outerHeight', {
-        //             includeMargin: true
-        //         }); /* Border not inside */
-        //     });
-        //     /* Add the padding to min-height */
-        //     $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css('min-height', totalHeight + 'px').addClass("ls-sameheight");
-        // }
-
+        if (samelistheight) {
+            var totalHeight = 0;
+            $('#sortable-choice-' + questionId + ' li,#sortable-rank-' + questionId + ' li').each(function () {
+                totalHeight = totalHeight + $(this).actual('outerHeight', {
+                    includeMargin: true
+                }); /* Border not inside */
+            });
+            /* Add the padding to min-height */
+            $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css('min-height', totalHeight + 'px').addClass("ls-sameheight");
+        }
     },
 
     triggerEmRelevanceSortable = function() {
