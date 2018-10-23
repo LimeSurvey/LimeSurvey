@@ -356,7 +356,7 @@ class database extends Survey_Common_Action
     }
 
     /**
-     * action to do when update sub-questions
+     * action to do when update subquestions
      * @param integer $iSurveyID
      * @return void
      * @throws CHttpException

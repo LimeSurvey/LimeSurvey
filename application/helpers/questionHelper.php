@@ -124,7 +124,7 @@ class questionHelper
             'options'=>array(0=>gT('Hidden', 'unescaped'),
             1=>gT('Disabled', 'unescaped')),
             'default'=>0,
-            "help"=>gT("Specify how array-filtered sub-questions should be displayed"),
+            "help"=>gT("Specify how array-filtered subquestions should be displayed"),
             "caption"=>gT('Array filter style')
         );
 
@@ -324,8 +324,8 @@ class questionHelper
             'sortorder'=>220,
             'inputtype'=>'textarea',
             'expression'=>2,
-            "help"=>gT('Enter a boolean equation to validate each sub-question.'),
-            "caption"=>gT('Sub-question validation equation')
+            "help"=>gT('Enter a boolean equation to validate each subquestion.'),
+            "caption"=>gT('Subquestion validation equation')
         );
 
         self::$attributes["em_validation_sq_tip"] = array(
@@ -335,8 +335,8 @@ class questionHelper
             'inputtype'=>'textarea',
             'expression'=>1,
             'i18n'=>true,
-            "help"=>gT('This is a tip shown to the participant describing the sub-question validation equation.'),
-            "caption"=>gT('Sub-question validation tip')
+            "help"=>gT('This is a tip shown to the participant describing the subquestion validation equation.'),
+            "caption"=>gT('Subquestion validation tip')
         );
 
         self::$attributes["exclude_all_others"] = array(

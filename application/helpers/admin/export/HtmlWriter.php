@@ -109,7 +109,7 @@
         }
 
         /**
-         * Renders a question and recurses into sub-questions.
+         * Renders a question and recurses into subquestions.
          * @param Question $question
          * @param string $value
          */
