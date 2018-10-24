@@ -787,17 +787,24 @@ class TemplateConfiguration extends TemplateConfig
 
     private function _filterImages($file)
     {
-        $imagePath = (file_exists($this->filesPath.$file['name']))
-            ? $this->filesPath.$file['name']
-            : $this->generalFilesPath.$file['name'] ;
-
+        $imagePath = "";
+        if($this->sid && file_exists(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'.$file['name']) ) {
+            $imagePath = Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'.$file['name'];
+        }
+        if( file_exists($this->filesPath.$file['name']) ) {
+            $imagePath = $this->generalFilesPath.$file['name'];
+        }
+        if( file_exists($this->filesPath.$file['name']) ) {
+            $imagePath = $this->filesPath.$file['name'];
+        }
+        if(!$imagePath) {
+            return;
+        }
         $filePath = $this->_getRelativePath(Yii::app()->getConfig('rootdir'),  $imagePath);
-
         $previewFilePath = App()->getAssetManager()->publish($imagePath);
-
         $checkImage = LSYii_ImageValidator::validateImage($imagePath);
         if (!$checkImage['check'] === false) {
-                return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>$file['name']];
+            return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>$file['name']];
         }
     }
 
@@ -805,6 +812,9 @@ class TemplateConfiguration extends TemplateConfig
     {
         $aData = $this->attributes;
         $fileList = array_merge(Template::getOtherFiles($this->filesPath), Template::getOtherFiles($this->generalFilesPath));
+        if($this->sid) {
+            $fileList = array_merge($fileList,Template::getOtherFiles(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'));
+        }
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
         foreach ($fileList as $file) {
