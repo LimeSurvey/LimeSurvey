@@ -788,7 +788,7 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Return image information
      * @param string $file
-     * @param integer get file in this survey dir too
+     * @param integer|null $surveyId get file in this survey dir too
      * @return array|null
      */
     private function _filterImages($file,$surveyId = null)
