@@ -800,7 +800,7 @@ class TemplateConfiguration extends TemplateConfig
         if(file_exists($this->filesPath.$file['name']) ) {
             $imagePath = $this->filesPath.$file['name'];
         }
-        if($surveyId && file_exists(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'.$file['name']) ) {
+        if($surveyId && file_exists(Yii::app()->getConfig('uploaddir').'/surveys/'.$surveyId.'/images/'.$file['name']) ) {
             $imagePath = Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'.$file['name'];
         }
         if(!$imagePath) {
