@@ -172,14 +172,17 @@ class themes extends Survey_Common_Action
      */
     public function upload()
     {
+        $action = returnGlobal('action');
+        if ($action == 'templateuploadimagefile' && Yii::app()->request->getPost('surveyid') ) {
+            Yii::app()->getController()->forward("/admin/survey/sa/uploadimagefile/");
+            Yii::app()->end();
+        }
         if (Permission::model()->hasGlobalPermission('templates', 'import')) {
             Yii::app()->loadHelper('admin/template');
             $lid = returnGlobal('lid');
-            $action = returnGlobal('action');
             $uploadresult = "";
             $success = false;
             $debug = [];
-
             if ($action == 'templateuploadimagefile') {
                 // $iTemplateConfigurationId = Yii::app()->request->getPost('templateconfig');
                 // $oTemplateConfiguration = TemplateConfiguration::getInstanceFromConfigurationId($iTemplateConfigurationId);
