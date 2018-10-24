@@ -287,7 +287,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
                     // else, its ajax, don't check, bypass it.
 
                     if ($json != "" && $json != "[]") {
-                        $phparray = json_decode(stripslashes($json));
+                        $phparray = json_decode(urldecode($json));
                         if ($phparray[0]->size != "") {
 // ajax
                             $filecount = count($phparray);
