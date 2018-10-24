@@ -785,17 +785,23 @@ class TemplateConfiguration extends TemplateConfig
         return str_repeat('..'.DIRECTORY_SEPARATOR, count($dir)) . implode(DIRECTORY_SEPARATOR, $file);
     }
 
-    private function _filterImages($file)
+    /**
+     * Return image information
+     * @param string $file
+     * @param integer get file in this survey dir too
+     * @return array|null
+     */
+    private function _filterImages($file,$surveyId = null)
     {
         $imagePath = "";
-        if($this->sid && file_exists(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'.$file['name']) ) {
-            $imagePath = Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'.$file['name'];
-        }
-        if( file_exists($this->filesPath.$file['name']) ) {
+        if(file_exists($this->generalFilesPath.$file['name']) ) {
             $imagePath = $this->generalFilesPath.$file['name'];
         }
-        if( file_exists($this->filesPath.$file['name']) ) {
+        if(file_exists($this->filesPath.$file['name']) ) {
             $imagePath = $this->filesPath.$file['name'];
+        }
+        if($surveyId && file_exists(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'.$file['name']) ) {
+            $imagePath = Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'.$file['name'];
         }
         if(!$imagePath) {
             return;
@@ -812,19 +818,23 @@ class TemplateConfiguration extends TemplateConfig
     {
         $aData = $this->attributes;
         $fileList = array_merge(Template::getOtherFiles($this->filesPath), Template::getOtherFiles($this->generalFilesPath));
-        if($this->sid) {
-            $fileList = array_merge($fileList,Template::getOtherFiles(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'));
-        }
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
         foreach ($fileList as $file) {
             $isImage = $this->_filterImages($file);
-
             if ($isImage) {
                 $aData['imageFileList'][] = $isImage;
             }
         };
-
+        if($this->sid) {
+            $fileList = Template::getOtherFiles(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/');
+            foreach ($fileList as $file) {
+                $isImage = $this->_filterImages($file,$this->sid);
+                if ($isImage) {
+                    $aData['imageFileList'][] = $isImage;
+                }
+            };
+        }
         return $aData;
     }
 
