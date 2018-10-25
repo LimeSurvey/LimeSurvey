@@ -787,31 +787,21 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Return image information
-     * @param string $file
-     * @param integer|null $surveyId get file in this survey dir too
+     * @param string $file with Path
      * @return array|null
      */
-    private function _filterImages($file,$surveyId = null)
+    private function _filterImages($file)
     {
-        $imagePath = "";
-        if(file_exists($this->generalFilesPath.$file['name']) ) {
-            $imagePath = $this->generalFilesPath.$file['name'];
-        }
-        if(file_exists($this->filesPath.$file['name']) ) {
-            $imagePath = $this->filesPath.$file['name'];
-        }
-        if($surveyId && file_exists(Yii::app()->getConfig('uploaddir').'/surveys/'.$surveyId.'/images/'.$file['name']) ) {
-            $imagePath = Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'.$file['name'];
-        }
-        if(!$imagePath) {
+        if(!file_exists($file)) {
             return;
         }
-        $filePath = $this->_getRelativePath(Yii::app()->getConfig('rootdir'),  $imagePath);
-        $previewFilePath = App()->getAssetManager()->publish($imagePath);
-        $checkImage = LSYii_ImageValidator::validateImage($imagePath);
-        if (!$checkImage['check'] === false) {
-            return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>$file['name']];
+        $filePath = $this->_getRelativePath(Yii::app()->getConfig('rootdir'), $file);
+        $checkImage = LSYii_ImageValidator::validateImage($file);
+        if (!$checkImage['check']) {
+            return;
         }
+        $previewFilePath = App()->getAssetManager()->publish($file);
+        return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>basename($file)];
     }
 
     protected function getOptionPageAttributes()
@@ -820,21 +810,22 @@ class TemplateConfiguration extends TemplateConfig
         $fileList = array_merge(Template::getOtherFiles($this->filesPath), Template::getOtherFiles($this->generalFilesPath));
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
-        foreach ($fileList as $file) {
-            $isImage = $this->_filterImages($file);
-            if ($isImage) {
-                $aData['imageFileList'][] = $isImage;
-            }
-        };
+        $categoryList = []; // Array with optgroup label and path
+        $categoryList[] = ['group' => gT("Global"),'path' => $this->generalFilesPath];
+        $categoryList[] = ['group' => gT("Theme"),'path' => $this->filesPath];
         if($this->sid) {
-            $fileList = Template::getOtherFiles(Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/');
+            $categoryList[] = ['group' => gT("Survey"),'path' => Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'];
+        }
+        foreach($categoryList as $category) {
+            $fileList = Template::getOtherFiles($category['path']);
             foreach ($fileList as $file) {
-                $isImage = $this->_filterImages($file,$this->sid);
-                if ($isImage) {
-                    $aData['imageFileList'][] = $isImage;
+                $imageInfo = $this->_filterImages($category['path'].$file['name']);
+                if ($imageInfo) {
+                    $aData['imageFileList'][] = array_merge($category,$imageInfo);
                 }
             };
         }
+
         return $aData;
     }
 
