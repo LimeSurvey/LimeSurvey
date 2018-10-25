@@ -244,10 +244,18 @@
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <option value="inherit">Inherit</option>
                                 {% endif %}
-
+                                {% set optgroup = '' %}
                                 {% for image in templateConfiguration.imageFileList %}
-                                    <option data-lightbox-src="{{image.preview}}" value="{{image.filepath}}">{{image.filename}}</option>
+                                {% if image.group != optgroup %}
+                                {% if optgroup != '' %}
+                                    </optgroup>
+                                {% endif %}
+                                    <optgroup label="{{image.group}}">
+                                {% set optgroup = image.group %}
+                                {% endif %}
+                                        <option data-lightbox-src="{{image.preview}}" value="{{image.filepath}}">{{image.filename}}</option>
                                 {% endfor %}
+                                    </optgroup>
                             </select>
                         </div>
                     </div>

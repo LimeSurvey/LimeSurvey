@@ -790,16 +790,17 @@ class TemplateConfiguration extends TemplateConfig
      * @param string $file with Path
      * @return array|null
      */
-    private function _filterImages($file)
+    private function _getImageInfo($file)
     {
         if(!file_exists($file)) {
             return;
         }
-        $filePath = $this->_getRelativePath(Yii::app()->getConfig('rootdir'), $file);
+        // Currently it's private and only used one time, before put this function in twig : must validate directory is inside rootdir
         $checkImage = LSYii_ImageValidator::validateImage($file);
         if (!$checkImage['check']) {
             return;
         }
+        $filePath = $this->_getRelativePath(Yii::app()->getConfig('rootdir'), $file);
         $previewFilePath = App()->getAssetManager()->publish($file);
         return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>basename($file)];
     }
@@ -819,7 +820,7 @@ class TemplateConfiguration extends TemplateConfig
         foreach($categoryList as $category) {
             $fileList = Template::getOtherFiles($category['path']);
             foreach ($fileList as $file) {
-                $imageInfo = $this->_filterImages($category['path'].$file['name']);
+                $imageInfo = $this->_getImageInfo($category['path'].$file['name']);
                 if ($imageInfo) {
                     $aData['imageFileList'][] = array_merge($category,$imageInfo);
                 }
