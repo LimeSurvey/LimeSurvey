@@ -69,6 +69,19 @@
             <help>Choose maximum number of buttons in a row</help>
             <caption>Maximum number of buttons in a row</caption>
         </attribute>
+        <!-- hidden attributes -->
+        <attribute>
+            <name>display_columns</name>
+            <inputtype></inputtype>
+            <help>hide display_columns</help>
+            <caption>hide display_columns</caption>
+        </attribute>
+        <attribute>
+            <name>input_size</name>
+            <inputtype></inputtype>
+            <help>hide input_size</help>
+            <caption>hide input_size</caption>
+        </attribute>
     </custom_attributes>
 
     <!-- Here datas about how LimeSurvey should load the core js/css of the question -->

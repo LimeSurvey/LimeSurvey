@@ -1,4 +1,5 @@
 .bootstrap-item label::before, .bootstrap-item label::after {
+    visibility:hidden !important;
     display: none !important;
 }
 

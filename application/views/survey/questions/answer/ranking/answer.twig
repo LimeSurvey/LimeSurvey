@@ -72,7 +72,7 @@ try{
  ranking{{qId}}.init()
 } catch(e){}
 {% endset %}
-
+{{ registerPackage('question-ranking') }}
 {{ registerScript( 'RankingQuestion'~qId, script, 'POS_POSTSCRIPT') }}
 
 

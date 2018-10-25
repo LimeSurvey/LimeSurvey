@@ -611,7 +611,10 @@ class dataentry extends Survey_Common_Action
                         case Question::QT_D_DATE: //DATE
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid);
                             if ($idrow[$fname['fieldname']] != '') {
-                                $datetimeobj = DateTime::createFromFormat("!Y-m-d H:i:s", $idrow[$fname['fieldname']]);
+                                $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']]);
+                                if($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
+                                    $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']]);
+                                }
                                 $thisdate = $datetimeobj->format($dateformatdetails['phpdate']);
                             } else {
                                 $thisdate = '';

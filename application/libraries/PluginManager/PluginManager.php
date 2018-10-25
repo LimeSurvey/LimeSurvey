@@ -416,7 +416,7 @@ class PluginManager extends \CApplicationComponent
             // If the id is not set we search for the plugin.
             if (!isset($id)) {
                 foreach ($this->plugins as $plugin) {
-                    if (get_class($plugin) == $pluginName) {
+                    if (!is_null($plugin) && get_class($plugin) == $pluginName) {
                         $return = $plugin;
                     }
                 }

@@ -1887,7 +1887,6 @@ function do_ranking($ia)
         $inputnames[] = $myfname;
     }
 
-    Yii::app()->getClientScript()->registerPackage("question-ranking", CClientScript::POS_BEGIN);
     $rankingTranslation = 'LSvar.lang.rankhelp="'.gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.", 'js').'";';
     App()->getClientScript()->registerScript("rankingTranslation", $rankingTranslation, CClientScript::POS_BEGIN);
 

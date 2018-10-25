@@ -1,5 +1,6 @@
 .bootstrap-item input {
-    visibility:hidden;
+    visibility:hidden !important;
+    display: none !important;
 }
 
  .bootstrap-item {
