@@ -5,9 +5,12 @@
 $currentfieldset='';
 $categoryNum=0;
 ?>
+
 <!-- Advanced Settings -->
 <?php foreach ($attributedata as $index=>$aAttribute):?>
-    <?php if(!$aAttribute['visible']) { continue; } // don't shown : for question template <visible>0</visible> (<visible>false</visible> send true) ?>
+    <?php if(!$aAttribute['visible']) {
+        continue;
+    } // don't shown : for question template <visible>0</visible> (<visible>false</visible> send true) ?>
     <!-- Fieldsets -->
     <?php if ($currentfieldset!=$aAttribute['category']): ?>
         <?php $categoryNum++; ?>

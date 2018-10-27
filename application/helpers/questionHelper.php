@@ -1593,7 +1593,6 @@ class questionHelper
         /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
         $questionAttributes = (array) $result->get('questionAttributes');
         self::$attributes = array_merge(self::$attributes, $questionAttributes);
-
         return self::$attributes;
     }
 
@@ -1649,7 +1648,13 @@ class questionHelper
         // Create array of attribute with name as key
         foreach($custom_attributes['attribute'] as $customAttribute) {
             if(!empty($customAttribute['name'])) {
-                $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
+                /* if attribute already exist (core or plugin), add it after default */
+                $aExistingAttribute = isset(self::$attributes[$customAttribute['name']]) ? self::$attributes[$customAttribute['name']] : array();
+                $additionalAttributes[$customAttribute['name']] = array_merge(
+                    $defaultQuestionAttributeValues,
+                    $aExistingAttribute,
+                    $customAttribute
+                );
             }
         }
         return $additionalAttributes;

@@ -283,16 +283,18 @@ class Question extends LSActiveRecord
     {
         if (isset($aAttributeValues['question_template'])) {
             if ($aAttributeValues['question_template'] != 'core') {
-
                 $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
                 if ($oQuestionTemplate->bHasCustomAttributes) {
                     // Add the custom attributes to the list
                     foreach ($oQuestionTemplate->oConfig->custom_attributes->attribute as $oCustomAttribute) {
                         $sAttributeName = (string) $oCustomAttribute->name;
                         $aCustomAttribute = json_decode(json_encode((array) $oCustomAttribute), 1);
+                        /* if attribute already exist (core or plugin), add it after default */
+                        $aExistingAttribute = isset($aAttributeNames[$sAttributeName]) ? $aAttributeNames[$sAttributeName] : array();
                         $aCustomAttribute = array_merge(
                             QuestionAttribute::getDefaultSettings(),
                             array("category"=>gT("Template")),
+                            $aExistingAttribute,
                             $aCustomAttribute
                         );
                         $aAttributeNames[$sAttributeName] = $aCustomAttribute;

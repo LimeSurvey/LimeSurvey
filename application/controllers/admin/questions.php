@@ -1668,23 +1668,30 @@ class questions extends Survey_Common_Action
         $aLanguages = array_merge(
             array(Survey::model()->findByPk($surveyid)->language),
             Survey::model()->findByPk($surveyid)->additionalLanguages
-            );
+        );
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
+
+        // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
+        $currentAttributesDefinition = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($type);
+        if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
+            $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionTemplate, $questionTypeList[$type]);
+            $currentAttributesDefinition = array_merge($currentAttributesDefinition,$themeAttributes);
+            $aAttributesWithValues = array_merge($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
+        }
         // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible  
         if (!empty($sOldQuestionTemplate) && $sOldQuestionTemplate !== 'core'){
-            // get old custom question theme attributes
+            // get old custom question theme attributes, Must not remove attribute with same name …
             $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sOldQuestionTemplate, $questionTypeList[$type]);
             if (!empty($aOldQuestionThemeAttributes)){ 
                 foreach ($aOldQuestionThemeAttributes as $key => $value) {
-                    unset($aAttributesWithValues[$value['name']]);
+                    if(array_key_exists($value['name'],$currentAttributesDefinition)) {
+                        $aAttributesWithValues[$value['name']] = array_merge($aAttributesWithValues[$value['name']],$currentAttributesDefinition[$value['name']]);
+                    } else {
+                        unset($aAttributesWithValues[$value['name']]);
+                    }
                 }
             }
-        }
-        // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
-        if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
-                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionTemplate, $questionTypeList[$type]);
-                $aAttributesWithValues = array_merge($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
         }
         uasort($aAttributesWithValues, 'categorySort');
         unset($aAttributesWithValues['question_template']);

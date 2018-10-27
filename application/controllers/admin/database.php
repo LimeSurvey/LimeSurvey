@@ -568,7 +568,7 @@ class database extends Survey_Common_Action
 
         $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
         foreach ($validAttributes as $validAttribute) {
-            /* Readonly attribute : disable save */
+            /* Readonly attribute and visible==false: disable save */
             if( $validAttribute['readonly'] || ( $validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive() ) ) {
                 continue;
             }

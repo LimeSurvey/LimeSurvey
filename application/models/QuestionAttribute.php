@@ -188,10 +188,8 @@ class QuestionAttribute extends LSActiveRecord
             }
 
             $aAttributeNames = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sType);
-
             /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid", array('qid'=>$iQuestionID));
-
             foreach ($oAttributeValues as $oAttributeValue) {
                 if ($oAttributeValue->attribute == 'question_template') {
                     $aAttributeValues['question_template'] = $oAttributeValue->value;
@@ -211,17 +209,15 @@ class QuestionAttribute extends LSActiveRecord
                 }
             }
 
-
             // Fill with aQuestionAttributes with default attribute or with aAttributeValues
             // Can not use array_replace due to i18n
             foreach ($aAttributeNames as $aAttribute) {
                 $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
-
                 if ($aAttribute['i18n'] == false) {
                     if (isset($aAttributeValues[$aAttribute['name']][''])) {
                         $aQuestionAttributes[$aAttribute['name']] = $aAttributeValues[$aAttribute['name']][''];
                     } elseif (isset($aAttributeValues[$aAttribute['name']])) {
-/* Some survey have language is set for attribute without language (see #11980). This must fix for public survey and not only for admin. */
+                        /* Some survey have language is set for attribute without language (see #11980). This must fix for public survey and not only for admin. */
                         $aQuestionAttributes[$aAttribute['name']] = reset($aAttributeValues[$aAttribute['name']]);
                     } else {
                         $aQuestionAttributes[$aAttribute['name']] = $aAttribute['default'];
