@@ -313,10 +313,11 @@ class QuestionAttribute extends LSActiveRecord
             "help" => '',
             "value" => '',
             "sortorder" => 1000,
-            "i18n"=> false,
+            "i18n" => false,
             "readonly" => false,
             "readonly_when_active" => false,
-            "expression"=> null,
+            "expression" => null,
+            "visible" => true,
         );
     }
 }
