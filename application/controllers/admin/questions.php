@@ -1684,12 +1684,7 @@ class questions extends Survey_Common_Action
             $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sOldQuestionTemplate, $questionTypeList[$type]);
             if (!empty($aOldQuestionThemeAttributes)){ 
                 foreach ($aOldQuestionThemeAttributes as $key => $value) {
-                    if(array_key_exists($value['name'],$currentAttributesDefinition)) {
-                        $aAttributesWithValues[$value['name']] = array_merge(
-                            $aAttributesWithValues[$value['name']],
-                            $currentAttributesDefinition[$value['name']]
-                        );
-                    } else {
+                    if(!array_key_exists($value['name'],$currentAttributesDefinition)) {
                         unset($aAttributesWithValues[$value['name']]);
                     }
                 }
