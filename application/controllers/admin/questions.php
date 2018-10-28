@@ -1671,7 +1671,6 @@ class questions extends Survey_Common_Action
         );
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
-
         // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
         $currentAttributesDefinition = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($type);
         if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
@@ -1686,7 +1685,10 @@ class questions extends Survey_Common_Action
             if (!empty($aOldQuestionThemeAttributes)){ 
                 foreach ($aOldQuestionThemeAttributes as $key => $value) {
                     if(array_key_exists($value['name'],$currentAttributesDefinition)) {
-                        $aAttributesWithValues[$value['name']] = array_merge($aAttributesWithValues[$value['name']],$currentAttributesDefinition[$value['name']]);
+                        $aAttributesWithValues[$value['name']] = array_merge(
+                            $aAttributesWithValues[$value['name']],
+                            $currentAttributesDefinition[$value['name']]
+                        );
                     } else {
                         unset($aAttributesWithValues[$value['name']]);
                     }

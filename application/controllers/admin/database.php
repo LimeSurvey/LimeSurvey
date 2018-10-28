@@ -547,8 +547,16 @@ class database extends Survey_Common_Action
         } else {
             $sQuestionType = Yii::app()->request->getPost('type');
         }
-
-
+        /* Set 'question_template' to current one before al other action : QuestionTemplate use cirrent one only*/
+        $question_template = Yii::app()->request->getPost("question_template", "core");
+        QuestionAttribute::model()->deleteAll("attribute = :attribute",array(":attribute" => "question_template"));
+        if($question_template != "core") {
+            $attribute = new QuestionAttribute;
+            $attribute->qid = $this->iQuestionID;
+            $attribute->value = $question_template;
+            $attribute->attribute = "question_template";
+            $attribute->save();
+        }
         // Remove invalid question attributes on saving
         $criteria = new CDbCriteria;
         $criteria->compare('qid', $this->iQuestionID);
