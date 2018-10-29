@@ -21,7 +21,7 @@
 
 <li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item form-group{{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}" {{ sDisplayStyle }}>
     <!--  color code missing mandatory questions red -->
-    <label class="control-label col-xs-12 col-sm-{{ sLabelWidth }}{{ (sLabelWidth == 0 ? " hidden":"") }}" for="answer{{myfname}}">
+    <label class="control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth == 0 %} hidden{% endif %}" for="answer{{myfname}}">
         {{ labelText }}
     </label>
 
