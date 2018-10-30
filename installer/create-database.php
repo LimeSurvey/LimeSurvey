@@ -982,6 +982,7 @@ function createDatabase($oDB){
 
         // Install default plugins.
         foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {
+            unset($plugin['id']);
             $oDB->createCommand()->insert("{{plugins}}", $plugin);
         }
 
@@ -994,32 +995,4 @@ function createDatabase($oDB){
         throw new CHttpException(500, $e->getMessage());
     }
 
-    
-    // $oTransaction = $oDB->beginTransaction();
-    // try{  
-    //     $surveyMenuRowData = LsDefaultDataSets::getSurveyMenuData();
-    //     foreach ($surveyMenuRowData as $surveyMenuRow) {
-    //         switchMSSQLIdentityInsert("surveymenu", true, $oDB);
-    //         $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
-    //         switchMSSQLIdentityInsert("surveymenu", false, $oDB);
-    //     }
-    //     $oTransaction->commit();
-    // }catch(Exception $e){
-    //     $oTransaction->rollback();
-    //     throw new CHttpException(500, $e->getMessage());
-    // }
-
-    // $oTransaction = $oDB->beginTransaction();
-    // try{  
-    //     foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
-    //         switchMSSQLIdentityInsert("surveymenu_entries", true, $oDB);
-    //         $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
-    //         switchMSSQLIdentityInsert("surveymenu_entries", false, $oDB);
-    //     }
-    //     $oTransaction->commit();
-    // }catch(Exception $e){
-    //     $oTransaction->rollback();
-    //     throw new CHttpException(500, $e->getMessage());
-    // }
-    // return true;
 }

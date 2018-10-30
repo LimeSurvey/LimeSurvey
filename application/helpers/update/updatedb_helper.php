@@ -2429,7 +2429,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand("INSERT INTO {{label_l10ns}} (label_id, title, language) select id, title, language from {{labels}}")->execute();
             $dataReader = $oDB->createCommand("select l1.language,l1.id FROM {{labels}} l1 INNER JOIN {{labels}} l2 ON l1.id = l2.id and l1.language<l2.language")->query();
             while (($row = $dataReader->read()) !== false) {
-                $oDB->createCommand("delete from  {{labels}} where id={$row['id']} and language='{$row['language']}'")->execute();
+                $oDB->createCommand("DELETE FROM  {{labels}} where id={$row['id']} AND language='{$row['language']}'")->execute();
             }
             $oDB->createCommand()->dropColumn('{{labels}}', 'title');
             $oDB->createCommand()->dropColumn('{{labels}}', 'language');    
@@ -4488,3 +4488,64 @@ function fixLanguageConsistencyAllSurveys()
         fixLanguageConsistency($sv['sid'], $sv['additional_languages']);
     }
 }
+
+function runAddPrimaryKeyonAnswersTable400(&$oDB) {
+    if (!in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
+        addColumn('{{answers}}', 'aid', 'pk');
+        $oDB->createCommand()->createIndex('answer_idx_10', '{{answers}}', ['qid', 'code', 'scale_id']);
+        $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM {{answers}} group by qid, code, scale_id")->query();
+        $iCounter = 1;
+        while (($row = $dataReader->read()) !== false) {
+            $oDB->createCommand("UPDATE {{answers}} SET aid={$iCounter} WHERE qid={$row['qid']} AND code='{$row['code']}' AND scale_id={$row['scale_id']}")->execute();
+            $iCounter++;
+        }
+        $oDB->createCommand()->dropindex('answer_idx_10', '{{answers}}');
+
+    } else {
+        $oDB->createCommand()->renameTable('{{answers}}', 'answertemp');
+        $oDB->createCommand()->createIndex('answer_idx_10', 'answertemp', ['qid', 'code', 'scale_id']);
+
+        $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM answertemp group by qid, code, scale_id")->query();
+
+        $oDB->createCommand()->createTable('{{answers}}',[
+            'aid' =>  "pk",
+            'qid' => 'integer NOT NULL',
+            'code' => 'string(5) NOT NULL',
+            'sortorder' => 'integer NOT NULL',
+            'assessment_value' => 'integer NOT NULL DEFAULT 0',
+            'scale_id' => 'integer NOT NULL DEFAULT 0',
+            'answer' => 'text NOT NULL',
+            'language' =>  "string(20) NOT NULL DEFAULT 'en'"
+        ]);
+
+        $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM answertemp group by qid, code, scale_id")->query();
+        $iCounter = 1;
+        while (($row = $dataReader->read()) !== false) {
+            $dataBlock = $oDB->createCommand("SELECT * FROM answertemp WHERE qid={$row['qid']} AND code='{$row['code']}' AND scale_id={$row['scale_id']}")->queryRow();
+            $oDB->createCommand()->insert('{{answers}}', $dataBlock);
+        }
+        $oDB->createCommand()->dropindex('answer_idx_10', 'answertemp');
+        $oDB->createCommand()->dropTable('answertemp');
+    }
+
+}
+
+/**
+* This function switches identity insert on/off for the MSSQL database
+*
+* @param string $table table name (without prefix)
+* @param boolean $state  Set to true to activate ID insert, or false to deactivate
+*/
+function switchMSSQLIdentityInsert($table, $state, $oDb = null)
+{
+    $oDb = $oDb === null ? Yii::app()->db : $oDb;
+    if (in_array($oDb->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
+        if ($state === true) {
+            // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
+            $oDb->pdoInstance->exec('SET IDENTITY_INSERT '.$oDb->tablePrefix.$table.' ON');
+        } else {
+            // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
+            $oDb->pdoInstance->exec( 'SET IDENTITY_INSERT '.$oDb->tablePrefix.$table.' OFF');
+        }            
+    }
+}    
