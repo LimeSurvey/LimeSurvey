@@ -5038,7 +5038,7 @@ function crypto_rand_secure($min, $max) {
  */
 function isZipBomb($zip_filename)
 {
-    return ( get_zip_originalsize($zip_filename) >  getMaximumFileUploadSize() );
+    return ( get_zip_originalsize($zip_filename) >  Yii::app()->getConfig('maximum_unzipped_size') );
 }
 
 /**
