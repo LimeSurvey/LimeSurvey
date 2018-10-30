@@ -1310,8 +1310,8 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid"=>$surveyid));
             $thissurvey['include_content']  = 'userforms';
 
-
-
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
+            
             // Language selector
             if ($aSurveyInfo['alanguageChanger']['show']){
                 $aSurveyInfo['alanguageChanger']['datas']['targetUrl'] = $thissurvey['surveyUrl'];
@@ -1484,6 +1484,7 @@ function getNavigatorDatas()
         App()->getClientScript()->registerScript("activateActionLink", "activateActionLink();\n", LSYii_ClientScript::POS_POSTSCRIPT);
 
         // Fill some test here, more clear ....
+        $bAnonymized                = $thissurvey["anonymized"] == 'Y';
         $bTokenanswerspersistence   = $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
         $bAlreadySaved              = isset($_SESSION['survey_'.$surveyid]['scid']);
         $iSessionStep               = (isset($_SESSION['survey_'.$surveyid]['step']) ? $_SESSION['survey_'.$surveyid]['step'] : false);
@@ -1491,14 +1492,14 @@ function getNavigatorDatas()
 
         // Find out if the user has any saved data
         if ($thissurvey['format'] == 'A') {
-            if (!$bTokenanswerspersistence && !$bAlreadySaved) {
+            if ((!$bTokenanswerspersistence || $bAnonymized) && !$bAlreadySaved) {
                 $aNavigator['load']['show'] = true;
             }
             $aNavigator['save']['show'] = true;
         } elseif (!$iSessionStep) {
 
             //Welcome page, show load (but not save)
-            if (!$bTokenanswerspersistence && !$bAlreadySaved) {
+            if ((!$bTokenanswerspersistence || $bAnonymized) && !$bAlreadySaved) {
                 $aNavigator['load']['show'] = true;
             }
 
@@ -1507,7 +1508,7 @@ function getNavigatorDatas()
             }
         } elseif ($iSessionMaxStep == 1 && $thissurvey['showwelcome'] == "N") {
             //First page, show LOAD and SAVE
-            if (!$bTokenanswerspersistence && !$bAlreadySaved) {
+            if ((!$bTokenanswerspersistence || $bAnonymized) && !$bAlreadySaved) {
                 $aNavigator['load']['show'] = true;
             }
 
@@ -1515,7 +1516,7 @@ function getNavigatorDatas()
         } elseif (getMove() != "movelast") {
             // Not on last page or submited survey
             $aNavigator['save']['show'] = true;
-        }
+        } 
     }
 
     return $aNavigator;

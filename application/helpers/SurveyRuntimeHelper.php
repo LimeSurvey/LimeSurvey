@@ -1088,12 +1088,13 @@ class SurveyRuntimeHelper
 
         // Don't test if save is allowed
         if ($this->aSurveyInfo['active'] == "Y" && Yii::app()->request->getPost('saveall')) {
+            $bAnonymized            = $this->aSurveyInfo["anonymized"] == 'Y';
             $bTokenAnswerPersitance = $this->aSurveyInfo['tokenanswerspersistence'] == 'Y' && $this->iSurveyid != null && tableExists('tokens_'.$this->iSurveyid);
 
             // must do this here to process the POSTed values
             $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false); // by jumping to current step, saves data so far
 
-            if (!isset($_SESSION[$this->LEMsessid]['scid']) && !$bTokenAnswerPersitance) {
+            if (!isset($_SESSION[$this->LEMsessid]['scid']) && (!$bTokenAnswerPersitance || $bAnonymized)) {
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
                 // $cSave->showsaveform($this->aSurveyInfo['sid']); // generates a form and exits, awaiting input
