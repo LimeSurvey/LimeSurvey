@@ -52,8 +52,8 @@
     {# get the same default value than qanda_helper #}
     {% set aJsonOption = json_encode({
             'format' : dateformatdetailsjs,
-            'minDate' : mindate[0] == '{' ? '1900-01-01' : mindate,
-            'maxDate' : maxdate[0] == '{' ? '2037-12-31' : maxdate,
+            'minDate' : '{' in mindate ? '1900-01-01' : mindate,
+            'maxDate' : '{' in maxdate ? '2037-12-31' : maxdate,
             'stepping' : minuteStep,
             'sideBySide' :  true
         })
