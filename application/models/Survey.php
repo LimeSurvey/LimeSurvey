@@ -1615,7 +1615,12 @@ class Survey extends LSActiveRecord
                 'pageSize'=>$pageSize,
             ),
         ));
-
+        
+        $oEvent = new \LimeSurvey\PluginManager\PluginEvent('beforeSurveySearch');
+        $oEvent->set('oCActiveDataProvider', $dataProvider);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $dataProvider = $oEvent->get('oCActiveDataProvider');
+        
         $dataProvider->setTotalItemCount($this->count($criteria));
 
         return $dataProvider;
