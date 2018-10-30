@@ -78,11 +78,7 @@ class QuestionGroup extends LSActiveRecord
             'questionGroupL10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
         );
     }    
-
-    public function defaultScope()
-    {
-        return array('order'=>'group_order');
-    }    
+ 
 
     /**
      * @param integer $iSurveyId

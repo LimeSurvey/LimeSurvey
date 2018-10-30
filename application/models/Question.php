@@ -218,11 +218,7 @@ class Question extends LSActiveRecord
         }
         return $aRules;
     }
-    
-    public function defaultScope()
-    {
-        return array('order'=>'question_order');
-    }    
+ 
     
 
     /**
