@@ -43,7 +43,7 @@
               'force_xmlsettings_for_survey_rendering' => true,
 
               Then, you will not need anymore to reset your theme each time you change the config file.
-              But, once turning the setting off, You will still must reset the theme to the changes are pushed to DB 
+              But, once turning the setting off, You will still must reset the theme to the changes are pushed to DB
 
     -->
     <files>
@@ -75,6 +75,7 @@
         <brandlogofile>./files/logo.png</brandlogofile>
         <font>noto</font>
         <showpopups>1</showpopups>
+        <showclearall>off</showclearall>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
