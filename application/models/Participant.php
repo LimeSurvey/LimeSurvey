@@ -1027,10 +1027,8 @@ class Participant extends LSActiveRecord
                                 ->queryAll();
 								
 							if(isset($gettoken[0])) {
-								$gettoken = $gettoken[0];
 								Yii::app()->db->createCommand()
-									->delete($survey->responsesTableName, 'token = :token')
-									->bindParam(":token", $gettoken['token'], PDO::PARAM_STR); // Deletes matching responses from surveys
+									->delete($survey->responsesTableName, 'token = :token', array(":token" => $token['token'])); // Deletes matching responses from surveys
 							}
                         }
                     }
