@@ -114,7 +114,7 @@ class statistics extends Survey_Common_Action
 
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'statistics.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'statistics.js', CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'json-js/json2.min.js');
 
         yii::app()->clientScript->registerPackage('jszip');
@@ -775,7 +775,7 @@ class statistics extends Survey_Common_Action
         $aData['menu']['expertstats'] = true;
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'statistics.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'statistics.js', CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'json-js/json2.min.js');
         yii::app()->clientScript->registerPackage('jspdf');
         yii::app()->clientScript->registerPackage('jszip');

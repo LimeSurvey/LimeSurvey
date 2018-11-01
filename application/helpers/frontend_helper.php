@@ -1312,8 +1312,8 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index", array("sid"=>$surveyid));
             $thissurvey['include_content']  = 'userforms';
 
-
-
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
+            
             // Language selector
             if ($aSurveyInfo['alanguageChanger']['show']){
                 $aSurveyInfo['alanguageChanger']['datas']['targetUrl'] = $thissurvey['surveyUrl'];
