@@ -117,6 +117,9 @@ class LSYii_Application extends CWebApplication
      * @return void
      */
     public function setConfigs() {
+
+        // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
+
         /* Default config */
         $coreConfig = require(__DIR__.'/../config/config-defaults.php');
         $emailConfig = require(__DIR__.'/../config/email.php');
@@ -127,6 +130,19 @@ class LSYii_Application extends CWebApplication
             /* Set up not done : then no other part to update */
             return;
         }
+
+        /* Custom config file */
+        $configdir = $coreConfig['configdir'];
+        if (file_exists( $configdir .  '/config.php')) {
+            $userConfigs = require(  $configdir .'/config.php');
+            if (is_array($userConfigs['config'])) {
+
+                $this->config = array_merge($this->config, $userConfigs['config']);
+
+            }
+        }
+
+
         /* User file config */
         $userConfigs = require(__DIR__.'/../config/config.php');
         if (is_array($userConfigs['config'])) {
