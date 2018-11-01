@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-10-24 15:26:05+00:00\n"
+"POT-Creation-Date: 2018-11-01 14:46:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -466,7 +466,7 @@ msgid "ID"
 msgstr ""
 
 #: application/controllers/RegisterController.php:165
-#: application/helpers/SurveyRuntimeHelper.php:1504
+#: application/helpers/SurveyRuntimeHelper.php:1505
 msgid "Your answer to the security question was not correct - please try again."
 msgstr ""
 
@@ -1078,7 +1078,7 @@ msgstr ""
 msgid "Something went wrong! Are the survey menus properly restored?"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:59
+#: application/controllers/admin/SurveysGroupsController.php:61
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/unkown_modal_type.php:14
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/yes-no.php:49
 #: application/helpers/replacements_helper.php:344
@@ -1138,11 +1138,15 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:114
+#: application/controllers/admin/SurveysGroupsController.php:87
+msgid "A child group can't be set as parent group"
+msgstr ""
+
+#: application/controllers/admin/SurveysGroupsController.php:130
 msgid "The survey group '%s' was deleted."
 msgstr ""
 
-#: application/controllers/admin/SurveysGroupsController.php:119
+#: application/controllers/admin/SurveysGroupsController.php:135
 msgid "You can't delete a group if it's not empty!"
 msgstr ""
 
@@ -3023,8 +3027,8 @@ msgstr ""
 #: application/controllers/admin/themes.php:285
 #: application/core/Survey_Common_Action.php:1212
 #: application/extensions/LimeScript/LimeScript.php:25
-#: application/helpers/SurveyRuntimeHelper.php:1302
-#: application/helpers/frontend_helper.php:2182
+#: application/helpers/SurveyRuntimeHelper.php:1303
+#: application/helpers/frontend_helper.php:2183
 #: application/views/admin/homepagesettings/index.php:16
 #: application/views/admin/participants/participantsPanel_view.php:6
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:21
@@ -4612,7 +4616,7 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1551
 #: application/controllers/admin/tokens.php:2304
 #: application/extensions/LimeScript/LimeScript.php:24
-#: application/helpers/SurveyRuntimeHelper.php:1301
+#: application/helpers/SurveyRuntimeHelper.php:1302
 #: application/views/admin/conditions/deleteAllConditions.php:21
 #: application/views/admin/conditions/includes/conditions_scenario.php:42
 #: application/views/admin/dataentry/import.php:21
@@ -5162,7 +5166,7 @@ msgid "An email with a generated password was sent to the user."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:157
-#: application/helpers/SurveyRuntimeHelper.php:1004
+#: application/helpers/SurveyRuntimeHelper.php:1005
 #: application/helpers/update/update_helper.php:35
 #: application/views/admin/dataentry/insert.php:37
 #: application/views/admin/dataentry/iteratesurvey.php:6
@@ -7517,45 +7521,45 @@ msgstr ""
 msgid "We are sorry but you can't proceed without first agreeing to our survey data policy."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1005
+#: application/helpers/SurveyRuntimeHelper.php:1006
 msgid "Your responses were successfully saved."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1132 tmp/twig_translate.php:200
+#: application/helpers/SurveyRuntimeHelper.php:1133 tmp/twig_translate.php:200
 msgid "Print your answers."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1325
+#: application/helpers/SurveyRuntimeHelper.php:1326
 #: application/helpers/qanda_helper.php:421
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1330
+#: application/helpers/SurveyRuntimeHelper.php:1331
 #: application/helpers/qanda_helper.php:443
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1335
+#: application/helpers/SurveyRuntimeHelper.php:1336
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1507
+#: application/helpers/SurveyRuntimeHelper.php:1508
 msgid "Your have to answer the security question - please try again."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1608
+#: application/helpers/SurveyRuntimeHelper.php:1609
 msgid "Invalid group number for this survey: "
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1614
+#: application/helpers/SurveyRuntimeHelper.php:1615
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1638
+#: application/helpers/SurveyRuntimeHelper.php:1639
 msgid "Submit your answers"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1639
+#: application/helpers/SurveyRuntimeHelper.php:1640
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
@@ -7605,7 +7609,7 @@ msgstr ""
 msgid "Survey response %d"
 msgstr ""
 
-#: application/helpers/admin/htmleditor_helper.php:164
+#: application/helpers/admin/htmleditor_helper.php:170
 msgid "Start HTML editor in a popup window"
 msgstr ""
 
@@ -9289,15 +9293,15 @@ msgstr ""
 msgid "There are empty question groups in this survey - please create at least one question within a question group."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2181
+#: application/helpers/frontend_helper.php:2182
 msgid "This website uses cookies. By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2183
+#: application/helpers/frontend_helper.php:2184
 msgid "View policy"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:2184
+#: application/helpers/frontend_helper.php:2185
 msgid "Please be patient until you are forwarded to the final URL."
 msgstr ""
 
@@ -12091,7 +12095,7 @@ msgstr ""
 
 #: application/models/QuestionGroup.php:336
 #: application/models/QuestionGroup.php:345
-#: application/models/SurveysGroups.php:257
+#: application/models/SurveysGroups.php:272
 msgid "Delete survey group"
 msgstr ""
 
@@ -12244,7 +12248,7 @@ msgid "Delete this response"
 msgstr ""
 
 #: application/models/Surveymenu.php:109
-#: application/models/SurveysGroups.php:296
+#: application/models/SurveysGroups.php:311
 msgid "No parent menu"
 msgstr ""
 
@@ -12434,11 +12438,11 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: application/models/SurveysGroups.php:254
+#: application/models/SurveysGroups.php:269
 msgid "Edit survey group"
 msgstr ""
 
-#: application/models/SurveysGroups.php:257
+#: application/models/SurveysGroups.php:272
 #: application/models/TemplateConfiguration.php:612
 #: application/models/TemplateConfiguration.php:640
 msgid "Do you want to continue?"
