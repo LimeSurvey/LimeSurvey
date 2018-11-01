@@ -59,8 +59,10 @@ class LSYii_Application extends CWebApplication
     {
         /* Using some config part for app config, then load it before*/
         $baseConfig = require(__DIR__.'/../config/config-defaults.php');
-        if (file_exists(__DIR__.'/../config/config.php')) {
-            $userConfigs = require(__DIR__.'/../config/config.php');
+        $configdir = $baseConfig['configdir'];
+
+        if (file_exists( $configdir .  '/config.php')) {
+            $userConfigs = require(  $configdir .'/config.php');
             if (is_array($userConfigs['config'])) {
                 $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }

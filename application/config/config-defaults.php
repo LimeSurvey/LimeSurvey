@@ -640,6 +640,7 @@ $config['adminstyleurl']          = $config['styleurl'].$config['admintheme'].'/
 // Dir
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
 $config['homedir']                  = $config['rootdir']; // The directory path of the admin scripts
+$config['configdir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config';
 $config['tempdir']                  = $config['rootdir'].DIRECTORY_SEPARATOR."tmp"; // The directory path where LimeSurvey can store temporary files
 $config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."images"; // The directory path of the image directory
 $config['uploaddir']                = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
