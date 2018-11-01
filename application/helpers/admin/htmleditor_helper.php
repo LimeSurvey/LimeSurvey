@@ -221,7 +221,7 @@
         . "
             if($('#".$fieldname."').length >0){
                 var $oCKeditorVarName = CKEDITOR.instances['$fieldname'];
-                if ($oCKeditorVarName) { 
+                if ($oCKeditorVarName) {
                         CKEDITOR.remove($oCKeditorVarName);
                     $oCKeditorVarName = null;
                 }
@@ -244,4 +244,3 @@
 
         Yii::app()->getClientScript()->registerScript('ckEditorScriptsInline-'.$fieldname, $scriptCode, LSYii_ClientScript::POS_POSTSCRIPT);
     }
-

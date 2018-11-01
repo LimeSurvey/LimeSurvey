@@ -90,7 +90,7 @@ $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,g
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
-$config['maximum_unzipped_size'] = '500000000'; // Max size after zip unarchiving in bytes. 
+$config['maximum_unzipped_size'] = '500000000'; // Max size after zip unarchiving in bytes.
 
 $config['showpopups']         = 2; // Show popup messages if mandatory or conditional questions have not been answered correctly.
 //  2 = defined by Theme option (default)
