@@ -14,8 +14,6 @@ var ThemeOptions = function(){
     //get the global form
     var globalForm = $('.action_update_options_string_form');
 
-    var optionObjectInheritedValues = null;
-
     /////////////////
     // Define methods run on startup
     
@@ -29,7 +27,6 @@ var ThemeOptions = function(){
         if($('#TemplateConfiguration_options').length>0 && !generalInherit()){
             try{
                 optionObject = JSON.parse($('#TemplateConfiguration_options').val());
-                optionObjectInheritedValues = JSON.parse($('#optionInheritedValues').val());
             } catch(e){ console.ls ? console.ls.error('No valid option field!') : console.log('No valid option field!'); }
         }
     };
@@ -76,12 +73,6 @@ var ThemeOptions = function(){
                     optionObject[$(item).attr('name')] = $(item).val();
                 }
 
-                // display inherited option values for tooltip
-                if ($(item).val() == 'inherit'){
-                    var element = $(item).parent();
-                    element.attr('title', element.attr('title')+optionObjectInheritedValues[$(item).attr('name')]);    
-                    element.tooltip();
-                }
             }
 
         });
@@ -95,18 +86,6 @@ var ThemeOptions = function(){
     ///////////////
     // Utility Methods
     // -- small utilities i.g. for images or similar, or very specialized functions
-    
-    //Disables image previews when the image selector is set to inherit
-    var disableImagePreviewIfneeded = function(item){
-        // Image selectors are disabled on inherit
-        if($(item).hasClass('selector_image_selector')){
-            if($(item).val() == 'inherit'){
-                $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  true);
-            } else {
-                $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  false);
-            }
-        }
-    };
 
     //Parses the option value for an item
     var parseOptionValue = function(item, fallbackValue){
@@ -139,7 +118,6 @@ var ThemeOptions = function(){
         globalForm.find('.selector_option_value_field').each(function(i,item){
             var itemValue = parseOptionValue(item);
             $(item).val(itemValue);
-            disableImagePreviewIfneeded(item);
         });
     };
     
@@ -183,9 +161,12 @@ var ThemeOptions = function(){
                     $(selectorItem).prop('disabled', true);
                 }
 
-                if($(selectorItem).hasClass('selector_image_selector')){
-                    $('button[data-target="#'+$(selectorItem).attr('id')+'"]').prop('disabled',  $(selectorItem).val() == 'inherit');
+                // disabled this part to always be able to click on "Preview image" button
+                /* 
+                if ($(selectorItem).hasClass('selector_image_selector')) {
+                    $('button[data-target="#' + $(selectorItem).attr('id') + '"]').prop('disabled', $(selectorItem).val() == 'inherit');
                 }
+                */
 
             });
         });
@@ -196,7 +177,6 @@ var ThemeOptions = function(){
         
         globalForm.find('.selector_option_value_field').on('change', function(evt){ 
             updateFieldSettings(); 
-            disableImagePreviewIfneeded(this);
         });
 
         globalForm.find('.selector_option_radio_field').on('change', updateFieldSettings);
@@ -316,10 +296,8 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
         var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
         var imgTitle = $($(this).data('target')).val();
         imgTitle = imgTitle.split('/').pop();
-        if(imgTitle !== 'inherit'){
-            $('#lightbox-modal').find('.selector__title').text(imgTitle);
-            $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});
-        }
+        $('#lightbox-modal').find('.selector__title').text(imgTitle);
+        $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});
         $('#lightbox-modal').modal('show');
     });
 

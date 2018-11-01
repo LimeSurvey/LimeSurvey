@@ -26,7 +26,7 @@ var prepare = function(){
     $.each($("#simple_edit_cssframework > option"), function (i, option) {
         $.each(optionCssFramework, function (i, item) {
             if (option.value == item && $("#simple_edit_cssframework option:first").val() == 'inherit'){
-                $("#simple_edit_cssframework option:first").text($("#simple_edit_cssframework option:first").text()+' '+option.text+' )');
+                $("#simple_edit_cssframework option:first").text($("#simple_edit_cssframework option:first").text()+' '+option.text+']');
             }
         });
     });
@@ -59,14 +59,6 @@ var prepare = function(){
 
             $(item).val(itemValue);
 
-            if($(item).hasClass('selector_image_selector')){
-                if($(item).val() == 'inherit'){
-                    $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  true);
-                } else {
-                    $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  false);
-                }
-            }
-
         });
 
         //hotwapping the select fields to the radiobuttons
@@ -78,9 +70,12 @@ var prepare = function(){
                     $(selectorItem).prop('disabled', true);
                 }
 
-                if($(selectorItem).hasClass('selector_image_selector')){
-                    $('button[data-target="#'+$(selectorItem).attr('id')+'"]').prop('disabled',  $(selectorItem).val() == 'inherit');
+                // disabled this part to always be able to click on "Preview image" button
+                /* 
+                if ($(selectorItem).hasClass('selector_image_selector')) {
+                    $('button[data-target="#' + $(selectorItem).attr('id') + '"]').prop('disabled', $(selectorItem).val() == 'inherit');
                 }
+                */
             });
         });
 
@@ -96,15 +91,6 @@ var prepare = function(){
             if($(item).val() == itemValue){
                 $(item).prop('checked', true).trigger('change');
                 $(item).closest('label').addClass('active');
-            }
-
-            // display inherited option values for tooltip
-            if ($(item).val() == 'inherit'){ 
-                var element = $(item).parent();
-                var elementPrefix = $('#translationInheritedValue').val();
-                var elementTitle = elementPrefix + optionObjectInheritedValues[$(item).attr('name')];
-                element.attr('title', elementTitle);
-                element.tooltip();
             }
         });
 
@@ -144,15 +130,6 @@ var prepare = function(){
 
         //hotswapping the fields
         $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
-
-            if($(this).hasClass('selector_image_selector')){
-                if($(this).val() == 'inherit'){
-                    $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  true);
-                } else {
-                    $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  false);
-                }
-            }
-
             optionObject[$(this).attr('name')] = $(this).val();
             if($(this).attr('type') == 'radio'){
                 optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
@@ -212,10 +189,8 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
         var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
         var imgTitle = $($(this).data('target')).val();
         imgTitle = imgTitle.split('/').pop();
-        if(imgTitle !== 'inherit'){
-            $('#lightbox-modal').find('.selector__title').text(imgTitle);
-            $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});
-        }
+        $('#lightbox-modal').find('.selector__title').text(imgTitle);
+        $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});
         $('#lightbox-modal').modal('show');
     });
 

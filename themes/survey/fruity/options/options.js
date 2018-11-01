@@ -94,18 +94,6 @@ var ThemeOptions = function () {
     // Utility Methods
     // -- small utilities i.g. for images or similar, or very specialized functions
 
-    //Disables image previews when the image selector is set to inherit
-    var disableImagePreviewIfneeded = function (item) {
-        // Image selectors are disabled on inherit
-        if ($(item).hasClass('selector_image_selector')) {
-            if ($(item).val() == 'inherit') {
-                $('button[data-target="#' + $(item).attr('id') + '"]').prop('disabled', true);
-            } else {
-                $('button[data-target="#' + $(item).attr('id') + '"]').prop('disabled', false);
-            }
-        }
-    };
-
     var applyColorPickerValue = function (item) {
         if ($(item).hasClass('selector__color-picker')) {
             console.ls.log($(item).data('inheritvalue'), $(item).val(), item);
@@ -131,25 +119,15 @@ var ThemeOptions = function () {
         $.each($("#simple_edit_add_css > option"), function (i, option) {
             $.each(optionCssFiles.add, function (i, item) {
                 if (option.value == item && $("#simple_edit_add_css option:first").val() == 'inherit'){
-                    $("#simple_edit_add_css option:first").text($("#simple_edit_add_css option:first").text()+' '+option.text+' )');
+                    $("#simple_edit_add_css option:first").text($("#simple_edit_add_css option:first").text()+' '+option.text+']');
                 }
             });
         });
 
-        globalForm.find('.selector-numerical-input, .selector__color-picker').each(function (i, item) {
+        globalForm.find('.selector-numerical-input').each(function (i, item) {
             var element = $(item);
             element.attr('title', element.attr('title')+optionObjectInheritedValues[$(item).attr('name')]);
             element.tooltip();
-        });
-
-        globalForm.find('.selector_option_radio_field ').each(function (i, item) {
-            if ($(item).val() == 'inherit'){ 
-                var element = $(item).parent();
-                var elementPrefix = $('#translationInheritedValue').val();
-                var elementTitle = elementPrefix + optionObjectInheritedValues[$(item).attr('name')];
-                element.attr('title', elementTitle);
-                element.tooltip();
-            }
         });
 
     };
@@ -185,7 +163,6 @@ var ThemeOptions = function () {
         globalForm.find('.selector_option_value_field').each(function (i, item) {
             var itemValue = parseOptionValue(item);
             $(item).val(itemValue);
-            disableImagePreviewIfneeded(item);
             applyColorPickerValue(item);
         });
     };
@@ -245,16 +222,18 @@ var ThemeOptions = function () {
         // If an option is set to off, the attached selectors are disabled
         $('.selector_radio_childfield').each(function (i, selectorItem) {
             $('input[name=' + $(selectorItem).data('parent') + ']').on('change', function () {
-
                 if ($(this).val() == 'on' && $(this).prop('checked') == true) {
                     $(selectorItem).prop('disabled', false);
                 } else {
                     $(selectorItem).prop('disabled', true);
                 }
 
+                // disabled this part to always be able to click on "Preview image" button
+                /* 
                 if ($(selectorItem).hasClass('selector_image_selector')) {
                     $('button[data-target="#' + $(selectorItem).attr('id') + '"]').prop('disabled', $(selectorItem).val() == 'inherit');
                 }
+                */
 
             });
         });
@@ -265,7 +244,6 @@ var ThemeOptions = function () {
 
         globalForm.find('.selector_option_value_field').on('change', function (evt) {
             updateFieldSettings();
-            disableImagePreviewIfneeded(this);
             parseNumeric(this);
         });
 
@@ -437,13 +415,11 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
         var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
         var imgTitle = $($(this).data('target')).val();
         imgTitle = imgTitle.split('/').pop();
-        if (imgTitle !== 'inherit') {
-            $('#lightbox-modal').find('.selector__title').text(imgTitle);
-            $('#lightbox-modal').find('.selector__image').attr({
-                'src': imgSrc,
-                'alt': imgTitle
-            });
-        }
+        $('#lightbox-modal').find('.selector__title').text(imgTitle);
+        $('#lightbox-modal').find('.selector__image').attr({
+            'src': imgSrc,
+            'alt': imgTitle
+        });
         $('#lightbox-modal').modal('show');
     });
 

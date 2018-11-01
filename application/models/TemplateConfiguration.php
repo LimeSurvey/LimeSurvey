@@ -840,10 +840,24 @@ class TemplateConfiguration extends TemplateConfig
         $oTemplate->setOptions();
         $oTemplate->setOptionInheritance();
 
+        $oOptions = (array) $oSimpleInheritanceTemplate->oOptions;
+        // replace database values with translated text, to match labels on the page
+        foreach ($oOptions as $key=>$value){
+            if ($key == 'showpopups'){
+                $oOptions[$key] = str_replace(array('1', '0', '-1'), array(gT("Popup"), gT("On page"), gT("No")), $value);
+            } else {
+                if ($value == 'on'){
+                    $oOptions[$key] = str_replace('on',gT('Yes'), $value);
+                } elseif ($value == 'off'){
+                    $oOptions[$key] = str_replace('off',gT('No'), $value);
+                }
+            }
+        }
+
         //We add some extra values to the option page
         //This is just a dirty hack, and somewhere in the future we will correct it
         $renderArray['oParentOptions'] = array_merge(
-            ((array) $oTemplate->oOptions),
+            ($oOptions),
             array(
                 'packages_to_load' =>  $oTemplate->packages_to_load,
                 'files_css' => $oTemplate->files_css
