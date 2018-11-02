@@ -722,8 +722,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['errorHtml']         = ' ls-questions-have-errors ';
         $aClassAndAttributes['class']['activealertbutton'] = '  ';
         $aClassAndAttributes['class']['errorHtmlbutton']   = ' ';
-        $aClassAndAttributes['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="Close" ';
-        $aClassAndAttributes['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="Close" ';
+        $aClassAndAttributes['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="'.gT("Close").'" ';
+        $aClassAndAttributes['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="'.gT("Close").'" ';
 
         $aClassAndAttributes['attr']['activealert'] = 'role="alert"';
 
