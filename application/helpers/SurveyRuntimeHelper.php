@@ -1348,9 +1348,17 @@ class SurveyRuntimeHelper
     private function manageClearAll()
     {
         $sessionSurvey = Yii::app()->session["survey_{$this->iSurveyid}"];
-
+        if (App()->request->getPost('confirm-clearall') != 'confirm') {
+            /* Save current reponse, and come back to survey if clearll is not confirmed */
+            $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true, false);
+            /* Todo : add an error in HTML view … */
+            //~ $aErrorHtmlMessage                             = array(gT("You need to confirm clear all action"));
+            //~ $this->aSurveyInfo['errorHtml']['show']        = true;
+            //~ $this->aSurveyInfo['errorHtml']['hiddenClass'] = "ls-js-hidden";
+            //~ $this->aSurveyInfo['errorHtml']['messages']    = $aErrorHtmlMessage;
+            return;
+        }
         if (App()->request->getPost('confirm-clearall') == 'confirm') {
-
             // Previous behaviour (and javascript behaviour)
             // delete the existing response but only if not already completed
             if (
