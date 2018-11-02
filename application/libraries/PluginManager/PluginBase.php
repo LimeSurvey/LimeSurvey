@@ -482,4 +482,47 @@ abstract class PluginBase implements iPlugin
         $pluginModel->update();
     }
 
+
+    protected function registerScript($relativePathToScript, $parentPlugin=null){
+        
+        $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
+
+        $scriptToRegister = null;
+        if(file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = Yii::app()->getAssetManager()->publish(
+                YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+            );
+        } else if (file_exists(Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = Yii::app()->getAssetManager()->publish(
+                Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+            );
+        } else if (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = Yii::app()->getAssetManager()->publish(
+                Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
+            );
+        }
+        Yii::app()->getClientScript()->registerScriptFile($scriptToRegister);
+    }
+
+    protected function registerCss($relativePathToCss, $parentPlugin=null){
+        
+        $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
+
+        $cssToRegister = null;
+        if(file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+            $cssToRegister = Yii::app()->getAssetManager()->publish(
+                YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+            );
+        } else if (file_exists(YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+            $cssToRegister = Yii::app()->getAssetManager()->publish(
+                YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+            );
+        } else if (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+            $cssToRegister = Yii::app()->getAssetManager()->publish(
+                Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
+            );
+        }
+        Yii::app()->getClientScript()->registerCssFile($cssToRegister);
+    }
+
 }

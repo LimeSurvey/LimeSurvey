@@ -180,6 +180,7 @@ return array(
             'css/attributeMap.css',
             'css/attributeMapToken.css',
             'css/displayParticipants.css',
+            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.css',
         ),
         'js' => array(
             'build/adminbasics'.(($debug > 0) ? '' : '.min').'.js',

@@ -131,14 +131,8 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                     <?php if ($copying): ?>
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="heading-copy">
-                                <div class="panel-title h4">
-                                    <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
-                                        <span class="fa fa-chevron-left"></span>
-                                        <span class="sr-only"><?php eT("Expand/Collapse");?></span>
-                                    </a>
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-copy" aria-expanded="false" aria-controls="collapse-copy">
-                                        <?php eT("Copy options"); ?>
-                                    </a>
+                                <div class="panel-title h4 selector--questionEdit-collapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-copy" aria-expanded="false" aria-controls="collapse-copy">
+                                    <?php eT("Copy options"); ?>
                                 </div>
                             </div>
                             <div id="collapse-copy" class="panel-collapse collapse  in" role="tabpanel" aria-labelledby="heading-copy">
@@ -200,14 +194,8 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                     <div class="panel panel-default" id="questionTypeContainer">
                         <!-- General Options : Header  -->
                         <div class="panel-heading" role="tab" id="headingOne">
-                            <div class="panel-title h4">
-                                <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
-                                    <span class="fa fa-chevron-left"></span>
-                                    <span class="sr-only"><?php eT("Expand/Collapse");?></span>
-                                </a>
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
-                                    <?php eT("General options");?>
-                                </a>
+                            <div class="panel-title h4 selector--questionEdit-collapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
+                                <?php eT("General options");?>
                             </div>
                         </div>
 
@@ -364,7 +352,13 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                             <!-- Advanced settings -->
                         </div>
                         <div class="loader-advancedquestionsettings text-center">
-                            <span class="fa fa-refresh" style="font-size:3em;" aria-hidden='true'></span>
+                            <div class="contain-pulse animate-pulse">
+                                <div class="square"></div>
+                                <div class="square"></div>
+                                <div class="square"></div>
+                                <div class="square"></div>
+                            </div>
+                           <!-- <span class="fa fa-refresh fa-spin" style="font-size:3em;" aria-hidden='true'></span> -->
                         </div>
                     <?php endif; ?>
                 </div>
