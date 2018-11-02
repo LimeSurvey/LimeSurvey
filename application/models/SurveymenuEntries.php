@@ -515,6 +515,7 @@ class SurveymenuEntries extends LSActiveRecord
     {
 
         $oDB = Yii::app()->db;
+        switchMSSQLIdentityInsert('surveymenu_entries', true);
         $oTransaction = $oDB->beginTransaction();
         try {
 
@@ -530,7 +531,7 @@ class SurveymenuEntries extends LSActiveRecord
         } catch (Exception $e) {
             throw $e;
         }
-
+        switchMSSQLIdentityInsert('surveymenu_entries', false);
         return true;
     }
 

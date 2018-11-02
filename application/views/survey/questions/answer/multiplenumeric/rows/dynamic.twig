@@ -15,7 +15,7 @@
         <div class="control-label col-xs-12 col-sm-{{sLabelWidth}}">
             {{ gT('Remaining: ') }}
         </div>
-        <div class="ls-input-group col-xs-12 col-sm-{{sInputContainerWidth}}">
+        <div class="ls-input-group col-xs-12 col-sm-{{sInputContainerWidth}} {% if sLabelWidth == 0 %} hidden{% endif %}">
             {% if prefix %}
                 <div class="ls-input-group-extra prefix-text prefix">
                     {{ processString(prefix) }}

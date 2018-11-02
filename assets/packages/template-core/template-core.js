@@ -66,7 +66,6 @@ var TemplateCoreClass = function () {
         triggerEmClassChangeTemplate: function () {
             $('.ls-em-tip').each(function () {
                 $(this).on('classChangeError', function () {
-                    console.trace('change error');
                     /* If user choose hide-tip : leave it */
                     $parent = $(this).parent('div.hide-tip');
                     if ($parent.hasClass('hide-tip')) {

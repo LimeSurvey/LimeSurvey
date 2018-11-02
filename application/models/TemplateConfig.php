@@ -433,7 +433,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes = array();
 
         // Welcome
-        $aClassAndAttributes['id']['welcomecontainer']     = 'welcome-container ';
+        $aClassAndAttributes['id']['welcomecontainer']     = 'welcome-container';
         $aClassAndAttributes['class']['welcomecontainer']  = '';
         $aClassAndAttributes['class']['surveyname']        = " survey-name ";
         $aClassAndAttributes['class']['description']       = " survey-description ";

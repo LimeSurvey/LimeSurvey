@@ -219,7 +219,7 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'css' => array(
-            'css/adminstyle-rtl.css',
+            'css/rtl/adminstyle-rtl.css',
             'css/rtl/lime-admin-common-rtl.css',
             'css/rtl/jcarousel.responsive-rtl.css',
             'css/rtl/attributeMap-rtl.css',

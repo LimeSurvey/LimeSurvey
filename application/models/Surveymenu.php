@@ -337,6 +337,7 @@ class Surveymenu extends LSActiveRecord
     {
 
         $oDB = Yii::app()->db;
+        switchMSSQLIdentityInsert('surveymenu', true);
         $oTransaction = $oDB->beginTransaction();
         try {
             $oDB->createCommand()->truncateTable('{{surveymenu}}');
@@ -351,6 +352,7 @@ class Surveymenu extends LSActiveRecord
             App()->setLanguage($sOldLanguage);
             return false;
         }
+        switchMSSQLIdentityInsert('surveymenu', false);
         return true;
     }
 

@@ -25,10 +25,9 @@
 #}
 <!-- answer_row -->
 <li id="javatbd{{ name }}" class='row checkbox-text-item form-group other-item clearfix'>
-
     <!-- Checkbox + label -->
     <div class="col-sm-{{ sLabelWidth }} col-xs-12">
-        <div class="form-group answer-item text-item other-text-item ls-input-group"><!-- input-group from BS seems OK too -->
+        <div class="answer-item text-item other-text-item ls-input-group"><!-- input-group from BS seems OK too -->
             <label for="{{ id }}" class="label-text control-label ls-input-group-extra" id="label-{{ id }}" >{{ processString(labeltext) }}</label>
             <input
                class="other-text form-control input multipleco-other-topic {{ classes }} {{ kpclass }}"
@@ -43,7 +42,7 @@
 
     <!-- Comment -->
     <div class="col-sm-{{ sInputContainerWidth }} col-xs-12 ">
-        <div class="form-group answer-item text-item comment-item">
+        <div class="answer-item text-item comment-item">
             <input
                 class='form-control {{ kpclass }}'
                 type='text'

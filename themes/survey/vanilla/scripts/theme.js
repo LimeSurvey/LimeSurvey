@@ -275,7 +275,12 @@ var ThemeScripts = function(){
     var initGlobal = function(){
         sliderSuffixClone();
         fixBodyPadding();
-        window.templateCore.hideQuestionWithRelevanceSubQuestion();
+        if(jQuery.isFunction(window.templateCore.hideQuestionWithRelevanceSubQuestion)) {
+            window.templateCore.hideQuestionWithRelevanceSubQuestion();
+        }
+        if(jQuery.isFunction(window.templateCore.hideMultipleColumn)) {
+            window.templateCore.hideMultipleColumn();
+        }
         hideEmptyPart();
     };
 
