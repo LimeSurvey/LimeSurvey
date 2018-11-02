@@ -1681,11 +1681,10 @@ class questions extends Survey_Common_Action
                 }
             }
         }
-
         // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
         if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
                 $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionTemplate, $questionTypeList[$type]);
-                $aAttributesWithValues = array_merge_recursive($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
+                $aAttributesWithValues = array_merge($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
         }
         uasort($aAttributesWithValues, 'categorySort');
         unset($aAttributesWithValues['question_template']);

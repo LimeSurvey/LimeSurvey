@@ -22,6 +22,9 @@
 .js .ls-js-hidden{display: none !important;}
 .no-js .ls-no-js-hidden{display: none !important;}
 
+/* boostrap navbar-toggle is broken without js */
+.no-js .navbar-toggle{display: none}
+
 /* Using http://webaim.org/techniques/css/invisiblecontent/ technique : better with less part (to be more easily updatable by template : can use initial or inherit) */
 .js .ls-js-hidden-sr{
   position:absolute;
@@ -149,3 +152,7 @@ box-shadow: 0 0 0 #fff;
 }
 
 .input-error input {border:1px solid #E75041;}
+.form-inline .radio-item,.form-inline .checkbox-item {
+    display: inline-block;
+    vertical-align: middle;
+}

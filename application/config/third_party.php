@@ -395,7 +395,7 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'basePath' => 'third_party.jquery-actual', /* for samechoiceheight/samelistheight */
         'js' => array(
-            'jquery.actual.min.js'
+            'jquery.actual'.$minVersion.'.js'
         ),
     ),
     /* Used by short text with map by leaflet */

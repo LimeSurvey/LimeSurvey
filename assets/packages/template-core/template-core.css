@@ -19,9 +19,10 @@ li.question-item.answer-item.text-item.form-group{
 [data-number='1']{text-align:right}
 .dir-rtl [data-number='1']{text-align:left}
 .slider-list .ls-group-dynamic [data-number='1']{text-align:center}
-
+/* no form-group on radio-item and checkbox-item */
+li.radio-item,li.checkbox-item,li.radio-text-item,li.checkbox-text-item{margin-bottom:1em}
 /* awesome-bootstrap-checkbox */
-li.radio-item,li.checkbox-item{display:block}
+li.radio-item,li.checkbox-item,li.radio-text-item,li.checkbox-text-item{display:block}
 /* map item : .input-group-addon.checkbox-item : put awesome padding */
 .dir-ltr .input-group-addon.radio-item,.dir-ltr .input-group-addon.checkbox-item {padding-left: 25px;}
 .dir-rtl .input-group-addon.radio-item,.dir-rtl .input-group-addon.checkbox-item {padding-right: 25px;}

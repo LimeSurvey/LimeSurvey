@@ -34,7 +34,7 @@ return array(
             'scripts/ranking.js',
         ),
         'depends' => array(
-            'jquery',
+            'jquery','jquery-actual',
         )
     ),
     /* numeric slider question : numerci question type with slider */

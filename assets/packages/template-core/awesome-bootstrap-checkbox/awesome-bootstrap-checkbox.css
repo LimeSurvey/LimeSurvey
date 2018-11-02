@@ -20,6 +20,7 @@
   width: 17px;
   height: 17px;
   left: 0;
+  top:0;
   margin-left: -20px;
   border: 1px solid #cccccc;
   border-radius: 3px;
@@ -28,27 +29,34 @@
   -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
   transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
 }
+.form-horizontal .checkbox-item label::before{
+  top:7px;
+}
 .checkbox-item label::after {
   display: inline-block;
   position: absolute;
-  width: 16px;
-  height: 16px;
-  left: 0;
-  top: 0;
+  width: 15px;
+  height: 15px;
+  left: 1px;
+  top: 1px;
+  border-radius: 3px;
   margin-left: -20px;
   padding-left: 3px;
   padding-top: 1px;
   font-size: 11px;
   color: #2c3e50;
+  text-align: center;
 }
-.checkbox-item input[type="checkbox"],
-.checkbox-item input[type="radio"] {
+.form-horizontal .checkbox-item label::after{
+  top:8px;
+}
+.checkbox-item input[type="checkbox"] {
   opacity: 0;
   z-index: -1;
   /* set the position at same place than label::after */
   position: absolute;
   left: 0;
-  margin-left: -20px;
+  /* margin-right: -20px; input is out of label : must remove position:relative from label and set it to .checkbox-item*/
 }
 .checkbox-item input[type="checkbox"]:focus + label::before,
 .checkbox-item input[type="radio"]:focus + label::before {
@@ -209,6 +217,7 @@
   width: 17px;
   height: 17px;
   left: 0;
+  top:0;
   margin-left: -20px;
   border: 1px solid #cccccc;
   border-radius: 50%;
@@ -240,6 +249,7 @@
 .radio-item input[type="radio"] {
   opacity: 0;
   z-index: 1;
+  top:0;
 }
 .radio-item input[type="radio"]:focus + label::before {
   outline: thin dotted;

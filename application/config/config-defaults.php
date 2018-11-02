@@ -90,6 +90,8 @@ $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,g
 
 $config['memory_limit'] = '256'; // This sets how much memory LimeSurvey can access in megabytes. 256 MB is the minimum recommended - if you are using PDF functions up to 512 MB may be needed
 
+$config['maximum_unzipped_size'] = '500000000'; // Max size after zip unarchiving in bytes.
+
 $config['showpopups']         = 2; // Show popup messages if mandatory or conditional questions have not been answered correctly.
 //  2 = defined by Theme option (default)
 //  1 = Show popup message
@@ -552,6 +554,9 @@ $config['characterset'] = 'auto';
 $config['iFileUploadTotalSpaceMB'] = 0;
 
 
+$config['uniq_upload_dir'] = false; // Use a single KCFinder upload directory for all surveys
+
+
 // defines if the CKeditor toolbar should be opened by default
 $config['ckeditexpandtoolbar'] = true;
 
@@ -635,6 +640,7 @@ $config['adminstyleurl']          = $config['styleurl'].$config['admintheme'].'/
 // Dir
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
 $config['homedir']                  = $config['rootdir']; // The directory path of the admin scripts
+$config['configdir']                = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config';
 $config['tempdir']                  = $config['rootdir'].DIRECTORY_SEPARATOR."tmp"; // The directory path where LimeSurvey can store temporary files
 $config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."images"; // The directory path of the image directory
 $config['uploaddir']                = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
