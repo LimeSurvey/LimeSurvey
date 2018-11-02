@@ -925,4 +925,12 @@ class LsDefaultDataSets
 
         return $returnArray;
     }
+
+    public static function getPluginActivated()
+    {
+        $returnArray = [];
+        $returnArray[] = ['id' => 1, 'name' => 'Authdb', 'active' => 1, 'version' => null];
+        $returnArray[] = ['id' => 2, 'name' => 'tableClassQuestionAttribute', 'active' => 1, 'version' => null];
+        return $returnArray;
+    }
 }
