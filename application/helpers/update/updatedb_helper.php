@@ -2337,6 +2337,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>355], "stg_name='DBVersion'");
         }
 
+        if ($iOldDBVersion < 356) {
+            $oTransaction = $oDB->beginTransaction();
+            if(activatePlugin('tableClassQuestionAttribute')) {
+                $oTransaction->commit();
+                $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>356], "stg_name='DBVersion'");
+            }
+        }
+
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
@@ -2408,6 +2416,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->setConfig('Updating', false);
     return true;
 }
+
 /**
  * @param CDbConnection $oDB
  *
@@ -4143,4 +4152,21 @@ function fixLanguageConsistencyAllSurveys()
     foreach ($surveyidresult as $sv) {
         fixLanguageConsistency($sv['sid'], $sv['additional_languages']);
     }
+}
+
+/**
+ * Activate a plugin by name
+ * Currently don't send plugin activate event
+ * @param string $plugin name
+ * @return boolean
+ */
+function activatePlugin($plugin)
+{
+    $oPlugin = Plugin::model()->findByAttributes(array('name'=>$plugin));
+    if (empty($oPlugin)) {
+        $oPlugin = new Plugin();
+        $oPlugin->name = $plugin;
+    }
+    $oPlugin->active = 1;
+    return $oPlugin->save();
 }
