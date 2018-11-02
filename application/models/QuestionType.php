@@ -3,6 +3,7 @@
 /**
  * Class QuestionType
  * @property Question $question
+ * @property QuestionRenderer $questionRenderer
  * @property string $fieldType The type of field question needs for storing data
  * @property string $fieldDataType numeric vs string types
  * @property boolean $isText Whether the type is text (string longer than char)

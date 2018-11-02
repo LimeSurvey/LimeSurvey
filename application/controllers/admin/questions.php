@@ -1817,4 +1817,31 @@ class questions extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
     }
+
+    public function saveQuestion($aQuestion, $aSettings, $ajax=false){
+        
+        $iQid = $aQuestion['qid'];
+        unset($aQuestion['qid']);
+
+        $oQuestion = (isset($iQid) && $iQid != '') ? Question::model()->findByPk($iQid) : new Question();
+
+        $oQuestion->setAttributes($aQuestion);
+        $success = $oQuestion->save();
+        $message = $success ? gT("Question successfully saved.") : gT("Question could not be saved");
+        if($ajax) {
+            Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => [
+                'success' => $success,
+                'message' => $message
+            ]]);
+            return;
+        }
+        
+        Yii::app()->user->setFlash($success?'success':'error', $message);
+        Yii::app()->getController()->redirect(
+            Yii::app()->getController()->createUrl(
+                "admin/questions/sa/view/", 
+                ['surveyid' => $oQuestion->sid, 'gid'=> $oQuestion->gid, "qid" => $oQuestion->qid]
+            )
+        );
+    }
 }
