@@ -1,1 +1,2 @@
 .table-responsive table.ls-answers {min-width:100%;width:auto;max-width:none}
+.table-responsive table.ls-answers td.visible-xs,.table-responsive table.ls-answers th.visible-xs {display:none !important;}

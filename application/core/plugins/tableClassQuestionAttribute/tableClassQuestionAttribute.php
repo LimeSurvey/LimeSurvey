@@ -45,7 +45,7 @@ class tableClassQuestionAttribute extends PluginBase {
                 'options' => array(
                     'no-more-table' => gT("Usage of no more table."),
                     'table-responsive' => gT("Usage of table-responsive."),
-                    'none' => gT("No specific class."),
+                    'table-base' => gT("No specific class, just default css."),
                 ),
                 'default' => 'no-more-table',
                 'help' => sprintf(
@@ -76,11 +76,12 @@ class tableClassQuestionAttribute extends PluginBase {
                     $className = "no-more-table";
                     break;
                 case 'table-responsive':
-                $this->addAndRegisterTableresponsivePackage();
+                    $this->addAndRegisterTableresponsivePackage();
                     $className = "table-responsive";
                     break;
-                case 'none':
-                    $className = "";
+                case 'table-base':
+                    $this->addAndRegisterTablebasePackage();
+                    $className = "table-base";
                     break;
             }
             if($className) {
@@ -133,6 +134,28 @@ class tableClassQuestionAttribute extends PluginBase {
             ));
         }
         Yii::app()->getClientScript()->registerPackage('table-responsive');
+    }
+
+    /**
+     * Register table-none package
+     * @return void
+     */
+    public function addAndRegisterTablebasePackage()
+    {
+        /* Quit if is done */
+        if(array_key_exists('table-base',Yii::app()->getClientScript()->packages)) {
+            return;
+        }
+        /* Add package only if don't exist currently (can be replaced by user config) */
+        if(!Yii::app()->clientScript->hasPackage('table-base')) {
+            Yii::setPathOfAlias(get_class($this), dirname(__FILE__));
+            Yii::app()->clientScript->addPackage('table-base', array(
+                'basePath'    => get_class($this).'.assets.table-base',
+                'css'          => array('table-base.css'),
+                'depends'      =>array('limesurvey-public'),
+            ));
+        }
+        Yii::app()->getClientScript()->registerPackage('table-base');
     }
 
 }
