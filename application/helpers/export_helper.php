@@ -2633,9 +2633,9 @@ function tsvSurveyExport($surveyid){
  * @param string $column_name
  **/
 function sortArrayByColumn(&$array, $column_name){
-    uasort($array, create_function('$a, $b', '
+    uasort($array, function($a,$b) {
         return strnatcmp($a["' . $column_name . '"], $b["' . $column_name . '"]);
-    '));
+    });
 }
 
 /**
