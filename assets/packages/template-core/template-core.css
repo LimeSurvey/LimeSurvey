@@ -150,6 +150,7 @@ only screen and (max-width: 760px),
         width: auto;
         height: auto;
         overflow:initial;
+        white-space: normal;
     }
     .dir-ltr table.ls-answers .ls-label-xs-visibility{left:auto;}
     .dir-rtl table.ls-answers .ls-label-xs-visibility{right:auto;}
