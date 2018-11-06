@@ -114,7 +114,6 @@ class QuestionGroup extends LSActiveRecord
         foreach ($aSurveyLanguages as $sSurveyLanguage) {
             $oCriteria=new CDbCriteria;
             $oCriteria->compare('sid',$iSurveyId);
-            $oCriteria->compare('language',$sSurveyLanguage);
             $oCriteria->order = 'group_order ASC';
 
             $aQuestiongroups = QuestionGroup::model()->findAll($oCriteria);

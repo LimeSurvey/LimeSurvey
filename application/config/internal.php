@@ -105,6 +105,7 @@ $internalConfig = array(
         'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
+        'application.views.QuestionTypeRenderer.*',
         'bootstrap.helpers.*',
         'bootstrap.widgets.*',
         'bootstrap.behaviors.*',

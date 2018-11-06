@@ -53,12 +53,6 @@ class Answer extends LSActiveRecord
         return 'aid';
     }
 
-
-    public function defaultScope()
-    {
-        return array('order'=>'sortorder');
-    }    
-
     /** @inheritdoc */
     public function relations()
     {

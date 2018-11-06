@@ -865,9 +865,23 @@ class Question extends LSActiveRecord
     {
         $criteria = new CDbCriteria();
         $criteria->addCondition('qid=:qid');
+        $criteria->addCondition('(language=:language OR language IS NULL)');
         $criteria->params = [':qid'=>$this->qid];
+        $criteria->params = [':language'=>$this->language];
         return QuestionAttribute::model()->findAll($criteria);
     }
+
+    // /**
+    //  * @return QuestionAttribute[]
+    //  */
+    // public function getQuestionAttribute($sAttribute)
+    // {
+    //     $criteria = new CDbCriteria();
+    //     $criteria->addCondition('qid=:qid');
+    //     $criteria->addCondition('attribute=:attribute');
+    //     $criteria->params = [':qid'=>$this->qid, ':attribute' => $sAttribute];
+    //     return QuestionAttribute::model()->find($criteria);
+    // }
 
     /**
      * @return null|QuestionType
@@ -895,14 +909,16 @@ class Question extends LSActiveRecord
         return $result;
     }
     
-    public function getQuestionTypeFolder(){
+    public function getRenderererObject($aFieldArray){
         switch ($this->type) {
-            case Question::QT_1_ARRAY_MULTISCALE: return 'arrays/dualscale';
-            case Question::QT_5_POINT_CHOICE: return '5pointchoice';
+            case Question::QT_X_BOILERPLATE_QUESTION: return new RenderBoilerplate($aFieldArray);
+            case Question::QT_5_POINT_CHOICE: return new RenderFivePointChoice($aFieldArray);
+            case Question::QT_ASTERISK_EQUATION: return new RenderEquation($aFieldArray);
+            case Question::QT_D_DATE: return new RenderDate($aFieldArray);
+            case Question::QT_1_ARRAY_MULTISCALE: return new RenderArrayDual($aFieldArray);
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return 'arrays/5point';
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return 'arrays/10point';
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return 'arrays/yesnouncertain';
-            case Question::QT_D_DATE: return 'date';
             case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: return 'arrays/increasesamedecrease';
             case Question::QT_F_ARRAY_FLEXIBLE_ROW: return 'arrays/multiflexi';
             case Question::QT_G_GENDER_DROPDOWN: return 'gender';
@@ -919,18 +935,15 @@ class Question extends LSActiveRecord
             case Question::QT_S_SHORT_FREE_TEXT: return 'shortfreetext';
             case Question::QT_T_LONG_FREE_TEXT: return 'longfreetext';
             case Question::QT_U_HUGE_FREE_TEXT: return 'longfreetext';
-            case Question::QT_X_BOILERPLATE_QUESTION: return 'boilerplate';
             case Question::QT_Y_YES_NO_RADIO: return 'yesno';
             case Question::QT_Z_LIST_RADIO_FLEXIBLE: return 'listradioflexible';
             case Question::QT_EXCLAMATION_LIST_DROPDOWN: return 'list_dropdown';
             case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: return 'arrays/texts';
             case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: return 'arrays/texts';
             case Question::QT_VERTICAL_FILE_UPLOAD: return 'file_upload';
-            case Question::QT_ASTERISK_EQUATION: return 'equation';
             default:  return 'generic_question'; // fallback
         };
     }
-
 
     /**
      * @param array $data
@@ -946,16 +959,6 @@ class Question extends LSActiveRecord
             return $oRecord->save();
         }
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
-    }
-
-
-    public function getCurrentView(){
-        $baseView = '/survey/questions/answer/'. $this->questionTypeFolder;
-        
-    }
-
-    public function getCurrentViewData(){
-
     }
 
 }
