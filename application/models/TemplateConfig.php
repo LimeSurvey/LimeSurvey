@@ -501,7 +501,7 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['attr']['maincolformdivainput']          = ' type="password" id="token" name="token" value="" required ';
         $aClassAndAttributes['attr']['maincoldivdivbul']              = ' role="alert" ';
-        $aClassAndAttributes['attr']['maincolformlabel']              = ' for="loadname"';
+        $aClassAndAttributes['attr']['maincolformlabel']              = ' for="token"';
         $aClassAndAttributes['attr']['maincolformlabelsmall']         = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['maincolformdivblabel']          = ' for="loadsecurity" ';
         $aClassAndAttributes['attr']['maincolformdivblabelsmall']     = ' aria-hidden="true" ';
