@@ -131,9 +131,9 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                     <?php if ($copying): ?>
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="heading-copy">
-                                <div class="panel-title h4 selector--questionEdit-collapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-copy" aria-expanded="false" aria-controls="collapse-copy">
+                                <a class="panel-title h4 selector--questionEdit-collapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-copy" aria-expanded="false" aria-controls="collapse-copy">
                                     <?php eT("Copy options"); ?>
-                                </div>
+                                </a>
                             </div>
                             <div id="collapse-copy" class="panel-collapse collapse  in" role="tabpanel" aria-labelledby="heading-copy">
                                 <div class="panel-body">
@@ -194,9 +194,9 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                     <div class="panel panel-default" id="questionTypeContainer">
                         <!-- General Options : Header  -->
                         <div class="panel-heading" role="tab" id="headingOne">
-                            <div class="panel-title h4 selector--questionEdit-collapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
+                            <a class="panel-title h4 selector--questionEdit-collapse" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
                                 <?php eT("General options");?>
-                            </div>
+                            </a>
                         </div>
 
                         <div id="collapse-question" class="panel-collapse collapse <?php if (!$copying){echo ' in '; } ?>" role="tabpanel" aria-labelledby="headingOne">

@@ -17,9 +17,9 @@ $categoryNum=0;
         <?php endif; ?>
         <div class="panel panel-default panel-advancedquestionsettings">
             <div class="panel-heading" role="tab">
-                <div class="panel-title h4 selector--questionEdit-collapse" id="button-collapse<?php echo $categoryNum ?>"  role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-cat<?php echo $categoryNum ?>" aria-expanded="false" aria-controls="collapse-cat<?php echo $categoryNum ?>">
+                <a class="panel-title h4 selector--questionEdit-collapse" id="button-collapse<?php echo $categoryNum ?>"  role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-cat<?php echo $categoryNum ?>" aria-expanded="false" aria-controls="collapse-cat<?php echo $categoryNum ?>">
                     <?php echo $aAttribute['category']; ?>
-                </div>
+                </a>
             </div>
             <div id="collapse-cat<?php echo $categoryNum ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="button-collapse<?php echo $categoryNum ?>">
                 <div class="panel-body">
