@@ -37,8 +37,15 @@
             <?php case 'action': ?>
 
                 <!-- Action -->
-                <li>
+                <li
+                    <?php if(!empty($aAction['disabled'])) : ?>
+                        class='disabled'
+                    <?php endif;?>
+                >
                     <a href="#"
+                        <?php if(!empty($aAction['disabled'])) : ?>
+                            data-disabled='1'
+                        <?php endif;?>
                         data-url="<?php echo $aAction['url'];?>"
                         <?php if (isset($aAction['on-success'])): ?>
                             data-on-success="<?php echo $aAction['on-success'];?>"
@@ -49,7 +56,6 @@
                         data-action="<?php echo $aAction['action'];?>"
                         data-type="<?php echo $aAction['actionType']; //Direct action, or modal ?>"
                         data-grid-reload="<?php if(isset($aAction['grid-reload'])){echo $aAction['grid-reload'];}else{echo "no";}?>"
-
                         <?php
                             /**
                              * It the action type is 'modal', a modal will be generated for this action, with the id: massive-actions-modal- $aAction['action'] -  $key

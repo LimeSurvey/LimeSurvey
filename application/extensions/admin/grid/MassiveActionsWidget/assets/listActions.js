@@ -16,6 +16,9 @@
  *      perform an ajax request and show the result in the modal
  */
 var onClickListAction =  function () {
+    if($(this).data('disabled')) {
+        return;
+    }
     var $that          = $(this);                                                             // The clicked link
     var $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
     var onSuccess      = $that.data('on-success');
@@ -282,6 +285,7 @@ function getDefaultDateTimePickerSettings() {
 
 function bindListItemclick(){
     $( '.listActions a').off('click.listactions').on('click.listactions', onClickListAction);
+    $( '.listActions .disabled a').off('click.listactions').on('click.listactions', function(e){ e.preventDefault(); });
 }
 
 
