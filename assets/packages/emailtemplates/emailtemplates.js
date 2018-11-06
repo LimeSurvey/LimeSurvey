@@ -9,14 +9,12 @@ var PrepEmailTemplates = function(){
 
     var KCFinder_callback = function (url)
     {
-
-        console.log('target', currentTarget);
-        console.log("$(currentTarget).closest('.selector__table-container')", $(currentTarget).closest('.selector__table-container'));
         if($(currentTarget).closest('.selector__table-container').hasClass('hidden')){
             $(currentTarget).closest('.selector__table-container').removeClass('hidden');
         }
         addAttachment(currentTarget, url);
         window.KCFinder = null;
+        $('#kc-modal-open').modal('hide');
     },
     
     /**
@@ -112,13 +110,15 @@ var PrepEmailTemplates = function(){
         }
     
     
-        $('span.edit-relevance-equation').off('click').on('click', editAttachmentRelevance);
+        $('.edit-relevance-equation').off('click').on('click', editAttachmentRelevance);
         $('.btnattachmentremove').off('click').on('click', removeAttachment);
     
         $('span.filename').off('click').on('click', function(e) {
             e.preventDefault();
             var target = $(this).parents('tr');
-            openKCFinder_singleFile(target);
+            var ckTarget = $(this).parents('table').data('ck-target');
+            uri = LS.data.baseUrl + '/third_party/kcfinder/browse.php?opener=custom&type=files&CKEditor='+ckTarget+'&langCode='+sKCFinderLanguage;
+            openKCFinder_singleFile(target, uri);
         });
     
         $(newrow).find('span.filesize').text(formatFileSize(size));
@@ -143,15 +143,13 @@ var PrepEmailTemplates = function(){
         return bytes;
     },
     openKCFinder_singleFile = function (target, uri) {
+
         currentTarget = target;
         window.KCFinder = {};
         window.KCFinder.target = target;
         window.KCFinder.callBack = KCFinder_callback;
-
         $('#kc-modal-open').find('iframe').attr('src', uri);
         $('#kc-modal-open').modal('show');
-        
-        
     },
     bindActions = function(elements, translate, resetUrl){
         $(elements.validate).remoteModal({}, {
