@@ -154,6 +154,7 @@ var QuestionFunctions = function () {
 $(document).on('ready  pjax:scriptcomplete', function () {
     window.questionFunctions = window.questionFunctions || (new QuestionFunctions());
     window.questionFunctions.init();
+    window.LS.fixAccordionPosition();
 });
 
 

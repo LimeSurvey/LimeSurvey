@@ -318,11 +318,11 @@ function confirmSurveyDialog(text,title,submits){
  *  Ask confirmation on click on .needconfirm
  */
 function activateConfirmButton(){
-    $(document).on('click',"button[data-confirmedby]", function(event){
+    /* With ajax mode : using $(document).on attache X times the same event */
+    $("button[data-confirmedby]").on('click',function(event){
         var btnConfirm=$(this);
         var cbConfirm=$(this).parent().find("[name='"+$(this).data('confirmedby')+"']");
-        if(!$(cbConfirm).is(":checked"))
-        {
+        if(!$(cbConfirm).is(":checked")) {
             event.preventDefault();
             var submits = { };
             submits[$(btnConfirm).attr('name')]=$(btnConfirm).val();
