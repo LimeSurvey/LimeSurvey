@@ -19,10 +19,10 @@
 
 <!-- answer_row -->
 {# rows is done in qanda : can set a var answer.twig to use it …  #}
-{% set pattern = "[-]?([0-9]+([,\.][0-9]+))?" %}
+{% set pattern = "[-]?([0-9]{0,20}([,\.][0-9]{1,10})?)" %}
 {% set title = gT('Only numbers may be entered in this field.') %}
 {% if integeronly %}
-    {% set pattern = "[-]?([0-9]+)" %}
+    {% set pattern = "[-]?([0-9]{0,20})" %}
     {% set title = gT('Only an integer value may be entered in this field.') %}
 {% endif %}
 
