@@ -241,9 +241,11 @@ class tokens extends Survey_Common_Action
      */
     public function deleteMultiple()
     {
-        // TODO: permission checks
         $aTokenIds = json_decode(Yii::app()->getRequest()->getPost('sItems'));
         $iSid = Yii::app()->getRequest()->getPost('sid');
+        if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         TokenDynamic::model($iSid)->deleteRecords($aTokenIds);
         return true;
     }
@@ -253,9 +255,11 @@ class tokens extends Survey_Common_Action
      */
     public function deleteToken()
     {
-        // TODO: permission checks
         $aTokenId = Yii::app()->getRequest()->getParam('sItem');
         $iSid = Yii::app()->getRequest()->getParam('sid');
+        if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
         TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
         return true;
     }

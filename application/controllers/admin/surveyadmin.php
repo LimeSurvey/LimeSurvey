@@ -1145,15 +1145,17 @@ class SurveyAdmin extends Survey_Common_Action
             LimeExpressionManager::SetDirtyFlag();
             LimeExpressionManager::singleton();
             // Why this @ !
-            @LimeExpressionManager::UpgradeConditionsToRelevance($aImportResults['newsid']);
-            @LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
-            @LimeExpressionManager::StartProcessingPage(true, true);
+            LimeExpressionManager::SetSurveyId($aImportResults['newsid']);
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance($aImportResults['newsid']);
+            LimeExpressionManager::UpgradeConditionsToRelevance($aImportResults['newsid']);
+            LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
+            LimeExpressionManager::StartProcessingPage(true, true);
             $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid'=>$aImportResults['newsid']]);
             foreach ($aGrouplist as $aGroup) {
-                @LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $aImportResults['newsid']);
-                @LimeExpressionManager::FinishProcessingGroup();
+                LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $aImportResults['newsid']);
+                LimeExpressionManager::FinishProcessingGroup();
             }
-            @LimeExpressionManager::FinishProcessingPage();
+            LimeExpressionManager::FinishProcessingPage();
         }
 
         $this->_renderWrappedTemplate('survey', 'importSurvey_view', $aData);
