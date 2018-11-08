@@ -108,14 +108,13 @@ const globalWindowMethods = {
         $('<input type="hidden"/>').attr('name', name).attr('value', value).appendTo($(form));
     },
     fixAccordionPosition : () => {
-        $(document).on('shown.bs.collapse',"#accordion", function () {
-            let collapsed = $(this).find('.collapse.in').prev('.panel-heading');
-            /* test if is up to surveybarid bottom, if yes : scrollTo */
-            if($(collapsed).offset().top-$(window).scrollTop() < $(".navbar-fixed-top").first().outerHeight(true)){
+        $('#accordion').on('shown.bs.collapse',".panel-collapse.collapse", function () {
+            $('#accordion').find('.collapse').not('#'+$(this).attr('id')).collapse('hide');
+            setTimeout(function(){
                 $('html, body').animate({
-                    scrollTop: $(collapsed).offset().top-$(".navbar-fixed-top").first().outerHeight(true)
+                    scrollTop: $(this).closest('.panel.panel-default').offset().top-20
                 }, 500);
-            }
+            }, 500);
         });
     }
 };
@@ -133,7 +132,6 @@ const globalStartUpMethods = {
         });
 
         globalWindowMethods.tableCellAdapters();
-        globalWindowMethods.fixAccordionPosition();
     }
 };
 

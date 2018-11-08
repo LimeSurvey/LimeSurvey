@@ -36,6 +36,96 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 3.15.2 (build 181107) to 3.15.3 (build 181018)   November 08, 2018
+-Fixed issue #11845: Relevance Equation code is missing syntax highlighting and not recognising question variables (Dominik Vitt)
+-Fixed issue #14211 : no keyboard navigation available with language changer (Denis Chenu)
+-Fixed issue: Condition designer doesn't show predefined answers on first load (Dominik Vitt)
+-Fixed issue: Selected survey language for browsing responses was not used in detail view or queXML PDF view (Carsten Schmitz)
+-Fixed issue: Update not possible from pre 3.x versions (Carsten Schmitz)
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Papiamento (Curaçao and Bonaire) by c_schmitz
+#Updated translation: Romanian by cdorin
+
+
+Changes from 3.15.1 (build 181017) to 3.15.2 (build 181107)  November 07, 2018
+
+-New feature: allow to change config file location (LouisGac)
+-New feature: allow to change config file location, part 2 (LouisGac)
+-New feature: configuration option to use a single upload directory for all surveys (LouisGac)
+-Fixed issue #10162: new visit on a survey with token deletes last entry (Dominik Vitt)
+-Fixed issue #11787: filtered question with multiple column (Denis Chenu)
+-Fixed issue #13982: Allow kcfinder use with CHttpSession derived classes (#1112) (Casey Lucas)
+-Fixed issue #14062: No languages list when clicking the hamburger icon in Token page (Dominik Vitt)
+-Fixed issue #14066: Broken link on reset button from mass-action response export (Anton Victorson)
+-Fixed issue #14098: Subquestion incorrectly named 'Sub-question' (Carsten Schmitz)
+-Fixed issue #14101: Missing CSS-class "form-horizontal" for multiple-short-text-questions (Denis Chenu)
+-Fixed issue #14106: Button "Add new question to group" does not work (Dominik Vitt)
+-Fixed issue #14124: Changing invitation/reminder dates for a certain tokens changes the date format at the database (Dominik Vitt)
+-Fixed issue #14150: Wrong survey menu id entry (Carsten Schmitz)
+-Fixed issue #14162: Functionality ranking questions breaks with relev… (#1154) (Denis Chenu)
+-Fixed issue #14167: Double Quotes are not allowed (title) = File upload (Dominik Vitt)
+-Fixed issue #14168: PHP7.2.0 Removed plugins throw error in plugin manager (Denis Chenu)
+-Fixed issue #14191: Broken question view if sum of width !=12 (Denis Chenu)
+-Fixed issue #14192: Mass action on Survey listing doesn't work on second page (Dominik Vitt)
+-Fixed issue #14196: Unable to use dynamic mindate and maxdate (Denis Chenu)
+-Fixed issue #14205: Unable to save, clearall (and maybe load) without javascript (Denis Chenu)
+-Fixed issue #14209: Long answer options for array question types not line-breaked in mobile view (Dominik Vitt)
+-Fixed issue #14212: Deleting or editing details of a to be attached file at token emails is not doable (Dominik Vitt)
+-Fixed issue #14216: Users without rights to delete tokens can still delete them (Denis Chenu)
+-Fixed issue : Same choice height work again (Denis Chenu)
+-Fixed issue : aria-label for warning and error not translated (Denis Chenu)
+-Fixed issue : broken HTML validatio on welcome page (Denis Chenu)
+-Fixed issue : class and title broken in array number (text layout) (Denis Chenu)
+-Fixed issue : hidden column in multiple short text (Denis Chenu)
+-Fixed issue : label usage broken in token form (Denis Chenu)
+-Fixed issue : no "No answser" in list with comment , dropdown (Denis Chenu)
+-Fixed issue : no label related for Yes No button (a11y related) (Denis Chenu)
+-Fixed issue: EM variables are shown in red color after survey copy (Dominik Vitt)
+-Fixed issue: JSON editor options to load the right content (#1130) (yent)
+-Fixed issue: Not possible to save or load saved survey when in anonymized mode (Dominik Vitt)
+-Fixed issue: PHP7 compatibility (Markus Flür)
+-Fixed issue: PHP7 compatibility 2 (Markus Flür)
+-Fixed issue: Survey groups not being wiped (Carsten Schmitz)
+-Fixed issue: can't extract large zip file (LouisGac)
+-Fixed issue: child survey group could become parent (LouisGac)
+-Fixed issue: content, whatever its type, was passed to CHtml::encode which expects a string due to lack of encode htmlOption for CHtml::textarea. Also added needed json_encode so that textarea value is a string in the end. (yent)
+-Fixed issue: corrected the icon class on the footer help icon (Markus Flür)
+-Fixed issue: datefield from mssql database always contains milliseconds (Markus Flür)
+-Fixed issue: more php7 issues fixed (count, etc) (Markus Flür)
+-Fixed issue: multiple design issues in question edit (Markus Flür)
+-Fixed issue: resumed survey lose saved values after click on "Next" (Dominik Vitt)
+-Fixed issue: unable to check all questions on survey statistics page (Dominik Vitt)
+-Fixed issue: upload to generalfiles fails (Markus Flür)
+-Fixed issue: wrong path for adminstyle-rtl.css (Dominik Vitt)
+#Updated translation: Arabic by AbdelmalekTEBBOUB
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Czech by jelen1
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Dutch by kpadm, Han
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German by actxcellence, c_schmitz
+#Updated translation: Hebrew by vis_kerem
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by peterhol, pmonstad
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Russian by ddrmoscow
+#Updated translation: Spanish (Argentina) by Eescudero
+#Updated translation: Thai by tomzt
+
+
 Changes from 3.15.0 (build 181008) to 3.15.1 (build 181017) to  October 17, 2018
 -Fixed issue #13928: script (and tag) are not filtered or encoded if question is in same group (Denis Chenu)
 -Fixed issue #14061: Duplication check when adding participant to survey not working (#1119) (Thomas Singer)

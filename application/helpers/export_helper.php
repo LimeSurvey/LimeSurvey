@@ -97,7 +97,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
     foreach ($result as $row) {
         $rownr++;
         if ($rownr == 1) {
-            $num_fields = count($row);
+            $num_fields = safecount($row);
             // Add column headers (used by R export)
             if ($header == true) {
                 $i = 1;
@@ -273,7 +273,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
             $query .= " {{answers}}.qid = '".$field["qid"]."' and {{questions}}.language='".$language."' and  {{answers}}.language='".$language."'
             and {{questions}}.qid='".$field['qid']."' ORDER BY sortorder ASC";
             $result = Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
-            $num_results = count($result);
+            $num_results = safecount($result);
             if ($num_results > 0) {
                 # Build array that has to be returned
                 foreach ($result as $row) {
@@ -462,7 +462,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage = '')
     }
 
     $fieldnames = array_keys($fieldmap);
-    $num_results = count($fieldnames);
+    $num_results = safecount($fieldnames);
     $diff = 0;
     $noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage');
     # Build array that has to be returned
@@ -697,7 +697,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
     do {
         $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
         $result = $QueryResult->readAll();
-        if ($iStart == 0 && count($result) > 0) {
+        if ($iStart == 0 && safecount($result) > 0) {
             $exclude = array_flip($excludes); //Flip key/value in array for faster checks
             $xmlwriter->startElement($TableName);
             $xmlwriter->startElement('fields');
@@ -2461,9 +2461,9 @@ function tsvSurveyExport($surveyid){
             $tsv_output['class'] = 'G';
             $tsv_output['type/scale'] = $group['group_order'];
             $tsv_output['name'] = $group['group_name'];
-            $tsv_output['text'] = !empty($group['description']) && count($group['description']) > 0 ? str_replace(array("\n", "\r"), '', $group['description']) : '';
-            $tsv_output['relevance'] = !empty($group['grelevance']) && count($group['grelevance']) > 0 ? $group['grelevance'] : '';
-            $tsv_output['random_group'] = !empty($group['randomization_group']) && count($group['randomization_group']) > 0 ? $group['randomization_group'] : '';
+            $tsv_output['text'] = is_array($group['description']) && safecount($group['description']) > 0 ? str_replace(array("\n", "\r"), '', $group['description']) : '';
+            $tsv_output['relevance'] = is_array($group['grelevance']) && safecount($group['grelevance']) > 0 ? $group['grelevance'] : '';
+            $tsv_output['random_group'] = is_array($group['randomization_group']) && safecount($group['randomization_group']) > 0 ? $group['randomization_group'] : '';
             $tsv_output['language'] = $language;
             fputcsv($out, $tsv_output, chr(9));
             
@@ -2476,11 +2476,11 @@ function tsvSurveyExport($surveyid){
                     $tsv_output['class'] = 'Q';
                     $tsv_output['type/scale'] = $question['type'];
                     $tsv_output['name'] = $question['title'];
-                    $tsv_output['relevance'] = !empty($question['relevance']) && count($question['relevance']) > 0 ? $question['relevance'] : '';
-                    $tsv_output['text'] = !empty($question['question']) && count($question['question']) > 0 ? str_replace(array("\n", "\r"), '', $question['question']) : '';
-                    $tsv_output['help'] = !empty($question['help']) && count($question['help']) > 0 ? str_replace(array("\n", "\r"), '', $question['help']) : '';
+                    $tsv_output['relevance'] = is_array($question['relevance']) && safecount($question['relevance']) > 0 ? $question['relevance'] : '';
+                    $tsv_output['text'] = is_array($question['question']) && safecount($question['question']) > 0 ? str_replace(array("\n", "\r"), '', $question['question']) : '';
+                    $tsv_output['help'] = is_array($question['help']) && safecount($question['help']) > 0 ? str_replace(array("\n", "\r"), '', $question['help']) : '';
                     $tsv_output['language'] = $question['language'];
-                    $tsv_output['mandatory'] = !empty($question['mandatory']) && count($question['mandatory']) > 0 ? $question['mandatory'] : '';
+                    $tsv_output['mandatory'] = is_array($question['mandatory']) && safecount($question['mandatory']) > 0 ? $question['mandatory'] : '';
                     $tsv_output['other'] = $question['other'];
                     $tsv_output['same_default'] = $question['same_default'];
 
@@ -2492,7 +2492,7 @@ function tsvSurveyExport($surveyid){
                     if ($index_languages == 0 && array_key_exists($question['qid'], $attributes)){
                         foreach ($attributes[$question['qid']] as $key => $attribute) {
                             if (in_array($attribute['attribute'], array_keys($fields))){
-                                if (is_array($attribute['value']) && count($attribute['attribute']) > 0){
+                                if (is_array($attribute['value']) && safecount($attribute['attribute']) > 0){
                                     $tsv_output[$attribute['attribute']] = implode(' ', $attribute['value']);
                                 } else {
                                     $tsv_output[$attribute['attribute']] = $attribute['value'];
@@ -2524,7 +2524,7 @@ function tsvSurveyExport($surveyid){
                             $tsv_output['related_id'] = $condition['cqid']; 
                             $tsv_output['name'] = $condition['cfieldname']; 
                             $tsv_output['relevance'] = $condition['method']; 
-                            $tsv_output['text'] = !empty($assessment['value']) && count($condition['value']) > 0?$condition['value']:''; 
+                            $tsv_output['text'] = !empty($assessment['value']) && safecount($condition['value']) > 0?$condition['value']:''; 
                             fputcsv($out, $tsv_output, chr(9));
                         }
                     }
@@ -2535,12 +2535,12 @@ function tsvSurveyExport($surveyid){
                             $tsv_output = $fields;
                             $tsv_output['id'] = $subquestion['qid'];
                             $tsv_output['class'] = 'SQ';
-                            $tsv_output['type/scale'] = !empty($subquestion['scale_id']) && count($subquestion['scale_id']) > 0 ? $subquestion['scale_id'] : '';
+                            $tsv_output['type/scale'] = !empty($subquestion['scale_id']) && safecount($subquestion['scale_id']) > 0 ? $subquestion['scale_id'] : '';
                             $tsv_output['name'] = $subquestion['title'];
-                            $tsv_output['relevance'] = !empty($subquestion['relevance']) && count($subquestion['relevance']) > 0 ? $subquestion['relevance'] : '';
+                            $tsv_output['relevance'] = !empty($subquestion['relevance']) && safecount($subquestion['relevance']) > 0 ? $subquestion['relevance'] : '';
                             $tsv_output['text'] = $subquestion['question'];
                             $tsv_output['language'] = $subquestion['language'];
-                            $tsv_output['mandatory'] = !empty($subquestion['mandatory']) && count($subquestion['mandatory']) > 0 ? $subquestion['mandatory'] : '';
+                            $tsv_output['mandatory'] = !empty($subquestion['mandatory']) && safecount($subquestion['mandatory']) > 0 ? $subquestion['mandatory'] : '';
                             $tsv_output['other'] = $subquestion['other'];
                             $tsv_output['same_default'] = $subquestion['same_default'];
 
@@ -2580,8 +2580,8 @@ function tsvSurveyExport($surveyid){
             $tsv_output['related_id'] = $assessment['gid'];
             $tsv_output['class'] = 'AS';
             $tsv_output['type/scale'] = $assessment['scope'];
-            $tsv_output['name'] = !empty($assessment['name']) && count($assessment['name']) > 0?$assessment['name']:'';
-            $tsv_output['text'] = !empty($assessment['message']) && count($assessment['message']) > 0?$assessment['message']:'';
+            $tsv_output['name'] = !empty($assessment['name']) && safecount($assessment['name']) > 0?$assessment['name']:'';
+            $tsv_output['text'] = !empty($assessment['message']) && safecount($assessment['message']) > 0?$assessment['message']:'';
             $tsv_output['min_num_value'] = $assessment['minimum'];
             $tsv_output['max_num_value'] = $assessment['maximum'];
             $tsv_output['language'] = $assessment['language'];
@@ -2613,7 +2613,7 @@ function tsvSurveyExport($surveyid){
                         //$tsv_output['name'] = $ls['quotals_name'];
                         $tsv_output['relevance'] = $ls['quotals_message'];
                         $tsv_output['text'] = $ls['quotals_url'];
-                        $tsv_output['help'] = !empty($ls['quotals_urldescrip']) && count($ls['quotals_urldescrip']) > 0 ? $ls['quotals_urldescrip'][0] : '';
+                        $tsv_output['help'] = !empty($ls['quotals_urldescrip']) && safecount($ls['quotals_urldescrip']) > 0 ? $ls['quotals_urldescrip'][0] : '';
                         $tsv_output['language'] = $ls['quotals_language'];
                         fputcsv($out, $tsv_output, chr(9));  
                     }
@@ -2633,9 +2633,9 @@ function tsvSurveyExport($surveyid){
  * @param string $column_name
  **/
 function sortArrayByColumn(&$array, $column_name){
-    uasort($array, create_function('$a, $b', '
-        return strnatcmp($a["' . $column_name . '"], $b["' . $column_name . '"]);
-    '));
+    uasort($array, function($a,$b) use (&$column_name) {
+        return @(strnatcmp($a["' . $column_name . '"], $b["' . $column_name . '"]));
+    });
 }
 
 /**

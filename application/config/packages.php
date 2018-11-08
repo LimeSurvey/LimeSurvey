@@ -180,6 +180,7 @@ return array(
             'css/attributeMap.css',
             'css/attributeMapToken.css',
             'css/displayParticipants.css',
+            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.css',
         ),
         'js' => array(
             'build/adminbasics'.(($debug > 0) ? '' : '.min').'.js',
@@ -196,7 +197,7 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'css' => array(
-            'css/adminstyle-rtl.css',
+            'css/rtl/adminstyle-rtl.css',
             'css/rtl/lime-admin-common-rtl.css',
             'css/rtl/jcarousel.responsive-rtl.css',
             'css/rtl/attributeMap-rtl.css',

@@ -226,3 +226,12 @@
         </div>
     </div>
 </div>
+
+<?php
+App()->getClientScript()->registerScript(
+    'activatePanelClickable', 
+    'LS.pageLoadActions.panelClickable()', 
+    LSYii_ClientScript::POS_POSTSCRIPT 
+)
+?>
+

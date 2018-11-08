@@ -39,9 +39,18 @@
                     preg_match('/^edit:assessments/', Yii::app()->session['FileManagerContext']) != 0 ||
                     preg_match('/^edit:emailsettings/', Yii::app()->session['FileManagerContext']) != 0) {
                 $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
-                $surveyid = $contextarray[2];
+
+
+$surveyid = $contextarray[2];
+
 
                 if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
+
+
+                    if (Yii::app()->getConfig('uniq_upload_dir')){
+                        $surveyid = 'uniq';
+                    }
+
                     $_SESSION['KCFINDER']['disabled'] = false;
                     if (preg_match('/^edit:emailsettings/', $_SESSION['FileManagerContext']) != 0) {
                         // Uploadurl use public url or getBaseUrl(true);
@@ -61,7 +70,9 @@
                     } else {
                         $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
+
                     $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')).DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
+
                 }
             } elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0) {
                 $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
@@ -119,6 +130,12 @@
 
     function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
+
+
+        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
+            $surveyID = 'uniq';
+        }
+
         initKcfinder();
         //error_log("TIBO fieldtype=$fieldtype,fieldname=$fieldname,fieldtext=$fieldtext,surveyID=$surveyID,gID=$gID,qID=$qID,action=$action");
         $session = &Yii::app()->session;
@@ -149,6 +166,12 @@
 
     function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
+
+        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
+            $surveyID = 'uniq';
+        }
+
+
         $htmlcode = '';
 
         if ($fieldtype == 'editanswer' ||
@@ -170,6 +193,9 @@
 
     function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
+        if (Yii::app()->getConfig('uniq_upload_dir') && !empty($surveyID)){
+            $surveyID = 'uniq';
+        }
 
         $htmlcode = '';
         $toolbaroption = "";
@@ -215,7 +241,7 @@
         . "
             if($('#".$fieldname."').length >0){
                 var $oCKeditorVarName = CKEDITOR.instances['$fieldname'];
-                if ($oCKeditorVarName) { 
+                if ($oCKeditorVarName) {
                         CKEDITOR.remove($oCKeditorVarName);
                     $oCKeditorVarName = null;
                 }
@@ -238,4 +264,3 @@
 
         Yii::app()->getClientScript()->registerScript('ckEditorScriptsInline-'.$fieldname, $scriptCode, LSYii_ClientScript::POS_POSTSCRIPT);
     }
-

@@ -70,7 +70,7 @@ $script = array();
         <div class='form-group col-sm-12'>
             <div class='form-group'>
                 <div class=' '>
-                    <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments table table-striped" style="width: 100%;">
+                    <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]"  data-target="#attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" data-ck-target="<?="email_{$tab}_{$grouplang}"?>" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments table table-striped" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th><?php eT("Action"); ?></th>
@@ -92,7 +92,7 @@ $script = array();
 <table id="rowTemplate" class="hidden">
     <tr>
         <td>
-            <button class="btn btn-xs btn-danger" title="<?php eT('Remove attachment')?>" class="btnattachmentremove text-warning" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Remove attachment')?>">
+            <button class="btn btn-xs btn-danger btnattachmentremove" title="<?php eT('Remove attachment')?>" class="btnattachmentremove text-warning" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Remove attachment')?>">
                 <i class="fa fa-trash"></i>
             </button>
         </td>
@@ -105,7 +105,7 @@ $script = array();
         </td>
         <td>
             <span class="relevance"></span>
-            <button class="btn btn-xs btn-default" title="<?php eT('Edit relevance equation') ?>" class="edit-relevance-equation" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Edit relevance equation') ?>">
+            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit relevance equation') ?>" class="edit-relevance-equation" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Edit relevance equation') ?>">
                 <i class="fa fa-pencil"></i>
             </button>
             <input class="relevance" type="hidden">

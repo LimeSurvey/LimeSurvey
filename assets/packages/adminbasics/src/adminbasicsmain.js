@@ -75,6 +75,7 @@ const AdminCore = function(){
             appendToLoad(panelClickable);
             appendToLoad(panelsAnimation, null, null, 200);
             appendToLoad(notificationSystem.initNotification);
+            appendToLoad(globalWindowMethods.fixAccordionPosition);
         },
         appendToLoad = (fn, event, root, delay) => {
             event = event || 'pjax:scriptcomplete ready';

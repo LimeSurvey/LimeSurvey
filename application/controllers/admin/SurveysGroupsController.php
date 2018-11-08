@@ -47,6 +47,8 @@ class SurveysGroupsController extends Survey_Common_Action
             $model->attributes = $_POST['SurveysGroups'];
             $model->name = sanitize_paranoid_string($model->name);
             $model->created_by = $model->owner_uid = Yii::app()->user->id;
+
+
             if ($model->save()) {
                             $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
             }
@@ -73,6 +75,20 @@ class SurveysGroupsController extends Survey_Common_Action
 
         if (isset($_POST['SurveysGroups'])) {
             $model->attributes = $_POST['SurveysGroups'];
+
+
+                // prevent loop
+                if (!empty($_POST['SurveysGroups']['parent_id'])){
+                    $sgid = $_POST['SurveysGroups']['parent_id'] ;
+                    $ParentSurveyGroup = $this->loadModel($sgid);
+                    $aParentsGsid = $ParentSurveyGroup->getAllParents(true);
+
+                    if ( in_array( $model->gsid, $aParentsGsid  ) ) {
+                        Yii::app()->setFlashMessage(gT("A child group can't be set as parent group"), 'error');
+                        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                    }
+                }
+
             if ($model->save()) {
                     $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
             }
@@ -147,6 +163,7 @@ class SurveysGroupsController extends Survey_Common_Action
             'model'=>$model,
         ));
     }
+
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

@@ -155,14 +155,15 @@ function activateLanguageChanger(){
      * @param {string} lang Language to change to.
      */
     var applyChangeAndSubmit = function(lang) {
-        // Remove existing lang input.
-        limesurveyForm.find('input[name="lang"]').remove();
+        // Remove existing onsubmitbuttoninput, no need to remove lang : last one is the submitted
+        $("#onsubmitbuttoninput").remove();
         // Append new input.
         $('<input type="hidden">')
             .attr('name', 'lang')
             .val(lang)
             .appendTo(limesurveyForm);
         // Append move type.
+        /* onsubmitbuttoninput is related to template (and ajax) : MUST move to template with ajax … */
         $('<input type="hidden" id="onsubmitbuttoninput" name="move" value="changelang" />').appendTo(limesurveyForm);
         limesurveyForm.submit();
     };
@@ -210,7 +211,7 @@ function activateLanguageChanger(){
         }
     });
     /* Language changer dropdown */
-    $('.form-change-lang [name="lang"]').on('change', function() {
+    $('.form-change-lang [name="lang"] option:not(selected)').on('click', function(event) {
         var closestForm = $(this).closest('form');
         var newLang = $(this).val();
         if (!closestForm.length) {
@@ -222,9 +223,9 @@ function activateLanguageChanger(){
                 // Answer : remind user can put language changer everywhere, not only in home page, but for example in clear all page etc …
             } else {
                 // If there are no form : we can't use it */
-                if($(this).data('targeturl')){
+                if($(this).parent().data('targeturl')){
                     /* If we have a target url : just move location to this url with lang set */
-                    var target=$(this).data('targeturl');
+                    var target=$(this).parent().data('targeturl');
                     /* adding lang in get param manually */
                     if(target.indexOf("?") >=0){
                         target+="&lang="+$(this).val();
@@ -247,7 +248,7 @@ function activateLanguageChanger(){
             }
         }else{
             /* we are inside a form : just submit : but remove other lang input if exist : be sure it's this one send */
-            $(this).closest('form').find("[name='lang']").not($(this)).remove();
+            $(this).closest('form').find("[name='lang']").not($(this).parent()).remove();
             $(this).closest('.form-change-lang').find(':submit').click();
         }
     });
@@ -318,11 +319,11 @@ function confirmSurveyDialog(text,title,submits){
  *  Ask confirmation on click on .needconfirm
  */
 function activateConfirmButton(){
-    $(document).on('click',"button[data-confirmedby]", function(event){
+    /* With ajax mode : using $(document).on attache X times the same event */
+    $("button[data-confirmedby]").on('click',function(event){
         var btnConfirm=$(this);
         var cbConfirm=$(this).parent().find("[name='"+$(this).data('confirmedby')+"']");
-        if(!$(cbConfirm).is(":checked"))
-        {
+        if(!$(cbConfirm).is(":checked")) {
             event.preventDefault();
             var submits = { };
             submits[$(btnConfirm).attr('name')]=$(btnConfirm).val();

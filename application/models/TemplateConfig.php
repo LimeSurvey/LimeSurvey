@@ -433,7 +433,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes = array();
 
         // Welcome
-        $aClassAndAttributes['id']['welcomecontainer']     = 'welcome-container ';
+        $aClassAndAttributes['id']['welcomecontainer']     = 'welcome-container';
         $aClassAndAttributes['class']['welcomecontainer']  = '';
         $aClassAndAttributes['class']['surveyname']        = " survey-name ";
         $aClassAndAttributes['class']['description']       = " survey-description ";
@@ -501,7 +501,7 @@ class TemplateConfig extends CActiveRecord
 
         $aClassAndAttributes['attr']['maincolformdivainput']          = ' type="password" id="token" name="token" value="" required ';
         $aClassAndAttributes['attr']['maincoldivdivbul']              = ' role="alert" ';
-        $aClassAndAttributes['attr']['maincolformlabel']              = ' for="loadname"';
+        $aClassAndAttributes['attr']['maincolformlabel']              = ' for="token"';
         $aClassAndAttributes['attr']['maincolformlabelsmall']         = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['maincolformdivblabel']          = ' for="loadsecurity" ';
         $aClassAndAttributes['attr']['maincolformdivblabelsmall']     = ' aria-hidden="true" ';
@@ -722,8 +722,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['errorHtml']         = ' ls-questions-have-errors ';
         $aClassAndAttributes['class']['activealertbutton'] = '  ';
         $aClassAndAttributes['class']['errorHtmlbutton']   = ' ';
-        $aClassAndAttributes['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="Close" ';
-        $aClassAndAttributes['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="Close" ';
+        $aClassAndAttributes['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="'.gT("Close").'" ';
+        $aClassAndAttributes['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="'.gT("Close").'" ';
 
         $aClassAndAttributes['attr']['activealert'] = 'role="alert"';
 
@@ -843,7 +843,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['clearallwrapper'] = $aClassAndAttributes['class']['clearallconfirm'] = ""; // No need, adding it if need something after
         $aClassAndAttributes['class']['clearalllabel'] = "ls-js-hidden";
         $aClassAndAttributes['attr']['clearallconfirm']  = 'value="confirm" name="confirm-clearall" type="checkbox"';
-        $aClassAndAttributes['attr']['clearallbutton'] = 'type="submit" ';
+        $aClassAndAttributes['attr']['clearallbutton'] = 'type="submit" name="clearall" value="clearall" data-confirmedby="confirm-clearall"';
         $aClassAndAttributes['class']['clearallbutton'] = "ls-clearaction ls-clearall"; // Not needed, keep it (and adding to twig to be most compatible in future)
 
         // Language changer
@@ -871,16 +871,18 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['navigatorbuttonr']      = '  ';
         $aClassAndAttributes['class']['navigatorbuttonsubmit'] = ' ls-move-btn ls-move-submit-btn action--ls-button-submit ';
         $aClassAndAttributes['class']['navigatorbuttonnext']   = ' ls-move-btn ls-move-next-btn ls-move-submit-btn action--ls-button-submit ';
+        // Save/Load buttons
         $aClassAndAttributes['class']['loadsavecontainer']     = '  ';
-        $aClassAndAttributes['class']['loadsaveccol']          = ' save-clearall-wrapper ';
-        $aClassAndAttributes['class']['loadbutton']            = ' ls-saveaction ls-loadall ';
-        $aClassAndAttributes['class']['savebutton']            = ' ls-saveaction ls-loadall ';
+        $aClassAndAttributes['class']['loadsaveccol']          = ' save-clearall-wrapper '; /* ???? save or clearall ???? */
+        $aClassAndAttributes['class']['loadbutton']           = 'ls-saveaction ls-loadall ';
+        $aClassAndAttributes['class']['savebutton']           = 'ls-saveaction ls-saveall ';
+        $aClassAndAttributes['attr']['loadbutton']            = ' type="submit" value="loadall" name="loadall" ';
+        $aClassAndAttributes['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" ';
 
         $aClassAndAttributes['attr']['navigatorbuttonprev']   = ' id="ls-button-previous" type="submit" value="moveprev" name="move" ';
         $aClassAndAttributes['attr']['navigatorbuttonsubmit'] = ' id="ls-button-submit" type="submit" value="movesubmit" name="move" ';
         $aClassAndAttributes['attr']['navigatorbuttonnext']   = ' id="ls-button-submit" type="submit" value="movenext" name="move" ';
-        $aClassAndAttributes['attr']['loadbutton']            = ' type="submit" value="loadall" name="loadall" ';
-        $aClassAndAttributes['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" ';
+
 
         // Index Menu
         $aClassAndAttributes['class']['indexmenugli']     = ' ls-index-menu ls-no-js-hidden  ';
@@ -948,11 +950,7 @@ class TemplateConfig extends CActiveRecord
 
         // Here you can add metas from core
         $aClassAndAttributes['metas'] = '    ';
-        // Save/Load buttons
-        $aClassAndAttributes['class']['loadbutton']  = 'ls-saveaction ls-loadall';
-        $aClassAndAttributes['class']['savebutton'] = 'ls-saveaction ls-saveall';
-        $aClassAndAttributes['attr']['loadbutton']  = 'type="submit" value="loadall" name="loadall"';
-        $aClassAndAttributes['attr']['savebutton'] = 'type="submit" value="saveall" name="saveall"';
+
         // Maybe add a plugin event here?
 
         return $aClassAndAttributes;

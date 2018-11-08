@@ -107,25 +107,6 @@ var ThemeScripts = function(){
         });
     };
 
-    var initLanguageChanger = function(selectorItem){
-        $(selectorItem).on('change',function(e) {
-            var lang = $(this).val();
-            var parser = document.createElement('a');
-            parser.href = window.location.href;
-            var url = parser.protocol+'//'+parser.host+parse.search;
-            logObject.log(lang, 'changed');
-            // If there are no form : we can't use it
-            // No form, not targeturl : just see what happen
-            
-            $('<form>', {
-                'class':'ls-js-hidden',
-                'html': '<input type="hidden" name="lang" value="' + lang + '" />',
-                'action' : url,
-                'method': 'get'
-            }).appendTo('body').submit();
-        });
-    };
-
     var initTopMenuLanguageChanger = function(selectorItem, selectorGlobalForm){
         // $(selectorContainer).height($('#main-row').height());
         $(selectorItem).on('click', function(){
@@ -275,7 +256,12 @@ var ThemeScripts = function(){
     var initGlobal = function(){
         sliderSuffixClone();
         fixBodyPadding();
-        window.templateCore.hideQuestionWithRelevanceSubQuestion();
+        if(jQuery.isFunction(window.templateCore.hideQuestionWithRelevanceSubQuestion)) {
+            window.templateCore.hideQuestionWithRelevanceSubQuestion();
+        }
+        if(jQuery.isFunction(window.templateCore.hideMultipleColumn)) {
+            window.templateCore.hideMultipleColumn();
+        }
         hideEmptyPart();
     };
 
@@ -312,7 +298,6 @@ var ThemeScripts = function(){
         initUserForms: initUserForms,
         initGlobal: initGlobal,
         initWelcomePage: initWelcomePage,
-        initLanguageChanger: initLanguageChanger,
         focusFirst: focusFirst,
         sliderSuffixClone : sliderSuffixClone,
         fixBodyPadding : fixBodyPadding,

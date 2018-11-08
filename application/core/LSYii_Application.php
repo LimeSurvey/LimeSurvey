@@ -22,7 +22,7 @@ require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
 * @property CLogRouter $log Log router component.
 * @property string $language Returns the language that the user is using and the application should be targeted to.
 * @property CClientScript $clientScript CClientScript manages JavaScript and CSS stylesheets for views.
-* @property CHttpRequest $request The request component. 
+* @property CHttpRequest $request The request component.
 * @property CDbConnection $db The database connection.
 * @property string $baseUrl The relative URL for the application.
 * @property CWebUser $user The user session information.
@@ -30,7 +30,7 @@ require_once(dirname(dirname(__FILE__)).'/helpers/globals.php');
 * @property PluginManager $pluginManager The LimeSurvey Plugin manager
 * @property TbApi $bootstrap The bootstrap renderer
 * @property CHttpSession $session The HTTP session
-* 
+*
 */
 class LSYii_Application extends CWebApplication
 {
@@ -59,8 +59,10 @@ class LSYii_Application extends CWebApplication
     {
         /* Using some config part for app config, then load it before*/
         $baseConfig = require(__DIR__.'/../config/config-defaults.php');
-        if (file_exists(__DIR__.'/../config/config.php')) {
-            $userConfigs = require(__DIR__.'/../config/config.php');
+        $configdir = $baseConfig['configdir'];
+
+        if (file_exists( $configdir .  '/config.php')) {
+            $userConfigs = require(  $configdir .'/config.php');
             if (is_array($userConfigs['config'])) {
                 $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
@@ -115,17 +117,32 @@ class LSYii_Application extends CWebApplication
      * @return void
      */
     public function setConfigs() {
+
+        // TODO: check the whole configuration process. It must be easier and clearer. Too many repitions
+
         /* Default config */
         $coreConfig = require(__DIR__.'/../config/config-defaults.php');
         $emailConfig = require(__DIR__.'/../config/email.php');
         $versionConfig = require(__DIR__.'/../config/version.php');
         $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
         $this->config = array_merge($this->config,$coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+
+        /* Custom config file */
+        $configdir = $coreConfig['configdir'];
+        if (file_exists( $configdir .  '/config.php')) {
+            $userConfigs = require(  $configdir .'/config.php');
+            if (is_array($userConfigs['config'])) {
+
+                $this->config = array_merge($this->config, $userConfigs['config']);
+
+            }
+        }
+
+
         if(!file_exists(__DIR__.'/../config/config.php')) {
             /* Set up not done : then no other part to update */
             return;
-        }
-        /* User file config */
+        }/* User file config */
         $userConfigs = require(__DIR__.'/../config/config.php');
         if (is_array($userConfigs['config'])) {
              $this->config = array_merge($this->config, $userConfigs['config']);
@@ -346,7 +363,7 @@ class LSYii_Application extends CWebApplication
             } else {
                 /* Here we have different possibility : maybe 400/401/403/404 with debug < 2 except for forced superadmin (currently : the 4 part don't show intersting information with debug*/
                 /* 500 always if debug and for (forced) superadmin even if no debug is set (and try to show complete error in this case (see issue by olle about white page and log */
-                if ((Yii::app()->getConfig('debug')<1  /* || Permission::hasGlobalPermission('superadmin') */) || $event->exception->statusCode=='404') {
+                if ((Yii::app()->getConfig('debug')<1  /* || Permission::hasGlobalPermission('superadmin') */) || (isset($event->exception->statusCode) &&$event->exception->statusCode=='404')) {
                     Yii::app()->setComponent('errorHandler', array(
                         'errorAction'=>'surveys/error',
                     ));

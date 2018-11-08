@@ -19,26 +19,27 @@
 <!-- Date, selector layout -->
 
 <!-- answer -->
-<div class='{{coreClass}} form-group form-inline'>
-    <label for='answer{{name}}' class='sr-only control-label'>
-        {{ sprintf(gT('Date in the format: %s'), dateformatdetails) }}
-    </label>
-    <div id="answer{{name}}_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="{{name}}"><!-- data-basename used in js function -->
-        {{ C.Html.textField(name,dateoutput,{
-            'id' : "answer" ~ name,
-            'class' : "form-control date-control date",
-            'aria-describedby' : "ls-question-text-" ~ name,
-        }) }}
-        <div class="input-group-addon btn btn-primary">
-            <i class="fa fa-calendar" aria-hidden="true"></i><span class="sr-only"> {{ gT("Open the date time chooser") }}</span>
+<div class='form-inline'>
+    <div class='{{coreClass}} form-group'>
+        <label for='answer{{name}}' class='sr-only control-label'>
+            {{ sprintf(gT('Date in the format: %s'), dateformatdetails) }}
+        </label>
+        <div id="answer{{name}}_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="{{name}}"><!-- data-basename used in js function -->
+            {{ C.Html.textField(name,dateoutput,{
+                'id' : "answer" ~ name,
+                'class' : "form-control date-control date",
+                'aria-describedby' : "ls-question-text-" ~ name,
+            }) }}
+            <div class="input-group-addon btn btn-primary">
+                <i class="fa fa-calendar" aria-hidden="true"></i><span class="sr-only"> {{ gT("Open the date time chooser") }}</span>
+            </div>
         </div>
+        {% if(hidetip) %}
+        <p class="tip help-block" aria-hidden='true'>
+           {{ sprintf(gT('Format: %s'),dateformatdetails) }}
+        </p>
+        {% endif %}
     </div>
-    {% if(hidetip) %}
-    <p class="tip help-block">
-       {{ sprintf(gT('Format: %s'),dateformatdetails) }}
-    </p>
-    {% endif %}
-
 </div>
 
 <div class='hidden' style='display:none'>
@@ -52,8 +53,8 @@
     {# get the same default value than qanda_helper #}
     {% set aJsonOption = json_encode({
             'format' : dateformatdetailsjs,
-            'minDate' : mindate[0] == '{' ? '1900-01-01' : mindate,
-            'maxDate' : maxdate[0] == '{' ? '2037-12-31' : maxdate,
+            'minDate' : '{' in mindate ? '1900-01-01' : mindate,
+            'maxDate' : '{' in maxdate ? '2037-12-31' : maxdate,
             'stepping' : minuteStep,
             'sideBySide' :  true
         })
