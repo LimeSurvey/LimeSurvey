@@ -2024,11 +2024,11 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
             }
 
             //Check if datestamp is set => throws no default error on importing
-            if(!isset($oSurvey->datestamp)){
+            if($oSurvey->hasAttribute('datestamp') && !isset($oSurvey->datestamp)){
                 $oSurvey->datestamp = '1980-01-01 00:00:01';
             } 
             //Check if startdate is set => throws no default error on importing
-            if(!isset($oSurvey->startdate)){
+            if($oSurvey->hasAttribute('startdate') && !isset($oSurvey->startdate)){
                 $oSurvey->startdate = '1980-01-01 00:00:01';
             } 
 
