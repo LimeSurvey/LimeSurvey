@@ -665,13 +665,11 @@ class responses extends Survey_Common_Action
      */
     public function actionDeleteAttachments()
     {
-        Yii::import('application.helpers.admin.ajax_helper', true);
-
         $request     = Yii::app()->request;
-        $surveyid    = (int) $request->getPost('surveyid');
-        $sid         = (int) $request->getPost('sid');
+        $surveyid    = (int) $request->getParam('surveyid');
+        $sid         = (int) $request->getParam('sid');
         $surveyId    = $sid ? $sid : $surveyid;
-        $responseId  = (int) $request->getPost('sResponseId');
+        $responseId  = (int) $request->getParam('sResponseId');
         $stringItems = json_decode($request->getPost('sItems'));
         // Cast all ids to int.
         $items       = array_map(
@@ -682,38 +680,47 @@ class responses extends Survey_Common_Action
             is_array($stringItems) ? $stringItems : array()
         );
         $responseIds = $responseId ? array($responseId) : $items;
-
+        if(!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        if(!$request->isPostRequest) {
+            throw new CHttpException(405, gT("You need post for this action."));
+        }
+        Yii::import('application.helpers.admin.ajax_helper', true);
         $allErrors = array();
         $allSuccess = 0;
 
-        if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
-            foreach ($responseIds as $responseId) {
-                $response = Response::model($surveyId)->findByPk($responseId);
-                if (!empty($response)) {
-                    list($success, $errors) = $response->deleteFilesAndFilename();
-                    if (empty($errors)) {
-                        $allSuccess += $success;
-                    } else {
-                        // Could not delete all files.
-                        $allErrors = array_merge($allErrors, $errors);
-                    }
+        foreach ($responseIds as $responseId) {
+            $response = Response::model($surveyId)->findByPk($responseId);
+            if (!empty($response)) {
+                list($success, $errors) = $response->deleteFilesAndFilename();
+                if (empty($errors)) {
+                    $allSuccess += $success;
                 } else {
-                    $allErrors[] = sprintf(gT('Found no response with ID %d'), $responseId);
+                    // Could not delete all files.
+                    $allErrors = array_merge($allErrors, $errors);
                 }
-            }
-
-            if ($allErrors) {
-                ls\ajax\AjaxHelper::outputError(
-                    gT('Error: Could not delete some files: ').implode(', ', $allErrors)
-                );
             } else {
-                // All is OK.
-                ls\ajax\AjaxHelper::outputSuccess(sprintf(ngT('%d file deleted.|%d files deleted.', $allSuccess), $allSuccess));
+                $allErrors[] = sprintf(gT('Found no response with ID %d'), $responseId);
             }
-        } else {
-            // No permission.
-            ls\ajax\AjaxHelper::outputNoPermission();
         }
+        if (!empty($allErrors)) {
+            $message = gT('Error: Could not delete some files: ').implode(', ', $allErrors);
+            if($request->isAjaxRequest) {
+                ls\ajax\AjaxHelper::outputError(
+                    $message
+                );
+                Yii::app()->end();
+            }
+            Yii::app()->setFlashMessage($message,'error');
+            $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$surveyId));
+        }
+        $message = sprintf(ngT('%d file deleted.|%d files deleted.', $allSuccess), $allSuccess);
+        if($request->isAjaxRequest) {
+            ls\ajax\AjaxHelper::outputSuccess($message);
+            Yii::app()->end();
+        }
+        Yii::app()->setFlashMessage($message,'success');
         $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$surveyId));
     }
 

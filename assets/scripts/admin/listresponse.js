@@ -124,6 +124,24 @@ function onDocumentReadyListresponse() {
     });
 
 }
+function confirmGridAction(element) {
+    var actionUrl = $(element).attr('href');
+    $.bsconfirm($(element).data('confirm-text'),$(element).data('confirm-utf8'),function onClickOK() {
+        $('#responses-grid').yiiGridView('update', {
+            type : 'POST',
+            url : actionUrl, // No need to add csrfToken, already in ajaxSetup
+            success: function(data) {
+                jQuery('#responses-grid').yiiGridView('update');
+                $('#identity__bsconfirmModal').modal('hide');
+                // todo : show an success alert box
+            },
+            error: function (request, status, error) {
+                $('#identity__bsconfirmModal').modal('hide');
+                alert(request.responseText);// Use a better alert box (see todo success)
+            }
+        });
+    });
+}
 
 $(document).on('ready pjax:scriptcomplete',function(){
     onDocumentReadyListresponse();
