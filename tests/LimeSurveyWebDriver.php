@@ -32,6 +32,10 @@ class LimeSurveyWebDriver extends RemoteWebDriver
             )
         );
         $langSelectOption->click();
+        $langSubmit = $this->findElement(
+            WebDriverBy::cssSelector('button[value=changelang]')
+        );
+        $langSubmit->click();
     }
 
     /**
