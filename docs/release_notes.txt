@@ -36,6 +36,20 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 3.15.3 (build 181018) to 3.15.4 (build 181019)   November 08, 2018
+-New feature : list image in Survey for Brand logo file in Theme option (Denis Chenu)
+-Fixed issue #14171: Survey owner without template edit right can not upload logo (Denis Chenu)
+-Fixed issue #14180: Multiple logo filename with same url in dropdown (Denis Chenu)
+-Fixed issue #14227: Some token with existing reponse can send PHP Warning about seed (Denis Chenu)
+-Fixed issue: HTML quotes not properly decoded in VV export file header (Carsten Schmitz)
+-Fixed issue: VV import not working if datestamps are off (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Finnish by jeskiv, Jmantysalo
+#Updated translation: Norwegian (Bokmål) by pmonstad
+
 Changes from 3.15.2 (build 181107) to 3.15.3 (build 181018)   November 08, 2018
 -Fixed issue #11845: Relevance Equation code is missing syntax highlighting and not recognising question variables (Dominik Vitt)
 -Fixed issue #14211 : no keyboard navigation available with language changer (Denis Chenu)
