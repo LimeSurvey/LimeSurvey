@@ -112,7 +112,6 @@ class themeoptions  extends Survey_Common_Action
                     $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions/sa/updatesurvey", ['surveyid'=>$sid, 'sid'=>$sid]));
                 }
             }
-
             $this->_updateCommon($model, $sid);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
@@ -343,8 +342,9 @@ class themeoptions  extends Survey_Common_Action
 
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         $aData = array(
-            'model'=>$model,
-            'templateOptionPage' => $templateOptionPage
+            'model' => $model,
+            'templateOptionPage' => $templateOptionPage,
+            'sid' => $sid
         );
 
         if ($sid !== null) {
