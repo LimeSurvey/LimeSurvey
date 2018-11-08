@@ -72,7 +72,7 @@
         <container>on</container>
         <bodyanimation>fadeInRight</bodyanimation>
         <brandlogo>on</brandlogo>
-        <brandlogofile>./files/logo.png</brandlogofile>
+        <brandlogofile>themes/survey/vanilla/files/logo.png</brandlogofile>
         <font>noto</font>
         <showpopups>1</showpopups>
         <showclearall>off</showclearall>

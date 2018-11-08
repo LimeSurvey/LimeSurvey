@@ -775,7 +775,7 @@
                                 {% endfor %}
 
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    {% set backgroundimagefileOptions = '<option data-lightbox-src="' ~ backgroundimagefileInheritPreview ~ '" value="inherit">' ~ gT("Inherit")~ ' [' ~ gT("inherited value:") ~ ' ' ~ backgroundimagefileInheritFilename ~ ')</option>' ~ backgroundimagefileOptions %}
+                                    {% set backgroundimagefileOptions = '<option data-lightbox-src="' ~ backgroundimagefileInheritPreview ~ '" value="inherit">' ~ gT("Inherit")~ ' [' ~ gT("inherited value:") ~ ' ' ~ backgroundimagefileInheritFilename ~ ']</option>' ~ backgroundimagefileOptions %}
                                 {% endif %}
 
                                 {{ backgroundimagefileOptions }}
@@ -830,7 +830,7 @@
                                 {% endfor %}
 
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    {% set brandlogofileOptions = '<option data-lightbox-src="' ~ brandlogofileInheritPreview ~ '" value="inherit">' ~ gT("Inherit")~ ' [' ~ gT("inherited value:") ~ ' ' ~ brandlogofileInheritFilename ~ ')</option>' ~ brandlogofileOptions %}
+                                    {% set brandlogofileOptions = '<option data-lightbox-src="' ~ brandlogofileInheritPreview ~ '" value="inherit">' ~ gT("Inherit")~ ' [' ~ gT("inherited value:") ~ ' ' ~ brandlogofileInheritFilename ~ ']</option>' ~ brandlogofileOptions %}
                                 {% endif %}
 
                                 {{ brandlogofileOptions }}

@@ -69,7 +69,7 @@
     <options>
         <ajaxmode>off</ajaxmode>
         <brandlogo>on</brandlogo>
-        <brandlogofile>./files/logo.png</brandlogofile>
+        <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
         <container>on</container>
         <backgroundimage>off</backgroundimage>
         <backgroundimagefile>./files/pattern.png</backgroundimagefile>
