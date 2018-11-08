@@ -248,6 +248,11 @@ populateCanswersSelectObject = function() {
 
     this.fun = function(evt) {
 
+        // preselect the first option if select object value is null
+        if ($(that.cquestionsId).val() === null){
+            $(that.cquestionsId+" option:first").attr('selected','selected');
+        }
+
         var fname = $(that.cquestionsId).val();
         // empty the canswers Select
         $(that.canswersId + ' option').remove();
