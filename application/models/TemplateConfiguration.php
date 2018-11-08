@@ -841,17 +841,13 @@ class TemplateConfiguration extends TemplateConfig
         $oTemplate->setOptionInheritance();
 
         $oOptions = (array) $oSimpleInheritanceTemplate->oOptions;
-        // replace database values with translated text, to match labels on the page
+        // translation of database values, to match labels on the page
         foreach ($oOptions as $key=>$value){
-            if ($key == 'showpopups'){
-                $oOptions[$key] = str_replace(array('1', '0', '-1'), array(gT("Popup"), gT("On page"), gT("No")), $value);
-            } else {
-                if ($value == 'on'){
-                    $oOptions[$key] = str_replace('on',gT('Yes'), $value);
-                } elseif ($value == 'off'){
-                    $oOptions[$key] = str_replace('off',gT('No'), $value);
+                if ($key == 'showpopups'){
+                    $oOptions[$key] = str_replace(array('1', '0', '-1'), array(gT("Popup"), gT("On page"), gT("No")), $value);
+                } else {
+                    $oOptions[$key] = str_replace(array('on', 'off', 'top', 'bottom'), array(gT("Yes"), gT("No"), gT("Top"), gT("Bottom")), $value);
                 }
-            }
         }
 
         //We add some extra values to the option page

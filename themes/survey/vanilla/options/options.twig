@@ -113,7 +113,7 @@
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input name='ajaxmode' type='radio' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
-                                        {{ gT("Inherit") }} [{{gT(oParentOptions.brandlogo)}}]
+                                        {{ gT("Inherit") }} [{{ oParentOptions.brandlogo }}]
                                     </label>
                                 {% endif %}
                             </div>
@@ -141,7 +141,7 @@
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='container' value='inherit' class='selector_option_radio_field simple_edit_options_container ' data-id='container'/>
-                                        {{ gT("Inherit") }} [{{gT(oParentOptions.brandlogo)}}]
+                                        {{ gT("Inherit") }} [{{ oParentOptions.brandlogo }}]
                                     </label>
                                 {% endif %}
                             </div>
@@ -167,7 +167,33 @@
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='hideprivacyinfo' value='inherit' class='selector_option_radio_field simple_edit_options_hideprivacyinfo ' data-id='hideprivacyinfo'/>
-                                        {{ gT("Inherit") }} [{{gT(oParentOptions.brandlogo)}}]
+                                        {{ gT("Inherit") }} [{{ oParentOptions.brandlogo }}]
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Show Clear And Exit #}
+                <div class='col-sm-12 col-md-4 col-lg-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_showclearall' class='control-label'> {{ gT("Show Clear All Button") }} </label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='showclearall' value='on' class='selector_option_radio_field simple_edit_options_showclearall ' data-id='showclearall'/>
+                                    {{ gT("Yes") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='showclearall' value='off' class='selector_option_radio_field simple_edit_options_showclearall ' data-id='showclearall'/>
+                                    {{ gT("No") }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default" title="{{ gT("Inherited value:") }} ">
+                                        <input type='radio' name='showclearall' value='inherit' class='selector_option_radio_field simple_edit_options_showclearall ' data-id='showclearall'/>
+                                        {{ gT("Inherit") }} [{{ oParentOptions.showclearall }}]
                                     </label>
                                 {% endif %}
                             </div>
@@ -178,6 +204,33 @@
 
             {# Second settings row #}
             <div class='row action_hide_on_inherit'>
+
+                {# questionhelptextposition #}
+                <div class='col-sm-12 col-md-4 col-lg-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_questionhelptextposition' class='control-label'>{{ gT("Question help text position") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='questionhelptextposition' value='top' class='selector_option_radio_field simple_edit_options_questionhelptextposition ' data-id='questionhelptextposition'/>
+                                    {{ gT("Top") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='questionhelptextposition' value='bottom' class='selector_option_radio_field simple_edit_options_questionhelptextposition ' data-id='questionhelptextposition'/>
+                                    {{ gT("Bottom") }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='questionhelptextposition' value='inherit' class='selector_option_radio_field simple_edit_options_questionhelptextposition ' data-id='questionhelptextposition'/>
+                                        {{ gT("Inherit") }} [{{ oParentOptions.questionhelptextposition }}]
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 {# Show popups #}
                 <div class='col-sm-12 col-md-4 col-lg-4'>
                     <div class='form-group row'>
@@ -200,35 +253,9 @@
                                     {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                         <label class="btn btn-default" {{ showpopups_disabled }}>
                                             <input type='radio' name='showpopups' value='inherit' class='selector_option_radio_field simple_edit_options_showpopups ' data-id='showpopups'/>
-                                            {{ gT("Inherit") }} [{{gT(oParentOptions.showpopups)}}]
+                                            {{ gT("Inherit") }} [{{ oParentOptions.showpopups }}]
                                         </label>
                                     {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {# Show Clear And Exit #}
-                <div class='col-sm-12 col-md-2'>
-                    <div class='form-group row'>
-                        <label for='simple_edit_options_showclearall' class='control-label'> {{ gT("Show Clear All Button") }} </label>
-                        <div class='col-sm-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default">
-                                    <input type='radio' name='showclearall' value='on' class='selector_option_radio_field simple_edit_options_showclearall ' data-id='showclearall'/>
-                                    {{ gT("Yes") }}
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type='radio' name='showclearall' value='off' class='selector_option_radio_field simple_edit_options_showclearall ' data-id='showclearall'/>
-                                    {{ gT("No") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-default" title="{{ gT("Inherited value:") }} ">
-                                        <input type='radio' name='showclearall' value='inherit' class='selector_option_radio_field simple_edit_options_showclearall ' data-id='showclearall'/>
-                                        {{ gT("Inherit") }}
-                                    </label>
-                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -259,7 +286,7 @@
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='brandlogo' value='inherit' class='selector_option_radio_field ' data-id='simple_edit_options_brandlogo'/>
-                                        {{ gT("Inherit") }} [{{gT(oParentOptions.brandlogo)}}]
+                                        {{ gT("Inherit") }} [{{ oParentOptions.brandlogo }}]
                                     </label>
                                 {% endif %}
                             </div>

@@ -102,6 +102,7 @@
         <crosshover>off</crosshover>
         <showpopups>1</showpopups>
         <showclearall>off</showclearall>
+        <questionhelptextposition>top</questionhelptextposition>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->
