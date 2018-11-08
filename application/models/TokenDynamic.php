@@ -631,7 +631,12 @@ class TokenDynamic extends LSActiveRecord
                 'class'=>'CCheckBoxColumn',
                 'selectableRows' => '100',
             ),
-
+            array(
+                'header' => gT('Action'),
+                'class'=>'bootstrap.widgets.TbButtonColumn',
+                'template'=>'{viewresponse}{previewsurvey}',
+                'buttons'=> $this->getGridButtons(),
+            ),
             array(
                 'header' => gT('Action'),
                 'filter'=>false,
@@ -789,6 +794,48 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
+     * Return the buttons columns
+     * @see https://www.yiiframework.com/doc/api/1.1/CButtonColumn
+     * @see https://bugs.limesurvey.org/view.php?id=14219
+     * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response : all page is reloaded (not only grid)
+     * @return array
+     */
+    public function getGridButtons()
+    {
+        /* Did we need to set confirm script in params ? */
+        $scriptConfirm = "function(event) { "
+                . "event.preventDefault();"
+                . "confirmGridAction(this)"
+                . "}";
+        /* viewresponse button */
+        $gridButtons['viewresponse'] = array(
+            'label'=>'<span class="sr-only">'.gT("View response details").'</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("admin/responses/sa/viewbytoken",array("surveyid"=>'.self::$sid.',"token"=>$data->token));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("View response details")
+            ),
+            'visible'=> '$data->survey->active == "Y" && $data->survey->anonymized != "Y" && count($data->responses) > 0',
+        );
+        /* previewsurvey button */
+        $gridButtons['previewsurvey'] = array(
+            'label'=>'<span class="sr-only">'.gT("Launch the survey with this token").'</span><span class="fa fa-cog" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("/survey/index",array("sid"=>'.self::$sid.',"token"=>$data->token,"newtest"=>"Y"));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs",
+                'target'=>"_blank",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("Launch the survey with this token")
+            ),
+        );
+        return $gridButtons;
+    }
+
+    /**
+     * @deprecated
      * @return string
      */
     public function getbuttons()

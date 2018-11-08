@@ -283,7 +283,6 @@ class SurveyDynamic extends LSActiveRecord
                 . "}";
 
         /* detail button */
-        $sViewUrl     = 
         $gridButtons['detail'] = array(
             'label'=>'<span class="sr-only">'.gT("View response details").'</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
             'imageUrl'=>false,
@@ -345,7 +344,7 @@ class SurveyDynamic extends LSActiveRecord
                 'data-confirm-utf8' => json_encode(array("confirm_ok" =>gT("Yes"),"confirm_cancel" => gT("No"))),
                 'data-confirm-text' => gT("Delete all files of this response"),
             ),
-            'click' => $script,
+            'click' => $scriptConfirm,
         );
         /* delete  button */
         $gridButtons['delete'] = array(
@@ -360,7 +359,7 @@ class SurveyDynamic extends LSActiveRecord
                 'data-confirm-utf8' => json_encode(array("confirm_ok" =>gT("Yes"),"confirm_cancel" => gT("No"))),
                 'data-confirm-text' => gT("Delete all files of this response"),
             ),
-            'click' => $script,
+            'click' => $scriptConfirm,
         );
         return $gridButtons;
     }
