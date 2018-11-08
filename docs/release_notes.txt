@@ -35,6 +35,23 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 3.15.2 (build 181107) to 3.15.3 (build 181018)   November 08, 2018
+-Fixed issue #11845: Relevance Equation code is missing syntax highlighting and not recognising question variables (Dominik Vitt)
+-Fixed issue #14211 : no keyboard navigation available with language changer (Denis Chenu)
+-Fixed issue: Condition designer doesn't show predefined answers on first load (Dominik Vitt)
+-Fixed issue: Selected survey language for browsing responses was not used in detail view or queXML PDF view (Carsten Schmitz)
+-Fixed issue: Update not possible from pre 3.x versions (Carsten Schmitz)
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German by c_schmitz
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Papiamento (Curaçao and Bonaire) by c_schmitz
+#Updated translation: Romanian by cdorin
+
+
 Changes from 3.15.1 (build 181017) to 3.15.2 (build 181107)  November 07, 2018
 
 -New feature: allow to change config file location (LouisGac)
