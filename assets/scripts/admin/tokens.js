@@ -349,12 +349,11 @@ var startEditToken = function(){
     var $that       = $(this),
         $sid        = $that.data('sid'),
         $tid        = $that.data('tid'),
-        $actionUrl  = $that.data('url'),
+        $actionUrl  = $that.data('url') || $that.attr("href"),
         $modal      = $('#editTokenModal'),
         $modalBody  = $modal.find('.modal-body'),
         $ajaxLoader = $('#ajaxContainerLoading2'),
         $oldModalBody   = $modalBody.html();
-
     $ajaxLoader.show();
     $modal.modal('show');
     // Ajax request
@@ -418,7 +417,35 @@ var startEditToken = function(){
             console.ls.error(html);
         }
     });
+    return false;
 };
+
+/* Todo : move this function to admin base grig.js */
+var noaction = function() {
+    return false;
+}
+var confirmGridAction = function() {
+    console.log($(this));
+    var actionUrl = $(this).attr('href');
+    var text = $(this).data('confirm-text') || $(this).attr('title') || $(this).data('original-title');
+    var utf8 = $(this).data('confirm-utf8') || LS.lang.confirm;
+    var grid = $(this).closest(".grid-view");
+    $.bsconfirm(text,utf8,function onClickOK() {
+        $(grid).yiiGridView('update', {
+            type : 'POST',
+            url : actionUrl, // No need to add csrfToken, already in ajaxSetup
+            success: function(data) {
+                $(grid).yiiGridView('update');
+                $('#identity__bsconfirmModal').modal('hide');
+                // todo : show an success alert box
+            },
+            error: function (request, status, error) {
+                $('#identity__bsconfirmModal').modal('hide');
+                alert(request.responseText);// Use a better alert box (see todo success)
+            }
+        });
+    });
+}
 
 var conditionid=1;
 function checkbounces() {

@@ -5,6 +5,9 @@
   align-content: bottom;
   height: 3em; }
 
+.grid-view .button-column {
+  white-space: nowrap; }
+
 .square {
   background: #0f3e12;
   border-radius: 0.6em;

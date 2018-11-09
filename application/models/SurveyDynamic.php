@@ -317,6 +317,7 @@ class SurveyDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT("Edit this response")
             ),
+            'visible'=> 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update').')',
         );
         /* downloadfile button */
         $gridButtons['downloadfiles'] = array(
@@ -336,7 +337,7 @@ class SurveyDynamic extends LSActiveRecord
             'label'=>'<span class="sr-only">'.gT("Delete all files of this response").'</span><span class="fa fa-paperclip text-danger" aria-hidden="true"></span>',
             'imageUrl'=>false,
             'url' => 'App()->createUrl("admin/responses/sa/actionDeleteAttachments",array("surveyid"=>'.self::$sid.',"sResponseId"=>$data->id));',
-            'visible'=> $surveyHasFileUploadQuestion.' && Response::model('.self::$sid.')->findByPk($data->id)->someFileExists()',
+            'visible'=> Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && $surveyHasFileUploadQuestion.' && Response::model('.self::$sid.')->findByPk($data->id)->someFileExists()',
             'options' => array(
                 'class' => "btn btn-default btn-xs btn-deletefiles",
                 'data-toggle' => "tooltip",
@@ -351,12 +352,11 @@ class SurveyDynamic extends LSActiveRecord
             'label'=>'<span class="sr-only">'.gT("Delete this response").'</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
             'imageUrl'=>false,
             'url' => 'App()->createUrl("admin/responses/sa/actionDelete",array("surveyid"=>'.self::$sid.',"sResponseId"=>$data->id));',
-            'visible'=> $surveyHasFileUploadQuestion.' && Response::model('.self::$sid.')->findByPk($data->id)->someFileExists()',
+            'visible'=> 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete').')',
             'options' => array(
                 'class' => "btn btn-default btn-xs btn-deletefiles",
                 'data-toggle' => "tooltip",
                 'title' => gT("Delete all files of this response"),
-                'data-confirm-utf8' => json_encode(array("confirm_ok" =>gT("Yes"),"confirm_cancel" => gT("No"))),
                 'data-confirm-text' => gT("Delete all files of this response"),
             ),
             'click' => $scriptConfirm,
