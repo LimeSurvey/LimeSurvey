@@ -108,8 +108,9 @@ const globalWindowMethods = {
         $('<input type="hidden"/>').attr('name', name).attr('value', value).appendTo($(form));
     },
     fixAccordionPosition : () => {
-        $('#accordion').on('shown.bs.collapse',".panel-collapse.collapse", function () {
-            $('#accordion').find('.collapse').not('#'+$(this).attr('id')).collapse('hide');
+        $('#accordion').on('shown.bs.collapse',".panel-collapse.collapse", function (e) {
+            if(e.target != this) return;
+            $('#accordion').find('.panel-collapse.collapse').not('#'+$(this).attr('id')).collapse('hide');
             setTimeout(function(){
                 $('html, body').animate({
                     scrollTop: $(this).closest('.panel.panel-default').offset().top-20
