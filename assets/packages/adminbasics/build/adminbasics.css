@@ -5,8 +5,9 @@
   align-content: bottom;
   height: 3em; }
 
-.grid-view .button-column {
-  white-space: nowrap; }
+.grid-view .table tbody .button-column {
+  white-space: nowrap;
+  text-align: initial; }
 
 .square {
   background: #0f3e12;

@@ -82,7 +82,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         ),
                         array(
                             'class'=>'bootstrap.widgets.TbButtonColumn',
-                            'template'=>'{detail}{quexmlpdf}{edit}{downloadfiles}{deletefiles}',
+                            'template'=>'{detail}{quexmlpdf}{edit}{downloadfiles}{deletefiles}{deleteresponse}',
                             //~ 'htmlOptions' => array('class' => 'text-left response-buttons'),
                             'buttons'=> $model->getGridButtons('responses-grid'),
                         ),

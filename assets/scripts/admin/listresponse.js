@@ -124,9 +124,11 @@ function onDocumentReadyListresponse() {
     });
 
 }
-function confirmGridAction(element) {
-    var actionUrl = $(element).attr('href');
-    $.bsconfirm($(element).data('confirm-text'),$(element).data('confirm-utf8'),function onClickOK() {
+function confirmGridAction() {
+    var actionUrl = $(this).attr('href');
+    var text = $(this).data('confirm-text') || $(this).attr('title') || $(this).data('original-title');
+    var utf8 = $(this).data('confirm-utf8') || LS.lang.confirm;
+    $.bsconfirm(text,utf8,function onClickOK() {
         $('#responses-grid').yiiGridView('update', {
             type : 'POST',
             url : actionUrl, // No need to add csrfToken, already in ajaxSetup
@@ -141,6 +143,7 @@ function confirmGridAction(element) {
             }
         });
     });
+    return false;
 }
 
 $(document).on('ready pjax:scriptcomplete',function(){

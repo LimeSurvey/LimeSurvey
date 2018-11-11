@@ -634,7 +634,7 @@ class TokenDynamic extends LSActiveRecord
             array(
                 'header' => gT('Action'),
                 'class'=>'bootstrap.widgets.TbButtonColumn',
-                'template'=>'{viewresponse}{spacerviewresponse}{previewsurvey}{mail}{remind}{edit}{delete}',
+                'template'=>'{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{edit}{deletetoken}',
                 'buttons'=> $this->getGridButtons(),
             ),
             array(
@@ -808,6 +808,7 @@ class TokenDynamic extends LSActiveRecord
                 . "confirmGridAction(this)"
                 . "}";
         /* viewresponse button */
+        $baseView = (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y");
         $gridButtons['viewresponse'] = array(
             'label'=>'<span class="sr-only">'.gT("View response details").'</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
             'imageUrl'=>false,
@@ -817,21 +818,22 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT("View response details")
             ),
-            'visible'=> (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y") .' && count($data->responses) > 0',
+            'visible'=> $baseView .' && count($data->responses) > 0',
         );
         $gridButtons['spacerviewresponse'] = array(
             'label'=>'<span class="fa fa-list-alt text-muted" aria-hidden="true"></span>',
             'imageUrl'=>false,
             'url' => '#',
             'options' => array(
-                'class'=>"btn btn-default btn-xs",
+                'class'=>"btn btn-default btn-xs invisible",
                 'disabled' => 'disabled',
                 'title'=>''
             ),
-            'visible'=> (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y") .' && count($data->responses) == 0',
+            'visible'=> $baseView . ' && count($data->responses) == 0',
             'click' => 'noaction'
         );
         /* previewsurvey button */
+        $baseView = (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create') && $this->survey->active == "Y");
         $gridButtons['previewsurvey'] = array(
             'label'=>'<span class="sr-only">'.gT("Launch the survey with this token").'</span><span class="fa fa-cog" aria-hidden="true"></span>',
             'imageUrl'=>false,
@@ -842,19 +844,32 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT("Launch the survey with this token")
             ),
-            'visible'=> (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create') && $this->survey->active == "Y") . ' && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
+            'visible'=> $baseView . ' && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
         );
+        $gridButtons['previewsurveyspacer'] = array(
+            'label'=>'<span class="fa fa-cog  text-muted" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => '#',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs",
+                'disabled' => 'disabled',
+                'title'=> ''
+            ),
+            'visible'=> $baseView . ' && !( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
+        );
+        /* mail button */
+        $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
         /* mailing mail button */
         $gridButtons['mail'] = array(
             'label'=>'<span class="sr-only">'.gT("Send email invitation").'</span><span class="icon-invite" aria-hidden="true"></span>',// fa-enveloppe-o
             'imageUrl'=>false,
             'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>'.self::$sid.',"tokenids"=>$data->tid,));',
             'options' => array(
-                'class'=>"btn btn-default btn-xs",
+                'class'=>"btn btn-default btn-xs btn-email",
                 'data-toggle'=>"tooltip",
                 'title'=>gT("Send email invitation")
             ),
-            'visible'=> Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update') . ' && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
+            'visible'=> $baseView . ' && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
         );
         /* mailing remind button */
         $gridButtons['remind'] = array(
@@ -862,11 +877,22 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl'=>false,
             'url' => 'App()->createUrl("/admin/tokens/sa/remind",array("surveyid"=>'.self::$sid.',"tokenids"=>$data->tid));',
             'options' => array(
-                'class'=>"btn btn-default btn-xs",
+                'class'=>"btn btn-default btn-xs btn-email",
                 'data-toggle'=>"tooltip",
                 'title'=>gT("Send email reminder")
             ),
-            'visible'=> Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update') . ' && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
+            'visible'=> $baseView . ' && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
+        );
+        $gridButtons['mailspacer'] = array(
+            'label'=>'<span class="fa fa-envelope-o text-muted" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => '#',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs invisible",
+                'disabled' => 'disabled',
+                'title'=> ''
+            ),
+            'visible'=> $baseView . ' && ($data->emailstatus != "OK" || empty($data->email) || $data->completed != "N" || ($data->usesleft <= 0 && $data->survey->alloweditaftercompletion != "Y"))',
         );
         /* edit button button */
         $gridButtons['edit'] = array(
@@ -883,18 +909,20 @@ class TokenDynamic extends LSActiveRecord
             'click' => 'startEditToken'
         );
         /* delete button */
-        $gridButtons['delete'] = array(
+        $gridButtons['deletetoken'] = array(
             'label'=>'<span class="sr-only">'.gT('Delete survey participant').'</span><span class="text-warning fa fa-trash" aria-hidden="true"></span>',
             'imageUrl'=>false,
             'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>'.self::$sid.',"sItem"=>$data->tid,"ajax"=>"true"));',
             'options' => array(
-                'class'=>"btn btn-danger btn-xs btn-delete",
+                'class'=>"btn btn-default btn-xs btn-delete",
                 'data-toggle'=>"tooltip",
                 'title'=>gT('Delete survey participant'),
             ),
             'visible' => 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'delete').')',
             'click' => 'confirmGridAction'
         );
+        /* CPDB link */
+        $baseVisible = Permission::model()->hasGlobalPermission('participantpanel', 'read');
         return $gridButtons;
     }
 

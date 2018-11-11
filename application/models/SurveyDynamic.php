@@ -275,13 +275,6 @@ class SurveyDynamic extends LSActiveRecord
     public function getGridButtons()
     {
         $sBrowseLanguage=sanitize_languagecode(Yii::app()->request->getParam('browselang', ''));
-        $surveyHasFileUploadQuestion = hasFileUploadQuestion(self::$sid);
-        /* Did we need to set confirm script in params ? */
-        $scriptConfirm = "function(event) { "
-                . "event.preventDefault();"
-                . "confirmGridAction(this)"
-                . "}";
-
         /* detail button */
         $gridButtons['detail'] = array(
             'label'=>'<span class="sr-only">'.gT("View response details").'</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
@@ -320,11 +313,12 @@ class SurveyDynamic extends LSActiveRecord
             'visible'=> 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update').')',
         );
         /* downloadfile button */
+        $baseVisible = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid));
         $gridButtons['downloadfiles'] = array(
             'label'=>'<span class="sr-only">'.gT("Download all files in this response as a zip file").'</span><span class="fa fa-download text-success" aria-hidden="true"></span>',
             'imageUrl'=>false,
             'url' => 'App()->createUrl("admin/responses/sa/actionDownloadfiles",array("surveyid"=>'.self::$sid.',"sResponseId"=>$data->id));',
-            'visible'=> $surveyHasFileUploadQuestion.' && Response::model('.self::$sid.')->findByPk($data->id)->someFileExists()',
+            'visible'=> 'boolval('.$baseVisible.') && Response::model('.self::$sid.')->findByPk($data->id)->someFileExists()',
             'options' => array(
                 'class'=>"btn btn-default btn-xs",
                 'target'=>"_blank",
@@ -337,7 +331,7 @@ class SurveyDynamic extends LSActiveRecord
             'label'=>'<span class="sr-only">'.gT("Delete all files of this response").'</span><span class="fa fa-paperclip text-danger" aria-hidden="true"></span>',
             'imageUrl'=>false,
             'url' => 'App()->createUrl("admin/responses/sa/actionDeleteAttachments",array("surveyid"=>'.self::$sid.',"sResponseId"=>$data->id));',
-            'visible'=> Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && $surveyHasFileUploadQuestion.' && Response::model('.self::$sid.')->findByPk($data->id)->someFileExists()',
+            'visible'=> 'boolval('.$baseVisible.') && Response::model('.self::$sid.')->findByPk($data->id)->someFileExists()',
             'options' => array(
                 'class' => "btn btn-default btn-xs btn-deletefiles",
                 'data-toggle' => "tooltip",
@@ -345,21 +339,22 @@ class SurveyDynamic extends LSActiveRecord
                 'data-confirm-utf8' => json_encode(array("confirm_ok" =>gT("Yes"),"confirm_cancel" => gT("No"))),
                 'data-confirm-text' => gT("Delete all files of this response"),
             ),
-            'click' => $scriptConfirm,
+            'click' => 'confirmGridAction',
         );
         /* delete  button */
-        $gridButtons['delete'] = array(
+        $baseVisible = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete'));
+        $gridButtons['deleteresponse'] = array(
             'label'=>'<span class="sr-only">'.gT("Delete this response").'</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
             'imageUrl'=>false,
             'url' => 'App()->createUrl("admin/responses/sa/actionDelete",array("surveyid"=>'.self::$sid.',"sResponseId"=>$data->id));',
-            'visible'=> 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete').')',
+            'visible'=> 'boolval('.$baseVisible.')',
             'options' => array(
-                'class' => "btn btn-default btn-xs btn-deletefiles",
+                'class' => "btn btn-default btn-xs btn-delete",
                 'data-toggle' => "tooltip",
                 'title' => gT("Delete all files of this response"),
                 'data-confirm-text' => gT("Delete all files of this response"),
             ),
-            'click' => $scriptConfirm,
+            'click' => 'confirmGridAction',
         );
         return $gridButtons;
     }

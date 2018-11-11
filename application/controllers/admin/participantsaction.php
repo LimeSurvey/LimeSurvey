@@ -282,7 +282,7 @@ $url .= "_view"; });
         $surveys = Survey::model();
         //!!! Is this even possible to execute?
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                    $surveys->permission(Yii::app()->user->getId());
+            $surveys->permission(Yii::app()->user->getId());
         }
 
         /** @var Survey[] $aSurveyNames */
@@ -300,18 +300,17 @@ $url .= "_view"; });
         // if superadmin all the records in the cpdb will be displayed
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $iTotalRecords = Participant::model()->count();
-        }
-        // if not only the participants on which he has right on (shared and owned)
-        else {
+        } else {// if not only the participants on which he has right on (shared and owned)
             $iUserId = Yii::app()->user->getId();
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
         $model = new Participant();
         $request = Yii::app()->request;
-        $participantParam = $request->getPost('Participant');
+        $participantParam = $request->getParam('Participant');
         if ($participantParam) {
             $model->setAttributes($participantParam, false);
         }
+        /* @todo : See when/where it's used */
         $searchcondition = $request->getPost('searchcondition');
         $searchparams = array();
         if ($searchcondition) {

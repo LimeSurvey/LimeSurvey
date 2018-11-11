@@ -425,7 +425,6 @@ var noaction = function() {
     return false;
 }
 var confirmGridAction = function() {
-    console.log($(this));
     var actionUrl = $(this).attr('href');
     var text = $(this).data('confirm-text') || $(this).attr('title') || $(this).data('original-title');
     var utf8 = $(this).data('confirm-utf8') || LS.lang.confirm;
@@ -445,6 +444,7 @@ var confirmGridAction = function() {
             }
         });
     });
+    return false;
 }
 
 var conditionid=1;
