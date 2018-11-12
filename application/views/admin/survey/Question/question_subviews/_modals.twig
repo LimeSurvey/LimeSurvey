@@ -10,12 +10,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
-                <h4 class="modal-title" id="quickaddModal">{{ gT('Enter your answers:') }}</h4>
+                <h4 class="modal-title" id="quickaddModal">{{ gT('Enter your labels:') }}</h4>
             </div>
 
             <div class="modal-body">
                 <p>
-                    {{ gT('Enter one answer per line. You can provide a code by separating code and answer text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab.') }}
+                    {{ gT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab.') }}
                 </p>
                 <textarea id='quickaddarea' class='tipme' title='' cols='100' rows='10' style='width:570px;'></textarea>
             </div>
@@ -34,18 +34,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
-                <h4 class="modal-title" id="labelsetbrowserModal">{{ gT('Available label sets:') }}</h4>
+                <h4 class="modal-title" id="labelsetbrowserModal">{{ gT('Manage label sets') }}</h4>
             </div>
 
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
-                            <label for="labelsets">{{ ('Please select a label set') }}</label>
+                            <label for="labelsets">{{ gT('Label sets list') }}</label>
                         </div>
                         <div class="col-sm-12">
                             <select id='labelsets' size='10' style='width:250px;'>
-                                <option>--{{ gT('Select label set') }}--</option>
+                                <option>--{{ gT('Label sets') }}--</option>
                             </select>
                         </div>
                         <div class="row">
@@ -73,7 +73,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
                 <h4 class="modal-title">
-                    {{ gT('Save as label set:') }}
+                    {{ gT('Save as label set') }}
                 </h4>
 
             </div>
@@ -85,7 +85,7 @@
                 </p>
                 <p>
                     <input type="radio" name="savelabeloption" id="replacelabel">
-                    <label for="replacelabel">{{ gT('Replace existing label set') }}
+                    <label for="replacelabel">{{ gT('Replace the existing record.') }}
                 </p>
             </div>
 
