@@ -802,11 +802,7 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getGridButtons()
     {
-        /* Did we need to set confirm script in params ? */
-        $scriptConfirm = "function(event) { "
-                . "event.preventDefault();"
-                . "confirmGridAction(this)"
-                . "}";
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_HEAD);
         /* viewresponse button */
         $baseView = (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y");
         $gridButtons['viewresponse'] = array(
@@ -830,7 +826,7 @@ class TokenDynamic extends LSActiveRecord
                 'title'=>''
             ),
             'visible'=> $baseView . ' && count($data->responses) == 0',
-            'click' => 'noaction'
+            'click' => 'noGridAction'
         );
         /* previewsurvey button */
         $baseView = (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create') && $this->survey->active == "Y");
@@ -851,11 +847,12 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl'=>false,
             'url' => '#',
             'options' => array(
-                'class'=>"btn btn-default btn-xs",
+                'class'=>"btn btn-default btn-xs btn-disable",
                 'disabled' => 'disabled',
                 'title'=> ''
             ),
-            'visible'=> $baseView . ' && !( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
+            'visible'=> $baseView . ' && !( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")',
+            'click' => 'noGridAction',
         );
         /* mail button */
         $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
@@ -928,10 +925,12 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl'=>false,
             'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("searchcondition"=>"participant_id||equal||".$data->participant_id))',
             'options' => array(
-                'class'=>"btn btn-default btn-xs",
+                'class'=>"btn btn-default btn-xs btn-participant",
+                'data-postparam' => json_encode(['searchcondition']),
                 'data-toggle'=>"tooltip",
                 'title'=>gT('View this participant in the central participants database'),
             ),
+            'click' => 'postGridAction',
             'visible' => 'boolval('.$baseVisible.') && $data->participant_id',
         );
         $gridButtons['viewparticipantspacer'] = array(
@@ -939,12 +938,12 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl'=>false,
             'url' => '#',
             'options' => array(
-                'class'=>"btn btn-default btn-xs disabled",
+                'class'=>"btn btn-default btn-xs invisible",
                 'data-toggle'=>"tooltip",
                 'title'=>"",
             ),
             'visible' => 'boolval('.$baseVisible.') && empty($data->participant_id)',
-            'script' => 'noGridAction',
+            'click' => 'noGridAction',
         );
         return $gridButtons;
     }

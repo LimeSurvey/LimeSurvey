@@ -1,5 +1,5 @@
 /* Todo : move this function to admin base grig.js */
-var noGridAction = function() {
+function noGridAction () {
     return false;
 }
 function confirmGridAction() {
@@ -21,5 +21,11 @@ function confirmGridAction() {
             }
         });
     });
+    return false;
+}
+function postGridAction() {
+    var actionUrl = $(this).attr('href');
+    var postparam = $(this).data('postparam');
+    /* @todo */
     return false;
 }

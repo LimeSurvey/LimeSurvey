@@ -420,33 +420,6 @@ var startEditToken = function(){
     return false;
 };
 
-/* Todo : move this function to admin base grig.js */
-var noaction = function() {
-    return false;
-}
-var confirmGridAction = function() {
-    var actionUrl = $(this).attr('href');
-    var text = $(this).data('confirm-text') || $(this).attr('title') || $(this).data('original-title');
-    var utf8 = $(this).data('confirm-utf8') || LS.lang.confirm;
-    var grid = $(this).closest(".grid-view");
-    $.bsconfirm(text,utf8,function onClickOK() {
-        $(grid).yiiGridView('update', {
-            type : 'POST',
-            url : actionUrl, // No need to add csrfToken, already in ajaxSetup
-            success: function(data) {
-                $(grid).yiiGridView('update');
-                $('#identity__bsconfirmModal').modal('hide');
-                // todo : show an success alert box
-            },
-            error: function (request, status, error) {
-                $('#identity__bsconfirmModal').modal('hide');
-                alert(request.responseText);// Use a better alert box (see todo success)
-            }
-        });
-    });
-    return false;
-}
-
 var conditionid=1;
 function checkbounces() {
     $("#dialog-modal").dialog('open');

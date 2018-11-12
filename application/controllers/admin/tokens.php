@@ -32,7 +32,6 @@ class tokens extends Survey_Common_Action
      */
     public function index($surveyid)
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = $surveyid;
         $iSurveyId = (int) $iSurveyId;
