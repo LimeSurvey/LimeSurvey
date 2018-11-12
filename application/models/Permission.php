@@ -744,7 +744,7 @@ class Permission extends LSActiveRecord
     }
 
     public static function getPermissionList(){
-        $aPermissions = self::getSurveyBasePermissions();
+        $aPermissions = array_merge(self::getSurveyBasePermissions(),self::getGlobalBasePermissions());
         return array_map(function($aPermission){
             return $aPermission['title'];
         }, $aPermissions);
