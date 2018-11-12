@@ -311,12 +311,13 @@ $url .= "_view"; });
             $model->setAttributes($participantParam, false);
         }
         /* @todo : See when/where it's used */
-        $searchcondition = $request->getPost('searchcondition');
+        $searchcondition = $request->getParam('searchcondition');
         $searchparams = array();
         if ($searchcondition) {
             $searchparams = explode('||', $searchcondition);
             $model->addSurveyFilter($searchparams);
         }
+        
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -406,7 +407,7 @@ $url .= "_view"; });
      */
     public function openEditParticipant()
     {
-        $participant_id = Yii::app()->request->getPost('participant_id');
+        $participant_id = Yii::app()->request->getParam('participant_id');
         if ($participant_id) {
             $model = Participant::model()->findByPk($participant_id);
             $operationType = "edit";

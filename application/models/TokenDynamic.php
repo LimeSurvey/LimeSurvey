@@ -634,7 +634,7 @@ class TokenDynamic extends LSActiveRecord
             array(
                 'header' => gT('Action'),
                 'class'=>'bootstrap.widgets.TbButtonColumn',
-                'template'=>'{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{edit}{deletetoken}',
+                'template'=>'{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{edit}{deletetoken}{viewparticipant}{viewparticipantspacer}',
                 'buttons'=> $this->getGridButtons(),
             ),
             array(
@@ -922,7 +922,30 @@ class TokenDynamic extends LSActiveRecord
             'click' => 'confirmGridAction'
         );
         /* CPDB link */
-        $baseVisible = Permission::model()->hasGlobalPermission('participantpanel', 'read');
+        $baseVisible = Permission::model()->hasGlobalPermission('participantpanel', 'read') && self::model(self::$sid)->count("participant_id is not null");
+        $gridButtons['viewparticipant'] = array(
+            'label'=>'<span class="sr-only">'.gT('View this participant in the central participants database').'</span><span class="icon-cpdb" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("searchcondition"=>"participant_id||equal||".$data->participant_id))',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs",
+                'data-toggle'=>"tooltip",
+                'title'=>gT('View this participant in the central participants database'),
+            ),
+            'visible' => 'boolval('.$baseVisible.') && $data->participant_id',
+        );
+        $gridButtons['viewparticipantspacer'] = array(
+            'label'=>'<span class="icon-cpdb text-muted" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => '#',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs disabled",
+                'data-toggle'=>"tooltip",
+                'title'=>"",
+            ),
+            'visible' => 'boolval('.$baseVisible.') && empty($data->participant_id)',
+            'script' => 'noGridAction',
+        );
         return $gridButtons;
     }
 
