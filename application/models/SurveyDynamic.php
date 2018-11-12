@@ -271,18 +271,13 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getButtons()
     {
-    	$sBrowseLanguage=sanitize_languagecode(Yii::app()->request->getParam('browselang', ''));
-        $sViewUrl     = App()->createUrl("/admin/responses/sa/view/surveyid/".self::$sid."/id/".$this->id);
-        $sViewPDFUrl = App()->createUrl("/admin/responses/sa/viewquexmlpdf/surveyid/".self::$sid."/id/".$this->id);
-        $sEditUrl     = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
-        $sDownloadUrl = App()->createUrl("admin/responses", array("sa"=>"actionDownloadfiles", "surveyid"=>self::$sid, "sResponseId"=>$this->id));
-        $sDeleteUrl   = convertGETtoPOST(App()->createUrl("admin/responses/sa/actionDelete/surveyid/".self::$sid."?surveyid=".self::$sid."&sResponseId=".$this->id));
-        $sAttachmentDeleteUrl   = convertGETtoPOST(App()->createUrl("admin/responses/sa/actionDeleteAttachments/?surveyid=".self::$sid."&sResponseId=".$this->id));
-        if (!empty($sBrowseLanguage)) {
-			$sViewUrl.='?browselang='.$sBrowseLanguage;
-			$sViewPDFUrl.='?browselang='.$sBrowseLanguage;
-			$sEditUrl.='?browselang='.$sBrowseLanguage;
-        }
+        $sBrowseLanguage=sanitize_languagecode(Yii::app()->request->getParam('browselang', ''));
+        $sViewUrl     = App()->createUrl("/admin/responses/sa/view/surveyid/".self::$sid,array("id" =>$this->id,"browselang"=>$sBrowseLanguage));
+        $sViewPDFUrl = App()->createUrl("/admin/responses/sa/viewquexmlpdf/surveyid/".self::$sid,array("id" =>$this->id,"browselang"=>$sBrowseLanguage));
+        $sEditUrl     = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid,array("id" =>$this->id,"browselang"=>$sBrowseLanguage));
+        $sDownloadUrl = App()->createUrl("admin/responses/sa/actionDownloadfiles/surveyid/".self::$sid, array( "surveyid"=>self::$sid, "sResponseId"=>$this->id));
+        $sDeleteUrl   = convertGETtoPOST(App()->createUrl("admin/responses/sa/actionDelete/surveyid/".self::$sid,array("surveyid"=>self::$sid,"sResponseId"=>$this->id)));
+        $sAttachmentDeleteUrl   = convertGETtoPOST(App()->createUrl("admin/responses/sa/actionDeleteAttachments/surveyid/".self::$sid,array("surveyid"=>self::$sid,"sResponseId"=>$this->id)));
         $button       = "";
 
         // View detail icon
