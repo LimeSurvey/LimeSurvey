@@ -47,7 +47,6 @@
     <files>
         <css>
             <add>css/variations/sea_green.css</add>
-            <remove>css/noTablesOnMobile.css</remove>
             <replace>css/animate.css</replace>
             <replace>css/theme.css</replace>
             <replace>css/custom.css</replace>
@@ -101,7 +100,6 @@
         <hideprivacyinfo>off</hideprivacyinfo>
         <crosshover>off</crosshover>
         <showpopups>1</showpopups>
-        <notables>1</notables>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->

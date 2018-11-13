@@ -320,7 +320,7 @@
 
             {# First settings row #}
             <div class='row action_hide_on_inherit'>
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
 
                     {# Ajaxmode setting #}
                     <div class='form-group row'>
@@ -348,7 +348,7 @@
                 </div>
 
                 {# Container #}
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_container' class='control-label'> {{ gT("Survey container") }} </label>
                         <div class='col-sm-12'>
@@ -374,7 +374,7 @@
                 </div>
 
                 {# Question Border #}
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_questionborder' class='control-label'>{{ gT("Question borders") }}</label>
                         <div class='col-sm-12'>
@@ -401,7 +401,7 @@
                 </div>
 
                 {# Question Shadow #}
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_questioncontainershadow' class='control-label'>{{ gT("Question shadow") }}</label>
                         <div class='col-sm-12'>
@@ -455,8 +455,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            
+            {# Second settings row #}
+            <div class='row action_hide_on_inherit'>
                 {# zebrastriping #}
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_zebrastriping' class='control-label'>{{ gT("Zebra-striped questions") }}</label>
                         <div class='col-sm-12'>
@@ -481,7 +485,7 @@
                     </div>
                 </div>
                 {# stickymatrixheaders #}
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_stickymatrixheaders' class='control-label'>{{ gT("Sticky array headers") }}</label>
                         <div class='col-sm-12'>
@@ -506,7 +510,7 @@
                     </div>
                 </div>
                 {# greyoutselected #}
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_greyoutselected' class='control-label'>{{ gT("Dim answered array rows") }}</label>
                         <div class='col-sm-12'>
@@ -531,7 +535,7 @@
                     </div>
                 </div>
                 {# hideprivacyinfo #}
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_hideprivacyinfo' class='control-label'>{{ gT("Hide privacy info") }}</label>
                         <div class='col-sm-12'>
@@ -556,7 +560,7 @@
                     </div>
                 </div>
                 {# crosshover #}
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+                <div class='col-sm-12 col-md-4 col-lg-2'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_crosshover' class='control-label'>{{ gT("Cross-hover in matrix questions") }}</label>
                         <div class='col-sm-12'>
@@ -573,35 +577,6 @@
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     <label class="btn btn-default">
                                         <input type='radio' name='crosshover' value='inherit' class='selector_option_radio_field simple_edit_options_crosshover ' data-id='crosshover'/>
-                                        {{ gT("Inherit") }}
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {# always activate no more tables #}
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
-                    <div class='form-group row'>
-                        <label for='simple_edit_options_notables' class='control-label'>{{ gT("Break tables") }}</label>
-                        <div class='col-sm-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default">
-                                    <input type='radio' name='notables' value='2' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                    {{ gT("Always on") }}
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type='radio' name='notables' value='1' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                    {{ gT("Small screens") }}
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type='radio' name='notables' value='0' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                    {{ gT("Off") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-default">
-                                        <input type='radio' name='notables' value='inherit' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
                                         {{ gT("Inherit") }}
                                     </label>
                                 {% endif %}

@@ -50,7 +50,6 @@
             <add>css/base.css</add>
             <add>css/ajaxify.css</add>
             <add>css/theme.css</add>
-            <add>css/noTablesOnMobile.css</add>
             <add>css/custom.css</add>
         </css>
         <js>
