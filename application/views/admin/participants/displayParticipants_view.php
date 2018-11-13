@@ -30,7 +30,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                             . "<div class='col-xs-12'>"
                                     . gT("Active filters:")
                                 . "<span class=''>&nbsp;&nbsp;</span>"
-                                . "<button id='removeAllFilters' class='btn btn-warning btn-xs'>".gT("Remove filters")."</button>"
+                                . "<button id='removeAllFilters' class='btn btn-warning btn-xs' data_url='".App()->createUrl("admin/participants/sa/displayParticipants")."'>".gT("Remove filters")."</button>"
                             . "</div>"
                         . "</div>";
                 $i=0;

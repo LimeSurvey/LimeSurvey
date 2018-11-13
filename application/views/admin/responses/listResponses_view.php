@@ -80,17 +80,12 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'class'=>'CCheckBoxColumn',
                             'selectableRows' => '100',
                         ),
-
                         array(
-                            'header' => '',
-                            'name' => 'actions',
-                            'id'=>'action',
-                            'value'=>'$data->buttons',
-                            'type'=>'raw',
-                            'htmlOptions' => array('class' => 'text-left response-buttons'),
-                            'filter'=>false,
+                            'class'=>'bootstrap.widgets.TbButtonColumn',
+                            'template'=>'{detail}{quexmlpdf}{edit}{downloadfiles}{deletefiles}{deleteresponse}',
+                            //~ 'htmlOptions' => array('class' => 'text-left response-buttons'),
+                            'buttons'=> $model->getGridButtons('responses-grid'),
                         ),
-
                         array(
                             'header' => 'id',
                             'name' => 'id',

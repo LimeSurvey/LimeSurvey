@@ -260,6 +260,9 @@ class tokens extends Survey_Common_Action
         if (!Permission::model()->hasSurveyPermission($iSid, 'tokens', 'delete')) {
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
+        if(!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("You need post for this action."));
+        }
         TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
         return true;
     }

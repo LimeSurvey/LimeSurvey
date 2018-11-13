@@ -631,15 +631,11 @@ class TokenDynamic extends LSActiveRecord
                 'class'=>'CCheckBoxColumn',
                 'selectableRows' => '100',
             ),
-
             array(
                 'header' => gT('Action'),
-                'filter'=>false,
-                'id'=>'action',
-                'name' => 'actions',
-                'value'=>'$data->buttons',
-                'type'=>'raw',
-                'htmlOptions' => array('class' => 'text-left'),
+                'class'=>'bootstrap.widgets.TbButtonColumn',
+                'template'=>'{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{edit}{deletetoken}{viewparticipant}{viewparticipantspacer}',
+                'buttons'=> $this->getGridButtons(),
             ),
 
             array(
@@ -789,87 +785,165 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
+     * Return the buttons columns
+     * @see https://www.yiiframework.com/doc/api/1.1/CButtonColumn
+     * @see https://bugs.limesurvey.org/view.php?id=14219
+     * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response : all page is reloaded (not only grid)
+     * @return array
+     */
+    public function getGridButtons()
+    {
+        /* viewresponse button */
+        $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y");
+        $gridButtons['viewresponse'] = array(
+            'label'=>'<span class="sr-only">'.gT("View response details").'</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("admin/responses/sa/viewbytoken",array("surveyid"=>'.self::$sid.',"token"=>$data->token));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("View response details")
+            ),
+            'visible'=> $baseView .' && count($data->responses) > 0',
+        );
+        $gridButtons['spacerviewresponse'] = array(
+            'label'=>'<span class="fa fa-list-alt text-muted" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => '#',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs invisible",
+                'disabled' => 'disabled',
+                'title'=>''
+            ),
+            'visible'=> $baseView . ' && count($data->responses) == 0',
+            'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
+        );
+        /* previewsurvey button */
+        $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create') && $this->survey->active == "Y");
+        $gridButtons['previewsurvey'] = array(
+            'label'=>'<span class="sr-only">'.gT("Launch the survey with this token").'</span><span class="fa fa-cog" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("/survey/index",array("sid"=>'.self::$sid.',"token"=>$data->token,"newtest"=>"Y"));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs",
+                'target'=>"_blank",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("Launch the survey with this token")
+            ),
+            'visible'=> $baseView . ' && ( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")'
+        );
+        $gridButtons['previewsurveyspacer'] = array(
+            'label'=>'<span class="fa fa-cog  text-muted" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => '#',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs invisible",
+                'disabled' => 'disabled',
+                'title'=> ''
+            ),
+            'visible'=> $baseView . ' && !( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")',
+            'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
+        );
+        /* mail button */
+        $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
+        /* mailing mail button */
+        $gridButtons['mail'] = array(
+            'label'=>'<span class="sr-only">'.gT("Send email invitation").'</span><span class="icon-invite" aria-hidden="true"></span>',// fa-enveloppe-o
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("/admin/tokens/sa/email",array("surveyid"=>'.self::$sid.',"tokenids"=>$data->tid,));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs btn-email",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("Send email invitation")
+            ),
+            'visible'=> $baseView . ' && ($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
+        );
+        /* mailing remind button */
+        $gridButtons['remind'] = array(
+            'label'=>'<span class="sr-only">'.gT("Send email reminder").'</span><span class="icon-remind" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("/admin/tokens/sa/remind",array("surveyid"=>'.self::$sid.',"tokenids"=>$data->tid));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs btn-email",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("Send email reminder")
+            ),
+            'visible'=> $baseView . ' && !($data->sent== "N" || empty($data->sent)) && $data->emailstatus == "OK" && $data->email && $data->completed == "N" && ($data->usesleft > 0 || $data->survey->alloweditaftercompletion == "Y")',
+        );
+        $gridButtons['mailspacer'] = array(
+            'label'=>'<span class="fa fa-envelope-o text-muted" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => '#',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs invisible",
+                'disabled' => 'disabled',
+                'title'=> ''
+            ),
+            'visible'=> $baseView . ' && ($data->emailstatus != "OK" || empty($data->email) || $data->completed != "N" || ($data->usesleft <= 0 && $data->survey->alloweditaftercompletion != "Y"))',
+        );
+        /* edit button button */
+        $gridButtons['edit'] = array(
+            'label'=>'<span class="sr-only">'.gT('Edit this survey participant').'</span><span class="fa fa-edit" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("/admin/tokens/sa/edit",array("iSurveyId"=>'.self::$sid.',"iTokenId"=>$data->tid,"ajax"=>"true"));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs btn-edit",
+                'data-toggle'=>"tooltip",
+                'title'=>gT('Edit this survey participant'),
+                'data-sid' => self::$sid
+            ),
+            'visible' => 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update').')',
+            'click' => 'startEditToken'
+        );
+        /* delete button */
+        $gridButtons['deletetoken'] = array(
+            'label'=>'<span class="sr-only">'.gT('Delete survey participant').'</span><span class="text-warning fa fa-trash" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("/admin/tokens/sa/deleteToken",array("sid"=>'.self::$sid.',"sItem"=>$data->tid,"ajax"=>"true"));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs btn-delete",
+                'data-toggle'=>"tooltip",
+                'title'=>gT('Delete survey participant'),
+            ),
+            'visible' => 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'delete').')',
+            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
+        );
+        /* CPDB link */
+        $baseVisible = intval(Permission::model()->hasGlobalPermission('participantpanel', 'read') && self::model(self::$sid)->count("participant_id is not null"));
+        $gridButtons['viewparticipant'] = array(
+            'label'=>'<span class="sr-only">'.gT('View this participant in the central participants database').'</span><span class="icon-cpdb" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("#" => json_encode(["searchcondition"=>"participant_id||equal||".$data->participant_id],JSON_FORCE_OBJECT)))',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs btn-participant",
+                'data-toggle'=>"tooltip",
+                'title'=>gT('View this participant in the central participants database'),
+            ),
+            'click' => 'function(event){ window.LS.gridButton.postGridAction(event,$(this)); }',
+            'visible' => 'boolval('.$baseVisible.') && $data->participant_id',
+        );
+        $gridButtons['viewparticipantspacer'] = array(
+            'label'=>'<span class="icon-cpdb text-muted" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => '#',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs invisible",
+                'data-toggle'=>"tooltip",
+                'title'=>"",
+            ),
+            'visible' => 'boolval('.$baseVisible.') && empty($data->participant_id)',
+            'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
+        );
+        return $gridButtons;
+    }
+
+    /**
+     * @deprecated
      * @return string
      */
     public function getbuttons()
     {
-
-
-        $sPreviewUrl  = App()->createUrl("survey/index", array('sid'=>self::$sid, 'token'=> $this->token, 'newtest'=>"Y", 'lang'=>$this->language));
-        $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid/ajax/true");
-        $sInviteUrl   = App()->createUrl("/admin/tokens/sa/email/surveyid/".self::$sid."/tokenids/$this->tid");
-        $sRemindUrl   = App()->createUrl("admin/tokens/sa/email/action/remind/surveyid/".self::$sid."/tokenids/$this->tid");
-        $sDeleteUrl   = App()->createUrl("admin/tokens/sa/deleteToken/sid/".self::$sid."/sItem/$this->tid");
-        $button = '';
-
-        // View response details
-        if ($this->survey->isActive
-            && Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read')
-            && $this->survey->anonymized != 'Y') {
-
-            if (count($this->responses) > 0) {
-
-                if (count($this->responses) < 2) {
-                    $sResponseUrl = App()->createUrl("admin/responses/sa/viewbytoken/surveyid/".self::$sid, array('token'=>$this->token));
-                    $button .= '<a class="btn btn-default btn-xs" href="'.$sResponseUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details").'"><span class="fa fa-list-alt" ></span></a>';
-                }
-                // Multiple answers, give choice to user
-                else {
-                    // TODO: link to Response grid filtered on the base of this Token (when responses will be rewritten using CGridView instead of jQgrid)
-                    $sResponseUrl = App()->createUrl("admin/responses/sa/viewbytoken/surveyid/".self::$sid, array('token'=>$this->token));
-                    $button .= '<a class="btn btn-default btn-xs" href="'.$sResponseUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View last response details").'"><span class="fa fa-list-alt" ></span></a>';
-                }
-            }
-        } else {
-            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
-        }
-
-        // Launch the survey with this token
-        if (($this->completed == "N" || $this->completed == "" || $this->survey->alloweditaftercompletion == "Y")
-            && Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create')) {
-
-            $button .= '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';
-        } else {
-            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
-        }
-
-        // Invite or Remind
-        if ($this->emailstatus && $this->email && Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update')) {
-            if ($this->completed == 'N' && $this->usesleft > 0) {
-                if ($this->sent == 'N') {
-                    $button .= '<a class="btn btn-default btn-xs" href="'.$sInviteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Send email invitation').'"><span class="icon-invite" ></span></a>';
-                } else {
-                    $button .= '<a class="btn btn-default btn-xs" href="'.$sRemindUrl.'" role="button" data-toggle="tooltip" title="'.gT('Send email reminder').'"><span class="icon-remind " ></span></a>';
-                }
-            } else {
-                $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
-            }
-        } else {
-            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span><!-- Invite or Remind --></span>';
-        }
-
-        // TODO: permission check
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update')) {
-            // $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid");
-            $button .= '<a class="btn  btn-default btn-xs edit-token" href="#" data-sid="'.self::$sid.'" data-tid="'.$this->tid.'" data-url="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this survey participant').'"><span class="icon-edit" ></span></a>';
-            //Delete Token
-            $button .= '<a class="btn btn-danger btn-xs delete-token" href="#" data-sid="'.self::$sid.'" data-tid="'.$this->tid.'" data-url="'.$sDeleteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Delete survey participant').'"><span class="fa fa-trash-o" ></span></a>';
-
-        } else {
-            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span><!-- Edit --></span>';
-        }
-
-        // Display participant in CPDB
-        if (!empty($this->participant_id)
-            && $this->participant_id != ""
-            && Permission::model()->hasGlobalPermission('participantpanel', 'read')) {
-
-            $onClick = "window.LS.sendPost('".App()->createUrl('admin/participants/sa/displayParticipants')."',false,{'searchcondition': 'participant_id||equal||{$this->participant_id}'});";
-            $button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('View this person in the central participants database').'" onclick="'.$onClick.'"><span class="icon-cpdb" ></span></a>';
-        } else {
-            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ><!-- Display participant in CPDB--></span></span>';
-        }
-        return "<div style='white-space:nowrap'>".$button."</div>";
+        return "";
     }
 
     /**
