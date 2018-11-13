@@ -351,6 +351,27 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * Change survey group for multiple survey at once.
+     * Called from survey list massive actions
+     */
+    public function changeMultipleSurveyGroup()
+    {
+        $sSurveys = $_POST['sItems'];
+        $aSIDs = json_decode($sSurveys);
+        $aResults = array();
+
+        $iSurveyGroupId = sanitize_int(App()->request->getPost('surveygroupid'));
+
+        foreach ($aSIDs as $iSurveyID){
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $oSurvey->gsid = $iSurveyGroupId;
+            $aResults[$iSurveyID] = $oSurvey->save();
+        }
+
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT("Success")));
+    }
+
+    /**
     * Update the theme of a survey
     *
     * @access public
