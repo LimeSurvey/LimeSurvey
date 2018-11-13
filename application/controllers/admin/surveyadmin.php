@@ -792,6 +792,10 @@ class SurveyAdmin extends Survey_Common_Action
                 $aData['sNewTimingsTableName'] = $sNewTimingsTableName;
             }
 
+            $event = new PluginEvent('afterSurveyDeactivate');
+            $event->set('surveyId', $iSurveyID);
+            App()->getPluginManager()->dispatchEvent($event);
+
             $aData['surveyid'] = $iSurveyID;
             Yii::app()->db->schema->refresh();
         }
@@ -2265,7 +2269,7 @@ class SurveyAdmin extends Survey_Common_Action
                 if ($oSurveyConfig->options === 'inherit'){
                     $oSurveyConfig->setOptionKeysToInherit();
                 }
-                
+
                 foreach ($aThemeOptions as $key => $value) {
                         $oSurveyConfig->setOption($key, $value);
                 }
@@ -2338,7 +2342,7 @@ class SurveyAdmin extends Survey_Common_Action
                 false
             );
         }
-        
+
         $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
         $fullfilepath = $destdir.$filename;
         $debug[] = $destdir;
