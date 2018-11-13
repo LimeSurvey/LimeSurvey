@@ -32,6 +32,7 @@ class tokens extends Survey_Common_Action
      */
     public function index($surveyid)
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = $surveyid;
         $iSurveyId = (int) $iSurveyId;
@@ -300,6 +301,7 @@ class tokens extends Survey_Common_Action
         $aData['showRemindButton'] = Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') ? 'true' : 'false';
 
         // Javascript
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
 
         Yii::app()->loadHelper('surveytranslator');
@@ -491,6 +493,7 @@ class tokens extends Survey_Common_Action
     {
         $iSurveyId = (int) $iSurveyId;
         $aData = [];
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'create')) {
             eT("We are sorry but you don't have permissions to do this."); // return json ? error not treated in js.
@@ -604,6 +607,7 @@ class tokens extends Survey_Common_Action
     public function addnew($iSurveyId)
     {
         $aData = array();
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
@@ -625,6 +629,7 @@ class tokens extends Survey_Common_Action
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"] = true;
         $aData['token_bar']['buttons']['view'] = true;
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $request = Yii::app()->request;
         if ($request->getPost('subaction') == 'inserttoken') {
@@ -722,6 +727,7 @@ class tokens extends Survey_Common_Action
      */
     public function edit($iSurveyId, $iTokenId, $ajax = false)
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyId = (int) $iSurveyId;
         $iTokenId = (int) $iTokenId;
@@ -850,6 +856,7 @@ class tokens extends Survey_Common_Action
      */
     public function delete($iSurveyID)
     {
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
         $iSurveyID = (int) $iSurveyID;
         $sTokenIDs = Yii::app()->request->getPost('tid');

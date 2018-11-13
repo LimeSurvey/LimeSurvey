@@ -802,9 +802,8 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getGridButtons()
     {
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_HEAD);
         /* viewresponse button */
-        $baseView = (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y");
+        $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'read') && $this->survey->active == "Y" && $this->survey->anonymized != "Y");
         $gridButtons['viewresponse'] = array(
             'label'=>'<span class="sr-only">'.gT("View response details").'</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
             'imageUrl'=>false,
@@ -829,7 +828,7 @@ class TokenDynamic extends LSActiveRecord
             'click' => 'noGridAction'
         );
         /* previewsurvey button */
-        $baseView = (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create') && $this->survey->active == "Y");
+        $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create') && $this->survey->active == "Y");
         $gridButtons['previewsurvey'] = array(
             'label'=>'<span class="sr-only">'.gT("Launch the survey with this token").'</span><span class="fa fa-cog" aria-hidden="true"></span>',
             'imageUrl'=>false,
@@ -919,7 +918,7 @@ class TokenDynamic extends LSActiveRecord
             'click' => 'confirmGridAction'
         );
         /* CPDB link */
-        $baseVisible = Permission::model()->hasGlobalPermission('participantpanel', 'read') && self::model(self::$sid)->count("participant_id is not null");
+        $baseVisible = intval(Permission::model()->hasGlobalPermission('participantpanel', 'read') && self::model(self::$sid)->count("participant_id is not null"));
         $gridButtons['viewparticipant'] = array(
             'label'=>'<span class="sr-only">'.gT('View this participant in the central participants database').'</span><span class="icon-cpdb" aria-hidden="true"></span>',
             'imageUrl'=>false,
