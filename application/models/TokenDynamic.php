@@ -816,7 +816,7 @@ class TokenDynamic extends LSActiveRecord
                 'title'=>''
             ),
             'visible'=> $baseView . ' && count($data->responses) == 0',
-            'click' => 'noGridAction'
+            'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         /* previewsurvey button */
         $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create') && $this->survey->active == "Y");
@@ -837,12 +837,12 @@ class TokenDynamic extends LSActiveRecord
             'imageUrl'=>false,
             'url' => '#',
             'options' => array(
-                'class'=>"btn btn-default btn-xs btn-disable",
+                'class'=>"btn btn-default btn-xs invisible",
                 'disabled' => 'disabled',
                 'title'=> ''
             ),
             'visible'=> $baseView . ' && !( $data->completed == "N" || empty($data->completed) || $data->survey->alloweditaftercompletion == "Y")',
-            'click' => 'noGridAction',
+            'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         /* mail button */
         $baseView = Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update');
@@ -906,7 +906,7 @@ class TokenDynamic extends LSActiveRecord
                 'title'=>gT('Delete survey participant'),
             ),
             'visible' => 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'delete').')',
-            'click' => 'confirmGridAction'
+            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
         );
         /* CPDB link */
         $baseVisible = intval(Permission::model()->hasGlobalPermission('participantpanel', 'read') && self::model(self::$sid)->count("participant_id is not null"));
@@ -919,7 +919,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT('View this participant in the central participants database'),
             ),
-            'click' => 'postGridAction',
+            'click' => 'function(event){ window.LS.gridButton.postGridAction(event,$(this)); }',
             'visible' => 'boolval('.$baseVisible.') && $data->participant_id',
         );
         $gridButtons['viewparticipantspacer'] = array(
@@ -932,7 +932,7 @@ class TokenDynamic extends LSActiveRecord
                 'title'=>"",
             ),
             'visible' => 'boolval('.$baseVisible.') && empty($data->participant_id)',
-            'click' => 'noGridAction',
+            'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         return $gridButtons;
     }

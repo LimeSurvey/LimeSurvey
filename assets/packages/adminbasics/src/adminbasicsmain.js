@@ -45,6 +45,7 @@ import confirmDeletemodal from './components/confirmdeletemodal';
 import panelClickable from './components/panelclickable';
 import panelsAnimation from './components/panelsanimation';
 import notificationSystem from './components/notifications';
+import gridAction from './components/gridAction';
 import LOG from './components/lslog';
 
 const AdminCore = function(){
@@ -131,7 +132,7 @@ const AdminCore = function(){
                 initNotification : notificationSystem.initNotification
             }
 
-            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, AjaxHelper, notifyFader, subquestionAndAnswersGlobalMethods, notificationSystem);
+            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, AjaxHelper, notifyFader, subquestionAndAnswersGlobalMethods, notificationSystem,gridAction);
             
             /*
             * Set the namespace to the global variable LS

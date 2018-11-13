@@ -403,7 +403,6 @@ class responses extends Survey_Common_Action
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
-            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'gridAction.js', LSYii_ClientScript::POS_BEGIN);
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'listresponse.js', LSYii_ClientScript::POS_BEGIN);
             App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
 

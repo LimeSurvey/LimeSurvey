@@ -336,10 +336,8 @@ class SurveyDynamic extends LSActiveRecord
                 'class' => "btn btn-default btn-xs btn-deletefiles",
                 'data-toggle' => "tooltip",
                 'title' => gT("Delete all files of this response"),
-                'data-confirm-utf8' => json_encode(array("confirm_ok" =>gT("Yes"),"confirm_cancel" => gT("No"))),
-                'data-confirm-text' => gT("Delete all files of this response"),
             ),
-            'click' => 'confirmGridAction',
+            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
         );
         /* delete  button */
         $baseVisible = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete'));
@@ -351,10 +349,9 @@ class SurveyDynamic extends LSActiveRecord
             'options' => array(
                 'class' => "btn btn-default btn-xs btn-delete",
                 'data-toggle' => "tooltip",
-                'title' => gT("Delete all files of this response"),
-                'data-confirm-text' => gT("Delete all files of this response"),
+                'title' => gT("Delete this response"),
             ),
-            'click' => 'confirmGridAction',
+            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
         );
         return $gridButtons;
     }
