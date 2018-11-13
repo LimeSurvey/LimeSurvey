@@ -5,7 +5,7 @@
   align-content: bottom;
   height: 3em; }
 
-.grid-view .table tbody .button-column {
+.grid-view .table td.button-column, .grid-view .table th.button-column {
   white-space: nowrap;
   text-align: initial; }
 

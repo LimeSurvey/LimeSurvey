@@ -637,15 +637,6 @@ class TokenDynamic extends LSActiveRecord
                 'template'=>'{viewresponse}{spacerviewresponse}{previewsurvey}{previewsurveyspacer}{mail}{remind}{mailspacer}{edit}{deletetoken}{viewparticipant}{viewparticipantspacer}',
                 'buttons'=> $this->getGridButtons(),
             ),
-            array(
-                'header' => gT('Action'),
-                'filter'=>false,
-                'id'=>'action',
-                'name' => 'actions',
-                'value'=>'$data->buttons',
-                'type'=>'raw',
-                'htmlOptions' => array('class' => 'text-left'),
-            ),
 
             array(
                 'header' => gT('ID'),
@@ -922,10 +913,9 @@ class TokenDynamic extends LSActiveRecord
         $gridButtons['viewparticipant'] = array(
             'label'=>'<span class="sr-only">'.gT('View this participant in the central participants database').'</span><span class="icon-cpdb" aria-hidden="true"></span>',
             'imageUrl'=>false,
-            'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("searchcondition"=>"participant_id||equal||".$data->participant_id))',
+            'url' => 'App()->createUrl("admin/participants/sa/displayParticipants",array("#" => json_encode(["searchcondition"=>"participant_id||equal||".$data->participant_id],JSON_FORCE_OBJECT)))',
             'options' => array(
                 'class'=>"btn btn-default btn-xs btn-participant",
-                'data-postparam' => json_encode(['searchcondition']),
                 'data-toggle'=>"tooltip",
                 'title'=>gT('View this participant in the central participants database'),
             ),
@@ -953,38 +943,7 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getbuttons()
     {
-
-
-        $sPreviewUrl  = App()->createUrl("survey/index", array('sid'=>self::$sid, 'token'=> $this->token, 'newtest'=>"Y", 'lang'=>$this->language));
-        $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid/ajax/true");
-        $sInviteUrl   = App()->createUrl("/admin/tokens/sa/email/surveyid/".self::$sid."/tokenids/$this->tid");
-        $sRemindUrl   = App()->createUrl("admin/tokens/sa/email/action/remind/surveyid/".self::$sid."/tokenids/$this->tid");
-        $sDeleteUrl   = App()->createUrl("admin/tokens/sa/deleteToken/sid/".self::$sid."/sItem/$this->tid");
-        $button = '';
-
-
-        // TODO: permission check
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update')) {
-            // $sEditUrl     = App()->createUrl("/admin/tokens/sa/edit/iSurveyId/".self::$sid."/iTokenId/$this->tid");
-            $button .= '<a class="btn  btn-default btn-xs edit-token" href="#" data-sid="'.self::$sid.'" data-tid="'.$this->tid.'" data-url="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this survey participant').'"><span class="icon-edit" ></span></a>';
-            //Delete Token
-            $button .= '<a class="btn btn-danger btn-xs delete-token" href="#" data-sid="'.self::$sid.'" data-tid="'.$this->tid.'" data-url="'.$sDeleteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Delete survey participant').'"><span class="fa fa-trash-o" ></span></a>';
-
-        } else {
-            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span><!-- Edit --></span>';
-        }
-
-        // Display participant in CPDB
-        if (!empty($this->participant_id)
-            && $this->participant_id != ""
-            && Permission::model()->hasGlobalPermission('participantpanel', 'read')) {
-
-            $onClick = "window.LS.sendPost('".App()->createUrl('admin/participants/sa/displayParticipants')."',false,{'searchcondition': 'participant_id||equal||{$this->participant_id}'});";
-            $button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('View this person in the central participants database').'" onclick="'.$onClick.'"><span class="icon-cpdb" ></span></a>';
-        } else {
-            $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ><!-- Display participant in CPDB--></span></span>';
-        }
-        return "<div style='white-space:nowrap'>".$button."</div>";
+        return "";
     }
 
     /**
