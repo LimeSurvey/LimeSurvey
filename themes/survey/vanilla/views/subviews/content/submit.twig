@@ -27,10 +27,8 @@
 {# include the form opening tag #}
 <!-- main form -->
 {{ include('./subviews/header/start_form.twig') }}
-
     {# This will display the script and the hidden inputs needed for Expression Manager #}
     {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
-
     <div class="{{ aSurveyInfo.class.submitwrapper }}" {{ aSurveyInfo.attr.submitwrapper }}>
         <div class='{{ aSurveyInfo.class.submitwrappertext }}' {{ aSurveyInfo.attr.submitwrappertext }}>
             {% if (aSurveyInfo.aCompleted.showDefault == true) %}
@@ -69,8 +67,8 @@
             {{ aSurveyInfo.aCompleted.sPluginHTML }}
 
             {# NOTE: not very clear what the old replacement keyword {URL} was doing  #}
-            {% if (aSurveyInfo.aCompleted.sSurveylsUrl) %}
-                <a href="{{ aSurveyInfo.aCompleted.sSurveylsUrl }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}</a>
+            {% if (aSurveyInfo.surveyls_url) %}
+                <a href="{{ aSurveyInfo.surveyls_url }}">{{ aSurveyInfo.surveyls_urldescription ?: aSurveyInfo.surveyls_url }}</a>
             {% endif %}
         </div>
     </div>
