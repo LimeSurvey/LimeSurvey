@@ -2461,9 +2461,9 @@ function tsvSurveyExport($surveyid){
             $tsv_output['class'] = 'G';
             $tsv_output['type/scale'] = $group['group_order'];
             $tsv_output['name'] = $group['group_name'];
-            $tsv_output['text'] = is_array($group['description']) && safecount($group['description']) > 0 ? str_replace(array("\n", "\r"), '', $group['description']) : '';
-            $tsv_output['relevance'] = is_array($group['grelevance']) && safecount($group['grelevance']) > 0 ? $group['grelevance'] : '';
-            $tsv_output['random_group'] = is_array($group['randomization_group']) && safecount($group['randomization_group']) > 0 ? $group['randomization_group'] : '';
+            $tsv_output['text'] = !empty($group['description']) ? str_replace(array("\n", "\r"), '', $group['description']) : '';
+            $tsv_output['relevance'] = !empty($group['grelevance']) ? $group['grelevance'] : '';
+            $tsv_output['random_group'] = !empty($group['randomization_group']) ? $group['randomization_group'] : '';
             $tsv_output['language'] = $language;
             fputcsv($out, $tsv_output, chr(9));
             
@@ -2476,9 +2476,9 @@ function tsvSurveyExport($surveyid){
                     $tsv_output['class'] = 'Q';
                     $tsv_output['type/scale'] = $question['type'];
                     $tsv_output['name'] = $question['title'];
-                    $tsv_output['relevance'] = is_array($question['relevance']) && safecount($question['relevance']) > 0 ? $question['relevance'] : '';
-                    $tsv_output['text'] = is_array($question['question']) && safecount($question['question']) > 0 ? str_replace(array("\n", "\r"), '', $question['question']) : '';
-                    $tsv_output['help'] = is_array($question['help']) && safecount($question['help']) > 0 ? str_replace(array("\n", "\r"), '', $question['help']) : '';
+                    $tsv_output['relevance'] = !empty($question['relevance']) ? $question['relevance'] : '';
+                    $tsv_output['text'] = !empty($question['question']) ? str_replace(array("\n", "\r"), '', $question['question']) : '';
+                    $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
                     $tsv_output['language'] = $question['language'];
                     $tsv_output['mandatory'] = is_array($question['mandatory']) && safecount($question['mandatory']) > 0 ? $question['mandatory'] : '';
                     $tsv_output['other'] = $question['other'];
@@ -2524,7 +2524,7 @@ function tsvSurveyExport($surveyid){
                             $tsv_output['related_id'] = $condition['cqid']; 
                             $tsv_output['name'] = $condition['cfieldname']; 
                             $tsv_output['relevance'] = $condition['method']; 
-                            $tsv_output['text'] = !empty($assessment['value']) && safecount($condition['value']) > 0?$condition['value']:''; 
+                            $tsv_output['text'] = !empty($assessment['value']) ? $condition['value'] : '';
                             fputcsv($out, $tsv_output, chr(9));
                         }
                     }
@@ -2535,12 +2535,12 @@ function tsvSurveyExport($surveyid){
                             $tsv_output = $fields;
                             $tsv_output['id'] = $subquestion['qid'];
                             $tsv_output['class'] = 'SQ';
-                            $tsv_output['type/scale'] = !empty($subquestion['scale_id']) && safecount($subquestion['scale_id']) > 0 ? $subquestion['scale_id'] : '';
+                            $tsv_output['type/scale'] = !empty($subquestion['scale_id']) ? $subquestion['scale_id'] : '';
                             $tsv_output['name'] = $subquestion['title'];
-                            $tsv_output['relevance'] = !empty($subquestion['relevance']) && safecount($subquestion['relevance']) > 0 ? $subquestion['relevance'] : '';
+                            $tsv_output['relevance'] = !empty($subquestion['relevance']) ? $subquestion['relevance'] : '';
                             $tsv_output['text'] = $subquestion['question'];
                             $tsv_output['language'] = $subquestion['language'];
-                            $tsv_output['mandatory'] = !empty($subquestion['mandatory']) && safecount($subquestion['mandatory']) > 0 ? $subquestion['mandatory'] : '';
+                            $tsv_output['mandatory'] = !empty($subquestion['mandatory']) ? $subquestion['mandatory'] : '';
                             $tsv_output['other'] = $subquestion['other'];
                             $tsv_output['same_default'] = $subquestion['same_default'];
 
@@ -2580,8 +2580,8 @@ function tsvSurveyExport($surveyid){
             $tsv_output['related_id'] = $assessment['gid'];
             $tsv_output['class'] = 'AS';
             $tsv_output['type/scale'] = $assessment['scope'];
-            $tsv_output['name'] = !empty($assessment['name']) && safecount($assessment['name']) > 0?$assessment['name']:'';
-            $tsv_output['text'] = !empty($assessment['message']) && safecount($assessment['message']) > 0?$assessment['message']:'';
+            $tsv_output['name'] = !empty($assessment['name']) ? $assessment['name']:'';
+            $tsv_output['text'] = !empty($assessment['message']) ? $assessment['message']:'';
             $tsv_output['min_num_value'] = $assessment['minimum'];
             $tsv_output['max_num_value'] = $assessment['maximum'];
             $tsv_output['language'] = $assessment['language'];
@@ -2613,7 +2613,7 @@ function tsvSurveyExport($surveyid){
                         //$tsv_output['name'] = $ls['quotals_name'];
                         $tsv_output['relevance'] = $ls['quotals_message'];
                         $tsv_output['text'] = $ls['quotals_url'];
-                        $tsv_output['help'] = !empty($ls['quotals_urldescrip']) && safecount($ls['quotals_urldescrip']) > 0 ? $ls['quotals_urldescrip'][0] : '';
+                        $tsv_output['help'] = !empty($ls['quotals_urldescrip']) ? $ls['quotals_urldescrip'][0] : '';
                         $tsv_output['language'] = $ls['quotals_language'];
                         fputcsv($out, $tsv_output, chr(9));  
                     }
