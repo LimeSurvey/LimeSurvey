@@ -799,6 +799,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
 */
 function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = null, $iDesiredSurveyId = null, $bTranslateInsertansTags = true, $bConvertInvalidQuestionCodes = true)
 {
+    $isCopying = ($sNewSurveyName != null);
     Yii::app()->loadHelper('database');
     $results = [];
     $aGIDReplacements = array();
@@ -851,8 +852,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $insertdata = array();
 
         foreach ($row as $key=>$value) {
-            // Set survey group id to 1. Makes no sense to import it without the actual survey group.
-            if ($key == 'gsid') {
+            // Set survey group id to default if not a copy
+            if ($key == 'gsid' & !$isCopying) {
                 $value = 1;
             }
             if ($key == 'template') {
@@ -940,7 +941,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $insertdata['surveyls_survey_id'] = $iNewSID;
 
         // Assign new survey name (if a copy)
-        if ($sNewSurveyName != null) {
+        if ($isCopying) {
             $insertdata['surveyls_title'] = $sNewSurveyName;
         }
 
@@ -1682,7 +1683,6 @@ function GetNewSurveyID($iDesiredSurveyId)
         return $iDesiredSurveyId;
     }
 }
-
 
 /**
  * @param string $sFullFilePath
