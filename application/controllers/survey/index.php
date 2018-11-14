@@ -239,7 +239,7 @@ class index extends CAction
             );
 
             $aReloadUrlParam = array('lang'=>App()->language, 'newtest'=>'Y');
-            if ($clienttoken) {
+            if (!empty($clienttoken)) {
                 $aReloadUrlParam['token'] = $clienttoken;
             }
             $aUrl = array(
