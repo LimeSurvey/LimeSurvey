@@ -6585,7 +6585,7 @@
                         {
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
-                        $sMandatoryText = $LEM->gT('Please complete all parts');
+                        $sMandatoryText = $LEM->gT('Please complete all parts.');
                         $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                 'sMandatoryText'=>$sMandatoryText,
                         ), true);
@@ -6629,7 +6629,7 @@
                             {
                                 $qmandViolation = true; // TODO - what about 'other'?
                             }
-                            $sMandatoryText = $LEM->gT('Please complete all parts');
+                            $sMandatoryText = $LEM->gT('Please complete all parts.');
                             $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
                                     'sMandatoryText'=>$sMandatoryText,
                             ), true);
