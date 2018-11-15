@@ -195,11 +195,12 @@ class LSActiveRecord extends CActiveRecord
         $modelEventName = get_class($this);
         $eventParams = array();
         if(is_subclass_of($this,'Dynamic')) {
+            /** @scrutinizer ignore-call since we test if exist by subclass */ 
             $eventParams['dynamicId'] = $this->getDynamicId();
             $modelEventName = get_parent_class($this);
         }
-        $this->dispatchPluginModelEvent('before'.$modelEventName.'DeleteMany', $criteria,$eventParams);
-        $this->dispatchPluginModelEvent('beforeModelDeleteMany', $criteria,$eventParams);
+        $this->/** @scrutinizer ignore-call */dispatchPluginModelEvent('before'.$modelEventName.'DeleteMany', $criteria,$eventParams);
+        $this->/** @scrutinizer ignore-call */dispatchPluginModelEvent('beforeModelDeleteMany', $criteria,$eventParams);
         return parent::deleteAllByAttributes(array(), $criteria, array());
     }
 

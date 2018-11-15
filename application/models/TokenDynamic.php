@@ -442,7 +442,7 @@ class TokenDynamic extends LSActiveRecord
 
     /**
      * @param integer $tokenid
-     * @return boolean
+     * @return integer the number of rows deleted
      */
     public function deleteToken($tokenid)
     {
@@ -452,7 +452,7 @@ class TokenDynamic extends LSActiveRecord
 
     /**
      * @param integer[] $iTokenIds
-     * @return integer
+     * @return integer the number of rows deleted
      */
     public function deleteRecords($iTokenIds)
     {
