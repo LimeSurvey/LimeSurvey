@@ -12,6 +12,11 @@
  *
   *     Extensions to the CActiveRecord class
  */
+
+ /**
+  * @method PluginEvent dispatchPluginModelEvent(string $sEventName,CDbCriteria $criteria = null,array $eventParams = array())
+  */
+
 class LSActiveRecord extends CActiveRecord
 {
 
@@ -199,8 +204,8 @@ class LSActiveRecord extends CActiveRecord
             $eventParams['dynamicId'] = $this->getDynamicId();
             $modelEventName = get_parent_class($this);
         }
-        $this->/** @scrutinizer ignore-call */dispatchPluginModelEvent('before'.$modelEventName.'DeleteMany', $criteria,$eventParams);
-        $this->/** @scrutinizer ignore-call */dispatchPluginModelEvent('beforeModelDeleteMany', $criteria,$eventParams);
+        $this->dispatchPluginModelEvent('before'.$modelEventName.'DeleteMany', $criteria,$eventParams);
+        $this->dispatchPluginModelEvent('beforeModelDeleteMany', $criteria,$eventParams);
         return parent::deleteAllByAttributes(array(), $criteria, array());
     }
 

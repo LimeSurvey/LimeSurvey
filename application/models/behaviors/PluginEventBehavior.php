@@ -59,7 +59,7 @@
          *
          * See {@link find()} for detailed explanation about $condition and $params.
          * @param string $sEventName event name to dispatch
-         * @param array $criteria array containing attributes, conditions and params for the filter query
+         * @param CDbCriteria $criteria
          * @param array $eventParams array of params for event
          * @return PluginEvent the dispatched event
          */
