@@ -4499,17 +4499,13 @@ function do_array_texts($ia)
     $lresult      = Yii::app()->db->createCommand($lquery)->query();
     $labelans     = array();
     $labelcode    = array();
-
     foreach ($lresult->readAll() as $lrow) {
         $labelans[]  = $lrow['question'];
         $labelcode[] = $lrow['title'];
     }
 
     if ($numrows = count($labelans)) {
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
-            $numrows++;
-        }
-
+        // There are no "No answer" column
         if (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both') {
             ++$numrows;
         }
@@ -4832,7 +4828,7 @@ function do_array_multiflexi($ia)
     }
 
     if ($numrows = count($labelans)) {
-        //~ if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
+        // There are no "No answer" column
         $cellwidth  = $columnswidth / $numrows;
 
         $sQuery     = "SELECT count(question) FROM {{questions}} WHERE parent_qid=".$ia[0]." AND scale_id=0 AND question like '%|%'";
