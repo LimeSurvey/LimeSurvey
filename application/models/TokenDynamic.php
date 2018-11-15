@@ -442,26 +442,21 @@ class TokenDynamic extends LSActiveRecord
 
     /**
      * @param integer $tokenid
-     * @return CDbDataReader
+     * @return boolean
      */
     public function deleteToken($tokenid)
     {
-        $dlquery = "DELETE FROM ".TokenDynamic::tableName()." WHERE tid=:tokenid";
-        return Yii::app()->db->createCommand($dlquery)->bindParam(":tokenid", $tokenid)->query();
+        return Token::model(self::$sid)->deleteByPk($tokenid);
     }
 
 
     /**
      * @param integer[] $iTokenIds
-     * @return CDbDataReader
+     * @return integer
      */
     public function deleteRecords($iTokenIds)
     {
-        foreach ($iTokenIds as &$currentrow) {
-            $currentrow = Yii::app()->db->quoteValue($currentrow);
-        }
-        $dlquery = "DELETE FROM ".TokenDynamic::tableName()." WHERE tid IN (".implode(", ", $iTokenIds).")";
-        return Yii::app()->db->createCommand($dlquery)->query();
+        return Token::model(self::$sid)->deleteAllByAttributes(array('tid'=>$iTokenIds));
     }
 
     /**
