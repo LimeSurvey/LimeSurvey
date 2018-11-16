@@ -45,6 +45,24 @@ class index extends CAction
 
         $oSurvey = Survey::model()->findByPk($surveyid);
 
+        if(empty($oSurvey)) {
+            $event = new PluginEvent('onSurveyDenied');
+            $event->set('surveyId', $surveyid);
+            $event->set('reason', 'surveyDoesNotExist');
+            App()->getPluginManager()->dispatchEvent($event);
+            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
+            /* Alt solution */
+            //~ header("HTTP/1.0 404 Not Found",true,404);
+            //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
+                //~ array('aSurveyInfo' =>array(
+                    //~ 'aError'=>array(
+                        //~ 'error'=>gT('404: Not Found'),
+                        //~ 'title'=>gT('This survey does not seem to exist'),
+                        //~ 'message'=>gT("The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.")
+                    //~ ),
+                //~ )), false);
+        }
+
         Yii::app()->setConfig('surveyID', $surveyid);
         Yii::app()->setConfig('move', $move);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
@@ -64,7 +82,6 @@ class index extends CAction
 
         $surveyExists   = ($oSurvey != null);
         $isSurveyActive = ($surveyExists && $oSurvey->isActive);
-
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
@@ -276,25 +293,6 @@ class index extends CAction
                 UpdateGroupList($surveyid, App()->language); // to refresh the language strings in the group list session variable
                 updateFieldArray(); // to refresh question titles and question text
             }
-        } else {
-
-            $event = new PluginEvent('onSurveyDenied');
-            $event->set('surveyId', $surveyid);
-            $event->set('reason', 'surveyDoesNotExist');
-            App()->getPluginManager()->dispatchEvent($event);
-            throw new CHttpException(404, gT("The survey in which you are trying to participate does not seem to exist."));
-            /* Alt solution */
-            //~ header("HTTP/1.0 404 Not Found",true,404);
-            //~ Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig",
-                //~ array('aSurveyInfo' =>array(
-                    //~ 'aError'=>array(
-                        //~ 'error'=>gT('404: Not Found'),
-                        //~ 'title'=>gT('This survey does not seem to exist'),
-                        //~ 'message'=>gT("The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.")
-
-                    //~ ),
-                //~ )), false);
-
         }
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
