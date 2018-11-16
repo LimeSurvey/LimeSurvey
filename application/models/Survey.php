@@ -1835,7 +1835,7 @@ return $s->hasTokensTable; });
             'survey.groups',
         );
 
-        if (Yii::app()->db->driverName == 'sqlsrv'){
+        if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib'){
             $criteria->order = Yii::app()->db->quoteColumnName('t.question_order');
         } else {
             $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','.Yii::app()->db->quoteColumnName('t.question_order');
