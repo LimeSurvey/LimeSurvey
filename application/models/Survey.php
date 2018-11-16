@@ -1834,8 +1834,12 @@ return $s->hasTokensTable; });
         $criteria->with = array(
             'survey.groups',
         );
-        $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','
-            .Yii::app()->db->quoteColumnName('t.question_order');
+
+        if (Yii::app()->db->driverName == 'sqlsrv'){
+            $criteria->order = Yii::app()->db->quoteColumnName('t.question_order');
+        } else {
+            $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','.Yii::app()->db->quoteColumnName('t.question_order');
+        }
         $criteria->addCondition('groups.gid=t.gid', 'AND');
         return $criteria;
 
