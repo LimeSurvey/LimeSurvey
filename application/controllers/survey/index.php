@@ -201,7 +201,7 @@ class index extends CAction
         if ($this->_isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) {
             $aReloadUrlParam = array('lang'=>App()->language, 'newtest'=>'Y');
 
-            if ($clienttoken) {
+            if (!empty($clienttoken)) {
                 $aReloadUrlParam['token'] = $clienttoken;
             }
 
@@ -433,7 +433,7 @@ class index extends CAction
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid'=>$surveyid));
             }
 
-            if (isset($clienttoken)) {
+            if (!empty($clienttoken)) {
                 $aLoadForm['sHiddenField'] = CHtml::hiddenField('token', $clienttoken);
             }
 
