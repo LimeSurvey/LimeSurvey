@@ -398,7 +398,7 @@ abstract class PluginBase implements iPlugin
                 $this->saveNewVersion($pluginModel);
             }
         } else {
-            $this->log('Found no config file');
+            /* No need action since system update in 4.0, where need a config.xml */
         }
     }
 
