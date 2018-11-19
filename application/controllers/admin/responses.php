@@ -567,8 +567,8 @@ class responses extends Survey_Common_Action
         }
 
         if ($errors || $timingErrors) {
-            $message = ($errors) ? sprintf(gT("%s response(s) are not deleted."),$errors) : "";
-            $message.= ($timingErrors) ? sprint_(gT("%s timing(s) are not deleted."),$errors) : "";
+            $message = ($errors) ? ngT("A response was not deleted.|{n} responses was not deleted",$errors) : "";
+            $message.= ($timingErrors) ? ngT("A timing was not deleted.|{n} timings was not deleted",$errors) : "";
             if(Yii::app()->getRequest()->isAjaxRequest) {
                 ls\ajax\AjaxHelper::outputError($message);
             } else {
