@@ -111,11 +111,6 @@ const globalWindowMethods = {
         $('#accordion').on('shown.bs.collapse',".panel-collapse.collapse", function (e) {
             if(e.target != this) return;
             $('#accordion').find('.panel-collapse.collapse').not('#'+$(this).attr('id')).collapse('hide');
-            setTimeout(function(){
-                $('html, body').animate({
-                    scrollTop: $(this).closest('.panel.panel-default').offset().top-20
-                }, 500);
-            }, 500);
         });
     }
 };
