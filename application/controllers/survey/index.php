@@ -118,14 +118,16 @@ class index extends CAction
             $token = $clienttoken;
         }
 
+        if (empty($token) && isset($_SESSION['survey_'.$surveyid]['token'])) {
+            $token = $_SESSION['survey_'.$surveyid]['token'];
+        }
+
         //SEE IF SURVEY USES TOKENS
         if ($oSurvey->hasTokensTable) {
             $tokensexist = 1;
         }
 
-
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
-
             // check also if it is allowed to change survey after completion
             if ($thissurvey['alloweditaftercompletion'] == 'Y') {
                 $oToken = $tokenInstance = Token::model($surveyid)->editable()->findByAttributes(array('token' => $token));

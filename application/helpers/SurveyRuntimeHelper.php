@@ -92,6 +92,7 @@ class SurveyRuntimeHelper
 
         // Start rendering
         $this->makeLanguageChanger(); //  language changer can be used on any entry screen, so it must be set first
+        /** @var Token $oToken */
         extract($args);
 
         ///////////////////////////////////////////////////////////
@@ -459,12 +460,18 @@ class SurveyRuntimeHelper
         }
 
         $this->aSurveyInfo['include_content'] = 'main';
-        Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array(
+        $params = array(
             'oSurvey'=> Survey::model()->findByPk($this->iSurveyid),
             'aSurveyInfo'=>$this->aSurveyInfo,
             'step'=>$step,
             'LEMskipReprocessing'=>$this->LEMskipReprocessing,
-        ), false);
+        );
+
+        if (isset($oToken)) {
+            $params['oToken'] = $oToken;
+        }
+
+        Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", $params, false);
     }
 
     public function getShowNumAndCode()
