@@ -88,7 +88,7 @@ class GlobalSettings extends Survey_Common_Action
         $setting = App()->getConfig('maildebug');
         App()->setConfig('maildebug',2);
         if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce)) {
-            $content .= gT('Email sending success: ') .gT('Email sent successfully');
+            $content .= gT('Email sent successfully');
         } else {
             $content .= gT('Email sending failure: ') .$maildebug;
         }
