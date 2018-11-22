@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-11-22 13:08:51+00:00\n"
+"POT-Creation-Date: 2018-11-22 13:13:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3967,7 +3967,7 @@ msgid "This is a question help text."
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2312
-msgid "You don't have suffisient right to upload image in this survey"
+msgid "You don't have sufficient permissions to upload images in this survey"
 msgstr ""
 
 #: application/controllers/admin/surveyadmin.php:2319
