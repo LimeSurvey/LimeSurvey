@@ -224,7 +224,7 @@
 
     // Added by LS Team to prevent Zip Bombing
     if ($bCheckZipBomb && isZipBomb($p_zipname)){
-        die('Abort '.basename(__FILE__).' : Unzipped file is superior to upload_max_filesize or to post_max_size');
+        die('Abort '.basename(__FILE__).' : Unzipped file is bigger than upload_max_filesize or post_max_size');
     }
 
 
