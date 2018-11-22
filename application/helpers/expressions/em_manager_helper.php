@@ -3623,7 +3623,10 @@
             $now = microtime(true);
             $this->em->SetSurveyMode($this->surveyMode);
             $survey = Survey::model()->findByPk($surveyid);
-
+            if(empty($this->surveyOptions)) {
+                /* Log it as error : this need some test */
+                Yii::log('setVariableAndTokenMappingsForExpressionManager with an empty surveyOptions.','error','application.LimeExpressionManager');
+            }
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($survey,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
             $this->sid= $surveyid;
