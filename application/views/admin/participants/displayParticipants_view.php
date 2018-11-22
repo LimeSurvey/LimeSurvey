@@ -85,7 +85,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                     'htmlOptions' => array('class'=> 'table-responsive'),
                     'itemsCssClass' => 'table table-responsive table-striped',
                     'filter'=>$model,
-                    'afterAjaxUpdate' => 'function(id, data){LS.CPDB.bindButtons;bindListItemclick();}',
+                    'afterAjaxUpdate' => 'function(id, data){LS.CPDB.bindButtons;LS.CPDB.participantPanel();bindListItemclick();}',
                     'ajaxType' => 'POST',
                     'beforeAjaxUpdate' => 'insertSearchCondition',
                     'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
