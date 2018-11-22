@@ -2309,7 +2309,7 @@ class SurveyAdmin extends Survey_Common_Action
         if(!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
-                array('data' => ['success' => $success, 'message' => gT("You don't have suffisient right to upload image in this survey"), 'debug' => $debug]),
+                array('data' => ['success' => $success, 'message' => gT("You don't have sufficient permissions to upload images in this survey"), 'debug' => $debug]),
                 false,
                 false
             );
