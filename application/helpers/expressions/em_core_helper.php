@@ -1297,9 +1297,17 @@ class ExpressionManager
         $globalErrs = array();
         $bHaveError = false;
         while ($errIndex < $errCount) {
-            if ($errs[$errIndex++][1][1] == 0) {
+            /**
+             * Shnoulle on 2018-11-22
+             * This is really a quick fix … i really don't understand the logic here
+             * But RDP_errs contain array of error (it's OK) but array of array of error too : this broke
+             * Only mimic debug=0 when debug=2
+             **/
+            if (empty($errs[$errIndex++][1][1])) {
                 // General message, associated with position 0
-                $globalErrs[] = $errs[$errIndex - 1][0];
+                if(is_string($errs[$errIndex - 1][0])) { /* test if string, because have array of array sometimes */
+                    $globalErrs[] = $errs[$errIndex - 1][0];
+                }
                 $bHaveError = true;
             } else {
                 --$errIndex;
