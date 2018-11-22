@@ -673,6 +673,8 @@ class SurveyRuntimeHelper
 
             // Init $LEM states.
             LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
+            // Prefill questions/answers from command line params
+            prefillFromCommandLine($this->iSurveyid);
             $_SESSION[$this->LEMsessid]['step'] = 0;
 
             // Welcome page.

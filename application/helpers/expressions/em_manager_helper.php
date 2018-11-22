@@ -3616,9 +3616,12 @@
             if (isset($_SESSION['LEMforceRefresh'])) {
                 unset($_SESSION['LEMforceRefresh']);
                 $forceRefresh=true;
-            }
-            else if ($forceRefresh===false && isset($this->knownVars) && !$this->sPreviewMode ) {
+            } elseif ($forceRefresh===false && isset($this->knownVars) && !$this->sPreviewMode ) {
                 return false;   // means that those variables have been cached and no changes needed
+            }
+            if(empty($this->surveyOptions)) {
+                /* Temporary throw Exception : this need some test before merging */
+                throw new Exception('setVariableAndTokenMappingsForExpressionManager without valid surveyOptions.');
             }
             $now = microtime(true);
             $this->em->SetSurveyMode($this->surveyMode);

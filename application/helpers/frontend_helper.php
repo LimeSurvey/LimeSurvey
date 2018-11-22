@@ -808,9 +808,6 @@ function buildsurveysession($surveyid, $preview = false)
     // first call to initFieldArray
     initFieldArray($surveyid, $fieldmap);
 
-    // Prefill questions/answers from command line params
-    prefillFromCommandLine($surveyid);
-
     if (isset($_SESSION['survey_'.$surveyid]['fieldarray'])) {
         $_SESSION['survey_'.$surveyid]['fieldarray'] = array_values($_SESSION['survey_'.$surveyid]['fieldarray']);
     }
