@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-11-22 12:20:16+00:00\n"
+"POT-Creation-Date: 2018-11-22 13:08:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3693,15 +3693,15 @@ msgstr ""
 #: application/controllers/admin/responses.php:525
 #: application/controllers/admin/responses.php:696
 #: application/controllers/admin/tokens.php:264
-msgid "You need post for this action."
+msgid "Invalid action"
 msgstr ""
 
 #: application/controllers/admin/responses.php:570
-msgid "A response was not deleted.|{n} responses was not deleted"
+msgid "A response was not deleted.|{n} responses were not deleted."
 msgstr ""
 
 #: application/controllers/admin/responses.php:571
-msgid "A timing was not deleted.|{n} timings was not deleted"
+msgid "A timing record was not deleted.|{n} timing records were not deleted."
 msgstr ""
 
 #: application/controllers/admin/responses.php:580
