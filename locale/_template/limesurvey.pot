@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2018-11-15 12:28:41+00:00\n"
+"POT-Creation-Date: 2018-11-22 12:20:16+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,10 +29,10 @@ msgstr ""
 #: application/controllers/admin/questions.php:229
 #: application/controllers/admin/themes.php:905
 #: application/controllers/admin/themes.php:1207
-#: application/controllers/survey/index.php:79
-#: application/controllers/survey/index.php:313
-#: application/controllers/survey/index.php:335
-#: application/controllers/survey/index.php:359
+#: application/controllers/survey/index.php:96
+#: application/controllers/survey/index.php:311
+#: application/controllers/survey/index.php:333
+#: application/controllers/survey/index.php:357
 #: application/extensions/PanelBoxWidget/PanelBoxWidget.php:60
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:7
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_action_results.php:31
@@ -379,12 +379,12 @@ msgid "Plugin '%s' was missing and is removed from the database."
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:88
-#: application/controllers/survey/index.php:236
+#: application/controllers/survey/index.php:253
 msgid "We are sorry but your session has expired."
 msgstr ""
 
 #: application/controllers/PrintanswersController.php:93
-#: application/controllers/survey/index.php:238
+#: application/controllers/survey/index.php:255
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr ""
 
@@ -479,12 +479,7 @@ msgid "The email you used is not valid. Please try again."
 msgstr ""
 
 #: application/controllers/RegisterController.php:181
-#: application/controllers/admin/tokens.php:440
-#: application/controllers/admin/tokens.php:548
-#: application/controllers/admin/tokens.php:582
-#: application/controllers/admin/tokens.php:682
-#: application/controllers/admin/tokens.php:950
-msgid "%s cannot be left empty"
+msgid "%s cannot be left empty."
 msgstr ""
 
 #: application/controllers/RegisterController.php:364
@@ -1054,9 +1049,9 @@ msgstr ""
 #: application/controllers/admin/tokens.php:476
 #: application/controllers/admin/tokens.php:496
 #: application/controllers/admin/tokens.php:594
-#: application/controllers/survey/index.php:80
-#: application/controllers/survey/index.php:219
-#: application/controllers/survey/index.php:221
+#: application/controllers/survey/index.php:97
+#: application/controllers/survey/index.php:236
+#: application/controllers/survey/index.php:238
 #: application/views/admin/participants/blacklist_view.php:128
 #: application/views/admin/survey/subview/_survey_quickaction.php:241
 #: application/views/admin/survey/subview/_survey_quickaction.php:294
@@ -3702,11 +3697,11 @@ msgid "You need post for this action."
 msgstr ""
 
 #: application/controllers/admin/responses.php:570
-msgid "%s response(s) are not deleted."
+msgid "A response was not deleted.|{n} responses was not deleted"
 msgstr ""
 
 #: application/controllers/admin/responses.php:571
-msgid "%s timing(s) are not deleted."
+msgid "A timing was not deleted.|{n} timings was not deleted"
 msgstr ""
 
 #: application/controllers/admin/responses.php:580
@@ -4598,6 +4593,14 @@ msgstr ""
 msgid "Bounce processing is deactivated either application-wide or for this survey in particular."
 msgstr ""
 
+#: application/controllers/admin/tokens.php:440
+#: application/controllers/admin/tokens.php:548
+#: application/controllers/admin/tokens.php:582
+#: application/controllers/admin/tokens.php:682
+#: application/controllers/admin/tokens.php:950
+msgid "%s cannot be left empty"
+msgstr ""
+
 #: application/controllers/admin/tokens.php:472
 msgid "No participant table found for this survey!"
 msgstr ""
@@ -5400,40 +5403,40 @@ msgstr ""
 msgid "User not found."
 msgstr ""
 
-#: application/controllers/survey/index.php:151
-msgid "Token mismatch"
-msgstr ""
-
-#: application/controllers/survey/index.php:152
-msgid "The token you provided doesn't match the one in your session."
-msgstr ""
-
-#: application/controllers/survey/index.php:156
-#: application/controllers/survey/index.php:196
-#: application/controllers/survey/index.php:248
-msgid "Click here to start the survey."
-msgstr ""
-
-#: application/controllers/survey/index.php:191
-msgid "Previous session is set to be finished."
-msgstr ""
-
-#: application/controllers/survey/index.php:192
-msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
-msgstr ""
-
-#: application/controllers/survey/index.php:285
+#: application/controllers/survey/index.php:53
 msgid "The survey in which you are trying to participate does not seem to exist."
 msgstr ""
 
-#: application/controllers/survey/index.php:315
+#: application/controllers/survey/index.php:168
+msgid "Token mismatch"
+msgstr ""
+
+#: application/controllers/survey/index.php:169
+msgid "The token you provided doesn't match the one in your session."
+msgstr ""
+
+#: application/controllers/survey/index.php:173
+#: application/controllers/survey/index.php:213
+#: application/controllers/survey/index.php:265
+msgid "Click here to start the survey."
+msgstr ""
+
+#: application/controllers/survey/index.php:208
+msgid "Previous session is set to be finished."
+msgstr ""
+
+#: application/controllers/survey/index.php:209
+msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
+msgstr ""
+
+#: application/controllers/survey/index.php:313
 msgid "We are sorry but the survey is expired and no longer available."
 msgstr ""
 
-#: application/controllers/survey/index.php:316
-#: application/controllers/survey/index.php:338
-#: application/controllers/survey/index.php:362
-#: application/controllers/survey/index.php:477
+#: application/controllers/survey/index.php:314
+#: application/controllers/survey/index.php:336
+#: application/controllers/survey/index.php:360
+#: application/controllers/survey/index.php:475
 #: application/helpers/replacements_helper.php:149
 #: application/helpers/replacements_helper.php:151
 #: application/helpers/replacements_helper.php:399
@@ -5441,57 +5444,57 @@ msgstr ""
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
-#: application/controllers/survey/index.php:337
+#: application/controllers/survey/index.php:335
 msgid "This survey is not yet started."
 msgstr ""
 
-#: application/controllers/survey/index.php:361
+#: application/controllers/survey/index.php:359
 msgid "You have already completed this survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:387
+#: application/controllers/survey/index.php:385
 msgid "You did not provide a name."
 msgstr ""
 
-#: application/controllers/survey/index.php:391
+#: application/controllers/survey/index.php:389
 msgid "You did not provide a password."
 msgstr ""
 
-#: application/controllers/survey/index.php:403
+#: application/controllers/survey/index.php:401
 msgid "You did not answer to the security question."
 msgstr ""
 
-#: application/controllers/survey/index.php:405
+#: application/controllers/survey/index.php:403
 #: application/libraries/Save.php:199 application/libraries/Save.php:336
 msgid "The answer to the security question is incorrect."
 msgstr ""
 
-#: application/controllers/survey/index.php:417
+#: application/controllers/survey/index.php:415
 msgid "There is no matching saved survey."
 msgstr ""
 
-#: application/controllers/survey/index.php:463
+#: application/controllers/survey/index.php:461
 msgid "This invitation has already been used."
 msgstr ""
 
-#: application/controllers/survey/index.php:465
+#: application/controllers/survey/index.php:463
 msgid "This invitation has no uses left."
 msgstr ""
 
-#: application/controllers/survey/index.php:467
+#: application/controllers/survey/index.php:465
 msgid "This invitation is not valid yet."
 msgstr ""
 
-#: application/controllers/survey/index.php:469
+#: application/controllers/survey/index.php:467
 msgid "This invitation is not valid anymore."
 msgstr ""
 
-#: application/controllers/survey/index.php:472
-#: application/controllers/survey/index.php:493
+#: application/controllers/survey/index.php:470
+#: application/controllers/survey/index.php:491
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
-#: application/controllers/survey/index.php:476
+#: application/controllers/survey/index.php:474
 msgid "We are sorry but you are not allowed to enter this survey."
 msgstr ""
 
@@ -12177,7 +12180,7 @@ msgstr ""
 msgid "Add new group"
 msgstr ""
 
-#: application/models/Survey.php:1933
+#: application/models/Survey.php:1937
 msgid "Show policy"
 msgstr ""
 
@@ -20980,8 +20983,7 @@ msgid "(This question is mandatory)"
 msgstr ""
 
 #: application/views/survey/system/LanguageChanger/LanguageChanger.php:20
-#: tmp/twig_translate.php:160
-msgid "Change the language"
+msgid "Change language"
 msgstr ""
 
 #: application/views/survey/system/actionButton/clearAll.php:23
@@ -21189,6 +21191,10 @@ msgstr ""
 
 #: tmp/twig_translate.php:154
 msgid "Question by question mode not yet supported."
+msgstr ""
+
+#: tmp/twig_translate.php:160
+msgid "Change the language"
 msgstr ""
 
 #: tmp/twig_translate.php:164
