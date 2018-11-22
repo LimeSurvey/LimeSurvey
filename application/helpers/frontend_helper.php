@@ -887,7 +887,6 @@ function prefillFromCommandLine($surveyid)
                 $qcode2sgqa[viewHelper::getFieldCode($details,array('LEMcompat'=>true))] = $sgqa;
             }
             foreach ($getValues as $k=>$v) {
-                tracevar($k);
                 if (isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k])) {
                     // sXgXqa prefilling
                     $startingValues[$k] = $v;
