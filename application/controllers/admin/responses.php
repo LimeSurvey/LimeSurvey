@@ -522,7 +522,7 @@ class responses extends Survey_Common_Action
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         if(!Yii::app()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("You need post for this action."));
+            throw new CHttpException(405, gT("Invalid action"));
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
 
@@ -567,8 +567,8 @@ class responses extends Survey_Common_Action
         }
 
         if ($errors || $timingErrors) {
-            $message = ($errors) ? ngT("A response was not deleted.|{n} responses was not deleted",$errors) : "";
-            $message.= ($timingErrors) ? ngT("A timing was not deleted.|{n} timings was not deleted",$errors) : "";
+            $message = ($errors) ? ngT("A response was not deleted.|{n} responses were not deleted.",$errors) : "";
+            $message.= ($timingErrors) ? ngT("A timing record was not deleted.|{n} timing records were not deleted.",$errors) : "";
             if(Yii::app()->getRequest()->isAjaxRequest) {
                 ls\ajax\AjaxHelper::outputError($message);
             } else {
@@ -693,7 +693,7 @@ class responses extends Survey_Common_Action
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         if(!$request->isPostRequest) {
-            throw new CHttpException(405, gT("You need post for this action."));
+            throw new CHttpException(405, gT("Invalid action"));
         }
         Yii::import('application.helpers.admin.ajax_helper', true);
         $allErrors = array();

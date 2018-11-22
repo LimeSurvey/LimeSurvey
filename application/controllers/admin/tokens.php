@@ -261,7 +261,7 @@ class tokens extends Survey_Common_Action
             throw new CHttpException(403, gT("You do not have permission to access this page."));
         }
         if(!Yii::app()->getRequest()->isPostRequest) {
-            throw new CHttpException(405, gT("You need post for this action."));
+            throw new CHttpException(405, gT("Invalid action"));
         }
         TokenDynamic::model($iSid)->deleteRecords(array($aTokenId));
         return true;
@@ -411,7 +411,7 @@ class tokens extends Survey_Common_Action
 
                 // Email
                 if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
-                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
+                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&â€™*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&â€™*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
                     if ($isValid) {
                                             $aData['email'] = 'lskeep';
                     } else {
