@@ -16,7 +16,7 @@ var TemplateCoreClass = function () {
                     return text;
 
                 });
-                alertSurveyDialog(startPopup);
+                window.templateCore.alertSurveyDialog(startPopup);
             }
         },
         /* alertSurveyDialog @see application/core/package/limesurvey */
