@@ -1445,7 +1445,7 @@ class ExpressionManager
                     break;
                 case 'ASSIGN':
                     $messages[] = self::gT('Assigning a new value to a variable.');
-                    $stringParts[] = "<span title='".implode('; ', $messages)."' class='em-assign'>";
+                    $stringParts[] = "<span title='".CHtml::encode(implode('; ', $messages))."' class='em-assign'>";
                     $stringParts[] = $token[0];
                     $stringParts[] = "</span>";
                     break;
