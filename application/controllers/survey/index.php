@@ -118,14 +118,15 @@ class index extends CAction
             $token = $clienttoken;
         }
 
-        if (empty($token) && isset($_SESSION['survey_'.$surveyid]['token'])) {
-            $token = $_SESSION['survey_'.$surveyid]['token'];
-        }
-
         //SEE IF SURVEY USES TOKENS
         if ($oSurvey->hasTokensTable) {
             $tokensexist = 1;
         }
+
+        if (empty($token) && isset($_SESSION['survey_'.$surveyid]['token']) && !$oSurvey->isAnonymized && $tokensexist === 1) {
+            $token = $_SESSION['survey_'.$surveyid]['token'];
+        }
+
 
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
             // check also if it is allowed to change survey after completion
