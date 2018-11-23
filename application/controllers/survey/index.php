@@ -394,13 +394,13 @@ class index extends CAction
             // && Yii::app()->request->isPostRequest ?
             if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']) && is_null(Yii::app()->request->getQuery('scid'))) {
                 $sLoadSecurity  = Yii::app()->request->getPost('loadsecurity');
-                $captcha        = Yii::app()->getController()->createAction('captcha');
-                $captchaCorrect = $captcha->validate($sLoadSecurity, false);
 
                 if (empty($sLoadSecurity)) {
                     $aLoadErrorMsg['captchaempty'] = gT("You did not answer to the security question.");
-                } elseif (!$captchaCorrect) {
-                    $aLoadErrorMsg['captcha'] = gT("The answer to the security question is incorrect.");
+                } elseif (!Yii::app()->request->getPost('loadsecurity')
+                    || !isset($_SESSION['survey_'.$surveyid]['secanswer'])
+                    || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']) {
+                        $aLoadErrorMsg['captcha'] = gT("The answer to the security question is incorrect.");
                 }
             }
 

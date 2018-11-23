@@ -326,17 +326,6 @@ class Save
             $this->aSaveErrors[] = gT("Your passwords do not match.");
         }
 
-        // Check captcha
-        if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha'])) {
-
-            if (!Yii::app()->request->getPost('loadsecurity')
-             || !isset($_SESSION['survey_'.$surveyid]['secanswer'])
-             || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']
-            ) {
-                $this->aSaveErrors[] = gT("The answer to the security question is incorrect.");
-            }
-        }
-
         $saveName  = Yii::app()->request->getPost('savename');
         $duplicate = SavedControl::model()->findByAttributes(array('sid' => $surveyid, 'identifier' => $saveName));
 
@@ -349,7 +338,20 @@ class Save
         } elseif (!empty($duplicate) && $duplicate->count() > 0) {
 
             $this->aSaveErrors[] = gT("This name has already been used for this survey. You must use a unique save name.");
-        } else {
+        }
+
+        // Check captcha
+        if (isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha'])) {
+
+            if (!Yii::app()->request->getPost('loadsecurity')
+                || !isset($_SESSION['survey_'.$surveyid]['secanswer'])
+                || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']
+            ) {
+                $this->aSaveErrors[] = gT("The answer to the security question is incorrect.");
+            }
+        }
+
+        if (empty($this->aSaveErrors)) {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
 
             if (!isset($_SESSION['survey_'.$surveyid]['srid'])) {
