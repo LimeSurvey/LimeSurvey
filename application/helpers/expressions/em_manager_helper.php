@@ -1807,7 +1807,7 @@
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'equals_num_value',
-                            'class' => 'sum_range',
+                            'class' => 'sum_equals',
                             'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
@@ -3212,7 +3212,7 @@
                 // equals_num_value
                 if ($equals_num_value!='')
                 {
-                    $qtips['sum_range']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
+                    $qtips['sum_equals']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
                 }
 
                 if($input_boxes)
@@ -7626,6 +7626,7 @@
                                 switch ($vclass)
                                 {
                                     case 'sum_range':
+                                    case 'sum_equals':
                                         $valParts[] = "    isValidSum" . $arg['qid'] . "=false;\n";
                                         break;
                                     case 'other_comment_mandatory':
