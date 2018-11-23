@@ -77,6 +77,12 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	public $autoStart=true;
 
 	/**
+	 * @var array Frozen session data
+	 * @since 1.1.20
+	 */
+	private $_frozenData;
+
+	/**
 	 * Initializes the application component.
 	 * This method is required by IApplicationComponent and is invoked by application.
 	 */
@@ -270,18 +276,24 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	{
 		if($value==='none')
 		{
+			$this->freeze();
 			ini_set('session.use_cookies','0');
 			ini_set('session.use_only_cookies','0');
+			$this->unfreeze();
 		}
 		elseif($value==='allow')
 		{
+			$this->freeze();
 			ini_set('session.use_cookies','1');
 			ini_set('session.use_only_cookies','0');
+			$this->unfreeze();
 		}
 		elseif($value==='only')
 		{
+			$this->freeze();
 			ini_set('session.use_cookies','1');
 			ini_set('session.use_only_cookies','1');
+			$this->unfreeze();
 		}
 		else
 			throw new CException(Yii::t('yii','CHttpSession.cookieMode can only be "none", "allow" or "only".'));
@@ -303,9 +315,11 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	{
 		if($value>=0 && $value<=100)
 		{
+			$this->freeze();
 			// percent * 21474837 / 2147483647 ≈ percent * 0.01
 			ini_set('session.gc_probability',floor($value*21474836.47));
 			ini_set('session.gc_divisor',2147483647);
+			$this->unfreeze();
 		}
 		else
 			throw new CException(Yii::t('yii','CHttpSession.gcProbability "{value}" is invalid. It must be a float between 0 and 100.',
@@ -572,5 +586,50 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	public function offsetUnset($offset)
 	{
 		unset($_SESSION[$offset]);
+	}
+
+	/**
+	 * If session is started we cannot edit session ini settings.
+	 * This function save session data to temporary variable and stop session.
+	 *
+	 * @see CHttpSession::unfreeze();
+	 * @since 1.1.20
+	 */
+	protected function freeze()
+	{
+		if (isset($_SESSION) && $this->getIsStarted())
+		{
+			$this->_frozenData = $_SESSION;
+			$this->close();
+		}
+	}
+
+	/**
+	 * Start session and restore data from temporary variable
+	 *
+	 * @see CHttpSession::freeze();
+	 * @since 1.1.20
+	 */
+	protected function unfreeze()
+	{
+		if ($this->_frozenData !== null)
+		{
+			@session_start();
+			$_SESSION = $this->_frozenData;
+			$this->_frozenData = null;
+		}
+	}
+
+	/**
+	 * Set cache limiter
+	 *
+	 * @param string $cacheLimiter
+	 * @since 1.1.20
+	 */
+	public function setCacheLimiter($cacheLimiter)
+	{
+		$this->freeze();
+		session_cache_limiter($cacheLimiter);
+		$this->unfreeze();
 	}
 }
