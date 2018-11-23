@@ -85,7 +85,7 @@ $.Autocompleter = function(input, options) {
 	var blockSubmit;
 	
 	// prevent form submit in opera when selecting with return key
-	(navigator.userAgent.match(/OPERA|OPR\//i) !== null) && $(input.form).on("submit.autocomplete", function() {
+	(navigator.userAgent.match(/OPERA|OPR\//i) !== null) && $(input.form).bind("submit.autocomplete", function() {
 		if (blockSubmit) {
 			blockSubmit = false;
 			return false;
@@ -172,7 +172,7 @@ $.Autocompleter = function(input, options) {
 		if ( hasFocus++ > 1 && !select.visible() ) {
 			onChange(0, true);
 		}
-	}).on("search", function() {
+	}).bind("search", function() {
 		// TODO why not just specifying both arguments?
 		var fn = (arguments.length > 1) ? arguments[1] : null;
 		function findValueCallback(q, data) {
@@ -191,14 +191,14 @@ $.Autocompleter = function(input, options) {
 		$.each(trimWords($input.val()), function(i, value) {
 			request(value, findValueCallback, findValueCallback);
 		});
-	}).on("flushCache", function() {
+	}).bind("flushCache", function() {
 		cache.flush();
-	}).on("setOptions", function() {
+	}).bind("setOptions", function() {
 		$.extend(options, arguments[1]);
 		// if we've updated the data, repopulate
 		if ( "data" in arguments[1] )
 			cache.populate();
-	}).on("unautocomplete", function() {
+	}).bind("unautocomplete", function() {
 		select.unbind();
 		$input.unbind();
 		$(input.form).unbind(".autocomplete");
