@@ -1294,21 +1294,21 @@ class ExpressionManager
         }
         $stringParts = array();
         $numTokens = count($tokens);
-        $globalErrs = array();
         $bHaveError = false;
 
+        $globalErrs = array(); // Error not related to a token (bracket for example)
         while ($errIndex < $errCount) {
-            if (empty($errs[$errIndex][1])) { // Error not related to a token (bracket for example)
+            if (empty($errs[$errIndex][1])) {
                 $globalErrs[] = $errs[$errIndex][0];
                 $bHaveError = true;
             }
             $errIndex++;
         }
+
         for ($i = 0; $i < $numTokens; ++$i) {
             $token = $tokens[$i];
             $messages = array();
             $thisTokenHasError = false;
-            $tokenErrs = array();
             $errIndex = 0;
             while ($errIndex < $errCount) {
                 if ($errs[$errIndex][1] == $token) { // Error related to this token
@@ -1671,7 +1671,6 @@ class ExpressionManager
         $this->groupSeq = $groupSeq;
         $result = $src;
         $prettyPrint = '';
-        $errors = array();
 
         $prettyPrintIterationDone = false;
         for ($i = 1; $i <= $numRecursionLevels; ++$i) {
