@@ -1296,40 +1296,39 @@ class ExpressionManager
         $numTokens = count($tokens);
         $globalErrs = array();
         $bHaveError = false;
+
         while ($errIndex < $errCount) {
-            if ($errs[$errIndex++][1][1] == 0) {
-                // General message, associated with position 0
-                $globalErrs[] = $errs[$errIndex - 1][0];
+            if (empty($errs[$errIndex][1])) { // Error not related to a token (bracket for example)
+                $globalErrs[] = $errs[$errIndex][0];
                 $bHaveError = true;
-            } else {
-                --$errIndex;
-                break;
             }
+            $errIndex++;
         }
         for ($i = 0; $i < $numTokens; ++$i) {
             $token = $tokens[$i];
             $messages = array();
             $thisTokenHasError = false;
-            if ($i == 0 && count($globalErrs) > 0) {
-                $messages = array_merge($messages, $globalErrs);
-                $thisTokenHasError = true;
-            }
-            if ($errIndex < $errCount && $token[1] == $errs[$errIndex][1][1]) {
-                $messages[] = $errs[$errIndex][0];
-                $thisTokenHasError = true;
+            $tokenErrs = array();
+            $errIndex = 0;
+            while ($errIndex < $errCount) {
+                if ($errs[$errIndex][1] == $token) { // Error related to this token
+                    $messages[] = $errs[$errIndex][0];
+                    $thisTokenHasError = true;
+                }
+                $errIndex++;
             }
             if ($thisTokenHasError) {
-                $stringParts[] = "<span title='".implode('; ', $messages)."' class='em-error'>";
+                $stringParts[] = "<span class='em-error'>";
                 $bHaveError = true;
             }
             switch ($token[2]) {
                 case 'DQ_STRING':
-                    $stringParts[] = "<span title='".implode('; ', $messages)."' class='em-var-string'>\"";
+                    $stringParts[] = "<span title='".CHtml::encode(implode('; ', $messages))."' class='em-var-string'>\"";
                     $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "\"</span>";
                     break;
                 case 'SQ_STRING':
-                    $stringParts[] = "<span title='".implode('; ', $messages)."' class='em-var-string'>'";
+                    $stringParts[] = "<span title='".CHtml::encode(implode('; ', $messages))."' class='em-var-string'>'";
                     $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "'</span>";
                     break;
@@ -1342,7 +1341,7 @@ class ExpressionManager
                             $messages[] = $funcInfo[2];
                             $messages[] = $funcInfo[3];
                         }
-                        $stringParts[] = "<span title='".preg_replace('/\'/', '"', implode('; ', $messages))."' class='em-function' >";
+                        $stringParts[] = "<span title='".CHtml::encode(implode('; ', $messages))."' class='em-function' >";
                         $stringParts[] = $token[0];
                         $stringParts[] = "</span>";
                     } else {
@@ -1391,17 +1390,17 @@ class ExpressionManager
                                 $descriptor .= ': ';
                             }
 
-                            $messages[] = $descriptor.htmlspecialchars($question, ENT_QUOTES, 'UTF-8', false);
+                            $messages[] = $descriptor.$question;
                             if ($ansList != '') {
-                                $messages[] = htmlspecialchars($ansList, ENT_QUOTES, 'UTF-8', false);
+                                $messages[] = $ansList;
                             }
                             if ($code != '') {
                                 if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/', $token[0])) {
                                     $shown = $this->GetVarAttribute($token[0], 'shown', '');
-                                    $messages[] = 'value=['.htmlspecialchars($code, ENT_QUOTES, 'UTF-8', false).'] '
-                                            . htmlspecialchars($shown, ENT_QUOTES, 'UTF-8', false);
+                                    $messages[] = 'value=['.$code.'] '
+                                            . $shown;
                                 } else {
-                                    $messages[] = 'value='.htmlspecialchars($code, ENT_QUOTES, 'UTF-8', false);
+                                    $messages[] = 'value='.$code;
                                 }
                             }
 
@@ -1423,9 +1422,9 @@ class ExpressionManager
 
                         if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid > 0) {
                             $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/'.$this->sid.'/gid/'.$gid.'/qid/'.$qid);
-                            $stringParts[] = "<a title='{$message}' class='em-var {$class}' href='{$editlink}' >";
+                            $stringParts[] = "<a title='".CHtml::encode($message)."' class='em-var {$class}' href='{$editlink}' >";
                         } else {
-                            $stringParts[] = "<span title='".$message."' class='em-var {$class}' >";
+                            $stringParts[] = "<span title='".CHtml::encode($message)."' class='em-var {$class}' >";
                         }
                         if ($this->sgqaNaming) {
                             $sgqa = substr($jsName, 4);
@@ -1473,7 +1472,12 @@ class ExpressionManager
         }
         $sClass = 'em-expression';
         $sClass .= ($bHaveError) ? " em-haveerror" : "";
-        return "<span class='$sClass'>".implode('', $stringParts)."</span>";
+        $title = "";
+        if(!empty($globalErrs)) {
+            $sClass .= " em-error";
+            $title = " title='".CHtml::encode(implode('; ', $globalErrs))."'";
+        }
+        return "<span class='$sClass' $title >".implode('', $stringParts)."</span>";
     }
 
     /**
@@ -1686,10 +1690,8 @@ class ExpressionManager
                 $prettyPrint = $this->prettyPrintSource;
                 $prettyPrintIterationDone = true;
             }
-            $errors = array_merge($errors, $this->RDP_errs);
         }
         $this->prettyPrintSource = $prettyPrint; // ensure that if doing recursive substition, can get original source to pretty print
-        $this->RDP_errs = $errors;
         $result = str_replace(array('\{', '\}',), array('{', '}'), $result);
         return $result;
     }
@@ -1707,8 +1709,6 @@ class ExpressionManager
         $stringParts = $this->asSplitStringOnExpressions($src);
         $resolvedParts = array();
         $prettyPrintParts = array();
-        $allErrors = array();
-
         foreach ($stringParts as $stringPart) {
             if ($stringPart[2] == 'STRING') {
                 $resolvedParts[] = $stringPart[0];
@@ -1725,7 +1725,6 @@ class ExpressionManager
                     } else {
                         $resolvedPart = '';
                     }
-                    $allErrors[] = $this->GetErrors();
                 }
                 $onpageJsVarsUsed = $this->GetOnPageJsVarsUsed();
                 $jsVarsUsed = $this->GetJsVarsUsed();
@@ -1753,7 +1752,6 @@ class ExpressionManager
         }
         $result = implode('', $this->flatten_array($resolvedParts));
         $this->prettyPrintSource = implode('', $this->flatten_array($prettyPrintParts));
-        $this->RDP_errs = $allErrors; // so that has all errors from this string
         return $result; // recurse in case there are nested ones, avoiding infinite loops?
     }
 
