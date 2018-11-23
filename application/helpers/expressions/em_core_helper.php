@@ -1420,7 +1420,7 @@ class ExpressionManager
                         $message = implode('; ', $messages);
                         $message = str_replace(array('{', '}'), array('{ ', ' }'), $message);
 
-                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid > 0) {
+                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid > 0 && $this->RDP_isValidVariable($token[0])) {
                             $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/'.$this->sid.'/gid/'.$gid.'/qid/'.$qid);
                             $stringParts[] = "<a title='".CHtml::encode($message)."' class='em-var {$class}' href='{$editlink}' >";
                         } else {
@@ -1436,7 +1436,7 @@ class ExpressionManager
                         } else {
                             $stringParts[] = $displayName;
                         }
-                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid > 0) {
+                        if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid > 0 && $this->RDP_isValidVariable($token[0])) {
                             $stringParts[] = "</a>";
                         } else {
                             $stringParts[] = "</span>";
