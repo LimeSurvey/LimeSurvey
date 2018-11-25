@@ -150,7 +150,9 @@ function manageIndex(){
  */
 function activateLanguageChanger(){
     var limesurveyForm = $('form#limesurvey');
-
+    if(limesurveyForm.length == 0 && $('form[name="limesurvey"]').length == 1) { /* #form-token for example */
+        limesurveyForm = $('form[name="limesurvey"]');
+    }
     /**
      * @param {string} lang Language to change to.
      */
