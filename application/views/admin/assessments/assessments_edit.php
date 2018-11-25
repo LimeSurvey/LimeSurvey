@@ -113,10 +113,10 @@
                       <label class='control-label col-sm-12' for='assessmentmessage_<?=$assessmentlang?>'>
                         <?php eT("Message");?>:</label>
                       <div class='col-sm-12'>
-                        <textarea name='assessmentmessage_<?=$assessmentlang?>' id='assessmentmessage_<?=$assessmentlang?>' rows='10' style="width:100%">
-                          <?php echo $message;?>
-                        </textarea>
-                        <?php echo getEditor("assessment-text","assessmentmessage_".$assessmentlang, "[".gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
+                        <div class="htmleditor input-group">
+                          <textarea name='assessmentmessage_<?=$assessmentlang?>' class="form-control" id='assessmentmessage_<?=$assessmentlang?>' rows='10' ><?php echo $message;?></textarea>
+                          <?php echo getEditor("assessment-text","assessmentmessage_".$assessmentlang, "[".gT("Message:", "js")."]",$surveyid,$gid,null,$action); ?>
+                        </div>
                       </div>
                     </div>
                     <div class='form-group'>
