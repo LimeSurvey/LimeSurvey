@@ -3,11 +3,12 @@
  */
 $(document).on('ready  pjax:scriptcomplete', function(){
     // Tooltip inside em-var
-    $(".em-expression").tooltip();
-});
-
-
-$(document).on('click','.em-expression a',function(e){
-    e.preventDefault();
-    window.open($(this).attr('href'));
+    $(".em-expression").tooltip({
+        placement : 'bottom',
+        template : '<div class="tooltip expression-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+    });
+    $(".em-expression *").tooltip({
+        placement : 'top',
+        template : '<div class="tooltip expression-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+    });
 });
