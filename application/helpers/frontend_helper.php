@@ -1301,7 +1301,9 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
                 Yii::app()->getController()->createAction('captcha');
             }
             $oSurvey = Survey::model()->findByPk($surveyid);
-
+            if(empty($aSurveyInfo)) {
+                $aSurveyInfo  =  getsurveyinfo($surveyid,App()->getLanguage());
+            }
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
@@ -1318,7 +1320,6 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
 
             $aData['aSurveyInfo'] = $thissurvey;
 
-            $aSurveyInfo  =  getsurveyinfo($surveyid);
             $aData['aSurveyInfo'] = array_merge($aSurveyInfo, $aData['aSurveyInfo']);
 
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", $aData, false);
