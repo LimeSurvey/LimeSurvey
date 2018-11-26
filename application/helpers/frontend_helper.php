@@ -1549,18 +1549,19 @@ function doAssessment($surveyid, $onlyCurrent = true)
             'datas' => $assessment,
             'currentotal' => '',
         );
-        return $assessment;
     }
-
+    $currentLanguage = App()->getLanguage();
     $baselang = $oSurvey->language;
     if (!isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
         /* Then not inside survey … can surely return directly */
-        $_SESSION['survey_'.$surveyid]['s_lang'] = $baselang;
+        return array(
+            'show'=> false,
+            'datas' => $assessment,
+            'currentotal' => '',
+        );
     }
-    $total = 0;
-    /* Always count and countonly one time … */
-    $fieldmap = createFieldMap($oSurvey, "full", false, false, $_SESSION['survey_'.$surveyid]['s_lang']);
-    $i        = 0;
+    /* Always count and count only one time … */
+    $fieldmap = createFieldMap($oSurvey, "full", false, false, $currentLanguage);
     $total    = 0;
     $groups   = array();
     foreach ($fieldmap as $field) {
@@ -1600,7 +1601,7 @@ function doAssessment($surveyid, $onlyCurrent = true)
             // Prepare Event Info
             $event = new PluginEvent('afterSurveyQuestionAssessment');
             $event->set('surveyId', $surveyid);
-            $event->set('lang', $_SESSION['survey_'.$surveyid]['s_lang']);
+            $event->set('lang', $currentLanguage);
             $event->set('gid', $field['gid']);
             $event->set('qid', $field['qid']);
 
@@ -1626,7 +1627,6 @@ function doAssessment($surveyid, $onlyCurrent = true)
             $fieldmap[$field['fieldname']]['assessment_value'] = $updatedAssessmentValue;
             $total = $total + $updatedAssessmentValue;
         }
-        $i++;
     }
     $assessment['total_score'] = $total;
     if($onlyCurrent) {
@@ -1655,35 +1655,37 @@ function doAssessment($surveyid, $onlyCurrent = true)
     $query = "SELECT * FROM {{assessments}}
         WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
         ORDER BY scope, id";
-
-    if ($result = dbExecuteAssoc($query)) {
-        $aResultSet = $result->readAll();
-        if (count($aResultSet) > 0) {
-            foreach ($aResultSet as $row) {
-                if ($row['scope'] == "G") {
-                    /* send only current valid assessments */
-                    if($row['minimum'] <= $subtotal[$row['gid']] && $subtotal[$row['gid']] <= $row['maximum']) {
-                        $assessment['group'][$row['gid']][] = array(
-                            "name"    => $row['name'],
-                            "min"     => $row['minimum'],
-                            "max"     => $row['maximum'],
-                            "message" => $row['message']
-                        );
-                    }
-                } else {
-                    /* send only current valid assessments */
-                    if($row['minimum'] <= $total && $total <= $row['maximum']) {
-                        $assessment['total']['show'] = true;
-                        $assessment['total'][] = array(
-                            "name"    => $row['name'],
-                            "min"     => $row['minimum'],
-                            "max"     => $row['maximum'],
-                            "message" => $row['message']
-                        );
-                    }
+    $aoAssessements = Assessment::model()->findAll(array(
+        'condition' => "sid = :sid and language = :language",
+        'order' => 'scope,id', // No real order in assessment, here : group first (why ?) and by creation
+        'params' => array(':sid' => $surveyid,':language' => $currentLanguage)
+    ));
+    if(!empty($aoAssessements)) {
+        foreach ($aoAssessements as $oAssessement) {
+            if ($oAssessement->scope == "G") {
+                /* send only current valid assessments */
+                if($oAssessement->minimum <= $subtotal[$oAssessement->gid] && $subtotal[$oAssessement->gid] <= $oAssessement->maximum) {
+                    $assessment['group'][$oAssessement->gid][] = array(
+                        "name"    => $oAssessement->name,
+                        "min"     => $oAssessement->minimum,
+                        "max"     => $oAssessement->maximum,
+                        "message" => $oAssessement->message
+                    );
+                }
+            } else {
+                /* send only current valid assessments */
+                if($oAssessement->minimum <= $total && $total <= $oAssessement->maximum) {
+                    $assessment['total']['show'] = true;
+                    $assessment['total'][] = array(
+                        "name"    => $oAssessement->name,
+                        "min"     => $oAssessement->minimum,
+                        "max"     => $oAssessement->maximum,
+                        "message" => $oAssessement->message
+                    );
                 }
             }
         }
+
         if (!empty($subtotal) && !empty($assessment['group'])) {
             $assessment['subtotal']['show']  = true;
             $assessment['subtotal']['datas'] = $subtotal;
