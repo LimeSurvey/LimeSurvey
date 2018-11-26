@@ -1652,9 +1652,6 @@ function doAssessment($surveyid, $onlyCurrent = true)
     }
 
     /* Get current assesment (can be only for last page …) */
-    $query = "SELECT * FROM {{assessments}}
-        WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
-        ORDER BY scope, id";
     $aoAssessements = Assessment::model()->findAll(array(
         'condition' => "sid = :sid and language = :language",
         'order' => 'scope,id', // No real order in assessment, here : group first (why ?) and by creation
