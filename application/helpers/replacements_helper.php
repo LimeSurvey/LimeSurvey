@@ -292,7 +292,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
 
     // Set the array of replacement variables here - don't include curly braces
-    $coreReplacements = array();
+    $coreReplacements = getStandardsReplacementFields($thissurvey);
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['ANSWERSCLEARED'] = gT("Answers cleared");
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
