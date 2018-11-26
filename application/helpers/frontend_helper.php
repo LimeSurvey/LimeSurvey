@@ -1577,12 +1577,13 @@ function doAssessment($surveyid, $onlyCurrent = true)
                     }
                 } else {
                     // Single choice question
-                    $usquery  = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".App()->db->quoteValue($_SESSION['survey_'.$surveyid][$field['fieldname']]);
-                    $usresult = dbExecuteAssoc($usquery); //Checked
-                    if ($usresult) {
-                        $usrow              = $usresult->read();
-                        $assessmentValue    = $usrow['assessment_value'];
-                    //    $total              = $total+$usrow['assessment_value'];
+                    $oAssessementAnswer = Answer::model()->find(array(
+                        'select' => 'code,assessment_value',
+                        'condition' => 'qid = :qid and language = :language and code = :code', // Same assessment_value for all language, get primary
+                        'params' => array(":qid" => $field['qid'],":language" => $baselang, ":code" => $_SESSION['survey_'.$surveyid][$field['fieldname']])
+                    ));
+                    if ($oAssessementAnswer) {
+                        $assessmentValue    = $oAssessementAnswer->assessment_value;
                     }
                 }
 
