@@ -1396,7 +1396,7 @@ class SurveyAdmin extends Survey_Common_Action
             LimeExpressionManager::SetSurveyId($aImportResults['newsid']);
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($aImportResults['newsid']);
             LimeExpressionManager::UpgradeConditionsToRelevance($aImportResults['newsid']);
-            LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
+            @LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
             LimeExpressionManager::StartProcessingPage(true, true);
             $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid'=>$aImportResults['newsid']]);
             foreach ($aGrouplist as $aGroup) {
