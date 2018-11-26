@@ -130,24 +130,19 @@ class Question extends LSActiveRecord
     public function rules()
     {
         $aRules = array(
-                    array('title', 'required', 'on' => 'update, insert', 'message'=>gT('The question code is mandatory.', 'unescaped')),
-                    array('title', 'length', 'min' => 1, 'max'=>20, 'on' => 'update, insert'),
-                    array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly'=>true),
-                    array('qid', 'unique', 'criteria'=>array(
-                            'condition'=>'language=:language',
-                            'params'=>array(':language'=>$this->language)
-                        ),
-                        'message'=>sprintf(gT("Question id (qid) : '%s' is already in use."),$this->qid),// Usage of {attribute} need attributeLabels, {value} never exist in message
-                    ),
-                    array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-                    array('mandatory', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-                    array('question_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-                    array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-                    array('same_default', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-                    array('type', 'length', 'min' => 1, 'max'=>1),
-                    array('preg,relevance', 'safe'),
-                    array('modulename', 'length', 'max'=>255),
-                );
+            array('title', 'required', 'on' => 'update, insert', 'message'=>gT('The question code is mandatory.', 'unescaped')),
+            array('title', 'length', 'min' => 1, 'max'=>20, 'on' => 'update, insert'),
+            array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly'=>true),
+            array('qid', 'unique','message'=>sprintf(gT("Question id (qid) : '%s' is already in use."),$this->qid)),// Still needed ?
+            array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('mandatory', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('question_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('same_default', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('type', 'length', 'min' => 1, 'max'=>1),
+            array('preg,relevance', 'safe'),
+            array('modulename', 'length', 'max'=>255),
+        );
         // Always enforce unicity on Sub question code (DB issue).
         if ($this->parent_qid) {
             $aRules[] = array('title', 'unique', 'caseSensitive'=>false,

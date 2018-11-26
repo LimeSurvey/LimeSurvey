@@ -3683,6 +3683,14 @@
                 'jsName'=>'',
                 'readWrite'=>'N',
             );
+            if($survey->getIsAssessments()) {
+                $this->knownVars['ASSESSMENT_CURRENT_TOTAL'] = array(
+                    'code'=> 0,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
+            }
             /* Add the core replacement before question code : needed if use it in equation , use SID to never send error */
             templatereplace("{SID}");
 
