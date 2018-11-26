@@ -1524,10 +1524,11 @@ function getNavigatorDatas()
 /**
  * Caculate assessement scores
  *
- * @param mixed $surveyid
+ * @param integer $surveyid
+ * @param boolean $onlyCurrent : only current ( ASSESSMENT_CURRENT_TOTAL )
  * @return array
  */
-function doAssessment($surveyid)
+function doAssessment($surveyid, $onlyCurrent = true)
 {
     /* Default : show nothing */
     $assessment = array(
@@ -1538,15 +1539,22 @@ function doAssessment($surveyid)
         'subtotal' => array(
             'show' => false,
         ),
-        'currenttotal' => "", // Current total is set to 0 if assessments == "Y", empty string if nit.
+        'total_score' => "", // Current total is set to 0 if assessments == "Y", empty string if not.
+        'subtotal_score' => array(), // Score by group, used only on endpage currently
     );
     $oSurvey = Survey::model()->findByPk($surveyid);
     if ($oSurvey->assessments != "Y") {
+        return array(
+            'show'=> false,
+            'datas' => $assessment,
+            'currentotal' => '',
+        );
         return $assessment;
     }
 
     $baselang = $oSurvey->language;
     if (!isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
+        /* Then not inside survey … can surely return directly */
         $_SESSION['survey_'.$surveyid]['s_lang'] = $baselang;
     }
     $total = 0;
@@ -1568,7 +1576,7 @@ function doAssessment($surveyid)
                         $assessmentValue = (int) $aAttributes['assessment_value'];
                     }
                 } else {
-                        // Single choice question
+                    // Single choice question
                     $usquery  = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".App()->db->quoteValue($_SESSION['survey_'.$surveyid][$field['fieldname']]);
                     $usresult = dbExecuteAssoc($usquery); //Checked
                     if ($usresult) {
@@ -1619,11 +1627,19 @@ function doAssessment($surveyid)
         }
         $i++;
     }
+    $assessment['total_score'] = $total;
+    if($onlyCurrent) {
+        return array(
+            'show'=> false,
+            'datas' => $assessment,
+            'currentotal' => $total,
+        );
+    }
     /* count by group */
     $groups = array_unique($groups);
+    $subtotal = array();
     foreach ($groups as $group) {
         $grouptotal = 0;
-
         foreach ($fieldmap as $field) {
             if ($field['gid'] == $group && isset($field['assessment_value'])) {
                 if (isset ($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
@@ -1667,18 +1683,19 @@ function doAssessment($surveyid)
                 }
             }
         }
-
         if (!empty($subtotal) && !empty($assessment['group'])) {
             $assessment['subtotal']['show']  = true;
             $assessment['subtotal']['datas'] = $subtotal;
         }
-
-        $assessment['subtotal_score'] = (isset($subtotal)) ? $subtotal : '';
-        $assessment['total_score']    = (isset($total)) ? $total : '';
-
+        $assessment['subtotal_score'] = $subtotal;
+        $assessment['total_score']    = $total;
         //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
+        
         return array(
-            'show'=>($assessment['subtotal']['show'] || $assessment['total']['show']), 'datas' => $assessment);
+            'show'=>($assessment['subtotal']['show'] || $assessment['total']['show']),
+            'datas' => $assessment,
+            'currentotal' => $total,
+        );
 
     }
 }
