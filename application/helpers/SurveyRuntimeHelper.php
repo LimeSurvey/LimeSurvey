@@ -1092,7 +1092,7 @@ class SurveyRuntimeHelper
             //Check for assessments
             $this->aSurveyInfo['aAssessments']['show'] = false;
             if ($this->aSurveyInfo['assessments'] == "Y") {
-                $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid);
+                $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid,false);
             }
             // End text
             if (trim(str_replace(array('<p>', '</p>'), '', $this->aSurveyInfo['surveyls_endtext'])) == '') {
