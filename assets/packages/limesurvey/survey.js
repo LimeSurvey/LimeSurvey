@@ -150,7 +150,9 @@ function manageIndex(){
  */
 function activateLanguageChanger(){
     var limesurveyForm = $('form#limesurvey');
-
+    if(limesurveyForm.length == 0 && $('form[name="limesurvey"]').length == 1) { /* #form-token for example */
+        limesurveyForm = $('form[name="limesurvey"]');
+    }
     /**
      * @param {string} lang Language to change to.
      */
@@ -394,24 +396,4 @@ function updateMandatoryErrorClass(){
         $(this).closest(".has-error").removeClass("has-error");
     });
 }
-/**
- * showStartPopups : Take all message in startPopups json array and launch an alert with text
- */
-function showStartPopups()
-{
-    if(LSvar.showpopup && typeof(LSvar.startPopups) == 'array' && LSvar.startPopups.length){
-        startPopup=LSvar.startPopups.map(function(text) {
-            return $("<div/>").html(text).text();
-        });
-        alertSurveyDialog(startPopup.join("\n"),''); // What can be a good title here ? ANd this title must come from PHP
-    }
-}
-/**
- * alertSurveyDialog : Send a warning/alert to the user
- * @var string text : the text to be shown
- * @var string optionnal title
- */
-function alertSurveyDialog(text,title)
-{
-    alert(text);
-}
+

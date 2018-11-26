@@ -2289,7 +2289,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
                 $oDB->createCommand()->delete('{{surveymenu}}', 'id=:id', [':id' => $aSurveymenu['id']]);
                 $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
-                $aIdMap[$aSurveymenu['name']] = $oDB->getCommandBuilder()->getLastInsertID('{{surveymenu}}');
+                $aIdMap[$aSurveymenu['name']] = $aSurveymenu['id'];
             }
             
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();

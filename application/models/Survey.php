@@ -398,7 +398,7 @@ class Survey extends LSActiveRecord
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id')),
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid')),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id',),
-            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'order'=>'group_order ASC'),
+            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'order'=>'groups.group_order ASC'),
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
@@ -805,10 +805,17 @@ class Survey extends LSActiveRecord
                 }
 
                 //Skip menu if no permission
-                if ((!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])
-                    && !Permission::model()->hasSurveyPermission($this->sid, $aEntry['permission'], $aEntry['permission_grade']))
-                ) {
-                    continue;
+                 if (!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])){
+                     $inArray = array_search($aEntry['permission'],array_keys(Permission::getGlobalBasePermissions()));
+                    if($inArray) {
+                        $hasPermission = Permission::model()->hasGlobalPermission($aEntry['permission'], $aEntry['permission_grade']);
+                    } else {
+                        $hasPermission = Permission::model()->hasSurveyPermission($this->sid, $aEntry['permission'], $aEntry['permission_grade']);
+                    }
+
+                    if(!$hasPermission) {
+                        continue;
+                    }
                 }
 
                 // Check if a specific user owns this menu.
@@ -1864,9 +1871,12 @@ return $s->hasTokensTable; });
         $criteria->with = array(
             'survey.groups',
         );
-        $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','
-            .Yii::app()->db->quoteColumnName('t.question_order');
-        $criteria->addCondition('groups.gid = t.gid', 'AND');
+        if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib'){
+            $criteria->order = Yii::app()->db->quoteColumnName('t.question_order');
+        } else {
+            $criteria->order = Yii::app()->db->quoteColumnName('groups.group_order').','.Yii::app()->db->quoteColumnName('t.question_order');
+        }
+        $criteria->addCondition('groups.gid=t.gid', 'AND');
         return $criteria;
     }
 

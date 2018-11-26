@@ -766,20 +766,26 @@
                         <label for='simple_edit_options_backgroundimagefile' class='control-label'>{{ gT("Background image file") }}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="backgroundimage" id='simple_edit_options_backgroundimagefile' name='backgroundimagefile'>
+                                {% set optgroup = '' %}
                                 {% for image in templateConfiguration.imageFileList %}
-                                    {% if oParentOptions.backgroundimagefile == image.filepath %} 
-                                        {% set backgroundimagefileInheritPreview = backgroundimagefileInheritPreview ~ image.preview %} 
-                                        {% set backgroundimagefileInheritFilename = backgroundimagefileInheritFilename ~ image.filename %} 
+                                    {% if image.group != optgroup %}
+                                        {% if optgroup != '' %}
+                                            {% set backgroundimagefileOptions = backgroundimagefileOptions ~ '</optgroup>' %}
+                                        {% endif %}
+                                        {% set backgroundimagefileOptions = backgroundimagefileOptions ~ '<optgroup label="' ~ image.group ~ '">'  %}
+                                        {% set optgroup = image.group %}
+                                    {% endif %}
+                                    {% if oParentOptions.brandlogofile == image.filepath %} 
+                                        {% set brandlogofileInheritPreview = backgroundimagefileInheritPreview ~ image.preview %} 
+                                        {% set brandlogofileInheritFilename = backgroundimagefileInheritFilename ~ image.filename %} 
                                     {% endif %}
                                     {% set backgroundimagefileOptions = backgroundimagefileOptions ~ '<option data-lightbox-src="' ~ image.preview ~ '" value="' ~ image.filepath ~ '">' ~ image.filename ~ '</option>' %}
                                 {% endfor %}
-
+                                {% set backgroundimagefileOptions = backgroundimagefileOptions ~ '</optgroup>' %}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    {% set backgroundimagefileOptions = '<option data-lightbox-src="' ~ backgroundimagefileInheritPreview ~ '" value="inherit">' ~ gT("Inherit")~ ' [' ~ gT("inherited value:") ~ ' ' ~ backgroundimagefileInheritFilename ~ ']</option>' ~ backgroundimagefileOptions %}
+                                    {% set backgroundimagefileOptions = '<option data-lightbox-src="' ~ backgroundimageInheritPreview ~ '" value="inherit">' ~ gT("Inherit")~ ' [' ~ gT("inherited value:") ~ ' ' ~ backgroundimagefileInheritFilename ~ ']</option>' ~ backgroundimagefileOptions %}
                                 {% endif %}
-
                                 {{ backgroundimagefileOptions }}
-                                
                             </select>
                         </div>
                     </div>
@@ -821,20 +827,26 @@
                         <label for='simple_edit_options_brandlogofile' class='control-label'>{{ gT("Logo file") }}</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
+                                {% set optgroup = '' %}
                                 {% for image in templateConfiguration.imageFileList %}
+                                    {% if image.group != optgroup %}
+                                        {% if optgroup != '' %}
+                                            {% set brandlogofileOptions = brandlogofileOptions ~ '</optgroup>' %}
+                                        {% endif %}
+                                        {% set brandlogofileOptions = brandlogofileOptions ~ '<optgroup label="' ~ image.group ~ '">'  %}
+                                        {% set optgroup = image.group %}
+                                    {% endif %}
                                     {% if oParentOptions.brandlogofile == image.filepath %} 
                                         {% set brandlogofileInheritPreview = brandlogofileInheritPreview ~ image.preview %} 
                                         {% set brandlogofileInheritFilename = brandlogofileInheritFilename ~ image.filename %} 
                                     {% endif %}
                                     {% set brandlogofileOptions = brandlogofileOptions ~ '<option data-lightbox-src="' ~ image.preview ~ '" value="' ~ image.filepath ~ '">' ~ image.filename ~ '</option>' %}
                                 {% endfor %}
-
+                                {% set brandlogofileOptions = brandlogofileOptions ~ '</optgroup>' %}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     {% set brandlogofileOptions = '<option data-lightbox-src="' ~ brandlogofileInheritPreview ~ '" value="inherit">' ~ gT("Inherit")~ ' [' ~ gT("inherited value:") ~ ' ' ~ brandlogofileInheritFilename ~ ']</option>' ~ brandlogofileOptions %}
                                 {% endif %}
-
                                 {{ brandlogofileOptions }}
-
                             </select>
                         </div>
                     </div>

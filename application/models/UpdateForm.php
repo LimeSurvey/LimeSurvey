@@ -278,7 +278,7 @@ class UpdateForm extends CFormModel
             // To debug pcl_zip, comment the following line:
             Yii::app()->loadLibrary("admin/pclzip");
 
-            $archive = new PclZip($this->tempdir.DIRECTORY_SEPARATOR.$file_to_unzip);
+            $archive = new PclZip($this->tempdir.DIRECTORY_SEPARATOR.$file_to_unzip, false);
 
             // TODO : RESTORE REPLACE NEWER !!
             // To debug pcl_zip, uncomment the following line :

@@ -145,7 +145,7 @@
 				});
 
 				if (settings.enableHistory && settings.ajaxUpdate !== false && window.History.enabled) {
-					$(window).on('statechange', function() { // Note: We are using statechange instead of popstate
+					$(window).bind('statechange', function() { // Note: We are using statechange instead of popstate
 						var State = window.History.getState(); // Note: We are using History.getState() instead of event.state
 						if (State.data.url === undefined) {
 							State.data.url = State.url;
@@ -405,11 +405,7 @@
 			}
 			this.find('.' + settings.tableClass).children('tbody').children('tr').children('td').children('input[name="' + column_id + '"]').each(function (i) {
 				if (this.checked) {
-                    var val = keys.eq(i).text();
-                    if (val == '') {
-                        val = $(this).val();
-                    }
-					checked.push(val);
+					checked.push(keys.eq(i).text());
 				}
 			});
 			return checked;

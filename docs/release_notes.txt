@@ -35,8 +35,51 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.15.4 (build 181109) to 3.15.5 (build 181115)   November 15, 2018
+-Fixed issue #14129: wrong translation table in German version (Dominik Vitt)
+-Fixed issue #14159: Cannot delete response urlParam to get (Denis Chenu)
+-Fixed issue #14182: Database error when trying to define a quota using MS sql server 2012 (Dominik Vitt)
+-Fixed issue #14221: [security] No XSS control when delete a token (Denis Chenu)
+-Fixed issue #14222: When deleting a single response : all page is reloaded and current filter lost (Denis Chenu)
+-Fixed issue #14226: End Url don't display if survey not activated (Denis Chenu)
+-Fixed issue #14229: Popover showed multiple times when save survey (Dominik Vitt)
+-Fixed issue #14233: Unable to show help in advanced question settings (Denis Chenu)
+-Fixed issue #14238: statistics chart tooltip shows incorrect data (Dominik Vitt)
+-Fixed issue #14240: When deleting token attributes the drop down is missing the attribute names (Dominik Vitt)
+-Fixed issue #14249: Tab-separated export of surveys is broken (Dominik Vitt)
+-Fixed issue #14251: When deleting a token : CPDB keep link with survey (Denis Chenu)
+-Fixed issue : bad column width for array text (Denis Chenu)
+-Fixed issue: IP address captured for 'Resume later' even when disabled (Carsten Schmitz)
+-Fixed issue: error during ComfortUpdate upgrade on PostgreSQL database (Dominik Vitt)
+-Fixed issue: ranking_advanced not working (Markus Flür)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by persometrics, DenisChenu, b00z00
+#Updated translation: Hungarian by c_schmitz, anikoken, kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
 
-Changes from 3.15.2 (build 181107) to 3.15.3 (build 181018)   November 08, 2018
+
+Changes from 3.15.3 (build 181108) to 3.15.4 (build 181109)   November 09, 2018
+-New feature : list image in Survey for Brand logo file in Theme option (Denis Chenu)
+-Fixed issue #14171: Survey owner without template edit right can not upload logo (Denis Chenu)
+-Fixed issue #14180: Multiple logo filename with same url in dropdown (Denis Chenu)
+-Fixed issue #14227: Some token with existing reponse can send PHP Warning about seed (Denis Chenu)
+-Fixed issue: HTML quotes not properly decoded in VV export file header (Carsten Schmitz)
+-Fixed issue: VV import not working if datestamps are off (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Finnish by jeskiv, Jmantysalo
+#Updated translation: Norwegian (Bokmål) by pmonstad
+
+Changes from 3.15.2 (build 181107) to 3.15.3 (build 181108)   November 08, 2018
 -Fixed issue #11845: Relevance Equation code is missing syntax highlighting and not recognising question variables (Dominik Vitt)
 -Fixed issue #14211 : no keyboard navigation available with language changer (Denis Chenu)
 -Fixed issue: Condition designer doesn't show predefined answers on first load (Dominik Vitt)

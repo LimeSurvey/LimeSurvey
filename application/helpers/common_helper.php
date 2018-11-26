@@ -248,16 +248,27 @@ function convertGETtoPOST($url)
     $query = array_shift($stack);
     $aqueryitems = explode('&', $query);
     $postArray = [];
-
+    $getArray = [];
     foreach ($aqueryitems as $queryitem) {
         $stack = explode('=', $queryitem);
         $paramname = array_shift($stack);
         $value = array_shift($stack);
-        $postArray[$paramname] = $value;
+        if(in_array($paramname,array(Yii::app()->getComponent('urlManager')->routeVar))) {
+            $getArray[$paramname] = $value;
+        } else {
+            $postArray[$paramname] = $value;
+        }
     }
-
+    if(!empty($getArray)) {
+        $calledscript = $calledscript."?".implode('&', array_map(
+            function ($v, $k) {
+                return $k.'='.$v;
+            },
+            $getArray, 
+            array_keys($getArray)
+        ));
+    }
     $callscript = "window.LS.sendPost(\"".$calledscript."\",\"\",".json_encode($postArray).");";
-
     return $callscript;
 }
 

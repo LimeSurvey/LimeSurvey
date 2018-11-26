@@ -1826,7 +1826,7 @@
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'equals_num_value',
-                            'class' => 'sum_range',
+                            'class' => 'sum_equals',
                             'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
@@ -3234,7 +3234,7 @@
                 // equals_num_value
                 if ($equals_num_value!='')
                 {
-                    $qtips['sum_range']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
+                    $qtips['sum_equals']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
                 }
 
                 if($input_boxes)
@@ -3645,7 +3645,10 @@
             $now = microtime(true);
             $this->em->SetSurveyMode($this->surveyMode);
             $survey = Survey::model()->findByPk($surveyid);
-
+            if(empty($this->surveyOptions)) {
+                /* Log it as error : this need some test */
+                Yii::log('setVariableAndTokenMappingsForExpressionManager with an empty surveyOptions.','error','application.LimeExpressionManager');
+            }
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($survey,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
             $this->sid= $surveyid;
@@ -7631,6 +7634,7 @@
                                 switch ($vclass)
                                 {
                                     case 'sum_range':
+                                    case 'sum_equals':
                                         $valParts[] = "    isValidSum" . $arg['qid'] . "=false;\n";
                                         break;
                                     case 'other_comment_mandatory':

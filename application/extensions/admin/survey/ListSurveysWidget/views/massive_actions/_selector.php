@@ -40,8 +40,6 @@
                     'type'  => 'separator',
                 ),
 
-
-
                 // Theme selector
                 array(
                     // li element
@@ -57,6 +55,23 @@
                     'keepopen'    => 'yes',
                     'sModalTitle'   => gT('Set survey theme'),
                     'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_select_survey_theme.php',array(),true),
+                ),
+
+                // Change survey group selector
+                array(
+                    // li element
+                    'type'        => 'action',
+                    'action'      => 'updateSurveygroup',
+                    'url'         =>  App()->createUrl('/admin/survey/sa/changeMultipleSurveyGroup/'),
+                    'iconClasses' => 'fa fa-group',
+                    'text'        =>  gT("Survey group"),
+                    'grid-reload' => 'yes',
+                    // modal
+                    'actionType'  => 'modal',
+                    'modalType'   => 'yes-no',
+                    'keepopen'    => 'yes',
+                    'sModalTitle'   => gT('Change survey group'),
+                    'htmlModalBody' => $this->controller->renderFile(__DIR__.'/_change_survey_group.php',array(),true),
                 ),
 
                 // Separator

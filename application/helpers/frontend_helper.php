@@ -881,22 +881,18 @@ function prefillFromCommandLine($surveyid)
     if (Yii::app()->getRequest()->getRequestType()=='GET') {
         $getValues = array_diff_key($_GET,array_combine($reservedGetValues, $reservedGetValues));
         if(!empty($getValues)) {
-            $qcode2sgqa = LimeExpressionManager::getLEMqcode2sgqa($surveyid);
+            $qcode2sgqa = array();
+            Yii::import('application.helpers.viewHelper');
+            foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details) {
+                $qcode2sgqa[viewHelper::getFieldCode($details,array('LEMcompat'=>true))] = $sgqa;
+            }
             foreach ($getValues as $k=>$v) {
                 if (isset($_SESSION['survey_'.$surveyid]['fieldmap'][$k])) {
                     // sXgXqa prefilling
                     $startingValues[$k] = $v;
-                } elseif( !empty($qcode2sgqa) && array_key_exists($k,$qcode2sgqa) ) {
+                } elseif( array_key_exists($k,$qcode2sgqa) ) {
                     // EM code prefilling
                     $startingValues[$qcode2sgqa[$k]] = $v;
-                    /* Alternative
-                    foreach ($_SESSION['survey_'.$surveyid]['fieldmap'] as $sgqa => $details) {
-                        // Need Yii::import('application.helpers.viewHelper');
-                        if (viewHelper::getFieldCode($details,array('LEMcompat'=>true)) == $k) {
-                            $startingValues[$sgqa] = $v;
-                        }
-                    }
-                    */
                 }
             }
         }
@@ -1303,7 +1299,9 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
                 Yii::app()->getController()->createAction('captcha');
             }
             $oSurvey = Survey::model()->findByPk($surveyid);
-
+            if(empty($aSurveyInfo)) {
+                $aSurveyInfo  =  getsurveyinfo($surveyid,App()->getLanguage());
+            }
             // Rendering layout_user_forms.twig
             $thissurvey                     = $oSurvey->attributes;
             $thissurvey["aForm"]            = $aForm;
@@ -1320,7 +1318,6 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
 
             $aData['aSurveyInfo'] = $thissurvey;
 
-            $aSurveyInfo  =  getsurveyinfo($surveyid);
             $aData['aSurveyInfo'] = array_merge($aSurveyInfo, $aData['aSurveyInfo']);
 
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", $aData, false);

@@ -299,20 +299,26 @@
                         <label for='simple_edit_options_brandlogofile' class='control-label'>Brandlogo file</label>
                         <div class='col-sm-12'>
                             <select class='form-control selector_option_value_field selector_radio_childfield selector_image_selector' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
+                                {% set optgroup = '' %}
                                 {% for image in templateConfiguration.imageFileList %}
+                                    {% if image.group != optgroup %}
+                                        {% if optgroup != '' %}
+                                            {% set brandlogofileOptions = brandlogofileOptions ~ '</optgroup>' %}
+                                        {% endif %}
+                                        {% set brandlogofileOptions = brandlogofileOptions ~ '<optgroup label="' ~ image.group ~ '">'  %}
+                                        {% set optgroup = image.group %}
+                                    {% endif %}
                                     {% if oParentOptions.brandlogofile == image.filepath %} 
                                         {% set brandlogofileInheritPreview = brandlogofileInheritPreview ~ image.preview %} 
                                         {% set brandlogofileInheritFilename = brandlogofileInheritFilename ~ image.filename %} 
                                     {% endif %}
                                     {% set brandlogofileOptions = brandlogofileOptions ~ '<option data-lightbox-src="' ~ image.preview ~ '" value="' ~ image.filepath ~ '">' ~ image.filename ~ '</option>' %}
                                 {% endfor %}
-
+                                {% set brandlogofileOptions = brandlogofileOptions ~ '</optgroup>' %}
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                                     {% set brandlogofileOptions = '<option data-lightbox-src="' ~ brandlogofileInheritPreview ~ '" value="inherit">' ~ gT("Inherit")~ ' [' ~ gT("inherited value:") ~ ' ' ~ brandlogofileInheritFilename ~ ']</option>' ~ brandlogofileOptions %}
                                 {% endif %}
-
                                 {{ brandlogofileOptions }}
-                                
                             </select>
                         </div>
                     </div>
@@ -368,7 +374,7 @@
                             {{ gT("Upload") }}
                         </label>
                     </span>
-
+                        <input type='hidden' name='surveyid' value='{{ templateConfiguration.sid }}' />
                         <input type='hidden' name='templatename' value='{{ templateConfiguration.template_name }}' />
                         <input type='hidden' name='templateconfig' value='{{ templateConfiguration.id }}' />
                         <input type='hidden' name='action' value='templateuploadimagefile' />
