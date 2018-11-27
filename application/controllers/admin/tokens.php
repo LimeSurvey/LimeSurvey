@@ -1337,9 +1337,8 @@ class tokens extends Survey_Common_Action
             $emcount = count($emresult);
 
             foreach ($aSurveyLangs as $language) {
-                // See #08683 : this allow use of {TOKEN:ANYTHING}, directly replaced by {ANYTHING}
-                $sSubject[$language] = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", Yii::app()->request->getPost('subject_'.$language, ''));
-                $sMessage[$language] = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", Yii::app()->request->getPost('message_'.$language, ''));
+                $sSubject[$language] = Yii::app()->request->getPost('subject_'.$language, '');
+                $sMessage[$language] = Yii::app()->request->getPost('message_'.$language, '');
                 if ($bHtml) {
                     $sMessage[$language] = html_entity_decode($sMessage[$language], ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
                 }
@@ -1350,7 +1349,6 @@ class tokens extends Survey_Common_Action
             $bSendError = false;
             if ($emcount > 0) {
                 foreach ($emresult as $emrow) {
-
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'])) {
                         // The email has already been send this session, skip.
                         // Happens if user reloads page or double clicks on "Send".
@@ -1369,6 +1367,8 @@ class tokens extends Survey_Common_Action
                     }
 
                     $fieldsarray["{SID}"] = $iSurveyId;
+                    /* mantis #14288 */
+                    LimeExpressionManager::singleton()->loadTokenInformation($iSurveyId, $emrow['token']);
                     foreach ($emrow as $attribute => $value) {
                         $fieldsarray['{'.strtoupper($attribute).'}'] = $value;
                     }
