@@ -81,14 +81,14 @@ function doFileUpload(){
     new AjaxUpload(button, {
         action: uploadurl + '/sid/'+surveyid+'/preview/'+questgrppreview+'/fieldname/'+fieldname+'/',
         name: 'uploadfile',
-        data: {
+        data: $.extend({
             valid_extensions : $('#'+fieldname+'_allowed_filetypes').val(),
             max_filesize : $('#'+fieldname+'_maxfilesize').val(),
             preview : $('#preview').val(),
             surveyid : surveyid,
             fieldname : fieldname,
-            YII_CSRF_TOKEN : csrfToken
-        },
+            },csrfData
+        ),
         onSubmit : function(file, ext){
 
             var maxfiles = parseInt($('#'+fieldname+'_maxfiles').val());
@@ -303,13 +303,12 @@ function deletefile(fieldname, count) {
     {
         method: "POST",
         url: uploadurl,
-        data: {
+        data: $.extend({
             'delete': 1,
             'fieldname': fieldname,
             'filename' : filename,
             'name' : name,
-            YII_CSRF_TOKEN : csrfToken
-            }
+            },csrfData)
     })
     .done(function( msg )
     {
