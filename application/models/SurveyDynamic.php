@@ -877,10 +877,37 @@ class SurveyDynamic extends LSActiveRecord
 
 
         if ($oQuestion->parent_qid != 0 && $oQuestion->parents['type'] === "1") {
+
+            $aAnswers = (
+                $oQuestion->parent_qid == 0
+                    ? $oQuestion->answers
+                    : ($oQuestion->parents != null
+                        ? $oQuestion->parents->answers
+                        : []
+                    )
+            );
+
+            foreach($aAnswers as $key=>$value){
+                $aAnswerText[$value['code']] = $value['answer'];
+            }
+
             $tempFieldname = $fieldname.'#0';
-            $aQuestionAttributes['answervalues'][0] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            $sAnswerCode = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            $sAnswerText = isset($aAnswerText[$oResponses[$tempFieldname]]) ? $aAnswerText[$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $aQuestionAttributes['answervalues'][0] = $sAnswerText;
+
             $tempFieldname = $fieldname.'#1';
-            $aQuestionAttributes['answervalues'][1] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            $sAnswerCode = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            $sAnswerText = isset($aAnswerText[$oResponses[$tempFieldname]]) ? $aAnswerText[$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $aQuestionAttributes['answervalues'][1] = $sAnswerText;
+        }
+
+        // array dual scale headers
+        if (isset($attributes['dualscale_headerA']) && !empty($attributes['dualscale_headerA'][$oQuestion->language])){
+            $aQuestionAttributes['dualscale_header'][0] =  $attributes['dualscale_headerA'][$oQuestion->language];
+        }
+        if (isset($attributes['dualscale_headerB']) && !empty($attributes['dualscale_headerB'][$oQuestion->language])){
+            $aQuestionAttributes['dualscale_header'][1] =  $attributes['dualscale_headerB'][$oQuestion->language];
         }
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
