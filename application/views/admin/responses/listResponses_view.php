@@ -171,7 +171,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         {
                             $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true)); // This must be unique ......
                             $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
+                            /* flat and ellipsize all part of question (sub question etc …, separate by br . mantis #14301 */
                             $colDetails = viewHelper::getFieldText($fieldmap[$column->name],array('abbreviated'=>$model->ellipsize_header_value,'separator'=>array('<br>','')));
+                            /* Here we strip all tags, and separate with hr since we allow html (in popover), maybe use only viewHelper::purified ? But remind XSS. mantis #14301 */
                             $colTitle = viewHelper::getFieldText($fieldmap[$column->name],array('afterquestion'=>"<hr>"));
 
                             $aColumns[]=
