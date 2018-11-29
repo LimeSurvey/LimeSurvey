@@ -52,8 +52,8 @@ class UserInGroup extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             // TODO should be singular
-            'users' => array(self::BELONGS_TO, 'User', '', 'on' => 't.uid = users.uid'),
-            'group' => array(self::BELONGS_TO, 'UserGroup', '', 'on' => 't.ugid = group.uid'),
+            'users' => array(self::BELONGS_TO, 'User', 'uid'),
+            'group' => array(self::BELONGS_TO, 'UserGroup', 'ugid'),
         );
     }
 
