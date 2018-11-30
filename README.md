@@ -27,6 +27,13 @@ You may want to use the plain repository, which is also possible.
 
 Please be advised, that we sometimes push development versions into the repository, which may not be working correctly.
 
+### Docker
+LimeSurvey can also be started as a [Docker](https://www.docker.com/) container by running the following [docker-compose](https://docs.docker.com/compose/) command.
+
+```
+docker-compose up
+```
+
 ## Requirements
 
 ### Minimal
