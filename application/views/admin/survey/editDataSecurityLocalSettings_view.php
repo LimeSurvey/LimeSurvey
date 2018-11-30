@@ -37,7 +37,7 @@ echo viewHelper::getViewTestTag('surveyTexts');
             </div>
             <div class="col-sm-12 col-lg-6">
                 <div class="well">
-                    <?=gT("If you want to specify a link to the survey data policy please use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} to define the link that opens the popup. If there is no placeholder given, there will be an appendix.")?>
+                    <?=gT('If you want to specify a link to the survey data policy, set "Show survey policy text with mandatory checkbox" to "Collapsible text" and use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the "Survey data policy checkbox label" field to define the link that opens the policy popup. If there is no placeholder given, there will be an appendix.')?>
                 </div>
             </div>
         </div>

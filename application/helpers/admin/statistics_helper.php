@@ -325,7 +325,7 @@ function buildSelects($allfields, $surveyid, $language)
         }
     }
 
-    $postvars = array(); 
+    $postvars = array();
     // creates array of post variable names
     for (reset($_POST); $key = key($_POST); next($_POST)) { $postvars[] = $key; }
 
@@ -3066,7 +3066,7 @@ class statistics_helper
                 $am = 0;
 
                 $sumitems = $grawdata[0] + $grawdata[1] + $grawdata[2] + $grawdata[3] + $grawdata[4];
-                
+
                 //calculate arithmetic mean
                 if (isset($sumitems) && $sumitems > 0) {
 
@@ -3846,8 +3846,17 @@ class statistics_helper
             // set default header data
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
             //$headerlogo = '$this->pdf';
+
             $headerlogo = '';
-            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics", 'unescaped'), gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'], false, true, 'UTF-8')."'");
+            $logowidth = 10;
+            $at = AdminTheme::getInstance();
+            $path = array($at->path, 'images', 'logo_statistics.jpg');
+            if (file_exists(implode(DIRECTORY_SEPARATOR, $path))) {
+                $headerlogo = 'logo_statistics.jpg';
+                $logowidth= 85;
+            }
+
+            $this->pdf->SetHeaderData($headerlogo, $logowidth, gT("Quick statistics", 'unescaped'), gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'], false, true, 'UTF-8')."'");
             $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);

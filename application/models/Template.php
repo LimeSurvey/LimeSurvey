@@ -517,7 +517,17 @@ class Template extends LSActiveRecord
     {
         self::$instance = null;
     }
-
+        
+    /**
+    * Alias function for resetAssetVersion()
+    * Don't delete this one to maintain updgrade compatibilty
+    * @return void
+    */
+    public function forceAssets()
+    {
+        $this->resetAssetVersion();    
+    }
+                    
     /**
      * Reset assets for this template
      * Using DB only
