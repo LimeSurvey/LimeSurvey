@@ -857,7 +857,7 @@ class TokenDynamic extends LSActiveRecord
         $gridButtons['remind'] = array(
             'label'=>'<span class="sr-only">'.gT("Send email reminder").'</span><span class="icon-remind" aria-hidden="true"></span>',
             'imageUrl'=>false,
-            'url' => 'App()->createUrl("/admin/tokens/sa/remind",array("surveyid"=>'.self::$sid.',"tokenids"=>$data->tid));',
+            'url' => 'App()->createUrl("/admin/tokens/sa/email/action/remind",array("surveyid"=>'.self::$sid.',"tokenids"=>$data->tid));',
             'options' => array(
                 'class'=>"btn btn-default btn-xs btn-email",
                 'data-toggle'=>"tooltip",

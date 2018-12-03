@@ -148,7 +148,7 @@ class index extends CAction
             $sDisplayLanguage = $param['lang']; // $param take lang from returnGlobal and returnGlobal sanitize langagecode
         } elseif (isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
             $sDisplayLanguage = $_SESSION['survey_'.$surveyid]['s_lang'];
-        } elseif ( !empty($clienttoken) ) {
+        } elseif ( !empty($oToken) ) {
             $sDisplayLanguage = $oToken->language;
         }elseif (Survey::model()->findByPk($surveyid)) {
             $sDisplayLanguage = Survey::model()->findByPk($surveyid)->language;
