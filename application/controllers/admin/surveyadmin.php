@@ -2002,6 +2002,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oGroupL10ns->group_name = gt('My first question group', 'html', $sLanguage);
         $oGroupL10ns->language = $sLanguage;
         $oGroupL10ns->save();
+        LimeExpressionManager::SetEMLanguage($sLanguage);
         return $oGroup->gid;
     }
 
