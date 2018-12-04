@@ -375,7 +375,7 @@ class Permission extends LSActiveRecord
                     }
                 }
                 $aBasePermissions = $aFilteredPermissions;
-            } elseif (Permission::model()->hasGlobalPermission('superadmin', 'read') && Yii::app()->session['loginID'] != 1) {
+            } elseif (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
                 unset($aBasePermissions['superadmin']);
             }
         } elseif ($sEntityName == 'survey') {

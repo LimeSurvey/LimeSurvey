@@ -949,7 +949,6 @@ class SurveyRuntimeHelper
             if ($this->sMove == "movenext") {
                 $this->aMoveResult = LimeExpressionManager::NavigateForwards();
             }
-
             if (($this->sMove == 'movesubmit')) {
                 if ($this->sSurveyMode == 'survey') {
                     $this->aMoveResult = LimeExpressionManager::NavigateForwards();
@@ -957,10 +956,10 @@ class SurveyRuntimeHelper
                     // may be submitting from the navigation bar, in which case need to process all intervening questions
                     // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
                     if ($this->aSurveyInfo['questionindex'] == 2) {
-                        // Must : save actual page , review whole before set finished to true (see #09906), index==1 seems to don't need it : (don't force move)
-                        LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions);
+                        // Must : save actual page , review whole before set finished to true (see #09906), index==1 don't need it : (don't force move)
+                        // Jump to 1st step : don't restart survey since it reset indexGseq/indexQseq
+                        LimeExpressionManager::JumpTo(0,false,false,true); // no preview, no post (already done) but force
                     }
-
                     $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false);
                 }
             }
@@ -1003,9 +1002,8 @@ class SurveyRuntimeHelper
             // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
             // we already done if move == 'movesubmit', don't do it again
             if ($this->aMoveResult['finished'] == true && $this->sMove != 'movesubmit' && $this->thissurvey['questionindex'] == 2) {
-                //LimeExpressionManager::JumpTo(-1, false, false, true);
-                LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions);
-                $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false, false, false); // no preview, no save data and NO force
+                LimeExpressionManager::JumpTo(0, false, false, true); // Jump to 1st step : don't restart survey since it reset indexGseq/indexQseq, no preview, no post (already done) but force
+                $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false, false, false); // no preview, no save data and NO FORCE
                 if (!$this->aMoveResult['mandViolation'] && $this->aMoveResult['valid'] && empty($this->aMoveResult['invalidSQs'])) {
                     $this->aMoveResult['finished'] = true;
                 }

@@ -52,7 +52,7 @@ var onClickListAction =  function () {
             'value': $oCheckedItems.join("|"),
             'type': 'hidden'
         })).append(jQuery('<input>', {
-            'name': 'YII_CSRF_TOKEN',
+            'name': LS.data.csrfTokenName,
             'value': LS.data.csrfToken,
             'type': 'hidden'
         })).appendTo('body');
