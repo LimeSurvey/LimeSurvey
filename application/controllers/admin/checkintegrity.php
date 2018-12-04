@@ -48,7 +48,6 @@ class CheckIntegrity extends Survey_Common_Action
 
     public function fixredundancy()
     {
-
         $oldsmultidelete = Yii::app()->request->getPost('oldsmultidelete', array());
         $aData = [];
         $aData['messages'] = array();
