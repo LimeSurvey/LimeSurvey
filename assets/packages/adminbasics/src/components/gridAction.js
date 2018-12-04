@@ -15,7 +15,7 @@ const gridButton = {
         $.bsconfirm(text,utf8,function onClickOK() {
             $('#'+gridid).yiiGridView('update', {
                 type : 'POST',
-                url : actionUrl, // No need to add csrfToken, already in ajaxSetup
+                url : actionUrl,
                 success: function(data) {
                     jQuery('#'+gridid).yiiGridView('update');
                     $('#identity__bsconfirmModal').modal('hide');

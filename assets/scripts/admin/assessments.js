@@ -39,7 +39,7 @@ var bindAction = function(){
         $('input[name=action]').val('assessmentupdate');
         $.ajax({
             url: loadEditUrl,
-            data: {id: $(this).closest('tr').data('assessment-id'), YII_CSRF_TOKEN : LS.data.csrfToken},
+            data: {id: $(this).closest('tr').data('assessment-id')},// crsf is already in ajaxsetup
             method: 'GET',
             success: function(responseData){
                 $("#in_survey_common").css({cursor: ""});

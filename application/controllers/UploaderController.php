@@ -265,7 +265,7 @@ class UploaderController extends SurveyController
             var surveyid = "'.$surveyid.'";
             var fieldname = "'.$sFieldName.'";
             var questgrppreview  = '.$sPreview.';
-            csrfToken = '.ls_json_encode(Yii::app()->request->csrfToken).';
+            var csrfData = '.ls_json_encode(array(Yii::app()->request->csrfTokenName => Yii::app()->request->csrfToken)).';
             showpopups="'.$oTemplate->showpopups.'";
         ';
         $sLangScriptVar = "
