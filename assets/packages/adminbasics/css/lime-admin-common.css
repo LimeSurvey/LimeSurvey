@@ -1954,6 +1954,10 @@ h3,.h3 {
     text-align: left;
 }
 
+.dropup {
+    position: fixed;
+}
+
 .has-link
 {
     cursor: pointer;
