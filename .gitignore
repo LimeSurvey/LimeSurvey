@@ -26,7 +26,7 @@
 /upload/labels/**/*.*
 !/upload/labels/index.html
 !/upload/labels/readme.txt
-/upload/surveys/**/*.*
+/upload/surveys/**/*
 !/upload/surveys/index.html
 !/upload/surveys/readme.txt
 !/upload/surveys/.htaccess
