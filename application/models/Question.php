@@ -83,7 +83,7 @@ class Question extends LSActiveRecord
 
     /** @var string $group_name Stock the active group_name for questions list filtering */
     public $group_name;
-    public $gid;         
+    public $gid;
 
     /**
      * @inheritdoc
@@ -261,8 +261,11 @@ class Question extends LSActiveRecord
 
         $position = intval($position);
         foreach ($data->readAll() as $row) {
-            Yii::app()->db->createCommand()->update($this->tableName(),
-                array('question_order' => $position), 'qid='.$row['qid']);
+            Yii::app()->db->createCommand()->update(
+                $this->tableName(),
+                array('question_order' => $position),
+                'qid='.$row['qid']
+            );
             $position++;
         }
     }
@@ -326,7 +329,6 @@ class Question extends LSActiveRecord
     {
         if (isset($aAttributeValues['question_template'])) {
             if ($aAttributeValues['question_template'] != 'core') {
-
                 $oQuestionTemplate = QuestionTemplate::getInstance($oQuestion);
                 if ($oQuestionTemplate->bHasCustomAttributes) {
                     // Add the custom attributes to the list
@@ -334,7 +336,7 @@ class Question extends LSActiveRecord
                         $sAttributeName = (string) $oCustomAttribute->name;
                         $sInputType = (string)$oCustomAttribute->inputtype;
                         // remove attribute if inputtype is empty
-                        if (empty($sInputType)){
+                        if (empty($sInputType)) {
                             unset($aAttributeNames[$sAttributeName]);
                         } else {
                             $aCustomAttribute = json_decode(json_encode((array) $oCustomAttribute), 1);
@@ -354,7 +356,6 @@ class Question extends LSActiveRecord
 
     public function getTypeGroup()
     {
-
     }
 
     /**
@@ -404,7 +405,7 @@ class Question extends LSActiveRecord
      */
     public function delete()
     {
-        $ids = array_merge([$this->qid],$this->allSubQuestionIds);
+        $ids = array_merge([$this->qid], $this->allSubQuestionIds);
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
 
 
@@ -426,7 +427,8 @@ class Question extends LSActiveRecord
     /**
      * remove question from lastVisited
      */
-    public function removeFromLastVisited(){
+    public function removeFromLastVisited()
+    {
         $oCriteria = new CDbCriteria();
         $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
         $oCriteria->compare('stg_value', $this->qid, false, 'AND');
@@ -438,7 +440,7 @@ class Question extends LSActiveRecord
      */
     private function deleteAllAnswers()
     {
-        $ids = array_merge([$this->qid],$this->allSubQuestionIds);
+        $ids = array_merge([$this->qid], $this->allSubQuestionIds);
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
 
         $answerIds = [];
@@ -577,7 +579,6 @@ class Question extends LSActiveRecord
 
     public function getbuttons()
     {
-
         $url         = Yii::app()->createUrl("/admin/questions/sa/view/surveyid/");
         $url        .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
@@ -598,7 +599,7 @@ class Question extends LSActiveRecord
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"'
-                ." onclick='$.bsconfirm(\"".gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js")
+                ." onclick='$.bsconfirm(\"".gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "js")
                             ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
                             . convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $this->sid, "qid" => $this->qid, "gid" => $gid_search]))
                         ."});'>"
@@ -618,9 +619,8 @@ class Question extends LSActiveRecord
         } else {
             $sOrder = 'sortorder';
         }
-        $aAnswers = Answer::model()->findAll(array('order'=>$sOrder, 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$this->qid)));        
+        $aAnswers = Answer::model()->findAll(array('order'=>$sOrder, 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$this->qid)));
         return $aAnswers;
-
     }
 
     /**
@@ -645,7 +645,7 @@ class Question extends LSActiveRecord
             foreach ($ansresult as $answer) {
                 if (($answer['title'] == trim($exclude_all_others))) {
                     if ($position == $answer['question_order'] - 1) {
-//already in the right position
+                        //already in the right position
                         break;
                     }
                     $tmp = array_splice($ansresult, $position, 1);
@@ -670,7 +670,6 @@ class Question extends LSActiveRecord
 
     public function getOtherIcon()
     {
-
         if (($this->type == Question::QT_L_LIST_DROPDOWN) || ($this->type == Question::QT_EXCLAMATION_LIST_DROPDOWN) || ($this->type == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) || ($this->type == Question::QT_M_MULTIPLE_CHOICE)) {
             $sIcon = ($this->other === "Y") ? '<span class="fa fa-dot-circle-o"></span>' : '<span></span>';
         } else {
@@ -717,9 +716,9 @@ class Question extends LSActiveRecord
                 'questionL10ns'=>array('condition'=>"language='".$sLanguage."'"),
                 'group'=>array('condition'=>"language='".$sLanguage."'")
             )
-        );                                              
+        );
         return $this;
-    }*/                       
+    }*/
                            
     public function search()
     {
@@ -829,7 +828,7 @@ class Question extends LSActiveRecord
         $criteria->with = array("question", array('condition'=>array('sid'=>$this->qid)));
         $criteria->together = true;
         $criteria->addNotInCondition('language', $oSurvey->getAllLanguages());
-        QuestionL10n::model()->deleteAll($criteria); 
+        QuestionL10n::model()->deleteAll($criteria);
 
         /* Delete invalid subquestions (not in primary language */
         $validSubQuestion = Question::model()->findAll(array(
@@ -909,13 +908,15 @@ class Question extends LSActiveRecord
         return $result;
     }
     
-    public function getRenderererObject($aFieldArray){
+    public function getRenderererObject($aFieldArray)
+    {
         switch ($this->type) {
             case Question::QT_X_BOILERPLATE_QUESTION: return new RenderBoilerplate($aFieldArray);
             case Question::QT_5_POINT_CHOICE: return new RenderFivePointChoice($aFieldArray);
             case Question::QT_ASTERISK_EQUATION: return new RenderEquation($aFieldArray);
             case Question::QT_D_DATE: return new RenderDate($aFieldArray);
             case Question::QT_1_ARRAY_MULTISCALE: return new RenderArrayDual($aFieldArray);
+            case Question::QT_L_LIST_DROPDOWN: return new RenderListDropdown($aFieldArray);
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return 'arrays/5point';
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return 'arrays/10point';
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return 'arrays/yesnouncertain';
@@ -925,7 +926,6 @@ class Question extends LSActiveRecord
             case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: return 'arrays/multiflexi';
             case Question::QT_I_LANGUAGE: return 'language';
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: return 'multiplenumeric';
-            case Question::QT_L_LIST_DROPDOWN: return 'listradio';
             case Question::QT_M_MULTIPLE_CHOICE: return 'multiplechoice';
             case Question::QT_N_NUMERICAL: return 'numerical';
             case Question::QT_O_LIST_WITH_COMMENT: return 'list_with_comment';
@@ -960,5 +960,4 @@ class Question extends LSActiveRecord
         }
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
     }
-
 }

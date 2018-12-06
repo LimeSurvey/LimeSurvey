@@ -220,9 +220,11 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
     }
 
-    protected function setAnsweroptions( $scale_id = null ){
+    protected function setAnsweroptions( $scale_id = null, $alpha = false ){
         // Get questions and answers by defined order
-        $sOrder = ($this->aQuestionAttributes['random_order'] == 1) ? dbRandom() : 'question_order';
+        $sOrder = ($this->aQuestionAttributes['random_order'] == 1) 
+            ? dbRandom() 
+            : ($alpha ? 'answer' : 'question_order');
         $oCriteria = new CDbCriteria();
         $oCriteria->order = $sOrder;
         $oCriteria->addCondition('parent_qid=:parent_qid');
@@ -285,6 +287,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     }
 
     abstract public function getMainView();
+    abstract public function getRows();
     abstract public function render();
 
 }

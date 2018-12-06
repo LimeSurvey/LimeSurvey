@@ -18,6 +18,10 @@
  */
 class RenderEquation extends QuestionBaseRenderer
 {
+    public function getRows(){
+        return;
+    }
+
     public function getMainView(){
         return '/survey/questions/answer/equation/answer';
     }

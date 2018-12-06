@@ -21,6 +21,11 @@ class RenderBoilerplate extends QuestionBaseRenderer
     public function getMainView(){
         return '/survey/questions/answer/boilerplate/answer';
     }
+    
+    public function getRows(){
+        return;
+    }
+
     public function render($sCoreClasses = ''){
         $answer = '';
         $inputnames = [];

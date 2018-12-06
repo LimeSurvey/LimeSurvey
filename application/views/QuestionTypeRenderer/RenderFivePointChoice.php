@@ -25,7 +25,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
         return '/survey/questions/answer/5pointchoice/answer';
     }
 
-    public function renderRows(){
+    public function getRows(){
         $aRows = [];
         for ($fp = 1; $fp <= 5; $fp++) {
             $aRows[] = array(
@@ -95,7 +95,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
             'name'          => $this->aFieldArray[1],
             'basename'      => $this->aFieldArray[1],
             'sessionValue'  => $this->mSessionValue,
-            'aRows'         => $this->renderRows(),
+            'aRows'         => $this->getRows(),
             'slider_rating' => $slider_rating,
 
             ), true);

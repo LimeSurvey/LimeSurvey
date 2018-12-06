@@ -26,7 +26,10 @@ class RenderDate extends QuestionBaseRenderer
     public function getMainView(){
         return '/survey/questions/answer/date/';
     }
-
+    
+    public function getRows(){
+        return;
+    }
 
     protected function registerAssets() { 
         $this->addScript(
