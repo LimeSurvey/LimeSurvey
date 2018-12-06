@@ -196,7 +196,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         'ajaxUpdate'    => 'responses-grid',
                         'ajaxType'      => 'POST',
                         'afterAjaxUpdate'=>'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-toggle=\'popover\']").popover({container:\'body\'}); }',
-                        'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-12\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-12 pager-container ls-ba \">{pager}</div><div class=\"col-sm-12 summary-container\">{summary}</div></div>",
+                        'template'      => "<div class='push-grid-pager'>{items}\n</div><div id='ListPager'><div class=\"col-sm-12\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-12 pager-container ls-ba \">{pager}</div><div class=\"col-sm-12 summary-container\">{summary}</div></div>",
                         'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
