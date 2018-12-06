@@ -258,6 +258,10 @@ class questions extends Survey_Common_Action
      */
     public function editdefaultvalues($surveyid, $gid, $qid)
     {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
         $iSurveyID = (int) $surveyid;
         $survey = Survey::model()->findByPk($iSurveyID);
 
