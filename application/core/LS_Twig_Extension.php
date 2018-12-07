@@ -272,9 +272,13 @@ class LS_Twig_Extension extends Twig_Extension
             $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
         }
 
-        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
-            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
+        // check if this is a true image
+        $checkImage = LSYii_ImageValidator::validateImage($sImagePath);
+        if (!$checkImage['check']) {
+            return;
         }
+
+        $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
 
 
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
