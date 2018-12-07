@@ -68,6 +68,7 @@
                             <input
                                 type='submit'
                                 class='btn btn-default'
+                                id='activateRedirectSurvey__selector'
                                 value='<?php eT("Back to survey home"); ?>'
                                 />
 
@@ -82,6 +83,6 @@
 
 <?php App()->getClientScript()->registerScript("ActivationFeedBackTriggers","
 $('#activateTokenTable__selector--yes').on('click', function(e){ var run=function(){".$closedOnclickAction."}; run();});
-$('#activateTokenTable__selector--no').on('click', function(e){ var run=function(){".$noOnclickAction."}; run();});
+$('#activateTokenTable__selector--no, #activateRedirectSurvey__selector').on('click', function(e){ var run=function(){".$noOnclickAction."}; run();});
 ",LSYii_ClientScript::POS_POSTSCRIPT); 
 ?>
