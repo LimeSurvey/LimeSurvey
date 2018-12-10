@@ -102,7 +102,7 @@ class Question extends LSActiveRecord
                             'condition'=>'language=:language',
                             'params'=>array(':language'=>$this->language)
                         ),
-                        'message'=>sprintf(gT("Question id (qid) : '%s' is already in use."),$this->qid),// Usage of {attribute} need attributeLabels, {value} never exist in message
+                        'message'=>sprintf(gT("Question ID (QIDd): '%s' is already in use."),$this->qid),// Usage of {attribute} need attributeLabels, {value} never exist in message
                     ),
                     array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
                     array('title,question,help', 'LSYii_Validators'),
@@ -179,7 +179,7 @@ class Question extends LSActiveRecord
                     'SGQ',
                     'TOKEN',
                 ),
-                'message'=> sprintf(gT('Code : %s is a reserved word.'),$this->title),// Usage of {attribute} need attributeLabels, {value} never exist in message
+                'message'=> sprintf(gT("Code: '%s' is a reserved word."),$this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
             );
         } else {
