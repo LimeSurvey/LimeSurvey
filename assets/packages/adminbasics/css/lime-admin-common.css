@@ -1954,8 +1954,8 @@ h3,.h3 {
     text-align: left;
 }
 
-.dropup {
-    position: fixed;
+.push-grid-pager {/* push the pager for massive action dropup */
+    min-height:25em;
 }
 
 .has-link
