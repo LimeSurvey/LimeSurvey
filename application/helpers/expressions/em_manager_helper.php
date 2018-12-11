@@ -5260,7 +5260,6 @@
                         'unansweredSQs'=>$result['unansweredSQs'],
                         'invalidSQs'=>$result['invalidSQs'],
                     );
-                    tracevar($LEM->lastMoveResult);
                     return $LEM->lastMoveResult;
                     // NB: No break needed
                 case 'group':
