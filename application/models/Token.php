@@ -96,7 +96,9 @@ abstract class Token extends Dynamic
         return $labels;
     }
 
-    /** @inheritdoc */
+    /** @inheritdoc
+     * Delete related SurveyLink if it's deleted
+     */
     public function beforeDelete()
     {
         $result = parent::beforeDelete();
@@ -105,6 +107,28 @@ abstract class Token extends Dynamic
                 throw new CException('Could not delete survey link. Token was not deleted.');
             }
             return true;
+        }
+        return $result;
+    }
+
+    /** @inheritdoc
+     * Delete related SurveyLink at same time
+     */
+    public function deleteAllByAttributes($attributes, $condition = '', $params = array())
+    {
+        $builder=$this->getCommandBuilder();
+        $participantCriteria=$builder->createCriteria($condition,$params);
+        $participantCriteria->select = array('tid','participant_id');
+        $participantCriteria->addCondition('participant_id is not null');
+        $oParticipantToDelete = self::model($this->dynamicId)->findAll($participantCriteria);
+        $result = parent::deleteAllByAttributes($attributes, $condition, $params);
+        if($result && !empty($oParticipantToDelete)) {
+            /* Get the participant not deleted : we must not delete survey link */
+            $oParticipantNotDeleted = self::model($this->dynamicId)->findAll($participantCriteria);
+            $tidToDelete = array_diff(CHtml::listData($oParticipantToDelete,'tid','tid'),CHtml::listData($oParticipantNotDeleted,'tid','tid'));
+            if(!empty($tidToDelete)) {
+                SurveyLink::model()->deleteAllByAttributes(array('token_id'=>$tidToDelete,'survey_id'=>$this->dynamicId));
+            }
         }
         return $result;
     }

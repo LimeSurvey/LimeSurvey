@@ -64,10 +64,11 @@
     <options>
         <ajaxmode>on</ajaxmode>
         <brandlogo>on</brandlogo>
-        <brandlogofile>./files/logo.png</brandlogofile>
+        <brandlogofile>themes/survey/bootswatch/files/logo.png</brandlogofile>
         <container>on</container>
         <showpopups>1</showpopups>
         <showclearall>off</showclearall>
+        <questionhelptextposition>top</questionhelptextposition>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->

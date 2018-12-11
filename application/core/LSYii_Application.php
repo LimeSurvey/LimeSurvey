@@ -161,6 +161,7 @@ class LSYii_Application extends CWebApplication
         }
         /* Add some specific config using exiting other configs */
         $this->setConfig('globalAssetsVersion', /* Or create a new var ? */
+            Yii::getVersion().
             $this->getConfig('assetsversionnumber',0).
             $this->getConfig('versionnumber',0).
             $this->getConfig('dbversionnumber',0).

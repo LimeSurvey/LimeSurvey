@@ -1826,7 +1826,7 @@
                             $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'equals_num_value',
-                            'class' => 'sum_range',
+                            'class' => 'sum_equals',
                             'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
@@ -3234,7 +3234,7 @@
                 // equals_num_value
                 if ($equals_num_value!='')
                 {
-                    $qtips['sum_range']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
+                    $qtips['sum_equals']=sprintf($this->gT("The sum must equal %s."),'{fixnum('.$equals_num_value.')}');
                 }
 
                 if($input_boxes)
@@ -3645,7 +3645,10 @@
             $now = microtime(true);
             $this->em->SetSurveyMode($this->surveyMode);
             $survey = Survey::model()->findByPk($surveyid);
-
+            if(empty($this->surveyOptions)) {
+                /* Log it as error : this need some test */
+                Yii::log('setVariableAndTokenMappingsForExpressionManager with an empty surveyOptions.','error','application.LimeExpressionManager');
+            }
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($survey,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
             $this->sid= $surveyid;
@@ -3680,6 +3683,14 @@
                 'jsName'=>'',
                 'readWrite'=>'N',
             );
+            if($survey->getIsAssessments()) {
+                $this->knownVars['ASSESSMENT_CURRENT_TOTAL'] = array(
+                    'code'=> 0,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
+            }
             /* Add the core replacement before question code : needed if use it in equation , use SID to never send error */
             templatereplace("{SID}");
 
@@ -6157,31 +6168,31 @@
             // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
             //////////////////////////////////////////////////////////////////////////
             $currentGroupInfo = array(
-            'gseq' => $groupSeq,
-            'message' => $debug_message,
-            'relevant' => $grel,
-            'hidden' => $ghidden,
-            'mandViolation' => $gmandViolation,
-            'valid' => $gvalid,
-            'qset' => $currentQset,
-            'unansweredSQs' => $unansweredSQList,
-            'anyUnanswered' => $ganyUnanswered,
-            'invalidSQs' => $invalidSQList,
-            'updatedValues' => $updatedValues,
+                'gseq' => $groupSeq,
+                'message' => $debug_message,
+                'relevant' => $grel,
+                'hidden' => $ghidden,
+                'mandViolation' => $gmandViolation,
+                'valid' => $gvalid,
+                'qset' => $currentQset,
+                'unansweredSQs' => $unansweredSQList,
+                'anyUnanswered' => $ganyUnanswered,
+                'invalidSQs' => $invalidSQList,
+                'updatedValues' => $updatedValues,
             );
 
             ////////////////////////////////////////////////////////
             // STORE METADATA NEEDED TO GENERATE NAVIGATION INDEX //
             ////////////////////////////////////////////////////////
             $LEM->indexGseq[$groupSeq] = array(
-            'gtext' => $LEM->gseq2info[$groupSeq]['description'],
-            'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
-            'gid' => $LEM->gseq2info[$groupSeq]['gid'], // TODO how used if random?
-            'anyUnanswered' => $ganyUnanswered,
-            'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
-            'valid' => $gvalid,
-            'mandViolation' => $gmandViolation,
-            'show' => (($grel && !$ghidden) ? true : false),
+                'gtext' => $LEM->gseq2info[$groupSeq]['description'],
+                'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
+                'gid' => $LEM->gseq2info[$groupSeq]['gid'], // TODO how used if random?
+                'anyUnanswered' => $ganyUnanswered,
+                'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
+                'valid' => $gvalid,
+                'mandViolation' => $gmandViolation,
+                'show' => (($grel && !$ghidden) ? true : false),
             );
 
             $LEM->gseq2relevanceStatus[$gseq] = $grel;
@@ -7631,6 +7642,7 @@
                                 switch ($vclass)
                                 {
                                     case 'sum_range':
+                                    case 'sum_equals':
                                         $valParts[] = "    isValidSum" . $arg['qid'] . "=false;\n";
                                         break;
                                     case 'other_comment_mandatory':

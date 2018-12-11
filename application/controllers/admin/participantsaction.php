@@ -282,7 +282,7 @@ $url .= "_view"; });
         $surveys = Survey::model();
         //!!! Is this even possible to execute?
         if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                    $surveys->permission(Yii::app()->user->getId());
+            $surveys->permission(Yii::app()->user->getId());
         }
 
         /** @var Survey[] $aSurveyNames */
@@ -300,24 +300,24 @@ $url .= "_view"; });
         // if superadmin all the records in the cpdb will be displayed
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $iTotalRecords = Participant::model()->count();
-        }
-        // if not only the participants on which he has right on (shared and owned)
-        else {
+        } else {// if not only the participants on which he has right on (shared and owned)
             $iUserId = Yii::app()->user->getId();
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
         $model = new Participant();
         $request = Yii::app()->request;
-        $participantParam = $request->getPost('Participant');
+        $participantParam = $request->getParam('Participant');
         if ($participantParam) {
             $model->setAttributes($participantParam, false);
         }
-        $searchcondition = $request->getPost('searchcondition');
+        /* @todo : See when/where it's used */
+        $searchcondition = $request->getParam('searchcondition');
         $searchparams = array();
         if ($searchcondition) {
             $searchparams = explode('||', $searchcondition);
             $model->addSurveyFilter($searchparams);
         }
+        
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -407,7 +407,7 @@ $url .= "_view"; });
      */
     public function openEditParticipant()
     {
-        $participant_id = Yii::app()->request->getPost('participant_id');
+        $participant_id = Yii::app()->request->getParam('participant_id');
         if ($participant_id) {
             $model = Participant::model()->findByPk($participant_id);
             $operationType = "edit";

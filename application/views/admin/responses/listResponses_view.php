@@ -9,8 +9,6 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT('Survey responses'); ?></h3>
-
-
     <!-- Display mode -->
     <div class="text-right in-title">
         <div class="pull-right">
@@ -80,17 +78,12 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'class'=>'CCheckBoxColumn',
                             'selectableRows' => '100',
                         ),
-
                         array(
-                            'header' => '',
-                            'name' => 'actions',
-                            'id'=>'action',
-                            'value'=>'$data->buttons',
-                            'type'=>'raw',
-                            'htmlOptions' => array('class' => 'text-left response-buttons'),
-                            'filter'=>false,
+                            'class'=>'bootstrap.widgets.TbButtonColumn',
+                            'template'=>'{detail}{quexmlpdf}{edit}{downloadfiles}{deletefiles}{deleteresponse}',
+                            //~ 'htmlOptions' => array('class' => 'text-left response-buttons'),
+                            'buttons'=> $model->getGridButtons('responses-grid'),
                         ),
-
                         array(
                             'header' => 'id',
                             'name' => 'id',
@@ -178,26 +171,14 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         {
                             $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true)); // This must be unique ......
                             $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
-                            $colDetails = '';
-
-                            if(isset($fieldmap[$column->name]['subquestion'])){
-                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion'].'</em><br/>';
-                            }
-
-                            if(isset($fieldmap[$column->name]['subquestion1'])){
-                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion1'].'</em><br/>';
-                            }
-
-                            if(isset($fieldmap[$column->name]['subquestion2'])){
-                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion2'].'</em><br/>';
-                            }
-
-
-                            $colDetails .= ellipsize($fieldmap[$column->name]['question'], $model->ellipsize_header_value);
+                            /* flat and ellipsize all part of question (sub question etc …, separate by br . mantis #14301 */
+                            $colDetails = viewHelper::getFieldText($fieldmap[$column->name],array('abbreviated'=>$model->ellipsize_header_value,'separator'=>array('<br>','')));
+                            /* Here we strip all tags, and separate with hr since we allow html (in popover), maybe use only viewHelper::purified ? But remind XSS. mantis #14301 */
+                            $colTitle = viewHelper::getFieldText($fieldmap[$column->name],array('afterquestion'=>"<hr>"));
 
                             $aColumns[]=
                                 array(
-                                    'header' => '<span data-toggle="tooltip" data-placement="bottom" title="'.quoteText(strip_tags($fieldmap[$column->name]['question'])).'">'.$colName.' <br/> '.$colDetails.'</span>',
+                                    'header' => '<span data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="'.$colName.'" data-content="'.$colTitle.'" data-html="1">'.$colName.' <br/> '.$colDetails.'</span>',
                                     'headerHtmlOptions'=>array('style'=>'min-width: 350px;'),
                                     'name' => $column->name,
                                     'type' => 'raw',
@@ -214,7 +195,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         'id'            => 'responses-grid',
                         'ajaxUpdate'    => 'responses-grid',
                         'ajaxType'      => 'POST',
-                        'afterAjaxUpdate'=>'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid(); }',
+                        'afterAjaxUpdate'=>'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-toggle=\'popover\']").popover({container:\'body\'}); }',
                         'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-12\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-12 pager-container ls-ba \">{pager}</div><div class=\"col-sm-12 summary-container\">{summary}</div></div>",
                         'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
@@ -239,6 +220,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 jQuery(document).on("change", "#pageSize", function(){
                     $.fn.yiiGridView.update("responses-grid",{ data:{ pageSize: $(this).val() }});
                 });
+                $(".grid-view [data-toggle=\'popover\']").popover({container:\'body\'});
                 ';
             App()->getClientScript()->registerScript('listresponses', $scriptVars, LSYii_ClientScript::POS_BEGIN);
             App()->getClientScript()->registerScript('listresponses', $script, LSYii_ClientScript::POS_POSTSCRIPT);

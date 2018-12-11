@@ -130,15 +130,20 @@ function init_chart_js_graph_with_datas($type, $qid) {
     var $labels = $statistics.labels
     var $grawdata = $statistics.grawdata
     var $chartDef = new Array();
+    var $max = 0;
 
     $('#legend-no-percent-' + $qid).hide();
     $('#legend-percent-' + $qid).show();
     $('#stat-no-answer-' + $qid).show();
 
+    $.each($labels, function($i, $label) {
+        $max = $max + parseInt($grawdata[$i]);
+    });
+
     $.each($labels, function ($i, $label) {
         $colori = (parseInt($i) + $color);
         $chartDef[$i] = {
-            value: $grawdata[$i],
+            value: Math.round($grawdata[$i]/$max * 100 * 100) / 100,
             color: "rgba(" + COLORS_FOR_SURVEY[$colori] + ",0.6)",
             highlight: "rgba(" + COLORS_FOR_SURVEY[$colori] + ",0.9)",
             label: $label,

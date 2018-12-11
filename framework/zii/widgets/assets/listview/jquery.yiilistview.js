@@ -52,7 +52,7 @@
 				});
 
 				if(settings.enableHistory && window.History.enabled) {
-					$(window).on('statechange', function() { // Note: We are using statechange instead of popstate
+					$(window).bind('statechange', function() { // Note: We are using statechange instead of popstate
 						var State = window.History.getState(); // Note: We are using History.getState() instead of event.state
 						if (State.data.url === undefined) {
 							State.data.url = State.url;

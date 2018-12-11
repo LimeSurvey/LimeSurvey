@@ -31,6 +31,8 @@ return array(
         ),
         'depends' => array(
             'jquery',
+            'moment', // Used by LEMval function
+            'decimalcustom', // Use by fixnum_checkconditions
         )
     ),
     /* For public template functionnality */

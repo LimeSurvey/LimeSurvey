@@ -15,7 +15,7 @@ $('#{$class}_connectionId').change(function(){
 $('#{$class}_modelClass').change(function(){
 	$(this).data('changed',$(this).val()!='');
 });
-$('#{$class}_tableName').on('keyup change', function(){
+$('#{$class}_tableName').bind('keyup change', function(){
 	var model=$('#{$class}_modelClass');
 	var tableName=$(this).val();
 	if(tableName.substring(tableName.length-1)!='*') {

@@ -9,6 +9,8 @@ $color: #0f3e12;
   height: $size+1;
 }
 
+@import 'grid';
+
 .square {
   background: $color;
   border-radius: 0.6em;

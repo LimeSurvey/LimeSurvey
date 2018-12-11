@@ -641,7 +641,7 @@ class export extends Survey_Common_Action
                 if (count($fielddata) < 1) {
                     $firstline .= $field;
                 } else {
-                    $firstline .= preg_replace('/\s+/', ' ', strip_tags($fielddata['question']));
+                    $firstline .= preg_replace('/\s+/', ' ', flattenText($fielddata['question'],false,true,'UTF-8',true));
                 }
                 $firstline .= $s;
                 if ($vvVersion == 2) {

@@ -178,7 +178,7 @@ class RegisterController extends LSYii_Controller
         //Check and validate attribute
         foreach ($aRegisterAttributes as $key => $aAttribute) {
             if ($aAttribute['show_register'] == 'Y' && $aAttribute['mandatory'] == 'Y' && empty($aFieldValue['aAttribute'][$key])) {
-                $this->aRegisterErrors[] = sprintf(gT("%s cannot be left empty").".", $aAttribute['caption']);
+                $this->aRegisterErrors[] = sprintf(gT("%s cannot be left empty."), $aAttribute['caption']);
             }
         }
     }

@@ -14,7 +14,7 @@
     <li class="form-group ls-group-remaining ls-group-dynamic">
         <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} col-md-offset-{{ sLabelWidth }}">
             <div class="control-label">
-                {{ gT('Remaining: ') }}
+                {{ gT('Remaining') }}:
             </div>
             {% if prefix %}
                 <div class="prefix-text prefix"><!-- Suffix prefix are not shown inline, but only in the slider: completely different concept : set hidden -->
@@ -37,7 +37,7 @@
     <li class="form-group ls-group-total ls-group-dynamic">
        <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} col-md-offset-{{ sLabelWidth }}">
             <div class="control-label">
-                {{gT('Total: ')}}
+                {{gT('Total:')}}
             </div>
             <div id="totalvalue_{{ id }}" class="form-control-static numeric dynamic-total" data-number="1">
                 {{ '{'~sumEqn~'}' }}

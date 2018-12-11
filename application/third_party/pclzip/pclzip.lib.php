@@ -212,7 +212,7 @@
   //   Note that no real action is taken, if the archive does not exist it is not
   //   created. Use create() for that.
   // --------------------------------------------------------------------------------
-  public function __construct($p_zipname)
+  public function __construct($p_zipname, $bCheckZipBomb=true)
   {
 
     // ----- Tests the zlib
@@ -223,8 +223,8 @@
 
 
     // Added by LS Team to prevent Zip Bombing
-    if (isZipBomb($p_zipname)){
-        die('Abort '.basename(__FILE__).' : Unzipped file is superior to upload_max_filesize or to post_max_size');
+    if ($bCheckZipBomb && isZipBomb($p_zipname)){
+        die('Abort '.basename(__FILE__).' : Unzipped file is bigger than upload_max_filesize or post_max_size');
     }
 
 

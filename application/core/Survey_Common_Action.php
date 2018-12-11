@@ -326,7 +326,14 @@ class Survey_Common_Action extends CAction
         
         if ($sRenderFile == false) {
             if (!empty($aData['surveyid'])) {
+
                 $aData['oSurvey'] = Survey::model()->findByPk($aData['surveyid']);
+
+                // Needed to evaluate EM expressions in question summary
+                // See bug #11845
+                LimeExpressionManager::SetSurveyId($aData['surveyid']);
+                LimeExpressionManager::StartProcessingPage(false,true);
+
                 $renderFile = $basePath.'/layout_insurvey.php';
             } else {
                 $renderFile = $basePath.'/layout_main.php';

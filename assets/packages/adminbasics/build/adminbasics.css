@@ -5,6 +5,10 @@
   align-content: bottom;
   height: 3em; }
 
+.grid-view .table td.button-column, .grid-view .table th.button-column {
+  white-space: nowrap;
+  text-align: initial; }
+
 .square {
   background: #0f3e12;
   border-radius: 0.6em;

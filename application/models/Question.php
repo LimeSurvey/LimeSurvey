@@ -130,29 +130,32 @@ class Question extends LSActiveRecord
     public function rules()
     {
         $aRules = array(
-                    array('title', 'required', 'on' => 'update, insert', 'message'=>gT('The question code is mandatory.', 'unescaped')),
-                    array('title', 'length', 'min' => 1, 'max'=>20, 'on' => 'update, insert'),
-                    array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly'=>true),
-                    array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-                    array('mandatory', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-                    array('question_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-                    array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-                    array('same_default', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
-                    array('type', 'length', 'min' => 1, 'max'=>1),
-                    array('preg,relevance', 'safe'),
-                    array('modulename', 'length', 'max'=>255),
-                );
+            array('title', 'required', 'on' => 'update, insert', 'message'=>gT('The question code is mandatory.', 'unescaped')),
+            array('title', 'length', 'min' => 1, 'max'=>20, 'on' => 'update, insert'),
+            array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly'=>true),
+            array('qid', 'unique','message'=>sprintf(gT("Question id (qid) : '%s' is already in use."),$this->qid)),// Still needed ?
+            array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('mandatory', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('question_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('same_default', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            array('type', 'length', 'min' => 1, 'max'=>1),
+            array('preg,relevance', 'safe'),
+            array('modulename', 'length', 'max'=>255),
+        );
         // Always enforce unicity on Sub question code (DB issue).
         if ($this->parent_qid) {
-            $aRules[] = array('title', 'unique', 'caseSensitive'=>false, 'criteria'=>array(
-                                'condition' => 'sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
-                                'params' => array(
-                                    ':sid' => $this->sid,
-                                    ':parent_qid' => $this->parent_qid,
-                                    ':scale_id' => $this->scale_id
-                                    )
-                                ),
-                            'message' => gT('Subquestion codes must be unique.'));
+            $aRules[] = array('title', 'unique', 'caseSensitive'=>false,
+                'criteria'=>array(
+                    'condition' => 'sid=:sid AND parent_qid=:parent_qid and scale_id=:scale_id',
+                    'params' => array(
+                        ':sid' => $this->sid,
+                        ':parent_qid' => $this->parent_qid,
+                        ':scale_id' => $this->scale_id
+                        )
+                    ),
+                    'message' => gT('Subquestion codes must be unique.')
+            );
             // Disallow other title if question allow other
             $oParentQuestion = Question::model()->findByPk(array("qid"=>$this->parent_qid));
             if ($oParentQuestion->other == "Y") {
@@ -168,11 +171,14 @@ class Question extends LSActiveRecord
         if (!$this->isNewRecord) {
             $oActualValue = Question::model()->findByPk(array("qid"=>$this->qid));
             if ($oActualValue && $oActualValue->title == $this->title) {
-                return $aRules; // We don't change title, then don't put rules on title
+                /* We don't change title, then don't put rules on title */
+                /* We don't want to broke existing survey,  We only disallow to set it or update it according to this value */
+                return $aRules;
             }
         }
-        // 0 or empty
-        if (!$this->parent_qid) {
+        /* Question was new or title was updated : we add minor rules. This rules don't broke DB, only potential “Expression Manager” issue. */
+        if (!$this->parent_qid) { // 0 or empty
+            /* Unicity for ExpressionManager */
             $aRules[] = array('title', 'unique', 'caseSensitive'=>true,
                 'criteria'=>array(
                     'condition' => 'sid=:sid AND parent_qid=0',
@@ -183,9 +189,25 @@ class Question extends LSActiveRecord
                 'message' => gT('Question codes must be unique.'),
                 'except' => 'archiveimport'
             );
+            /* ExpressionManager basic rule */
             $aRules[] = array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/',
                 'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'),
-                'except' => 'archiveimport');
+                'except' => 'archiveimport'
+            );
+            /* ExpressionManager reserved word (partial) */
+            $aRules[] = array('title', 'in', 'not' => true,
+                'range' => array(
+                    'LANG',
+                    'SID',
+                    'QID',
+                    'GID',
+                    'SAVEDID',
+                    'SGQ',
+                    'TOKEN',
+                ),
+                'message'=> sprintf(gT('Code : %s is a reserved word.'),$this->title),// Usage of {attribute} need attributeLabels, {value} never exist in message
+                'except' => 'archiveimport'
+            );
         } else {
             $aRules[] = array('title', 'compare', 'compareValue'=>'time', 'operator'=>'!=',
                 'message'=> gT("'time' is a reserved word and can not be used for a subquestion."),

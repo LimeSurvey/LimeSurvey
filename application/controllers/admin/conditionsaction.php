@@ -635,14 +635,12 @@ protected function getMethod()
 */
 protected function resetSurveyLogic($iSurveyID)
 {
-    $request = Yii::app()->request;
-    $postOk = $request->getQuery('ok');
-    if (empty($postOk)) {
+    if (empty(Yii::app()->request->getPost('ok'))) {
         $data = array('iSurveyID' => $iSurveyID);
         $content = $this->getController()->renderPartial('/admin/conditions/deleteAllConditions', $data, true);
         $this->_renderWrappedTemplate('conditions', array('message' => array(
-        'title' => gT("Warning"),
-        'message' => $content
+            'title' => gT("Warning"),
+            'message' => $content
         )));
         Yii::app()->end();
     } else {

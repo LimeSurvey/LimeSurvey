@@ -21101,7 +21101,7 @@ const globalWindowMethods = {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
         });
         
-        $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", LS.data.csrfToken).appendTo($form);
+        $("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken).appendTo($form);
         $form.appendTo("body");
         $form.submit();
     },
@@ -21109,13 +21109,9 @@ const globalWindowMethods = {
         $('<input type="hidden"/>').attr('name', name).attr('value', value).appendTo($(form));
     },
     fixAccordionPosition : () => {
-        $('#accordion').on('shown.bs.collapse',".panel-collapse.collapse", function () {
-            $('#accordion').find('.collapse').not('#'+$(this).attr('id')).collapse('hide');
-            setTimeout(function(){
-                $('html, body').animate({
-                    scrollTop: $(this).closest('.panel.panel-default').offset().top-20
-                }, 500);
-            }, 500);
+        $('#accordion').on('shown.bs.collapse',".panel-collapse.collapse", function (e) {
+            if(e.target != this) return;
+            $('#accordion').find('.panel-collapse.collapse').not('#'+$(this).attr('id')).collapse('hide');
         });
     }
 };
@@ -26707,7 +26703,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_panelclickable__ = __webpack_require__(345);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_panelsanimation__ = __webpack_require__(346);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_notifications__ = __webpack_require__(347);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_lslog__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_gridAction__ = __webpack_require__(348);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_lslog__ = __webpack_require__(49);
 /*
  * JavaScript functions for LimeSurvey administrator
  *
@@ -26757,6 +26754,7 @@ window.LS = window.LS || {};
 
 
 
+
 const AdminCore = function(){
     //Singelton Pattern -> the AdminCore functions can only be nound once.
     if(typeof window.LS.adminCore === 'object') {
@@ -26776,8 +26774,8 @@ const AdminCore = function(){
         onLoadRegister = () => {
             __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["a" /* globalStartUpMethods */].bootstrapping();
             Object(__WEBPACK_IMPORTED_MODULE_7__pages_surveyGrid__["a" /* onExistBinding */])();
-            appendToLoad(function(){__WEBPACK_IMPORTED_MODULE_17__components_lslog__["a" /* default */].log('TRIGGERWARNING','Document ready triggered')}, 'ready');
-            appendToLoad(function(){__WEBPACK_IMPORTED_MODULE_17__components_lslog__["a" /* default */].log('TRIGGERWARNING','Document scriptcomplete triggered')}, 'pjax:scriptcomplete');
+            appendToLoad(function(){__WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log('TRIGGERWARNING','Document ready triggered')}, 'ready');
+            appendToLoad(function(){__WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log('TRIGGERWARNING','Document scriptcomplete triggered')}, 'pjax:scriptcomplete');
             appendToLoad(__WEBPACK_IMPORTED_MODULE_12__parts_save__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_8__parts_confirmationModal__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__["a" /* default */]);
@@ -26791,7 +26789,7 @@ const AdminCore = function(){
             event = event || 'pjax:scriptcomplete ready';
             root = root || 'document';
             delay = delay || 0;
-            __WEBPACK_IMPORTED_MODULE_17__components_lslog__["a" /* default */].log('appendToLoad', {
+            __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log('appendToLoad', {
                 'type' : typeof fn,
                 'fn' : fn
             })
@@ -26820,7 +26818,7 @@ const AdminCore = function(){
                 });
             });
             Object(__WEBPACK_IMPORTED_MODULE_7__pages_surveyGrid__["a" /* onExistBinding */])();
-            __WEBPACK_IMPORTED_MODULE_17__components_lslog__["a" /* default */].log("Refreshed Admin core methods");
+            __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log("Refreshed Admin core methods");
         },
         setNameSpace = () => {
             const BaseNameSpace = {
@@ -26841,7 +26839,7 @@ const AdminCore = function(){
                 initNotification : __WEBPACK_IMPORTED_MODULE_16__components_notifications__["a" /* default */].initNotification
             }
 
-            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_11__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_10__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_6__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_16__components_notifications__["a" /* default */]);
+            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_11__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_10__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_6__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_16__components_notifications__["a" /* default */],__WEBPACK_IMPORTED_MODULE_17__components_gridAction__["a" /* default */]);
             
             /*
             * Set the namespace to the global variable LS
@@ -26856,10 +26854,11 @@ const AdminCore = function(){
         };
         setNameSpace();
         onLoadRegister();
-        __WEBPACK_IMPORTED_MODULE_17__components_lslog__["a" /* default */].log("AdminCore", eventsBound);
+        __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log("AdminCore", eventsBound);
 }
 
 AdminCore();
+
 
 /***/ }),
 /* 334 */
@@ -27530,7 +27529,7 @@ const ConfirmDeleteModal = function (options) {
                 formObject.append('<input name="' + key + '" value="' + value + '" type="' + type + '" ' + (htmlClass ? 'class="' + htmlClass + '"' : '') + ' />');
             }
 
-            formObject.append('<input name="YII_CSRF_TOKEN" value="' + LS.data.csrfToken + '" type="hidden" />');
+            formObject.append('<input name="' + LS.data.csrfTokenName + '" value="' + LS.data.csrfToken + '" type="hidden" />');
             modalObject.find('.modal-body').append(formObject)
             modalObject.find('.modal-body').append('<p>' + confirmText + '</p>');
 
@@ -27896,6 +27895,59 @@ const NotifcationSystem  = function (){
 const notificationSystem = new NotifcationSystem();
 
 /* harmony default export */ __webpack_exports__["a"] = (notificationSystem);
+
+
+/***/ }),
+/* 348 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const gridButton = {
+    noGridAction : (event,that) => {
+        event.preventDefault();
+    },
+    confirmGridAction : (event,that) => {
+        event.preventDefault();
+        var actionUrl = $(that).attr('href');
+        if(!actionUrl) {
+            LOG.error("confirmGridAction without valid element");
+            return;
+        }
+        var text = $(that).data('confirm-text') || $(that).attr('title') || $(that).data('original-title');
+        var utf8 = $(that).data('confirm-utf8') || LS.lang.confirm;
+        var gridid = $(that).data('gridid') || $(that).closest(".grid-view").attr("id");
+        $.bsconfirm(text,utf8,function onClickOK() {
+            $('#'+gridid).yiiGridView('update', {
+                type : 'POST',
+                url : actionUrl,
+                success: function(data) {
+                    jQuery('#'+gridid).yiiGridView('update');
+                    $('#identity__bsconfirmModal').modal('hide');
+                    // todo : show an success alert box
+                },
+                error: function (request, status, error) {
+                    $('#identity__bsconfirmModal').modal('hide');
+                    alert(request.responseText);// Use a better alert box (see todo success)
+                }
+            });
+        });
+    },
+    postGridAction : (event,that) => {
+        event.preventDefault();
+        var parts = $(that).attr('href').split("#");
+        var actionUrl = parts[0];
+        if(!actionUrl) {
+            LOG.error("postGridAction without valid element");
+            return;
+        }
+        var postAction = '';
+        if(parts.length > 1) {
+            postAction= parts[1];
+        }
+        window.LS.sendPost(actionUrl,postAction);
+    }
+}
+/* harmony default export */ __webpack_exports__["a"] = ({gridButton});
 
 
 /***/ })

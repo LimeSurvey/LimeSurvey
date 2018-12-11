@@ -298,6 +298,27 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * Change survey group for multiple survey at once.
+     * Called from survey list massive actions
+     */
+    public function changeMultipleSurveyGroup()
+    {
+        $sSurveys = $_POST['sItems'];
+        $aSIDs = json_decode($sSurveys);
+        $aResults = array();
+
+        $iSurveyGroupId = sanitize_int(App()->request->getPost('surveygroupid'));
+
+        foreach ($aSIDs as $iSurveyID){
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+            $oSurvey->gsid = $iSurveyGroupId;
+            $aResults[$iSurveyID] = $oSurvey->save();
+        }
+
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT("Success")));
+    }
+
+    /**
     * Update the theme of a survey
     *
     * @access public
@@ -1145,15 +1166,17 @@ class SurveyAdmin extends Survey_Common_Action
             LimeExpressionManager::SetDirtyFlag();
             LimeExpressionManager::singleton();
             // Why this @ !
-            @LimeExpressionManager::UpgradeConditionsToRelevance($aImportResults['newsid']);
+            LimeExpressionManager::SetSurveyId($aImportResults['newsid']);
+            LimeExpressionManager::RevertUpgradeConditionsToRelevance($aImportResults['newsid']);
+            LimeExpressionManager::UpgradeConditionsToRelevance($aImportResults['newsid']);
             @LimeExpressionManager::StartSurvey($oSurvey->sid, 'survey', $oSurvey->attributes, true);
-            @LimeExpressionManager::StartProcessingPage(true, true);
+            LimeExpressionManager::StartProcessingPage(true, true);
             $aGrouplist = QuestionGroup::model()->findAllByAttributes(['sid'=>$aImportResults['newsid']]);
             foreach ($aGrouplist as $aGroup) {
-                @LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $aImportResults['newsid']);
-                @LimeExpressionManager::FinishProcessingGroup();
+                LimeExpressionManager::StartProcessingGroup($aGroup['gid'], $oSurvey->anonymized != 'Y', $aImportResults['newsid']);
+                LimeExpressionManager::FinishProcessingGroup();
             }
-            @LimeExpressionManager::FinishProcessingPage();
+            LimeExpressionManager::FinishProcessingPage();
         }
 
         $this->_renderWrappedTemplate('survey', 'importSurvey_view', $aData);
@@ -1979,6 +2002,7 @@ class SurveyAdmin extends Survey_Common_Action
         $oGroupL10ns->group_name = gt('My first question group', 'html', $sLanguage);
         $oGroupL10ns->language = $sLanguage;
         $oGroupL10ns->save();
+        LimeExpressionManager::SetEMLanguage($sLanguage);
         return $oGroup->gid;
     }
 
@@ -2048,5 +2072,90 @@ class SurveyAdmin extends Survey_Common_Action
             }
         }
         $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+    }
+
+    /**
+     * Upload an image in directory
+     * @return json
+     */
+    public function uploadimagefile()
+    {
+        $iSurveyID = Yii::app()->request->getPost('surveyid');
+        $success = false;
+        $debug = [];
+        if(!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'update')) {
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => gT("You don't have sufficient permissions to upload images in this survey"), 'debug' => $debug]),
+                false,
+                false
+            );
+        }
+        $debug[] = $_FILES;
+        if(empty($_FILES)) {
+            $uploadresult = gT("No file was uploaded.");
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+                false,
+                false
+            );
+        }
+        if ($_FILES['file']['error'] == 1 || $_FILES['file']['error'] == 2) {
+            $uploadresult = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize() / 1024 / 1024);
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+                false,
+                false
+            );
+        }
+        $checkImage = LSYii_ImageValidator::validateImage($_FILES["file"]["tmp_name"]);
+        if ($checkImage['check'] === false) {
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => $checkImage['uploadresult'], 'debug' => $checkImage['debug']]),
+                false,
+                false
+            );
+        }
+        $surveyDir = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID;
+        if (!is_dir($surveyDir)) {
+            @mkdir($surveyDir);
+        }
+        if (!is_dir($surveyDir."/images")) {
+            @mkdir($surveyDir."/images");
+        }
+        $destdir = $surveyDir."/images/";
+        if (!is_writeable($destdir)) {
+            $uploadresult = sprintf(gT("Incorrect permissions in your %s folder."), $destdir);
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+                false,
+                false
+            );
+        }
+        
+        $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
+        $fullfilepath = $destdir.$filename;
+        $debug[] = $destdir;
+        $debug[] = $filename;
+        $debug[] = $fullfilepath;
+        if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
+            $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+        } else {
+            $uploadresult = sprintf(gT("File %s uploaded"), $filename);
+            $success = true;
+        };
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array('data' => ['success' => $success, 'message' => $uploadresult, 'debug' => $debug]),
+            false,
+            false
+        );
+
+
+
     }
 }

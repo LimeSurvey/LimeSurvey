@@ -793,20 +793,24 @@ class TemplateConfiguration extends TemplateConfig
         return str_repeat('..'.DIRECTORY_SEPARATOR, count($dir)) . implode(DIRECTORY_SEPARATOR, $file);
     }
 
-    private function _filterImages($file)
+    /**
+     * Return image information
+     * @param string $file with Path
+     * @return array|null
+     */
+    private function _getImageInfo($file)
     {
-        $imagePath = (file_exists($this->filesPath.$file['name']))
-            ? $this->filesPath.$file['name']
-            : $this->generalFilesPath.$file['name'] ;
-
-        $filePath = $this->_getRelativePath(Yii::app()->getConfig('rootdir'),  $imagePath);
-
-        $previewFilePath = App()->getAssetManager()->publish($imagePath);
-
-        $checkImage = LSYii_ImageValidator::validateImage($imagePath);
-        if (!$checkImage['check'] === false) {
-                return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>$file['name']];
+        if(!file_exists($file)) {
+            return;
         }
+        // Currently it's private and only used one time, before put this function in twig : must validate directory is inside rootdir
+        $checkImage = LSYii_ImageValidator::validateImage($file);
+        if (!$checkImage['check']) {
+            return;
+        }
+        $filePath = $this->_getRelativePath(Yii::app()->getConfig('rootdir'), $file);
+        $previewFilePath = App()->getAssetManager()->publish($file);
+        return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>basename($file)];
     }
 
     protected function getOptionPageAttributes()
@@ -815,13 +819,21 @@ class TemplateConfiguration extends TemplateConfig
         $fileList = array_merge(Template::getOtherFiles($this->filesPath), Template::getOtherFiles($this->generalFilesPath));
         $aData['maxFileSize'] = getMaximumFileUploadSize();
         $aData['imageFileList'] = [];
-        foreach ($fileList as $file) {
-            $isImage = $this->_filterImages($file);
-
-            if ($isImage) {
-                $aData['imageFileList'][] = $isImage;
-            }
-        };
+        $categoryList = []; // Array with optgroup label and path
+        $categoryList[] = ['group' => gT("Global"),'path' => $this->generalFilesPath];
+        $categoryList[] = ['group' => gT("Theme"),'path' => $this->filesPath];
+        if($this->sid) {
+            $categoryList[] = ['group' => gT("Survey"),'path' => Yii::app()->getConfig('uploaddir').'/surveys/'.$this->sid.'/images/'];
+        }
+        foreach($categoryList as $category) {
+            $fileList = Template::getOtherFiles($category['path']);
+            foreach ($fileList as $file) {
+                $imageInfo = $this->_getImageInfo($category['path'].$file['name']);
+                if ($imageInfo) {
+                    $aData['imageFileList'][] = array_merge($category,$imageInfo);
+                }
+            };
+        }
 
         return $aData;
     }
@@ -841,17 +853,13 @@ class TemplateConfiguration extends TemplateConfig
         $oTemplate->setOptionInheritance();
 
         $oOptions = (array) $oSimpleInheritanceTemplate->oOptions;
-        // replace database values with translated text, to match labels on the page
+        // translation of database values, to match labels on the page
         foreach ($oOptions as $key=>$value){
-            if ($key == 'showpopups'){
-                $oOptions[$key] = str_replace(array('1', '0', '-1'), array(gT("Popup"), gT("On page"), gT("No")), $value);
-            } else {
-                if ($value == 'on'){
-                    $oOptions[$key] = str_replace('on',gT('Yes'), $value);
-                } elseif ($value == 'off'){
-                    $oOptions[$key] = str_replace('off',gT('No'), $value);
+                if ($key == 'showpopups'){
+                    $oOptions[$key] = str_replace(array('1', '0', '-1'), array(gT("Popup"), gT("On page"), gT("No")), $value);
+                } else {
+                    $oOptions[$key] = str_replace(array('on', 'off', 'top', 'bottom'), array(gT("Yes"), gT("No"), gT("Top"), gT("Bottom")), $value);
                 }
-            }
         }
 
         //We add some extra values to the option page

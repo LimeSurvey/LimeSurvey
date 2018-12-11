@@ -4493,15 +4493,12 @@ function do_array_texts($ia)
     $labelcode    = [];
 
     foreach ($aSubquestions as $lrow) {
-        $labelans[]  = $lrow->questionL10ns[$sSurveyLanguage]->question;
-        $labelcode[] = $lrow['title'];
+        $labelans[] = $oSubquestion->questionL10ns[$sSurveyLanguage]->question;
+        $labelans[] = $oSubquestion->title;
     }
 
     if ($numrows = count($labelans)) {
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
-            $numrows++;
-        }
-
+        // There are no "No answer" column
         if (($show_grand == true && $show_totals == 'col') || $show_totals == 'row' || $show_totals == 'both') {
             ++$numrows;
         }
@@ -4821,9 +4818,8 @@ function do_array_multiflexi($ia)
     }
 
     if ($numrows = count($labelans)) {
-        //~ if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$numrows++;}
-        $cellwidth = $columnswidth / $numrows;
-
+        // There are no "No answer" column
+        $cellwidth  = $columnswidth / $numrows;
         $iCount = Question::model()->with(array('questionL10ns'=>array('condition'=>"question like '%|%'")))->countByAttributes([], 'parent_qid=:parent_qid AND scale_id=0', array(':parent_qid'=>$ia[0]));
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($iCount > 0) {
