@@ -662,7 +662,7 @@ class UserAction extends Survey_Common_Action
             }
 
             if (Yii::app()->request->getPost("saveandclose")) {
-                $this->getController()->redirect(array("admin"));
+                $this->getController()->redirect("/admin");
             }
         } else {
             $aData = array();
