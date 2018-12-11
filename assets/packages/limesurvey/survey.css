@@ -13,7 +13,7 @@
  * Expression manager relevance system
  */
 .js .ls-hidden{display:none}/* 3 class , and don't hide without javascript*/
-.ls-irrelevant{pointer-events: none;}
+.js .ls-irrelevant{pointer-events: none;} /* Without js : NEED action accepted … */
 .js .ls-disabled{opacity:0.4;}
 
 
