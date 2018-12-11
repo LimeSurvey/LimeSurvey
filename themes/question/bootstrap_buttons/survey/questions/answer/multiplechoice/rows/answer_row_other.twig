@@ -17,12 +17,12 @@
 
 <!-- answer_row_other -->
 <div class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
-    <div id='javatbd{{ myfname }}' class="bootstrap-item btn btn-primary checkbox-item {{ button_size_class }} {% if checkedState!='' %} active {% endif %} col-xs-12 col-sm-12">
+    <div id='javatbd{{ myfname }}' class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %} col-xs-12 col-sm-12">
 
         <!-- Checkbox + label -->
             <!-- checkbox -->
             <input
-                class="other-checkbox bootstrap-checkbox-other"
+                class="other-checkbox bootstrap-checkbox-other sr-only"
                 type="checkbox"
                 name="{{myfname}}cbox"
                 id="answer{{myfname}}cbox"
@@ -38,7 +38,7 @@
             name="java{{myfname}}"
             id="java{{myfname}}"
             value="{{sValueHidden}}"
-            class="bootstrap-checkbox-other-value"
+            class="button-checkbox-other-value"
             data-name="{{myfname}}"
         />
     </div>

@@ -43,7 +43,7 @@ $(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /* checkbox item */
-$(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event){
+$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 
