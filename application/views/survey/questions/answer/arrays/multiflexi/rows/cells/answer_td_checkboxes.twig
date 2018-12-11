@@ -20,9 +20,8 @@
     }))
     }}
     {# Value submited by default, replaced by next if checked #}
-    {# EM use javaXXXX, no need updating the value of this one, just submit '' if other one is unchecked , review JS ? #}
+    {# EM use answerXXXX (previous input), no need updating the value of this one, just submit '' if other one is unchecked #}
     {# See http://www.yiiframework.com/doc/api/1.1/CHtml#checkBox-detail width uncheckValue for replacing ? #}
-    {# Add prefix 'answer' to make question relevance work in LEMval(). #}
     {{ C.Html.hiddenField(myfname2,"",({
         'class' : "hidden",
         'id' : 'hidden_'~myfname2
