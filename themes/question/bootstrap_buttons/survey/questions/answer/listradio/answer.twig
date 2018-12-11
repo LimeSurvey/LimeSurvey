@@ -11,10 +11,8 @@
 
 <!-- answer -->
 {{ sTimer }}
-
-<div class="row {{coreClass}}" role="group">
-    <div class="list-unstyled form-inline btn-toolbar col-sm-12 " data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
-
+<div class="container-fluid">
+    <div class="row {{coreClass}} form-inline " data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{name }}">
     {# rows/answer_row.php #}
     {{ sRows }}
 
@@ -26,13 +24,13 @@
     }}
     </div>
     {# Must add it only of other is set ! #}
-    <div class="col-sm-12 hide" id="{{ name }}-div">
+    <div class="row ls-js-hidden form-inline" id="{{ name }}-div">
         <label for="answer{{ name }}othertext" class="control-label" id="label-id-{{ name }}">{{ othertext }}</label>
         <!-- comment -->
         {{ gT('Other:') }}
         <input
         type="text"
-        class="form-control {{ kpclass }} input-sm col-sm-4"
+        class="form-control {{ kpclass }} input-sm"
         id="answer{{ name }}othertext"
         name="{{ name }}other"
         title="{{ gT('Other') }}"

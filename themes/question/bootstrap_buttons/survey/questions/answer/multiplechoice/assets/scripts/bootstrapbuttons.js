@@ -10,19 +10,6 @@
 
 
 $( document ).ready(function() {
-	
-	// ROW
-	$(".bootstrap-checkbox").change(function(){
-		name = $(this).data('name');
-		// set value for java element
-	    if ($(this).is(':checked')){
-	    	$("#java" + name).val('Y');
-	    } else {
-	    	$("#java" + name).val('');
-	    }
-	    checkconditions(this.value, this.name, this.type);
-	});
-
 	// OTHER
 	$(".bootstrap-checkbox-other-value").each( function( index, element ){
 		name = $(this).data('name');
