@@ -2214,7 +2214,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         /**
          * Adding asset version to allow to reset asset without write inside
          */
-        if ($iOldDBVersion < 400) {
+        if ($iOldDBVersion < 350) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable('{{asset_version}}',array(
                 'id' => 'pk',
