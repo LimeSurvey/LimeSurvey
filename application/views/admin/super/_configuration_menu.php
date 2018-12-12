@@ -250,6 +250,13 @@
                         </a>
                     </li>
 
+                    <!-- Global survey settings -->
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/globalsettings/sa/surveysettings"); ?>">
+                            <?php eT("Global survey settings");?>
+                        </a>
+                    </li>
+
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("/admin/pluginmanager/sa/index"); ?>">
                             <?php eT("Plugin manager");?>

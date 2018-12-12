@@ -390,6 +390,47 @@ class GlobalSettings extends Survey_Common_Action
     }
 
     /**
+     * Update global survey settings
+     */
+    public function surveySettings()
+    {
+        $bRedirect = 0;
+        $gsid = 0; // global setting in SurveysGroupsettings model
+        $oSurvey = SurveysGroupsettings::model()->findByPk($gsid);
+        $oSurvey->setOptions();
+
+        if (isset($_POST)) {
+            $oSurvey->attributes = $_POST;
+            $oSurvey->gsid = 0;
+            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
+
+            if ($oSurvey->save()) {
+                $bRedirect = 1;
+            }
+        }
+
+        $users = getUserList();
+        $aData['users'] = array();
+        foreach ($users as $user) {
+            $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
+        }
+        // Sort users by name
+        asort($aData['users']);
+
+        $aData['oSurvey'] = $oSurvey;
+
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+            $this->getController()->redirect($this->getController()->createUrl('admin/index'));
+        }
+
+        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+
+        $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+
+        $this->_renderWrappedTemplate('global_settings', 'surveySettings', $aData);
+    }
+
+    /**
      * Renders template(s) wrapped in header and footer
      *
      * @param string $sAction Current action, the folder to fetch views from

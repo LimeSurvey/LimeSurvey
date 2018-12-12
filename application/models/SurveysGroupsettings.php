@@ -285,50 +285,68 @@ class SurveysGroupsettings extends LSActiveRecord
     /**
      * @return SurveysGroupsettings instance
      */
-    public static function getInstance($iSurveyGroupId = null, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false){
-        if ($iSurveyGroupId != null){
+    public static function getInstance($iSurveyGroupId = 0, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false){
+
+        if ($iSurveyGroupId > 0){
             $model = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
-            
-            // set initial values to instance on first run
-            if ($instance === null){
-                $instance = $model;
-                $instance->optionAttributes = array_keys($model->attributes);
-                // unset gsid
-                unset($instance->optionAttributes[array_search('gsid', $instance->optionAttributes)]);
-                $instance->oOptions = new stdClass();
-                $instance->oOptionLabels = new stdClass();
-
-                // set survey values to instance options, to be used for frontend redering
-                if ($oSurvey !== null && $bRealValues){
-                    foreach($instance->optionAttributes as $key=>$attribute){
-                        $instance->oOptions->{$attribute} = $oSurvey->$attribute;
-                        $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $oSurvey->$attribute);   
-                    }
-                }
-            }
-
-            // hide inherit option if parent instance
-            if ($instance->SurveysGroups->parent_id === null && $oSurvey === null){
-                $instance->showInherited = 0;
-            }
-
-            if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)){
-                foreach($instance->optionAttributes as $key=>$attribute){
-                    if ((empty($instance->oOptions->{$attribute})) || (!empty($instance->oOptions->{$attribute}) && ($instance->oOptions->{$attribute} === 'inherit' || $instance->oOptions->{$attribute} === 'I') || $instance->oOptions->{$attribute} === '-1')){
-
-                        $instance->oOptions->{$attribute} = $model->$attribute;
-                        $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);   
-                    }
-                }
-            }
-
-            // fetch parent instance only if parent_id exists
-            if (!empty($model->SurveysGroups) && $model->SurveysGroups->parent_id !== null){
-                self::getInstance($model->SurveysGroups->parent_id, null, $instance, $iStep + 1);
-            }
-
-            return $instance;
+        } else {
+            $model = SurveysGroupsettings::model()->findByPk($iSurveyGroupId);
         }
+        
+        // set initial values to instance on first run
+        if ($instance === null){
+            $instance = $model;
+            $instance->oOptions = new stdClass();
+            $instance->oOptionLabels = new stdClass();
+            $instance->optionAttributes = array_keys($model->attributes);
+            // unset gsid
+            unset($instance->optionAttributes[array_search('gsid', $instance->optionAttributes)]);
+
+            // set visibility of 'inherit' options on buttons
+            if ($iSurveyGroupId == 0){
+                $instance->showInherited = 0;
+            } else {
+                $instance->showInherited = 1;
+            }
+
+            // set instance options from survey model, used for frontend redering
+            if (($oSurvey !== null && $bRealValues)){
+                foreach($instance->optionAttributes as $key=>$attribute){
+                    $instance->oOptions->{$attribute} = $oSurvey->$attribute;
+                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $oSurvey->$attribute);   
+                }
+            }
+
+            // set instance options from global model
+            if ($iSurveyGroupId == 0){
+                foreach($instance->optionAttributes as $key=>$attribute){
+                    $instance->oOptions->{$attribute} = $model->$attribute;
+                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);   
+                }
+            }
+        }
+
+        // set instance options only if option needs to be inherited
+        if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)){
+            foreach($instance->optionAttributes as $key=>$attribute){
+                if ((empty($instance->oOptions->{$attribute})) || (!empty($instance->oOptions->{$attribute}) && ($instance->oOptions->{$attribute} === 'inherit' || $instance->oOptions->{$attribute} === 'I') || $instance->oOptions->{$attribute} === '-1')){
+                    $instance->oOptions->{$attribute} = $model->$attribute;
+                    $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);   
+                }
+            }
+        }
+
+        // fetch parent instance only if parent_id exists
+        if ($iSurveyGroupId > 0 && !empty($model->SurveysGroups) && $model->SurveysGroups->parent_id !== null){
+            self::getInstance($model->SurveysGroups->parent_id, null, $instance, $iStep + 1);
+        } 
+        
+        // fetch global instance
+        if ($iSurveyGroupId > 0 && !empty($model->SurveysGroups) && $model->SurveysGroups->parent_id === null){
+            self::getInstance(0, null, $instance, $iStep + 1); // calling global settings
+        }
+
+        return $instance;
     }
 
     /**
