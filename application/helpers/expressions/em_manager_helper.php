@@ -8827,21 +8827,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $qid = $qinfo['info']['qid'];
                 $gseq = $qinfo['info']['gseq'];
                 /* Never use posted value : must be fixed and find real actual relevance */
+                /* Set current relevance using ProcessStepString tested in https://github.com/LimeSurvey/LimeSurvey/commit/9106dfe8afb07b99f14814d3fbcf7550e2b44bb9 */
                 $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
                 $grelevant = (isset($_POST['relevanceG' . $gseq]) ? ($_POST['relevanceG' . $gseq] == 1) : false);
-                
-                /* Set current relevance using ProcessStepString, test if relevance and grelevance is set, but really think if happen : all EM are broken*/
-                /**
-                 * Disable since travis broke with this : @todo find why, and what really happen 
-                $relevant = true;
-                if(isset($qinfo['info']['relevance']) && ($qinfo['info']['relevance'] !== "" and $qinfo['info']['relevance'] != 1) ) { 
-                    $relevant = boolval(self::ProcessStepString($qinfo['info']['relevance']));
-                }
-                $grelevant = true;
-                if(isset($qinfo['info']['grelevance']) && ($qinfo['info']['grelevance'] !== "" and $qinfo['info']['grelevance'] != 1) ) {
-                    $grelevant = boolval(self::ProcessStepString($qinfo['info']['grelevance']));
-                }
-                **/
                 $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $relevant;
                 $_SESSION[$LEM->sessid]['relevanceStatus']['G' . $gseq] = $grelevant;
                 foreach (explode('|',$qinfo['sgqa']) as $sq)
