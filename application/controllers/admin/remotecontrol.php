@@ -94,7 +94,7 @@ class remotecontrol extends Survey_Common_Action
         die(); // Remove if you want to test this function
         $RPCType = Yii::app()->getConfig("RPCInterface");
         $serverUrl = App()->createAbsoluteUrl('/admin/remotecontrol');
-        $sFileToImport = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'limesurvey2_sample_survey_english.lss';
+        $sFileToImport = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.'docs'.DIRECTORY_SEPARATOR.'demosurveys'.DIRECTORY_SEPARATOR.'ls205_sample_survey_english.lss';
 
         if ($RPCType == 'xml') {
             $cur_path = get_include_path();
@@ -105,6 +105,7 @@ class remotecontrol extends Survey_Common_Action
         } elseif ($RPCType == 'json') {
             Yii::app()->loadLibrary('jsonRPCClient');
             $client = new jsonRPCClient($serverUrl);
+            // Set $client = new jsonRPCClient($serverUrl, true); to activate debug output
         } else {
             die('RPC interface not activated in global settings');
         }
@@ -116,7 +117,7 @@ class remotecontrol extends Survey_Common_Action
         }
         
         $sLSSData = base64_encode(file_get_contents($sFileToImport));
-        $iSurveyID = $client->call('import_survey', array($sSessionKey, $sLSSData, 'lss', 'Test import by JSON_RPC', 1000));
+        $iSurveyID = $client->call('import_survey', array($sSessionKey, $sLSSData, 'lss', 'Test import by JSON_RPC'));
         echo 'Created new survey SID:'.$iSurveyID.'<br>';
 
         $aResult = $client->call('activate_survey', array($sSessionKey, $iSurveyID));
