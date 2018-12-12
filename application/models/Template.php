@@ -624,6 +624,7 @@ class Template extends LSActiveRecord
         $this->deleteAssetVersion();
         Survey::model()->updateAll(array('template' => $sNewName), "template = :oldname", array(':oldname'=>$this->name));
         Template::model()->updateAll(array('name' => $sNewName, 'folder' => $sNewName), "name = :oldname", array(':oldname'=>$this->name));
+        Template::model()->updateAll(array('extends' => $sNewName), "extends = :oldname", array(':oldname'=>$this->name));
         TemplateConfiguration::rename($this->name, $sNewName);
         TemplateManifest::rename($this->name, $sNewName);
     }
