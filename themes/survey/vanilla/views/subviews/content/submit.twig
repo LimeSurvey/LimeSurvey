@@ -31,18 +31,23 @@
     {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
     <div class="{{ aSurveyInfo.class.submitwrapper }}" {{ aSurveyInfo.attr.submitwrapper }}>
         <div class='{{ aSurveyInfo.class.submitwrappertext }}' {{ aSurveyInfo.attr.submitwrappertext }}>
+            {% block endtext %}
             {% if (aSurveyInfo.aCompleted.showDefault == true) %}
                 <p {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ gT("Thank you!") }}</p>
                 <p {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ gT("Your survey responses have been recorded.") }}</p>
             {% else %}
                 {{ aSurveyInfo.aCompleted.sEndText }}
             {% endif %}
+            {% endblock %}
 
+            {% block assessments %}
             {# Assessments #}
             {% if (aSurveyInfo.aAssessments.show) %}
                 {{ include('./subviews/messages/assessments.twig') }}
             {% endif %}
+            {% endblock %}
 
+            {% block printanswer %}
             {#  Link to Print Answer Preview #}
             {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
                 <!--  Link to Print Answer Preview -->
@@ -52,7 +57,9 @@
                     </a>
                 </div>
             {% endif %}
+            {% endblock %}
 
+            {% block publicstatistics %}
             {# Link to Public statistics #}
             {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
                 <!-- Link to Public statistics -->
@@ -62,14 +69,17 @@
                     </a>
                 </div>
             {% endif %}
+            {% endblock %}
 
             {# Before LS3 Master, this should be replace by a Twig block logic #}
             {{ aSurveyInfo.aCompleted.sPluginHTML }}
 
+            {% block endurl %}
             {# NOTE: not very clear what the old replacement keyword {URL} was doing  #}
-            {% if (aSurveyInfo.surveyls_url) %}
-                <a href="{{ aSurveyInfo.surveyls_url }}">{{ aSurveyInfo.surveyls_urldescription ?: aSurveyInfo.surveyls_url }}</a>
+            {% if (aSurveyInfo.aCompleted.sSurveylsUrl) %}
+                <a href="{{ aSurveyInfo.aCompleted.sSurveylsUrl }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}</a>
             {% endif %}
+            {% endblock %}
         </div>
     </div>
 </form> <!-- main form -->
