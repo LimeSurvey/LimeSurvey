@@ -7,7 +7,6 @@
  * @property integer $gsid
  * @property integer $owner_id
  * @property string $admin
- * @property string $active
  * @property string $expires
  * @property string $startdate
  * @property string $adminemail
@@ -15,7 +14,6 @@
  * @property string $format
  * @property string $savetimings
  * @property string $template
- * @property string $additional_languages
  * @property string $datestamp
  * @property string $usecookie
  * @property string $allowregister
@@ -72,6 +70,8 @@ class SurveysGroupsettings extends LSActiveRecord
     protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');    
 
     public $showInherited = 1;
+    public $active;
+    public $additional_languages;
 
 
     /**
@@ -95,14 +95,13 @@ class SurveysGroupsettings extends LSActiveRecord
 		return array(
 			array('autonumber_start, showsurveypolicynotice, tokenlength, questionindex, navigationdelay, owner_id', 'numerical', 'integerOnly'=>true),
 			array('admin', 'length', 'max'=>50),
-			array('active, anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion', 'length', 'max'=>1),
+			array('anonymized, format, savetimings, datestamp, usecookie, allowregister, allowsave, autoredirect, allowprev, printanswers, ipaddr, refurl, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, nokeyboard, alloweditaftercompletion', 'length', 'max'=>1),
 			array('adminemail, bounce_email', 'length', 'max'=>255),
 			array('template', 'length', 'max'=>100),
-			array('additional_languages', 'length', 'max'=>255),
 			array('expires, startdate, datecreated, attributedescriptions, emailresponseto, emailnotificationto', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('gsid, owner_id, admin, active, expires, startdate, adminemail, anonymized, format, savetimings, template, additional_languages, datestamp, usecookie, allowregister, allowsave, autonumber_start, autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto, tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on'=>'search'),
+			array('gsid, owner_id, admin, expires, startdate, adminemail, anonymized, format, savetimings, template, datestamp, usecookie, allowregister, allowsave, autonumber_start, autoredirect, allowprev, printanswers, ipaddr, refurl, datecreated, showsurveypolicynotice, publicstatistics, publicgraphs, listpublic, htmlemail, sendconfirmation, tokenanswerspersistence, assessments, usecaptcha, bounce_email, attributedescriptions, emailresponseto, emailnotificationto, tokenlength, showxquestions, showgroupinfo, shownoanswer, showqnumcode, showwelcome, showprogress, questionindex, navigationdelay, nokeyboard, alloweditaftercompletion', 'safe', 'on'=>'search'),
 		);
     }
   
@@ -129,7 +128,6 @@ class SurveysGroupsettings extends LSActiveRecord
 			'gsid' => 'Gsid',
 			'owner_id' => 'OwnerId',
 			'admin' => 'Admin',
-			'active' => 'Active',
 			'expires' => 'Expires',
 			'startdate' => 'Startdate',
 			'adminemail' => 'Adminemail',
@@ -137,7 +135,6 @@ class SurveysGroupsettings extends LSActiveRecord
 			'format' => 'Format',
 			'savetimings' => 'Savetimings',
 			'template' => 'Template',
-			'additional_languages' => 'Additional Languages',
 			'datestamp' => 'Datestamp',
 			'usecookie' => 'Usecookie',
 			'allowregister' => 'Allowregister',
@@ -197,7 +194,6 @@ class SurveysGroupsettings extends LSActiveRecord
 		$criteria->compare('gsid',$this->gsid);
 		$criteria->compare('owner_id',$this->owner_id);
 		$criteria->compare('admin',$this->admin,true);
-		$criteria->compare('active',$this->active,true);
 		$criteria->compare('expires',$this->expires,true);
 		$criteria->compare('startdate',$this->startdate,true);
 		$criteria->compare('adminemail',$this->adminemail,true);
@@ -205,7 +201,6 @@ class SurveysGroupsettings extends LSActiveRecord
 		$criteria->compare('format',$this->format,true);
 		$criteria->compare('savetimings',$this->savetimings,true);
 		$criteria->compare('template',$this->template,true);
-		$criteria->compare('additional_languages',$this->additional_languages,true);
 		$criteria->compare('datestamp',$this->datestamp,true);
 		$criteria->compare('usecookie',$this->usecookie,true);
 		$criteria->compare('allowregister',$this->allowregister,true);

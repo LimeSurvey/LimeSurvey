@@ -145,7 +145,7 @@ class SurveysGroupsController extends Survey_Common_Action
         $oSurvey->setOptions();
         $oSurvey->owner_id = $model->owner_uid;
 
-        if (isset($_POST)) {
+        if (isset($_POST['template'])) {
             $oSurvey->attributes = $_POST;
             $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
 
