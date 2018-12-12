@@ -621,6 +621,72 @@ function createDatabase($oDB){
         }
 
 
+        // surveys_groupsettings
+        $oDB->createCommand()->createTable('{{surveys_groupsettings}}', array(
+            'gsid' => "integer NULL",
+            'owner_id' => "integer NULL DEFAULT NULL",
+            'admin' => "string(50) NULL DEFAULT NULL'",
+            'active' => "string(1) NOT NULL DEFAULT 'N'",
+            'expires' => "datetime NULL DEFAULT NULL",
+            'startdate' => "datetime NULL DEFAULT NULL",
+            'adminemail' => "string(254) NULL DEFAULT NULL'",
+            'anonymized' => "string(1) NOT NULL DEFAULT 'N'",
+            'format' => "string(1) NULL DEFAULT NULL'",
+            'savetimings' => "string(1) NOT NULL DEFAULT 'N'",
+            'template' => "string(100) NULL DEFAULT 'default'",
+            'additional_languages' => "string(255) NULL DEFAULT NULL'",
+            'datestamp' => "string(1) NOT NULL DEFAULT 'N'",
+            'usecookie' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowregister' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowsave' => "string(1) NOT NULL DEFAULT 'Y'",
+            'autonumber_start' => "integer NULL DEFAULT '0'",
+            'autoredirect' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowprev' => "string(1) NOT NULL DEFAULT 'N'",
+            'printanswers' => "string(1) NOT NULL DEFAULT 'N'",
+            'ipaddr' => "string(1) NOT NULL DEFAULT 'N'",
+            'refurl' => "string(1) NOT NULL DEFAULT 'N'",
+            'datecreated' => "datetime NULL DEFAULT NULL",
+            'showsurveypolicynotice' => "integer NULL DEFAULT '0'",
+            'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
+            'publicgraphs' => "string(1) NOT NULL DEFAULT 'N'",
+            'listpublic' => "string(1) NOT NULL DEFAULT 'N'",
+            'htmlemail' => "string(1) NOT NULL DEFAULT 'N'",
+            'sendconfirmation' => "string(1) NOT NULL DEFAULT 'Y'",
+            'tokenanswerspersistence' => "string(1) NOT NULL DEFAULT 'N'",
+            'assessments' => "string(1) NOT NULL DEFAULT 'N'",
+            'usecaptcha' => "string(1) NOT NULL DEFAULT 'N'",
+            'bounce_email' => "string(254) NULL DEFAULT NULL'",
+            'attributedescriptions' => "text NULL'",
+            'emailresponseto' => "text NULL'",
+            'emailnotificationto' => "text NULL'",
+            'tokenlength' => "integer NULL DEFAULT '15'",
+            'showxquestions' => "string(1) NULL DEFAULT 'Y'",
+            'showgroupinfo' => "string(1) NULL DEFAULT 'B'",
+            'shownoanswer' => "string(1) NULL DEFAULT 'Y'",
+            'showqnumcode' => "string(1) NULL DEFAULT 'X'",
+            'showwelcome' => "string(1) NULL DEFAULT 'Y'",
+            'showprogress' => "string(1) NULL DEFAULT 'Y'",
+            'questionindex' => "integer NULL DEFAULT '0'",
+            'navigationdelay' => "integer NULL DEFAULT '0'",
+            'nokeyboard' => "string(1) NULL DEFAULT 'N'",
+            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
+        ));
+
+        $oDB->createCommand()->addPrimaryKey('{{surveys_groupsettings_pk}}', '{{surveys_groupsettings}}', ['gsid']);
+
+        // insert settings for global level
+        $settings1 = new SurveysGroupsettings;
+        $settings1->setToDefault();
+        $settings1->gsid = 0;
+        $oDB->createCommand()->insert("{{surveys_groupsettings}}", $settings1->attributes);
+
+        // insert settings for default survey group
+        $settings2 = new SurveysGroupsettings;
+        $settings2->setToInherit();
+        $settings2->gsid = 1;
+        $oDB->createCommand()->insert("{{surveys_groupsettings}}", $settings2->attributes);
+
+
         // surveys_languagesettings
         $oDB->createCommand()->createTable('{{surveys_languagesettings}}', array(
             'surveyls_survey_id' => "integer NOT NULL",

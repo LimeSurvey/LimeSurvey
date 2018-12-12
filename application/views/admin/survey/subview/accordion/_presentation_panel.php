@@ -68,7 +68,7 @@ if ($bShowInherited){
                 $sel_showgri[$set_showgri] = ' selected="selected"';
             }
             if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X']) && empty($sel_showgri['I']))
-                $sel_showgri['C'] = ' selected="selected"';
+                $sel_showgri['B'] = ' selected="selected"';
         ?>
 
         <!-- Show group name and/or group description -->

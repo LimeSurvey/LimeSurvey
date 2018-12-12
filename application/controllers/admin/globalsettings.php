@@ -289,10 +289,6 @@ class GlobalSettings extends Survey_Common_Action
             $warning .= gT("Warning! Admin email was not saved because it was not valid.").'<br/>';
         }
         SettingGlobal::setSetting('siteadminname', strip_tags(Yii::app()->getRequest()->getPost('siteadminname')));
-        SettingGlobal::setSetting('shownoanswer', sanitize_int(Yii::app()->getRequest()->getPost('shownoanswer')));
-        SettingGlobal::setSetting('showxquestions', (Yii::app()->getRequest()->getPost('showxquestions')));
-        SettingGlobal::setSetting('showgroupinfo', (Yii::app()->getRequest()->getPost('showgroupinfo')));
-        SettingGlobal::setSetting('showqnumcode', (Yii::app()->getRequest()->getPost('showqnumcode')));
         $repeatheadingstemp = (int) (Yii::app()->getRequest()->getPost('repeatheadings'));
         if ($repeatheadingstemp == 0) {
             $repeatheadingstemp = 25;
