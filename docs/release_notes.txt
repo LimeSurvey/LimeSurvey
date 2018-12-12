@@ -35,6 +35,59 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.15.4 (build 181109) to 4.0.0-alpha (build 181212) december 12, 2018
+
+-New feature: Inherited survey settings - corrections (Dominik Vitt)
+-New feature #13288: Validation settings for more question type (#980) (Denis Chenu)
+-New feature #13513 : allow plugins to add expresssion manager function (#1081) (Denis Chenu)
+-New feature: Added sharing panel with Twitter Facebook and QRcodes (Markus flür)
+-New feature: Inherited survey settings - corrections (Dominik Vitt)
+-New feature: Inherited survey settings - part 1 - design change + save settings (Dominik Vitt)
+-New feature: Inherited survey settings - part 2 - frontend rendering (Dominik Vitt)
+-New feature: Inherited survey settings - part 3 - global survey settings (Dominik Vitt)
+-New feature: Inherited survey settings - part 4 - database upgrade (Dominik Vitt)
+-New feature: Make "exit an clear survey" an option (T215) (LouisGac)
+-New feature: New "Question help text position" theme option (T138) (Dominik Vitt)
+-New feature: New event beforePluginManagerMenuRender. (Olle Haerstedt)
+-New feature: Preserve response IDs when importing archived responses (Carsten Schmitz)
+-New feature: RemoteControl list_users can now search for username (gekkedev)
+-New feature: afterSuccessfulLogin has argument $identity (Olle Haerstedt)
+-New feature: automatic consistency fixer (markusfluer)
+-New feature: helper library to add contextual help. (markusfluer)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Chinese (Simplified) by yooyooh, jun9, yanglaw, johnxan
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Czech by jelen1
+#Updated translation: Danish by bjorn82dk
+#Updated translation: Danish by pedesjensen
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by DenisChenu
+#Updated translation: French (France) by DenisChenu, LouisGac
+#Updated translation: French (France) by arnaud21
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by holch
+#Updated translation: German by c_schmitz
+#Updated translation: German by holch, c_schmitz
+#Updated translation: Hebrew by vis_kerem
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Macedonian by cdorin
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Portugal) by educaticteced
+#Updated translation: Romanian by cdorin
+#Updated translation: Tajik by Iskandar_r
+#Updated translation: Thai by tomzt
+#Updated translation: Turkish by kayazeren
+
+
+
 Changes from 3.15.4 (build 181109) to 3.15.5 (build 181115)   November 15, 2018
 -Fixed issue #14129: wrong translation table in German version (Dominik Vitt)
 -Fixed issue #14159: Cannot delete response urlParam to get (Denis Chenu)

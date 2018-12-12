@@ -11,8 +11,8 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-// The current version of this branch, LS4
-$config['versionnumber'] = '4.0.0dev';
+
+$config['versionnumber'] = '4.0.0-alpha';
 $config['dbversionnumber'] = 404;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
