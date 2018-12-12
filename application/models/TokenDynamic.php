@@ -814,7 +814,7 @@ class TokenDynamic extends LSActiveRecord
             'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         /* previewsurvey button */
-        $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create') && $this->survey->active == "Y");
+        $baseView = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create'));
         $gridButtons['previewsurvey'] = array(
             'label'=>'<span class="sr-only">'.gT("Launch the survey with this token").'</span><span class="fa fa-cog" aria-hidden="true"></span>',
             'imageUrl'=>false,
