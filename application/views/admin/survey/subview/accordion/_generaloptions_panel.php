@@ -145,11 +145,12 @@
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
                 <?php $admin = $oSurvey->admin; ?>
-                <label class=" control-label"  for='admin' title="<?php echo ($bShowInherited)?eT("Set this field to 'inherit' if you want to use inherited value"):'' ?>"><?php  eT("Administrator:"); ?></label>
+                <label class=" control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" />
                     <?php if ($bShowInherited){ ?>
-                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->admin . ']'; ?></span>
+                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->admin . ']'; ?></span></br>
+                        <span class='annotation'> <?php echo eT("Set this field to 'inherit' to apply inherited value."); ?></span>
                     <?php } ?>
                 </div>
             </div>
@@ -158,11 +159,12 @@
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
                 <?php $admin_email = $oSurvey->adminemail; ?>
-                <label class=" control-label"  for='adminemail' title="<?php echo ($bShowInherited)?eT("Set this field to 'inherit' if you want to use inherited value"):''; ?>"><?php  eT("Admin email:"); ?></label>
+                <label class=" control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
                 <div class="">
                     <input class="form-control" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($admin_email); ?>" />
                     <?php if ($bShowInherited){ ?>
-                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->adminemail . ']'; ?></span>
+                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->adminemail . ']'; ?></span></br>
+                        <span class='annotation'> <?php echo eT("Set this field to 'inherit' to apply inherited value."); ?></span>
                     <?php } ?>
                 </div>
             </div>
@@ -171,11 +173,12 @@
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
                 <?php $bounce_email = $oSurvey->bounce_email; ?>
-                <label class=" control-label"  for='bounce_email' title="<?php echo ($bShowInherited)?eT("Set this field to 'inherit' if you want to use inherited value"):''; ?>"><?php  eT("Bounce email:"); ?></label>
+                <label class=" control-label"  for='bounce_email'><?php  eT("Bounce email:"); ?></label>
                 <div class="">
                     <input class="form-control" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" />
                     <?php if ($bShowInherited){ ?>
-                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->bounce_email . ']'; ?></span>
+                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->bounce_email . ']'; ?></span></br>
+                        <span class='annotation'> <?php echo eT("Set this field to 'inherit' to apply inherited value."); ?></span>
                     <?php } ?>
                 </div>
             </div>

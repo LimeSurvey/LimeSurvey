@@ -706,6 +706,7 @@ function getSurveyInfo($surveyid, $languagecode = '')
     $languagecode = sanitize_languagecode($languagecode);
     $thissurvey = false;
     $oSurvey = Survey::model()->findByPk($surveyid);
+    $aSurveyOptions = $oSurvey->aOptions;
     // Do job only if this survey exist
     if (!$oSurvey) {
         return false;
@@ -726,7 +727,8 @@ function getSurveyInfo($surveyid, $languagecode = '')
             $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
         }
         if ($result) {
-            $thissurvey = array_merge($result->survey->attributes, $result->attributes);
+            $aSurveyAtrributes = array_replace($result->survey->attributes, $aSurveyOptions);
+            $thissurvey = array_merge($aSurveyAtrributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
             $thissurvey['description'] = $thissurvey['surveyls_description'];
             $thissurvey['welcome'] = $thissurvey['surveyls_welcometext'];
@@ -753,10 +755,12 @@ function getSurveyInfo($surveyid, $languagecode = '')
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail'] = Yii::app()->getConfig('siteadminname'); }
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '') {$thissurvey['urldescrip'] = $thissurvey['surveyls_url']; }
 
-            if ($result->survey->owner_id == -1){
+            if ($result->survey->owner_id == -1 && !empty($oSurvey->oOptions->ownerUserId)){
                 $thissurvey['owner_username'] = User::model()->find("uid=:uid", array(':uid'=>$oSurvey->oOptions->ownerUserId))['users_name'];
-            } else {
+            } elseif (!empty($result->survey->owner->users_name)){
                 $thissurvey['owner_username'] = $result->survey->owner->users_name;
+            } else {
+                $thissurvey['owner_username'] = '';
             }
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;

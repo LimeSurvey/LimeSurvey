@@ -14,7 +14,7 @@ $templates = Template::getTemplateListWithPreviews();
 //print_r($templates);
 $count = 0;
 $surveyid = $oSurvey->sid;
-
+$templateModel = Template::model()->findByPk($oSurvey->oOptions->template);
      $surveylocale = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read');
      // EDIT SURVEY SETTINGS BUTTON
      $surveysettings = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read');

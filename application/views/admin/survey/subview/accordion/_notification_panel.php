@@ -179,7 +179,7 @@ $googleAnalyticsStyleOptions = array(
             </div>
             <!-- email basic to -->
             <div class="form-group">
-                <label class=" control-label" for='emailnotificationto' title="<?php echo ($bShowInherited)?eT("Set this field to 'inherit' if you want to use inherited value"):''; ?>"><?php  eT("Send basic admin notification email to:"); ?></label>
+                <label class=" control-label" for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
                 <div class="">
                     <?php echo CHtml::textField('emailnotificationto',$oSurvey->emailnotificationto,array('size'=>70, 'class'=>"form-control")); ?>
                     <?php if ($bShowInherited){ ?>
@@ -190,7 +190,7 @@ $googleAnalyticsStyleOptions = array(
 
             <!-- email detail to  -->
             <div class="form-group">
-                <label class=" control-label" for='emailresponseto' title="<?php echo ($bShowInherited)?eT("Set this field to 'inherit' if you want to use inherited value"):''; ?>"><?php  eT("Send detailed admin notification email to:"); ?></label>
+                <label class=" control-label" for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
                 <div class="">
                     <?php echo CHtml::textField('emailresponseto',$oSurvey->emailresponseto,array('size'=>70, 'class'=>"form-control")) ?>
                     <?php if ($bShowInherited){ ?>

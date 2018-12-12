@@ -50,6 +50,7 @@ class SurveysGroupsController extends Survey_Common_Action
 
 
             if ($model->save()) {
+                // save new SurveysGroupsettings record
                 $modelSettings = new SurveysGroupsettings;
                 $modelSettings->gsid = $model->gsid;
 

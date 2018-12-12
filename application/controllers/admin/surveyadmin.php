@@ -151,6 +151,8 @@ class SurveyAdmin extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
         $survey = new Survey();
+        // set 'inherit' values to survey attributes 
+        $survey->setToInherit();
 
         $this->_registerScriptFiles();
         Yii::app()->loadHelper('surveytranslator');
@@ -161,11 +163,11 @@ class SurveyAdmin extends Survey_Common_Action
         $aData                = $this->_generalTabNewSurvey();
         $aData                = array_merge($aData, $this->_getGeneralTemplateData(0));
         $aData['esrow']       = $esrow;
-        $survey->setToInherit();
+        
         $aData['oSurvey'] = $survey;
         $aData['bShowAllOptions'] = true;
         $aData['bShowInherited'] = true;
-        $aData['oSurveyOptions'] = $survey->oOptions;
+        $aData['oSurveyOptions'] = $survey->oOptionLabels;
 
         $aData['optionsOnOff'] = array(
             'Y' => gT('On','unescaped'),
@@ -173,7 +175,6 @@ class SurveyAdmin extends Survey_Common_Action
         );
 
         //Prepare the edition panes
-
         $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
         $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey($survey));
         $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
@@ -983,6 +984,8 @@ class SurveyAdmin extends Survey_Common_Action
         $menuaction = (string) $subaction;
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
+        // set values from database to survey attributes 
+        $survey->setOptionsFromDatabase();
 
         //Get all languages
         $grplangs = $survey->additionalLanguages;
@@ -1434,9 +1437,10 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         // Get users, but we only need id and name (NOT password etc)
+        $owner_id = !empty($survey->oOptions->owner_id) ? $survey->oOptions->owner_id : $survey->owner_id;
         $users = getUserList();
         $aData['users'] = array();
-        $aData['users']['-1'] = gT('Inherit').' ['. $survey->oOptions->owner_id . ']';
+        $aData['users']['-1'] = gT('Inherit').' ['. $owner_id . ']';
         foreach ($users as $user) {
             $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
         }

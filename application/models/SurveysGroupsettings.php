@@ -54,30 +54,26 @@
  */
 class SurveysGroupsettings extends LSActiveRecord
 {
-
+    // survey options
     public $oOptions;
     public $oOptionLabels;
+    // used for twig files, same content as $oOptions, but in array format
     public $aOptions = array();
 
+    // attribute names from surveys_groupsettings table definition
     protected $optionAttributes = array();
 
+    // attributes separated by column datatype, used by setToInherit method
     protected $optionAttributesInteger  = array('owner_id', 'tokenlength', 'questionindex', 'navigationdelay');
     protected $optionAttributesChar     = array('anonymized', 'savetimings', 'datestamp', 'usecookie', 'allowregister', 'allowsave', 'autoredirect', 'allowprev', 'printanswers',
                                                 'ipaddr', 'refurl', 'publicstatistics', 'publicgraphs', 'listpublic', 'htmlemail', 'sendconfirmation', 'tokenanswerspersistence', 
                                                 'assessments', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'nokeyboard', 
                                                 'alloweditaftercompletion');
-    protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');
-    
+    protected $optionAttributesText     = array('admin', 'adminemail', 'template', 'bounce_email', 'emailresponseto', 'emailnotificationto');    
 
     public $showInherited = 1;
 
-    public $full_name;
-    public $googleanalyticsapikeysetting;
-    public $ownerUserId;
 
-	public $oParentModel;
-
-    public $useCaptchaSurveyAccess;
     /**
 	 * @return string the associated database table name
 	 */
@@ -286,17 +282,32 @@ class SurveysGroupsettings extends LSActiveRecord
         }
     }
 
-    public static function getInstance($iSurveyGroupId = null, $oSurvey = null, $instance = null, $iStep = 1){
+    /**
+     * @return SurveysGroupsettings instance
+     */
+    public static function getInstance($iSurveyGroupId = null, $oSurvey = null, $instance = null, $iStep = 1, $bRealValues = false){
         if ($iSurveyGroupId != null){
-            $model = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);            
-
+            $model = SurveysGroupsettings::model()->with('SurveysGroups')->findByPk($iSurveyGroupId);
+            
+            // set initial values to instance on first run
             if ($instance === null){
                 $instance = $model;
                 $instance->optionAttributes = array_keys($model->attributes);
+                // unset gsid
+                unset($instance->optionAttributes[array_search('gsid', $instance->optionAttributes)]);
                 $instance->oOptions = new stdClass();
                 $instance->oOptionLabels = new stdClass();
+
+                // set survey values to instance options, to be used for frontend redering
+                if ($oSurvey !== null && $bRealValues){
+                    foreach($instance->optionAttributes as $key=>$attribute){
+                        $instance->oOptions->{$attribute} = $oSurvey->$attribute;
+                        $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $oSurvey->$attribute);   
+                    }
+                }
             }
 
+            // hide inherit option if parent instance
             if ($instance->SurveysGroups->parent_id === null && $oSurvey === null){
                 $instance->showInherited = 0;
             }
@@ -311,16 +322,20 @@ class SurveysGroupsettings extends LSActiveRecord
                 }
             }
 
+            // fetch parent instance only if parent_id exists
             if (!empty($model->SurveysGroups) && $model->SurveysGroups->parent_id !== null){
-                $instance->oParentModel = self::getInstance($model->SurveysGroups->parent_id, null, $instance, $iStep + 1);
+                self::getInstance($model->SurveysGroups->parent_id, null, $instance, $iStep + 1);
             }
 
             return $instance;
         }
     }
 
+    /**
+     * @return string
+     */
     protected static function translateOptionLabels($instance, $attribute, $value){
-        // translate option labels
+        // replace option labels on forms
         if ($attribute == 'usecaptcha'){
             $usecap = $value;
             if ($usecap === 'A' || $usecap === 'B' || $usecap === 'C' || $usecap === 'X' || $usecap === 'F' || $usecap === 'H' || $usecap === 'K' || $usecap === '0'){
@@ -343,24 +358,28 @@ class SurveysGroupsettings extends LSActiveRecord
             foreach ($users as $user) {
                 $oUsers[$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
             }
-            $instance->oOptions->ownerUserId = $value;
-            $instance->oOptions->{$attribute} = str_replace($value, $oUsers[$value], $value);
+
+            if (!empty($users)){
+                $instance->oOptions->ownerUserId = $value;
+                $instance->oOptions->{$attribute} = str_replace($value, $oUsers[$value], $value);
+            }
         } elseif ($attribute == 'format' && $value != -1){
-            return str_replace(array('S', 'G', 'A'), array(gT("Question by question"), gT("Group by group"), gT("All in one")),$value);
+            return str_replace(array('S', 'G', 'A'), array(gT("Question by question"), gT("Group by group"), gT("All in one")), $value);
         } elseif ($attribute == 'questionindex' && $value != -1){
-            return str_replace(array('0', '1', '2'), array(gT("Disabled"), gT("Incremental"), gT("Full")),$value);
+            return str_replace(array('0', '1', '2'), array(gT("Disabled"), gT("Incremental"), gT("Full")), $value);
         } elseif ($attribute == 'showgroupinfo'){
-            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group name only"), gT("Show group description only"), gT("Hide both")),$value);
+            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group name only"), gT("Show group description only"), gT("Hide both")), $value);
         } elseif ($attribute == 'showqnumcode'){
-            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show question number only"), gT("Show question code only"), gT("Hide both")),$value);
+            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show question number only"), gT("Show question code only"), gT("Hide both")), $value);
         } else {
-            return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")),$value);
+            return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")), $value);
         }
     }
 
     public function setOptions()
     {
         $instance = SurveysGroupsettings::getInstance($this->gsid);
+        // set SurveysGroupsettings properties from $instance
         $this->oOptions = $instance->oOptions;
         $this->oOptionLabels = $instance->oOptionLabels;
         $this->aOptions = (array) $instance->oOptions;
@@ -369,6 +388,7 @@ class SurveysGroupsettings extends LSActiveRecord
 
     public function setToInherit()
     {
+        // set attribute values to inherit, used only when creating new Survey instance
         $this->owner_id = 1;
         $this->usecaptcha = 'E';
         $this->format = 'I';
@@ -385,22 +405,12 @@ class SurveysGroupsettings extends LSActiveRecord
 
     public function setToDefault()
     {
+        // set attribute values to default values, used only when creating new top level SurveysGroupsettings instance
         $this->owner_id = 1;
         $this->usecaptcha = 'N';
+        $this->format = 'G';
         $this->admin = App()->getConfig('siteadminname');
         $this->adminemail = App()->getConfig('siteadminemail');
-        $this->format = 'G';
         $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
     }
-
-    public function getOwnerUsername()
-    {
-        $this->owner_id = 1;
-        $this->usecaptcha = 'N';
-        $this->admin = App()->getConfig('siteadminname');
-        $this->adminemail = App()->getConfig('siteadminemail');
-        $this->format = 'G';
-        $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
-    }
-
 }

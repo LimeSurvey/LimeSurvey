@@ -232,8 +232,14 @@ class TemplateConfiguration extends TemplateConfig
     public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName = null, $abstractInstance = false)
     {
 
-        //if a template name is given also check against that
-        $sTemplateName = $sTemplateName != null ? $sTemplateName : Survey::model()->findByPk($iSurveyId)->template;
+        // set template name if it does not exists or if it is inherit
+        if ($sTemplateName === null || $sTemplateName == 'inherit'){
+            $oSurvey = Survey::model()->findByPk($iSurveyId);
+            // set real value from inheritance
+            if (!empty($oSurvey->oOptions->template)){
+                $sTemplateName = $oSurvey->oOptions->template;
+            }
+        }
 
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid=:sid');
@@ -1201,7 +1207,9 @@ class TemplateConfiguration extends TemplateConfig
             //check for surveygroup id if a survey is given
             if ($this->sid != null) {
                 $oSurvey = Survey::model()->findByPk($this->sid);
-                $oParentTemplate = Template::getTemplateConfiguration($this->template->name, null, $oSurvey->gsid);
+                // set template name from real inherited value
+                $sTemplateName = !empty($oSurvey->oOptions->template) ? $oSurvey->oOptions->template : $this->template->name;
+                $oParentTemplate = Template::getTemplateConfiguration($sTemplateName, null, $oSurvey->gsid);
                 if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                     $this->oParentTemplate = $oParentTemplate;
                     $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;

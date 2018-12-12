@@ -159,8 +159,10 @@ class Survey extends LSActiveRecord
     protected $findByPkCache = array();
 
 
+    // survey options
     public $oOptions;
     public $oOptionLabels;
+    // used for twig files, same content as $oOptions, but in array format
     public $aOptions = array();
     
     public $showInherited = 1;
@@ -168,6 +170,8 @@ class Survey extends LSActiveRecord
     public $searched_value;
 
     public $showsurveypolicynotice = 0;
+
+    public $bShowRealOptionValues = true;
 
 
     private $sSurveyUrl;
@@ -183,8 +187,6 @@ class Survey extends LSActiveRecord
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
-
-
 
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = App()->getConfig('googleanalyticsapikey');
@@ -212,6 +214,9 @@ class Survey extends LSActiveRecord
                 }
             }
         }
+
+        // set inherited values for new survey
+        $this->setOptions($this->gsid);
         
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
@@ -527,6 +532,7 @@ class Survey extends LSActiveRecord
             }
         }
 
+        // set inherited values for existing survey
         $this->setOptions($this->gsid);
         
         if ($this->template != 'inherit'){
@@ -2035,11 +2041,12 @@ return $s->hasTokensTable; });
 
     public function setOptions($gsid)
     {
+        // set gsid to 1 if empty
         if (empty($gsid)){
             $gsid = 1;
         }
 
-        $instance = SurveysGroupsettings::getInstance($gsid, $this);
+        $instance = SurveysGroupsettings::getInstance($gsid, $this, null, 1, $this->bShowRealOptionValues);
         if ($instance){
             $this->oOptions = $instance->oOptions;
             $this->oOptionLabels = $instance->oOptionLabels;
@@ -2049,12 +2056,18 @@ return $s->hasTokensTable; });
 
     }
 
+    public function setOptionsFromDatabase()
+    {
+        // set real survey options with inheritance
+        $this->bShowRealOptionValues = false;
+        $this->setOptions($this->gsid);
+    }
+
     public function setToInherit()
     {
         $settings = new SurveysGroupsettings();
-
-        $settings->setToInherit();
-        
+        $settings->setToInherit();        
+        // set Survey attributes to 'inherit' values
         foreach ($settings as $key => $value){
             $this->$key = $value;
         }

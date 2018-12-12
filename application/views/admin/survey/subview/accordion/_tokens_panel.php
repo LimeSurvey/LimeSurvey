@@ -38,12 +38,12 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
         <div class="col-sm-12 col-md-6">
             <!--  Set token length to -->
             <div class="form-group">
-                <label class=" control-label" for='tokenlength' title="<?php echo ($bShowInherited)?eT("Set this field to -1 if you want to use inherited value"):''; ?>"><?php  eT("Set token length to:"); ?></label>
+                <label class=" control-label" for='tokenlength'><?php  eT("Set token length to:"); ?></label>
                 <div class="">
                     <input type='text' value="<?php echo $oSurvey->tokenlength ?>" name='tokenlength' id='tokenlength' size='4' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')"  class="form-control selector-numerical-input" />
                     <?php if ($bShowInherited){ ?>
-                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->tokenlength . ']'; ?></span>
-                        <span class='annotation'> <?php echo ' ['. eT("Set this field to -1 to apply inherited value."); ?></span>
+                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->tokenlength . ']'; ?></span></br>
+                        <span class='annotation'> <?php echo eT("Set this field to -1 to apply inherited value."); ?></span>
                     <?php } ?>
                 </div>
             </div>

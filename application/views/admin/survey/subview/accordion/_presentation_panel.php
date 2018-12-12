@@ -38,7 +38,7 @@ if ($bShowInherited){
     <div class="col-sm-12 col-md-6">
         <!-- Navigation delay -->
         <div class="form-group">
-            <label class=" control-label" for='navigationdelay' title="<?php echo ($bShowInherited)?eT("Set this field to -1 if you want to use inherited value"):''; ?>"><?php  eT("Navigation delay (seconds):"); ?></label>
+            <label class=" control-label" for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
             <div class="">
                 <input type='text' class="form-control selector-numerical-input" value="<?php echo $oSurvey->navigationdelay; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')" />
                 <?php if ($bShowInherited){ ?>
