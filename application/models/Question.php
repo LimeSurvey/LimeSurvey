@@ -205,7 +205,7 @@ class Question extends LSActiveRecord
                     'SGQ',
                     'TOKEN',
                 ),
-                'message'=> sprintf(gT('Code : %s is a reserved word.'),$this->title),// Usage of {attribute} need attributeLabels, {value} never exist in message
+                'message'=> sprintf(gT("Code: '%s' is a reserved word."),$this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
             );
         } else {

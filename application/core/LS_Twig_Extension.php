@@ -274,13 +274,19 @@ class LS_Twig_Extension extends Twig_Extension
         $sUrlImgAsset = '';
 
         if ($oTemplate) {
-            $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
+            $sFullPath = $oTemplate->path.$sImagePath;
+        } else {
+            $sFullPath = Yii::app()->getConfig('rootdir').'/'.$sImagePath;
         }
 
-        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
-            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
+        // check if this is a true image
+        $checkImage = LSYii_ImageValidator::validateImage($sFullPath  );
+
+        if (!$checkImage['check']) {
+            return false;
         }
 
+        $sUrlImgAsset = self::assetPublish($sFullPath);
 
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
     }
@@ -297,14 +303,21 @@ class LS_Twig_Extension extends Twig_Extension
         $oTemplate = self::getTemplateForRessource($sImagePath);
         $sUrlImgAsset =  $sImagePath;
 
-
         if ($oTemplate) {
-            $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
+            $sFullPath = $oTemplate->path.$sImagePath;
+        } else {
+            $sFullPath = Yii::app()->getConfig('rootdir').'/'.$sImagePath;
         }
 
-        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
-            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
+        // check if this is a true image
+        $checkImage = LSYii_ImageValidator::validateImage($sFullPath  );
+
+        if (!$checkImage['check']) {
+            return false;
         }
+
+        $sUrlImgAsset = self::assetPublish($sFullPath);
+
         $myTemplateAsset = $sUrlImgAsset;
         return $sUrlImgAsset;
     }

@@ -21,12 +21,12 @@
 
 <!-- answer_row -->
 <div class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
-    <div id='javatbd{{ myfname }}' class="bootstrap-item btn btn-primary checkbox-item {{ button_size_class }} {% if checkedState!='' %} active {% endif %} col-xs-12 col-sm-12">
+    <div id='javatbd{{ myfname }}' class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %} col-xs-12 col-sm-12">
         <input
             type="checkbox"
             name="{{ myfname }}"
             data-name="{{myfname}}"
-            class="bootstrap-checkbox"
+            class="bootstrap-checkbox sr-only"
             id="answer{{ myfname }}"
             {{ checkedState }}
             value="Y"
