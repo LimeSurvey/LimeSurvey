@@ -7,6 +7,10 @@
 */
 
 $templateData['oSurvey'] = $oSurvey;
+$templateData['oSurveyOptions'] = $oSurvey->oOptionLabels;
+$templateData['bShowInherited'] = $oSurvey->showInherited;
+$templateData['bShowAllOptions'] = true;
+$templateData['optionsOnOff'] = $optionsOnOff;
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyGeneralSettings');

@@ -18,6 +18,17 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
     var sURLParameters = '';
     var sAddParam = '';
 ", LSYii_ClientScript::POS_BEGIN);
+
+$googleAnalyticsOptions = array(
+    "N"=>gT("None",'unescaped'),
+    "Y"=>gT("Use settings below",'unescaped'),
+    "G"=>gT("Use global settings",'unescaped')
+);
+$googleAnalyticsStyleOptions = array(
+    "0"=>gT("Off",'unescaped'),
+    "1"=>gT("Default",'unescaped'),
+    "2"=>gT("Survey-SID/Group",'unescaped')
+);
 ?>
 <!-- Notification panel -->
 <div id='notification-panel'  class="container-fluid">
@@ -37,24 +48,23 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                         <?php echo CHtml::hiddenField('datestamp',$oSurvey->datestamp); // Maybe use a readonly dropdown? ?>
                         <?php }
                         else {
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'datestamp',
-                            'value'=> $oSurvey->isDateStamp,
-                            'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off'),
-                            'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                            'value'=> $oSurvey->datestamp,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                            /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 if ($('#anonymized').is(':checked') == true) {
                                 $('#datestampModal_1').modal();
                                 }
-                            }")
+                            }")*/
                             ));
-                            $this->widget('bootstrap.widgets.TbModal', array(
+                            /*$this->widget('bootstrap.widgets.TbModal', array(
                                 'id' => 'datestampModal_1',
                                 'htmlOptions' => ['class' => 'selector_dateStampModal_notification'],
                                 'header' => gt('Warning','unescaped'),
                                 'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
                                 'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
-                            ));
+                            ));*/
                             }
                         ?>
                 </div>
@@ -72,23 +82,22 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                         <?php echo CHtml::hiddenField('ipaddr',$oSurvey->ipaddr);
                     } else {
-                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'ipaddr',
-                            'value'=> $oSurvey->isIpAddr,
-                            'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off'),
-                            'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                            'value'=> $oSurvey->ipaddr,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                            /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 if ($('#anonymized').is(':checked') == true) {
                                 $('#datestampModal_2').modal();
                                 }
-                            }")
+                            }")*/
                         ));
-                        $this->widget('bootstrap.widgets.TbModal', array(
+                        /*$this->widget('bootstrap.widgets.TbModal', array(
                             'id' => 'datestampModal_2',
                             'header' => gt('Warning','unescaped'),
                             'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants. If you are running a closed survey you will NOT be able to link responses to participants if the survey is set to be anonymous.").'</p>',
                             'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
-                        ));
+                        ));*/
                         }
                     ?>
                 </div>
@@ -107,11 +116,10 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                         <?php echo CHtml::hiddenField('refurl',$oSurvey->refurl);?>
                         <?php } else {
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'refurl',
-                            'value'=> $oSurvey->isRefUrl,
-                            'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off')
+                            'value'=> $oSurvey->refurl,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
                             ));
                     } ?>
                 </div>
@@ -131,11 +139,10 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                         <?php endif; ?>
                     <?php else: ?>
                         <?php
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                 'name' => 'savetimings',
-                                'value'=> $oSurvey->isSaveTimings,
-                                'onLabel'=>gT('On'),
-                                'offLabel'=>gT('Off')
+                                'value'=> $oSurvey->savetimings,
+                                'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
                             ));
                         ?>
                     <?php endif;?>
@@ -149,11 +156,10 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
             <div class="form-group">
                 <label class=" control-label" for='assessments'><?php  eT("Enable assessment mode:"); ?></label>
                 <div class=""><?php
-                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'assessments',
-                        'value'=> $oSurvey->isAssessments,
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
+                        'value'=> $oSurvey->assessments,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
                     ));
                 ?></div>
             </div>
@@ -163,31 +169,36 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                 <label class=" control-label" for='allowsave'><?php  eT("Participant may save and resume later:"); ?></label>
                 <div class="">
                 <?php
-                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'allowsave',
-                        'value'=> $oSurvey->isAllowSave,
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
+                        'value'=> $oSurvey->allowsave,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
                     ));
                 ?>
                 </div>
             </div>
             <!-- email basic to -->
             <div class="form-group">
-                <label class=" control-label" for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
+                <label class=" control-label" for='emailnotificationto' title="<?php echo ($bShowInherited)?eT("Set this field to 'inherit' if you want to use inherited value"):''; ?>"><?php  eT("Send basic admin notification email to:"); ?></label>
                 <div class="">
                     <?php echo CHtml::textField('emailnotificationto',$oSurvey->emailnotificationto,array('size'=>70, 'class'=>"form-control")); ?>
+                    <?php if ($bShowInherited){ ?>
+                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->emailnotificationto . ']'; ?></span>
+                    <?php } ?>
                 </div>
             </div>
 
             <!-- email detail to  -->
             <div class="form-group">
-                <label class=" control-label" for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
+                <label class=" control-label" for='emailresponseto' title="<?php echo ($bShowInherited)?eT("Set this field to 'inherit' if you want to use inherited value"):''; ?>"><?php  eT("Send detailed admin notification email to:"); ?></label>
                 <div class="">
                     <?php echo CHtml::textField('emailresponseto',$oSurvey->emailresponseto,array('size'=>70, 'class'=>"form-control")) ?>
+                    <?php if ($bShowInherited){ ?>
+                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->emailresponseto . ']'; ?></span>
+                    <?php } ?>
                 </div>
             </div>
-
+            <?php if ($bShowAllOptions === true){ ?>
             <!-- GoogleAnalytics settings to be used -->
             <div class="form-group">
                 <label class=" control-label" for="googleanalyticsapikeysetting">
@@ -197,11 +208,7 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'googleanalyticsapikeysetting',
                         'value'=>  $oSurvey->googleanalyticsapikeysetting,
-                        'selectOptions'=>array(
-                            "N"=>gT("None",'unescaped'),
-                            "Y"=>gT("Use settings below",'unescaped'),
-                            "G"=>gT("Use global settings",'unescaped')
-                        )
+                        'selectOptions'=>$googleAnalyticsOptions,
                     ));?>
                 </div>
             </div>
@@ -219,13 +226,11 @@ App()->getClientScript()->registerScript("notification-panel-variables", "
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'googleanalyticsstyle',
                         'value'=> $oSurvey->googleanalyticsstyle ,
-                        'selectOptions'=>array(
-                        "0"=>gT("Off",'unescaped'),
-                        "1"=>gT("Default",'unescaped'),
-                        "2"=>gT("Survey-SID/Group",'unescaped'))
+                        'selectOptions'=>$googleAnalyticsStyleOptions,
                         ));?>
                 </div>
             </div>
+            <?php } ?>
         </div>
     </div>
 </div>

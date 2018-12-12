@@ -50,7 +50,18 @@ class SurveysGroupsController extends Survey_Common_Action
 
 
             if ($model->save()) {
-                            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                $modelSettings = new SurveysGroupsettings;
+                $modelSettings->gsid = $model->gsid;
+
+                if (empty($model->parent_id)){
+                    $modelSettings->setToDefault();
+                } else {
+                    $modelSettings->setToInherit();
+                }
+
+                if ($modelSettings->save()) {
+                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                }
             }
         }
 
@@ -71,6 +82,7 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function update($id)
     {
+        $bRedirect = 0;
         $model = $this->loadModel($id);
 
         if (isset($_POST['SurveysGroups'])) {
@@ -90,7 +102,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 }
 
             if ($model->save()) {
-                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                $bRedirect = 1;
             }
         }
 
@@ -103,6 +115,10 @@ class SurveysGroupsController extends Survey_Common_Action
         $oTemplateOptions->scenario = 'surveygroup';
         $aData['templateOptionsModel'] = $oTemplateOptions;
 
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+        }
+
         // Page size
         if (Yii::app()->request->getParam('pageSize')) {
             Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
@@ -110,6 +126,60 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
 
         $this->_renderWrappedTemplate('surveysgroups', 'update', $aData);
+    }
+
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function surveySettings($id)
+    {
+        $bRedirect = 0;
+        $model = $this->loadModel($id);
+
+        $aData['model'] = $model;
+
+        $oSurvey = SurveysGroupsettings::model()->findByPk($model->gsid);
+        $oSurvey->setOptions();
+        $oSurvey->owner_id = $model->owner_uid;
+
+        if (isset($_POST)) {
+            $oSurvey->attributes = $_POST;
+            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
+
+            if ($oSurvey->save()) {
+                $bRedirect = 1;
+            }
+        }
+
+        $users = getUserList();
+        $aData['users'] = array();
+        $aData['users']['-1'] = gT('Inherit').' ['. $oSurvey['owner_id'] . ']';
+        foreach ($users as $user) {
+            $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
+        }
+        // Sort users by name
+        asort($aData['users']);
+
+        $aData['oSurvey'] = $oSurvey;
+
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+        }
+
+        // Page size
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
+        }
+        $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
+
+        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+
+        $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+
+
+        $this->_renderWrappedTemplate('surveysgroups', 'surveySettings', $aData);
     }
 
     /**

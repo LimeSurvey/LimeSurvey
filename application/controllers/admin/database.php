@@ -955,18 +955,18 @@ class database extends Survey_Common_Action
             $oSurvey->autoredirect = $this->_filterEmptyFields($oSurvey, 'autoredirect');
 
             // save into the database only if global settings are off
-            if (getGlobalSetting('showxquestions') === 'choose'){
+            //if (getGlobalSetting('showxquestions') === 'choose'){
                 $oSurvey->showxquestions = $this->_filterEmptyFields($oSurvey, 'showxquestions');
-            }
-            if (getGlobalSetting('showgroupinfo') === 'choose'){
+            //}
+            //if (getGlobalSetting('showgroupinfo') === 'choose'){
                 $oSurvey->showgroupinfo = $this->_filterEmptyFields($oSurvey, 'showgroupinfo');
-            }
-            if (getGlobalSetting('showqnumcode') === 'choose'){
+            //}
+            //if (getGlobalSetting('showqnumcode') === 'choose'){
                 $oSurvey->showqnumcode = $this->_filterEmptyFields($oSurvey, 'showqnumcode');
-            }
-            if (getGlobalSetting('shownoanswer') == 2){  // Don't do exact comparison because the value could be from global settings table (string) or from config (integer)
+            //}
+            //if (getGlobalSetting('shownoanswer') == 2){  // Don't do exact comparison because the value could be from global settings table (string) or from config (integer)
                 $oSurvey->shownoanswer = $this->_filterEmptyFields($oSurvey, 'shownoanswer');
-            }
+            //}
             $oSurvey->showwelcome = $this->_filterEmptyFields($oSurvey, 'showwelcome');
             $oSurvey->showsurveypolicynotice = $this->_filterEmptyFields($oSurvey, 'showsurveypolicynotice');
             $oSurvey->allowprev = $this->_filterEmptyFields($oSurvey, 'allowprev');
@@ -1192,7 +1192,7 @@ class database extends Survey_Common_Action
 
         switch ($options['type']) {
             case 'yesno':
-            if ($newValue != 'Y' && $newValue != 'N') {
+            if ($newValue != 'Y' && $newValue != 'N' && $newValue != 'I') {
                 $newValue = (int) $newValue;
                 $newValue = ($newValue === 1) ? 'Y' : 'N';
             }

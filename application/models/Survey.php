@@ -159,6 +159,11 @@ class Survey extends LSActiveRecord
     protected $findByPkCache = array();
 
 
+    public $oOptions;
+    public $oOptionLabels;
+    public $aOptions = array();
+    
+    public $showInherited = 1;
 
     public $searched_value;
 
@@ -179,6 +184,8 @@ class Survey extends LSActiveRecord
         $this->htmlemail = 'Y';
         $this->format = 'G';
 
+
+
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = App()->getConfig('googleanalyticsapikey');
         if ($globalKey != "") {
@@ -186,7 +193,7 @@ class Survey extends LSActiveRecord
             $this->googleanalyticsapikeysetting = "G";
         }
         /* default template */
-        $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
+        $this->template = 'inherit';
         /* default language */
         $validator = new LSYii_Validators;
         $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
@@ -205,6 +212,7 @@ class Survey extends LSActiveRecord
                 }
             }
         }
+        
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
@@ -402,6 +410,7 @@ class Survey extends LSActiveRecord
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
+            'surveysettings' => array(self::BELONGS_TO, 'SurveysGroupSettings', array('gsid' => 'gsid')),
             'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template')),
             'templateConfiguration' => array(self::HAS_ONE, 'TemplateConfiguration', array('sid' => 'sid'))
         );
@@ -442,45 +451,45 @@ class Survey extends LSActiveRecord
             array('admin,faxto', 'LSYii_Validators'),
             array('adminemail', 'filter', 'filter'=>'trim'),
             array('bounce_email', 'filter', 'filter'=>'trim'),
-            array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
+            //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
             array('active', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('gsid', 'numerical', 'min'=>'0', 'allowEmpty'=>true),
-            array('anonymized', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('savetimings', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('datestamp', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('usecookie', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('allowregister', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('allowsave', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('autoredirect', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('allowprev', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('printanswers', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('ipaddr', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('refurl', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('publicstatistics', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('publicgraphs', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('listpublic', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('htmlemail', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('sendconfirmation', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('tokenanswerspersistence', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('assessments', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('anonymized', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('savetimings', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('datestamp', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('usecookie', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('allowregister', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('allowsave', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('autoredirect', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('allowprev', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('printanswers', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('ipaddr', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('refurl', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('publicstatistics', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('publicgraphs', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('listpublic', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('htmlemail', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('sendconfirmation', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('tokenanswerspersistence', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('assessments', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
             array('usetokens', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('showxquestions', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('shownoanswer', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('showwelcome', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('showxquestions', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('shownoanswer', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('showwelcome', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
             array('showsurveypolicynotice', 'in', 'range'=>array('0', '1', '2'), 'allowEmpty'=>true),
-            array('showprogress', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('questionindex', 'numerical', 'min' => 0, 'max' => 2, 'allowEmpty'=>false),
-            array('nokeyboard', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('alloweditaftercompletion', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('showprogress', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('questionindex', 'numerical', 'min' => -1, 'max' => 2, 'allowEmpty'=>false),
+            array('nokeyboard', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('alloweditaftercompletion', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
             array('bounceprocessing', 'in', 'range'=>array('L', 'N', 'G'), 'allowEmpty'=>true),
-            array('usecaptcha', 'in', 'range'=>array('A', 'B', 'C', 'D', 'X', 'R', 'S', 'N'), 'allowEmpty'=>true),
-            array('showgroupinfo', 'in', 'range'=>array('B', 'N', 'D', 'X'), 'allowEmpty'=>true),
-            array('showqnumcode', 'in', 'range'=>array('B', 'N', 'C', 'X'), 'allowEmpty'=>true),
-            array('format', 'in', 'range'=>array('G', 'S', 'A'), 'allowEmpty'=>true),
-            array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
+            array('usecaptcha', 'in', 'range'=>array('A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U', '1', '2', '3', '4', '5', '6'), 'allowEmpty'=>true),
+            array('showgroupinfo', 'in', 'range'=>array('B', 'N', 'D', 'X', 'I'), 'allowEmpty'=>true),
+            array('showqnumcode', 'in', 'range'=>array('B', 'N', 'C', 'X', 'I'), 'allowEmpty'=>true),
+            array('format', 'in', 'range'=>array('G', 'S', 'A', 'I'), 'allowEmpty'=>true),
+            array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'3', 'allowEmpty'=>true),
             array('autonumber_start', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('tokenlength', 'default', 'value'=>15),
-            array('tokenlength', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false, 'min'=>'5', 'max'=>'36'),
+            array('tokenlength', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false, 'min'=>'-1', 'max'=>'36'),
             array('bouncetime', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('navigationdelay', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('template', 'filter', 'filter'=>array($this, 'filterTemplateSave')),
@@ -517,7 +526,12 @@ class Survey extends LSActiveRecord
                 $this->{$attribute} = $event->get($attribute);
             }
         }
-        $this->template = Template::templateNameFilter($this->template);
+
+        $this->setOptions($this->gsid);
+        
+        if ($this->template != 'inherit'){
+            $this->template = Template::templateNameFilter($this->template);
+        }
     }
 
 
@@ -537,10 +551,15 @@ class Survey extends LSActiveRecord
                     $sTemplateName = getGlobalSetting('defaulttheme');
                 }
             } else {
-                $sTemplateName = getGlobalSetting('defaulttheme');
+                $sTemplateName = 'inherit';
             }
         }
-        return Template::templateNameFilter($sTemplateName);
+        if ($sTemplateName == 'inherit'){
+            return $sTemplateName;
+        } else {
+            return Template::templateNameFilter($sTemplateName);
+        }
+        
     }
 
 
@@ -1640,48 +1659,6 @@ class Survey extends LSActiveRecord
 
     /**
      * Transcribe from 3 checkboxes to 1 char for captcha usages
-     * Uses variables from $_POST
-     *
-     * 'A' = All three captcha enabled
-     * 'B' = All but save and load
-     * 'C' = All but registration
-     * 'D' = All but survey access
-     * 'X' = Only survey access
-     * 'R' = Only registration
-     * 'S' = Only save and load
-     * 'N' = None
-     *
-     * @return string One character that corresponds to captcha usage
-     * @todo Should really be saved as three fields in the database!
-     */
-    public static function transcribeCaptchaOptions()
-    {
-        // TODO POST handling should be done in controller!
-        $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
-        $registration = App()->request->getPost('usecaptcha_registration');
-        $saveandload = App()->request->getPost('usecaptcha_saveandload');
-
-        if ($surveyaccess && $registration && $saveandload) {
-            return 'A';
-        } elseif ($surveyaccess && $registration) {
-            return 'B';
-        } elseif ($surveyaccess && $saveandload) {
-            return 'C';
-        } elseif ($registration && $saveandload) {
-            return 'D';
-        } elseif ($surveyaccess) {
-            return 'X';
-        } elseif ($registration) {
-            return 'R';
-        } elseif ($saveandload) {
-            return 'S';
-        }
-
-        return 'N';
-    }
-
-    /**
-     * Transcribe from 3 checkboxes to 1 char for captcha usages
      * Uses variables from $_POST and transferred Surveyobject
      *
      * 'A' = All three captcha enabled
@@ -1691,35 +1668,93 @@ class Survey extends LSActiveRecord
      * 'X' = Only survey access
      * 'R' = Only registration
      * 'S' = Only save and load
+     * 
+     * 'E' = All inherited
+     * 'F' = Inherited save and load + survey access + registration
+     * 'G' = Inherited survey access + registration + save and load
+     * 'H' = Inherited registration + save and load + survey access
+     * 'I' = Inherited save and load + inherited survey access + registration
+     * 'J' = Inherited survey access + inherited registration + save and load
+     * 'K' = Inherited registration + inherited save and load + survey access
+     * 
+     * 'L' = Inherited survey access + save and load
+     * 'M' = Inherited survey access + registration
+     * 'O' = Inherited registration + survey access
+     * '1' = Inherited survey access + inherited registration
+     * '2' = Inherited survey access + inherited save and load
+     * '3' = Inherited registration + inherited save and load
+     * '4' = Inherited survey access
+     * '5' = Inherited save and load
+     * '6' = Inherited registration
+     * 
      * 'N' = None
      *
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey)
+    public static function saveTranscribeCaptchaOptions(Survey $oSurvey = null)
     {
-        // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
         $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
 
         if ($surveyaccess === null && $registration === null && $saveandload === null) {
-            return $oSurvey->usecaptcha;
+            if ($oSurvey !== null){
+                return $oSurvey->usecaptcha;
+            }
         }
 
-        if ($surveyaccess && $registration && $saveandload) {
+        if ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'I') {
+            return 'E';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'I') {
+            return 'F';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'Y') {
+            return 'G';
+        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'Y') {
+            return 'H';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'I') {
+            return 'I';
+        } elseif ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'Y') {
+            return 'J';
+        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'I') {
+            return 'K';
+        } elseif ($surveyaccess == 'I' && $saveandload == 'Y') {
+            return 'L';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y') {
+            return 'M';
+        } elseif ($registration == 'I' && $surveyaccess == 'Y') {
+            return 'O';
+        } elseif ($registration == 'I' && $saveandload == 'Y') {
+            return 'P';
+        } elseif ($saveandload == 'I' && $surveyaccess == 'Y') {
+            return 'T';
+        } elseif ($saveandload == 'I' && $registration == 'Y') {
+            return 'U';
+        } elseif ($surveyaccess == 'I' && $registration == 'I') {
+            return '1';
+        } elseif ($surveyaccess == 'I' && $saveandload == 'I') {
+            return '2';
+        } elseif ($registration == 'I' && $saveandload == 'I') {
+            return '3';
+        } elseif ($surveyaccess == 'I') {
+            return '4';
+        } elseif ($saveandload == 'I') {
+            return '5';
+        } elseif ($registration == 'I') {
+            return '6';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'Y') {
             return 'A';
-        } elseif ($surveyaccess && $registration) {
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y') {
             return 'B';
-        } elseif ($surveyaccess && $saveandload) {
+        } elseif ($surveyaccess == 'Y' && $saveandload == 'Y') {
             return 'C';
-        } elseif ($registration && $saveandload) {
+        } elseif ($registration == 'Y' && $saveandload == 'Y') {
             return 'D';
-        } elseif ($surveyaccess) {
+        } elseif ($surveyaccess == 'Y') {
             return 'X';
-        } elseif ($registration) {
+        } elseif ($registration == 'Y') {
             return 'R';
-        } elseif ($saveandload) {
+        } elseif ($saveandload == 'Y') {
             return 'S';
         }
 
@@ -1996,5 +2031,33 @@ return $s->hasTokensTable; });
         }
         $criteria->addColumnCondition(['type'=>$type]);
         return Question::model()->find($criteria);
-    }    
+    }
+
+    public function setOptions($gsid)
+    {
+        if (empty($gsid)){
+            $gsid = 1;
+        }
+
+        $instance = SurveysGroupsettings::getInstance($gsid, $this);
+        if ($instance){
+            $this->oOptions = $instance->oOptions;
+            $this->oOptionLabels = $instance->oOptionLabels;
+            $this->aOptions = (array) $instance->oOptions;
+            $this->showInherited = $instance->showInherited;
+        }
+
+    }
+
+    public function setToInherit()
+    {
+        $settings = new SurveysGroupsettings();
+
+        $settings->setToInherit();
+        
+        foreach ($settings as $key => $value){
+            $this->$key = $value;
+        }
+    }
+
 }

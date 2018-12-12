@@ -753,7 +753,11 @@ function getSurveyInfo($surveyid, $languagecode = '')
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail'] = Yii::app()->getConfig('siteadminname'); }
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '') {$thissurvey['urldescrip'] = $thissurvey['surveyls_url']; }
 
-            $thissurvey['owner_username'] = $result->survey->owner->users_name;
+            if ($result->survey->owner_id == -1){
+                $thissurvey['owner_username'] = User::model()->find("uid=:uid", array(':uid'=>$oSurvey->oOptions->ownerUserId))['users_name'];
+            } else {
+                $thissurvey['owner_username'] = $result->survey->owner->users_name;
+            }
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }

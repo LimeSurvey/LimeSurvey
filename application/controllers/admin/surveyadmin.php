@@ -161,7 +161,16 @@ class SurveyAdmin extends Survey_Common_Action
         $aData                = $this->_generalTabNewSurvey();
         $aData                = array_merge($aData, $this->_getGeneralTemplateData(0));
         $aData['esrow']       = $esrow;
+        $survey->setToInherit();
         $aData['oSurvey'] = $survey;
+        $aData['bShowAllOptions'] = true;
+        $aData['bShowInherited'] = true;
+        $aData['oSurveyOptions'] = $survey->oOptions;
+
+        $aData['optionsOnOff'] = array(
+            'Y' => gT('On','unescaped'),
+            'N' => gT('Off','unescaped'),
+        );
 
         //Prepare the edition panes
 
@@ -467,7 +476,8 @@ class SurveyAdmin extends Survey_Common_Action
         }
         $aData['templateapiversion'] = Template::model()->getTemplateConfiguration(null, $iSurveyID)->getApiVersion();
 
-
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+        $aData['owner'] = $user->attributes;
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }
 
@@ -1020,6 +1030,11 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['surveybar']['closebutton']['url'] = $this->getController()->createUrl("'admin/survey/sa/view/", ['surveyid' => $iSurveyID]); // Close button
 
+        $aData['optionsOnOff'] = array(
+            'Y' => gT('On','unescaped'),
+            'N' => gT('Off','unescaped'),
+        );
+
         $aViewUrls[] = $menuEntry->template;
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
@@ -1377,24 +1392,13 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _generalTabNewSurvey()
     {
-        //Use the current user details for the default administrator name and email for this survey
+        // use survey option inheritance
         $user = User::model()->findByPk(Yii::app()->session['loginID']);
         $owner = $user->attributes;
+        $owner['full_name'] = 'inherit';
+        $owner['email'] = 'inherit';
+        $owner['bounce_email'] = 'inherit';
 
-        //Degrade gracefully to $siteadmin details if anything is missing.
-        if (empty($owner['full_name'])) {
-            $owner['full_name'] = getGlobalSetting('siteadminname');
-        }
-        if (empty($owner['email'])) {
-            $owner['email'] = getGlobalSetting('siteadminemail');
-        }
-
-        //Bounce setting by default to global if it set globally
-        if (getGlobalSetting('bounceaccounttype') != 'off') {
-            $owner['bounce_email'] = getGlobalSetting('siteadminbounce');
-        } else {
-            $owner['bounce_email'] = $owner['email'];
-        }
         $aData = [];
         $aData['action'] = "newsurvey";
         $aData['owner'] = $owner;
@@ -1423,10 +1427,16 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $aData = [];
         $aData['surveyid'] = $iSurveyID;
+        if ($iSurveyID > 0){
+            $survey = Survey::model()->findByPk($iSurveyID);
+        } else {
+            $survey = new Survey;
+        }
 
         // Get users, but we only need id and name (NOT password etc)
         $users = getUserList();
         $aData['users'] = array();
+        $aData['users']['-1'] = gT('Inherit').' ['. $survey->oOptions->owner_id . ']';
         foreach ($users as $user) {
             $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
         }
@@ -1582,10 +1592,6 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData = [];
         $aData['esrow'] = $esrow;
-        $aData['shownoanswer'] = $shownoanswer;
-        $aData['showxquestions'] = $showxquestions;
-        $aData['showgroupinfo'] = $showgroupinfo;
-        $aData['showqnumcode'] = $showqnumcode;
         return $aData;
     }
 
@@ -1832,77 +1838,67 @@ class SurveyAdmin extends Survey_Common_Action
 
             $iTokenLength = (int) Yii::app()->request->getPost('tokenlength');
             //token length has to be at least 5, otherwise set it to default (15)
-            if ($iTokenLength < 5) {
-                $iTokenLength = 15;
+            if ($iTokenLength !== -1){
+                if ($iTokenLength < 5) {
+                    $iTokenLength = 15;
+                }
+                if ($iTokenLength > 36) {
+                    $iTokenLength = 36;
+                }
             }
-            if ($iTokenLength > 36) {
-                $iTokenLength = 36;
-            }
-
-            // Insert base settings into surveys table
+            
             $aInsertData = array(
                 'expires' => $sExpiryDate,
                 'startdate' => $sStartDate,
                 'template' => App()->request->getPost('template'),
-                'owner_id' => Yii::app()->session['loginID'],
+                'owner_id' => App()->request->getPost('owner_id'),
                 'admin' => App()->request->getPost('admin'),
                 'active' => 'N',
-                'anonymized' => App()->request->getPost('anonymized') == '1' ? 'Y' : 'N',
+                'anonymized' => App()->request->getPost('anonymized'),
                 'faxto' => App()->request->getPost('faxto'),
                 'format' => App()->request->getPost('format'),
-                'savetimings' => App()->request->getPost('savetimings') == '1' ? 'Y' : 'N',
+                'savetimings' => App()->request->getPost('savetimings'),
                 'language' => App()->request->getPost('language', Yii::app()->session['adminlang']),
-                'datestamp' => App()->request->getPost('datestamp') == '1' ? 'Y' : 'N',
-                'ipaddr' => App()->request->getPost('ipaddr') == '1' ? 'Y' : 'N',
-                'refurl' => App()->request->getPost('refurl') == '1' ? 'Y' : 'N',
-                'usecookie' => App()->request->getPost('usecookie') == '1' ? 'Y' : 'N',
+                'datestamp' => App()->request->getPost('datestamp'),
+                'ipaddr' => App()->request->getPost('ipaddr'),
+                'refurl' => App()->request->getPost('refurl'),
+                'usecookie' => App()->request->getPost('usecookie'),
                 'emailnotificationto' => App()->request->getPost('emailnotificationto'),
-                'allowregister' => App()->request->getPost('allowregister') == '1' ? 'Y' : 'N',
-                'allowsave' => App()->request->getPost('allowsave') == '1' ? 'Y' : 'N',
+                'allowregister' => App()->request->getPost('allowregister'),
+                'allowsave' => App()->request->getPost('allowsave'),
                 'navigationdelay' => App()->request->getPost('navigationdelay'),
-                'autoredirect' => App()->request->getPost('autoredirect') == '1' ? 'Y' : 'N',
-                'showxquestions' => App()->request->getPost('showxquestions') == '1' ? 'Y' : 'N',
+                'autoredirect' => App()->request->getPost('autoredirect'),
+                'showxquestions' => App()->request->getPost('showxquestions'),
                 'showgroupinfo' => App()->request->getPost('showgroupinfo'),
                 'showqnumcode' => App()->request->getPost('showqnumcode'),
-                'shownoanswer' => App()->request->getPost('shownoanswer') == '1' ? 'Y' : 'N',
-                'showwelcome' => App()->request->getPost('showwelcome') == '1' ? 'Y' : 'N',
-                'allowprev' => App()->request->getPost('allowprev') == '1' ? 'Y' : 'N',
+                'shownoanswer' => App()->request->getPost('shownoanswer'),
+                'showwelcome' => App()->request->getPost('showwelcome'),
+                'allowprev' => App()->request->getPost('allowprev'),
                 'questionindex' => App()->request->getPost('questionindex'),
-                'nokeyboard' => App()->request->getPost('nokeyboard') == '1' ? 'Y' : 'N',
-                'showprogress' => App()->request->getPost('showprogress') == '1' ? 'Y' : 'N',
-                'printanswers' => App()->request->getPost('printanswers') == '1' ? 'Y' : 'N',
-                'listpublic' => App()->request->getPost('listpublic') == '1' ? 'Y' : 'N',
-                'htmlemail' => App()->request->getPost('htmlemail') == '1' ? 'Y' : 'N',
-                'sendconfirmation' => App()->request->getPost('sendconfirmation') == '1' ? 'Y' : 'N',
-                'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence') == '1' ? 'Y' : 'N',
-                'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion') == '1' ? 'Y' : 'N',
-                'usecaptcha' => Survey::transcribeCaptchaOptions(),
-                'publicstatistics' => App()->request->getPost('publicstatistics') == '1' ? 'Y' : 'N',
-                'publicgraphs' => App()->request->getPost('publicgraphs') == '1' ? 'Y' : 'N',
-                'assessments' => App()->request->getPost('assessments') == '1' ? 'Y' : 'N',
+                'nokeyboard' => App()->request->getPost('nokeyboard'),
+                'showprogress' => App()->request->getPost('showprogress'),
+                'printanswers' => App()->request->getPost('printanswers'),
+                'listpublic' => App()->request->getPost('listpublic'),
+                'htmlemail' => App()->request->getPost('htmlemail'),
+                'sendconfirmation' => App()->request->getPost('sendconfirmation'),
+                'tokenanswerspersistence' => App()->request->getPost('tokenanswerspersistence'),
+                'alloweditaftercompletion' => App()->request->getPost('alloweditaftercompletion'),
+                'usecaptcha' => Survey::saveTranscribeCaptchaOptions(),
+                'publicstatistics' => App()->request->getPost('publicstatistics'),
+                'publicgraphs' => App()->request->getPost('publicgraphs'),
+                'assessments' => App()->request->getPost('assessments'),
                 'emailresponseto' => App()->request->getPost('emailresponseto'),
                 'tokenlength' => $iTokenLength,
                 'gsid'  => App()->request->getPost('gsid', '1'),
+                'adminemail' => Yii::app()->request->getPost('adminemail'),
+                'bounce_email' => Yii::app()->request->getPost('bounce_email'),
+            
             );
+            
             //var_dump($aInsertData);
 
             $warning = '';
-            // make sure we only update emails if they are valid
-            if (Yii::app()->request->getPost('adminemail', '') == ''
-                || validateEmailAddress(Yii::app()->request->getPost('adminemail'))) {
-                $aInsertData['adminemail'] = Yii::app()->request->getPost('adminemail');
-            } else {
-                $aInsertData['adminemail'] = '';
-                $warning .= gT("Warning! Notification email was not updated because it was not valid.").'<br/>';
-            }
-            if (Yii::app()->request->getPost('bounce_email', '') == ''
-                || validateEmailAddress(Yii::app()->request->getPost('bounce_email'))) {
-                $aInsertData['bounce_email'] = Yii::app()->request->getPost('bounce_email');
-            } else {
-                $aInsertData['bounce_email'] = '';
-                $warning .= gT("Warning! Bounce email was not updated because it was not valid.").'<br/>';
-            }
-
+            
             if (!is_null($iSurveyID)) {
                 $aInsertData['wishSID'] = $iSurveyID;
             }
