@@ -48,16 +48,16 @@
 
 # tmp directory : whole except the index.html for directory create
 /tmp/*
-!/tmp/*/*index.html
-/tmp/assets/**/
-/tmp/runtime/gii-1.1.18/*.*
-/tmp/runtime/cache/*.bin
-/tmp/runtime/plugin.log
-/tmp/runtime/twig_cache/*
-/tmp/runtime/CSS/*.ser
-/tmp/runtime/HTML/*.ser
-/tmp/runtime/URI/*.ser
-
+/tmp/assets/*
+/tmp/runtime/*
+/tmp/upload/*
+!/tmp/index.html
+!/tmp/assets/
+!/tmp/assets/index.html
+!/tmp/runtime/
+!/tmp/runtime/index.html
+!/tmp/upload/
+!/tmp/upload/index.html
 
 # ignore plugins directory by default except LS plugin
 # if you want to add a new distributed plugin : add the directory here
