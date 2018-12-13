@@ -1964,12 +1964,14 @@ function tokensExport($iSurveyID)
         if ($bIsNotAnonymous) {
             $oRecordSet->leftJoin("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
             $oRecordSet->andWhere("ls.id IS NULL");
+            $oRecordSet->select("lt.*, ls.id");
         }
     }
     if ($iTokenStatus == 3 && $bIsNotAnonymous) {
         $oRecordSet->leftJoin("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
         $oRecordSet->andWhere("lt.completed='N'");
         $oRecordSet->andWhere("ls.id IS NULL");    
+        $oRecordSet->select("lt.*, ls.id");
     }
     if ($iTokenStatus == 4 && $bIsNotAnonymous) {
         $oRecordSet->selectDistinct('lt.tid, lt.firstname, lt.lastname, lt.email, lt.emailstatus, lt.token, lt.language, lt.sent, lt.remindersent, lt.remindercount, lt.completed, lt.usesleft, lt.validfrom, lt.validuntil, MAX(ls.startdate) as started');
