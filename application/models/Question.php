@@ -916,7 +916,8 @@ class Question extends LSActiveRecord
             case Question::QT_ASTERISK_EQUATION: return new RenderEquation($aFieldArray);
             case Question::QT_D_DATE: return new RenderDate($aFieldArray);
             case Question::QT_1_ARRAY_MULTISCALE: return new RenderArrayDual($aFieldArray);
-            case Question::QT_L_LIST_DROPDOWN: return new RenderListDropdown($aFieldArray);
+            case Question::QT_L_LIST_DROPDOWN: return new RenderListRadio($aFieldArray);
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN: return new RenderListDropdown($aFieldArray);
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return 'arrays/5point';
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return 'arrays/10point';
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return 'arrays/yesnouncertain';
@@ -937,7 +938,6 @@ class Question extends LSActiveRecord
             case Question::QT_U_HUGE_FREE_TEXT: return 'longfreetext';
             case Question::QT_Y_YES_NO_RADIO: return 'yesno';
             case Question::QT_Z_LIST_RADIO_FLEXIBLE: return 'listradioflexible';
-            case Question::QT_EXCLAMATION_LIST_DROPDOWN: return 'list_dropdown';
             case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: return 'arrays/texts';
             case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: return 'arrays/texts';
             case Question::QT_VERTICAL_FILE_UPLOAD: return 'file_upload';

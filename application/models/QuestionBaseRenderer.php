@@ -239,6 +239,10 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
     }
 
+    protected function getAnswerCount($iScaleId=0){
+        return safecount($this->aAnswerOptions[$iScaleId]);
+    }
+
     protected function getFromSurveySession($sIndex){
         return $_SESSION['survey_'.$this->oQuestion->sid][$sIndex];
     }

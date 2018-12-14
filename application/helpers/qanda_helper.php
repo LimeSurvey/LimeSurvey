@@ -139,15 +139,12 @@ function retrieveAnswers($ia)
         case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
         case Question::QT_D_DATE: //DATE
         case Question::QT_1_ARRAY_MULTISCALE:
-            $oRenderer = $oQuestion->getRenderererObject($ia);
-            $values = $oRenderer->render();
-            break;
-        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
-            $values = do_list_radio($ia);
-            break;
-
         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-            $values = do_list_dropdown($ia);
+        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+
+            $oRenderer = $oQuestion->getRenderererObject($ia);
+            
+            $values = $oRenderer->render();
             break;
 
         case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
