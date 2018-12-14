@@ -1877,10 +1877,10 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     // Assign fieldname with $aFileResponses[] key
     foreach ($aRealFieldNames as $sFieldName) {
         if (in_array($sFieldName, $aCsvHeader)) {
-// First pass : simple associated
+            // First pass : simple associated
             $aKeyForFieldNames[$sFieldName] = array_search($sFieldName, $aCsvHeader);
         } elseif (in_array($sFieldName, $aLemFieldNames)) {
-// Second pass : LEM associated
+            // Second pass : LEM associated
             $sLemFieldName = array_search($sFieldName, $aLemFieldNames);
             if (in_array($sLemFieldName, $aCsvHeader)) {
                 $aKeyForFieldNames[$sFieldName] = array_search($sLemFieldName, $aCsvHeader);
@@ -1926,13 +1926,8 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     }
 
     // make sure at least one answer was imported before commiting
-    foreach ($aKeyForFieldNames as $field=>$index) {
-        if (preg_match('/^\d+X\d+X\d+/', $field)) {
-            $import_ok = true;
-            break;
-        }
-    }
-    if (!isset($import_ok)) {
+    $isAnswerMapped = array_key_exists('id',$aKeyForFieldNames) ? (count($aKeyForFieldNames) > 1) : (count($aKeyForFieldNames) > 0);
+    if (!$isAnswerMapped) {
         $CSVImportResult['errors'][] = gT("Import failed: No answers could be mapped.");
         return $CSVImportResult;
     }
@@ -1948,9 +1943,13 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
     $iMaxId = 0; // If we set the id, keep the max
     // Some specific header (with options)
     $iIdKey = array_search('id', $aCsvHeader); // the id is allways needed and used a lot
-    if (is_int($iIdKey)) {unset($aKeyForFieldNames['id']); }
+    if (is_int($iIdKey)) {
+        unset($aKeyForFieldNames['id']);
+    }
     $iSubmitdateKey = array_search('submitdate', $aCsvHeader); // submitdate can be forced to null
-    if (is_int($iSubmitdateKey)) {unset($aKeyForFieldNames['submitdate']); }
+    if (is_int($iSubmitdateKey)) {
+        unset($aKeyForFieldNames['submitdate']);
+    }
     $iIdReponsesKey = (is_int($iIdKey)) ? $iIdKey : 0; // The key for reponses id: id column or first column if not exist
 
     // Import each responses line here
@@ -1993,9 +1992,9 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
         if ($oSurvey) {
             // First rule for id and submitdate
             if (is_int($iIdKey)) {
-// Rule for id: only if id exists in vvimport file
+                // Rule for id: only if id exists in vvimport file
                 if (!$bExistingsId) {
-// If not exist : allways import it
+                    // If not exist : allways import it
                     $oSurvey->id = $aResponses[$iIdKey];
                     $iMaxId = ($aResponses[$iIdKey] > $iMaxId) ? $aResponses[$iIdKey] : $iMaxId;
                 } elseif ($aOptions['sExistingId'] == 'replace' || $aOptions['sExistingId'] == 'replaceanswers') {
@@ -2131,7 +2130,7 @@ function XMLImportTimings($sFullFilePath, $iSurveyID, $aFieldReMap = array())
         $aLanguagesSupported[] = (string) $language;
     }
     $results['languages'] = count($aLanguagesSupported);
-        // Return if there are no timing records to import
+    // Return if there are no timing records to import
     if (!isset($xml->timings->rows)) {
         return $results;
     }
