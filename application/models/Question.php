@@ -918,6 +918,7 @@ class Question extends LSActiveRecord
             case Question::QT_1_ARRAY_MULTISCALE: return new RenderArrayDual($aFieldArray);
             case Question::QT_L_LIST_DROPDOWN: return new RenderListRadio($aFieldArray);
             case Question::QT_EXCLAMATION_LIST_DROPDOWN: return new RenderListDropdown($aFieldArray);
+            case Question::QT_O_LIST_WITH_COMMENT: return new RenderListComment($aFieldArray);
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return 'arrays/5point';
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return 'arrays/10point';
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return 'arrays/yesnouncertain';
@@ -929,7 +930,6 @@ class Question extends LSActiveRecord
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: return 'multiplenumeric';
             case Question::QT_M_MULTIPLE_CHOICE: return 'multiplechoice';
             case Question::QT_N_NUMERICAL: return 'numerical';
-            case Question::QT_O_LIST_WITH_COMMENT: return 'list_with_comment';
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: return 'multiplechoice_with_comments';
             case Question::QT_Q_MULTIPLE_SHORT_TEXT: return 'multipleshorttext';
             case Question::QT_R_RANKING_STYLE: return 'ranking';

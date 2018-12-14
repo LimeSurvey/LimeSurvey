@@ -141,14 +141,11 @@ function retrieveAnswers($ia)
         case Question::QT_1_ARRAY_MULTISCALE:
         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
         case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
+        case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
 
             $oRenderer = $oQuestion->getRenderererObject($ia);
             
             $values = $oRenderer->render();
-            break;
-
-        case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
-            $values = do_listwithcomment($ia);
             break;
 
         case Question::QT_R_RANKING_STYLE: //RANKING STYLE

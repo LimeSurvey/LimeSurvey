@@ -240,7 +240,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     }
 
     protected function getAnswerCount($iScaleId=0){
-        return safecount($this->aAnswerOptions[$iScaleId]);
+        return count($this->aAnswerOptions[$iScaleId]);
     }
 
     protected function getFromSurveySession($sIndex){
