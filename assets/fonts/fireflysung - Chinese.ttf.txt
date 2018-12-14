@@ -1,0 +1,6 @@
+For package size reasons the Firefly Sung font to show Chinese characters in the statistics graphs 
+is not included with LimeSurvey.
+
+Please download it http://www.study-area.org/apt/firefly-font/fireflysung-1.3.0.tar.gz , 
+unzip and put the fireflysung.tff file into the /assets/fonts directory of your LimeSurvey installation.
+

@@ -51,7 +51,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         $chartfontfile = 'DejaVuSans.ttf';
         if (array_key_exists($sLanguageCode, $alternatechartfontfile)) {
             $neededfontfile = $alternatechartfontfile[$sLanguageCode];
-            if (is_file($rootdir."/fonts/".$neededfontfile)) {
+            if (is_file($rootdir."/assets/fonts/".$neededfontfile)) {
                 $chartfontfile = $neededfontfile;
             } else {
                 Yii::app()->setFlashMessage(sprintf(gT('The fonts file %s was not found in <limesurvey root folder>/fonts directory. Please, see the txt file for your language in fonts directory to generate the charts.'), $neededfontfile), 'error');
