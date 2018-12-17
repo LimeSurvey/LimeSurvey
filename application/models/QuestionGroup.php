@@ -85,16 +85,21 @@ class QuestionGroup extends LSActiveRecord
     }    
 
     /**
-     * @param integer $sid
+     * @param integer $iSurveyId
      * @param int $position
      */
-    public function updateGroupOrder($sid, $position = 0)
+    public function updateGroupOrder($iSurveyId, $position = 0)
     {
-        $data = Yii::app()->db->createCommand()->select('gid')
-            ->where('sid=:sid')
+        $iSurveyId = (int) $iSurveyId;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $language = $oSurvey->language;
+        $data = Yii::app()->db->createCommand()->select('g.gid')
+            ->where('g.sid=:sid AND gl.language = :language')
             ->order('group_order, group_name ASC')
-            ->from('{{groups}}')
-            ->bindParam(':sid', $sid, PDO::PARAM_INT)
+            ->from('{{groups}} g')
+            ->join('{{group_l10ns}} gl', 'g.gid=gl.gid')
+            ->bindParam(':sid', $iSurveyId, PDO::PARAM_INT)
+            ->bindParam(':language', $language, PDO::PARAM_STR)
             ->query();
 
         $position = intval($position);
