@@ -144,6 +144,7 @@ function retrieveAnswers($ia)
         case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
         case Question::QT_R_RANKING_STYLE: //RANKING STYLE
         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
+        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
 
             $oRenderer = $oQuestion->getRenderererObject($ia);
             
@@ -154,11 +155,7 @@ function retrieveAnswers($ia)
         case Question::QT_I_LANGUAGE: //Language Question
             $values = do_language($ia);
             break;
-
-        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-            $values = do_multiplechoice_withcomments($ia);
-            break;
-
+            
         case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
             $values = do_file_upload($ia);
             break;

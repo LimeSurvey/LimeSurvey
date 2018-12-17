@@ -30,7 +30,6 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
-        $this->setAnsweroptions(null, @$this->aQuestionAttributes['alphasort']==1);
         $this->setSubquestions();
 
         $this->iNbCols = $this->setDefaultIfEmpty($this->aQuestionAttributes['display_columns'], 1);
@@ -135,13 +134,6 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $inputnames = [];
         $this->sCoreClasses .= " ".$sCoreClasses;
 
-
-        if (!empty($this->aQuestionAttributes['time_limit']['value'])) {
-            $answer .= $this->getTimeSettingRender();
-        }
-        // 'ia'=>$this->aFieldArray,
-        // 'name'=>$this->sSGQA,
-
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
             'aRows'            => $this->getRows(),
             'name'             => $this->sSGQA,
@@ -155,6 +147,14 @@ class RenderMultipleChoice extends QuestionBaseRenderer
 
         $this->inputnames[] = $this->sSGQA;
         return array($answer, $this->inputnames);
+    }
+
+    protected function getQuestionCount($iScaleId=0){
+        $counter = count($this->aSubQuestions[$iScaleId]);
+        if($this->oQuestion->other == 'Y') {
+            $counter++;
+        }
+        return $counter;
     }
 }
 
