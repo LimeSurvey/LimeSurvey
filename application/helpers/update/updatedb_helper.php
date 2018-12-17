@@ -2358,9 +2358,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("delete from  {{questions}} where qid={$row['qid']} and language='{$row['language']}'")->execute();
             }
-            alterColumn('{{questions}}', 'qid', "int", true);
-            dropPrimaryKey('questions');
-            alterColumn('{{questions}}', 'qid', "pk", false);
+            modifyPrimaryKey('questions', array('qid'));
             $oDB->createCommand()->dropColumn('{{questions}}', 'question');
             $oDB->createCommand()->dropColumn('{{questions}}', 'help');
             $oDB->createCommand()->dropColumn('{{questions}}', 'language');    
@@ -2374,13 +2372,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));        
             $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
             $oDB->createCommand("INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}")->execute();
-            $dataReader = $oDB->createCommand("select g1.language,g1.gid FROM {{groups}} g1 INNER JOIN {{groups}} g2 WHERE g1.gid = g2.gid and g1.language<g2.language")->query();
+            $dataReader = $oDB->createCommand("select g1.language,g1.gid FROM {{groups}} g1 INNER JOIN {{groups}} g2 ON g1.gid = g2.gid and g1.language<g2.language")->query();
             while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("delete from  {{groups}} where gid={$row['gid']} and language='{$row['language']}'")->execute();
             }
-            alterColumn('{{groups}}', 'gid', "int", true);
-            dropPrimaryKey('groups');
-            alterColumn('{{groups}}', 'gid', "pk", false);
+            modifyPrimaryKey('groups', array('gid'));
             $oDB->createCommand()->dropColumn('{{groups}}', 'group_name');
             $oDB->createCommand()->dropColumn('{{groups}}', 'description');
             $oDB->createCommand()->dropColumn('{{groups}}', 'language');    
@@ -2393,9 +2389,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'language' =>  "string(20) NOT NULL"
             ));        
             $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
-            dropPrimaryKey('answers');
             
             addColumn('{{answers}}', 'aid', 'int');
+            modifyPrimaryKey('answers', array('aid'));
             $oDB->createCommand()->createIndex('answer_idx_10', '{{answers}}', ['qid', 'code', 'scale_id']);
             $dataReader = $oDB->createCommand("select qid, code, scale_id from {{answers}} group by qid, code, scale_id")->query();
             $iCounter = 1;
@@ -2404,11 +2400,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $iCounter++;
             }
             $oDB->createCommand("INSERT INTO {{answer_l10ns}} (aid, answer, language) select aid, answer, language from {{answers}}")->execute();
-            $dataReader = $oDB->createCommand("select a1.language,a1.aid FROM {{answers}} a1 INNER JOIN {{answers}} a2 WHERE a1.aid = a2.aid and a1.language<a2.language")->query();
+            $dataReader = $oDB->createCommand("select a1.language,a1.aid FROM {{answers}} a1 INNER JOIN {{answers}} a2 ON a1.aid = a2.aid and a1.language<a2.language")->query();
             while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("delete from  {{answers}} where aid={$row['aid']} and language='{$row['language']}'")->execute();
             }
-            alterColumn('{{answers}}', 'aid', "pk", false);
             $oDB->createCommand()->dropColumn('{{answers}}', 'answer');
             $oDB->createCommand()->dropColumn('{{answers}}', 'language');    
             $oDB->createCommand()->dropindex('answer_idx_10', '{{answers}}');
@@ -2424,8 +2419,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));  
             $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
             
-            alterColumn('{{labels}}', 'id', "int", true);
-            dropPrimaryKey('labels');
+            modifyPrimaryKey('labels', array('id'));
             $dataReader = $oDB->createCommand("select lid,code from {{labels}} group by lid,code")->query();
             $iCounter = 1;
             while (($row = $dataReader->read()) !== false) {
@@ -2433,11 +2427,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $iCounter++;
             }
             $oDB->createCommand("INSERT INTO {{label_l10ns}} (label_id, title, language) select id, title, language from {{labels}}")->execute();
-            $dataReader = $oDB->createCommand("select l1.language,l1.id FROM {{labels}} l1 INNER JOIN {{labels}} l2 WHERE l1.id = l2.id and l1.language<l2.language")->query();
+            $dataReader = $oDB->createCommand("select l1.language,l1.id FROM {{labels}} l1 INNER JOIN {{labels}} l2 ON l1.id = l2.id and l1.language<l2.language")->query();
             while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("delete from  {{labels}} where id={$row['id']} and language='{$row['language']}'")->execute();
             }
-            alterColumn('{{labels}}', 'id', "pk", false);
             $oDB->createCommand()->dropColumn('{{labels}}', 'title');
             $oDB->createCommand()->dropColumn('{{labels}}', 'language');    
            
@@ -4383,7 +4376,27 @@ function addPrimaryKey($sTablename, $aColumns)
 */
 function modifyPrimaryKey($sTablename, $aColumns)
 {
-    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',', $aColumns).")")->execute();
+    switch (Yii::app()->db->driverName) {
+        case 'mysql':
+            Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',', $aColumns).")")->execute();
+            break;
+        case 'pgsql':
+        case 'sqlsrv':
+        case 'dblib':
+        case 'mssql':
+            $pkquery = "SELECT CONSTRAINT_NAME "
+            ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
+            ."WHERE (TABLE_NAME = '{{{$sTablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
+
+            $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
+            if ($primarykey !== false) {
+                Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP CONSTRAINT ".$primarykey[0])->execute();
+                Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} ADD PRIMARY KEY (".implode(',', $aColumns).")")->execute();
+            }
+            break;
+        default: die('Unknown database type');
+    }
+
 }
 
 
