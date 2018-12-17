@@ -2918,7 +2918,7 @@ function createSurveysGroupSettingsTable(CDbConnection $oDB)
 
     // create surveys_groupsettings table
     $oDB->createCommand()->createTable('{{surveys_groupsettings}}', array(
-        'gsid' => "integer NULL",
+        'gsid' => "integer NOT NULL",
         'owner_id' => "integer NULL DEFAULT NULL",
         'admin' => "string(50) NULL DEFAULT NULL",
         'adminemail' => "string(254) NULL DEFAULT NULL",
