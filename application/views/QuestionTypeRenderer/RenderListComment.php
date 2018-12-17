@@ -34,7 +34,8 @@ class RenderListComment extends QuestionBaseRenderer
         return '/survey/questions/answer/list_with_comment';
     }
 
-    public function renderList($sCoreClasses){
+    public function renderList($sCoreClasses)
+    {
         $sRows = '';
 
         foreach ($this->aAnswerOptions[0] as $ansrow) {
@@ -56,7 +57,7 @@ class RenderListComment extends QuestionBaseRenderer
                 'name'=>$this->sSGQA,
                 'id'=>'answer'.$this->sSGQA,
                 'value'=>'',
-                'check_ans'=> ( $this->mSessionValue == '' || $this->mSessionValue == ' ') ? CHECKED :'',
+                'check_ans'=> ($this->mSessionValue == '' || $this->mSessionValue == ' ') ? CHECKED :'',
                 'checkconditionFunction'=>$this->checkconditionFunction.'(this.value, this.name, this.type)',
                 'labeltext'=>gT('No answer'),
             );
@@ -91,8 +92,8 @@ class RenderListComment extends QuestionBaseRenderer
         return array($answer, $inputnames);
     }
 
-    public function renderDropdown($sCoreClasses){
-
+    public function renderDropdown($sCoreClasses)
+    {
         $sOptions = '';
         foreach ($this->aAnswerOptions[0] as $ansrow) {
             $itemData = array(
@@ -118,13 +119,17 @@ class RenderListComment extends QuestionBaseRenderer
         }
 
         $fname2 = $this->sSGQA.'comment';
-        $tarows =  ($this->getAnswerCount() > 8 ? ($this->getAnswerCount() / 1.2) : 4);      
+        $tarows =  ($this->getAnswerCount() > 8 ? ($this->getAnswerCount() / 1.2) : 4);
         $tarows =  ($tarows > 15) ? 15 : $tarows;
 
         $this->maxoptionsize = $this->maxoptionsize * 0.72;
 
-        if ($this->maxoptionsize < 33) {$this->maxoptionsize = 33; }
-        if ($this->maxoptionsize > 70) {$this->maxoptionsize = 70; }
+        if ($this->maxoptionsize < 33) {
+            $this->maxoptionsize = 33;
+        }
+        if ($this->maxoptionsize > 70) {
+            $this->maxoptionsize = 70;
+        }
 
         $this->sCoreClass .= " ".$sCoreClasses;
 
@@ -162,7 +167,6 @@ class RenderListComment extends QuestionBaseRenderer
         }
         return $this->renderDropdown($sCoreClasses);
     }
-
 }
 
 /*
@@ -316,7 +320,7 @@ function do_listwithcomment($ia)
             'kpclass'                => $kpclass,
             'tarows'                 => $tarows,
             'maxoptionsize'          => $maxoptionsize,
-            'comment_saved'          => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]), /* htmlspecialchars(null)=="" right ? 
+            'comment_saved'          => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]), /* htmlspecialchars(null)=="" right ?
             'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->sSGQA],
             ), true);
 

@@ -57,7 +57,8 @@ class RenderListRadio extends QuestionBaseRenderer
         return '/survey/questions/answer/listradio';
     }
 
-    public function renderRowsArray(){
+    public function renderRowsArray()
+    {
         $aRows = [];
         foreach ($this->aAnswerOptions[0] as $iterator=>$oAnswer) {
             $aRows[] = Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/answer_row', array(
@@ -84,7 +85,7 @@ class RenderListRadio extends QuestionBaseRenderer
     {
         $sRows = "";
         
-        foreach($this->renderRowsArray() as $iterator => $sRow){
+        foreach ($this->renderRowsArray() as $iterator => $sRow) {
             // counter of number of row by column. Is reset to zero each time a column is full.
             $this->iRowCount++;
                 
@@ -127,25 +128,27 @@ class RenderListRadio extends QuestionBaseRenderer
         return $sRows;
     }
 
-    public function addNoAnswerRow(){
+    public function addNoAnswerRow()
+    {
         if (!isset($this->mSessionValue) || $this->mSessionValue == '' || $this->mSessionValue == ' ') {
             $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
         } else {
             $check_ans = '';
         }
 
-        return Yii::app()->twigRenderer->renderQuestion( $this->getMainView().'/rows/answer_row_noanswer', array(
+        return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/answer_row_noanswer', array(
             'name'=>$this->sSGQA,
             'check_ans'=>$check_ans,
             'checkconditionFunction'=>$this->checkconditionFunction,
             ), true);
     }
 
-    public function addOtherRow(){
+    public function addOtherRow()
+    {
         $sSeparator = getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat);
         $sSeparator = $sSeparator['separator'];
         
-        $oth_checkconditionFunction = ($this->aQuestionAttributes['other_numbers_only'] == 1) ? 'fixnum_checkconditions' : 'checkconditions';   
+        $oth_checkconditionFunction = ($this->aQuestionAttributes['other_numbers_only'] == 1) ? 'fixnum_checkconditions' : 'checkconditions';
         $checkedState = ($this->mSessionValue == '-oth-') ? CHECKED : '';
 
         $myfname = $thisfieldname = $this->sSGQA.'other';
@@ -171,7 +174,6 @@ class RenderListRadio extends QuestionBaseRenderer
             'oth_checkconditionFunction'=>$oth_checkconditionFunction.'(this.value, this.name, this.type)',
             'checkconditionFunction'=>$this->checkconditionFunction,
             ), true);
-
     }
 
 

@@ -243,6 +243,10 @@ abstract class QuestionBaseRenderer extends StaticModel
         return count($this->aAnswerOptions[$iScaleId]);
     }
 
+    protected function getQuestionCount($iScaleId=0){
+        return count($this->aSubQuestions[$iScaleId]);
+    }
+
     protected function getFromSurveySession($sIndex){
         return $_SESSION['survey_'.$this->oQuestion->sid][$sIndex];
     }
@@ -289,6 +293,39 @@ abstract class QuestionBaseRenderer extends StaticModel
         $this->applyScriptfiles();
         $this->applyStyles();
     }
+
+    /**
+    * Return class of a specific row (hidden by relevance)
+    * @param string $myfname The name of the question/row to test
+    * @return string
+    */
+    public function getCurrentRelevecanceClass($myfname)
+    {
+        $aSurveySessionArray = $_SESSION["survey_{$this->oQuestion->sid}"];
+        $relevanceStatus = !isset($aSurveySessionArray['relevanceStatus'][$myfname]) || $aSurveySessionArray['relevanceStatus'][$myfname];
+        if ($relevanceStatus) {
+            return "";
+        }
+
+        $sExcludeAllOther = $this->setDefaultIfEmpty($this->aQuestionAttributes['exclude_all_others'], false);
+        /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
+        if ($sExcludeAllOther !== false) {
+            foreach (explode(';', $sExcludeAllOther) as $sExclude) {
+                $sExclude = $this->sSGQA.$sExclude;
+                if ((!isset($aSurveySessionArray['relevanceStatus'][$sExclude]) || $aSurveySessionArray['relevanceStatus'][$sExclude])
+                && (isset($aSurveySessionArray[$sExclude]) && $aSurveySessionArray[$sExclude] == "Y")
+                ) {
+                    return "ls-irrelevant ls-disabled";
+                }
+            }
+        }
+    
+        // Currently null/0/false=> hidden , 1 : disabled
+        $filterStyle = !empty($this->aQuestionAttributes['array_filter_style']); 
+        return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
+
+    }
+
 
     abstract public function getMainView();
     abstract public function getRows();

@@ -3,11 +3,11 @@
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
- *  0 => string qid 
+ *  0 => string qid
  *  1 => string sgqa
  *  2 => string questioncode
  *  3 => string question
- *  4 => string type 
+ *  4 => string type
  *  5 => string gid
  *  6 => string mandatory,
  *  7 => string conditionsexist,
@@ -18,14 +18,17 @@
  */
 class RenderEquation extends QuestionBaseRenderer
 {
-    public function getRows(){
+    public function getRows()
+    {
         return;
     }
 
-    public function getMainView(){
+    public function getMainView()
+    {
         return '/survey/questions/answer/equation/answer';
     }
-    public function render($sCoreClasses = ''){
+    public function render($sCoreClasses = '')
+    {
         $inputnames = [];
 
         $sEquation  = $this->setDefaultIfEmpty($this->aQuestionAttributes['equation'], $this->aFieldArray[3]);
@@ -36,7 +39,7 @@ class RenderEquation extends QuestionBaseRenderer
             'name'=>$this->sSGQA,
             'basename'=>$this->sSGQA, /* is this needed ? */
             'sValue'    =>  $sValue,
-            'sEquation' => LimeExpressionManager::ProcessString($sEquation,$this->oQuestion->qid),
+            'sEquation' => LimeExpressionManager::ProcessString($sEquation, $this->oQuestion->qid),
             'coreClass'=> 'ls-answers answer-item hidden-item  '.$sCoreClasses,
             'insideClass' => 'em_equation',
             ), true);
@@ -44,5 +47,4 @@ class RenderEquation extends QuestionBaseRenderer
         $inputnames[] = $this->sSGQA;
         return array($answer, $inputnames);
     }
-
 }

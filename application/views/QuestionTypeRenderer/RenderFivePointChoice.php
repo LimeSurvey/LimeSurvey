@@ -3,11 +3,11 @@
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
- *  0 => string qid 
+ *  0 => string qid
  *  1 => string sgqa
  *  2 => string questioncode
  *  3 => string question
- *  4 => string type 
+ *  4 => string type
  *  5 => string gid
  *  6 => string mandatory,
  *  7 => string conditionsexist,
@@ -21,11 +21,13 @@ class RenderFivePointChoice extends QuestionBaseRenderer
     protected $aPackages = [];
     protected $aScripts = [];
 
-    public function getMainView(){
+    public function getMainView()
+    {
         return '/survey/questions/answer/5pointchoice/answer';
     }
 
-    public function getRows(){
+    public function getRows()
+    {
         $aRows = [];
         for ($fp = 1; $fp <= 5; $fp++) {
             $aRows[] = array(
@@ -40,7 +42,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
         }
 
         if ($this->oQuestion->mandatory != "Y" && SHOW_NO_ANSWER == 1) {
-        // Add "No Answer" option if question is not mandatory
+            // Add "No Answer" option if question is not mandatory
             $aRows[] = array(
                 'name'                   => $this->sSGQA,
                 'value'                  => "",
@@ -55,10 +57,12 @@ class RenderFivePointChoice extends QuestionBaseRenderer
         return $aRows;
     }
 
-    public function render($sCoreClasses = ''){
+    public function render($sCoreClasses = '')
+    {
         $inputnames = [];
 
-        $aRows = array(); ;
+        $aRows = array();
+        ;
         
 
         $inputnames[] = $this->aFieldArray[1];
@@ -79,7 +83,9 @@ class RenderFivePointChoice extends QuestionBaseRenderer
         if ($this->aQuestionAttributes['slider_rating'] == 2) {
             $slider_rating = 2;
             $this->aPackages[] = 'question-5pointchoice-slider';
-            $this->addScript('doRatingSlider',"
+            $this->addScript(
+                'doRatingSlider',
+                "
                     var doRatingSlider_".$this->aFieldArray[1]."= new getRatingSlider('".$this->aFieldArray[0]."');
                     doRatingSlider_".$this->aFieldArray[1]."();
                 ",

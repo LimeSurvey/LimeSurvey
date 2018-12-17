@@ -142,19 +142,14 @@ function retrieveAnswers($ia)
         case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
         case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
         case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
+        case Question::QT_R_RANKING_STYLE: //RANKING STYLE
+        case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
 
             $oRenderer = $oQuestion->getRenderererObject($ia);
             
             $values = $oRenderer->render();
             break;
 
-        case Question::QT_R_RANKING_STYLE: //RANKING STYLE
-            $values = do_ranking($ia);
-            break;
-
-        case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-            $values = do_multiplechoice($ia);
-            break;
 
         case Question::QT_I_LANGUAGE: //Language Question
             $values = do_language($ia);

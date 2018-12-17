@@ -3,11 +3,11 @@
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
- *  0 => string qid 
+ *  0 => string qid
  *  1 => string sgqa
  *  2 => string questioncode
  *  3 => string question
- *  4 => string type 
+ *  4 => string type
  *  5 => string gid
  *  6 => string mandatory,
  *  7 => string conditionsexist,
@@ -18,15 +18,18 @@
  */
 class RenderBoilerplate extends QuestionBaseRenderer
 {
-    public function getMainView(){
+    public function getMainView()
+    {
         return '/survey/questions/answer/boilerplate/answer';
     }
     
-    public function getRows(){
+    public function getRows()
+    {
         return;
     }
 
-    public function render($sCoreClasses = ''){
+    public function render($sCoreClasses = '')
+    {
         $answer = '';
         $inputnames = [];
 
@@ -44,5 +47,4 @@ class RenderBoilerplate extends QuestionBaseRenderer
         $inputnames[] = $this->sSGQA;
         return array($answer, $inputnames);
     }
-
 }

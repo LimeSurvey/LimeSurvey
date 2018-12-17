@@ -3,11 +3,11 @@
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
- *  0 => string qid 
+ *  0 => string qid
  *  1 => string sgqa
  *  2 => string questioncode
  *  3 => string question
- *  4 => string type 
+ *  4 => string type
  *  5 => string gid
  *  6 => string mandatory,
  *  7 => string conditionsexist,
@@ -24,17 +24,19 @@ class RenderListDropdown extends QuestionBaseRenderer
     
     private $iRowNum = 0;
 
-    public function __construct($aFieldArray, $bRenderDirect = false) {
+    public function __construct($aFieldArray, $bRenderDirect = false)
+    {
         parent::__construct($aFieldArray, $bRenderDirect);
         // Question attribute variables
-        $this->othertext              = $this->setDefaultIfEmpty($this->aQuestionAttributes['other_replace_text'][$this->sLanguage], gT('Other:')); 
+        $this->othertext              = $this->setDefaultIfEmpty($this->aQuestionAttributes['other_replace_text'][$this->sLanguage], gT('Other:'));
         $this->optCategorySeparator   = @$this->setDefaultIfEmpty($this->aQuestionAttributes['category_separator'], false);
         $this->sCoreClass             = "ls-answers answer-item dropdown-item";
         $this->bPrefix                = @(sanitize_int($this->aQuestionAttributes['dropdown_prefix']) == 1);
         $this->setAnsweroptions(null, $this->aQuestionAttributes['alphasort']);
     }
 
-    public function getRows(){
+    public function getRows()
+    {
         $sOptions = '';
 
         // If no answer previously selected
@@ -47,7 +49,7 @@ class RenderListDropdown extends QuestionBaseRenderer
                 ), true);
         }
 
-        if($this->optCategorySeparator !== false ) {
+        if ($this->optCategorySeparator !== false) {
             return $this->getOptGroupRows($sOptions);
         }
 
@@ -67,14 +69,14 @@ class RenderListDropdown extends QuestionBaseRenderer
         return $sOptions;
     }
 
-    public function getOptGroupRows($sOptions) {
-
+    public function getOptGroupRows($sOptions)
+    {
         $defaultopts = [];
         $optgroups = [];
 
         foreach ($this->aAnswerOptions[0] as $oAnsweroption) {
             // Let's sort answers in an array indexed by subcategories
-            @list ($categorytext, $answertext) = explode($this->optCategorySeparator, $oAnsweroption->answerL10ns[$this->sLanguage]->answer);
+            @list($categorytext, $answertext) = explode($this->optCategorySeparator, $oAnsweroption->answerL10ns[$this->sLanguage]->answer);
             // The blank category is left at the end outside optgroups
             if ($categorytext == '' || $answertext == '') {
                 $defaultopts[] = array('code' => $oAnsweroption->code, 'answer' => $oAnsweroption->answerL10ns[$this->sLanguage]->answer);
@@ -84,7 +86,6 @@ class RenderListDropdown extends QuestionBaseRenderer
         }
 
         foreach ($optgroups as $categoryname => $optionlistarray) {
-
             $sOptGroupOptions = '';
             foreach ($optionlistarray as $optionarray) {
                 // ==> rows
@@ -113,9 +114,10 @@ class RenderListDropdown extends QuestionBaseRenderer
         return $sOptions;
     }
 
-    public function getOtherOption() {
-            $_prefix = $this->bPrefix ? ++$this->iRowNum.') ' : '';
-            return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
+    public function getOtherOption()
+    {
+        $_prefix = $this->bPrefix ? ++$this->iRowNum.') ' : '';
+        return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
                 'name'=> $this->sSGQA,
                 'classes'=>'other-item',
                 'value'=>'-oth-',
@@ -124,21 +126,22 @@ class RenderListDropdown extends QuestionBaseRenderer
                 ), true);
     }
 
-    public function getOtherInput(){
-            return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/othertext', [
+    public function getOtherInput()
+    {
+        return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/othertext', [
                 'name' => $this->sSGQA,
                 'checkconditionFunction' => $this->checkconditionFunction,
                 'display' => $this->mSessionValue != '-oth-' ? 'display: none;' : '',
                 'label' => $this->othertext,
                 'value' => (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->sSGQA."other"]))
-                    ? htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->sSGQA."other"], ENT_QUOTES) 
+                    ? htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->sSGQA."other"], ENT_QUOTES)
                     : ''
             ], true);
     }
 
-    public function getNoAnswerOption() {
+    public function getNoAnswerOption()
+    {
         if (!(is_null($this->mSessionValue) || $this->mSessionValue === "") && $this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {
-            
             $_prefix = $this->bPrefix ? ++$this->iRowNum.') ' : '';
             return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
                 'name'=> $this->sSGQA,
@@ -151,7 +154,8 @@ class RenderListDropdown extends QuestionBaseRenderer
         return '';
     }
 
-    public function getDropdownSize(){
+    public function getDropdownSize()
+    {
         if (isset($this->aQuestionAttributes['dropdown_size']) && $this->aQuestionAttributes['dropdown_size'] > 0) {
             $_height    = sanitize_int($this->aQuestionAttributes['dropdown_size']);
             $_maxHeight = $this->getAnswerCount();
@@ -177,19 +181,20 @@ class RenderListDropdown extends QuestionBaseRenderer
         return null;
     }
 
-    public function getMainView(){
+    public function getMainView()
+    {
         return '/survey/questions/answer/list_dropdown';
     }
-    public function render($sCoreClasses = ''){
-        
-        
+    public function render($sCoreClasses = '')
+    {
         $inputnames = [];
         $sOther = '';
         $this->sCoreClass = $this->sCoreClass.' '.$sCoreClasses;
         
         $sOptions = $this->getRows();
         if ($this->oQuestion->other == 'Y') {
-            $sOther = $this->getOtherInput();;
+            $sOther = $this->getOtherInput();
+            ;
             $sOptions .= $this->getOtherOption();
             $inputnames[] = $this->sSGQA.'other';
         }
@@ -215,5 +220,4 @@ class RenderListDropdown extends QuestionBaseRenderer
 
         return array($answer, $inputnames);
     }
-
 }

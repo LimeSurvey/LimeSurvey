@@ -57,7 +57,8 @@ class RenderArrayDual extends QuestionBaseRenderer
         return '/survey/questions/answer/arrays/dualscale';
     }
 
-    public function getRows(){
+    public function getRows()
+    {
         return;
     }
 
