@@ -27,7 +27,7 @@ class LSYii_ImageValidator
         $result =[];
         $checkImage = CFileHelper::getMimeType($path);
         $result['debug'] = $checkImage;
-        $allowedImageFormats = array("image/png", "image/jpg", "image/jpeg", "image/gif", "image/svg+xml");
+        $allowedImageFormats = array("image/png", "image/jpg", "image/jpeg", "image/gif", "image/svg+xml", "image/x-icon");
 
         if (!empty($checkImage) && in_array($checkImage, $allowedImageFormats)) {
             $result['uploadresult'] = '';
