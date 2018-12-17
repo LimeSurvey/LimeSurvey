@@ -254,7 +254,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 /**
 * Function to activate a survey
 * @param int $iSurveyID The Survey ID
-* @param bool $simulate
+* @param bool $simulate Set to true to test the activation regarding table size limit
 * @return array
 */
 function activateSurvey($iSurveyID, $simulate = false)
