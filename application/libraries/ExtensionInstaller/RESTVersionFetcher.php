@@ -40,7 +40,8 @@ class RESTVersionFetcher extends VersionFetcher
         }
 
         if (empty($this->curlResult->last_security_version)) {
-            throw new \Exception('Found no last_security_version field in curl result');
+            //throw new \Exception('Found no last_security_version field in curl result');
+            return '0.0.0';
         }
 
         return $this->curlResult->last_security_version;
