@@ -37,11 +37,12 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         return false;
     }
     $rootdir = Yii::app()->getConfig("rootdir");
-    $admintheme = Yii::app()->getConfig("admintheme");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
     $cachefilename = "";
+
+    $adminThemePath = AdminTheme::getInstance()->path;
 
     /* Set the fonts for the chart */
     if ($chartfontfile == 'auto') {
@@ -65,7 +66,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
+            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
@@ -81,7 +82,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
+            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
@@ -171,7 +172,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 }
                 $graph = new pChart(690 + $legendsize[0], $gheight);
                 $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
+                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $graph->setGraphArea(50, 30, 500, $gheight - 60);
                 $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
@@ -255,7 +256,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 $gheight = ceil($gheight);
                 $graph = new pChart(690, $gheight);
                 $graph->drawFilledRectangle(0, 0, 690, $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.'/images/limesurvey.pal');
+                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
                 $graph->drawFilledRoundedRectangle(7, 7, 687, $gheight - 3, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, 689, $gheight - 1, 5, 230, 230, 230);
 

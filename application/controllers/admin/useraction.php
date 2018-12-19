@@ -609,7 +609,6 @@ class UserAction extends Survey_Common_Action
     {
         // Save Data
         if (Yii::app()->request->getPost("action")) {
-
             $oUserModel                       = User::model()->findByPk(Yii::app()->session['loginID']);
             $oUserModel->lang                 = Yii::app()->request->getPost('lang');
             $oUserModel->dateformat           = Yii::app()->request->getPost('dateformat');
@@ -675,7 +674,7 @@ class UserAction extends Survey_Common_Action
             }
 
             if (Yii::app()->request->getPost("saveandclose")) {
-                $this->getController()->redirect("/admin");
+                $this->getController()->redirect(array("admin/index"));
             }
         }
 

@@ -15,18 +15,30 @@
 
 #}
 {% extends 'layout_global.twig' %}
-
-{% if aSurveyInfo.printPdf != 1 %}
-    {% block pjaxbegin %}<div></div>{% endblock %}
-{% endif %}
-
+{% block ajaxindicator %}{% endblock %}
+{% block pjaxbegin %}{% endblock %}
 {% block body %}
-
+    {% block nav_bar %}
+        {% if (not aSurveyInfo.printPdf) %} 
+            {{ parent() }}
+        {% endif %}
+    {% endblock %}
     {% block content %}
         {% set sViewContent =  './subviews/content/' ~ aSurveyInfo.include_content ~ '.twig' %}
         {% include './subviews/content/outerframe.twig' with {'include_content': sViewContent } %}
     {% endblock %}
-
+    {% if (not aSurveyInfo.printPdf) %} 
+        {{ registerScript("BasicThemeScripts", "
+        if(window.basicThemeScripts === undefined){ 
+            window.basicThemeScripts = new ThemeScripts(); 
+        } 
+        basicThemeScripts.initGlobal(); 
+        ", "POS_END") }}
+    {% endif %}
 {% endblock %}
-
-{% block pjaxend %}<div></div>{% endblock %}
+{% block footer %}
+    {% if (not aSurveyInfo.printPdf) %} 
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+{% block pjaxend %}{% endblock %}

@@ -119,7 +119,7 @@ class GlobalSettings extends Survey_Common_Action
         $decimals = 1;
 
         $data['totalStorage'] = humanFilesize(folderSize($uploaddir), $decimals);
-        $data['templateSize'] = humanFilesize(folderSize($uploaddir.'/templates'), $decimals);
+        $data['templateSize'] = humanFilesize(folderSize($uploaddir.'/themes'), $decimals);
         $data['surveySize']   = humanFilesize(folderSize($uploaddir.'/surveys'), $decimals);
         $data['labelSize']    = humanFilesize(folderSize($uploaddir.'/labels'), $decimals);
 
