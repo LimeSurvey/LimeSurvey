@@ -140,7 +140,7 @@ abstract class ExtensionUpdater
 
         $message = sprintf(
             $message,
-            $extensionType,
+            $this->convertExtensionType($extensionType),
             $extensionName
         );
 
@@ -233,6 +233,28 @@ abstract class ExtensionUpdater
         }
 
         return $versions;
+    }
+
+    /**
+     * Convert from single char $type to fullword.
+     *
+     * @param string $type
+     * @return string
+     */
+    public function convertExtensionType($type)
+    {
+        switch ($type) {
+            case 'p':
+                return gT('plugin');
+            case 't':
+                return gT('theme');
+            case 's':
+                return gT('survey template');
+            case 'q':
+                return gT('question template');
+            default:
+                throw new \Exception();
+        }
     }
 
     /**
