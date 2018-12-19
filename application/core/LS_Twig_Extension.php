@@ -276,11 +276,14 @@ class LS_Twig_Extension extends Twig_Extension
         if ($oTemplate) {
             $sFullPath = $oTemplate->path.$sImagePath;
         } else {
+            if(!is_file(Yii::app()->getConfig('rootdir').'/'.$sImagePath)) {
+                return false;
+            }
             $sFullPath = Yii::app()->getConfig('rootdir').'/'.$sImagePath;
         }
 
         // check if this is a true image
-        $checkImage = LSYii_ImageValidator::validateImage($sFullPath  );
+        $checkImage = LSYii_ImageValidator::validateImage($sFullPath);
 
         if (!$checkImage['check']) {
             return false;

@@ -17,9 +17,10 @@
 class LSYii_ImageValidator
 {
     /**
-    * A function to validate images
+    * A function to validate images,
+    * This don't validate file : must validate if file exist before.
     *
-    * @param mixed $path
+    * @param string $path
     * @return array
     */
     static function validateImage($path)
