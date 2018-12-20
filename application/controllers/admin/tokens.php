@@ -1675,7 +1675,7 @@ class tokens extends Survey_Common_Action
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
         $aData = array();
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import')) {
+        if (!(Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import') || Permission::model()->hasGlobalPermission('surveys', 'update'))) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
@@ -1918,7 +1918,7 @@ class tokens extends Survey_Common_Action
         $aData = array();
         $iSurveyId = (int) $iSurveyId;
         $survey = Survey::model()->findByPk($iSurveyId);
-        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import')) {
+        if (!(Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'import') || Permission::model()->hasGlobalPermission('surveys', 'update'))) {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }

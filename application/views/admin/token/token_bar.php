@@ -14,7 +14,7 @@
             <?php if( isset($token_bar['buttons']['view']) ): ?>
 
                 <!-- Display tokens -->
-                <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'read')): ?>
+                <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'read') || Permission::model()->hasGlobalPermission('surveys', 'update')): ?>
                     <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$oSurvey->sid"); ?>' role="button">
                         <span class="fa fa-list-alt text-success"></span>
                         <?php eT("Display participants"); ?>
@@ -30,7 +30,7 @@
 
                 <!-- Add new token entry -->
                 <ul class="dropdown-menu">
-                <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'create')): ?>
+                <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'create') || Permission::model()->hasGlobalPermission('surveys', 'update')): ?>
                 <li>
                     <a class="pjax" href="<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$oSurvey->sid"); ?>" >
                         <span class="icon-add"></span>
@@ -48,7 +48,7 @@
                 <?php endif; ?>
 
                 <!-- Import tokens -->
-                <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'import')): ?>
+                <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'import') || Permission::model()->hasGlobalPermission('surveys', 'update')): ?>
                     <li role="separator" class="divider"></li>
                     <li>
                         <small><?php eT("Import participants from:"); ?></small>
