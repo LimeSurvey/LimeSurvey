@@ -10,6 +10,9 @@
 
 <!-- answer -->
 <ul class="{{ coreClass }} list-unstyled form-horizontal" role="group" aria-labelledby="ls-question-text-{{ basename }}">
-    {{ sRows }}
+    {% for aRow in aRows %}
+        {% set rowTemplate = (aRow.textarea ? 'survey/questions/answer/multipleshorttext/rows/answer_row_textarea.twig' : 'survey/questions/answer/multipleshorttext/rows/answer_row_inputtext.twig') %}
+        {% include rowTemplate with aRow only %}
+    {% endfor %}
 </ul>
 <!-- end of answer -->

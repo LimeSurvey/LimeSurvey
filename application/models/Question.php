@@ -922,6 +922,8 @@ class Question extends LSActiveRecord
             case Question::QT_R_RANKING_STYLE: return new RenderRanking($aFieldArray);
             case Question::QT_M_MULTIPLE_CHOICE: return new RenderMultipleChoice($aFieldArray);
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: return new RenderMultipleChoiceWithComments($aFieldArray);
+            case Question::QT_I_LANGUAGE: return new RenderLanguageSelector($aFieldArray);
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT: return new RenderMultipleShortText($aFieldArray);
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return 'arrays/5point';
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return 'arrays/10point';
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return 'arrays/yesnouncertain';
@@ -929,10 +931,8 @@ class Question extends LSActiveRecord
             case Question::QT_F_ARRAY_FLEXIBLE_ROW: return 'arrays/multiflexi';
             case Question::QT_G_GENDER_DROPDOWN: return 'gender';
             case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: return 'arrays/multiflexi';
-            case Question::QT_I_LANGUAGE: return 'language';
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: return 'multiplenumeric';
             case Question::QT_N_NUMERICAL: return 'numerical';
-            case Question::QT_Q_MULTIPLE_SHORT_TEXT: return 'multipleshorttext';
             case Question::QT_S_SHORT_FREE_TEXT: return 'shortfreetext';
             case Question::QT_T_LONG_FREE_TEXT: return 'longfreetext';
             case Question::QT_U_HUGE_FREE_TEXT: return 'longfreetext';

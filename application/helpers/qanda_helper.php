@@ -75,19 +75,19 @@ function setNoAnswerMode($thissurvey)
 * @return array Array like [array $qanda, array $inputnames] where
 *               $qanda has elements [
 *                 $qtitle (question_text) : array [
-                        all : string; complete HTML?; all has been added for backwards compatibility with templates that use question_start.pstpl (now redundant)
-                        'text'               => $qtitle, question?? $ia[3]?
-                        'code'               => $ia[2] or title??
-                        'number'             => $number
-                        'help'               => ''
-                        'mandatory'          => ''
-                        man_message : string; message when mandatory is not answered
-                        'valid_message'      => ''
-                        file_valid_message : string; only relevant for file upload
-                        'class'              => ''
-                        'man_class'          => ''
-                        'input_error_class'  => ''              // provides a class.
-                        'essentials'         => ''
+*                        all : string; complete HTML?; all has been added for backwards compatibility with templates that use question_start.pstpl (now redundant)
+*                        'text'               => $qtitle, question?? $ia[3]?
+*                        'code'               => $ia[2] or title??
+*                        'number'             => $number
+*                        'help'               => ''
+*                        'mandatory'          => ''
+*                        man_message : string; message when mandatory is not answered
+*                        'valid_message'      => ''
+*                        file_valid_message : string; only relevant for file upload
+*                        'class'              => ''
+*                        'man_class'          => ''
+*                        'input_error_class'  => ''              // provides a class.
+*                        'essentials'         => ''
 *                 ]
 *                 $answer ?
 *                 'help' : string
@@ -145,21 +145,14 @@ function retrieveAnswers($ia)
         case Question::QT_R_RANKING_STYLE: //RANKING STYLE
         case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
         case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-
-            $oRenderer = $oQuestion->getRenderererObject($ia);
-            
-            $values = $oRenderer->render();
-            break;
-
-
         case Question::QT_I_LANGUAGE: //Language Question
-            $values = do_language($ia);
-            break;
-            
-        case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
-            $values = do_file_upload($ia);
-            break;
-
+        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
+        
+        $oRenderer = $oQuestion->getRenderererObject($ia);
+        
+        $values = $oRenderer->render();
+        break;
+        
         case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
             $values = do_multipleshorttext($ia);
             break;
@@ -230,6 +223,10 @@ function retrieveAnswers($ia)
 
         case Question::QT_ASTERISK_EQUATION: // Equation
             $values = do_equation($ia);
+            break;
+                    
+            case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
+            $values = do_file_upload($ia);
             break;
     }
 

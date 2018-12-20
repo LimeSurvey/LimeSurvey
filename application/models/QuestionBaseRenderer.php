@@ -29,6 +29,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     
     protected $aFieldArray;
     protected $aQuestionAttributes;
+    protected $aSurveySessionArray;
     protected $mSessionValue;
     protected $sLanguage;
     
@@ -47,8 +48,9 @@ abstract class QuestionBaseRenderer extends StaticModel
         $this->oQuestion = Question::model()->findByPk($aFieldArray[0]);
         $this->bRenderDirect = $bRenderDirect;
         $this->sLanguage = $_SESSION['survey_'.$this->oQuestion->sid]['s_lang'];
-        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);;
-        $this->mSessionValue = @$this->setDefaultIfEmpty($_SESSION['survey_'.$this->oQuestion->sid][$this->sSGQA], '');
+        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
+        $this->aSurveySessionArray = $_SESSION['survey_'.$this->oQuestion->sid];
+        $this->mSessionValue = @$this->setDefaultIfEmpty($this->aSurveySessionArray[$this->sSGQA], '');
     }
     
     protected function getTimeSettingRender()
@@ -325,7 +327,60 @@ abstract class QuestionBaseRenderer extends StaticModel
         return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
 
     }
+    /**
+    * Find the label / input width
+    * @param string|int $labelAttributeWidth label width from attribute
+    * @param string|int $inputAttributeWidth input width from attribute
+    * @return array labelWidth as integer,inputWidth as integer,defaultWidth as boolean
+    */              
+    public function getLabelInputWidth()
+    {
+        $labelAttributeWidth = trim($this->aQuestionAttributes['label_input_columns']);
+        $inputAttributeWidth = trim($this->aQuestionAttributes['text_input_columns']);
 
+        $attributeInputContainerWidth = intval($inputAttributeWidth);
+        if ($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12) {
+            $attributeInputContainerWidth = null;
+        }
+
+        $attributeLabelWidth =  ($labelAttributeWidth === 'hidden')
+            ? 0 
+            : (
+                ($labelAttributeWidth < 1 || $labelAttributeWidth > 12) 
+                ? null 
+                : intval($labelAttributeWidth)
+            );
+        
+        if ($attributeInputContainerWidth === null && $attributeLabelWidth === null) {
+            $sInputContainerWidth = 8;
+            $sLabelWidth = 4;
+            $defaultWidth = true;
+        } else {
+
+            if ($attributeInputContainerWidth !== null) {
+                $sInputContainerWidth = $attributeInputContainerWidth;
+            } elseif ($attributeLabelWidth == 12) {
+                $sInputContainerWidth = 12;
+            } else {
+                $sInputContainerWidth = 12 - $attributeLabelWidth;
+            }
+
+            if (!is_null($attributeLabelWidth)) {
+                $sLabelWidth = $attributeLabelWidth;
+            } elseif ($attributeInputContainerWidth == 12) {
+                $sLabelWidth = 12;
+            } else {
+                $sLabelWidth = 12 - $attributeInputContainerWidth;
+            }
+
+            $defaultWidth = false;
+        }
+        return array(
+            'sLabelWidth' => $sLabelWidth,
+            'sInputContainerWidth' => $sInputContainerWidth,
+            'defaultWidth' => $defaultWidth,
+        );
+    }
 
     abstract public function getMainView();
     abstract public function getRows();
