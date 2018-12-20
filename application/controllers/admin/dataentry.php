@@ -479,7 +479,9 @@ class dataentry extends Survey_Common_Action
             $results = array();
             if ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 $idresult = Response::model($surveyid)->findByPk($id);
-                $results[] = $idresult->attributes;
+                foreach ($idresult as $idrow) {
+                    $results[] = $idrow;
+                }
             } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 if (isset($_GET['public']) && $_GET['public'] == "true") {
                     $password = hash('sha256',Yii::app()->request->getParam('accesscode'));
