@@ -410,7 +410,6 @@ class QuestionTemplate extends CFormModel
 
                         // Get the config file and check if template is available
                         $oConfig = self::getTemplateConfig($sFullPathToQuestionTemplate);
-
                         if (is_object($oConfig) && isset($oConfig->engine->show_as_template) && $oConfig->engine->show_as_template) {
                             if (!empty($oConfig->metadata->title)){
                                 $aQuestionTemplates[$file]['title'] = json_decode(json_encode($oConfig->metadata->title), TRUE)[0];
@@ -418,11 +417,18 @@ class QuestionTemplate extends CFormModel
                                 $templateName = $file;
                                 $aQuestionTemplates[$file]['title'] = $templateName;
                             }
-
                             if (!empty($oConfig->files->preview->filename)){
-                                $aQuestionTemplates[$file]['preview'] = json_decode(json_encode($oConfig->files->preview->filename), TRUE)[0];
-                            } else {
-                                $aQuestionTemplates[$file]['preview'] = \LimeSurvey\Helpers\questionHelper::getQuestionThemePreviewUrl($type);
+                                $fileName = json_decode(json_encode($oConfig->files->preview->filename), TRUE)[0];
+                                $previewPath = $sFullPathToQuestionTemplate."/assets/".$fileName;
+                                if(is_file($previewPath) && LSYii_ImageValidator::validateImage($previewPath)) {
+                                    $aQuestionTemplates[$file]['preview'] = App()->getAssetManager()->publish($previewPath);
+                                } else {
+                                    /* Log it a theme.question.$oConfig->name as error, review ? */
+                                    Yii::log("Unable to use $fileName for preview in $sFullPathToQuestionTemplate/assets/",'error','theme.question.'.$oConfig->metadata->name);
+                                }
+                            }
+                            if(empty($aQuestionTemplates[$file]['preview'])) {
+                                $aQuestionTemplates[$file]['preview'] = $aQuestionTemplates['core']['preview'];
                             }
                         }
                     }
