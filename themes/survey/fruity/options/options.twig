@@ -591,36 +591,6 @@
                         </div>
                     </div>
                 </div>
-                {# always activate no more tables #}
-                <div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
-                    <div class='form-group row'>
-                        <label for='simple_edit_options_notables' class='control-label'>{{ gT("Break tables") }}</label>
-                        <div class='col-sm-12'>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default">
-                                    <input type='radio' name='notables' value='2' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                    {{ gT("Always on") }}
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type='radio' name='notables' value='1' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                    {{ gT("Small screens") }}
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type='radio' name='notables' value='0' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                    {{ gT("Off") }}
-                                </label>
-                                {# If this is a root template setting, don't show the inherit button #}
-                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                                    <label class="btn btn-default">
-                                        <input type='radio' name='notables' value='inherit' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
-                                        {{ gT("Inherit") }}
-                                    </label>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 {# questionhelptextposition #}
                 <div class='col-sm-12 col-md-4 col-lg-3'>
                     <div class='form-group row'>
@@ -646,9 +616,13 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class='row action_hide_on_inherit'>
+                <hr/>
+            </div>
+            <div class='row action_hide_on_inherit'>
                 {# Show popups #}
-                <div class='col-sm-12 col-md-4 col-lg-4'>
+                <div class='col-xs-12 col-sm-6'>
                     <div class='form-group row'>
                         <label for='simple_edit_options_showpopups' class='control-label' {{ showpopups_disabled_qtip }}>{{ gT("Show popups") }}</label>
                         <div class='col-sm-12'>
@@ -676,8 +650,37 @@
                         </div>
                     </div>
                 </div>
+                
+                {# always activate no more tables #}
+                <div class='col-xs-12 col-sm-6'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_notables' class='control-label'>{{ gT("Break tables") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type='radio' name='notables' value='2' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
+                                    {{ gT("Always on") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='notables' value='1' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
+                                    {{ gT("Small screens") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type='radio' name='notables' value='0' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
+                                    {{ gT("Off") }}
+                                </label>
+                                {# If this is a root template setting, don't show the inherit button #}
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='notables' value='inherit' class='selector_option_radio_field simple_edit_options_notables ' data-id='notables'/>
+                                        {{ gT("Inherit") }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
             <div class='row action_hide_on_inherit'>
                 <hr/>
             </div>
