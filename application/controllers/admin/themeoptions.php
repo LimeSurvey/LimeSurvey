@@ -335,8 +335,8 @@ class themeoptions  extends Survey_Common_Action
      */
     private function _updateCommon(TemplateConfiguration $model, $sid = null,$gsid = null)
     {
-        /* set the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
-        $oTemplate = Template::model()->getInstance($model->template_name,$sid,$iSurveyGroupId);
+        /* init the template to current one if option use some twig function (imageSrc for example) mantis #14363 */
+        Template::model()->getInstance($model->template_name,$sid,$gsid);
 
         $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
         $templateOptionPage           = $oModelWithInheritReplacement->optionPage;

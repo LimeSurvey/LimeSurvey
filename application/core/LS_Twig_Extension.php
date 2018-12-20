@@ -269,14 +269,31 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function image($sImagePath, $alt = '', $htmlOptions = array( ))
     {
+        $sUrlImgAsset = self::imageSrc($sImagePath,'');
+        if(!$sUrlImgAsset) {
+            return '';
+        }
+        return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
+    }
+
+    /**
+     * @var $sImagePath  string                 the image path relative to the template root
+     * @var $default     string|false                 an alternative image if the provided one cant be found
+     * @return string|false
+     */
+    public static function imageSrc($sImagePath, $default = false)
+    {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
-        $sUrlImgAsset = '';
+        $sUrlImgAsset =  $sImagePath;
 
         if ($oTemplate) {
             $sFullPath = $oTemplate->path.$sImagePath;
         } else {
             if(!is_file(Yii::app()->getConfig('rootdir').'/'.$sImagePath)) {
+                if($default) {
+                    return self::imageSrc($default);
+                }
                 return false;
             }
             $sFullPath = Yii::app()->getConfig('rootdir').'/'.$sImagePath;
@@ -290,38 +307,6 @@ class LS_Twig_Extension extends Twig_Extension
         }
 
         $sUrlImgAsset = self::assetPublish($sFullPath);
-
-        return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
-    }
-
-    /**
-     * @var $sImagePath  string                 the image path relative to the template root
-     * @var $default     string                 an alternative image if the provided one cant be found
-     * @return string
-     */
-    /* @TODO => implement the default in a secure way */
-    public static function imageSrc($sImagePath, $default = './files/pattern.png')
-    {
-        // Reccurence on templates to find the file
-        $oTemplate = self::getTemplateForRessource($sImagePath);
-        $sUrlImgAsset =  $sImagePath;
-
-        if ($oTemplate) {
-            $sFullPath = $oTemplate->path.$sImagePath;
-        } else {
-            $sFullPath = Yii::app()->getConfig('rootdir').'/'.$sImagePath;
-        }
-
-        // check if this is a true image
-        $checkImage = LSYii_ImageValidator::validateImage($sFullPath  );
-
-        if (!$checkImage['check']) {
-            return false;
-        }
-
-        $sUrlImgAsset = self::assetPublish($sFullPath);
-
-        $myTemplateAsset = $sUrlImgAsset;
         return $sUrlImgAsset;
     }
 
