@@ -2467,6 +2467,12 @@ input[type="file"].form-control {
 .currentQuestionTypeImageContainer img {
   max-width: 100%;
 }
+
+#accordion-container .panel-heading>a {
+  width:100%;
+  display: block;
+}
+
 /*custom margin and padding*/
 
 .custom.custom-no-padding {
