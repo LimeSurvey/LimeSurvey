@@ -10,11 +10,10 @@ var RankingQuestion = function (options) {
     var max_answers = options.max_answers,
         min_answers = options.min_answers,
         rankingName = options.rankingName,
-        showpopups = options.showpopups || true,
-        samechoiceheight = options.samechoiceheight || true,
-        samelistheight = options.samelistheight || true,
+        showpopups = (typeof options.showpopups == 'undefined') ? options.showpopups : true,
+        samechoiceheight = (typeof options.samechoiceheight == 'undefined') ? options.samechoiceheight : true,
+        samelistheight = (typeof options.samelistheight == 'undefined') ? options.samelistheight : true,
         questionId = options.questionId;
-
     //define reused variables
     var relevancename= "relevance"+rankingName,
         rankingID = "javatbd" + rankingName;
@@ -56,6 +55,7 @@ var RankingQuestion = function (options) {
         $('#question' + questionId + ' .ls-remove').remove();
         // Adapt choice and list height
         fixChoiceListHeight();
+        
     },
     fixScreenReaderCompatibility = function(){
         // Hide the default answers list but display for media oral or screen reader
@@ -149,23 +149,23 @@ var RankingQuestion = function (options) {
     fixChoiceListHeight = function() {
         if (samechoiceheight) {
             var maxHeight = 0;
-            $('#question' + questionId + ' .list-samechoiceheight .ls-choice').each(function () {
+            $('#question' + questionId + ' .ls-choice').each(function () {
                 if ($(this).actual('height') > maxHeight) {
                     maxHeight = $(this).actual('height');
                 }
             });
-            $('#question' + questionId + ' .list-samechoiceheight .ls-choice').height(maxHeight);
+            $('#question' + questionId + ' .ls-choice').css("min-height",maxHeight+"px");
         }
 
         if (samelistheight) {
             var totalHeight = 0;
-            $('#question' + questionId + ' .list-samelistheight .ls-choice').each(function () {
+            $('#question' + questionId + ' .ls-choice').each(function () {
                 totalHeight = totalHeight + $(this).actual('outerHeight', {
                     includeMargin: true
                 }); /* Border not inside */
             });
             /* Add the padding to min-height */
-            $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).height(totalHeight);
+            $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css("min-height",totalHeight+"px");
         }
     },
 
