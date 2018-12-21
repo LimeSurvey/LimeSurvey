@@ -52,12 +52,12 @@
                             {
                                 if ($entry['is_folder']){
                                 ?>
-                                <li><?php echo gT("Folder:") . " " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
+                                <li><?php printf(gT("Folder: %s"),CHtml::encode($entry["filename"])); ?></li>
                                 <?php
                                 }
                                 else
                                 { ?>
-                                <li><?php echo gT("File:") . " " . htmlspecialchars($entry["filename"],ENT_QUOTES,'utf-8'); ?></li>
+                                <li><?php printf(gT("File: %s"),CHtml::encode($entry["filename"])); ?></li>
 
 
                                 <?php
@@ -74,7 +74,7 @@
                             foreach ($aErrorFilesInfo as $entry)
                             {
                             ?>
-                            <li><?php echo gT("File:") . " " . $entry["filename"] ?></li>
+                            <li><?php printf(gT("File: %s"),CHtml::encode($entry["filename"])); ?></li>
                             <?php
                             }
                         }

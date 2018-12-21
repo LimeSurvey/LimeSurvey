@@ -126,7 +126,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                 <?php foreach ($otherfiles as $fileName => $file) { ?>
                     <div class="row other-files-row">
                         <div class="col-sm-9 other-files-filename">
-                            <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
+                            <?php echo CHtml::encode((empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1)) ;?>
                         </div>
                         <div class="col-sm-3">
                             <?php //TODO: make it ajax and less messy ?>
