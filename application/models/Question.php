@@ -1132,4 +1132,17 @@ class Question extends LSActiveRecord
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
     }
 
+    public function getQuestionAttribute($name, $default = null)
+    {
+        if ($this->questionAttributes) {
+            foreach ($this->questionAttributes as $record) {
+                if ($record->attribute == $name) {
+                    return $record->value;
+                }
+            }
+        }
+
+        return $default;
+    }
+
 }

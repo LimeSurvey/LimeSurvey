@@ -551,13 +551,28 @@ class SurveyAdmin extends Survey_Common_Action
             foreach ($aGroups as $group) {
                 $curGroup = $group->attributes;
                 $curGroup['link'] = $this->getController()->createUrl("admin/questiongroups/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid]);
-                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'], "language"=>$baselang, 'parent_qid'=>0), array('order'=>'question_order ASC'));
+
+                $group->aQuestions = Question::model()->with('questionAttributes')->findAllByAttributes(
+                    array(
+                        'sid' => $iSurveyID,
+                        'gid' => $group['gid'],
+                        'language' => $baselang,
+                        'parent_qid' => 0
+                    ),
+                    array(
+                        'order'=>'question_order ASC'
+                    )
+                );
+
+                var_dump($group->aQuestions); exit;
+
                 $curGroup['questions'] = array();
                 foreach ($group->aQuestions as $question) {
                     if (is_object($question)) {
                         $curQuestion = $question->attributes;
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questions/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($question->question, true);
+                        $curQuestion['hidden'] = intval($question->getQuestionAttribute('hidden', 0));
                         $curGroup['questions'][] = $curQuestion;
                     }
 
