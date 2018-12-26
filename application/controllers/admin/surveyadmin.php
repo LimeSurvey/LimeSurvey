@@ -564,8 +564,6 @@ class SurveyAdmin extends Survey_Common_Action
                     )
                 );
 
-                var_dump($group->aQuestions); exit;
-
                 $curGroup['questions'] = array();
                 foreach ($group->aQuestions as $question) {
                     if (is_object($question)) {
