@@ -264,7 +264,7 @@ abstract class Token extends Dynamic
             throw new \Exception("This function should only be called like: Token::model(12345)->generateTokens");
         }
         $surveyId = $this->dynamicId;
-        $iTokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
+        $iTokenLength = isset($this->survey) && is_numeric($this->survey->oOptions->tokenlength) ? $this->survey->oOptions->tokenlength : 15;
 
         $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
         //Exit early if there are not empty tokens
