@@ -66,147 +66,12 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
                 <?php endif;?>
 
-                <?php
-                    // the massive actions dropup button
-                    $massiveAction = App()->getController()->renderPartial('/admin/responses/massive_actions/_selector', array(), true, false);
-
-                    // The first few colums are fixed.
-                    // Specific columns at start
-                    $aColumns = array(
-                        array(
-                            'id'=>'id',
-                            'class'=>'CCheckBoxColumn',
-                            'selectableRows' => '100',
-                        ),
-                        array(
-                            'class'=>'bootstrap.widgets.TbButtonColumn',
-                            'template'=>'{detail}{quexmlpdf}{edit}{downloadfiles}{deletefiles}{deleteresponse}',
-                            //~ 'htmlOptions' => array('class' => 'text-left response-buttons'),
-                            'buttons'=> $model->getGridButtons('responses-grid'),
-                        ),
-                        array(
-                            'header' => 'id',
-                            'name' => 'id',
-                        ),
-
-                        array(
-                            'header' => 'seed',
-                            'name' => 'seed'
-                        ));
-
-                        $aColumns[] = array(
-                            'header'=>'lastpage',
-                            'name'=>'lastpage',
-                            'type'=>'number',
-                            'filter'=>TbHtml::textField(
-                                'SurveyDynamic[lastpage]',
-                                $model->lastpage)
-                        );
-
-                        $aColumns[] = array(
-                            'header'=>gT("completed"),
-                            'name'=>'completed_filter',
-                            'value'=>'$data->completed',
-                            'type'=>'raw',
-                            'filter'=>TbHtml::dropDownList(
-                                'SurveyDynamic[completed_filter]',
-                                $model->completed_filter,
-                                array(''=>gT('All'),'Y'=>gT('Yes'),'N'=>gT('No')))
-                        );
-
-                        //add token to top of list if survey is not private
-                        if ($bHaveToken)
-                        {
-                            $aColumns[] = array(
-                                'header'=>'token',
-                                'name'=>'token',
-                                'type'=>'raw',
-                                'value'=>'$data->tokenForGrid',
-
-                            );
-
-                            $aColumns[] = array(
-                                'header'=>gT("First name"),
-                                'name'=>'tokens.firstname',
-                                'id'=>'firstname',
-                                'type'=>'raw',
-                                'value'=>'$data->firstNameForGrid',
-                                'filter'=>TbHtml::textField(
-                                    'SurveyDynamic[firstname_filter]',
-                                    $model->firstname_filter)
-                            );
-
-                            $aColumns[] = array(
-                                'header'=>gT("Last name"),
-                                'name'=>'tokens.lastname',
-                                'type'=>'raw',
-                                'id'=>'lastname',
-                                'value'=>'$data->lastNameForGrid',
-                                'filter'=>TbHtml::textField(
-                                    'SurveyDynamic[lastname_filter]',
-                                    $model->lastname_filter)
-                            );
-
-                            $aColumns[] = array(
-                                'header'=>gT("Email"),
-                                'name'=>'tokens.email',
-                                'id'=>'email',
-                                'filter'=>TbHtml::textField(
-                                    'SurveyDynamic[email_filter]',
-                                    $model->email_filter)
-                            );
-                        }
-
-                        $aColumns[] = array(
-                            'header'=>'startlanguage',
-                            'name'=>'startlanguage',
-                        );
-
-                   // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
-                   // All other columns are based on the questions.
-                   // An array to control unicity of $code (EM code)
-                    foreach($model->metaData->columns as $column)
-                    {
-                        if(!in_array($column->name, $aDefaultColumns))
-                        {
-                            $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true)); // This must be unique ......
-                            $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
-                            /* flat and ellipsize all part of question (sub question etc …, separate by br . mantis #14301 */
-                            $colDetails = viewHelper::getFieldText($fieldmap[$column->name],array('abbreviated'=>$model->ellipsize_header_value,'separator'=>array('<br>','')));
-                            /* Here we strip all tags, and separate with hr since we allow html (in popover), maybe use only viewHelper::purified ? But remind XSS. mantis #14301 */
-                            $colTitle = viewHelper::getFieldText($fieldmap[$column->name],array('afterquestion'=>"<hr>"));
-
-                            $aColumns[]=
-                                array(
-                                    'header' => '<span data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="'.$colName.'" data-content="'.$colTitle.'" data-html="1">'.$colName.' <br/> '.$colDetails.'</span>',
-                                    'headerHtmlOptions'=>array('style'=>'min-width: 350px;'),
-                                    'name' => $column->name,
-                                    'type' => 'raw',
-                                    'value' => '$data->getExtendedData("'.$column->name.'", "'.$language.'", "'.$base64jsonFieldMap.'")',
-                                );
-                        }
-                    }
-
-                    $this->widget('bootstrap.widgets.TbGridView', array(
-                        'dataProvider'  => $model->search(),
-                        'filter'        => $model,
-                        'columns'       => $aColumns,
-                        'itemsCssClass' =>'table-striped',
-                        'id'            => 'responses-grid',
-                        'ajaxUpdate'    => 'responses-grid',
-                        'ajaxType'      => 'POST',
-                        'afterAjaxUpdate'=>'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-toggle=\'popover\']").popover({container:\'body\'}); }',
-                        'template'      => "<div class='push-grid-pager'>{items}\n</div><div id='ListPager'><div class=\"col-sm-12\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-12 pager-container ls-ba \">{pager}</div><div class=\"col-sm-12 summary-container\">{summary}</div></div>",
-                        'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
-                            CHtml::dropDownList(
-                                'pageSize',
-                                $pageSize,
-                                Yii::app()->params['pageSizeOptions'],
-                                array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))
-                            ),
-                    ));
-
-                ?>
+                <?php $this->widget('application.widgets.grid.ResponseGridView', array(
+                    'model' => $model,
+                    'survey' => $survey,
+                    'language' => $language,
+                    'pageSize' => $pageSize
+                )); ?>
             </div>
 
             <!-- To update rows per page via ajax setSession-->
@@ -263,11 +128,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <div style="display: none;">
-<?php
-Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
-    'name' => "no",
-    'id'   => "no",
-    'value' => '',
-));
-?>
+    <?php $this->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
+        'name' => "no",
+        'id'   => "no",
+        'value' => '',
+    )); ?>
 </div>
