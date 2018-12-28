@@ -409,6 +409,7 @@ class responses extends Survey_Common_Action
             // Basic datas for the view
             $aData                      = $this->_getData($iSurveyId);
             $aData['surveyid']          = $iSurveyId;
+            $aData['survey']            = $survey;
             $aData['menu']['edition']   = false;
             $aData['sidemenu']['state'] = false;
             $aData['issuperadmin']      = Permission::model()->hasGlobalPermission('superadmin');
