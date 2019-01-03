@@ -2473,6 +2473,11 @@ input[type="file"].form-control {
   display: block;
 }
 
+#accordion_questionTypeSelector .panel-title>a {
+  width:100%;
+  display: block;
+}
+
 /*custom margin and padding*/
 
 .custom.custom-no-padding {
