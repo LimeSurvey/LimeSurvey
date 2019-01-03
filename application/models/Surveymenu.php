@@ -61,7 +61,7 @@ class Surveymenu extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'surveymenuEntries' => array(self::HAS_MANY, 'SurveymenuEntries', 'menu_id'),
-            'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
+            'survey' => array(self::BELONGS_TO, 'Survey', ['survey_id' => 'sid']),
             'user' => array(self::BELONGS_TO, 'User', 'user_id'),
             'parent' => array(self::BELONGS_TO, 'Surveymenu', 'parent_id'),
         );
@@ -88,11 +88,10 @@ class Surveymenu extends LSActiveRecord
 
     public static function staticRemoveMenu($menuName, $recursive = false)
     {
-
         $oSurveymenu = Surveymenu::model()->find('name=:name', [':name'=>$menuName]);
 
         if ($recursive !== true && count($oSurveymenu->surveymenuEntries) > 0) {
-                return false;
+            return false;
         }
 
         foreach ($oSurveymenu->surveymenuEntries as $oSurveymenuEntry) {
@@ -207,8 +206,6 @@ class Surveymenu extends LSActiveRecord
             . "</button>";
 
         if (Permission::model()->hasGlobalPermission('settings', 'update')) {
-
-
             $editData = array(
                 'action_surveymenu_editModal',
                 'text-danger',
@@ -324,18 +321,16 @@ class Surveymenu extends LSActiveRecord
             $collidingMenu->save();
         }
         return parent::onAfterSave($event);
-
     }
 
-        /**
-         * Method to restore the default surveymenu entries
-         * This method will fail if the surveymenus have been tempered, or wrongly set
-         *
-         * @return boolean
-         */
+    /**
+     * Method to restore the default surveymenu entries
+     * This method will fail if the surveymenus have been tempered, or wrongly set
+     *
+     * @return boolean
+     */
     public function restoreDefaults()
     {
-
         $oDB = Yii::app()->db;
         switchMSSQLIdentityInsert('surveymenu', true);
         $oTransaction = $oDB->beginTransaction();
