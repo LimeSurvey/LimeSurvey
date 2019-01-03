@@ -132,7 +132,10 @@ function templateExtractFilter($p_event, &$p_header)
     $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
     $aAllowExtensions[] = 'twig';
     $info = pathinfo($p_header['filename']);
-
+    if($p_header['folder'] && $p_header['filename'][0] === ".") {
+        // Don't include hidden folder , same with file ? 
+        return 0;
+    }
     if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'], $aAllowExtensions)) {
         return 1;
     } else {
