@@ -52,8 +52,9 @@ class themes extends Survey_Common_Action
 
             $zipfile = "$tempdir/$templatename.zip";
             Yii::app()->loadLibrary('admin.pclzip');
+            Yii::app()->loadHelper('admin/template');
             $zip = new PclZip($zipfile);
-            $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oEditedTemplate->path);
+            $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oEditedTemplate->path,PCLZIP_CB_PRE_ADD, 'templateExtractFilter');
 
             if (is_file($zipfile)) {
                 // Send the file for download!
@@ -68,6 +69,9 @@ class themes extends Survey_Common_Action
 
                 // Delete the temporary file
                 unlink($zipfile);
+            } else {
+                Yii::app()->setFlashMessage($zip->errorInfo(true), 'error');
+                $this->getController()->redirect(array("admin/themeoptions"));
             }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
