@@ -1680,12 +1680,17 @@ class dataentry extends Survey_Common_Action
             } else {
                 $sDataEntryLanguage = $lang;
             }
-
             $langlistbox = languageDropdown($surveyid, $sDataEntryLanguage);
             $thissurvey = getSurveyInfo($surveyid);
 
+            $aSurveyOption = array(
+                'startlanguage' => $sDataEntryLanguage,
+            );
+            // Unsure we use EM with current sid and language
+            LimeExpressionManager::SetSurveyId($surveyid);
+            LimeExpressionManager::SetEMLanguage($sDataEntryLanguage);
             //This is the default, presenting a blank dataentry form
-            LimeExpressionManager::StartSurvey($surveyid, 'survey', null, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
+            LimeExpressionManager::StartSurvey($surveyid, 'survey', $aSurveyOption, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
             LimeExpressionManager::NavigateForwards();
 
             $aData = [];
@@ -1984,19 +1989,19 @@ class dataentry extends Survey_Common_Action
         if (!empty($qidattributes['array_filter'])) {
 
             /** @var Question $question */
-            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'sid' => $surveyid));
             if ($question) {
                 $output .= "\n<p class='extrahelp'>
-                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"), $qidattributes['array_filter'], flattenText(breakToNewline($question->question)))."
+                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"), $qidattributes['array_filter'], flattenText(breakToNewline($question->questionL10ns[$surveyprintlang]->question)))."
                 </p>\n";
             }
         }
         if (!empty($qidattributes['array_filter_exclude'])) {
             /** @var Question $question */
-            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'sid' => $surveyid));
             if ($question) {
                 $output .= "\n    <p class='extrahelp'>
-                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"), $qidattributes['array_filter_exclude'], breakToNewline($question->question))."
+                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"), $qidattributes['array_filter_exclude'], breakToNewline($question->questionL10ns[$surveyprintlang]->question))."
                 </p>\n";
             }
         }

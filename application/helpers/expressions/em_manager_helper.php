@@ -3639,7 +3639,7 @@
                 unset($_SESSION['LEMforceRefresh']);
                 $forceRefresh=true;
             }
-            else if ($forceRefresh===false && isset($this->knownVars) && !$this->sPreviewMode ) {
+            else if ($forceRefresh===false && !empty($this->knownVars) && !$this->sPreviewMode ) {
                 return false;   // means that those variables have been cached and no changes needed
             }
             $now = microtime(true);
@@ -8037,7 +8037,7 @@
             // Now figure out which variables have not been declared (those not on the current page)
             $undeclaredJsVars = array();
             $undeclaredVal = array();
-            if ($LEM->knownVars)
+            if (!empty($LEM->knownVars))
             {
                 if (!$LEM->allOnOnePage)
                 {
