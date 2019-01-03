@@ -1645,8 +1645,7 @@ class questions extends Survey_Common_Action
             foreach ($aUsedLanguages as $sLanguage) {
                 $aResult[$sLanguage] = $oLabelSet->attributes;
                 foreach ($oLabelSet->labels as $oLabel) {
-                    if($oLabel->language === $sLanguage)
-                        $aResult[$sLanguage]['labels'][] = $oLabel->attributes;
+                    $aResult[$sLanguage]['labels'][] = $oLabel->getTranslated($sLanguage);
                 };
                 $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
             };
