@@ -382,6 +382,21 @@ abstract class QuestionBaseRenderer extends StaticModel
         );
     }
 
+    /**
+    * Include Keypad headers
+    */
+    function includeKeypad()
+    {
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party')."jquery-keypad/jquery.keypad.alt.css");
+        
+        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party').'jquery-keypad/jquery.plugin.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
+        $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad.min.js', 'position' => LSYii_ClientScript::POS_BEGIN];
+        $localefile = Yii::app()->getConfig('rootdir').'/third_party/jquery-keypad/jquery.keypad-'.App()->language.'.js';
+        if (App()->language != 'en' && file_exists($localefile)) {
+            $this->aScriptFiles[] = ['path' => Yii::app()->getConfig('third_party').'jquery-keypad/jquery.keypad-'.App()->language.'.js', 'position' => LSYii_ClientScript::POS_BEGIN];
+        }
+    }
+
     abstract public function getMainView();
     abstract public function getRows();
     abstract public function render();
