@@ -26,12 +26,13 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
     ];
     
     
+    private $sSeparator;
+    private $useSliderLayout;
+
     private $sCoreClasses = "ls-answers subquestion-list questions-list ";
-    private $useSliderLayout = false;
     private $inputnames = [];
     private $widthArray = [];
     private $sliderOptionsArray = [];
-    private $sSeparator = '';
     private $extraclass = '';
     private $maxlength = '';
     private $inputsize = null;
@@ -45,10 +46,11 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         $this->setSubquestions();
         $this->setPrefixAndSuffix();
         
-        $this->widthArray = $this->getLabelInputWidth();
         $this->sSeparator   = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
-        $this->extraclass   .= " numberonly";
         $this->useSliderLayout = $this->aQuestionAttributes['slider_layout'] == 1; 
+        
+        $this->widthArray = $this->getLabelInputWidth();
+        $this->extraclass   .= " numberonly";
 
         if (intval($this->setDefaultIfEmpty($this->aQuestionAttributes['maximum_chars'], 0)) > 0) {
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
@@ -77,6 +79,12 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             $this->sliderOptionsArray['slider_mintext'] = $this->sliderOptionsArray['slider_min'];
             $this->sliderOptionsArray['slider_max'] = (is_numeric($this->sliderOptionsArray['slider_max'])) ? $this->sliderOptionsArray['slider_max'] : 100;
             $this->sliderOptionsArray['slider_maxtext'] = $this->sliderOptionsArray['slider_max'];
+            
+            //Eventually reset numbers with wrong decimal separator
+            if($this->sSeparator != '.') {
+                $this->sliderOptionsArray['slider_step']    = preg_replace('/'.$this->sSeparator.'/','.',$this->sliderOptionsArray['slider_step']);
+            }
+
             $this->sliderOptionsArray['slider_step']    = (is_numeric($this->sliderOptionsArray['slider_step'])) ? $this->sliderOptionsArray['slider_step'] : 1;
             $this->sliderOptionsArray['slider_default'] = (is_numeric($this->sliderOptionsArray['slider_default'])) ? $this->sliderOptionsArray['slider_default'] : "";
             $this->sliderOptionsArray['slider_handle']  = $this->handleOptions[(trim($this->aQuestionAttributes['slider_handle']))];
@@ -98,6 +106,8 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             } else {
                 $this->sliderOptionsArray['slider_reversed'] = 'false';
             }
+
+
         } else {
             $this->sCoreClasses .= " text-list number-list";
             $this->sliderOptionsArray = [

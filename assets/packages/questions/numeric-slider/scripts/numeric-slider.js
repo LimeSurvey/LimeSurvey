@@ -23,7 +23,7 @@ var LSSlider = function (options) {
         setPosition = options.setPosition || '',
         custom_handle = options.custom_handle || null,
         settings = {
-            value: options.value || null,
+            value: options.value || options.position || null,
             min: options.min || '0',
             max: options.max || '1',
             step: options.step || '1',

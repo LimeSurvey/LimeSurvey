@@ -22,7 +22,6 @@
             {% include 'survey/questions/answer/multiplenumeric/empty.twig' %}
         {% else %}
             {% for aRow in aRows %}
-                {{ dump(aRow) }}
                 {% include rowTemplate with aRow only %}
             {% endfor %}
         {% endif %}
