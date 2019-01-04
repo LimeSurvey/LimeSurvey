@@ -18,7 +18,7 @@
 
 <li class="dropdown mega-dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <span class="icon-settings" ></span>
+        <span class="fa fa-cogs" ></span>
         <?php eT('Configuration');?>
         <span class="caret"></span>
     </a>
