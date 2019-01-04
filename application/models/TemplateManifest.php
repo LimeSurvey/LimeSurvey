@@ -610,8 +610,6 @@ class TemplateManifest extends TemplateConfiguration
             $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
             $sXMLConfigFile        = file_get_contents(realpath($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
-
-
             foreach ($oXMLConfig->config->xpath("//file") as $oFileName) {
                         $oFileName[0] = get_absolute_path($oFileName[0]);
             }
@@ -639,8 +637,7 @@ class TemplateManifest extends TemplateConfiguration
             $this->isStandard    = true;
             $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             if (!$this->iSurveyId) {
-                // Why?
-                \SettingGlobal::setSetting('defaulttheme','fruity');
+                \SettingGlobal::setSetting('defaulttheme',Yii::app()->getConfig('defaulttheme'));
             }
         }
 
