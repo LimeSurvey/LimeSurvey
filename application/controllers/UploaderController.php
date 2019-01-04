@@ -321,8 +321,8 @@ class UploaderController extends SurveyController
         $scripts = "<script>\n
             ".$sNeededScriptVar."\n\n
             ". $sLangScriptVar."\n\n
-            uploadModalObjects = uploadModalObjects || {};
-            uploadModalObjects[".$fn."] = new uploadHandler(  "
+            window.uploadModalObjects = window.uploadModalObjects || {};
+            window.uploadModalObjects['".$fn."'] = new uploadHandler(  "
                 . $qid.", {"
                 . "sFieldName : '".$sFieldName."', "
                 . "sPreview : '".$sPreview."', "
