@@ -3,6 +3,7 @@
 const
     gulp = require('gulp'),
     uglify = require('gulp-uglify'),
+    cleanCSS = require('gulp-clean-css'),
     pump = require('pump'),
     concat = require('gulp-concat'),
     rename = require('gulp-rename'),
@@ -11,15 +12,16 @@ const
     sourcemaps = require('gulp-sourcemaps'),
     autoprefixer = require('gulp-autoprefixer'),
     runSequence = require('run-sequence'),
+    eventStream = require('event-stream'),
     babel = require('gulp-babel'),
     webpack = require('webpack'),
     gulpWebpack = require('gulp-webpack'),
     sass = require('gulp-sass');
 
 //filename definitions
-const 
-    cssOutFile = 'adminbasics.css',
-    cssOutFileProducton = 'adminbasics.min.css',
+const
+    cssOutFile = 'adminbasics',
+    cssOutFileProducton = 'adminbasics',
     jsOutFile = 'adminbasics.js',
     jsOutFileDebug = 'adminbasics.debug.js',
     jsOutFileProducton = 'adminbasics.min.js';
@@ -51,26 +53,62 @@ gulp.task('lint:watch', function () {
 
 
 //compile tasks
-gulp.task('sass', function () {
-    return gulp.src('./scss/main.scss')
-        .pipe(sass().on('error', sass.logError))
-        .pipe(concat(cssOutFile))
-        .pipe(gulp.dest('./build'));
+gulp.task('sass', function (cb) {
+
+    const ltrCssStream = gulp.src('./css/*.css');
+    const rtlCssStream = gulp.src('./css/rtl/*.css');
+    const sassStream = gulp.src('./scss/main.scss').pipe(sass().on('error', sass.logError));
+
+    pump([
+        eventStream.merge(ltrCssStream, sassStream),
+        concat(cssOutFile + '.css'),
+        gulp.dest('./build')
+    ], pump([
+        eventStream.merge(rtlCssStream, sassStream),
+        concat(cssOutFile + '.rtl.css'),
+        gulp.dest('./build')
+    ], cb));
 });
 
 gulp.task('sass:production', function (cb) {
-    pump(
+    const ltrCssStream = function () {
+        return gulp.src('./css/*.css');
+    };
+    const rtlCssStream = function () {
+        return gulp.src('./css/rtl/*.css');
+    };
+    const sassStream = function () {
+        return gulp.src('./scss/main.scss').pipe(sass().on('error', sass.logError));
+    };
+
+    pump([
+        eventStream.merge(ltrCssStream(), sassStream()),
+        sourcemaps.init(),
+        cleanCSS({
+            debug: true
+        }, (details) => {
+            console.log(`${details.name}: ${details.stats.originalSize}`);
+            console.log(`${details.name}: ${details.stats.minifiedSize}`);
+        }),
+        autoprefixer(),
+        concat(cssOutFileProducton + '.min.css'),
+        sourcemaps.write(),
+        gulp.dest('./build')
+    ], pump(
         [
-            gulp.src('./scss/main.scss'),
+            eventStream.merge(rtlCssStream(), sassStream()),
             sourcemaps.init(),
-            sass({
-                outputStyle: 'compressed'
-            }).on('error', sass.logError),
+            cleanCSS({
+                debug: true
+            }, (details) => {
+                console.log(`${details.name}: ${details.stats.originalSize}`);
+                console.log(`${details.name}: ${details.stats.minifiedSize}`);
+            }),
             autoprefixer(),
-            concat(cssOutFileProducton),
+            concat(cssOutFileProducton + '.rtl.min.css'),
             sourcemaps.write(),
             gulp.dest('./build')
-        ], cb);
+        ], cb));
 });
 
 gulp.task('webpack', function (cb) {
@@ -98,17 +136,23 @@ gulp.task('webpack:production', function (cb) {
     );
 });
 
-gulp.task('babelify', function(cb){
+gulp.task('babelify', function (cb) {
     pump([
-        gulp.src('build/'+jsOutFile),
-        sourcemaps.init(),
-        babel({
-            presets: [['env', {'targets' : { 'browsers' :  ['last 2 versions', 'ie 10'] }}]]
-        }),
-        concat(jsOutFileDebug),
-        gulp.dest('build')
-    ],
-    cb );
+            gulp.src('build/' + jsOutFile),
+            sourcemaps.init(),
+            babel({
+                presets: [
+                    ['env', {
+                        'targets': {
+                            'browsers': ['last 2 versions', 'ie 10']
+                        }
+                    }]
+                ]
+            }),
+            concat(jsOutFileDebug),
+            gulp.dest('build')
+        ],
+        cb);
 });
 
 //linter
@@ -150,10 +194,16 @@ gulp.task('js:lint', function (cb) {
 gulp.task('compress', function (cb) {
     pump(
         [
-            gulp.src('build/'+jsOutFile),
+            gulp.src('build/' + jsOutFile),
             sourcemaps.init(),
             babel({
-                presets: [['env', {'targets' : { 'browsers' :  ['last 2 versions', 'ie 10'] }}]]
+                presets: [
+                    ['env', {
+                        'targets': {
+                            'browsers': ['last 2 versions', 'ie 10']
+                        }
+                    }]
+                ]
             }),
             uglify(),
             concat(jsOutFileProducton),
@@ -165,21 +215,29 @@ gulp.task('compress', function (cb) {
 
 gulp.task('compresslibs', function (cb) {
     pump([
-        gulp.src('lib/*.js'),
-        gulp.dest('build')
-    ],
-    pump(
-        [
             gulp.src('lib/*.js'),
-            sourcemaps.init(),
-            babel({
-                presets: [['env', {'targets' : { 'browsers' :  ['last 2 versions', 'ie 10'] }}]]
-            }),
-            uglify(),
-            rename({ suffix: '.min' }),
             gulp.dest('build')
         ],
-        cb
-    )
+        pump(
+            [
+                gulp.src('lib/*.js'),
+                sourcemaps.init(),
+                babel({
+                    presets: [
+                        ['env', {
+                            'targets': {
+                                'browsers': ['last 2 versions', 'ie 10']
+                            }
+                        }]
+                    ]
+                }),
+                uglify(),
+                rename({
+                    suffix: '.min'
+                }),
+                gulp.dest('build')
+            ],
+            cb
+        )
     );
 });

@@ -26699,12 +26699,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__parts_notifyFader__ = __webpack_require__(128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__parts_ajaxHelper__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__parts_save__ = __webpack_require__(343);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_confirmdeletemodal__ = __webpack_require__(344);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_panelclickable__ = __webpack_require__(345);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_panelsanimation__ = __webpack_require__(346);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_notifications__ = __webpack_require__(347);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_gridAction__ = __webpack_require__(348);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_lslog__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_bootstrap_sub_submenues__ = __webpack_require__(344);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_confirmdeletemodal__ = __webpack_require__(345);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_panelclickable__ = __webpack_require__(346);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_panelsanimation__ = __webpack_require__(347);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_notifications__ = __webpack_require__(348);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_gridAction__ = __webpack_require__(349);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_lslog__ = __webpack_require__(49);
 /*
  * JavaScript functions for LimeSurvey administrator
  *
@@ -26755,6 +26756,7 @@ window.LS = window.LS || {};
 
 
 
+
 const AdminCore = function(){
     //Singelton Pattern -> the AdminCore functions can only be nound once.
     if(typeof window.LS.adminCore === 'object') {
@@ -26774,22 +26776,23 @@ const AdminCore = function(){
         onLoadRegister = () => {
             __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["a" /* globalStartUpMethods */].bootstrapping();
             Object(__WEBPACK_IMPORTED_MODULE_7__pages_surveyGrid__["a" /* onExistBinding */])();
-            appendToLoad(function(){__WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log('TRIGGERWARNING','Document ready triggered')}, 'ready');
-            appendToLoad(function(){__WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log('TRIGGERWARNING','Document scriptcomplete triggered')}, 'pjax:scriptcomplete');
+            appendToLoad(function(){__WEBPACK_IMPORTED_MODULE_19__components_lslog__["a" /* default */].log('TRIGGERWARNING','Document ready triggered')}, 'ready');
+            appendToLoad(function(){__WEBPACK_IMPORTED_MODULE_19__components_lslog__["a" /* default */].log('TRIGGERWARNING','Document scriptcomplete triggered')}, 'pjax:scriptcomplete');
             appendToLoad(__WEBPACK_IMPORTED_MODULE_12__parts_save__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_8__parts_confirmationModal__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__["a" /* default */]);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_13__components_confirmdeletemodal__["a" /* default */]);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_14__components_panelclickable__["a" /* default */]);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_15__components_panelsanimation__["a" /* default */], null, null, 200);
-            appendToLoad(__WEBPACK_IMPORTED_MODULE_16__components_notifications__["a" /* default */].initNotification);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_14__components_confirmdeletemodal__["a" /* default */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_15__components_panelclickable__["a" /* default */]);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_16__components_panelsanimation__["a" /* default */], null, null, 200);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */].initNotification);
+            appendToLoad(__WEBPACK_IMPORTED_MODULE_13__components_bootstrap_sub_submenues__["a" /* default */]);
             appendToLoad(__WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["b" /* globalWindowMethods */].fixAccordionPosition);
         },
         appendToLoad = (fn, event, root, delay) => {
             event = event || 'pjax:scriptcomplete ready';
             root = root || 'document';
             delay = delay || 0;
-            __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log('appendToLoad', {
+            __WEBPACK_IMPORTED_MODULE_19__components_lslog__["a" /* default */].log('appendToLoad', {
                 'type' : typeof fn,
                 'fn' : fn
             })
@@ -26818,7 +26821,7 @@ const AdminCore = function(){
                 });
             });
             Object(__WEBPACK_IMPORTED_MODULE_7__pages_surveyGrid__["a" /* onExistBinding */])();
-            __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log("Refreshed Admin core methods");
+            __WEBPACK_IMPORTED_MODULE_19__components_lslog__["a" /* default */].log("Refreshed Admin core methods");
         },
         setNameSpace = () => {
             const BaseNameSpace = {
@@ -26833,13 +26836,13 @@ const AdminCore = function(){
                 saveBindings: __WEBPACK_IMPORTED_MODULE_12__parts_save__["a" /* default */],
                 confirmationModal: __WEBPACK_IMPORTED_MODULE_8__parts_confirmationModal__["a" /* default */],
                 questionEdit: __WEBPACK_IMPORTED_MODULE_5__pages_questionEditing__["a" /* default */],
-                confirmDeletemodal: __WEBPACK_IMPORTED_MODULE_13__components_confirmdeletemodal__["a" /* default */],
-                panelClickable: __WEBPACK_IMPORTED_MODULE_14__components_panelclickable__["a" /* default */],
-                panelsAnimation: __WEBPACK_IMPORTED_MODULE_15__components_panelsanimation__["a" /* default */],
-                initNotification : __WEBPACK_IMPORTED_MODULE_16__components_notifications__["a" /* default */].initNotification
+                confirmDeletemodal: __WEBPACK_IMPORTED_MODULE_14__components_confirmdeletemodal__["a" /* default */],
+                panelClickable: __WEBPACK_IMPORTED_MODULE_15__components_panelclickable__["a" /* default */],
+                panelsAnimation: __WEBPACK_IMPORTED_MODULE_16__components_panelsanimation__["a" /* default */],
+                initNotification : __WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */].initNotification
             }
 
-            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_11__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_10__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_6__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_16__components_notifications__["a" /* default */],__WEBPACK_IMPORTED_MODULE_17__components_gridAction__["a" /* default */]);
+            const LsNameSpace = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(BaseNameSpace, __WEBPACK_IMPORTED_MODULE_9__parts_globalMethods__["b" /* globalWindowMethods */], __WEBPACK_IMPORTED_MODULE_11__parts_ajaxHelper__, __WEBPACK_IMPORTED_MODULE_10__parts_notifyFader__, __WEBPACK_IMPORTED_MODULE_6__pages_subquestionandanswers__["a" /* subquestionAndAnswersGlobalMethods */], __WEBPACK_IMPORTED_MODULE_17__components_notifications__["a" /* default */],__WEBPACK_IMPORTED_MODULE_18__components_gridAction__["a" /* default */]);
             
             /*
             * Set the namespace to the global variable LS
@@ -26854,7 +26857,7 @@ const AdminCore = function(){
         };
         setNameSpace();
         onLoadRegister();
-        __WEBPACK_IMPORTED_MODULE_18__components_lslog__["a" /* default */].log("AdminCore", eventsBound);
+        __WEBPACK_IMPORTED_MODULE_19__components_lslog__["a" /* default */].log("AdminCore", eventsBound);
 }
 
 AdminCore();
@@ -27449,6 +27452,23 @@ const saveController = SaveController();
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+var activateSubSubMenues = function(){
+	$('ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
+		event.preventDefault(); 
+		event.stopPropagation(); 
+		$(this).parent().siblings().removeClass('open');
+		$(this).parent().toggleClass('open');
+	});
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (activateSubSubMenues);
+
+
+/***/ }),
+/* 345 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = confirmDeletemodal;
 const ConfirmDeleteModal = function (options) {
     const $item = $(this);
@@ -27649,7 +27669,7 @@ function confirmDeletemodal() {
 
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27674,7 +27694,7 @@ function panelClickable () {
 
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27719,7 +27739,7 @@ function panelsAnimation(){
 
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27898,7 +27918,7 @@ const notificationSystem = new NotifcationSystem();
 
 
 /***/ }),
-/* 348 */
+/* 349 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

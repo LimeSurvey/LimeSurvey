@@ -40,6 +40,8 @@
     "webpack": "^3.0.0"
   },
   "dependencies": {
+    "event-stream": "^4.0.1",
+    "gulp-clean-css": "^4.0.0",
     "lodash": "^4.17.4"
   }
 }
