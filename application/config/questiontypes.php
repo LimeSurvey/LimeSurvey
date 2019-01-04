@@ -88,11 +88,8 @@ return array(
             'css/uploader.css',
         ),
         'js'=>array(
-            'scripts/uploadquestion'.$minVersion.'.js',
-        ),
-        'depends' => [
-            'emoji'
-        ]
+            'build/uploadquestion'.$minVersion.'.js',
+        )
     ),
     /* array-numeric question */
     'question-array-numeric'=>array(

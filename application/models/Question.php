@@ -926,6 +926,7 @@ class Question extends LSActiveRecord
             case Question::QT_Q_MULTIPLE_SHORT_TEXT: return new RenderMultipleShortText($aFieldArray);
             case Question::QT_T_LONG_FREE_TEXT: //fallthrough
             case Question::QT_U_HUGE_FREE_TEXT: return new RenderFreeText($aFieldArray);
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: return new RenderMultipleNumerical($aFieldArray);
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return 'arrays/5point';
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return 'arrays/10point';
             case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return 'arrays/yesnouncertain';
@@ -933,7 +934,6 @@ class Question extends LSActiveRecord
             case Question::QT_F_ARRAY_FLEXIBLE_ROW: return 'arrays/multiflexi';
             case Question::QT_G_GENDER_DROPDOWN: return 'gender';
             case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: return 'arrays/multiflexi';
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: return 'multiplenumeric';
             case Question::QT_N_NUMERICAL: return 'numerical';
             case Question::QT_S_SHORT_FREE_TEXT: return 'shortfreetext';
             case Question::QT_Y_YES_NO_RADIO: return 'yesno';

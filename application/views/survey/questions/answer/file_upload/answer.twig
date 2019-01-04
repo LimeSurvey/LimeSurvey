@@ -93,8 +93,8 @@
             filecount++;
 
             var fileObject = {
-                title : {{showTitle}} ? $("#{{fileid}}_title_"+i).val() : '',
-                comment: {{showComment}} ? $("#{{fileid}}_comment_"+i).val() : '',
+                title : {{showTitle ? '$("#{{fileid}}_title_"+i).val()' : '""' }},
+                comment: {{showComment ? '$("#{{fileid}}_comment_"+i).val()' : '""'}},
                 size: '',
                 name: '',
                 ext: ''

@@ -149,16 +149,9 @@ function retrieveAnswers($ia)
         case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
         case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
         case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
+        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
             $oRenderer = $oQuestion->getRenderererObject($ia);
             $values = $oRenderer->render();
-            break;
-        
-        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-            $values = do_multipleshorttext($ia);
-            break;
-
-        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-            $values = do_multiplenumeric($ia);
             break;
 
         case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
@@ -1862,8 +1855,9 @@ function do_file_upload($ia)
         var imageurl =  '".Yii::app()->getConfig('imageurl')."';
         var uploadurl =  '".$scriptloc."';
     </script>\n";
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js", LSYii_ClientScript::POS_BEGIN);
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
+    //Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js", LSYii_ClientScript::POS_BEGIN);
+    //Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
+    Yii::app()->getClientScript()->registerPackage('question-file-upload');
     // Modal dialog
     //$answer .= $uploadbutton;
     $filecountvalue = '0';

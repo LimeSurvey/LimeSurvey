@@ -335,8 +335,8 @@ abstract class QuestionBaseRenderer extends StaticModel
     */              
     public function getLabelInputWidth()
     {
-        $labelAttributeWidth = trim($this->aQuestionAttributes['label_input_columns']);
-        $inputAttributeWidth = trim($this->aQuestionAttributes['text_input_columns']);
+        $labelAttributeWidth = @trim($this->aQuestionAttributes['label_input_columns']);
+        $inputAttributeWidth = @trim($this->aQuestionAttributes['text_input_columns']);
 
         $attributeInputContainerWidth = intval($inputAttributeWidth);
         if ($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12) {
