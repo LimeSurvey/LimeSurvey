@@ -220,7 +220,7 @@ class AdminController extends LSYii_Controller
         'notification'     => 'NotificationController',
         'menus'            => 'SurveymenuController',
         'menuentries'      => 'SurveymenuEntryController',
-        'tutorial'         => 'TutorialsController',
+        'tutorials'        => 'TutorialsController',
         'tutorialentries'  => 'TutorialEntryController',
         'extensionupdater' => 'ExtensionUpdaterController'
         );
