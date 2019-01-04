@@ -1629,7 +1629,7 @@ class ConsoleShim {
     }
 }
 
-const adminCoreLSConsole = new ConsoleShim('AdminCore');
+const adminCoreLSConsole = new ConsoleShim('AdminCore', !window.debugState.backend);
 
 /* harmony default export */ __webpack_exports__["a"] = (adminCoreLSConsole);
 
