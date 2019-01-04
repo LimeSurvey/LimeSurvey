@@ -390,10 +390,11 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.fn.sortable'.$minVersion.'.js'
-        )
-    ),
+            )
+        ),
     'jquery-actual' => array(
         'position' => CClientScript::POS_BEGIN,
+        'devBaseUrl' => 'third_party/jquery-actual',
         'basePath' => 'third_party.jquery-actual', /* for samechoiceheight/samelistheight */
         'js' => array(
             'jquery.actual'.$minVersion.'.js'

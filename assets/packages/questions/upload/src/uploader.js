@@ -355,3 +355,7 @@ function escapeHtml(unsafe) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
+
+window.getUploadHandler = function(qid, options){
+    return new uploadHandler(qid, options);
+}

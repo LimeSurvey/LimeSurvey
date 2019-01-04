@@ -84,8 +84,8 @@ return array(
         'basePath' => 'core.questions.upload',
         'position' => CClientScript::POS_BEGIN,
         'css'=> array(
-            'css/uploader-file.css',
-            'css/uploader.css',
+            'styles/uploader-files.css',
+            'styles/uploader.css',
         ),
         'js'=>array(
             'build/uploadquestion'.$minVersion.'.js',

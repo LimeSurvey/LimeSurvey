@@ -1140,3 +1140,7 @@ var uploadHandler = function uploadHandler(qid, options) {
 function escapeHtml(unsafe) {
     return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
+
+window.getUploadHandler = function (qid, options) {
+    return new uploadHandler(qid, options);
+};
