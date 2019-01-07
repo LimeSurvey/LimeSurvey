@@ -628,17 +628,22 @@ class TemplateManifest extends TemplateConfiguration
     private function setPath()
     {
         // If the template is standard, its root is based on standardthemerootdir, else, it is a user template, its root is based on userthemerootdir
-        $this->path = ($this->isStandard) ?Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR : Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
+        $this->path = ($this->isStandard) ? Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR : Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
 
         // If the template directory doesn't exist, we just set Default as the template to use
         // TODO: create a method "setToDefault"
         if (!is_dir($this->path)) {
-            $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
-            $this->isStandard    = true;
-            $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             if (!$this->iSurveyId) {
                 \SettingGlobal::setSetting('defaulttheme',Yii::app()->getConfig('defaultfixedtheme'));
-                
+                /* @todo ? : check if installed, install if not */
+            }
+            $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
+            if(Template::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
+                $this->isStandard    = true;
+                $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
+            } else {
+                $this->isStandard    = false;
+                $this->path = Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             }
         }
 
