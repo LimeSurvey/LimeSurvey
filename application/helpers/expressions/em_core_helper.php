@@ -1755,23 +1755,52 @@ class ExpressionManager
     }
 
     /**
-     * If the equation contains refernece to this, expand to comma separated list if needed.
+     * If the equation contains reference to this, expand to comma separated list if needed.
      * @param string $src
      */
     function ExpandThisVar($src)
     {
-        $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*';
-        $parts = preg_split("/(".$splitter.")/i", $src, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
-        $result = '';
-        foreach ($parts as $part) {
-            if (preg_match("/".$splitter."/", $part)) {
-                $result .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $part);
-            } else {
-                $result .= $part;
+        $expandedVar = "";
+        $tokens = $this->Tokenize($src,1);
+        foreach ($tokens as $token) {
+            switch ($token[2]) {
+                case 'SGQA':
+                case 'WORD':
+                    /* TODO check if an not use directly replace ? Since word == self or that ? */
+                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*';
+                    $parts = preg_split("/(".$splitter.")/i", $token[0], -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
+                    $result = '';
+                    foreach ($parts as $part) {
+                        if (preg_match("/".$splitter."/", $part)) {
+                            $result .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $part);
+                        } else {
+                            $result .= $part;
+                        }
+                    }
+                    $expandedVar .= $result;
+                    break;
+                case 'DQ_STRING';
+                    $expandedVar .= "\"{$token[0]}\"";
+                    break;
+                case 'SQ_STRING';
+                    $expandedVar .= "'{$token[0]}'";
+                    break;
+                case 'SPACE':
+                case 'LP':
+                case 'RP':
+                case 'COMMA':
+                case 'AND_OR':
+                case 'COMPARE':
+                case 'NUMBER':
+                case 'NOT':
+                case 'OTHER':
+                case 'ASSIGN':
+                case 'BINARYOP':
+                default:
+                    $expandedVar .= $token[0];
             }
         }
-
-        return $result;
+        return $expandedVar;
     }
 
     /**
