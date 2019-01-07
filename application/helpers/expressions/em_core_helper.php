@@ -1766,15 +1766,16 @@ class ExpressionManager
             switch ($token[2]) {
                 case 'SGQA':
                 case 'WORD':
-                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*';
-                    $parts = preg_split("/(".$splitter.")/i", $token[0], -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
+                    $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionnaly followed by dot and alnum
+                    tracevar([
+                        $token[0],
+                        preg_match("/".$splitter."/", $token[0])
+                    ]);
                     $result = '';
-                    foreach ($parts as $part) {
-                        if (preg_match("/".$splitter."/", $part)) {
-                            $result .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $part);
-                        } else {
-                            $result .= $part;
-                        }
+                    if (preg_match("/".$splitter."/", $token[0])) {
+                        $result .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $token[0]);
+                    } else {
+                        $result .= $token[0];
                     }
                     $expandedVar .= $result;
                     break;

@@ -4790,14 +4790,12 @@
         public static function GetAllVarNamesForQ($qseq,$varname)
         {
             $LEM =& LimeExpressionManager::singleton();
-
             $parts = explode('.',$varname);
             $qroot = '';
             $suffix = '';
             $sqpatts = array();
             $nosqpatts = array();
             $comments = '';
-
             if ($parts[0] == 'self') {
                 $type = 'self';
             } else {
