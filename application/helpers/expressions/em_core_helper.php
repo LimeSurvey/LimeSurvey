@@ -1767,10 +1767,6 @@ class ExpressionManager
                 case 'SGQA':
                 case 'WORD':
                     $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionnaly followed by dot and alnum
-                    tracevar([
-                        $token[0],
-                        preg_match("/".$splitter."/", $token[0])
-                    ]);
                     $result = '';
                     if (preg_match("/".$splitter."/", $token[0])) {
                         $result .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $token[0]);
