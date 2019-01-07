@@ -1767,13 +1767,11 @@ class ExpressionManager
                 case 'SGQA':
                 case 'WORD':
                     $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionnaly followed by dot and alnum
-                    $result = '';
                     if (preg_match("/".$splitter."/", $token[0])) {
-                        $result .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $token[0]);
+                        $expandedVar .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $token[0]);
                     } else {
-                        $result .= $token[0];
+                        $expandedVar .= $token[0];
                     }
-                    $expandedVar .= $result;
                     break;
                 case 'DQ_STRING';
                     $expandedVar .= "\"{$token[0]}\"";
