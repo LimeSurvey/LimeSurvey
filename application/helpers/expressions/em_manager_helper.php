@@ -4798,115 +4798,80 @@
             $nosqpatts = array();
             $comments = '';
 
-            if ($parts[0] == 'self')
-            {
+            if ($parts[0] == 'self') {
                 $type = 'self';
-            }
-            else
-            {
+            } else {
                 $type = 'that';
                 array_shift($parts);
-                if (isset($parts[0]))
-                {
+                if (isset($parts[0])) {
                     $qroot = $parts[0];
-                }
-                else
-                {
+                } else {
                     return $varname;
                 }
             }
             array_shift($parts);
 
-            if (count($parts) > 0)
-            {
-                if (preg_match('/^' . ExpressionManager::$RDP_regex_var_attr . '$/',$parts[count($parts)-1]))
-                {
+            if (count($parts) > 0) {
+                if (preg_match('/^' . ExpressionManager::$RDP_regex_var_attr . '$/',$parts[count($parts)-1])) {
                     $suffix = '.' . $parts[count($parts)-1];
                     array_pop($parts);
                 }
             }
 
-            foreach($parts as $part)
-            {
-                if ($part == 'nocomments')
-                {
+            foreach($parts as $part) {
+                if ($part == 'nocomments') {
                     $comments = 'N';
-                }
-                else if ($part == 'comments')
-                {
+                } elseif ($part == 'comments') {
                     $comments = 'Y';
-                }
-                else if (preg_match('/^sq_.+$/',$part))
-                {
+                } elseif (preg_match('/^sq_.+$/',$part)) {
                     $sqpatts[] = substr($part,3);
-                }
-                else if (preg_match('/^nosq_.+$/',$part))
-                {
+                } elseif (preg_match('/^nosq_.+$/',$part)) {
                     $nosqpatts[] = substr($part,5);
-                }
-                else
-                {
+                } else {
                     return $varname;    // invalid
                 }
             }
             $sqpatt = implode('|',$sqpatts);
             $nosqpatt = implode('|',$nosqpatts);
             $vars = array();
-            if(isset($LEM->knownVars))
-            {
-                foreach ($LEM->knownVars as $kv)
-                {
-                    if ($type == 'self')
-                    {
-                        if (!isset($kv['qseq']) || $kv['qseq'] != $qseq || trim($kv['sgqa']) == '')
-                        {
+            if(isset($LEM->knownVars)) {
+                foreach ($LEM->knownVars as $kv) {
+                    if ($type == 'self') {
+                        if (!isset($kv['qseq']) || $kv['qseq'] != $qseq || trim($kv['sgqa']) == '') {
+                            continue;
+                        }
+                    } else {
+                        if (!isset($kv['rootVarName']) || $kv['rootVarName'] != $qroot) {
                             continue;
                         }
                     }
-                    else
-                    {
-                        if (!isset($kv['rootVarName']) || $kv['rootVarName'] != $qroot)
-                        {
+                    if ($comments != '') {
+                        if ($comments == 'Y' && !preg_match('/comment$/',$kv['sgqa'])) {
                             continue;
                         }
-                    }
-                    if ($comments != '')
-                    {
-                        if ($comments == 'Y' && !preg_match('/comment$/',$kv['sgqa']))
-                        {
-                            continue;
-                        }
-                        if ($comments == 'N' && preg_match('/comment$/',$kv['sgqa']))
-                        {
+                        if ($comments == 'N' && preg_match('/comment$/',$kv['sgqa'])) {
                             continue;
                         }
                     }
                     $sgq = $LEM->sid . 'X' . $kv['gid'] . 'X' . $kv['qid'];
                     $ext = (string)substr($kv['sgqa'],strlen($sgq));
-
-                    if ($sqpatt != '')
-                    {
-                        if (!preg_match('/'.$sqpatt.'/',$ext))
-                        {
+                    if ($sqpatt != '') {
+                        if (!preg_match('/'.$sqpatt.'/',$ext)) {
                             continue;
                         }
                     }
-                    if ($nosqpatt != '')
-                    {
-                        if (preg_match('/'.$nosqpatt.'/',$ext))
-                        {
+                    if ($nosqpatt != '') {
+                        if (preg_match('/'.$nosqpatt.'/',$ext)) {
                             continue;
                         }
                     }
-
                     $vars[] = $kv['sgqa'] . $suffix;
                 }
             }
-            if (count($vars) > 0)
-            {
+            if (count($vars) > 0) {
                 return implode(',',$vars);
             }
-            return $varname;    // invalid
+            return $varname; // invalid
         }
 
         /**
