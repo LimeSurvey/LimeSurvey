@@ -637,7 +637,8 @@ class TemplateManifest extends TemplateConfiguration
             $this->isStandard    = true;
             $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             if (!$this->iSurveyId) {
-                \SettingGlobal::setSetting('defaulttheme',Yii::app()->getConfig('defaulttheme'));
+                \SettingGlobal::setSetting('defaulttheme',Yii::app()->getConfig('defaultfixedtheme'));
+                
             }
         }
 
