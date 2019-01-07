@@ -1039,9 +1039,9 @@ class Survey extends LSActiveRecord
     public function setAllowjumps($value)
     {
         if ($value === 'Y') {
-            $this->questionindex = 1;
+            $this->oOptions->questionindex = 1;
         } else {
-            $this->questionindex = 0;
+            $this->oOptions->questionindex = 0;
         }
     }
 
@@ -1093,7 +1093,7 @@ class Survey extends LSActiveRecord
      */
     public function getAnonymizedResponses()
     {
-        return ($this->anonymized == 'Y') ? gT('Yes') : gT('No');
+        return ($this->oOptions->anonymized == 'Y') ? gT('Yes') : gT('No');
     }
 
     /**
@@ -1233,28 +1233,28 @@ class Survey extends LSActiveRecord
      */
     public function getIsAnonymized()
     {
-        return ($this->anonymized === 'Y');
+        return ($this->oOptions->anonymized === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsSaveTimings()
     {
-        return ($this->savetimings === 'Y');
+        return ($this->oOptions->savetimings === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsDateStamp()
     {
-        return ($this->datestamp === 'Y');
+        return ($this->oOptions->datestamp === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsUseCookie()
     {
-        return ($this->usecookie === 'Y');
+        return ($this->oOptions->usecookie === 'Y');
     }
 
     /**
@@ -1262,154 +1262,154 @@ class Survey extends LSActiveRecord
      */
     public function getIsAllowRegister()
     {
-        return ($this->allowregister === 'Y');
+        return ($this->oOptions->allowregister === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAllowSave()
     {
-        return ($this->allowsave === 'Y');
+        return ($this->oOptions->allowsave === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAutoRedirect()
     {
-        return ($this->autoredirect === 'Y');
+        return ($this->oOptions->autoredirect === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAllowPrev()
     {
-        return ($this->allowprev === 'Y');
+        return ($this->oOptions->allowprev === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsPrintAnswers()
     {
-        return ($this->printanswers === 'Y');
+        return ($this->oOptions->printanswers === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsIpAddr()
     {
-        return ($this->ipaddr === 'Y');
+        return ($this->oOptions->ipaddr === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsRefUrl()
     {
-        return ($this->refurl === 'Y');
+        return ($this->oOptions->refurl === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsPublicStatistics()
     {
-        return ($this->publicstatistics === 'Y');
+        return ($this->oOptions->publicstatistics === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsPublicGraphs()
     {
-        return ($this->publicgraphs === 'Y');
+        return ($this->oOptions->publicgraphs === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsListPublic()
     {
-        return ($this->listpublic === 'Y');
+        return ($this->oOptions->listpublic === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsHtmlEmail()
     {
-        return ($this->htmlemail === 'Y');
+        return ($this->oOptions->htmlemail === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsSendConfirmation()
     {
-        return ($this->sendconfirmation === 'Y');
+        return ($this->oOptions->sendconfirmation === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsTokenAnswersPersistence()
     {
-        return ($this->tokenanswerspersistence === 'Y');
+        return ($this->oOptions->tokenanswerspersistence === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAssessments()
     {
-        return ($this->assessments === 'Y');
+        return ($this->oOptions->assessments === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowXQuestions()
     {
-        return ($this->showxquestions === 'Y');
+        return ($this->oOptions->showxquestions === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowGroupInfo()
     {
-        return ($this->showgroupinfo === 'Y');
+        return ($this->oOptions->showgroupinfo === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowNoAnswer()
     {
-        return ($this->shownoanswer === 'Y');
+        return ($this->oOptions->shownoanswer === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowQnumCode()
     {
-        return ($this->showqnumcode === 'Y');
+        return ($this->oOptions->showqnumcode === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowWelcome()
     {
-        return ($this->showwelcome === 'Y');
+        return ($this->oOptions->showwelcome === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowProgress()
     {
-        return ($this->showprogress === 'Y');
+        return ($this->oOptions->showprogress === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsNoKeyboard()
     {
-        return ($this->nokeyboard === 'Y');
+        return ($this->oOptions->nokeyboard === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAllowEditAfterCompletion()
     {
-        return ($this->alloweditaftercompletion === 'Y');
+        return ($this->oOptions->alloweditaftercompletion === 'Y');
     }
 
     /**
