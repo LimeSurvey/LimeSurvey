@@ -171,13 +171,10 @@ class Question extends LSActiveRecord
             /* ExpressionManager reserved word (partial) */
             $aRules[] = array('title', 'in', 'not' => true,
                 'range' => array(
-                    'LANG',
-                    'SID',
-                    'QID',
-                    'GID',
-                    'SAVEDID',
-                    'SGQ',
-                    'TOKEN',
+                    'LANG','SID', // Global var
+                    'SAVEDID','TOKEN', // current survey related var
+                    'QID','GID','SGQ', // current question related var
+                    'self','that','this', // EM reserved variables
                 ),
                 'message'=> sprintf(gT("Code: '%s' is a reserved word."),$this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'

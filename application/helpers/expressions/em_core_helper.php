@@ -1766,7 +1766,6 @@ class ExpressionManager
             switch ($token[2]) {
                 case 'SGQA':
                 case 'WORD':
-                    /* TODO check if an not use directly replace ? Since word == self or that ? */
                     $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*';
                     $parts = preg_split("/(".$splitter.")/i", $token[0], -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
                     $result = '';
