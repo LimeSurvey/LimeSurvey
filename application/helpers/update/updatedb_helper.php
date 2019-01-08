@@ -4536,6 +4536,7 @@ function runAddPrimaryKeyonAnswersTable400(&$oDB) {
 * @param string $table table name (without prefix)
 * @param boolean $state  Set to true to activate ID insert, or false to deactivate
 */
+/*
 function switchMSSQLIdentityInsert($table, $state, $oDb = null)
 {
     $oDb = $oDb === null ? Yii::app()->db : $oDb;
@@ -4549,3 +4550,4 @@ function switchMSSQLIdentityInsert($table, $state, $oDb = null)
         }            
     }
 }    
+ */

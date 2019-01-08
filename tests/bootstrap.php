@@ -251,7 +251,8 @@ define('PHP_ENV', 'test');
 $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 
-error_reporting(E_ALL);
+// Enable if phpunit fails.
+// error_reporting(E_ALL);
 
 @copy($configFile, $configBackupFile);
 
