@@ -126,6 +126,27 @@ class LSYii_Validators extends CValidator
                 'news' => true,
                 )
         );
+
+	$config = $filter->getPurifier()->config;
+        $config->set('HTML.DefinitionID', 'html5-definitions');
+        $def = $config->maybeGetRawHTMLDefinition();
+        $max = $config->get('HTML.MaxImgLength');
+        if ($def) {
+            $def->addElement('video', 'Inline', 'Flow', 'Common', array(
+                'controls' => 'Bool',
+                'height'   => 'Length',
+                'poster'   => 'URI',
+                'preload'  => 'Enum#auto,metadata,none',
+                'src'      => 'URI',
+                'width'    => 'Length',
+                ));
+            $def->addElement('audio', 'Inline', 'Flow', 'Common', array(
+                'controls' => 'Bool',
+                'preload'  => 'Enum#auto,metadata,none',
+                'src'      => 'URI',
+                ));
+        }
+
         // To allow script BUT purify : HTML.Trusted=true (plugin idea for admin or without XSS filtering ?)
 
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
