@@ -20,7 +20,7 @@
  *
  * Developers should then think about :
  * 1. refreshing their brower's cache (ctrl + F5) to see their changes
- * 2. update the config.xml last_update before pushing, to be sure that end users will have the new version
+ * 2. update the config.xml lastUpdate before pushing, to be sure that end users will have the new version
  *
  *
  * For more detail, see :

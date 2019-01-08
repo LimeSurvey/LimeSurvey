@@ -48,7 +48,7 @@
     <!-- Last updated -->
     <div class="form-group col-sm-12">
         <label class="col-sm-4 control-label"><?php eT("Last updated:"); ?></label>
-        <div class="col-sm-4"><?php echo $metadata->last_update; ?></div>
+        <div class="col-sm-4"><?php echo $metadata->lastUpdate; ?></div>
     </div>
 
     <!-- License -->

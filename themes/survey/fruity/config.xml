@@ -22,7 +22,7 @@
         <version>3.0.1</version>
         <apiVersion>3</apiVersion>
         <description><![CDATA[<strong>LimeSurvey Fruity Theme</strong><br>A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.]]></description>
-        <last_update>2018-06-12 16:26:42</last_update>
+        <lastUpdate>2018-06-12 16:26:42</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
 

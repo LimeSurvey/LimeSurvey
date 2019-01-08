@@ -43,7 +43,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         libxml_disable_entity_loader(false);
         $config = simplexml_load_file(realpath($this->xmlFile));
-        $config->metadata->last_update = date("Y-m-d H:i:s");
+        $config->metadata->lastUpdate = date("Y-m-d H:i:s");
         $config->asXML(realpath($this->xmlFile)); // Belt
         touch($this->path); // & Suspenders ;-)
         libxml_disable_entity_loader(true);
@@ -469,8 +469,8 @@ class TemplateManifest extends TemplateConfiguration
         $oOldDateNode   = $ometadata->getElementsByTagName('creationDate')->item(0);
         $oNvDateNode    = $oNewManifest->createElement('creationDate', $sDate);
         $ometadata->replaceChild($oNvDateNode, $oOldDateNode);
-        $oOldUpdateNode = $ometadata->getElementsByTagName('last_update')->item(0);
-        $oNvDateNode    = $oNewManifest->createElement('last_update', $sDate);
+        $oOldUpdateNode = $ometadata->getElementsByTagName('lastUpdate')->item(0);
+        $oNvDateNode    = $oNewManifest->createElement('lastUpdate', $sDate);
         $ometadata->replaceChild($oNvDateNode, $oOldUpdateNode);
     }
 

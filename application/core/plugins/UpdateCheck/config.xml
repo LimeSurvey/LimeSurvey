@@ -4,7 +4,7 @@
         <name>UpdateCheck</name>
         <type>plugin</type>
         <creationDate>2018-10-04</creationDate>
-        <last_update>2018-10-04</last_update>
+        <lastUpdate>2018-10-04</lastUpdate>
         <author>Olle Haerstedt</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
         <version>1.0.0</version>

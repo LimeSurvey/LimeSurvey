@@ -22,7 +22,7 @@
         <version>2.0</version>
         <apiVersion>3</apiVersion>
         <description><![CDATA[<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href='https://bootswatch.com/3/'>Visit BootsWatch page</a> ]]></description>
-        <last_update>2017-11-29 19:28:00</last_update>
+        <lastUpdate>2017-11-29 19:28:00</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
 
