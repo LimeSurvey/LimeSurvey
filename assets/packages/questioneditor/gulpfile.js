@@ -18,11 +18,11 @@ const
 
 //filename definitions
 const 
-    cssOutFile = 'lsadminpanel.css',
-    cssOutFileProducton = 'lsadminpanel.min.css',
-    jsOutFile = 'lsadminpanel.js',
-    jsOutFileDebug = 'lsadminpanel.debug.js',
-    jsOutFileProducton = 'lsadminpanel.min.js';
+    cssOutFile = 'lsquestioneditor.css',
+    cssOutFileProducton = 'lsquestioneditor.min.css',
+    jsOutFile = 'lsquestioneditor.js',
+    jsOutFileDebug = 'lsquestioneditor.debug.js',
+    jsOutFileProducton = 'lsquestioneditor.min.js';
 
 gulp.task('default', function (cb) {
     runSequence('compile:production', 'compile', cb);
@@ -78,7 +78,7 @@ gulp.task('webpack', function (cb) {
     process.env.WEBPACK_ENV = 'developement';
     pump(
         [
-            gulp.src('src/adminpanelmain.js'),
+            gulp.src('src/questioneditmain.js'),
             gulpWebpack(require('./webpack.config.js'), webpack),
             gulp.dest('build/')
         ],
@@ -90,7 +90,7 @@ gulp.task('webpack:production', function (cb) {
     process.env.WEBPACK_ENV = 'production';
     pump(
         [
-            gulp.src('src/adminpanelmain.js'),
+            gulp.src('src/questioneditmain.js'),
             gulpWebpack(require('./webpack.config.js'), webpack),
             gulp.dest('build/')
         ],

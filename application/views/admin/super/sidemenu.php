@@ -47,16 +47,17 @@
     $menuObject =  json_encode($menuObjectArray);
 
 ?>
-<sidebar
-    :options="[]"
-    surveyid = '<?=$surveyid?>'
-    is-active = <?=(Survey::model()->findByPk($surveyid)->isActive ? 1 : 0)?>
-    get-questions-url="<?=$getQuestionsUrl ?>"
-    get-menu-url="<?=$getMenuUrl ?>"
-    :basemenus='<?=$menuObject?>'
-    create-question-group-link ="<?=$createQuestionGroupLink?>"
-    create-question-link ="<?=$createQuestionLink?>"
-    update-order-link="<?=$updateOrderLink?>"
-    :translate="{settings: '<?php eT("Settings");?>', structure:'<?php eT("Structure");?>', createQuestionGroup:'<?php eT("Add question group");?>', createQuestion:'<?php eT("Add question");?>' }"
-></sidebar>
-
+<div class="simpleWrapper ls-flex" id="vue-sidebar-container" v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}" v-bind:data-collapsed="$store.state.isCollapsed">
+    <sidebar
+        :options="[]"
+        surveyid = '<?=$surveyid?>'
+        is-active = <?=(Survey::model()->findByPk($surveyid)->isActive ? 1 : 0)?>
+        get-questions-url="<?=$getQuestionsUrl ?>"
+        get-menu-url="<?=$getMenuUrl ?>"
+        :basemenus='<?=$menuObject?>'
+        create-question-group-link ="<?=$createQuestionGroupLink?>"
+        create-question-link ="<?=$createQuestionLink?>"
+        update-order-link="<?=$updateOrderLink?>"
+        :translate="{settings: '<?php eT("Settings");?>', structure:'<?php eT("Structure");?>', createQuestionGroup:'<?php eT("Add question group");?>', createQuestion:'<?php eT("Add question");?>' }"
+    ></sidebar>
+</div>

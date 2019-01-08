@@ -3,8 +3,8 @@ var path = require('path');
 
 
 // Naming and path settings
-var appName = 'lsadminpanel';
-var entryPoint = ['./src/adminpanelmain.js'];
+var appName = 'lsquestioneditor';
+var entryPoint = ['./src/questioneditmain.js'];
 var exportPath = path.resolve(__dirname, './build');
 
 // Enviroment flag

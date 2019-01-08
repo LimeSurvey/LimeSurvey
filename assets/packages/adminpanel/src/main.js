@@ -23,10 +23,10 @@ Vue.mixin({
 
 $(document).on("ready", function () {
     const AppState = getAppState(LS.globalUserId);
-    if (document.getElementById("vue-app-main-container")) {
+    if (document.getElementById("vue-apps-main-container")) {
         // eslint-disable-next-line
         const vueGeneralApp = new Vue({
-            el: "#vue-app-main-container",
+            el: "#vue-apps-main-container",
             store: AppState,
             components: {
                 sidebar: Sidebar,

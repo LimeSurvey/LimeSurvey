@@ -158,6 +158,20 @@ return array(
             'adminbasics'
         )
     ),
+    'questioneditor' => array(
+        'devBaseUrl' => 'assets/packages/questioneditor/',
+        'basePath' => 'core.questioneditor',
+        'position' =>CClientScript::POS_END,
+        'js' => array(
+            'build/lsquestioneditor'.(($debug > 0) ? '' : '.min').'.js'
+        ),
+        'css' => array(
+            'build/lsquestioneditor'.$minVersion.'.css'
+        ),
+        'depends' => array(
+            'adminbasics'
+        )
+    ),
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
