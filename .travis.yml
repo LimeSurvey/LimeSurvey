@@ -57,7 +57,7 @@ before_script:
 
     # Test server.
     - wget localhost
-    - more index.html
+    - cat index.html
 
     # Chromedriver setup.
     # Note: Keep getting timeout problems on Travis with chromedriver.
