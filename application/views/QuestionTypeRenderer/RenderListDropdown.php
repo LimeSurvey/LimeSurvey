@@ -32,7 +32,8 @@ class RenderListDropdown extends QuestionBaseRenderer
         $this->optCategorySeparator   = @$this->setDefaultIfEmpty($this->aQuestionAttributes['category_separator'], false);
         $this->sCoreClass             = "ls-answers answer-item dropdown-item";
         $this->bPrefix                = @(sanitize_int($this->aQuestionAttributes['dropdown_prefix']) == 1);
-        $this->setAnsweroptions(null, $this->aQuestionAttributes['alphasort']);
+        
+        $this->setAnsweroptions();
     }
 
     public function getRows()

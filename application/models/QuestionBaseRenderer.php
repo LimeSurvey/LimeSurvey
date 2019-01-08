@@ -206,33 +206,45 @@ abstract class QuestionBaseRenderer extends StaticModel
         return $output;
     }
 
-    protected function setSubquestions( $scale_id = null ){
+    private function getSubquestions(){
         // Get questions and answers by defined order
-        $sOrder = ($this->aQuestionAttributes['random_order'] == 1) ? dbRandom() : 'question_order';
+        $bRandomOrder = (bool) $this->setDefaultIfEmpty($this->aQuestionAttributes['random_order'], 0);
+        $sOrder = ($bRandomOrder ? dbRandom() : 'question_order');
         $oCriteria = new CDbCriteria();
         $oCriteria->order = $sOrder;
         $oCriteria->addCondition('parent_qid=:parent_qid');
         $oCriteria->params = [':parent_qid'=>$this->oQuestion->qid];
 
+        return Question::model()->findAll($oCriteria);
+    }
+
+
+    protected function setSubquestions( $scale_id = null ){
         //reset subquestions set prior to this call
         $this->aSubQuestions = [];
-        foreach ($this->oQuestion->subquestions as $oQuestion) {
+        foreach ($this->getSubquestions() as $oQuestion) {
             if($scale_id !== null && $oQuestion->scale_id != $scale_id) { continue; }
             $this->aSubQuestions[$oQuestion->scale_id][] = $oQuestion;
         }
     }
 
-    protected function setAnsweroptions( $scale_id = null, $alpha = false ){
+    private function getAnsweroptions(){
+        $bAlphasort    = (bool) $this->setDefaultIfEmpty($this->aQuestionAttributes['alphasort'], 0);
+        $bRandomOrder = (bool) $this->setDefaultIfEmpty($this->aQuestionAttributes['random_order'], 0);
         // Get questions and answers by defined order
-        $sOrder = ($this->aQuestionAttributes['random_order'] == 1) 
-            ? dbRandom() 
-            : ($alpha ? 'answer' : 'question_order');
+        $sOrder = ($bRandomOrder) 
+        ? dbRandom() 
+        : ($bAlphasort ? 'answer' : 'question_order');
+
         $oCriteria = new CDbCriteria();
         $oCriteria->order = $sOrder;
         $oCriteria->addCondition('parent_qid=:parent_qid');
-
         $oCriteria->params = [':parent_qid'=>$this->oQuestion->qid];
+        
+        return Answers::model()->findAll($oCriteria);
+    }
 
+    protected function setAnsweroptions( $scale_id = null){
         //reset answers set prior to this call
         $this->aAnswerOptions = [];
         foreach ($this->oQuestion->answers as $oAnswer) {
