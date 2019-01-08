@@ -8,14 +8,13 @@ export default {
 </script>
 
 <template>
-    <div class="col-sm-8 col-xs-12 xxcolor">
-
+    <div class="col-sm-8 col-xs-12 scope-border-simple">
+        
     </div>
 </template>
 
 <style lang="scss" scoped>
-.xxcolor {
-    background-color: green;
-    min-height: 50vh;
+.scope-border-simple {
+    border: 1px solid black;
 }
 </style>

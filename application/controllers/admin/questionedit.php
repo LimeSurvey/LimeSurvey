@@ -46,6 +46,20 @@ class questionedit extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
     }
 
+
+    /**
+     * A lot of getter function regarding functionalities and views.
+     * All called via ajax
+     */
+
+
+
+    protected function renderJSON($aData){
+        if(Yii::app()->getConfig('debug') > 0)
+            $aData['debug'] = [$_POST, $_GET];
+
+        Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData]);
+    }
     
     /**
      * Renders template(s) wrapped in header and footer
