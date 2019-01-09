@@ -156,7 +156,8 @@ var RankingQuestion = function (options) {
                 setChoiceHeight();
             });
             /* Do it when a choice is shown/hidden by filter (mantis #14411) */
-            $('#question' + questionId + ' .ls-choice').on('relevance:on relevance:off', function (event, data) {
+            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice',function (event, data) {
+                if(event.target != this) return;
                 data = $.extend({style:'hidden'}, data);
                 if(data.style == 'hidden') {
                     setChoiceHeight();
@@ -174,7 +175,8 @@ var RankingQuestion = function (options) {
             $('#question' + questionId + ' .ls-choice').on('html:updated',function(){
                 setListHeight();
             });
-            $('#question' + questionId + ' .ls-choice').on('relevance:on relevance:off', function (event, data) {
+            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice', function (event, data) {
+                if(event.target != this) return;
                 data = $.extend({style:'hidden'}, data);
                 if(data.style == 'hidden') {
                     setListHeight();
@@ -186,8 +188,9 @@ var RankingQuestion = function (options) {
         }
     },
     setChoiceHeight = function() {
+        $('#question' + questionId + ' .ls-choice').css("min-height",""); // reset the min-height style
         var maxHeight = 0;
-        $('#question' + questionId + ' .ls-choice').filter(":visible").each(function () {
+        $('#question' + questionId + ' .ls-choice:not(.ls-hidden)').each(function () {
             if ($(this).actual('height') > maxHeight) {
                 maxHeight = $(this).actual('height');
             }
@@ -196,7 +199,7 @@ var RankingQuestion = function (options) {
     },
     setListHeight = function() {
         var totalHeight = 0;
-        $('#question' + questionId + ' .ls-choice').filter(":visible").each(function () {
+        $('#question' + questionId + ' .ls-choice:not(.ls-hidden)').each(function () {
             totalHeight = totalHeight + $(this).actual('outerHeight', {
                 includeMargin: true
             }); /* Border not inside */
@@ -205,18 +208,21 @@ var RankingQuestion = function (options) {
         $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css("min-height",totalHeight+"px");
     },
     triggerEmRelevanceSortable = function() {
-        $(".sortable-item").on('relevance:on', function (event, data) {
-            //~ if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
+        $('#question' + questionId).off('relevance:on',"[id^='javatbd']");
+        $('#question' + questionId).off('relevance:off',"[id^='javatbd']");
+        $('#question' + questionId +' .sortable-item').on('relevance:on', function (event, data) {
             data = $.extend({style:'hidden'}, data);
+            data = $.extend({style:'hidden'}, data);
+            $(this).removeClass("ls-irrelevant ls-"+data.style);
             if(data.style == 'disable') { // not needed if hidden
                 $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', false);
                 $(event.target).removeClass("disabled");
             }
         });
 
-        $(".sortable-item").on('relevance:off', function (event, data) {
-            //~ if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
+        $('#question' + questionId +' .sortable-item').on('relevance:off', function (event, data) {
             data = $.extend({style:'hidden'}, data);
+            $(this).addClass("ls-irrelevant ls-"+data.style);
             if(data.style == 'disable') { // not needed if hidden
                 $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', true);
                 $(event.target).addClass("disabled");
@@ -232,8 +238,9 @@ var RankingQuestion = function (options) {
 
     return {
         init : function(){
-            doDragDropRank();
+            /* must trigger hidden before set heght */
             triggerEmRelevanceSortable();
+            doDragDropRank();
         }
     }
 
