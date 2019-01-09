@@ -148,27 +148,49 @@ var RankingQuestion = function (options) {
 
     fixChoiceListHeight = function() {
         if (samechoiceheight) {
-            var maxHeight = 0;
-            $('#question' + questionId + ' .ls-choice').each(function () {
-                if ($(this).actual('height') > maxHeight) {
-                    maxHeight = $(this).actual('height');
-                }
+            /* Do it at load */
+            setChoiceHeight();
+            /* Do it when any choice are updated by EM */
+            $('#question' + questionId + ' .ls-choice').on('html:updated',function(){
+                $('#question' + questionId + ' .ls-choice').css("min-height","");
+                setChoiceHeight();
             });
-            $('#question' + questionId + ' .ls-choice').css("min-height",maxHeight+"px");
+            /* Do it on windiw resize */
+            $(window).resize(function() {
+                $('#question' + questionId + ' .ls-choice').css("min-height","");
+                setChoiceHeight();
+            });
         }
-
         if (samelistheight) {
-            var totalHeight = 0;
-            $('#question' + questionId + ' .ls-choice').each(function () {
-                totalHeight = totalHeight + $(this).actual('outerHeight', {
-                    includeMargin: true
-                }); /* Border not inside */
+            /* Do it at same time it happen for choice */
+            setListHeight();
+            $('#question' + questionId + ' .ls-choice').on('html:updated',function(){
+                setListHeight();
             });
-            /* Add the padding to min-height */
-            $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css("min-height",totalHeight+"px");
+            $(window).resize(function() {
+                setListHeight();
+            });
         }
     },
-
+    setChoiceHeight = function() {
+        var maxHeight = 0;
+        $('#question' + questionId + ' .ls-choice').each(function () {
+            if ($(this).actual('height') > maxHeight) {
+                maxHeight = $(this).actual('height');
+            }
+        });
+        $('#question' + questionId + ' .ls-choice').css("min-height",maxHeight+"px");
+    },
+    setListHeight = function() {
+        var totalHeight = 0;
+        $('#question' + questionId + ' .ls-choice').each(function () {
+            totalHeight = totalHeight + $(this).actual('outerHeight', {
+                includeMargin: true
+            }); /* Border not inside */
+        });
+        /* Add the padding to min-height */
+        $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css("min-height",totalHeight+"px");
+    },
     triggerEmRelevanceSortable = function() {
         $(".sortable-item").on('relevance:on', function (event, data) {
             //~ if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
