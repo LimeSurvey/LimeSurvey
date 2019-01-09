@@ -309,6 +309,37 @@ class LS_Twig_Extension extends Twig_Extension
     }
 
     /**
+     * @var $ressourcePath string : the needed ressource
+     * @var $default string : the default ressource
+     * @return string
+     */
+    public static function templateRessourceUrl($ressourcePath, $default = false)
+    {
+        /* @todo fix filename … */
+        //~ if(sanitize($ressourcePath) != $ressourcePath) {
+            //~ if($default) {
+                //~ return self::templateRessourceUrl($default);
+            //~ }
+            //~ return false;
+        //~ }
+
+        // Reccurence on templates to find the file
+        $oTemplate = self::getTemplateForRessource($ressourcePath);
+        if ($oTemplate) {
+            $sFullPath = $oTemplate->path.$ressourcePath;
+        } else {
+            if(!is_file(Yii::app()->getConfig('rootdir').'/'.$ressourcePath)) {
+                if($default) {
+                    return self::templateRessourceUrl($default);
+                }
+                return false;
+            }
+            $sFullPath = Yii::app()->getConfig('rootdir').'/'.$ressourcePath;
+        }
+        $ressourceAsset = self::assetPublish($sFullPath);
+        return $ressourceAsset;
+    }
+    /**
      * @param string $sRessource
      */
     public static function getTemplateForRessource($sRessource)
@@ -316,7 +347,6 @@ class LS_Twig_Extension extends Twig_Extension
         $oRTemplate = Template::model()->getInstance();
 
         while (!file_exists($oRTemplate->path.$sRessource)) {
-
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 return false;
