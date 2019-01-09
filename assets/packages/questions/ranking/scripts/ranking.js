@@ -161,7 +161,7 @@ var RankingQuestion = function (options) {
                 if(data.style == 'hidden') {
                     setChoiceHeight();
                 }
-            }
+            });
             /* Do it on window resize */
             $(window).resize(function() {
                 $('#question' + questionId + ' .ls-choice').css("min-height","");
@@ -179,7 +179,7 @@ var RankingQuestion = function (options) {
                 if(data.style == 'hidden') {
                     setListHeight();
                 }
-            }
+            });
             $(window).resize(function() {
                 setListHeight();
             });
