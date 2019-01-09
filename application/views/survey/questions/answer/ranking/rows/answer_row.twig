@@ -17,7 +17,7 @@
         <select  class='form-control' name="{{myfname}}" id="answer{{myfname}}">
             {% for option in options %}
                 <option value="{{ option.value }}" {{ option.selected }} class='{{option.classes}}'>
-                    {{ option.optiontext }}
+                    {{ flatString(option.optiontext) }}
                 </option>
             {% endfor %}
         </select>
