@@ -150,12 +150,19 @@ var RankingQuestion = function (options) {
         if (samechoiceheight) {
             /* Do it at load */
             setChoiceHeight();
-            /* Do it when any choice are updated by EM */
+            /* Do it when any choice are updated by EM (mantis #14406) */
             $('#question' + questionId + ' .ls-choice').on('html:updated',function(){
                 $('#question' + questionId + ' .ls-choice').css("min-height","");
                 setChoiceHeight();
             });
-            /* Do it on windiw resize */
+            /* Do it when a choice is shown/hidden by filter (mantis #14411) */
+            $('#question' + questionId + ' .ls-choice').on('relevance:on relevance:off', function (event, data) {
+                data = $.extend({style:'hidden'}, data);
+                if(data.style == 'hidden') {
+                    setChoiceHeight();
+                }
+            }
+            /* Do it on window resize */
             $(window).resize(function() {
                 $('#question' + questionId + ' .ls-choice').css("min-height","");
                 setChoiceHeight();
@@ -167,6 +174,12 @@ var RankingQuestion = function (options) {
             $('#question' + questionId + ' .ls-choice').on('html:updated',function(){
                 setListHeight();
             });
+            $('#question' + questionId + ' .ls-choice').on('relevance:on relevance:off', function (event, data) {
+                data = $.extend({style:'hidden'}, data);
+                if(data.style == 'hidden') {
+                    setListHeight();
+                }
+            }
             $(window).resize(function() {
                 setListHeight();
             });
@@ -174,7 +187,7 @@ var RankingQuestion = function (options) {
     },
     setChoiceHeight = function() {
         var maxHeight = 0;
-        $('#question' + questionId + ' .ls-choice').each(function () {
+        $('#question' + questionId + ' .ls-choice').filter(":visible").each(function () {
             if ($(this).actual('height') > maxHeight) {
                 maxHeight = $(this).actual('height');
             }
@@ -183,7 +196,7 @@ var RankingQuestion = function (options) {
     },
     setListHeight = function() {
         var totalHeight = 0;
-        $('#question' + questionId + ' .ls-choice').each(function () {
+        $('#question' + questionId + ' .ls-choice').filter(":visible").each(function () {
             totalHeight = totalHeight + $(this).actual('outerHeight', {
                 includeMargin: true
             }); /* Border not inside */
@@ -194,16 +207,20 @@ var RankingQuestion = function (options) {
     triggerEmRelevanceSortable = function() {
         $(".sortable-item").on('relevance:on', function (event, data) {
             //~ if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
-            //~ data = $.extend({style:'hidden'}, data);
-            $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', false);
-            $(event.target).removeClass("disabled");
+            data = $.extend({style:'hidden'}, data);
+            if(data.style == 'disable') { // not needed if hidden
+                $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', false);
+                $(event.target).removeClass("disabled");
+            }
         });
 
         $(".sortable-item").on('relevance:off', function (event, data) {
             //~ if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
-            //~ data = $.extend({style:'hidden'}, data);
-            $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', true);
-            $(event.target).addClass("disabled");
+            data = $.extend({style:'hidden'}, data);
+            if(data.style == 'disable') { // not needed if hidden
+                $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', true);
+                $(event.target).addClass("disabled");
+            }
             /* reset already ranked item */
             if ($(event.target).parent().hasClass("sortable-rank")) {
                 $(event.target).appendTo($(event.target).closest(".answers-list").find(".sortable-choice"));
