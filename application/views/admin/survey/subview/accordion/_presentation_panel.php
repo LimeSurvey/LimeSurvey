@@ -42,7 +42,8 @@ if ($bShowInherited){
             <div class="">
                 <input type='text' class="form-control selector-numerical-input" value="<?php echo $oSurvey->navigationdelay; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')" />
                 <?php if ($bShowInherited){ ?>
-                    <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->navigationdelay . ']'; ?></span>
+                    <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->navigationdelay . ']'; ?></span></br>
+                    <span class='annotation'> <?php echo eT("Set this field to -1 to apply inherited value."); ?></span>
                 <?php } ?>
             </div>
         </div>
