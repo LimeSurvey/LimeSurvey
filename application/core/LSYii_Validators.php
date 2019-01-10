@@ -127,10 +127,9 @@ class LSYii_Validators extends CValidator
                 )
         );
 
-	$config = $filter->getPurifier()->config;
+	    $config = $filter->getPurifier()->config;
         $config->set('HTML.DefinitionID', 'html5-definitions');
         $def = $config->maybeGetRawHTMLDefinition();
-        $max = $config->get('HTML.MaxImgLength');
         if ($def) {
             $def->addElement('video', 'Inline', 'Flow', 'Common', array(
                 'controls' => 'Bool',
