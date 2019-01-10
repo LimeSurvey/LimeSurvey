@@ -293,7 +293,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param string $sHtml     The Html content of the page (it must not contain anymore any twig statement)
      * @param Template $oTemplate The name of the template to use to register the packages
      */
-    private function renderHtmlPage($sHtml, $oTemplate)
+    public function renderHtmlPage($sHtml, $oTemplate)
     {
         Yii::app()->clientScript->registerPackage($oTemplate->sPackageName, LSYii_ClientScript::POS_BEGIN);
 
