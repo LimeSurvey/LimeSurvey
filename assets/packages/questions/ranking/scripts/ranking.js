@@ -10,9 +10,9 @@ var RankingQuestion = function (options) {
     var max_answers = options.max_answers,
         min_answers = options.min_answers,
         rankingName = options.rankingName,
-        showpopups = (typeof options.showpopups != 'undefined') ? options.showpopups : true,
-        samechoiceheight = (typeof options.samechoiceheight != 'undefined') ? options.samechoiceheight : true,
-        samelistheight = (typeof options.samelistheight != 'undefined') ? options.samelistheight : true,
+        showpopups = (typeof options.showpopups != 'undefined') ? parseInt(options.showpopups) : 1,
+        samechoiceheight = (typeof options.samechoiceheight != 'undefined') ? parseInt(options.samechoiceheight) : 1,
+        samelistheight = (typeof options.samelistheight != 'undefined') ? parseInt(options.samelistheight) : 1,
         questionId = options.questionId;
     //define reused variables
     var relevancename= "relevance"+rankingName,
