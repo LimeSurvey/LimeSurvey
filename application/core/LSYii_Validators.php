@@ -108,7 +108,7 @@ class LSYii_Validators extends CValidator
      */
     public function xssFilter($value)
     {
-        $filter = new CHtmlPurifier();
+        $filter = new CHtmlPurifierHelper();
         $filter->options = array(
             'AutoFormat.RemoveEmpty'=>false,
             'Core.NormalizeNewlines'=>false,
@@ -127,7 +127,7 @@ class LSYii_Validators extends CValidator
                 )
         );
 
-	    $config = $filter->getPurifier()->config;
+	$config = $filter->getPurifier()->config;
         $config->set('HTML.DefinitionID', 'html5-definitions');
         $def = $config->maybeGetRawHTMLDefinition();
         if ($def) {
