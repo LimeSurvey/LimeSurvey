@@ -694,7 +694,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
                                 .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' />\n";
                             } else {
-                                $lresult = Answer::model()->findAll("qid={$fname['qid']}");
+                                $lresult = Answer::model()->with('answerL10ns')->findAll(array('condition'=>'qid =:qid AND language = :language', 'params' => array('qid' => $fname['qid'], 'language' => $sDataEntryLanguage)));
                                 $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
                                 ."<option value=''";
                                 if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'"; }
@@ -709,8 +709,8 @@ class dataentry extends Survey_Common_Action
                                 } else {
                                     $defaultopts = array();
                                     $optgroups = array();
-                                    foreach ($lresult->readAll() as $llrow) {
-                                        list ($categorytext, $answertext) = explode($optCategorySeparator, $llrow['answer']);
+                                    foreach ($lresult as $llrow) {
+                                        list ($categorytext, $answertext) = explode($optCategorySeparator, $llrow->answerL10ns[$sDataEntryLanguage]->answer);
                                         if ($categorytext == '') {
                                             $defaultopts[] = array('code' => $llrow['code'], 'answer' => $answertext);
                                         } else {
@@ -773,8 +773,7 @@ class dataentry extends Survey_Common_Action
                                 }
                                 $fname = next($fnames);
                             }
-                            $ansquery = "SELECT * FROM {{answers}} WHERE language = '{$sDataEntryLanguage}' AND qid=$thisqid ORDER BY sortorder, answer";
-                            $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll(); //Checked
+                            $ansresult = Answer::model()->with('answerL10ns')->findAll(array('condition'=>'qid =:qid AND language = :language', 'params' => array('qid' => $thisqid, 'language' => $sDataEntryLanguage)));
                             $anscount = count($ansresult);
                             $answers = array();
                                 foreach ($ansresult as $ansrow) {
@@ -793,9 +792,9 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "<select name=\"{$myfname}{$i}\" id=\"answer{$myfname}{$i}\" class='form-control'>\n";
                                 (!isset($currentvalues[$i - 1])) ? $selected = " selected=\"selected\"" : $selected = "";
                                 $aDataentryoutput .= "\t<option value=\"\" $selected>".gT('None')."</option>\n";
-                                foreach ($answers as $ansrow) {
+                                foreach ($ansresult as $ansrow) {
                                     (isset($currentvalues[$i - 1]) && $currentvalues[$i - 1] == $ansrow['code']) ? $selected = " selected=\"selected\"" : $selected = "";
-                                    $aDataentryoutput .= "\t<option value=\"".$ansrow['code']."\" $selected>".flattenText($ansrow['answer'])."</option>\n";
+                                    $aDataentryoutput .= "\t<option value=\"".$ansrow['code']."\" $selected>".flattenText($ansrow->answerL10ns[$sDataEntryLanguage]->answer)."</option>\n";
                                 }
                                 $aDataentryoutput .= "</select\n";
                                 $aDataentryoutput .= "</li>";
@@ -805,8 +804,8 @@ class dataentry extends Survey_Common_Action
                                 . "<div style='display:none' id='ranking-{$thisqid}-minans'>0</div>"
                                 . "<div style='display:none' id='ranking-{$thisqid}-name'>javatbd{$myfname}</div>";
                             $aDataentryoutput .= "<div style=\"display:none\">";
-                            foreach ($answers as $ansrow) {
-                                $aDataentryoutput .= "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow['answer']}</div>";
+                            foreach ($ansresult as $ansrow) {
+                                $aDataentryoutput .= "<div id=\"htmlblock-{$thisqid}-{$ansrow['code']}\">{$ansrow->answerL10ns[$sDataEntryLanguage]->answer}</div>";
                             }
                             $aDataentryoutput .= "</div>";
                             $aDataentryoutput .= '</div>';
@@ -1794,7 +1793,7 @@ class dataentry extends Survey_Common_Action
                                 unset($optCategorySeparator);
                             }
                             $defexists = "";
-                            $arAnswers = Answer::model()->findAllByAttributes(['qid'=>$arQuestion['qid']]);
+                            $arAnswers = Answer::model()->with('answerL10ns')->findAll(array('condition'=>'qid =:qid AND language = :language', 'params' => array('qid' => $arQuestion['qid'], 'language' => $sDataEntryLanguage)));
                             //$aDataentryoutput .= "\t<select name='$fieldname' class='form-control' >\n";
                             $aDatatemp = '';
                             if (!isset($optCategorySeparator)) {
@@ -1808,7 +1807,7 @@ class dataentry extends Survey_Common_Action
                                 $optgroups = array();
 
                                 foreach ($arAnswers as $aAnswer) {
-                                    list ($categorytext, $answertext) = explode($optCategorySeparator, $aAnswer['answer']);
+                                    list ($categorytext, $answertext) = explode($optCategorySeparator, $aAnswer->answerL10ns[$sDataEntryLanguage]->answer);
                                     if ($categorytext == '') {
                                         $defaultopts[] = array('code' => $aAnswer['code'], 'answer' => $answertext, 'default_value' => $aAnswer['assessment_value']);
                                     } else {
@@ -1843,7 +1842,7 @@ class dataentry extends Survey_Common_Action
                             foreach ($arAnswers as $aAnswer) {
                                 $aDatatemp .= "<option value='{$aAnswer['code']}'";
                                 //if ($dearow['default_value'] == "Y") {$aDatatemp .= " selected='selected'"; $defexists = "Y";}
-                                $aDatatemp .= ">{$aAnswer['answer']}</option>\n";
+                                $aDatatemp .= ">{$aAnswer->answerL10ns[$sDataEntryLanguage]->answer}</option>\n";
 
                             }
                             $cdata['datatemp'] = $aDatatemp;
