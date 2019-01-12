@@ -99,7 +99,6 @@ var RankingQuestion = function (options) {
      * Update answers after updating drag and drop part
      */
     updateDragDropRank = function() {
-        
         $('#question' + questionId + ' .select-item select').val('');
         $('#sortable-rank-' + questionId + ' li').each(function (index) {
             $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
@@ -126,7 +125,6 @@ var RankingQuestion = function (options) {
         }
     },
     loadDragDropRank = function () {
-        
         // Update #relevance
         $("[id^=" + relevancename + "]").val('0');
         $('#sortable-rank-' + questionId + ' li').each(function () {
@@ -156,7 +154,8 @@ var RankingQuestion = function (options) {
                 setChoiceHeight();
             });
             /* Do it when a choice is shown/hidden by filter (mantis #14411) */
-            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice',function (event, data) {
+            /* attach to the last one only , see #14424. This can need update when EM javascript was improved */
+            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice:last',function (event, data) {
                 if(event.target != this) return;
                 data = $.extend({style:'hidden'}, data);
                 if(data.style == 'hidden') {
@@ -175,7 +174,8 @@ var RankingQuestion = function (options) {
             $('#question' + questionId + ' .ls-choice').on('html:updated',function(){
                 setListHeight();
             });
-            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice', function (event, data) {
+            /* attach to the last one only , see #14424. This can need update when EM javascript was improved */
+            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice:last', function (event, data) {
                 if(event.target != this) return;
                 data = $.extend({style:'hidden'}, data);
                 if(data.style == 'hidden') {
