@@ -101,6 +101,7 @@ var RankingQuestion = function (options) {
     updateDragDropRank = function() {
         $('#question' + questionId + ' .select-item select').val('');
         $('#sortable-rank-' + questionId + ' li').each(function (index) {
+            $('#question' + questionId + ' .select-item select').eq(index).data("old-val",$('#question' + questionId + ' .select-item select').eq(index).val());
             $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
         });
 
@@ -111,7 +112,11 @@ var RankingQuestion = function (options) {
             if ($(this).val() != "") {
                 $("#" + relevancename + (index+1) ).val("1");
             }
-            $(this).trigger("change", { source: 'dragdrop' });
+            /* trigger change only if val is updated see #14425 */
+            if( (typeof $(this).data("old-val") == 'undefined' && $(this).val() != "") || ($(this).val() != $(this).data("old-val")) ) {
+                $(this).trigger("change", { source: 'dragdrop' });
+                $(this).data("old-val",$(this).val())
+            }
         });
         $('#sortable-rank-' + questionId + ' li').removeClass("text-error");
         $('#sortable-choice-' + questionId + ' li').removeClass("text-error");
@@ -135,6 +140,8 @@ var RankingQuestion = function (options) {
                 $("#" + relevancename + (index+1)).val("1");
                 $('#sortable-choice-' + questionId + ' li#' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
             }
+            /* set old-val for updateDragDropRank see #14425 */
+            $(this).closest("select").data("old-val",$(this).closest("select").val());
         });
 
         updateDragDropRank(); // Update to reorder select
