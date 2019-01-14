@@ -464,7 +464,13 @@ class Question extends LSActiveRecord
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
-        return Question::model()->findAll($condition);
+        $oQuestions = Question::model()->with('questionL10ns')->findAll($condition);
+        $arr = array();
+        foreach($oQuestions as $key => $question)
+        {
+            $arr[$key] = array_merge($question->attributes, current($question->questionL10ns)->attributes);
+        }
+        return $arr;
     }
 
     /**
