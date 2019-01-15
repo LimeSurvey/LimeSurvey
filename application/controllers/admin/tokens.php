@@ -1555,6 +1555,7 @@ class tokens extends Survey_Common_Action
                             . "<li>".gT("not having been sent an invitation already")."</li>"
                             . "<li>".gT("not having already completed the survey")."</li>"
                             . "<li>".gT("having a token")."</li></ul>"
+                            . "<li>".gT("having at least one use left")."</li></ul>"
                             . '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Cancel").'</a></p>'
                         )
                     ),
