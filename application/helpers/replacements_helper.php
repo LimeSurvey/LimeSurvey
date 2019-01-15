@@ -74,7 +74,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     // Local over-rides in case not set above
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
-    $_surveyid = Yii::app()->getConfig('surveyID');
+    $_surveyid = $_SESSION['LEMsid'];
 
     if ($_surveyid) {
         $totalgroups = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
@@ -361,7 +361,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
 function getStandardsReplacementFields($thissurvey)
 {
-    $_surveyid = Yii::app()->getConfig('surveyID');
+    $_surveyid = $_SESSION['LEMsid'];
 
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
 
@@ -440,12 +440,14 @@ function getStandardsReplacementFields($thissurvey)
         $_assessment_current_total = (isset($assessmentdata['datas']['total_score']))?$assessmentdata['datas']['total_score']:gT("Unkown");
     }
 
+    $oSurvey = Survey::model()->findByPk($surveyid);
+    $totalquestions = $oSurvey->countTotalQuestions;
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
     $coreReplacements['FLASHMESSAGE'] = makeFlashMessage();
     $coreReplacements['NUMBEROFGROUPS'] = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
-    $coreReplacements['NUMBEROFQUESTIONS'] = $_SESSION['survey_'.$surveyid]['totalquestions'];
+    $coreReplacements['NUMBEROFQUESTIONS'] = $totalquestions;
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['EXPIRY'] = $_dateoutput;

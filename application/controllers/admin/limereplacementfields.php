@@ -194,14 +194,13 @@ class limereplacementfields extends Survey_Common_Action
         if (!$surveyid) {
                     return array($replFields, false);
         }
-        switch ($fieldtype) {
-            case 'survey-desc':
-            case 'survey-welc':
-            case 'survey-endtext':
-            case 'edittitle': // for translation
-            case 'editdescription': // for translation
-            case 'editwelcome': // for translation
-            case 'editend': // for translation
+        if (strpos($fieldtype, 'survey-desc') !== false
+            || strpos($fieldtype, 'survey-welc') !== false
+            || strpos($fieldtype, 'survey-endtext') !== false
+            || strpos($fieldtype, 'edittitle') !== false // for translation
+            || strpos($fieldtype, 'editdescription') !== false // for translation
+            || strpos($fieldtype, 'editwelcome') !== false // for translation
+            || strpos($fieldtype, 'editend') !== false) { // for translation
                 $replFields['TOKEN:FIRSTNAME'] = gT("First name from token");
                 $replFields['TOKEN:LASTNAME'] = gT("Last name from token");
                 $replFields['TOKEN:EMAIL'] = gT("Email from the token");
@@ -214,8 +213,8 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
                 return array($replFields, false);
 
-            case 'email-admin_notification':
-            case 'email-admin_detailed_notification':
+        } elseif (strpos($fieldtype, 'email_admin_notification') !== false
+            || strpos($fieldtype, 'email_admin_detailed_notification') !== false){
                 $replFields['VIEWRESPONSEURL'] = gT("View response URL");
                 $replFields['EDITRESPONSEURL'] = gT("Edit response URL");
                 $replFields['STATISTICSURL'] = gT("Statistics URL");
@@ -233,7 +232,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
                 return array($replFields, false);
 
-            case 'email-admin-resp':
+        } elseif (strpos($fieldtype, 'email-admin-resp') !== false){
                 $replFields['VIEWRESPONSEURL'] = gT("View response URL");
                 $replFields['EDITRESPONSEURL'] = gT("Edit response URL");
                 $replFields['STATISTICSURL'] = gT("Statistics URL");
@@ -252,16 +251,30 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
                 return array($replFields, false);
 
-            case 'email-invitation':
-            case 'email-reminder':
+        } elseif (strpos($fieldtype, 'email_invitation') !== false
+            || strpos($fieldtype, 'email_reminder') !== false){
                 // these 2 fields are supported by email-inv and email-rem
                 // but not email-reg for the moment
                 $replFields['EMAIL'] = gT("Email from the token");
                 $replFields['TOKEN'] = gT("Token code for this participant");
                 $replFields['OPTOUTURL'] = gT("URL for a respondent to opt-out of this survey");
                 $replFields['OPTINURL'] = gT("URL for a respondent to opt-in to this survey");
+                $replFields['FIRSTNAME'] = gT("First name from token");
+                $replFields['LASTNAME'] = gT("Last name from token");
+                $replFields['SURVEYNAME'] = gT("Survey title");
+                $replFields['SID'] = gT("Survey ID");
+                $replFields['SURVEYDESCRIPTION'] = gT("Survey description");
+                $attributes = getTokenFieldsAndNames($surveyid, true);
+                foreach ($attributes as $attributefield => $attributedescription) {
+                    $replFields[strtoupper($attributefield)] = sprintf(gT("Token attribute: %s"), $attributedescription['description']);
+                }
+                $replFields['ADMINNAME'] = gT("Name of the survey administrator");
+                $replFields['ADMINEMAIL'] = gT("Email address of the survey administrator");
+                $replFields['SURVEYURL'] = gT("URL of the survey");
+                $replFields['EXPIRY'] = gT("Survey expiration date");
+                return array($replFields, false);
                 // $replFields['SID']= gT("Survey ID");
-            case 'email-registration':
+        } elseif (strpos($fieldtype, 'email_registration') !== false){
                 $replFields['FIRSTNAME'] = gT("First name from token");
                 $replFields['LASTNAME'] = gT("Last name from token");
                 $replFields['SURVEYNAME'] = gT("Survey title");
@@ -277,7 +290,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['EXPIRY'] = gT("Survey expiration date");
                 return array($replFields, false);
 
-            case 'email-confirmation':
+        } elseif (strpos($fieldtype, 'email_confirmation') !== false){
                 $replFields['TOKEN'] = gT("Token code for this participant");
                 $replFields['FIRSTNAME'] = gT("First name from token");
                 $replFields['LASTNAME'] = gT("Last name from token");
@@ -303,13 +316,13 @@ class limereplacementfields extends Survey_Common_Action
                 }
                 return array($replFields, false);
 
-            case 'group-desc':
-            case 'question-text':
-            case 'question-help':
-            case 'editgroup': // for translation
-            case 'editgroup_desc': // for translation
-            case 'editquestion': // for translation
-            case 'editquestion_help': // for translation
+        } elseif (strpos($fieldtype, 'group-desc') !== false
+            || strpos($fieldtype, 'question-text') !== false
+            || strpos($fieldtype, 'question-help') !== false
+            || strpos($fieldtype, 'editgroup') !== false // for translation
+            || strpos($fieldtype, 'editgroup_desc') !== false // for translation
+            || strpos($fieldtype, 'editquestion') !== false // for translation
+            || strpos($fieldtype, 'editquestion_help') !== false) { // for translation
                 $replFields['TOKEN:FIRSTNAME'] = gT("First name from token");
                 $replFields['TOKEN:LASTNAME'] = gT("Last name from token");
                 $replFields['TOKEN:EMAIL'] = gT("Email from the token");
@@ -322,10 +335,23 @@ class limereplacementfields extends Survey_Common_Action
                     $replFields['TOKEN:'.strtoupper($attributefield)] = sprintf(gT("Token attribute: %s"), $attributedescription['description']);
                 }
                 $replFields['EXPIRY'] = gT("Survey expiration date");
-            case 'editanswer':
                 return array($replFields, true);
+        } elseif (strpos($fieldtype, 'editanswer') !== false){
+            $replFields['TOKEN:FIRSTNAME'] = gT("First name from token");
+            $replFields['TOKEN:LASTNAME'] = gT("Last name from token");
+            $replFields['TOKEN:EMAIL'] = gT("Email from the token");
+            $replFields['SID'] = gT("This question's survey ID number");
+            $replFields['GID'] = gT("This question's group ID number");
+            $replFields['QID'] = gT("This question's question ID number");
+            $replFields['SGQ'] = gT("This question's SGQA code");
+            $attributes = getTokenFieldsAndNames($surveyid, true);
+            foreach ($attributes as $attributefield => $attributedescription) {
+                $replFields['TOKEN:'.strtoupper($attributefield)] = sprintf(gT("Token attribute: %s"), $attributedescription['description']);
+            }
+            $replFields['EXPIRY'] = gT("Survey expiration date");
+            return array($replFields, true);
 
-            case 'assessment-text':
+        } elseif (strpos($fieldtype, 'assessment-text') !== false){
                 $replFields['TOTAL'] = gT("Overall assessment score");
                 $replFields['PERC'] = gT("Assessment group score");
                 return array($replFields, false);
