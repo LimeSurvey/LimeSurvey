@@ -236,8 +236,8 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                                 </div>
 
                                 <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
-
                                 <!-- Question selector end -->
+
                                <div class="form-group" id="QuestionTemplateSelection">
                                     <label class=" control-label" for='question_template'>
                                         <?php eT("Question theme:"); ?>
@@ -293,9 +293,15 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                                                 'onLabel'=>gT('On'),
                                                 'offLabel'=>gT('Off'),
                                                 'htmlOptions'=>array(
-                                                    'disabled'=>$activated == "Y",
+                                                    'disabled'=> $activated == "Y",
+                                                    'value'=> 'Y',
+                                                    'uncheckValue' => 'N',
                                                 ),
-                                            ));?>
+                                            ));
+                                            if($activated == "Y") {
+                                                echo CHtml::hiddenField('other',$eqrow['other']);
+                                            }
+                                            ?>
                                         </div>
                                 </div>
 
@@ -308,7 +314,17 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                                     <p class="help-block collapse" id="help_mandatory"><?php eT("Set \"Mandatory\" state");?></p> 
                                     <div class="">
                                         <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'id' => 'mandatory','value'=> $eqrow['mandatory'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => 'mandatory',
+                                            'id' => 'mandatory',
+                                            'value'=> $eqrow['mandatory'] === "Y",
+                                            'onLabel'=>gT('On'),
+                                            'offLabel'=>gT('Off'),
+                                            'htmlOptions'=>array(
+                                                'value'=> 'Y',
+                                                'uncheckValue' => 'N',
+                                            ),
+                                        ));?>
                                     </div>
                                 </div>
 
