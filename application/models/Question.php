@@ -464,7 +464,11 @@ class Question extends LSActiveRecord
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby = false)
     {
-        $oQuestions = Question::model()->with('questionL10ns')->findAll($condition);
+        if ($orderby === false){
+            $oQuestions = Question::model()->with('questionL10ns')->findAll(array('condition' => $condition));
+        } else {
+            $oQuestions = Question::model()->with('questionL10ns')->findAll(array('condition' => $condition, 'order' => $orderby));
+        }
         $arr = array();
         foreach($oQuestions as $key => $question)
         {
