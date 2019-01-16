@@ -587,8 +587,9 @@ class themes extends Survey_Common_Action
      * @param string $templatename
      * @return void
      */
-    public function delete($templatename)
+    public function delete()
     {
+        $templatename = trim( Yii::app()->request->getPost('templatename') );
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             Yii::app()->loadHelper("admin/template");
 
