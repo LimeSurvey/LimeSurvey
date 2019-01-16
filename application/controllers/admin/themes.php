@@ -635,17 +635,21 @@ class themes extends Survey_Common_Action
         $this->getController()->redirect(array("admin/themeoptions"));
     }
 
-    public function deleteBrokenTheme($templatename)
+    public function deleteBrokenTheme()
     {
-        // First we check that the theme is really broken
-        $aBrokenThemes = Template::getBrokenThemes();
-        $templatename  = sanitize_dirname($templatename);
-        if (array_key_exists($templatename, $aBrokenThemes)) {
-            if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
-                Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+        $templatename = trim( Yii::app()->request->getPost('templatename') );
+
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
+            // First we check that the theme is really broken
+            $aBrokenThemes = Template::getBrokenThemes();
+            $templatename  = sanitize_dirname($templatename);
+            if (array_key_exists($templatename, $aBrokenThemes)) {
+                if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
+                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+                }
+            }else{
+                Yii::app()->setFlashMessage(gT("Not a broken theme!"), 'error');
             }
-        }else{
-            Yii::app()->setFlashMessage(gT("Not a broken theme!"), 'error');
         }
 
         $this->getController()->redirect(array("admin/themeoptions"));
