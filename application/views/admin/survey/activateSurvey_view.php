@@ -1,3 +1,7 @@
+<?php
+/** @var Survey $oSurvey */
+
+?>
 <?php if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck)): ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
@@ -183,6 +187,15 @@
         <p class='col-sm-7 col-sm-offset-2'>
             <?php eT("Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."); ?><br /><br />
         </p>
+        <?php if($oSurvey->getIsExpiredByConfig()):?>
+        <div class="row">
+            <div class='col-sm-7 col-sm-offset-2'>
+
+                <div class="alert alert-danger"><?= Yii::t('app', 'NB! The survey you are activating is currently expired! The survey will not be available for participants.')?><div>
+            </div>
+
+        </div>
+        <?php endif;?>
 
         <div class='col-sm-6 col-sm-offset-4'>
             <input type='hidden' name='ok' value='Y' />
