@@ -273,7 +273,8 @@ class TemplateManifest extends TemplateConfiguration
     public function getButtons()
     {
         $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->sTemplateName));
-        $sDeleteUrl  = Yii::app()->getController()->createUrl('admin/themeoptions/sa/deleteTemplate/', array("templatename"=>$this->sTemplateName));
+        $sDeleteUrl   = Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/');
+
 
         // TODO: load to DB
         $sEditorLink = "<a
@@ -286,9 +287,7 @@ class TemplateManifest extends TemplateConfiguration
 
             //
 
-        $sLoadLink = '';
-
-        $sLoadLink .= CHtml::form( array("/admin/themeoptions/sa/importmanifest/"), 'post',array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
+        $sLoadLink = CHtml::form( array("/admin/themeoptions/sa/importmanifest/"), 'post',array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
                 "<input type='hidden' name='templatename' value='".$this->sTemplateName."'>
                 <button id='template_options_link_".$this->sTemplateName."'
                 class='btn btn-default btn-block'>
@@ -297,16 +296,24 @@ class TemplateManifest extends TemplateConfiguration
                 </button>
                 </form>";
 
-        $sDeleteLink = "<a
-                id='template_options_link_".$this->sTemplateName."'
-                href='".$sDeleteUrl."'
-                class='btn btn-danger btn-block'>
-                    <span class='fa fa-trash text-warning'></span>
-                    ".gT('Delete')."
-                </a>";
 
+        $sDeleteLink = '';
+        // We don't want user to be able to delete standard theme. Must be done via ftp (advanced users only)
+        if(Permission::model()->hasGlobalPermission('templates','delete') && !Template::isStandardTemplate($this->sTemplateName) ){
+          $sDeleteLink = '<a
+              id="template_delete_link_'.$this->sTemplateName.'"
+              href="'.$sDeleteUrl.'"
+              data-post=\'{ "templatename": "'.$this->sTemplateName.'" }\'
+              data-text="'.gT('Are you sure you want to delete this theme? ').'"
+              title="'.gT('Delete').'"
+              class="btn btn-danger btn-block selector--ConfirmModal">
+                  <span class="fa fa-trash "></span>
+                  '.gT('Delete').'
+                  </a>';
+      }
 
-        return $sEditorLink.$sLoadLink; //.$sDeleteLink;
+      return $sEditorLink.$sLoadLink.$sDeleteLink;
+
     }
 
     /**

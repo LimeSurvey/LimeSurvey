@@ -655,6 +655,32 @@ class themes extends Survey_Common_Action
         $this->getController()->redirect(array("admin/themeoptions"));
     }
 
+
+    public function deleteAvailableTheme()
+    {
+        $templatename = trim( Yii::app()->request->getPost('templatename') );
+
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
+
+            // CheckIfTemplateExists check if the template is installed....
+            if ( ! Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename) ) {
+                if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
+                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+                }else{
+                    Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
+                }
+            }else{
+                // This should never happen... trying to submit the form via a script? so no translation
+                Yii::app()->setFlashMessage( "You're trying to delete a theme that is installed. Please, uninstall it first", 'error');
+            }
+
+
+
+        }
+
+        $this->getController()->redirect(array("admin/themeoptions"));
+    }
+
     /**
      * Function responsible to save the changes made in CodemMirror editor.
      *
