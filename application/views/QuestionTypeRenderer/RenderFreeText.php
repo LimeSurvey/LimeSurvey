@@ -39,7 +39,7 @@ class RenderFreeText extends QuestionBaseRenderer
         $inputsize = null;
 
         $drows = $this->setDefaultIfEmpty(
-            $this->aQuestionAttributes['display_rows'], 
+            $this->getQuestionAttribute('display_rows'), 
             ($this->oQuestion->type == Question::QT_T_LONG_FREE_TEXT  ? 4 : 30)
         );
 
@@ -50,20 +50,20 @@ class RenderFreeText extends QuestionBaseRenderer
         } 
 
         // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-        if (intval(trim($this->aQuestionAttributes['maximum_chars'])) > 0) {
-            $maxlength = intval(trim($this->aQuestionAttributes['maximum_chars']));
+        if (intval(trim($this->getQuestionAttribute('maximum_chars'))) > 0) {
+            $maxlength = intval(trim($this->getQuestionAttribute('maximum_chars')));
             $extraclass .= " ls-input-maxchars";
         }
     
         // text_input_width can not be empty, except with old survey (wher can be empty or up to 12 see bug #11743
-        if (trim($this->aQuestionAttributes['text_input_width']) != '') {
-            $col         = ($this->aQuestionAttributes['text_input_width'] <= 12) ? $this->aQuestionAttributes['text_input_width'] : 12;
+        if (trim($this->getQuestionAttribute('text_input_width')) != '') {
+            $col         = ($this->getQuestionAttribute('text_input_width') <= 12) ? $this->getQuestionAttribute('text_input_width') : 12;
             $extraclass .= " col-sm-".trim($col);
             $withColumn = true;
         }
         
-        if (ctype_digit(trim($this->aQuestionAttributes['input_size']))) {
-            $inputsize = trim($this->aQuestionAttributes['input_size']);
+        if (ctype_digit(trim($this->getQuestionAttribute('input_size')))) {
+            $inputsize = trim($this->getQuestionAttribute('input_size'));
             $extraclass .= " ls-input-sized";
         }
 
@@ -81,7 +81,7 @@ class RenderFreeText extends QuestionBaseRenderer
             'maxlength'              => $maxlength,
         ), true);
 
-        if (!empty($this->aQuestionAttributes['time_limit']['value'])) {
+        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
             $answer .= $this->getTimeSettingRender();
         }
 

@@ -33,9 +33,9 @@ class RenderListRadio extends QuestionBaseRenderer
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
-        $this->sOthertext = $this->setDefaultIfEmpty($this->aQuestionAttributes['other_replace_text'][$this->sLanguage], gT('Other:')); // text for 'other'
-        $this->iNbCols   = @$this->setDefaultIfEmpty($this->aQuestionAttributes['display_columns'], 1); // number of columns
-        $this->setAnsweroptions(null, $this->aQuestionAttributes['alphasort']==1);
+        $this->sOthertext = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')); // text for 'other'
+        $this->iNbCols   = @$this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1); // number of columns
+        $this->setAnsweroptions(null, $this->getQuestionAttribute('alphasort')==1);
 
         if ($this->iNbCols > 1) {
             // Add a class on the wrapper
@@ -148,14 +148,14 @@ class RenderListRadio extends QuestionBaseRenderer
         $sSeparator = getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat);
         $sSeparator = $sSeparator['separator'];
         
-        $oth_checkconditionFunction = ($this->aQuestionAttributes['other_numbers_only'] == 1) ? 'fixnum_checkconditions' : 'checkconditions';
+        $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? 'fixnum_checkconditions' : 'checkconditions';
         $checkedState = ($this->mSessionValue == '-oth-') ? CHECKED : '';
 
         $myfname = $thisfieldname = $this->sSGQA.'other';
 
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname])) {
             $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$thisfieldname];
-            if ($this->aQuestionAttributes['other_numbers_only'] == 1) {
+            if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
             $answer_other = ' value="'.htmlspecialchars($dispVal, ENT_QUOTES).'"';
@@ -183,7 +183,7 @@ class RenderListRadio extends QuestionBaseRenderer
         $this->inputnames[] = $this->sSGQA;
         $this->sCoreClass .= " ".$sCoreClasses;
 
-        if (!empty($this->aQuestionAttributes['time_limit']['value'])) {
+        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
             $answer .= $this->getTimeSettingRender();
         }
 

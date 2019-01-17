@@ -69,7 +69,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
 
         $slider_rating = 0;
 
-        if ($this->aQuestionAttributes['slider_rating'] == 1) {
+        if ($this->getQuestionAttribute('slider_rating') == 1) {
             $slider_rating = 1;
             $this->aPackages[] = 'question-5pointchoice-star';
             $this->addScript(
@@ -80,7 +80,7 @@ class RenderFivePointChoice extends QuestionBaseRenderer
             );
         }
         
-        if ($this->aQuestionAttributes['slider_rating'] == 2) {
+        if ($this->getQuestionAttribute('slider_rating') == 2) {
             $slider_rating = 2;
             $this->aPackages[] = 'question-5pointchoice-slider';
             $this->addScript(

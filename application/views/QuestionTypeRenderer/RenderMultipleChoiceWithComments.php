@@ -41,11 +41,11 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         
         /*Find the col-sm width : if none is set : default, if one is set, set another one to be 12, if two is set : no change */
 
-        $this->attributeInputContainerWidth = intval(trim($this->aQuestionAttributes['text_input_columns']));
+        $this->attributeInputContainerWidth = intval(trim($this->getQuestionAttribute('text_input_columns')));
         if ($this->attributeInputContainerWidth < 1 || $this->attributeInputContainerWidth > 12) {
             $this->attributeInputContainerWidth = null;
         }
-        $this->attributeLabelWidth = intval(trim($this->aQuestionAttributes['choice_input_columns']));
+        $this->attributeLabelWidth = intval(trim($this->getQuestionAttribute('choice_input_columns')));
         if ($this->attributeLabelWidth < 1 || $this->attributeLabelWidth > 12) {
             /* old system or imported */
             $this->attributeLabelWidth = null;
@@ -80,8 +80,11 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
     public function getRows()
     {
         $aRows = [];
-        $checkconditionFunction = "checkconditions"; 
+        if($this->getQuestionCount() == 0) {
+            return $aRows;
+        }
 
+        $checkconditionFunction = "checkconditions"; 
         foreach ($this->aSubQuestions[0] as $oQuestion) {
 
             $myfname = $this->sSGQA.$oQuestion->title;
@@ -106,7 +109,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
                 'id'                   => 'answer'.$myfname,
                 'value'                => 'Y', // TODO : check if it should be the same than javavalue
                 'classes'              => '',
-                'otherNumber'          => $this->aQuestionAttributes['other_numbers_only'],
+                'otherNumber'          => $this->getQuestionAttribute('other_numbers_only'),
                 'labeltext'            => $oQuestion->questionL10ns[$this->sLanguage]->question,
                 'javainput'            => true,
                 'javaname'             => 'java'.$myfname,
@@ -144,7 +147,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         $sValue = '';
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
-            if ($this->aQuestionAttributes['other_numbers_only'] == 1) {
+            if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
             $sValue .= htmlspecialchars($dispVal, ENT_QUOTES);
@@ -154,7 +157,7 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         $sValueHidden = '';
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
-            if ($this->aQuestionAttributes['other_numbers_only'] == 1) {
+            if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
             $sValueHidden = htmlspecialchars($dispVal, ENT_QUOTES);
@@ -176,8 +179,8 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
             'id'                   => 'answer'.$myfname,
             'value'                => $sValue, // TODO : check if it should be the same than javavalue
             'classes'              => '',
-            'otherNumber'          => $this->aQuestionAttributes['other_numbers_only'],
-            'labeltext'            => $this->setDefaultIfEmpty($this->aQuestionAttributes['other_replace_text'][$this->sLanguage], gT('Other:')),
+            'otherNumber'          => $this->getQuestionAttribute('other_numbers_only'),
+            'labeltext'            => $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')),
             'inputCommentId'       => 'answer'.$myfname2,
             'commentLabelText'     => gT('Make a comment on your choice here:'),
             'inputCommentName'     => $myfname2,
@@ -199,14 +202,14 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
         $inputnames = [];
         $this->sCoreClasses .= " ".$sCoreClasses;
 
-        if ($this->aQuestionAttributes['commented_checkbox'] != "allways" && $this->aQuestionAttributes['commented_checkbox_auto']) {
+        if ($this->getQuestionAttribute('commented_checkbox') != "allways" && $this->getQuestionAttribute('commented_checkbox_auto')) {
             $this->aScriptFiles[] = [
                 'path' => Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js", 
                 'position' => LSYii_ClientScript::POS_BEGIN
             ];
             $this->addScript(
                 'doMultipleChoiceWithComments',
-                "doMultipleChoiceWithComments({$this->oQuestion->qid},'{$this->aQuestionAttributes["commented_checkbox"]}');",
+                "doMultipleChoiceWithComments({$this->oQuestion->qid},'{$this->getQuestionAttribute("commented_checkbox")}');",
                 LSYii_ClientScript::POS_POSTSCRIPT, 
                 true
             );
@@ -226,12 +229,15 @@ class RenderMultipleChoiceWithComments extends QuestionBaseRenderer
     }
 
     protected function getQuestionCount($iScaleId=0){
-        $counter = count($this->aSubQuestions[$iScaleId]);
-        if($this->oQuestion->other == 'Y') {
-            $counter++;
-            $counter++;
+        if(!empty($this->aSubQuestions)) {
+            $counter = count($this->aSubQuestions[$iScaleId]);
+            if($this->oQuestion->other == 'Y') {
+                $counter++;
+                $counter++;
+            }
+            return $counter;
         }
-        return $counter;
+        return 0;
     }
 }
 

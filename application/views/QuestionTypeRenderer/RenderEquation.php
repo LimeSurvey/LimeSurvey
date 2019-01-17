@@ -31,7 +31,7 @@ class RenderEquation extends QuestionBaseRenderer
     {
         $inputnames = [];
 
-        $sEquation  = $this->setDefaultIfEmpty($this->aQuestionAttributes['equation'], $this->aFieldArray[3]);
+        $sEquation  = $this->setDefaultIfEmpty($this->getQuestionAttribute('equation'), $this->aFieldArray[3]);
         $sValue     = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$this->sSGQA], ENT_QUOTES);
 
         $answer =  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(

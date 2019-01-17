@@ -6,7 +6,9 @@ import AdvancedSettings from './components/advancedSettings.vue';
 export default {
     name: 'lsnextquestioneditor',
     data() {
-        return {}
+        return {
+            event: null,
+        }
     },
     components: {
         'maineditor' : MainEditor,
@@ -15,9 +17,21 @@ export default {
     },
     mounted() {
         this.toggleLoading(false);
+        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
+    },
+    methods: {
+        jqueryTriggered(event, data){
+            //this.$log.log('data', data);
+            this.event = JSON.parse(data.emitter);
+        },
+        eventSet() {
+            this.event = null;
+        }
+
     },
     created(){
         this.$store.dispatch('loadQuestion');
+        this.$store.dispatch('getQuestionTypes');
     }
 }
 </script>
@@ -25,9 +39,9 @@ export default {
 <template>
     <div class="container-center">
         <template v-if="$store.getters.fullyLoaded">
-            <maineditor></maineditor>
-            <generalsettings></generalsettings>
-            <advancedsettings></advancedsettings>
+            <maineditor :event="event" v-on:eventSet="eventSet"></maineditor>
+            <generalsettings :event="event" v-on:eventSet="eventSet"></generalsettings>
+            <advancedsettings :event="event" v-on:eventSet="eventSet"></advancedsettings>
         </template>
     </div>
 </template>

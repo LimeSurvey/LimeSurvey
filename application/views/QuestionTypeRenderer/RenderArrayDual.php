@@ -32,7 +32,7 @@ class RenderArrayDual extends QuestionBaseRenderer
     {
         parent::__construct($aFieldArray, $bRenderDirect = false);
         // Set attributes
-        if ($this->aQuestionAttributes['use_dropdown'] == 1) {
+        if ($this->getQuestionAttribute('use_dropdown') == 1) {
             $this->useDropdownLayout = true;
             $this->sCoreClass .= " dropdown-array";
             $this->answertypeclass .= " dropdown";
@@ -44,7 +44,7 @@ class RenderArrayDual extends QuestionBaseRenderer
             $this->doDualScaleFunction = "doDualScaleRadio";
         }
 
-        $this->answerwidth = $this->setDefaultIfEmpty($this->aQuestionAttributes['answer_width'], null);
+        $this->answerwidth = $this->setDefaultIfEmpty($this->getQuestionAttribute('answer_width'), null);
         $this->defaultWidth = false;
         if ($this->answerwidth == null) {
             $this->answerwidth = 33;
@@ -107,8 +107,8 @@ class RenderArrayDual extends QuestionBaseRenderer
         //~ $rightexists=false;
         //~ $centerexists=false;
         
-        $leftheader  = $this->setDefaultIfEmpty($this->aQuestionAttributes['dualscale_headerA'][$this->sLanguage], '');
-        $rightheader = $this->setDefaultIfEmpty($this->aQuestionAttributes['dualscale_headerB'][$this->sLanguage], '');
+        $leftheader  = $this->setDefaultIfEmpty($this->getQuestionAttribute('dualscale_headerA', $this->sLanguage), '');
+        $rightheader = $this->setDefaultIfEmpty($this->getQuestionAttribute('dualscale_headerB', $this->sLanguage), '');
     
         $shownoanswer = ($this->oQuestion->mandatory != "Y" && SHOW_NO_ANSWER == 1);
 
@@ -199,7 +199,7 @@ class RenderArrayDual extends QuestionBaseRenderer
     {
         $repeatheadings     = Yii::app()->getConfig("repeatheadings");
         $minrepeatheadings  = Yii::app()->getConfig("minrepeatheadings");
-        $repeatheadings     = $this->setDefaultIfEmpty($this->aQuestionAttributes['repeat_headings'], $repeatheadings);
+        $repeatheadings     = $this->setDefaultIfEmpty($this->getQuestionAttribute('repeat_headings'), $repeatheadings);
         $anscount = count($this->aSubQuestions[0]);
 
         //Only use the 0 scale
@@ -337,15 +337,15 @@ class RenderArrayDual extends QuestionBaseRenderer
         $aData['basename'] = $this->sSGQA;
 
         // Get attributes for Headers and Prefix/Suffix
-        if (trim($this->aQuestionAttributes['dropdown_prepostfix'][$this->sLanguage]) != '') {
-            list($ddprefix, $ddsuffix) = explode("|", $this->aQuestionAttributes['dropdown_prepostfix'][$this->sLanguage]);
+        if (trim($this->getQuestionAttribute('dropdown_prepostfix', $this->sLanguage)) != '') {
+            list($ddprefix, $ddsuffix) = explode("|", $this->getQuestionAttribute('dropdown_prepostfix', $this->sLanguage));
         } else {
             $ddprefix = null;
             $ddsuffix = null;
         }
         
-        if (trim($this->aQuestionAttributes['dropdown_separators']) != '') {
-            $aSeparator = explode('|', $this->aQuestionAttributes['dropdown_separators']);
+        if (trim($this->getQuestionAttribute('dropdown_separators')) != '') {
+            $aSeparator = explode('|', $this->getQuestionAttribute('dropdown_separators'));
             if (isset($aSeparator[1])) {
                 $interddSep = $aSeparator[1];
             } else {

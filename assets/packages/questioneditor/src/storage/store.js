@@ -29,6 +29,13 @@ export default function(questionId){
         languages: [],
         activeLanguage: '',
         survey: {},
+        questionTypes: [
+            {
+                code : '',
+                type : '',
+                title : ''
+            }
+        ],
     };
 
     return new Vuex.Store({

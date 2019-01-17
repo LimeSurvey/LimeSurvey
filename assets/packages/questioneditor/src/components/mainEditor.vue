@@ -2,16 +2,19 @@
 
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import debounce from 'lodash/debounce';
+import isEqual from 'lodash/isEqual';
 import PreviewFrame from './subcomponents/_previewFrame.vue';
 import runAjax from '../mixins/runAjax.js';
+import eventChild from '../mixins/eventChild.js';
 
 export default {
     name: 'MainEditor',
-    mixins: [runAjax],
+    mixins: [runAjax, eventChild],
     components: {PreviewFrame},
     data() {
         return {
             currentQuestionCode: '',
+            currentQuestionType: '',
             editorQuestion: ClassicEditor,
             editorQuestionData: '',
             editorQuestionConfig: {},
@@ -23,6 +26,7 @@ export default {
             previewLoading: false,
             previewActive: true,
             debug: false,
+            questionEditButton: window.questionEditButton
         };
     },
     computed: {
@@ -41,13 +45,37 @@ export default {
         currentQuestionI10N() {
             return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage];
         },
+        questionImmutableI10N() {
+            return this.$store.state.questionImmutableI10N[this.$store.state.activeLanguage];
+        },
     },
     methods: {
+        changedParts() {
+            let changed = {};
+            this.$log.log('COMPARING', {
+                'this.$store.state.questionImmutable' : this.$store.state.questionImmutable,
+                'this.currentQuestionType' : this.currentQuestionType,
+                'this.currentQuestionI10N' : this.currentQuestionI10N,
+                'this.questionImmutableI10N' : this.questionImmutableI10N
+            });
+            if(!isEqual(this.currentQuestionI10N, this.questionImmutableI10N)) {
+                changed['changedText'] = this.currentQuestionI10N;
+            }
+            if(!isEqual(this.currentQuestionType, this.$store.state.questionImmutable.type)) {
+                changed['changedType'] = this.currentQuestionType;
+            }
+            return changed;
+        },
         triggerPreview(){
             this.previewActive=!this.previewActive
             if(this.previewActive) {
                 this.getQuestionPreview();
             }
+        },
+        questionTypeChangeTriggered(newValue) {
+            this.$log.log('CHANGE OF TYPE', newValue);
+            this.currentQuestionType = newValue;
+            this.getQuestionPreview();
         },
         changeTriggered: debounce( function(content,event) {
             this.$log.log('Debounced load triggered',{content,event});
@@ -57,9 +85,7 @@ export default {
             this.previewLoading = true;
             this.$_load(
                 this.previewRootUrl+'/sLanguage/'+this.$store.state.activeLanguage, 
-                { 
-                    'changedText': this.currentQuestionI10N,
-                },
+                this.changedParts(),
                 'POST'
             ).then((result) => {
                 this.previewContent = result.data;
@@ -76,6 +102,7 @@ export default {
         this.selectLanguage(this.$store.state.languages[0]);
         this.getQuestionPreview();
         this.currentQuestionCode = this.$store.state.currentQuestion.title;
+        this.currentQuestionType = this.$store.state.currentQuestion.type;
     },
 }
 </script>
@@ -83,51 +110,62 @@ export default {
 <template>
     <div class="col-sm-8 col-xs-12 ls-space padding all-5">
         <div class="container-center">
-            <div class="form-group col-sm-12">
-                <label for="questionCode">{{'Code' | translate }}</label>
-                <input type="text" class="form-control" id="questionCode" v-model="currentQuestionCode">
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="questionCode">{{'Code' | translate }}</label>
+                    <input type="text" class="form-control" id="questionCode" v-model="currentQuestionCode">
+                </div>
+                <div class="form-group col-sm-6 contains-question-selector">
+                    <label for="questionCode">{{'Question type' | translate }}</label>
+                    <div v-html="questionEditButton" />
+                    <input type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="currentQuestionType" />
+                </div>
             </div>
-            <ul class="nav nav-tabs" id="editor-tabs-selectors" role="tablist">
-                <li class="nav-item" v-for="(language, index) in $store.state.languages" :key="language">
-                    <a 
-                        class="nav-link" 
-                        :class="index==0 ? ' active' : ''" 
-                        :id="language+'-tab'" :href="'#'+language+'-tabpane'"
-                        @click="selectLanguage(language)"
-                    >
-                        {{language | translate}}
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content scope-set-min-height" id="editor-tabs" >
-                    <div class="tab-pane" 
-                        role="tabpanel" 
-                        v-for="language in $store.state.languages" 
-                        :class="$store.state.activeLanguage == language ? ' active' : ''" 
-                        :id="'#'+language+'-tabpane'" 
-                        :key="language"
-                    >
-                    <div class="container-center">
-                        <div class="row">
-                            <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
-                                <label class="col-sm-12">{{ 'Question' | translate }}:</label>
-                                <ckeditor :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="changeTriggered" :config="editorQuestionConfig"></ckeditor>
-                            </div>
-                            <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
-                                <label class="col-sm-12">{{ 'Help' | translate }}:</label>
-                                <ckeditor :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="changeTriggered" :config="editorHelpConfig"></ckeditor>
-                            </div>
-                            <div class="col-sm-12 ls-space margin top-15 bottom-5">
-                                <hr />
-                            </div>
-                            <div class="col-sm-12 ls-space margin top-5 bottom-5">
-                                <button class="btn btn-default pull-right" @click.prevent="triggerPreview">
-                                    {{previewActive ? "Hide Preview" : "Show Preview"}}
-                                </button>
-                            </div>
-                            <div class="col-sm-12 ls-space margin top-5 bottom-5">
-                                <div class="scope-preview" v-show="previewActive">
-                                    <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :loading="previewLoading" />
+            <div class="row">
+                <ul class="nav nav-tabs col-xs-12" id="editor-tabs-selectors" role="tablist">
+                    <li class="nav-item" v-for="(language, index) in $store.state.languages" :key="language">
+                        <a 
+                            class="nav-link" 
+                            :class="index==0 ? ' active' : ''" 
+                            :id="language+'-tab'" :href="'#'+language+'-tabpane'"
+                            @click="selectLanguage(language)"
+                        >
+                            {{language | translate}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="tab-content scope-set-min-height col-xs-12" id="editor-tabs" >
+                        <div class="tab-pane" 
+                            role="tabpanel" 
+                            v-for="language in $store.state.languages" 
+                            :class="$store.state.activeLanguage == language ? ' active' : ''" 
+                            :id="'#'+language+'-tabpane'" 
+                            :key="language"
+                        >
+                        <div class="container-center">
+                            <div class="row">
+                                <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
+                                    <label class="col-sm-12">{{ 'Question' | translate }}:</label>
+                                    <ckeditor :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="changeTriggered" :config="editorQuestionConfig"></ckeditor>
+                                </div>
+                                <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
+                                    <label class="col-sm-12">{{ 'Help' | translate }}:</label>
+                                    <ckeditor :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="changeTriggered" :config="editorHelpConfig"></ckeditor>
+                                </div>
+                                <div class="col-sm-12 ls-space margin top-15 bottom-5">
+                                    <hr />
+                                </div>
+                                <div class="col-sm-12 ls-space margin top-5 bottom-5">
+                                    <button class="btn btn-default pull-right" @click.prevent="triggerPreview">
+                                        {{previewActive ? "Hide Preview" : "Show Preview"}}
+                                    </button>
+                                </div>
+                                <div class="col-sm-12 ls-space margin top-5 bottom-5">
+                                    <div class="scope-preview" v-show="previewActive">
+                                        <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :loading="previewLoading" />
+                                    </div>
                                 </div>
                             </div>
                         </div>

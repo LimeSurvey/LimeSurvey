@@ -47,19 +47,19 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
         $this->setPrefixAndSuffix();
         
         $this->sSeparator   = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
-        $this->useSliderLayout = $this->aQuestionAttributes['slider_layout'] == 1; 
+        $this->useSliderLayout = $this->getQuestionAttribute('slider_layout') == 1; 
         
         $this->widthArray = $this->getLabelInputWidth();
         $this->extraclass   .= " numberonly";
 
-        if (intval($this->setDefaultIfEmpty($this->aQuestionAttributes['maximum_chars'], 0)) > 0) {
+        if (intval($this->setDefaultIfEmpty($this->getQuestionAttribute('maximum_chars'), 0)) > 0) {
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-            $this->maxlength = intval(trim($this->aQuestionAttributes['maximum_chars']));
+            $this->maxlength = intval(trim($this->getQuestionAttribute('maximum_chars')));
             $this->extraclass .= " ls-input-maxchars";
         }
 
-        if (ctype_digit(trim($this->aQuestionAttributes['input_size']))) {
-            $this->inputsize = trim($this->aQuestionAttributes['input_size']);
+        if (ctype_digit(trim($this->getQuestionAttribute('input_size')))) {
+            $this->inputsize = trim($this->getQuestionAttribute('input_size'));
             $this->extraclass .= " ls-input-sized";
         }
 
@@ -67,12 +67,12 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
             $this->sCoreClasses  .= " slider-list";
             $this->extraclass   .= " withslider";
             $this->sliderOptionsArray = [
-                'slider_step'          => trim(LimeExpressionManager::ProcessString("{{$this->aQuestionAttributes['slider_accuracy']}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_min'           => trim(LimeExpressionManager::ProcessString("{{$this->aQuestionAttributes['slider_min']}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_max'           => trim(LimeExpressionManager::ProcessString("{{$this->aQuestionAttributes['slider_max']}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_default'       => trim(LimeExpressionManager::ProcessString("{{$this->aQuestionAttributes['slider_default']}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
-                'slider_orientation'   => (trim($this->aQuestionAttributes['slider_orientation']) == 0) ? 'horizontal' : 'vertical',
-                'slider_custom_handle' => (trim($this->aQuestionAttributes['slider_custom_handle'])),
+                'slider_step'          => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_accuracy')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_min'           => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_min')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_max'           => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_max')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_default'       => trim(LimeExpressionManager::ProcessString("{{$this->getQuestionAttribute('slider_default')}}", $this->oQuestion->qid, [], 1, 1, false, false, true)),
+                'slider_orientation'   => (trim($this->getQuestionAttribute('slider_orientation')) == 0) ? 'horizontal' : 'vertical',
+                'slider_custom_handle' => (trim($this->getQuestionAttribute('slider_custom_handle'))),
             ];
             
             $this->sliderOptionsArray['slider_min'] = (is_numeric($this->sliderOptionsArray['slider_min'])) ? $this->sliderOptionsArray['slider_min'] : 0;
@@ -87,21 +87,21 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
 
             $this->sliderOptionsArray['slider_step']    = (is_numeric($this->sliderOptionsArray['slider_step'])) ? $this->sliderOptionsArray['slider_step'] : 1;
             $this->sliderOptionsArray['slider_default'] = (is_numeric($this->sliderOptionsArray['slider_default'])) ? $this->sliderOptionsArray['slider_default'] : "";
-            $this->sliderOptionsArray['slider_handle']  = $this->handleOptions[(trim($this->aQuestionAttributes['slider_handle']))];
-            $this->sliderOptionsArray['slider_default_set'] = (bool) ($this->aQuestionAttributes['slider_default_set'] && $this->sliderOptionsArray['slider_default'] !== '');
+            $this->sliderOptionsArray['slider_handle']  = $this->handleOptions[(trim($this->getQuestionAttribute('slider_handle')))];
+            $this->sliderOptionsArray['slider_default_set'] = (bool) ($this->getQuestionAttribute('slider_default_set') && $this->sliderOptionsArray['slider_default'] !== '');
 
             // Put the slider init to initial state (when no click is set or when 'reset') 
             if ($this->sliderOptionsArray['slider_default'] !== '') {
                 $this->sliderOptionsArray['slider_position'] = $this->sliderOptionsArray['slider_default'];
-            } elseif ($this->aQuestionAttributes['slider_middlestart'] == 1) {
+            } elseif ($this->getQuestionAttribute('slider_middlestart') == 1) {
                 $this->sliderOptionsArray['slider_position'] = intval(($this->sliderOptionsArray['slider_max'] + $this->sliderOptionsArray['slider_min']) / 2);
             }
             
-            $this->sliderOptionsArray['slider_separator'] = $this->setDefaultIfEmpty($this->aQuestionAttributes['slider_separator'],"");
-            $this->sliderOptionsArray['slider_reset'] = ($this->aQuestionAttributes['slider_reset']) ? 1 : 0;
+            $this->sliderOptionsArray['slider_separator'] = $this->setDefaultIfEmpty($this->getQuestionAttribute('slider_separator'),"");
+            $this->sliderOptionsArray['slider_reset'] = ($this->getQuestionAttribute('slider_reset')) ? 1 : 0;
     
             // Slider reversed value 
-            if ($this->aQuestionAttributes['slider_reversed'] == 1) {
+            if ($this->getQuestionAttribute('slider_reversed') == 1) {
                 $this->sliderOptionsArray['slider_reversed'] = 'true';
             } else {
                 $this->sliderOptionsArray['slider_reversed'] = 'false';
@@ -129,13 +129,13 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
     }
 
     public function setPrefixAndSuffix(){
-        $sPrefix = $this->setDefaultIfEmpty($this->aQuestionAttributes['prefix'][$this->sLanguage], '');
+        $sPrefix = $this->setDefaultIfEmpty($this->getQuestionAttribute('prefix', $this->sLanguage), '');
         if ($sPrefix != '') {
             $this->prefix = $sPrefix;
             $this->extraclass .= " withprefix";
         }
         
-        $sSuffix = $this->setDefaultIfEmpty($this->aQuestionAttributes['suffix'][$this->sLanguage], '');
+        $sSuffix = $this->setDefaultIfEmpty($this->getQuestionAttribute('suffix', $this->sLanguage), '');
         if ($sSuffix != '') {
             $this->suffix = $sSuffix;
             $this->extraclass .= " withsuffix";
@@ -178,14 +178,14 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                     'dispVal'                => $dispVal,
                     'extraclass'             => $this->extraclass,
                     'qid'                    => $this->oQuestion->qid,
-                    'answertypeclass'        => $this->aQuestionAttributes['num_value_int_only'] ? 'integeronly' : '',
+                    'answertypeclass'        => $this->getQuestionAttribute('num_value_int_only') ? 'integeronly' : '',
                     'prefix'                 => $this->prefix,
                     'suffix'                 => $this->suffix,
                     'sInputContainerWidth'   => $this->widthArray['sInputContainerWidth'],
                     'sLabelWidth'            => $this->widthArray['sLabelWidth'],
                     'inputsize'              => $this->inputsize,
                     'maxlength'              => $this->maxlength,
-                    'integeronly'            => $this->aQuestionAttributes['num_value_int_only'],
+                    'integeronly'            => $this->getQuestionAttribute('num_value_int_only'),
                 );
 
             } else {
@@ -260,7 +260,7 @@ class RenderMultipleNumerical extends QuestionBaseRenderer
                         'sLabelWidth'            => $this->widthArray['sLabelWidth'],
                         'inputsize'              => $this->inputsize,
                         'maxlength'              => $this->maxlength,
-                        'integeronly'            => $this->aQuestionAttributes['num_value_int_only'],
+                        'integeronly'            => $this->getQuestionAttribute('num_value_int_only'),
                         'basename'               => $this->sSGQA,
                         'sSeparator'             => $this->sSeparator,
                     ), $this->sliderOptionsArray);

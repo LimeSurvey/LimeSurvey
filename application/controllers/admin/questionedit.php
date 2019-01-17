@@ -108,11 +108,25 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aQuestionAttributes);
     }
 
+    public function getQuestionTypeList() {
+        $this->renderJSON(QuestionType::modelsAttributes());
+    }
+
+    /**
+     * Live preview rendering
+     *
+     * @param int $iQuestionId
+     * @param string $sLanguage
+     * @param boolean $root
+     *
+     * @return void
+     */
     public function getRenderedPreview($iQuestionId, $sLanguage, $root=false) {
         $root = (bool) $root;
         $oQuestion = Question::model()->findByPk($iQuestionId);
 
         $changedText = App()->request->getPost('changedText', []);
+        $changedType = App()->request->getPost('changedType', $oQuestion->type);
 
         if($changedText !== []) {
             Yii::app()->session['edit_'.$iQuestionId.'_changedText'] = $changedText;
@@ -139,7 +153,7 @@ class questionedit extends Survey_Common_Action
             ($oQuestion->mandatory == 'Y'),
         ];
 
-        $oQuestionRenderer = $oQuestion->getRenderererObject($aFieldArray);
+        $oQuestionRenderer = $oQuestion->getRenderererObject($aFieldArray, $changedType);
         $aRendered =  $oQuestionRenderer->render('applyCkToFields');
         $aSurveyInfo = $oQuestion->survey->attributes;
         $aQuestion = array_merge(

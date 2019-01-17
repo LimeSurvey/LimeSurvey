@@ -32,7 +32,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->setSubquestions();
 
-        $this->iNbCols = $this->setDefaultIfEmpty($this->aQuestionAttributes['display_columns'], 1);
+        $this->iNbCols = $this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1);
 
         $this->iColumnWidth = round(12 / $this->iNbCols);
         $this->iColumnWidth = ($this->iColumnWidth >= 1) ? $this->iColumnWidth : 1;
@@ -52,6 +52,11 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     public function getRows()
     {
         $aRows = [];
+
+        if($this->getQuestionCount() == 0) {
+            return $aRows;
+        }
+
         $checkconditionFunction = "checkconditions"; 
         /// Generate answer rows
         foreach ($this->aSubQuestions[0] as $oQuestion) {
@@ -86,7 +91,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     public function getOtherRow(){
 
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
-        $oth_checkconditionFunction = ($this->aQuestionAttributes['other_numbers_only'] == 1) ? "fixnum_checkconditions" : "checkconditions";
+        $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
         $myfname = $this->sSGQA.'other';
         $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname], '');
@@ -95,7 +100,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $sValue = '';
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
-            if ($this->aQuestionAttributes['other_numbers_only'] == 1) {
+            if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
             $sValue .= htmlspecialchars($dispVal, ENT_QUOTES);
@@ -105,7 +110,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         $sValueHidden = '';
         if (!empty($mSessionValue)) {
             $dispVal = $mSessionValue;
-            if ($this->aQuestionAttributes['other_numbers_only'] == 1) {
+            if ($this->getQuestionAttribute('other_numbers_only') == 1) {
                 $dispVal = str_replace('.', $sSeparator, $dispVal);
             }
             $sValueHidden = htmlspecialchars($dispVal, ENT_QUOTES);
@@ -116,7 +121,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         // Display the answer row
         return array(
             'myfname'                    => $myfname,
-            'othertext'                  => $this->setDefaultIfEmpty($this->aQuestionAttributes['other_replace_text'][$this->sLanguage], gT('Other:')),
+            'othertext'                  => $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')),
             'sValue'                     => $sValue,
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => "checkconditions",
@@ -150,11 +155,15 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     }
 
     protected function getQuestionCount($iScaleId=0){
-        $counter = count($this->aSubQuestions[$iScaleId]);
-        if($this->oQuestion->other == 'Y') {
-            $counter++;
+        if(!empty($this->aSubQuestions)) {
+
+            $counter = count($this->aSubQuestions[$iScaleId]);
+            if($this->oQuestion->other == 'Y') {
+                $counter++;
+            }
+            return $counter;
         }
-        return $counter;
+        return 0;
     }
 }
 

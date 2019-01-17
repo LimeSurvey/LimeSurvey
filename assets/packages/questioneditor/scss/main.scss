@@ -1,6 +1,3 @@
-.stub{
-    border:none;
-}
 
 #questionEditLoader {
     position: absolute;
@@ -11,7 +8,15 @@
     background-color: rgba(225,225,225,0.7);
     z-index: 100;
 }
+#advancedQuestionEditor {
+    .contains-question-selector .btn-group {
+        width: 100%;
+        &>.btn {            
+            width: 100%;
+        }
+    }
 
-.ck.ck-content {
-    min-height: 10rem;
+    .ck.ck-content {
+        min-height: 10rem;
+    }
 }

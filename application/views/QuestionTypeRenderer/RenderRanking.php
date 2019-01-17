@@ -29,20 +29,20 @@ class RenderRanking extends QuestionBaseRenderer
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
-        $this->setAnsweroptions();
-        $this->iMaxSubquestions = ((int) $this->aQuestionAttributes['max_subquestions']) > 0
-            ? ((int) $this->aQuestionAttributes['max_subquestions'])
+        $this->setAnsweroptions(null, @$this->getQuestionAttribute('alphasort')==1);
+        $this->iMaxSubquestions = ((int) $this->getQuestionAttribute('max_subquestions')) > 0
+            ? ((int) $this->getQuestionAttribute('max_subquestions'))
             : $this->getAnswerCount();
 
-        $this->mMaxAnswers = trim($this->aQuestionAttributes['max_answers']) != ''
+        $this->mMaxAnswers = trim($this->getQuestionAttribute('max_answers')) != ''
             ? (
                 ($this->iMaxSubquestions < $this->getAnswerCount())
-                ? "min(".trim($this->aQuestionAttributes['max_answers']).",".$this->iMaxSubquestions.")"
-                : trim($this->aQuestionAttributes['max_answers'])
+                ? "min(".trim($this->getQuestionAttribute('max_answers')).",".$this->iMaxSubquestions.")"
+                : trim($this->getQuestionAttribute('max_answers'))
               )
             : $this->iMaxSubquestions;
         
-        $this->mMinAnswers = $this->setDefaultIfEmpty($this->aQuestionAttributes['min_answers'], 0);
+        $this->mMinAnswers = $this->setDefaultIfEmpty($this->getQuestionAttribute('min_answers'), 0);
     }
 
     public function getMainView()
@@ -118,7 +118,7 @@ class RenderRanking extends QuestionBaseRenderer
         $answer = '';
 
         $sCoreClasses = "ls-answers answers-lists select-sortable-lists ".$sCoreClasses;
-        if (!empty($this->aQuestionAttributes['time_limit']['value'])) {
+        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
             $answer .= $this->getTimeSettingRender();
         }
         
@@ -126,14 +126,14 @@ class RenderRanking extends QuestionBaseRenderer
         $this->addScript("rankingTranslation", $rankingTranslation, CClientScript::POS_BEGIN);
         //$this->applyScripts();
         
-        if (trim($this->aQuestionAttributes['choice_title'][App()->language]) != '') {
-            $choice_title = htmlspecialchars(trim($this->aQuestionAttributes['choice_title'][App()->language]), ENT_QUOTES);
+        if (trim($this->getQuestionAttribute('choice_title', App()->language)) != '') {
+            $choice_title = htmlspecialchars(trim($this->getQuestionAttribute('choice_title', App()->language)), ENT_QUOTES);
         } else {
             $choice_title = gT("Your Choices", 'js');
         }
 
-        if (trim($this->aQuestionAttributes['rank_title'][App()->language]) != '') {
-            $rank_title = htmlspecialchars(trim($this->aQuestionAttributes['rank_title'][App()->language]), ENT_QUOTES);
+        if (trim($this->getQuestionAttribute('rank_title', App()->language)) != '') {
+            $rank_title = htmlspecialchars(trim($this->getQuestionAttribute('rank_title', App()->language)), ENT_QUOTES);
         } else {
             $rank_title = gT("Your Ranking", 'js');
         }
@@ -152,9 +152,9 @@ class RenderRanking extends QuestionBaseRenderer
             'min_answers'       => $this->mMinAnswers,
             'choice_title'      => $choice_title,
             'rank_title'        => $rank_title,
-            'showpopups'        => $this->aQuestionAttributes["showpopups"],
-            'samechoiceheight'  => $this->aQuestionAttributes["samechoiceheight"],
-            'samelistheight'    => $this->aQuestionAttributes["samelistheight"],
+            'showpopups'        => $this->getQuestionAttribute("showpopups"),
+            'samechoiceheight'  => $this->getQuestionAttribute("samechoiceheight"),
+            'samelistheight'    => $this->getQuestionAttribute("samelistheight"),
         ), true);
 
         $inputnames[] = $this->sSGQA;

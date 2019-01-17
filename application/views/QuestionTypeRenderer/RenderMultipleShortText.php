@@ -36,35 +36,35 @@ class RenderMultipleShortText extends QuestionBaseRenderer
         $this->setPrefixAndSuffix();
         
         $this->widthArray = $this->getLabelInputWidth();
-        $this->numbersonly = ($this->aQuestionAttributes['numbers_only'] == 1);
+        $this->numbersonly = ($this->getQuestionAttribute('numbers_only') == 1);
         
 
-        if ($this->aQuestionAttributes['numbers_only'] == 1) {
+        if ($this->getQuestionAttribute('numbers_only') == 1) {
             $this->sSeparator   = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
             $this->extraclass   .= " numberonly";
             $this->sCoreClasses .= " number-list ";
         } 
 
-        if (intval($this->setDefaultIfEmpty($this->aQuestionAttributes['maximum_chars'], 0)) > 0) {
+        if (intval($this->setDefaultIfEmpty($this->getQuestionAttribute('maximum_chars'), 0)) > 0) {
             // Only maxlength attribute, use textarea[maxlength] jquery selector for textarea
-            $this->maxlength = intval(trim($this->aQuestionAttributes['maximum_chars']));
+            $this->maxlength = intval(trim($this->getQuestionAttribute('maximum_chars')));
             $this->extraclass .= " ls-input-maxchars";
         }
 
-        if (ctype_digit(trim($this->aQuestionAttributes['input_size']))) {
-            $this->inputsize = trim($this->aQuestionAttributes['input_size']);
+        if (ctype_digit(trim($this->getQuestionAttribute('input_size')))) {
+            $this->inputsize = trim($this->getQuestionAttribute('input_size'));
             $this->extraclass .= " ls-input-sized";
         }
     }
 
     public function setPrefixAndSuffix(){
-        $sPrefix = $this->setDefaultIfEmpty($this->aQuestionAttributes['prefix'][$this->sLanguage], '');
+        $sPrefix = $this->setDefaultIfEmpty($this->getQuestionAttribute('prefix', $this->sLanguage), '');
         if ($sPrefix != '') {
             $this->prefix = $sPrefix;
             $this->extraclass .= " withprefix";
         }
         
-        $sSuffix = $this->setDefaultIfEmpty($this->aQuestionAttributes['suffix'][$this->sLanguage], '');
+        $sSuffix = $this->setDefaultIfEmpty($this->getQuestionAttribute('suffix', $this->sLanguage), '');
         if ($sSuffix != '') {
             $this->suffix = $sSuffix;
             $this->extraclass .= " withsuffix";
@@ -98,7 +98,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
             }
             $dispVal = htmlspecialchars($dispVal, ENT_QUOTES, 'UTF-8');
 
-            if (trim($this->aQuestionAttributes['display_rows']) != '') {
+            if (trim($this->getQuestionAttribute('display_rows')) != '') {
                 $aRows[] = array(
                     'textarea'               => true,
                     'sDisplayStyle'          => '',
@@ -109,7 +109,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
                     'question'               => $sSubquestionText,
                     'numbersonly'            => $this->numbersonly,
                     'maxlength'              => $this->maxlength,
-                    'rows'                   => $this->aQuestionAttributes['display_rows'],
+                    'rows'                   => $this->getQuestionAttribute('display_rows'),
                     'inputsize'              => $this->inputsize,
                     'extraclass'             => $this->extraclass,
                     'prefix'                 => $this->prefix,

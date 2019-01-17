@@ -44,5 +44,5 @@ const AppState = getAppState(window.LS.parameters.qid);
 const questionEditor = new Vue({
     el: '#advancedQuestionEditor',
     store: AppState,
-    components: {App}
+    components: {App},
 });

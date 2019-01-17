@@ -162,7 +162,7 @@ class RenderListComment extends QuestionBaseRenderer
    
     public function render($sCoreClasses = '')
     {
-        if ($this->aQuestionAttributes['use_dropdown'] != 1) {
+        if ($this->getQuestionAttribute('use_dropdown') != 1) {
             return $this->renderList($sCoreClasses);
         }
         return $this->renderDropdown($sCoreClasses);

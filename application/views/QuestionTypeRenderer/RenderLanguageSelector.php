@@ -36,7 +36,7 @@ class RenderLanguageSelector extends QuestionBaseRenderer
         $answer = '';
         $inputnames = [];
 
-        if (!empty($this->aQuestionAttributes['time_limit']['value'])) {
+        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
             $answer .= $this->getTimeSettingRender();
         }
         $sLanguage = $this->sLanguage;

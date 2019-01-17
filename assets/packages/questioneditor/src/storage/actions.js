@@ -25,4 +25,11 @@ export default {
             context.commit('setQuestionAttributes', result.data);
         });
     },
+    getQuestionTypes: (context) => {
+        ajax.methods.$_get(
+            window.QuestionEditData.connectorBaseUrl+'/getQuestionTypeList'
+        ).then((result) => {
+            context.commit('setQuestionTypeList', result.data);
+        });
+    }
 };

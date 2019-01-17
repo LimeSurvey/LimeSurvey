@@ -62,7 +62,7 @@ class RenderDate extends QuestionBaseRenderer
             'millisecond' => gT('Millisecond')
         ];
 
-        switch ((int) trim($this->aQuestionAttributes['dropdown_dates_month_style'])) {
+        switch ((int) trim($this->getQuestionAttribute('dropdown_dates_month_style'))) {
             case 0:
                 $data['montharray'] = array(
                     gT('Jan'), gT('Feb'), gT('Mar'), gT('Apr'), gT('May'), gT('Jun'), 
@@ -99,8 +99,8 @@ class RenderDate extends QuestionBaseRenderer
 
     public function setMinDate(){
         // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
-        if (trim($this->aQuestionAttributes['date_min']) != '') {
-            $date_min      = trim($this->aQuestionAttributes['date_min']);
+        if (trim($this->getQuestionAttribute('date_min')) != '') {
+            $date_min      = trim($this->getQuestionAttribute('date_min'));
             $date_time_em  = strtotime(LimeExpressionManager::ProcessString("{".$date_min."}", $this->oQuestion->qid));
         
             if (ctype_digit($date_min) && (strlen($date_min) == 4) && ($date_min >= 1900) && ($date_min <= 2099)) {
@@ -111,7 +111,7 @@ class RenderDate extends QuestionBaseRenderer
             } elseif ($date_time_em !== false) {
                 $this->minDate = (string) date("Y-m-d", $date_time_em);
             } else {
-                $this->minDate = '{'.$this->aQuestionAttributes['date_min'].'}';
+                $this->minDate = '{'.$this->getQuestionAttribute('date_min').'}';
             }
         } else {
             $this->minDate = '1900-01-01'; // Why 1900 ?
@@ -120,8 +120,8 @@ class RenderDate extends QuestionBaseRenderer
 
     public function setMaxDate(){
         // date_max: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
-        if (trim($this->aQuestionAttributes['date_max']) != '') {
-            $date_max     = trim($this->aQuestionAttributes['date_max']);
+        if (trim($this->getQuestionAttribute('date_max')) != '') {
+            $date_max     = trim($this->getQuestionAttribute('date_max'));
             $date_time_em = strtotime(LimeExpressionManager::ProcessString("{".$date_max."}", $this->oQuestion->qid));
         
             if (ctype_digit($date_max) && (strlen($date_max) == 4) && ($date_max >= 1900) && ($date_max <= 2099)) {
@@ -132,7 +132,7 @@ class RenderDate extends QuestionBaseRenderer
             } elseif ($date_time_em !== false) {
                 $this->maxDate = (string) date("Y-m-d", $date_time_em);
             } else {
-                $this->maxDate = '{'.$this->aQuestionAttributes['date_max'].'}';
+                $this->maxDate = '{'.$this->getQuestionAttribute('date_max').'}';
             }
         } else {
             $this->maxDate = '2187-12-31'; // Why 2187 ?
@@ -178,7 +178,7 @@ class RenderDate extends QuestionBaseRenderer
             $yearmax = 2187;
         }
 
-        if ($this->aQuestionAttributes['reverse'] == 1) {
+        if ($this->getQuestionAttribute('reverse') == 1) {
             $tmp = $yearmin;
             $yearmin = $yearmax;
             $yearmax = $tmp;
@@ -217,7 +217,7 @@ class RenderDate extends QuestionBaseRenderer
             array(
                 'minuteId'=>$this->sSGQA, 
                 'currentminute'=>$iCurrent, 
-                'dropdown_dates_minute_step'=>$this->aQuestionAttributes['dropdown_dates_minute_step'], 
+                'dropdown_dates_minute_step'=>$this->getQuestionAttribute('dropdown_dates_minute_step'), 
                 'datepart'=>$datepart
             ), 
             true
@@ -282,11 +282,11 @@ class RenderDate extends QuestionBaseRenderer
             'dateformatdetails'      => $this->aDateformatDetails['dateformat'],
             'dateformatdetailsjs'    => $this->aDateformatDetails['jsdate'],
             'dateformatdetailsphp'   => $this->aDateformatDetails['phpdate'],
-            'minuteStep'             => $this->aQuestionAttributes['dropdown_dates_minute_step'],
+            'minuteStep'             => $this->getQuestionAttribute('dropdown_dates_minute_step'),
             'goodchars'              => "", // "return window.LS.goodchars(event,'".$goodchars."')", //  This won't work with non-latin keyboards
             'checkconditionFunction' => $this->checkconditionFunction.'(this.value, this.name, this.type)',
             'language'               => App()->language,
-            'hidetip'                => trim($this->aQuestionAttributes['hide_tip']) == 0,
+            'hidetip'                => trim($this->getQuestionAttribute('hide_tip')) == 0,
             'dateoutput'             => $dateoutput,
             'qid'                    => $this->oQuestion->qid,
             'hideCalendar'           => $hideCalendar
@@ -388,7 +388,7 @@ class RenderDate extends QuestionBaseRenderer
         }
         
         //throw new Error("<pre>HALT!".print_r($this->oQuestion,true)."</pre>");
-        if (trim($this->aQuestionAttributes['dropdown_dates']) == 1) {
+        if (trim($this->getQuestionAttribute('dropdown_dates')) == 1) {
             $answer = $this->renderDropdownDates($dateoutput, $coreClass);
         } else {
             $answer = $this->renderDatepicker($dateoutput, $coreClass);

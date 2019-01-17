@@ -927,9 +927,10 @@ class Question extends LSActiveRecord
         return $result;
     }
     
-    public function getRenderererObject($aFieldArray)
+    public function getRenderererObject($aFieldArray, $type = null)
     {
-        switch ($this->type) {
+        $type = $type === null ? $this->type : $type;
+        switch ($type) {
             case Question::QT_X_BOILERPLATE_QUESTION: return new RenderBoilerplate($aFieldArray);
             case Question::QT_5_POINT_CHOICE: return new RenderFivePointChoice($aFieldArray);
             case Question::QT_ASTERISK_EQUATION: return new RenderEquation($aFieldArray);

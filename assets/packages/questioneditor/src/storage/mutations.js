@@ -11,6 +11,9 @@ export default {
         newCurrentQuestionI10N[state.activeLanguage][setObject.value] = setObject.newValue;
         state.currentQuestionI10N = newCurrentQuestionI10N;
     },
+    setQuestionTypeList : (state, newValue) => {
+        state.questionTypes = newValue;
+    },
     setActiveLanguage : (state, newValue) => {
         state.activeLanguage = newValue;
     },

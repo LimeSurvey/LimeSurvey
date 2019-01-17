@@ -28,12 +28,11 @@ class RenderListDropdown extends QuestionBaseRenderer
     {
         parent::__construct($aFieldArray, $bRenderDirect);
         // Question attribute variables
-        $this->othertext              = $this->setDefaultIfEmpty($this->aQuestionAttributes['other_replace_text'][$this->sLanguage], gT('Other:'));
-        $this->optCategorySeparator   = @$this->setDefaultIfEmpty($this->aQuestionAttributes['category_separator'], false);
+        $this->othertext              = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:'));
+        $this->optCategorySeparator   = @$this->setDefaultIfEmpty($this->getQuestionAttribute('category_separator'), false);
         $this->sCoreClass             = "ls-answers answer-item dropdown-item";
-        $this->bPrefix                = @(sanitize_int($this->aQuestionAttributes['dropdown_prefix']) == 1);
-        
-        $this->setAnsweroptions();
+        $this->bPrefix                = @(sanitize_int($this->getQuestionAttribute('dropdown_prefix')) == 1);
+        $this->setAnsweroptions(null, $this->getQuestionAttribute('alphasort'));
     }
 
     public function getRows()
@@ -157,8 +156,8 @@ class RenderListDropdown extends QuestionBaseRenderer
 
     public function getDropdownSize()
     {
-        if (isset($this->aQuestionAttributes['dropdown_size']) && $this->aQuestionAttributes['dropdown_size'] > 0) {
-            $_height    = sanitize_int($this->aQuestionAttributes['dropdown_size']);
+        if (isset($this->getQuestionAttribute('dropdown_size')) && $this->getQuestionAttribute('dropdown_size') > 0) {
+            $_height    = sanitize_int($this->getQuestionAttribute('dropdown_size'));
             $_maxHeight = $this->getAnswerCount();
     
             if ((!$this->mSessionValue || $this->mSessionValue === '') && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
@@ -215,7 +214,7 @@ class RenderListDropdown extends QuestionBaseRenderer
 
         $inputnames[] = $this->sSGQA;
 
-        if (!empty($this->aQuestionAttributes['time_limit']['value'])) {
+        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
             $answer .= $this->getTimeSettingRender();
         }
 
