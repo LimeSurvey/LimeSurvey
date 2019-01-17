@@ -24,6 +24,7 @@ module.exports = {
         filename: appName
     },
     externals: {
+        LS: 'LS',
         jquery: 'jQuery',
         pjax: 'Pjax',
     },
@@ -70,6 +71,11 @@ module.exports = {
             options: {
                 data: '$env: ' + process.env.NODE_ENV + ';'
             }
+        },
+        {
+            test: /\.html$/,
+            exclude: /node_modules/,
+            use: {loader: 'html-loader'}
         }
         ]
     },

@@ -1,9 +1,7 @@
 import Vue from 'vue';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
-import MainEditor from './components/mainEditor.vue';
-import GeneralSettings from './components/generalSettings.vue';
-import AdvancedSettings from './components/advancedSettings.vue';
-
+import App from './App.vue';
 
 import getAppState from "./storage/store";
 import LOG from "./mixins/logSystem";
@@ -15,7 +13,8 @@ import LOG from "./mixins/logSystem";
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
 
-Vue.use(LOG);
+Vue.use( LOG );
+Vue.use( CKEditor );
 
 Vue.mixin({
     methods: {
@@ -34,18 +33,16 @@ Vue.mixin({
             }
             $('#questionEditLoader').fadeOut(400);
         },
+    },
+    filters: {
+        translate: (value) => {
+            return window.QuestionEditData.i10N[value] || value;
+        }
     }
 });
-
+const AppState = getAppState(window.LS.parameters.qid);
 const questionEditor = new Vue({
     el: '#advancedQuestionEditor',
-    store: getAppState(window.LS.parameters.qid),
-    components: {
-        'maineditor' : MainEditor,
-        'generalsettings' : GeneralSettings,
-        'advancedsettings' : AdvancedSettings
-    },
-    mounted(){
-        this.toggleLoading(false);
-    }
+    store: AppState,
+    components: {App}
 });

@@ -79,6 +79,67 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
     }
 
+    /**
+     * Main method to render a question in the question editor preview.
+     * @param string  $sLayout the name of the layout to render
+     * @param array   $aDatas  the datas needed to fill the layout
+     * @param boolean $bReturn if true, it will return the html string without
+     *                         rendering the whole page. Usefull for debuging, and used for Print Answers
+     */
+    public function renderTemplateForQuestionEditPreview($sLayout, $aDatas, $root = false, $bReturn  = false)
+    {
+        $oTemplate = Template::model()->getInstance();
+        $oLayoutTemplate = $this->getTemplateForView($sLayout, $oTemplate);
+        if ($oLayoutTemplate) {
+            
+            $line = '<div class="{{ aSurveyInfo.class.outerframe }}  {% if (aSurveyInfo.options.container == "on") %} container {% else %} container-fluid {% endif %} " id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >';
+            $line .= file_get_contents($oLayoutTemplate->viewPath.$sLayout);
+            $line .= '</div>';
+            if($root === true) {
+                $line = '<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
+                    . '<body style="padding-top: 90px;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >'
+                    . file_get_contents($oLayoutTemplate->viewPath.'/subviews/header/head.twig')
+                    . $line;
+                $line .= '</body>';
+                $line .= '</html>';
+            }
+
+            $sHtml     = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
+            
+            $sEmHiddenInputs = LimeExpressionManager::FinishProcessPublicPage(true);
+            if($sEmHiddenInputs) {
+                $sHtml = str_replace("<!-- emScriptsAndHiddenInputs -->","<!-- emScriptsAndHiddenInputs updated -->\n".$sEmHiddenInputs,$sHtml);
+            }
+            if ($bReturn) {
+                return $sHtml;
+            } else {
+                $this->renderHtmlPage($sHtml, $oTemplate);
+            }
+        } else {
+            $templateDbConf = Template::getTemplateConfiguration($oTemplate->template_name, null, null, true);
+            // A possible solution to this error is to re-install the template.
+            if ($templateDbConf->config->metadata->version != $oTemplate->template->version) {
+                throw new WrongTemplateVersionException(
+                    sprintf(
+                        gT("Can't render layout %s for template %s. Template version in database is %s, but in config.xml it's %s. Please re-install the template."),
+                        $sLayout,
+                        $oTemplate->template_name,
+                        $oTemplate->template->version,
+                        $templateDbConf->config->metadata->version
+                    )
+                );
+            }
+            // TODO: Panic or default to something else?
+            throw new CException(
+                sprintf(
+                    gT("Can't render layout %s for template %s. Please try to re-install the template."),
+                    $sLayout,
+                    $oTemplate->template_name
+                )
+            );
+        }
+    }
+
 
     /**
      * Main method to render an admin page or block.

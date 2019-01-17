@@ -3,12 +3,13 @@ import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
 import VueLocalStorage from 'vue-localstorage';
 
+
 Vue.use(VueLocalStorage);
 Vue.use(Vuex);
 
 
 const getAppState = function (userid) {
-
+    const AppStateName = 'limesurveyadminpanel';
     const vuexLocal = new VuexPersistence({
         key: 'limesurveyadminpanel_'+userid,
         storage: window.localStorage

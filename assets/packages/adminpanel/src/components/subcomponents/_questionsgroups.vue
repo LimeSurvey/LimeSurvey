@@ -318,12 +318,15 @@ export default {
                                     </i>
                                 <a
                                     :href="question.link"  
-                                    class="col-12 pjax question-question-list-item-link display-as-container" 
+                                    class="col-10 pjax question-question-list-item-link display-as-container" 
                                     @click.stop.prevent="openQuestion(question)" 
                                 > 
                                     <span class="question_text_ellipsize" :style="{ width: itemWidth }">
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }} 
                                     </span> 
+                                </a>
+                                <a :href="question.editLink" class="fa fa-edit bigIcons editIcon">
+                                    &nbsp;
                                 </a>
                             </div>
                         </ul>
@@ -335,6 +338,9 @@ export default {
 </template>
 
 <style lang="scss">
+.list-group-item.question-question-list-item .editIcon {
+    margin: 10px 10px 10px 5px;
+}
 .display-as-container{
     display: block;
 }

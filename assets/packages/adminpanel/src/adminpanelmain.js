@@ -1,5 +1,7 @@
 //globals formId
 import Vue from "vue";
+Vue.config.devtools = false;
+
 import Sidebar from "./components/sidebar.vue";
 import Topbar from "./components/topbar.vue";
 import ParameterTable from "./components/parameter-table.vue";
@@ -56,7 +58,7 @@ const LsAdminPanel = () => {
         panelNameSpace["surveyViewHeight"] = inSurveyViewHeight;
         panelNameSpace["surveyViewWidth"] = inSurveyViewWidth;
         $('#pjax-content').css({
-            'max-height': inSurveyViewHeight,
+            //'height': inSurveyViewHeight,
             'max-width': inSurveyViewWidth,
         });
     }

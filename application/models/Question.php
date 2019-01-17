@@ -946,21 +946,21 @@ class Question extends LSActiveRecord
             case Question::QT_T_LONG_FREE_TEXT: //fallthrough
             case Question::QT_U_HUGE_FREE_TEXT: return new RenderFreeText($aFieldArray);
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: return new RenderMultipleNumerical($aFieldArray);
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return 'arrays/5point';
-            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return 'arrays/10point';
-            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return 'arrays/yesnouncertain';
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: return 'arrays/increasesamedecrease';
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW: return 'arrays/multiflexi';
-            case Question::QT_G_GENDER_DROPDOWN: return 'gender';
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: return 'arrays/multiflexi';
-            case Question::QT_N_NUMERICAL: return 'numerical';
-            case Question::QT_S_SHORT_FREE_TEXT: return 'shortfreetext';
-            case Question::QT_Y_YES_NO_RADIO: return 'yesno';
-            case Question::QT_Z_LIST_RADIO_FLEXIBLE: return 'listradioflexible';
-            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: return 'arrays/texts';
-            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: return 'arrays/texts';
-            case Question::QT_VERTICAL_FILE_UPLOAD: return 'file_upload';
-            default:  return 'generic_question'; // fallback
+            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: 
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: 
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: 
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: 
+            case Question::QT_F_ARRAY_FLEXIBLE_ROW: 
+            case Question::QT_G_GENDER_DROPDOWN: 
+            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: 
+            case Question::QT_N_NUMERICAL: 
+            case Question::QT_S_SHORT_FREE_TEXT: 
+            case Question::QT_Y_YES_NO_RADIO: 
+            case Question::QT_Z_LIST_RADIO_FLEXIBLE: 
+            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: 
+            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: 
+            case Question::QT_VERTICAL_FILE_UPLOAD: 
+            default:  return new DummyQuestionEditContainer($aFieldArray);
         };
     }
 

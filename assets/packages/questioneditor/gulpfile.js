@@ -29,6 +29,7 @@ gulp.task('default', function (cb) {
 });
 
 //general combined tasks
+gulp.task('dev', ['sass', 'webpack']);
 gulp.task('compile', ['sass', 'webpack', 'babelify']);
 gulp.task('compile:production', function (cb) {
     runSequence(['sass:production', 'webpack:production'], 'compress', 'compresslibs', cb);
@@ -153,9 +154,8 @@ gulp.task('compress', function (cb) {
             gulp.src('build/'+jsOutFile),
             sourcemaps.init(),
             babel({
-                presets: [['env', {'targets' : { 'browsers' :  ['last 2 versions', 'ie 10'] }}]]
+                presets: [['env', {'targets' : { 'browsers' :  ['last 2 versions', 'ie 10'] }, 'presets': ['minify']}]]
             }),
-            uglify(),
             concat(jsOutFileProducton),
             gulp.dest('build')
         ],

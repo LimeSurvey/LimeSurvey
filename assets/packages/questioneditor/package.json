@@ -10,6 +10,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-minify": "^0.5.0",
     "css-loader": "^0.28.4",
     "eslint": "^4.0.0",
     "eslint-config-prettier": "^2.9.0",
@@ -32,6 +33,7 @@
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^3.0.0",
     "gulp-webpack": "^1.5.0",
+    "html-loader": "^0.5.5",
     "node-sass": "^4.5.3",
     "prettier": "^1.15.3",
     "prettier-eslint": "^8.8.1",
@@ -47,6 +49,7 @@
     "webpack": "^3.0.0"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^11.2.0",
     "@ckeditor/ckeditor5-build-inline": "^11.2.0",
     "@ckeditor/ckeditor5-vue": "^1.0.0-beta.1",
     "lodash": "^4.17.4",

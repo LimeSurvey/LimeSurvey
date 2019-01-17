@@ -27423,6 +27423,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_logSystem_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__mixins_logSystem_js__);
 //globals formId
 
+__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].config.devtools = false;
+
 
 
 
@@ -27479,7 +27481,7 @@ const LsAdminPanel = () => {
         panelNameSpace["surveyViewHeight"] = inSurveyViewHeight;
         panelNameSpace["surveyViewWidth"] = inSurveyViewWidth;
         $('#pjax-content').css({
-            'max-height': inSurveyViewHeight,
+            //'height': inSurveyViewHeight,
             'max-width': inSurveyViewWidth,
         });
     }
@@ -28219,7 +28221,7 @@ exports = module.exports = __webpack_require__(1)(true);
 
 
 // module
-exports.push([module.i, "\n.display-as-container {\n  display: block;\n}\n#questionexplorer {\n  overflow: auto;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/adminpanel/src/components/subcomponents/_questionsgroups.vue"],"names":[],"mappings":";AAAA;EACE,eAAe;CAAE;AAEnB;EACE,eAAe;CAAE","file":"_questionsgroups.vue","sourcesContent":[".display-as-container {\n  display: block; }\n\n#questionexplorer {\n  overflow: auto; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.list-group-item.question-question-list-item .editIcon {\n  margin: 10px 10px 10px 5px;\n}\n.display-as-container {\n  display: block;\n}\n#questionexplorer {\n  overflow: auto;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/adminpanel/src/components/subcomponents/_questionsgroups.vue"],"names":[],"mappings":";AAAA;EACE,2BAA2B;CAAE;AAE/B;EACE,eAAe;CAAE;AAEnB;EACE,eAAe;CAAE","file":"_questionsgroups.vue","sourcesContent":[".list-group-item.question-question-list-item .editIcon {\n  margin: 10px 10px 10px 5px; }\n\n.display-as-container {\n  display: block; }\n\n#questionexplorer {\n  overflow: auto; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -28561,7 +28563,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }, [_vm._v("\n                                     \n                                ")]) : _vm._e(), _vm._v(" "), _c('a', {
-        staticClass: "col-12 pjax question-question-list-item-link display-as-container",
+        staticClass: "col-10 pjax question-question-list-item-link display-as-container",
         attrs: {
           "href": question.link
         },
@@ -28577,7 +28579,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         style: ({
           width: _vm.itemWidth
         })
-      }, [_vm._v("\n                                    [" + _vm._s(question.title) + "] › " + _vm._s(question.question_flat) + " \n                                ")])])])
+      }, [_vm._v("\n                                    [" + _vm._s(question.title) + "] › " + _vm._s(question.question_flat) + " \n                                ")])]), _vm._v(" "), _c('a', {
+        staticClass: "fa fa-edit bigIcons editIcon",
+        attrs: {
+          "href": question.editLink
+        }
+      }, [_vm._v("\n                                 \n                            ")])])
     })) : _vm._e()])], 1)
   }))])])
 },staticRenderFns: []}
@@ -30650,12 +30657,13 @@ if (false) {
 
 
 
+
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_3_vue_localstorage___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
 
 
 const getAppState = function (userid) {
-
+    const AppStateName = 'limesurveyadminpanel';
     const vuexLocal = new __WEBPACK_IMPORTED_MODULE_2_vuex_persist___default.a({
         key: 'limesurveyadminpanel_'+userid,
         storage: window.localStorage

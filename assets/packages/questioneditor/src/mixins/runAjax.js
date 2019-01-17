@@ -1,6 +1,9 @@
 export default {
   methods: {
-    _runAjax(uri, data = {}, method = 'get') {
+    __runAjax(uri, data = {}, method = 'get', dataType = 'json') {
+      const csrfObject = {};
+      csrfObject[LS.data.csrfTokenName] = LS.data.csrfToken;
+      const sendData = $.merge(data,csrfObject);
       return new Promise((resolve, reject) => {
         if ($ == undefined) {
           reject('JQUERY NOT AVAILABLE!');
@@ -8,8 +11,8 @@ export default {
         $.ajax({
           url: uri,
           method: method || 'get',
-          data: data,
-          dataType: 'json',
+          data: sendData,
+          dataType,
           success: (response, status, xhr) => {
             resolve({
               success: true,
@@ -29,17 +32,20 @@ export default {
         });
       });
     },
-    post(uri, data) {
-      return this._runAjax(uri, data, 'post');
+    $_post(uri, data) {
+      return this.__runAjax(uri, data, 'post');
     },
-    get(uri, data) {
-      return this._runAjax(uri, data, 'get');
+    $_get(uri, data) {
+      return this.__runAjax(uri, data, 'get');
     },
-    delete(uri, data) {
-      return this._runAjax(uri, data, 'delete');
+    $_load(uri, data, method='get') {
+      return this.__runAjax(uri, data, method, "html");
     },
-    put(uri, data) {
-      return this._runAjax(uri, data, 'put');
+    $_delete(uri, data) {
+      return this.__runAjax(uri, data, 'delete');
+    },
+    $_put(uri, data) {
+      return this.__runAjax(uri, data, 'put');
     }
   }
 };

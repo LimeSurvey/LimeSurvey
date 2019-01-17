@@ -51,7 +51,7 @@ $this->_showHeaders($aData, false);
             $this->_organizequestionbar($aData);
 
             echo '<div id="in_survey_common" '
-            . 'class="container-fluid ls-flex-column fill col-12 overflow-enabled"'
+            . 'class="container-fluid ls-flex-column fill col-12"'
             . '>';
 
                 //Rendered through /admin/update/_update_notification
