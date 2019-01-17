@@ -289,17 +289,31 @@ class Survey extends LSActiveRecord
             }
             SettingGlobal::model()->deleteAll($oCriteria);
 
-            $oResult = Question::model()->findAllByAttributes(array('sid' => $this->sid));
-            foreach ($oResult as $aRow) {
-                Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
-                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+            $oQuestions = Question::model()->findAllByAttributes(array('sid' => $this->sid));
+            foreach ($oQuestions as $aQuestion) {
+                // answers
+                $oAnswers = Answer::model()->findAllByAttributes(array('qid' => $aQuestion['qid']));
+                foreach ($oAnswers as $aAnswer) {
+                    AnswerL10n::model()->deleteAllByAttributes(array('aid' =>$aAnswer['aid']));
+                }
+                Answer::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+
+                Condition::model()->deleteAllByAttributes(array('qid' =>$aQuestion['qid']));
+                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+                QuestionL10n::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
             }
 
             Question::model()->deleteAllByAttributes(array('sid' => $this->sid));
             Assessment::model()->deleteAllByAttributes(array('sid' => $this->sid));
+
+            // question groups
+            $oQuestionGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $this->sid));
+            foreach ($oQuestionGroups as $aQuestionGroup) {
+                QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' =>$aQuestionGroup['gid']));
+            }
             QuestionGroup::model()->deleteAllByAttributes(array('sid' => $this->sid));
+
             SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $this->sid));
             Permission::model()->deleteAllByAttributes(array('entity_id' => $this->sid, 'entity'=>'survey'));
             SavedControl::model()->deleteAllByAttributes(array('sid' => $this->sid));
