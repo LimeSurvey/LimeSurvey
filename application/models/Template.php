@@ -555,8 +555,7 @@ class Template extends LSActiveRecord
      */
     public static function getStandardTemplateList()
     {
-        $standardTemplates = array('vanilla', 'bootswatch', 'fruity');
-        return $standardTemplates;
+        return array_keys(self::getTemplateInStandard());
     }
 
 
@@ -591,7 +590,6 @@ class Template extends LSActiveRecord
             $standardTemplateRootDir       = Yii::app()->getConfig("standardthemerootdir");
             self::$aTemplatesInStandardDir = self::getTemplateInFolder($standardTemplateRootDir);
         }
-
         return self::$aTemplatesInStandardDir;
     }
 

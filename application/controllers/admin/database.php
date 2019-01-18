@@ -635,29 +635,41 @@ class database extends Survey_Common_Action
         $iAnswerScales = $aQuestionTypeList[$sQuestionType]['answerscales'];
         $iSubquestionScales = $aQuestionTypeList[$sQuestionType]['subquestions'];
 
-        // These are the questions types that have the other option therefore we set everything else to 'No Other'
-        if (($sQuestionType != "L") && ($sQuestionType != "!") && ($sQuestionType != "P") && ($sQuestionType != "M")) {
-            $_POST['other'] = 'N';
-        }
-
-        // These are the questions types that have no validation - so zap it accordingly
+        /* Set the new question attribute with post value to fix it after */
+        $fixedQuestionAttributes = array(
+            'preg' => Yii::app()->request->getPost('preg',''),
+            'other' => Yii::app()->request->getPost('other'),
+            'mandatory' => Yii::app()->request->getPost('mandatory'),
+            'relevance' => Yii::app()->request->getPost('relevance',''),
+        );
 
         if ($sQuestionType == "!" || $sQuestionType == "L" || $sQuestionType == "M" || $sQuestionType == "P" ||
         $sQuestionType == "F" || $sQuestionType == "H" ||
         $sQuestionType == "X" || $sQuestionType == "") {
-            $_POST['preg'] = '';
+            $fixedQuestionAttributes['preg'] = '';
         }
 
+        // For Bootstrap Version using BAD YiiWheels switch only if needed
+        // Alt solution : filter_var($fixedQuestionAttributes['mandatory'], FILTER_VALIDATE_BOOLEAN); then on is true and off is false
+        if(!in_array($fixedQuestionAttributes['mandatory'],array('Y','N'))) {
+            $fixedQuestionAttributes['mandatory'] = boolval($fixedQuestionAttributes['mandatory']) ? 'Y' : 'N';
+        }
+        if(!in_array($fixedQuestionAttributes['other'],array('Y','N'))) {
+            $fixedQuestionAttributes['other'] = boolval($fixedQuestionAttributes['other']) ? 'Y' : 'N';
+        }
 
-        // For Bootstrap Version usin YiiWheels switch :
-        $_POST['mandatory'] = (Yii::app()->request->getPost('mandatory') == '1') ? 'Y' : 'N';
-        $_POST['other'] = (Yii::app()->request->getPost('other') == '1') ? 'Y' : 'N';
+        // Other specific
+        if (($sQuestionType != "L") && ($sQuestionType != "!") && ($sQuestionType != "P") && ($sQuestionType != "M")) {
+            $fixedQuestionAttributes['other'] = 'N';
+        }
+        if ($survey->isActive && !empty($cqr) ) {
+            $fixedQuestionAttributes['other'] = $cqr['other'];
+        }
 
         // These are the questions types that have no mandatory property - so zap it accordingly
         if ($sQuestionType == "X" || $sQuestionType == "|") {
-            $_POST['mandatory'] = 'N';
+            $fixedQuestionAttributes['mandatory'] = 'N';
         }
-
 
         if ($oldtype != $sQuestionType) {
             // TMSW Condition->Relevance:  Do similar check via EM, but do allow such a change since will be easier to modify relevance
@@ -671,24 +683,16 @@ class database extends Survey_Common_Action
         if (isset($cccount) && $cccount) {
             Yii::app()->setFlashMessage(gT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions  before you can change the type of this question."), 'error');
         } else {
-            if (isset($this->iQuestionGroupID) && $this->iQuestionGroupID != "") {
-
-                //                    $array_result=checkMoveQuestionConstraintsForConditions(sanitize_int($surveyid),sanitize_int($qid), sanitize_int($gid));
-                //                    // If there is no blocking conditions that could prevent this move
-                //
-                //                    if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
-                //                    {
-                $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-                $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-                array_push($aSurveyLanguages, $sBaseLanguage);
+            if (!empty($this->iQuestionGroupID)) {
+                $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->getAllLanguages();
                 $oQuestion = Question::model()->findByPk($this->iQuestionID);
                 $oQuestion->type = $sQuestionType; 
                 $oQuestion->title = Yii::app()->request->getPost('title');
-                $oQuestion->preg = Yii::app()->request->getPost('preg');
+                $oQuestion->preg = $fixedQuestionAttributes['preg'],
                 $oQuestion->gid = $this->iQuestionGroupID;
-                $oQuestion->other = Yii::app()->request->getPost('other');
-                $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
-                $oQuestion->relevance = Yii::app()->request->getPost('relevance');  
+                $oQuestion->other = $fixedQuestionAttributes['other'];
+                $oQuestion->mandatory = $fixedQuestionAttributes['mandatory'];
+                $oQuestion->relevance = $fixedQuestionAttributes['relevance'];
                 // Update question module
                 if (Yii::app()->request->getPost('module_name') != '') {
                     // The question module is not empty. So it's an external question module.
@@ -715,7 +719,6 @@ class database extends Survey_Common_Action
                 }
                 
                 $uqresult = $oQuestion->save();              
-                
                 foreach ($aSurveyLanguages as $qlang) {
                     if (isset($qlang) && $qlang != "") {
                         $sQuestionText = Yii::app()->request->getPost('question_'.$qlang, '');

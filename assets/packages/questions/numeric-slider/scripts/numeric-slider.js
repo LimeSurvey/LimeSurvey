@@ -96,8 +96,8 @@ var LSSlider = function (options) {
 
         },
         setValue = function (value) {
-            value = value || position;
-            sliderObject.setValue(position, true, true);
+            value = value || parseInt(position);
+            sliderObject.setValue(value, true, true);
             elementObject.val(value.toString().replace('.', separator)).trigger('keyup');
             writeToRootElement(value);
             triggerChanges();
