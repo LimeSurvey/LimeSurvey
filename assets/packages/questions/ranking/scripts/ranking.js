@@ -10,9 +10,9 @@ var RankingQuestion = function (options) {
     var max_answers = options.max_answers,
         min_answers = options.min_answers,
         rankingName = options.rankingName,
-        showpopups = (typeof options.showpopups == 'undefined') ? options.showpopups : true,
-        samechoiceheight = (typeof options.samechoiceheight == 'undefined') ? options.samechoiceheight : true,
-        samelistheight = (typeof options.samelistheight == 'undefined') ? options.samelistheight : true,
+        showpopups = (typeof options.showpopups != 'undefined') ? parseInt(options.showpopups) : 1,
+        samechoiceheight = (typeof options.samechoiceheight != 'undefined') ? parseInt(options.samechoiceheight) : 1,
+        samelistheight = (typeof options.samelistheight != 'undefined') ? parseInt(options.samelistheight) : 1,
         questionId = options.questionId;
     //define reused variables
     var relevancename= "relevance"+rankingName,
@@ -99,9 +99,9 @@ var RankingQuestion = function (options) {
      * Update answers after updating drag and drop part
      */
     updateDragDropRank = function() {
-        
         $('#question' + questionId + ' .select-item select').val('');
         $('#sortable-rank-' + questionId + ' li').each(function (index) {
+            $('#question' + questionId + ' .select-item select').eq(index).data("old-val",$('#question' + questionId + ' .select-item select').eq(index).val());
             $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
         });
 
@@ -112,7 +112,11 @@ var RankingQuestion = function (options) {
             if ($(this).val() != "") {
                 $("#" + relevancename + (index+1) ).val("1");
             }
-            $(this).trigger("change", { source: 'dragdrop' });
+            /* trigger change only if val is updated see #14425 */
+            if( (typeof $(this).data("old-val") == 'undefined' && $(this).val() != "") || ($(this).val() != $(this).data("old-val")) ) {
+                $(this).trigger("change", { source: 'dragdrop' });
+                $(this).data("old-val",$(this).val())
+            }
         });
         $('#sortable-rank-' + questionId + ' li').removeClass("text-error");
         $('#sortable-choice-' + questionId + ' li').removeClass("text-error");
@@ -126,7 +130,6 @@ var RankingQuestion = function (options) {
         }
     },
     loadDragDropRank = function () {
-        
         // Update #relevance
         $("[id^=" + relevancename + "]").val('0');
         $('#sortable-rank-' + questionId + ' li').each(function () {
@@ -137,6 +140,8 @@ var RankingQuestion = function (options) {
                 $("#" + relevancename + (index+1)).val("1");
                 $('#sortable-choice-' + questionId + ' li#' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
             }
+            /* set old-val for updateDragDropRank see #14425 */
+            $(this).closest("select").data("old-val",$(this).closest("select").val());
         });
 
         updateDragDropRank(); // Update to reorder select
@@ -148,40 +153,87 @@ var RankingQuestion = function (options) {
 
     fixChoiceListHeight = function() {
         if (samechoiceheight) {
-            var maxHeight = 0;
-            $('#question' + questionId + ' .ls-choice').each(function () {
-                if ($(this).actual('height') > maxHeight) {
-                    maxHeight = $(this).actual('height');
+            /* Do it at load */
+            setChoiceHeight();
+            /* Do it when any choice are updated by EM (mantis #14406) */
+            $('#question' + questionId + ' .ls-choice').on('html:updated',function(){
+                $('#question' + questionId + ' .ls-choice').css("min-height","");
+                setChoiceHeight();
+            });
+            /* Do it when a choice is shown/hidden by filter (mantis #14411) */
+            /* attach to the last one only , see #14424. This can need update when EM javascript was improved */
+            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice:last',function (event, data) {
+                if(event.target != this) return;
+                data = $.extend({style:'hidden'}, data);
+                if(data.style == 'hidden') {
+                    setChoiceHeight();
                 }
             });
-            $('#question' + questionId + ' .ls-choice').css("min-height",maxHeight+"px");
-        }
-
-        if (samelistheight) {
-            var totalHeight = 0;
-            $('#question' + questionId + ' .ls-choice').each(function () {
-                totalHeight = totalHeight + $(this).actual('outerHeight', {
-                    includeMargin: true
-                }); /* Border not inside */
+            /* Do it on window resize */
+            $(window).resize(function() {
+                $('#question' + questionId + ' .ls-choice').css("min-height","");
+                setChoiceHeight();
             });
-            /* Add the padding to min-height */
-            $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css("min-height",totalHeight+"px");
+        }
+        if (samelistheight) {
+            /* Do it at same time it happen for choice */
+            setListHeight();
+            $('#question' + questionId + ' .ls-choice').on('html:updated',function(){
+                setListHeight();
+            });
+            /* attach to the last one only , see #14424. This can need update when EM javascript was improved */
+            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice:last', function (event, data) {
+                if(event.target != this) return;
+                data = $.extend({style:'hidden'}, data);
+                if(data.style == 'hidden') {
+                    setListHeight();
+                }
+            });
+            $(window).resize(function() {
+                setListHeight();
+            });
         }
     },
-
+    setChoiceHeight = function() {
+        $('#question' + questionId + ' .ls-choice').css("min-height",""); // reset the min-height style
+        var maxHeight = 0;
+        $('#question' + questionId + ' .ls-choice:not(.ls-hidden)').each(function () {
+            if ($(this).actual('height') > maxHeight) {
+                maxHeight = $(this).actual('height');
+            }
+        });
+        $('#question' + questionId + ' .ls-choice').css("min-height",maxHeight+"px");
+    },
+    setListHeight = function() {
+        var totalHeight = 0;
+        $('#question' + questionId + ' .ls-choice:not(.ls-hidden)').each(function () {
+            totalHeight = totalHeight + $(this).actual('outerHeight', {
+                includeMargin: true
+            }); /* Border not inside */
+        });
+        /* Add the padding to min-height */
+        $('#sortable-choice-' + questionId + ',#sortable-rank-' + questionId).css("min-height",totalHeight+"px");
+    },
     triggerEmRelevanceSortable = function() {
-        $(".sortable-item").on('relevance:on', function (event, data) {
-            //~ if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
-            //~ data = $.extend({style:'hidden'}, data);
-            $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', false);
-            $(event.target).removeClass("disabled");
+        $('#question' + questionId).off('relevance:on',"[id^='javatbd']");
+        $('#question' + questionId).off('relevance:off',"[id^='javatbd']");
+        $('#question' + questionId +' .sortable-item').on('relevance:on', function (event, data) {
+            data = $.extend({style:'hidden'}, data);
+            data = $.extend({style:'hidden'}, data);
+            $(this).removeClass("ls-irrelevant ls-"+data.style);
+            if(data.style == 'disable') { // not needed if hidden
+                $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', false);
+                $(event.target).removeClass("disabled");
+            }
         });
 
-        $(".sortable-item").on('relevance:off', function (event, data) {
-            //~ if(event.target != this) return; // not needed now, but after maybe (2016-11-07)
-            //~ data = $.extend({style:'hidden'}, data);
-            $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', true);
-            $(event.target).addClass("disabled");
+        $('#question' + questionId +' .sortable-item').on('relevance:off', function (event, data) {
+            data = $.extend({style:'hidden'}, data);
+            $(this).addClass("ls-irrelevant ls-"+data.style);
+            if(data.style == 'disable') { // not needed if hidden
+                $(event.target).closest(".ls-answers").find("option[value=" + $(event.target).data("value") + "]").prop('disabled', true);
+                $(event.target).addClass("disabled");
+            }
             /* reset already ranked item */
             if ($(event.target).parent().hasClass("sortable-rank")) {
                 $(event.target).appendTo($(event.target).closest(".answers-list").find(".sortable-choice"));
@@ -193,8 +245,9 @@ var RankingQuestion = function (options) {
 
     return {
         init : function(){
-            doDragDropRank();
+            /* must trigger hidden before set heght */
             triggerEmRelevanceSortable();
+            doDragDropRank();
         }
     }
 

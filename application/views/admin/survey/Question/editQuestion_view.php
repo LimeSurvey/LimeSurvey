@@ -297,8 +297,14 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                                 'offLabel'=>gT('Off'),
                                                 'htmlOptions'=>array(
                                                     'disabled'=>$oSurvey->isActive,
+                                                    'value'=> 'Y',
+                                                    'uncheckValue' => 'N',
                                                 ),
-                                            ));?>
+                                            ));
+                                            if($oSurvey->isActive) {
+                                                echo CHtml::hiddenField('other',$oQuestion->other);
+                                            }
+                                            ?>
                                         </div>
                                 </div>
 
@@ -311,7 +317,17 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                     <p class="help-block collapse" id="help_mandatory"><?php eT("Set \"Mandatory\" state");?></p> 
                                     <div class="">
                                         <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
-                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'id' => 'mandatory','value'=> $oQuestion->mandatory === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
+                                        <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                            'name' => 'mandatory',
+                                            'id' => 'mandatory',
+                                            'value'=> $oQuestion->mandatory === "Y",
+                                            'onLabel'=>gT('On'),
+                                            'offLabel'=>gT('Off'),
+                                            'htmlOptions'=>array(
+                                                'value'=> 'Y',
+                                                'uncheckValue' => 'N',
+                                            ),
+                                        ));?>
                                     </div>
                                 </div>
 
