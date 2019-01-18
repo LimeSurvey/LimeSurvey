@@ -135,7 +135,7 @@ class TemplateConfiguration extends TemplateConfig
     /** @inheritdoc */
     public function defaultScope()
     {
-        return array('order'=> 'template_name');
+        return array('order'=> $this->getTableAlias(false, false).'.template_name');
     }
 
     /**
