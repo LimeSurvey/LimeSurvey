@@ -468,9 +468,6 @@ class TemplateConfiguration extends TemplateConfig
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
-            'sort'=>array(
-                'defaultOrder'=>'template_name ASC',
-            ),
             'pagination'=>array(
                 'pageSize'=>$pageSizeTemplateView,
             ),
