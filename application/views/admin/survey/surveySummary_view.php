@@ -244,10 +244,20 @@ $surveyid = $oSurvey->sid;
                 <li class="list-group-item">
                     <div class="ls-flex-row col-12">
                         <div class="col-4">
-                            <?php eT("Administrator:");?>
+                            <?php eT("Owner:");?>
                         </div>
                         <div class="col-8">
                                 <?php echo flattenText("{$oSurvey->owner->full_name} ({$oSurvey->owner->email})");?>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            <?php eT("Administrator:");?>
+                        </div>
+                        <div class="col-8">
+                                <?php echo CHtml::encode("{$oSurvey->admin} ({$oSurvey->adminemail})");?>
                         </div>
                     </div>
                 </li>
