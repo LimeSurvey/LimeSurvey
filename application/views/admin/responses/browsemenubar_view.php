@@ -177,23 +177,17 @@
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
                 </a>
-                <?php /*
-                <a class="btn btn-default" href="#" role="button" id="save-and-close-button">
-                    <span class="fa fa-saved"></span>
-                    <?php eT("Save and close");?>
-                </a>
-                */ ?>
             <?php endif;?>
 
             <?php if(isset($menu['export'])): ?>
-                <a class="btn btn-success" href="#" role="button" id="save-button">
+                <a class="btn btn-success" href="#" role="button" id="export-button">
                     <span class="fa fa-download-alt"></span>
                     <?php eT("Export");?>
                 </a>
             <?php endif;?>
 
             <?php if(isset($menu['import'])): ?>
-                <a class="btn btn-success" href="#" role="button" id="save-button">
+                <a class="btn btn-success" href="#" role="button" id="import-button">
                     <span class="fa fa-upload"></span>
                     <?php eT("Import");?>
                 </a>
@@ -201,21 +195,21 @@
 
             <?php if(isset($menu['stats'])):?>
                 <?php if (isset($menu['expertstats']) && $menu['expertstats'] =  true):?>
-                    <a class="btn btn-info" href="<?php echo App()->createUrl('/admin/statistics/sa/index/surveyid/'.$surveyid); ?>" role="" id="">
+                    <a class="btn btn-info" href="<?php echo App()->createUrl('/admin/statistics/sa/index/surveyid/'.$surveyid); ?>" role="" id="expert-mode">
                         <span class="fa fa-bar-chart"></span>
                         <?php eT("Expert mode"); ?>
                     </a>
                 <?php else: ?>
-                    <a class="btn btn-info" href="<?php echo App()->createUrl('/admin/statistics/sa/simpleStatistics/surveyid/'.$surveyid); ?>" role="" id="">
+                    <a class="btn btn-info" href="<?php echo App()->createUrl('/admin/statistics/sa/simpleStatistics/surveyid/'.$surveyid); ?>" role="" id="simple-mode">
                         <span class="fa fa-bar-chart"></span>
                         <?php eT("Simple mode"); ?>
                     </a>
-                    <a class="btn btn-success" href="#" role="button" id="save-button">
+                    <a class="btn btn-success" href="#" role="button" id="view-button">
                         <span class="fa"></span>
                         <?php eT("View statistics"); ?>
                     </a>
 
-                    <a class="btn btn-default" href="#" role="button" id="save-button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')">
+                    <a class="btn btn-default" href="#" role="button" id="clear-button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')">
                         <span class="fa fa-refresh text-success"></span>
                         <?php eT("Clear"); ?>
                     </a>
