@@ -1,0 +1,21 @@
+{#
+/**
+ * Multiple Choice with Comment question item Html
+ *
+ * @var $sRows      : the rows, generated with the views rows/answer_row.php
+ *
+ * @var $name
+ * @var $value
+ */
+#}
+<!-- Multiple Choice with comment-->
+
+<!-- answer -->
+<input type='hidden' name='{{ name }}' value='{{ value }}' />
+<ul class="{{ coreClass }} list-unstyled form-horizontal" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+        {% for aRow in aRows %}
+                {% set rowTemplate = aRow.other ? './survey/questions/answer/multiplechoice_with_comments/rows/answer_row_other.twig' : './survey/questions/answer/multiplechoice_with_comments/rows/answer_row.twig' %}
+                {% include rowTemplate with aRow only %}
+        {% endfor %}
+</ul>
+<!-- end of answer -->

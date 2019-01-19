@@ -43,7 +43,7 @@ class ExpressionValidate extends Survey_Common_Action
      */
     public function quota($iSurveyId, $quota, $lang = null)
     {
-        $oSurvey = Survey::model()->findByPk($iSurveyId):
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read')) {
             throw new CHttpException(401, "401 Unauthorized");
         }
@@ -85,7 +85,7 @@ class ExpressionValidate extends Survey_Common_Action
         $this->getController()->layout = $this->layout;
         $this->getController()->pageTitle = gT("Validate quota");
 
-        $this->getController()->render("/admin/expressions/validationList", $aData);
+        $this->getController()->renderPartial("/admin/expressions/validationList", $aData);
     }
     /**
      * Check the Expression in email

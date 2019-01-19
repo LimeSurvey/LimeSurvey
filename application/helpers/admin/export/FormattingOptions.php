@@ -63,6 +63,13 @@ class FormattingOptions
     public $headCodeTextSeparator;
 
     /**
+     * What is the character to separate CSV fields
+     *
+     * @var boolean
+     */
+    public $csvFieldSeparator;
+
+    /**
      * Valid values are:
      * "short" = Answer codes
      * "long" = Full answers
@@ -70,6 +77,16 @@ class FormattingOptions
      * @var string
      */
     public $answerFormat;
+
+    /**
+     * Strip HTML code
+     * Valid values are:
+     * "1" = Strip HTML code
+     * "0" = No stripping
+     *
+     * @var string
+     */
+    public $stripHtmlCode;
 
     /**
      * If $answerFormat is set to "short" then this indicates that 'Y' responses

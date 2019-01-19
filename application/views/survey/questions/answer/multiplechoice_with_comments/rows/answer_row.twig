@@ -1,0 +1,63 @@
+{#
+/**
+ * Multiple choice with comments question, item Html
+ * @var $liclasses
+ * @var $liid
+ * @var $kpclass
+ * @var $title
+ * @var $sDisplayStyle
+ * @var $name                       $myfname
+ * @var $id                         answer$myfname
+ * @var $value                       Y
+ * @var $classes                    ''
+ * @var $checked                    ''
+ * @var $checkconditionFunction     $checkconditionFunction(this.value, this.name, this.type);
+ * @var $checkconditionFunctionComment
+ * @var $labeltext                  $ansrow['question']
+ * @var $javaname                   java$myfname
+ * @var $javavalue                  ''
+ * @var $checked                    if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))  ...
+ * @var $inputCommentId             'answer'.$myfname2
+ * @var $commentLabelText           gT('Make a comment on your choice here:') }}
+ * @var $inputCommentName           $myfname2
+ * @var $inputCOmmentValue          if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2])) {$answer_main .= htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);}
+ */
+#}
+<!-- answer_row -->
+<li id="javatbd{{ name }}" class='row checkbox-text-item form-group' role='group'>
+    <!-- Checkbox + label -->
+    <div class="col-sm-{{ sLabelWidth }} col-xs-12">
+        <div class="checkbox-item answer-item">
+            <input
+                class="{{ classes }} {{ kpclass }}"
+                title="{{ title }}"
+                type="checkbox"
+                name="{{ name }}"
+                id="{{ id }}"
+                value="{{ value }}"
+                {{ checked }}
+              />
+
+            <label id="label-{{ id }}" for="{{ id }}" class="control-label checkbox-label">{{ processString(labeltext) }}</label>
+            {# Value for expression manager javascript (use val()) ; no need to submit #}
+            {{ C.Html.hiddenField(javaname,javavalue,({
+                'id' : javaname,
+                'disabled' : true,
+            }))
+            }}
+        </div>
+    </div>
+
+    <!-- Comment -->
+    <div class="col-sm-{{ sInputContainerWidth }} col-xs-12 answer-item text-item comment-item">
+            <input
+                class='form-control {{ kpclass }}'
+                type='text'
+                id='{{ inputCommentId }}'
+                name='{{ inputCommentName }}'
+                value='{{ inputCOmmentValue }}'
+                aria-labelledby='label-{{ id }}'
+            />
+    </div>
+</li>
+<!-- end of answer_row -->

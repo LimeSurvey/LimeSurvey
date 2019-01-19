@@ -18,7 +18,7 @@
  */
 class Tutorial extends LSActiveRecord
 {
-    
+
     /**
      * @return string the associated database table name
      */
@@ -151,7 +151,7 @@ class Tutorial extends LSActiveRecord
             array_walk($defaultTutorials[$tutorialName], function($attribute, $key) use (&$oTutorial) {
                 $oTutorial->setAttribute($key, $attribute);
             });
-            
+
             return $oTutorial;
         }
        return $this->find('name=:name', [':name' => $tutorialName]);
@@ -175,7 +175,7 @@ class Tutorial extends LSActiveRecord
         if (!empty($aTutorials)) {
             return array_merge($aTutorials, $this->getDefaultTutorials());
         }
-        
+
         return $this->getDefaultTutorials();
     }
 
@@ -195,7 +195,7 @@ class Tutorial extends LSActiveRecord
     public function getTutorialDataArray($tutorialName)
     {
         $aSteps = [];
-        
+
         if ($this->tid === null) {
             $defaultEntries = LsDefaultDataSets::getTutorialEntryData();
             $this->tid = $tutorialName;
@@ -208,14 +208,14 @@ class Tutorial extends LSActiveRecord
             $aTutorialEntryRelations = TutorialEntryRelation::model()->findAll('tid=:tid', [':tid'=>$this->tid]);
             foreach ($aTutorialEntryRelations as $oTutorialMapEntry) {
                 $oTutorialEntry = $oTutorialMapEntry->tutorialEntry;
-                $aSteps[] = $oTutorialEntry->getStepFromEntry();            
+                $aSteps[] = $oTutorialEntry->getStepFromEntry();
             }
         }
 
         $aTutorialData = json_decode($this->settings, true);
         $aTutorialData['steps'] = $aSteps;
         $aTutorialData['tid'] = $this->tid;
-        
+
         return $aTutorialData;
     }
 

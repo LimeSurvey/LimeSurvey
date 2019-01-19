@@ -13,7 +13,7 @@ class SurveyDao
      * @param int $id
      * @return SurveyObj
      */
-    public function loadSurveyById($id, $lang = null)
+    public function loadSurveyById($id, $lang = null, FormattingOptions $oOptions = null)
     {
         $survey = new SurveyObj();
 
@@ -43,9 +43,14 @@ class SurveyDao
 
         $survey->groups = QuestionGroup::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'group_order'));
         $survey->questions = Question::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'question_order'));
-        $aAnswers = Answer::model()->with('question', array('condition'=>'sid='.$intId))->findAll(array('order' => 'question.question_order, t.scale_id, sortorder'));
+        $aAnswers = Answer::model()->with(array('answerL10ns', 'question'), array('condition'=>'sid='.$intId.' AND language = "'.$lang.'"'))->findAll(array('order' => 'question.question_order, t.scale_id, sortorder'));
         foreach ($aAnswers as $aAnswer) {
-            $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']] = $aAnswer;
+            if(!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1  && Yii::app()->controller->action->id !='remotecontrol'){
+                $answer=stripTagsFull($aAnswer->answerL10ns[$lang]->answer);
+            } else {
+                $answer=$aAnswer->answerL10ns[$lang]->answer;
+            }
+            $survey->answers[$aAnswer->question->qid][$aAnswer->scale_id][$aAnswer->code] = $answer;
         }
         //Load language settings for requested language
         $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.' AND surveyls_language = \''.$lang.'\';';

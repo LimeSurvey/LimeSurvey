@@ -151,7 +151,7 @@ class responses extends Survey_Common_Action
             $message['class'] = "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         }
-    }   
+    }
 
     /**
      * View a single response in detail
@@ -397,7 +397,7 @@ class responses extends Survey_Common_Action
     {
         $survey = Survey::model()->findByPk($iSurveyId);
         $displaymode = Yii::app()->request->getPost('displaymode', null);
-        
+
         if ($displaymode !== null) {
             $this->set_grid_display($displaymode);
         }
@@ -518,49 +518,69 @@ class responses extends Survey_Common_Action
      */
     public function actionDelete($surveyid)
     {
+        if(!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        if(!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
         Yii::import('application.helpers.admin.ajax_helper', true);
 
         $iSurveyId = (int) $surveyid;
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) {
-            $ResponseId  = (Yii::app()->request->getPost('sItems') != '') ? json_decode(Yii::app()->request->getPost('sItems')) : json_decode(Yii::app()->request->getPost('sResponseId'), true);
-            $aResponseId = (is_array($ResponseId)) ? $ResponseId : array($ResponseId);
+        $ResponseId  = (Yii::app()->request->getPost('sItems') != '') ? json_decode(Yii::app()->request->getPost('sItems')) : json_decode(Yii::app()->request->getParam('sResponseId'), true);
+        if (  Yii::app()->request->getPost('modalTextArea') != '' ){
+            $ResponseId = explode(',', Yii::app()->request->getPost('modalTextArea'));
+            foreach($ResponseId as $key => $sResponseId){
+                $ResponseId[$key] = str_replace(' ', '', $sResponseId);
+            }
+        }
 
-            $errors = 0;
-            $timingErrors = 0;
+        $aResponseId = (is_array($ResponseId)) ? $ResponseId : array($ResponseId);
 
-            foreach ($aResponseId as $iResponseId) {
-                $beforeDataEntryDelete = new PluginEvent('beforeDataEntryDelete');
-                $beforeDataEntryDelete->set('iSurveyID', $iSurveyId);
-                $beforeDataEntryDelete->set('iResponseID', $iResponseId);
-                App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
+        $errors = 0;
+        $timingErrors = 0;
 
-                $response = Response::model($iSurveyId)->findByPk($iResponseId);
-                if ($response) {
-                    $result = $response->delete(true);
-                    if (!$result) {
-                        $errors++;
-                    } else {
-                        $oSurvey = Survey::model()->findByPk($iSurveyId);
-                        // TODO : add it to response delete (maybe test if timing table exist)
-                        if ($oSurvey->savetimings == "Y") {
-                            $result = SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
-                            if (!$result) {
-                                $timingErrors++;
-                            }
+        foreach ($aResponseId as $iResponseId) {
+            $beforeDataEntryDelete = new PluginEvent('beforeDataEntryDelete');
+            $beforeDataEntryDelete->set('iSurveyID', $iSurveyId);
+            $beforeDataEntryDelete->set('iResponseID', $iResponseId);
+            App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
+
+            $response = Response::model($iSurveyId)->findByPk($iResponseId);
+            if ($response) {
+                $result = $response->delete(true);
+                if (!$result) {
+                    $errors++;
+                } else {
+                    $oSurvey = Survey::model()->findByPk($iSurveyId);
+                    // TODO : add it to response->delete and response->afterDelete
+                    if ($oSurvey->savetimings == "Y") {
+                        $result = SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
+                        if (!$result) {
+                            $timingErrors++;
                         }
                     }
-                } else {
-                    $errors++;
                 }
-            }
-
-            if ($errors == 0 && $timingErrors == 0) {
-                ls\ajax\AjaxHelper::outputSuccess(gT('Response(s) deleted.'));
             } else {
-                ls\ajax\AjaxHelper::outputError(gT('Error during response deletion.'));
+                $errors++;
             }
-
         }
+
+        if ($errors || $timingErrors) {
+            $message = ($errors) ? ngT("A response was not deleted.|{n} responses were not deleted.",$errors) : "";
+            $message.= ($timingErrors) ? ngT("A timing record was not deleted.|{n} timing records were not deleted.",$errors) : "";
+            if(Yii::app()->getRequest()->isAjaxRequest) {
+                ls\ajax\AjaxHelper::outputError($message);
+            } else {
+                Yii::app()->setFlashMessage($message,'error');
+                $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$iSurveyId));
+            }
+        }
+        if(Yii::app()->getRequest()->isAjaxRequest) {
+            ls\ajax\AjaxHelper::outputSuccess(gT('Response(s) deleted.'));
+        }
+        Yii::app()->setFlashMessage(gT('Response(s) deleted.'),'success');
+        $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$iSurveyId));
     }
 
     /**
@@ -619,6 +639,7 @@ class responses extends Survey_Common_Action
      */
     public function actionDownloadfiles($iSurveyId, $sResponseId)
     {
+
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
             if (!$sResponseId) {
 // No response id : get all survey files
@@ -654,13 +675,11 @@ class responses extends Survey_Common_Action
      */
     public function actionDeleteAttachments()
     {
-        Yii::import('application.helpers.admin.ajax_helper', true);
-
         $request     = Yii::app()->request;
-        $surveyid    = (int) $request->getPost('surveyid');
-        $sid         = (int) $request->getPost('sid');
+        $surveyid    = (int) $request->getParam('surveyid');
+        $sid         = (int) $request->getParam('sid');
         $surveyId    = $sid ? $sid : $surveyid;
-        $responseId  = (int) $request->getPost('sResponseId');
+        $responseId  = (int) $request->getParam('sResponseId');
         $stringItems = json_decode($request->getPost('sItems'));
         // Cast all ids to int.
         $items       = array_map(
@@ -671,38 +690,48 @@ class responses extends Survey_Common_Action
             is_array($stringItems) ? $stringItems : array()
         );
         $responseIds = $responseId ? array($responseId) : $items;
-
+        if(!Permission::model()->hasSurveyPermission($surveyId, 'responses', 'update')) {
+            throw new CHttpException(403, gT("You do not have permission to access this page."));
+        }
+        if(!$request->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
+        Yii::import('application.helpers.admin.ajax_helper', true);
         $allErrors = array();
         $allSuccess = 0;
 
-        if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
-            foreach ($responseIds as $responseId) {
-                $response = Response::model($surveyId)->findByPk($responseId);
-                if (!empty($response)) {
-                    list($success, $errors) = $response->deleteFilesAndFilename();
-                    if (empty($errors)) {
-                        $allSuccess += $success;
-                    } else {
-                        // Could not delete all files.
-                        $allErrors = array_merge($allErrors, $errors);
-                    }
+        foreach ($responseIds as $responseId) {
+            $response = Response::model($surveyId)->findByPk($responseId);
+            if (!empty($response)) {
+                list($success, $errors) = $response->deleteFilesAndFilename();
+                if (empty($errors)) {
+                    $allSuccess += $success;
                 } else {
-                    $allErrors[] = sprintf(gT('Found no response with ID %d'), $responseId);
+                    // Could not delete all files.
+                    $allErrors = array_merge($allErrors, $errors);
                 }
-            }
-
-            if ($allErrors) {
-                ls\ajax\AjaxHelper::outputError(
-                    gT('Error: Could not delete some files: ').implode(', ', $allErrors)
-                );
             } else {
-                // All is OK.
-                ls\ajax\AjaxHelper::outputSuccess(sprintf(ngT('%d file deleted.|%d files deleted.', $allSuccess), $allSuccess));
+                $allErrors[] = sprintf(gT('Found no response with ID %d'), $responseId);
             }
-        } else {
-            // No permission.
-            ls\ajax\AjaxHelper::outputNoPermission();
         }
+        if (!empty($allErrors)) {
+            $message = gT('Error: Could not delete some files: ').implode(', ', $allErrors);
+            if($request->isAjaxRequest) {
+                ls\ajax\AjaxHelper::outputError(
+                    $message
+                );
+                Yii::app()->end();
+            }
+            Yii::app()->setFlashMessage($message,'error');
+            $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$surveyId));
+        }
+        $message = sprintf(ngT('%d file deleted.|%d files deleted.', $allSuccess), $allSuccess);
+        if($request->isAjaxRequest) {
+            ls\ajax\AjaxHelper::outputSuccess($message);
+            Yii::app()->end();
+        }
+        Yii::app()->setFlashMessage($message,'success');
+        $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$surveyId));
     }
 
     /**
@@ -1020,7 +1049,6 @@ class responses extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $aData['display']['menu_bars'] = false;
         $aData['subaction'] = gT("Responses and statistics");
-        $aData['title_bar']['subaction'] = gT("Responses and statistics");
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);

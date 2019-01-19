@@ -251,12 +251,17 @@ define('PHP_ENV', 'test');
 $configFile = __DIR__ . '/application/config/config.php';
 $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
 
+// Enable if phpunit fails.
+// error_reporting(E_ALL);
+
 @copy($configFile, $configBackupFile);
 
-register_shutdown_function(function(){
-    $configFile = __DIR__ . '/application/config/config.php';
-    $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
-    
-    @unlink($configFile);
-    @rename($configBackupFile, $configFile);
-});
+register_shutdown_function(
+    function () {
+        $configFile = __DIR__ . '/application/config/config.php';
+        $configBackupFile = __DIR__ . '/application/config/test-backup.config.php';
+
+        @unlink($configFile);
+        @rename($configBackupFile, $configFile);
+    }
+);

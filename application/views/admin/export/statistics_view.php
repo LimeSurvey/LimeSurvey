@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
         <?php eT("Statistics"); ?>
     </h3>
 
-    <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder', 'class'=>'', 'id'=>'generate-statistics'));?>
+    <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'generate-statistics', 'class'=>'', 'id'=>'generate-statistics'));?>
         <!-- General filters -->
         <div class="row">
             <div class="col-sm-12 content-right">
@@ -137,3 +137,8 @@ echo viewHelper::getViewTestTag('statisticsIndex');
         </div>
     </div>
 </div>
+<?php
+App()->getClientScript()->registerScript('StatisticsViewBSSwitcher', "
+LS.renderBootstrapSwitch();
+", LSYii_ClientScript::POS_POSTSCRIPT);
+?>

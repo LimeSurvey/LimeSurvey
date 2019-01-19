@@ -1,0 +1,23 @@
+{#
+/**
+ * Multiple Short Text question Html
+ *
+ * @var $sRows      : the rows, generated with the views rows/answer_row*.php
+ *
+ */
+#}
+<!-- Multiple Shor Text -->
+
+<!-- answer -->
+<ul class="{{ coreClass }} list-unstyled form-horizontal" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    {% if aRows is empty %}
+        {% include 'survey/questions/answer/multipleshorttext/empty.twig' %}
+    {% else %}
+        {% for aRow in aRows %}
+            {% set rowTemplate = (aRow.textarea ? 'survey/questions/answer/multipleshorttext/rows/answer_row_textarea.twig' : 'survey/questions/answer/multipleshorttext/rows/answer_row_inputtext.twig') %}
+            {% include rowTemplate with aRow only %}
+        {% endfor %}
+    {% endif %}
+
+</ul>
+<!-- end of answer -->

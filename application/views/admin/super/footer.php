@@ -54,7 +54,7 @@ foreach($systemInfos as &$systemInfo) {
             <!-- Link to manual -->
             <div class="col-xs-6 col-sm-4 ">
                 <a href='http://manual.limesurvey.org' onclick='function go(ev) { ev.preventDefault(); var win = window.open("http://manual.limesurvey.org", "_blank"); win.focus(); }; go(event);'>
-                    <span class="fa fa-info-sign" id="info-footer"></span>
+                    <span class="fa fa-question-circle" id="info-footer"></span>
 		    <span class="sr-only"><?php eT('Limesurvey online manual'); ?></span>
                 </a>
             </div>
@@ -215,7 +215,7 @@ foreach($systemInfos as &$systemInfo) {
                 <div class="h3 modal-title">
 			<span class="sr-only"><?php eT("Notifications"); ?></span>
 		</div>
-                <span class='notification-date text-muted'></span>
+                <span class='notification-date'></span>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'></p>

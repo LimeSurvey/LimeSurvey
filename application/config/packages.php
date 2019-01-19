@@ -31,6 +31,8 @@ return array(
         ),
         'depends' => array(
             'jquery',
+            'moment', // Used by LEMval function
+            'decimalcustom', // Use by fixnum_checkconditions
         )
     ),
     /* For public template functionnality */
@@ -119,7 +121,7 @@ return array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
         'js' => array(
-            $debug > 0 ? 'pjax.js' : 'min/pjax.min.js',
+            'pjax.js',
         ),
         'depends' => array(
             'lslog',
@@ -198,21 +200,20 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_HEAD,
         'css' => array(
-            'css/lime-admin-common.css',
-            'css/jcarousel.responsive.css',
-            'css/attributeMap.css',
-            'css/attributeMapToken.css',
-            'css/displayParticipants.css',
+            // 'css/lime-admin-common.css',
+            // 'css/jcarousel.responsive.css',
+            // 'css/attributeMap.css',
+            // 'css/attributeMapToken.css',
+            // 'css/displayParticipants.css',
+            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.css',
         ),
         'js' => array(
-            'js/confirmdeletemodal.js',
-            'js/bootstrap-remote-modals.js',
-            'js/admin_core.js',
-            'js/notifications.js',
+            'build/adminbasics'.(($debug > 0) ? '' : '.min').'.js',
         ),
         'depends' => array(
             'jquery',
             'pjaxbackend',
+            'lslog',
         )
     ),
 
@@ -221,16 +222,16 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'css' => array(
-            'css/adminstyle-rtl.css',
-            'css/rtl/lime-admin-common-rtl.css',
-            'css/rtl/jcarousel.responsive-rtl.css',
-            'css/rtl/attributeMap-rtl.css',
-            'css/rtl/attributeMapToken-rtl.css',
-            'css/rtl/displayParticipants-rtl.css',
+            // 'css/rtl/adminstyle-rtl.css',
+            // 'css/rtl/lime-admin-common-rtl.css',
+            // 'css/rtl/jcarousel.responsive-rtl.css',
+            // 'css/rtl/attributeMap-rtl.css',
+            // 'css/rtl/attributeMapToken-rtl.css',
+            // 'css/rtl/displayParticipants-rtl.css',
+            'build/adminbasics.rtl'.(($debug > 0) ? '' : '.min').'.css',
         ),
         'js' => array(
-            'js/admin_core.js',
-            'js/notifications.js',
+            'build/adminbasics.js',
         ),
         'depends' => array(
             'jquery',
@@ -243,14 +244,11 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'js' => array(
-            'js/notify.js',
-            'js/panelclickable.js',
-            'js/panelsanimation.js',
-            'js/save.js',
         ),
         'depends' => array(
             'jquery',
             'pjaxbackend',
+            'adminbasics'
         )
     ),
 
@@ -259,6 +257,7 @@ return array(
         'basePath' => 'core.surveymenufunctions',
         'js' => array(
             'surveymenufunctionswrapper'.$minVersion.'.js',
+            'surveymenuentryfunctions'.$minVersion.'.js',
         ),
         'depends' => array(
             'adminbasics',
@@ -309,7 +308,22 @@ return array(
         'depends' => array(
             'adminbasics',
         )
-    )
-
-
+    ),
+    /* An empty package to be extended for EM (after core expressions) */
+    'expression-extend' =>array(
+        'depends' => array(
+            'expressions',
+        )
+    ),
+    'decimalcustom' => array(
+        'devBaseUrl' => 'assets/packages/decimalcustom/',
+        'basePath' => 'core.decimalcustom',
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'decimalcustom.js',
+        ),
+        'depends' => array(
+            'decimal',
+        )
+    ),
 );

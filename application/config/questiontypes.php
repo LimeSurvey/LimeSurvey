@@ -34,7 +34,7 @@ return array(
             'scripts/ranking.js',
         ),
         'depends' => array(
-            'jquery',
+            'jquery','jquery-actual',
         )
     ),
     /* numeric slider question : numerci question type with slider */
@@ -84,14 +84,33 @@ return array(
         'basePath' => 'core.questions.upload',
         'position' => CClientScript::POS_BEGIN,
         'css'=> array(
-            'css/uploader-file.css',
-            'css/uploader.css',
+            'styles/uploader-files.css',
+            'styles/uploader.css',
         ),
         'js'=>array(
-            'scripts/uploadquestion'.$minVersion.'.js',
+            'build/uploadquestion'.$minVersion.'.js',
+        )
+    ),
+    /* array-numeric question */
+    'question-array-numeric'=>array(
+        'devBaseUrl'  => 'assets/packages/questions/arraynumeric/',
+        'basePath' => 'core.questions.arraynumeric',
+        'position' => CClientScript::POS_BEGIN,
+        'css'=> array(
         ),
-        'depends' => [
-            'emoji'
-        ]
+        'js'=>array(
+            'scripts/array-totalsum'.$minVersion.'.js',
+        ),
+    ),
+    /* array-numeric question */
+    'timer-addition'=>array(
+        'devBaseUrl'  => 'assets/packages/questions/timer/',
+        'basePath' => 'core.questions.timer',
+        'position' => CClientScript::POS_BEGIN,
+        'css'=> array(
+        ),
+        'js'=>array(
+            'timer'.$minVersion.'.js',
+        ),
     ),
 );

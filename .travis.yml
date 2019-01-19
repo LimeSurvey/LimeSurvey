@@ -8,7 +8,6 @@ php:
     - 7.0
     - 7.1
     - 7.2
-    - 5.6
 env:
   - DBENGINE=MYISAM
   - DBENGINE=INNODB
@@ -34,6 +33,7 @@ before_script:
     - touch enabletests
       #- rm composer.lock
       #- rm -r third_party
+    - composer remove --dev vimeo/psalm
     - composer install
     - chmod -R 777 tmp
     - chmod -R 777 upload
@@ -53,7 +53,8 @@ before_script:
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
     # Enable debug=2 in config file. OBS: This assumes debug is on line 59.
-    - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
+    # TODO: Disable, a lines was added to config file and some tests started to fail.
+    # - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
 
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
@@ -74,9 +75,12 @@ before_script:
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
 
+    # Check for syntax errors.
+    - find application/ -type f -name "*.php" -exec php -l {} \;  | grep -v 'No syntax errors' || true
+
     # Test server.
     - wget localhost
-    - more localhost
+    - cat index.html
 
     # Chromedriver setup.
     # Note: Keep getting timeout problems on Travis with chromedriver.
@@ -85,10 +89,11 @@ before_script:
 
     # Setup Selenium with Firefox headless mode.
     - wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
-    - wget "https://github.com/mozilla/geckodriver/releases/download/v0.19.1/geckodriver-v0.19.1-linux64.tar.gz"
-    - tar xvzf geckodriver-v0.19.1-linux64.tar.gz
+    - wget "https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz"
+    - tar xvzf geckodriver-v0.23.0-linux64.tar.gz
     - export MOZ_HEADLESS=1
     - java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
 
 script:
-    - DOMAIN=localhost phpunit #--stop-on-failure # Stop so we can see errors.
+    # Run tests.
+    - DOMAIN=localhost phpunit # --stop-on-failure

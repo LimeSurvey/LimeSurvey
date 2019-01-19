@@ -60,7 +60,8 @@ class labels extends Survey_Common_Action
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
-            $extractdir = $this->_tempdir(Yii::app()->getConfig('tempdir'));
+            Yii::import('application.helpers.common_helper', true);
+            $extractdir = createRandomTempDir();
             $zipfilename = $_FILES['the_file']['tmp_name'];
             $basedestdir = Yii::app()->getConfig('uploaddir')."/labels";
             $destdir = $basedestdir."/$lid/";
@@ -438,14 +439,22 @@ class labels extends Survey_Common_Action
         foreach ($answers as $lang => $answer) {
             foreach ($answer as $key => $ans) {
                 $label = new Label;
+                
                 $label->lid = $lid;
                 $label->code = $code[$key];
-                $label->title = $ans;
                 $label->sortorder = $key;
                 $label->language = $lang;
                 $label->assessment_value = isset($aAssessmentValues[$key]) ? $aAssessmentValues[$key] : 0;
                 if (!$label->save()) {
-                                    $res = 'fail';
+                    $res = 'fail';
+                }
+                
+                $labelI10N = new LabelL10n;
+                $labelI10N->language = $lang;
+                $labelI10N->label_id = $label->id;
+                $labelI10N->title = $ans;
+                if (!$labelI10N->save()) {
+                    $res = 'fail';
                 }
             }
         }

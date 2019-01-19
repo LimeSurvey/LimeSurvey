@@ -8,7 +8,7 @@
     <div class='row container-fluid'>
 
         <!-- left buttons -->
-        <div class="col-md-10">
+        <div class="col-md-9">
 
             <!-- Token view buttons -->
             <?php if( isset($token_bar['buttons']['view']) ): ?>
@@ -174,7 +174,7 @@
                 </a>
 
                 <!-- View participants of this survey in CPDB -->
-                <a class="btn btn-default" href="#" role="button" onclick="sendPost('<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>','',['searchcondition'],['surveyid||equal|| <?php echo $oSurvey->sid ?>']);">
+                <a class="btn btn-default" href="#" role="button" onclick="window.LS.sendPost('<?php echo $this->createUrl("/admin/participants/sa/displayParticipants"); ?>',false,{'searchcondition': 'surveyid||equal|| <?php echo $oSurvey->sid ?>'});">
                     <span class="ui-icon ui-participant-link"></span>
                     <?php eT("View in CPDB"); ?>
                 </a>
@@ -183,7 +183,7 @@
         </div>
 
         <!-- Right buttons -->
-        <div class="col-md-2 text-right">
+        <div class="col-md-3 text-right">
 
             <!-- View token buttons -->
             <?php if( isset($token_bar['buttons']['view'] )): ?>

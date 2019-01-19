@@ -74,7 +74,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     // Local over-rides in case not set above
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
-    $_surveyid = Yii::app()->getConfig('surveyID');
+    $_surveyid = $_SESSION['LEMsid'];
 
     if ($_surveyid) {
         $totalgroups = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
@@ -98,7 +98,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($thissurvey['templatedir'])) {
         $templatename = $thissurvey['templatedir'];
     } else {
-        $templatename = getGlobalSetting('defaulttheme');
+        $templatename = App()->getConfig('defaulttheme');
     }
     if (!isset($templateurl)) {
         $templateurl = getTemplateURL($templatename)."/";
@@ -230,7 +230,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $iscompleted = $thissurvey['iscompleted'] = false;
     }
 
-    if (isset($surveyid)) {
+    if (isset($surveyid) && isset($_SESSION['survey_'.$surveyid]['srid'])) {
         $_quexmlpdf = CHtml::link(gT("Save as PDF"), array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"), array('data-toggle'=>'tooltip', 'data-placement'=>'right', 'title'=>gT("Note: Print will not include items on this page")));
     } else {
         $_quexmlpdf = "";
@@ -250,7 +250,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $_return_to_survey = "";
 
     if (isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999") {
-        $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
+        $_googleAnalyticsAPIKey = trim(App()->getConfig('googleanalyticsapikey'));
     } else if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '') {
         $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
     } else {
@@ -293,6 +293,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
+    if(isset($thissurvey['sid']) && !empty($_SESSION['survey_'.$thissurvey['sid']])) {
+        $coreReplacements = getStandardsReplacementFields($thissurvey);
+    }
+
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['ANSWERSCLEARED'] = gT("Answers cleared");
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
@@ -357,7 +361,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
 function getStandardsReplacementFields($thissurvey)
 {
-    $_surveyid = Yii::app()->getConfig('surveyID');
+    $_surveyid = $_SESSION['LEMsid'];
 
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
 
@@ -430,13 +434,19 @@ function getStandardsReplacementFields($thissurvey)
         $_datestamp = '-';
     }
     $_assessment_current_total = '';
-    if (!empty($thissurvey['aAssessments'])) {
-        $_assessment_current_total = $thissurvey['aAssessments']['total'];
+    if (!empty($thissurvey['assessments']) && $thissurvey['assessments']=="Y") {
+        $assessmentdata = doAssessment($surveyid);
+        $_assessment_current_total = (isset($assessmentdata['datas']['total_score']))?$assessmentdata['datas']['total_score']:gT("Unkown");
     }
 
+    $oSurvey = Survey::model()->findByPk($surveyid);
+    $totalquestions = $oSurvey->countTotalQuestions;
 
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
+    $coreReplacements['FLASHMESSAGE'] = makeFlashMessage();
+    $coreReplacements['NUMBEROFGROUPS'] = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
+    $coreReplacements['NUMBEROFQUESTIONS'] = $totalquestions;
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['DATESTAMP'] = $_datestamp;
     $coreReplacements['EXPIRY'] = $_dateoutput;
@@ -470,6 +480,7 @@ function getStandardsReplacementFields($thissurvey)
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
     $coreReplacements['ASSESSMENT_CURRENT_TOTAL'] = $_assessment_current_total;
+    $coreReplacements['TEMPLATEURL'] = Template::model()->getInstance()->templateURL;
 
     return $coreReplacements;
 }

@@ -54,7 +54,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property Survey $survey
  * @property SurveyLink $surveylink
  * @property Response[] $responses
- * @property CDbTableSchema $tableSchema 
+ * @property CDbTableSchema $tableSchema
  */
 abstract class Token extends Dynamic
 {
@@ -96,7 +96,9 @@ abstract class Token extends Dynamic
         return $labels;
     }
 
-    /** @inheritdoc */
+    /** @inheritdoc
+     * Delete related SurveyLink if it's deleted
+     */
     public function beforeDelete()
     {
         $result = parent::beforeDelete();
@@ -105,6 +107,28 @@ abstract class Token extends Dynamic
                 throw new CException('Could not delete survey link. Token was not deleted.');
             }
             return true;
+        }
+        return $result;
+    }
+
+    /** @inheritdoc
+     * Delete related SurveyLink at same time
+     */
+    public function deleteAllByAttributes($attributes, $condition = '', $params = array())
+    {
+        $builder=$this->getCommandBuilder();
+        $participantCriteria=$builder->createCriteria($condition,$params);
+        $participantCriteria->select = array('tid','participant_id');
+        $participantCriteria->addCondition('participant_id is not null');
+        $oParticipantToDelete = self::model($this->dynamicId)->findAll($participantCriteria);
+        $result = parent::deleteAllByAttributes($attributes, $condition, $params);
+        if($result && !empty($oParticipantToDelete)) {
+            /* Get the participant not deleted : we must not delete survey link */
+            $oParticipantNotDeleted = self::model($this->dynamicId)->findAll($participantCriteria);
+            $tidToDelete = array_diff(CHtml::listData($oParticipantToDelete,'tid','tid'),CHtml::listData($oParticipantNotDeleted,'tid','tid'));
+            if(!empty($tidToDelete)) {
+                SurveyLink::model()->deleteAllByAttributes(array('token_id'=>$tidToDelete,'survey_id'=>$this->dynamicId));
+            }
         }
         return $result;
     }
@@ -240,7 +264,7 @@ abstract class Token extends Dynamic
             throw new \Exception("This function should only be called like: Token::model(12345)->generateTokens");
         }
         $surveyId = $this->dynamicId;
-        $iTokenLength = isset($this->survey) && is_numeric($this->survey->tokenlength) ? $this->survey->tokenlength : 15;
+        $iTokenLength = isset($this->survey) && is_numeric($this->survey->oOptions->tokenlength) ? $this->survey->oOptions->tokenlength : 15;
 
         $tkresult = Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$surveyId}}} WHERE token IS NULL OR token=''")->queryAll();
         //Exit early if there are not empty tokens
@@ -315,16 +339,6 @@ abstract class Token extends Dynamic
     }
 
     /** @inheritdoc */
-    public function save($runValidation = true, $attributes = null)
-    {
-        $beforeTokenSave = new PluginEvent('beforeTokenSave');
-        $beforeTokenSave->set('model', $this);
-        $beforeTokenSave->set('iSurveyID', $this->dynamicId);
-        App()->getPluginManager()->dispatchEvent($beforeTokenSave);
-        return parent::save($runValidation, $attributes);
-    }
-
-    /** @inheritdoc */
     public function rules()
     {
         $aRules = array(
@@ -388,5 +402,13 @@ abstract class Token extends Dynamic
     public function tableName()
     {
         return '{{tokens_'.$this->dynamicId.'}}';
+    }
+
+    /**
+     * Get current surveyId for other model/function
+     * @return int
+     */
+    public function getSurveyId() {
+        return $this->getDynamicId();
     }
 }

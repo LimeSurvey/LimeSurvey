@@ -37,11 +37,12 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         return false;
     }
     $rootdir = Yii::app()->getConfig("rootdir");
-    $admintheme = Yii::app()->getConfig("admintheme");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
     $cachefilename = "";
+
+    $adminThemePath = AdminTheme::getInstance()->path;
 
     /* Set the fonts for the chart */
     if ($chartfontfile == 'auto') {
@@ -65,7 +66,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
+            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
@@ -81,7 +82,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
         } else {
             $graph = new pChart(690, 200);
-            $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
+            $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
             $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
@@ -171,7 +172,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 }
                 $graph = new pChart(690 + $legendsize[0], $gheight);
                 $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
+                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $graph->setGraphArea(50, 30, 500, $gheight - 60);
                 $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
@@ -255,7 +256,7 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
                 $gheight = ceil($gheight);
                 $graph = new pChart(690, $gheight);
                 $graph->drawFilledRectangle(0, 0, 690, $gheight, 254, 254, 254, false);
-                $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.'/images/limesurvey.pal');
+                $graph->loadColorPalette($adminThemePath . DIRECTORY_SEPARATOR . 'images/limesurvey.pal');
                 $graph->drawFilledRoundedRectangle(7, 7, 687, $gheight - 3, 5, 254, 255, 254);
                 $graph->drawRoundedRectangle(5, 5, 689, $gheight - 1, 5, 230, 230, 230);
 
@@ -325,7 +326,7 @@ function buildSelects($allfields, $surveyid, $language)
         }
     }
 
-    $postvars = array(); 
+    $postvars = array();
     // creates array of post variable names
     for (reset($_POST); $key = key($_POST); next($_POST)) { $postvars[] = $key; }
 
@@ -541,7 +542,7 @@ class statistics_helper
     /**
      * The current Excel workbook we are working on
      *
-     * @var Xlswriter
+     * @var Writer
      */
     protected $workbook;
 
@@ -577,7 +578,7 @@ class statistics_helper
         $qtitle = "";
         $qquestion = "";
         $qtype = "";
-        $firstletter = substr($rt, 0, 1);
+        $sQuestionType = substr($rt, 0, 1);
         $fieldmap = createFieldMap($survey, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput = "";
@@ -597,7 +598,7 @@ class statistics_helper
         }
 
         //M - Multiple choice, therefore multiple fields - one for each answer
-        if ($firstletter == "M" || $firstletter == "P") {
+        if ($sQuestionType == "M" || $sQuestionType == "P") {
             //get SGQ data
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
@@ -625,9 +626,7 @@ class statistics_helper
                 $alist[] = array(gT("Other"), gT("Other"), $mfield);
             }
         }
-
-        //S - Short Free Text and T - Long Free Text
-        elseif ($firstletter == "T" || $firstletter == "S") {
+        elseif ($sQuestionType == Question::QT_T_LONG_FREE_TEXT || $sQuestionType == Question::QT_S_SHORT_FREE_TEXT) {
             //Short and long text
             //search for key
             $fld = substr($rt, 1, strlen($rt));
@@ -650,7 +649,7 @@ class statistics_helper
         }
 
         //Q - Multiple short text
-        elseif ($firstletter == "Q") {
+        elseif ($sQuestionType == "Q") {
             //Build an array of legitimate qid's for testing later
             $aQuestionInfo = $fieldmap[substr($rt, 1)];
             $qqid = $aQuestionInfo['qid'];
@@ -683,7 +682,7 @@ class statistics_helper
         }
 
         //RANKING OPTION
-        elseif ($firstletter == "R") {
+        elseif ($sQuestionType == "R") {
             //getting the needed IDs somehow
             $lengthofnumeral = substr($rt, strpos($rt, "-") + 1, 1);
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-") - ($lengthofnumeral + 1)), 3);
@@ -711,7 +710,7 @@ class statistics_helper
                 $mfield = substr($rt, 1, strpos($rt, "-") - 1);
                 $alist[] = array("$row[0]", flattenText($row[1]), $mfield);
             }
-        } else if ($firstletter == "|") {
+        } else if ($sQuestionType == "|") {
             // File Upload
 
             //get SGQ data
@@ -787,7 +786,7 @@ class statistics_helper
             //outputting
             switch ($outputType) {
                 case 'xls':
-                    $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                    $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                     $xlsDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
                     $this->xlsRow++;
                     $this->xlsRow++;
@@ -808,7 +807,7 @@ class statistics_helper
 
                 case 'html':
                     $statisticsoutput .= "\n<table class='statisticstable table table-bordered >\n"
-                    ."\t<thead><tr class='success'><th style='text-align: center; '><strong>".sprintf(gT("Field summary for %s"), $qtitle).":</strong>"
+                    ."\t<thead><tr class='success'><th style='text-align: center; '><strong>".sprintf(gT("Summary for %s"), $qtitle).":</strong>"
                     ."</th></tr>\n"
                     ."\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
                     ."\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
@@ -829,7 +828,7 @@ class statistics_helper
 
         //N = numerical input
         //K = multiple numerical input
-        elseif ($firstletter == "N" || $firstletter == "K") {
+        elseif ($sQuestionType == "N" || $sQuestionType == "K") {
             //NUMERICAL TYPE
             //Zero handling
             if (!isset($excludezeros)) {
@@ -857,7 +856,7 @@ class statistics_helper
                 //outputting
                 switch ($outputType) {
                     case 'xls':
-                        $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                        $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                         $xlsDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
                         $this->xlsRow++;
                         $this->xlsRow++;
@@ -877,7 +876,7 @@ class statistics_helper
                         $tablePDF = array();
                         $footPDF = array();
 
-                        $pdfTitle = sprintf(gT("Field summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
+                        $pdfTitle = sprintf(gT("Summary for %s"), html_entity_decode($qtitle, ENT_QUOTES, 'UTF-8'));
                         $titleDesc = html_entity_decode($qquestion, ENT_QUOTES, 'UTF-8');
 
                         $headPDF[] = array(gT("Calculation"), gT("Result"));
@@ -886,7 +885,7 @@ class statistics_helper
                     case 'html':
 
                         $statisticsoutput .= "\n<table class='statisticstable table table-bordered' >\n"
-                        ."\t<thead><tr  class='success'><th colspan='2' align='right'  class='success'><strong>".sprintf(gT("Field summary for %s"), $qtitle).":</strong>"
+                        ."\t<thead><tr  class='success'><th colspan='2' align='right'  class='success'><strong>".sprintf(gT("Summary for %s"), $qtitle).":</strong>"
                         ."</th></tr>\n"
                         ."\t<tr><th colspan='2' align='right'><strong>$qquestion</strong></th></tr>\n"
                         ."\t<tr>\n\t\t<th width='50%' align='right' ><strong>"
@@ -914,20 +913,20 @@ class statistics_helper
                 //other databases (MySQL, Postgres)
                 else {
                     //standard deviation
-                    $query = "SELECT STDDEV(".Yii::app()->db->quoteColumnName($fieldname).") as stdev";
+                    $query = "SELECT STDDEV(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(26,6))) as stdev";
                 }
 
                 //sum
-                $query .= ", SUM(".Yii::app()->db->quoteColumnName($fieldname)."*1) as sum";
+                $query .= ", SUM(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(26,6))) as sum";
 
                 //average
-                $query .= ", AVG(".Yii::app()->db->quoteColumnName($fieldname)."*1) as average";
+                $query .= ", AVG(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(26,6))) as average";
 
                 //min
-                $query .= ", MIN(".Yii::app()->db->quoteColumnName($fieldname)."*1) as minimum";
+                $query .= ", MIN(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(26,6))) as minimum";
 
                 //max
-                $query .= ", MAX(".Yii::app()->db->quoteColumnName($fieldname)."*1) as maximum";
+                $query .= ", MAX(CAST(".Yii::app()->db->quoteColumnName($fieldname)." AS DECIMAL(26,6))) as maximum";
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
 
                 //special treatment for MS SQL databases
@@ -1102,9 +1101,7 @@ class statistics_helper
                         case 'html':
 
                             //output
-                            $statisticsoutput .= "\t<tr>\n"
-                            ."\t\t<td align='right'  colspan='4'>".gT("Not enough values for calculation")."</td>\n"
-                            ."\t</tr>\n</table><br />\n";
+                            $statisticsoutput .= "<p class='printable'>".gT("Not enough values for calculation")."</p>\n";
 
                             break;
                         default:
@@ -1122,7 +1119,7 @@ class statistics_helper
         }    //end else-if -> multiple numerical types
 
         //is there some "id", "datestamp" or "D" within the type?
-        elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || ($firstletter == "D")) {
+        elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || ($sQuestionType == "D")) {
             /*
             * DON'T show anything for date questions
             * because there aren't any statistics implemented yet!
@@ -1180,8 +1177,8 @@ class statistics_helper
                     }
 
                     //list IDs and answer codes in brackets
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -1197,8 +1194,8 @@ class statistics_helper
                         $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
 
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "({$qanswer})";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "({$qanswer})"."[".$atext."]";
                     break;
 
 
@@ -1215,8 +1212,8 @@ class statistics_helper
                         $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
                     //output
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "({$qanswer})";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "({$qanswer})"."[".$atext."]";
                     break;
 
 
@@ -1231,8 +1228,8 @@ class statistics_helper
                         $alist[] = array("D", gT("Decrease"));
                         $atext = flattenText($qrow->questionL10ns[$language]->question);
                     }
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "({$qanswer})";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "({$qanswer})"."[".$atext."]";
                     break;
 
 
@@ -1249,8 +1246,8 @@ class statistics_helper
                         $atext = flattenText($qrow[1]);
                     }
 
-                    $qquestion .= $linefeed."[".$atext."] [".$ltext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."] [".$ltext."]";
                     break;
 
                 case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //Array (Multiple Flexi) (Numbers)
@@ -1305,8 +1302,8 @@ class statistics_helper
                     }
 
                     //output
-                    $qquestion .= $linefeed."[".$atext."]";
-                    $qtitle .= "($qanswer)";
+                    $qquestion .= $linefeed;
+                    $qtitle .= "($qanswer)"."[".$atext."]";
                     break;
 
 
@@ -2152,7 +2149,7 @@ class statistics_helper
         switch ($outputType) {
             case 'xls':
 
-                $xlsTitle = sprintf(gT("Field summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
+                $xlsTitle = sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8'));
                 $xlsDesc = html_entity_decode($outputs['qquestion'], ENT_QUOTES, 'UTF-8');
 
                 $this->xlsRow++;
@@ -2168,7 +2165,7 @@ class statistics_helper
             case 'pdf':
 
                 $sPDFQuestion = flattenText($outputs['qquestion'], false, true);
-                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Field summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
+                $pdfTitle = $this->pdf->delete_html(sprintf(gT("Summary for %s"), html_entity_decode($outputs['qtitle'], ENT_QUOTES, 'UTF-8')));
                 $titleDesc = $sPDFQuestion;
 
                 $this->pdf->AddPage('P', 'A4');
@@ -3069,6 +3066,8 @@ class statistics_helper
                 $stddevarray = array_slice($grawdata, 0, 5, true);
                 $am = 0;
 
+                $sumitems = $grawdata[0] + $grawdata[1] + $grawdata[2] + $grawdata[3] + $grawdata[4];
+
                 //calculate arithmetic mean
                 if (isset($sumitems) && $sumitems > 0) {
 
@@ -3234,7 +3233,36 @@ class statistics_helper
 
                 $cachefilename = '';
                 if ($outputType == 'xls' || $outputType == 'pdf') {
-                    $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                    // This takes care of graph_lables for PDF output (previous fix only supported HTML).
+                    $graphLbl = [];
+                    foreach ($outputs['alist'] as $al) {
+                        switch ($_POST['graph_labels']) {
+                            case 'qtext':
+                                $graphLbl[] = $al[1];
+                                break;
+                            case 'both':
+                                if ($al[0] == "") {
+                                    $graphLbl[] =  gT("No answer") . ': ' . $al[1];
+                                } else {
+                                    $graphLbl[] = $al[0] . ': ' . $al[1];
+                                }
+                                break;
+                            default:
+                                if ($al[0] == "") {
+                                    $graphLbl[] =  gT("No answer");
+                                } else {
+                                    $graphLbl[] = $al[0];
+                                }
+                                break;
+                        }
+                    }
+                    // One extra label for "Not completed or not displayed".
+                    if (count($lbl) == count($outputs['alist']) + 1) {
+                        end($lbl);
+                        $graphLbl[] = key($lbl);
+                        reset($lbl);
+                    }
+                    $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $graphLbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
                 }
 
                 if ($cachefilename || $outputType == 'html') {
@@ -3819,8 +3847,17 @@ class statistics_helper
             // set default header data
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
             //$headerlogo = '$this->pdf';
+
             $headerlogo = '';
-            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics", 'unescaped'), gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'], false, true, 'UTF-8')."'");
+            $logowidth = 10;
+            $at = AdminTheme::getInstance();
+            $path = array($at->path, 'images', 'logo_statistics.jpg');
+            if (file_exists(implode(DIRECTORY_SEPARATOR, $path))) {
+                $headerlogo = 'logo_statistics.jpg';
+                $logowidth= 85;
+            }
+
+            $this->pdf->SetHeaderData($headerlogo, $logowidth, gT("Quick statistics", 'unescaped'), gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'], false, true, 'UTF-8')."'");
             $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -3829,15 +3866,14 @@ class statistics_helper
             /**
              * Initiate the Spreadsheet_Excel_Writer
              */
-            require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
+            require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Writer.php');
 
             if ($outputTarget == 'F') {
                 $sFileName = $sTempDir.'/statistic-survey'.$surveyid.'.xls';
-                $this->workbook = new Xlswriter($sFileName);
+                $this->workbook = new Spreadsheet_Excel_Writer($sFileName);
             } else {
-                $this->workbook = new Xlswriter();
+                $this->workbook = new Spreadsheet_Excel_Writer();
             }
-
             $this->workbook->setVersion(8);
             // Inform the module that our data will arrive as UTF-8.
             // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
@@ -3848,15 +3884,16 @@ class statistics_helper
             if (!empty($sTempDir)) {
                 $this->workbook->setTempDir($sTempDir);
             }
+
             if ($outputTarget != 'F') {
                 $this->workbook->send('statistic-survey'.$surveyid.'.xls');
             }
 
             // Creating the first worksheet
             $this->sheet = $this->workbook->addWorksheet(utf8_decode('results-survey'.$surveyid));
-            $this->xlsPercents = &$this->workbook->addFormat();
+            $this->xlsPercents = $this->workbook->addFormat();
             $this->xlsPercents->setNumFormat('0.00%');
-            $this->formatBold = &$this->workbook->addFormat(array('Bold'=>1));
+            $this->formatBold = $this->workbook->addFormat(array('Bold'=>1));
             $this->sheet->setInputEncoding('utf-8');
             $this->sheet->setColumn(0, 20, 20);
         }

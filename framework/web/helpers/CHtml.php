@@ -996,13 +996,13 @@ class CHtml
 	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
-	 *     The array keys must be the option values, and the array values are the extra
-	 *     OPTION tag attributes in the name-value pairs. For example,
+	 *	 The array keys must be the option values, and the array values are the extra
+	 *	 OPTION tag attributes in the name-value pairs. For example,
 	 * <pre>
-	 *     array(
-	 *         'value1'=>array('disabled'=>true,'label'=>'value 1'),
-	 *         'value2'=>array('label'=>'value 2'),
-	 *     );
+	 *	 array(
+	 *		 'value1'=>array('disabled'=>true,'label'=>'value 1'),
+	 *		 'value2'=>array('label'=>'value 2'),
+	 *	 );
 	 * </pre>
 	 * </li>
 	 * </ul>
@@ -1064,13 +1064,13 @@ class CHtml
 	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
-	 *     The array keys must be the option values, and the array values are the extra
-	 *     OPTION tag attributes in the name-value pairs. For example,
+	 *	 The array keys must be the option values, and the array values are the extra
+	 *	 OPTION tag attributes in the name-value pairs. For example,
 	 * <pre>
-	 *     array(
-	 *         'value1'=>array('disabled'=>true,'label'=>'value 1'),
-	 *         'value2'=>array('label'=>'value 2'),
-	 *     );
+	 *	 array(
+	 *		 'value1'=>array('disabled'=>true,'label'=>'value 1'),
+	 *		 'value2'=>array('label'=>'value 2'),
+	 *	 );
 	 * </pre>
 	 * </li>
 	 * </ul>
@@ -1970,13 +1970,13 @@ EOD;
 	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
-	 *     The array keys must be the option values, and the array values are the extra
-	 *     OPTION tag attributes in the name-value pairs. For example,
+	 *	 The array keys must be the option values, and the array values are the extra
+	 *	 OPTION tag attributes in the name-value pairs. For example,
 	 * <pre>
-	 *     array(
-	 *         'value1'=>array('disabled'=>true,'label'=>'value 1'),
-	 *         'value2'=>array('label'=>'value 2'),
-	 *     );
+	 *	 array(
+	 *		 'value1'=>array('disabled'=>true,'label'=>'value 1'),
+	 *		 'value2'=>array('label'=>'value 2'),
+	 *	 );
 	 * </pre>
 	 * </li>
 	 * </ul>
@@ -2037,13 +2037,13 @@ EOD;
 	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
-	 *     The array keys must be the option values, and the array values are the extra
-	 *     OPTION tag attributes in the name-value pairs. For example,
+	 *	 The array keys must be the option values, and the array values are the extra
+	 *	 OPTION tag attributes in the name-value pairs. For example,
 	 * <pre>
-	 *     array(
-	 *         'value1'=>array('disabled'=>true,'label'=>'value 1'),
-	 *         'value2'=>array('label'=>'value 2'),
-	 *     );
+	 *	 array(
+	 *		 'value1'=>array('disabled'=>true,'label'=>'value 1'),
+	 *		 'value2'=>array('label'=>'value 2'),
+	 *	 );
 	 * </pre>
 	 * </li>
 	 * </ul>
@@ -2220,7 +2220,7 @@ EOD;
 				foreach($errors as $error)
 				{
 					if($error!='')
-						$content.="<li>$error</li>\n";
+						$content.= '<li>'.self::encode($error)."</li>\n";
 					if($firstError)
 						break;
 				}
@@ -2251,7 +2251,7 @@ EOD;
 	public static function error($model,$attribute,$htmlOptions=array())
 	{
 		self::resolveName($model,$attribute); // turn [a][b]attr into attr
-		$error=$model->getError($attribute);
+		$error=self::encode($model->getError($attribute));
 		if($error!='')
 		{
 			if(!isset($htmlOptions['class']))
@@ -2348,8 +2348,21 @@ EOD;
 		if(is_scalar($attribute) || $attribute===null)
 			foreach(explode('.',$attribute) as $name)
 			{
-				if(is_object($model) && isset($model->$name))
-					$model=$model->$name;
+				if(is_object($model))
+				{
+					if ((version_compare(PHP_VERSION, '7.2.0', '>=')
+						&& is_numeric($name))
+						|| !isset($model->$name)
+					)
+					{
+						return $defaultValue;
+					}
+					else
+					{
+						$model=$model->$name;
+					}
+				}
+
 				elseif(is_array($model) && isset($model[$name]))
 					$model=$model[$name];
 				else
@@ -2485,13 +2498,13 @@ EOD;
 	 * The 'empty' option can also be an array of value-label pairs.
 	 * Each pair will be used to render a list option at the beginning. Note, the text label will NOT be HTML-encoded.</li>
 	 * <li>options: array, specifies additional attributes for each OPTION tag.
-	 *     The array keys must be the option values, and the array values are the extra
-	 *     OPTION tag attributes in the name-value pairs. For example,
+	 *	 The array keys must be the option values, and the array values are the extra
+	 *	 OPTION tag attributes in the name-value pairs. For example,
 	 * <pre>
-	 *     array(
-	 *         'value1'=>array('disabled'=>true,'label'=>'value 1'),
-	 *         'value2'=>array('label'=>'value 2'),
-	 *     );
+	 *	 array(
+	 *		 'value1'=>array('disabled'=>true,'label'=>'value 1'),
+	 *		 'value2'=>array('label'=>'value 2'),
+	 *	 );
 	 * </pre>
 	 * </li>
 	 * <li>key: string, specifies the name of key attribute of the selection object(s).

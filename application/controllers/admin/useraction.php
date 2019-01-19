@@ -72,7 +72,14 @@ class UserAction extends Survey_Common_Action
 
         $aData['title_bar']['title'] = gT('User administration');
         $model = new User();
+
+        // Search
+        if (isset($_GET['User']['searched_value'])){
+            $model->searched_value = $_GET['User']['searched_value'];
+        }
+
         $aData['model'] = $model;
+        $aData['formUrl'] = 'admin/user/sa/index';
         $this->_renderWrappedTemplate('user', 'editusers', $aData);
     }
 
@@ -332,9 +339,10 @@ class UserAction extends Survey_Common_Action
     {
         if (Yii::app()->request->getParam('uid') != '') {
             $postuserid = (int) Yii::app()->request->getParam("uid");
-            if (Permission::model()->hasGlobalPermission('superadmin', 'read') // Super admin have all right on user
+            if ( /* @todo : move all this logic to Permission::model */
+                Permission::model()->hasGlobalPermission('superadmin', 'read') // Super admin have all right on user
                 || Yii::app()->session['loginID'] == $postuserid // User can edit himself
-                || (Permission::model()->hasGlobalPermission('users', 'update') && User::model()->count("uid=:uid AND parent_id=:parent_id)", array(':uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']))) // User with users update can only update own Users
+                || (Permission::model()->hasGlobalPermission('users', 'update') && User::model()->count("uid=:uid AND parent_id=:parent_id", array(':uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']))) // User with users update can only update own Users
             ) {
                 $oUser = User::model()->findByPk($postuserid);
                 $aData = array();
@@ -601,7 +609,6 @@ class UserAction extends Survey_Common_Action
     {
         // Save Data
         if (Yii::app()->request->getPost("action")) {
-
             $oUserModel                       = User::model()->findByPk(Yii::app()->session['loginID']);
             $oUserModel->lang                 = Yii::app()->request->getPost('lang');
             $oUserModel->dateformat           = Yii::app()->request->getPost('dateformat');
@@ -667,7 +674,7 @@ class UserAction extends Survey_Common_Action
             }
 
             if (Yii::app()->request->getPost("saveandclose")) {
-                $this->getController()->redirect(array("admin/survey/sa/index"));
+                $this->getController()->redirect(array("admin/index"));
             }
         }
 
@@ -689,7 +696,7 @@ class UserAction extends Survey_Common_Action
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
-        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin/user/sa/index"));
+        $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin"));
 
         //Get data for personal menues
         $oSurveymenu = Surveymenu::model();
@@ -730,7 +737,7 @@ class UserAction extends Survey_Common_Action
             // if not create it with current user as creator (user with rights "create user" can assign template rights)
             $result = Template::model()->findByPk($tp);
 
-            if (count($result) == 0) {
+            if ($result == NULL) {
                 $post = new Template;
                 $post->folder = $tp;
                 $post->owner_id = Yii::app()->session['loginID'];

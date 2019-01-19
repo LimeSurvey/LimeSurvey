@@ -146,7 +146,7 @@ class Authdb extends AuthPluginBase
         }
 
 
-        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && md5($onepass) == $user->one_time_pw) {
+        if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && hash('sha256',$onepass) == $user->one_time_pw) {
             $user->one_time_pw = '';
             $user->save();
             $this->setAuthSuccess($user);

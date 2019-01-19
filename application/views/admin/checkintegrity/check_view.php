@@ -203,6 +203,24 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                     <li><?php eT("All groups meet consistency standards."); ?></li><?php
                 } ?>
 
+                <?php
+                if (isset($user_in_groups))
+                {?>
+                    <li><?php eT("The following user group assignments should be deleted:"); ?>
+                        <ul class="list-unstyled" >
+                            <?php
+                            foreach ($user_in_groups as $user_in_group) {?>
+                                <li>UID:<?php echo $user_in_group['uid'];?> UGID:<?php echo $user_in_group['ugid'];?> <?php eT("Reason:");?> <?php echo $user_in_group['reason'];?></li><?php
+                            }?>
+                        </ul>
+                    </li>
+                    <?php
+                }
+                else
+                { ?>
+                    <li><?php eT("All groups meet consistency standards."); ?></li><?php
+                } ?>
+
                 <?php if (isset($groupOrderDuplicates) && !empty($groupOrderDuplicates)): ?>
                     <li><?php eT("The following surveys have an errorneous question group order. Please go to each survey respectively, check the group order and save it."); ?>
                         <ul>
@@ -275,7 +293,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 <br /> <?php eT("No database action required!"); ?>
                 <?php } else
                 {?>
-                <?php echo CHtml::form(array("admin/checkintegrity/fixredundancy"), 'post');?>
+                <?php echo CHtml::form(array("admin/checkintegrity",'sa'=>'fixredundancy'), 'post');?>
                     <ul class='data-redundancy-list list-unstyled'>
                         <?php
                             if (isset($redundantsurveytables))

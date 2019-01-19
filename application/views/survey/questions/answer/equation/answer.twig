@@ -1,0 +1,19 @@
+{#
+/**
+ * Equation Html
+ * @var $name
+ * @var $sValue
+ * @var $sEquation
+ */
+#}
+
+<!-- Equation -->
+
+<!-- answer -->
+<div class='{{ coreClass }} hidden'>
+    <input type="hidden" name="{{ name }}" id="java{{ name }}" value="{{ sValue }}">
+    <div class='{{ insideClass }}'>
+        {{ sEquation }}
+    </div>
+</div>
+<!-- end of answer -->

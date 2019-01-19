@@ -17,39 +17,42 @@
     NOTE: This content is included inside mainrow.twig
     NOTE: see layout_global.twig for more infos
 #}
-
-
-
-{# include the form opening tag #}
-<!-- main form -->
-{{ include('./subviews/header/start_form.twig') }}
-
-
-    <div class="{{ aSurveyInfo.class.previewsubmit }}" {{ aSurveyInfo.attr.previewsubmit }}>
-        <div class='{{ aSurveyInfo.class.previewsubmittext }}' {{ aSurveyInfo.attr.previewsubmittext }}>
-            {% if (aSurveyInfo.aCompleted.showDefault == true) %}
-                <p {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ gT("Thank you!") }}</p>
-                <p {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ gT("Your survey responses have been recorded.") }}</p>
-            {% else %}
-                {{ aSurveyInfo.aCompleted.sEndText }}
-            {% endif %}
-
-            {# Assessments #}
-            {% if (aSurveyInfo.aAssessments.show) %}
-                {{ include('./subviews/messages/assessments.twig') }}
-            {% endif %}
-
-            <br /><br />
-            {# TODO: rewrite this before master #}
-            <strong >
-                <font size='2' color='red'>
-                    {{ gT("Did Not Save") }}
-                </font>
-            </strong>
-            <br /><br />
-
-            {{ gT("Your survey responses have not been recorded. This survey is not yet active.") }}
-            <br /><br />
-        </div>
+{% extends "./subviews/content/submit.twig" %}
+{% block endtext %}
+    <div class="alert alert-warning"><strong class="h4 text-danger">{{ gT("Did Not Save") }} </strong>
+        {{ gT("Your survey responses have not been recorded. This survey is not yet active.") }}
     </div>
-</form> <!-- main form -->
+    {{ parent() }}
+{% endblock %}
+{% block printanswer %}
+    {#  Link to Print Answer Preview #}
+    {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
+        <!--  Link to Print Answer Preview -->
+        <div class="{{ aSurveyInfo.class.submitwrapperdiva }} disabled" {{ aSurveyInfo.attr.submitwrapperdiv }}>
+            <a href="#" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
+                {{ gT("Print your answers is disable when survey not activated.") }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block publicstatistics %}
+    {# Link to Public statistics #}
+    {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
+        <!-- Link to Public statistics -->
+        <div class="{{ aSurveyInfo.class.submitwrapperdivb }}" {{ aSurveyInfo.attr.submitwrapperdivb }}>
+            <a href="#" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
+                {{ gT("View the statistics for this survey is disable when survey not activated.") }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block endurl %}
+    {% if (aSurveyInfo.aCompleted.sSurveylsUrl) %}
+        <a href="{{ aSurveyInfo.aCompleted.sSurveylsUrl }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}
+        {% if(aSurveyInfo.autoredirect == "Y") %}
+            <small class="text-info">{{ gT("Automatically load URL when survey complete deactivated disable when survey is not activated.") }}</small>
+        {% endif %}
+        </a>
+    {% endif %}
+{% endblock %}
+

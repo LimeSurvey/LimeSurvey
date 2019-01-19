@@ -19,6 +19,7 @@ echo viewHelper::getViewTestTag('pluginManager');
         <div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
         <div class='col-sm-12'>
             <div class='pull-right'>
+                <?php /* Disabled for prototype 1.
                 <a
                     href=''
                     class='btn btn-default '
@@ -28,6 +29,25 @@ echo viewHelper::getViewTestTag('pluginManager');
                     <i class='fa fa-shopping-cart'></i>&nbsp;
                     <?php eT('Browse the shop'); ?>
                 </a>
+                 */ ?>
+                <?php foreach ($extraMenus as $menu): ?>
+                    <a
+                        href='<?php echo $menu->getHref(); ?>'
+                        <?php if ($menu->getOnClick()): ?>
+                            onclick='<?php echo $menu->getOnClick(); ?>'
+                        <?php endif; ?>
+                        <?php if ($menu->getTooltip()): ?>
+                            data-toggle='tooltip'
+                            data-title='<?php echo $menu->getTooltip(); ?>'
+                        <?php endif; ?>
+                        class='btn btn-default'
+                    >
+                        <?php if ($menu->getIconClass()): ?>
+                            <i class='<?php echo $menu->getIconClass(); ?>'></i>&nbsp;
+                        <?php endif; ?>
+                        <?php echo $menu->getLabel(); ?>
+                    </a>
+                <?php endforeach; ?>
                 <a
                     href=''
                     class='btn btn-success '
@@ -36,10 +56,9 @@ echo viewHelper::getViewTestTag('pluginManager');
                     data-tooltip='true'
                     title='<?php eT('Install plugin by ZIP archive'); ?>'
                 >
-                    <i class='fa fa-cloud-download '></i>&nbsp;
+                    <i class='fa fa-file-zip-o'></i>&nbsp;
                     <?php eT('Install ZIP'); ?>
                 </a>
-                &nbsp;
                 <a 
                     href='<?php echo $scanFilesUrl; ?>'
                     class='btn btn-default'

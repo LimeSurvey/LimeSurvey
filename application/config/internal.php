@@ -62,7 +62,22 @@ $internalConfig = array(
         // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
     ),
 
+    /*
+
+
+    here you can load the different modules
+    more about YII modules :
+    https://www.yiiframework.com/doc/guide/1.1/en/basics.module
+
+
+
+
     'modules'=>array(
+            'yourmodule'=array(
+            'class' => 'Use a yii Alias',
+
+        )
+
             'gii'=>array(
                 'class'=>'system.gii.GiiModule',
                 'password'=>'toto',
@@ -70,6 +85,10 @@ $internalConfig = array(
                     'newDirMode'=>0777,
             ),
         ),
+
+
+
+    */
 
     'params'=>array(
         'defaultPageSize'=>10, // Default page size for most of the grids
@@ -86,6 +105,7 @@ $internalConfig = array(
         'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
+        'application.views.QuestionTypeRenderer.*',
         'bootstrap.helpers.*',
         'bootstrap.widgets.*',
         'bootstrap.behaviors.*',
@@ -131,6 +151,7 @@ $internalConfig = array(
             'class'=>'LSHttpRequest',
             'enableCsrfValidation'=>true, // CSRF protection
             'enableCookieValidation'=>false, // Enable to activate cookie protection
+            'noCsrfValidationParams'=>array(),
             'noCsrfValidationRoutes'=>array(
                 'remotecontrol',
                 'plugins/unsecure',
@@ -237,17 +258,20 @@ $internalConfig = array(
                 'ellipsizeString'         => 'LS_Twig_Extension::ellipsizeString',
                 'flatEllipsizeText'       => 'LS_Twig_Extension::flatEllipsizeText', /* Temporary keep it */
                 'str_replace'             => 'str_replace',
+                'getConfig'               => 'LS_Twig_Extension::getConfig',
                 'getExpressionManagerOutput' => 'LS_Twig_Extension::getExpressionManagerOutput',/* Not in 3.X */
                 'getTextDisplayWidget'       => 'LS_Twig_Extension::getTextDisplayWidget',/* Not in 3.X */
-
                 'checkPermission'         => 'LS_Twig_Extension::checkPermission',/* Not in 3.X */
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'getLanguageNameFromCode'    => 'getLanguageNameFromCode',/* Not in 3.X */
 
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
-                'count'                   => 'count',
+                'count'                   => 'LS_Twig_Extension::safecount',
                 'reset'                   => 'reset',
+                'in_array'                => 'in_array',
+                'in_multiarray'           => 'LS_Twig_Extension::in_multiarray',
+                'array_search'            => 'array_search',
                 'renderCaptcha'           => 'LS_Twig_Extension::renderCaptcha',
                 'getPost'                 => 'LS_Twig_Extension::getPost',
                 'getParam'                => 'LS_Twig_Extension::getParam',
@@ -263,6 +287,15 @@ $internalConfig = array(
                 'createUrl'               => 'LS_Twig_Extension::createUrl',
                 'json_decode'             => 'LS_Twig_Extension::json_decode',
                 'json_encode'             => 'CJSON::encode',
+                'getLanguageNameFromCode' => 'getLanguageNameFromCode',
+                'checkconditionFunction'  => 'checkconditionFunction',
+                'doRender'                => 'doRender',
+                'flattenText'             => 'flattenText',
+                'getEditor'               => 'getEditor',
+                'darkencss'               => 'LS_Twig_Extension::darkencss',
+                'lightencss'              => 'LS_Twig_Extension::lightencss',
+                'getAllTokenAnswers'      => 'LS_Twig_Extension::getAllTokenAnswers',
+                'getAllAnswers'           => 'LS_Twig_Extension::getAllAnswers',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -287,10 +320,18 @@ $internalConfig = array(
                     'trim',
                     'json_encode',
                     'round',
-                    'url_encode'
+                    'replace',
+                    'last',
+                    'first',
+                    'url_encode',
+                    'capitalize',
+                    'lower',
+                    'upper',
+                    'strip_tags',
+                    'number_format',
                 ),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield"),
+                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield", "hiddenfield", "textArea", "checkBox"),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                     'LSCaptcha'                          =>  array("renderOut"),
@@ -299,7 +340,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                     'TemplateConfiguration'             =>  array("sTemplateurl"),
-                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'nokeyboard', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice'),
+                    'Survey' => array('sid', 'admin', 'active', 'expires', 'startdate', 'anonymized', 'format', 'savetimings', 'template', 'language', 'datestamp', 'usecookie', 'allowprev', 'printanswers', 'showxquestions', 'showgroupinfo', 'shownoanswer', 'showqnumcode', 'showwelcome', 'showprogress', 'questionindex', 'navigationdelay', 'nokeyboard', 'alloweditaftercompletion', 'hasTokensTable', 'hasResponsesTable', 'showsurveypolicynotice', 'aOptions'),
                     'SurveyLanguageSetting' => array('surveyls_description', 'surveyls_welcometext', 'surveyls_endtext', 'surveyls_policy_notice', 'surveyls_policy_error', 'surveyls_policy_notice_label'),
                     'Question' => array('qid', 'parent_qid', 'sid', 'gid', 'type', 'title', 'question', 'help', 'other', 'mandatory', 'language', 'scale_qid'),
                     'QuestionGroups' => array('gid', 'sid', 'group_name', 'group_order', 'description', 'language', 'randomization_group', 'grelevance')
@@ -330,9 +371,9 @@ $internalConfig = array(
                     'flatEllipsizeText',
                     'str_replace',
                     'flattenText',
+                    'getConfig',
                     'getExpressionManagerOutput',
                     'getTextDisplayWidget',
-
                     'getLanguageNameFromCode',
                     'getAllQuestionClasses',
                     'checkPermission',
@@ -340,6 +381,9 @@ $internalConfig = array(
                     'empty',
                     'count',
                     'reset',
+                    'in_array',
+                    'array_search',
+                    'in_multiarray',
                     'renderCaptcha',
                     'getPost',
                     'getParam',
@@ -355,11 +399,28 @@ $internalConfig = array(
                     'createUrl',
                     'json_decode',
                     'json_encode',
+                    'strip_tags',
                     /* Not in twigRenderer[functions] */
                     'include',
                     'dump',
+                    'getLanguageNameFromCode',
+                    'checkconditionFunction',
+                    'doRender',
+                    'flattenText',
+                    'range',
+                    'getEditor',
+                    'darkencss',
+                    'lightencss',
+                    'getAllTokenAnswers',
+                    'getAllAnswers',
                 ),
             ),
+        ),
+        'extensionUpdaterServiceLocator' => array(
+            'class' => '\LimeSurvey\ExtensionInstaller\ExtensionUpdaterServiceLocator',
+        ),
+        'versionFetcherServiceLocator' => array(
+            'class' => '\LimeSurvey\ExtensionInstaller\VersionFetcherServiceLocator',
         ),
     )
 );

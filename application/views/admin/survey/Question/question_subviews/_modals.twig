@@ -1,0 +1,123 @@
+{#
+/**
+ * Render the modals for subquestions/answers label sets, quick add, save as label set
+ */
+#}
+
+<!-- quickaddModal -->
+<div class="modal fade labelsets-update" id="quickaddModal" tabindex="-1" role="dialog" aria-labelledby="quickaddModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
+                <h4 class="modal-title" id="quickaddModal">{{ gT('Enter your labels:') }}</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    {{ gT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or tab.') }}
+                </p>
+                <textarea id='quickaddarea' class='tipme' title='' cols='100' rows='10' style='width:570px;'></textarea>
+            </div>
+            <div class="modal-footer button-list">
+                <button class='btn btn-default' id='btnqareplace' type='button'>{{ gT('Replace') }}</button>
+                <button class='btn btn-default' id='btnqainsert' type='button'>{{ gT('Add') }}</button>
+                <button class='btn btn-warning' id='btnqacancel' type='button'  data-dismiss="modal">{{ gT('Cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--labelset browser Modal -->
+<div class="modal fade labelsets-update" id="labelsetbrowserModal" tabindex="-1" role="dialog" aria-labelledby="labelsetbrowserModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
+                <h4 class="modal-title" id="labelsetbrowserModal">{{ gT('Manage label sets') }}</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="labelsets">{{ gT('Label sets list') }}</label>
+                        </div>
+                        <div class="col-sm-12">
+                            <select id='labelsets' size='10' style='width:250px;'>
+                                <option>--{{ gT('Label sets') }}--</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div id='labelsetpreview' class="col-sm-12 ls-space margin top-15" >
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer button-list">
+                <button id='btnlsreplace' type='button' class='btn btn-default'>{{ gT('Replace') }}</button>
+                <button id='btnlsinsert' type='button' class='btn btn-default'>{{ gT('Add') }}</button>
+                <button class='btn btn-warning' id='btnqacancel' type='button'  data-dismiss="modal">{{ gT('Cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save as labelset Modal -->
+<div class="modal fade" id="saveaslabelModal" tabindex="-1" role="dialog" aria-labelledby="saveaslabelModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
+                <h4 class="modal-title">
+                    {{ gT('Save as label set') }}
+                </h4>
+
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    <input type="radio" name="savelabeloption" id="newlabel">
+                    <label for="newlabel">{{ gT('New label set') }}</label>
+                </p>
+                <p>
+                    <input type="radio" name="savelabeloption" id="replacelabel">
+                    <label for="replacelabel">{{ gT('Replace the existing record.') }}
+                </p>
+            </div>
+
+            <div class="modal-footer button-list">
+                <button id='btnsave' class='btn btn-default' type='button'>{{ gT('Save') }}</button>
+                <button class='btn btn-warning' id='btnlacancel' type='button'  data-dismiss="modal">{{ gT('Cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm labelset replacement -->
+<div class="modal fade" id="dialog-confirm-replaceModal" tabindex="-1" role="dialog" aria-labelledby="dialog-confirm-replaceModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span >&times;</span></button>
+                <h4 class="modal-title">
+                    {{ gT('Replace label set?') }}
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    <span id='strReplaceMessage'></span>
+                </p>
+            </div>
+
+            <div class="modal-footer button-list">
+                <button class='btn btn-default' id='btnlconfirmreplace' type='button' data-dismiss="modal"  >{{ gT('OK') }}</button>
+                <button class='btn btn-warning' id='btnlacancel' type='button'  data-dismiss="modal">{{ gT('Cancel') }}</button>
+            </div>
+        </div>
+    </div>
+</div>

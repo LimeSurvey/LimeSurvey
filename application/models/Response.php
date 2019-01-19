@@ -57,7 +57,7 @@
             $files = array();
             foreach ($questions as $question) {
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;
-                $data = json_decode(stripslashes($this->getAttribute($field)), true);
+                $data = json_decode(urldecode($this->getAttribute($field)), true);
                 if (is_array($data)) {
                     $files = array_merge($files, $data);
                 }
@@ -183,10 +183,14 @@
         {
             return '{{survey_'.$this->dynamicId.'}}';
         }
-        public function getSurveyId()
-        {
-            return $this->dynamicId;
+        /**
+         * Get current surveyId for other model/function
+         * @return int
+         */
+        public function getSurveyId() {
+            return $this->getDynamicId();
         }
+
         public function browse()
         {
         }

@@ -289,7 +289,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{plugins}}', array(
             'id' =>  "pk",
             'name' =>  "string(50) NOT NULL",
-            'plugin_type' =>  "string(4) default 'user'",
+            'plugin_type' =>  "string(6) default 'user'",
             'active' =>  "int NOT NULL default 0",
             'version' =>  "string(32) NULL",
             'load_error' => 'int default 0',
@@ -470,7 +470,8 @@ function createDatabase($oDB){
             'title' => "string(168)  NOT NULL DEFAULT ''",
             'position' => "string(192)  NOT NULL DEFAULT 'side'",
             'description' => "text ",
-            'active' => "boolean NOT NULL DEFAULT '0'",
+            'showincollapse' => 'integer DEFAULT 0',
+            'active' => "integer NOT NULL DEFAULT '0'",
             'changed_at' => "datetime",
             'changed_by' => "integer NOT NULL DEFAULT '0'",
             'created_at' => "datetime",
@@ -481,10 +482,13 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx2_surveymenu}}', '{{surveymenu}}', 'title', false);
 
         $surveyMenuRowData = LsDefaultDataSets::getSurveyMenuData();
-        foreach ($surveyMenuRowData as $surveyMenuRow) {
-            $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
-        }
-
+            foreach ($surveyMenuRowData as $surveyMenuRow) {
+                if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
+                    unset($surveyMenuRow['id']);
+                }
+                $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
+            }
+        
         // Surveymenu entries
 
         $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
@@ -509,7 +513,8 @@ function createDatabase($oDB){
             'data' =>  "text ",
             'getdatamethod' =>  "string(192)  NOT NULL DEFAULT ''",
             'language' =>  "string(32)  NOT NULL DEFAULT 'en-GB'",
-            'active' =>  "boolean NOT NULL DEFAULT '0'",
+            'showincollapse' => 'integer DEFAULT 0',
+            'active' =>  "integer NOT NULL DEFAULT '0'",
             'changed_at' =>  "datetime NULL",
             'changed_by' =>  "integer NOT NULL DEFAULT '0'",
             'created_at' =>  "datetime NULL",
@@ -519,14 +524,14 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_id', false);
         $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
         $oDB->createCommand()->createIndex('{{surveymenu_entries_name}}', '{{surveymenu_entries}}', 'name', true);
-
         
-
         foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
+            if (in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
+                unset($surveyMenuEntryRow['id']);
+            }
             $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
+            
         }
-
-
 
         // surveys
         $oDB->createCommand()->createTable('{{surveys}}', array(
@@ -619,6 +624,145 @@ function createDatabase($oDB){
         foreach($surveyGroupData=LsDefaultDataSets::getSurveygroupData() as $surveyGroup){
             $oDB->createCommand()->insert("{{surveys_groups}}", $surveyGroup);
         }
+
+
+        // surveys_groupsettings
+        $oDB->createCommand()->createTable('{{surveys_groupsettings}}', array(
+            'gsid' => "integer NOT NULL",
+            'owner_id' => "integer NULL DEFAULT NULL",
+            'admin' => "string(50) NULL DEFAULT NULL",
+            'adminemail' => "string(254) NULL DEFAULT NULL",
+            'anonymized' => "string(1) NOT NULL DEFAULT 'N'",
+            'format' => "string(1) NULL DEFAULT NULL",
+            'savetimings' => "string(1) NOT NULL DEFAULT 'N'",
+            'template' => "string(100) NULL DEFAULT 'default'",
+            'datestamp' => "string(1) NOT NULL DEFAULT 'N'",
+            'usecookie' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowregister' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowsave' => "string(1) NOT NULL DEFAULT 'Y'",
+            'autonumber_start' => "integer NULL DEFAULT '0'",
+            'autoredirect' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowprev' => "string(1) NOT NULL DEFAULT 'N'",
+            'printanswers' => "string(1) NOT NULL DEFAULT 'N'",
+            'ipaddr' => "string(1) NOT NULL DEFAULT 'N'",
+            'refurl' => "string(1) NOT NULL DEFAULT 'N'",
+            'showsurveypolicynotice' => "integer NULL DEFAULT '0'",
+            'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
+            'publicgraphs' => "string(1) NOT NULL DEFAULT 'N'",
+            'listpublic' => "string(1) NOT NULL DEFAULT 'N'",
+            'htmlemail' => "string(1) NOT NULL DEFAULT 'N'",
+            'sendconfirmation' => "string(1) NOT NULL DEFAULT 'Y'",
+            'tokenanswerspersistence' => "string(1) NOT NULL DEFAULT 'N'",
+            'assessments' => "string(1) NOT NULL DEFAULT 'N'",
+            'usecaptcha' => "string(1) NOT NULL DEFAULT 'N'",
+            'bounce_email' => "string(254) NULL DEFAULT NULL",
+            'attributedescriptions' => "text NULL",
+            'emailresponseto' => "text NULL",
+            'emailnotificationto' => "text NULL",
+            'tokenlength' => "integer NULL DEFAULT '15'",
+            'showxquestions' => "string(1) NULL DEFAULT 'Y'",
+            'showgroupinfo' => "string(1) NULL DEFAULT 'B'",
+            'shownoanswer' => "string(1) NULL DEFAULT 'Y'",
+            'showqnumcode' => "string(1) NULL DEFAULT 'X'",
+            'showwelcome' => "string(1) NULL DEFAULT 'Y'",
+            'showprogress' => "string(1) NULL DEFAULT 'Y'",
+            'questionindex' => "integer NULL DEFAULT '0'",
+            'navigationdelay' => "integer NULL DEFAULT '0'",
+            'nokeyboard' => "string(1) NULL DEFAULT 'N'",
+            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
+        ), $options);
+
+        $oDB->createCommand()->addPrimaryKey('{{surveys_groupsettings_pk}}', '{{surveys_groupsettings}}', ['gsid']);
+
+        // insert settings for global level
+        $attributes1 = array(
+            'gsid' => '0',
+            'owner_id' => '1',
+            'admin' => 'Administrator',
+            'adminemail' => 'your-email@example.net',
+            'anonymized' => 'N',
+            'format' => 'G',
+            'savetimings' => 'N',
+            'template' => 'fruity',
+            'datestamp' => 'N',
+            'usecookie' => 'N',
+            'allowregister' => 'N',
+            'allowsave' => 'Y',
+            'autonumber_start' => '0',
+            'autoredirect' => 'N',
+            'allowprev' => 'N',
+            'printanswers' => 'N',
+            'ipaddr' => 'N',
+            'refurl' => 'N',
+            'showsurveypolicynotice' => '0',
+            'publicstatistics' => 'N',
+            'publicgraphs' => 'N',
+            'listpublic' => 'N',
+            'htmlemail' => 'N',
+            'sendconfirmation' => 'Y',
+            'tokenanswerspersistence' => 'N',
+            'assessments' => 'N',
+            'usecaptcha' => 'N',
+            'tokenlength' => '15',
+            'showxquestions' => 'Y',
+            'showgroupinfo' => 'B',
+            'shownoanswer' => 'Y',
+            'showqnumcode' => 'X',
+            'showwelcome' => 'Y',
+            'showprogress' => 'Y',
+            'questionindex' => '0',
+            'navigationdelay' => '0',
+            'nokeyboard' => 'N',
+            'alloweditaftercompletion' => 'N'
+        );
+        $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes1);
+
+        // insert settings for default survey group
+        $attributes2 =  array(
+                "gsid" => 1,
+                "owner_id" => -1,
+                "admin" => "inherit",
+                "adminemail" => "inherit",
+                "anonymized" => "I",
+                "format" => "I",
+                "savetimings" => "I",
+                "template" => "inherit",
+                "datestamp" => "I",
+                "usecookie" => "I",
+                "allowregister" => "I",
+                "allowsave" => "I",
+                "autonumber_start" => 0,
+                "autoredirect" => "I",
+                "allowprev" => "I",
+                "printanswers" => "I",
+                "ipaddr" => "I",
+                "refurl" => "I",
+                "showsurveypolicynotice" => 0,
+                "publicstatistics" => "I",
+                "publicgraphs" => "I",
+                "listpublic" => "I",
+                "htmlemail" => "I",
+                "sendconfirmation" => "I",
+                "tokenanswerspersistence" => "I",
+                "assessments" => "I",
+                "usecaptcha" => "E",
+                "bounce_email" => "inherit",
+                "attributedescriptions" => NULL,
+                "emailresponseto" => "inherit",
+                "emailnotificationto" => "inherit",
+                "tokenlength" => -1,
+                "showxquestions" => "I",
+                "showgroupinfo" => "I",
+                "shownoanswer" => "I",
+                "showqnumcode" => "I",
+                "showwelcome" => "I",
+                "showprogress" => "I",
+                "questionindex" => -1,
+                "navigationdelay" => -1,
+                "nokeyboard" => "I",
+                "alloweditaftercompletion" => "I",
+        );      
+        $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
 
 
         // surveys_languagesettings
@@ -814,7 +958,7 @@ function createDatabase($oDB){
             'htmleditormode' => "string(7) default 'default'",
             'templateeditormode' => "string(7) NOT NULL default 'default'",
             'questionselectormode' => "string(7) NOT NULL default 'default'",
-            'one_time_pw' => "binary",
+            'one_time_pw' => "text",
             'dateformat' => "integer NOT NULL DEFAULT 1",
             'created' => "datetime",
             'modified' => "datetime",
@@ -834,15 +978,25 @@ function createDatabase($oDB){
 
         $oDB->createCommand()->createIndex('{{idx1_user_groups}}', '{{user_groups}}', 'name', true);
 
+        // asset version
+        $oDB->createCommand()->createTable('{{asset_version}}',array(
+            'id' => 'pk',
+            'path' => 'text NOT NULL',
+            'version' => 'integer NOT NULL',
+        ), $options);
+
+        // Install default plugins.
+        foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {
+            unset($plugin['id']);
+            $oDB->createCommand()->insert("{{plugins}}", $plugin);
+        }
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
 
         $oTransaction->commit();
-        return true;
     }catch(Exception $e){
-
         $oTransaction->rollback();
-        throw new CHttpException(500, $e->getMessage()." ".$e->getTraceAsString());
+        throw new CHttpException(500, $e->getMessage());
     }
 }

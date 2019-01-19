@@ -1,9 +1,12 @@
 <?php
 /**
  * Render the selector for question massive actions.
- * @var $model      The question model
- * @var $oSurvey    The survey object
  */
+
+/** @var AdminController $this */
+/** @var Question $model */
+/** @var Survey $oSurvey */
+
 ?>
 
 <!-- Rendering massive action widget -->
@@ -85,7 +88,7 @@
             'no' => gT('Cancel'),
             'keepopen' => 'no',
             'sModalTitle' => gT('Set "Mandatory" state'),
-            'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_mandatory', array(), true),
+            'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_mandatory', ['model' => $model, 'oSurvey' => $oSurvey], true),
         );
     }
 
@@ -106,7 +109,7 @@
         'no' => gT('Cancel'),
         'keepopen' => 'no',
         'sModalTitle' => gT('Set CSS class'),
-        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_css_class', array(), true),
+        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_css_class', ['model' => $model], true),
     );
 
     // Set Statistics
@@ -126,7 +129,7 @@
         'no' => gT('Cancel'),
         'keepopen' => 'no',
         'sModalTitle' => gT('Set statistics options'),
-        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_statistics_options', array(), true),
+        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_statistics_options',  ['model' => $model], true),
     );
 
     // Separator
@@ -162,7 +165,7 @@
             'no' => gT('Cancel'),
             'keepopen' => 'no',
             'sModalTitle' => gT('Set "Other" state'),
-            'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_other', array(), true),
+            'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_other', ['model' => $model], true),
         );
     }    
 
@@ -183,7 +186,7 @@
         'no' => gT('Cancel'),
         'keepopen' => 'false',
         'sModalTitle' => gT('Present subquestions/answer options in random order'),
-        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_subquestansw_order', array(), true),
+        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_subquestansw_order',  ['model' => $model], true),
     );
 
 

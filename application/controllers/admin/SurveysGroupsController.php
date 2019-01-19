@@ -47,8 +47,22 @@ class SurveysGroupsController extends Survey_Common_Action
             $model->attributes = $_POST['SurveysGroups'];
             $model->name = sanitize_paranoid_string($model->name);
             $model->created_by = $model->owner_uid = Yii::app()->user->id;
+
+
             if ($model->save()) {
-                            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                // save new SurveysGroupsettings record
+                $modelSettings = new SurveysGroupsettings;
+                $modelSettings->gsid = $model->gsid;
+
+                if (empty($model->parent_id)){
+                    $modelSettings->setToDefault();
+                } else {
+                    $modelSettings->setToInherit();
+                }
+
+                if ($modelSettings->save()) {
+                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                }
             }
         }
 
@@ -69,12 +83,27 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function update($id)
     {
+        $bRedirect = 0;
         $model = $this->loadModel($id);
 
         if (isset($_POST['SurveysGroups'])) {
             $model->attributes = $_POST['SurveysGroups'];
+
+
+                // prevent loop
+                if (!empty($_POST['SurveysGroups']['parent_id'])){
+                    $sgid = $_POST['SurveysGroups']['parent_id'] ;
+                    $ParentSurveyGroup = $this->loadModel($sgid);
+                    $aParentsGsid = $ParentSurveyGroup->getAllParents(true);
+
+                    if ( in_array( $model->gsid, $aParentsGsid  ) ) {
+                        Yii::app()->setFlashMessage(gT("A child group can't be set as parent group"), 'error');
+                        $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                    }
+                }
+
             if ($model->save()) {
-                    $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+                $bRedirect = 1;
             }
         }
 
@@ -87,7 +116,72 @@ class SurveysGroupsController extends Survey_Common_Action
         $oTemplateOptions->scenario = 'surveygroup';
         $aData['templateOptionsModel'] = $oTemplateOptions;
 
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+        }
+
+        // Page size
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
+        }
+        $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
+
         $this->_renderWrappedTemplate('surveysgroups', 'update', $aData);
+    }
+
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function surveySettings($id)
+    {
+        $bRedirect = 0;
+        $model = $this->loadModel($id);
+
+        $aData['model'] = $model;
+
+        $oSurvey = SurveysGroupsettings::model()->findByPk($model->gsid);
+        $oSurvey->setOptions();
+        $oSurvey->owner_id = $model->owner_uid;
+
+        if (isset($_POST['template'])) {
+            $oSurvey->attributes = $_POST;
+            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
+
+            if ($oSurvey->save()) {
+                $bRedirect = 1;
+            }
+        }
+
+        $users = getUserList();
+        $aData['users'] = array();
+        $inheritOwner = empty($oSurvey['ownerLabel']) ? $oSurvey['owner_id'] : $oSurvey['ownerLabel'];
+        $aData['users']['-1'] = gT('Inherit').' ['. $inheritOwner . ']';
+        foreach ($users as $user) {
+            $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
+        }
+        // Sort users by name
+        asort($aData['users']);
+
+        $aData['oSurvey'] = $oSurvey;
+
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
+        }
+
+        // Page size
+        if (Yii::app()->request->getParam('pageSize')) {
+            Yii::app()->user->setState('pageSizeTemplateView', (int) Yii::app()->request->getParam('pageSize'));
+        }
+        $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
+
+        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+
+        $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+
+
+        $this->_renderWrappedTemplate('surveysgroups', 'surveySettings', $aData);
     }
 
     /**
@@ -141,6 +235,7 @@ class SurveysGroupsController extends Survey_Common_Action
             'model'=>$model,
         ));
     }
+
 
     /**
      * Returns the data model based on the primary key given in the GET variable.

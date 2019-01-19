@@ -1,4 +1,4 @@
-<?php
+{#
 /**
  * Multiple Choice Html : item 'other' row
  *
@@ -13,10 +13,10 @@
  * @var $sValueHidden
  * @var $wrapper
  */
-?>
+#}
 
 <!-- answer_row_other -->
-    <li id='javatbd{{myfname}}' class='question-item answer-item checkbox-text-item form-group form-inline {{relevanceClass}}' >
+    <li id='javatbd{{myfname}}' class='question-item answer-item checkbox-text-item form-inline {{relevanceClass}}' >
 
         <!-- Checkbox + label -->
         <div class="form-group checkbox-item othertext-label-checkox-container">
@@ -29,7 +29,7 @@
                 {{checkedState}}
                 aria-hidden="true"
             />
-            <label for="answer{{myfname}}cbox" class="answertext" id="label-{{myfname}}-other">{{othertext}}</label>
+            <label for="answer{{myfname}}cbox" class="answertext" id="label-{{myfname}}-other">{{ processString(othertext) }}</label>
         </div>
 
         <!-- comment -->

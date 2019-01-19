@@ -38,7 +38,7 @@ $.fn.YesNoDate = function(options)
             {
                 // Show date
                 $elDateContainer.show();
-                $elHiddenInput.attr('value', moment().format($elDateContainer.data('date-format')));
+                $elHiddenInput.attr('value', moment().format($elDate.data('date-format')));
             }
             else
             {
@@ -50,7 +50,7 @@ $.fn.YesNoDate = function(options)
 
         // When user change date
         $elDate.on('dp.change', function(e){
-            $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:mm'));
+            $elHiddenInput.attr('value', e.date.format($elDate.data('date-format')));
         })
     };
     return that;
@@ -131,9 +131,17 @@ function submitEditToken(){
     var $datas      = $form.serialize();
     var $actionUrl  = $form.attr('action');
     var $modal      = $('#editTokenModal');
+    var $gridId     = '';
+
+    // check which grid id exists on the page, to be able to update grid successfully
+    if ($('#token-grid').length > 0) {
+        $gridId = 'token-grid';
+    } else if ($('#responses-grid').length > 0) {
+        $gridId = 'responses-grid';
+    }
 
     // Ajax request
-    LS.ajax({
+    $.ajax({
         url  : $actionUrl,
         type : 'POST',
         data : $datas,
@@ -147,7 +155,7 @@ function submitEditToken(){
 
             // Using Try/Catch here to catch errors if there is no grid
             try {
-                $.fn.yiiGridView.update('token-grid', {
+                $.fn.yiiGridView.update($gridId, {
                     complete: function(s){
                         $modal.modal('hide');
                     } // Update the surveys list
@@ -323,7 +331,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         <td><span data-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button fa fa-trash text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
         <span data-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success icon-add' style='margin-bottom:4px'></span></td></tr><tr></tr>";
         $('#searchtable tr:last').after(html);
-        $('[data-toggle="tooltip"]').tooltip()
+        window.LS.doToolTip();
     });
     if(typeof searchconditions === "undefined") {
         searchconditions = {};
@@ -341,12 +349,11 @@ var startEditToken = function(){
     var $that       = $(this),
         $sid        = $that.data('sid'),
         $tid        = $that.data('tid'),
-        $actionUrl  = $that.data('url'),
+        $actionUrl  = $that.data('url') || $that.attr("href"),
         $modal      = $('#editTokenModal'),
         $modalBody  = $modal.find('.modal-body'),
         $ajaxLoader = $('#ajaxContainerLoading2'),
         $oldModalBody   = $modalBody.html();
-
     $ajaxLoader.show();
     $modal.modal('show');
     // Ajax request
@@ -410,6 +417,7 @@ var startEditToken = function(){
             console.ls.error(html);
         }
     });
+    return false;
 };
 
 var conditionid=1;

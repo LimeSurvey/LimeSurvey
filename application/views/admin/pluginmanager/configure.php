@@ -27,7 +27,8 @@ echo viewHelper::getViewTestTag('configurePlugin');
                     'plugin'       => $plugin,
                     'pluginObject' => $pluginObject,
                     'config'       => $pluginObject->config,
-                    'metadata'     => $pluginObject->config->metadata
+                    'metadata'     => $pluginObject->config->metadata,
+                    'showactive'   => true
                 ]
             ); ?>
         </div>

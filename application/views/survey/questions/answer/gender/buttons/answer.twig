@@ -1,0 +1,71 @@
+{#
+/**
+ * Gender question, button item Html
+ *
+ * @var $name
+ * @var $checkconditionFunction
+ * @var $fChecked
+ * @var $mChecked
+ * @var $naChecked
+ * @var $value
+ */
+#}
+
+<!--Gender question, buttons display -->
+<!-- answer -->
+<ul class="{{ coreClass }} list-unstyled btn-group btn-group-justified" data-toggle="buttons" role="radiogroup" aria-labelledby="ls-question-text-{{basename }}">
+    <!-- Female -->
+    <li id="javatbd{{ name }}F" class="button-item btn btn-primary {% if fChecked!='' %} active {% endif %}">
+        <input
+            class="radio"
+            type="radio"
+            name="{{ name }}"
+            id="answer{{ name }}F"
+            value="F"
+            {{ fChecked }}
+        />
+        <label for="answer{{ name }}F">
+            <span class="fa fa-venus ls-icon" aria-hidden="true"></span> {{ gT('Female') }}
+        </label>
+    </li>
+
+    <!-- Male -->
+    <li id="javatbd{{ name }}M" class="button-item btn btn-primary  {% if mChecked!='' %} active {% endif %} ">
+        <input
+            class="radio"
+            type="radio"
+            name="{{ name }}"
+            id="answer{{ name }}M"
+            value="M"
+            {{ mChecked }}
+        />
+        <label for="answer{{ name }}M">
+            <span class="fa fa-mars ls-icon" aria-hidden="true"></span> {{ gT('Male') }}
+        </label>
+    </li>
+
+<!-- No answer -->
+    {% if noAnswer %}
+    <li id="javatbd{{ name }}" class="button-item btn btn-primary  {% if naChecked!='' %} active {% endif %}">
+        <input
+            class="radio"
+            type="radio"
+            name="{{ name }}"
+            id="answer{{ name }}"
+            value=""
+            {{ naChecked }}
+        />
+        <label for="answer{{ name }}">
+            <span class="fa fa-genderless ls-icon" aria-hidden="true"></span> {{ gT('No answer') }}
+        </label>
+    </li>
+    {% endif %}
+</ul>
+{# Value for expression manager javascript (use id) ; no need to submit #}
+
+{{ C.Html.hiddenField('java' ~ name, value, ({'id' : 'java' ~ name,'disabled' : 'true'})) }}
+
+<!-- end of answer -->
+
+
+

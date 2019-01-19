@@ -232,12 +232,17 @@ class InstallerController extends CController
         $aData['descp'] = gT('Please enter the database settings you want to use for LimeSurvey:');
         $aData['classesForStep'] = array('off', 'off', 'off', 'on', 'off', 'off');
         $aData['progressValue'] = 40;
-        $aData['model'] = $oModel = $this->getModelFromSession();
-
-        if (isset(Yii::app()->session['populateerror'])) {
-            $oModel->addError('dblocation', Yii::app()->session['populateerror']);
-            $oModel->addError('dbpwd', '');
-            $oModel->addError('dbuser', '');
+        $aData['model'] = $oModel = new InstallerConfigForm;
+        if (!empty(Yii::app()->session['populateerror'])) {
+            if(is_string(Yii::app()->session['populateerror'])) {
+                $oModel->addError('dblocation', Yii::app()->session['populateerror']);
+            } else {
+                foreach(Yii::app()->session['populateerror'] as $error) {
+                    $oModel->addError('dblocation', $error);
+                }
+            }
+            //~ $oModel->addError('dbpwd', '');
+            //~ $oModel->addError('dbuser', '');
             unset(Yii::app()->session['populateerror']);
         }
 
@@ -293,64 +298,52 @@ class InstallerController extends CController
                     if (Yii::app()->getConfig('debug') > 1) {
                         $oModel->db->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
                     }
-                    $sMySQLVersion = $oModel->db->getServerVersion();
-                    if (version_compare($sMySQLVersion, '4.1', '<')) {
-                        die("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version: ".$sMySQLVersion);
+
+                    //$aData array won't work here. changing the name
+                    $aValues = [];
+                    $aValues['title'] = gT('Database settings');
+                    $aValues['descp'] = gT('Database settings');
+                    $aValues['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
+                    $aValues['progressValue'] = 60;
+
+                    //it store text content
+                    $aValues['adminoutputText'] = '';
+                    //it store the form code to be displayed
+                    $aValues['adminoutputForm'] = '';
+
+                    //if DB exist, check if its empty or up to date. if not, tell user LS can create it.
+                    if (!$oModel->dbExists) {
+                        Yii::app()->session['databaseDontExist'] = true;
+
+                        $aValues['dbname'] = $oModel->dbname;
+
+                        // The database doesn't exist, etc. TODO: renderPartial should be done in the view, really.
+                        $aValues['adminoutputText'] = $this->renderPartial('/installer/nodatabase_view', $aValues, true);
+
+                        $aValues['next'] = array(
+                            'action' => 'installer/createdb',
+                            'label' => gT('Create database'),
+                            'name' => '',
+                        );
+                    } elseif ($bDBExistsButEmpty) {
+                        Yii::app()->session['populatedatabase'] = true;
+
+                        //$this->connection->database = $model->dbname;
+                        //                        //$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
+                        $aValues['adminoutputText'] .= sprintf(gT('A database named "%s" already exists.'), $oModel->dbname)."<br /><br />\n"
+                        .gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
+
+                        $aValues['next'] = array(
+                            'action' => 'installer/populatedb',
+                            'label' => gT("Populate database", 'unescaped'),
+                            'name' => 'createdbstep2',
+                        );
+                    } elseif (!$bDBExistsButEmpty) {
+                        $aValues['adminoutput'] .= "<br />".sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
                     }
-                        /** @scrutinizer ignore-unhandled */ @$oModel->db->createCommand("SET CHARACTER SET 'utf8mb4'")->execute();
-                        /** @scrutinizer ignore-unhandled */ @$oModel->db->createCommand("SET NAMES 'utf8mb4'")->execute();
-                }
-
-                // Setting date format for mssql driver. It seems if you don't do that the in- and output format could be different
-                if ($oModel->isMSSql) {
-                    @$oModel->db->createCommand('SET DATEFORMAT ymd;')->execute();
-                    @$oModel->db->createCommand('SET QUOTED_IDENTIFIER ON;')->execute();
-                }
-
-                //$aData array won't work here. changing the name
-                $aValues = [];
-                $aValues['model'] = $oModel;
-                $aValues['title'] = gT('Database settings');
-                $aValues['descp'] = gT('Database settings');
-                $aValues['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
-                $aValues['progressValue'] = 60;
-
-                //it store text content
-                $aValues['adminoutputText'] = '';
-                //it store the form code to be displayed
-                $aValues['adminoutputForm'] = '';
-
-                //if DB exist, check if its empty or up to date. if not, tell user LS can create it.
-                if (!$oModel->dbExists) {
-                    Yii::app()->session['databaseDontExist'] = true;
-
-                    $aValues['dbname'] = $oModel->dbname;
-
-                    $aValues['next'] = array(
-                        'action' => 'installer/createdb',
-                        'label' => gT('Create database'),
-                        'name' => '',
-                    );
-                    $this->render('/installer/populatedb_view', $aValues);
-                    return;
-
-                } elseif ($bDBExistsButEmpty) {
-                    Yii::app()->session['populatedatabase'] = true;
-
-                    //$this->connection->database = $model->dbname;
-                    //                        //$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
-                    $aValues['adminoutputText'] .= sprintf(gT('A database named "%s" already exists.'), $oModel->dbname)."<br /><br />\n"
-                    .gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
-
-                    $aValues['next'] = array(
-                        'action' => 'installer/populatedb',
-                        'label' => gT("Populate database", 'unescaped'),
-                        'name' => 'createdbstep2',
-                    );
-                    $this->render('/installer/populatedb_view', $aValues);
-                    return;
-                } elseif (!$bDBExistsButEmpty) {
-                    $aValues['adminoutput'] .= "<br />".sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
+                    $this->render('/installer/dbsettings_view', $aValues);
+                } else {
+                    $this->render('/installer/dbconfig_view', $aData);
                 }
             }
         }
@@ -667,7 +660,8 @@ class InstallerController extends CController
             $sConfig .= "\t\t"."),"."\n"
             ."\t\t".""."\n"
 
-            ."\t\t"."// Uncomment the following line if you need table-based sessions"."\n"
+            ."\t\t"."// Uncomment the following lines if you need table-based sessions."."\n"
+            ."\t\t"."// Note: Table-based sessions are currently not supported on MSSQL server."."\n"
             ."\t\t"."// 'session' => array ("."\n"
             ."\t\t\t"."// 'class' => 'application.core.web.DbHttpSession',"."\n"
             ."\t\t\t"."// 'connectionID' => 'db',"."\n"
@@ -804,7 +798,6 @@ class InstallerController extends CController
 
         return $db;
     }
-
 
     /**
      * Contains a number of extensions that can be expected

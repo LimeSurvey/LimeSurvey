@@ -23,7 +23,6 @@
  * @property string $code
  * @property string $title
  * @property integer $sortorder
- * @property string $language
  * @property integer $assessment_value
  */
 class Label extends LSActiveRecord
@@ -85,8 +84,17 @@ class Label extends LSActiveRecord
     
     public function defaultScope()
     {
-        return array('order'=>'sortorder', 'index'=>'id');
+        return array('index'=>'id');
     }    
+
+    public function getTranslated($sLanguage) {
+        $ol10N = $this->labelL10ns;
+        if(isset($ol10N[$sLanguage])) {
+            return array_merge($this->attributes, $ol10N[$sLanguage]->attributes);
+        } 
+
+        return [];
+    }
 
     /**
      * @param integer $lid

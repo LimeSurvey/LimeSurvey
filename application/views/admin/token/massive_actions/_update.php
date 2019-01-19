@@ -135,6 +135,19 @@
                         <input class='form-control custom-data selector_submitField' type='text' size='30'  id='massedit_lastname' name='lastname' value="lskeep" disabled />
                     </div>
                 </div>
+
+                <!-- Language -->
+                <div class="form-group">
+                    <div class="col-sm-1">
+                        <label class="" >
+                            <input type="checkbox" class="action_check_to_keep_old_value"></input>
+                        </label>
+                    </div>
+                    <label class="col-sm-3 control-label"  for='massedit_language'><?php eT("Language:"); ?></label>
+                    <div class="col-sm-8">
+                        <?php echo CHtml::dropDownList('language', '', array_merge(array('lskeep'=>''), $aLanguages), array('id'=>'massedit_language', 'class'=>'form-control custom-data selector_submitField', 'disabled'=>'disabled')); ?>
+                    </div>
+                </div>
                 
                 <!-- Email -->
                 <div class="form-group">
@@ -398,7 +411,7 @@
                 <?php endforeach; ?>
             </div>
         </div>
-        <input type="hidden" id="sid" name="sid" class="custom-data" value="<?php echo $_GET['surveyid']; ?>" />
+        <input type="hidden" id="sid" name="sid" class="custom-data" value="<?php echo $iSurveyId; ?>" />
     </div>
 </form>
 
@@ -437,7 +450,7 @@
         var currentValue = !$(this).prop('checked');
         var myFormGroup = $(this).closest('.form-group');
         
-        $(this).closest('.form-group').find('input:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
+        $(this).closest('.form-group').find('input:not(.action_check_to_keep_old_value),select:not(.action_check_to_keep_old_value)').prop('disabled', currentValue)
 
         if($(this).closest('.form-group').find('.bootstrap-switch-container').length > 0){
             $(this).closest('.form-group').find('.bootstrap-switch-container input[type=checkbox]').bootstrapSwitch('disabled', currentValue);

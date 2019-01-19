@@ -457,8 +457,23 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ms']['nativedescription'] = 'Bahasa Melayu';
     $supportedLanguages['ms']['rtl'] = false;
     $supportedLanguages['ms']['dateformat'] = 1;
-    $supportedLanguages['ms']['radixpoint'] = 0;
+    $supportedLanguages['ms']['radixpoint'] = 0;    
+    
+    // Malayalam
+    $supportedLanguages['ml']['description'] =  gT('Malayalam');
+    $supportedLanguages['ml']['nativedescription'] = 'Malay&#257;&#7735;a&#7745;';
+    $supportedLanguages['ml']['rtl'] = false;
+    $supportedLanguages['ml']['dateformat'] = 2;
+    $supportedLanguages['ml']['radixpoint'] = 0;
 
+    
+    // Maltese
+    $supportedLanguages['mt']['description'] = gT('Maltese');
+    $supportedLanguages['mt']['nativedescription'] = 'Malti';
+    $supportedLanguages['mt']['rtl'] = false;
+    $supportedLanguages['mt']['dateformat'] = 1;
+    $supportedLanguages['mt']['radixpoint'] = 0;
+    
     // Maltese
     $supportedLanguages['mt']['description'] = gT('Maltese');
     $supportedLanguages['mt']['nativedescription'] = 'Malti';
@@ -473,6 +488,15 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['mr']['dateformat'] = 2;
     $supportedLanguages['mr']['radixpoint'] = 0;
     
+    // Montenegrin
+    $supportedLanguages['cnr']['description'] = gT('Montenegrin');
+    $supportedLanguages['cnr']['nativedescription'] = 'Crnogorski';
+    $supportedLanguages['cnr']['rtl'] = false;
+    $supportedLanguages['cnr']['dateformat'] = 4;
+    $supportedLanguages['cnr']['radixpoint'] = 1;
+    $supportedLanguages['cnr']['cldr'] ='sr_Latn_ME';
+    
+
     // Myanmar / Burmese
     $supportedLanguages['mya']['description'] = gT('Myanmar (Burmese)');
     $supportedLanguages['mya']['nativedescription'] = '&#4121;&#4156;&#4116;&#4154;&#4121;&#4140;&#4120;&#4140;&#4126;&#4140;';
@@ -512,7 +536,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['fa']['description'] = gT('Persian');
     $supportedLanguages['fa']['nativedescription'] = '&#1601;&#1575;&#1585;&#1587;&#1740;';
     $supportedLanguages['fa']['rtl'] = true;
-    $supportedLanguages['fa']['dateformat'] = 6;
+    $supportedLanguages['fa']['dateformat'] = 6;                                                                        
     $supportedLanguages['fa']['radixpoint'] = 0;
 
     // Papiamento (Curacao and Bonaire)

@@ -86,7 +86,7 @@ class AdminTheme extends CFormModel
             $sAdminThemeName   = 'Sea_Green';
             $sTemplateDir      = $sStandardTemplateRootDir;
             $sTemplateUrl      = Yii::app()->getConfig('styleurl').DIRECTORY_SEPARATOR.$sAdminThemeName;
-            setGlobalSetting('admintheme', 'Sea_Green');
+            SettingGlobal::setSetting('admintheme', 'Sea_Green');
         }
 
         // Now that we are sure we have an existing template, we can set the variables of the AdminTheme
@@ -307,6 +307,7 @@ class AdminTheme extends CFormModel
     {
         $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
         $aListOfFiles = array();
+        $oAdminTheme = new AdminTheme;
         if ($sDir && $pHandle = opendir($sDir)) {
             while (false !== ($file = readdir($pHandle))) {
                 if (is_dir($sDir.DIRECTORY_SEPARATOR.$file) && is_file($sDir.DIRECTORY_SEPARATOR.$file.DIRECTORY_SEPARATOR.'config.xml')) {
@@ -315,7 +316,11 @@ class AdminTheme extends CFormModel
                     // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
                     // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
                     $oTemplateConfig = json_decode(json_encode((array) simplexml_load_string($sXMLConfigFile), 1));
-                    $previewUrl = Yii::app()->getConfig('styleurl').$file; // NOTE: will not work with uploaded themes for now
+                    if ($oAdminTheme->isStandardAdminTheme($file)) {
+                        $previewUrl = Yii::app()->getConfig('styleurl').$file;
+                    } else {
+                        $previewUrl = Yii::app()->getConfig('uploadurl').DIRECTORY_SEPARATOR.'admintheme'.DIRECTORY_SEPARATOR.$file;
+                    }
                     $oTemplateConfig->path    = $file;
                     $oTemplateConfig->preview = '<img src="'.$previewUrl.'/preview.png" alt="admin theme preview" height="200" class="img-thumbnail" />';
                     $aListOfFiles[$file] = $oTemplateConfig;

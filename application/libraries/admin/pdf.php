@@ -550,7 +550,7 @@ class pdf extends TCPDF
         $fullWidth = ($this->GetLineWidth() * 1000) - $deadSpace;
         $faktor = $fullWidth / array_sum($width);
 
-        $arraySize = sizeof($array);
+        $arraySize = sizeof($width);
         for ($i = 0; $i < $arraySize; $i++) {
             $maxlength[$i] = $faktor * $width[$i];
         }

@@ -55,6 +55,7 @@ abstract class PluginBase implements iPlugin
 
     /**
      * config.xml
+     * @todo Use ExtensionConfig
      * @var \SimpleXMLElement|null
      */
     public $config = null;
@@ -205,7 +206,7 @@ abstract class PluginBase implements iPlugin
                 $url = \Yii::getPathOfAlias('webroot').$fileName;
 
             } else {
-// This is a plugin relative path. 
+                // This is a plugin relative path.
                 $path = \Yii::getPathOfAlias('webroot.plugins.'.get_class($this)).DIRECTORY_SEPARATOR.$fileName;
                 /*
                  * By using the asset manager the assets are moved to a publicly accessible path.
@@ -419,7 +420,7 @@ abstract class PluginBase implements iPlugin
                 // Failed. Popup error message.
                 $this->showConfigErrorNotification();
                 return false;
-            } else if ($this->configIsNewVersion()) {
+            } elseif ($this->configIsNewVersion()) {
                 // Do everything related to reading config fields
                 // TODO: Create a config object for this? One object for each config field? Then loop through those fields.
                 $pluginModel = \Plugin::model()->findByPk($this->id);
@@ -524,5 +525,58 @@ abstract class PluginBase implements iPlugin
         $pluginModel = \Plugin::model()->findByPk($this->id);
         $pluginModel->version = (string) $this->config->metadata->version;
         return $pluginModel->update();
+    }
+
+    /**
+     * @param string $relativePathToScript
+     * @param string $parentPlugin
+     * @return void
+     */
+    protected function registerScript($relativePathToScript, $parentPlugin = null)
+    {
+        
+        $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
+
+        $scriptToRegister = null;
+        if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = Yii::app()->getAssetManager()->publish(
+                YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+            );
+        } elseif (file_exists(Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = Yii::app()->getAssetManager()->publish(
+                Yii::app()->getBasePath().'/plugins/'.$parentPlugin.'/'.$relativePathToScript
+            );
+        } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript)) {
+            $scriptToRegister = Yii::app()->getAssetManager()->publish(
+                Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToScript
+            );
+        }
+        Yii::app()->getClientScript()->registerScriptFile($scriptToRegister);
+    }
+
+    /**
+     * @param string $relativePathToCss
+     * @param string $parentPlugin
+     * @return void
+     */
+    protected function registerCss($relativePathToCss, $parentPlugin = null)
+    {
+        $parentPlugin = $parentPlugin===null ? get_class($this) : $parentPlugin;
+
+        $cssToRegister = null;
+        if (file_exists(YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+            $cssToRegister = Yii::app()->getAssetManager()->publish(
+                YiiBase::getPathOfAlias('userdir').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+            );
+        } elseif (file_exists(YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+            $cssToRegister = Yii::app()->getAssetManager()->publish(
+                YiiBase::getPathOfAlias('webroot').'/plugins/'.$parentPlugin.'/'.$relativePathToCss
+            );
+        } elseif (file_exists(Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss)) {
+            $cssToRegister = Yii::app()->getAssetManager()->publish(
+                Yii::app()->getBasePath().'/application/core/plugins/'.$parentPlugin.'/'.$relativePathToCss
+            );
+        }
+        Yii::app()->getClientScript()->registerCssFile($cssToRegister);
     }
 }

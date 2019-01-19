@@ -17,7 +17,184 @@
  * Copyright (c) 2013 Kevin van Zonneveld (http://kvz.io)
  * and Contributors (http://phpjs.org/authors)
  */
+/**
+ * checkconditions : javascript function attach to some element
+ * Launch ExprMgr_process_relevance_and_tailoring with good value
+ * @todo : move this directly to event
+ */
+function checkconditions(value, name, type, evt_type)
+{
+    if (typeof evt_type === 'undefined')
+    {
+        evt_type = 'onchange';
+    }
+    if (type == 'radio' || type == 'select-one')
+    {
+        $('#java'+name).val(value);
+    }
+    else if (type == 'checkbox')
+    {
+        if ($('#answer'+name).is(':checked'))
+        {
+            $('#java'+name).val('Y');
+        } else
+        {
+            $('#java'+name).val('');
+        }
+    }
+    else if (type == 'text' && name.match(/other$/))
+    {
+        $('#java'+name).val(value);
+    }
 
+    aQuestionsWithDependencies = $('#aQuestionsWithDependencies').data('qids');
+
+    var questionCode;
+    if(typeof name !== 'undefined') {
+        var parts = name.split('X');
+        questionCode = parts[2];
+        var LEMvarNameAttr = LEMvarNameAttr || {};
+        if (LEMvarNameAttr['java' + name] != undefined) {
+            questionCode = '' + LEMvarNameAttr['java' + name].qid;
+        }
+    }
+
+    /*
+    // STILL NOT WORKING !!!!!
+    // But we're getting closer... 
+    var $isRelevant = $.inArray(questionCode, aQuestionsWithDependencies);// NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
+    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1) {
+        ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+    }*/
+    try{
+        ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
+    } catch(e) { console.ls.error(e); }
+}
+
+/**
+ * fixnum_checkconditions : javascript function attach to some element
+ * Update the answer of the user to be numeric and launch checkconditions
+ *
+ * Also checks if any of the arrow keys is pressed to avoid unecessary hassle.
+ * @todo : move this directly to event
+ */
+function fixnum_checkconditions(value, name, type, evt_type, intonly)
+{
+    if(window.event){
+    var keyPressed =  window.event.keyCode || 0;
+    if(
+            keyPressed == 37 //left arrow
+        ||  keyPressed == 39 //right arrow
+    ){return false; }
+    }
+
+    var decimalValue;
+    var newval = new String(value);
+    var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.|)[0-9]*$/);
+    var cleansedValue = newval.replace(numRegex,'');
+    /**
+    * If have to use parsed value.
+    */
+    if(!bNumRealValue)
+    {
+        if(checkNumericRegex.test(value)) {
+            try{
+                decimalValue = new Decimal(cleansedValue);
+            } catch(e){
+                try{
+                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                } catch(e){
+                    decimalValue = new Decimal(NaN);
+                }
+            }
+
+            if (typeof intonly !=='undefined' && intonly==1) {
+                newval = decimalValue.trunc();
+            }
+        } else {
+            newval = cleansedValue;
+        }
+
+    }
+
+    /**
+     * If have to fix numbers automatically.
+     */
+    if(bFixNumAuto && (newval != ""))
+    {
+        if(window.correctNumberField!=null) {
+            clearTimeout(window.correctNumberField);
+            window.correctNumberField = null;
+        }
+
+        var addition = "";
+        if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
+            addition = cleansedValue.split("").pop();
+        }
+
+        var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/);
+        if(matchFollowingZeroes){
+            addition = LEMradix+matchFollowingZeroes[3];
+        }
+        if(decimalValue == undefined){
+            try{
+                decimalValue = new Decimal(cleansedValue);
+            } catch(e){
+                try{
+                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                } catch(e){
+                    decimalValue = new Decimal(NaN);
+
+                }
+            }
+        }
+
+        /**
+         * Work on length of the number
+         * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator.
+         */
+        // Treat decimal part, if there is one.
+        // Trim after 10th decimal if larger than 10 decimals.
+        if(decimalValue.dp()>10){
+            decimalValue.toDecimalPlaces(10);
+        }
+
+        /**
+         * Set display value
+         */
+        displayVal = decimalValue.toString();
+        if (displayVal=='NaN')
+        {
+            newval=displayVal;
+            displayVal=value;
+        }
+        else{
+            if(LEMradix==",")
+                displayVal = displayVal.replace(/\./,',');
+
+            newval = displayVal+addition
+
+            if (name.match(/other$/)) {
+                if($('#answer'+name+'text').val() != newval){
+                    $('#answer'+name+'text').val(newval);
+                }
+            }
+
+            if($('#answer'+name).val() != newval){
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval);}, 400);
+            }
+        }
+    }
+
+    /**
+     * Check conditions
+     */
+    if (typeof evt_type === 'undefined')
+    {
+        evt_type = 'onchange';
+    }
+    checkconditions(newval, name, type, evt_type);
+}
 /**
  * Default event to trigger on answer part
  * Launch function according to anser-item type
@@ -43,11 +220,11 @@ $(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /* checkbox item */
-$(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event){
+$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* hidden item */
-$(document).on("change",".answer-item :hidden",function(event){
+$(document).on("updated",".answer-item :hidden",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
 });
 /**
@@ -512,7 +689,9 @@ function LEMval(alias)
     var varName = alias;
     var suffix = 'code';    // the default
     var value = "";
-    if(typeof bNumRealValue == 'undefined'){bNumRealValue=false;} // Allow to update {QCODE} even with text
+    if(typeof bNumRealValue == 'undefined'){
+        bNumRealValue=false;
+    } // Allow to update {QCODE} even with text
 
     /* If passed a number, return that number */
     if (str == '') return '';
@@ -709,6 +888,49 @@ function LEMval(alias)
             if (value === '') {
                 return '';
             }
+            // Always htmlentities user entered values, see #13928
+            switch(attr.type)
+            {
+                case '!': //List - dropdown
+                case 'L': //LIST drop-down/radio-button list
+                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                case 'H': //ARRAY (Flexible) - Column Format
+                case 'F': //ARRAY (Flexible) - Row Format
+                case 'R': //RANKING STYLE
+                    if (attr.type == 'O' && varName.match(/comment$/)) {
+                        value = htmlentities(value);
+                    }
+                    else if ((attr.type == 'L' || attr.type == '!') && varName.match(/_other$/)) {
+                        value = htmlentities(value);
+                    }
+                    break;
+                case 'N': //NUMERICAL QUESTION TYPE
+                case 'K': //MULTIPLE NUMERICAL QUESTION
+                case 'Q': //MULTIPLE SHORT TEXT
+                case ';': //ARRAY (Multi Flexi) Text
+                case 'S': //SHORT FREE TEXT
+                case 'T': //LONG FREE TEXT
+                case 'U': //HUGE FREE TEXT
+                case 'D': //DATE
+                case '*': //Equation
+                case '|': //File Upload (unsure need to be htmlentities ?)
+                        value = htmlentities(value);
+                    break;
+                case 'M': //Multiple choice checkbox
+                case 'P': //Multiple choice with comments checkbox + text
+                    if (attr.type == 'P' && varName.match(/comment$/)) {
+                        value = htmlentities(value);
+                    }
+                    break;
+                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                case ':': //ARRAY (Multi Flexi) 1 to 10
+                case '5': //5 POINT CHOICE radio-buttons
+                case 'I': //Language Question
+                case 'X': //BOILERPLATE QUESTION
+                default:
+                    // Nothing to update
+            }
 
             if (suffix == 'value' || suffix == 'valueNAOK') {
                 // if in assessment mode, this returns the assessment value
@@ -786,9 +1008,12 @@ function LEMval(alias)
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
             else if (attr.type=='D')  {
                 // get date format pattern of referenced question
-                var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).text();
-                // if undefined (eg., variable on a previous page), set default format yy-mm-dd HH:MM
-                sdatetimePattern =typeof sdatetimePattern == 'undefined'? 'YYYY-MM-DD HH:mm': sdatetimePattern;
+                var sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).val();
+                if (sdatetimePattern == ''){
+                    sdatetimePattern=$(jsName.replace(/java/g, '#dateformat')).text();
+                }
+                // if empty (eg., variable on a previous page), set default format yy-mm-dd HH:MM
+                sdatetimePattern = sdatetimePattern == ''? 'YYYY-MM-DD HH:mm': sdatetimePattern;
 
                 if (sdatetimePattern==null) {
                     sdatetimePattern="";
@@ -807,16 +1032,18 @@ function LEMval(alias)
                 }
                 return value;
             }
-            else {
+            else if(!isNaN(parseFloat(newval)) && isFinite(newval))
+            {
                 // If it's not a decimal number, just return value
                 try {
                     var decimal_safe = new Decimal(value);
-                    return pad(decimal_safe,value.length);
+                    return decimal_safe.toPrecision(value.length);
                 }
                 catch (ex) {
-                    return value;
                 }
             }
+
+            return value;
         }
         case 'rowdivid':
             if (typeof attr.rowdivid === 'undefined' || attr.rowdivid == '') {
@@ -828,17 +1055,18 @@ function LEMval(alias)
     }
 }
 
+
 /** Display number with comma as radix separator, if needed
  */
 function LEMfixnum(value)
 {
     if (LEMradix===',') {
         var newval = String(value);
-        if (parseFloat(newval) != value) {
-            return value;   // unchanged
+        if (!isNaN(parseFloat(newval)) && isFinite(newval)) {
+            newval= newval.split('.').join(',');
+            return newval;
         }
-        newval= newval.split('.').join(',');
-        return newval;
+        return value;   // unchanged
     }
     return value;
 }

@@ -130,6 +130,7 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                             unset($actionUrlArray['id']);
                             $actionBaseUrl = 'admin/themeoptions/sa/updatesurveygroup/';
                             $actionUrlArray['gsid'] = $model->gsid;
+                            $actionUrlArray['id'] = $model->id;
                         }
 
                         $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl,$actionUrlArray);
@@ -184,6 +185,11 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                                 <?php echo $form->hiddenField($model,'sid'); ?>
                                 <?php echo $form->hiddenField($model,'gsid'); ?>
                                 <?php echo $form->hiddenField($model,'uid'); ?>
+
+                                <?php echo CHtml::hiddenField('optionInheritedValues' , json_encode($optionInheritedValues)); ?>
+                                <?php echo CHtml::hiddenField('optionCssFiles' , json_encode($optionCssFiles)); ?>
+                                <?php echo CHtml::hiddenField('optionCssFramework' , json_encode($optionCssFramework)); ?>
+                                <?php echo CHtml::hiddenField('translationInheritedValue' , gT("Inherited value:").' '); ?>
 
                                 <div class="row">
                                     <div class="form-group">

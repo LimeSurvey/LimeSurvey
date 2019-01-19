@@ -266,69 +266,105 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
+     * Return the buttons columns
+     * @see https://www.yiiframework.com/doc/api/1.1/CButtonColumn
+     * @see https://bugs.limesurvey.org/view.php?id=14219
+     * @see https://bugs.limesurvey.org/view.php?id=14222: When deleting a single response : all page is reloaded (not only grid)
+     * @return array
+     */
+    public function getGridButtons()
+    {
+        $sBrowseLanguage=sanitize_languagecode(Yii::app()->request->getParam('browselang', ''));
+        /* detail button */
+        $gridButtons['detail'] = array(
+            'label'=>'<span class="sr-only">'.gT("View response details").'</span><span class="fa fa-list-alt" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("/admin/responses/sa/view",array("surveyid"=>'.self::$sid.',"id"=>$data->id,"browselang"=>"'.$sBrowseLanguage.'"));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs",
+                'target'=>"_blank",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("View response details")
+            ),
+        );
+        /* quexmlpdf button */
+        $gridButtons['quexmlpdf'] = array(
+            'label'=>'<span class="sr-only">'.gT("View response details as queXML PDF").'</span><span class="fa fa-file-o" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("/admin/responses/sa/viewquexmlpdf",array("surveyid"=>'.self::$sid.',"id"=>$data->id,"browselang"=>"'.$sBrowseLanguage.'"));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs",
+                'target'=>"_blank",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("View response details as queXML PDF")
+            ),
+        );
+        /* edit button */
+        $gridButtons['edit'] = array(
+            'label'=>'<span class="sr-only">'.gT("Edit this response").'</span><span class="fa fa-pencil text-success" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("admin/dataentry/sa/editdata/subaction/edit",array("surveyid"=>'.self::$sid.',"id"=>$data->id,"browselang"=>"'.$sBrowseLanguage.'"));',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs",
+                'target'=>"_blank",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("Edit this response")
+            ),
+            'visible'=> 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update').')',
+        );
+        /* downloadfile button */
+        $baseVisible = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update') && hasFileUploadQuestion(self::$sid));
+        $gridButtons['downloadfiles'] = array(
+            'label'=>'<span class="sr-only">'.gT("Download all files in this response as a zip file").'</span><span class="fa fa-download text-success" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("admin/responses/sa/actionDownloadfiles",array("surveyid"=>'.self::$sid.',"sResponseId"=>$data->id));',
+            'visible'=> 'boolval('.$baseVisible.') && Response::model('.self::$sid.')->findByPk($data->id)->someFileExists()',
+            'options' => array(
+                'class'=>"btn btn-default btn-xs",
+                'target'=>"_blank",
+                'data-toggle'=>"tooltip",
+                'title'=>gT("Download all files in this response as a zip file")
+            ),
+        );
+        /* deletefile button */
+        $gridButtons['deletefiles'] = array(
+            'label'=>'<span class="sr-only">'.gT("Delete all files of this response").'</span><span class="fa fa-paperclip text-danger" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("admin/responses/sa/actionDeleteAttachments",array("surveyid"=>'.self::$sid.',"sResponseId"=>$data->id));',
+            'visible'=> 'boolval('.$baseVisible.') && Response::model('.self::$sid.')->findByPk($data->id)->someFileExists()',
+            'options' => array(
+                'class' => "btn btn-default btn-xs btn-deletefiles",
+                'data-toggle' => "tooltip",
+                'title' => gT("Delete all files of this response"),
+            ),
+            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
+        );
+        /* delete  button */
+        $baseVisible = intval(Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete'));
+        $gridButtons['deleteresponse'] = array(
+            'label'=>'<span class="sr-only">'.gT("Delete this response").'</span><span class="fa fa-trash text-danger" aria-hidden="true"></span>',
+            'imageUrl'=>false,
+            'url' => 'App()->createUrl("admin/responses/sa/actionDelete",array("surveyid"=>'.self::$sid.',"sResponseId"=>$data->id));',
+            'visible'=> 'boolval('.$baseVisible.')',
+            'options' => array(
+                'class' => "btn btn-default btn-xs btn-delete",
+                'data-toggle' => "tooltip",
+                'title' => gT("Delete this response"),
+            ),
+            'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
+        );
+        return $gridButtons;
+    }
+
+    /**
      * Get buttons HTML for response browse view.
+     * @deprecated , use getGridButtons ,
+     * 
      * @return string HTML
      */
     public function getButtons()
     {
-        $sViewUrl     = App()->createUrl("/admin/responses/sa/view/surveyid/".self::$sid."/id/".$this->id);
-        $sViewPDFUrl = App()->createUrl("/admin/responses/sa/viewquexmlpdf/surveyid/".self::$sid."/id/".$this->id);
-        $sEditUrl     = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
-        $sDownloadUrl = App()->createUrl("admin/responses", array("sa"=>"actionDownloadfiles", "surveyid"=>self::$sid, "sResponseId"=>$this->id));
-        $sDeleteUrl   = App()->createUrl("admin/responses", array("sa"=>"actionDelete", "surveyid"=>self::$sid));
-        $sAttachmentDeleteUrl = App()->createUrl("admin/responses", array("sa"=>"actionDeleteAttachments"));
-        $button       = "";
-
-        // View detail icon
-        $button .= '<a class="btn btn-default btn-xs" href="'.$sViewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details").'"><span class="fa fa-list-alt" ></span></a>';
-
-        // View quexMLPDF icon
-        $button .= '<a class="btn btn-default btn-xs" href="'.$sViewPDFUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details as queXML PDF").'"><span class="fa fa-file-o" ></span></a>';
-
-        // Edit icon
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
-            $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Edit this response").'"><span class="fa fa-pencil text-success" ></span></a>';
-        }
-
-        $responseHasFiles = Response::model(self::$sid)->findByPk($this->id)->someFileExists();
-
-        // Download icon
-        if (hasFileUploadQuestion(self::$sid) && $responseHasFiles) {
-            if (Response::model(self::$sid)->findByPk($this->id)->getFiles()) {
-                $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><i class="fa fa-download downloadfile text-success" ></i></a>';
-            }
-        } else {
-            $button .= '<a class="btn btn-default btn-xs invisible" href="#" role="button"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
-        }
-
-        $aPostDatas = json_encode(
-            array(
-                'surveyid' => self::$sid,
-                'sResponseId' => $this->id
-            )
-        );
-
-        // Delete icon
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $aPostDatas = json_encode(array('sResponseId'=>$this->id));
-            $button .= "<a class='deleteresponse btn btn-default btn-xs' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='".sprintf(gT('Delete response %s'), $this->id)."'><span class='fa fa-trash text-danger' ></span></a>";
-        }
-
-        // Delete all uploaded attachments from one response.
-        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            if (hasFileUploadQuestion(self::$sid) && $responseHasFiles) {
-                $button .= sprintf(
-                    "<a class='deleteattachments btn btn-danger btn-xs text-danger' data-ajax-url='%s' data-gridid='responses-grid' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
-                        <span class='fa fa-paperclip'></span>
-                        </a>",
-                    $sAttachmentDeleteUrl,
-                    $aPostDatas,
-                    gT('Delete all attachments for this response')
-                );
-            }
-        }
-
-        return $button;
+        return "";
     }
 
 
@@ -739,13 +775,21 @@ class SurveyDynamic extends LSActiveRecord
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
 
         if (
-            !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true) 
+            !(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) && $bHonorConditions == true)
             || $attributes['hidden'] === 1
         ) {
             return false;
         }
 
         $aQuestionAttributes = $oQuestion->attributes;
+
+        $aQuestionAttributes['questionSrc'] = $oQuestion->question;
+        $result = LimeExpressionManager::ProcessString($oQuestion->question, 40, NULL, 1, 1);
+        $aQuestionAttributes['question'] = $result;
+
+        $aQuestionAttributes['helpSrc'] = $oQuestion->help;
+        $result = LimeExpressionManager::ProcessString($oQuestion->help, 40, NULL, 1, 1);
+        $aQuestionAttributes['help'] = $result;
 
         if (count($oQuestion->subquestions) > 0) {
             $aQuestionAttributes['subquestions'] = array();
@@ -761,8 +805,8 @@ class SurveyDynamic extends LSActiveRecord
                 }
 
                 $aQuestionAttributes['subquestions'][$oSubquestion->qid] = $subQuestionArray;
-                
-                
+
+
             }
             //Get other options
             if (in_array($oQuestion->type, ["M", "P"]) && $oQuestion->other == "Y") {
@@ -784,15 +828,14 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         $fieldname = $oQuestion->basicFieldName;
-        
         //If question is of any Array-Type  or a subquestion
-        if (in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"]) 
-            || ($oQuestion->type=='T' && $oQuestion->parent_qid != 0) 
+        if (in_array($oQuestion->type, ["F", "A", "B", "E", "C", "H", "Q", "K", "M", "P", ";",":","1"])
+            || ($oQuestion->type=='T' && $oQuestion->parent_qid != 0)
         ) {
             $fieldname .= $oQuestion->title;
         }
 
-        
+
         if ($getComment === true) {
             $fieldname .= 'comment';
         }
@@ -805,20 +848,21 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         if ($aQuestionAttributes['questionclass'] === 'date') {
+            // FIXME Inexisting Question->language used here!
             $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge(self::$survey->attributes, $oQuestion->survey->languagesettings[$oQuestion->language]->attributes));
         }
 
         $aQuestionAttributes['answervalue'] = isset($oResponses[$fieldname]) ? $oResponses[$fieldname] : null;
-        
+
 
         if ((in_array($oQuestion->type, ["!", "L", "O", "F", "H"]))
             || ($oQuestion->type=='T' && $oQuestion->parent_qid != 0) ) {
 
             $aAnswers = (
-                $oQuestion->parent_qid == 0 
-                    ? $oQuestion->answers 
-                    : ($oQuestion->parents != null 
-                        ? $oQuestion->parents->answers 
+                $oQuestion->parent_qid == 0
+                    ? $oQuestion->answers
+                    : ($oQuestion->parents != null
+                        ? $oQuestion->parents->answers
                         : []
                     )
                 );
@@ -835,17 +879,44 @@ class SurveyDynamic extends LSActiveRecord
             $languageArray = getLanguageData(false, $aQuestionAttributes['answervalue']);
             $aQuestionAttributes['languageArray'] = $languageArray[$aQuestionAttributes['answervalue']];
         }
-        
+
         if ($aQuestionAttributes['questionclass'] === 'upload-files') {
             $aQuestionAttributes['fileinfo'] = json_decode($aQuestionAttributes['answervalue'], true);
         }
 
-        
+
         if ($oQuestion->parent_qid != 0 && $oQuestion->parents['type'] === "1") {
+
+            $aAnswers = (
+                $oQuestion->parent_qid == 0
+                    ? $oQuestion->answers
+                    : ($oQuestion->parents != null
+                        ? $oQuestion->parents->answers
+                        : []
+                    )
+            );
+
+            foreach($aAnswers as $key=>$value){
+                $aAnswerText[$value['code']] = $value['answer'];
+            }
+
             $tempFieldname = $fieldname.'#0';
-            $aQuestionAttributes['answervalues'][0] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            $sAnswerCode = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            $sAnswerText = isset($aAnswerText[$oResponses[$tempFieldname]]) ? $aAnswerText[$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $aQuestionAttributes['answervalues'][0] = $sAnswerText;
+
             $tempFieldname = $fieldname.'#1';
-            $aQuestionAttributes['answervalues'][1] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;        
+            $sAnswerCode = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            $sAnswerText = isset($aAnswerText[$oResponses[$tempFieldname]]) ? $aAnswerText[$oResponses[$tempFieldname]] . ' (' . $sAnswerCode . ')' : null;
+            $aQuestionAttributes['answervalues'][1] = $sAnswerText;
+        }
+
+        // array dual scale headers
+        if (isset($attributes['dualscale_headerA']) && !empty($attributes['dualscale_headerA'][$oQuestion->language])){
+            $aQuestionAttributes['dualscale_header'][0] =  $attributes['dualscale_headerA'][$oQuestion->language];
+        }
+        if (isset($attributes['dualscale_headerB']) && !empty($attributes['dualscale_headerB'][$oQuestion->language])){
+            $aQuestionAttributes['dualscale_header'][1] =  $attributes['dualscale_headerB'][$oQuestion->language];
         }
 
         if ($aQuestionAttributes['questionclass'] === 'ranking') {
@@ -853,24 +924,30 @@ class SurveyDynamic extends LSActiveRecord
             $iterator = 1;
             do {
                 $currentResponse = $oResponses[$fieldname.$iterator];
-                
+
                 $oSelectedAnswerOption = array_reduce( $oQuestion->answers, function($carry, $oAnswer) use ($currentResponse){
                     return $currentResponse == $oAnswer->code ? $oAnswer : $carry;
                 });
-    
+
                 $option = $oSelectedAnswerOption !== null ? $oSelectedAnswerOption->attributes : '';
 
                 $aQuestionAttributes['answervalues'][] = ['value' => $currentResponse, 'option' => $option];
 
                 $iterator++;
             } while (isset($oResponses[$fieldname.$iterator]));
-        
+
         }
-        
+
         if ($oQuestion->parent_qid != 0 && in_array($oQuestion->parents['type'], [";", ":"])) {
             foreach (Question::model()->findAllByAttributes(array('parent_qid' => $aQuestionAttributes['parent_qid'], 'scale_id' => ($oQuestion->parents['type'] == '1' ? 2 : 1))) as $oScaleSubquestion) {
                 $tempFieldname = $fieldname.'_'.$oScaleSubquestion->title;
                 $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            }
+        }
+        
+        if ($oQuestion->type=='N' || ($oQuestion->parent_qid != 0 && $oQuestion->parents['type'] === "K")) {
+            if (strpos($aQuestionAttributes['answervalue'], ".") !== false) { // Remove last 0 and last . ALWAYS (see \SurveyObj\getShortAnswer)
+                $aQuestionAttributes['answervalue'] = rtrim(rtrim($aQuestionAttributes['answervalue'], "0"), ".");
             }
         }
 
@@ -882,13 +959,13 @@ class SurveyDynamic extends LSActiveRecord
 
         $oSurvey = self::$survey;
         $aGroupArray = array();
-        $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id'=>$sSRID));     
+        $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id'=>$sSRID));
         $oGroupList = array_filter($oSurvey->groups, function($oGroup) use ($sLanguage) { return $oGroup->language == $sLanguage; });
 
         foreach ($oGroupList as $oGroup) {
 
             if (!(LimeExpressionManager::GroupIsRelevant($oGroup->gid) && $bHonorConditions == true)) {
-                continue; 
+                continue;
             }
 
             $aAnswersArray = array();
@@ -907,10 +984,17 @@ class SurveyDynamic extends LSActiveRecord
             $aGroupAttributes['answerArray'] = $aAnswersArray;
             $aGroupAttributes['debug'] = $oResponses->attributes;
             $aGroupArray[$oGroup->gid] = $aGroupAttributes;
-            
+
         }
 
         return $aGroupArray;
     }
-}
 
+    /**
+     * Get current surveyId for other model/function
+     * @return int
+     */
+    public function getSurveyId() {
+        return self::$sid;
+    }
+}

@@ -5,7 +5,9 @@ var prepare = function(){
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
     var inheritPossible = ($('#general_inherit_active').length > 0 ) ;
     //get option Object from Template configuration options
-    var optionObject = {"general_inherit" : 1}
+    var optionObject = {"general_inherit" : 1};
+    var optionObjectInheritedValues = null;
+    var optionCssFramework = null;
     var generalInherit = function(){return $('#TemplateConfiguration_options').val() === 'inherit'; };
     var updateFieldSettings = function(){
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
@@ -16,6 +18,18 @@ var prepare = function(){
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
     };
+
+    optionObjectInheritedValues = JSON.parse($('#optionInheritedValues').val());
+    optionCssFramework = JSON.parse(JSON.parse($('#optionCssFramework').val())).replace[0];
+
+    // display inherited option values in dropdown list
+    $.each($("#simple_edit_cssframework > option"), function (i, option) {
+        $.each(optionCssFramework, function (i, item) {
+            if (option.value == item && $("#simple_edit_cssframework option:first").val() == 'inherit'){
+                $("#simple_edit_cssframework option:first").text($("#simple_edit_cssframework option:first").text()+' '+option.text+']');
+            }
+        });
+    });
 
     if(generalInherit()){
         $('#general_inherit_on').prop('checked',true).trigger('change').closest('label').addClass('active');
@@ -45,14 +59,6 @@ var prepare = function(){
 
             $(item).val(itemValue);
 
-            if($(item).hasClass('selector_image_selector')){
-                if($(item).val() == 'inherit'){
-                    $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  true);
-                } else {
-                    $('button[data-target="#'+$(item).attr('id')+'"]').prop('disabled',  false);
-                }
-            }
-
         });
 
         //hotwapping the select fields to the radiobuttons
@@ -64,9 +70,12 @@ var prepare = function(){
                     $(selectorItem).prop('disabled', true);
                 }
 
-                if($(selectorItem).hasClass('selector_image_selector')){
-                    $('button[data-target="#'+$(selectorItem).attr('id')+'"]').prop('disabled',  $(selectorItem).val() == 'inherit');
+                // disabled this part to always be able to click on "Preview image" button
+                /* 
+                if ($(selectorItem).hasClass('selector_image_selector')) {
+                    $('button[data-target="#' + $(selectorItem).attr('id') + '"]').prop('disabled', $(selectorItem).val() == 'inherit');
                 }
+                */
             });
         });
 
@@ -121,15 +130,6 @@ var prepare = function(){
 
         //hotswapping the fields
         $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
-
-            if($(this).hasClass('selector_image_selector')){
-                if($(this).val() == 'inherit'){
-                    $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  true);
-                } else {
-                    $('button[data-target="#'+$(this).attr('id')+'"]').prop('disabled',  false);
-                }
-            }
-
             optionObject[$(this).attr('name')] = $(this).val();
             if($(this).attr('type') == 'radio'){
                 optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
@@ -189,10 +189,8 @@ $(document).off('pjax:scriptcomplete.templateOptions').on('ready pjax:scriptcomp
         var imgSrc = $($(this).data('target')).find('option:selected').data('lightbox-src');
         var imgTitle = $($(this).data('target')).val();
         imgTitle = imgTitle.split('/').pop();
-        if(imgTitle !== 'inherit'){
-            $('#lightbox-modal').find('.selector__title').text(imgTitle);
-            $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});
-        }
+        $('#lightbox-modal').find('.selector__title').text(imgTitle);
+        $('#lightbox-modal').find('.selector__image').attr({'src' : imgSrc, 'alt': imgTitle});
         $('#lightbox-modal').modal('show');
     });
 

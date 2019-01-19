@@ -7,8 +7,8 @@
         static protected $description = 'Demo: This plugin can not be activated';
         static protected $name = 'Unactivatable';
 
-        public function __construct(PluginManager $manager, $id) {
-            parent::__construct($manager, $id);
+        public function init()
+        {
             $this->subscribe('beforeActivate');
         }
 

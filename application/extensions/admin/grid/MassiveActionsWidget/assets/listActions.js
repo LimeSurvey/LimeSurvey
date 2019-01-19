@@ -16,6 +16,9 @@
  *      perform an ajax request and show the result in the modal
  */
 var onClickListAction =  function () {
+    if($(this).data('disabled')) {
+        return;
+    }
     var $that          = $(this);                                                             // The clicked link
     var $actionUrl     = $that.data('url');                                                   // The url of the Survey Controller action to call
     var onSuccess      = $that.data('on-success');
@@ -49,7 +52,7 @@ var onClickListAction =  function () {
             'value': $oCheckedItems.join("|"),
             'type': 'hidden'
         })).append(jQuery('<input>', {
-            'name': 'YII_CSRF_TOKEN',
+            'name': LS.data.csrfTokenName,
             'value': LS.data.csrfToken,
             'type': 'hidden'
         })).appendTo('body');
@@ -171,7 +174,7 @@ var onClickListAction =  function () {
                 }
 
                 if (html.ajaxHelper) {
-                    LS.ajaxHelperOnSuccess(html);
+                    LS.AjaxHelper.onSuccess(html);
                     return;
                 }
 
@@ -282,6 +285,7 @@ function getDefaultDateTimePickerSettings() {
 
 function bindListItemclick(){
     $( '.listActions a').off('click.listactions').on('click.listactions', onClickListAction);
+    $( '.listActions .disabled a').off('click.listactions').on('click.listactions', function(e){ e.preventDefault(); });
 }
 
 

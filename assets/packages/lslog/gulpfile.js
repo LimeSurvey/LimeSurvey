@@ -44,7 +44,7 @@ gulp.task('babel', function (cb) {
         [
             gulp.src('src/lslog.js'),
             babel({
-                presets: ['es2015']
+                presets: [['env', {targets: {browsers: "last 2 versions"}}]]
             }),
             gulp.dest('build/')
         ],
@@ -59,7 +59,7 @@ gulp.task('babel:production', function (cb) {
             gulp.src('src/lslog.js'),
             sourcemaps.init(),
             babel({
-                presets: ['es2015']
+                presets: [['env', {targets: {browsers: "last 2 versions"}}]]
             }),
             uglify(),
             rename('lslog.min.js'),

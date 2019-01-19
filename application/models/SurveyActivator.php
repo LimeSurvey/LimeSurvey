@@ -115,44 +115,44 @@ class SurveyActivator
                 case "lastpage":
                     $aTableDefinition[$aRow['fieldname']] = "integer";
                     break;
-                case "N":  //Numerical
-                case "K":  //Multiple Numerical
+                case Question::QT_N_NUMERICAL:
+                case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
                     $aTableDefinition[$aRow['fieldname']] = "decimal (30,10)";
                     break;
-                case "S":  //SHORT TEXT
+                case Question::QT_S_SHORT_FREE_TEXT:
                     $aTableDefinition[$aRow['fieldname']] = "text";
                     break;
-                case "L":  //LIST (RADIO)
-                case "!":  //LIST (DROPDOWN)
-                case "M":  //Multiple choice
-                case "P":  //Multiple choice with comment
-                case "O":  //DROPDOWN LIST WITH COMMENT
+                case Question::QT_L_LIST_DROPDOWN:
+                case Question::QT_EXCLAMATION_LIST_DROPDOWN:
+                case Question::QT_M_MULTIPLE_CHOICE:
+                case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
+                case Question::QT_O_LIST_WITH_COMMENT:
                     if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
                         $aTableDefinition[$aRow['fieldname']] = "string(5)";
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
                     }
                     break;
-                case "U":  //Huge text
-                case "Q":  //Multiple short text
-                case "T":  //LONG TEXT
-                case ";":  //Multi Flexi
-                case ":":  //Multi Flexi
+                case Question::QT_U_HUGE_FREE_TEXT:
+                case Question::QT_Q_MULTIPLE_SHORT_TEXT:
+                case Question::QT_T_LONG_FREE_TEXT:
+                case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:
+                case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                     $aTableDefinition[$aRow['fieldname']] = "text";
                     break;
-                case "D":  //DATE
+                case Question::QT_D_DATE:
                     $aTableDefinition[$aRow['fieldname']] = "datetime";
                     break;
-                case "5":  //5 Point Choice
-                case "G":  //Gender
-                case "Y":  //YesNo
-                case "X":  //Boilerplate
+                case Question::QT_5_POINT_CHOICE:
+                case Question::QT_G_GENDER_DROPDOWN:
+                case Question::QT_Y_YES_NO_RADIO:
+                case Question::QT_X_BOILERPLATE_QUESTION:
                     $aTableDefinition[$aRow['fieldname']] = "string(1)";
                     break;
-                case "I":  //Language switch
+                case Question::QT_I_LANGUAGE:
                     $aTableDefinition[$aRow['fieldname']] = "string(20)";
                     break;
-                case "|":
+                case Question::QT_VERTICAL_FILE_UPLOAD:
                     $this->createSurveyDir = true;
                     if (strpos($aRow['fieldname'], "_")) {
                         $aTableDefinition[$aRow['fieldname']] = "integer";
@@ -173,10 +173,10 @@ class SurveyActivator
                 case "token":
                     $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$this->collation;
                     break;
-                case '*': // Equation
+                case Question::QT_ASTERISK_EQUATION:
                     $aTableDefinition[$aRow['fieldname']] = "text";
                     break;
-                case 'R':
+                case Question::QT_R_RANKING_STYLE:
                     /**
                      * See bug #09828: Ranking question : update allowed can broke Survey DB
                      * If max_subquestions is not set or is invalid : set it to actual answers numbers

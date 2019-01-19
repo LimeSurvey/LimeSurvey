@@ -182,17 +182,25 @@ class InstallFromConfigCommand extends CConsoleCommand
             switch ($this->connection->driverName) {
                 case 'mysqli':
                 case 'mysql':
-                    $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
+                    $exists = $this->connection->createCommand(
+                        "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$sDatabaseName'"
+                    )->queryScalar();
+                    if (!$exists) {
+                        $this->connection->createCommand("CREATE DATABASE `$sDatabaseName` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")->execute();
+                    }
                     break;
                 case 'dblib':
                 case 'mssql':
                 case 'odbc':
+                    // TODO: Check if exists
                     $this->connection->createCommand("CREATE DATABASE [$sDatabaseName];")->execute();
                     break;
                 case 'pgsql':
+                    // TODO: Check if exists
                     $this->connection->createCommand("CREATE DATABASE \"$sDatabaseName\" ENCODING 'UTF8'")->execute();
                     break;
                 default:
+                    // TODO: Check if exists
                     $this->connection->createCommand("CREATE DATABASE $sDatabaseName")->execute();
                     break;
             }

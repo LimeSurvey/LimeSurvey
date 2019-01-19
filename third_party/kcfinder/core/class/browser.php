@@ -710,7 +710,7 @@ class browser extends uploader {
         if ($message !== true) {
             if (isset($file['tmp_name']))
                 @unlink($file['tmp_name']);
-            return "{$file['name']}: $message";
+            return $this->htmlData($file['name']) . ": " . $message;
         }
 
         $filename = $this->normalizeFilename($file['name']);

@@ -7,6 +7,10 @@
 */
 
 $templateData['oSurvey'] = $oSurvey;
+$templateData['oSurveyOptions'] = $oSurvey->oOptionLabels;
+$templateData['bShowInherited'] = $oSurvey->showInherited;
+$templateData['bShowAllOptions'] = true;
+$templateData['optionsOnOff'] = $optionsOnOff;
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('surveyGeneralSettings');
@@ -61,6 +65,9 @@ echo $scripts;
   <!-- END editLocalSettings -->
   <?php
 Yii::app()->getClientScript()->registerScript( "editLocalSettings_submit_".$entryData['name'], "
+
+window.LS.unrenderBootstrapSwitch();
+window.LS.renderBootstrapSwitch();
 
 $('#".$entryData['name']."').off('.editLocalsettings');
 

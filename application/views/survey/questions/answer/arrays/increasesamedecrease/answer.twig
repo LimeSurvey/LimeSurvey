@@ -1,0 +1,43 @@
+{#
+/**
+ * array increasesamedecrease Html
+ *
+ * @var $sColumns   : the columns, generated with the view columns/col.php
+ * @var $sHeaders   : the headers, generated with the view rows/cell/thead.php
+ * @var $sRows      : the rows, generated with the view rows/answer_row.php
+ * @var $answerwidth
+ * @var $anscount
+ * @var $extraclass
+ *
+ */
+#}
+
+<!-- Array  increasesamedecrease -->
+
+<!-- answer -->
+<table class="{{ coreClass }} table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+    <colgroup class="col-responses">
+        <col class="col-answers"  style='width: {{ answerwidth }}%;'  />
+            {# columns/col.php #}
+            {{ sColumns }}
+    </colgroup>
+    <thead aria-hidden="true">
+        <tr class="ls-heading">
+                {# rows/cell/thead.php #}
+                {{ sHeaders }}
+        </tr>
+    </thead>
+    <tbody>
+        {% if anscount==0 %}
+            <tr>
+                <th class="answertext">
+                    {{ gT('Error: This question has no answers.') }}
+                </th>
+            </tr>
+        {% endif %}
+
+            {# rows/answer_row.php #}
+            {{ sRows }}
+    </tbody>
+</table>
+<!-- end of answer -->

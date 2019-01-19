@@ -24,6 +24,7 @@
 				"application/libraries/PluginManager/Storage"
 			],
 			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
+			"LimeSurvey\\ExtensionInstaller\\": "application/libraries/ExtensionInstaller/",
 			"LimeSurvey\\Helpers\\": "application/helpers"
 		}
 	},
@@ -34,8 +35,9 @@
         "vendor-dir": "third_party",
         "bin-dir": "third_party/bin"
     },
-	"require-dev": {
-		"squizlabs/php_codesniffer": "2.*",
-		"vimeo/psalm": "~1.1"
-	}
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*",
+        "vimeo/psalm": "dev-master",
+        "phpmd/phpmd" : "@stable"
+    }
 }

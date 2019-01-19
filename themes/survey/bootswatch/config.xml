@@ -12,7 +12,7 @@
     <metadata>
         <name>bootswatch</name>
         <title>Bootswatch Theme</title>
-
+        <type>theme</type>
         <creationDate>08/01/2016</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>
@@ -22,27 +22,40 @@
         <version>2.0</version>
         <apiVersion>3</apiVersion>
         <description><![CDATA[<strong>LimeSurvey Bootwatch Theme</strong><br>Based on BootsWatch Themes: <a href='https://bootswatch.com/3/'>Visit BootsWatch page</a> ]]></description>
-        <last_update>2017-11-29 19:28:00</last_update>
+        <lastUpdate>2017-11-29 19:28:00</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
 
     <!--
         Here the list of the css/js files to add to the template package.
         About packages in Yii: http://www.yiiframework.com/doc/api/1.1/CClientScript#packages-detail
+
+        NOTE: The "add" tag also count as a "replace" tag.
+              Eg: You can't add a file with the same name as a file in the mother theme. It will always replace it. You must use a diffrent file name.
+              Eg: Vanilla manifest already has "<add>css/theme.css</add>". So here, if you use "<add>css/theme.css</add>" it will replace the vanilla css/theme.css
+
+        NOTE: If a file in a mother theme, you don't need to add it here again.
+              Eg: css/ajaxify.css is already added in vanilla, this theme doesn't replace it, so ne need to add it here.
+                  Even if no mention at all about  "css/ajaxify.css" is made here, it will be added because it's in the mother theme configuration
+
+        NOTE: To easy test changes in config file, you can force the use of the XML file rather than DB. To do so, turn debug mode on, and in config.php config array, on bottom of debug mode, add:
+              'force_xmlsettings_for_survey_rendering' => true,
+
+              Then, you will not need anymore to reset your theme each time you change the config file.
+              But, once turning the setting off, You will still must reset the theme to the changes are pushed to DB
     -->
     <files>
         <css>
-            <add>css/ajaxify.css</add>
-            <add>css/theme.css</add>
-            <add>css/custom.css</add>
+            <replace>css/theme.css</replace>
+            <replace>css/custom.css</replace>
         </css>
         <js>
-            <add>scripts/theme.js</add>
-            <add>scripts/ajaxify.js</add>
-            <add>scripts/custom.js</add>
+            <replace>scripts/theme.js</replace>
+            <replace>scripts/ajaxify.js</replace>
+            <replace>scripts/custom.js</replace>
         </js>
         <print_css>
-            <add>css/print_theme.css</add>
+            <replace>css/print_theme.css</replace>
         </print_css>
     </files>
 
@@ -51,8 +64,11 @@
     <options>
         <ajaxmode>on</ajaxmode>
         <brandlogo>on</brandlogo>
-        <brandlogofile>./files/logo.png</brandlogofile>
+        <brandlogofile>themes/survey/bootswatch/files/logo.png</brandlogofile>
         <container>on</container>
+        <showpopups>1</showpopups>
+        <showclearall>off</showclearall>
+        <questionhelptextposition>top</questionhelptextposition>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
@@ -85,12 +101,14 @@
             <screens>
                 <question>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
                     <file type="view" role="subview">./subviews/survey/group.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_container.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_desc.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_name.twig</file>
                     <file type="view" role="subview">./subviews/survey/question.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question_container.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/question_text_container.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/question_text_content.twig</file>
                     <file type="view" role="subview">./subviews/survey/question_subviews/answers.twig</file>
@@ -104,6 +122,7 @@
 
                 <surveylist>
                     <file type="view" role="layout">layout_survey_list.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="css">./css/theme.css</file>
@@ -114,13 +133,19 @@
 
                 <welcome>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/firstpage.twig</file>
+                    <file type="view" role="subview">./subviews/header/head.twig</file>
+                    <file type="view" role="subview">./subviews/header/custom_header.twig</file>
+                    <file type="view" role="subview">./subviews/header/nav_bar.twig</file>
+                    <file type="view" role="subview">./subviews/header/progress_bar.twig</file>
                     <file type="view" role="subview">./subviews/messages/welcome.twig</file>
                     <file type="view" role="subview">./subviews/messages/warnings.twig</file>
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_first_page.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -129,6 +154,7 @@
 
                 <completed>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/submit.twig</file>
@@ -140,6 +166,7 @@
 
                 <assessments>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/submit.twig</file>
@@ -152,10 +179,12 @@
 
                 <error>
                     <file type="view" role="layout">layout_errors.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                 </error>
 
                 <clearall>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/clearall.twig</file>
@@ -167,6 +196,7 @@
 
                 <load>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/load.twig</file>
@@ -178,6 +208,7 @@
 
                 <save>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="subview">./subviews/content/mainrow.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/save.twig</file>
@@ -189,6 +220,7 @@
 
                 <register>
                     <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/register.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_error.twig</file>
                     <file type="view" role="subview">./subviews/registration/register_head.twig</file>
@@ -198,13 +230,37 @@
                 </register>
 
                 <printanswers>
-                    <file type="view" role="layout">./subviews/content/printanswers.twig</file>
-                    <file type="view" role="layout">./subviews/printanswers/printanswers_question.twig</file>
-                    <file type="view" role="layout">./subviews/printanswers/printanswers_table.twig</file>
+                    <file type="view" role="layout">layout_printanswers.twig</file>
+                    <file type="view" role="subview">./subviews/content/outerframe.twig</file>
+                    <file type="view" role="content">./subviews/content/printanswers.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_head.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_table.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_question.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_foot.twig</file>
                 </printanswers>
+
+                <pdf>
+                    <file type="view" role="layout">layout_print.twig</file>
+                </pdf>
+
+                <navigation>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
+                    <file type="view" role="content">./subviews/content/main.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/ajax_indicator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/clearall_links.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/language_changer_top_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/navigator.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/question_index_menu.twig</file>
+                    <file type="view" role="subview">./subviews/navigation/save_links.twig</file>
+                </navigation>
 
             </screens>
         </template_editor>
     </engine>
+
+    <!-- Disable the updater system for core themes. -->
+    <updaters disabled="disabled">
+    </updaters>
 
 </config>

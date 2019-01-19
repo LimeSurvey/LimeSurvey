@@ -22,7 +22,7 @@
  * @property string $visible
  * @property ParticipantAttributeNameLang[] $participant_attribute_names_lang
  * @property ParticipantAttribute $participant_attribute
- * @property array $AttributeTypeDropdownArray 
+ * @property array $AttributeTypeDropdownArray
  *
  */
 class ParticipantAttributeName extends LSActiveRecord
@@ -85,6 +85,7 @@ class ParticipantAttributeName extends LSActiveRecord
             'attribute_id' => gT('Attribute'),
             'attribute_type' => gT('Attribute type'),
             'visible' => gT('Visible'),
+            'defaultname' => gT('Default attribute name:'),
         );
     }
 
@@ -99,7 +100,7 @@ class ParticipantAttributeName extends LSActiveRecord
             . "</button>";
         $buttons = "";
         //DELETE attribute
-        //Edit-button 
+        //Edit-button
         $editData = array(
             'action_attributeNames_editModal',
             '',
@@ -639,7 +640,7 @@ class ParticipantAttributeName extends LSActiveRecord
             $oParticipantAttributeNameLang->save();
         } else {
             $oParticipantAttributeNameLang = ParticipantAttributeNameLang::model()->findByPk(array(
-                'attribute_id' => $data['attribute_id'], 
+                'attribute_id' => $data['attribute_id'],
                 'lang' => $data['lang']
             ));
             $oParticipantAttributeNameLang->attribute_name = $data['attribute_name'];

@@ -115,7 +115,7 @@ class statistics extends Survey_Common_Action
 
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'statistics.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'statistics.js', CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'json-js/json2.min.js');
 
         yii::app()->clientScript->registerPackage('jszip');
@@ -155,7 +155,7 @@ class statistics extends Survey_Common_Action
          */
 
         //store all the data in $rows
-        $rows = Question::model()->with('group')->findAll(array('condition'=>'group.sid='.$surveyid, 'order'=>'group_order,question_order'));
+        $rows = Question::model()->with('group')->findAll(array('condition'=>'parent_qid = 0 AND group.sid='.$surveyid, 'order'=>'group_order,question_order'));
 
         //SORT IN NATURAL ORDER!
         usort($rows, 'groupOrderThenQuestionOrder');
@@ -165,31 +165,31 @@ class statistics extends Survey_Common_Action
         $aGroups = array();
         $keyone = 0;
         foreach ($rows as $row) {
-            //store some column names in $filters array
+            $sGroupName = $row->group->questionGroupL10ns[$language]->group_name;
 
+            //store some column names in $filters array
             $filters[] = array($row['qid'],
             $row['gid'],
             $row['type'],
             $row['title'],
-            $row['group_name'],
+            $sGroupName,
             flattenText($row->questionL10ns[$language]['question']));
 
-            if (!in_array($row['group_name'], $aGroups)) {
-                //$aGroups[] = $row['group_name'];
-                $aGroups[$row['group_name']]['gid'] = $row['gid'];
-                $aGroups[$row['group_name']]['name'] = $row['group_name'];
+            if (!in_array($sGroupName, $aGroups)) {
+                //$aGroups[] = $sGroupName;
+                $aGroups[$sGroupName]['gid'] = $row['gid'];
+                $aGroups[$sGroupName]['name'] = $sGroupName;
             }
-            $aGroups[$row['group_name']]['questions'][$keyone] = array($row['qid'],
+            $aGroups[$sGroupName]['questions'][$keyone] = array($row['qid'],
             $row['gid'],
             $row['type'],
             $row['title'],
-            $row['group_name'],
+            $sGroupName,
             flattenText($row->questionL10ns[$language]['question']));
             $keyone = $keyone + 1;
         }
         $aData['filters'] = $filters;
         $aData['aGroups'] = $aGroups;
-
         // SHOW ID FIELD
 
         $grapherror = false;
@@ -467,7 +467,7 @@ class statistics extends Survey_Common_Action
                     $statisticsoutput .= $helper->generate_html_chartjs_statistics($surveyid, $summary, $summary, $usegraph, $outputType, 'DD', $statlang);
                     break;
                 case 'pdf':
-                    $helper->generate_statistics($surveyid, $summary, $summary, $usegraph, $outputType, 'I', $statlang);
+                    $helper->generate_statistics($surveyid, $summary, $summary, $usegraph, $outputType, 'D', $statlang);
                     exit;
                     break;
                 case 'xls':
@@ -663,7 +663,7 @@ class statistics extends Survey_Common_Action
             $summary[4] = "idL";
 
             // 1: Get list of questions from survey
-            $rows = Question::model()->getQuestionList($surveyid, $language);
+            $rows = Question::model()->getQuestionList($surveyid);
 
             //SORT IN NATURAL ORDER!
             usort($rows, 'groupOrderThenQuestionOrder');
@@ -774,7 +774,7 @@ class statistics extends Survey_Common_Action
         $aData['menu']['expertstats'] = true;
 
         //Call the javascript file
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'statistics.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'statistics.js', CClientScript::POS_BEGIN);
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'json-js/json2.min.js');
         yii::app()->clientScript->registerPackage('jspdf');
         yii::app()->clientScript->registerPackage('jszip');
@@ -815,7 +815,6 @@ class statistics extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
         $iSurveyId = $aData['surveyid'];
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
-        $aData['title_bar']['subaction'] = gT('Statistics');
         $aData['subaction'] = gT('Statistics');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }

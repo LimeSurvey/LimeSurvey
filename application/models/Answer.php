@@ -16,6 +16,7 @@
 
 /**
  * Class Answer
+ * @property integer $aid PK
  * @property integer $qid Question id
  * @property string $code Answer code
  * @property string $answer Answer text
@@ -52,12 +53,6 @@ class Answer extends LSActiveRecord
         return 'aid';
     }
 
-
-    public function defaultScope()
-    {
-        return array('order'=>'sortorder');
-    }    
-
     /** @inheritdoc */
     public function relations()
     {
@@ -70,6 +65,7 @@ class Answer extends LSActiveRecord
                 'on' => 'questions.gid = group.gid'
             ),
             'answerL10ns' => array(self::HAS_MANY, 'AnswerL10n', 'aid', 'together' => true),
+            'questionL10ns' => array(self::HAS_MANY, 'QuestionL10n', 'qid', 'together' => true)
             
         );
     }
@@ -231,6 +227,24 @@ class Answer extends LSActiveRecord
     public function getAnswersForStatistics($fields, $condition, $orderby)
     {
         return Answer::model()->findAll($condition);
+    }
+
+    /**
+     * @param string $fields
+     * @param string $orderby
+     * @param mixed $condition
+     * @return array
+     */
+    public function getQuestionsForStatistics($fields, $condition, $orderby)
+    {
+
+        $oAnswers = Answer::model()->with('answerL10ns')->findAll($condition);
+        $arr = array();
+        foreach($oAnswers as $key => $answer)
+        {
+            $arr[$key] = array_merge($answer->attributes, current($answer->answerL10ns)->attributes);
+        }
+        return $arr;
     }
     
     

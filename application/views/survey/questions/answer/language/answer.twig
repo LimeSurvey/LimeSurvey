@@ -1,0 +1,42 @@
+{#
+/**
+ * Language HTML
+ * @var $name
+ * @var $checkconditionFunction
+ * @var $answerlangs
+ * @var $sLang
+ */
+#}
+<!-- Language -->
+
+<!-- answer -->
+<div class='form-inline'>
+    <div class="{{ coreClass }} form-group">
+        <label for='answer{{ name }}' class='sr-only control-label'>
+            {{ gT('Choose your language') }}
+        </label>
+
+        <select
+            name="{{ name }}"
+            id="answer{{ name }}"
+            class="languagesurvey form-control"
+            aria-describedby="ls-question-text-{{ name }}"
+        >
+            {% for ansrow in answerlangs %}
+                <option value="{{ ansrow }}" {% if sLang == ansrow %} SELECTED {% endif %}>
+                    {% set aLanguage=getLanguageNameFromCode(ansrow, true) %}
+                    {{ aLanguage[1] }}
+                </option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="java{{ name }}" id="java{{ name }}" value="{{ sLang }}" />
+    </div>
+</div>
+<script type='text/javascript'>
+/*<![CDATA[*/
+    $('#answer{{ name }}').change(function(){
+        $('<input type="hidden">').attr('name','lang').val($(this).val()).appendTo($('form#limesurvey'));
+    });
+/*]]>*/
+</script>
+<!-- end of answer -->

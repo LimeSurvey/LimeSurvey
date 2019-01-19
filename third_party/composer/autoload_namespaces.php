@@ -6,5 +6,4 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'LSS' => array($vendorDir . '/openlss/lib-array2xml'),
 );

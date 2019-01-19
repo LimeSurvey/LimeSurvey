@@ -42,7 +42,7 @@
             <!-- The table grid  -->
             <div class="row">
                 <div class="col-lg-12">
-                    <?php
+                    <?php  
                     $this->widget('bootstrap.widgets.TbGridView', array(
                         'id'=>'question-group-grid',
                         'dataProvider' => $model->search(),
@@ -75,7 +75,7 @@
                             // Group Name
                             array(
                                 'name'=>'group_name',
-                                'value'=>'$data->group_name',
+                                'value'=>'$data->primaryTitle',
                                 'htmlOptions' => array('class' => 'col-md-2'),
                             ),
 
@@ -84,7 +84,7 @@
                                 'header'=>gT('Description'),
                                 'name'=>'description',
                                 'type'=>'raw',
-                                'value'=>'viewHelper::flatEllipsizeText($data->description,true,0)',
+                                'value'=>'viewHelper::flatEllipsizeText($data->primaryDescription, true, 0)',
                                 'htmlOptions' => array('class' => 'col-md-6'),
                             ),
 

@@ -9,7 +9,7 @@
   <h3>
   <?php
 
-    if ($subaction == "edit") {
+    if ($token_subaction == "edit") {
         eT("Edit survey participant");
     } else {
         eT("Add survey participant");
@@ -26,7 +26,7 @@ foreach ($tokendata as $Key => $Value) {
 
 <div class="row">
   <div class="col-md-12 content-right">
-    <?php echo CHtml::form(array("admin/tokens/sa/{$subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array('id'=>'edittoken', 'class'=>'')); ?>
+    <?php echo CHtml::form(array("admin/tokens/sa/{$token_subaction}/surveyid/{$surveyid}/tokenid/{$tokenid}"), 'post', array('id'=>'edittoken', 'class'=>'')); ?>
       <!-- Tabs -->
       <?php if( count($attrfieldnames) > 0 ):?>
         <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
@@ -59,7 +59,7 @@ foreach ($tokendata as $Key => $Value) {
                 <div class="">
                     <p class="form-control-static">
                     <?php
-                    if ($subaction == "edit") {
+                    if ($token_subaction == "edit") {
                         echo $tokenid;
                     } else {
                         eT("Auto");
@@ -136,7 +136,7 @@ foreach ($tokendata as $Key => $Value) {
                         </div>
                         <?php endif; ?>
                     </div>
-                    <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completedDBFormat)) {echo $completedDBFormat; } else {echo " N "; }?>" />
+                    <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='completed' name='completed' value="<?php if (isset($completed)) {echo $completed; } else {echo " N "; }?>" />
                 </div>
 
             </div>
@@ -169,7 +169,7 @@ foreach ($tokendata as $Key => $Value) {
                 </label>
                 <div class="">
                 <input class='form-control' type='text' maxlength="<?php echo $iTokenLength; ?>" size='20' name='token' id='token' value="<?php if (isset($token)) {echo $token; } ?>" />
-                <?php if ($subaction == "addnew"): ?>
+                <?php if ($token_subaction == "addnew"): ?>
                     <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></span>
                 <?php endif; ?>
                 </div>
@@ -277,7 +277,7 @@ foreach ($tokendata as $Key => $Value) {
                     </div>
                 </div>
                 </div>
-                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sentDBValue)) {echo $sentDBValue; } else {echo " N "; }?>" />
+                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sent)) {echo $sent; } else {echo " N "; }?>" />
             </div>
             </div>
             <div class="form-group">
@@ -323,13 +323,13 @@ foreach ($tokendata as $Key => $Value) {
                     </div>
                 </div>
                 </div>
-                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersentDBValue)) {echo $remindersentDBValue; } else {echo " N "; }?>" />
+                <input class='form-control hidden YesNoDateHidden' type='text' size='20' id='remindersent' name='remindersent' value="<?php if (isset($remindersent)) {echo $remindersent; } else {echo " N "; }?>" />
             </div>
                 
             <!-- Reminder count, Uses left -->
             <div class="form-group">
                 <!-- Reminder count -->
-                <?php if ($subaction == "edit"): ?>
+                <?php if ($token_subaction == "edit"): ?>
                 <label class=" control-label" for='remindercount'>
                     <?php eT("Reminder count:"); ?>
                 </label>
@@ -411,7 +411,7 @@ foreach ($tokendata as $Key => $Value) {
   <!-- Buttons -->
   <p>
     <?php
-    switch ($subaction)
+    switch ($token_subaction)
     {
         case "edit":?>
           <input type='submit' class="hidden" value='<?php eT("Update token entry"); ?>' />
@@ -441,3 +441,8 @@ foreach ($tokendata as $Key => $Value) {
     ?>
   </div>
 </div>
+<?php
+App()->getClientScript()->registerScript('TokenformViewBSSwitcher', "
+LS.renderBootstrapSwitch();
+", LSYii_ClientScript::POS_POSTSCRIPT);
+?>

@@ -47,9 +47,14 @@ class Plugin extends LSActiveRecord
      */
     public function setLoadError(array $error)
     {
-        $this->load_error = 1;
-        $this->load_error_message = $error['message'] . ' ' . $error['file'];
-        return $this->update();
+        // NB: Don't use ActiveRecord here, since it will trigger events and
+        // load the plugin system all over again.
+        // TODO: Works on all SQL systems?
+        $sql = sprintf(
+            "UPDATE {{plugins}} SET load_error = 1, load_error_message = '%s' WHERE id = " . $this->id,
+            addslashes($error['message'] . ' ' . $error['file'])
+        );
+        return \Yii::app()->db->createCommand($sql)->execute();
     }
 
     /**
@@ -58,30 +63,22 @@ class Plugin extends LSActiveRecord
      */
     public function isCompatible()
     {
-        $config = $this->getConfig();
-        $lsVersion = require \Yii::app()->getBasePath() . '/config/version.php';
-        foreach ($config->compatibility->version as $pluginVersion) {
-            // At least one $v in config.xml must be higher or equal to versionnumber.
-            if (version_compare($lsVersion['versionnumber'], $pluginVersion) >= 0) {
-                return true;
-            }
-        }
-        return false;
+        $config = $this->getExtensionConfig();
+        return $config->isCompatible();
     }
 
     /**
-     * @return xml
-     * @todo Use PluginConfiguration.
+     * @return ExtensionConfig
      * @throws Exception if file does not exist.
      */
-    public function getConfig()
+    public function getExtensionConfig()
     {
         $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.xml';
         if (file_exists($file)) {
             libxml_disable_entity_loader(false);
             $config = simplexml_load_file(realpath($file));
             libxml_disable_entity_loader(true);
-            return $config;
+            return new ExtensionConfig($config);
         } else {
             throw new \Exception('Missing configuration file for plugin ' . $this->name);
         }
@@ -256,6 +253,7 @@ class Plugin extends LSActiveRecord
         if ($plugin) {
             $result = $plugin->setLoadError($error);
         } else {
+            // TODO: Use raw SQL insteadl of active records.
             $plugin = new \Plugin();
             $plugin->name = $pluginName;
             $plugin->active = 0;

@@ -20,30 +20,34 @@ class Expressions extends Survey_Common_Action
     {
         $aData = array();
         $needpermission = false;
-
+        
         $iSurveyID = sanitize_int(Yii::app()->request->getQuery('surveyid', false));
         if (!$iSurveyID) {
             $iSurveyID = sanitize_int(Yii::app()->request->getQuery('sid'));
         }
         
         $aData['sa'] = $sa = sanitize_paranoid_string(Yii::app()->request->getQuery('sa', 'index'));
-
+        
         $aData['fullpagebar']['closebutton']['url'] = 'admin/'; // Close button
-
+        
         if (($aData['sa'] == 'survey_logic_file' || $aData['sa'] == 'navigation_test') && $iSurveyID) {
             $needpermission = true;
         }
-
+        
         if ($needpermission && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
             $message['title'] = gT('Access denied!');
             $message['message'] = gT('You do not have permission to access this page.');
             $message['class'] = "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
         } else {
+            
+            
             App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerPackage('decimal');
             App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
+            App()->getClientScript()->registerPackage('decimal');
             App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'survey_runtime.js');
+            App()->getClientScript()->registerPackage('expression-extend');
+
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle'] = "ExpressionManager:  {$aData['sa']}";
             $aData['subaction'] = $this->_printTitle($aData['sa']);
@@ -112,7 +116,7 @@ class Expressions extends Survey_Common_Action
 
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$sid;
 
-        if ($gid !== null) {
+        if ($gid !== null && $qid === null) {
             $gid = sanitize_int($gid);
             $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$sid.'/gid/'.$gid;
             $aData['gid'] = $gid;
@@ -127,6 +131,7 @@ class Expressions extends Survey_Common_Action
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
         App()->getClientScript()->registerPackage('expressions');/* Why we need it ? */
+        App()->getClientScript()->registerPackage('expression-extend');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'expressionlogicfile.css');
 
         SetSurveyLanguage($sid, $language);
@@ -171,6 +176,8 @@ class Expressions extends Survey_Common_Action
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
         App()->getClientScript()->registerPackage('expressions');
+        App()->getClientScript()->registerPackage('expression-extend');
+
 
         
         $this->_renderWrappedTemplate('expressions', 'test/survey_logic_form', $aData);        

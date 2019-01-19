@@ -32,11 +32,12 @@ if (ini_get("safe_mode"))
 
 
 // CMS INTEGRATION
-if (isset($_GET['cms']) &&
-    (basename($_GET['cms']) == $_GET['cms']) &&
-    is_file("integration/{$_GET['cms']}.php")
-)
-    require "integration/{$_GET['cms']}.php";
+// Possible files -> drupal, BolmerCMS
+if(isset($_GET['cms']) && (basename($cmsFile) == $cmsFile) && preg_match("/drupal|BolmerCMS/", $_GET['cms'])){
+    $cmsFile = basename($_GET['cms']);
+    if (is_file("integration/{$cmsFile}.php") )
+        require "integration/{$cmsFile}.php";
+}
 
 
 // REGISTER AUTOLOAD FUNCTION
@@ -91,283 +92,33 @@ if (!function_exists("json_encode")) {
 }
 
 
-// CUSTOM SESSION SAVE HANDLER CLASS EXAMPLE
-//
-// Uncomment & edit it if the application you want to integrate with, have
-// its own session save handler. It's not even needed to save instances of
-// this class in variables. Just add a row:
-// new SessionSaveHandler();
-// and your handler will rule the sessions ;-)
-
-/*
-class SessionSaveHandler {
-    protected $savePath;
-    protected $sessionName;
-
-    public function __construct() {
-        session_set_save_handler(
-            array($this, "open"),
-            array($this, "close"),
-            array($this, "read"),
-            array($this, "write"),
-            array($this, "destroy"),
-            array($this, "gc")
-        );
-    }
-
-    // Open function, this works like a constructor in classes and is
-    // executed when the session is being opened. The open function expects
-    // two parameters, where the first is the save path and the second is the
-    // session name.
-    public function open($savePath, $sessionName) {
-        $this->savePath = $savePath;
-        $this->sessionName = $sessionName;
-        return true;
-    }
-
-    // Close function, this works like a destructor in classes and is
-    // executed when the session operation is done.
-    public function close() {
-        return true;
-    }
-
-    // Read function must return string value always to make save handler
-    // work as expected. Return empty string if there is no data to read.
-    // Return values from other handlers are converted to boolean expression.
-    // TRUE for success, FALSE for failure.
-    public function read($id) {
-        $file = $this->savePath . "/sess_$id";
-        return (string) @file_get_contents($file);
-    }
-
-    // Write function that is called when session data is to be saved. This
-    // function expects two parameters: an identifier and the data associated
-    // with it.
-    public function write($id, $data) {
-        $file = $this->savePath . "/sess_$id";
-        if (false !== ($fp = @fopen($file, "w"))) {
-            $return = fwrite($fp, $data);
-            fclose($fp);
-            return $return;
-        } else
-            return false;
-    }
-
-    // The destroy handler, this is executed when a session is destroyed with
-    // session_destroy() and takes the session id as its only parameter.
-    public function destroy($id) {
-        $file = $this->savePath . "/sess_$id";
-        return @unlink($file);
-    }
-
-    // The garbage collector, this is executed when the session garbage
-    // collector is executed and takes the max session lifetime as its only
-    // parameter.
-    public function gc($maxlifetime) {
-        foreach (glob($this->savePath . "/sess_*") as $file)
-            if (filemtime($file) + $maxlifetime < time())
-                @unlink($file);
-        return true;
-    }
-}
-
-new SessionSaveHandler();
-
-*/
-
-
-// PUT YOUR ADDITIONAL CODE HERE
-/**
- * A custom session handler to read session from Limesurvey database.
- *
- * @author Gabriele Mambrini
- */
-class LSSessionSaveHandler
-{
-    public $aDbConfig;
-    public $sSessionTableName;
-
-    /**
-     * @param array $aConfig Limesurvey configuration array
-     */
-    public function __construct($aConfig)
-    {
-        $this->aDbConfig= $aConfig['components']['db'];
-
-    $sTblName = $aConfig['components']['session']['sessionTableName'];
-    if ( preg_match("/^{{(.+)}}$/", $sTblName, $aMatches ) )
-    {
-        $sTblName = $aMatches[1];
-    }
-
-        $this->sSessionTableName = $this->aDbConfig['tablePrefix'] . $sTblName;
-
-        session_set_save_handler(
-            array($this, "open"),
-            array($this, "close"),
-            array($this, "read"),
-            array($this, "write"),
-            array($this, "destroy"),
-            array($this, "gc")
-        );
-    }
-
-
-    /**
-     * getDbh() create a PDO db handler
-     *
-     * @return object - db handler
-     */
-    private function getDbh() {
-        # get DB configuration
-        $sDsn      = $this->aDbConfig['connectionString'];
-        $sUsername = $this->aDbConfig['username'];
-        $sPassword = $this->aDbConfig['password'];
-        return new PDO($sDsn, $sUsername, $sPassword);
-    }
-
-
-    /**
-     * open() function is executed when the session is being opened.
-     *
-     * @param string $sSavePath - the save path (unused)
-     * @param string $sSessionName - the session name (unused)
-     * @return bool - true on success
-     */
-    public function open($sSavePath, $sSessionName) {
-        return true;
-    }
-
-    /**
-     * close() function is executed when the session operation is done.
-     *
-     * @return bool - true on success
-     */
-    public function close() {
-        return true;
-    }
-
-    /**
-     * read() reads the session data from the Limesurvey DB session
-     * storage and returns the results
-     *
-     * @param string $sSessionId - the session identifier
-     * @return string - session data
-     */
-    public function read($sSessionId)
-    {
-        try
-        {
-            $oDbh = $this->getDbh();
-            $sTblName = $this->sSessionTableName;
-
-            $sSql = "SELECT data "
-                    ."FROM $sTblName "
-                    ."WHERE expire > :expire "
-                    ."AND id = :id";
-
-            $oStmt = $oDbh->prepare($sSql);
-            $iNow = time();
-            $oStmt->bindParam(':expire', $iNow, PDO::PARAM_INT);
-            $oStmt->bindParam(':id', $sSessionId, PDO::PARAM_STR);
-
-            if ( $oStmt->execute() )
-            {
-                $aRow = $oStmt->fetch(PDO::FETCH_ASSOC);
-                return $aRow['data'];
-            }
-        }
-        catch (PDOException $e)
-        {
-            // nothing to do here
-        }
-
-        return '';
-    }
-
-    /**
-     * write() function is executed when the session is being updated.
-     *
-     * @param string $sSessionId - the session identifier
-     * @param string $sData - the session identifier
-     *
-     * @return bool - true on success
-     */
-    public function write($sSessionId, $sData)
-    {
-        try
-        {
-            $oDbh = $this->getDbh();
-            $sTblName = $this->sSessionTableName;
-
-            $sSql = "UPDATE $sTblName "
-                ."SET data=:data "
-               ."WHERE id=:id";
-            $oStmt = $oDbh->prepare($sSql);
-            $oStmt->bindParam(':id', $sSessionId, PDO::PARAM_STR);
-            $oStmt->bindParam(':data', $sData, PDO::PARAM_STR);
-
-            $oStmt->execute();
-            return true;
-        }
-        catch (PDOException $e)
-        {
-            //nothing to do here
-        }
-
-        return false;
-    }
-
-    /** destroy() called when the session should be destroyed.
-     * Does nothing as sessions are managed by Limesurvey
-     *
-     * @param string $sSessionId - the session identifier
-     * @return bool - true on success
-     */
-    public function destroy($sessionId)
-    {
-        return true;
-    }
-
-    /** gc() Should cleanup old sessions, not implemented
-     *  as sessions are managed by Limesurvey
-     *
-     * @param string $maxlifetime - session older than maxlifetime should be destroyed
-     * @return bool - true on success
-     */
-    public function gc($maxlifetime)
-    {
-        return true;
-    }
-}
-
- /**
-  * checkLSSession() read Limesurvey configuration and if sessions are
-  * managed by CDbHttpSession create a new instance of
-  * LSSessionSaveHandler
-  *
-  * @author Gabriele Mambrini
-  */
 function checkLSSession()
 {
     //relative path calculated from the path where kcfinder is running
     $sLimesurveyFolder = realpath( dirname(__FILE__) . "/../../../application");
 
+    // code adapted from /index.php
+    if (!defined('APPPATH'))
+    {
+        define('APPPATH', $sLimesurveyFolder.'/');
+    }
+
     // define BASEPATH in order to access LS config.php
     if (!defined('BASEPATH'))
     {
-        define("BASEPATH", $sLimesurveyFolder);
+        define("BASEPATH", realpath($sLimesurveyFolder . "/../framework") . "/");
     }
-    /* Read the config and create the LSSessionSaveHandler if needed */
-    if(is_file($sLimesurveyFolder . '/config/config.php'))
-    {
-        $aConfig = include($sLimesurveyFolder . '/config/config.php');
-        if (isset($aConfig['components']['session']['class']) &&
-            $aConfig['components']['session']['class'] == 'application.core.web.DbHttpSession')
-        {
-            new LSSessionSaveHandler($aConfig);
-        }
-    }
+    require_once BASEPATH . 'yii.php';
+    require_once APPPATH . 'core/LSYii_Application.php';
+    $config = require_once(APPPATH . 'config/internal.php');
+    Yii::$enableIncludePath = false;
+
+    // chdir is required because config['rootdir'] is defined with getcwd()
+    $currentDir = getcwd();
+    chdir(APPPATH . "..");
+    Yii::createApplication('LSYii_Application', $config);
+    Yii::app()->session->open();
+    chdir($currentDir);
 }
 
 checkLSSession();

@@ -141,10 +141,22 @@ export default {
             }
         },
         dragoverQuestiongroup($event, questiongroupObject) {
+            if(this.draggedQuestion == undefined || this.draggedQuestion == null) {
+                this.$log.log({
+                    this: this, 
+                    questiongroupObject: questiongroupObject,
+                    draggedQuestion: this.draggedQuestion
+                    });
+            }
+                
             if (this.questiongroupDragging) {
-                const orderSwap = questiongroupObject.group_order;
-                questiongroupObject.group_order = this.draggedQuestionGroup.group_order;
-                this.draggedQuestionGroup.group_order = orderSwap;
+                const targetPosition = parseInt(questiongroupObject.group_order);
+                const currentPosition = parseInt(this.draggedQuestionGroup.group_order);
+                if(Math.abs(parseInt(targetPosition)-parseInt(currentPosition)) == 1){
+                    questiongroupObject.group_order = currentPosition;
+                    this.draggedQuestionGroup.group_order = targetPosition
+                } 
+                
             } else {
                 this.addActive(questiongroupObject.gid);
                 if (this.draggedQuestion.gid !== questiongroupObject.gid) {
@@ -186,7 +198,7 @@ export default {
         //dragevents questions
         startDraggingQuestion($event, questionObject, questionGroupObject) {
             this.$log.log("Dragging started", questionObject);
-            $event.dataTransfer.setData("text/plain", "node");
+            $event.dataTransfer.setData('application/node', this);
             this.questionDragging = true;
             this.draggedQuestion = questionObject;
             this.draggedQuestionsGroup = questionGroupObject;
@@ -219,33 +231,101 @@ export default {
 </script>
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba menu-pane ls-space padding all-0 margin top-5">
-        <div class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar" v-if="createAllowance != ''">
-            <a id="adminpanel__sidebar--selectorCreateQuestionGroup" v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax">
-                <i class="fa fa-plus"></i>&nbsp;{{translate.createQuestionGroup}}</a>
-            <a id="adminpanel__sidebar--selectorCreateQuestion" v-if="createQuestionAllowed" :href="createQuestionLink" class="btn btn-small btn-default ls-space margin right-10 pjax">
-                <i class="fa fa-plus-circle"></i>&nbsp;{{translate.createQuestion}}</a>
+        <div 
+            class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar" 
+            v-if="createAllowance != ''"
+        >
+            <a 
+                id="adminpanel__sidebar--selectorCreateQuestionGroup" 
+                v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" 
+                :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
+            >
+                <i class="fa fa-plus"></i>&nbsp;
+                {{translate.createQuestionGroup}}
+            </a>
+            <a 
+                id="adminpanel__sidebar--selectorCreateQuestion" 
+                v-if="createQuestionAllowed" 
+                :href="createQuestionLink" 
+                class="btn btn-small btn-default ls-space margin right-10 pjax"
+            >
+                <i class="fa fa-plus-circle"></i>&nbsp;
+                {{translate.createQuestion}}
+            </a>
         </div>
         <div class="ls-flex-row ls-space padding all-0">
-            <ul class="list-group col-12"  @drop="dropQuestionGroup($event, questiongroup)">
-                <li v-for="questiongroup in orderedQuestionGroups" class="list-group-item ls-flex-column" v-bind:key="questiongroup.gid" v-bind:class="questionGroupItemClasses(questiongroup)" @dragenter="dragoverQuestiongroup($event, questiongroup)">
-                    <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
-                        <i class="fa fa-bars bigIcons dragPointer" draggable="true" @dragend="endDraggingGroup($event, questiongroup)" @dragstart="startDraggingGroup($event, questiongroup)">&nbsp;</i>
-                        <a :href="questiongroup.link" @click.stop="openQuestionGroup(questiongroup)" class="col-12 pjax"> 
-                            <span class="question_text_ellipsize pull-left" :style="{ 'max-width': itemWidth }"> {{questiongroup.group_name}} </span>
+            <ul 
+                class="list-group col-12"  
+                @drop="dropQuestionGroup($event, questiongroup)"
+            >
+                <li 
+                    v-for="questiongroup in orderedQuestionGroups" 
+                    v-bind:key="questiongroup.gid" 
+                    class="list-group-item ls-flex-column" 
+                    v-bind:class="questionGroupItemClasses(questiongroup)" 
+                    @dragenter="dragoverQuestiongroup($event, questiongroup)"
+                >
+                    <div class="col-12 ls-flex-row nowrap ls-space padding right-5 bottom-5">
+                        <i 
+                            v-if="!$store.state.surveyActiveState"
+                            class="fa fa-bars bigIcons dragPointer" 
+                            draggable="true"
+                            @dragend="endDraggingGroup($event, questiongroup)" 
+                            @dragstart="startDraggingGroup($event, questiongroup)"
+                            @click.stop.prevent="()=>false"
+                        >
+                            &nbsp;
+                        </i>
+                        <a 
+                            class="col-12 pjax"
+                            :href="questiongroup.link" 
+                            @click.stop="openQuestionGroup(questiongroup)" 
+                        > 
+                            <span 
+                                class="question_text_ellipsize pull-left" 
+                                :style="{ 'max-width': itemWidth }"
+                            >
+                                {{questiongroup.group_name}} 
+                            </span>
                             <span class="badge pull-right ls-space margin right-5">{{questiongroup.questions.length}}</span>
                         </a>
                         <i class="fa bigIcons" v-bind:class="isActive(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
                     </div>
                     <transition name="slide-fade-down">
-                        <ul class="list-group background-muted padding-left question-question-list" v-if="isActive(questiongroup.gid)" @drop="dropQuestion($event, question)">
-                            <li v-for="question in orderQuestions(questiongroup.questions)" v-bind:key="question.qid" v-bind:class="questionItemClasses(question)" class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-between" @dragenter="dragoverQuestion($event, question, questiongroup)">
-                                <i class="fa fa-bars margin-right bigIcons dragPointer" draggable="true" @dragend="endDraggingQuestion($event, question)" @dragstart="startDraggingQuestion($event, question, questiongroup)">&nbsp;</i>
-                                <a :href="question.link" class="col-12 pjax question-question-list-item-link" @click.prevent="openQuestion(question)" data-toggle="tootltip" :title="question.question_flat"> 
+                        <ul 
+                            class="list-group background-muted padding-left question-question-list" 
+                            v-if="isActive(questiongroup.gid)" 
+                            @drop="dropQuestion($event, question)"
+                        >
+                            <div 
+                                v-for="question in orderQuestions(questiongroup.questions)" 
+                                v-bind:key="question.qid" 
+                                v-bind:class="questionItemClasses(question)" 
+                                data-toggle="tootltip" 
+                                class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-between" 
+                                :title="question.question_flat"
+                                @dragenter="dragoverQuestion($event, question, questiongroup)"
+                            >
+                                    <i 
+                                        v-if="!$store.state.surveyActiveState"
+                                        class="fa fa-bars margin-right bigIcons dragPointer question-question-list-item-drag" 
+                                        draggable="true"
+                                        @dragend="endDraggingQuestion($event, question)" 
+                                        @dragstart="startDraggingQuestion($event, question, questiongroup)"
+                                        @click.stop.prevent="()=>false"
+                                    >
+                                        &nbsp;
+                                    </i>
+                                <a
+                                    :href="question.link"  
+                                    class="col-12 pjax question-question-list-item-link display-as-container" 
+                                    @click.stop.prevent="openQuestion(question)" 
+                                > 
                                     <span class="question_text_ellipsize" :style="{ width: itemWidth }">
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }} 
                                     </span> 
                                 </a>
-                            </li>
+                            </div>
                         </ul>
                     </transition>
                 </li>
@@ -255,6 +335,9 @@ export default {
 </template>
 
 <style lang="scss">
+.display-as-container{
+    display: block;
+}
 #questionexplorer {
     overflow: auto;
 }

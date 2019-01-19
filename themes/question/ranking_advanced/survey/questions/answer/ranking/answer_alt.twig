@@ -1,0 +1,67 @@
+{#
+/**
+ * Ranking question, item list header Html
+ * @var $sOptions         : the select options, generated with the view answer_row.php
+ *
+ * @var $name
+ * @var $myfname
+ * @var $labeltext
+ * @var $rankId
+ * @var $rankingName
+ * @var $max_answers
+ * @var $min_answers
+ * @var $qid
+ * @var $choice_title
+ * @var $rank_title
+ * @var $rank_help
+ * @var $showpopups
+ * @var $samechoiceheight
+ * @var $samelistheight
+ */
+#}
+
+<!-- Ranking -->
+
+<!-- answer -->
+<div class="{{ coreClass }}">
+    <ul class="list-unstyled ls-js-hidden-sr answers-list select-list " role="group" aria-labelledby="ls-question-text-{{ basename }}">
+        {# rows/answer_row.twig #}
+            {{ sSelects }}
+    </ul>
+    <div class="ls-no-js-hidden answers-list{{ samechoiceheight ? " list-samechoiceheight": "" }}{{ samelistheight ? " list-samelistheight": "" }} row" aria-hidden="true">
+        <div class="col-sm-6 col-xs-6">
+            <strong class="sortable-subtitle sortable-rank-subtitle">{{ rank_title }}</strong>
+            <!-- @todo : move htmlblock at the good place -->
+            <ul id="sortable-choice-{{ qId }}" class="sortable-choice sortable-list list-group">
+                {% for ansrow in answers %}
+                    <li id="javatbd{{ rankingName }}{{ ansrow.code }}" class="ls-choice list-group-item answer-item sortable-item sortable-enable" data-value="{{ ansrow.code }}">
+                        {{ ansrow.answer }}
+                    </li>
+                {% endfor %}
+                <li class="hidden ls-remove"></li>
+            </ul>
+        </div>
+        <div class="col-sm-6 col-xs-6">
+            <strong class="sortable-subtitle sortable-rank-subtitle">{{ choice_title }}</strong>
+            <ul id="sortable-rank-{{ qId }}" class="sortable-rank sortable-list list-group">
+                <li class="hidden ls-remove"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!--  The list with HTML answers -->
+
+<div class="hidden" style="display:none">
+    <div style='display:none' id='ranking-{{ qId }}-maxans'>
+        {{ max_answers }}
+    </div>
+    <div style='display:none' id='ranking-{{ qId }}-minans'>
+        {{ min_answers }}
+    </div>
+    <div style='display:none' id='ranking-{{ qId }}-name'>
+        {{ rankingName }}
+    </div>
+
+</div>
+<!-- end of answer -->

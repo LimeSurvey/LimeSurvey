@@ -290,10 +290,11 @@ function updaterowproperties()
     var qID=$('input[name=qid]').val();
 
     $('.answertable tbody').each(function(){
-        info=$(this).closest('table').attr('id').split("_");
-        language=info[1];
-        scale_id=info[2];
-        var rownumber=1;
+        var id        = $(this).closest('table').attr('id');
+        var info      = id.split("_");
+        var language  = info[1];
+        var scale_id  = info[2];
+        var rownumber = 1;
 
         $(this).children('tr').each(function(){
 
@@ -411,10 +412,10 @@ function areCodesUnique(sNewValue)
         })
         if (sNewValue!='')
         {
-            codearray=codearray.filter( onlyUnique );
+            codearray=window.LS.getUnique(codearray);
             codearray.push(sNewValue);
         }
-        if (arrHasDupes(codearray))
+        if (window.LS.arrHasDupes(codearray))
             {
             dupefound=true;
             return;
@@ -439,7 +440,7 @@ function lsbrowser(e)
     $('#labelsets').select2();
     $("#labelsetpreview").html('');
     //    e.preventDefault();
-    var scale_id=removechars($(this).attr('id'));
+    var scale_id=window.LS.removechars($(this).attr('id'));
     var surveyid=$('input[name=sid]').val();
         
     $.ajax({
@@ -471,7 +472,9 @@ function lsbrowser(e)
     });
 
     $('#labelsets').on('change', function(){
-        lspreview($(this).val());
+        var value = $(this).val();
+        if(parseFloat(value) == value)
+            lspreview(value);
     });
 }
 
@@ -770,7 +773,7 @@ for (var x in languages)
 function getlabel()
 {
     var answer_table = $(this).parent().children().eq(0);
-    scale_id=removechars($(this).attr('id'));
+    scale_id=window.LS.removechars($(this).attr('id'));
     updaterowproperties();
 }
 

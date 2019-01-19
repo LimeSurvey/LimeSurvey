@@ -1,0 +1,43 @@
+{#
+
+!!!! BECAREFUL: ONLY FOR TESTING !!!!!
+!!!! DON'T START TO TRANSLATE ALL VIEWS BASED ON THIS MODEL !!!!!
+
+!!!! IT WILL PROBABLY FIRST NEED TO CHANGE  THE TWIG TEMPLATE SYNTAX TO AVOID CONFLICT WITH EXPRESSION MANAGER !!!!
+
+/**
+ * Multiple Choice Html : item row
+ *
+ * @var hiddenfield
+ * @var name
+ * @var title
+ * @var question
+ * @var checkedState
+ * @var sCheckconditionFunction
+ * @var myfname
+ * @var sValue
+ */
+#}
+
+<!-- answer_row -->
+<div class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
+    <div id='javatbd{{ myfname }}' class="button-item btn btn-primary {{ button_size_class }} {% if checkedState!='' %} active {% endif %} col-xs-12 col-sm-12">
+        <input
+            type="checkbox"
+            name="{{ myfname }}"
+            data-name="{{myfname}}"
+            class="bootstrap-checkbox sr-only"
+            id="answer{{ myfname }}"
+            {{ checkedState }}
+            value="Y"
+        />
+        <label for="answer{{ myfname }}" class="checkbox-label control-label">{{ question }}</label>
+        <input
+            type="hidden"
+            name="java{{ myfname }}"
+            id="java{{ myfname }}"
+            value="{{ C.Html.encode( sValue ) }}"
+        />
+    </div>
+</div>
+<!-- end of answer_row -->

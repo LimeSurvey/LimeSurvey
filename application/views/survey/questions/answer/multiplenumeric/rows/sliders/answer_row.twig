@@ -1,5 +1,5 @@
 
-{# <?php
+{#
 /**
  * Multiple short texts question, item input text Html
  * @var $tip
@@ -28,17 +28,15 @@
  * @var $slider_reversed
  * @var $sSeparator
  */
-?> #}
+#}
 
 <li id='javatbd{{ myfname }}' class="question-item answer-item numeric-item text-item slider-item form-group {{ extraclass }}{% if alert %} ls-error-mandatory has-error {% endif %}">
-    <label id="label-{{ myfname }}" class='control-label col-xs-12 col-sm-{{ sLabelWidth }}{{ sLabelWidth == 0 ? " hidden":"" }}' for="answer{{myfname}}">
-        {{ labelText }}
+    <label id="label-{{ myfname }}" class='control-label col-xs-12 col-sm-{{ sLabelWidth }}{% if sLabelWidth == 0 %} hidden{% endif %}' for="answer{{myfname}}">
+        {{ processString(labelText) }}
     </label>
     <div class="col-xs-12 col-sm-{{ sInputContainerWidth }} container-fluid">
             {% if sliderleft is not empty %}
                 <div class='col-xs-12 col-sm-2 slider-left text-right'>{{ sliderleft }}</div>
-            {% elseif sliderWidth < 12 %}
-                <div class='col-xs-12 col-sm-2 slider-left text-right'></div>
             {% endif %}
 
             <div class="slider-container ls-input-group col-xs-12 col-sm-{{sliderWidth}}" style="min-height:15px;">
@@ -89,18 +87,17 @@
         'handle' : "{{slider_handle}}",
         'tooltip' : 'always',
         'reset' : "{{slider_reset}}",
-        'prefix' : "{{prefix}}",
-        'suffix' : "{{suffix}}",
+        'prefix' : "{{ processString(prefix,1) }}",
+        'suffix' : "{{ processString(suffix,1) }}",
         'separator' : "{{sSeparator}}",
         'number' : true,
         'integer' : {{integeronly}},
-        'position' : "{{slider_position}}",
+        'position' : parseInt({{slider_position}}),
         'custom_handle' : "{{slider_custom_handle}}",
         'setPosition' : "{{slider_reset_set}}",
         'reversed' : {{slider_reversed}},
     });
     window.activeSliders.s{{myfname}}.init();
-
 {% endset %}
 {{ registerScript( 'SliderQuestion'~myfname, script, 'POS_POSTSCRIPT') }}
 

@@ -1,0 +1,26 @@
+{#
+/**
+ * List with comment, list layout, Html
+ *
+ * @var $name
+ * @var $id
+ * @var $value
+ * @var $check_ans
+ * @var $checkconditionFunction
+ * @var $labeltext
+ * @var $li_classes
+ */
+#}
+<!-- answer_row -->
+<li id='javatbd{{ name }}{{ value }}' class="{{ li_classes }}">
+    <input
+        type="radio"
+        name="{{ name }}"
+        id="{{ id }}"
+        value="{{ value }}"
+        {{ check_ans }}
+        onclick="{{ checkconditionFunction }}"
+    />
+    <label for="{{ id }}" class="radio-label control-label">{{ processString(labeltext) }}</label>
+</li>
+<!-- end of answer_row -->

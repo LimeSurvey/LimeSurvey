@@ -63,6 +63,7 @@ class SurveyController extends LSYii_Controller
         if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction')); } //Desired subaction
         if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction')); } // for html editor integration
         Yii::app()->clientScript->registerPackage('decimal'); // decimal
+        Yii::app()->clientScript->registerPackage('decimalcustom'); // decimal-customisations
     }
 
     /**
@@ -74,7 +75,7 @@ class SurveyController extends LSYii_Controller
     protected function _sessioncontrol()
     {
         if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"] == '') {
-                    Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
+            Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
         }
         Yii::app()->setLanguage(Yii::app()->session['adminlang']);
     }
@@ -121,33 +122,46 @@ class SurveyController extends LSYii_Controller
      * @param string[]|null $aErrors : array of errors to be shown
      * @return void
      **/
-    function renderExitMessage($iSurveyId, $sType, $aMessages = array(), $aUrl = null, $aErrors = null)
+    public function renderExitMessage($iSurveyId, $sType, $aMessages = array(), $aUrl = null, $aErrors = null)
     {
         $this->layout = 'survey';
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
         $this->sTemplate = $oTemplate->sTemplateName;
-        $message = $this->renderPartial("/survey/system/message", array(
-            'aMessage'=>$aMessages
-        ), true);
+        $message = $this->renderPartial(
+            "/survey/system/message",
+            array(
+                'aMessage'=>$aMessages
+            ),
+            true
+        );
         if (!empty($aUrl)) {
             $url = $this->renderPartial("/survey/system/url", $aUrl, true);
         } else {
             $url = "";
         }
         if (!empty($aErrors)) {
-            $error = $this->renderPartial("/survey/system/errorWarning", array(
-                'aErrors'=>$aErrors
-            ), true);
+            $error = $this->renderPartial(
+                "/survey/system/errorWarning",
+                array(
+                    'aErrors'=>$aErrors
+                ),
+                true
+            );
         } else {
             $error = "";
         }
 
         /* Set the data for templatereplace */
         $aReplacementData = [];
-        $aReplacementData['type'] = $sType; // Adding this to replacement data : allow to update title (for example)
+
+        // Adding this to replacement data : allow to update title (for example)
+        $aReplacementData['type'] = $sType;
         $aReplacementData['message'] = $message;
         $aReplacementData['URL'] = $url;
-        $aReplacementData['title'] = $error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
+
+        // Adding this to replacement data : allow to update title (for example) :
+        // @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
+        $aReplacementData['title'] = $error;
 
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $oTemplate = $oSurvey->templateModel;
@@ -155,7 +169,11 @@ class SurveyController extends LSYii_Controller
         $aSurveyInfo = $oSurvey->attributes;
         $aSurveyInfo['aError'] = $aReplacementData;
 
-        Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aError'=>$aReplacementData, 'aSurveyInfo' => $aSurveyInfo), false);
+        Yii::app()->twigRenderer->renderTemplateFromFile(
+            "layout_errors.twig",
+            array('aError'=>$aReplacementData, 'aSurveyInfo' => $aSurveyInfo),
+            false
+        );
         App()->end();
     }
 }

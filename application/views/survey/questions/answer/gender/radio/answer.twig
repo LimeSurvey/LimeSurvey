@@ -1,0 +1,65 @@
+{#
+/**
+ * Gender question, radio item Html
+ *
+ * @var $name
+ * @var $checkconditionFunction
+ * @var $fChecked
+ * @var $mChecked
+ * @var $naChecked
+ * @var $value
+ */
+#}
+
+<!--Gender question, radio display -->
+
+<!-- answer -->
+<ul class="{{ coreClass }} list-unstyled form-inline" role="radiogroup" aria-labelledby="ls-question-text-{{ basename }}" >
+    <!-- Female -->
+    <li id='javatbd{{ name }}F' class="answer-item radio-item">
+        <input
+            type="radio"
+            name="{{ name }}"
+            id="answer{{ name }}F"
+            value="F"
+            {{ fChecked }}
+        />
+        <label for="answer{{ name }}F" class="control-label radio-label">
+            {{ gT('Female') }}
+        </label>
+    </li>
+
+    <!-- Male -->
+    <li id='javatbd{{ name }}M' class="answer-item radio-item">
+        <input
+            type="radio"
+            name="{{ name }}"
+            id="answer{{ name }}M"
+            value="M"
+            {{ mChecked }}
+        />
+
+        <label for="answer{{ name }}M" class="control-label radio-label">
+            {{ gT('Male') }}
+        </label>
+    </li>
+
+    <!-- No answer -->
+    {% if noAnswer %}
+        <li id='javatbd{{ name }}' class="answer-item radio-item noanswer-item">
+            <input
+                type="radio"
+                name="{{ name }}"
+                id="answer{{ name }}"
+                value=""
+                {{ naChecked }}
+            />
+            <label for="answer{{ name }}" class="control-label radio-label">
+                {{ gT('No answer') }}
+            </label>
+        </li>
+    {% endif %}
+</ul>
+{{ C.Html.hiddenField('java' ~ name, value, ({'id' : 'java' ~ name,'disabled' : 'true'})) }}
+
+<!-- end of answer -->

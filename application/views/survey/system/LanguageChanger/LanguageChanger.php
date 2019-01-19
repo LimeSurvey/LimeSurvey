@@ -17,7 +17,7 @@
         </label>
             <!-- for no js functionality use LanguageChangerForm: @see makeLanguageChangerSurvey -->
             <?php
-               echo CHtml::htmlButton(gT("Change the language"),array('type'=>'submit','value'=>'changelang','name'=>'move','class'=>"btn btn-default ls-js-hidden"));
+               echo CHtml::htmlButton(gT("Change language"),array('type'=>'submit','value'=>'changelang','name'=>'move','class'=>"btn btn-default ls-js-hidden"));
             ?>
     </div>
 <!-- end of  views/survey/system/LanguageChanger -->

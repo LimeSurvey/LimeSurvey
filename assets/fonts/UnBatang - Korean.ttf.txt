@@ -1,0 +1,5 @@
+For package size reasons the UnBatang font to show Chinese characters in the statistics graphs 
+is not included with LimeSurvey.
+
+Please download it from http://kldp.net/projects/unfonts/ , 
+unzip and put the UnBatang.tff file into the /assets/fonts directory of your LimeSurvey installation.

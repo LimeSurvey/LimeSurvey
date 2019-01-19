@@ -49,7 +49,7 @@ gulp.task('combine', function (cb) {
     pump(
         [
             gulp.src('src/*.js'),
-            concat(jsOutFile)
+            concat(jsOutFile),
             gulp.dest('build/')
         ],
         cb

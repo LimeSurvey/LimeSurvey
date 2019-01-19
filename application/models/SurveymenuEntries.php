@@ -492,10 +492,15 @@ class SurveymenuEntries extends LSActiveRecord
         $criteria->compare('created_at', $this->created_at, true);
         $criteria->compare('created_by', $this->created_by);
 
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'sort'=>array(
                 'defaultOrder'=>'t.menu_id ASC, t.ordering ASC',
+            ),
+            'pagination' => array(
+                'pageSize' => $pageSize
             )
         ));
     }
@@ -508,8 +513,9 @@ class SurveymenuEntries extends LSActiveRecord
      */
     public function restoreDefaults()
     {
-        
+
         $oDB = Yii::app()->db;
+        switchMSSQLIdentityInsert('surveymenu_entries', true);
         $oTransaction = $oDB->beginTransaction();
         try {
 
@@ -525,9 +531,32 @@ class SurveymenuEntries extends LSActiveRecord
         } catch (Exception $e) {
             throw $e;
         }
-
+        switchMSSQLIdentityInsert('surveymenu_entries', false);
         return true;
     }
+
+    private function _parseUniqueNameFromTitle() {
+
+        $name = preg_replace("/[^a-z]*/","", strtolower($this->title));
+        if(!preg_match("/^[a-z].*$/",$name)) {
+            $name = 'm'.$name;
+        }
+        $itrt = 0;
+        while(self::model()->findByAttributes(['name' => $name]) !== null){
+            $name = $name.($itrt++);
+        }
+        return $name;
+    }
+
+    public function save($runValidation=true,$attributes=null)
+	{
+        if($this->getIsNewRecord()){
+            $this->name = $this->_parseUniqueNameFromTitle();
+            $this->menu_title = empty($this->menu_title) ? $this->title : $this->menu_title;
+            $this->menu_description = empty($this->menu_description) ? $this->title : $this->menu_title;
+        }
+		parent::save($runValidation,$attributes);
+	}
 
     /**
      * Returns the static model of the specified AR class.

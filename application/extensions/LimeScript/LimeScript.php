@@ -14,13 +14,20 @@
             $data['showScriptName']             = Yii::app()->urlManager->showScriptName;
             $data['urlFormat']                  = Yii::app()->urlManager->urlFormat;
             $data['adminImageUrl']              = Yii::app()->getConfig('adminimageurl');
+            $data['csrfTokenName']              = Yii::app()->request->csrfTokenName;
             $data['csrfToken']                  = Yii::app()->request->csrfToken;
+            $data['csrfTokenData']              = array(Yii::app()->request->csrfTokenName=>Yii::app()->request->csrfToken);
             $data['language']                   = Yii::app()->language;
             $data['replacementFields']['path']  = App()->createUrl("admin/limereplacementfields/sa/index/");
             $json = json_encode($data, JSON_FORCE_OBJECT);
             $script = "LS.data = $json;\n"
-                    . "LS.lang = {};\n"
-                    . "$.ajaxSetup({data: {YII_CSRF_TOKEN: LS.data.csrfToken}});";
+                    . "LS.lang = {
+                        confirm: {
+                            confirm_cancel: '".gT('Cancel')."',
+                            confirm_ok: '".gT('OK')."'
+                        }
+                    };\n"
+                    . "$.ajaxSetup({data: {".Yii::app()->request->csrfTokenName.": LS.data.csrfToken}});";
             App()->getClientScript()->registerScript('LimeScript', $script, CClientScript::POS_HEAD);
         }
     }

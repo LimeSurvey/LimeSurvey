@@ -30,7 +30,7 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
             <div class="col-sm-12 content-right">
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
-                        <?php $this->renderPartial('/admin/export/exportresult_panels/_format', ['exports' => $exports]); ?> 
+                        <?php $this->renderPartial('/admin/export/exportresult_panels/_format', ['exports' => $exports,'defaultexport' => $defaultexport,'aCsvFieldSeparator' => $aCsvFieldSeparator ]); ?> 
                         <?php $this->renderPartial('/admin/export/exportresult_panels/_general', [ 'selecthide'  => $selecthide, 'selectshow'  => $selectshow, 'selectinc'  => $selectinc, 'aLanguages'  => $aLanguages]); ?>   
                         
                         <?php if (empty(Yii::app()->session['responsesid'])): // If called from massive action, it will be filled the selected answers ?>
@@ -57,3 +57,8 @@ App()->getClientScript()->registerScript('ExportresultsVariables', $scriptBegin,
         <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
     </form>
 </div>
+<?php
+App()->getClientScript()->registerScript('ExportResultsBSSwitcher', "
+LS.renderBootstrapSwitch();
+", LSYii_ClientScript::POS_POSTSCRIPT);
+?>

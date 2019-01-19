@@ -15,7 +15,7 @@
  * @property string $modified
  * @property integer $created_by
  * @property object $parentgroup
- * @property boolean $hasSurveys 
+ * @property boolean $hasSurveys
  */
 class SurveysGroups extends LSActiveRecord
 {
@@ -35,7 +35,7 @@ class SurveysGroups extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, sortorder, created_by', 'required'),
+            array('name, sortorder, created_by, title', 'required'),
             array('sortorder, owner_uid, parent_id, created_by', 'numerical', 'integerOnly'=>true),
             array('name', 'length', 'max'=>45),
             array('title', 'length', 'max'=>100),
@@ -181,6 +181,8 @@ class SurveysGroups extends LSActiveRecord
 
         $criteria = new CDbCriteria;
 
+        $criteria->select = array('DISTINCT t.*');
+
         $criteria->compare('gsid', $this->gsid);
         $criteria->compare('name', $this->name, true);
         $criteria->compare('title', $this->title, true);
@@ -192,9 +194,31 @@ class SurveysGroups extends LSActiveRecord
         $criteria->compare('modified', $this->modified, true);
         $criteria->compare('created_by', $this->created_by);
 
-        return new CActiveDataProvider($this, array(
+        // Permission
+        // Note: reflect Permission::hasPermission
+        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
+            $criteriaPerm = new CDbCriteria;
+
+            // Multiple ON conditions with string values such as 'survey'
+            $criteriaPerm->mergeWith(array(
+                'join'=>"LEFT JOIN {{surveys}} AS surveys ON (surveys.gsid = t.gsid)
+                        LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = surveys.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
+            ));
+
+            $criteriaPerm->compare('t.owner_uid', Yii::app()->user->id, false);
+            $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
+            $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
+            $criteriaPerm->compare('t.gsid', '1', false, 'OR');  // "default" survey group
+            $criteria->mergeWith($criteriaPerm, 'AND');
+        }
+
+        $dataProvider = new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
+
+        $dataProvider->setTotalItemCount(count($dataProvider->getData()));
+
+        return $dataProvider;
     }
 
     public function getParentTitle()
@@ -217,6 +241,21 @@ class SurveysGroups extends LSActiveRecord
         return $nbSurvey > 0;
     }
 
+
+    public function getAllParents($bOnlyGsid=false)
+    {
+        $aParents = array();
+        $oRSurveyGroup = $this;
+        while (!empty($oRSurveyGroup->parent_id)){
+            $oRSurveyGroup =  SurveysGroups::model()->findByPk($oRSurveyGroup->parent_id);
+            $aParents[] = ($bOnlyGsid)?$oRSurveyGroup->gsid:$oRSurveyGroup;
+        }
+
+        return $aParents;
+    }
+
+
+
     /**
      * @return string
      */
@@ -224,11 +263,13 @@ class SurveysGroups extends LSActiveRecord
     {
         $sDeleteUrl     = App()->createUrl("admin/surveysgroups/sa/delete", array("id"=>$this->gsid));
         $sEditUrl = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$this->gsid));
+        $sSurveySettingsUrl = App()->createUrl("admin/surveysgroups/sa/surveysettings", array("id"=>$this->gsid));
         $button         = '';
 
-        if (!$this->gsid !== 1) {
+        if (!$this->gsid != 1) {
             $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" ></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
         }
+        $button .= '<a class="btn btn-default" href="'.$sSurveySettingsUrl.'" role="button" data-toggle="tooltip" title="'.gT('Survey settings').'"><i class="fa fa-cog" ></i><span class="sr-only">'.gT('Survey settings').'</span></a>';
         if (!$this->hasSurveys) {
             $button .= '<a class="btn btn-default" href="#" data-href="'.$sDeleteUrl.'" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="'.gT('Do you want to continue?').'" data-tooltip="true" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger "></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
         }
@@ -239,7 +280,14 @@ class SurveysGroups extends LSActiveRecord
     public static function getSurveyGroupsList()
     {
         $aSurveyList = [];
-        $oSurveyGroups = self::model()->findAll();
+        $criteria = new CDbCriteria;
+
+        if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
+            $criteria->compare('t.owner_uid', Yii::app()->user->id, false);
+            $criteria->compare('t.gsid', '1', false, 'OR');  // "default" survey group
+        }
+
+        $oSurveyGroups = self::model()->findAll($criteria);
 
         foreach ($oSurveyGroups as $oSurveyGroup) {
             $aSurveyList[$oSurveyGroup->gsid] = $oSurveyGroup->title;
@@ -254,15 +302,26 @@ class SurveysGroups extends LSActiveRecord
         return count($oSurveysGroups) + 1;
     }
 
-    public function getParentGroupOptions()
+    public function getParentGroupOptions($gsid = null)
     {
-        $oSurveysGroups = SurveysGroups::model()->findAll();
+        if (!empty($gsid)){
+            $oSurveysGroups = SurveysGroups::model()->findAll('gsid != :gsid', array(':gsid' => $gsid));
+        } else {
+            $oSurveysGroups = SurveysGroups::model()->findAll();
+        }
         $options = [
             '' => gT('No parent menu')
         ];
+
+
         foreach ($oSurveysGroups as $oSurveysGroup) {
             //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
-            $options[''.($oSurveysGroup->gsid).''] = '('.$oSurveysGroup->name.') '.$oSurveysGroup->title;
+
+            $aParentsGsid = $oSurveysGroup->getAllParents(true);
+
+            if ( ! in_array( $this->gsid, $aParentsGsid  ) ) {
+                $options[''.($oSurveysGroup->gsid).''] = '('.$oSurveysGroup->name.') '.$oSurveysGroup->title;
+            }
         }
         //return join('\n',$options);
         return $options;

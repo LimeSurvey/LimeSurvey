@@ -86,7 +86,7 @@
                         'header' => gT('Owner'),
                         'name' => 'owner',
                         'type' => 'raw',
-                        'value'=>'CHtml::link(CHtml::encode($data->owner->users_name), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'value'=>'CHtml::link(CHtml::encode($data->oOptions->admin), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm hidden-xs'),
                         'htmlOptions' => array('class' => 'hidden-md hidden-sm hidden-xs has-link'),
                     ),
@@ -147,7 +147,7 @@
                 'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
                 //'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/survey/sa/view/surveyid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                 'ajaxUpdate' => true,
-                'afterAjaxUpdate' => 'doToolTip',
+                'afterAjaxUpdate' => 'function(id, data){window.LS.doToolTip();bindListItemclick();}',
                 'template'  => $this->template,
             ));
         ?>

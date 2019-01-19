@@ -78,48 +78,34 @@ var ThemeScripts = function(){
      * Hide some part if empty
      * Some can be needed if contain only js
      * Some are not really needed : little margin only is shown
+     * Allowed content -> <script> and <img/>
      */
     var hideEmptyPart = function hideEmptyPart()
     {
         $('.question-help-container').each(function(){
-            if($(this).text().trim()==''){/* Only if have only script tag inside or empty tag */
+            /* Only if have only script tag inside or empty tag */
+            if($(this).text().trim()=='' && !/<img/.test($(this).html())){
                 $(this).addClass('hidden');
             }
         });
         $('.group-description').each(function(){
-            if($(this).text().trim()==''){/* Only if have only script tag inside or empty tag */
+            /* Only if have only script tag inside or empty tag */
+            if($(this).text().trim()=='' && !/<img/.test($(this).html())){
                 $(this).addClass('hidden');
             }
         });
         $('.question-help-container.hidden').on('html:updated',function(){
-            if($(this).text().trim()!=''){
+            if($(this).text().trim()!=''  && !/<img/.test($(this).html())){
                 $(this).removeClass('hidden');
             }
         });
-        $('.question-help-container').on('html:updated',function(){ // .question-help-container:not(.hidden) don't work ?
-            if($(this).text().trim()==''){
+        // .question-help-container:not(.hidden) don't work ?
+        $('.question-help-container').on('html:updated',function(){ 
+            if($(this).text().trim()==''  && !/<img/.test($(this).html())){
                 $(this).addClass('hidden');
             }
         });
     };
-
-    /*
-    var initLanguageChanger = function(selectorItem, selectorGlobalForm){
-        $(selectorItem).on('change',function() {
-            var lang = $(this).val();
-            logObject.log(lang, 'changed');
-            // If there are no form : we can't use it
-            // No form, not targeturl : just see what happen
-            var target = window.location.href;
-            $("<form>", {
-                "class":'ls-js-hidden',
-                "html": '<input type="hidden" name="lang" value="' + lang + '" />',
-                "action": target,
-                "method": 'get'
-            }).appendTo('body').submit();
-        });
-    };
-    */
 
     var initTopMenuLanguageChanger = function(selectorItem, selectorGlobalForm){
         // $(selectorContainer).height($('#main-row').height());
@@ -238,7 +224,7 @@ var ThemeScripts = function(){
                 }
                 $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
             } else if (code==13 && e.ctrlKey == true) {
-                $('.ls-move-btn').trigger('click');
+                $('.action--ls-button-submit').trigger('click');
             }
         };
 
@@ -254,7 +240,7 @@ var ThemeScripts = function(){
                 }
                 $(this).closest('.question-container').next('.question-container').find('input, textarea').first().focus();
             } else if (code==13 && e.ctrlKey == true) {
-                $('.ls-move-btn').trigger('click');
+                $('.action--ls-button-submit').trigger('click');
             }
         };
 
@@ -270,27 +256,36 @@ var ThemeScripts = function(){
     var initGlobal = function(){
         sliderSuffixClone();
         fixBodyPadding();
-        window.templateCore.hideQuestionWithRelevanceSubQuestion();
+        if(jQuery.isFunction(window.templateCore.hideQuestionWithRelevanceSubQuestion)) {
+            window.templateCore.hideQuestionWithRelevanceSubQuestion();
+        }
+        if(jQuery.isFunction(window.templateCore.hideMultipleColumn)) {
+            window.templateCore.hideMultipleColumn();
+        }
         hideEmptyPart();
     };
 
     var initWelcomePage = function(){
         logObject.log('Starting up for first page');
         if($('#datasecurity_accepted').length >0) {
-            $('#ls-button-submit').prop('disabled', true).parent().on('mouseenter', function(e){
-                logObject.log('starting animation');
-                if(!$('#datasecurity_accepted').prop('checked') && $(this).data('moving') != 1){
-                    e.preventDefault();
-                    var self = this;
-                    $(self).data('moving', 1);
-                    $('label[for=datasecurity_accepted]').animate({'zoom': '1.05'}, 500, function(){
-                        $('label[for=datasecurity_accepted]').animate({'zoom': '1'}, 500, function(){
-                            $(self).data('moving', 0);
-                        });
-                    });
-                    return false;
-                }
-            });
+            $('#ls-button-submit').prop('disabled', true);
+            /* 
+            * #### Animation function doesn't work on IE -> Deactivate until now.
+            * $('#ls-button-submit').prop('disabled', true).parent().on('mouseenter', function(e){
+            *    logObject.log('starting animation');
+            *     if(!$('#datasecurity_accepted').prop('checked') && $(this).data('moving') != 1){
+            *         e.preventDefault();
+            *         var self = this;
+            *         $(self).data('moving', 1);
+            *         $('label[for=datasecurity_accepted]').animate({'zoom': '1.05'}, 500, function(){
+            *             $('label[for=datasecurity_accepted]').animate({'zoom': '1'}, 500, function(){
+            *                 $(self).data('moving', 0);
+            *             });
+            *         });
+            *         return false;
+            *     }
+            * });
+            */
             $('#datasecurity_accepted').on('change', function(){
                 $('#ls-button-submit').prop('disabled', !$(this).prop('checked'));
             });

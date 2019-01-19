@@ -45,7 +45,8 @@ return array(
             'yiistrap'.$minVersion.'.css',
         ),
         'js'=>array(
-            'bootstrap'.$minVersion.'.js'
+            'bootstrap'.$minVersion.'.js',
+            'plugins/bootstrapconfirm/bootstrapconfirm'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',
@@ -344,13 +345,11 @@ return array(
     ),
 
     'jquery-datatable' => array(
-        'basePath' => 'third_party.jquery-datatable',
+        'basePath' => 'third_party.datatables',
         'position' => CClientScript::POS_BEGIN,
-        'css' => array(
-            'datatables.min.css'
-        ),
         'js' => array(
-            'datatables.js'
+            'js/jquery.dataTables'.$minVersion.'.js',
+            'js/dataTables.bootstrap'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',
@@ -391,13 +390,14 @@ return array(
         'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.fn.sortable'.$minVersion.'.js'
-        )
-    ),
+            )
+        ),
     'jquery-actual' => array(
         'position' => CClientScript::POS_BEGIN,
+        'devBaseUrl' => 'third_party/jquery-actual',
         'basePath' => 'third_party.jquery-actual', /* for samechoiceheight/samelistheight */
         'js' => array(
-            'jquery.actual.min.js'
+            'jquery.actual'.$minVersion.'.js'
         ),
     ),
     /* Used by short text with map by leaflet */

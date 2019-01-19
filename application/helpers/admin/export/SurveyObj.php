@@ -91,7 +91,7 @@ class SurveyObj
         if ($questionId) {
             $answers = $this->getAnswers($questionId);
             if (isset($answers[$answerCode])) {
-                $answer = $answers[$answerCode]->answerL10ns[$sLanguageCode]->answer;
+                $answer = $answers[$answerCode];
             }
         }
 

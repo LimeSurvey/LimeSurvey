@@ -1,0 +1,65 @@
+{#
+/**
+ * Cell when checkbox layout is not used in advanced question attribute
+ *
+ * @var $dataTitle
+ * @var $ld
+ * @var $answertypeclass
+ * @var $extraclass
+ * @var $myfname2
+ * @var $answertext
+ * @var $error
+ * @var $myfname2_java_value
+ * @var $inputboxlayout
+ * @var $checkconditionFunction
+ * @var $minvalue
+ * @var $maxvalue
+ * @var $reverse
+ * @var $value
+ * @var $sSeparator
+ * @var $kpclass
+ * @var $maxlength
+ */
+#}
+
+<!-- answer_td -->
+<td class="answer_cell_{{ ld }} answer-item {{ answertypeclass }} {{ extraclass }}{% if error %} has-error{% endif %}">
+        {# Value for expression manager javascript ; no need to submit #}
+        {{ C.Html.hiddenField("java"~myfname2,value,({
+            'id' : "java"~myfname2,
+            'disabled' : true,
+        }))
+        }}
+        <label for="answer{{ myfname2 }}" class='ls-label-xs-visibility'>
+            {{ processString(dataTitle) }}
+        </label>
+        {% if inputboxlayout == false %}
+            <!-- InputBox Layout False -->
+            <select
+                class="multiflexiselect form-control text-right"
+                name="{{ myfname2 }}"
+                id="answer{{ myfname2 }}">
+                <option value="">
+                    {{ gT('...') }}
+                </option>
+                {% for i in range(minvalue, maxvalue, stepvalue) %}
+                    {% set selected = value is not empty and value|t == i|t?'SELECTED':'' %}
+                    <option value="{{ i|replace({'.' : sSeparator }) }}" {{ selected }}>
+                        {{ i|replace({'.':sSeparator }) }}
+                    </option>
+                {% endfor %}
+            </select>
+        {% elseif inputboxlayout == true %}
+            <!-- InputBox Layout -->
+            {{ C.Html.textField(myfname2,value,({
+                'id' : "answer"~myfname2,
+                'class' : "multiflexitext form-control "~answertypeclass~" text-right ",
+                'title' : gT('Only numbers may be entered in this field.'),
+                'size' : (inputsize ? inputsize : null),
+                'maxlength' : (maxlength ? maxlength : null),
+                'data-number' : 1,
+            }))
+            }}
+        {% endif %}
+</td>
+<!-- end of answer_td -->

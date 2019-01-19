@@ -193,7 +193,7 @@ $aReplacementData=array();
 
 
             <!-- Default Values -->
-            <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0):?>
+            <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0):?>
                     <a class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                         <span class="icon-defaultanswers"></span>
                         <?php eT("Edit default answers"); ?>
@@ -254,6 +254,14 @@ $aReplacementData=array();
                 <?php endif;?>
             <?php endif;?>
         </div>
+    <?php else: ?>        
+        <!-- Close -->
+        <?php if(isset($questionbar['closebutton']['url'])):?>
+            <a class="btn btn-danger pull-right margin-left" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
+                <span class="fa fa-close"></span>
+                <?php eT("Close");?>
+            </a>
+        <?php endif;?>
     <?php endif; ?>
 
         <?php // TODO: Factor out in own view? ?>

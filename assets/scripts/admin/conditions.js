@@ -248,6 +248,11 @@ populateCanswersSelectObject = function() {
 
     this.fun = function(evt) {
 
+        // preselect the first option if select object value is null
+        if ($(that.cquestionsId).val() === null){
+            $(that.cquestionsId+" option:first").attr('selected','selected');
+        }
+
         var fname = $(that.cquestionsId).val();
         // empty the canswers Select
         $(that.canswersId + ' option').remove();
@@ -373,8 +378,7 @@ function quickAddSelectTabFromOper() {
  * @return
  */
 function scenarioaddbtnOnClickAction() {
-    $('#scenarioaddbtn').hide();
-    $('#defaultscenariotxt').hide('slow');
+    $('#defaultscenarioshow').hide('slow');
     $('.add-scenario-column').removeClass('col-sm-4').addClass('col-sm-2');
     $('#scenario').show('slow');
 }

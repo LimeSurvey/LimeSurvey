@@ -38,6 +38,8 @@ class WipeCommand extends CConsoleCommand
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{surveys}}";
             Yii::app()->db->createCommand($actquery)->execute();
+            $actquery = "delete from {{surveys_groups}} where gsid<>1";
+            Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "truncate table {{surveys_languagesettings}}";
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery = "delete from {{permissions}} where uid<>1";

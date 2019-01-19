@@ -4,7 +4,9 @@
   "description": "",
   "main": "surveymenufunctionswrapper.js",
   "scripts": {
-    "compile": "uglify -s ./surveymenufunctionswrapper.js -o surveymenufunctionswrapper.min.js"
+    "compile": "uglifyjs ./surveymenufunctionswrapper.js -o surveymenufunctionswrapper.min.js && uglifyjs ./surveymenuentryfunctions.js -o surveymenuentryfunctions.min.js",
+    "compilemenu": "uglifyjs ./surveymenufunctionswrapper.js -o surveymenufunctionswrapper.min.js",
+    "compilemenuentries": "uglifyjs ./surveymenuentryfunctions.js -o surveymenuentryfunctions.min.js"
   },
   "author": "Markus Flür <markus.fluer@limesurvey.org>",
   "license": "GPL2.0",

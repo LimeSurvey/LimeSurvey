@@ -79,19 +79,19 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Assessments"),
                 'description' => gT("Permission to create/view/update/delete assessments rules for a survey"),
-                'img' => 'assessments'
+                'img' => ' fa fa-comment'
             ),
             'quotas' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("Quotas"),
                 'description' => gT("Permission to create/view/update/delete quota rules for a survey"),
-                'img' => 'quota'
+                'img' => ' fa fa-tasks'
             ),
             'responses' => array(
                 'title' => gT("Responses"),
                 'description' => gT("Permission to create(data entry)/view/update/delete/import/export responses"),
-                'img' => 'browse'
+                'img' => ' icon-browse'
             ),
             'statistics' => array(
                 'create' => false,
@@ -101,7 +101,7 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Statistics"),
                 'description' => gT("Permission to view statistics"),
-                'img' => 'statistics'
+                'img' => ' fa fa-bar-chart'
             ),
             'survey' => array(
                 'create' => false,
@@ -110,7 +110,7 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Survey deletion"),
                 'description' => gT("Permission to delete a survey"),
-                'img' => 'delete'
+                'img' => ' fa fa-trash'
             ),
             'surveyactivation' => array(
                 'create' => false,
@@ -120,12 +120,12 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Survey activation"),
                 'description' => gT("Permission to activate/deactivate a survey"),
-                'img' => 'activate_deactivate'
+                'img' => ' fa fa-play'
             ),
             'surveycontent' => array(
                 'title' => gT("Survey content"),
                 'description' => gT("Permission to create/view/update/delete/import/export the questions, groups, answers & conditions of a survey"),
-                'img' => 'add'
+                'img' => ' fa fa-file-text-o'
             ),
             'surveylocale' => array(
                 'create' => false,
@@ -133,15 +133,15 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey text elements"),
-                'description' => gT("Permission to view/update the survey text elements : survey title, survey description, welcome and end message …"),
-                'img'=>'edit'
+                'description' => gT("Permission to view/update the survey text elements, e.g. survey title, survey description, welcome and end message"),
+                'img'=>' fa fa-edit'
             ),
             'surveysecurity' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("Survey security"),
                 'description' => gT("Permission to modify survey security settings"),
-                'img' => 'survey_security'
+                'img' => ' fa fa-shield'
             ),
             'surveysettings' => array(
                 'create' => false,
@@ -150,11 +150,11 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Survey settings"),
                 'description' => gT("Permission to view/update the survey settings including survey participants table creation"),
-                'img' => 'survey_settings'
+                'img' => ' fa fa-gears'
             ),
             'tokens' => array(
                 'title' => gT("Tokens"), 'description'=>gT("Permission to create/update/delete/import/export token entries"),
-                'img' => 'tokens'
+                'img' => ' fa fa-user'
             ),
             'translations' => array(
                 'create' => false,
@@ -163,7 +163,7 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Quick translation"),
                 'description' => gT("Permission to view & update the translations using the quick-translation feature"),
-                'img' => 'translate'
+                'img' => ' fa fa-language'
             )
         );
         uasort($aPermissions, array(__CLASS__, "comparePermissionTitle"));
@@ -199,31 +199,31 @@ class Permission extends LSActiveRecord
                 'import' => false,
                 'title' => gT("Surveys"),
                 'description' => gT("Permission to create surveys (for which all permissions are automatically given) and view, update and delete surveys from other users"),
-                'img'=>'survey'
+                'img'=>' icon-list'
             ),
             'users' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("Users"),
                 'description' => gT("Permission to create, view, update and delete users"),
-                'img' => 'security'
+                'img' => ' fa fa-shield'
             ),
             'usergroups' => array(
                 'import' => false,
                 'export' => false,
                 'title' => gT("User groups"),
                 'description' => gT("Permission to create, view, update and delete user groups"),
-                'img' => 'usergroup'
+                'img' => ' fa fa-users'
             ),
             'templates' => array(
                 'title'=> gT("Templates"),
                 'description' => gT("Permission to create, view, update, delete, export and import templates"),
-                'img' => 'templates'
+                'img' => ' fa fa-paint-brush'
             ),
             'labelsets' => array(
                 'title' => gT("Label sets"),
                 'description' => gT("Permission to create, view, update, delete, export and import label sets/labels"),
-                'img' => 'labels'
+                'img' => ' icon-defaultanswers'
             ),
             'settings' => array(
                 'create' => false,
@@ -231,12 +231,12 @@ class Permission extends LSActiveRecord
                 'export' => false,
                 'title' => gT("Settings & Plugins"),
                 'description' => gT("Permission to view and update global settings & plugins and to delete and import plugins"),
-                'img' => 'global'
+                'img' => 'fa fa-globe'
             ),
             'participantpanel' => array(
                 'title' => gT("Central participant database"),
                 'description' => gT("Permission to create participants in the central participants database (for which all permissions are automatically given) and view, update and delete participants from other users"),
-                'img' => 'cpdb'
+                'img' => 'fa fa-user-circle-o'
             ),
         );
         uasort($aPermissions, array(__CLASS__, "comparePermissionTitle"));
@@ -248,7 +248,7 @@ class Permission extends LSActiveRecord
             'export' => false,
             'title' => gT("Superadministrator"),
             'description' => gT("Unlimited administration permissions"),
-            'img' => 'superadmin'
+            'img' => 'icon-superadmin'
         );
         $aPermissions['auth_db'] = array(
             'create' => false,
@@ -375,7 +375,7 @@ class Permission extends LSActiveRecord
                     }
                 }
                 $aBasePermissions = $aFilteredPermissions;
-            } elseif (Permission::model()->hasGlobalPermission('superadmin', 'read') && Yii::app()->session['loginID'] != 1) {
+            } elseif (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
                 unset($aBasePermissions['superadmin']);
             }
         } elseif ($sEntityName == 'survey') {
@@ -681,12 +681,14 @@ class Permission extends LSActiveRecord
         if (!$oSurvey) {
             return false;
         }
-        // If the user has the permission to update all other surveys he may import/export as well
-        if ($this->hasGlobalPermission('surveys', 'update', $iUserID) && $sPermission == 'token' && ($sCRUD == 'import' || $sCRUD == 'export')) {
-            $sCRUD = 'update';
-        }
         // Get global correspondance for surveys rigth
-        $sGlobalCRUD = ($sCRUD == 'create' || ($sCRUD == 'delete' && $sPermission != 'survey')) ? 'update' : $sCRUD;
+        $sGlobalCRUD = $sCRUD;
+        if(($sCRUD == 'create' || $sCRUD == 'import')) {// Create and import (token, reponse , question content …) need only allow update surveys
+            $sGlobalCRUD = 'update';
+        }
+        if(($sCRUD == 'delete' && $sPermission != 'survey')) {// Delete (token, reponse , question content …) need only allow update surveys
+            $sGlobalCRUD = 'update';
+        }
         return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
@@ -742,5 +744,22 @@ class Permission extends LSActiveRecord
             return $sEntityName::Model()->findByPk($iEntityID)->owner_id; // ALternative : if owner_id exist in $sEntityName::model()->findByPk($iEntityID), but unsure actually $sEntityName have always a model
         }
         return null;
+    }
+
+    public static function getPermissionList(){
+        $aPermissions = array_merge(self::getSurveyBasePermissions(),self::getGlobalBasePermissions());
+        return array_map(function($aPermission){
+            return $aPermission['title'];
+        }, $aPermissions);
+    }
+    public static function getPermissionGradeList(){
+        return [
+            'create' => gT("Create"),
+            'read' => gT("View/read"),
+            'update' => gT("Update"),
+            'delete' => gT("Delete"),
+            'import' => gT("Import"),
+            'export' => gT("Export"),
+        ];
     }
 }

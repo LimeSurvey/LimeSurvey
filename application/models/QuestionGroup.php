@@ -29,10 +29,14 @@
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions
+ * @property QuestionL10n[] $questionGroupL10ns
  */
 class QuestionGroup extends LSActiveRecord
 {
     public $aQuestions; // to stock array of questions of the group
+    public $group_name;
+    public $language;
+    public $description;
     /**
      * @inheritdoc
      * @return QuestionGroup
@@ -74,23 +78,24 @@ class QuestionGroup extends LSActiveRecord
             'questionGroupL10ns' => array(self::HAS_MANY, 'QuestionGroupL10n', 'gid', 'together' => true)
         );
     }    
-
-    public function defaultScope()
-    {
-        return array('order'=>'group_order');
-    }    
+ 
 
     /**
-     * @param integer $sid
+     * @param integer $iSurveyId
      * @param int $position
      */
-    public function updateGroupOrder($sid, $position = 0)
+    public function updateGroupOrder($iSurveyId, $position = 0)
     {
-        $data = Yii::app()->db->createCommand()->select('gid')
-            ->where('sid=:sid')
+        $iSurveyId = (int) $iSurveyId;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $language = $oSurvey->language;
+        $data = Yii::app()->db->createCommand()->select('g.gid')
+            ->where('g.sid=:sid AND gl.language = :language')
             ->order('group_order, group_name ASC')
-            ->from('{{groups}}')
-            ->bindParam(':sid', $sid, PDO::PARAM_INT)
+            ->from('{{groups}} g')
+            ->join('{{group_l10ns}} gl', 'g.gid=gl.gid')
+            ->bindParam(':sid', $iSurveyId, PDO::PARAM_INT)
+            ->bindParam(':language', $language, PDO::PARAM_STR)
             ->query();
 
         $position = intval($position);
@@ -100,6 +105,32 @@ class QuestionGroup extends LSActiveRecord
         }
     }
 
+    public function cleanOrder($surveyid){
+        $iSurveyId = (int) $surveyid;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+
+        $aSurveyLanguages = array_merge([$oSurvey->language], explode(" ", $oSurvey->additional_languages));
+
+        foreach ($aSurveyLanguages as $sSurveyLanguage) {
+            $oCriteria=new CDbCriteria;
+            $oCriteria->compare('sid',$iSurveyId);
+            $oCriteria->order = 'group_order ASC';
+
+            $aQuestiongroups = QuestionGroup::model()->findAll($oCriteria);
+            foreach($aQuestiongroups as $itrt => $oQuestiongroup) {
+                $iQuestionGroupOrder = $itrt+1;
+                $oQuestiongroup->group_order = $iQuestionGroupOrder;
+                $oQuestiongroup->save();
+
+                $aQuestions = $oQuestiongroup->questions;
+                foreach ($aQuestions as $qitrt => $oQuestion) {
+                    $iQuestionOrder = $qitrt+1;
+                    $oQuestion->question_order = $iQuestionOrder;
+                    $oQuestion->save(true);
+                }
+            }
+        }
+    }
     /**
      * Insert an array into the groups table
      * Returns false if insertion fails, otherwise the new GID
@@ -227,7 +258,7 @@ class QuestionGroup extends LSActiveRecord
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if (is_null($condarray)) {
                 $sDeleteUrl = Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid");
-                
+
                 $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
                     .'<a class="btn btn-default" href="#" '
                     .' data-href="'.$sDeleteUrl.'" '
@@ -285,6 +316,8 @@ class QuestionGroup extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
+        $criteria->with = array('questionGroupL10ns'=>array("select"=>"group_name, description"));
+        $criteria->together = true;
         $criteria->condition = 'sid=:surveyid AND language=:language';
         $criteria->params = (array(':surveyid'=>$this->sid, ':language'=>$this->language));
         $criteria->compare('group_name', $this->group_name, true);
@@ -299,6 +332,28 @@ class QuestionGroup extends LSActiveRecord
             ),
         ));
         return $dataProvider;
+    }
+
+    /*
+     * Get primary Question group title
+     */
+    public function getPrimaryTitle()
+    {
+        $survey = Survey::model()->findByPk($this->sid);
+        $baselang = $survey->language;
+        $oQuestionGroup = $this->with('questionGroupL10ns')->find('t.gid = :gid AND language = :language', array(':gid' => $this->gid, ':language' => $baselang));
+        return $oQuestionGroup->questionGroupL10ns[$baselang]->group_name;
+    }
+
+    /*
+     * Get primary Question group description
+     */
+    public function getPrimaryDescription()
+    {
+        $survey = Survey::model()->findByPk($this->sid);
+        $baselang = $survey->language;
+        $oQuestionGroup = $this->with('questionGroupL10ns')->find('t.gid = :gid AND language = :language', array(':gid' => $this->gid, ':language' => $baselang));
+        return $oQuestionGroup->questionGroupL10ns[$baselang]->description;
     }
 
     /**
