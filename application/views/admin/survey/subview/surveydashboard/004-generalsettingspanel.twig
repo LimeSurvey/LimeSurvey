@@ -6,7 +6,19 @@
         </a>
     </div>
     <ul class="list-group">
-            <!-- Administrator -->
+        <!-- Owner -->
+        
+        <li class="list-group-item">
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    {{gT("Owner:")}}
+                </div>
+                <div class="col-8">
+                        {{ flattenText(oSurvey.aOptions['owner']['users_name'] ~ ' (' ~ oSurvey.aOptions['owner']['email'] ~ ')') }}
+                </div>
+            </div>
+        </li>
+        <!-- Administrator -->
         <li class="list-group-item">
             <div class="ls-flex-row col-12">
                 <div class="col-4">

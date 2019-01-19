@@ -1441,10 +1441,10 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         // Get users, but we only need id and name (NOT password etc)
-        $owner_id = !empty($survey->oOptions->owner_id) ? $survey->oOptions->owner_id : $survey->owner_id;
+        $inheritOwner = empty($oSurvey->oOptions->ownerLabel) ? $oSurvey->owner_id : $oSurvey->oOptions->ownerLabel;
         $users = getUserList();
         $aData['users'] = array();
-        $aData['users']['-1'] = gT('Inherit').' ['. $owner_id . ']';
+        $aData['users']['-1'] = gT('Inherit').' ['. $inheritOwner . ']';
         foreach ($users as $user) {
             $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
         }

@@ -367,14 +367,13 @@ class SurveysGroupsettings extends LSActiveRecord
                 $instance->oOptionLabels->useCaptchaSaveAndLoad = gT("Off");
             }
         } elseif ($attribute == 'owner_id' && $value != -1){
-            $users = getUserList();
-            foreach ($users as $user) {
-                $oUsers[$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
-            }
-
-            if (!empty($users)){
-                $instance->oOptions->ownerUserId = $value;
-                $instance->oOptions->{$attribute} = str_replace($value, $oUsers[$value], $value);
+            $instance->oOptions->owner = "";
+            $instance->oOptions->ownerName = "";
+            $instance->oOptions->ownerEmail = "";
+            $oUser = User::model()->findByPk($instance->oOptions->{$attribute});
+            if(!empty($oUser)) {
+                $instance->oOptions->owner = $oUser->attributes;
+                $instance->oOptions->ownerLabel = $oUser->users_name." - ".$oUser->email;
             }
         } elseif ($attribute == 'format' && $value != -1){
             return str_replace(array('S', 'G', 'A'), array(gT("Question by question"), gT("Group by group"), gT("All in one")), $value);

@@ -156,7 +156,8 @@ class SurveysGroupsController extends Survey_Common_Action
 
         $users = getUserList();
         $aData['users'] = array();
-        $aData['users']['-1'] = gT('Inherit').' ['. $oSurvey['owner_id'] . ']';
+        $inheritOwner = empty($oSurvey['ownerLabel']) ? $oSurvey['owner_id'] : $oSurvey['ownerLabel'];
+        $aData['users']['-1'] = gT('Inherit').' ['. $inheritOwner . ']';
         foreach ($users as $user) {
             $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
         }
