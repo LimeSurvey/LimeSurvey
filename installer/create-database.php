@@ -999,4 +999,5 @@ function createDatabase($oDB){
         $oTransaction->rollback();
         throw new CHttpException(500, $e->getMessage());
     }
+    return true;
 }

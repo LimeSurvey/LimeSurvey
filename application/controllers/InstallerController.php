@@ -316,9 +316,7 @@ class InstallerController extends CController
                         Yii::app()->session['databaseDontExist'] = true;
 
                         $aValues['dbname'] = $oModel->dbname;
-
-                        // The database doesn't exist, etc. TODO: renderPartial should be done in the view, really.
-                        $aValues['adminoutputText'] = $this->renderPartial('/installer/nodatabase_view', $aValues, true);
+                        $aValues['model'] = $oModel;
 
                         $aValues['next'] = array(
                             'action' => 'installer/createdb',
@@ -341,9 +339,8 @@ class InstallerController extends CController
                     } elseif (!$bDBExistsButEmpty) {
                         $aValues['adminoutput'] .= "<br />".sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
                     }
-                    $this->render('/installer/dbsettings_view', $aValues);
-                } else {
-                    $this->render('/installer/dbconfig_view', $aData);
+                    $this->render('/installer/populatedb_view', $aValues);
+                    return;
                 }
             }
         }
@@ -798,6 +795,7 @@ class InstallerController extends CController
 
         return $db;
     }
+
 
     /**
      * Contains a number of extensions that can be expected
