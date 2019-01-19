@@ -80,7 +80,7 @@ function checkDbEngine(){
 
         <div id="InstallerConfigForm_dbpwd_row" class="form-group">
             <?= CHtml::activeLabelEx($model, 'dbpwd'); ?>
-            <?= CHtml::activeTextField($model, 'dbpwd',['class' => 'form-control']); ?>
+            <?= CHtml::activePasswordField($model, 'dbpwd',['class' => 'form-control']); ?>
             <div class="help-block"><?= $model->getAttributeHint('dbpwd') ?></div>
         </div>
 
