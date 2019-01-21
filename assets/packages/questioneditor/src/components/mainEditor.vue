@@ -14,7 +14,6 @@ export default {
     data() {
         return {
             currentQuestionCode: '',
-            currentQuestionType: '',
             editorQuestion: ClassicEditor,
             editorQuestionData: '',
             editorQuestionConfig: {},
@@ -45,25 +44,35 @@ export default {
         currentQuestionI10N() {
             return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage];
         },
-        questionImmutableI10N() {
-            return this.$store.state.questionImmutableI10N[this.$store.state.activeLanguage];
+        questionImmutableI10NQuestion() {
+            return this.$store.state.questionImmutableI10N[this.$store.state.activeLanguage].question;
+        },
+        questionImmutableI10NHelp() {
+            return this.$store.state.questionImmutableI10N[this.$store.state.activeLanguage].help;
         },
     },
     methods: {
         changedParts() {
             let changed = {};
-            this.$log.log('COMPARING', {
-                'this.$store.state.questionImmutable' : this.$store.state.questionImmutable,
-                'this.currentQuestionType' : this.currentQuestionType,
-                'this.currentQuestionI10N' : this.currentQuestionI10N,
-                'this.questionImmutableI10N' : this.questionImmutableI10N
+            this.$log.log('CHANGE!',{
+                currentQuestionQuestion: this.currentQuestionQuestion,
+                questionImmutableI10NQuestion: this.questionImmutableI10NQuestion,
+                currentQuestionHelp: this.currentQuestionHelp,
+                questionImmutableI10NHelp: this.questionImmutableI10NHelp,
+                'questionEqal' : isEqual(this.currentQuestionQuestion, this.questionImmutableI10NQuestion),
+                'helpEqual' : isEqual(this.currentQuestionHelp, this.questionImmutableI10NHelp)
             });
-            if(!isEqual(this.currentQuestionI10N, this.questionImmutableI10N)) {
+            if(!(
+                isEqual(this.currentQuestionQuestion, this.questionImmutableI10NQuestion)
+                && isEqual(this.currentQuestionHelp, this.questionImmutableI10NHelp)
+            )) {
                 changed['changedText'] = this.currentQuestionI10N;
             }
-            if(!isEqual(this.currentQuestionType, this.$store.state.questionImmutable.type)) {
-                changed['changedType'] = this.currentQuestionType;
+            if(!isEqual(this.$store.state.currentQuestion.type, this.$store.state.questionImmutable.type)) {
+                changed['changedType'] = this.$store.state.currentQuestion.type;
             }
+            this.$log.log('CHANGEOBJECT',changed);
+            
             return changed;
         },
         triggerPreview(){
@@ -75,7 +84,11 @@ export default {
         questionTypeChangeTriggered(newValue) {
             this.$log.log('CHANGE OF TYPE', newValue);
             this.currentQuestionType = newValue;
+            let tempQuestionObject = this.$store.state.currentQuestion;
+            tempQuestionObject.type = newValue;
+            this.$store.commit('setCurrentQuestion', tempQuestionObject);
             this.getQuestionPreview();
+            this.$store.dispatch('getQuestionGeneralSettingsWithType');
         },
         changeTriggered: debounce( function(content,event) {
             this.$log.log('Debounced load triggered',{content,event});
@@ -102,7 +115,6 @@ export default {
         this.selectLanguage(this.$store.state.languages[0]);
         this.getQuestionPreview();
         this.currentQuestionCode = this.$store.state.currentQuestion.title;
-        this.currentQuestionType = this.$store.state.currentQuestion.type;
     },
 }
 </script>
@@ -118,7 +130,7 @@ export default {
                 <div class="form-group col-sm-6 contains-question-selector">
                     <label for="questionCode">{{'Question type' | translate }}</label>
                     <div v-html="questionEditButton" />
-                    <input type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="currentQuestionType" />
+                    <input type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
                 </div>
             </div>
             <div class="row">

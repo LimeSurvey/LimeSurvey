@@ -11440,7 +11440,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.loading-back-greyed[data-v-05c0cfb0] {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\n}\r\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/App.vue?6aaf0f4f"],"names":[],"mappings":";AAiDA;IACA,wCAAA;IACA,YAAA;IACA,aAAA;IACA,iBAAA;CACA","file":"App.vue","sourcesContent":["<script>\r\nimport MainEditor from './components/mainEditor.vue';\r\nimport GeneralSettings from './components/generalSettings.vue';\r\nimport AdvancedSettings from './components/advancedSettings.vue';\r\n\r\nexport default {\r\n    name: 'lsnextquestioneditor',\r\n    data() {\r\n        return {\r\n            event: null,\r\n        }\r\n    },\r\n    components: {\r\n        'maineditor' : MainEditor,\r\n        'generalsettings' : GeneralSettings,\r\n        'advancedsettings' : AdvancedSettings\r\n    },\r\n    mounted() {\r\n        this.toggleLoading(false);\r\n        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);\r\n    },\r\n    methods: {\r\n        jqueryTriggered(event, data){\r\n            //this.$log.log('data', data);\r\n            this.event = JSON.parse(data.emitter);\r\n        },\r\n        eventSet() {\r\n            this.event = null;\r\n        }\r\n\r\n    },\r\n    created(){\r\n        this.$store.dispatch('loadQuestion');\r\n        this.$store.dispatch('getQuestionTypes');\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"container-center\">\r\n        <template v-if=\"$store.getters.fullyLoaded\">\r\n            <maineditor :event=\"event\" v-on:eventSet=\"eventSet\"></maineditor>\r\n            <generalsettings :event=\"event\" v-on:eventSet=\"eventSet\"></generalsettings>\r\n            <advancedsettings :event=\"event\" v-on:eventSet=\"eventSet\"></advancedsettings>\r\n        </template>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n.loading-back-greyed {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.loading-back-greyed[data-v-05c0cfb0] {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\n}\r\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/App.vue?0cda2e56"],"names":[],"mappings":";AAkDA;IACA,wCAAA;IACA,YAAA;IACA,aAAA;IACA,iBAAA;CACA","file":"App.vue","sourcesContent":["<script>\r\nimport MainEditor from './components/mainEditor.vue';\r\nimport GeneralSettings from './components/generalSettings.vue';\r\nimport AdvancedSettings from './components/advancedSettings.vue';\r\n\r\nexport default {\r\n    name: 'lsnextquestioneditor',\r\n    data() {\r\n        return {\r\n            event: null,\r\n        }\r\n    },\r\n    components: {\r\n        'maineditor' : MainEditor,\r\n        'generalsettings' : GeneralSettings,\r\n        'advancedsettings' : AdvancedSettings\r\n    },\r\n    mounted() {\r\n        this.toggleLoading(false);\r\n        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);\r\n    },\r\n    methods: {\r\n        jqueryTriggered(event, data){\r\n            //this.$log.log('data', data);\r\n            this.event = JSON.parse(data.emitter);\r\n        },\r\n        eventSet() {\r\n            this.event = null;\r\n        }\r\n\r\n    },\r\n    created(){\r\n        this.$store.dispatch('loadQuestion');\r\n        this.$store.dispatch('getQuestionTypes');\r\n        this.$store.dispatch('getQuestionGeneralSettings');\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"container-center\">\r\n        <template v-if=\"$store.getters.fullyLoaded\">\r\n            <maineditor :event=\"event\" v-on:eventSet=\"eventSet\"></maineditor>\r\n            <generalsettings :event=\"event\" v-on:eventSet=\"eventSet\"></generalsettings>\r\n            <advancedsettings :event=\"event\" v-on:eventSet=\"eventSet\"></advancedsettings>\r\n        </template>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n.loading-back-greyed {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -11524,6 +11524,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created() {
         this.$store.dispatch('loadQuestion');
         this.$store.dispatch('getQuestionTypes');
+        this.$store.dispatch('getQuestionGeneralSettings');
     }
 });
 
@@ -11643,7 +11644,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data() {
         return {
             currentQuestionCode: '',
-            currentQuestionType: '',
             editorQuestion: __WEBPACK_IMPORTED_MODULE_0__ckeditor_ckeditor5_build_classic___default.a,
             editorQuestionData: '',
             editorQuestionConfig: {},
@@ -11678,25 +11678,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         currentQuestionI10N() {
             return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage];
         },
-        questionImmutableI10N() {
-            return this.$store.state.questionImmutableI10N[this.$store.state.activeLanguage];
+        questionImmutableI10NQuestion() {
+            return this.$store.state.questionImmutableI10N[this.$store.state.activeLanguage].question;
+        },
+        questionImmutableI10NHelp() {
+            return this.$store.state.questionImmutableI10N[this.$store.state.activeLanguage].help;
         }
     },
     methods: {
         changedParts() {
             let changed = {};
-            this.$log.log('COMPARING', {
-                'this.$store.state.questionImmutable': this.$store.state.questionImmutable,
-                'this.currentQuestionType': this.currentQuestionType,
-                'this.currentQuestionI10N': this.currentQuestionI10N,
-                'this.questionImmutableI10N': this.questionImmutableI10N
+            this.$log.log('CHANGE!', {
+                currentQuestionQuestion: this.currentQuestionQuestion,
+                questionImmutableI10NQuestion: this.questionImmutableI10NQuestion,
+                currentQuestionHelp: this.currentQuestionHelp,
+                questionImmutableI10NHelp: this.questionImmutableI10NHelp,
+                'questionEqal': __WEBPACK_IMPORTED_MODULE_2_lodash_isEqual___default.a(this.currentQuestionQuestion, this.questionImmutableI10NQuestion),
+                'helpEqual': __WEBPACK_IMPORTED_MODULE_2_lodash_isEqual___default.a(this.currentQuestionHelp, this.questionImmutableI10NHelp)
             });
-            if (!__WEBPACK_IMPORTED_MODULE_2_lodash_isEqual___default.a(this.currentQuestionI10N, this.questionImmutableI10N)) {
+            if (!(__WEBPACK_IMPORTED_MODULE_2_lodash_isEqual___default.a(this.currentQuestionQuestion, this.questionImmutableI10NQuestion) && __WEBPACK_IMPORTED_MODULE_2_lodash_isEqual___default.a(this.currentQuestionHelp, this.questionImmutableI10NHelp))) {
                 changed['changedText'] = this.currentQuestionI10N;
             }
-            if (!__WEBPACK_IMPORTED_MODULE_2_lodash_isEqual___default.a(this.currentQuestionType, this.$store.state.questionImmutable.type)) {
-                changed['changedType'] = this.currentQuestionType;
+            if (!__WEBPACK_IMPORTED_MODULE_2_lodash_isEqual___default.a(this.$store.state.currentQuestion.type, this.$store.state.questionImmutable.type)) {
+                changed['changedType'] = this.$store.state.currentQuestion.type;
             }
+            this.$log.log('CHANGEOBJECT', changed);
+
             return changed;
         },
         triggerPreview() {
@@ -11708,7 +11715,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         questionTypeChangeTriggered(newValue) {
             this.$log.log('CHANGE OF TYPE', newValue);
             this.currentQuestionType = newValue;
+            let tempQuestionObject = this.$store.state.currentQuestion;
+            tempQuestionObject.type = newValue;
+            this.$store.commit('setCurrentQuestion', tempQuestionObject);
             this.getQuestionPreview();
+            this.$store.dispatch('getQuestionGeneralSettingsWithType');
         },
         changeTriggered: __WEBPACK_IMPORTED_MODULE_1_lodash_debounce___default.a(function (content, event) {
             this.$log.log('Debounced load triggered', { content, event });
@@ -11731,7 +11742,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.selectLanguage(this.$store.state.languages[0]);
         this.getQuestionPreview();
         this.currentQuestionCode = this.$store.state.currentQuestion.title;
-        this.currentQuestionType = this.$store.state.currentQuestion.type;
     }
 });
 
@@ -14492,7 +14502,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "type"
     },
     domProps: {
-      "value": _vm.currentQuestionType
+      "value": _vm.$store.state.currentQuestion.type
     },
     on: {
       "change": _vm.questionTypeChangeTriggered
@@ -14701,7 +14711,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scope-set-min-height[data-v-df131e4a] {\n  min-height: 40vh;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/generalSettings.vue"],"names":[],"mappings":";AAAA;EACE,iBAAiB;CAAE","file":"generalSettings.vue","sourcesContent":[".scope-set-min-height {\n  min-height: 40vh; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scope-general-setting-block[data-v-df131e4a] {\n  margin: 1rem  0.1rem;\n}\n.scope-set-min-height[data-v-df131e4a] {\n  min-height: 40vh;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/generalSettings.vue"],"names":[],"mappings":";AAAA;EACE,qBAAqB;CAAE;AAEzB;EACE,iBAAiB;CAAE","file":"generalSettings.vue","sourcesContent":[".scope-general-setting-block {\n  margin: 1rem  0.1rem; }\n\n.scope-set-min-height {\n  min-height: 40vh; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -14727,7 +14737,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-sm-4 col-xs-12 scope-border-simple scope-set-min-height"
-  })
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v(" " + _vm._s(_vm._f("translate")("General Settings")))]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "list-group"
+  }, _vm._l((_vm.$store.state.questionGeneralSettings), function(generalSetting) {
+    return _c('div', {
+      key: generalSetting.name,
+      staticClass: "list-group-item scope-general-setting-block"
+    }, [_c('label', {
+      staticClass: "list-group-item-heading",
+      attrs: {
+        "for": generalSetting.formElementId
+      }
+    }, [_vm._v(" " + _vm._s(generalSetting.title) + " ")]), _vm._v(" "), _c('div', {
+      staticClass: "list-group-item-text form-row",
+      domProps: {
+        "innerHTML": _vm._s(generalSetting.formElement)
+      }
+    })])
+  }))])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -14930,6 +14963,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODU
         currentQuestionSettings: {},
         currentQuestionI10N: {},
         questionAttributes: {},
+        questionGeneralSettings: [],
         questionImmutable: {},
         questionImmutableI10N: {},
         languages: [],
@@ -18657,6 +18691,9 @@ process.umask = function() { return 0; };
     setQuestionTypeList : (state, newValue) => {
         state.questionTypes = newValue;
     },
+    setQuestionGeneralSettings : (state, newValue) => {
+        state.questionGeneralSettings = newValue;
+    },
     setActiveLanguage : (state, newValue) => {
         state.activeLanguage = newValue;
     },
@@ -18709,7 +18746,7 @@ process.umask = function() { return 0; };
             context.commit('unsetQuestionImmutable')
             context.commit('setQuestionImmutable',result.data.question)
             context.commit('unsetQuestionImmutableI10N')
-            context.commit('setQuestionImmutableI10N',result.data.i10n)
+            context.commit('setQuestionImmutableI10N', __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.cloneDeep(result.data.i10n))
             context.commit('setLanguages',__WEBPACK_IMPORTED_MODULE_1_lodash___default.a.map(result.data.i10n, (value, language) => {
                 return language;
             }));
@@ -18720,6 +18757,26 @@ process.umask = function() { return 0; };
             {'iQuestionId' : window.QuestionEditData.qid}
         ).then((result) => {
             context.commit('setQuestionAttributes', result.data);
+        });
+    },
+    getQuestionGeneralSettings: (context) => {
+        __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
+            window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
+            {'iQuestionId' : window.QuestionEditData.qid}
+        ).then((result) => {
+            context.commit('setQuestionGeneralSettings', result.data);
+        });
+    },
+    getQuestionGeneralSettingsWithType: (context) => {
+        context.commit('setQuestionGeneralSettings', []);
+        __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
+            window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
+            {
+                'iQuestionId' : window.QuestionEditData.qid,
+                'sQuestionType' : context.store.currentQuestion.type
+            }
+        ).then((result) => {
+            context.commit('setQuestionGeneralSettings', result.data);
         });
     },
     getQuestionTypes: (context) => {

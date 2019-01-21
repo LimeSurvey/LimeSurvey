@@ -32,6 +32,7 @@ export default {
     created(){
         this.$store.dispatch('loadQuestion');
         this.$store.dispatch('getQuestionTypes');
+        this.$store.dispatch('getQuestionGeneralSettings');
     }
 }
 </script>

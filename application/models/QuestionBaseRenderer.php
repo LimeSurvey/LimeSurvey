@@ -48,11 +48,17 @@ abstract class QuestionBaseRenderer extends StaticModel
         $this->oQuestion = Question::model()->findByPk($aFieldArray[0]);
         $this->bRenderDirect = $bRenderDirect;
         $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], @$_SESSION['survey_'.$this->oQuestion->sid]['s_lang']);
+        if(!$this->sLanguage) {
+                $this->sLanguage = $this->oQuestion->survey->language;
+        }
+        
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
         $this->aSurveySessionArray = @$_SESSION['survey_'.$this->oQuestion->sid];
         $this->mSessionValue = @$this->setDefaultIfEmpty($this->aSurveySessionArray[$this->sSGQA], '');
+        
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
         $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
+        
     }
     
     protected function getTimeSettingRender()
@@ -318,6 +324,9 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setDefaultIfEmpty($value, $default)
     {
+        if(!$value) {
+            return $default;
+        }
         return trim($value) == '' ? $default : $value;
     }
 

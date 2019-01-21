@@ -111,6 +111,11 @@ class questionedit extends Survey_Common_Action
     public function getQuestionTypeList() {
         $this->renderJSON(QuestionType::modelsAttributes());
     }
+    
+    public function getGeneralOptions($iQuestionId, $sQuestionType=null){
+        $oQuestion = Question::model()->findByPk($iQuestionId);
+        $this->renderJSON($oQuestion->getDataSetObject()->getGeneralSettingsArray(null, $sQuestionType));
+    }
 
     /**
      * Live preview rendering

@@ -97,7 +97,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $line .= '</div>';
             //if($root === true) {
                 $line = '<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
-                    . '<body style="padding-top: 90px;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >'
+                    . '<body style="padding-top: 0px !important;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >'
                     . file_get_contents($oLayoutTemplate->viewPath.'/subviews/header/head.twig')
                     . $line;
                 $line .= '</body>';

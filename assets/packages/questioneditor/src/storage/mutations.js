@@ -14,6 +14,9 @@ export default {
     setQuestionTypeList : (state, newValue) => {
         state.questionTypes = newValue;
     },
+    setQuestionGeneralSettings : (state, newValue) => {
+        state.questionGeneralSettings = newValue;
+    },
     setActiveLanguage : (state, newValue) => {
         state.activeLanguage = newValue;
     },
