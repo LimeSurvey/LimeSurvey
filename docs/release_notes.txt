@@ -35,6 +35,52 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.15.6 (build 190108) to 3.15.7 (build 190122) January 22, 2019
+-[security] Fixed issue:  possible to delete a broken theme by bait clicking an administrator (LouisGac)
+-[security] Fixed issue:  possible to delete a theme by bait clicking an administrator (LouisGac)
+-Fixed issue: avoid rare QID colision in checkintegrety (LouisGac)
+-Fixed issue : 500 error just after survey creation (Denis Chenu)
+-Fixed issue : don't replace question title starting with self or that in expression (Denis Chenu)
+-Fixed issue : invalid HTML in ranking question (Denis Chenu)
+-Fixed issue : unable to disable samechoiceheight and samelistheight in ranking (Denis Chenu)
+-Fixed issue: Printanwers not using evaluated question and helptext (Markus Flür)
+-Fixed issue: Slider not always in middle position (Markus Flür)
+-Fixed issue: no "loading" icon on survey list page (Dominik Vitt)
+-Fixed issue: placeholder fields can't be inserted and expresions validation doesn't work on edit email templates page (Dominik Vitt)
+-Fixed issue: wrong link to noto italic (LouisGac)
+-Fixed issue #14135: Evaluation of survey statistics generates a query error when using PostgreSQL DB server (Dominik Vitt)
+-Fixed issue #14229: Popover showed multiple times when saving survey (#1167) (amicci)
+-Fixed issue #14389: never same order in Theme list (#1208) (Denis Chenu)
+-Fixed issue #14398: Unable to set a different standardthemerootdir than default one (#1201) (Denis Chenu)
+-Fixed issue #14400: Unable to use self ot that fixed string in Expression (#1202) (Denis Chenu)
+-Fixed issue #14406: 'Ranking' Question same choice height not updated when a expression update choice (Denis Chenu)
+-Fixed issue #14411: Ranking choice height is to big than needed in case of filter (Denis Chenu)
+-Fixed issue #14415: (partial) unable to use Expression Manager var in submit.twig (#1206) (Denis Chenu)
+-Fixed issue #14416: Sort LDAP participant names alphabetically in the survey creation form (#1205) (s-nirali)
+-Fixed issue #14424: Ranking question totally hang browser with same height (Denis Chenu)
+-Fixed issue #14425: Improve Ranking speed without same height (Denis Chenu)
+-Fixed issue #14426: Error exporting PDF with graphs (Dominik Vitt)
+-Fixed issue #14427: On an Active survey, Option 'Other' switched to Off when update question (Denis Chenu)
+-Fixed issue #14431: error 500 in question list with postgresql (Denis Chenu)
+-Fixed issue #14437: Statistics - Clear button not working (LouisGac)
+-Fixed issue #14441: Survey summary invalid values for administrator (Denis Chenu)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Turkish by kayazeren
+#Updated translation: Vietnamese by c_schmitz, namphuong, tuannm, dnvservices
+
+
 Changes from 3.15.5 (build 181115) to 3.15.6 (build 190108) January 8, 2019
 -New feature: added afterSurveyActivate, afterSurveyDeactivate Plugin Events (#1168) (Marko Bischof)
 -[security] Fixed issue #14376: XSS in Survey Resource zip upload (Denis Chenu)
