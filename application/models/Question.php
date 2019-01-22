@@ -1017,8 +1017,10 @@ class Question extends LSActiveRecord
         $criteria2->compare('t.question', $this->title, true, 'OR');
         $criteria2->compare('t.type', $this->title, true, 'OR');
         /* search id exactly */
-        $criteria2->compare('t.qid', $this->title, false, 'OR');
-        if ($this->gid != '') {
+        if(is_numeric($this->title)) {
+            $criteria2->compare('t.qid', $this->title, false, 'OR');
+        }
+        if ($this->gid != '' and is_numeric($this->gid)) {
             $criteria->compare('groups.gid', $this->gid, false, 'AND');
         }
 
