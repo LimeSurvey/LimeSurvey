@@ -143,7 +143,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
- * @property boolean $isExpiredByConfig Whether survey is expired depending on the current time and survey configuration status
+ * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @method mixed active()
  */
 class Survey extends LSActiveRecord
@@ -1120,7 +1120,7 @@ class Survey extends LSActiveRecord
      * @return bool
      * @throws Exception
      */
-    public function getIsExpiredByConfig()
+    public function getIsDateExpired()
     {
         if (!empty($this->expires)) {
             $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
