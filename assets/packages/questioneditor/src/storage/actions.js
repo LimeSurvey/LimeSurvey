@@ -13,10 +13,8 @@ export default {
             context.commit('setQuestionImmutable',result.data.question)
             context.commit('unsetQuestionImmutableI10N')
             context.commit('setQuestionImmutableI10N', _.cloneDeep(result.data.i10n))
-            context.commit('setLanguages',_.map(result.data.i10n, (value, language) => {
-                return language;
-            }));
-            context.commit('setActiveLanguage', context.state.languages[0]);
+            context.commit('setLanguages', result.data.languages);
+            context.commit('setActiveLanguage', result.data.mainLanguage);
         });
         ajax.methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getQuestionAttributeData', 

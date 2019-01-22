@@ -19,4 +19,16 @@
     .ck.ck-content {
         min-height: 10rem;
     }
+    .question-option-general-container {
+
+        .question-option-general-setting-block {
+            margin: 0.25rem  0 0.5rem 0; 
+            
+            .question-option-help {
+                margin: 0.5rem 0;
+                padding: .75rem;
+            }
+        }
+        
+    }
 }

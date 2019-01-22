@@ -96,6 +96,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementName' => false, //false means identical to id
                 'formElementHelp' => gT("Use a customized question theme for this question"),
                 'formElement' => 'select',
+                'formElementValue' => isset($aQuestionTemplateAttributes['value']) ? $aQuestionTemplateAttributes['value'] : '',
                 'formElementOptions' => [
                     'classes' => ['form-control'],
                     'options' => $aOptionsArray,
@@ -134,6 +135,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             'formElementName' => false,
             'formElementHelp' => gT("If you want to change the question group this question is in."),
             'formElement' => 'select',
+            'formElementValue' => $this->oQuestion->gid,
             'formElementOptions' => [
                 'classes' => ['form-control'],
                 'options' => $aGroupOptions,
@@ -150,14 +152,15 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementId' => 'other',
                 'formElementName' => false,
                 'formElementHelp' => gT('Activate the "other" option for your question'),
-                'formElement' => 'switcher',
+                'formElement' => 'checkboxswitch',
+                'formElementValue' => $this->oQuestion->other == 'Y',
                 'formElementOptions' => [
                     'classes' => [],
                     'switchData' => [
-                        'on-text' => "On",
-                        'off-text' => "Off",
-                        'on-color' => "primary",
-                        'off-color' => "warning",
+                        'onText' => gT("On"),
+                        'offText' => gT("Off"),
+                        'onColor' => "primary",
+                        'offColor' => "warning",
                         'size' => "small",
                     ],
                 ],
@@ -173,14 +176,15 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementId' => 'mandatory',
                 'formElementName' => false,
                 'formElementHelp' => gT('Makes this question mandatory in your survey'),
-                'formElement' => 'switcher',
+                'formElement' => 'checkboxswitch',
+                'formElementValue' => $this->oQuestion->mandatory == 'Y',
                 'formElementOptions' => [
                     'classes' => [],
                     'switchData' => [
-                        'on-text' => "On",
-                        'off-text' => "Off",
-                        'on-color' => "primary",
-                        'off-color' => "warning",
+                        'onText' => gT("On"),
+                        'offText' => gT("Off"),
+                        'onColor' => "primary",
+                        'offColor' => "warning",
                         'size' => "small",
                     ],
                 ],
@@ -190,6 +194,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         
     public function getRelevanceEquationInput()
     {
+        $inputType = 'textarea';
         $relevanceIntputHtml = ''
             .'<div class="input-group">
                     <div class="input-group-addon">{</div>
@@ -200,6 +205,8 @@ abstract class QuestionBaseDataSet extends StaticModel
                     .'<div class="input-group-addon">}</div>'
                 .'</div>';
         if (count($this->oQuestion->conditions) > 0) {
+            $inputType = 'text';
+            $content = gT("Note: You can't edit the relevance equation because there are currently conditions set for this question.");
             $relevanceIntputHtml .= '<div class="help-block text-warning">'
                 . gT("Note: You can't edit the relevance equation because there are currently conditions set for this question.")
                 .'</div>';
@@ -210,12 +217,11 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'title' => gT('Relevance equation'),
                 'formElementId' => 'relevance',
                 'formElementName' => false,
-                'formElementHelp' => (count($this->oQuestion->conditions)>0
-                    ? gT("Note: You can't edit the relevance equation because there are currently conditions set for this question.")
-                    : gT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
+                'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
                 'formElement' => 'textarea',
+                'formElementValue' => $this->oQuestion->relevance,
                 'formElementOptions' => [
-                    'classes' => 'form-control',
+                    'classes' => ['form-control'],
                     'attributes' => [
                         'rows' => 1,
                         'readonly' => count($this->oQuestion->conditions)>0
@@ -232,14 +238,15 @@ abstract class QuestionBaseDataSet extends StaticModel
     public function getValidationInput()
     {
         return  [
-                'name' => 'RelevanceEquation',
-                'title' => gT('Relevance equation'),
+                'name' => 'Validation',
+                'title' => gT('Input validation'),
                 'formElementId' => 'preg',
                 'formElementName' => false,
                 'formElementHelp' => gT('You can add any regular expression based validation in here'),
-                'formElement' => 'input',
+                'formElement' => 'textinput',
+                'formElementValue' => $this->oQuestion->preg,
                 'formElementOptions' => [
-                    'classes' => 'form-control',
+                    'classes' => ['form-control'],
                     'inputGroup' => [
                         'prefix' => 'RegExp',
                     ]

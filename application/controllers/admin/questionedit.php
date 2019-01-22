@@ -28,7 +28,6 @@ use \LimeSurvey\Helpers\questionHelper;
 */
 class questionedit extends Survey_Common_Action
 {
-    
     public function view($surveyid, $gid, $qid)
     {
         $aData = array();
@@ -89,30 +88,45 @@ class questionedit extends Survey_Common_Action
     **** All called via ajax
     ****/
 
-    public function getPossibleLanguages($iSurveyId){
+    public function getPossibleLanguages($iSurveyId)
+    {
         $iSurveyId = (int) $iSurveyId;
         $aLanguages = Survey::model()->findByPk($iSurveyId)->allLanguages;
         $this->renderJSON($aLanguages);
     }
 
-    public function getQuestionData($iQuestionId){
+    public function getQuestionData($iQuestionId)
+    {
         $iQuestionId = (int) $iQuestionId;
         $oQuestion = Question::model()->findByPk($iQuestionId);
-        
-        $this->renderJSON(['question' => $oQuestion, 'i10n' => $oQuestion->questionL10ns]);
+        $aLanguages = [];
+        $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
+        $aSurveyLanguages = $oQuestion->survey->getAllLanguages();
+        array_walk($aSurveyLanguages, function ($lngString) use (&$aLanguages, $aAllLanguages) {
+            $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
+        });
+        $this->renderJSON([
+            'question' => $oQuestion, 
+            'i10n' => $oQuestion->questionL10ns, 
+            'languages' => $aLanguages, 
+            'mainLanguage' => $oQuestion->survey->language
+        ]);
     }
 
-    public function getQuestionAttributeData($iQuestionId){
+    public function getQuestionAttributeData($iQuestionId)
+    {
         $iQuestionId = (int) $iQuestionId;
         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQuestionId);
         $this->renderJSON($aQuestionAttributes);
     }
 
-    public function getQuestionTypeList() {
+    public function getQuestionTypeList()
+    {
         $this->renderJSON(QuestionType::modelsAttributes());
     }
     
-    public function getGeneralOptions($iQuestionId, $sQuestionType=null){
+    public function getGeneralOptions($iQuestionId, $sQuestionType=null)
+    {
         $oQuestion = Question::model()->findByPk($iQuestionId);
         $this->renderJSON($oQuestion->getDataSetObject()->getGeneralSettingsArray(null, $sQuestionType));
     }
@@ -126,18 +140,19 @@ class questionedit extends Survey_Common_Action
      *
      * @return void
      */
-    public function getRenderedPreview($iQuestionId, $sLanguage, $root=false) {
+    public function getRenderedPreview($iQuestionId, $sLanguage, $root=false)
+    {
         $root = (bool) $root;
         $oQuestion = Question::model()->findByPk($iQuestionId);
 
         $changedText = App()->request->getPost('changedText', []);
         $changedType = App()->request->getPost('changedType', $oQuestion->type);
 
-        if($changedText !== []) {
+        if ($changedText !== []) {
             Yii::app()->session['edit_'.$iQuestionId.'_changedText'] = $changedText;
         } else {
-            $changedText = isset(Yii::app()->session['edit_'.$iQuestionId.'_changedText']) 
-                ? Yii::app()->session['edit_'.$iQuestionId.'_changedText'] 
+            $changedText = isset(Yii::app()->session['edit_'.$iQuestionId.'_changedText'])
+                ? Yii::app()->session['edit_'.$iQuestionId.'_changedText']
                 : [];
         }
 
@@ -169,16 +184,16 @@ class questionedit extends Survey_Common_Action
                 'number' => $oQuestion->question_order,
                 'code' => $oQuestion->title,
                 'text' => isset($changedText['question']) ? $changedText['question'] : $oQuestion->questionL10ns[$sLanguage]->question,
-                'help' => [ 
-                    'show' => true, 
-                    'text' => ( isset($changedText['help']) ? $changedText['help'] : $oQuestion->questionL10ns[$sLanguage]->help )
+                'help' => [
+                    'show' => true,
+                    'text' => (isset($changedText['help']) ? $changedText['help'] : $oQuestion->questionL10ns[$sLanguage]->help)
                 ],
             ]
         );
         $oTemplate = Template::model()->getInstance($oQuestion->survey->template);
         Yii::app()->twigRenderer->renderTemplateForQuestionEditPreview(
-            '/subviews/survey/question_container.twig', 
-            ['aSurveyInfo' => $aSurveyInfo, 'aQuestion' => $aQuestion, 'session' => $_SESSION], 
+            '/subviews/survey/question_container.twig',
+            ['aSurveyInfo' => $aSurveyInfo, 'aQuestion' => $aQuestion, 'session' => $_SESSION],
             $root
         );
 
@@ -188,13 +203,15 @@ class questionedit extends Survey_Common_Action
 
     /**
      * Method to render an array as a json document
-     * 
+     *
      * @param array $aData
      * @return void
      */
-    protected function renderJSON($aData){
-        if(Yii::app()->getConfig('debug') > 0)
+    protected function renderJSON($aData)
+    {
+        if (Yii::app()->getConfig('debug') > 0) {
             $aData['debug'] = [$_POST, $_GET];
+        }
 
         echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData], true, false);
         return;
@@ -211,5 +228,4 @@ class questionedit extends Survey_Common_Action
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData, $sRenderFile);
     }
-
 }
