@@ -999,7 +999,7 @@ class SurveyRuntimeHelper
 
                 App()->clientScript->registerScript("saveflashmessage", "
                     console.ls.log($('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']'));
-                    $('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']').popover({
+                    $('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']:visible').popover({
                         title: '".gT('Success')."',
                         content: '<div>".gT("Your responses were successfully saved.", "js")."</div>',
                         html: true,
