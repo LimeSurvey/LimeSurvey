@@ -57,7 +57,7 @@ function checkDbEngine(){
         <div id="InstallerConfigForm_dbtype_row" class="form-group">
             <?= CHtml::activeLabelEx($model, 'dbtype'); ?>
             <?= CHtml::activeDropDownList($model, 'dbtype', $model->supportedDbTypes, ['required' => 'required', 'class'=>'form-control', 'autofocus' => 'autofocus']); ?>
-            <div class="help-block"><?= $model->getAttributeHint('dbtype') ?></div>
+            <div class="help-block"><?= $model->attributeHints()['dbtype'] ?></div>
         </div>
 
         <div id="InstallerConfigForm_dbengine_row" class="form-group">
@@ -69,31 +69,31 @@ function checkDbEngine(){
         <div id="InstallerConfigForm_dblocation_row" class="form-group">
             <?= CHtml::activeLabelEx($model, 'dblocation'); ?>
             <?= CHtml::activeTextField($model, 'dblocation',['class' => 'form-control']); ?>
-            <div class="help-block"><?= $model->getAttributeHint('dblocation') ?></div>
+            <div class="help-block"><?= $model->attributeHints()['dblocation'] ?></div>
         </div>
 
         <div id="InstallerConfigForm_dbuser_row" class="form-group">
             <?= CHtml::activeLabelEx($model, 'dbuser'); ?>
             <?= CHtml::activeTextField($model, 'dbuser',['class' => 'form-control']); ?>
-            <div class="help-block"><?= $model->getAttributeHint('dbuser') ?></div>
+            <div class="help-block"><?= $model->attributeHints()['dbuser'] ?></div>
         </div>
 
         <div id="InstallerConfigForm_dbpwd_row" class="form-group">
             <?= CHtml::activeLabelEx($model, 'dbpwd'); ?>
             <?= CHtml::activePasswordField($model, 'dbpwd',['class' => 'form-control']); ?>
-            <div class="help-block"><?= $model->getAttributeHint('dbpwd') ?></div>
+            <div class="help-block"><?= $model->attributeHints()['dbpwd'] ?></div>
         </div>
 
         <div id="InstallerConfigForm_dbname_row" class="form-group">
             <?= CHtml::activeLabelEx($model, 'dbname'); ?>
             <?= CHtml::activeTextField($model, 'dbname',['class' => 'form-control']); ?>
-            <div class="help-block"><?= $model->getAttributeHint('dbname') ?></div>
+            <div class="help-block"><?= $model->attributeHints()['dbname'] ?></div>
         </div>
 
         <div id="InstallerConfigForm_dbname_row" class="form-group">
             <?= CHtml::activeLabelEx($model, 'dbprefix'); ?>
             <?= CHtml::activeTextField($model, 'dbprefix',['class' => 'form-control']); ?>
-            <div class="help-block"><?= $model->getAttributeHint('dbprefix') ?></div>
+            <div class="help-block"><?= $model->attributeHints()['dbprefix'] ?></div>
         </div>
 
         <div class="row">

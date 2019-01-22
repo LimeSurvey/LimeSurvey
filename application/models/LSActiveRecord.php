@@ -19,7 +19,6 @@
 
 class LSActiveRecord extends CActiveRecord
 {
-    use Yii2ModelTrait;
 
     /**
      * Lists the behaviors of this model

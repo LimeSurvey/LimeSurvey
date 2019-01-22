@@ -27,7 +27,7 @@
  * @property boolean $isTmpDirWriteable
  * @property string[] $supportedDbTypes
  */
-class InstallerConfigForm extends LSCFormModel
+class InstallerConfigForm extends CFormModel
 {
     const ENGINE_TYPE_MYISAM = 'MYISAM';
     const ENGINE_TYPE_INNODB = 'INNODB';
