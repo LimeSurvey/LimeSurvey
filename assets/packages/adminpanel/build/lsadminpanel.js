@@ -28533,7 +28533,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, _vm._l((_vm.orderQuestions(questiongroup.questions)), function(question) {
       return _c('div', {
         key: question.qid,
-        staticClass: "list-group-item question-question-list-item ls-flex-row align-itmes-flex-between",
+        staticClass: "list-group-item question-question-list-item ls-flex-row align-itmes-flex-start",
         class: _vm.questionItemClasses(question),
         attrs: {
           "data-toggle": "tootltip",
@@ -28563,7 +28563,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }, [_vm._v("\n                                     \n                                ")]) : _vm._e(), _vm._v(" "), _c('a', {
-        staticClass: "col-10 pjax question-question-list-item-link display-as-container",
+        staticClass: "col-9 pjax question-question-list-item-link display-as-container",
         attrs: {
           "href": question.link
         },
@@ -28580,7 +28580,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           width: _vm.itemWidth
         })
       }, [_vm._v("\n                                    [" + _vm._s(question.title) + "] › " + _vm._s(question.question_flat) + " \n                                ")])]), _vm._v(" "), _c('a', {
-        staticClass: "fa fa-edit bigIcons editIcon",
+        staticClass: "fa fa-edit bigIcons editIcon pjax",
         attrs: {
           "href": question.editLink
         }

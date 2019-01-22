@@ -43,6 +43,26 @@ export default {
             context.commit('setQuestionGeneralSettings', result.data);
         });
     },
+    getQuestionAdvancedSettings: (context) => {
+        ajax.methods.$_get(
+            window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
+            {'iQuestionId' : window.QuestionEditData.qid}
+        ).then((result) => {
+            context.commit('setQuestionAdvancedSettings', result.data);
+        });
+    },
+    getQuestionAdvancedSettingsWithType: (context) => {
+        context.commit('setQuestionGeneralSettings', []);
+        ajax.methods.$_get(
+            window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
+            {
+                'iQuestionId' : window.QuestionEditData.qid,
+                'sQuestionType' : context.store.currentQuestion.type
+            }
+        ).then((result) => {
+            context.commit('setQuestionAdvancedSettings', result.data);
+        });
+    },
     getQuestionTypes: (context) => {
         ajax.methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getQuestionTypeList'

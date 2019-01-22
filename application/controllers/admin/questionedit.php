@@ -31,24 +31,16 @@ class questionedit extends Survey_Common_Action
     public function view($surveyid, $gid, $qid)
     {
         $aData = array();
-        $aData['surveyid'] = $iSurveyID = (int) $surveyid;
+        $iSurveyID = (int) $surveyid;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $oQuestion = Question::model()->findByPk($qid);
         $oTemplateConfiguration = TemplateConfiguration::getInstance($oSurvey->template, null, $iSurveyID);
         Yii::app()->getClientScript()->registerPackage('questioneditor');
-        
         $qrrow = $oQuestion->attributes;
         $baselang = $oQuestion->survey->language;
-        $aData['oQuestion'] = $oQuestion;
-        
-        $qrrow = $oQuestion->attributes;
-        $aData['languagelist'] = $oQuestion->survey->allLanguages;
-        $aData['activated'] = $oQuestion->survey->active;
-        $aData['qtypes'] = Question::typeList();
-
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $iSurveyID, $baselang);
         $DisplayArray = array();
-
+        
         foreach ($aAttributesWithValues as $aAttribute) {
             if (($aAttribute['i18n'] == false && isset($aAttribute['value']) && $aAttribute['value'] != $aAttribute['default'])
                 || ($aAttribute['i18n'] == true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang] != $aAttribute['default'])) {
@@ -60,14 +52,55 @@ class questionedit extends Survey_Common_Action
                 $DisplayArray[] = $aAttribute;
             }
         }
-        $aData['advancedsettings'] = $DisplayArray;
+        $condarray = getQuestDepsForConditions($iSurveyID, "all", "all", $qid, "by-targqid", "outsidegroup");
+  
         
+
+         // Last question visited : By user (only one by user)
+         $setting_entry = 'last_question_'.Yii::app()->user->getId();
+         SettingGlobal::setSetting($setting_entry, $qid);
+ 
+         // we need to set the sid for this question
+         $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
+         SettingGlobal::setSetting($setting_entry, $iSurveyID);
+ 
+         // we need to set the gid for this question
+         $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
+         SettingGlobal::setSetting($setting_entry, $gid);
+ 
+         // Last question for this survey (only one by survey, many by user)
+         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
+         SettingGlobal::setSetting($setting_entry, $qid);
+ 
+         // we need to set the gid for this question
+         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
+         SettingGlobal::setSetting($setting_entry, $gid);
+
+        ///////////
+        // combine aData
         $aData['surveyid'] = $iSurveyID;
+        $aData['oSurvey'] = $oSurvey;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
-
+        //$aData['qct']
+        //$aData['sqct']
+        $aData['activated'] = $oSurvey->active;
+        $aData['oQuestion'] = $oQuestion;
+        $aData['languagelist'] = $oQuestion->survey->allLanguages;
+        $aData['qshowstyle'] = '';
+        $aData['qrrow'] = $qrrow;
+        $aData['baselang'] = $baselang;
+        $aData['advancedsettings'] = $DisplayArray;
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
+        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');        
+        $aData['display']['menu_bars']['qid_action'] = 'editquestion';
+        $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
+        $aData['action'] = 'editquestion';
+        $aData['editing'] = true;
+
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['surveyIsActive'] = $oSurvey->active !== 'N';
+        $aData['activated'] = $oQuestion->survey->active;
         $aData['jsData'] = [
             'surveyid' => $iSurveyID,
             'gid' => $gid,
@@ -75,10 +108,11 @@ class questionedit extends Survey_Common_Action
             'connectorBaseUrl' => $this->getController()->createUrl('admin/questioneditor/sa/'),
             'i10N' => []
         ];
-        $aData['qrrow'] = $qrrow;
-        $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
-        $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
-        $aData['questionbar']['buttons']['view'] = true;
+        $aData['questiongroupbar']['importquestion'] = true;
+        $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
+        $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
+        $aData['questiongroupbar']['closebutton']['url'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID; // Close button
+
         $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
     }
 
@@ -129,6 +163,12 @@ class questionedit extends Survey_Common_Action
     {
         $oQuestion = Question::model()->findByPk($iQuestionId);
         $this->renderJSON($oQuestion->getDataSetObject()->getGeneralSettingsArray(null, $sQuestionType));
+    }
+
+    public function getAdvancedOptions($iQuestionId, $sQuestionType=null)
+    {
+        $oQuestion = Question::model()->findByPk($iQuestionId);
+        $this->renderJSON($oQuestion->getDataSetObject()->getAdvancedOptions(null, $sQuestionType));
     }
 
     /**

@@ -1,7 +1,7 @@
 <script>
     import empty from 'lodash/isEmpty';
     export default {
-        name: 'setting-input',
+        name: 'setting-text',
         props: {
             elId: {type: String, required: true},
             elName: {type: [String, Boolean], default: ''},
@@ -19,7 +19,6 @@
         computed: {
             curValue: {
                 get() { return this.currentValue },
-                set(newValue) { this.$emit('change', newValue)},
             },
             showHelp(){
                 return this.triggerShowHelp && (this.elHelp.length>0);
@@ -29,19 +28,7 @@
                     return this.elOptions.classes.join(' ')
                 }
                 return '';
-            },
-            hasPrefix(){
-                if(!empty(this.elOptions.inputGroup)){
-                    return !empty(this.elOptions.inputGroup.prefix);
-                }
-                return false;
-            },
-            hasSuffix(){
-                if(!empty(this.elOptions.inputGroup)){
-                    return !empty(this.elOptions.inputGroup.suffix);
-                }
-                return false;
-            },
+            }
         }
     };
 </script>
@@ -50,18 +37,7 @@
     <div class="form-row">
         <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
-            <div class="input-group">
-                <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
-                <input 
-                    type="text" 
-                    v-model="curValue" 
-                    :pattern="elOptions.elInputPattern" 
-                    :class="getClasses" 
-                    :name="elName || elId" 
-                    :id="elId" 
-                />
-                <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
-            </div>
+        <div :class="getClasses" :name="elName || elId" :id="elId" v-html="curValue" />
         <div 
             class="question-option-help alert alert-info"
             v-if="showHelp"

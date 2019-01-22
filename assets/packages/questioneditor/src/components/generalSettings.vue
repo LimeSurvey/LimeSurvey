@@ -1,20 +1,20 @@
 <script>
 import filter from 'lodash/filter';
 
-import SettingCheckboxswitch from './_inputtypes/checkboxswitch.vue';
+import SettingSwitch from './_inputtypes/switch.vue';
 import SettingText from './_inputtypes/text.vue';
 import SettingSelect from './_inputtypes/select.vue';
-import SettingTextinput from './_inputtypes/textinput.vue';
+import SettingTextdisplay from './_inputtypes/textdisplay.vue';
 import SettingTextarea from './_inputtypes/textarea.vue';
 import StubSet from './_inputtypes/stub.vue';
 
 export default {
     name: 'GeneralSettings',
     components: {
-        'setting-checkboxswitch': SettingCheckboxswitch,
-        'setting-text': SettingText,
+        'setting-switch': SettingSwitch,
+        'setting-text': SettingTextdisplay,
         'setting-select': SettingSelect,
-        'setting-textinput': SettingTextinput,
+        'setting-textinput': SettingText,
         'setting-textarea': SettingTextarea,
         'stub-set' : StubSet
     },
@@ -49,7 +49,7 @@ export default {
                 <div class="list-group">
                     <div class="list-group-item question-option-general-setting-block" v-for="generalSetting in generalSettingOptions" :key="generalSetting.name">
                         <component 
-                        v-bind:is="getComponentName(generalSetting.formElement)" 
+                        v-bind:is="getComponentName(generalSetting.inputtype)" 
                         :elId="generalSetting.formElementId"
                         :elName="generalSetting.formElementName"
                         :elLabel="generalSetting.title"

@@ -1,7 +1,7 @@
 <script>
     import empty from 'lodash/isEmpty';
     export default {
-        name: 'setting-input',
+        name: 'setting-integer',
         props: {
             elId: {type: String, required: true},
             elName: {type: [String, Boolean], default: ''},

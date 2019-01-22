@@ -1,4 +1,6 @@
 import isEmpty from "lodash/isEmpty";
+import merge from "lodash/merge";
+
 export default {
     setCurrentQuestion : (state, newValue) => {
         state.currentQuestion = newValue;
@@ -15,7 +17,10 @@ export default {
         state.questionTypes = newValue;
     },
     setQuestionGeneralSettings : (state, newValue) => {
-        state.questionGeneralSettings = newValue;
+        merge(state.questionGeneralSettings,newValue);
+    },
+    setQuestionAdvancedSettings : (state, newValue) => {
+        merge(state.questionAdvancedSettings,newValue);
     },
     setActiveLanguage : (state, newValue) => {
         state.activeLanguage = newValue;

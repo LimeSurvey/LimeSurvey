@@ -70,10 +70,13 @@
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="container-fluid">
-        <div class="pagetitle h3"><?php eT('Question'); ?>:  <?php echo  $qrrow['title'];?> <small>(ID: <?php echo  $qid;?>)</small></div>
+        <?php echo CHtml::form(array("admin/questionedit/update"), 'post',array('class'=>'form30 ','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
+            <div class="alert alert-danger">EXPERIMENTAL EDITOR! - Use at your own risk! </div>
+            <div class="pagetitle h3"><?php eT('Question'); ?>:  <?php echo  $qrrow['title'];?> <small>(ID: <?php echo  $qid;?>)</small></div>
             <div class="row">
                 <div id="advancedQuestionEditor" class="col-xs-12"><app/></div>
             </div>
+        </form>
         
         
         <div id="questionEditLoader" class="ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">

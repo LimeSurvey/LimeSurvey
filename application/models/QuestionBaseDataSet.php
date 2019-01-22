@@ -1,11 +1,15 @@
 <?php
-
+/**
+ * This is a base class to enable all question tpyes to extend the general settings.
+ * @TODO: Create an xml based solution to use external question type definitions as well
+ */
 abstract class QuestionBaseDataSet extends StaticModel
 {
     private $iQuestionId;
     private $sQuestionType;
     private $sLanguage;
     private $oQuestion;
+    private $aQuestionAttributes;
 
     public function __construct($iQuestionId)
     {
@@ -30,7 +34,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
-
+        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
         /*
         @todo Discussion:
         General options currently are
@@ -54,40 +58,58 @@ abstract class QuestionBaseDataSet extends StaticModel
         ];
     }
 
+    /**
+     * Returns a preformatted block of the advanced settings for the question editor
+     *
+     * @param int $iQuestionID
+     * @param int $sQuestionType
+     * @param int $iSurveyID
+     * @param string $sLanguage
+     * @return array
+     */
+    public function getAdvancedOptions($iQuestionID = null, $sQuestionType = null, $sLanguage = null)
+    {
+        if ($iQuestionID != null) {
+            $this->oQuestion = Question::model()->findByPk($iQuestionID);
+        }
+        
+        $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
+        $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
+        $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
+        
+        $sQuestionType = $this->sQuestionType;
+        
+        $aAttributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
+        /* Filter to get this question type setting */
+        $aQuestionTypeAttributes = array_filter($aAttributes, function($attribute) use ($sQuestionType) {
+            return stripos($attribute['types'], $sQuestionType) !== false;
+        });
+
+        $aAdvancedOptionsArray = [];
+        foreach($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
+            $aAdvancedOptionsArray[$aQuestionAttributeArray['category']][] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray);
+        }
+        
+        return $aAdvancedOptionsArray;
+
+    }
+
     //Question theme
-    public function getQuestionThemeOption()
+    protected function getQuestionThemeOption()
     {
         $aQuestionTemplateList = QuestionTemplate::getQuestionTemplateList($this->sQuestionType);
         $aQuestionTemplateAttributes = Question::model()->getAdvancedSettingsWithValues($this->oQuestion->qid, $this->sQuestionType, $this->oQuestion->survey->sid)['question_template'];
 
-        $sQuestionTemplateSettingsItemHtml = '<p class="help-block collapse" id="help_question_template">'.gT("Use a customized question theme for this question").'</p>'
-            .'<select id="question_template" name="question_template" class="form-control">';
         $aOptionsArray = [];
-        
         foreach ($aQuestionTemplateList as $code => $value) {
             $bSelected = false;
             $sSelected = '';
         
             if (!empty($aQuestionTemplateAttributes) && isset($aQuestionTemplateAttributes['value'])) {
                 $bSelected = $aQuestionTemplateAttributes['value'] == $code;
-
-                $question_template_preview = $bSelected ? $value['preview'] : $question_template_preview;
-                $sSelected = $bSelected ? 'selected' : '';
-            }
-            if (YII_DEBUG) {
-                $sQuestionTemplateSettingsItemHtml .= sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $sSelected, $value['title'], $code);
-            } else {
-                $sQuestionTemplateSettingsItemHtml .= sprintf("<option value='%s' %s>%s</option>", $code, $sSelected, $value['title']);
             }
             $aOptionsArray[] = ['name' => $value['title'], 'value' => $code, 'selected' => $bSelected];
         }
-        $sQuestionTemplateSettingsItemHtml .= '</select>'
-            .'<div class="help-block" id="QuestionTemplatePreview">'
-                .'<strong>'.gT("Preview:").'</strong>'
-                    .'<div class="">'
-                        .'<img src="'.$question_template_preview.'" class="img-thumbnail img-responsive center-block">'
-                    .'</div>'
-            .'</div>';
 
         return [
                 'name' => 'QuestionTheme',
@@ -95,18 +117,17 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementId' => 'question_template',
                 'formElementName' => false, //false means identical to id
                 'formElementHelp' => gT("Use a customized question theme for this question"),
-                'formElement' => 'select',
+                'inputtype' => 'select',
                 'formElementValue' => isset($aQuestionTemplateAttributes['value']) ? $aQuestionTemplateAttributes['value'] : '',
                 'formElementOptions' => [
                     'classes' => ['form-control'],
                     'options' => $aOptionsArray,
                 ],
-                'formElementHtml' => $sQuestionTemplateSettingsItemHtml //just for proof of concept
             ];
     }
 
     //Question group
-    public function getQuestionGroupSelector()
+    protected function getQuestionGroupSelector()
     {
         $aGroupsToSelect = QuestionGroup::model()->findAllByAttributes(array('sid' => $this->oQuestion->sid), array('order'=>'group_order'));
         $aGroupOptions = array_map(
@@ -119,32 +140,23 @@ abstract class QuestionBaseDataSet extends StaticModel
             },
             $aGroupsToSelect
         );
-        $QuestionGroupSettingsItemHtml = '';
-        $QuestionGroupSettingsItemHtml = '<div class="">'
-            .'<select name="gid" id="gid" class="form-control" '.($this->oQuestion->survey->isActive ? " disabled ":'').'>'
-                .getGroupList3($this->oQuestion->gid, $this->oQuestion->survey->sid)
-            .'</select>';
-        if ($this->oQuestion->survey->isActive) {
-            $QuestionGroupSettingsItemHtml .= '<input type="hidden" name="gid" value="'.$this->oQuestion->gid.'" />';
-        }
-        $QuestionGroupSettingsItemHtml .= '</div>';
+
         return [
             'name' => 'QuestionGroup',
             'title' => gT('Question group'),
             'formElementId' => 'gid',
             'formElementName' => false,
             'formElementHelp' => gT("If you want to change the question group this question is in."),
-            'formElement' => 'select',
+            'inputtype' => 'select',
             'formElementValue' => $this->oQuestion->gid,
             'formElementOptions' => [
                 'classes' => ['form-control'],
                 'options' => $aGroupOptions,
             ],
-            'formElementHtml' => $QuestionGroupSettingsItemHtml
         ];
     }
 
-    public function getOtherSwitch()
+    protected function getOtherSwitch()
     {
         return  [
                 'name' => 'other',
@@ -152,7 +164,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementId' => 'other',
                 'formElementName' => false,
                 'formElementHelp' => gT('Activate the "other" option for your question'),
-                'formElement' => 'checkboxswitch',
+                'inputtype' => 'switch',
                 'formElementValue' => $this->oQuestion->other == 'Y',
                 'formElementOptions' => [
                     'classes' => [],
@@ -163,12 +175,11 @@ abstract class QuestionBaseDataSet extends StaticModel
                         'offColor' => "warning",
                         'size' => "small",
                     ],
-                ],
-                'formElementHtml' => '<input data-on-text="On" data-off-text="Off" data-on-color="primary" data-off-color="warning" data-size="small" data-is-bootstrap-switch="1" id="other" name="other" type="checkbox" value="1">'
+                ],                
             ];
     }
 
-    public function getMandatorySwitch()
+    protected function getMandatorySwitch()
     {
         return [
                 'name' => 'mandatory',
@@ -176,7 +187,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementId' => 'mandatory',
                 'formElementName' => false,
                 'formElementHelp' => gT('Makes this question mandatory in your survey'),
-                'formElement' => 'checkboxswitch',
+                'inputtype' => 'switch',
                 'formElementValue' => $this->oQuestion->mandatory == 'Y',
                 'formElementOptions' => [
                     'classes' => [],
@@ -188,28 +199,16 @@ abstract class QuestionBaseDataSet extends StaticModel
                         'size' => "small",
                     ],
                 ],
-                'formElementHtml' =>'<input data-on-text="On" data-off-text="Off" data-on-color="primary" data-off-color="warning" data-size="small" data-is-bootstrap-switch="1" id="mandatory" name="mandatory" type="checkbox" value="1">'
             ];
     }
         
-    public function getRelevanceEquationInput()
+    protected function getRelevanceEquationInput()
     {
-        $inputType = 'textarea';
-        $relevanceIntputHtml = ''
-            .'<div class="input-group">
-                    <div class="input-group-addon">{</div>
-                    <textarea class="form-control" rows="1" id="relevance" name="relevance" '
-                        .(count($this->oQuestion->conditions)>0 ? "readonly='readonly'" : "").'>'
-                            .$this->oQuestion->relevance
-                        .'</textarea>'
-                    .'<div class="input-group-addon">}</div>'
-                .'</div>';
+        $inputtype = 'textarea';
+        
         if (count($this->oQuestion->conditions) > 0) {
-            $inputType = 'text';
+            $inputtype = 'text';
             $content = gT("Note: You can't edit the relevance equation because there are currently conditions set for this question.");
-            $relevanceIntputHtml .= '<div class="help-block text-warning">'
-                . gT("Note: You can't edit the relevance equation because there are currently conditions set for this question.")
-                .'</div>';
         }
 
         return [
@@ -218,7 +217,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementId' => 'relevance',
                 'formElementName' => false,
                 'formElementHelp' => (count($this->oQuestion->conditions)>0 ? '' :gT("The relevance equation can be used to add branching logic. This is a rather advanced topic. If you are unsure, just leave it be.")),
-                'formElement' => 'textarea',
+                'inputtype' => 'textarea',
                 'formElementValue' => $this->oQuestion->relevance,
                 'formElementOptions' => [
                     'classes' => ['form-control'],
@@ -231,19 +230,18 @@ abstract class QuestionBaseDataSet extends StaticModel
                         'suffix' => '}',
                     ]
                 ],
-                'formElementHtml' => $relevanceIntputHtml
             ];
     }
             
-    public function getValidationInput()
+    protected function getValidationInput()
     {
         return  [
-                'name' => 'Validation',
+                'name' => 'validation',
                 'title' => gT('Input validation'),
                 'formElementId' => 'preg',
                 'formElementName' => false,
                 'formElementHelp' => gT('You can add any regular expression based validation in here'),
-                'formElement' => 'textinput',
+                'inputtype' => 'text',
                 'formElementValue' => $this->oQuestion->preg,
                 'formElementOptions' => [
                     'classes' => ['form-control'],
@@ -251,7 +249,26 @@ abstract class QuestionBaseDataSet extends StaticModel
                         'prefix' => 'RegExp',
                     ]
                 ],
-                'formElementHtml' => '<input class="form-control" type="text" id="preg" name="preg" size="50" value="'.$this->oQuestion->preg.'" />'
             ];
+    }
+
+    protected function parseFromAttributeHelper($sAttributeKey,$aAttributeArray) 
+    {
+        $aAdvancedAttributeArray = [
+            'name' => $sAttributeKey,
+            'title' => $aAttributeArray['caption'],
+            'inputtype' => $aAttributeArray['inputtype'],
+            'formElementId' => $sAttributeKey,
+            'formElementName' => false,
+            'formElementHelp' => $aAttributeArray['help'],
+            'formElementValue' => isset($this->aQuestionAttributes[$sAttributeKey]) ? $this->aQuestionAttributes[$sAttributeKey] : ''
+        ];
+        unset($aAttributeArray['caption']);
+        unset($aAttributeArray['help']);
+        unset($aAttributeArray['inputtype']);
+
+        $aAdvancedAttributeArray['aFormElementOptions'] = array_merge(['classes' => ['form-control']], $aAttributeArray);
+        
+        return $aAdvancedAttributeArray;
     }
 }

@@ -25,6 +25,7 @@ export default function(questionId){
         currentQuestionI10N: {},
         questionAttributes: {},
         questionGeneralSettings: [],
+        questionAdvancedSettings: {},
         questionImmutable: {},
         questionImmutableI10N: {},
         languages: [],
