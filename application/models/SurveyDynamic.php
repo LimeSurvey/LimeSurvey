@@ -783,6 +783,14 @@ class SurveyDynamic extends LSActiveRecord
 
         $aQuestionAttributes = $oQuestion->attributes;
 
+        $aQuestionAttributes['questionSrc'] = $oQuestion->question;
+        $result = LimeExpressionManager::ProcessString($oQuestion->question, 40, NULL, 1, 1);
+        $aQuestionAttributes['question'] = $result;
+
+        $aQuestionAttributes['helpSrc'] = $oQuestion->help;
+        $result = LimeExpressionManager::ProcessString($oQuestion->help, 40, NULL, 1, 1);
+        $aQuestionAttributes['help'] = $result;
+
         if (count($oQuestion->subquestions) > 0) {
             $aQuestionAttributes['subquestions'] = array();
             foreach ($oQuestion->subquestions as $oSubquestion) {

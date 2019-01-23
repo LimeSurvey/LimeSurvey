@@ -102,7 +102,7 @@ class Question extends LSActiveRecord
                             'condition'=>'language=:language',
                             'params'=>array(':language'=>$this->language)
                         ),
-                        'message'=>sprintf(gT("Question ID (QIDd): '%s' is already in use."),$this->qid),// Usage of {attribute} need attributeLabels, {value} never exist in message
+                        'message'=>sprintf(gT("Question ID (qid): '%s' is already in use."),$this->qid),// Usage of {attribute} need attributeLabels, {value} never exist in message
                     ),
                     array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
                     array('title,question,help', 'LSYii_Validators'),
@@ -1016,12 +1016,12 @@ class Question extends LSActiveRecord
         $criteria2->compare('t.title', $this->title, true, 'OR');
         $criteria2->compare('t.question', $this->title, true, 'OR');
         $criteria2->compare('t.type', $this->title, true, 'OR');
-
-        $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ? ' t.qid::varchar' : 't.qid');
-        $criteria2->compare($qid_reference, $this->title, true, 'OR');
-
-        if ($this->gid != '') {
-            $criteria->compare('groups.gid', $this->gid, true, 'AND');
+        /* search id exactly */
+        if(is_numeric($this->title)) {
+            $criteria2->compare('t.qid', $this->title, false, 'OR');
+        }
+        if ($this->gid != '' and is_numeric($this->gid)) {
+            $criteria->compare('groups.gid', $this->gid, false, 'AND');
         }
 
         $criteria->mergeWith($criteria2, 'AND');

@@ -10,9 +10,9 @@ var RankingQuestion = function (options) {
     var max_answers = options.max_answers,
         min_answers = options.min_answers,
         rankingName = options.rankingName,
-        showpopups = (typeof options.showpopups == 'undefined') ? options.showpopups : true,
-        samechoiceheight = (typeof options.samechoiceheight == 'undefined') ? options.samechoiceheight : true,
-        samelistheight = (typeof options.samelistheight == 'undefined') ? options.samelistheight : true,
+        showpopups = (typeof options.showpopups != 'undefined') ? parseInt(options.showpopups) : 1,
+        samechoiceheight = (typeof options.samechoiceheight != 'undefined') ? parseInt(options.samechoiceheight) : 1,
+        samelistheight = (typeof options.samelistheight != 'undefined') ? parseInt(options.samelistheight) : 1,
         questionId = options.questionId;
     //define reused variables
     var relevancename= "relevance"+rankingName,
@@ -99,9 +99,9 @@ var RankingQuestion = function (options) {
      * Update answers after updating drag and drop part
      */
     updateDragDropRank = function() {
-        
         $('#question' + questionId + ' .select-item select').val('');
         $('#sortable-rank-' + questionId + ' li').each(function (index) {
+            $('#question' + questionId + ' .select-item select').eq(index).data("old-val",$('#question' + questionId + ' .select-item select').eq(index).val());
             $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
         });
 
@@ -112,7 +112,11 @@ var RankingQuestion = function (options) {
             if ($(this).val() != "") {
                 $("#" + relevancename + (index+1) ).val("1");
             }
-            $(this).trigger("change", { source: 'dragdrop' });
+            /* trigger change only if val is updated see #14425 */
+            if( (typeof $(this).data("old-val") == 'undefined' && $(this).val() != "") || ($(this).val() != $(this).data("old-val")) ) {
+                $(this).trigger("change", { source: 'dragdrop' });
+                $(this).data("old-val",$(this).val())
+            }
         });
         $('#sortable-rank-' + questionId + ' li').removeClass("text-error");
         $('#sortable-choice-' + questionId + ' li').removeClass("text-error");
@@ -126,7 +130,6 @@ var RankingQuestion = function (options) {
         }
     },
     loadDragDropRank = function () {
-        
         // Update #relevance
         $("[id^=" + relevancename + "]").val('0');
         $('#sortable-rank-' + questionId + ' li').each(function () {
@@ -137,6 +140,8 @@ var RankingQuestion = function (options) {
                 $("#" + relevancename + (index+1)).val("1");
                 $('#sortable-choice-' + questionId + ' li#' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
             }
+            /* set old-val for updateDragDropRank see #14425 */
+            $(this).closest("select").data("old-val",$(this).closest("select").val());
         });
 
         updateDragDropRank(); // Update to reorder select
@@ -156,7 +161,8 @@ var RankingQuestion = function (options) {
                 setChoiceHeight();
             });
             /* Do it when a choice is shown/hidden by filter (mantis #14411) */
-            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice',function (event, data) {
+            /* attach to the last one only , see #14424. This can need update when EM javascript was improved */
+            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice:last',function (event, data) {
                 if(event.target != this) return;
                 data = $.extend({style:'hidden'}, data);
                 if(data.style == 'hidden') {
@@ -175,7 +181,8 @@ var RankingQuestion = function (options) {
             $('#question' + questionId + ' .ls-choice').on('html:updated',function(){
                 setListHeight();
             });
-            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice', function (event, data) {
+            /* attach to the last one only , see #14424. This can need update when EM javascript was improved */
+            $('#question' + questionId).on('relevance:on relevance:off','.ls-choice:last', function (event, data) {
                 if(event.target != this) return;
                 data = $.extend({style:'hidden'}, data);
                 if(data.style == 'hidden') {

@@ -999,7 +999,7 @@ class SurveyRuntimeHelper
 
                 App()->clientScript->registerScript("saveflashmessage", "
                     console.ls.log($('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']'));
-                    $('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']').popover({
+                    $('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']:visible').popover({
                         title: '".gT('Success')."',
                         content: '<div>".gT("Your responses were successfully saved.", "js")."</div>',
                         html: true,
@@ -1184,12 +1184,11 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['aLEM']['debugvalidation']['message'] .= "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$this->aMoveResult['message']."</td></tr></table>\n";
             }
 
-            // kill survey session before redirecting
-            if ($this->aSurveyInfo['printanswers'] != 'Y') {
-                killSurveySession($this->iSurveyid);
-            }
-
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
+                // kill survey session before redirecting
+                if ($this->aSurveyInfo['printanswers'] != 'Y') {
+                    killSurveySession($this->iSurveyid);
+                }
                 //Automatically redirect the page to the "url" setting for the survey
                 $headToSurveyUrl = htmlspecialchars_decode ($this->aSurveyInfo['surveyls_url']);
                 $actualRedirect = $headToSurveyUrl;
@@ -1208,7 +1207,13 @@ class SurveyRuntimeHelper
             if(!$surveyActive) {
                 $this->aSurveyInfo['include_content'] = 'submit_preview';
             }
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> $oSurvey, 'aSurveyInfo'=>$this->aSurveyInfo), false);
+            $sHtml = Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> $oSurvey, 'aSurveyInfo'=>$this->aSurveyInfo), true);
+            $oTemplate = Template::model()->getInstance();
+            // kill survey session after doing template : didn't work for all var, but for EM core var : it's OK.
+            if ($this->aSurveyInfo['printanswers'] != 'Y') {
+                killSurveySession($this->iSurveyid);
+            }
+            Yii::app()->twigRenderer->renderHtmlPage($sHtml, $oTemplate);
         }
     }
 

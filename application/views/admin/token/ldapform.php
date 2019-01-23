@@ -43,7 +43,9 @@
                         </label>
                         <div class="">
                             <select name='ldapQueries' class="form-control">
-                                <?php foreach ($ldap_queries as $q_number => $q): ?>
+                                <?php $names = array_column($ldap_queries, 'name');
+                                      array_multisort($names, $ldap_queries);
+                                      foreach ($ldap_queries as $q_number => $q): ?>
                                     <option value="<?php echo $q_number; ?>"><?php echo $q['name']; ?></option>
                                 <?php endforeach; ?>
                             </select>
