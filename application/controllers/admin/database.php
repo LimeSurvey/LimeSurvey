@@ -688,7 +688,7 @@ class database extends Survey_Common_Action
                 $oQuestion = Question::model()->findByPk($this->iQuestionID);
                 $oQuestion->type = $sQuestionType; 
                 $oQuestion->title = Yii::app()->request->getPost('title');
-                $oQuestion->preg = $fixedQuestionAttributes['preg'],
+                $oQuestion->preg = $fixedQuestionAttributes['preg'];
                 $oQuestion->gid = $this->iQuestionGroupID;
                 $oQuestion->other = $fixedQuestionAttributes['other'];
                 $oQuestion->mandatory = $fixedQuestionAttributes['mandatory'];
