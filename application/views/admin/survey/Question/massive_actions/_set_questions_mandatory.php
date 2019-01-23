@@ -27,7 +27,7 @@ $surveyid = App()->request->getParam('surveyid', 0);
                 'offLabel'=>gT('Off')));
             ?>
 
-            <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" class="custom-data"/>
+            <input type="hidden" name="sid" value="<?php echo (int) $surveyid; ?>" class="custom-data"/>
         </div>
     </div>
 </form>
