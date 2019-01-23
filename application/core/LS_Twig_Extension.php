@@ -311,7 +311,7 @@ class LS_Twig_Extension extends Twig_Extension
     /**
      * @var $ressourcePath string : the needed ressource
      * @var $default string : the default ressource
-     * @return string
+     * @return string|false
      */
     public static function templateRessourceUrl($ressourcePath, $default = false)
     {
