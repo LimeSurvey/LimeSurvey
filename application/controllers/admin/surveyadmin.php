@@ -1434,13 +1434,10 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $aData = [];
         $aData['surveyid'] = $iSurveyID;
-        if ($iSurveyID > 0){
-            $survey = Survey::model()->findByPk($iSurveyID);
-        } else {
-            $survey = new Survey;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (empty($oSurvey)) {
+            $oSurvey = new Survey;
         }
-
-        // Get users, but we only need id and name (NOT password etc)
         $inheritOwner = empty($oSurvey->oOptions->ownerLabel) ? $oSurvey->owner_id : $oSurvey->oOptions->ownerLabel;
         $users = getUserList();
         $aData['users'] = array();
