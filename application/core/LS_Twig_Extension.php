@@ -315,14 +315,13 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function templateRessourceUrl($ressourcePath, $default = false)
     {
-        /* @todo fix filename … */
-        //~ if(sanitize($ressourcePath) != $ressourcePath) {
-            //~ if($default) {
-                //~ return self::templateRessourceUrl($default);
-            //~ }
-            //~ return false;
-        //~ }
-
+        /* sanitize filename … use same filter than themes->uploadfile */
+        if(sanitize_filename($ressourcePath, false, false, false) != $ressourcePath) {
+            if($default) {
+                return self::templateRessourceUrl($default);
+            }
+            return false;
+        }
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($ressourcePath);
         if ($oTemplate) {
@@ -345,7 +344,6 @@ class LS_Twig_Extension extends Twig_Extension
     public static function getTemplateForRessource($sRessource)
     {
         $oRTemplate = Template::model()->getInstance();
-
         while (!file_exists($oRTemplate->path.$sRessource)) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
