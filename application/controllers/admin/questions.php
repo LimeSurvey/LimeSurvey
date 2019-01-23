@@ -32,6 +32,7 @@ class questions extends Survey_Common_Action
     public function view($surveyid, $gid, $qid)
     {
         $aData = array();
+        $qid = (int) $qid;
 
         // Init general variables
         $aData['surveyid'] = $iSurveyID = (int) $surveyid;
