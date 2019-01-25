@@ -6121,31 +6121,31 @@
             // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
             //////////////////////////////////////////////////////////////////////////
             $currentGroupInfo = array(
-                'gseq' => $groupSeq,
-                'message' => $debug_message,
-                'relevant' => $grel,
-                'hidden' => $ghidden,
-                'mandViolation' => $gmandViolation,
-                'valid' => $gvalid,
-                'qset' => $currentQset,
-                'unansweredSQs' => $unansweredSQList,
-                'anyUnanswered' => $ganyUnanswered,
-                'invalidSQs' => $invalidSQList,
-                'updatedValues' => $updatedValues,
+            'gseq' => $groupSeq,
+            'message' => $debug_message,
+            'relevant' => $grel,
+            'hidden' => $ghidden,
+            'mandViolation' => $gmandViolation,
+            'valid' => $gvalid,
+            'qset' => $currentQset,
+            'unansweredSQs' => $unansweredSQList,
+            'anyUnanswered' => $ganyUnanswered,
+            'invalidSQs' => $invalidSQList,
+            'updatedValues' => $updatedValues,
             );
 
             ////////////////////////////////////////////////////////
             // STORE METADATA NEEDED TO GENERATE NAVIGATION INDEX //
             ////////////////////////////////////////////////////////
             $LEM->indexGseq[$groupSeq] = array(
-                'gtext' => $LEM->gseq2info[$groupSeq]['description'],
-                'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
-                'gid' => $LEM->gseq2info[$groupSeq]['gid'], // TODO how used if random?
-                'anyUnanswered' => $ganyUnanswered,
-                'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
-                'valid' => $gvalid,
-                'mandViolation' => $gmandViolation,
-                'show' => (($grel && !$ghidden) ? true : false),
+            'gtext' => $LEM->gseq2info[$groupSeq]['description'],
+            'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
+            'gid' => $LEM->gseq2info[$groupSeq]['gid'], // TODO how used if random?
+            'anyUnanswered' => $ganyUnanswered,
+            'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
+            'valid' => $gvalid,
+            'mandViolation' => $gmandViolation,
+            'show' => (($grel && !$ghidden) ? true : false),
             );
 
             $LEM->gseq2relevanceStatus[$gseq] = $grel;
