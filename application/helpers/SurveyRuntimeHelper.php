@@ -845,10 +845,11 @@ class SurveyRuntimeHelper
                     // may be submitting from the navigation bar, in which case need to process all intervening questions
                     // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
                     if ($this->aSurveyInfo['questionindex'] == 2) {
-                        // Must : save actual page , review whole before set finished to true (see #09906), index==1 seems to don't need it : (don't force move)
-                        LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions);
+                        // Save actual page ,
+                        LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true);
+                        // Review whole before set finished to true (see #09906), index==1 don't need it because never force move
+                        LimeExpressionManager::JumpTo(0,false,false,true); // no preview, no post and force
                     }
-
                     $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false);
                 }
             }
@@ -891,8 +892,11 @@ class SurveyRuntimeHelper
             // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
             // we already done if move == 'movesubmit', don't do it again
             if ($this->aMoveResult['finished'] == true && $this->sMove != 'movesubmit' && $this->thissurvey['questionindex'] == 2) {
-                //LimeExpressionManager::JumpTo(-1, false, false, true);
-                LimeExpressionManager::StartSurvey($this->iSurveyid, $this->sSurveyMode, $this->aSurveyOptions);
+                /* Save current page */
+                LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true);
+                /* Move to start */
+                LimeExpressionManager::JumpTo(0, false, false, true);
+                /* Try to move next again */
                 $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false, false, false); // no preview, no save data and NO force
                 if (!$this->aMoveResult['mandViolation'] && $this->aMoveResult['valid'] && empty($this->aMoveResult['invalidSQs'])) {
                     $this->aMoveResult['finished'] = true;
