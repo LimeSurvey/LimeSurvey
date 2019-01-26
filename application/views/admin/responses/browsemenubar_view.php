@@ -14,8 +14,6 @@
             <?php endif;?>
 
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')): ?>
-
-
                 <!-- Display Responses -->
                 <?php if (count($oSurvey->allLanguages) < 2): ?>
                     <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
@@ -180,17 +178,17 @@
             <?php endif;?>
 
             <?php if(isset($menu['export'])): ?>
-                <a class="btn btn-success" href="#" role="button" id="export-button" data-submit-form=1>
+                <button class="btn btn-success" name="export-button" id="export-button" data-submit-form=1>
                     <span class="fa fa-download-alt"></span>
                     <?php eT("Export");?>
-                </a>
+                </button>
             <?php endif;?>
 
             <?php if(isset($menu['import'])): ?>
-                <a class="btn btn-success" href="#" role="button" id="import-button" data-submit-form=1>
+                <button class="btn btn-success" name="import-button" id="import-button" data-submit-form=1>
                     <span class="fa fa-upload"></span>
                     <?php eT("Import");?>
-                </a>
+                </button>
             <?php endif;?>
 
             <?php if(isset($menu['stats'])):?>
@@ -204,10 +202,10 @@
                         <span class="fa fa-bar-chart"></span>
                         <?php eT("Simple mode"); ?>
                     </a>
-                    <a class="btn btn-success" href="#" role="button" id="view-button" data-submit-form=1>
+                    <button class="btn btn-success" name="view-button" id="view-button" data-submit-form=1>
                         <span class="fa"></span>
                         <?php eT("View statistics"); ?>
-                    </a>
+                    </button>
 
                     <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/",array('surveyid'=>$surveyid)) ?>" id="clear-button">
                         <span class="fa fa-refresh text-success"></span>
