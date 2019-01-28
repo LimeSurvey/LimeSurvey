@@ -371,6 +371,7 @@ function getStandardsReplacementFields($thissurvey)
         $surveyid = $thissurvey['sid'];
     }
 
+    $anonymized = true;
     if (isset($thissurvey['anonymized'])) {
         $anonymized = ($thissurvey['anonymized'] == "Y");
     }
