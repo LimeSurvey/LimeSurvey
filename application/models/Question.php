@@ -777,12 +777,13 @@ class Question extends LSActiveRecord
         $criteria2->compare('t.title', $this->title, true, 'OR');
         $criteria2->compare('questionL10ns.question', $this->title, true, 'OR');
         $criteria2->compare('t.type', $this->title, true, 'OR');
-
-        $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ? ' t.qid::varchar' : 't.qid');
-        $criteria2->compare($qid_reference, $this->title, true, 'OR');
-
-        if ($this->gid != '') {
-            $criteria->compare('group.gid', $this->gid, true, 'AND');
+        /* search id exactly and be sure it's an numeric */
+        if(is_numeric($this->title)) {
+            $criteria2->compare('t.qid', $this->title, false, 'OR');
+        }
+        /* be sure gid it's an numeric */
+        if ($this->gid != '' and is_numeric($this->gid)) {
+            $criteria->compare('groups.gid', $this->gid, false, 'AND');
         }
 
         $criteria->mergeWith($criteria2, 'AND');

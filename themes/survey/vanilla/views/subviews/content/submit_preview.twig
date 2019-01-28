@@ -29,8 +29,8 @@
     {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
         <!--  Link to Print Answer Preview -->
         <div class="{{ aSurveyInfo.class.submitwrapperdiva }} disabled" {{ aSurveyInfo.attr.submitwrapperdiv }}>
-            <a href="#" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
-                {{ gT("Print your answers is disable when survey not activated.") }}
+            <a href="#" title=" {{ gt("Note: This link only works if the survey is activated.") }}" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
+                {{ gT("Print your answers.") }}
             </a>
         </div>
     {% endif %}
@@ -40,8 +40,8 @@
     {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
         <!-- Link to Public statistics -->
         <div class="{{ aSurveyInfo.class.submitwrapperdivb }}" {{ aSurveyInfo.attr.submitwrapperdivb }}>
-            <a href="#" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
-                {{ gT("View the statistics for this survey is disable when survey not activated.") }}
+            <a href="#" title=" {{ gt("Note: This link only works if the survey is activated.") }}" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
+                {{ gT("View the statistics for this survey.") }}
             </a>
         </div>
     {% endif %}
@@ -50,7 +50,7 @@
     {% if (aSurveyInfo.aCompleted.sSurveylsUrl) %}
         <a href="{{ aSurveyInfo.aCompleted.sSurveylsUrl }}">{{ aSurveyInfo.aCompleted.sSurveylsUrlDescription }}
         {% if(aSurveyInfo.autoredirect == "Y") %}
-            <small class="text-info">{{ gT("Automatically load URL when survey complete deactivated disable when survey is not activated.") }}</small>
+            <small class="text-info">{{ gT("Note: Automatically loading the end URL works only if the survey is activated.") }}</small>
         {% endif %}
         </a>
     {% endif %}
