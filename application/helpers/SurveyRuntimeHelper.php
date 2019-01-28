@@ -1123,14 +1123,16 @@ class SurveyRuntimeHelper
             if ($this->aSurveyInfo['printanswers'] == 'Y') {
                 $this->aSurveyInfo['aCompleted']['aPrintAnswers']['show']  = true;
                 $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sUrl']  = $surveyActive ? Yii::app()->getController()->createUrl("/printanswers/view", array('surveyid'=>$this->iSurveyid)) : "#";
-                $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = $surveyActive ? gT("Print your answers.") : gT("Print your answers is disable when survey not activated.");
+                $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = gT("Print your answers.");
+                $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sTitle'] =  $surveyActive ? $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] : gT("Note: This link only works if the survey is activated.");
             }
             // Link to Public statistics 
             $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show'] = false;
             if ($this->aSurveyInfo['publicstatistics'] == 'Y') {
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show']  = true;
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sUrl']  = $surveyActive ? Yii::app()->getController()->createUrl("/statistics_user/action/", array('surveyid'=>$this->iSurveyid, 'language'=>App()->getLanguage())) : "#";
-                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sText'] = $surveyActive ? gT("View the statistics for this survey.") : gT("View the statistics for this survey is disable when survey not activated.");
+                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sText'] =  gT("View the statistics for this survey.");
+                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sTitle'] =  $surveyActive ? $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] : gT("Note: This link only works if the survey is activated.");
             }
 
             $this->completed = true;
@@ -1206,7 +1208,7 @@ class SurveyRuntimeHelper
                         header("Location: ".$actualRedirect, false, 302);
                     }
                 }
-                $this->aSurveyInfo['aCompleted']['sSurveylsUrlDescriptionExta'] = gT("Automatically load URL when survey complete deactivated disable when survey is not activated.");
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrlDescriptionExta'] = gT("Note: Automatically loading the end URL works only if the survey is activated.");
             }
 
             $this->aSurveyInfo['include_content'] = 'submit';
