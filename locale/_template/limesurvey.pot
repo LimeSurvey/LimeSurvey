@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-01-28 11:00:22+00:00\n"
+"POT-Creation-Date: 2019-01-28 11:15:13+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3654,7 +3654,7 @@ msgstr ""
 #: application/views/admin/responses/listResponses_view.php:129
 #: application/views/admin/themes/templateeditor_register_view.php:3
 #: application/views/admin/token/dummytokenform.php:40
-#: tmp/twig_translate.php:217
+#: tmp/twig_translate.php:216
 msgid "First name"
 msgstr ""
 
@@ -3667,7 +3667,7 @@ msgstr ""
 #: application/views/admin/responses/listResponses_view.php:140
 #: application/views/admin/themes/templateeditor_register_view.php:7
 #: application/views/admin/token/dummytokenform.php:48
-#: tmp/twig_translate.php:218
+#: tmp/twig_translate.php:217
 msgid "Last name"
 msgstr ""
 
@@ -6079,7 +6079,7 @@ msgstr ""
 #: application/views/installer/license_view.php:16
 #: application/views/installer/precheck_view.php:147
 #: application/views/survey/system/actionButton/movePrevious.php:11
-#: tmp/twig_translate.php:157 tmp/twig_translate.php:212
+#: tmp/twig_translate.php:157 tmp/twig_translate.php:211
 msgid "Previous"
 msgstr ""
 
@@ -7550,7 +7550,8 @@ msgstr ""
 msgid "Your responses were successfully saved."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1126 tmp/twig_translate.php:202
+#: application/helpers/SurveyRuntimeHelper.php:1126 tmp/twig_translate.php:198
+#: tmp/twig_translate.php:201
 msgid "Print your answers."
 msgstr ""
 
@@ -7559,7 +7560,8 @@ msgstr ""
 msgid "Note: This link only works if the survey is activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1134 tmp/twig_translate.php:203
+#: application/helpers/SurveyRuntimeHelper.php:1134 tmp/twig_translate.php:199
+#: tmp/twig_translate.php:202
 msgid "View the statistics for this survey."
 msgstr ""
 
@@ -8280,7 +8282,7 @@ msgstr ""
 #: application/views/admin/export/exportresult_panels/_token-control.php:29
 #: application/views/admin/saved/savedlist_view.php:22
 #: application/views/admin/themes/templateeditor_register_view.php:11
-#: tmp/twig_translate.php:219
+#: tmp/twig_translate.php:218
 msgid "Email address"
 msgstr ""
 
@@ -9524,7 +9526,7 @@ msgstr ""
 
 #: application/helpers/qanda_helper.php:2310
 #: application/views/admin/survey/activateSurvey_view.php:36
-#: tmp/twig_translate.php:195 tmp/twig_translate.php:211
+#: tmp/twig_translate.php:195 tmp/twig_translate.php:210
 msgid "Return to survey"
 msgstr ""
 
@@ -10995,7 +10997,7 @@ msgstr ""
 msgid "Note: Print will not include items on this page"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:301 tmp/twig_translate.php:204
+#: application/helpers/replacements_helper.php:301 tmp/twig_translate.php:203
 msgid "Answers cleared"
 msgstr ""
 
@@ -13328,7 +13330,7 @@ msgstr ""
 #: application/views/admin/update/manage/subscribe.php:38
 #: application/views/admin/update/updater/welcome/_subscribe.php:44
 #: application/views/survey/system/actionButton/moveSubmit.php:11
-#: tmp/twig_translate.php:158 tmp/twig_translate.php:213
+#: tmp/twig_translate.php:158 tmp/twig_translate.php:212
 msgid "Submit"
 msgstr ""
 
@@ -16720,8 +16722,8 @@ msgstr ""
 #: application/views/survey/system/required.php:6 tmp/twig_translate.php:144
 #: tmp/twig_translate.php:145 tmp/twig_translate.php:148
 #: tmp/twig_translate.php:191 tmp/twig_translate.php:192
-#: tmp/twig_translate.php:193 tmp/twig_translate.php:208
-#: tmp/twig_translate.php:209 tmp/twig_translate.php:222
+#: tmp/twig_translate.php:193 tmp/twig_translate.php:207
+#: tmp/twig_translate.php:208 tmp/twig_translate.php:221
 msgid "Mandatory"
 msgstr ""
 
@@ -18119,7 +18121,7 @@ msgid "Show graphs in public statistics:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_presentation_panel.php:394
-msgid "Automatically load URL when survey complete:"
+msgid "Automatically load end URL when survey complete:"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_publication_panel.php:29
@@ -19017,7 +19019,7 @@ msgid "Thank you!"
 msgstr ""
 
 #: application/views/admin/themes/templateeditor_completed_view.php:4
-#: tmp/twig_translate.php:201
+#: tmp/twig_translate.php:200
 msgid "Your survey responses have been recorded."
 msgstr ""
 
@@ -20953,7 +20955,7 @@ msgid "Security question:"
 msgstr ""
 
 #: application/views/survey/frontpage/loadForm/form.php:35
-#: tmp/twig_translate.php:210
+#: tmp/twig_translate.php:209
 msgid "Load now"
 msgstr ""
 
@@ -20961,12 +20963,12 @@ msgstr ""
 #: application/views/survey/system/actionButton/saveLoad.php:11
 #: application/views/survey/system/actionLink/saveLoad.php:11
 #: tmp/twig_translate.php:155 tmp/twig_translate.php:162
-#: tmp/twig_translate.php:206
+#: tmp/twig_translate.php:205
 msgid "Load unfinished survey"
 msgstr ""
 
 #: application/views/survey/frontpage/loadForm/message.php:7
-#: tmp/twig_translate.php:207
+#: tmp/twig_translate.php:206
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr ""
 
@@ -20987,7 +20989,7 @@ msgid "You may register for this survey but you have to wait for the %s before s
 msgstr ""
 
 #: application/views/survey/frontpage/registerForm/message.php:10
-#: tmp/twig_translate.php:216
+#: tmp/twig_translate.php:215
 msgid "You may register for this survey if you wish to take part."
 msgstr ""
 
@@ -21251,7 +21253,7 @@ msgid "Accept"
 msgstr ""
 
 #: tmp/twig_translate.php:146 tmp/twig_translate.php:149
-#: tmp/twig_translate.php:220
+#: tmp/twig_translate.php:219
 msgid "Reload captcha"
 msgstr ""
 
@@ -21303,30 +21305,18 @@ msgstr ""
 msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr ""
 
-#: tmp/twig_translate.php:198
-msgid "Print your answers is disable when survey not activated."
-msgstr ""
-
-#: tmp/twig_translate.php:199
-msgid "View the statistics for this survey is disable when survey not activated."
-msgstr ""
-
-#: tmp/twig_translate.php:200
-msgid "Automatically load URL when survey complete deactivated disable when survey is not activated."
-msgstr ""
-
-#: tmp/twig_translate.php:205
+#: tmp/twig_translate.php:204
 msgid "Restart this survey"
 msgstr ""
 
-#: tmp/twig_translate.php:214
+#: tmp/twig_translate.php:213
 msgid "Thank you for registering. You will receive an email shortly."
 msgstr ""
 
-#: tmp/twig_translate.php:215
+#: tmp/twig_translate.php:214
 msgid "You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey."
 msgstr ""
 
-#: tmp/twig_translate.php:221
+#: tmp/twig_translate.php:220
 msgid "Fields marked with an asterisk are mandatory."
 msgstr ""
