@@ -29,7 +29,7 @@
     {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
         <!--  Link to Print Answer Preview -->
         <div class="{{ aSurveyInfo.class.submitwrapperdiva }} disabled" {{ aSurveyInfo.attr.submitwrapperdiv }}>
-            <a href="#" title=" {{ gT("Note: This link only works if the survey is activated.") }}" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
+            <a href="#" title=" {{ gt("Note: This link only works if the survey is activated.") }}" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
                 {{ gT("Print your answers.") }}
             </a>
         </div>
@@ -40,7 +40,7 @@
     {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
         <!-- Link to Public statistics -->
         <div class="{{ aSurveyInfo.class.submitwrapperdivb }}" {{ aSurveyInfo.attr.submitwrapperdivb }}>
-            <a href="#" title=" {{ gT("Note: This link only works if the survey is activated.") }}" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
+            <a href="#" title=" {{ gt("Note: This link only works if the survey is activated.") }}" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
                 {{ gT("View the statistics for this survey.") }}
             </a>
         </div>
