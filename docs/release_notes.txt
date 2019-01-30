@@ -35,6 +35,13 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.15.7 (build 190122) to 3.15.8 (build 190130) January 30, 2019
+-Fixed issue #13859: Question full index lose color when try submit (Denis Chenu)
+-Fixed issue #14450: Export responses not working (Denis Chenu)
+-Fixed issue #14455: {SURVEYRESOURCESURL} show as error in question on survey logic file (Denis Chenu)
+-Fixed issue: At export page the dropdown list of CSV separators is not translated (Denis Chenu)
+-Fixed issue: Some IE versions were not properly detected (Carsten Schmitz)
+
 Changes from 3.15.6 (build 190108) to 3.15.7 (build 190122) January 22, 2019 
 -[security] Fixed issue:  possible to delete a broken theme by bait clicking an administrator (LouisGac)
 -[security] Fixed issue:  possible to delete a theme by bait clicking an administrator (LouisGac)
