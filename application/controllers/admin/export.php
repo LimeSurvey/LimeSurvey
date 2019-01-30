@@ -245,10 +245,9 @@ class export extends Survey_Common_Action
             $data['aLanguages'] = $aLanguages; // Pass available exports
 
             $data['aCsvFieldSeparator'] = array(
-                chr(44) => "Comma",
-                chr(59) => "Semicolon",
-                chr(9) => "Tab",
-
+                chr(44) => gT("Comma"),
+                chr(59) => gT("Semicolon"),
+                chr(9) => gT("Tab"),
             );
 
             $data['sidemenu']['state'] = false;
