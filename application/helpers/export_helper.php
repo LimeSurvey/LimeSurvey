@@ -1648,7 +1648,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         break;
                     case "R": //RANKING STYLE
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
-                        $Query = "SELECT MAX(CHAR_LENGTH(code)) as sc FROM {{answers}} JOIN {{answerl10ns}} ON {{answers}}.aid = {{answerl10ns}}.aid WHERE qid = $qid AND language='$quexmllang' ";
+                        $Query = "SELECT MAX(CHAR_LENGTH(code)) as sc FROM {{answers}} JOIN {{answer_l10ns}} ON {{answers}}.aid = {{answer_l10ns}}.aid WHERE qid = $qid AND language='$quexmllang' ";
                         $QRE = Yii::app()->db->createCommand($Query)->query();
                         //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
                         //$QROW = mysql_fetch_assoc($QRE);
