@@ -1156,7 +1156,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     if ($scale_id != false) {
         $aCondition['scale_id'] = $scale_id;
     }
-    $QueryResult = Question::model()->findAllByAttributes($aCondition);
+    $QueryResult = Question::model()->with('questionL10ns')->findAllByAttributes($aCondition);
     foreach ($QueryResult as $Row) {
         $response = $dom->createElement("response");
         if ($free == false) {
@@ -1197,7 +1197,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $response->appendChild($fixed);
 
         } else {
-            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row['question']));
+            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionL10ns[$quexmllang]->question));
         }
 
         $response->setAttribute("varName", $varname."_".QueXMLCleanup($Row['title']));
@@ -1648,7 +1648,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         break;
                     case "R": //RANKING STYLE
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
-                        $Query = "SELECT MAX(CHAR_LENGTH(code)) as sc FROM {{answers}} WHERE qid = $qid AND language='$quexmllang' ";
+                        $Query = "SELECT MAX(CHAR_LENGTH(code)) as sc FROM {{answers}} JOIN {{answerl10ns}} ON {{answers}}.aid = {{answerl10ns}}.aid WHERE qid = $qid AND language='$quexmllang' ";
                         $QRE = Yii::app()->db->createCommand($Query)->query();
                         //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
                         //$QROW = mysql_fetch_assoc($QRE);
