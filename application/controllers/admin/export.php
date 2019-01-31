@@ -503,7 +503,9 @@ class export extends Survey_Common_Action
                     foreach ($label_parts as $idx => $label_part) {
                         if ($idx != count($label_parts) && substr($label_part, -1) == '"' && substr($label_part, -2) != '"') {
                             $label_parts[$idx] = rtrim($label_part, '"');
-                            $label_parts[$idx + 1] = '"'.$label_parts[$idx + 1];
+                            if (array_key_exists($idx + 1, $label_parts)){
+                                $label_parts[$idx + 1] = '"'.$label_parts[$idx + 1];
+                            }
                         }
                     }
                     echo "VARIABLE LABELS ".$field['id']." \"".implode("\"+\n\"", $label_parts)."\".\n";
