@@ -263,15 +263,15 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
                 'size' => stringSize($field['sql_name']),
             );
         } else {
-            $query = "SELECT {{answers}}.code, {{answers}}.answer,
-            {{questions}}.type FROM {{answers}}, {{questions}} WHERE";
+            $query = "SELECT {{answers}}.code, {{answer_l10ns}}.answer,
+            {{questions}}.type FROM {{answers}}, {{answer_l10ns}}, {{questions}}, {{question_l10ns}} WHERE";
 
             if (isset($field['scale_id'])) {
                 $query .= " {{answers}}.scale_id = ".(int) $field['scale_id']." AND";
             }
 
-            $query .= " {{answers}}.qid = '".$field["qid"]."' and {{questions}}.language='".$language."' and  {{answers}}.language='".$language."'
-            and {{questions}}.qid='".$field['qid']."' ORDER BY sortorder ASC";
+            $query .= " {{answers}}.qid = '".$field["qid"]."' and {{answer_l10ns}}.aid = {{answers}}.aid and {{question_l10ns}}.language='".$language."' and  {{answer_l10ns}}.language='".$language."'
+            and {{questions}}.qid='".$field['qid']."' and {{question_l10ns}}.qid={{questions}}.qid ORDER BY sortorder ASC";
             $result = Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
             $num_results = safecount($result);
             if ($num_results > 0) {
