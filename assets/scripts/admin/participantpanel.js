@@ -75,7 +75,6 @@ LS.CPDB = (function() {
                 postdata.selectedParticipant.push($(item).val());
             });
         }
-
         $.ajax({
             url: exporttocsvcountall,
             data: postdata,
@@ -112,6 +111,11 @@ LS.CPDB = (function() {
                             var dlForm = $("<form></form>")
                                 .attr('action', exportToCSVURL)
                                 .attr('method', "POST");
+                            /* add crsf sice where out of ajax here */
+                            $('<input />')
+                                .attr('name', LS.data.csrfTokenName)
+                                .attr('value', LS.data.csrfToken)
+                                .appendTo(dlForm);
                             $.each(dldata, function(key,value){
                                 $('<input />')
                                     .attr('name', key)
