@@ -1963,7 +1963,7 @@ class dataentry extends Survey_Common_Action
                             if (trim($qidattributes['display_columns']) != '') {
                                 $dcols = $qidattributes['display_columns'];
                             } else {
-                                $dcols = 0;
+                                $dcols = 1;
                             }
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = dbExecuteAssoc($meaquery);
