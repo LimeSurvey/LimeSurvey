@@ -1013,7 +1013,7 @@ class SurveyRuntimeHelper
                     $this->aSurveyInfo['saved'] = array(
                         'success'=> false,
                         'title' => gT('Error'),
-                        'text' => gT("Your responses were not saved. Please contact survey administrator.")
+                        'text' => gT("Your responses were not saved. Please contact the survey administrator.")
                     );
                 }
                 $oResponse->save();
@@ -1022,7 +1022,7 @@ class SurveyRuntimeHelper
             $this->aSurveyInfo['saved'] = array(
                 'success'=> false,
                 'title' => gT('Warning'),
-                'text' => gT("Save response is disabled if survey is not activated.")
+                'text' => gT("Saving responses is disabled if survey is not activated.")
             );
         }
     }
