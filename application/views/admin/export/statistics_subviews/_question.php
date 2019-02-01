@@ -344,7 +344,7 @@
                 foreach($result[$key1] as $row)
                 {
                     $row = array_values($row);
-                    $myfield2 = $myfield.$row[0];
+                    $myfield2 = $myfield.$row[4];
                     echo "<!-- $myfield2 - ";
 
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
@@ -423,7 +423,7 @@
                 foreach($result[$key1] as $row)
                 {
                     $row=array_values($row);
-                    $myfield2 = $myfield . "$row[0]";
+                    $myfield2 = $myfield . "$row[4]";
                     echo "<!-- $myfield2 - ";
 
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
@@ -472,7 +472,7 @@
                 foreach($result[$key1] as $row)
                 {
                     $row=array_values($row);
-                    $myfield2 = $myfield . "$row[0]";
+                    $myfield2 = $myfield . "$row[4]";
                     echo "<!-- $myfield2 - ";
 
                     if (isset($_POST[$myfield2])) {echo htmlspecialchars($_POST[$myfield2]);}
@@ -740,7 +740,7 @@
 
                     //----------------- LABEL 1 ---------------------
                     //myfield2 = answer code.
-                    $myfield2 = $myfield . "$row[0]#0";
+                    $myfield2 = $myfield . "$row[4]#0";
 
                     //3 lines of debugging output
                     echo "<!-- $myfield2 - ";
@@ -793,7 +793,7 @@
                     $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '{$language}' AND scale_id = 0", 'sortorder, code');
 
                     //this is for debugging only
-                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{0}[]' multiple='multiple' class='form-control'>\n";
+                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[4]}#{0}[]' multiple='multiple' class='form-control'>\n";
 
                     //list answers
                     foreach($fresult as $frow)
@@ -812,7 +812,7 @@
                     //----------------- LABEL 2 ---------------------
 
                     //myfield2 = answer code
-                    $myfield2 = $myfield . "$row[0]#1";
+                    $myfield2 = $myfield . "$row[4]#1";
 
                     //3 lines of debugging output
                     echo "<!-- $myfield2 - ";
@@ -855,7 +855,7 @@
                     $fresult = Answer::model()->getQuestionsForStatistics('*', "qid='$flt[0]' AND language = '$language' AND scale_id = 1", 'sortorder, code');
 
                     //this is for debugging only
-                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{1}[]' multiple='multiple' class='form-control'>\n";
+                    echo "\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[4]}#{1}[]' multiple='multiple' class='form-control'>\n";
 
                     //list answers
                     foreach($fresult as $frow)
