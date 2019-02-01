@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-02-01 19:31:30+00:00\n"
+"POT-Creation-Date: 2019-02-01 19:32:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1145,6 +1145,8 @@ msgstr ""
 #: application/views/admin/token/token_bar.php:237
 #: application/views/admin/usergroup/usergroupbar_view.php:55
 #: application/views/survey/questions/question_help/error-tip.php:12
+#: tmp/twig_translate.php:150 tmp/twig_translate.php:176
+#: tmp/twig_translate.php:180
 msgid "Close"
 msgstr ""
 
@@ -1806,6 +1808,18 @@ msgstr ""
 #: application/views/admin/usergroup/usergroups_view.php:143
 #: application/views/survey/frontpage/clearallForm/form.php:11
 #: tmp/twig_translate.php:3 tmp/twig_translate.php:6 tmp/twig_translate.php:14
+#: tmp/twig_translate.php:22 tmp/twig_translate.php:25
+#: tmp/twig_translate.php:29 tmp/twig_translate.php:33
+#: tmp/twig_translate.php:37 tmp/twig_translate.php:46
+#: tmp/twig_translate.php:50 tmp/twig_translate.php:54
+#: tmp/twig_translate.php:58 tmp/twig_translate.php:62
+#: tmp/twig_translate.php:70 tmp/twig_translate.php:77
+#: tmp/twig_translate.php:83 tmp/twig_translate.php:89
+#: tmp/twig_translate.php:95 tmp/twig_translate.php:101
+#: tmp/twig_translate.php:107 tmp/twig_translate.php:119
+#: tmp/twig_translate.php:122 tmp/twig_translate.php:126
+#: tmp/twig_translate.php:130 tmp/twig_translate.php:138
+#: tmp/twig_translate.php:184 tmp/twig_translate.php:194
 msgid "Yes"
 msgstr ""
 
@@ -1823,6 +1837,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1218
 #: application/views/admin/dataentry/content_view.php:711
 #: application/views/admin/export/statistics_subviews/_question.php:460
+#: tmp/twig_translate.php:196
 msgid "Uncertain"
 msgstr ""
 
@@ -1962,6 +1977,18 @@ msgstr ""
 #: application/views/admin/token/tokenform.php:311
 #: application/views/survey/frontpage/clearallForm/form.php:14
 #: tmp/twig_translate.php:4 tmp/twig_translate.php:7 tmp/twig_translate.php:15
+#: tmp/twig_translate.php:23 tmp/twig_translate.php:26
+#: tmp/twig_translate.php:30 tmp/twig_translate.php:34
+#: tmp/twig_translate.php:38 tmp/twig_translate.php:47
+#: tmp/twig_translate.php:51 tmp/twig_translate.php:55
+#: tmp/twig_translate.php:59 tmp/twig_translate.php:63
+#: tmp/twig_translate.php:71 tmp/twig_translate.php:78
+#: tmp/twig_translate.php:84 tmp/twig_translate.php:90
+#: tmp/twig_translate.php:96 tmp/twig_translate.php:102
+#: tmp/twig_translate.php:108 tmp/twig_translate.php:120
+#: tmp/twig_translate.php:123 tmp/twig_translate.php:127
+#: tmp/twig_translate.php:131 tmp/twig_translate.php:139
+#: tmp/twig_translate.php:185 tmp/twig_translate.php:195
 msgid "No"
 msgstr ""
 
@@ -1978,6 +2005,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1235
 #: application/views/admin/dataentry/content_view.php:735
 #: application/views/admin/export/statistics_subviews/_question.php:500
+#: tmp/twig_translate.php:186
 msgid "Increase"
 msgstr ""
 
@@ -1994,6 +2022,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1236
 #: application/views/admin/dataentry/content_view.php:736
 #: application/views/admin/export/statistics_subviews/_question.php:505
+#: tmp/twig_translate.php:187
 msgid "Same"
 msgstr ""
 
@@ -2010,6 +2039,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1237
 #: application/views/admin/dataentry/content_view.php:737
 #: application/views/admin/export/statistics_subviews/_question.php:510
+#: tmp/twig_translate.php:188
 msgid "Decrease"
 msgstr ""
 
@@ -2053,6 +2083,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1331
 #: application/views/admin/dataentry/content_view.php:104
 #: application/views/admin/export/statistics_subviews/_question.php:293
+#: tmp/twig_translate.php:193
 msgid "Female"
 msgstr ""
 
@@ -2070,6 +2101,7 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:1332
 #: application/views/admin/dataentry/content_view.php:105
 #: application/views/admin/export/statistics_subviews/_question.php:299
+#: tmp/twig_translate.php:192
 msgid "Male"
 msgstr ""
 
@@ -2461,6 +2493,7 @@ msgstr ""
 #: application/views/admin/user/editusers.php:132
 #: application/views/admin/user/modifyuser.php:62
 #: application/views/admin/user/setuserpermissions.php:82
+#: tmp/twig_translate.php:114
 msgid "Save"
 msgstr ""
 
@@ -3359,6 +3392,7 @@ msgid "Please choose the appropriate response for each item:"
 msgstr ""
 
 #: application/controllers/admin/printablesurvey.php:1302
+#: tmp/twig_translate.php:179
 msgid "There are %s questions in this survey."
 msgstr ""
 
@@ -3640,6 +3674,7 @@ msgstr ""
 #: application/views/admin/responses/listResponses_view.php:129
 #: application/views/admin/themes/templateeditor_register_view.php:3
 #: application/views/admin/token/dummytokenform.php:40
+#: tmp/twig_translate.php:226
 msgid "First name"
 msgstr ""
 
@@ -3652,6 +3687,7 @@ msgstr ""
 #: application/views/admin/responses/listResponses_view.php:140
 #: application/views/admin/themes/templateeditor_register_view.php:7
 #: application/views/admin/token/dummytokenform.php:48
+#: tmp/twig_translate.php:227
 msgid "Last name"
 msgstr ""
 
@@ -4124,6 +4160,7 @@ msgstr ""
 #: application/views/survey/frontpage/captchaForm/form.php:39
 #: application/views/survey/frontpage/registerForm/form.php:56
 #: application/views/survey/frontpage/tokenForm/form.php:57
+#: tmp/twig_translate.php:155 tmp/twig_translate.php:158
 msgid "Continue"
 msgstr ""
 
@@ -4211,6 +4248,7 @@ msgstr ""
 
 #: application/controllers/admin/surveypermission.php:504
 #: application/views/survey/frontpage/saveForm/form.php:72
+#: tmp/twig_translate.php:204
 msgid "Save Now"
 msgstr ""
 
@@ -5456,7 +5494,7 @@ msgstr ""
 #: application/helpers/replacements_helper.php:149
 #: application/helpers/replacements_helper.php:151
 #: application/helpers/replacements_helper.php:404
-#: application/helpers/replacements_helper.php:406
+#: application/helpers/replacements_helper.php:406 tmp/twig_translate.php:145
 msgid "Please contact %s ( %s ) for further assistance."
 msgstr ""
 
@@ -6061,6 +6099,7 @@ msgstr ""
 #: application/views/installer/license_view.php:16
 #: application/views/installer/precheck_view.php:147
 #: application/views/survey/system/actionButton/movePrevious.php:11
+#: tmp/twig_translate.php:165 tmp/twig_translate.php:221
 msgid "Previous"
 msgstr ""
 
@@ -6072,6 +6111,7 @@ msgstr ""
 #: application/views/installer/optconfig_view.php:82
 #: application/views/installer/precheck_view.php:155
 #: application/views/survey/system/actionButton/moveNext.php:11
+#: tmp/twig_translate.php:167
 msgid "Next"
 msgstr ""
 
@@ -7006,7 +7046,8 @@ msgstr ""
 #: application/views/admin/token/remind.php:81
 #: application/views/admin/user/setusertemplates.php:26
 #: application/views/admin/user/setusertemplates.php:58
-#: tmp/twig_translate.php:12
+#: tmp/twig_translate.php:12 tmp/twig_translate.php:43
+#: tmp/twig_translate.php:136
 msgid "Off"
 msgstr ""
 
@@ -7537,7 +7578,8 @@ msgstr ""
 msgid "Saving responses is disabled if survey is not activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1130
+#: application/helpers/SurveyRuntimeHelper.php:1130 tmp/twig_translate.php:208
+#: tmp/twig_translate.php:211
 msgid "Print your answers."
 msgstr ""
 
@@ -7546,7 +7588,8 @@ msgstr ""
 msgid "Note: This link only works if the survey is activated."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1138
+#: application/helpers/SurveyRuntimeHelper.php:1138 tmp/twig_translate.php:209
+#: tmp/twig_translate.php:212
 msgid "View the statistics for this survey."
 msgstr ""
 
@@ -8267,6 +8310,7 @@ msgstr ""
 #: application/views/admin/export/exportresult_panels/_token-control.php:29
 #: application/views/admin/saved/savedlist_view.php:22
 #: application/views/admin/themes/templateeditor_register_view.php:11
+#: tmp/twig_translate.php:228
 msgid "Email address"
 msgstr ""
 
@@ -9265,7 +9309,7 @@ msgstr ""
 msgid "The minimum number of files has not been uploaded."
 msgstr ""
 
-#: application/helpers/frontend_helper.php:691
+#: application/helpers/frontend_helper.php:691 tmp/twig_translate.php:206
 msgid "Did Not Save"
 msgstr ""
 
@@ -9310,7 +9354,7 @@ msgstr ""
 msgid "This survey cannot be tested or completed for the following reason(s):"
 msgstr ""
 
-#: application/helpers/frontend_helper.php:1400
+#: application/helpers/frontend_helper.php:1400 tmp/twig_translate.php:177
 msgid "There are no questions in this survey."
 msgstr ""
 
@@ -9510,6 +9554,7 @@ msgstr ""
 
 #: application/helpers/qanda_helper.php:2310
 #: application/views/admin/survey/activateSurvey_view.php:36
+#: tmp/twig_translate.php:205 tmp/twig_translate.php:220
 msgid "Return to survey"
 msgstr ""
 
@@ -9522,7 +9567,8 @@ msgstr ""
 #: application/views/admin/themeoptions/update.php:151
 #: application/views/admin/themes/templatesummary_view.php:158
 #: application/views/admin/token/csvupload.php:123
-#: application/views/admin/token/ldapform.php:73
+#: application/views/admin/token/ldapform.php:73 tmp/twig_translate.php:18
+#: tmp/twig_translate.php:115 tmp/twig_translate.php:143
 msgid "Upload"
 msgstr ""
 
@@ -10979,11 +11025,11 @@ msgstr ""
 msgid "Note: Print will not include items on this page"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:301
+#: application/helpers/replacements_helper.php:301 tmp/twig_translate.php:213
 msgid "Answers cleared"
 msgstr ""
 
-#: application/helpers/replacements_helper.php:302
+#: application/helpers/replacements_helper.php:302 tmp/twig_translate.php:175
 msgid "Your assessment"
 msgstr ""
 
@@ -13312,6 +13358,7 @@ msgstr ""
 #: application/views/admin/update/manage/subscribe.php:38
 #: application/views/admin/update/updater/welcome/_subscribe.php:44
 #: application/views/survey/system/actionButton/moveSubmit.php:11
+#: tmp/twig_translate.php:166 tmp/twig_translate.php:222
 msgid "Submit"
 msgstr ""
 
@@ -14286,7 +14333,8 @@ msgid "Inline"
 msgstr ""
 
 #: application/views/admin/global_settings/_general.php:192
-#: tmp/twig_translate.php:10
+#: tmp/twig_translate.php:10 tmp/twig_translate.php:41
+#: tmp/twig_translate.php:134
 msgid "Popup"
 msgstr ""
 
@@ -16689,7 +16737,11 @@ msgid "Question type"
 msgstr ""
 
 #: application/views/admin/survey/Question/listquestions.php:105
-#: application/views/survey/system/required.php:6
+#: application/views/survey/system/required.php:6 tmp/twig_translate.php:152
+#: tmp/twig_translate.php:153 tmp/twig_translate.php:156
+#: tmp/twig_translate.php:201 tmp/twig_translate.php:202
+#: tmp/twig_translate.php:203 tmp/twig_translate.php:217
+#: tmp/twig_translate.php:218 tmp/twig_translate.php:231
 msgid "Mandatory"
 msgstr ""
 
@@ -18985,6 +19037,7 @@ msgid "Thank you!"
 msgstr ""
 
 #: application/views/admin/themes/templateeditor_completed_view.php:4
+#: tmp/twig_translate.php:210
 msgid "Your survey responses have been recorded."
 msgstr ""
 
@@ -19022,6 +19075,7 @@ msgstr ""
 
 #: application/views/admin/themes/templateeditor_surveylist_view.php:33
 #: application/views/admin/themes/templateeditor_surveylist_view.php:77
+#: tmp/twig_translate.php:144
 msgid "Start survey"
 msgstr ""
 
@@ -20904,6 +20958,7 @@ msgstr ""
 #: application/views/survey/frontpage/clearallForm/heading.php:7
 #: application/views/survey/system/actionButton/clearAll.php:16
 #: application/views/survey/system/actionLink/clearAll.php:11
+#: tmp/twig_translate.php:170 tmp/twig_translate.php:174
 msgid "Exit and clear survey"
 msgstr ""
 
@@ -20918,16 +20973,20 @@ msgid "Security question:"
 msgstr ""
 
 #: application/views/survey/frontpage/loadForm/form.php:35
+#: tmp/twig_translate.php:219
 msgid "Load now"
 msgstr ""
 
 #: application/views/survey/frontpage/loadForm/heading.php:7
 #: application/views/survey/system/actionButton/saveLoad.php:11
 #: application/views/survey/system/actionLink/saveLoad.php:11
+#: tmp/twig_translate.php:163 tmp/twig_translate.php:171
+#: tmp/twig_translate.php:215
 msgid "Load unfinished survey"
 msgstr ""
 
 #: application/views/survey/frontpage/loadForm/message.php:7
+#: tmp/twig_translate.php:216
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr ""
 
@@ -20948,6 +21007,7 @@ msgid "You may register for this survey but you have to wait for the %s before s
 msgstr ""
 
 #: application/views/survey/frontpage/registerForm/message.php:10
+#: tmp/twig_translate.php:225
 msgid "You may register for this survey if you wish to take part."
 msgstr ""
 
@@ -20968,10 +21028,12 @@ msgid "Your email address:"
 msgstr ""
 
 #: application/views/survey/frontpage/saveForm/heading.php:7
+#: tmp/twig_translate.php:198
 msgid "Save your unfinished survey"
 msgstr ""
 
 #: application/views/survey/frontpage/saveForm/message.php:7
+#: tmp/twig_translate.php:199
 msgid "Enter a name and password for this survey and click save below."
 msgstr ""
 
@@ -20984,6 +21046,7 @@ msgid "If you give an email address, an email containing the details will be sen
 msgstr ""
 
 #: application/views/survey/frontpage/saveForm/message.php:10
+#: tmp/twig_translate.php:200
 msgid "After having clicked the save button you can either close this browser window or continue filling out the survey."
 msgstr ""
 
@@ -20996,10 +21059,12 @@ msgid "If you have been issued a token, please enter it in the box below and cli
 msgstr ""
 
 #: application/views/survey/frontpage/tokenForm/message.php:11
+#: tmp/twig_translate.php:151
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
 #: application/views/survey/questions/question_help/asterisk.php:9
+#: tmp/twig_translate.php:146
 msgid "(This question is mandatory)"
 msgstr ""
 
@@ -21013,6 +21078,7 @@ msgstr ""
 
 #: application/views/survey/system/actionButton/saveSave.php:11
 #: application/views/survey/system/actionLink/saveSave.php:11
+#: tmp/twig_translate.php:164 tmp/twig_translate.php:172
 msgid "Resume later"
 msgstr ""
 
@@ -21021,6 +21087,7 @@ msgid "Caution: JavaScript execution is disabled in your browser or for this web
 msgstr ""
 
 #: application/views/survey/system/privacy/heading.php:7
+#: tmp/twig_translate.php:147
 msgid "This survey is anonymous."
 msgstr ""
 
@@ -21036,29 +21103,251 @@ msgstr ""
 #: application/views/survey/system/surveyIndex/groupIndexMenuLink.php:10
 #: application/views/survey/system/surveyIndex/questionIndex.php:10
 #: application/views/survey/system/surveyIndex/questionIndexMenuLink.php:10
+#: tmp/twig_translate.php:159 tmp/twig_translate.php:160
+#: tmp/twig_translate.php:161 tmp/twig_translate.php:169
 msgid "Question index"
 msgstr ""
 
-#: tmp/twig_translate.php:2
+#: tmp/twig_translate.php:2 tmp/twig_translate.php:21
+#: tmp/twig_translate.php:118
 msgid "Inherit everything"
 msgstr ""
 
-#: tmp/twig_translate.php:5
+#: tmp/twig_translate.php:5 tmp/twig_translate.php:24
+#: tmp/twig_translate.php:121
 msgid "Ajax mode"
 msgstr ""
 
 #: tmp/twig_translate.php:8 tmp/twig_translate.php:13 tmp/twig_translate.php:16
+#: tmp/twig_translate.php:27 tmp/twig_translate.php:31
+#: tmp/twig_translate.php:35 tmp/twig_translate.php:39
+#: tmp/twig_translate.php:44 tmp/twig_translate.php:48
+#: tmp/twig_translate.php:52 tmp/twig_translate.php:56
+#: tmp/twig_translate.php:60 tmp/twig_translate.php:64
+#: tmp/twig_translate.php:72 tmp/twig_translate.php:74
+#: tmp/twig_translate.php:79 tmp/twig_translate.php:85
+#: tmp/twig_translate.php:91 tmp/twig_translate.php:97
+#: tmp/twig_translate.php:103 tmp/twig_translate.php:109
+#: tmp/twig_translate.php:124 tmp/twig_translate.php:128
+#: tmp/twig_translate.php:132 tmp/twig_translate.php:137
+#: tmp/twig_translate.php:140
 msgid "Inherit"
 msgstr ""
 
-#: tmp/twig_translate.php:9
+#: tmp/twig_translate.php:9 tmp/twig_translate.php:40
+#: tmp/twig_translate.php:133
 msgid "Show popups"
 msgstr ""
 
-#: tmp/twig_translate.php:11
+#: tmp/twig_translate.php:11 tmp/twig_translate.php:42
+#: tmp/twig_translate.php:135
 msgid "On page"
 msgstr ""
 
-#: tmp/twig_translate.php:17
+#: tmp/twig_translate.php:17 tmp/twig_translate.php:75
+#: tmp/twig_translate.php:81 tmp/twig_translate.php:141
 msgid "Preview image"
+msgstr ""
+
+#: tmp/twig_translate.php:19 tmp/twig_translate.php:116
+msgid "Local Server"
+msgstr ""
+
+#: tmp/twig_translate.php:20 tmp/twig_translate.php:117
+msgid "User browser"
+msgstr ""
+
+#: tmp/twig_translate.php:28 tmp/twig_translate.php:125
+msgid "Survey container"
+msgstr ""
+
+#: tmp/twig_translate.php:32
+msgid "Question borders"
+msgstr ""
+
+#: tmp/twig_translate.php:36
+msgid "Question shadow"
+msgstr ""
+
+#: tmp/twig_translate.php:45
+msgid "Zebra-striped questions"
+msgstr ""
+
+#: tmp/twig_translate.php:49
+msgid "Sticky array headers"
+msgstr ""
+
+#: tmp/twig_translate.php:53
+msgid "Dim answered array rows"
+msgstr ""
+
+#: tmp/twig_translate.php:57 tmp/twig_translate.php:129
+msgid "Hide privacy info"
+msgstr ""
+
+#: tmp/twig_translate.php:61
+msgid "Cross-hover in matrix questions"
+msgstr ""
+
+#: tmp/twig_translate.php:65
+msgid "Background color"
+msgstr ""
+
+#: tmp/twig_translate.php:66
+msgid "Font color"
+msgstr ""
+
+#: tmp/twig_translate.php:67
+msgid "Question background color"
+msgstr ""
+
+#: tmp/twig_translate.php:68
+msgid "Check icon"
+msgstr ""
+
+#: tmp/twig_translate.php:69
+msgid "Background image"
+msgstr ""
+
+#: tmp/twig_translate.php:73
+msgid "Background image file"
+msgstr ""
+
+#: tmp/twig_translate.php:76
+msgid "Logo"
+msgstr ""
+
+#: tmp/twig_translate.php:80
+msgid "Logo file"
+msgstr ""
+
+#: tmp/twig_translate.php:82
+msgid "Animate body"
+msgstr ""
+
+#: tmp/twig_translate.php:86
+msgid "Body animation"
+msgstr ""
+
+#: tmp/twig_translate.php:87 tmp/twig_translate.php:93
+#: tmp/twig_translate.php:99 tmp/twig_translate.php:105
+#: tmp/twig_translate.php:111
+msgid "Duration"
+msgstr ""
+
+#: tmp/twig_translate.php:88
+msgid "Animate question"
+msgstr ""
+
+#: tmp/twig_translate.php:92
+msgid "Question animation"
+msgstr ""
+
+#: tmp/twig_translate.php:94
+msgid "Animate alert"
+msgstr ""
+
+#: tmp/twig_translate.php:98 tmp/twig_translate.php:104
+msgid "Alert animation"
+msgstr ""
+
+#: tmp/twig_translate.php:100
+msgid "Animate checkbox"
+msgstr ""
+
+#: tmp/twig_translate.php:106
+msgid "Animate radio buttons"
+msgstr ""
+
+#: tmp/twig_translate.php:110
+msgid "Radio button animation"
+msgstr ""
+
+#: tmp/twig_translate.php:112
+msgid "%s fonts"
+msgstr ""
+
+#: tmp/twig_translate.php:113
+msgid "%s variations"
+msgstr ""
+
+#: tmp/twig_translate.php:142
+msgid "Fruity fonts"
+msgstr ""
+
+#: tmp/twig_translate.php:148
+msgid "Survey data policy"
+msgstr ""
+
+#: tmp/twig_translate.php:149
+msgid "Accept"
+msgstr ""
+
+#: tmp/twig_translate.php:154 tmp/twig_translate.php:157
+#: tmp/twig_translate.php:229
+msgid "Reload captcha"
+msgstr ""
+
+#: tmp/twig_translate.php:162
+msgid "Question by question mode not yet supported."
+msgstr ""
+
+#: tmp/twig_translate.php:168
+msgid "Change the language"
+msgstr ""
+
+#: tmp/twig_translate.php:173
+msgid "This action need to be confirmed."
+msgstr ""
+
+#: tmp/twig_translate.php:178
+msgid "There is 1 question in this survey."
+msgstr ""
+
+#: tmp/twig_translate.php:181
+msgid "This survey is currently not active. You will not be able to save your responses."
+msgstr ""
+
+#: tmp/twig_translate.php:182
+msgid "PDF export"
+msgstr ""
+
+#: tmp/twig_translate.php:183
+msgid "queXMLPDF export"
+msgstr ""
+
+#: tmp/twig_translate.php:189
+msgid "No comment"
+msgstr ""
+
+#: tmp/twig_translate.php:190
+msgid "File type"
+msgstr ""
+
+#: tmp/twig_translate.php:191
+msgid "Rank"
+msgstr ""
+
+#: tmp/twig_translate.php:197
+msgid "default"
+msgstr ""
+
+#: tmp/twig_translate.php:207
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr ""
+
+#: tmp/twig_translate.php:214
+msgid "Restart this survey"
+msgstr ""
+
+#: tmp/twig_translate.php:223
+msgid "Thank you for registering. You will receive an email shortly."
+msgstr ""
+
+#: tmp/twig_translate.php:224
+msgid "You may register for this survey but you have to wait for the {{sStartDate}} before starting the survey."
+msgstr ""
+
+#: tmp/twig_translate.php:230
+msgid "Fields marked with an asterisk are mandatory."
 msgstr ""
