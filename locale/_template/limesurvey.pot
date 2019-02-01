@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-02-01 15:41:04+00:00\n"
+"POT-Creation-Date: 2019-02-01 15:43:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7570,11 +7570,11 @@ msgid "Your responses were successfully saved."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1016
-msgid "Your responses were not saved. Please contact survey administrator."
+msgid "Your responses were not saved. Please contact the survey administrator."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1025
-msgid "Save response is disabled if survey is not activated."
+msgid "Saving responses is disabled if survey is not activated."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1130 tmp/twig_translate.php:201
