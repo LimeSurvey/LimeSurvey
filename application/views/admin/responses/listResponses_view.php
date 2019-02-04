@@ -178,7 +178,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
 
                             $aColumns[]=
                                 array(
-                                    'header' => '<span data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="'.$colName.'" data-content="'.$colTitle.'" data-html="1">'.$colName.' <br/> '.$colDetails.'</span>',
+                                    'header' => '<span data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="'.$colName.'" data-content="'.CHtml::encode($colTitle).'" data-html="1">'.$colName.' <br/> '.$colDetails.'</span>',
                                     'headerHtmlOptions'=>array('style'=>'min-width: 350px;'),
                                     'name' => $column->name,
                                     'type' => 'raw',
