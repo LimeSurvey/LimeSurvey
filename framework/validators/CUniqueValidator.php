@@ -99,12 +99,20 @@ class CUniqueValidator extends CValidator
 				array('{column}'=>$attributeName,'{table}'=>$table->name)));
 
 		$columnName=$column->rawName;
+		$columnType=$column->type;
 		$criteria=new CDbCriteria();
 		if($this->criteria!==array())
 			$criteria->mergeWith($this->criteria);
 		$tableAlias = empty($criteria->alias) ? $finder->getTableAlias(true) : $criteria->alias;
 		$valueParamName = CDbCriteria::PARAM_PREFIX.CDbCriteria::$paramCount++;
-		$criteria->addCondition($this->caseSensitive ? "{$tableAlias}.{$columnName}={$valueParamName}" : "LOWER({$tableAlias}.{$columnName})=LOWER({$valueParamName})");
+
+		$valueParamNameCasted = $valueParamName;
+		if($columnType == 'string' && gettype($value) != "string") {
+			$valueParamNameCasted = $table->castToString($valueParamNameCasted);
+		}
+
+		$criteria->addCondition($this->caseSensitive ? "{$tableAlias}.{$columnName}={$valueParamNameCasted}" : "LOWER({$tableAlias}.{$columnName})=LOWER({$valueParamNameCasted})");
+
 		$criteria->params[$valueParamName] = $value;
 
 		if(!$object instanceof CActiveRecord || $object->isNewRecord || $object->tableName()!==$finder->tableName())

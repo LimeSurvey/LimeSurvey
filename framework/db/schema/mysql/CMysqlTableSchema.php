@@ -22,4 +22,11 @@ class CMysqlTableSchema extends CDbTableSchema
 	 * Defaults to null, meaning no schema (or the current database).
 	 */
 	public $schemaName;
+
+	/**
+	 * @return string SQL cast to string
+	 */
+	public function castToString($value) {
+		return "CONVERT(". $value .", CHAR)";
+	}
 }

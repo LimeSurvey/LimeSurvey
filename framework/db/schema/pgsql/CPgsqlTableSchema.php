@@ -21,4 +21,11 @@ class CPgsqlTableSchema extends CDbTableSchema
 	 * @var string name of the schema that this table belongs to.
 	 */
 	public $schemaName;
+
+	/**
+	 * @return string SQL cast to string
+	 */
+	public function castToString($value) {
+		return "CAST(". $value ." as TEXT)";
+	}
 }
