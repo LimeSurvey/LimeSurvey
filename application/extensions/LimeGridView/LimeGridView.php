@@ -13,7 +13,7 @@ class LimeGridView extends TbGridView
 {
 	/**
 	 * @inheritDoc
-	 * But set scriptposition to POS_PREBEGIN and POS_POSTSCRIPT
+	 * But set script position to POS_PREBEGIN and POS_POSTSCRIPT
 	 */
 	public function registerClientScript()
 	{
