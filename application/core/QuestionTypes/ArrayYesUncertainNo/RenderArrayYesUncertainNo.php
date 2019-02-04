@@ -32,6 +32,8 @@ class RenderArrayYesUncertainNo extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        return do_array_yesnouncertain($this->aFieldArray);
+        
         $answer = '';
         $inputnames = [];
 

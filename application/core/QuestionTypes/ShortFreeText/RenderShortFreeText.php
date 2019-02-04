@@ -32,6 +32,8 @@ class RenderShortFreeText extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        return do_shortfreetext($this->aFieldArray);
+
         $answer = '';
         $inputnames = [];
 

@@ -18,7 +18,7 @@
  * 10 => string new group id for question in randomization group (GroupbyGroup Mode)
  *
  */
-class DummyQuestionEditContainer extends QuestionBaseRenderer
+class RenderGenderDropdown extends QuestionBaseRenderer
 {
     public function getMainView()
     {
@@ -32,6 +32,8 @@ class DummyQuestionEditContainer extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        return do_gender($this->aFieldArray);
+
         $answer = '';
         $inputnames = [];
 

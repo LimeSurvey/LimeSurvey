@@ -18,8 +18,10 @@
         },
         computed: {
             curValue: {
-                get() { return this.currentValue },
-                set(newValue) { this.$emit('change', newValue)},
+                get() { return this.currentValue || this.elOptions.default || '' },
+                set(newValue) { 
+                    this.$emit('change', newValue);
+                },
             },
             showHelp(){
                 return this.triggerShowHelp && (this.elHelp.length>0);
@@ -50,15 +52,16 @@
     <div class="form-row">
         <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
-            <div class="input-group">
+            <div class="input-group col-12">
                 <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
                 <input 
-                    type="text" 
+                    type="number" 
                     v-model="curValue" 
-                    :pattern="elOptions.elInputPattern" 
                     :class="getClasses" 
                     :name="elName || elId" 
                     :id="elId" 
+                    :max="elOptions.max || ''"
+                    :min="elOptions.min || ''"
                 />
                 <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
             </div>

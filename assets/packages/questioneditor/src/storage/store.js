@@ -26,6 +26,7 @@ export default function(questionId){
         questionAttributes: {},
         questionGeneralSettings: [],
         questionAdvancedSettings: {},
+        questionAdvancedSettingsCategory: '',
         questionImmutable: {},
         questionImmutableI10N: {},
         languages: [],

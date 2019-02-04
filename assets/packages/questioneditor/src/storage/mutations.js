@@ -1,5 +1,5 @@
+import Vue from "vue";
 import isEmpty from "lodash/isEmpty";
-import merge from "lodash/merge";
 
 export default {
     setCurrentQuestion : (state, newValue) => {
@@ -17,10 +17,26 @@ export default {
         state.questionTypes = newValue;
     },
     setQuestionGeneralSettings : (state, newValue) => {
-        merge(state.questionGeneralSettings,newValue);
+        state.questionGeneralSettings = newValue;
     },
     setQuestionAdvancedSettings : (state, newValue) => {
-        merge(state.questionAdvancedSettings,newValue);
+        state.questionAdvancedSettings = newValue;
+    },
+    setQuestionAdvancedSettingsCategory : (state, newValue) => {
+        state.questionAdvancedSettingsCategory = newValue;
+    },
+    setQuestionAdvancedSetting : (state, payload) => {
+        console.ls.log("STORE -> ", {
+            questionAdvancedSettings: state.questionAdvancedSettings,
+            questionAdvancedSettingsCategory: state.questionAdvancedSettingsCategory,
+            newValue: payload.newValue,
+            settingName: payload.settingName
+        });
+        Vue.set(
+            state.questionAdvancedSettings[state.questionAdvancedSettingsCategory][payload.settingName],
+            'formElementValue',
+            payload.newValue
+        );
     },
     setActiveLanguage : (state, newValue) => {
         state.activeLanguage = newValue;

@@ -17,10 +17,20 @@
                 triggerShowHelp: false
             };
         },
+        methods: {
+            simpleValue(value) {
+                if(value == []) {
+                    return null;
+                }
+                return value;
+            },
+        },
         computed: {
             curValue: {
                 get() { return this.currentValue },
-                set(newValue) { this.$emit('change', {value: newValue, 'element': elId}); },
+                set(newValue) { 
+                    this.$emit('change', {value: newValue, 'element': elId});
+                },
             },
             showHelp(){
                 return this.triggerShowHelp && (this.elHelp.length>0);
@@ -46,11 +56,11 @@
             :id="elId" 
         >
             <option 
-                v-for="option in elOptions.options"
-                :key="option.value"
-                :value="option.value"
+                v-for="(optionObject, i) in elOptions.options"
+                :key="i"
+                :value="simpleValue(optionObject.value)"
             >
-                {{option.name}}
+                {{optionObject.text}}
             </option>
         </select>
         <div 

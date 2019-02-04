@@ -47,6 +47,7 @@
         'value' => $oQuestion->type,
         'debug' => YII_DEBUG,
         'currentSelected' => Question::getQuestionTypeName($oQuestion->type),
+        'buttonClasses' => ['btn-primary'],
         'optionArray' => [
             'selectedClass' => Question::getQuestionClass($oQuestion->type),
             'onUpdate' => [

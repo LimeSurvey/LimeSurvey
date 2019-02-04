@@ -32,6 +32,8 @@ class RenderArrayOfIncSameDecQuestions extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        return do_array_increasesamedecrease($this->aFieldArray);
+        
         $answer = '';
         $inputnames = [];
 

@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -32,6 +30,8 @@ class RenderNumerical extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        return do_numerical($this->aFieldArray);
+
         $answer = '';
         $inputnames = [];
 

@@ -49,12 +49,12 @@ abstract class QuestionBaseDataSet extends StaticModel
         - Always hide question => if available
         */
         return [
-            $this->getQuestionThemeOption(),
-            $this->getQuestionGroupSelector(),
-            $this->getOtherSwitch(),
-            $this->getMandatorySwitch(),
-            $this->getRelevanceEquationInput(),
-            $this->getValidationInput(),
+            'themeOption' => $this->getQuestionThemeOption(),
+            'groupSelector' => $this->getQuestionGroupSelector(),
+            'otherSwitch' => $this->getOtherSwitch(),
+            'mandatorySwitch' => $this->getMandatorySwitch(),
+            'relevanceEquation' => $this->getRelevanceEquationInput(),
+            'validationInput' => $this->getValidationInput(),
         ];
     }
 
@@ -67,7 +67,7 @@ abstract class QuestionBaseDataSet extends StaticModel
      * @param string $sLanguage
      * @return array
      */
-    public function getAdvancedOptions($iQuestionID = null, $sQuestionType = null, $sLanguage = null)
+    public function getAdvancedOptions($iQuestionID = null, $sQuestionType = null, $sLanguage = null,  $sQuestionTemplate = null)
     {
         if ($iQuestionID != null) {
             $this->oQuestion = Question::model()->findByPk($iQuestionID);
@@ -78,20 +78,18 @@ abstract class QuestionBaseDataSet extends StaticModel
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
         
         $sQuestionType = $this->sQuestionType;
-        
-        $aAttributes = \LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
-        /* Filter to get this question type setting */
-        $aQuestionTypeAttributes = array_filter($aAttributes, function($attribute) use ($sQuestionType) {
-            return stripos($attribute['types'], $sQuestionType) !== false;
-        });
+        if($this->aQuestionAttributes['question_template'] !== 'core' && $sQuestionTemplate === null) {
+            $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
+        }
 
+        $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues(QuestionTemplate::getFolderName($this->sQuestionType), $sQuestionTemplate);
+        
         $aAdvancedOptionsArray = [];
-        foreach($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
-            $aAdvancedOptionsArray[$aQuestionAttributeArray['category']][] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray);
+        foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
+            $aAdvancedOptionsArray[$aQuestionAttributeArray['category']][$sAttributeName] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray);
         }
         
         return $aAdvancedOptionsArray;
-
     }
 
     //Question theme
@@ -102,13 +100,10 @@ abstract class QuestionBaseDataSet extends StaticModel
 
         $aOptionsArray = [];
         foreach ($aQuestionTemplateList as $code => $value) {
-            $bSelected = false;
-            $sSelected = '';
-        
-            if (!empty($aQuestionTemplateAttributes) && isset($aQuestionTemplateAttributes['value'])) {
-                $bSelected = $aQuestionTemplateAttributes['value'] == $code;
-            }
-            $aOptionsArray[] = ['name' => $value['title'], 'value' => $code, 'selected' => $bSelected];
+            $aOptionsArray[] = [
+                'value' => $code,
+                'text' => $value['title']
+            ];
         }
 
         return [
@@ -130,15 +125,15 @@ abstract class QuestionBaseDataSet extends StaticModel
     protected function getQuestionGroupSelector()
     {
         $aGroupsToSelect = QuestionGroup::model()->findAllByAttributes(array('sid' => $this->oQuestion->sid), array('order'=>'group_order'));
-        $aGroupOptions = array_map(
-            function ($oQuestionGroup) {
-                return [
-                    'name' => $oQuestionGroup->questionGroupL10ns[$this->sLanguage]->group_name,
+        $aGroupOptions = [];
+        array_walk(
+            $aGroupsToSelect,
+            function ($oQuestionGroup) use (&$aGroupOptions){
+                $aGroupOptions[] = [
                     'value' => $oQuestionGroup->gid,
-                    'selected' => $oQuestionGroup->gid == $this->oQuestion->gid
+                    'text' => $oQuestionGroup->questionGroupL10ns[$this->sLanguage]->group_name,
                 ];
-            },
-            $aGroupsToSelect
+            }
         );
 
         return [
@@ -175,7 +170,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                         'offColor' => "warning",
                         'size' => "small",
                     ],
-                ],                
+                ],
             ];
     }
 
@@ -252,7 +247,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             ];
     }
 
-    protected function parseFromAttributeHelper($sAttributeKey,$aAttributeArray) 
+    protected function parseFromAttributeHelper($sAttributeKey, $aAttributeArray)
     {
         $aAdvancedAttributeArray = [
             'name' => $sAttributeKey,

@@ -1,6 +1,11 @@
 
 <script>
 import size from 'lodash/size';
+import pick from 'lodash/pick';
+import keys from 'lodash/keys';
+import slice from 'lodash/slice';
+import foreach from 'lodash/foreach';
+
 export default {
     name: 'language-selector',
     props: {
@@ -13,8 +18,13 @@ export default {
             get() { return this.parentCurrentLanguage},
             set(newValue) { this.$emit('change', newValue)}
         },
-        lessThanFour(){
-            return size(this.aLanguages) < 4;
+        getInChunks(){
+            if(size(this.aLanguages) <= 5) {
+                return [this.aLanguages];
+            };
+            let firstfour = pick(this.aLanguages, slice(keys(this.aLanguages), 0, 4));
+            let rest = pick(this.aLanguages, slice(keys(this.aLanguages), 5));
+            return [firstfour, rest];
         }
     },
     methods: {
@@ -24,54 +34,50 @@ export default {
 </script>
 <template>
     <div class="col-xs-12" >                    
-        <template v-if="lessThanFour">
-            <div class="button-toolbar" :id="elId+'-language-selector'">
-                <div 
-                    class="btn-group" 
-                    v-for="(languageTerm, language) in aLanguages" 
-                    :key="language"
-                    :class="language==currentLanguage ? ' active' : ''"
-                >
-                    <button 
-                        :class="'btn btn-'+(language==currentLanguage ? 'primary' : 'default')"
-                        @click.prevent="setCurrentLanguage(language)"
-                    >
-                        {{ languageTerm }}
-                    </button>
-                </div>
-            </div>
-        </template>
-        <template v-else>
-            <select
-                class="form-control"
-                :id="elId+'-language-selector'"
-                :name="elId+'-language-selector'"
-                v-model="currentLanguage"
+        <div class="button-toolbar" :id="elId+'-language-selector'">
+            <div 
+                class="btn-group" 
             >
-                <option
-                    v-for="(languageTerm, language) in aLanguages" 
-                    :key="language"
-                    :value="language"
+                <button 
+                    v-for="(languageTerm, language) in getInChunks[0]" 
+                    :key="language+'-button'"
+                    :class="'btn btn-'+(language==currentLanguage ? 'primary active' : 'default')"
+                    @click.prevent="setCurrentLanguage(language)"
                 >
                     {{ languageTerm }}
-                </option>
-            </select>
-        </template>
+                </button>
+                <button
+                    v-if="getInChunks.length > 1"
+                    class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown"
+                >
+                    {{ "More Languages" | translate }}
+                    <span class="caret"></span>
+                </button>
+                 <ul class="dropdown-menu">
+                    <li
+                        v-for="(languageTerm, language) in getInChunks[1]" 
+                        :key="language+'-dropdown'"
+                        @click.prevent="setCurrentLanguage(language)"
+                    >
+                        <a href="#">{{ languageTerm }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <hr/>
     </div>
 </template>
 
 <style scoped>
-    select {
-        min-width: 80%;
+    .button-toolbar>.btn-group {
+        margin-top: 0.3rem;
+        margin-bottom: 0.5rem;
     }
     .button-toolbar>.btn-group {
-        margin: 0.25em 1em;
-        min-width: 18%;
+        width: 100%;
     }
-    .button-toolbar>.btn-group:first {
-        margin: 0em 1em 0.25em 1em;
-    }
-    button {
-        width: 100%
+    .button-toolbar>.btn-group>.btn {
+        min-width: 20%;
     }
 </style>

@@ -19,7 +19,9 @@
         computed: {
             curValue: {
                 get() { return this.currentValue },
-                set(newValue) { this.$emit('change', newValue)},
+                set(newValue) { 
+                    this.$emit('change', newValue);
+                },
             },
             showHelp(){
                 return this.triggerShowHelp && (this.elHelp.length>0);
@@ -50,7 +52,7 @@
     <div class="form-row">
         <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
-            <div class="input-group">
+            <div class="input-group col-12">
                 <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
                 <input 
                     type="text" 

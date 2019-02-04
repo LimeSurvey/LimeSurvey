@@ -32,6 +32,8 @@ class RenderFileUpload extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        return do_file_upload($this->aFieldArray);
+        
         $answer = '';
         $inputnames = [];
 

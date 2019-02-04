@@ -32,6 +32,9 @@ class RenderArrayFlexibleColumn extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+
+        return do_arraycolumns($this->aFieldArray);
+        
         $answer = '';
         $inputnames = [];
 

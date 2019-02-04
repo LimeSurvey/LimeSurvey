@@ -1544,16 +1544,16 @@ class questionHelper
             "caption"=>gT('Display type')
         );
 
-        self::$attributes["question_template"] = array(
-            "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
-            'category'=>gT('Display'),
-            'sortorder'=>100,
-            'inputtype'=>'question_template',
-            'options'=>array(),
-            'default' => "core",
-            "help"=>gT('Use a customized question theme for this question'),
-            "caption"=>gT('Question theme')
-        );
+        // self::$attributes["question_template"] = array(
+        //     "types"=>"15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|",
+        //     'category'=>gT('Display'),
+        //     'sortorder'=>100,
+        //     'inputtype'=>'question_template',
+        //     'options'=>array(),
+        //     'default' => "core",
+        //     "help"=>gT('Use a customized question theme for this question'),
+        //     "caption"=>gT('Question theme')
+        // );
 
         /**
          * New event to allow plugin to add own question attribute (settings)
@@ -1586,32 +1586,50 @@ class questionHelper
      * @param $sQuestionThemeName: question theme name
      * @return array : the attribute settings for this question type
      */
-    public static function getQuestionThemeAttributeValues($sQuestionThemeName = null, $question_template = null)
+    public static function getQuestionThemeAttributeValues($question_template = null, $sQuestionThemeName = null)
     {
-        libxml_disable_entity_loader(false);
+        
+        $aQuestionAttributes = array();
+        $additionalAttributes = array();
 
+        $sCoreTypeXmlPath = Yii::app()->getConfig('corequestiontypedir').'/survey/questions/answer/'.$question_template.'/config.xml';
         $sCoreThemeXmlPath = Yii::app()->getConfig('corequestionthemerootdir').'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
         $sUserThemeXmlPath = Yii::app()->getConfig("userquestionthemerootdir").'/'.$sQuestionThemeName.'/survey/questions/answer/'.$question_template.'/config.xml';
+        
 
-        $xml_config = is_file($sCoreThemeXmlPath) ? simplexml_load_file($sCoreThemeXmlPath) :  simplexml_load_file($sUserThemeXmlPath);
-        $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), TRUE);
-        libxml_disable_entity_loader(true);
-
-        if(!empty($custom_attributes['attribute']['name'])) {
-            // Only one attribute set in config : need an array of attributes
-            $custom_attributes['attribute'] = array($custom_attributes['attribute']);
+        libxml_disable_entity_loader(false);
+        $oCoreConfig = simplexml_load_file($sCoreTypeXmlPath);
+        $aCoreAttributes =  json_decode(json_encode((array)$oCoreConfig), TRUE);
+        if ($sQuestionThemeName !== null) {
+            $xml_config = is_file($sCoreThemeXmlPath) ? simplexml_load_file($sCoreThemeXmlPath) :  simplexml_load_file($sUserThemeXmlPath);
+            $custom_attributes = json_decode(json_encode((array)$xml_config->custom_attributes), true);
         }
+        libxml_disable_entity_loader(true);
+        
 
-        $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
-        $additionalAttributes = array();
-        // Create array of attribute with name as key
-        foreach($custom_attributes['attribute'] as $customAttribute) {
-            if(!empty($customAttribute['name'])) {
-                // inputtype is text by default
-                $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
+        if(!empty($custom_attributes)) {
+            if(!empty($custom_attributes['attribute']['name'])) {
+                // Only one attribute set in config : need an array of attributes
+                $custom_attributes['attribute'] = array($custom_attributes['attribute']);
+            }
+            // Create array of attribute with name as key
+            $defaultQuestionAttributeValues = QuestionAttribute::getDefaultSettings();
+            foreach($custom_attributes['attribute'] as $customAttribute) {
+                if(!empty($customAttribute['name'])) {
+                    // inputtype is text by default
+                    $additionalAttributes[$customAttribute['name']] = array_merge($defaultQuestionAttributeValues,$customAttribute);
+                }
             }
         }
-        return $additionalAttributes;
+        if(!isset($aCoreAttributes['attributes']['attribute'])) {
+            throw new Exception("Question type attributes not available!");
+        }
+
+        foreach( $aCoreAttributes['attributes']['attribute'] as $aCoreAttribute ) {
+            $aQuestionAttributes[$aCoreAttribute['name']] = $aCoreAttribute;
+        }
+
+        return array_merge($aQuestionAttributes,$additionalAttributes);
     }
 
     /**

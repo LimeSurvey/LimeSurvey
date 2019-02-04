@@ -195,6 +195,8 @@ export default {
     padding: 2rem;
     border: 3px double #dfdfdf;
     min-height: 20vh;
+    resize: vertical;
+    overflow: auto;
 }
 .scope-contains-ckeditor {
     min-height: 10rem;

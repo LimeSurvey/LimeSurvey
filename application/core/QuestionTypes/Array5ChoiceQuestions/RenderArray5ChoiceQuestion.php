@@ -32,6 +32,9 @@ class RenderArray5ChoiceQuestion extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+
+        return do_array_5point($this->aFieldArray);
+        
         $answer = '';
         $inputnames = [];
 

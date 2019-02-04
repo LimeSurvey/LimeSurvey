@@ -656,6 +656,7 @@ $config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."as
 $config['uploaddir']                = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardthemerootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the standard themes
 $config['publicstylepath']          = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
+$config['corequestiontypedir']      = "application".DIRECTORY_SEPARATOR."views";
 $config['corequestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
 $config['corequestionthemerootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestionthemedir']; // The directory containing the core's question themes.
 $config['styledir']                 = $config['rootdir'].DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'admin';

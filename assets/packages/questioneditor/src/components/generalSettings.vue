@@ -24,7 +24,7 @@ export default {
     computed: {
         generalSettingOptions(){
             return filter(this.$store.state.questionGeneralSettings, (questionSetting) => {
-                return (questionSetting.formElement != undefined)
+                return (questionSetting.inputtype != undefined)
             });
         }
     },
@@ -34,7 +34,7 @@ export default {
                 return 'setting-'+componentRawName;
             return 'stub-set';
         },
-        reactOnChange(updateObject) {
+        reactOnChange(changedModelValue, changedOptionName) {
             
         }
     }

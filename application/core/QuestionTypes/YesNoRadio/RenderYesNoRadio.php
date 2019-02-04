@@ -32,6 +32,8 @@ class RenderYesNoRadio extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        return do_yesno($this->aFieldArray);
+
         $answer = '';
         $inputnames = [];
 

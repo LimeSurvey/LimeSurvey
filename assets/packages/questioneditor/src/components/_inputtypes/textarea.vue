@@ -20,8 +20,8 @@
         },
         computed: {
             curValue: {
-                get() { return this.currentValue },
-                set(newValue) { this.$emit('change', newValue)},
+                get() { return this.decode(this.currentValue) },
+                set(newValue) { this.$emit('change', this.encode(newValue))},
             },
             showHelp(){
                 return this.triggerShowHelp && (this.elHelp.length>0);
@@ -54,6 +54,24 @@
                 }
                 return false;
             },
+        },
+        methods: {
+            decode(value) {
+                if(typeof value == 'string') {
+                    return value;
+                }
+                if(typeof value == 'object') {
+                    return value[this.$store.state.activeLanguage];
+                }
+            },
+            encode(value) {
+                if(typeof this.currentValue == 'object') {
+                    this.currentValue[this.$store.state.activeLanguage] = value;
+                    return this.currentValue;
+                } 
+                return value;
+
+            },
         }
     };
 </script>
@@ -62,7 +80,7 @@
     <div class="form-row">
         <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
-            <div class="input-group">
+            <div class="input-group col-12">
                 <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
                 <textarea :class="getClasses" :name="elName || elId" :id="elId" v-model="curValue" v-bind="elOptions.attributes" ></textarea>
                 <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
