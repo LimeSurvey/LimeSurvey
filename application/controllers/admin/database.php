@@ -309,7 +309,7 @@ class database extends Survey_Common_Action
                         $bAnswerSave = false;
 
                         while (!$bAnswerSave) {
-                            $oAnswer->code = rand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                            $oAnswer->code = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                             if ($oAnswer->save()) {
                                 $bAnswerSave = true;
                             }
@@ -408,7 +408,7 @@ class database extends Survey_Common_Action
                         $bAnswerSave = false;
 
                         while (!$bAnswerSave) {
-                            $oSubQuestion->title = (string) rand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                            $oSubQuestion->title = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                             if ($oSubQuestion->save()) {
                                 $bAnswerSave = true;
                             }
@@ -492,7 +492,7 @@ class database extends Survey_Common_Action
                             $bAnswerSave = false;
 
                             while (!$bAnswerSave) {
-                                $oSubQuestion->title = rand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                                $oSubQuestion->title = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                                 if ($oSubQuestion->save()) {
                                     $sError = '<strong>'.sprintf(gT('A code has been updated to %s.'), $oSubQuestion->title).'</strong><br/>';
                                     Yii::app()->setFlashMessage($sError, 'error');
