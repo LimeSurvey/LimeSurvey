@@ -278,7 +278,12 @@ return array(
         'depends' => array(
             'decimal',
         )
-    )
-
+    ),
+    /* Replace bbq package from Yii core to set position */
+    'bbq'=>array(
+        'position' => CClientScript::POS_BEGIN,
+        'js'=>array(YII_DEBUG ? 'jquery.ba-bbq.js' : 'jquery.ba-bbq.min.js'),
+        'depends'=>array('jquery'),
+    ),
 
 );

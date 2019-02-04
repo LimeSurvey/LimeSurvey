@@ -187,7 +187,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         }
                     }
 
-                    $this->widget('bootstrap.widgets.TbGridView', array(
+                    $this->widget('ext.LimeGridView.LimeGridView', array(
                         'dataProvider'  => $model->search(),
                         'filter'        => $model,
                         'columns'       => $aColumns,
