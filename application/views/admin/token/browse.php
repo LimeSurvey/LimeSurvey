@@ -29,7 +29,7 @@
         <div class="row">
             <div class="content-right scrolling-wrapper"    >
                 <?php
-                    $this->widget('bootstrap.widgets.TbGridView', array(
+                    $this->widget('ext.LimeGridView.LimeGridView', array(
                         'dataProvider' => $model->search(),
                         'filter'=>$model,
                         'id' => 'token-grid',

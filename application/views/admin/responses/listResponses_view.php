@@ -174,11 +174,11 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             /* flat and ellipsize all part of question (sub question etc …, separate by br . mantis #14301 */
                             $colDetails = viewHelper::getFieldText($fieldmap[$column->name],array('abbreviated'=>$model->ellipsize_header_value,'separator'=>array('<br>','')));
                             /* Here we strip all tags, and separate with hr since we allow html (in popover), maybe use only viewHelper::purified ? But remind XSS. mantis #14301 */
-                            $colTitle = viewHelper::getFieldText($fieldmap[$column->name],array('afterquestion'=>"<hr>"));
+                            $colTitle = viewHelper::getFieldText($fieldmap[$column->name],array('afterquestion'=>"<hr>",'separator'=>array('','<br>')));
 
                             $aColumns[]=
                                 array(
-                                    'header' => '<span data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="'.$colName.'" data-content="'.$colTitle.'" data-html="1">'.$colName.' <br/> '.$colDetails.'</span>',
+                                    'header' => '<span data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="'.$colName.'" data-content="'.CHtml::encode($colTitle).'" data-html="1">'.$colName.' <br/> '.$colDetails.'</span>',
                                     'headerHtmlOptions'=>array('style'=>'min-width: 350px;'),
                                     'name' => $column->name,
                                     'type' => 'raw',
@@ -187,7 +187,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         }
                     }
 
-                    $this->widget('bootstrap.widgets.TbGridView', array(
+                    $this->widget('ext.LimeGridView.LimeGridView', array(
                         'dataProvider'  => $model->search(),
                         'filter'        => $model,
                         'columns'       => $aColumns,

@@ -1,0 +1,13 @@
+{% if (intval(aSurveyInfo.options.showpopups) >= 0 and aSurveyInfo.saved.text) %}
+    {% set savedClass = 'success' %}
+    {% if (not aSurveyInfo.saved.success) %}
+        {% set savedClass = 'error' %}
+    {% endif %}
+    {% if (aSurveyInfo.active != "Y") %}
+        {% set savedClass = 'info' %}
+    {% endif %}
+    <div class="alert alert-{{ savedClass }} alert-dismissible fade in{% if(intval(aSurveyInfo.options.showpopups) > 0) %} ls-js-hidden{% endif %} " role="alert">
+        <button class="close ls-no-js-hidden" data-dismiss="alert"><span aria-hidden="true">x</span><span class="sr-only">{{ gT("Close") }}</span></button>
+        {{ aSurveyInfo.saved.text }}
+    </div>
+{% endif %}

@@ -111,6 +111,7 @@
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
+                    <file type="view" role="subview">./subviews/messages/justsaved.twig</file>
                     <file type="view" role="subview">./subviews/survey/group.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_container.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_desc.twig</file>

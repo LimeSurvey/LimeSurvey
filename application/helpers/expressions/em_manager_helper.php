@@ -7757,6 +7757,7 @@
                     $relJsVarsUsed = array_merge($relJsVarsUsed,$valJsVarsUsed);
                     $relJsVarsUsed = array_unique($relJsVarsUsed);
                     $qrelQIDs = array();
+                    $qrelgseqs = array();
                     foreach ($relJsVarsUsed as $jsVar)
                     {
                         if ($jsVar != '' && isset($LEM->knownVars[substr($jsVar,4)]['qid']))
@@ -7792,23 +7793,24 @@
                     if ($LEM->surveyMode=='question') {
                         $qrelQIDs=array();  // in question-by-questin mode, should never test for dependencies on self or other questions.
                     }
-
+                    if ($LEM->surveyMode!='survey') {
+                        $qrelgseqs=array();  // in group by group or question by question mode, should never test for dependencies on self or other group.
+                    }
                     $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                     $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
-                    // if (count($qrelQIDs) > 0)
-                    // {
-                    //     $qrelJS .= "  if(" . implode(' || ', $qrelQIDs) . "){\n    ;\n  }\n  else";
-                    // }
-                    // if (count($qrelgseqs) > 0)
-                    // {
-                    //     $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
-                    // }
-
-                    /* Trigger reevaluation only for relevant questions */
-                    /* even for equation question : using updated specific event, this allow update previous text too, see mantis #14047 */
-                    /* And this disable launch again equation update if equation is not updated */
-                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
-                    $qrelJS .= "  return;\n }\n";
+                    //Normally trigger reevaluation only for relevant questions except for equation questions
+                    if($arg['type'] != '*') {
+                        /* If current relevance are updated in a previous function : must appy this one */
+                        /* See issue #14465 . Warning : expression manager trigger this by order of question */
+                        if (count($qrelQIDs) > 0) {
+                             $qrelJS .= "  if(" . implode(' || ', $qrelQIDs) . "){\n    ;\n  }\n  else";
+                        }
+                        if (count($qrelgseqs) > 0) {
+                             $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
+                        }
+                        $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+                        $qrelJS .= "  return;\n }\n";
+                    }
 
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";

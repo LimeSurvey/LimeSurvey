@@ -25,7 +25,7 @@ class LSYii_EmailIDNAValidator extends CValidator
     {
 
         if ($object->$attribute == '' && $this->allowEmpty) {
-                return;
+            return;
         }
 
         if ($this->allowMultiple) {
