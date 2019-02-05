@@ -862,7 +862,7 @@ class questionHelper
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>1,
             "caption"=>gT('Same height for all answer options'),
-            "help"=>gT('Force each answer option to have the same height. If you have a lot of item and filter : you can disable this to improve browser speed.')
+            "help"=>gT('Force each answer option to have the same height.').' '.gT('If you have a lot of items and use a filter you can disable this to improve browser speed.')
         );
 
         self::$attributes["samelistheight"] = array(
@@ -873,7 +873,7 @@ class questionHelper
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>1,
             "caption"=>gT('Same height for lists'),
-            "help"=>gT('Force the choice list and the rank list to have the same height. If you have a lot of item and filter : you can disable this to improve browser speed.')
+            "help"=>gT('Force the choice list and the rank list to have the same height.').' '.gT('If you have a lot of items and use a filter you can disable this to improve browser speed.')
         );
 
         self::$attributes["parent_order"] = array(

@@ -27319,6 +27319,19 @@ const SaveController = () => {
     //###########PRIVATE
     checks = () => {
         return {
+            _checkExportButton: {
+                check: '[data-submit-form]',
+                run: function(ev) {
+                    ev.preventDefault();
+                    const $form = getForm(this);
+                    formSubmitting = true;
+                    for (let instanceName in CKEDITOR.instances) {
+                        CKEDITOR.instances[instanceName].updateElement();
+                    }
+                    $form.find('[type="submit"]').first().trigger('click');
+                },
+                on: 'click'
+            },
             _checkSaveButton: {
                 check: '#save-button',
                 run: function(ev) {

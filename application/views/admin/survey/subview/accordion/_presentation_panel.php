@@ -239,7 +239,7 @@ if ($bShowInherited){
     
         <!-- Automatically load URL -->
         <div class="form-group">
-            <label class=" control-label" for='autoredirect'><?php  eT("Automatically load URL when survey complete:"); ?></label>
+            <label class=" control-label" for='autoredirect'><?php  eT("Automatically load end URL when survey complete:"); ?></label>
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhButtonGroup', array(
                     'name' => 'autoredirect',

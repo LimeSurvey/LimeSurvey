@@ -465,9 +465,9 @@ class themes extends Survey_Common_Action
             $sPostedFile     = CHtml::decode(App()->request->getPost('otherfile')); // Filename is encode, need to decode.
             $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
             $the_full_file_path = realpath($filesdir.$sFileToDelete);
-            /* Try to delete a file out of files dir */
             if(substr($the_full_file_path, 0, strlen(realpath($filesdir))) != realpath($filesdir)) {
-                Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted, out of template files directory."), CHtml::encode($sPostedFile)));
+                /* User tries to delete a file outside of files dir */
+                Yii::app()->user->setFlash('error', sprintf(gT("File %s cannot be deleted for security reasons."), CHtml::encode($sPostedFile)));
                 $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=> App()->request->getPost('editfile'), 'screenname'=>App()->request->getPost('screenname'), 'templatename'=>$sTemplateName));
             }
             /* No try to hack, go to delete */

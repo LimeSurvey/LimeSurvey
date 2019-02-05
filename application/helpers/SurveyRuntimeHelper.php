@@ -949,6 +949,7 @@ class SurveyRuntimeHelper
             if ($this->sMove == "movenext") {
                 $this->aMoveResult = LimeExpressionManager::NavigateForwards();
             }
+
             if (($this->sMove == 'movesubmit')) {
                 if ($this->sSurveyMode == 'survey') {
                     $this->aMoveResult = LimeExpressionManager::NavigateForwards();
@@ -956,9 +957,10 @@ class SurveyRuntimeHelper
                     // may be submitting from the navigation bar, in which case need to process all intervening questions
                     // in order to update equations and ensure there are no intervening relevant mandatory or relevant invalid questions
                     if ($this->aSurveyInfo['questionindex'] == 2) {
-                        // Must : save actual page , review whole before set finished to true (see #09906), index==1 don't need it : (don't force move)
-                        // Jump to 1st step : don't restart survey since it reset indexGseq/indexQseq
-                        LimeExpressionManager::JumpTo(0,false,false,true); // no preview, no post (already done) but force
+                        // Save actual page ,
+                        LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true);
+                        // Review whole before set finished to true (see #09906), index==1 don't need it because never force move
+                        LimeExpressionManager::JumpTo(0,false,false,true); // no preview, no post and force
                     }
                     $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false);
                 }
@@ -1002,8 +1004,12 @@ class SurveyRuntimeHelper
             // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
             // we already done if move == 'movesubmit', don't do it again
             if ($this->aMoveResult['finished'] == true && $this->sMove != 'movesubmit' && $this->thissurvey['questionindex'] == 2) {
-                LimeExpressionManager::JumpTo(0, false, false, true); // Jump to 1st step : don't restart survey since it reset indexGseq/indexQseq, no preview, no post (already done) but force
-                $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false, false, false); // no preview, no save data and NO FORCE
+                /* Save current page */
+                LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true);
+                /* Move to start */
+                LimeExpressionManager::JumpTo(0, false, false, true);
+                /* Try to move next again */
+                $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false, false, false); // no preview, no save data and NO force
                 if (!$this->aMoveResult['mandViolation'] && $this->aMoveResult['valid'] && empty($this->aMoveResult['invalidSQs'])) {
                     $this->aMoveResult['finished'] = true;
                 }
@@ -1083,9 +1089,11 @@ class SurveyRuntimeHelper
      */
     private function saveAllIfNeeded()
     {
-
-        // Don't test if save is allowed
-        if ($this->aSurveyInfo['active'] == "Y" && Yii::app()->request->getPost('saveall')) {
+        if(!Yii::app()->request->getPost('saveall')) {
+            return;
+        }
+        // Don't test if save is allowed … maybe must be done
+        if ($this->aSurveyInfo['active'] == "Y") {
             $bAnonymized            = $this->aSurveyInfo["anonymized"] == 'Y';
             $bTokenAnswerPersitance = $this->aSurveyInfo['tokenanswerspersistence'] == 'Y' && $this->iSurveyid != null && tableExists('tokens_'.$this->iSurveyid);
 
@@ -1107,25 +1115,27 @@ class SurveyRuntimeHelper
                 $iResponseID         = $_SESSION[$this->LEMsessid]['srid'];
                 $oResponse           = SurveyDynamic::model($this->iSurveyid)->findByPk($iResponseID);
                 $oResponse->lastpage = $_SESSION[$this->LEMsessid]['step'];
+                if($oResponse->save()) {
+                    $this->aSurveyInfo['saved'] = array(
+                        'success'=> true,
+                        'title' => gT('Success'),
+                        'text' => gT("Your responses were successfully saved.")
+                    );
+                } else {
+                    $this->aSurveyInfo['saved'] = array(
+                        'success'=> false,
+                        'title' => gT('Error'),
+                        'text' => gT("Your responses were not saved. Please contact the survey administrator.")
+                    );
+                }
                 $oResponse->save();
-
-                App()->clientScript->registerScript("saveflashmessage", "
-                    console.ls.log($('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']'));
-                    $('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']').popover({
-                        title: '".gT('Success')."',
-                        content: '<div>".gT("Your responses were successfully saved.", "js")."</div>',
-                        html: true,
-                        container: 'body',
-                        placement: 'bottom',
-                        delay: { 'show': 500, 'hide': 100 },
-                        trigger: 'click',
-                    }).popover('show');
-                    setTimeout(function(){ $('[data-limesurvey-submit=\'{ \"saveall\":\"saveall\" }\']').popover('destroy');}, 3500);
-                    "
-                    , LSYii_ClientScript::POS_POSTSCRIPT
-                );
-
             }
+        } else {
+            $this->aSurveyInfo['saved'] = array(
+                'success'=> false,
+                'title' => gT('Warning'),
+                'text' => gT("Saving responses is disabled if survey is not activated.")
+            );
         }
     }
 
@@ -1229,14 +1239,16 @@ class SurveyRuntimeHelper
             if ($this->aSurveyInfo['printanswers'] == 'Y') {
                 $this->aSurveyInfo['aCompleted']['aPrintAnswers']['show']  = true;
                 $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sUrl']  = $surveyActive ? Yii::app()->getController()->createUrl("/printanswers/view", array('surveyid'=>$this->iSurveyid)) : "#";
-                $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = $surveyActive ? gT("Print your answers.") : gT("Print your answers is disable when survey not activated.");
+                $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] = gT("Print your answers.");
+                $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sTitle'] =  $surveyActive ? $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] : gT("Note: This link only works if the survey is activated.");
             }
             // Link to Public statistics 
             $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show'] = false;
             if ($this->aSurveyInfo['publicstatistics'] == 'Y') {
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['show']  = true;
                 $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sUrl']  = $surveyActive ? Yii::app()->getController()->createUrl("/statistics_user/action/", array('surveyid'=>$this->iSurveyid, 'language'=>App()->getLanguage())) : "#";
-                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sText'] = $surveyActive ? gT("View the statistics for this survey.") : gT("View the statistics for this survey is disable when survey not activated.");
+                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sText'] =  gT("View the statistics for this survey.");
+                $this->aSurveyInfo['aCompleted']['aPublicStatistics']['sTitle'] =  $surveyActive ? $this->aSurveyInfo['aCompleted']['aPrintAnswers']['sText'] : gT("Note: This link only works if the survey is activated.");
             }
 
             $this->completed = true;
@@ -1296,12 +1308,11 @@ class SurveyRuntimeHelper
                 $this->aSurveyInfo['aLEM']['debugvalidation']['message'] .= "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$this->aMoveResult['message']."</td></tr></table>\n";
             }
 
-            // kill survey session before redirecting
-            if ($this->aSurveyInfo['printanswers'] != 'Y') {
-                killSurveySession($this->iSurveyid);
-            }
-
             if (isset($this->aSurveyInfo['autoredirect']) && $this->aSurveyInfo['autoredirect'] == "Y" && $this->aSurveyInfo['surveyls_url']) {
+                // kill survey session before redirecting
+                if ($this->aSurveyInfo['printanswers'] != 'Y') {
+                    killSurveySession($this->iSurveyid);
+                }
                 //Automatically redirect the page to the "url" setting for the survey
                 $headToSurveyUrl = htmlspecialchars_decode ($this->aSurveyInfo['surveyls_url']);
                 $actualRedirect = $headToSurveyUrl;
@@ -1313,14 +1324,20 @@ class SurveyRuntimeHelper
                         header("Location: ".$actualRedirect, false, 302);
                     }
                 }
-                $this->aSurveyInfo['aCompleted']['sSurveylsUrlDescriptionExta'] = gT("Automatically load URL when survey complete deactivated disable when survey is not activated.");
+                $this->aSurveyInfo['aCompleted']['sSurveylsUrlDescriptionExta'] = gT("Note: Automatically loading the end URL works only if the survey is activated.");
             }
 
             $this->aSurveyInfo['include_content'] = 'submit';
             if(!$surveyActive) {
                 $this->aSurveyInfo['include_content'] = 'submit_preview';
             }
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> $oSurvey, 'aSurveyInfo'=>$this->aSurveyInfo), false);
+            $sHtml = Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array('oSurvey'=> $oSurvey, 'aSurveyInfo'=>$this->aSurveyInfo), true);
+            $oTemplate = Template::model()->getInstance();
+            // kill survey session after doing template : didn't work for all var, but for EM core var : it's OK.
+            if ($this->aSurveyInfo['printanswers'] != 'Y') {
+                killSurveySession($this->iSurveyid);
+            }
+            Yii::app()->twigRenderer->renderHtmlPage($sHtml, $oTemplate);
         }
     }
 
