@@ -281,9 +281,11 @@ abstract class QuestionBaseRenderer extends StaticModel
         return count($this->aSubQuestions[$iScaleId]);
     }
 
-    protected function getFromSurveySession($sIndex)
+    protected function getFromSurveySession($sIndex, $default="")
     {
-        return $_SESSION['survey_'.$this->oQuestion->sid][$sIndex];
+        return isset($_SESSION['survey_'.$this->oQuestion->sid][$sIndex]) 
+            ? $_SESSION['survey_'.$this->oQuestion->sid][$sIndex]
+            : $default;
     }
 
     protected function applyPackages()

@@ -27,6 +27,8 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
     private $rightExists;
     private $bUseDropdownLayout = false;
 
+    private $inputnames = [];
+
     private $sCoreClass = "ls-answers subquestion-list questions-list";
 
     public function __construct($aFieldArray, $bRenderDirect = false) {
@@ -69,14 +71,59 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
 
     }
 
-    public function getMainView()
+    public function getMainView($forTwig = false)
     {
         return $this->bUseDropdownLayout
             ? '/survey/questions/answer/arrays/array/dropdown'
             : '/survey/questions/answer/arrays/array/no_dropdown';
     }
 
-    public function renderDropdownRows()
+    public function getHeaders(){
+        $sHeader = '';
+
+        $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
+            $this->getMainView().'/rows/cells/header_information', 
+            [
+                'class'   => '',
+                'content' => '',
+            ]
+        );
+
+        foreach ($this->aAnswers[0] as $oAnswer) {
+            $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
+                $this->getMainView().'/rows/cells/header_answer', 
+                [
+                    'class'   => "answer-text",
+                    'content' => $oAnswer->answerL10ns[$this->sLanguage]->answer,
+                ]
+            );
+        }
+
+        if ($this->rightExists) {
+            $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
+                $this->getMainView().'/rows/cells/header_information', 
+                [
+                    'class'   => '',
+                    'content' => '',
+                ]
+            );
+        }
+
+        if (($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1)) {
+            //Question is not mandatory and we can show "no answer"
+            $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
+                $this->getMainView().'/rows/cells/header_answer', 
+                [
+                    'class'   => 'answer-text noanswer-text',
+                    'content' => gT('No answer'),
+                ]
+            );
+        }
+
+        return $sHeaders;
+    }
+
+    public function getNonDropdownRows()
     {
         
         $answerwidth = $this->setDefaultIfEmpty($this->getQuestionAttribute('answer_width'), 33);
@@ -94,138 +141,112 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         }
 
         $cellwidth = round(($columnswidth / $this->getQuestionCount()), 1);
+        $sHeaders = $this->getHeaders();
 
-        $sHeaders = doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_information', array(
-            'class'   => '',
-            'content' => '',
-            ), true);
-
-        foreach ($labelans as $ld) {
-            $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_answer', array(
-                'class'   => "answer-text",
-                'content' => $ld,
-                ), true);
-        }
-
-        if ($right_exists) {
-            $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_information', array(
-                'class'     => '',
-                'content'   => '',
-                ), true);
-        }
-
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
-            //Question is not mandatory and we can show "no answer"
-            $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_answer', array(
-                'class'   => 'answer-text noanswer-text',
-                'content' => gT('No answer'),
-                ), true);
-        }
-
-        $inputnames = [];
-
-        $sRows = '';
-        foreach ($aQuestions as $i => $ansrow) {
-            if (isset($repeatheadings) && $repeatheadings > 0 && ($fn - 1) > 0 && ($fn - 1) % $repeatheadings == 0) {
-                if (($iQuestionCount - $fn + 1) >= $minrepeatheadings) {
+        $aRows = [];
+        foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
+            if ($this->repeatheadings > 0 && ($i - 1) > 0 && ($i - 1) % $this->repeatheadings == 0) {
+                if (($this->getQuestionCount() - $i + 1) >= $this->minrepeatheadings) {
                     // Close actual body and open another one
-                    $sRows .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/repeat_header', array(
-                        'sHeaders'=>$sHeaders
-                        ), true);
+                    $aRows .= [
+                        'template' => '/survey/questions/answer/arrays/array/no_dropdown/rows/repeat_header.twig', 
+                        'content' => array(
+                            'sHeaders'=>$sHeaders
+                        )
+                    ];
                 }
             }
 
-            $myfname        = $ia[1].$ansrow['title'];
-            $answertext     = $ansrow->questionL10ns[$sSurveyLanguage]->question;
+            $myfname        = $this->sSGQA.$oQuestion->title;
+            $answertext     = $oQuestion->questionL10ns[$sSurveyLanguage]->question;
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
 
-            if ($right_exists && strpos($ansrow->questionL10ns[$sSurveyLanguage]->question, '|') !== false) {
-                $answertextright = substr($ansrow->questionL10ns[$sSurveyLanguage]->question, strpos($ansrow->questionL10ns[$sSurveyLanguage]->question, '|') + 1);
+            if ($this->rightExists && strpos($oQuestion->questionL10ns[$sSurveyLanguage]->question, '|') !== false) {
+                $answertextright = substr($oQuestion->questionL10ns[$sSurveyLanguage]->question, strpos($oQuestion->questionL10ns[$sSurveyLanguage]->question, '|') + 1);
             } else {
                 $answertextright = '';
             }
 
-            $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the mandatory sub Q violation */
-            $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
-            $thiskey        = 0;
-            $answer_tds     = '';
-            $fn++;
+            $error          = (in_array($myfname, $aMandatoryViolationSubQ)); /* Check the mandatory sub Q violation */
+            $value          = $this->getFromSurveySession($myfname);
+            $aAnswerColumns = [];
 
-            foreach ($labelcode as $ld) {
-                $CHECKED     = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $ld) ? 'CHECKED' : '';
-                $answer_tds .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td', array(
+            foreach ($this->aAnswers[0] as $oAnswer) {
+                $aAnswerColumns[] = array(
                     'myfname'=>$myfname,
-                    'ld'=>$ld,
-                    'label'=>$labelans[$thiskey],
-                    'CHECKED'=>$CHECKED,
-                    'checkconditionFunction'=>$checkconditionFunction,
-                    ), true);
-                $thiskey++;
+                    'ld'=>$oAnswer->code,
+                    'label'=>$oAnswer->answerL10ns[$this->sLanguage]->answer,
+                    'CHECKED'=>($this->getFromSurveySession($myfname) == $oAnswer->code) ? 'CHECKED' : '',
+                    'checkconditionFunction'=>'checkconditions',
+                    );
             }
 
             // NB: $ia[6] = mandatory
-            $no_answer_td = '';
-            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+            $aNoAnswerColumn = [];
+            if (($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1)) {
                 $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
-                $no_answer_td .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td', array(
+                $aNoAnswerColumn = array(
                     'myfname'                => $myfname,
                     'ld'                     => '',
                     'label'                  => gT('No answer'),
                     'CHECKED'                => $CHECKED,
-                    'checkconditionFunction' => $checkconditionFunction,
-                    ), true);
+                    'checkconditionFunction' => 'checkconditions',
+                );
             }
-            $sRows .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/answer_row', array(
-                'answer_tds' => $answer_tds,
-                'no_answer_td' => $no_answer_td,
+
+            $aRows[] = array(
+                'aAnswerColumns' => $aAnswerColumns,
+                'aNoAnswerColumn' => $aNoAnswerColumn,
                 'myfname'    => $myfname,
                 'answertext' => $answertext,
                 'answerwidth'=>$answerwidth,
                 'answertextright' => $answertextright,
-                'right_exists' => $right_exists,
+                'right_exists' => $this->rightExists,
                 'value'      => $value,
                 'error'      => $error,
                 'odd'        => ($i % 2), // true for odd, false for even
-                ), true);
+            );
+
             $inputnames[] = $myfname;
         }
 
 
-        $odd_even = '';
-        $sColumns = '';
-        foreach ($labelans as $c) {
-            $odd_even = alternation($odd_even);
-            $sColumns .= doRender('/survey/questions/answer/arrays/array/no_dropdown/columns/col', array(
-                'class'     => $odd_even,
+        $aColumns = [];
+        $oddEven = false;
+        foreach ($this->aAnswers[0] as $oAnswer) {
+            $aColumns[] = array(
+                'class'     => $oddEven ? 'ls-col-even' : 'ls-col-odd',
                 'cellwidth' => $cellwidth,
-                ), true);
+            );
+                $oddEven = !$oddEven;
         }
 
-        if ($right_exists) {
+        if ($this->rightExists) {
             $odd_even = alternation($odd_even);
-            $sColumns .= doRender('/survey/questions/answer/arrays/array/no_dropdown/columns/col', array(
-                'class'     => 'answertextright '.$odd_even,
+            $aColumns[] = array(
+                'class'     => 'answertextright '.($oddEven ? 'ls-col-even' : 'ls-col-odd'),
                 'cellwidth' => $answerwidth,
-                ), true);
+            );
+            $oddEven = !$oddEven;
         }
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
             //Question is not mandatory
-            $odd_even = alternation($odd_even);
-            $sColumns .= doRender('/survey/questions/answer/arrays/array/no_dropdown/columns/col', array(
-                'class'     => 'col-no-answer '.$odd_even,
+            $aColumns[] = array(
+                'class'     => 'col-no-answer '.($oddEven ? 'ls-col-even' : 'ls-col-odd'),
                 'cellwidth' => $cellwidth,
-                ), true);
+            );
+            $oddEven = !$oddEven;
         }
 
         $answer = doRender('/survey/questions/answer/arrays/array/no_dropdown/answer', array(
             'answerwidth'=> $answerwidth,
             'anscount'   => $iQuestionCount,
-            'sRows'      => $sRows,
-            'coreClass'  => $coreClass,
+            'aRows'      => $aRows,
+            'coreClass'  => $this->sCoreClass,
             'sHeaders'   => $sHeaders,
-            'sColumns'   => $sColumns,
-            'basename' => $ia[1],
+            'aColumns'   => $aColumns,
+            'basename' => $this->sSGQA,
             ), true);
     }
 
@@ -233,13 +254,16 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
     public function getRows()
     {
         return;
+        return $this->bUseDropdownLayout 
+            ? $this->getDropdownRows()
+            : $this->getNonDropdownRows();
     }
 
     public function render($sCoreClasses = '')
     {
 
         return do_array($this->aFieldArray);
-
+       
         $answer = '';
         $inputnames = [];
 
@@ -268,16 +292,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $anscount  = ($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1) ? $anscount + 1 : $anscount; //Count up if "No answer" is showing
         return $anscount;
     }
-    
-    protected function getQuestionCount($iScaleId=0)
-    {
-        // Getting subquestion count
-        $sqcount  = count($this->aSubQuestions[$iScaleId]);
-        $sqcount  = ($this->oQuestion->other == 'Y') ? $sqcount + 1 : $sqcount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
-        $sqcount  = ($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1) ? $sqcount + 1 : $sqcount; //Count up if "No answer" is showing
-        $sqcount  = ($this->rightExists) ? $sqcount + 1 : $sqcount;
-        return $sqcount;
-    }
+  
 }
 
 function do_array($ia)
@@ -402,7 +417,7 @@ function do_array($ia)
                 }
             }
 
-            $myfname        = $ia[1].$ansrow['title'];
+            $myfname        = $this->sSGQA.$ansrow['title'];
             $answertext     = $ansrow->questionL10ns[$sSurveyLanguage]->question;
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
 
@@ -425,7 +440,7 @@ function do_array($ia)
                     'ld'=>$ld,
                     'label'=>$labelans[$thiskey],
                     'CHECKED'=>$CHECKED,
-                    'checkconditionFunction'=>$checkconditionFunction,
+                    'checkconditionFunction'=>'checkconditions',
                     ), true);
                 $thiskey++;
             }
@@ -492,7 +507,7 @@ function do_array($ia)
             'coreClass'  => $coreClass,
             'sHeaders'   => $sHeaders,
             'sColumns'   => $sColumns,
-            'basename' => $ia[1],
+            'basename' => $this->sSGQA,
             ), true);
     }
 
@@ -542,7 +557,7 @@ function do_array($ia)
         //$aAnswer->answerL10ns[$sSurveyLanguage]->answer
         $sRows = "";
         foreach ($aQuestions as $j => $ansrow) {
-            $myfname        = $ia[1].$ansrow['title'];
+            $myfname        = $this->sSGQA.$ansrow['title'];
             $answertext     = $ansrow->questionL10ns[$sSurveyLanguage]['question'];
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
             $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the mandatory sub Q violation */
@@ -602,7 +617,7 @@ function do_array($ia)
 
         $answer = doRender('/survey/questions/answer/arrays/array/dropdown/answer', array(
                 'coreClass' => $coreClass,
-                'basename' => $ia[1],
+                'basename' => $this->sSGQA,
                 'sRows'      => $sRows,
                 'answerwidth'=> $answerwidth,
                 'columnswidth'=> $columnswidth,
