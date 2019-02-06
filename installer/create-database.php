@@ -204,8 +204,6 @@ function createDatabase($oDB){
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{participant_pk}}', '{{participants}}', 'participant_id', false);
-        $oDB->createCommand()->createIndex('{{idx1_participants}}', '{{participants}}', 'firstname', false);
-        $oDB->createCommand()->createIndex('{{idx2_participants}}', '{{participants}}', 'lastname', false);
         $oDB->createCommand()->createIndex('{{idx3_participants}}', '{{participants}}', 'language', false);
 
 
