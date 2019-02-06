@@ -2019,13 +2019,11 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         $sender = $bouncemail;
     }
 
-
-    require_once(APPPATH.'/third_party/phpmailer/load_phpmailer.php');
-    $mail = new PHPMailer\PHPMailer\PHPMailer;
+    //$mail = new \LimeSurvey\LimeMailer\LimeMailer(); //  Class 'LimeSurvey\Mailer\LimeMailer' not found 
+    $mail = Yii::app()->LimeMailer(); // throw  LSYii_Application and its behaviors do not have a method or closure named "LimeMailer".
+    
     $mail->SMTPAutoTLS = false;
-    if (!$mail->SetLanguage($defaultlang, APPPATH.'/third_party/phpmailer/language/')) {
-        $mail->SetLanguage('en', APPPATH.'/third_party/phpmailer/language/');
-    }
+
     $mail->CharSet = $emailcharset;
     if (isset($emailsmtpssl) && trim($emailsmtpssl) !== '' && $emailsmtpssl !== 0) {
         if ($emailsmtpssl === 1) {$mail->SMTPSecure = "ssl"; } else {$mail->SMTPSecure = $emailsmtpssl; }

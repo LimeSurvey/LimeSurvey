@@ -422,6 +422,9 @@ $internalConfig = array(
         'versionFetcherServiceLocator' => array(
             'class' => '\LimeSurvey\ExtensionInstaller\VersionFetcherServiceLocator',
         ),
+        'LimeMailer' => array(
+            'class' => '\LimeSurvey\Mailer\LimeMailer',
+        ),
     )
 );
 
