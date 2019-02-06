@@ -3,7 +3,6 @@
 namespace LimeSurvey\Mailer;
 use \Yii;
 require_once(APPPATH.'/third_party/phpmailer/load_phpmailer.php');
-use ;
 
 /**
  * WIP

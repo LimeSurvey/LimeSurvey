@@ -2019,9 +2019,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         $sender = $bouncemail;
     }
 
-    //$mail = new \LimeSurvey\LimeMailer\LimeMailer(); //  Class 'LimeSurvey\Mailer\LimeMailer' not found 
-    $mail = Yii::app()->LimeMailer(); // throw  LSYii_Application and its behaviors do not have a method or closure named "LimeMailer".
-    
+    $mail =  App()->LimeMailer; //  Class 'LimeSurvey\Mailer\LimeMailer' not found
+    print_r($mail);
+    die();
     $mail->SMTPAutoTLS = false;
 
     $mail->CharSet = $emailcharset;
