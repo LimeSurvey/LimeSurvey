@@ -2018,10 +2018,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     } else {
         $sender = $bouncemail;
     }
-
-    $mail =  App()->LimeMailer; //  Class 'LimeSurvey\Mailer\LimeMailer' not found
-    print_r($mail);
-    die();
+    /* Need to find a way to call this ! F**O** */
+    require_once(APPPATH.'/libraries/Mailer/LimeMailer.php');
+    $mail =  \LimeSurvey\Mailer\LimeMailer::getInstance(); //  Class 'LimeSurvey\Mailer\LimeMailer' not found
     $mail->SMTPAutoTLS = false;
 
     $mail->CharSet = $emailcharset;

@@ -112,8 +112,8 @@ $internalConfig = array(
         'yiiwheels.widgets.select2.WhSelect2',
         'third_party.Twig.*',
         'ext.captchaExtended.CaptchaExtendedAction',
-        'ext.captchaExtended.CaptchaExtendedValidator'
-
+        'ext.captchaExtended.CaptchaExtendedValidator',
+        'application.libraries.Mailer.LimeMailer', // Didn't work …
     ),
     'preload' => array('log'),
     'components' => array(
@@ -421,9 +421,6 @@ $internalConfig = array(
         ),
         'versionFetcherServiceLocator' => array(
             'class' => '\LimeSurvey\ExtensionInstaller\VersionFetcherServiceLocator',
-        ),
-        'LimeMailer' => array(
-            'class' => '\LimeSurvey\Mailer\LimeMailer',
         ),
     )
 );
