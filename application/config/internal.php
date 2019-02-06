@@ -111,6 +111,7 @@ $internalConfig = array(
         'bootstrap.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'third_party.Twig.*',
+        'third_party.sodium.*',
         'ext.captchaExtended.CaptchaExtendedAction',
         'ext.captchaExtended.CaptchaExtendedValidator'
 
@@ -125,6 +126,10 @@ $internalConfig = array(
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',
         ),
+
+        'sodium'=>array(
+            'class' => 'Sodium',
+       ),
 
         'clientScript'=>array(
             'packages' => array_merge(

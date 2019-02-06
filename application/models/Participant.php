@@ -54,6 +54,11 @@ class Participant extends LSActiveRecord
     public $extraCondition;
     public $countActiveSurveys;
     public $id;
+    
+    /** @var int $sid */
+    protected static $sid = 0;
+
+    
 
     /**
      * @inheritdoc
@@ -307,7 +312,7 @@ class Participant extends LSActiveRecord
         $participantAttributes = ParticipantAttribute::model()->getAttributeInfo($this->participant_id);
         foreach ($participantAttributes as $singleAttribute) {
             if ($singleAttribute['attribute_id'] == $attribute_id) {
-                return $singleAttribute['value'];
+                return $singleAttribute->decrypt()['value'];
             }
         }
         return "";
@@ -536,7 +541,7 @@ class Participant extends LSActiveRecord
         }
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);
-        return new CActiveDataProvider($this, array(
+        return new LSCActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort' => $sort,
             'pagination' => array(
@@ -602,7 +607,7 @@ class Participant extends LSActiveRecord
         }
 
         try {
-            $result = $oParticipant->save();
+            $result = $oParticipant->encryptSave();
             if (!$result) {
                 return $this->flattenErrorMessages($oParticipant->getErrors());
             }
@@ -744,7 +749,18 @@ class Participant extends LSActiveRecord
 
         $allData = $data->queryAll();
 
-        return $allData;
+        $participants = array();
+        foreach($allData as $key => $data){
+            $participants[$key] = Participant::model()->findByPk($data['participant_id'])->decrypt()->attributes;
+            $attributes = ParticipantAttribute::model()->findAll(array('condition' => "participant_id = '" . $data['participant_id'] . "'"));
+            foreach($attributes as $attribute){
+                if (array_key_exists('a' . $attribute['attribute_id'], $data)){
+                    $participants[$key]['a' . $attribute['attribute_id']] = $attribute->decrypt()->attributes['value'];
+                }
+            }
+        }
+$test = 1;
+        return $participants;
     }
 
     /**
@@ -1570,6 +1586,7 @@ class Participant extends LSActiveRecord
             $fieldcontents[$newfieldname] = array(
                 "description"=>$newname,
                 "mandatory"=>"N",
+                "encrypted"=>"N",
                 "show_register"=>"N"
             );
             array_push($addedAttributeIds, 'attribute_'.$value);
@@ -1914,6 +1931,8 @@ class Participant extends LSActiveRecord
             $tokenfieldnames = array_keys($arr);
         }
 
+        $aTokenAttributes = decodeTokenAttributes($survey->attributedescriptions);
+
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) {
@@ -1924,6 +1943,7 @@ class Participant extends LSActiveRecord
                 $insertnames = array(
                     'attribute_type' => 'TB',
                     'visible' => 'Y',
+                    'encrypted' => $aTokenAttributes[$key]['encrypted'],
                     'defaultname' => $value
                 );
                 $oParticipantAttributeNames = new ParticipantAttributeName();
@@ -2163,5 +2183,43 @@ class Participant extends LSActiveRecord
     public function getOwnerOptions(){
         
         return [];
+    }
+
+    /**
+     * Get current surveyId for other model/function
+     * @return int
+     */
+    public function getSurveyId() {
+        return self::$sid;
+    }
+
+    /**
+     * decodes the tokenencryptionoptions to be used anywhere necessary
+     * @return Array
+     */
+    public static function getParticipantsEncryptionOptions()
+    {
+        $aOptions = ParticipantAttributeName::model()->findAll(array("condition" => "core_attribute = 'Y'"));
+        if (empty($aOptions)){
+            $aOptions = Participant::getDefaultEncryptionOptions();
+            return $aOptions;
+        } else {
+            $aOptionReturn['enabled'] = 'Y';
+            foreach($aOptions as $key => $value){
+                $aOptionReturn['columns'][$value['defaultname']] = $value['encrypted'];
+            }
+            return $aOptionReturn;
+        }
+    }
+
+    public static function getDefaultEncryptionOptions(){
+        return array(
+            'enabled' => 'N',
+            'columns' => array(
+                    'firstname' =>  'N',
+                    'lastname' =>  'N',
+                    'email' =>  'N'
+                )
+        );
     }
 }

@@ -2530,6 +2530,36 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>404),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        /**
+         * Database modification for encryption feature
+         */
+        if ($iOldDBVersion < 405) {
+            $oTransaction = $oDB->beginTransaction();
+            // surveys
+            $oDB->createCommand()->addColumn('{{surveys}}', 'tokenencryptionoptions', "text");
+            $oDB->createCommand()->update('{{surveys}}',array('tokenencryptionoptions'=>json_encode(Token::getDefaultEncryptionOptions())));
+            // participants
+            $oDB->createCommand()->dropindex('{{idx1_participants}}', '{{participants}}');
+            $oDB->createCommand()->dropindex('{{idx2_participants}}', '{{participants}}');
+            alterColumn('{{participants}}', 'firstname', "text", false);
+            alterColumn('{{participants}}', 'lastname', "text", false);
+            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'encrypted', "string(5)");
+            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'core_attribute', "string(5)");
+            $aCoreAttributes = array('firstname', 'lastname', 'email');
+            foreach($aCoreAttributes as $attribute){
+                $oDB->createCommand()->insert('{{participant_attribute_names}}', array(
+                    'attribute_type'    => 'TB',
+                    'defaultname'       => $attribute,
+                    'visible'           => 'TRUE',
+                    'encrypted'         => 'N',
+                    'core_attribute'    => 'Y'
+                ));
+            }
+            $oDB->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>405),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
       
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
@@ -4524,7 +4554,9 @@ function fixLanguageConsistencyAllSurveys()
 
 function runAddPrimaryKeyonAnswersTable400(&$oDB) {
     if (!in_array($oDB->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
+        dropPrimaryKey('answers');
         addColumn('{{answers}}', 'aid', 'pk');
+        modifyPrimaryKey('answers', array('aid'));        
         $oDB->createCommand()->createIndex('answer_idx_10', '{{answers}}', ['qid', 'code', 'scale_id']);
         $dataReader = $oDB->createCommand("SELECT qid, code, scale_id FROM {{answers}} group by qid, code, scale_id")->query();
         $iCounter = 1;

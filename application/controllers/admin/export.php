@@ -667,6 +667,16 @@ class export extends Survey_Common_Action
 
             echo $vvoutput;
             foreach ($result as $row) {
+                // prepare the data for decryption
+                $oToken = Token::model($iSurveyId);
+                $oToken->setAttributes($row, false); 
+                $oToken->decrypt(); 
+
+                $oResponse = Response::model($iSurveyId);
+                $oResponse->setAttributes($row, false); 
+                $oResponse->decrypt(); 
+
+                $row = array_merge($oToken->attributes, $oResponse->attributes);
                 foreach ($fieldnames as $field) {
                     if (is_null($row[$field])) {
                         $value = '{question_not_shown}';

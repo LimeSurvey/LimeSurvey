@@ -2211,7 +2211,7 @@ function XMLImportTokens($sFullFilePath, $iSurveyID, $sCreateMissingAttributeFie
 
         $token = Token::create($iSurveyID, 'allowinvalidemail');
         $token->setAttributes($insertdata, false);
-        if (!$token->save()) {
+        if (!$token->encryptSave()) {
             $results['warnings'][] = CHtml::errorSummary($token, gT("Skipped tokens entry:"));
         } else {
             $results['tokens']++;
@@ -2512,7 +2512,7 @@ function CSVImportResponses($sFullFilePath, $iSurveyId, $aOptions = array())
                     switchMSSQLIdentityInsert('survey_'.$iSurveyId, true);
                     $bSwitched = true;
                 }
-                if ($oSurvey->save()) {
+                if ($oSurvey->encryptSave()) {
                     $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
                     $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
                     $beforeDataEntryImport->set('oModel', $oSurvey);

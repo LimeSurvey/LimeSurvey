@@ -69,7 +69,8 @@ class ParticipantAttribute extends LSActiveRecord
      */
     public function getAttributeInfo($participantid)
     {
-        return self::model()->findAllByAttributes(array('participant_id' => $participantid));
+        $model = self::model()->with('participant_attribute_name')->findAllByAttributes(array('participant_id' => $participantid));
+        return $model;
     }
 
     /**
@@ -90,6 +91,14 @@ class ParticipantAttribute extends LSActiveRecord
             Yii::app()->db->createCommand()
                     ->insert('{{participant_attribute}}', $data);
         }
+    }
+
+    /**
+     * Get current surveyId for other model/function
+     * @return int
+     */
+    public function getSurveyId() {
+        return 0;
     }
 
 }

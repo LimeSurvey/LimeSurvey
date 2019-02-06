@@ -294,10 +294,19 @@ abstract class Writer implements IWriter
 
         // If no empty survey, render/export responses array.
         foreach ($oSurvey->responses as $response) {
+            // prepare the data for decryption
+            $oToken = Token::model($oSurvey->id);
+            $oToken->setAttributes($response, false); 
+            $oToken->decrypt();
+            $oResponse = Response::model($oSurvey->id);
+            $oResponse->setAttributes($response, false); 
+            $oResponse->decrypt();
+            $aResponse = array_merge($oToken->attributes, $oResponse->attributes);
+
             $elementArray = array();
 
             foreach ($oOptions->selectedColumns as $column) {
-                $value = $response[$column];
+                $value = $aResponse[$column];
                 if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type'] != 'answer_time' && $oSurvey->fieldMap[$column]['type'] != 'page_time' && $oSurvey->fieldMap[$column]['type'] != 'interview_time') {
                     switch ($oOptions->answerFormat) {
                         case 'long':
