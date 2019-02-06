@@ -3625,8 +3625,8 @@ function fixLanguageConsistency($sid, $availlangs = '')
     }
     
     /* Remove invalid question : can break survey */
+    switchMSSQLIdentityInsert('assessments', true);
     Survey::model()->findByPk($sid)->fixInvalidQuestions();
-
     $query = "SELECT * FROM {{assessments}} WHERE sid='{$sid}' AND language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $assessment) {
@@ -3650,8 +3650,10 @@ function fixLanguageConsistency($sid, $availlangs = '')
         }
         reset($langs);
     }
+    switchMSSQLIdentityInsert('assessments', false);
 
 
+    switchMSSQLIdentityInsert('quota_languagesettings', true);
     $query = "SELECT * FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $qls) {
@@ -3672,6 +3674,7 @@ function fixLanguageConsistency($sid, $availlangs = '')
         }
         reset($langs);
     }
+    switchMSSQLIdentityInsert('quota_languagesettings', true);
 
     return true;
 }

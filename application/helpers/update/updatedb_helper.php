@@ -49,6 +49,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     /// older versions to match current functionality
 
     Yii::app()->loadHelper('database');
+    Yii::app()->loadHelper('admin/import');
     $sUserTemplateRootDir       = Yii::app()->getConfig('userthemerootdir');
     $sStandardTemplateRootDir   = Yii::app()->getConfig('standardthemerootdir');
     $oDB                        = Yii::app()->getDb();
@@ -2359,9 +2360,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand("delete from  {{questions}} where qid={$row['qid']} and language='{$row['language']}'")->execute();
             }
             modifyPrimaryKey('questions', array('qid'));
-            $oDB->createCommand()->dropColumn('{{questions}}', 'question');
-            $oDB->createCommand()->dropColumn('{{questions}}', 'help');
-            $oDB->createCommand()->dropColumn('{{questions}}', 'language');    
+            dropColumn('{{questions}}', 'question');
+            dropColumn('{{questions}}', 'help');
+            dropColumn('{{questions}}', 'language');
+
             // Groups table
             $oDB->createCommand()->createTable('{{group_l10ns}}', array(
                 'id' =>  "pk",
@@ -2377,9 +2379,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand("delete from  {{groups}} where gid={$row['gid']} and language='{$row['language']}'")->execute();
             }
             modifyPrimaryKey('groups', array('gid'));
-            $oDB->createCommand()->dropColumn('{{groups}}', 'group_name');
-            $oDB->createCommand()->dropColumn('{{groups}}', 'description');
-            $oDB->createCommand()->dropColumn('{{groups}}', 'language');    
+            $oDB->createCommand()->dropindex('{{idx2_groups}}', '{{groups}}');
+            $oDB->createCommand()->dropindex('{{idx3_groups}}', '{{groups}}');
+            dropColumn('{{groups}}', 'group_name');
+            dropColumn('{{groups}}', 'description');
+            dropColumn('{{groups}}', 'language');
+
             // Answers table
             // Answers now have a proper answer ID - wohoo!
             $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
@@ -2390,24 +2395,38 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));        
             $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
             
-            addColumn('{{answers}}', 'aid', 'int');
-            modifyPrimaryKey('answers', array('aid'));
-            $oDB->createCommand()->createIndex('answer_idx_10', '{{answers}}', ['qid', 'code', 'scale_id']);
-            $dataReader = $oDB->createCommand("select qid, code, scale_id from {{answers}} group by qid, code, scale_id")->query();
-            $iCounter = 1;
+            $oDB->createCommand()->renameTable('{{answers}}', 'answertemp');
+            $oDB->createCommand()->createIndex('answer_idx_10', 'answertemp', ['qid', 'code', 'scale_id']);
+            $oDB->createCommand()->createTable('{{answers}}',[
+                'aid' =>  "pk",
+                'qid' => 'integer NOT NULL',
+                'code' => 'string(5) NOT NULL',
+                'sortorder' => 'integer NOT NULL',
+                'assessment_value' => 'integer NOT NULL DEFAULT 0',
+                'scale_id' => 'integer NOT NULL DEFAULT 0'
+            ]);
+            $iCounter1 = 0;
+            $iPrevQid = 0;
+            $sPrevCode = '';
+            $iPrevScaleId = 0;
+            $dataReader = $oDB->createCommand("SELECT * FROM answertemp order by qid, code, scale_id")->query();
             while (($row = $dataReader->read()) !== false) {
-                $oDB->createCommand("update {{answers}} set aid={$iCounter} where qid={$row['qid']} and code='{$row['code']}' and scale_id={$row['scale_id']}")->execute();
-                $iCounter++;
+                if ($iPrevQid != $row['qid'] || $sPrevCode != $row['code'] || $iPrevScaleId != $row['scale_id']){
+                    $iCounter1++;
+                    switchMSSQLIdentityInsert('answers', true);
+                    $oDB->createCommand()->insert('{{answers}}', array('aid' => $iCounter1, 'qid' => $row['qid'], 'code' => $row['code'], 'scale_id' => $row['scale_id'], 'sortorder' => $row['sortorder'], 'assessment_value' => $row['assessment_value']));
+                    switchMSSQLIdentityInsert('answers', false);
+                }
+
+                $oDB->createCommand()->insert('{{answer_l10ns}}', array('aid' => $iCounter1, 'language' => $row['language'], 'answer' => $row['answer']));
+
+                $iPrevQid = $row['qid'];
+                $sPrevCode = $row['code'];
+                $iPrevScaleId = $row['scale_id'];
             }
-            $oDB->createCommand("INSERT INTO {{answer_l10ns}} (aid, answer, language) select aid, answer, language from {{answers}}")->execute();
-            $dataReader = $oDB->createCommand("select a1.language,a1.aid FROM {{answers}} a1 INNER JOIN {{answers}} a2 ON a1.aid = a2.aid and a1.language<a2.language")->query();
-            while (($row = $dataReader->read()) !== false) {
-                $oDB->createCommand("delete from  {{answers}} where aid={$row['aid']} and language='{$row['language']}'")->execute();
-            }
-            $oDB->createCommand()->dropColumn('{{answers}}', 'answer');
-            $oDB->createCommand()->dropColumn('{{answers}}', 'language');    
-            $oDB->createCommand()->dropindex('answer_idx_10', '{{answers}}');
-            $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
+            $oDB->createCommand()->dropindex('answer_idx_10', 'answertemp');
+            $oDB->createCommand()->dropTable('answertemp');
+            $oDB->createCommand()->createIndex('{{answer_idx_10}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
             
             // Labels table
             // label_l10ns
@@ -2419,21 +2438,35 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));  
             $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
             
-            modifyPrimaryKey('labels', array('id'));
-            $dataReader = $oDB->createCommand("select lid,code from {{labels}} group by lid,code")->query();
-            $iCounter = 1;
+            $oDB->createCommand()->renameTable('{{labels}}', 'labelstemp');
+            $oDB->createCommand()->createIndex('label_idx_10', 'labelstemp', ['lid', 'sortorder', 'language']);
+            $oDB->createCommand()->createTable('{{labels}}',[
+                'id' =>  "pk",
+                'lid' => 'integer NOT NULL',
+                'code' => 'string(5) NOT NULL',
+                'sortorder' => 'integer NOT NULL',
+                'assessment_value' => 'integer NOT NULL DEFAULT 0'
+            ]);               
+        
+            $iCounter1 = 0;
+            $iPrevLid = 0;
+            $sPrevCode = '';
+            switchMSSQLIdentityInsert('labels', true);
+            $dataReader = $oDB->createCommand("SELECT * FROM labelstemp order by lid, sortorder, code, language")->query();
             while (($row = $dataReader->read()) !== false) {
-                $oDB->createCommand("update {{labels}} set id={$iCounter} where lid={$row['lid']} and code='{$row['code']}'")->execute();
-                $iCounter++;
+                if ($iPrevLid != $row['lid'] || $sPrevCode != $row['code']){
+                    $iCounter1++;
+                    $oDB->createCommand()->insert('{{labels}}', array('id' => $iCounter1, 'lid' => $row['lid'], 'code' => $row['code'],'sortorder' => $row['sortorder'], 'assessment_value' => $row['assessment_value']));
+                }
+                $oDB->createCommand()->insert('{{label_l10ns}}', array('label_id' => $iCounter1, 'language' => $row['language'], 'title' => $row['title']));
+                
+                $iPrevLid = $row['lid'];
+                $sPrevCode = $row['code'];
             }
-            $oDB->createCommand("INSERT INTO {{label_l10ns}} (label_id, title, language) select id, title, language from {{labels}}")->execute();
-            $dataReader = $oDB->createCommand("select l1.language,l1.id FROM {{labels}} l1 INNER JOIN {{labels}} l2 ON l1.id = l2.id and l1.language<l2.language")->query();
-            while (($row = $dataReader->read()) !== false) {
-                $oDB->createCommand("DELETE FROM  {{labels}} where id={$row['id']} AND language='{$row['language']}'")->execute();
-            }
-            $oDB->createCommand()->dropColumn('{{labels}}', 'title');
-            $oDB->createCommand()->dropColumn('{{labels}}', 'language');    
-           
+            switchMSSQLIdentityInsert('labels', false);
+            $oDB->createCommand()->dropindex('label_idx_10', 'labelstemp');
+            $oDB->createCommand()->dropTable('labelstemp');
+            $oDB->createCommand()->createIndex('{{label_idx_10}}', '{{labels}}', ['lid', 'sortorder'], true);
 
             // Extend language field on labelsets
             alterColumn('{{labelsets}}', 'languages', "string(255)", false);
@@ -4529,25 +4562,3 @@ function runAddPrimaryKeyonAnswersTable400(&$oDB) {
     }
 
 }
-
-/**
-* This function switches identity insert on/off for the MSSQL database
-*
-* @param string $table table name (without prefix)
-* @param boolean $state  Set to true to activate ID insert, or false to deactivate
-*/
-/*
-function switchMSSQLIdentityInsert($table, $state, $oDb = null)
-{
-    $oDb = $oDb === null ? Yii::app()->db : $oDb;
-    if (in_array($oDb->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
-        if ($state === true) {
-            // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
-            $oDb->pdoInstance->exec('SET IDENTITY_INSERT '.$oDb->tablePrefix.$table.' ON');
-        } else {
-            // This needs to be done directly on the PDO object because when using CdbCommand or similar it won't have any effect
-            $oDb->pdoInstance->exec( 'SET IDENTITY_INSERT '.$oDb->tablePrefix.$table.' OFF');
-        }            
-    }
-}    
- */
