@@ -3,7 +3,7 @@
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-12">
         <div class="jumbotron message-box">
-            <h2><?php eT("Test Email Results"); ?></h2>
+            <h2><?php eT("Email test result"); ?></h2>
             <p class="lead"><?php eT("If errors are showing up you might have to change configuration settings and retest."); ?></p>
             <?php if($success) { ?>
                 <p class="h4 text-success"><?php echo $message;?></p>

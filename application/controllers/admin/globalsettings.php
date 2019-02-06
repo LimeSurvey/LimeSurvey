@@ -70,11 +70,11 @@ class GlobalSettings extends Survey_Common_Action
 
         $sTo = $owner['full_name'] ." <".$owner['email'].">";
         $sFrom = Yii::app()->getConfig("siteadminname")." <".Yii::app()->getConfig("siteadminemail").">";
-        $sSubject = sprintf(gT('Test email from '), Yii::app()->getConfig('sitename'));
+        $sSubject = sprintf(gT('Test email from %s'), Yii::app()->getConfig('sitename'));
         $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
 
         $body   = array();
-        $body[] = sprintf(gT('This is a test email from '), Yii::app()->getConfig('sitename'));
+        $body[] = sprintf(gT('This is a test email from %s'), Yii::app()->getConfig('sitename'));
         $body   = implode("\n", $body);
         
         $this->_sendEmailAndShowResult($body, $sSubject, $sTo, $sFrom, $sSiteName, $sSiteAdminBounce);
@@ -90,7 +90,7 @@ class GlobalSettings extends Survey_Common_Action
         if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce)) {
             $content .= gT('Email sent successfully');
         } else {
-            $content .= gT('Email sending failure: ') .$maildebug;
+            $content .= sprintf(gT('Email sending failure: %s'), $maildebug);
         }
         App()->setConfig('maildebug',$setting);
         

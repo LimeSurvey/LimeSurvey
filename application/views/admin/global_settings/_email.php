@@ -57,7 +57,7 @@
         <!-- Test email -->
         <div class="form-group">
             <label class="text-left control-label" for='sendTestEmail'>
-            <?php eT("Send Test Email using saved options:"); ?>
+            <?php eT("Send test email using saved options:"); ?>
             </label>
             <div class="">
                 <a href="<?php echo App()->createUrl('admin/globalsettings', array("sa"=>"sendTestEmail")); ?>" class="btn btn-success btn-large"><?php eT("Send Email");?></a>
