@@ -2019,14 +2019,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         $sender = $bouncemail;
     }
     /* Need to find a way to call this ! F**O** */
-    require_once(APPPATH.'/libraries/Mailer/LimeMailer.php');
-    $mail =  \LimeSurvey\Mailer\LimeMailer::getInstance(); //  Class 'LimeSurvey\Mailer\LimeMailer' not found
-    $mail->SMTPAutoTLS = false;
-
-    $mail->CharSet = $emailcharset;
-    if (isset($emailsmtpssl) && trim($emailsmtpssl) !== '' && $emailsmtpssl !== 0) {
-        if ($emailsmtpssl === 1) {$mail->SMTPSecure = "ssl"; } else {$mail->SMTPSecure = $emailsmtpssl; }
-    }
+    $mail =  Yii::app()->LimeMailer::getInstance(); //  Class 'LimeSurvey\Mailer\LimeMailer' not found
 
     $fromname = '';
     $fromemail = $from;
@@ -2038,34 +2031,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     $senderemail = $sender;
     if (strpos($sender, '<')) {
         $senderemail = substr($sender, strpos($sender, '<') + 1, strpos($sender, '>') - 1 - strpos($sender, '<'));
-    }
-
-    switch ($emailmethod) {
-        case "qmail":
-            $mail->IsQmail();
-            break;
-        case "smtp":
-            $mail->IsSMTP();
-            if ($emailsmtpdebug > 0) {
-                $mail->SMTPDebug = $emailsmtpdebug;
-            }
-            if (strpos($emailsmtphost, ':') > 0) {
-                $mail->Host = substr($emailsmtphost, 0, strpos($emailsmtphost, ':'));
-                $mail->Port = (int) substr($emailsmtphost, strpos($emailsmtphost, ':') + 1);
-            } else {
-                $mail->Host = $emailsmtphost;
-            }
-            $mail->Username = $emailsmtpuser;
-            $mail->Password = $emailsmtppassword;
-            if (trim($emailsmtpuser) != "") {
-                $mail->SMTPAuth = true;
-            }
-            break;
-        case "sendmail":
-            $mail->IsSendmail();
-            break;
-        default:
-            $mail->IsMail();
     }
 
     $mail->SetFrom($fromemail, $fromname);
