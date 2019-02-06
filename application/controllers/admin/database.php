@@ -395,6 +395,22 @@ class database extends Survey_Common_Action
                 $aRelevance[$sPOSTKey[2]][] = $sPOSTValue;
             }
         }
+
+        // fix #14495
+        // Question of type P can't have subquestion with comment suffix
+        if ($sQuestionType == 'P') {
+            $allCodes = $aCodes[0];
+            for ($i = 0; $i < count($aCodes[0]); $i++) {
+                $sCode = $aCodes[0][$i];
+                foreach ($allCodes as $iCode) {
+                    if ($sCode == $iCode.'comment') {
+                        Yii::app()->setFlashMessage(gT("Can't suffix code by 'comment', updating code..."), 'error');
+                        $aCodes[0][$i] .= '00';
+                    }
+                }
+            }
+        }
+
         $aInsertQID = array();
         for ($iScaleID = 0; $iScaleID < $iScaleCount; $iScaleID++) {
             foreach ($aSurveyLanguages as $sLanguage) {
