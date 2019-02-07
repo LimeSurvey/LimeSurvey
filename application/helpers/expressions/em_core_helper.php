@@ -200,6 +200,7 @@ class ExpressionManager
 'is_string' => array('is_string', 'LEMis_string', gT('Find whether the type of a variable is string'), 'bool is_string(var)', 'http://php.net/is-string', 1),
 'join' => array('exprmgr_join', 'LEMjoin', gT('Join strings, return joined string.This function is an alias of implode("",argN)'), 'string join(arg1,arg2,...,argN)', '', -1),
 'list' => array('exprmgr_list', 'LEMlist', gT('Return comma-separated list of values'), 'string list(arg1, arg2, ... argN)', '', -2),
+'listifop' => array('exprmgr_listifop', 'LEMlistifop', gT('Return a list of retAttr from sgqa1...sgqaN which pass the criteria (cmpAttr op value)'), 'string listifop(cmpAttr, op, value, retAttr, glue, sgqa1, sgqa2,...,sgqaN)', '', -6),
 'log' => array('exprmgr_log', 'LEMlog', gT('The logarithm of number to base, if given, or the natural logarithm. '), 'number log(number,base=e)', 'http://php.net/log', -2),
 'ltrim' => array('ltrim', 'ltrim', gT('Strip whitespace (or other characters) from the beginning of a string'), 'string ltrim(string [, charlist])', 'http://php.net/ltrim', 1, 2),
 'max' => array('max', 'Decimal.asNum.max', gT('Find highest value'), 'number max(arg1, arg2, ... argN)', 'http://php.net/max', -2),
@@ -2604,6 +2605,56 @@ function exprmgr_list($args)
             ++$j;
         }
     }
+    return $result;
+}
+
+/**
+ * Implementation of listifop( $cmpAttr, $op, $value, $retAttr, $glue, $sgqa1, ..., sgqaN )
+ * Return a list of retAttr from sgqa1...sgqaN which pass the critiera (cmpAttr op value)
+ * @param array $args
+ * @return string
+ */
+function exprmgr_listifop( $args )
+{
+    $result = "";
+    $cmpAttr = array_shift($args);
+    $op = array_shift($args);
+    $value = array_shift($args);
+    $retAttr = array_shift($args);
+    $glue = array_shift($args);
+    
+    $validAttributes = "/" . ExpressionManager::$RDP_regex_var_attr . "/";
+    if ( ! preg_match( $validAttributes, $cmpAttr ) ) {
+        return $cmpAttr . " not recognized ?!";
+    }
+    if ( ! preg_match( $validAttributes, $retAttr ) ) {
+        return $retAttr . " not recognized ?!";
+    }
+    
+    foreach ($args as $sgqa) {
+        $cmpVal = LimeExpressionManager::GetVarAttribute($sgqa,$cmpAttr,null,-1,-1);
+        $match = false;
+        
+        switch ($op) {
+            case '==': case 'eq': $match = ($cmpVal == $value); break;
+            case '>=': case 'ge': $match = ($cmpVal >= $value); break;
+            case '>' : case 'gt': $match = ($cmpVal > $value);  break;
+            case '<=': case 'le': $match = ($cmpVal <= $value); break;
+            case '<' : case 'lt': $match = ($cmpVal < $value);  break;
+            case '!=': case 'ne': $match = ($cmpVal != $value); break;
+            case 'RX': try { $match = preg_match( $value, $cmpVal ); }
+            catch ( Exception $ex ) { return "Invalid RegEx"; } break;
+        }
+        
+        if ( $match ) {
+            $retVal = LimeExpressionManager::GetVarAttribute($sgqa,$retAttr,null,-1,-1);
+            if ( $result != "" ) {
+                $result .= $glue;
+            }
+            $result .= $retVal;
+        }
+    }
+    
     return $result;
 }
 
