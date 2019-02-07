@@ -23,13 +23,18 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
     private $aMandatoryViolationSubQ;
     private $repeatheadings;
     private $minrepeatheadings;
+    private $defaultWidth;
+    private $columnswidth;
+    private $answerwidth;
+    private $cellwidth;
+    private $sHeaders;
     
     private $rightExists;
     private $bUseDropdownLayout = false;
 
     private $inputnames = [];
 
-    private $sCoreClass = "ls-answers subquestion-list questions-list";
+    public $sCoreClass = "ls-answers subquestion-list questions-list";
 
     public function __construct($aFieldArray, $bRenderDirect = false) {
         parent::__construct($aFieldArray, $bRenderDirect);
@@ -41,7 +46,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $this->minrepeatheadings = Yii::app()->getConfig("minrepeatheadings");
 
         if (ctype_digit($this->repeatheadings) && !empty($this->repeatheadings)) {
-            $this->repeatheadings    = intval($aQuestionAttributes['repeat_headings']);
+            $this->repeatheadings    = intval($this->getQuestionAttribute('repeat_headings'));
             $this->minrepeatheadings = 0;
         }
     
@@ -62,12 +67,31 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
         $this->setAnsweroptions(0);
 
         $iCount = array_reduce($this->aSubQuestions[0], function($combined, $oSubquestion){
-            if(preg_match("/[^|]*|[^|]*/",$oQuestion->questionL10ns[$this->sLanguage]->question)) { $combined++; } 
+            if(preg_match("/^[^|]+\|[^|]+$/",$this->oQuestion->questionL10ns[$this->sLanguage]->question)) { 
+                $combined++; 
+            } 
             return $combined;
         }, 0);
         // $right_exists is a flag to find out if there are any right hand answer parts. 
         // If there arent we can leave out the right td column
         $this->rightExists = ($iCount > 0);
+
+        $this->answerwidth = $this->setDefaultIfEmpty($this->getQuestionAttribute('answer_width'), 33);
+        $this->defaultWidth = ($this->answerwidth===33);
+        
+        $this->columnswidth = 100 - $this->answerwidth;
+
+        if($this->rightExists) {
+        /* put the right answer to same width : take place in answer width only if it's not default */
+            if ($this->defaultWidth) {
+                $this->columnswidth -= $this->answerwidth;
+            } else {
+                $this->answerwidth = $this->answerwidth / 2;
+            }
+        }
+
+        $this->cellwidth = round(($this->columnswidth / $this->getQuestionCount()), 1);
+        $this->setHeaders();
 
     }
 
@@ -78,8 +102,12 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             : '/survey/questions/answer/arrays/array/no_dropdown';
     }
 
-    public function getHeaders(){
+    public function setHeaders(){
         $sHeader = '';
+        if($this->bUseDropdownLayout) {
+            $this->sHeaders =  $sHeader;
+            return;
+        }
 
         $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
             $this->getMainView().'/rows/cells/header_information', 
@@ -89,7 +117,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             ]
         );
 
-        foreach ($this->aAnswers[0] as $oAnswer) {
+        foreach ($this->aAnswerOptions[0] as $oAnswer) {
             $sHeader  .= Yii::app()->twigRenderer->renderQuestion(
                 $this->getMainView().'/rows/cells/header_answer', 
                 [
@@ -120,58 +148,111 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             );
         }
 
-        return $sHeaders;
+        $this->sHeaders =  $sHeader;
+    }
+
+    public function getDropdownRows() {
+        
+        // $labels[] = array(
+        //     'code'   => $aAnswer->code,
+        //     'answer' => $aAnswer->answerL10ns[$sSurveyLanguage]->answer
+        // );
+
+        //$aAnswer->answerL10ns[$sSurveyLanguage]->answer
+        $aRows = [];
+        foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
+            $myfname        = $this->sSGQA.$oQuestion->title;
+            $answertext     = $oQuestion->questionL10ns[$this->sLanguage]['question'];
+            // Check the mandatory sub Q violation 
+            $error = (in_array($myfname, $this->aMandatoryViolationSubQ)); 
+            $value = $this->getFromSurveySession($myfname);
+
+            if ($this->rightExists && (strpos($oQuestion->questionL10ns[$sSurveyLanguage]['question'], '|') !== false)) {
+                $aAnswertextArray = explode('|', $oQuestion->questionL10ns[$sSurveyLanguage]['question']);
+                $answertextright = $aAnswertextArray[1];
+                $answertext = $aAnswertextArray[0];
+            } else {
+                $answertextright = null;
+            }
+
+            $options = [];
+
+            // Dropdown representation : first choice (activated) must be Please choose... if there are no actual answer 
+            $showNoAnswer = ($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1); // Tag if we must show no-answer
+            if ($value === '') {
+                $options[] = array(
+                    'text'=> gT('Please choose...'),
+                    'value'=> '',
+                    'selected'=>''
+                );
+                $showNoAnswer = false;
+            }
+            // Real options
+            foreach ($this->aAnswerOptions[0] as $i=>$oAnswer) {
+                $options[] = array(
+                    'value'=>$oAnswer->code,
+                    'selected'=>($value == $oAnswer->code) ? SELECTED :'',
+                    'text'=> $oAnswer->answerL10ns[$this->sLanguage]->answer
+                );
+            }
+            // Add the now answer if needed 
+            if ($showNoAnswer) {
+                $options[] = array(
+                    'text'=> gT('No answer'),
+                    'value'=> '',
+                    'selected'=> ($value == '') ?  SELECTED :'',
+                );
+            }
+            unset($showNoAnswer);
+            $aRows[] = array(
+                'myfname'                => $myfname,
+                'answertext'             => $answertext,
+                'answerwidth'            => $this->answerwidth,
+                'value'                  => $value,
+                'error'                  => $error,
+                'checkconditionFunction' => 'checkconditions',
+                'right_exists'           => $this->rightExists,
+                'answertextright'        => $answertextright,
+                'options'                => $options,
+                'odd'                    => ($i % 2), // true for odd, false for even
+            );
+
+            $this->inputnames[] = $myfname;
+        }
+        return $aRows;
     }
 
     public function getNonDropdownRows()
     {
-        
-        $answerwidth = $this->setDefaultIfEmpty($this->getQuestionAttribute('answer_width'), 33);
-        $defaultWidth = ($answerwidth===33);
-        
-        $columnswidth = 100 - $answerwidth;
-
-        if($this->rightExists) {
-        /* put the right answer to same width : take place in answer width only if it's not default */
-            if ($defaultWidth) {
-                $columnswidth -= $answerwidth;
-            } else {
-                $answerwidth = $answerwidth / 2;
-            }
-        }
-
-        $cellwidth = round(($columnswidth / $this->getQuestionCount()), 1);
-        $sHeaders = $this->getHeaders();
-
         $aRows = [];
         foreach ($this->aSubQuestions[0] as $i => $oQuestion) {
             if ($this->repeatheadings > 0 && ($i - 1) > 0 && ($i - 1) % $this->repeatheadings == 0) {
                 if (($this->getQuestionCount() - $i + 1) >= $this->minrepeatheadings) {
                     // Close actual body and open another one
-                    $aRows .= [
+                    $aRows[] = [
                         'template' => '/survey/questions/answer/arrays/array/no_dropdown/rows/repeat_header.twig', 
                         'content' => array(
-                            'sHeaders'=>$sHeaders
+                            'sHeaders' => $this->sHeaders
                         )
                     ];
                 }
             }
 
             $myfname        = $this->sSGQA.$oQuestion->title;
-            $answertext     = $oQuestion->questionL10ns[$sSurveyLanguage]->question;
+            $answertext     = $oQuestion->questionL10ns[$this->sLanguage]->question;
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
 
-            if ($this->rightExists && strpos($oQuestion->questionL10ns[$sSurveyLanguage]->question, '|') !== false) {
-                $answertextright = substr($oQuestion->questionL10ns[$sSurveyLanguage]->question, strpos($oQuestion->questionL10ns[$sSurveyLanguage]->question, '|') + 1);
+            if ($this->rightExists && strpos($oQuestion->questionL10ns[$this->sLanguage]->question, '|') !== false) {
+                $answertextright = substr($oQuestion->questionL10ns[$this->sLanguage]->question, strpos($oQuestion->questionL10ns[$this->sLanguage]->question, '|') + 1);
             } else {
                 $answertextright = '';
             }
 
-            $error          = (in_array($myfname, $aMandatoryViolationSubQ)); /* Check the mandatory sub Q violation */
+            $error          = (in_array($myfname, $this->aMandatoryViolationSubQ)); /* Check the mandatory sub Q violation */
             $value          = $this->getFromSurveySession($myfname);
             $aAnswerColumns = [];
 
-            foreach ($this->aAnswers[0] as $oAnswer) {
+            foreach ($this->aAnswerOptions[0] as $oAnswer) {
                 $aAnswerColumns[] = array(
                     'myfname'=>$myfname,
                     'ld'=>$oAnswer->code,
@@ -194,66 +275,63 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
                 );
             }
 
-            $aRows[] = array(
-                'aAnswerColumns' => $aAnswerColumns,
-                'aNoAnswerColumn' => $aNoAnswerColumn,
-                'myfname'    => $myfname,
-                'answertext' => $answertext,
-                'answerwidth'=>$answerwidth,
-                'answertextright' => $answertextright,
-                'right_exists' => $this->rightExists,
-                'value'      => $value,
-                'error'      => $error,
-                'odd'        => ($i % 2), // true for odd, false for even
-            );
+            $aRows[] = [
+                "template" => "survey/questions/answer/arrays/array/no_dropdown/rows/answer_row.twig",
+                "content" => array(
+                    'aAnswerColumns' => $aAnswerColumns,
+                    'aNoAnswerColumn' => $aNoAnswerColumn,
+                    'myfname'    => $myfname,
+                    'answertext' => $answertext,
+                    'answerwidth'=> $this->answerwidth,
+                    'answertextright' => $answertextright,
+                    'right_exists' => intval($this->rightExists),
+                    'value'      => $value,
+                    'error'      => $error,
+                    'odd'        => ($i % 2), // true for odd, false for even
+                )
+                ];
 
-            $inputnames[] = $myfname;
+            $this->inputnames[] = $myfname;
         }
 
+        return $aRows;
+    }
 
+    public function getColumns()
+    {
         $aColumns = [];
         $oddEven = false;
-        foreach ($this->aAnswers[0] as $oAnswer) {
+        foreach ($this->aAnswerOptions[0] as $oAnswer) {
             $aColumns[] = array(
                 'class'     => $oddEven ? 'ls-col-even' : 'ls-col-odd',
-                'cellwidth' => $cellwidth,
+                'cellwidth' => $this->cellwidth,
             );
                 $oddEven = !$oddEven;
         }
 
         if ($this->rightExists) {
-            $odd_even = alternation($odd_even);
             $aColumns[] = array(
                 'class'     => 'answertextright '.($oddEven ? 'ls-col-even' : 'ls-col-odd'),
-                'cellwidth' => $answerwidth,
+                'cellwidth' => $this->answerwidth,
             );
             $oddEven = !$oddEven;
         }
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1)) {
             //Question is not mandatory
             $aColumns[] = array(
                 'class'     => 'col-no-answer '.($oddEven ? 'ls-col-even' : 'ls-col-odd'),
-                'cellwidth' => $cellwidth,
+                'cellwidth' => $this->cellwidth,
             );
             $oddEven = !$oddEven;
         }
-
-        $answer = doRender('/survey/questions/answer/arrays/array/no_dropdown/answer', array(
-            'answerwidth'=> $answerwidth,
-            'anscount'   => $iQuestionCount,
-            'aRows'      => $aRows,
-            'coreClass'  => $this->sCoreClass,
-            'sHeaders'   => $sHeaders,
-            'aColumns'   => $aColumns,
-            'basename' => $this->sSGQA,
-            ), true);
+        return $aColumns;
     }
 
 
     public function getRows()
     {
-        return;
+        //return;
         return $this->bUseDropdownLayout 
             ? $this->getDropdownRows()
             : $this->getNonDropdownRows();
@@ -262,25 +340,24 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
     public function render($sCoreClasses = '')
     {
 
-        return do_array($this->aFieldArray);
+        //return @do_array($this->aFieldArray);
        
         $answer = '';
-        $inputnames = [];
 
-        if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
-            $answer .= $this->getTimeSettingRender();
-        }
-
-        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
-            'ia'=>$this->aFieldArray,
-            'name'=>$this->sSGQA,
-            'basename'=>$this->sSGQA, 
-            'content' => $this->oQuestion,
-            'coreClass'=> 'ls-answers '.$sCoreClasses,
+        $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/answer', array(
+            'anscount'   => $this->getQuestionCount(),
+            'aRows'      => $this->getRows(),
+            'aColumns'   => $this->getColumns(),
+            'basename'   => $this->sSGQA,
+            'answerwidth'=> $this->answerwidth,
+            'columnswidth'=> $this->columnswidth,
+            'right_exists'=> $this->rightExists,
+            'coreClass'  => $this->sCoreClass,
+            'sHeaders'   => $this->sHeaders,
             ), true);
 
-        $inputnames[] = [];
-        return array($answer, $inputnames);
+        
+        return array($answer, $this->inputnames);
     }
 
     
@@ -294,7 +371,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
     }
   
 }
-
+/*
 function do_array($ia)
 {
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
@@ -346,7 +423,7 @@ function do_array($ia)
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($iCount > 0) {
             $right_exists = true;
-            /* put the right answer to same width : take place in answer width only if it's not default */
+            /* put the right answer to same width : take place in answer width only if it's not default 
             if ($defaultWidth) {
                 $columnswidth -= $answerwidth;
             } else {
@@ -427,7 +504,7 @@ function do_array($ia)
                 $answertextright = '';
             }
 
-            $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the mandatory sub Q violation */
+            $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the mandatory sub Q violation 
             $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
             $thiskey        = 0;
             $answer_tds     = '';
@@ -534,7 +611,7 @@ function do_array($ia)
 
         if ($iCount > 0) {
             $right_exists = true;
-            /* put the right answer to same width : take place in answer width only if it's not default */
+            /* put the right answer to same width : take place in answer width only if it's not default 
             if ($defaultWidth) {
                 $columnswidth -= $answerwidth;
             } else {
@@ -560,7 +637,7 @@ function do_array($ia)
             $myfname        = $this->sSGQA.$ansrow['title'];
             $answertext     = $ansrow->questionL10ns[$sSurveyLanguage]['question'];
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
-            $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the mandatory sub Q violation */
+            $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the mandatory sub Q violation 
             $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
             if ($right_exists && (strpos($ansrow->questionL10ns[$sSurveyLanguage]['question'], '|') !== false)) {
@@ -571,7 +648,7 @@ function do_array($ia)
 
             $options = [];
 
-            /* Dropdown representation : first choice (activated) must be Please choose... if there are no actual answer */
+            /* Dropdown representation : first choice (activated) must be Please choose... if there are no actual answer 
             $showNoAnswer = $ia[6] != 'Y' && SHOW_NO_ANSWER == 1; // Tag if we must show no-answer
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
                 $options[] = array(
@@ -589,7 +666,7 @@ function do_array($ia)
                     'text'=> $aAnswer['answer']
                 );
             }
-            /* Add the now answer if needed */
+            /* Add the now answer if needed 
             if ($showNoAnswer) {
                 $options[] = array(
                     'text'=> gT('No answer'),
@@ -628,4 +705,5 @@ function do_array($ia)
         $inputnames = '';
     }
     return array($answer, $inputnames);
-}
+} 
+*/

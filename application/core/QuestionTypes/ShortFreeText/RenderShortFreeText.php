@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * RenderClass for Boilerplate Question
  *  * The ia Array contains the following
@@ -32,7 +30,8 @@ class RenderShortFreeText extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
-        return do_shortfreetext($this->aFieldArray);
+        $result =  @do_shortfreetext($this->aFieldArray);
+        return $result;
 
         $answer = '';
         $inputnames = [];
@@ -44,7 +43,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
             'ia'=>$this->aFieldArray,
             'name'=>$this->sSGQA,
-            'basename'=>$this->sSGQA, 
+            'basename'=>$this->sSGQA,
             'content' => $this->oQuestion,
             'coreClass'=> 'ls-answers '.$sCoreClasses,
             ), true);

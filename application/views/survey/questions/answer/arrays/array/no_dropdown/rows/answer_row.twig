@@ -26,7 +26,7 @@
     </th>
 
         {% for aAnswerColumn in aAnswerColumns %}
-            {% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with aAnswerColumn only %},
+            {% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with aAnswerColumn only %}
         {% endfor %}
         {# Defined in answer_td view #}
     
@@ -36,7 +36,7 @@
     
         {# No answer should come after right text at bipolar question #}
         {% if aNoAnswerColumn is not empty %}
-            {% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with aNoAnswerColumn only %},
+            {% include 'survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td.twig' with aNoAnswerColumn only %}
         {% endif %}
     
 </tr>

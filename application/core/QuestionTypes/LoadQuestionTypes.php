@@ -1,7 +1,9 @@
 <?php
 
-class LoadQuestionTypes {
-    public static function loadAll() {
+class LoadQuestionTypes
+{
+    public static function loadAll()
+    {
         Yii::import('questiontypes.5pointchoice.*');
         Yii::import('questiontypes.array10choicequestions.*');
         Yii::import('questiontypes.array5choicequestions.*');
@@ -32,6 +34,6 @@ class LoadQuestionTypes {
         Yii::import('questiontypes.numerical.*');
         Yii::import('questiontypes.rankingstyle.*');
         Yii::import('questiontypes.shortfreetext.*');
-        Yii::import('questiontypes.yesnoradio.*');                       
+        Yii::import('questiontypes.yesnoradio.*');
     }
 }

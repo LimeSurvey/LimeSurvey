@@ -16,8 +16,6 @@ if (!defined('BASEPATH')) {
 *
 */
 
-use \LimeSurvey\Helpers\questionHelper;
-
 /**
 * question
 *
@@ -56,25 +54,25 @@ class questionedit extends Survey_Common_Action
   
         
 
-         // Last question visited : By user (only one by user)
-         $setting_entry = 'last_question_'.Yii::app()->user->getId();
-         SettingGlobal::setSetting($setting_entry, $qid);
+        // Last question visited : By user (only one by user)
+        $setting_entry = 'last_question_'.Yii::app()->user->getId();
+        SettingGlobal::setSetting($setting_entry, $qid);
  
-         // we need to set the sid for this question
-         $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
-         SettingGlobal::setSetting($setting_entry, $iSurveyID);
+        // we need to set the sid for this question
+        $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
+        SettingGlobal::setSetting($setting_entry, $iSurveyID);
  
-         // we need to set the gid for this question
-         $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
-         SettingGlobal::setSetting($setting_entry, $gid);
+        // we need to set the gid for this question
+        $setting_entry = 'last_question_gid_'.Yii::app()->user->getId();
+        SettingGlobal::setSetting($setting_entry, $gid);
  
-         // Last question for this survey (only one by survey, many by user)
-         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
-         SettingGlobal::setSetting($setting_entry, $qid);
+        // Last question for this survey (only one by survey, many by user)
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
+        SettingGlobal::setSetting($setting_entry, $qid);
  
-         // we need to set the gid for this question
-         $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
-         SettingGlobal::setSetting($setting_entry, $gid);
+        // we need to set the gid for this question
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
+        SettingGlobal::setSetting($setting_entry, $gid);
 
         ///////////
         // combine aData
@@ -92,7 +90,7 @@ class questionedit extends Survey_Common_Action
         $aData['baselang'] = $baselang;
         $aData['advancedsettings'] = $DisplayArray;
         $aData['sImageURL'] = Yii::app()->getConfig('adminimageurl');
-        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');        
+        $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
         $aData['display']['menu_bars']['qid_action'] = 'editquestion';
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
         $aData['action'] = 'editquestion';
@@ -140,9 +138,9 @@ class questionedit extends Survey_Common_Action
             $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
         });
         $this->renderJSON([
-            'question' => $oQuestion, 
-            'i10n' => $oQuestion->questionL10ns, 
-            'languages' => $aLanguages, 
+            'question' => $oQuestion,
+            'i10n' => $oQuestion->questionL10ns,
+            'languages' => $aLanguages,
             'mainLanguage' => $oQuestion->survey->language
         ]);
     }
@@ -184,7 +182,7 @@ class questionedit extends Survey_Common_Action
     {
         $root = (bool) $root;
         $oQuestion = Question::model()->findByPk($iQuestionId);
-
+    
         $changedText = App()->request->getPost('changedText', []);
         $changedType = App()->request->getPost('changedType', $oQuestion->type);
 
@@ -212,7 +210,8 @@ class questionedit extends Survey_Common_Action
         //*  6 => string mandatory,
             ($oQuestion->mandatory == 'Y'),
         ];
-
+        Yii::import('application.helpers.qanda_helper', true);
+        setNoAnswerMode(['shownoanswer' => $oQuestion->survey->shownoanswer ]);
         $oQuestionRenderer = $oQuestion->getRenderererObject($aFieldArray, $changedType);
         $aRendered =  $oQuestionRenderer->render('applyCkToFields');
         $aSurveyInfo = $oQuestion->survey->attributes;

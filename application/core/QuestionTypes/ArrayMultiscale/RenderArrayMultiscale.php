@@ -172,7 +172,11 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $myfid1 = $this->sSGQA.$oQuestionRow->title."_1";
             $sActualAnswer0 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname0), "");
             $sActualAnswer1 = $this->setDefaultIfEmpty($this->getFromSurveySession($myfname1), "");
+            
+            
+            $answertext = $oQuestionRow->questionL10ns[$this->sLanguage]->question;
 
+            $aData['aSubQuestions'][$i]['question'] = $answertext;
             $aData['aSubQuestions'][$i]['myfname'] = $myfname;
             $aData['aSubQuestions'][$i]['myfname0'] = $myfname0;
             $aData['aSubQuestions'][$i]['myfid0'] = $myfid0;
@@ -345,6 +349,9 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $ddprefix = null;
             $ddsuffix = null;
         }
+        
+        $aData['ddprefix'] = $ddprefix;
+        $aData['ddsuffix'] = $ddsuffix;
         
         if (trim($this->getQuestionAttribute('dropdown_separators')) != '') {
             $aSeparator = explode('|', $this->getQuestionAttribute('dropdown_separators'));

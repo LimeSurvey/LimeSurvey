@@ -18,7 +18,7 @@
  * 10 => string new group id for question in randomization group (GroupbyGroup Mode)
  *
  */
-class RenderArrayFlexibleColumn extends QuestionBaseRenderer
+class RendererArrayFlexibleColumn extends QuestionBaseRenderer
 {
     public function getMainView()
     {
