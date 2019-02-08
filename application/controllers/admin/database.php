@@ -1231,9 +1231,6 @@ class database extends Survey_Common_Action
             /* Already done in model : must control if return a good system or not here : BUT difficult to submit an empty string here */
             Yii::app()->setFlashMessage(gT("The question could not be added. You must enter at least a question code."), 'error');
         } else {
-            // For Bootstrap Version usin YiiWheels switch :
-            $_POST['mandatory'] = (Yii::app()->request->getPost('mandatory') == '1') ? 'Y' : 'N';
-            $_POST['other'] = (Yii::app()->request->getPost('other') == '1') ? 'Y' : 'N';
 
             if (Yii::app()->request->getPost('questionposition', "") != "") {
                 $iQuestionOrder = intval(Yii::app()->request->getPost('questionposition'));

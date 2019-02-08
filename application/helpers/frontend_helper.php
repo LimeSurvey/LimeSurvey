@@ -474,6 +474,8 @@ function submittokens($quotaexit = false)
                 //Only send confirmation email if there is a valid email address
             $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {
+                // #14499: Add first and last name to the "To" of confirmation email
+                $to = array($token->firstname." ".$token->lastname." <".$sToAddress[0].">");
                 $aAttachments = unserialize($thissurvey['attachments']);
 
                 $aRelevantAttachments = array();
@@ -494,7 +496,7 @@ function submittokens($quotaexit = false)
                 $event->set('type', 'confirm');
                 $event->set('model', 'confirm');
                 $event->set('subject', $subject);
-                $event->set('to', $sToAddress);
+                $event->set('to', $to);
                 $event->set('body', $message);
                 $event->set('from', $from);
                 $event->set('bounce', getBounceEmail($surveyid));

@@ -161,6 +161,10 @@ class Question extends LSActiveRecord
             if ($oParentQuestion->other == "Y") {
                 $aRules[] = array('title', 'LSYii_CompareInsensitiveValidator', 'compareValue'=>'other', 'operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), "other"), 'except' => 'archiveimport');
             }
+            // #14495: comment suffix can't be used with P Question (collapse with table name in database)
+            if ($oParentQuestion->type == "P") {
+                $aRules[] = array('title', 'match', 'pattern'=>'/.+comment$/', 'not'=>true, 'message'=> gT("'comment' suffix can not be used with question of type P."));
+            }
         } else {
             // Disallow other if sub question have 'other' for title
             $oSubquestionOther = Question::model()->find("parent_qid=:parent_qid and LOWER(title)='other'", array("parent_qid"=>$this->qid));
