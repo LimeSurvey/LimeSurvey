@@ -23,13 +23,13 @@ before_script:
 
     # disable xdebug to speed up tests
     - phpenv config-rm xdebug.ini
+
     # Install LimeSurvey.
-    - phpunit --version
     - mysql --version
     - touch enabletests
-      #- rm composer.lock
-      #- rm -r third_party
-    - composer install
+    # NB: PHPUnit 6.5.* is installed with composer.
+    - composer update
+    - ./third_party/bin/phpunit --version
     - chmod -R 777 tmp
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
@@ -80,6 +80,6 @@ before_script:
   
 script:
     # Run tests.
-    - DOMAIN=localhost phpunit --stop-on-failure --testdox
+    - DOMAIN=localhost ./third_party/bin/phpunit --stop-on-failure --testdox
 
 
