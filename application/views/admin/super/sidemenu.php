@@ -47,6 +47,7 @@
     $menuObject =  json_encode($menuObjectArray);
 
 ?>
+
 <div class="simpleWrapper ls-flex" id="vue-sidebar-container" v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}" v-bind:data-collapsed="$store.state.isCollapsed">
     <sidebar
         :options="[]"

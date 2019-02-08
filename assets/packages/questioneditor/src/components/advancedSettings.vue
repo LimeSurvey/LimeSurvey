@@ -1,26 +1,18 @@
 <script>
-import SettingSwitch from './_inputtypes/switch.vue';
-import SettingText from './_inputtypes/text.vue';
-import SettingInteger from './_inputtypes/integer.vue';
-import SettingSelect from './_inputtypes/select.vue';
-import SettingTextdisplay from './_inputtypes/textdisplay.vue';
-import SettingTextarea from './_inputtypes/textarea.vue';
-import StubSet from './_inputtypes/stub.vue';
 
 import keys from 'lodash/keys';
 import filter from 'lodash/filter';
-import sortBy from 'lodash/sortBy';
+
+import SettingsTab from './subcomponents/_settingstab.vue';
+import Subquestions from './subcomponents/_subquestions.vue';
+import Answeroptions from './subcomponents/_answeroptions.vue';
 
 export default {
     name: 'AdvancedSettings',
     components: {
-        'setting-switch': SettingSwitch,
-        'setting-text': SettingTextdisplay,
-        'setting-integer': SettingInteger,
-        'setting-select': SettingSelect,
-        'setting-textinput': SettingText,
-        'setting-textarea': SettingTextarea,
-        'stub-set' : StubSet
+        "settings-tab" : SettingsTab,
+        "subquestions" : Subquestions,
+        "Answeroptions" : Answeroptions,
     },
     data() {
         return {
@@ -32,44 +24,33 @@ export default {
                 'textinput',
                 'textarea'
             ],
+            currentTabComponent: 'settings-tab'
         };
     },
     computed: {
-        organizedSettings(){
-            return filter(this.$store.state.questionAdvancedSettings, (settingOptions, category) => category != 'debug');
-        },
-        currentSettingsTab(){
-            let items =  filter(
-                this.$store.state.questionAdvancedSettings[this.$store.state.questionAdvancedSettingsCategory],
-                (item) => this.aComponentArray.indexOf((item.inputtype=='singleselect' ? 'select' : item.inputtype)) > -1 
-            );
-            return sortBy(
-                items, 
-                item=>item.aFormElementOptions.sortorder 
-                );
-        },
         tabs(){
-            return filter(keys(this.$store.state.questionAdvancedSettings), (category) => category != 'debug');
+            return filter(keys(this.$store.state.currentQuestionAdvancedSettings), (category) => category != 'debug');
+        },
+        showSubquestionEdit(){
+            return this.$store.state.currentQuestion.typeInformation.subquestions == 1;
+        },
+        showAnswerOptionEdit(){
+            return this.$store.state.currentQuestion.typeInformation.answerscales > 1;
+        },
+        tabData() {
+
         }
     },
     methods: {
-        selectCurrentTab(categoryName) {
-            this.$store.commit('setQuestionAdvancedSettingsCategory',categoryName);
-        },
-        getComponentName(componentRawName){
-            
-            componentRawName = componentRawName=='singleselect' ? 'select' : componentRawName;
-            if(this.aComponentArray.indexOf(componentRawName) > -1 ){
-                return 'setting-'+componentRawName;
+        selectCurrentTab(tabComponent, categoryName='') {
+            this.currentTabComponent = tabComponent;
+            if(tabComponent == 'settings-tab') {
+                this.$store.commit('setQuestionAdvancedSettingsCategory',categoryName);
             }
-            return 'stub-set';
         },
-        reactOnChange(newValue, oAdvancedSettingObject) {
-            this.$store.commit('setQuestionAdvancedSetting', {newValue, settingName: oAdvancedSettingObject.name});   
-        }
     },
     mounted(){
-        this.selectCurrentTab(this.tabs[0]);
+        this.selectCurrentTab('settings-tab', this.tabs[0]);
     }
 }
 </script>
@@ -77,74 +58,82 @@ export default {
 <template>
     <div class="col-xs-12 scope-apply-base-style scope-min-height">
         <div class="container-fluid">
-            <div class="row">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs nav-justified" role="tablist">
+            <div class="row scoped-tablist-container">
+                <template v-if="showSubquestionEdit || showAnswerOptionEdit">
+                    <ul class="nav nav-tabs scoped-tablist-subquestionandanswers" role="tablist">
+                        <li 
+                            v-if="showSubquestionEdit"
+                            :class="currentTabComponent == 'subquestions' ? 'active' : ''"
+                        >
+                            <a href="#" @click.prevent.stop="selectCurrentTab('subquestions')" >{{"subquestions" | translate }}</a>
+                        </li>
+                        <li 
+                            v-if="showAnswerOptionEdit"
+                            :class="currentTabComponent == 'answeroptions' ? 'active' : ''"
+                        >
+                            <a href="#" @click.prevent.stop="selectCurrentTab('answeroptions')" >{{"answeroptions" | translate }}</a>
+                        </li>
+                    </ul>
+                    <span class="scope-divider">|</span>
+                </template>
+                <!-- Advanced settings tabs -->
+                <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
                     <li 
                         v-for="advancedSettingCategory in tabs"
                         :key="'tablist-'+advancedSettingCategory"
-                        :class="$store.state.questionAdvancedSettingsCategory == advancedSettingCategory ? 'active' : ''"
+                        :class="$store.state.questionAdvancedSettingsCategory == advancedSettingCategory && currentTabComponent == 'settings-tab' ? 'active' : ''"
                     >
-                        <a href="#" @click.prevent.stop="selectCurrentTab(advancedSettingCategory)" >{{advancedSettingCategory}}</a>
+                        <a href="#" @click.prevent.stop="selectCurrentTab('settings-tab', advancedSettingCategory)" >{{advancedSettingCategory}}</a>
                     </li>
                 </ul>
             </div>
             <div class="row scope-border-open-top">
-                <div class="col-sm-12">
-                    <div class="list-group scoped-custom-list-group">
-                        <div 
-                            class="list-group-item question-option-advanced-setting-block" 
-                            v-for="advancedSetting in currentSettingsTab" 
-                            :key="advancedSetting.name"
-                        >
-                            <component 
-                            v-bind:is="getComponentName(advancedSetting.inputtype)" 
-                            :elId="advancedSetting.formElementId"
-                            :elName="advancedSetting.formElementName"
-                            :elLabel="advancedSetting.title"
-                            :elHelp="advancedSetting.formElementHelp"
-                            :currentValue="advancedSetting.formElementValue"
-                            :elOptions="advancedSetting.aFormElementOptions"
-                            :debug="advancedSetting"
-                            @change="reactOnChange($event, advancedSetting)"
-                            ></component>
-                        </div>
-                    </div>
-                </div>
+                <component 
+                v-bind:is="currentTabComponent" 
+                tabData
+                />
             </div>    
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-.scoped-custom-list-group {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    margin: 0;
-    padding: 1rem 0;
-
-    .list-group-item {
-        width: 98%;
-        display: inline-block;
-        margin: 0.5% 1%;
-
-    }
-
-    @media(min-width: 992px) {
-        .list-group-item {
-            width: 48%;
-            display: inline-block;
-        }
-    }
-    
-    .list-group-item:first-child,
-    .list-group-item:last-child {
-        border-radius: 0;
-    }
+.scope-divider{
+    display: block;
+    width: 2em;
+    height:42px;
+    line-height:42px;
+    font-size: 38px;
+    text-align: center;
 }
+.scoped-tablist-container {
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+}
+.scoped-tablist-subquestionandanswers {
+    flex-grow: 1;
+    flex-shrink: 3;
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+.scoped-tablist-advanced-settings {
+    flex-grow: 3;
+    flex-shrink: 1;
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+.scoped-tablist-advanced-settings >li,
+.scoped-tablist-subquestionandanswers >li {
+    display: block;
+    width: 100%;
+    float: none;
+    text-align: center;
+}
+
 .scope-min-height {
     min-height: 20vh;
 }

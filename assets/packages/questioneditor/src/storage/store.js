@@ -18,19 +18,22 @@ export default function(questionId){
     });
 
     const statePreset = {
-        currentQuestionQuestion: '',
-        currentQuestionHelp: '',
         currentQuestion: {},
+        currentQuestionSubquestions: {},
+        currentQuestionAnswerOptions: {},
         currentQuestionSettings: {},
         currentQuestionI10N: {},
-        questionAttributes: {},
-        questionGeneralSettings: [],
-        questionAdvancedSettings: {},
-        questionAdvancedSettingsCategory: '',
+        currentQuestionAttributes: {},
+        currentQuestionGeneralSettings: [],
+        currentQuestionAdvancedSettings: {},
+        questionAttributesImmutable: {},
+        questionGeneralSettingsImmutable: [],
+        questionAdvancedSettingsImmutable: {},
         questionImmutable: {},
         questionImmutableI10N: {},
+        questionSubquestionsImmutable: {},
+        questionAnswerOptionsImmutable: {},
         languages: [],
-        activeLanguage: '',
         survey: {},
         questionTypes: [
             {
@@ -39,6 +42,8 @@ export default function(questionId){
                 title : ''
             }
         ],
+        questionAdvancedSettingsCategory: '',
+        activeLanguage: '',
     };
 
     return new Vuex.Store({

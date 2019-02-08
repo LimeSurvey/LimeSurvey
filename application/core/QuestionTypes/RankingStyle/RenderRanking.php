@@ -31,7 +31,7 @@ class RenderRanking extends QuestionBaseRenderer
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
-        $this->setAnsweroptions(null, @$this->getQuestionAttribute('alphasort')==1);
+        $this->setAnsweroptions();
         $this->iMaxSubquestions = ((int) $this->getQuestionAttribute('max_subquestions')) > 0
             ? ((int) $this->getQuestionAttribute('max_subquestions'))
             : $this->getAnswerCount();

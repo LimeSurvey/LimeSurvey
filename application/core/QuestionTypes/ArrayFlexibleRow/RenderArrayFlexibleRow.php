@@ -63,8 +63,8 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             //$caption           = gT("A table with a subquestion on each row. The answer options are contained in the table header.");
         }
         
-        $this->setSubquestions(0);
-        $this->setAnsweroptions(0);
+        $this->setSubquestions();
+        $this->setAnsweroptions();
 
         $iCount = array_reduce($this->aSubQuestions[0], function($combined, $oSubquestion){
             if(preg_match("/^[^|]+\|[^|]+$/",$this->oQuestion->questionL10ns[$this->sLanguage]->question)) { 

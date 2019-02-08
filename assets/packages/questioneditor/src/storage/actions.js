@@ -9,10 +9,18 @@ export default {
         ).then((result) => {
             context.commit('setCurrentQuestion', result.data.question);
             context.commit('setCurrentQuestionI10N', result.data.i10n);
-            context.commit('unsetQuestionImmutable')
-            context.commit('setQuestionImmutable',result.data.question)
-            context.commit('unsetQuestionImmutableI10N')
-            context.commit('setQuestionImmutableI10N', _.cloneDeep(result.data.i10n))
+            context.commit('unsetQuestionImmutable');
+            context.commit('setQuestionImmutable', _.cloneDeep(result.data.question));
+            context.commit('unsetQuestionImmutableI10N');
+            context.commit('setQuestionImmutableI10N', _.cloneDeep(result.data.i10n));
+            
+            context.commit('setCurrentQuestionSubquestions', result.data.subquestions);
+            context.commit('setCurrentQuestionAnswerOptions', result.data.answerOptions);
+            context.commit('unsetQuestionSubquestionsImmutable')
+            context.commit('setQuestionSubquestionsImmutable',  _.cloneDeep(result.data.subquestions));
+            context.commit('unsetQuestionAnswerOptionsImmutable')
+            context.commit('setQuestionAnswerOptionsImmutable', _.cloneDeep(result.data.answerOptions))
+
             context.commit('setLanguages', result.data.languages);
             context.commit('setActiveLanguage', result.data.mainLanguage);
         });
@@ -20,7 +28,9 @@ export default {
             window.QuestionEditData.connectorBaseUrl+'/getQuestionAttributeData', 
             {'iQuestionId' : window.QuestionEditData.qid}
         ).then((result) => {
-            context.commit('setQuestionAttributes', result.data);
+            context.commit('setCurrentQuestionAttributes', result.data);
+            context.commit('unsetImmutableQuestionAttributes', result.data);
+            context.commit('setImmutableQuestionAttributes', result.data);
         });
     },
     getQuestionGeneralSettings: (context) => {
@@ -28,7 +38,9 @@ export default {
             window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
             {'iQuestionId' : window.QuestionEditData.qid}
         ).then((result) => {
-            context.commit('setQuestionGeneralSettings', result.data);
+            context.commit('setCurrentQuestionGeneralSettings', result.data);
+            context.commit('unsetImmutableQuestionGeneralSettings', result.data);
+            context.commit('setImmutableQuestionGeneralSettings', result.data);
         });
     },
     getQuestionGeneralSettingsWithType: (context) => {
@@ -40,7 +52,9 @@ export default {
                 'sQuestionType' : context.store.currentQuestion.type
             }
         ).then((result) => {
-            context.commit('setQuestionGeneralSettings', result.data);
+            context.commit('setCurrentQuestionGeneralSettings', result.data);
+            context.commit('unsetImmutableQuestionGeneralSettings', result.data);
+            context.commit('setImmutableQuestionGeneralSettings', result.data);
         });
     },
     getQuestionAdvancedSettings: (context) => {
@@ -48,7 +62,9 @@ export default {
             window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
             {'iQuestionId' : window.QuestionEditData.qid}
         ).then((result) => {
-            context.commit('setQuestionAdvancedSettings', result.data);
+            context.commit('setCurrentQuestionAdvancedSettings', result.data);
+            context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
+            context.commit('setImmutableQuestionAdvancedSettings', result.data);
         });
     },
     getQuestionAdvancedSettingsWithType: (context) => {
@@ -60,7 +76,9 @@ export default {
                 'sQuestionType' : context.store.currentQuestion.type
             }
         ).then((result) => {
-            context.commit('setQuestionAdvancedSettings', result.data);
+            context.commit('setCurrentQuestionAdvancedSettings', result.data);
+            context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
+            context.commit('setImmutableQuestionAdvancedSettings', result.data);
         });
     },
     getQuestionTypes: (context) => {

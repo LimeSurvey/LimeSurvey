@@ -37,7 +37,7 @@ class RenderListRadio extends QuestionBaseRenderer
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->sOthertext = $this->setDefaultIfEmpty($this->getQuestionAttribute('other_replace_text', $this->sLanguage), gT('Other:')); // text for 'other'
         $this->iNbCols   = @$this->setDefaultIfEmpty($this->getQuestionAttribute('display_columns'), 1); // number of columns
-        $this->setAnsweroptions(null, $this->getQuestionAttribute('alphasort')==1);
+        $this->setAnsweroptions();
 
         if ($this->iNbCols > 1) {
             // Add a class on the wrapper

@@ -104,7 +104,16 @@ class questionedit extends Survey_Common_Action
             'gid' => $gid,
             'qid' => $qid,
             'connectorBaseUrl' => $this->getController()->createUrl('admin/questioneditor/sa/'),
-            'i10N' => []
+            'i10N' => [
+                'General Settings' => gT("General Settings"),
+                'Code' => gT('Code'),
+                'Question type' => gT('Question type'),
+                'Question' => gT('Question'),
+                'Help' => gT('Help'),
+                'More languages' => gT('More languages'),
+                'subquestions' => gT('Subquestions'),
+                'answeroptions' => gT('Answer options'),
+            ]
         ];
         $aData['questiongroupbar']['importquestion'] = true;
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
@@ -137,9 +146,13 @@ class questionedit extends Survey_Common_Action
         array_walk($aSurveyLanguages, function ($lngString) use (&$aLanguages, $aAllLanguages) {
             $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
         });
+        $aQuestionDefinition = array_merge($oQuestion->attributes, ['typeInformation' => $oQuestion->questionType]);
+
         $this->renderJSON([
-            'question' => $oQuestion,
+            'question' => $aQuestionDefinition,
             'i10n' => $oQuestion->questionL10ns,
+            'subquestions' => $oQuestion->getOrderedSubQuestions(),
+            'answerOptions' => $oQuestion->getOrderedAnswers(),
             'languages' => $aLanguages,
             'mainLanguage' => $oQuestion->survey->language
         ]);

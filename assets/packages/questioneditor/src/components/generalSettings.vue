@@ -23,7 +23,7 @@ export default {
     },
     computed: {
         generalSettingOptions(){
-            return filter(this.$store.state.questionGeneralSettings, (questionSetting) => {
+            return filter(this.$store.state.currentQuestionGeneralSettings, (questionSetting) => {
                 return (questionSetting.inputtype != undefined)
             });
         }
@@ -34,8 +34,8 @@ export default {
                 return 'setting-'+componentRawName;
             return 'stub-set';
         },
-        reactOnChange(changedModelValue, changedOptionName) {
-            
+        reactOnChange(newValue, oSettingObject) {
+            this.$store.commit('setQuestionGeneralSetting', {newValue, settingName: oSettingObject.formElementId});   
         }
     }
 }
@@ -57,7 +57,7 @@ export default {
                         :currentValue="generalSetting.formElementValue"
                         :elOptions="generalSetting.formElementOptions"
                         :debug="generalSetting"
-                        @change="reactOnChange"
+                        @change="reactOnChange($event, generalSetting)"
                         ></component>
                     </div>
                 </div>

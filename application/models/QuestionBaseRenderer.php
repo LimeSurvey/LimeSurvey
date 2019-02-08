@@ -224,51 +224,13 @@ abstract class QuestionBaseRenderer extends StaticModel
 
     protected function setSubquestions($scale_id = null)
     {
-        // Get questions and answers by defined order
-        $sOrder = ($this->getQuestionAttribute('random_order') == 1) ? dbRandom() : 'question_order';
-        $oCriteria = new CDbCriteria();
-        $oCriteria->order = $sOrder;
-        $oCriteria->addCondition('parent_qid=:parent_qid');
-        $oCriteria->params = [':parent_qid'=>$this->oQuestion->qid];
-
-        return Question::model()->findAll($oCriteria);
+       
+        $this->aSubQuestions = $this->oQuestion->getOrderedSubQuestions($scale_id);
     }
 
-
-    protected function setSubquestions( $scale_id = null ){
-        //reset subquestions set prior to this call
-        $this->aSubQuestions = [];
-        foreach ($this->oQuestion->subquestions as $oQuestion) {
-            if ($scale_id !== null && $oQuestion->scale_id != $scale_id) {
-                continue;
-            }
-            $this->aSubQuestions[$oQuestion->scale_id][] = $oQuestion;
-        }
-    }
-
-    protected function setAnsweroptions($scale_id = null, $alpha = false)
+    protected function setAnsweroptions($scale_id = null)
     {
-        // Get questions and answers by defined order
-        $sOrder = ($this->getQuestionAttribute('random_order') == 1)
-            ? dbRandom()
-            : ($alpha ? 'answer' : 'question_order');
-        $oCriteria = new CDbCriteria();
-        $oCriteria->order = $sOrder;
-        $oCriteria->addCondition('parent_qid=:parent_qid');
-        $oCriteria->params = [':parent_qid'=>$this->oQuestion->qid];
-        
-        return Answers::model()->findAll($oCriteria);
-    }
-
-    protected function setAnsweroptions( $scale_id = null){
-        //reset answers set prior to this call
-        $this->aAnswerOptions = [];
-        foreach ($this->oQuestion->answers as $oAnswer) {
-            if ($scale_id !== null && $oAnswer->scale_id != $scale_id) {
-                continue;
-            }
-            $this->aAnswerOptions[$oAnswer->scale_id][] = $oAnswer;
-        }
+        $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id);
     }
 
     protected function getAnswerCount($iScaleId=0)

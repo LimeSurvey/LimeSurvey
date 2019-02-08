@@ -49,12 +49,12 @@ abstract class QuestionBaseDataSet extends StaticModel
         - Always hide question => if available
         */
         return [
-            'themeOption' => $this->getQuestionThemeOption(),
-            'groupSelector' => $this->getQuestionGroupSelector(),
-            'otherSwitch' => $this->getOtherSwitch(),
-            'mandatorySwitch' => $this->getMandatorySwitch(),
-            'relevanceEquation' => $this->getRelevanceEquationInput(),
-            'validationInput' => $this->getValidationInput(),
+            'question_template' => $this->getQuestionThemeOption(),
+            'gid' => $this->getQuestionGroupSelector(),
+            'other' => $this->getOtherSwitch(),
+            'mandatory' => $this->getMandatorySwitch(),
+            'relevance' => $this->getRelevanceEquationInput(),
+            'preg' => $this->getValidationInput(),
         ];
     }
 
@@ -107,7 +107,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         }
 
         return [
-                'name' => 'QuestionTheme',
+                'name' => 'question_template',
                 'title' => gT('Question theme'),
                 'formElementId' => 'question_template',
                 'formElementName' => false, //false means identical to id
@@ -137,7 +137,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         );
 
         return [
-            'name' => 'QuestionGroup',
+            'name' => 'gid',
             'title' => gT('Question group'),
             'formElementId' => 'gid',
             'formElementName' => false,
@@ -160,15 +160,20 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementName' => false,
                 'formElementHelp' => gT('Activate the "other" option for your question'),
                 'inputtype' => 'switch',
-                'formElementValue' => $this->oQuestion->other == 'Y',
+                'formElementValue' => $this->oQuestion->other,
                 'formElementOptions' => [
                     'classes' => [],
-                    'switchData' => [
-                        'onText' => gT("On"),
-                        'offText' => gT("Off"),
-                        'onColor' => "primary",
-                        'offColor' => "warning",
-                        'size' => "small",
+                    'options' => [
+                        'option' => [
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
+                            ],
+                            [
+                                'text' => gT("Off"),
+                                'value' => 'N'
+                            ],
+                        ]
                     ],
                 ],
             ];
@@ -183,15 +188,20 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementName' => false,
                 'formElementHelp' => gT('Makes this question mandatory in your survey'),
                 'inputtype' => 'switch',
-                'formElementValue' => $this->oQuestion->mandatory == 'Y',
+                'formElementValue' => $this->oQuestion->mandatory,
                 'formElementOptions' => [
                     'classes' => [],
-                    'switchData' => [
-                        'onText' => gT("On"),
-                        'offText' => gT("Off"),
-                        'onColor' => "primary",
-                        'offColor' => "warning",
-                        'size' => "small",
+                    'options' => [
+                        'option' => [
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
+                            ],
+                            [
+                                'text' => gT("Off"),
+                                'value' => 'N'
+                            ],
+                        ]
                     ],
                 ],
             ];
@@ -207,7 +217,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         }
 
         return [
-                'name' => 'RelevanceEquation',
+                'name' => 'relevance',
                 'title' => gT('Relevance equation'),
                 'formElementId' => 'relevance',
                 'formElementName' => false,

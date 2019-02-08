@@ -621,17 +621,33 @@ class Question extends LSActiveRecord
         return $button;
     }
 
-    public function getOrderedAnswers($random = 0, $alpha = 0)
+    public function getOrderedAnswers($scale_id=null)
     {
-        if ($random == 1) {
-            $sOrder = dbRandom();
-        } elseif ($alpha == 1) {
-            $sOrder = 'answer';
-        } else {
-            $sOrder = 'sortorder';
+        $alpha = $this->getQuestionAttribute('alphasort');
+        // Get questions and answers by defined order
+        $sOrder = ($this->getQuestionAttribute('random_order') == 1)
+            ? dbRandom()
+            : ($alpha ? 'answer' : 'question_order');
+        $oCriteria = new CDbCriteria();
+        $oCriteria->order = $sOrder;
+        $oCriteria->addCondition('parent_qid=:parent_qid');
+
+        $oCriteria->params = [':parent_qid'=>$this->qid];
+
+        //reset answers set prior to this call
+        $aAnswerOptions = [];
+        foreach ($this->answers as $oAnswer) {
+            if ($scale_id !== null && $oAnswer->scale_id != $scale_id) {
+                continue;
+            }
+            $aAnswerOptions[$oAnswer->scale_id][] = $oAnswer;
         }
-        $aAnswers = Answer::model()->findAll(array('order'=>$sOrder, 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$this->qid)));
-        return $aAnswers;
+        
+        if($scale_id !== null) {
+            return $aAnswerOptions[$scale_id];
+        }
+
+        return $aAnswerOptions;
     }
 
     /**
@@ -640,33 +656,43 @@ class Question extends LSActiveRecord
      * @param string $exclude_all_others
      * @return array
      */
-    public function getOrderedSubQuestions($random = 0, $exclude_all_others = '')
+    public function getOrderedSubQuestions($scale_id = null)
     {
-        $criteria = (new CDbCriteria());
-        $criteria->addCondition('t.parent_qid=:qid');
-        $criteria->addCondition('t.scale_id=0');
-        $criteria->params = [':qid'=>$this->qid];
-        $criteria->order = ($random == 1 ? (new CDbExpression(dbRandom())) : 'question_order ASC');
-        $ansresult = Question::model()->findAll($criteria);
+        // Get questions and answers by defined order
+        $sOrder = ($this->getQuestionAttribute('random_order') == 1) ? dbRandom() : 'question_order';
+        $oCriteria = new CDbCriteria();
+        $oCriteria->order = $sOrder;
+        $oCriteria->addCondition('parent_qid=:parent_qid');
+        $oCriteria->params = [':parent_qid' => $this->qid];
 
-        //if  exclude_all_others is set then the related answer should keep its position at all times
-        //thats why we have to re-position it if it has been randomized
-        if (trim($exclude_all_others) != '' && $random == 1) {
-            $position = 0;
-            foreach ($ansresult as $answer) {
-                if (($answer['title'] == trim($exclude_all_others))) {
-                    if ($position == $answer['question_order'] - 1) {
-                        //already in the right position
-                        break;
-                    }
-                    $tmp = array_splice($ansresult, $position, 1);
-                    array_splice($ansresult, $answer['question_order'] - 1, 0, $tmp);
-                    break;
-                }
-                $position++;
+        //reset subquestions set prior to this call
+        $aSubQuestions = [];
+        $excludedSubquestion = null;
+        foreach ($this->subquestions as $i => $oSubquestion) {
+            if ($scale_id !== null && $oSubquestion->scale_id != $scale_id) {
+                continue;
             }
+            //if  exclude_all_others is set then the related answer should keep its position at all times
+            //thats why we have to re-position it if it has been randomized            
+            if ( 
+                ($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
+                && ($oSubquestion->title == $this->getQuestionAttribute('exclude_all_others'))
+            ) {
+                $excludedSubquestion = $oSubquestion;
+                continue;
+            }
+            $aSubQuestions[$oSubquestion->scale_id][] = $oSubquestion;   
         }
-        return $ansresult;
+        
+        if($excludedSubquestion !== null) {
+            array_splice($aSubQuestions[$excludedSubquestion->scale_id][], ($excludedSubquestion->question_order-1), 0, $excludedSubquestion);
+        }
+
+        if($scale_id !== null) {
+            return $aSubQuestions[$scale_id];
+        }
+
+        return $aSubQuestions;
     }
 
     public function getMandatoryIcon()
@@ -908,7 +934,7 @@ class Question extends LSActiveRecord
     {
         $model = QuestionType::findOne($this->type);
         if (!empty($model)) {
-            $model->question = $this;
+            $model->applyToQuestion($this);
         }
         return $model;
     }
@@ -1021,5 +1047,21 @@ class Question extends LSActiveRecord
             return $oRecord->save();
         }
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
+    }
+
+    protected function getQuestionAttribute($key1, $key2=null) {
+        $result =  isset($this->questionAttributes[$key1]) ? $this->questionAttributes[$key1] : null;
+        if($key2 !== null && $result !== null) {
+            $result =  isset($result[$key2]) ? $result[$key2] : null;
+        }
+        return $result;
+    }
+
+    public function getHasSubquestions(){
+
+    }  
+    
+    public function getHasAnsweroptions(){
+
     }
 }

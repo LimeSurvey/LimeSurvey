@@ -24,8 +24,7 @@
             curValue: {
                 get() { return this.currentValue },
                 set(newValue) { 
-                    this.$emit('change', this.$$el.prop('checked'));
-                    this.currentValue = newValue;
+                    this.$emit('change', newValue);
                 },
             },
             showHelp(){
@@ -42,19 +41,40 @@
             },
             $$el() {
                 return jQuery('input#'+this.elId);
-            }
+            },
+            onText() {
+                return this.elOptions.options.option[0].text;
+            },
+            onValue() {
+                return this.elOptions.options.option[0].value;
+            },
+            offText() {
+                return this.elOptions.options.option[1].text;
+            },
+            offValue() {
+                return this.elOptions.options.option[1].value;
+            },
         },
         methods: {
             changed(){
-                this.$log.log('SwitchChange', this.currentValue);
+                const newValue = this.$$el.prop('checked') ? this.onValue : this.offValue;
+                this.curValue  = newValue;
+                this.$log.log('SwitchChange ->', newValue);
             }
         },
         mounted() {
-            let curSwitchOptions = {};
+            let curSwitchOptions = {
+                onColor: "primary",
+                offColor: "warning",
+                size: "small",
+                onText : this.onText,
+                offText : this.offText
+            };
+
             curSwitchOptions = merge(curSwitchOptions, this.dataAttributes);
             curSwitchOptions.onSwitchChange = () => { 
-                this.$$el.prop('checked', !this.$$el.prop('checked')); 
-                this.$emit('change', this.$$el.prop('checked'))
+                //this.$emit('change', !this.$$el.prop('checked'))
+                //this.$$el.prop('checked', !this.$$el.prop('checked')); 
                 this.changed();
             };
 

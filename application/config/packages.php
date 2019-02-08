@@ -144,19 +144,19 @@ return array(
         )
     ),
     'adminpanel' => array(
-        'devBaseUrl' => 'assets/packages/adminpanel/',
-        'basePath' => 'core.adminpanel',
-        'js' => array(
-            'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
-            'build/surveysettings'.$minVersion.'.js',
-            'build/hammer'.$minVersion.'.js'
-        ),
-        'css' => array(
-            'build/lsadminpanel'.$minVersion.'.css'
-        ),
-        'depends' => array(
-            'adminbasics'
-        )
+       'devBaseUrl' => 'assets/packages/adminpanel/',
+       'basePath' => 'core.adminpanel',
+       'js' => array(
+           //'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
+           'build/surveysettings'.$minVersion.'.js',
+           //'build/hammer'.$minVersion.'.js'
+       ),
+       'css' => array(
+           'build/lsadminpanel'.$minVersion.'.css'
+       ),
+       'depends' => array(
+           'adminbasics'
+       )
     ),
     'questioneditor' => array(
         'devBaseUrl' => 'assets/packages/questioneditor/',
