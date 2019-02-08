@@ -886,9 +886,9 @@ class userstatistics_helper
                         ."\t<thead><tr><th colspan='2' class='text-center'><strong>".sprintf(gT("Summary for %s"), $qtitle).":</strong>"
                         ."</th></tr>\n"
                         ."\t<tr><th colspan='2' class='text-center'><strong>$qquestion</strong></th></tr>\n"
-                        ."\t<tr>\n\t\t<th width='50%' class='text-left'><strong>"
+                        ."\t<tr>\n\t\t<th width='50%' style='text-align:left'><strong>"
                         .gT("Calculation")."</strong></th>\n"
-                        ."\t\t<th width='50%' class='text-right'><strong>"
+                        ."\t\t<th width='50%' style='text-align:right'><strong>"
                         .gT("Result")."</strong></th>\n"
                         ."\t</tr></thead>\n";
 
@@ -1012,8 +1012,8 @@ class userstatistics_helper
                         case 'html':
 
                             $statisticsoutput .= "\t<tr>\n"
-                            ."\t\t<td class='text-left'>$shw[0]</td>\n"
-                            ."\t\t<td class='text-right'>$shw[1]</td>\n"
+                            ."\t\t<td style='text-align:left'>$shw[0]</td>\n"
+                            ."\t\t<td style='text-align:right'>$shw[1]</td>\n"
                             ."\t</tr>\n";
 
                             break;
@@ -2780,17 +2780,18 @@ class userstatistics_helper
 
                 $sOutputHTML .= "<br />\n<div class='well'><table class='table table-striped statisticssummary' >\n"
                 ."\t<thead><tr><th class='text-center' colspan='2'>".gT("Results")."</th></tr></thead>\n"
-                ."\t<tr><th >".gT("Number of records in this query:").'</th>'
-                ."<td class='text-right'>$results</td></tr>\n"
-                ."\t<tr><th>".gT("Total records in survey:").'</th>'
-                ."<td class='text-right'>$total</td></tr>\n";
+                ."\t<tr><th style='text-align:left'>".gT("Number of records in this query:").'</th>'
+                ."<td style='text-align:right'>$results</td></tr>\n"
+                ."\t<tr><th style='text-align:left'>".gT("Total records in survey:").'</th>'
+                ."<td style='text-align:right'>$total</td></tr>\n";
 
                 //only calculate percentage if $total is set
                 if ($total) {
                     $percent = sprintf("%01.2f", ($results / $total) * 100);
-                    $sOutputHTML .= "\t<tr><th>".gT("Percentage of total:").'</th>'
-                    ."<td class='text-right'>$percent%</td></tr>\n";
+                    $sOutputHTML .= "\t<tr><th style='text-align:left'>".gT("Percentage of total:").'</th>'
+                    ."<td style='text-align:right'>$percent%</td></tr>\n";
                 }
+                $sOutputHTML .= "<tr><td>&nbsp</td></tr>";
                 if ($outputType == 'html' && $browse === true && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')) {
                     //add a buttons to browse results
                     $sOutputHTML .= "<tr><td clospan='2' style='text-align:center'>";
