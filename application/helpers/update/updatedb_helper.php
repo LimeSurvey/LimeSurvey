@@ -49,7 +49,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     /// older versions to match current functionality
 
     Yii::app()->loadHelper('database');
-    Yii::app()->loadHelper('admin/import');
+    Yii::import('application.helpers.admin.import_helper', true);
     $sUserTemplateRootDir       = Yii::app()->getConfig('userthemerootdir');
     $sStandardTemplateRootDir   = Yii::app()->getConfig('standardthemerootdir');
     $oDB                        = Yii::app()->getDb();
