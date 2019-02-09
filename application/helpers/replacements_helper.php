@@ -331,8 +331,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['RESTART'] = $_restart;
     $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
     $coreReplacements['SAVE'] = isset($_saveall) ? $_saveall : '';
-    $coreReplacements['SAVEDID'] = isset(Yii::app()->session['survey_'.$_surveyid]['srid']) ? Yii::app()->session['survey_'.$_surveyid]['srid'] : '';
-    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID', ''); // Allways use surveyID from config
     $coreReplacements['SITELOGO'] = $sitelogo;
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
@@ -342,7 +340,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
     $coreReplacements['TEMPLATEURL'] = $templateurl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
-    $coreReplacements['TOKEN'] = (!$anonymized ? $_token : ''); // Silently replace TOKEN by empty string
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
@@ -469,15 +466,12 @@ function getStandardsReplacementFields($thissurvey)
     /* indexItems is static but not rendering, seem better to call it here ? */
     $coreReplacements['QUESTION_INDEX'] = isset($questionindex) ? $questionindex : '';
     $coreReplacements['QUESTION_INDEX_MENU'] = isset($questionindexmenu) ? $questionindexmenu : '';
-    $coreReplacements['SAVEDID'] = isset(Yii::app()->session['survey_'.$_surveyid]['srid']) ? Yii::app()->session['survey_'.$_surveyid]['srid'] : '';
-    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID', ''); // Allways use surveyID from config
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
     $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : ''; // global
     $coreReplacements['SURVEYLANGUAGE'] = $surveylanguage = App()->language;
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : Yii::app()->getConfig('sitename'));
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
-    $coreReplacements['TOKEN'] = (!$anonymized ? $_token : ''); // Silently replace TOKEN by empty string
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
