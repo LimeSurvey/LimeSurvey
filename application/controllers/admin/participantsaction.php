@@ -760,10 +760,14 @@ $url .= "_view"; });
                 $sSeparator = $aResult[0];
             }
             $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0]);
+            
             $selectedcsvfields = array();
             $fieldlist = array();
             foreach ($firstline as $key => $value) {
                 $testvalue = preg_replace('/[^(\x20-\x7F)]*/', '', $value); //Remove invalid characters from string
+                if($value != strip_tags($value)) { /* see ParticipantAttributeName->rules for defaultname */
+                    continue;
+                }
                 if (!in_array(strtolower($testvalue), $regularfields)) {
                     array_push($selectedcsvfields, $value);
                 }
