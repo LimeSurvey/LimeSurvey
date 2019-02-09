@@ -10046,7 +10046,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             ));
 
             if ($oToken && !$bAnonymize) {
-                tracevar($sToken);
                 $this->knownVars["TOKEN"] = array(
                     'code'=>$sToken,
                     'jsName_on'=>'',
