@@ -24,7 +24,7 @@
 * @param string[] $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
 * @param mixed[] $redata : array of global var used in the function
 * @param string|null $debugSrc deprecated
-* @param boolean $anonymized Determines if token data is being used or just replaced with blanks
+* @param boolean $anonymized @deprecated (all done in EM now)
 * @param integer|null $questionNum - needed to support dynamic JavaScript-based tailoring within questions
 * @param void $registerdata - deprecated
 * @param boolean bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
@@ -102,9 +102,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (!isset($templateurl)) {
         $templateurl = getTemplateURL($templatename)."/";
-    }
-    if (!$anonymized && isset($thissurvey['anonymized'])) {
-        $anonymized = ($thissurvey['anonymized'] == "Y");
     }
 
     /**
@@ -358,19 +355,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
 function getStandardsReplacementFields($thissurvey)
 {
-    $_surveyid = $_SESSION['LEMsid'];
-
-    if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
+    $surveyid = $_SESSION['LEMsid'];
 
     Yii::app()->loadHelper('surveytranslator');
 
     if (isset($thissurvey['sid'])) {
         $surveyid = $thissurvey['sid'];
-    }
-
-    $anonymized = true;
-    if (isset($thissurvey['anonymized'])) {
-        $anonymized = ($thissurvey['anonymized'] == "Y");
     }
 
     // surveyformat
@@ -405,15 +395,6 @@ function getStandardsReplacementFields($thissurvey)
         $surveycontact = "";
     }
 
-    global $token;
-    if (isset($token)) {
-        $_token = $token;
-    } elseif (isset($clienttoken)) {
-        $_token = htmlentities($clienttoken, ENT_QUOTES, 'UTF-8'); // or should it be URL-encoded?
-    } else {
-        $_token = '';
-    }
-
     // Expiry
     if (isset($thissurvey['expiry'])) {
         $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
@@ -444,7 +425,7 @@ function getStandardsReplacementFields($thissurvey)
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
     $coreReplacements['FLASHMESSAGE'] = makeFlashMessage();
-    $coreReplacements['NUMBEROFGROUPS'] = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
+    $coreReplacements['NUMBEROFGROUPS'] = QuestionGroup::model()->getTotalGroupsWithQuestions($surveyid);
     $coreReplacements['NUMBEROFQUESTIONS'] = $totalquestions;
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['DATESTAMP'] = $_datestamp;
