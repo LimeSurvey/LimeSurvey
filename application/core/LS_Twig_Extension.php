@@ -318,7 +318,7 @@ class LS_Twig_Extension extends Twig_Extension
         /* sanitize filename … use same filter than themes->uploadfile */
         if(sanitize_filename($resourcePath, false, false, false) != $resourcePath) {
             if($default) {
-                return self::templateRessourceUrl($default);
+                return self::templateResourceUrl($default);
             }
             return false;
         }
