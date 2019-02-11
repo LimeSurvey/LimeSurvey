@@ -33,6 +33,9 @@ Vue.mixin({
             }
             $('#questionEditLoader').fadeOut(400);
         },
+        translate(value) {
+            return window.QuestionEditData.i10N[value] || value;
+        }
     },
     filters: {
         translate: (value) => {

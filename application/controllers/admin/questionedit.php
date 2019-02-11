@@ -110,9 +110,19 @@ class questionedit extends Survey_Common_Action
                 'Question type' => gT('Question type'),
                 'Question' => gT('Question'),
                 'Help' => gT('Help'),
-                'More languages' => gT('More languages'),
                 'subquestions' => gT('Subquestions'),
                 'answeroptions' => gT('Answer options'),
+                'Quick add' => gT('Quick add'),
+                'Predefined label sets' => gT('Predefined label sets'),
+                'Save as label set' => gT('Save as label set'),
+                'More languages' => gT('More languages'),
+                'Add subquestion' => gT('Add subquestion'),
+                'Reset' => gT('Reset'),
+                'Save' => gT('Save'),
+                'Some example subquestion' => gT('Some example subquestion'),
+                'Delete' => gT('Delete'),
+                'Open editor' => gT('Open editor'),
+                'Duplicate' => gT('Duplicate'),
             ]
         ];
         $aData['questiongroupbar']['importquestion'] = true;
@@ -148,10 +158,14 @@ class questionedit extends Survey_Common_Action
         });
         $aQuestionDefinition = array_merge($oQuestion->attributes, ['typeInformation' => $oQuestion->questionType]);
 
+        $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
+        foreach($aScaledSubquestions as $scaleId => $aSubquestions) {
+            $aScaledSubquestions[$scaleId] = array_map(function($oSubQuestion) { return array_merge($oSubQuestion->attributes, $oSubQuestion->questionL10ns);}, $aSubquestions);
+        }
         $this->renderJSON([
             'question' => $aQuestionDefinition,
             'i10n' => $oQuestion->questionL10ns,
-            'subquestions' => $oQuestion->getOrderedSubQuestions(),
+            'subquestions' => $aScaledSubquestions,
             'answerOptions' => $oQuestion->getOrderedAnswers(),
             'languages' => $aLanguages,
             'mainLanguage' => $oQuestion->survey->language
