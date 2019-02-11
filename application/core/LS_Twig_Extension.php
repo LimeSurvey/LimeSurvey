@@ -309,34 +309,34 @@ class LS_Twig_Extension extends Twig_Extension
     }
 
     /**
-     * @var $ressourcePath string : the needed ressource
-     * @var $default string : the default ressource
+     * @var $resourcePath string : the needed resource
+     * @var $default string : the default resource
      * @return string|false
      */
-    public static function templateRessourceUrl($ressourcePath, $default = false)
+    public static function templateResourceUrl($resourcePath, $default = false)
     {
         /* sanitize filename … use same filter than themes->uploadfile */
-        if(sanitize_filename($ressourcePath, false, false, false) != $ressourcePath) {
+        if(sanitize_filename($resourcePath, false, false, false) != $resourcePath) {
             if($default) {
                 return self::templateRessourceUrl($default);
             }
             return false;
         }
         // Reccurence on templates to find the file
-        $oTemplate = self::getTemplateForRessource($ressourcePath);
+        $oTemplate = self::getTemplateForRessource($resourcePath);
         if ($oTemplate) {
-            $sFullPath = $oTemplate->path.$ressourcePath;
+            $sFullPath = $oTemplate->path.$resourcePath;
         } else {
-            if(!is_file(Yii::app()->getConfig('rootdir').'/'.$ressourcePath)) {
+            if(!is_file(Yii::app()->getConfig('rootdir').'/'.$resourcePath)) {
                 if($default) {
                     return self::templateRessourceUrl($default);
                 }
                 return false;
             }
-            $sFullPath = Yii::app()->getConfig('rootdir').'/'.$ressourcePath;
+            $sFullPath = Yii::app()->getConfig('rootdir').'/'.$resourcePath;
         }
-        $ressourceAsset = self::assetPublish($sFullPath);
-        return $ressourceAsset;
+        $resourceAsset = self::assetPublish($sFullPath);
+        return $resourceAsset;
     }
     /**
      * @param string $sRessource
