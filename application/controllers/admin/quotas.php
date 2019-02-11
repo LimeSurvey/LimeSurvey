@@ -565,7 +565,7 @@ class quotas extends Survey_Common_Action
             $slangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
             array_unshift($slangs, $sBaseLang);
 
-            while (list($key, $value) = each($slangs)) {
+            foreach($slangs as $key => $value) {
                 $tmparrayans = array('Title' => $aQuestion['title'], 'Display' => getLanguageNameFromCode($value, false), $value);
                 $aAnswerList[$value] = $tmparrayans;
             }
