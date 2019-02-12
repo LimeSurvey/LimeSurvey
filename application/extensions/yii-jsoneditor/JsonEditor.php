@@ -47,7 +47,13 @@
 		{
 			$htmlOptions = $this->htmlOptions;
             list($name, $id) = $this->resolveNameID();
-			echo CHtml::tag('div', $htmlOptions, CHtml::textArea($name, json_encode($this->value), array(
+			$value = $this->value;
+			// not a json, encoding
+			if (!isJson($this->value)) {
+				$value = json_encode($this->value);
+			}
+
+			echo CHtml::tag('div', $htmlOptions, CHtml::textArea($name, $value, array(
 				'id' => $id,
                 'encode' => false,
 			)));
