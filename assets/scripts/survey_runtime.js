@@ -170,6 +170,10 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
         } else {
             newval = cleansedValue;
+            // clear field if first character isn't number
+            if(cleansedValue == ''){
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval);}, 400);
+            }
         }
     }
 
