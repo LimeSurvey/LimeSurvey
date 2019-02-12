@@ -142,7 +142,7 @@ var AdvancedRankingQuestion = function (options) {
     sortableAlert = function() {
         if (showpopups) {
             var txtAlert = $("#question" + questionId + " .em_num_answers").text()
-            alertSurveyDialog(txtAlert, '');
+            window.templateCore.alertSurveyDialog(txtAlert, '');
         }
     },
     loadDragDropRank = function (questionId) {
