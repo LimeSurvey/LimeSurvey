@@ -796,6 +796,17 @@ class questionHelper
             "caption"=>gT('Insert page break in printable view')
         );
 
+        self::$attributes["placeholder"] = array(
+            "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_N_NUMERICAL,
+            'category'=>gT('Display'),
+            'sortorder'=>12,
+            'inputtype'=>'text',
+            'expression'=>1,
+            'i18n'=>true,
+            "help"=>gT('A placeholder answer to a question. This will appear in the answer field and disappear when real answer text is entered.'),
+            "caption"=>gT('Placeholder answer')
+        );
+
         self::$attributes["prefix"] = array(
         "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_N_NUMERICAL.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_S_SHORT_FREE_TEXT,
             'category'=>gT('Display'),
