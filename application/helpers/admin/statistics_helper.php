@@ -845,7 +845,7 @@ class statistics_helper
 
                 $qtitle = flattenText($fielddata['title']);
                 $qtype = $fielddata['type'];
-                $qquestion = $fielddata['question'];
+                $qquestion = LimeExpressionManager::ProcessString($fielddata['question'], $qqid, NULL, 1, 1, false, true, true);
 
                 //Get answer texts for multiple numerical
                 if (substr($rt, 0, 1) == "K") {

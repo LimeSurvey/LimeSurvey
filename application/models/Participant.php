@@ -406,8 +406,7 @@ class Participant extends LSActiveRecord
                 "value" => '$data->getParticipantAttribute($this->id)',
                 "id" => $name,
                 "header" => $attribute['defaultname'],
-                "type" => "raw",
-
+                "type" => "html",
             );
             //textbox
             if ($attribute['attribute_type'] == "TB") {
