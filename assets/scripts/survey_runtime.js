@@ -67,6 +67,7 @@ $(document).on('ready pjax:scriptcomplete',function()
 
 /**
  * setJsVar : Get all global used var
+ * @deprecated in 3.0.0 not lauched …
  */
 function setJsVar(){
     bFixNumAuto=LSvar.bFixNumAuto;
@@ -144,7 +145,6 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         ||  keyPressed == 39 //right arrow
     ){return false; }
     }
-
     var decimalValue;
     var newval = new String(value);
     var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.|)[0-9]*$/);
@@ -152,7 +152,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     /**
     * If have to use parsed value.
     */
-    if(!bNumRealValue)
+    if(!LSvar.bNumRealValue)
     {
         if(checkNumericRegex.test(value)) {
             try{
@@ -170,10 +170,6 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
         } else {
             newval = cleansedValue;
-            // clear field if first character isn't number
-            if(cleansedValue == ''){
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval);}, 400);
-            }
         }
 
     }
@@ -181,7 +177,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     /**
      * If have to fix numbers automatically.
      */
-    if(bFixNumAuto && (newval != ""))
+    if(LSvar.bFixNumAuto && (newval != ""))
     {
         if(window.correctNumberField!=null) {
             clearTimeout(window.correctNumberField);
