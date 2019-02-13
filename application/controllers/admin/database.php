@@ -653,9 +653,6 @@ class database extends Survey_Common_Action
 
         // For Bootstrap Version using BAD YiiWheels switch only if needed
         // Alt solution : filter_var($fixedQuestionAttributes['mandatory'], FILTER_VALIDATE_BOOLEAN); then on is true and off is false
-        if(!in_array($fixedQuestionAttributes['mandatory'],array('Y','N'))) {
-            $fixedQuestionAttributes['mandatory'] = boolval($fixedQuestionAttributes['mandatory']) ? 'Y' : 'N';
-        }
         if(!in_array($fixedQuestionAttributes['other'],array('Y','N'))) {
             $fixedQuestionAttributes['other'] = boolval($fixedQuestionAttributes['other']) ? 'Y' : 'N';
         }
