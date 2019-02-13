@@ -2253,8 +2253,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oTheme->setGlobalOption("ajaxmode", "off");
             }
 
-            $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>352], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 353) {
@@ -2266,8 +2266,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oTheme->addOptionFromXMLToLiveTheme();
             }
 
-            $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>353], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
 
@@ -2307,8 +2307,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
             }
 
-            $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>354], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 355) {
@@ -2337,8 +2337,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
 
 
-            $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>355], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
 
