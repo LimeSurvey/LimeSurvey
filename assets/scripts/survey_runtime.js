@@ -171,7 +171,6 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         } else {
             newval = cleansedValue;
         }
-
     }
 
     /**
@@ -201,7 +200,6 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
                     decimalValue = new Decimal(cleansedValue.replace(',','.'));
                 } catch(e){
                     decimalValue = new Decimal(NaN);
-
                 }
             }
         }
@@ -233,12 +231,12 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
 
             if (name.match(/other$/)) {
                 if($('#answer'+name+'text').val() != newval){
-                    $('#answer'+name+'text').val(newval);
+                    $('#answer'+name+'text').val(newval).trigger("keyup");
                 }
             }
 
             if($('#answer'+name).val() != newval){
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval);}, 400);
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 400);
             }
         }
     }
