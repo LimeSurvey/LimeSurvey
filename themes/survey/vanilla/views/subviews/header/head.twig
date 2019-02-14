@@ -48,12 +48,7 @@
             });
         </script>
     {% endif %}
-    {# LSvar update with  #}
-    {{ registerScript("LSvarTemplateInit","LSvar= LSvar || {};","POS_HEAD") }}
-    {% if(aSurveyInfo.options.fixnumauto and aSurveyInfo.options.fixnumauto != "off") %}
-        {{ registerScript("LSvarTemplateRealFixNumAuto","LSvar.bFixNumAuto = "~(aSurveyInfo.options.fixnumauto == "enable" ? 1 : 0)~";","POS_HEAD") }}
-        {{ registerScript("LSvarTemplateRealNumRealValue","LSvar.bNumRealValue = "~(aSurveyInfo.options.fixnumauto == "disable" ? 1 : 0)~";","POS_HEAD") }}
-    {% endif %}
+
     {{ include('./subviews/header/custom_header.twig') }}
 
     {{ include('./subviews/header/google_analytics.twig') }}

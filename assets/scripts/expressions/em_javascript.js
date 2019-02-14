@@ -509,6 +509,11 @@ function LEMval(alias)
     var varName = alias;
     var suffix = 'code';    // the default
     var value = "";
+    if(typeof bNumRealValue == 'undefined'){
+        bNumRealValue=false;
+    } // Allow to update {QCODE} even with text
+
+    /* If passed a number, return that number */
     if (str == '') return '';
     newval = str;
     if (LEMradix === ',') {
@@ -792,14 +797,12 @@ function LEMval(alias)
             }
 
             if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
-                if(value=="") {
+                if(value=="")
+                {
                     return "";
                 }
-                if(LSvar.bNumRealValue) {
-                    return value;
-                }
                 var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
-                if(checkNumericRegex.test(value))
+                if(checkNumericRegex.test(value) && !bNumRealValue)
                 {
                     var length = value.length;
                     var firstLetterIsNull = value.split("").shift() === '0';
