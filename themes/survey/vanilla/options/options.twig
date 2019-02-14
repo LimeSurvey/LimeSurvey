@@ -210,7 +210,7 @@
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
                                     {# bFixNumAuto : 1 and bNumRealValue : 0 #}
-                                    <input type='radio' name='fixnumauto' value='on' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
+                                    <input type='radio' name='fixnumauto' value='enable' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
                                     {{ gT("Yes") }}
                                 </label>
                                 <label class="btn btn-default">
@@ -220,7 +220,7 @@
                                 </label>
                                 <label class="btn btn-default">
                                     {# bFixNumAuto : 0 and bNumRealValue : 1 #}
-                                    <input type='radio' name='fixnumauto' value='off' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
+                                    <input type='radio' name='fixnumauto' value='disable' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
                                     {{ gT("No") }}
                                 </label>
                                 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
@@ -231,7 +231,7 @@
                                 {% else %}
                                     {# Since added after theme distribution and don't want reset : use empty value for leave default #}
                                     <label class="btn btn-default">
-                                        <input type='radio' name='fixnumauto' value='' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
+                                        <input type='radio' name='fixnumauto' value='off' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
                                         {{ gT("Default") }}
                                     </label>
                                 {% endif %}
