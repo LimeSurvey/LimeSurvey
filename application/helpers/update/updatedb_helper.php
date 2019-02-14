@@ -2355,7 +2355,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                         '{{boxes}}',
                         [
                             'title' => 'LimeStore',
-                            'ico'   => 'fa fa-shopping-basket',
+                            'ico'   => 'fa fa-cart-plus',
                             'desc'  => 'LimeSurvey extension marketplace',
                             'url'   => 'https://www.limesurvey.org/limestore'
                         ],
