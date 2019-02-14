@@ -67,6 +67,7 @@ $(document).on('ready pjax:scriptcomplete',function()
 
 /**
  * setJsVar : Get all global used var
+ * @deprecated in 3.0.0 not lauched …
  */
 function setJsVar(){
     bFixNumAuto=LSvar.bFixNumAuto;
