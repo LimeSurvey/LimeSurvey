@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-02-14 11:26:55+00:00\n"
+"POT-Creation-Date: 2019-02-14 11:43:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6063,10 +6063,6 @@ msgid "Stay safe and up to date"
 msgstr ""
 
 #: application/core/LsDefaultDataSets.php:150
-msgid "LimeStore"
-msgstr ""
-
-#: application/core/LsDefaultDataSets.php:150
 msgid "LimeSurvey extension marketplace"
 msgstr ""
 
@@ -11974,7 +11970,7 @@ msgid "'%s' can not be used if the 'Other' option for this question is activated
 msgstr ""
 
 #: application/models/Question.php:139
-msgid "'comment' suffix can not be used with question of type P."
+msgid "'comment' suffix can not be used with multiple choice with comments."
 msgstr ""
 
 #: application/models/Question.php:167
