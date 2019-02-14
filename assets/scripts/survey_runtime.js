@@ -221,7 +221,6 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         if (displayVal=='NaN')
         {
             newval=displayVal;
-            displayVal=newval;
             if(cleansedValue == '') {
                 window.correctNumberField = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 400);
             }
