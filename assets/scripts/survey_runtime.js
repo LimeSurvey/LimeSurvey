@@ -223,7 +223,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             newval=displayVal;
             displayVal=newval;
             if(cleansedValue == '') {
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(cleansedValue);}, 400);
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 400);
             }
         }
         else{
