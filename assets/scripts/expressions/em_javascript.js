@@ -798,8 +798,10 @@ function LEMval(alias)
                 if(LSvar.bNumRealValue) {
                     return value;
                 }
+
                 var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
-                if(checkNumericRegex.test(value))
+                /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
+                if( checkNumericRegex.test(value) && value.length > 1 )
                 {
                     var length = value.length;
                     var firstLetterIsNull = value.split("").shift() === '0';
@@ -807,6 +809,7 @@ function LEMval(alias)
                         var numtest = new Decimal(value);
                     } catch(e){
                         var numtest = new Decimal(value.toString().replace(/,/,'.'));
+                        // Error can still happen maybe but don't catch to know (and fix) it
                     }
 
                     // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
