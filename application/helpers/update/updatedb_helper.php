@@ -2556,6 +2556,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        // In case any LS4 user missed database update from version 356.
+        if ($iOldDBVersion < 405) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand("
+                UPDATE
+                    {{boxes}}
+                SET ico = CASE
+                    WHEN ico IN ('add', 'list', 'settings', 'shield', 'templates', 'labels') THEN CONCAT('icon-', ico)
+                    ELSE ico
+                END
+                "
+            )->execute();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>405),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
