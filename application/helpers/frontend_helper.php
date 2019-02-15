@@ -277,7 +277,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok = null)
             $fields = explode("|", $_POST['fieldnames']);
 
             foreach ($fields as $field) {
-                if ($fieldmap[$field]['type'] == Question::QT_VERTICAL_FILE_UPLOAD && !strrpos($fieldmap[$field]['fieldname'], "_filecount")) {
+                if (array_key_exists($field, $fieldmap) && $fieldmap[$field]['type'] == Question::QT_VERTICAL_FILE_UPLOAD && !strrpos($fieldmap[$field]['fieldname'], "_filecount")) {
                     $validation = QuestionAttribute::model()->getQuestionAttributes($fieldmap[$field]['qid']);
 
                     $filecount = 0;
