@@ -3791,11 +3791,11 @@ function do_array($ia)
         foreach ($aAnswers as $aAnswer) {
             $labels[] = array(
                 'code'   => $aAnswer->code,
-                'answer' => $aAnswer->answer
+                'answer' => $aAnswer->answerL10ns[$sSurveyLanguage]->answer
             );
         }
 
-        $sQuery = "SELECT count(question) FROM {{questions}} WHERE parent_qid={$ia[0]} AND question like '%|%' ";
+        $sQuery = "SELECT count(question) FROM {{questions}} q JOIN {{question_l10ns}} l  ON l.qid=q.qid  WHERE q.parent_qid={$ia[0]} AND l.question like '%|%' ";
         $iCount = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
         if ($iCount > 0) {
@@ -3824,7 +3824,7 @@ function do_array($ia)
         $sRows = "";
         foreach ($aQuestions as $j => $ansrow) {
             $myfname        = $ia[1].$ansrow['title'];
-            $answertext     = $ansrow['question'];
+            $answertext     = $ansrow->questionL10ns[$sSurveyLanguage]['question'];
             $answertext     = (strpos($answertext, '|') !== false) ? substr($answertext, 0, strpos($answertext, '|')) : $answertext;
             $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the mandatory sub Q violation */
             $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
@@ -4033,7 +4033,7 @@ function do_array_texts($ia)
     $labelans     = [];
     $labelcode    = [];
 
-    foreach ($aSubquestions as $lrow) {
+    foreach ($aSubquestions as $oSubquestion) {
         $labelans[] = $oSubquestion->questionL10ns[$sSurveyLanguage]->question;
         $labelans[] = $oSubquestion->title;
     }
