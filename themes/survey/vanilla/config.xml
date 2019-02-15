@@ -78,6 +78,7 @@
         <showpopups>1</showpopups>
         <showclearall>off</showclearall>
         <questionhelptextposition>top</questionhelptextposition>
+        <fixnumauto>off</fixnumauto>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->

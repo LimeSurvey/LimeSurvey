@@ -105,6 +105,7 @@
         <notables>1</notables>
         <showclearall>off</showclearall>
         <questionhelptextposition>top</questionhelptextposition>
+        <fixnumauto>off</fixnumauto>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->
