@@ -74,6 +74,7 @@
         <brandlogofile>./files/logo.png</brandlogofile>
         <font>noto</font>
         <showpopups>1</showpopups>
+        <fixnumauto>off</fixnumauto>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->

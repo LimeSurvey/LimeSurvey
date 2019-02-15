@@ -35,6 +35,60 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.15.8 (build 190130) to 3.15.9 (build 190214) January 14, 2019
+-Fixed issue #14499: Add first and last name to the "To" of confirmation email (#1214) (Jean-Sébastien B)
+-Fixed issue #12992: PHP-function each() has been deprecated (Dominik Vitt)
+-Fixed issue #14309: Upgrade to 3.15 SQL Error (Dominik Vitt)
+-Fixed issue #14410: Ranking : no alert when try to put more than answer (Dominik Vitt)
+-Fixed issue #14453: Deletion of responses broken (Denis Chenu)
+-Fixed issue #14465: EM relevance not being recalculated after conditions changed (Full survey included) (Denis Chenu)
+-Fixed issue #14472: Central participants not exporting (Denis Chenu)
+-Fixed issue #14476: Better error message than token_id doesn't have a default value (Denis Chenu)
+-Fixed issue #14480: No information shown after alert withot js, no way to have this managed by theme (Denis Chenu)
+-Fixed issue #14481: Filter of answers not working (Denis Chenu)
+-Fixed issue #14487: End-URL doesn't work correctly (Denis Chenu)
+-Fixed issue #14488: Potential SQL exception when creating a subquestion (Denis Chenu)
+-Fixed issue #14489: Some question html broke response browsing (Denis Chenu)
+-Fixed issue #14490: PHP error with Question L on statistic with pgsql (#1212) (Jean-Sébastien B)
+-Fixed issue #14492: Setting question as Mandatory does not save attribute (Dominik Vitt)
+-Fixed issue #14495: Error with P type and comment suffix (Jean-Sébastien B)
+-Fixed issue #14498: Participant view for statistics goes unformatted (Dominik Vitt)
+-Fixed issue #14503: Save button in "Copy survey" panel does not do anything (Markus Flür)
+-Fixed issue #14505: [security] XSS Attack Vector - Participant Attributes (Denis Chenu)
+-Fixed issue #14508: [security] XSS Attack Vector - Assessment editing (Denis Chenu)
+-Fixed issue #14509: [security] XSS Attack Vector - CPDB upload (Denis Chenu)
+-Fixed issue #14511: Equations or code in questions are visible on statistics (Dominik Vitt)
+-Fixed issue #14519: Letters do not get automatically deleted any longer in only numbers fields (Dominik Vitt)
+-Fixed issue #14524: Take bFixNumAuto and bNumRealValue into account (Denis Chenu)
+-Fixed issue: 2 delete buttons in template editor (Denis Chenu)
+-Fixed issue: Display participant failing with specific set permissions (Markus Flür)
+-Fixed issue: Empty Create menu shown in token with only view permission (Denis Chenu)
+-Fixed issue: Error message "division by zero" when "display _columns" attribute is missing, only in debug mode (Dominik Vitt)
+-Fixed issue: PHP warning message when saving new response without uploaded file (Dominik Vitt)
+-Fixed issue: Printable view containe em function instead of values (Markus Flür)
+-Fixed issue: Tip for numeric input still show error after fixed (Denis Chenu)
+-Fixed issue: Wrong encoding specification in R script (Carsten Schmitz)
+#Updated translation: Arabic by zainabalbazzal
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch by Han 
+#Updated translation: Dutch (Informal) by Han 
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German by ulisdd
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by ulisdd
+#Updated translation: Hungarian by kkd 
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Portugal) by Heldinha
+#Updated translation: Romanian by cdorin
+#Updated translation: Russian by vavankor, vipgroup
+#Updated translation: Russian by vipgroup
+
 Changes from 3.15.7 (build 190122) to 3.15.8 (build 190130) January 30, 2019
 -Fixed issue #13859: Question full index lose color when try submit (Denis Chenu)
 -Fixed issue #14450: Export responses not working (Denis Chenu)

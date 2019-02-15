@@ -7,7 +7,7 @@ echo $welcome . "<br /><br />";
 
 echo $numques;
 
-while (list ($key, $val) = each($survey_output))
+foreach ($survey_output as $key => $val)
 {
     if ($key == "GROUPS")
     {

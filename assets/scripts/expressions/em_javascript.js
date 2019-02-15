@@ -509,11 +509,6 @@ function LEMval(alias)
     var varName = alias;
     var suffix = 'code';    // the default
     var value = "";
-    if(typeof bNumRealValue == 'undefined'){
-        bNumRealValue=false;
-    } // Allow to update {QCODE} even with text
-
-    /* If passed a number, return that number */
     if (str == '') return '';
     newval = str;
     if (LEMradix === ',') {
@@ -797,12 +792,16 @@ function LEMval(alias)
             }
 
             if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
-                if(value=="")
-                {
+                if(value=="") {
                     return "";
                 }
+                if(LSvar.bNumRealValue) {
+                    return value;
+                }
+
                 var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
-                if(checkNumericRegex.test(value) && !bNumRealValue)
+                /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
+                if( checkNumericRegex.test(value) && value.length > 1 )
                 {
                     var length = value.length;
                     var firstLetterIsNull = value.split("").shift() === '0';
@@ -810,6 +809,7 @@ function LEMval(alias)
                         var numtest = new Decimal(value);
                     } catch(e){
                         var numtest = new Decimal(value.toString().replace(/,/,'.'));
+                        // Error can still happen maybe but don't catch to know (and fix) it
                     }
 
                     // If value is on same page : value use LEMradix, else use . (dot) : bug #10001

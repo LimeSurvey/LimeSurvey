@@ -136,7 +136,7 @@ class Question extends LSActiveRecord
             }
             // #14495: comment suffix can't be used with P Question (collapse with table name in database)
             if ($oParentQuestion->type == "P") {
-                $aRules[] = array('title', 'match', 'pattern'=>'/.+comment$/', 'not'=>true, 'message'=> gT("'comment' suffix can not be used with question of type P."));
+                $aRules[] = array('title', 'match', 'pattern'=>'/.+comment$/', 'not'=>true, 'message'=> gT("'comment' suffix can not be used with multiple choice with comments."));
             }
         } else {
             // Disallow other if sub question have 'other' for title
