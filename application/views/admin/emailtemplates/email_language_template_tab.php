@@ -92,8 +92,8 @@ $script = array();
 <table id="rowTemplate" class="hidden">
     <tr>
         <td>
-            <button class="btn btn-xs btn-danger btnattachmentremove" title="<?php eT('Remove attachment')?>" class="btnattachmentremove text-warning" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Remove attachment')?>">
-                <i class="fa fa-trash"></i>
+            <button class="btn btn-xs btn-danger btnattachmentremove" title="<?php eT('Remove attachment')?>" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-trash" aria-hidden="true"></i><span class="sr-only"><?php eT('Remove attachment')?></span>
             </button>
         </td>
         <td>
@@ -105,15 +105,15 @@ $script = array();
         </td>
         <td>
             <span class="relevance"></span>
-            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit relevance equation') ?>" class="edit-relevance-equation" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Edit relevance equation') ?>">
-                <i class="fa fa-pencil"></i>
+            <button class="btn btn-xs btn-default edit-relevance-equation" title="<?php eT('Edit relevance equation') ?>" data-toggle="tooltip" data-placement="bottom">
+                <i class="fa fa-pencil" aria-hidden="true"></i><span class="sr-only"><?php eT('Edit relevance equation')?></span>
             </button>
             <input class="relevance" type="hidden">
         </td>
     </tr>
 </table>
 
-<?php                 
+<?php
 
 App()->getClientScript()->registerScript("ScriptEmailTemplateLanguageTemplate_<?=$grouplang?>_<?=$tab?>", "
     var prepEmailTemplates = PrepEmailTemplates();\n
