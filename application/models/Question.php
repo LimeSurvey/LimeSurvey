@@ -778,6 +778,7 @@ class Question extends LSActiveRecord
         $criteria->compare("t.parent_qid", 0, false, 'AND');
 
         $criteria2 = new CDbCriteria;
+        $criteria2->with = array('questionL10ns');
         $criteria2->compare('t.title', $this->title, true, 'OR');
         $criteria2->compare('questionL10ns.question', $this->title, true, 'OR');
         $criteria2->compare('t.type', $this->title, true, 'OR');
@@ -787,7 +788,7 @@ class Question extends LSActiveRecord
         }
         /* be sure gid it's an numeric */
         if ($this->gid != '' and is_numeric($this->gid)) {
-            $criteria->compare('groups.gid', $this->gid, false, 'AND');
+            $criteria->compare('group.gid', $this->gid, false, 'AND');
         }
 
         $criteria->mergeWith($criteria2, 'AND');
