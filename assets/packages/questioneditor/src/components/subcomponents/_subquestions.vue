@@ -1,4 +1,5 @@
 <script>
+import max from 'lodash/max';
 import merge from 'lodash/merge';
 import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
@@ -35,6 +36,13 @@ export default {
         },
     },
     methods: {
+        getNewTitleFromCurrent(scaleId) {
+            let nonNumericPart = this.currentSubquestions[scaleId][0].title.replace(/[0-9]/,'');
+            let numericPart = this.currentSubquestions[scaleId].reduce((prev, oSubquestion) => {
+                return max([prev,oSubquestion.title.replace(/[^0-9]/,'')]);
+            }, 0) + 1 ;
+            return nonNumericPart+''+numericPart;
+        },
         getRandomId(){
             return 'random'+Math.random().toString(36).substr(2, 7);
         },
@@ -47,7 +55,7 @@ export default {
                 sid: this.$store.state.currentQuestion.sid,
                 gid: this.$store.state.currentQuestion.gid,
                 type: "F",
-                title: "",
+                title: this.getNewTitleFromCurrent(scaleId),
                 preg: null,
                 other: "N",
                 mandatory: "N",

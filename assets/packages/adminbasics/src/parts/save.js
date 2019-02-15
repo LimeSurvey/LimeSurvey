@@ -45,9 +45,13 @@ const SaveController = () => {
                     ev.preventDefault();
                     const $form = getForm(this);
                     formSubmitting = true;
-                    for (let instanceName in CKEDITOR.instances) {
-                        CKEDITOR.instances[instanceName].updateElement();
-                    }
+                    
+                    try {
+                        for (let instanceName in CKEDITOR.instances) {
+                            CKEDITOR.instances[instanceName].updateElement();
+                        }
+                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
+                    
                     $form.find('[type="submit"]').first().trigger('click');
                 },
                 on: 'click'
@@ -59,10 +63,13 @@ const SaveController = () => {
                     const $form = getForm(this);
 
                     formSubmitting = true;
-                    for (let instanceName in CKEDITOR.instances) {
-                        CKEDITOR.instances[instanceName].updateElement();
-                    }
 
+                    try {
+                        for (let instanceName in CKEDITOR.instances) {
+                            CKEDITOR.instances[instanceName].updateElement();
+                        }
+                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
+            
                     $form.find('[type="submit"]').first().trigger('click');
                     displayLoadingState(this);
                 },
@@ -91,9 +98,11 @@ const SaveController = () => {
                     formSubmitting = true;
                     $form.append('<input name="saveandnew" value="' + $('#save-and-new-button').attr('href') + '" />');
 
-                    for (let instanceName in CKEDITOR.instances) {
-                        CKEDITOR.instances[instanceName].updateElement();
-                    }
+                    try {
+                        for (let instanceName in CKEDITOR.instances) {
+                            CKEDITOR.instances[instanceName].updateElement();
+                        }
+                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
 
                     $form.find('[type="submit"]').first().trigger('click');
                     displayLoadingState(this);
@@ -144,9 +153,11 @@ const SaveController = () => {
                     formSubmitting = true;
                     $form.append('<input name="saveandnewquestion" value="' + $('#save-and-new-question-button').attr('href') + '" />');
 
-                    for (let instanceName in CKEDITOR.instances) {
-                        CKEDITOR.instances[instanceName].updateElement();
-                    }
+                    try {
+                        for (let instanceName in CKEDITOR.instances) {
+                            CKEDITOR.instances[instanceName].updateElement();
+                        }
+                    } catch(e) { console.ls.log('Seems no CKEDITOR4 is loaded'); }
 
                     $form.find('[type="submit"]').first().trigger('click');
                     displayLoadingState(this);

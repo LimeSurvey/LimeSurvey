@@ -130,11 +130,12 @@ return array(
     'pjaxbackend' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
-        'js' => ($debug > 0 ?
+        'js' => (
+            $debug > 0 ?
             array(
                 'pjax.js',
                 'loadPjax.js'
-            ) 
+            )
             : array(
                 'min/pjax.combined.min.js',
             )

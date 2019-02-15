@@ -79,7 +79,6 @@
             </div>
         </form>
         
-        
         <div id="questionEditLoader" class="ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">
             <div class="ls-flex align-content-center align-items-center">
                 <div class="loader-advancedquestionsettings text-center">

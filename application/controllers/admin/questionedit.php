@@ -146,6 +146,15 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aLanguages);
     }
 
+    public function saveQuestionData() 
+    {
+        $questionData = App()->request->getPost('questionData', []);
+        $this->renderJSON([
+            'transfer' => $questionData,
+        ]);
+    }
+
+
     public function getQuestionData($iQuestionId)
     {
         $iQuestionId = (int) $iQuestionId;
@@ -162,11 +171,17 @@ class questionedit extends Survey_Common_Action
         foreach($aScaledSubquestions as $scaleId => $aSubquestions) {
             $aScaledSubquestions[$scaleId] = array_map(function($oSubQuestion) { return array_merge($oSubQuestion->attributes, $oSubQuestion->questionL10ns);}, $aSubquestions);
         }
+
+        $aScaledAnswerOptions = $oQuestion->getOrderedAnswers();
+        foreach($aScaledAnswerOptions as $scaleId => $aAnswerOptions) {
+            $aScaledAnswerOptions[$scaleId] = array_map(function($oAnswerOption) { return array_merge($oAnswerOption->attributes, $oAnswerOption->answerL10ns);}, $aAnswerOptions);
+        }
+
         $this->renderJSON([
             'question' => $aQuestionDefinition,
             'i10n' => $oQuestion->questionL10ns,
             'subquestions' => $aScaledSubquestions,
-            'answerOptions' => $oQuestion->getOrderedAnswers(),
+            'answerOptions' => $aScaledAnswerOptions,
             'languages' => $aLanguages,
             'mainLanguage' => $oQuestion->survey->language
         ]);
