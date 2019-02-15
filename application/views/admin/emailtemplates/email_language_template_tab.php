@@ -17,8 +17,12 @@ $script = array();
     <div class="row">
         <div class='form-group col-sm-12'>
             <label class=' control-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
-            <div class="htmleditor input-group">
-                <?php
+            <?php if(getEmailFormat($surveyid) != 'html') { ?>
+                <div class="">
+            <?php }else{ ?>
+                <div class="htmleditor input-group">
+            <?php } ?>
+            <?php
                 $sBodyField=$details['field']['body'];
                 echo CHtml::textArea("email_".$tab."_".$grouplang,$esrow->$sBodyField,array('cols'=>80,'rows'=>20, 'class'=>'form-control')); ?>
                 <?php echo getEditor("email_".$tab."_".$grouplang, "email_".$tab."_".$grouplang, $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); ?>
