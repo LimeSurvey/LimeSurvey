@@ -17,7 +17,7 @@ $script = array();
     <div class="row">
         <div class='form-group col-sm-12'>
             <label class=' control-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
-            <div class=''>
+            <div class="htmleditor input-group">
                 <?php
                 $sBodyField=$details['field']['body'];
                 echo CHtml::textArea("email_".$tab."_".$grouplang,$esrow->$sBodyField,array('cols'=>80,'rows'=>20, 'class'=>'form-control')); ?>
