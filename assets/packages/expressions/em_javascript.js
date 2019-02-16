@@ -978,9 +978,6 @@ function LEMval(alias)
                 if(value=="") {
                     return "";
                 }
-                if(LSvar.bNumRealValue) {
-                    return value;
-                }
 
                 var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
                 /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
@@ -1004,6 +1001,9 @@ function LEMval(alias)
                     if(value.length < length && firstLetterIsNull){
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
+                }
+                if(LSvar.bNumRealValue) {
+                    return value;
                 }
                 return Number(value);
             }
