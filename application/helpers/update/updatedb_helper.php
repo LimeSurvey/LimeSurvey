@@ -2404,8 +2404,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand("delete from  {{groups}} where gid={$row['gid']} and language='{$row['language']}'")->execute();
             }
             modifyPrimaryKey('groups', array('gid'));
-            $oDB->createCommand()->dropindex('{{idx2_groups}}', '{{groups}}');
-            $oDB->createCommand()->dropindex('{{idx3_groups}}', '{{groups}}');
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('idx2_groups','{{groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('idx3_groups','{{groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             dropColumn('{{groups}}', 'group_name');
             dropColumn('{{groups}}', 'description');
             dropColumn('{{groups}}', 'language');
@@ -2449,7 +2449,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $sPrevCode = $row['code'];
                 $iPrevScaleId = $row['scale_id'];
             }
-            $oDB->createCommand()->dropindex('answer_idx_10', 'answertemp');
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('answer_idx_10','{{answertemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             $oDB->createCommand()->dropTable('answertemp');
             $oDB->createCommand()->createIndex('{{answer_idx_10}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
             
@@ -2489,7 +2489,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $sPrevCode = $row['code'];
             }
             switchMSSQLIdentityInsert('labels', false);
-            $oDB->createCommand()->dropindex('label_idx_10', 'labelstemp');
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('label_idx_10','{{labelstemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             $oDB->createCommand()->dropTable('labelstemp');
             $oDB->createCommand()->createIndex('{{label_idx_10}}', '{{labels}}', ['lid', 'sortorder'], true);
 
