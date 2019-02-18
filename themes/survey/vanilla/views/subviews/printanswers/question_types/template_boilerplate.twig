@@ -1,11 +1,4 @@
 {% extends "./subviews/printanswers/printanswers_question.twig" %}
-
-{% block question_name %}
-    <div class="col-xs-10">
-        <p>({{question.qid}}) <br/>{{question.question}}</p>
-        <small>{{ gT("Type:") }} ({{question.questionclass}})</small>
-    </div>
-{% endblock %}
 {% block question_answer %}
     <div class="col-xs-2">
             {{question.answervalue}}
