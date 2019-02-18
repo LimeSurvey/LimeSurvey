@@ -180,15 +180,15 @@ class RenderArrayDual extends QuestionBaseRenderer
             $aData['aSubQuestions'][$i]['sActualAnswer1'] = $sActualAnswer1;
             $aData['aSubQuestions'][$i]['odd'] = ($i % 2);
             // Set mandatory alert
-            $aData['aSubQuestions'][$i]['alert'] = ($this->oQuestion->mandatory == 'Y' && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ)));
-            $aData['aSubQuestions'][$i]['mandatoryviolation'] = ($this->oQuestion->mandatory == 'Y' && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ)));
+            $aData['aSubQuestions'][$i]['alert'] = (($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S') && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ)));
+            $aData['aSubQuestions'][$i]['mandatoryviolation'] = (($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S') && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ)));
             // Array filter : maybe leave EM do the trick
             $aData['aSubQuestions'][$i]['sDisplayStyle'] = "";
             
             $aData['labels0'] = $this->aLabels[0];
             $aData['labels1'] = $this->aLabels[1];
-            $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && $this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER);
-            $aData['aSubQuestions'][$i]['showNoAnswer1'] = ($sActualAnswer1 != '' && $this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER);
+            $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER);
+            $aData['aSubQuestions'][$i]['showNoAnswer1'] = ($sActualAnswer1 != '' && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER);
 
             $this->inputnames[] = $myfname0;
             $this->inputnames[] = $myfname1;
@@ -249,7 +249,7 @@ class RenderArrayDual extends QuestionBaseRenderer
             $aData['aSubQuestions'][$i]['odd'] = ($i % 2);
 
             // Check the Sub Q mandatory violation
-            if ($this->oQuestion->mandatory == 'Y' && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ))) {
+            if (($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S') && (in_array($myfname0, $this->aMandatoryViolationSubQ) || in_array($myfname1, $this->aMandatoryViolationSubQ))) {
                 $aData['aSubQuestions'][$i]['showmandatoryviolation'] = true;
             } else {
                 $aData['aSubQuestions'][$i]['showmandatoryviolation'] = false;
@@ -408,7 +408,7 @@ class RenderArrayDual extends QuestionBaseRenderer
         $this->sCoreClass  = "ls-answers subquestion-list questions-list";
 
         $aLastMoveResult   = LimeExpressionManager::GetLastMoveResult();
-        $this->aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && $this->oQuestion->mandatory == 'Y')
+        $this->aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && ($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S'))
                                         ? explode("|", $aLastMoveResult['unansweredSQs'])
                                         : [];
 

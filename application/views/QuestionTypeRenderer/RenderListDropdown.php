@@ -142,7 +142,7 @@ class RenderListDropdown extends QuestionBaseRenderer
 
     public function getNoAnswerOption()
     {
-        if (!(is_null($this->mSessionValue) || $this->mSessionValue === "") && $this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (!(is_null($this->mSessionValue) || $this->mSessionValue === "") && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
             $_prefix = $this->bPrefix ? ++$this->iRowNum.') ' : '';
             return Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/rows/option', array(
                 'name'=> $this->sSGQA,
@@ -161,7 +161,7 @@ class RenderListDropdown extends QuestionBaseRenderer
             $_height    = sanitize_int($this->aQuestionAttributes['dropdown_size']);
             $_maxHeight = $this->getAnswerCount();
     
-            if ((!$this->mSessionValue || $this->mSessionValue === '') && $this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {
+            if ((!$this->mSessionValue || $this->mSessionValue === '') && ($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
                 ++$_maxHeight; // for No Answer
             }
     

@@ -87,7 +87,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
             $alert = (
                 (($this->aSurveySessionArray['step'] != $this->aSurveySessionArray['maxstep']) 
                 || ($this->aSurveySessionArray['step'] == $this->aSurveySessionArray['prevstep']))
-                && ($this->oQuestion->mandatory == 'Y' && $this->aSurveySessionArray[$myfname] === '')
+                && (($this->oQuestion->mandatory == 'Y' || $this->oQuestion->mandatory == 'S') && $this->aSurveySessionArray[$myfname] === '')
             );
 
             $sDisplayStyle = '';

@@ -43,7 +43,7 @@ class listRadio extends CApplicationComponent
         }
 
         if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
+        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {$anscount++;} //Count up if "No answer" is showing
 
         $wrapper = setupColumns($dcols , $anscount,"answers-list radio-list","answer-item radio-item");
 
@@ -177,7 +177,7 @@ class listRadio extends CApplicationComponent
             }
         }
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1)
         {
             if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ' ))
             {

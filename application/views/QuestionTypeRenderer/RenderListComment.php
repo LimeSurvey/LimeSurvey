@@ -51,7 +51,7 @@ class RenderListComment extends QuestionBaseRenderer
             $sRows .= Yii::app()->twigRenderer->renderQuestion($this->getMainView().'/list/rows/answer_row', $itemData, true);
         }
 
-        if ($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
             $itemData = array(
                 'li_classes'=>'answer-item radio-item noanswer-item',
                 'name'=>$this->sSGQA,
@@ -108,7 +108,7 @@ class RenderListComment extends QuestionBaseRenderer
             }
         }
 
-        if ($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
             $itemData = array(
                 'classes' => ' noanswer-item ',
                 'value' => '',

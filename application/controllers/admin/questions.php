@@ -1450,7 +1450,7 @@ class questions extends Survey_Common_Action
     {
         $aQidsAndLang   = json_decode($_POST['sItems']); // List of question ids to update
         $iSid           = Yii::app()->request->getPost('sid');
-        $bMandatory     = (Yii::app()->request->getPost('mandatory') === 'true') ? 'Y' : 'N';
+        $bMandatory     = Yii::app()->request->getPost('mandatory', 'N');
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             $oSurvey          = Survey::model()->findByPk($iSid);

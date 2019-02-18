@@ -154,6 +154,8 @@
                         <td>
                             <?php if ($qrrow['mandatory'] == "Y") : ?>
                                 <?php eT("Yes"); ?>
+                            <?php elseif ($qrrow['mandatory'] == "S") : ?>
+                                <?php eT("Soft"); ?>
                             <?php else:?>
                                 <?php eT("No"); ?>
                             <?php endif;  ?>

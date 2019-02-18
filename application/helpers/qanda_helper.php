@@ -29,7 +29,7 @@
 * $ia[3] => question text
 * $ia[4] => type --  text, radio, select, array, etc
 * $ia[5] => group id
-* $ia[6] => mandatory Y || N
+* $ia[6] => mandatory Y || S || N
 * $ia[7] => conditions exist for this question
 * $ia[8] => other questions have conditions which rely on this question (including array_filter and array_filter_exclude attributes)
 * $ia[9] => incremental question count (used by {QUESTION_NUMBER})
@@ -231,7 +231,7 @@ function retrieveAnswers($ia)
         list($answer, $inputnames) = $values;
     }
 
-    if ($ia[6] == 'Y') {
+    if (($ia[6] == 'Y' || $ia[6] == 'S')) {
 
         //$qtitle .= doRender('/survey/questions/question_help/asterisk', [], true);
         //$qtitle .= $qtitle;
@@ -762,7 +762,7 @@ function do_list_dropdown($ia)
         $_height    = sanitize_int($aQuestionAttributes['dropdown_size']);
         $_maxHeight = count($ansresult);
 
-        if ((!is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] === '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if ((!is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] === '') && ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
             ++$_maxHeight; // for No Answer
         }
 
@@ -893,7 +893,7 @@ function do_list_dropdown($ia)
             ), true);
     }
 
-    if (!(is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] === "") && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (!(is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] === "") && ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         if ($prefixStyle == 1) {
             $_prefix = ++$_rowNum.') ';
         }
@@ -980,7 +980,7 @@ function do_list_radio($ia)
     $ansresult = $oQuestion->getOrderedAnswers($aQuestionAttributes['random_order'], $aQuestionAttributes['alphasort']);
     $anscount  = count($ansresult);
     $anscount  = ($other == 'Y') ? $anscount + 1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
-    $anscount  = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) ? $anscount + 1 : $anscount; //Count up if "No answer" is showing
+    $anscount  = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ? $anscount + 1 : $anscount; //Count up if "No answer" is showing
 
     //// Columns containing answer rows, set by user in question attribute
     /// TODO : move to a dedicated function
@@ -1129,7 +1129,7 @@ function do_list_radio($ia)
         }
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $iRowCount++;
 
         if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ')) {
@@ -1228,7 +1228,7 @@ function do_listwithcomment($ia)
 
         // ==> rows
         $check_ans = '';
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
             if ((!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == ' ')) {
                 $check_ans = CHECKED;
             } elseif (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] != '')) {
@@ -1291,7 +1291,7 @@ function do_listwithcomment($ia)
                 $maxoptionsize = strlen($ansrow['answer']);
             }
         }
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) {
+        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1 && !is_null($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) {
             $check_ans = "";
             if (trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) == '') {
                 $check_ans = SELECTED;
@@ -2020,7 +2020,7 @@ function do_multipleshorttext($ia)
 
             // color code missing mandatory questions red
             if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
-                if ($ia[6] == 'Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
+                if (($ia[6] == 'Y' || $ia[6] == 'S') && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
                     $alert = true;
                 }
             }
@@ -2265,7 +2265,7 @@ function do_multiplenumeric($ia)
             $alert = '';
 
             if (($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] != $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['maxstep']) || ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['step'] == $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['prevstep'])) {
-                if ($ia[6] == 'Y' && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
+                if (($ia[6] == 'Y' || $ia[6] == 'S') && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
                     $alert = true;
                 }
             }
@@ -2963,7 +2963,7 @@ function do_yesno($ia)
     }
 
     $noAnswer = false;
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
         if (empty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])) {
             $naChecked = CHECKED;
@@ -3005,7 +3005,7 @@ function do_gender($ia)
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $displayType            = $aQuestionAttributes['display_type'];
     $coreClass              = "ls-answers answers-list radio-list";
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         $noAnswer = true;
         if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]] == '') {
             $naChecked = CHECKED;
@@ -3048,7 +3048,7 @@ function do_array_5point($ia)
 {
     global $thissurvey;
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
     $coreClass               = "ls-answers subquestion-list questions-list radio-array";
     $checkconditionFunction  = "checkconditions";
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -3064,7 +3064,7 @@ function do_array_5point($ia)
     $columnswidth = 100 - $answerwidth;
     $colCount = 5; // number of columns
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
         ++$colCount; // add another column
     }
@@ -3102,7 +3102,7 @@ function do_array_5point($ia)
         $sColumns .= doRender('/survey/questions/answer/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
         $sColumns .= doRender('/survey/questions/answer/arrays/5point/columns/col', array('cellwidth'=>$cellwidth), true);
     }
@@ -3131,7 +3131,7 @@ function do_array_5point($ia)
             ), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
         $sHeaders .= doRender('/survey/questions/answer/arrays/5point/rows/cells/header_answer', array(
             'class'=>'answer-text noanswer-text',
@@ -3148,7 +3148,7 @@ function do_array_5point($ia)
         }
 
         /* Check if this item has not been answered */
-        $error = ($ia[6] == 'Y' && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false;
+        $error = (($ia[6] == 'Y' || $ia[6] == 'S') && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false;
 
         /* Check for array_filter  */
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
@@ -3185,7 +3185,7 @@ function do_array_5point($ia)
         }
 
         // ==>tds
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_input', array(
                 'i'=>"",
@@ -3237,7 +3237,7 @@ function do_array_10point($ia)
 {
     global $thissurvey;
     $aLastMoveResult = LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
     $coreClass = "ls-answers subquestion-list questions-list radio-array";
 
     $checkconditionFunction = "checkconditions";
@@ -3249,7 +3249,7 @@ function do_array_10point($ia)
         $answerwidth = 33;
     }
     $cellwidth = 10; // number of columns
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
         ++$cellwidth; // add another column
     }
@@ -3271,7 +3271,7 @@ function do_array_10point($ia)
         $sColumns .= doRender('/survey/questions/answer/arrays/10point/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
         $odd_even = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/10point/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
@@ -3289,7 +3289,7 @@ function do_array_10point($ia)
             ), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
         $sHeaders .= doRender('/survey/questions/answer/arrays/10point/rows/cells/header_answer', array(
             'class'=>'answer-text noanswer-text',
@@ -3306,7 +3306,7 @@ function do_array_10point($ia)
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow->questionL10ns[$sSurveyLanguage]->question;
         /* Check if this item has not been answered */
-        $error = ($ia[6] == 'Y' && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false;
+        $error = (($ia[6] == 'Y' || $ia[6] == 'S') && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false;
         $trbc = alternation($trbc, 'row');
 
         //Get array filter stuff
@@ -3376,14 +3376,14 @@ function do_array_10point($ia)
 function do_array_yesnouncertain($ia)
 {
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
     $coreClass               = "ls-answers subquestion-list questions-list radio-array";
     $checkconditionFunction  = "checkconditions";
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $answerwidth             = (trim($aQuestionAttributes['answer_width']) != '') ? $aQuestionAttributes['answer_width'] : 33;
     $cellwidth               = 3; // number of columns
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
         ++$cellwidth; // add another column
     }
@@ -3408,13 +3408,13 @@ function do_array_yesnouncertain($ia)
         $sColumns .= doRender('/survey/questions/answer/arrays/yesnouncertain/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
         $odd_even  = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/yesnouncertain/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth, 'no_answer'=>true), true);
     }
 
-    $no_answer = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) ?true:false;
+    $no_answer = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ?true:false;
     $sHeaders  = doRender('/survey/questions/answer/arrays/yesnouncertain/rows/cells/thead', array('no_answer'=>$no_answer, 'anscount'=>$anscount), true);
 
     $inputnames = [];
@@ -3427,10 +3427,10 @@ function do_array_yesnouncertain($ia)
             $myfname = $ia[1].$ansrow['title'];
             $answertext = $ansrow->questionL10ns[$sSurveyLanguage]->question;
             /* Check the sub question mandatory violation */
-            $error = ($ia[6] == 'Y' && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false;
+            $error = (($ia[6] == 'Y' || $ia[6] == 'S') && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false;
 
             // Get array_filter stuff
-            $no_answer = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) ?true:false;
+            $no_answer = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ?true:false;
             $value     = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
             $Ychecked  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y') ? 'CHECKED' : '';
             $Uchecked  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'U') ? 'CHECKED' : '';
@@ -3473,7 +3473,7 @@ function do_array_yesnouncertain($ia)
 function do_array_increasesamedecrease($ia)
 {
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
     $coreClass               = "ls-answers subquestion-list questions-list radio-array";
     $checkconditionFunction  = "checkconditions";
     $aQuestionAttributes     = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -3481,7 +3481,7 @@ function do_array_increasesamedecrease($ia)
     $cellwidth               = 3; // number of columns
     $inputnames              = [];
 
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
         ++$cellwidth; // add another column
     }
@@ -3505,13 +3505,13 @@ function do_array_increasesamedecrease($ia)
         $odd_even  = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/increasesamedecrease/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
-    if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+    if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
         //Question is not mandatory
         $odd_even  = alternation($odd_even);
         $sColumns .= doRender('/survey/questions/answer/arrays/increasesamedecrease/columns/col', array('odd_even'=>$odd_even, 'cellwidth'=>$cellwidth), true);
     }
 
-    $no_answer = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) ?true:false; //Question is not mandatory
+    $no_answer = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ?true:false; //Question is not mandatory
 
     $sHeaders = doRender('/survey/questions/answer/arrays/increasesamedecrease/rows/cells/thead', array('no_answer'=>$no_answer), true);
 
@@ -3521,13 +3521,13 @@ function do_array_increasesamedecrease($ia)
     foreach ($aSubquestions as $i => $ansrow) {
         $myfname        = $ia[1].$ansrow['title'];
         $answertext     = $ansrow->questionL10ns[$sSurveyLanguage]->question;
-        $error          = ($ia[6] == 'Y' && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the sub Q mandatory violation */
+        $error          = (($ia[6] == 'Y' || $ia[6] == 'S') && in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the sub Q mandatory violation */
         $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
         $Ichecked       = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'I') ? 'CHECKED' : '';
         $Schecked       = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'S') ? 'CHECKED' : '';
         $Dchecked       = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'D') ? 'CHECKED' : '';
         $NAchecked      = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
-        $no_answer      = ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) ?true:false;
+        $no_answer      = (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) ?true:false;
 
         $sRows .= doRender('/survey/questions/answer/arrays/increasesamedecrease/rows/answer_row', array(
             'myfname'=> $myfname,
@@ -3567,7 +3567,7 @@ function do_array($ia)
 {
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
     $aLastMoveResult         = LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
     $repeatheadings          = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings       = Yii::app()->getConfig("minrepeatheadings");
     $coreClass = "ls-answers subquestion-list questions-list";
@@ -3637,7 +3637,7 @@ function do_array($ia)
             ++$numrows;
             $caption .= gT("After the answer options a cell does give some information.");
         }
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
             ++$numrows;
         }
 
@@ -3662,7 +3662,7 @@ function do_array($ia)
                 ), true);
         }
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
             //Question is not mandatory and we can show "no answer"
             $sHeaders .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/header_answer', array(
                 'class'   => 'answer-text noanswer-text',
@@ -3713,7 +3713,7 @@ function do_array($ia)
 
             // NB: $ia[6] = mandatory
             $no_answer_td = '';
-            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+            if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
                 $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
                 $no_answer_td .= doRender('/survey/questions/answer/arrays/array/no_dropdown/rows/cells/answer_td', array(
                     'myfname'                => $myfname,
@@ -3757,7 +3757,7 @@ function do_array($ia)
                 ), true);
         }
 
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
             //Question is not mandatory
             $odd_even = alternation($odd_even);
             $sColumns .= doRender('/survey/questions/answer/arrays/array/no_dropdown/columns/col', array(
@@ -3838,7 +3838,7 @@ function do_array($ia)
             $options = [];
 
             /* Dropdown representation : first choice (activated) must be Please choose... if there are no actual answer */
-            $showNoAnswer = $ia[6] != 'Y' && SHOW_NO_ANSWER == 1; // Tag if we must show no-answer
+            $showNoAnswer = ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1; // Tag if we must show no-answer
             if (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] === '') {
                 $options[] = array(
                     'text'=> gT('Please choose...'),
@@ -3901,7 +3901,7 @@ function do_array_texts($ia)
 {
     global $thissurvey;
     $aLastMoveResult            = LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+    $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
     $repeatheadings             = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
     $coreClass                  = "ls-answers subquestion-list questions-list text-array";
@@ -4090,7 +4090,7 @@ function do_array_texts($ia)
             $answertextsave = $answertext;
             $error = false;
 
-            if ($ia[6] == 'Y' && !empty($aMandatoryViolationSubQ)) {
+            if (($ia[6] == 'Y' || $ia[6] == 'S') && !empty($aMandatoryViolationSubQ)) {
                 //Go through each labelcode and check for a missing answer! If any are found, highlight this line
                 $emptyresult = 0;
                 foreach ($labelcode as $ld) {
@@ -4226,7 +4226,7 @@ function do_array_multiflexi($ia)
 
     $inputnames                 = [];
     $aLastMoveResult            = LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+    $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
     $repeatheadings             = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
     $coreClass                  = "ls-answers subquestion-list questions-list";
@@ -4424,7 +4424,7 @@ function do_array_multiflexi($ia)
             /* Check the sub Q mandatory violation */
             $error = false;
 
-            if ($ia[6] == 'Y' && !empty($aMandatoryViolationSubQ)) {
+            if (($ia[6] == 'Y' || $ia[6] == 'S') && !empty($aMandatoryViolationSubQ)) {
                 //Go through each labelcode and check for a missing answer! Default :If any are found, highlight this line, checkbox : if one is not found : don't highlight
                 // PS : we really need a better system : event for EM !
                 $emptyresult = ($aQuestionAttributes['multiflexible_checkbox'] != 0) ? 1 : 0;
@@ -4576,7 +4576,7 @@ function do_array_multiflexi($ia)
 function do_arraycolumns($ia)
 {
     $aLastMoveResult = LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+    $aMandatoryViolationSubQ = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
     $coreClass = "ls-answers subquestion-list questions-list array-radio";
     $checkconditionFunction = "checkconditions";
 
@@ -4596,7 +4596,7 @@ function do_arraycolumns($ia)
 
     $inputnames = [];
     if (count($labelans) > 0) {
-        if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER == 1) {
             $labelcode[] = '';
             $labelans[] = gT('No answer');
             $labels[] = array('answer'=>gT('No answer'), 'code'=>'');
@@ -4643,7 +4643,7 @@ function do_arraycolumns($ia)
             for ($_i = 0; $_i < $iAnswerCount; ++$_i) {
                 $myfname = $ia[1].$anscode[$_i];
                 /* Check the Sub Q mandatory violation */
-                if ($ia[6] == 'Y' && in_array($myfname, $aMandatoryViolationSubQ)) {
+                if (($ia[6] == 'Y' || $ia[6] == 'S') && in_array($myfname, $aMandatoryViolationSubQ)) {
                     $aData['aQuestions'][$_i]['errormandatory'] = true;
                 } else {
                     $aData['aQuestions'][$_i]['errormandatory'] = false;
@@ -4704,7 +4704,7 @@ function do_array_dual($ia)
 {
     global $thissurvey;
     $aLastMoveResult            = LimeExpressionManager::GetLastMoveResult();
-    $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && $ia[6] == 'Y') ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
+    $aMandatoryViolationSubQ    = ($aLastMoveResult['mandViolation'] && ($ia[6] == 'Y' || $ia[6] == 'S')) ? explode("|", $aLastMoveResult['unansweredSQs']) : [];
     $repeatheadings             = Yii::app()->getConfig("repeatheadings");
     $minrepeatheadings          = Yii::app()->getConfig("minrepeatheadings");
     $coreClass                  = "ls-answers subquestion-list questions-list";
@@ -4906,7 +4906,7 @@ function do_array_dual($ia)
 
                 $aData['aSubQuestions'][$i]['odd'] = ($i % 2);
                 // Check the Sub Q mandatory violation
-                if ($ia[6] == 'Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ))) {
+                if (($ia[6] == 'Y' || $ia[6] == 'S') && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ))) {
                     $aData['aSubQuestions'][$i]['showmandatoryviolation'] = true;
                 } else {
                     $aData['aSubQuestions'][$i]['showmandatoryviolation'] = false;
@@ -5050,8 +5050,8 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['sActualAnswer1'] = $sActualAnswer1;
                 $aData['aSubQuestions'][$i]['odd'] = ($i % 2);
                 // Set mandatory alert
-                $aData['aSubQuestions'][$i]['alert'] = ($ia[6] == 'Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)));
-                $aData['aSubQuestions'][$i]['mandatoryviolation'] = ($ia[6] == 'Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)));
+                $aData['aSubQuestions'][$i]['alert'] = (($ia[6] == 'Y' || $ia[6] == 'S') && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)));
+                $aData['aSubQuestions'][$i]['mandatoryviolation'] = (($ia[6] == 'Y' || $ia[6] == 'S') && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)));
                 // Array filter : maybe leave EM do the trick
                 $aData['aSubQuestions'][$i]['sDisplayStyle'] = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
@@ -5060,8 +5060,8 @@ function do_array_dual($ia)
                 //~ $aData['aSubQuestions'][$i]['hiddenfield'] = $hiddenfield;
                 $aData['labels0'] = $labels0;
                 $aData['labels1'] = $labels1;
-                $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER);
-                $aData['aSubQuestions'][$i]['showNoAnswer1'] = ($sActualAnswer1 != '' && $ia[6] != 'Y' && SHOW_NO_ANSWER);
+                $aData['aSubQuestions'][$i]['showNoAnswer0'] = ($sActualAnswer0 != '' && ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER);
+                $aData['aSubQuestions'][$i]['showNoAnswer1'] = ($sActualAnswer1 != '' && ($ia[6] != 'Y' && $ia[6] != 'S') && SHOW_NO_ANSWER);
                 $aData['interddSep'] = $interddSep;
 
                 $inputnames[] = $myfname0;

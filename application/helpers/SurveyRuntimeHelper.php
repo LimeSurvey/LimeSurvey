@@ -297,7 +297,7 @@ class SurveyRuntimeHelper
 
                         //Display the "mandatory" popup if necessary
                         // TMSW - get question-level error messages - don't call **_popup() directly
-                        if ($okToShowErrors && $this->aStepInfo['mandViolation']) {
+                        if ($okToShowErrors && $this->aStepInfo['mandViolation'] && empty(App()->request->getPost('mandSoft'))) {
                             list($mandatorypopup, $this->popup) = mandatory_popup($ia, $this->notanswered);
                         }
 
@@ -386,6 +386,7 @@ class SurveyRuntimeHelper
         }
 
         $this->aSurveyInfo['jPopup'] = json_encode($aPopup);
+        $this->aSurveyInfo['mandSoft'] = array_key_exists('mandSoft', $this->aMoveResult) ? $this->aMoveResult['mandSoft'] : false;
 
         $aErrorHtmlMessage                             = $this->getErrorHtmlMessage();
         $this->aSurveyInfo['errorHtml']['show']        = !empty($aErrorHtmlMessage) && $this->oTemplate->showpopups==0;
@@ -1012,10 +1013,11 @@ class SurveyRuntimeHelper
                 }
             }
 
-            if ($this->aMoveResult['finished'] == true) {
+            if ($this->aMoveResult['finished'] == true || (!empty($this->aMoveResult['mandSoft']) && App()->request->getPost('mandSoft') == 'movesubmit')) {
                 $this->sMove = 'movesubmit';
+                $this->aMoveResult['finished'] = true;
             }
-
+            
             if ($this->sMove == "movesubmit" && $this->aMoveResult['finished'] == false) {
                 // then there are errors, so don't finalize the survey
                 $this->sMove = "movenext"; // so will re-display the survey
@@ -1838,7 +1840,7 @@ class SurveyRuntimeHelper
             $aQuestionClass .= ' ls-hidden';
         }
 
-        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
+        if ($lemQuestionInfo['info']['mandatory'] == 'Y' || $lemQuestionInfo['info']['mandatory'] == 'S') {
             $aQuestionClass .= ' mandatory';
         }
 

@@ -74,7 +74,7 @@ class RenderListRadio extends QuestionBaseRenderer
             $aRows[] = $this->addOtherRow();
         }
 
-        if ($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1) {
+        if (($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) {
             $aRows[] = $this->addNoAnswerRow();
         }
 
@@ -204,7 +204,7 @@ class RenderListRadio extends QuestionBaseRenderer
         // Getting answerrcount
         $anscount  = count($this->aAnswerOptions[0]);
         $anscount  = ($this->oQuestion->other == 'Y') ? $anscount + 1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
-        $anscount  = ($this->oQuestion->mandatory != 'Y' && SHOW_NO_ANSWER == 1) ? $anscount + 1 : $anscount; //Count up if "No answer" is showing
+        $anscount  = (($this->oQuestion->mandatory != 'Y' && $this->oQuestion->mandatory != 'S') && SHOW_NO_ANSWER == 1) ? $anscount + 1 : $anscount; //Count up if "No answer" is showing
         return $anscount;
     }
 }
