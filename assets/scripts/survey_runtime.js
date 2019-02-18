@@ -188,9 +188,16 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             addition = cleansedValue.split("").pop();
         }
 
-        var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/);
+        var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/); /* 1.0 : keep .0 */
+        var matchMustGetZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)([0-9]*)$/); /* Maybe have 0 */
         if(matchFollowingZeroes){
             addition = LEMradix+matchFollowingZeroes[3];
+        } else if(matchMustGetZeroes) {
+            /* Don‘t find good regexp … */
+            while (cleansedValue.substr(-1) === "0") {
+                addition += "0";
+                cleansedValue = cleansedValue.slice(0, -1);
+            }
         }
         if(decimalValue == undefined){
             try{
@@ -226,9 +233,9 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
         }
         else{
-            if(LEMradix==",")
+            if(LEMradix==",") {
                 displayVal = displayVal.replace(/\./,',');
-
+            }
             newval = displayVal+addition
 
             if (name.match(/other$/)) {
