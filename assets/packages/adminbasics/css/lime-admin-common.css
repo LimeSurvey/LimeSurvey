@@ -2168,6 +2168,10 @@ table#responsedetail tr td{
     background-color: inherit;
 }
 
+#responses-grid .filter-container{
+    min-width: 75px;
+}
+
 .edit-participant-modal-body {
     max-height: 500px;
     overflow-y: auto;
