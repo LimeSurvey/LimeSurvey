@@ -256,7 +256,6 @@ class export extends Survey_Common_Action
 
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
-            $data['title_bar']['subaction'] = gT('Export results');
             $data['subaction'] = gT('Export results');
 
             $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
@@ -607,7 +606,6 @@ class export extends Survey_Common_Action
 
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $aData['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
-            $aData['title_bar']['subaction'] = gt('Export a VV survey file');
             $aData['subaction'] = gt('Export a VV survey file');
 
             $aData['sidemenu']['state'] = false;
