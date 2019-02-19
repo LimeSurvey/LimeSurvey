@@ -419,7 +419,7 @@ class database extends Survey_Common_Action
         foreach ($aoSubquestions as $oSubQuestion) {
             $bAnswerSave = false;
             while (!$bAnswerSave) {
-                $oSubQuestion->title = strvalrand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                $oSubQuestion->title = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                 if ($oSubQuestion->save()) {
                     $bAnswerSave = true;
                 }
