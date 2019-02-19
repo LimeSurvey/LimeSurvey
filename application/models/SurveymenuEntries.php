@@ -515,24 +515,19 @@ class SurveymenuEntries extends LSActiveRecord
     {
 
         $oDB = Yii::app()->db;
-        switchMSSQLIdentityInsert('surveymenu_entries', true);
         $oTransaction = $oDB->beginTransaction();
         try {
-
             $oDB->createCommand()->truncateTable('{{surveymenu_entries}}');
-
             $basicMenues = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach ($basicMenues as $basicMenu) {
                 $oDB->createCommand()->insert("{{surveymenu_entries}}", $basicMenu);
             }
-
             $oTransaction->commit();
 
         } catch (Exception $e) {
             throw $e;
             return false;
         }
-        switchMSSQLIdentityInsert('surveymenu_entries', false);
         return true;
     }
 
