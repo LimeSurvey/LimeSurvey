@@ -13243,7 +13243,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     components: { PreviewFrame: __WEBPACK_IMPORTED_MODULE_3__subcomponents_previewFrame_vue___default.a, LanguageSelector: __WEBPACK_IMPORTED_MODULE_4__subcomponents_languageSelector_vue___default.a },
     data() {
         return {
-            currentQuestionCode: '',
             editorQuestion: __WEBPACK_IMPORTED_MODULE_0__ckeditor_ckeditor5_build_classic___default.a,
             editorQuestionData: '',
             editorQuestionConfig: {},
@@ -13251,7 +13250,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             editorHelpData: '',
             editorHelpConfig: {},
             previewContent: ' ',
-            previewRootUrl: window.QuestionEditData.connectorBaseUrl + '/getRenderedPreview/iQuestionId/' + window.QuestionEditData.qid,
+            previewRootUrl: 'about:blank',
             previewLoading: false,
             previewActive: true,
             debug: false,
@@ -13263,6 +13262,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     computed: {
+        currentQuestionCode: {
+            get() {
+                return this.$store.state.currentQuestion.title;
+            },
+            set(newValue) {
+                this.$store.commit('updateCurrentQuestionTitle', newValue);
+            }
+        },
         currentQuestionQuestion: {
             get() {
                 return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].question;
@@ -13328,15 +13335,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.getQuestionPreview();
             this.$store.dispatch('getQuestionGeneralSettingsWithType');
         },
-        getQuestionPreview() {
-            if (window.QuestionEditData.qid == null) {
-                this.previewContent = `<div><h3>${tranlate('No preview available')}</h3></div>`;
+        getQuestionPreview(firstStart = false) {
+            this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);
+            if (!window.QuestionEditData.qid) {
+                this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`;
+                return;
             }
             if (this.previewLoading === true) {
                 return;
             }
             this.previewLoading = true;
-            this.$_load(this.previewRootUrl + '/sLanguage/' + this.$store.state.activeLanguage, this.changedParts(), 'POST').then(result => {
+            this.$_load(this.previewRootUrl + '/sLanguage/' + this.$store.state.activeLanguage + (firstStart ? '/root/1' : ''), this.changedParts(), 'POST').then(result => {
                 this.previewContent = result.data;
                 this.previewLoading = false;
             });
@@ -13347,8 +13356,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted() {
-        this.getQuestionPreview();
-        this.currentQuestionCode = this.$store.state.currentQuestion.title;
+        this.previewRootUrl = window.QuestionEditData.qid != null ? window.QuestionEditData.connectorBaseUrl + '/getRenderedPreview/iQuestionId/' + window.QuestionEditData.qid : 'about:blank';
+        this.getQuestionPreview(true);
     }
 });
 
@@ -15363,7 +15372,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created() {
         const iframeID = this.getRandomId();
         this.iframeId = iframeID;
-        this.documentIframe = $(`<iframe src="${this.rootUrl}/sLanguage/${this.$store.state.activeLanguage}/root/1" id='${iframeID}' style='width:100%;height:100%;border:none;' />`);
+        this.documentIframe = $(`<iframe src="${this.rootUrl}" id='${iframeID}' style='width:100%;height:100%;border:none;' />`);
     }
 });
 
@@ -19633,7 +19642,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         getNewTitleFromCurrent(scaleId) {
-            let nonNumericPart = this.currentSubquestions[scaleId][0].title.replace(/[0-9]/, '');
+            let nonNumericPart = "SQ";
+            if (this.currentSubquestions[scaleId].length > 0) {
+                nonNumericPart = this.currentSubquestions[scaleId][0].title.replace(/[0-9]/, '');
+            }
             let numericPart = this.currentSubquestions[scaleId].reduce((prev, oSubquestion) => {
                 return __WEBPACK_IMPORTED_MODULE_0_lodash_max___default.a([prev, oSubquestion.title.replace(/[^0-9]/, '')]);
             }, 0) + 1;
@@ -20193,7 +20205,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         getNewCodeFromCurrent(scaleId) {
-            let nonNumericPart = this.currentansweroptions[scaleId][0].code.replace(/[0-9]/, '');
+            let nonNumericPart = 'AO';
+            if (this.currentansweroptions[scaleId].length > 0) {
+                nonNumericPart = this.currentansweroptions[scaleId][0].code.replace(/[0-9]/, '');
+            }
             let numericPart = this.currentansweroptions[scaleId].reduce((prev, oAnswerOption) => {
                 return parseInt(__WEBPACK_IMPORTED_MODULE_0_lodash_max___default.a([prev, oAnswerOption.code.replace(/[^0-9]/, '')]));
             }, 0) + 1;
@@ -24443,6 +24458,9 @@ process.umask = function() { return 0; };
         newCurrentQuestionI10N[state.activeLanguage][setObject.value] = setObject.newValue;
         state.currentQuestionI10N = newCurrentQuestionI10N;
     },
+    updateCurrentQuestionTitle: (state, newValue) => {
+        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.currentQuestion,'title',newValue);
+    },
 
     //view controllers
     setQuestionAdvancedSettingsCategory : (state, newValue) => {
@@ -24519,7 +24537,6 @@ process.umask = function() { return 0; };
         });
     },
     getQuestionAdvancedSettings: (context) => {
-        context.commit('setQuestionGeneralSettings', []);
         __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
             {

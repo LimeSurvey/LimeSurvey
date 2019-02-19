@@ -46,7 +46,7 @@ export default {
     created(){
         const iframeID = this.getRandomId();
         this.iframeId = iframeID;
-        this.documentIframe = $(`<iframe src="${this.rootUrl}/sLanguage/${this.$store.state.activeLanguage}/root/1" id='${iframeID}' style='width:100%;height:100%;border:none;' />`);
+        this.documentIframe = $(`<iframe src="${this.rootUrl}" id='${iframeID}' style='width:100%;height:100%;border:none;' />`);
     }
 }
 </script>

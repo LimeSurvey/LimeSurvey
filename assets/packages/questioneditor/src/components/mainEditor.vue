@@ -14,7 +14,6 @@ export default {
     components: {PreviewFrame, LanguageSelector},
     data() {
         return {
-            currentQuestionCode: '',
             editorQuestion: ClassicEditor,
             editorQuestionData: '',
             editorQuestionConfig: {},
@@ -22,7 +21,7 @@ export default {
             editorHelpData: '',
             editorHelpConfig: {},
             previewContent: ' ',
-            previewRootUrl: window.QuestionEditData.connectorBaseUrl+'/getRenderedPreview/iQuestionId/'+window.QuestionEditData.qid,
+            previewRootUrl: 'about:blank',
             previewLoading: false,
             previewActive: true,
             debug: false,
@@ -34,6 +33,12 @@ export default {
         };
     },
     computed: {
+        currentQuestionCode: {
+            get() {return this.$store.state.currentQuestion.title;},
+            set(newValue) {
+                this.$store.commit('updateCurrentQuestionTitle', newValue);
+            }
+        },
         currentQuestionQuestion: { 
             get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].question; },
             set(newValue) {
@@ -98,16 +103,18 @@ export default {
             this.getQuestionPreview();
             this.$store.dispatch('getQuestionGeneralSettingsWithType');
         },
-        getQuestionPreview(){
-            if(window.QuestionEditData.qid == null) {
-                this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`
+        getQuestionPreview(firstStart = false){
+            this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);
+            if(!window.QuestionEditData.qid) {
+                this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`;
+                return;
             }
             if(this.previewLoading === true) {
                 return;
             }
             this.previewLoading = true;
             this.$_load(
-                this.previewRootUrl+'/sLanguage/'+this.$store.state.activeLanguage, 
+                this.previewRootUrl+'/sLanguage/'+this.$store.state.activeLanguage+(firstStart ? '/root/1' : ''), 
                 this.changedParts(),
                 'POST'
             ).then((result) => {
@@ -121,8 +128,10 @@ export default {
         }
     },
     mounted(){
-        this.getQuestionPreview();
-        this.currentQuestionCode = this.$store.state.currentQuestion.title;
+        this.previewRootUrl = window.QuestionEditData.qid != null 
+            ? window.QuestionEditData.connectorBaseUrl+'/getRenderedPreview/iQuestionId/'+window.QuestionEditData.qid
+            : 'about:blank';
+        this.getQuestionPreview(true);
     },
 }
 </script>

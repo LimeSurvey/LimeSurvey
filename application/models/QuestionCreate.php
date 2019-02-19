@@ -4,13 +4,9 @@ class QuestionCreate extends Question
 {
     public static function getInstance($iSurveyId, $type)
     {
-        $temporaryTitle = SettingsUser::getUserSettingValue('temporaryTitle', SettingsUser::ENTITY_SURVEY, $iSurveyId);
-        if ($temporaryTitle == null) {
-            $temporaryTitle = 'tempX'.$iSurveyId.substr(md5(time()), 4, 9);
-            SettingsUser::setUserSetting('temporaryTitle', $temporaryTitle, SettingsUser::ENTITY_SURVEY, $iSurveyId);
-        }
-
         $oSurvey = Survey::model()->findByPk($iSurveyId);
+        
+        $temporaryTitle = 'S'.$iSurveyId.'Q'.(safecount($oSurvey->baseQuestions)+1);
         $aQuestionData = [
                 'sid' => $iSurveyId,
                 'gid' => Yii::app()->request->getParam('gid'),

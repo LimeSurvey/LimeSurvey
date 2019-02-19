@@ -37,7 +37,10 @@ export default {
     },
     methods: {
         getNewTitleFromCurrent(scaleId) {
-            let nonNumericPart = this.currentSubquestions[scaleId][0].title.replace(/[0-9]/,'');
+            let nonNumericPart = "SQ";
+            if(this.currentSubquestions[scaleId].length > 0) {
+                nonNumericPart = this.currentSubquestions[scaleId][0].title.replace(/[0-9]/,'');
+            }
             let numericPart = this.currentSubquestions[scaleId].reduce((prev, oSubquestion) => {
                 return max([prev,oSubquestion.title.replace(/[^0-9]/,'')]);
             }, 0) + 1 ;
@@ -82,7 +85,17 @@ export default {
         openQuickAdd() {},
         saveAsLabelSet() {},
         resetSubquestions() {},
-        saveSubquestions() {},
+        saveSubquestions() {
+            const allSubquestions = this.$store.state.currentQuestionSubquestions.map((scaleArray, scaleId) => {
+                    if(!isEmpty(this.tmpSubquestions[scaleId])) {
+                        return scaleArray.concat(this.tmpSubquestions[scaleId]);
+                    }
+                    return scaleArray;
+                }
+            );
+            this.tmpSubquestions = {};
+            this.$store.state.commit('setCurrentQuestionSubquestions', allSubquestions);
+        },
         getQuestionForCurrentLanguage(subquestionObject) {
             try {
                 return subquestionObject[this.$store.state.activeLanguage].question;

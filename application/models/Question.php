@@ -919,17 +919,23 @@ class Question extends LSActiveRecord
         return QuestionAttribute::model()->findAll($criteria);
     }
 
-    // /**
-    //  * @return QuestionAttribute[]
-    //  */
-    // public function getQuestionAttribute($sAttribute)
-    // {
-    //     $criteria = new CDbCriteria();
-    //     $criteria->addCondition('qid=:qid');
-    //     $criteria->addCondition('attribute=:attribute');
-    //     $criteria->params = [':qid'=>$this->qid, ':attribute' => $sAttribute];
-    //     return QuestionAttribute::model()->find($criteria);
-    // }
+    /**
+     * @return QuestionAttribute[]
+     */
+    public function getQuestionAttribute($sAttribute)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('qid=:qid');
+        $criteria->addCondition('attribute=:attribute');
+        $criteria->params = [':qid'=>$this->qid, ':attribute' => $sAttribute];
+        $oQuestionAttribute =  QuestionAttribute::model()->find($criteria);
+        
+        if($oQuestionAttribute != null) {
+            $oQuestionAttribute->value;
+        }
+        
+        return null;
+    }
 
     /**
      * @return null|QuestionType
@@ -1053,13 +1059,6 @@ class Question extends LSActiveRecord
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
     }
 
-    protected function getQuestionAttribute($key1, $key2=null) {
-        $result =  isset($this->questionAttributes[$key1]) ? $this->questionAttributes[$key1] : null;
-        if($key2 !== null && $result !== null) {
-            $result =  isset($result[$key2]) ? $result[$key2] : null;
-        }
-        return $result;
-    }
 
     public function getHasSubquestions(){
 

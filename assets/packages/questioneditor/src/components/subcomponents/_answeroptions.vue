@@ -37,7 +37,10 @@ export default {
     },
     methods: {
         getNewCodeFromCurrent(scaleId) {
-            let nonNumericPart = this.currentansweroptions[scaleId][0].code.replace(/[0-9]/,'');
+            let nonNumericPart = 'AO';
+            if(this.currentansweroptions[scaleId].length > 0) {
+                nonNumericPart = this.currentansweroptions[scaleId][0].code.replace(/[0-9]/,'');
+            }
             let numericPart = this.currentansweroptions[scaleId].reduce((prev, oAnswerOption) => {
                 return parseInt(max([prev,oAnswerOption.code.replace(/[^0-9]/,'')]));
             }, 0) + 1 ;
@@ -73,7 +76,17 @@ export default {
         openQuickAdd() {},
         saveAsLabelSet() {},
         resetansweroptions() {},
-        saveansweroptions() {},
+        saveansweroptions() {
+            const allAnsweroptions = this.$store.state.currentQuestionAnswerOptions.map((scaleArray, scaleId) => {
+                    if(!isEmpty(this.tmpansweroptions[scaleId])) {
+                        return scaleArray.concat(this.tmpansweroptions[scaleId]);
+                    }
+                    return scaleArray;
+                }
+            );
+            this.tmpansweroptions = {};
+            this.$store.commit('setCurrentQuestionAnswerOptions', allAnsweroptions);
+        },
         getAnswerForCurrentLanguage(answerOptionObject) {
             try {
                 return answerOptionObject[this.$store.state.activeLanguage].answer;

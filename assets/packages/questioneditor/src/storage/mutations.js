@@ -1,5 +1,6 @@
 import Vue from "vue";
 import isEmpty from "lodash/isEmpty";
+import clone from "lodash/clone";
 
 export default {
     //mutables
@@ -114,6 +115,9 @@ export default {
         const newCurrentQuestionI10N = state.currentQuestionI10N;
         newCurrentQuestionI10N[state.activeLanguage][setObject.value] = setObject.newValue;
         state.currentQuestionI10N = newCurrentQuestionI10N;
+    },
+    updateCurrentQuestionTitle: (state, newValue) => {
+        Vue.set(state.currentQuestion,'title',newValue);
     },
 
     //view controllers

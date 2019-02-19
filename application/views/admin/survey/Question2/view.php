@@ -73,7 +73,15 @@
     <div class="container-fluid">
         <?php echo CHtml::form(array("admin/questionedit/update"), 'post',array('class'=>'form30 ','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
             <div class="alert alert-danger">EXPERIMENTAL EDITOR! - Use at your own risk! </div>
-            <div class="pagetitle h3"><?php eT('Question'); ?>:  <?php echo  $qrrow['title'];?> <small>(ID: <?php echo  $qid;?>)</small></div>
+            <div class="pagetitle h3">
+            <?php 
+                if($oQuestion instanceof QuestionCreate) {
+                    eT('Create new Question');
+                } else {
+                    eT('Question').': '.$qrrow['title'].'<small>(ID: '.$qid.')</small>';
+                }
+            ?>
+            </div>
             <div class="row">
                 <div id="advancedQuestionEditor" class="col-xs-12"><app/></div>
             </div>
