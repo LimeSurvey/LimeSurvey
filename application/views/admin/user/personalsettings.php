@@ -2,6 +2,61 @@
 /**
  * Personal settings edition
  */
+
+    $aQuestionTypeGroups = array();
+    $aQuestionTypeList = Question::typeList();
+
+    if (Yii::app()->session['questionselectormode'] !== 'default') {
+        $selectormodeclass = Yii::app()->session['questionselectormode'];
+    } else {
+        $selectormodeclass = getGlobalSetting('defaultquestionselectormode');
+    }
+    
+    foreach ($aQuestionTypeList as $key=> $questionType) {
+        $htmlReadyGroup = str_replace(' ', '_', strtolower($questionType['group']));
+        if (!isset($aQuestionTypeGroups[$htmlReadyGroup])) {
+            $aQuestionTypeGroups[$htmlReadyGroup] = array(
+                'questionGroupName' => $questionType['group']
+            );
+        }
+            $imageName = $key;
+            if ($imageName == ":") $imageName = "COLON";
+            else if ($imageName == "|") $imageName = "PIPE";
+            else if ($imageName == "*") $imageName = "EQUATION";
+
+        $questionType['detailpage'] = '
+        <div class="col-sm-12 currentImageContainer">
+            <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
+        </div>';
+        if ($imageName == 'S') {
+            $questionType['detailpage'] = '
+            <div class="col-sm-12 currentImageContainer">
+                <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'.png" />
+                <img src="'.Yii::app()->getConfig('imageurl').'/screenshots/'.$imageName.'2.png" />
+            </div>';
+        }
+        $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
+    }
+    $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $oUserSettings) ? $oUserSettings['preselectquestiontype'] : Yii::app()->getConfig('preselectquestiontype');
+    $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
+    'widgetsJsName' => "preselectquestiontype",
+    'renderType' =>  "group-simple",
+    'modalTitle' => "Select question type",
+    'groupTitleKey' => "questionGroupName",
+    'groupItemsKey' => "questionTypes",
+    'debugKeyCheck' => "Type: ",
+    'previewWindowTitle' => gT("Preview question type"),
+    'groupStructureArray' => $aQuestionTypeGroups,
+    'value' => $currentPreselectedQuestiontype,
+    'debug' => YII_DEBUG,
+    'currentSelected' => Question::getQuestionTypeName($currentPreselectedQuestiontype),
+    'buttonClasses' => ['btn-primary'],
+    'optionArray' => [
+        'selectedClass' => Question::getQuestionClass($currentPreselectedQuestiontype),
+    ]
+));
+
+echo $oQuestionSelector->getModal();                        
 ?>
 
 <div class="container">
@@ -164,6 +219,14 @@
                                         ), array('class'=>"form-control"));
                                         ?>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <!-- Question type preselect -->
+                                <div class="form-group">
+                                    <?php echo CHtml::label(gT("Preselected question type:"), 'preselectquestiontype', array('class'=>" control-label")); ?>
+                                    <?=$oQuestionSelector->getButtonOrSelect(true)?>
+                                    <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">

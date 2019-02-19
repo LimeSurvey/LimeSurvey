@@ -13013,7 +13013,7 @@ exports = module.exports = __webpack_require__(4)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-new-questioneditor[data-v-05c0cfb0] {\r\n    min-height: 75vh;\n}\n.loading-back-greyed[data-v-05c0cfb0] {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\n}\r\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/App.vue?00b56412"],"names":[],"mappings":";AAyEA;IACA,iBAAA;CACA;AACA;IACA,wCAAA;IACA,YAAA;IACA,aAAA;IACA,iBAAA;CACA","file":"App.vue","sourcesContent":["<script>\r\nimport MainEditor from './components/mainEditor.vue';\r\nimport GeneralSettings from './components/generalSettings.vue';\r\nimport AdvancedSettings from './components/advancedSettings.vue';\r\n\r\nimport runAjax from './mixins/runAjax.js';\r\n\r\nexport default {\r\n    name: 'lsnextquestioneditor',\r\n    mixins: [runAjax],\r\n    data() {\r\n        return {\r\n            event: null,\r\n        }\r\n    },\r\n    components: {\r\n        'maineditor' : MainEditor,\r\n        'generalsettings' : GeneralSettings,\r\n        'advancedsettings' : AdvancedSettings\r\n    },\r\n    mounted() {\r\n        this.toggleLoading(false);\r\n        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);\r\n    },\r\n    methods: {\r\n        jqueryTriggered(event, data){\r\n            //this.$log.log('data', data);\r\n            this.event = JSON.parse(data.emitter);\r\n        },\r\n        eventSet() {\r\n            this.event = null;\r\n        },\r\n        submitCurrentState() {\r\n            this.toggleLoading();\r\n            let transferObject = {\r\n                question: this.$store.state.currentQuestion,\r\n                scaledSubquestions: this.$store.state.currentQuestionSubquestions,\r\n                scaledAnswerOptions: this.$store.state.currentQuestionAnswerOptions,\r\n                questionSettings: this.$store.state.currentQuestionSettings,\r\n                questionI10N: this.$store.state.currentQuestionI10N,\r\n                questionAttributes: this.$store.state.currentQuestionAttributes,\r\n                generalSettings: this.$store.state.currentQuestionGeneralSettings,\r\n                advancedSettings: this.$store.state.currentQuestionAdvancedSettings,\r\n            };\r\n            this.$log.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});\r\n            this.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', {'questionData': transferObject}).then((result) => {\r\n                this.toggleLoading();\r\n                this.$log.log('OBJECT AFTER TRANSFER: ', result);\r\n            })\r\n        }\r\n\r\n    },\r\n    created(){\r\n        this.$store.dispatch('loadQuestion');\r\n        this.$store.dispatch('getQuestionTypes');\r\n        this.$store.dispatch('getQuestionGeneralSettings');\r\n        this.$store.dispatch('getQuestionAdvancedSettings');\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"container-center scoped-new-questioneditor\">\r\n        <input type=\"submit\" class=\"hidden\" name=\"triggerSubmitQuestionEditor\" id=\"triggerSubmitQuestionEditor\" @click.prevent=\"submitCurrentState\" />\r\n        <template v-if=\"$store.getters.fullyLoaded\">\r\n            <maineditor :event=\"event\" v-on:eventSet=\"eventSet\"></maineditor>\r\n            <generalsettings :event=\"event\" v-on:eventSet=\"eventSet\"></generalsettings>\r\n            <advancedsettings :event=\"event\" v-on:eventSet=\"eventSet\"></advancedsettings>\r\n        </template>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n.scoped-new-questioneditor {\r\n    min-height: 75vh;\r\n}\r\n.loading-back-greyed {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-new-questioneditor[data-v-05c0cfb0] {\r\n    min-height: 75vh;\n}\n.loading-back-greyed[data-v-05c0cfb0] {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\n}\r\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/App.vue?83582894"],"names":[],"mappings":";AA0EA;IACA,iBAAA;CACA;AACA;IACA,wCAAA;IACA,YAAA;IACA,aAAA;IACA,iBAAA;CACA","file":"App.vue","sourcesContent":["<script>\r\nimport MainEditor from './components/mainEditor.vue';\r\nimport GeneralSettings from './components/generalSettings.vue';\r\nimport AdvancedSettings from './components/advancedSettings.vue';\r\n\r\nimport runAjax from './mixins/runAjax.js';\r\n\r\nexport default {\r\n    name: 'lsnextquestioneditor',\r\n    mixins: [runAjax],\r\n    data() {\r\n        return {\r\n            event: null,\r\n        }\r\n    },\r\n    components: {\r\n        'maineditor' : MainEditor,\r\n        'generalsettings' : GeneralSettings,\r\n        'advancedsettings' : AdvancedSettings\r\n    },\r\n    mounted() {\r\n        this.toggleLoading(false);\r\n        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);\r\n    },\r\n    methods: {\r\n        jqueryTriggered(event, data){\r\n            //this.$log.log('data', data);\r\n            this.event = JSON.parse(data.emitter);\r\n        },\r\n        eventSet() {\r\n            this.event = null;\r\n        },\r\n        submitCurrentState() {\r\n            this.toggleLoading();\r\n            let transferObject = {\r\n                question: this.$store.state.currentQuestion,\r\n                scaledSubquestions: this.$store.state.currentQuestionSubquestions,\r\n                scaledAnswerOptions: this.$store.state.currentQuestionAnswerOptions,\r\n                questionSettings: this.$store.state.currentQuestionSettings,\r\n                questionI10N: this.$store.state.currentQuestionI10N,\r\n                questionAttributes: this.$store.state.currentQuestionAttributes,\r\n                generalSettings: this.$store.state.currentQuestionGeneralSettings,\r\n                advancedSettings: this.$store.state.currentQuestionAdvancedSettings,\r\n            };\r\n            this.$log.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});\r\n            this.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', {'questionData': transferObject}).then((result) => {\r\n                this.toggleLoading();\r\n                $('#in_survey_common').trigger('lsStopLoading');\r\n                this.$log.log('OBJECT AFTER TRANSFER: ', result);\r\n            })\r\n        }\r\n\r\n    },\r\n    created(){\r\n        this.$store.dispatch('loadQuestion');\r\n        this.$store.dispatch('getQuestionTypes');\r\n        this.$store.dispatch('getQuestionGeneralSettings');\r\n        this.$store.dispatch('getQuestionAdvancedSettings');\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"container-center scoped-new-questioneditor\">\r\n        <input type=\"submit\" class=\"hidden\" name=\"triggerSubmitQuestionEditor\" id=\"triggerSubmitQuestionEditor\" @click.prevent=\"submitCurrentState\" />\r\n        <template v-if=\"$store.getters.fullyLoaded\">\r\n            <maineditor :event=\"event\" v-on:eventSet=\"eventSet\"></maineditor>\r\n            <generalsettings :event=\"event\" v-on:eventSet=\"eventSet\"></generalsettings>\r\n            <advancedsettings :event=\"event\" v-on:eventSet=\"eventSet\"></advancedsettings>\r\n        </template>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n.scoped-new-questioneditor {\r\n    min-height: 75vh;\r\n}\r\n.loading-back-greyed {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -13111,6 +13111,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$log.log('OBJECT TO BE TRANSFERRED: ', { 'questionData': transferObject });
             this.$_post(window.QuestionEditData.connectorBaseUrl + '/saveQuestionData', { 'questionData': transferObject }).then(result => {
                 this.toggleLoading();
+                $('#in_survey_common').trigger('lsStopLoading');
                 this.$log.log('OBJECT AFTER TRANSFER: ', result);
             });
         }
@@ -13328,6 +13329,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$store.dispatch('getQuestionGeneralSettingsWithType');
         },
         getQuestionPreview() {
+            if (window.QuestionEditData.qid == null) {
+                this.previewContent = `<div><h3>${tranlate('No preview available')}</h3></div>`;
+            }
             if (this.previewLoading === true) {
                 return;
             }
@@ -24473,7 +24477,7 @@ process.umask = function() { return 0; };
     loadQuestion: (context) => {
         __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 
-            {'iQuestionId' : window.QuestionEditData.qid}
+            {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
         ).then((result) => {
             context.commit('setCurrentQuestion', result.data.question);
             context.commit('setCurrentQuestionI10N', result.data.i10n);
@@ -24494,7 +24498,7 @@ process.umask = function() { return 0; };
         });
         __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getQuestionAttributeData', 
-            {'iQuestionId' : window.QuestionEditData.qid}
+            {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
         ).then((result) => {
             context.commit('setCurrentQuestionAttributes', result.data);
             context.commit('unsetImmutableQuestionAttributes', result.data);
@@ -24504,20 +24508,9 @@ process.umask = function() { return 0; };
     getQuestionGeneralSettings: (context) => {
         __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
-            {'iQuestionId' : window.QuestionEditData.qid}
-        ).then((result) => {
-            context.commit('setCurrentQuestionGeneralSettings', result.data);
-            context.commit('unsetImmutableQuestionGeneralSettings', result.data);
-            context.commit('setImmutableQuestionGeneralSettings', result.data);
-        });
-    },
-    getQuestionGeneralSettingsWithType: (context) => {
-        context.commit('setQuestionGeneralSettings', []);
-        __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
             {
                 'iQuestionId' : window.QuestionEditData.qid,
-                'sQuestionType' : context.store.currentQuestion.type
+                'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
             }
         ).then((result) => {
             context.commit('setCurrentQuestionGeneralSettings', result.data);
@@ -24526,22 +24519,12 @@ process.umask = function() { return 0; };
         });
     },
     getQuestionAdvancedSettings: (context) => {
-        __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
-            {'iQuestionId' : window.QuestionEditData.qid}
-        ).then((result) => {
-            context.commit('setCurrentQuestionAdvancedSettings', result.data);
-            context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
-            context.commit('setImmutableQuestionAdvancedSettings', result.data);
-        });
-    },
-    getQuestionAdvancedSettingsWithType: (context) => {
         context.commit('setQuestionGeneralSettings', []);
         __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
             {
                 'iQuestionId' : window.QuestionEditData.qid,
-                'sQuestionType' : context.store.currentQuestion.type
+                'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
             }
         ).then((result) => {
             context.commit('setCurrentQuestionAdvancedSettings', result.data);

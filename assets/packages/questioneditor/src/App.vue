@@ -45,6 +45,7 @@ export default {
             this.$log.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
             this.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', {'questionData': transferObject}).then((result) => {
                 this.toggleLoading();
+                $('#in_survey_common').trigger('lsStopLoading');
                 this.$log.log('OBJECT AFTER TRANSFER: ', result);
             })
         }

@@ -635,7 +635,9 @@ class Question extends LSActiveRecord
         $oCriteria->params = [':parent_qid'=>$this->qid];
 
         //reset answers set prior to this call
-        $aAnswerOptions = [];
+        $aAnswerOptions = [
+            0 => []
+        ];
         foreach ($this->answers as $oAnswer) {
             if ($scale_id !== null && $oAnswer->scale_id != $scale_id) {
                 continue;
@@ -666,7 +668,9 @@ class Question extends LSActiveRecord
         $oCriteria->params = [':parent_qid' => $this->qid];
 
         //reset subquestions set prior to this call
-        $aSubQuestions = [];
+        $aSubQuestions = [
+            0 => []
+        ];
         $excludedSubquestion = null;
         foreach ($this->subquestions as $i => $oSubquestion) {
             if ($scale_id !== null && $oSubquestion->scale_id != $scale_id) {

@@ -27544,8 +27544,12 @@ const SaveController = () => {
         return form;
     },
     displayLoadingState = (el) => {
-        const loadingSpinner = '<i class="fa fa-cog fa-spin"></i>';
+        const loadingSpinner = '<i class="fa fa-cog fa-spin lsLoadingStateIndicator"></i>';
         $(el).prop('disabled', true).append(loadingSpinner);
+    },
+    stopDisplayLoadingState = () => {
+        __WEBPACK_IMPORTED_MODULE_1__components_lslog__["a" /* default */].log('StopLoadingIconAnimation');
+        $('.lsLoadingStateIndicator').each((i,item) => {$(item).remove();});
     },
     //###########PRIVATE
     checks = () => {
@@ -27683,6 +27687,13 @@ const SaveController = () => {
                     $('#question-preview').modal('show');
                 },
                 on: 'click'
+            },
+            _checkStopLoading: {
+                check: '#in_survey_common',
+                run: function(ev) {
+                    stopDisplayLoadingState();
+                },
+                on: 'lsStopLoading'
             }
         }
     };

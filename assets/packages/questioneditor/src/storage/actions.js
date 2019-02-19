@@ -5,7 +5,7 @@ export default {
     loadQuestion: (context) => {
         ajax.methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 
-            {'iQuestionId' : window.QuestionEditData.qid}
+            {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
         ).then((result) => {
             context.commit('setCurrentQuestion', result.data.question);
             context.commit('setCurrentQuestionI10N', result.data.i10n);
@@ -26,7 +26,7 @@ export default {
         });
         ajax.methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getQuestionAttributeData', 
-            {'iQuestionId' : window.QuestionEditData.qid}
+            {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
         ).then((result) => {
             context.commit('setCurrentQuestionAttributes', result.data);
             context.commit('unsetImmutableQuestionAttributes', result.data);
@@ -36,20 +36,9 @@ export default {
     getQuestionGeneralSettings: (context) => {
         ajax.methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
-            {'iQuestionId' : window.QuestionEditData.qid}
-        ).then((result) => {
-            context.commit('setCurrentQuestionGeneralSettings', result.data);
-            context.commit('unsetImmutableQuestionGeneralSettings', result.data);
-            context.commit('setImmutableQuestionGeneralSettings', result.data);
-        });
-    },
-    getQuestionGeneralSettingsWithType: (context) => {
-        context.commit('setQuestionGeneralSettings', []);
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
             {
                 'iQuestionId' : window.QuestionEditData.qid,
-                'sQuestionType' : context.store.currentQuestion.type
+                'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
             }
         ).then((result) => {
             context.commit('setCurrentQuestionGeneralSettings', result.data);
@@ -60,20 +49,9 @@ export default {
     getQuestionAdvancedSettings: (context) => {
         ajax.methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
-            {'iQuestionId' : window.QuestionEditData.qid}
-        ).then((result) => {
-            context.commit('setCurrentQuestionAdvancedSettings', result.data);
-            context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
-            context.commit('setImmutableQuestionAdvancedSettings', result.data);
-        });
-    },
-    getQuestionAdvancedSettingsWithType: (context) => {
-        context.commit('setQuestionGeneralSettings', []);
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
             {
                 'iQuestionId' : window.QuestionEditData.qid,
-                'sQuestionType' : context.store.currentQuestion.type
+                'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
             }
         ).then((result) => {
             context.commit('setCurrentQuestionAdvancedSettings', result.data);

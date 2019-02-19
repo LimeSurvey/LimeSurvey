@@ -691,6 +691,9 @@ $config['bounceaccountuser'] = '';
 // Question selector
 $config['defaultquestionselectormode'] = 'default';
 
+// Preselected Question Type
+$config['preselectquestiontype'] = 'T';
+
 // theme editor mode
 $config['defaultthemeteeditormode'] = 'default';
 

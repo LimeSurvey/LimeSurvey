@@ -99,6 +99,9 @@ export default {
             this.$store.dispatch('getQuestionGeneralSettingsWithType');
         },
         getQuestionPreview(){
+            if(window.QuestionEditData.qid == null) {
+                this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`
+            }
             if(this.previewLoading === true) {
                 return;
             }
