@@ -57,21 +57,22 @@
     <div class="collapse navbar-collapse js-navbar-collapse pull-right">
         <ul class="nav navbar-nav navbar-right">
 
-            <!-- Tutorial menu -->
-            <?php $this->renderPartial( "/admin/super/_tutorial_menu", []); ?>
+            <!-- Help menu -->
+            <?php $this->renderPartial( "/admin/super/_help_menu", []); ?>
             
             <!-- Configuration menu -->
             <?php $this->renderPartial( "/admin/super/_configuration_menu", $dataForConfigMenu ); ?>
 
             <!-- Surveys menus -->
             <li class="dropdown-split-left">
-                <a style="" href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>"><span class="icon-list" ></span>
+                <a style="" href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
+                    <span class="fa fa-list" ></span>
                     <?php eT("Surveys");?>
                 </a>
             </li>
             <li class="dropdown dropdown-split-right">
-                <a style="padding-left: 5px;padding-right: 5px;" href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="sr-only">Toggle Dropdown</span>
+                <a class="ls-space padding left-5 right-5" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="sr-only">Toggle Dropdown</span>
                     <span style="margin-left: 0px;" class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">

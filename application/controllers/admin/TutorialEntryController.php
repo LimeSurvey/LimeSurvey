@@ -1,13 +1,7 @@
 <?php
 
-class TutorialEntryController extends Controller
+class TutorialEntryController extends Survey_Common_Action
 {
-    /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
-     */
-    public $layout = '//layouts/column2';
-
     /**
      * @return string[] action filters
      */
@@ -43,6 +37,20 @@ class TutorialEntryController extends Controller
                 'users'=>array('*'),
             ),
         );
+    }
+
+    public function index()
+    {
+        $this->getController()->redirect(array('admin/tutorialentries/sa/view'));
+    }
+    
+    public function view()
+    {
+        //$this->checkPermission();
+        $data = array();
+        $data['model'] = TutorialEntry::model();
+        //App()->getClientScript()->registerPackage('surveymenufunctions');
+        $this->_renderWrappedTemplate(null, array('tutorialentries/index'), $data);
     }
 
     /**
@@ -116,17 +124,6 @@ class TutorialEntryController extends Controller
         if (!isset($_GET['ajax'])) {
                     $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
-    }
-
-    /**
-     * Lists all models.
-     */
-    public function actionIndex()
-    {
-        $dataProvider = new CActiveDataProvider('TutorialEntry');
-        $this->render('index', array(
-            'dataProvider'=>$dataProvider,
-        ));
     }
 
     /**

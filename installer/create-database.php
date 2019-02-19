@@ -621,6 +621,145 @@ function createDatabase($oDB){
         }
 
 
+        // surveys_groupsettings
+        $oDB->createCommand()->createTable('{{surveys_groupsettings}}', array(
+            'gsid' => "integer NOT NULL",
+            'owner_id' => "integer NULL DEFAULT NULL",
+            'admin' => "string(50) NULL DEFAULT NULL",
+            'adminemail' => "string(254) NULL DEFAULT NULL",
+            'anonymized' => "string(1) NOT NULL DEFAULT 'N'",
+            'format' => "string(1) NULL DEFAULT NULL",
+            'savetimings' => "string(1) NOT NULL DEFAULT 'N'",
+            'template' => "string(100) NULL DEFAULT 'default'",
+            'datestamp' => "string(1) NOT NULL DEFAULT 'N'",
+            'usecookie' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowregister' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowsave' => "string(1) NOT NULL DEFAULT 'Y'",
+            'autonumber_start' => "integer NULL DEFAULT '0'",
+            'autoredirect' => "string(1) NOT NULL DEFAULT 'N'",
+            'allowprev' => "string(1) NOT NULL DEFAULT 'N'",
+            'printanswers' => "string(1) NOT NULL DEFAULT 'N'",
+            'ipaddr' => "string(1) NOT NULL DEFAULT 'N'",
+            'refurl' => "string(1) NOT NULL DEFAULT 'N'",
+            'showsurveypolicynotice' => "integer NULL DEFAULT '0'",
+            'publicstatistics' => "string(1) NOT NULL DEFAULT 'N'",
+            'publicgraphs' => "string(1) NOT NULL DEFAULT 'N'",
+            'listpublic' => "string(1) NOT NULL DEFAULT 'N'",
+            'htmlemail' => "string(1) NOT NULL DEFAULT 'N'",
+            'sendconfirmation' => "string(1) NOT NULL DEFAULT 'Y'",
+            'tokenanswerspersistence' => "string(1) NOT NULL DEFAULT 'N'",
+            'assessments' => "string(1) NOT NULL DEFAULT 'N'",
+            'usecaptcha' => "string(1) NOT NULL DEFAULT 'N'",
+            'bounce_email' => "string(254) NULL DEFAULT NULL",
+            'attributedescriptions' => "text NULL",
+            'emailresponseto' => "text NULL",
+            'emailnotificationto' => "text NULL",
+            'tokenlength' => "integer NULL DEFAULT '15'",
+            'showxquestions' => "string(1) NULL DEFAULT 'Y'",
+            'showgroupinfo' => "string(1) NULL DEFAULT 'B'",
+            'shownoanswer' => "string(1) NULL DEFAULT 'Y'",
+            'showqnumcode' => "string(1) NULL DEFAULT 'X'",
+            'showwelcome' => "string(1) NULL DEFAULT 'Y'",
+            'showprogress' => "string(1) NULL DEFAULT 'Y'",
+            'questionindex' => "integer NULL DEFAULT '0'",
+            'navigationdelay' => "integer NULL DEFAULT '0'",
+            'nokeyboard' => "string(1) NULL DEFAULT 'N'",
+            'alloweditaftercompletion' => "string(1) NULL DEFAULT 'N'"
+        ));
+
+        $oDB->createCommand()->addPrimaryKey('{{surveys_groupsettings_pk}}', '{{surveys_groupsettings}}', ['gsid']);
+
+        // insert settings for global level
+        $attributes1 = array(
+            'gsid' => '0',
+            'owner_id' => '1',
+            'admin' => 'Administrator',
+            'adminemail' => 'your-email@example.net',
+            'anonymized' => 'N',
+            'format' => 'G',
+            'savetimings' => 'N',
+            'template' => 'fruity',
+            'datestamp' => 'N',
+            'usecookie' => 'N',
+            'allowregister' => 'N',
+            'allowsave' => 'Y',
+            'autonumber_start' => '0',
+            'autoredirect' => 'N',
+            'allowprev' => 'N',
+            'printanswers' => 'N',
+            'ipaddr' => 'N',
+            'refurl' => 'N',
+            'showsurveypolicynotice' => '0',
+            'publicstatistics' => 'N',
+            'publicgraphs' => 'N',
+            'listpublic' => 'N',
+            'htmlemail' => 'N',
+            'sendconfirmation' => 'Y',
+            'tokenanswerspersistence' => 'N',
+            'assessments' => 'N',
+            'usecaptcha' => 'N',
+            'tokenlength' => '15',
+            'showxquestions' => 'Y',
+            'showgroupinfo' => 'B',
+            'shownoanswer' => 'Y',
+            'showqnumcode' => 'X',
+            'showwelcome' => 'Y',
+            'showprogress' => 'Y',
+            'questionindex' => '0',
+            'navigationdelay' => '0',
+            'nokeyboard' => 'N',
+            'alloweditaftercompletion' => 'N'
+        );
+        $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes1);
+
+        // insert settings for default survey group
+        $attributes2 =  array(
+                "gsid" => 1,
+                "owner_id" => -1,
+                "admin" => "inherit",
+                "adminemail" => "inherit",
+                "anonymized" => "I",
+                "format" => "I",
+                "savetimings" => "I",
+                "template" => "inherit",
+                "datestamp" => "I",
+                "usecookie" => "I",
+                "allowregister" => "I",
+                "allowsave" => "I",
+                "autonumber_start" => 0,
+                "autoredirect" => "I",
+                "allowprev" => "I",
+                "printanswers" => "I",
+                "ipaddr" => "I",
+                "refurl" => "I",
+                "showsurveypolicynotice" => 0,
+                "publicstatistics" => "I",
+                "publicgraphs" => "I",
+                "listpublic" => "I",
+                "htmlemail" => "I",
+                "sendconfirmation" => "I",
+                "tokenanswerspersistence" => "I",
+                "assessments" => "I",
+                "usecaptcha" => "E",
+                "bounce_email" => "inherit",
+                "attributedescriptions" => NULL,
+                "emailresponseto" => "inherit",
+                "emailnotificationto" => "inherit",
+                "tokenlength" => -1,
+                "showxquestions" => "I",
+                "showgroupinfo" => "I",
+                "shownoanswer" => "I",
+                "showqnumcode" => "I",
+                "showwelcome" => "I",
+                "showprogress" => "I",
+                "questionindex" => -1,
+                "navigationdelay" => -1,
+                "nokeyboard" => "I",
+                "alloweditaftercompletion" => "I",
+        );      
+        $oDB->createCommand()->insert("{{surveys_groupsettings}}", $attributes2);
+
+
         // surveys_languagesettings
         $oDB->createCommand()->createTable('{{surveys_languagesettings}}', array(
             'surveyls_survey_id' => "integer NOT NULL",
@@ -843,6 +982,7 @@ function createDatabase($oDB){
 
         // Install default plugins.
         foreach (LsDefaultDataSets::getDefaultPluginsData() as $plugin) {
+            unset($plugin['id']);
             $oDB->createCommand()->insert("{{plugins}}", $plugin);
         }
 
@@ -855,32 +995,4 @@ function createDatabase($oDB){
         throw new CHttpException(500, $e->getMessage());
     }
 
-    
-    // $oTransaction = $oDB->beginTransaction();
-    // try{  
-    //     $surveyMenuRowData = LsDefaultDataSets::getSurveyMenuData();
-    //     foreach ($surveyMenuRowData as $surveyMenuRow) {
-    //         switchMSSQLIdentityInsert("surveymenu", true, $oDB);
-    //         $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
-    //         switchMSSQLIdentityInsert("surveymenu", false, $oDB);
-    //     }
-    //     $oTransaction->commit();
-    // }catch(Exception $e){
-    //     $oTransaction->rollback();
-    //     throw new CHttpException(500, $e->getMessage());
-    // }
-
-    // $oTransaction = $oDB->beginTransaction();
-    // try{  
-    //     foreach($surveyMenuEntryRowData=LsDefaultDataSets::getSurveyMenuEntryData() as $surveyMenuEntryRow){
-    //         switchMSSQLIdentityInsert("surveymenu_entries", true, $oDB);
-    //         $oDB->createCommand()->insert("{{surveymenu_entries}}", $surveyMenuEntryRow);
-    //         switchMSSQLIdentityInsert("surveymenu_entries", false, $oDB);
-    //     }
-    //     $oTransaction->commit();
-    // }catch(Exception $e){
-    //     $oTransaction->rollback();
-    //     throw new CHttpException(500, $e->getMessage());
-    // }
-    // return true;
 }

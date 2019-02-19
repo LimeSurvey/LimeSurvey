@@ -24,7 +24,7 @@
         <version>3.0</version>
         <apiVersion>3</apiVersion>
         <description><![CDATA[<strong>LimeSurvey Bootstrap Vanilla Survey Theme</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based theme.]]></description>
-        <last_update>2018-04-11 17:00:00</last_update>
+        <lastUpdate>2018-04-11 17:00:00</lastUpdate>
     </metadata>
 
     <!--
@@ -51,6 +51,7 @@
             <add>css/base.css</add>
             <add>css/ajaxify.css</add>
             <add>css/theme.css</add>
+            <add>css/noTablesOnMobile.css</add>
             <add>css/custom.css</add>
         </css>
         <js>
@@ -77,6 +78,7 @@
         <showpopups>1</showpopups>
         <showclearall>off</showclearall>
         <questionhelptextposition>top</questionhelptextposition>
+        <fixnumauto>off</fixnumauto>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->
@@ -110,6 +112,7 @@
                     <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="subview">./subviews/footer/footer.twig</file>
                     <file type="view" role="content">./subviews/content/main.twig</file>
+                    <file type="view" role="subview">./subviews/messages/justsaved.twig</file>
                     <file type="view" role="subview">./subviews/survey/group.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_container.twig</file>
                     <file type="view" role="subview">./subviews/survey/group_subviews/group_desc.twig</file>
@@ -154,6 +157,8 @@
                     <file type="view" role="subview">./subviews/messages/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
                     <file type="view" role="subview">./subviews/navigation/language_changer.twig</file>
+                    <file type="view" role="subview">./subviews/logincomponents/captcha.twig</file>
+                    <file type="view" role="subview">./subviews/logincomponents/token.twig</file>
                     <file type="css">./css/theme.css</file>
                     <file type="js">./scripts/theme.js</file>
                     <file type="css">./css/custom.css</file>
@@ -242,8 +247,10 @@
                     <file type="view" role="layout">layout_printanswers.twig</file>
                     <file type="view" role="subview">./subviews/content/outerframe.twig</file>
                     <file type="view" role="content">./subviews/content/printanswers.twig</file>
-                    <file type="view" role="subview">./subviews/printanswers/printanswers_question.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_head.twig</file>
                     <file type="view" role="subview">./subviews/printanswers/printanswers_table.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_question.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_foot.twig</file>
                 </printanswers>
 
                 <pdf>

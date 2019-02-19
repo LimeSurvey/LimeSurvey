@@ -61,6 +61,8 @@ $this->renderPartial('super/fullpagebar_view', array(
                                                 <td class="col-md-1"><?php echo $oTemplate->buttons; ?></td>
                                             </tr>
                                         <?php endforeach;?>
+
+
                                     </tbody>
                                 </table>
 
@@ -106,9 +108,15 @@ $this->renderPartial('super/fullpagebar_view', array(
 
                                                     <!-- Delete -->
                                                     <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
-                                                        <a class="btn btn-default btn-block" id="button-delete" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this broken theme?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/deleteBrokenTheme/templatename/'.$sName); ?>", "_top")'>
-                                                            <span class="fa fa-trash  text-warning"></span>
-                                                            <?php eT("Delete"); ?>
+                                                        <a
+                                                            id="button-delete"
+                                                            href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/deleteBrokenTheme/'); ?>"
+                                                            data-post='{ "templatename": "<?php echo $sName; ?>" }'
+                                                            data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
+                                                            title="<?php eT('Delete'); ?>"
+                                                            class="btn btn-danger selector--ConfirmModal">
+                                                                <span class="fa fa-trash "></span>
+                                                                <?php eT('Delete'); ?>
                                                         </a>
                                                     <?php endif;?>
 

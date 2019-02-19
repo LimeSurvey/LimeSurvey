@@ -54,7 +54,7 @@ class ThemeUpdater extends ExtensionUpdater
      */
     public function getExtensionType()
     {
-        return 'theme';
+        return 't';
     }
 
     /**

@@ -102,8 +102,8 @@
                         <?php
                         $c = true;
                         foreach ($oSurvey->allLanguages as $language) {
-                                $admin_name = (empty($oSurvey->admin))?(Yii::app()->getConfig("siteadminname")):($oSurvey->admin);
-                                $admin_email  = (empty($oSurvey->adminemail))?(Yii::app()->getConfig("siteadminemail")):($oSurvey->adminemail);
+                                $admin_name = (empty($oSurvey->oOptions->admin))?(Yii::app()->getConfig("siteadminname")):($oSurvey->oOptions->admin);
+                                $admin_email  = (empty($oSurvey->oOptions->adminemail))?(Yii::app()->getConfig("siteadminemail")):($oSurvey->oOptions->adminemail);
                                 $fieldsarray["{ADMINNAME}"] = $admin_name;
                                 $fieldsarray["{ADMINEMAIL}"] = $admin_email;
                                 $fieldsarray["{SURVEYNAME}"] = $oSurvey->languagesettings[$language]->surveyls_title;

@@ -119,7 +119,7 @@ class GlobalSettings extends Survey_Common_Action
         $decimals = 1;
 
         $data['totalStorage'] = humanFilesize(folderSize($uploaddir), $decimals);
-        $data['templateSize'] = humanFilesize(folderSize($uploaddir.'/templates'), $decimals);
+        $data['templateSize'] = humanFilesize(folderSize($uploaddir.'/themes'), $decimals);
         $data['surveySize']   = humanFilesize(folderSize($uploaddir.'/surveys'), $decimals);
         $data['labelSize']    = humanFilesize(folderSize($uploaddir.'/labels'), $decimals);
 
@@ -289,10 +289,6 @@ class GlobalSettings extends Survey_Common_Action
             $warning .= gT("Warning! Admin email was not saved because it was not valid.").'<br/>';
         }
         SettingGlobal::setSetting('siteadminname', strip_tags(Yii::app()->getRequest()->getPost('siteadminname')));
-        SettingGlobal::setSetting('shownoanswer', sanitize_int(Yii::app()->getRequest()->getPost('shownoanswer')));
-        SettingGlobal::setSetting('showxquestions', (Yii::app()->getRequest()->getPost('showxquestions')));
-        SettingGlobal::setSetting('showgroupinfo', (Yii::app()->getRequest()->getPost('showgroupinfo')));
-        SettingGlobal::setSetting('showqnumcode', (Yii::app()->getRequest()->getPost('showqnumcode')));
         $repeatheadingstemp = (int) (Yii::app()->getRequest()->getPost('repeatheadings'));
         if ($repeatheadingstemp == 0) {
             $repeatheadingstemp = 25;
@@ -387,6 +383,47 @@ class GlobalSettings extends Survey_Common_Action
         'activetokens' => $activetokens,
         'deactivatedtokens' => $deactivatedtokens
         );
+    }
+
+    /**
+     * Update global survey settings
+     */
+    public function surveySettings()
+    {
+        $bRedirect = 0;
+        $gsid = 0; // global setting in SurveysGroupsettings model
+        $oSurvey = SurveysGroupsettings::model()->findByPk($gsid);
+        $oSurvey->setOptions();
+
+        if (isset($_POST)) {
+            $oSurvey->attributes = $_POST;
+            $oSurvey->gsid = 0;
+            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions();
+
+            if ($oSurvey->save()) {
+                $bRedirect = 1;
+            }
+        }
+
+        $users = getUserList();
+        $aData['users'] = array();
+        foreach ($users as $user) {
+            $aData['users'][$user['uid']] = $user['user'].($user['full_name'] ? ' - '.$user['full_name'] : '');
+        }
+        // Sort users by name
+        asort($aData['users']);
+
+        $aData['oSurvey'] = $oSurvey;
+
+        if ($bRedirect && App()->request->getPost('saveandclose') !== null){
+            $this->getController()->redirect($this->getController()->createUrl('admin/index'));
+        }
+
+        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+
+        $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+
+        $this->_renderWrappedTemplate('global_settings', 'surveySettings', $aData);
     }
 
     /**

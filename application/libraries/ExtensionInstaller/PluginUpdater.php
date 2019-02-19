@@ -55,7 +55,7 @@ class PluginUpdater extends ExtensionUpdater
      */
     public function getExtensionType()
     {
-        return 'plugin';
+        return 'p';
     }
 
     /**

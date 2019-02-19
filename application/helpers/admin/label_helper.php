@@ -70,7 +70,7 @@ function updateset($lid)
         }
         $criteria->mergeWith($langcriteria);
         // FIXME undefined function
-        debugbreak();
+        //debugbreak();
         $aLabels = Label::model()->with('labelL10ns')->together()->findAll($criteria);
         foreach ($aLabels as $aLabel) {
             foreach ($aLabel->labelL10ns as $aLabelL10ns) {
@@ -142,10 +142,10 @@ function modlabelsetanswers($lid)
 //            if {}
         }
         // FIXME undefined function
-        debugbreak();
+        //debugbreak();
         foreach ($data['codelist'] as $index=>$codeid) {
 
-            $codeObj = $data->$codeid;
+            $codeObj = $data[$codeid];
 
 
             $actualcode = $codeObj['code'];
@@ -154,20 +154,29 @@ function modlabelsetanswers($lid)
             foreach ($data['langs'] as $lang) {
 
                 $strTemp = 'text_'.$lang;
-                $title = $codeObj->$strTemp;
+                $title = $codeObj[$strTemp];
                 $sortorder = $index;
 
                 $oLabel = new Label();
                 $oLabel->lid = $lid;
                 $oLabel->code = $actualcode;
-                $oLabel->title = $title;
                 $oLabel->sortorder = $sortorder;
                 $oLabel->assessment_value = $assessmentvalue;
-                $oLabel->language = $lang;
+                
                 if ($oLabel->validate()) {
                     $oLabel->save();
                 } else {
                     $aErrors[] = $oLabel->getErrors();
+                }
+                $oLabelI10N = new LabelL10n();
+                $oLabelI10N->label_id = $oLabel->id;
+                $oLabelI10N->title = $title;
+                $oLabelI10N->language = $lang;
+
+                if ($oLabelI10N->validate()) {
+                    $oLabelI10N->save();
+                } else {
+                    $aErrors[] = $oLabelI10N->getErrors();
                 }
             }
         }

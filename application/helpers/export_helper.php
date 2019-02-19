@@ -263,15 +263,15 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language)
                 'size' => stringSize($field['sql_name']),
             );
         } else {
-            $query = "SELECT {{answers}}.code, {{answers}}.answer,
-            {{questions}}.type FROM {{answers}}, {{questions}} WHERE";
+            $query = "SELECT {{answers}}.code, {{answer_l10ns}}.answer,
+            {{questions}}.type FROM {{answers}}, {{answer_l10ns}}, {{questions}}, {{question_l10ns}} WHERE";
 
             if (isset($field['scale_id'])) {
                 $query .= " {{answers}}.scale_id = ".(int) $field['scale_id']." AND";
             }
 
-            $query .= " {{answers}}.qid = '".$field["qid"]."' and {{questions}}.language='".$language."' and  {{answers}}.language='".$language."'
-            and {{questions}}.qid='".$field['qid']."' ORDER BY sortorder ASC";
+            $query .= " {{answers}}.qid = '".$field["qid"]."' and {{answer_l10ns}}.aid = {{answers}}.aid and {{question_l10ns}}.language='".$language."' and  {{answer_l10ns}}.language='".$language."'
+            and {{questions}}.qid='".$field['qid']."' and {{question_l10ns}}.qid={{questions}}.qid ORDER BY sortorder ASC";
             $result = Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
             $num_results = safecount($result);
             if ($num_results > 0) {
@@ -1156,7 +1156,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     if ($scale_id != false) {
         $aCondition['scale_id'] = $scale_id;
     }
-    $QueryResult = Question::model()->findAllByAttributes($aCondition);
+    $QueryResult = Question::model()->with('questionL10ns')->findAllByAttributes($aCondition);
     foreach ($QueryResult as $Row) {
         $response = $dom->createElement("response");
         if ($free == false) {
@@ -1197,7 +1197,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
             $response->appendChild($fixed);
 
         } else {
-            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row['question']));
+            $response->appendChild(QueXMLCreateFree($free['f'], $free['len'], $Row->questionL10ns[$quexmllang]->question));
         }
 
         $response->setAttribute("varName", $varname."_".QueXMLCleanup($Row['title']));
@@ -1648,7 +1648,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                         break;
                     case "R": //RANKING STYLE
                         quexml_create_subQuestions($question, $qid, $sgq, $iResponseID, $fieldmap, true);
-                        $Query = "SELECT MAX(CHAR_LENGTH(code)) as sc FROM {{answers}} WHERE qid = $qid AND language='$quexmllang' ";
+                        $Query = "SELECT MAX(CHAR_LENGTH(code)) as sc FROM {{answers}} JOIN {{answer_l10ns}} ON {{answers}}.aid = {{answer_l10ns}}.aid WHERE qid = $qid AND language='$quexmllang' ";
                         $QRE = Yii::app()->db->createCommand($Query)->query();
                         //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
                         //$QROW = mysql_fetch_assoc($QRE);
@@ -1993,12 +1993,14 @@ function tokensExport($iSurveyID)
         if ($bIsNotAnonymous) {
             $oRecordSet->leftJoin("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
             $oRecordSet->andWhere("ls.id IS NULL");
+            $oRecordSet->select("lt.*, ls.id");
         }
     }
     if ($iTokenStatus == 3 && $bIsNotAnonymous) {
         $oRecordSet->leftJoin("{{survey_$iSurveyID}} ls", 'lt.token=ls.token');
         $oRecordSet->andWhere("lt.completed='N'");
         $oRecordSet->andWhere("ls.id IS NULL");    
+        $oRecordSet->select("lt.*, ls.id");
     }
     if ($iTokenStatus == 4 && $bIsNotAnonymous) {
         $oRecordSet->selectDistinct('lt.tid, lt.firstname, lt.lastname, lt.email, lt.emailstatus, lt.token, lt.language, lt.sent, lt.remindersent, lt.remindercount, lt.completed, lt.usesleft, lt.validfrom, lt.validuntil, MAX(ls.startdate) as started');
@@ -2483,7 +2485,7 @@ function tsvSurveyExport($surveyid){
             $conditions[$condition['qid']][] = $condition;
         }
 
-        sortArrayByColumn($groups[$language], 'group_order');
+        $groups[$language] = sortArrayByColumn($groups[$language], 'group_order');
         foreach ($groups[$language] as $gid => $group) {
             $tsv_output = $fields;
             $tsv_output['id'] = $gid;
@@ -2498,7 +2500,7 @@ function tsvSurveyExport($surveyid){
             
             // questions
             if (array_key_exists($gid, $questions[$language])){
-                sortArrayByColumn($questions[$language][$gid], 'question_order');
+                $questions[$language][$gid] = sortArrayByColumn($questions[$language][$gid], 'question_order');
                 foreach ($questions[$language][$gid] as $qid => $question) {
                     $tsv_output = $fields;
                     $tsv_output['id'] = $question['qid'];
@@ -2559,7 +2561,7 @@ function tsvSurveyExport($surveyid){
                     }
                     
                     if (!empty($subquestions[$language][$qid])){
-                        sortArrayByColumn($subquestions[$language][$qid], 'question_order');
+                        $subquestions[$language][$qid] = sortArrayByColumn($subquestions[$language][$qid], 'question_order');
                         foreach ($subquestions[$language][$qid] as $key => $subquestion) {
                             $tsv_output = $fields;
                             $tsv_output['id'] = $subquestion['qid'];
@@ -2581,7 +2583,7 @@ function tsvSurveyExport($surveyid){
                     }
 
                     if (!empty($answers[$language][$qid])){
-                        sortArrayByColumn($answers[$language][$qid], 'sortorder');
+                        $answers[$language][$qid] = sortArrayByColumn($answers[$language][$qid], 'sortorder');
                         foreach ($answers[$language][$qid] as $key => $answer) {
                             $tsv_output = $fields;
                             $tsv_output['id'] = $answer['qid'];
@@ -2602,7 +2604,7 @@ function tsvSurveyExport($surveyid){
 
     // assessments
     if (!empty($assessments)){
-        //sortArrayByColumn($assessments[$gid], 'other');
+        //$assessments[$gid] = sortArrayByColumn($assessments[$gid], 'other');
         foreach ($assessments as $key => $assessment) {
             $tsv_output = $fields;
             $tsv_output['id'] = $assessment['id'];
@@ -2620,7 +2622,7 @@ function tsvSurveyExport($surveyid){
 
     // quotas
     if (!empty($quotas)){
-        sortArrayByColumn($quotas, 'id');
+        $quotas = sortArrayByColumn($quotas, 'id');
         foreach ($quotas as $key => $quota) {
             $tsv_output = $fields;
             $tsv_output['id'] = $quota['id'];
@@ -2661,10 +2663,13 @@ function tsvSurveyExport($surveyid){
  * @param array $array
  * @param string $column_name
  **/
-function sortArrayByColumn(&$array, $column_name){
-    uasort($array, function($a,$b) use (&$column_name) {
-        return @(strnatcmp($a["' . $column_name . '"], $b["' . $column_name . '"]));
-    });
+function sortArrayByColumn($array, $column_name){
+    $keys = array_keys($array);
+    array_multisort(
+        array_column($array, $column_name), SORT_ASC, SORT_NUMERIC, $array, $keys
+    );
+    $array = array_combine($keys, $array);
+    return $array;
 }
 
 /**

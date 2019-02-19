@@ -244,10 +244,9 @@ class export extends Survey_Common_Action
             $data['aLanguages'] = $aLanguages; // Pass available exports
 
             $data['aCsvFieldSeparator'] = array(
-                chr(44) => "Comma",
-                chr(59) => "Semicolon",
-                chr(9) => "Tab",
-
+                chr(44) => gT("Comma"),
+                chr(59) => gT("Semicolon"),
+                chr(9) => gT("Tab"),
             );
 
             $data['sidemenu']['state'] = false;
@@ -257,7 +256,6 @@ class export extends Survey_Common_Action
 
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
-            $data['title_bar']['subaction'] = gT('Export results');
             $data['subaction'] = gT('Export results');
 
             $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
@@ -503,7 +501,9 @@ class export extends Survey_Common_Action
                     foreach ($label_parts as $idx => $label_part) {
                         if ($idx != count($label_parts) && substr($label_part, -1) == '"' && substr($label_part, -2) != '"') {
                             $label_parts[$idx] = rtrim($label_part, '"');
-                            $label_parts[$idx + 1] = '"'.$label_parts[$idx + 1];
+                            if (array_key_exists($idx + 1, $label_parts)){
+                                $label_parts[$idx + 1] = '"'.$label_parts[$idx + 1];
+                            }
                         }
                     }
                     echo "VARIABLE LABELS ".$field['id']." \"".implode("\"+\n\"", $label_parts)."\".\n";
@@ -606,7 +606,6 @@ class export extends Survey_Common_Action
 
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $aData['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
-            $aData['title_bar']['subaction'] = gt('Export a VV survey file');
             $aData['subaction'] = gt('Export a VV survey file');
 
             $aData['sidemenu']['state'] = false;

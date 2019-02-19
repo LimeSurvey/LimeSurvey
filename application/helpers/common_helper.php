@@ -706,6 +706,7 @@ function getSurveyInfo($surveyid, $languagecode = '')
     $languagecode = sanitize_languagecode($languagecode);
     $thissurvey = false;
     $oSurvey = Survey::model()->findByPk($surveyid);
+    $aSurveyOptions = $oSurvey->aOptions;
     // Do job only if this survey exist
     if (!$oSurvey) {
         return false;
@@ -726,7 +727,8 @@ function getSurveyInfo($surveyid, $languagecode = '')
             $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
         }
         if ($result) {
-            $thissurvey = array_merge($result->survey->attributes, $result->attributes);
+            $aSurveyAtrributes = array_replace($result->survey->attributes, $aSurveyOptions);
+            $thissurvey = array_merge($aSurveyAtrributes, $result->attributes);
             $thissurvey['name'] = $thissurvey['surveyls_title'];
             $thissurvey['description'] = $thissurvey['surveyls_description'];
             $thissurvey['welcome'] = $thissurvey['surveyls_welcometext'];
@@ -753,7 +755,13 @@ function getSurveyInfo($surveyid, $languagecode = '')
             if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail'] = Yii::app()->getConfig('siteadminname'); }
             if (!isset($thissurvey['urldescrip']) || $thissurvey['urldescrip'] == '') {$thissurvey['urldescrip'] = $thissurvey['surveyls_url']; }
 
-            $thissurvey['owner_username'] = $result->survey->owner->users_name;
+            if ($result->survey->owner_id == -1 && !empty($oSurvey->oOptions->owner_id)){
+                $thissurvey['owner_username'] = User::model()->find("uid=:uid", array(':uid'=>$oSurvey->oOptions->owner_id))['users_name'];
+            } elseif (!empty($result->survey->owner->users_name)){
+                $thissurvey['owner_username'] = $result->survey->owner->users_name;
+            } else {
+                $thissurvey['owner_username'] = '';
+            }
 
             $staticSurveyInfo[$surveyid][$languagecode] = $thissurvey;
         }
@@ -3617,8 +3625,8 @@ function fixLanguageConsistency($sid, $availlangs = '')
     }
     
     /* Remove invalid question : can break survey */
+    switchMSSQLIdentityInsert('assessments', true);
     Survey::model()->findByPk($sid)->fixInvalidQuestions();
-
     $query = "SELECT * FROM {{assessments}} WHERE sid='{$sid}' AND language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $assessment) {
@@ -3642,8 +3650,10 @@ function fixLanguageConsistency($sid, $availlangs = '')
         }
         reset($langs);
     }
+    switchMSSQLIdentityInsert('assessments', false);
 
 
+    switchMSSQLIdentityInsert('quota_languagesettings', true);
     $query = "SELECT * FROM {{quota_languagesettings}} join {{quota}} q on quotals_quota_id=q.id WHERE q.sid='{$sid}' AND quotals_language='{$baselang}'";
     $result = Yii::app()->db->createCommand($query)->query();
     foreach ($result->readAll() as $qls) {
@@ -3664,6 +3674,7 @@ function fixLanguageConsistency($sid, $availlangs = '')
         }
         reset($langs);
     }
+    switchMSSQLIdentityInsert('quota_languagesettings', true);
 
     return true;
 }
@@ -4823,4 +4834,26 @@ function safecount($element)
         return count($element);
     }
     return 0;
+}
+
+/**
+* This function switches identity insert on/off for the MSSQL database
+*
+* @param string $table table name (without prefix)
+* @param boolean $state  Set to true to activate ID insert, or false to deactivate
+* @return void
+*/
+function switchMSSQLIdentityInsert($table, $state)
+{
+    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
+        if ($state === true) {
+            // This needs to be done directly on the PDO object because when using CdbCommand or similar
+            // it won't have any effect
+            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' ON');
+        } else {
+            // This needs to be done directly on the PDO object because when using CdbCommand or similar
+            // it won't have any effect
+            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' OFF');
+        }
+    }
 }

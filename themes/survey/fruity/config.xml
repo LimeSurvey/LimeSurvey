@@ -22,7 +22,7 @@
         <version>3.0.1</version>
         <apiVersion>3</apiVersion>
         <description><![CDATA[<strong>LimeSurvey Fruity Theme</strong><br>A fruity theme for a flexible use. This theme offers monochromes variations and many options for easy customizations.]]></description>
-        <last_update>2018-06-12 16:26:42</last_update>
+        <lastUpdate>2018-06-12 16:26:42</lastUpdate>
         <extends>vanilla</extends>
     </metadata>
 
@@ -48,6 +48,7 @@
     <files>
         <css>
             <add>css/variations/sea_green.css</add>
+            <remove>css/noTablesOnMobile.css</remove>
             <replace>css/animate.css</replace>
             <replace>css/theme.css</replace>
             <replace>css/custom.css</replace>
@@ -101,8 +102,10 @@
         <hideprivacyinfo>off</hideprivacyinfo>
         <crosshover>off</crosshover>
         <showpopups>1</showpopups>
+        <notables>1</notables>
         <showclearall>off</showclearall>
         <questionhelptextposition>top</questionhelptextposition>
+        <fixnumauto>off</fixnumauto>
     </options>
 
     <!-- Engine configuration is the very same as vanilla  -->

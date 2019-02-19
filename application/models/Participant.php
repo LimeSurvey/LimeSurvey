@@ -406,8 +406,7 @@ class Participant extends LSActiveRecord
                 "value" => '$data->getParticipantAttribute($this->id)',
                 "id" => $name,
                 "header" => $attribute['defaultname'],
-                "type" => "raw",
-
+                "type" => "html",
             );
             //textbox
             if ($attribute['attribute_type'] == "TB") {
@@ -1684,16 +1683,15 @@ class Participant extends LSActiveRecord
                 }
             } else {
                 //Create a new token entry for this participant
-                $writearray = array(
-                    'participant_id' => $oParticipant->participant_id,
-                    'firstname' => $oParticipant->firstname,
-                    'lastname' => $oParticipant->lastname,
-                    'email' => $oParticipant->email,
-                    'emailstatus' => 'OK',
-                    'language' => isset($oParticipant->language) ? $oParticipant->language : App()->language
-                );
-
-                $insertedtokenid =TokenDynamic::model($surveyId)->insertParticipant($writearray);
+                $oToken = Token::create($surveyId);
+                $oToken->participant_id = $oParticipant->participant_id;
+                $oToken->firstname = $oParticipant->firstname;
+                $oToken->lastname = $oParticipant->lastname;
+                $oToken->email = $oParticipant->email;
+                if(!$oToken->save()) {
+                    throw new Exception(CHtml::errorSummary($oToken));
+                }
+                $insertedtokenid = $oToken->tid;
 
                 //Create a survey link for the new token entry
                 $oSurveyLink = new SurveyLink;

@@ -68,15 +68,13 @@ LS.CPDB = (function() {
     onClickExport = function(all) {
         var postdata = {
             selectedParticipant: [],
-            YII_CSRF_TOKEN : LS.data.csrfToken
-        }; 
+        }; /* csrf is already in ajaxSetup */
 
         if (!all) {
             $('.selector_participantCheckbox:checked').each(function(i,item){
                 postdata.selectedParticipant.push($(item).val());
             });
         }
-
         $.ajax({
             url: exporttocsvcountall,
             data: postdata,
@@ -113,6 +111,11 @@ LS.CPDB = (function() {
                             var dlForm = $("<form></form>")
                                 .attr('action', exportToCSVURL)
                                 .attr('method', "POST");
+                            /* add crsf sice where out of ajax here */
+                            $('<input />')
+                                .attr('name', LS.data.csrfTokenName)
+                                .attr('value', LS.data.csrfToken)
+                                .appendTo(dlForm);
                             $.each(dldata, function(key,value){
                                 $('<input />')
                                     .attr('name', key)
@@ -147,7 +150,7 @@ LS.CPDB = (function() {
                 //data can be string of parameters or array/object
                 data = typeof data == 'string' ? data : jQuery.param(data);
                 //split params into form inputs
-                var inputs = '<input type="hidden" name="YII_CSRF_TOKEN" value="'+LS.data.csrfToken+'">';
+                var inputs = '<input type="hidden" name="'+LS.data.csrfTokenName+'" value="'+LS.data.csrfToken+'">';
                 jQuery.each(data.split('&'), function(){
                     var pair = this.split('=');
                     inputs+='<input type="hidden" name="'+ pair[0] +'" value="'+ pair[1] +'">';

@@ -23,7 +23,7 @@ var LSSlider = function (options) {
         setPosition = options.setPosition || '',
         custom_handle = options.custom_handle || null,
         settings = {
-            value: options.value || null,
+            value: options.value || options.position || null,
             min: options.min || '0',
             max: options.max || '1',
             step: options.step || '1',
@@ -96,8 +96,8 @@ var LSSlider = function (options) {
 
         },
         setValue = function (value) {
-            value = value || position;
-            sliderObject.setValue(position, true, true);
+            value = value || parseInt(position);
+            sliderObject.setValue(value, true, true);
             elementObject.val(value.toString().replace('.', separator)).trigger('keyup');
             writeToRootElement(value);
             triggerChanges();

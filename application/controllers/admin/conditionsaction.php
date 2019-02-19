@@ -635,14 +635,12 @@ protected function getMethod()
 */
 protected function resetSurveyLogic($iSurveyID)
 {
-    $request = Yii::app()->request;
-    $postOk = $request->getQuery('ok');
-    if (empty($postOk)) {
+    if (empty(Yii::app()->request->getPost('ok'))) {
         $data = array('iSurveyID' => $iSurveyID);
         $content = $this->getController()->renderPartial('/admin/conditions/deleteAllConditions', $data, true);
         $this->_renderWrappedTemplate('conditions', array('message' => array(
-        'title' => gT("Warning"),
-        'message' => $content
+            'title' => gT("Warning"),
+            'message' => $content
         )));
         Yii::app()->end();
     } else {
@@ -1409,7 +1407,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     break;
                 }
                 // Only Show No-Answer if question is not mandatory
-                if ($rows['mandatory'] != 'Y') {
+                if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", gT("No answer"));
                 }
                 
@@ -1459,7 +1457,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                 foreach ($x_axis as $key=>$val) {
                     $shortquestion = $rows['title'].":{$yrow['title']}:$key: [".strip_tags($yrow['question'])."][".strip_tags($val)."] ".flattenText($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key);
-                    if ($rows['mandatory'] != 'Y') {
+                    if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                     }
                 }
             }
@@ -1499,7 +1497,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                 }
                 
                 // Only Show No-Answer if question is not mandatory
-                if ($rows['mandatory'] != 'Y') {
+                if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "", gT("No answer"));
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "", gT("No answer"));
                 }
@@ -1517,7 +1515,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                 $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
                 
                 // Only Show No-Answer if question is not mandatory
-                if ($rows['mandatory'] != 'Y') {
+                if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", gT("No answer"));
                 }
                 
@@ -1546,7 +1544,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]);
                 }
                 // Only Show No-Answer if question is not mandatory
-                if ($rows['mandatory'] != 'Y') {
+                if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", gT("No answer"));
                 }
             }
@@ -1583,7 +1581,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", gT("Yes"));
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", gT("No"));
                     // Only Show No-Answer if question is not mandatory
-                    if ($rows['mandatory'] != 'Y') {
+                    if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
@@ -1591,7 +1589,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", gT("Female"));
                     $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", gT("Male"));
                     // Only Show No-Answer if question is not mandatory
-                    if ($rows['mandatory'] != 'Y') {
+                    if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
@@ -1600,13 +1598,13 @@ protected function getCAnswersAndCQuestions(array $theserows)
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
                     }
                     // Only Show No-Answer if question is not mandatory
-                    if ($rows['mandatory'] != 'Y') {
+                    if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                     break;
                 case Question::QT_N_NUMERICAL: // Simple Numerical questions
                     // Only Show No-Answer if question is not mandatory
-                    if ($rows['mandatory'] != 'Y') {
+                    if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
@@ -1624,7 +1622,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     }
                     if ($rows['type'] == Question::QT_D_DATE) {
                         // Only Show No-Answer if question is not mandatory
-                        if ($rows['mandatory'] != 'Y') {
+                        if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                             $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                         }
                     } elseif ($rows['type'] != Question::QT_M_MULTIPLE_CHOICE &&
@@ -1639,7 +1637,7 @@ protected function getCAnswersAndCQuestions(array $theserows)
                         }
                         
                         // Only Show No-Answer if question is not mandatory
-                        if ($rows['mandatory'] != 'Y') {
+                        if ($rows['mandatory'] != 'Y' && $rows['mandatory'] != 'S') {
                             $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                         }
                     }

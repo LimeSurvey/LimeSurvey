@@ -80,6 +80,7 @@ function checkconditions(value, name, type, evt_type)
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
+    /* did we must check if LSvar is set ? and are valid ? */
     if(window.event){
     var keyPressed =  window.event.keyCode || 0;
     if(
@@ -95,7 +96,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     /**
     * If have to use parsed value.
     */
-    if(!bNumRealValue)
+    if(!LSvar.bNumRealValue)
     {
         if(checkNumericRegex.test(value)) {
             try{
@@ -120,7 +121,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     /**
      * If have to fix numbers automatically.
      */
-    if(bFixNumAuto && (newval != ""))
+    if(LSvar.bFixNumAuto))
     {
         if(window.correctNumberField!=null) {
             clearTimeout(window.correctNumberField);
@@ -132,10 +133,18 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             addition = cleansedValue.split("").pop();
         }
 
-        var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/);
+        var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/); /* 1.0 : keep .0 */
+        var matchMustGetZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)([0-9]*)$/); /* Maybe have 0 */
         if(matchFollowingZeroes){
             addition = LEMradix+matchFollowingZeroes[3];
+        } else if(matchMustGetZeroes) {
+            /* Don‘t find good regexp … */
+            while (cleansedValue.substr(-1) === "0") {
+                addition += "0";
+                cleansedValue = cleansedValue.slice(0, -1);
+            }
         }
+
         if(decimalValue == undefined){
             try{
                 decimalValue = new Decimal(cleansedValue);
@@ -166,7 +175,9 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
         if (displayVal=='NaN')
         {
             newval=displayVal;
-            displayVal=value;
+            if(cleansedValue == '') {
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(cleansedValue).trigger("keyup");}, 400);
+            }
         }
         else{
             if(LEMradix==",")
@@ -181,7 +192,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
 
             if($('#answer'+name).val() != newval){
-                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval);}, 400);
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval).trigger("keyup");}, 400);
             }
         }
     }
@@ -220,7 +231,7 @@ $(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /* checkbox item */
-$(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event){
+$(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :checkbox:not([onclick])",function(event){
     checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 /* hidden item */
@@ -689,11 +700,6 @@ function LEMval(alias)
     var varName = alias;
     var suffix = 'code';    // the default
     var value = "";
-    if(typeof bNumRealValue == 'undefined'){
-        bNumRealValue=false;
-    } // Allow to update {QCODE} even with text
-
-    /* If passed a number, return that number */
     if (str == '') return '';
     newval = str;
     if (LEMradix === ',') {
@@ -977,12 +983,13 @@ function LEMval(alias)
             }
 
             if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
-                if(value=="")
-                {
+                if(value=="") {
                     return "";
                 }
+
                 var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.)[0-9]*$/);
-                if(checkNumericRegex.test(value) && !bNumRealValue)
+                /* Set as number if regexp is OK AND lenght is > 1 (then not fix [-.,] #14533 and no need to fix single number) */
+                if( checkNumericRegex.test(value) && value.length > 1 )
                 {
                     var length = value.length;
                     var firstLetterIsNull = value.split("").shift() === '0';
@@ -990,6 +997,7 @@ function LEMval(alias)
                         var numtest = new Decimal(value);
                     } catch(e){
                         var numtest = new Decimal(value.toString().replace(/,/,'.'));
+                        // Error can still happen maybe but don't catch to know (and fix) it
                     }
 
                     // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
@@ -1001,6 +1009,9 @@ function LEMval(alias)
                     if(value.length < length && firstLetterIsNull){
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
+                }
+                if(LSvar.bNumRealValue) {
+                    return value;
                 }
                 return Number(value);
             }

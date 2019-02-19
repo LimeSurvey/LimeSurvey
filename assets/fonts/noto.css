@@ -17,7 +17,7 @@
   font-family: 'Noto Sans';
   font-weight: 300;
   font-style: italic;
-  src: url('./font-src/Noto/NotoSans-Italic');
+  src: url('./font-src/Noto/NotoSans-Italic.ttf');
 }
 
 @font-face {

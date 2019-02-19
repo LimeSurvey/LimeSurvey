@@ -8,20 +8,6 @@
 <div class="container-fluid">
     <div class="ls-flex-column ls-space padding left-5 right-35 col-md-7">
         <div class="form-group">
-            <label class=" control-label"  for="showqnumcode"><?php eT('Show question number and/or question code:'); ?></label>
-            <div class="">
-                <?php echo  CHtml::dropDownList('showqnumcode', getGlobalSetting('showqnumcode'),
-                    array("choose"=>gT('Selectable by survey admin'),
-                        "both"=>gT('Show both'),
-                        "number"=>gT('Show question number only'),
-                        "code"=>gT('Show question code only'),
-                        "none"=>gT('Hide both')
-                    ),array('class'=>'form-control'));
-                ?>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label class=" control-label"  for='repeatheadings'><?php eT("Repeating headings in array questions every X subquestions:"); ?></label>
             <div class="">
                 <input class="form-control"  id='repeatheadings' name='repeatheadings' value='<?php echo getGlobalSetting('repeatheadings'); ?>' size='4' maxlength='4' />
@@ -59,53 +45,9 @@
 
             </div>
         </div>
-
-        <div class="form-group">
-            <label class=" control-label"  for="showgroupinfo"><?php eT('Show question group title and/or description:'); ?></label>
-            <div class="">
-                <?php echo  CHtml::dropDownList('showgroupinfo', getGlobalSetting('showgroupinfo'),
-                    array("choose"=>gT('Selectable by survey admin'),
-                        "both"=>gT('Show both'),
-                        "name"=>gT('Show group name only'),
-                        "description"=>gT('Show group description only'),
-                        "none"=>gT('Hide both')
-                    ),array('class'=>'form-control'));
-                ?>
-            </div>
-        </div>
     </div>
     
     <div class="ls-flex-column ls-space padding left-5 right-5 col-md-5">
-        <div class="form-group">
-            <label class=" control-label"  for='shownoanswer'><?php eT("Show 'no answer' option for non-mandatory questions:"); ?></label>
-            <div class="">
-                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                    'name' => 'shownoanswer',
-                    'value'=> getGlobalSetting('shownoanswer') ,
-                    'selectOptions'=>array(
-                        "2"=>gT("Selectable",'unescaped'),
-                        "1"=>gT("On",'unescaped'),
-                        "0"=>gT("Off",'unescaped')
-                    )
-                ));?>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class=" control-label"  for="showxquestions"><?php eT('Show "There are X questions in this survey":'); ?></label>
-            <div class="">
-                <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                    'name' => 'showxquestions',
-                    'value'=> getGlobalSetting('showxquestions') ,
-                    'selectOptions'=>array(
-                        "choose"=>gT("Selectable",'unescaped'),
-                        "show"=>gT("On",'unescaped'),
-                        "hide"=>gT("Off",'unescaped')
-                    )
-                ));?>
-            </div>
-        </div>
-
         <div class="form-group">
             <label class=" control-label"  for='pdfshowheader'><?php eT("Show header in answers export PDFs:") ; ?></label>
             <div class="">

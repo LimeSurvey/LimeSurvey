@@ -19,12 +19,9 @@
  * Class Label
  *
  * @property integer $id Primary Key
- * @property integer $lid Related Label Set
- * @property string $code
- * @property string $title
- * @property integer $sortorder
- * @property string $language
- * @property integer $assessment_value
+ * @property integer $label_id Related Label ID
+ * @property string $title title
+ * @property string $language connected language
  */
 class LabelL10n extends LSActiveRecord
 {

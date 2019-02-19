@@ -18,7 +18,7 @@
 
 <li class="dropdown mega-dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <span class="icon-settings" ></span>
+        <span class="fa fa-cogs" ></span>
         <?php eT('Configuration');?>
         <span class="caret"></span>
     </a>
@@ -247,6 +247,13 @@
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/globalsettings"); ?>">
                             <?php eT("Global settings");?>
+                        </a>
+                    </li>
+
+                    <!-- Global survey settings -->
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/globalsettings/sa/surveysettings"); ?>">
+                            <?php eT("Global survey settings");?>
                         </a>
                     </li>
 

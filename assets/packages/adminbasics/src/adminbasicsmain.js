@@ -41,6 +41,7 @@ import * as AjaxHelper from './parts/ajaxHelper';
 import saveBindings from './parts/save';
 
 // import components
+import activateSubSubMenues from './components/bootstrap-sub-submenues';
 import confirmDeletemodal from './components/confirmdeletemodal';
 import panelClickable from './components/panelclickable';
 import panelsAnimation from './components/panelsanimation';
@@ -76,6 +77,7 @@ const AdminCore = function(){
             appendToLoad(panelClickable);
             appendToLoad(panelsAnimation, null, null, 200);
             appendToLoad(notificationSystem.initNotification);
+            appendToLoad(activateSubSubMenues);
             appendToLoad(globalWindowMethods.fixAccordionPosition);
         },
         appendToLoad = (fn, event, root, delay) => {

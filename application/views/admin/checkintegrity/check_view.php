@@ -293,7 +293,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 <br /> <?php eT("No database action required!"); ?>
                 <?php } else
                 {?>
-                <?php echo CHtml::form(array("admin/checkintegrity/fixredundancy"), 'post');?>
+                <?php echo CHtml::form(array("admin/checkintegrity",'sa'=>'fixredundancy'), 'post');?>
                     <ul class='data-redundancy-list list-unstyled'>
                         <?php
                             if (isset($redundantsurveytables))

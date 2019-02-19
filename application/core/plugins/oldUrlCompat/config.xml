@@ -4,7 +4,7 @@
         <name>oldUrlCompat</name>
         <type>plugin</type>
         <creationDate>2016-01-27</creationDate>
-        <last_update>2017-11-23</last_update>
+        <lastUpdate>2017-11-23</lastUpdate>
         <author>Denis Chenu</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
         <version>1.0.0</version>

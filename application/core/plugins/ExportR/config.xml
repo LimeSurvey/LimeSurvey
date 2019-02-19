@@ -4,7 +4,7 @@
         <name>ExportR</name>
         <type>plugin</type>
         <creationDate>2013-07-03</creationDate>
-        <last_update>2017-11-23</last_update>
+        <lastUpdate>2017-11-23</lastUpdate>
         <author>Menno Dekker</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
         <version>1.0.0</version>

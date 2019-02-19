@@ -48,7 +48,6 @@ class CheckIntegrity extends Survey_Common_Action
 
     public function fixredundancy()
     {
-
         $oldsmultidelete = Yii::app()->request->getPost('oldsmultidelete', array());
         $aData = [];
         $aData['messages'] = array();
@@ -468,9 +467,20 @@ class CheckIntegrity extends Survey_Common_Action
 
                                     // If not, we change the column name
                                     $sNvColName = $oSurvey->sid . 'X'. $oQuestion->groups->gid . 'X' . $sDirtyQid;
-                                    $oTransaction = $oDB->beginTransaction();
-                                    $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name , $sNvColName);
-                                    $oTransaction->commit();
+
+                                    if ( array_key_exists( $sNvColName, $aColumns ) ){
+                                        // This case will not happen often, only when QID + Subquestion ID == QID of a question in the target group
+                                        // So we'll change the group of the question question group table (so in admin interface, not in frontend)
+                                        $oQuestion->gid = $sGid;
+                                        $oQuestion->save();
+
+                                    }else{
+                                        $oTransaction = $oDB->beginTransaction();
+                                        $oDB->createCommand()->renameColumn($model->tableName(), $oColumn->name , $sNvColName);
+                                        $oTransaction->commit();
+                                    }
+
+
                                 }
                             }else{
                                 // QID not found: we should do something...

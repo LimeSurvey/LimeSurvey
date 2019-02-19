@@ -7,16 +7,18 @@
 <p>
     <?php eT("Continue?"); ?>
 </p>
-
+<?php echo CHtml::beginForm(array("admin/conditions/sa/index/",'subaction'=>'resetsurveylogic','surveyid'=>$iSurveyID)); ?>
 <button
-    class='btn btn-default'
-    onclick="window.open('<?php echo $this->createUrl("admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/$iSurveyID")."?ok=Y"; ?>', '_top')"
+    class='btn btn-danger'
+    type = "submit"
+    name = "ok"
+    value="Y";
 >
     <?php eT('Yes'); ?>
 </button>
-<button
+<a
     class='btn btn-default'
-    onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$iSurveyID"); ?>', '_top')"
+    href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$iSurveyID"); ?>"
 >
     <?php eT('Cancel'); ?>
-</button>
+</a>

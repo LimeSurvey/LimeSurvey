@@ -43,7 +43,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         libxml_disable_entity_loader(false);
         $config = simplexml_load_file(realpath($this->xmlFile));
-        $config->metadata->last_update = date("Y-m-d H:i:s");
+        $config->metadata->lastUpdate = date("Y-m-d H:i:s");
         $config->asXML(realpath($this->xmlFile)); // Belt
         touch($this->path); // & Suspenders ;-)
         libxml_disable_entity_loader(true);
@@ -273,7 +273,8 @@ class TemplateManifest extends TemplateConfiguration
     public function getButtons()
     {
         $sEditorUrl  = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->sTemplateName));
-        $sDeleteUrl  = Yii::app()->getController()->createUrl('admin/themeoptions/sa/deleteTemplate/', array("templatename"=>$this->sTemplateName));
+        $sDeleteUrl   = Yii::app()->getController()->createUrl('admin/themes/sa/deleteAvailableTheme/');
+
 
         // TODO: load to DB
         $sEditorLink = "<a
@@ -286,9 +287,7 @@ class TemplateManifest extends TemplateConfiguration
 
             //
 
-        $sLoadLink = '';
-
-        $sLoadLink .= CHtml::form( array("/admin/themeoptions/sa/importmanifest/"), 'post',array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
+        $sLoadLink = CHtml::form( array("/admin/themeoptions/sa/importmanifest/"), 'post',array('id'=>'frmínstalltheme','name'=>'frmínstalltheme')) .
                 "<input type='hidden' name='templatename' value='".$this->sTemplateName."'>
                 <button id='template_options_link_".$this->sTemplateName."'
                 class='btn btn-default btn-block'>
@@ -297,16 +296,24 @@ class TemplateManifest extends TemplateConfiguration
                 </button>
                 </form>";
 
-        $sDeleteLink = "<a
-                id='template_options_link_".$this->sTemplateName."'
-                href='".$sDeleteUrl."'
-                class='btn btn-danger btn-block'>
-                    <span class='fa fa-trash text-warning'></span>
-                    ".gT('Delete')."
-                </a>";
 
+        $sDeleteLink = '';
+        // We don't want user to be able to delete standard theme. Must be done via ftp (advanced users only)
+        if(Permission::model()->hasGlobalPermission('templates','delete') && !Template::isStandardTemplate($this->sTemplateName) ){
+          $sDeleteLink = '<a
+              id="template_delete_link_'.$this->sTemplateName.'"
+              href="'.$sDeleteUrl.'"
+              data-post=\'{ "templatename": "'.$this->sTemplateName.'" }\'
+              data-text="'.gT('Are you sure you want to delete this theme? ').'"
+              title="'.gT('Delete').'"
+              class="btn btn-danger btn-block selector--ConfirmModal">
+                  <span class="fa fa-trash "></span>
+                  '.gT('Delete').'
+                  </a>';
+      }
 
-        return $sEditorLink.$sLoadLink; //.$sDeleteLink;
+      return $sEditorLink.$sLoadLink.$sDeleteLink;
+
     }
 
     /**
@@ -469,8 +476,8 @@ class TemplateManifest extends TemplateConfiguration
         $oOldDateNode   = $ometadata->getElementsByTagName('creationDate')->item(0);
         $oNvDateNode    = $oNewManifest->createElement('creationDate', $sDate);
         $ometadata->replaceChild($oNvDateNode, $oOldDateNode);
-        $oOldUpdateNode = $ometadata->getElementsByTagName('last_update')->item(0);
-        $oNvDateNode    = $oNewManifest->createElement('last_update', $sDate);
+        $oOldUpdateNode = $ometadata->getElementsByTagName('lastUpdate')->item(0);
+        $oNvDateNode    = $oNewManifest->createElement('lastUpdate', $sDate);
         $ometadata->replaceChild($oNvDateNode, $oOldUpdateNode);
     }
 
@@ -610,8 +617,6 @@ class TemplateManifest extends TemplateConfiguration
             $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
             $sXMLConfigFile        = file_get_contents(realpath($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
             $oXMLConfig = simplexml_load_string($sXMLConfigFile);
-
-
             foreach ($oXMLConfig->config->xpath("//file") as $oFileName) {
                         $oFileName[0] = get_absolute_path($oFileName[0]);
             }
@@ -630,17 +635,22 @@ class TemplateManifest extends TemplateConfiguration
     private function setPath()
     {
         // If the template is standard, its root is based on standardthemerootdir, else, it is a user template, its root is based on userthemerootdir
-        $this->path = ($this->isStandard) ?Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR : Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
+        $this->path = ($this->isStandard) ? Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR : Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
 
         // If the template directory doesn't exist, we just set Default as the template to use
         // TODO: create a method "setToDefault"
         if (!is_dir($this->path)) {
-            $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
-            $this->isStandard    = true;
-            $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             if (!$this->iSurveyId) {
-                // Why?
-                \SettingGlobal::setSetting('defaulttheme','fruity');
+                \SettingGlobal::setSetting('defaulttheme',Yii::app()->getConfig('defaultfixedtheme'));
+                /* @todo ? : check if installed, install if not */
+            }
+            $this->sTemplateName = Yii::app()->getConfig('defaulttheme');
+            if(Template::isStandardTemplate(Yii::app()->getConfig('defaulttheme'))) {
+                $this->isStandard    = true;
+                $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
+            } else {
+                $this->isStandard    = false;
+                $this->path = Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             }
         }
 

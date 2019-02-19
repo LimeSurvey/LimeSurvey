@@ -265,7 +265,7 @@ export default {
                     v-bind:class="questionGroupItemClasses(questiongroup)" 
                     @dragenter="dragoverQuestiongroup($event, questiongroup)"
                 >
-                    <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
+                    <div class="col-12 ls-flex-row nowrap ls-space padding right-5 bottom-5">
                         <i 
                             v-if="!$store.state.surveyActiveState"
                             class="fa fa-bars bigIcons dragPointer" 

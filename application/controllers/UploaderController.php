@@ -251,7 +251,7 @@ class UploaderController extends SurveyController
 
         $meta = '';
         // App()->getClientScript()->registerPackage('jqueryui');
-        // App()->getClientScript()->registerPackage('jquery-superfish');
+        App()->getClientScript()->registerPackage('question-file-upload');
         
         $aSurveyInfo = getSurveyInfo($surveyid, $sLanguage);
         $oEvent = new PluginEvent('beforeSurveyPage');
@@ -286,21 +286,20 @@ class UploaderController extends SurveyController
                      editFile : '".gT('Edit', 'js')."',
                     };
         ";
-        // $oTemplate = Template::model()->getInstance('', $surveyid);
-        // Yii::app()->clientScript->registerPackage('survey-template-'.$oTemplate->sTemplateName);
-        
+        $oTemplate = Template::model()->getInstance('', $surveyid);
+        Yii::app()->clientScript->registerPackage('survey-template-'.$oTemplate->sTemplateName);
         // App()->getClientScript()->registerCssFile(Yii::app()->getConfig("publicstyleurl")."uploader.css");
         // App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl')."uploader-files.css");
-        // App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
-        // App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript('sNeededScriptVar', $sNeededScriptVar, LSYii_ClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript('sLangScriptVar', $sLangScriptVar, LSYii_ClientScript::POS_BEGIN);
         // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js', LSYii_ClientScript::POS_END);
         // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js', LSYii_ClientScript::POS_END);
 
-        // App()->bootstrap->register();
+        App()->bootstrap->register();
 
-        // $header = getHeader($meta);
+        $header = getHeader($meta);
 
-        // echo $header;
+        echo $header;
 
         $fn = $sFieldName;
         $qid = (int) Yii::app()->request->getParam('qid');
@@ -319,24 +318,26 @@ class UploaderController extends SurveyController
 
         $body = '<body class="uploader">';
         $scripts = "<script>\n
-            ".$sNeededScriptVar."\n\n
-            ". $sLangScriptVar."\n\n
-            uploadModalObjects = uploadModalObjects || {};
-            uploadModalObjects[".$fn."] = new uploadHandler(  "
-                . $qid.", {"
-                . "sFieldName : '".$sFieldName."', "
-                . "sPreview : '".$sPreview."', "
-                . "csrfToken: '".ls_json_encode(Yii::app()->request->csrfToken)."', "
-                . "showpopups: '".Yii::app()->getConfig("showpopups")."'"
-                . "});
+            $(function(){
+                ".$sNeededScriptVar."\n\n
+                ". $sLangScriptVar."\n\n
+                window.uploadModalObjects = window.uploadModalObjects || {};
+                window.uploadModalObjects['".$fn."'] = window.getUploadHandler(  "
+                    . $qid.", {"
+                    . "sFieldName : '".$sFieldName."', "
+                    . "sPreview : '".$sPreview."', "
+                    . "csrfToken: '".ls_json_encode(Yii::app()->request->csrfToken)."', "
+                    . "showpopups: '".Yii::app()->getConfig("showpopups")."'"
+                    . "});"
+            . "});
         </script>";
         $container = $this->renderPartial('/survey/questions/answer/file_upload/modal-container', $aData, true);
         $body .= $container.$scripts;
         $body .= '</body>
         </html>';
-        // App()->getClientScript()->render($body);
-        // echo $body;
-        echo $container;
-        echo $scripts;
+        App()->getClientScript()->render($body);
+        echo $body;
+        //echo $container;
+        //echo $scripts;
     }
 }

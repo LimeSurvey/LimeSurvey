@@ -13,9 +13,9 @@
 
 <!-- answer_row_noanswer -->
 <div class="bootstrap-buttons-div col-xs-12 {{ max_buttons_row }}">
-    <div id="javatbd{{ name }}F" class="bootstrap-item btn btn-primary {{ button_size_class }} {% if check_ans!='' %} active {% endif %} col-xs-12 col-sm-12">
+    <div id="javatbd{{ name }}" class="button-item btn btn-primary {{ button_size_class }} {% if check_ans!='' %} active {% endif %} col-xs-12 col-sm-12">
         <input
-            class="radio bootstrap-radio"
+            class="bootstrap-radio sr-only"
             type="radio"
             name="{{ name }}"
             id="answer{{ name }}"

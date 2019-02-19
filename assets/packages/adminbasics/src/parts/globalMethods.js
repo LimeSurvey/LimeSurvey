@@ -100,7 +100,7 @@ const globalWindowMethods = {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
         });
         
-        $("<input type='hidden'>").attr("name", 'YII_CSRF_TOKEN').attr("value", LS.data.csrfToken).appendTo($form);
+        $("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken).appendTo($form);
         $form.appendTo("body");
         $form.submit();
     },

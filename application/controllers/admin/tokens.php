@@ -702,7 +702,8 @@ class tokens extends Survey_Common_Action
 
             $aData['thissurvey'] = getSurveyInfo($iSurveyId);
             $aData['surveyid'] = $iSurveyId;
-            $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
+            $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->oOptions->tokenlength) ? Token::model($iSurveyId)->survey->oOptions->tokenlength : 15;
+
 
             $aData['sidemenu']['state'] = false;
 
@@ -1031,7 +1032,8 @@ class tokens extends Survey_Common_Action
             $aData['validfrom'] = null;
             $aData['validuntil'] = null;
             $aData['amount'] = 100;
-            $aData['tokenlength'] = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
+            $aData['tokenlength'] = !empty(Token::model($iSurveyId)->survey->oOptions->tokenlength) ? Token::model($iSurveyId)->survey->oOptions->tokenlength : 15;
+
 
 
             $thissurvey = getSurveyInfo($iSurveyId);
@@ -1555,6 +1557,7 @@ class tokens extends Survey_Common_Action
                             . "<li>".gT("not having been sent an invitation already")."</li>"
                             . "<li>".gT("not having already completed the survey")."</li>"
                             . "<li>".gT("having a token")."</li></ul>"
+                            . "<li>".gT("having at least one use left")."</li></ul>"
                             . '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Cancel").'</a></p>'
                         )
                     ),
@@ -2417,7 +2420,8 @@ class tokens extends Survey_Common_Action
             $aData['tokendata'] = Token::create($iSurveyId)->getAttributes();
         }
 
-        $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->tokenlength) ? Token::model($iSurveyId)->survey->tokenlength : 15;
+        $aData['iTokenLength'] = !empty(Token::model($iSurveyId)->survey->oOptions->tokenlength) ? Token::model($iSurveyId)->survey->oOptions->tokenlength : 15;
+
 
         $thissurvey = $oSurvey->attributes;
         $aAdditionalAttributeFields = $oSurvey->decodedAttributedescriptions;

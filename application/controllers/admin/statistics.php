@@ -155,7 +155,7 @@ class statistics extends Survey_Common_Action
          */
 
         //store all the data in $rows
-        $rows = Question::model()->with('group')->findAll(array('condition'=>'group.sid='.$surveyid, 'order'=>'group_order,question_order'));
+        $rows = Question::model()->with('group')->findAll(array('condition'=>'parent_qid = 0 AND group.sid='.$surveyid, 'order'=>'group_order,question_order'));
 
         //SORT IN NATURAL ORDER!
         usort($rows, 'groupOrderThenQuestionOrder');
@@ -165,31 +165,31 @@ class statistics extends Survey_Common_Action
         $aGroups = array();
         $keyone = 0;
         foreach ($rows as $row) {
-            //store some column names in $filters array
+            $sGroupName = $row->group->questionGroupL10ns[$language]->group_name;
 
+            //store some column names in $filters array
             $filters[] = array($row['qid'],
             $row['gid'],
             $row['type'],
             $row['title'],
-            $row['group_name'],
+            $sGroupName,
             flattenText($row->questionL10ns[$language]['question']));
 
-            if (!in_array($row['group_name'], $aGroups)) {
-                //$aGroups[] = $row['group_name'];
-                $aGroups[$row['group_name']]['gid'] = $row['gid'];
-                $aGroups[$row['group_name']]['name'] = $row['group_name'];
+            if (!in_array($sGroupName, $aGroups)) {
+                //$aGroups[] = $sGroupName;
+                $aGroups[$sGroupName]['gid'] = $row['gid'];
+                $aGroups[$sGroupName]['name'] = $sGroupName;
             }
-            $aGroups[$row['group_name']]['questions'][$keyone] = array($row['qid'],
+            $aGroups[$sGroupName]['questions'][$keyone] = array($row['qid'],
             $row['gid'],
             $row['type'],
             $row['title'],
-            $row['group_name'],
+            $sGroupName,
             flattenText($row->questionL10ns[$language]['question']));
             $keyone = $keyone + 1;
         }
         $aData['filters'] = $filters;
         $aData['aGroups'] = $aGroups;
-
         // SHOW ID FIELD
 
         $grapherror = false;

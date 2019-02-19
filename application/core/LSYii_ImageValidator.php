@@ -17,9 +17,10 @@
 class LSYii_ImageValidator
 {
     /**
-    * A function to validate images
+    * A function to validate images,
+    * This don't validate file : must validate if file exist before.
     *
-    * @param mixed $path
+    * @param string $path
     * @return array
     */
     static function validateImage($path)
@@ -27,7 +28,7 @@ class LSYii_ImageValidator
         $result =[];
         $checkImage = CFileHelper::getMimeType($path);
         $result['debug'] = $checkImage;
-        $allowedImageFormats = array("image/png", "image/jpg", "image/jpeg", "image/gif", "image/svg+xml");
+        $allowedImageFormats = array("image/png", "image/jpg", "image/jpeg", "image/gif", "image/svg+xml", "image/x-icon");
 
         if (!empty($checkImage) && in_array($checkImage, $allowedImageFormats)) {
             $result['uploadresult'] = '';

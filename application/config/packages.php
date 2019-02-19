@@ -200,11 +200,11 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_HEAD,
         'css' => array(
-            'css/lime-admin-common.css',
-            'css/jcarousel.responsive.css',
-            'css/attributeMap.css',
-            'css/attributeMapToken.css',
-            'css/displayParticipants.css',
+            // 'css/lime-admin-common.css',
+            // 'css/jcarousel.responsive.css',
+            // 'css/attributeMap.css',
+            // 'css/attributeMapToken.css',
+            // 'css/displayParticipants.css',
             'build/adminbasics'.(($debug > 0) ? '' : '.min').'.css',
         ),
         'js' => array(
@@ -222,12 +222,13 @@ return array(
         'basePath' => 'core.adminbasics',
         'position' =>CClientScript::POS_BEGIN,
         'css' => array(
-            'css/rtl/adminstyle-rtl.css',
-            'css/rtl/lime-admin-common-rtl.css',
-            'css/rtl/jcarousel.responsive-rtl.css',
-            'css/rtl/attributeMap-rtl.css',
-            'css/rtl/attributeMapToken-rtl.css',
-            'css/rtl/displayParticipants-rtl.css',
+            // 'css/rtl/adminstyle-rtl.css',
+            // 'css/rtl/lime-admin-common-rtl.css',
+            // 'css/rtl/jcarousel.responsive-rtl.css',
+            // 'css/rtl/attributeMap-rtl.css',
+            // 'css/rtl/attributeMapToken-rtl.css',
+            // 'css/rtl/displayParticipants-rtl.css',
+            'build/adminbasics.rtl'.(($debug > 0) ? '' : '.min').'.css',
         ),
         'js' => array(
             'build/adminbasics.js',
@@ -324,5 +325,11 @@ return array(
         'depends' => array(
             'decimal',
         )
+    ),
+    /* Replace bbq package from Yii core to set position */
+    'bbq'=>array(
+        'position' => CClientScript::POS_BEGIN,
+        'js'=>array(YII_DEBUG ? 'jquery.ba-bbq.js' : 'jquery.ba-bbq.min.js'),
+        'depends'=>array('jquery'),
     ),
 );

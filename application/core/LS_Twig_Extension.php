@@ -127,10 +127,13 @@ class LS_Twig_Extension extends Twig_Extension
 
     /**
      * Convert a json object to a PHP array (so no troubles with object method in sandbox)
+     * @param string $json
+     * @param boolean $assoc return sub object as array too
+     * @return array
      */
-    public static function json_decode($json)
+    public static function json_decode($json,$assoc = true)
     {
-        return (array) json_decode($json);
+        return (array) json_decode($json,$assoc);
     }
 
     /**
@@ -221,7 +224,7 @@ class LS_Twig_Extension extends Twig_Extension
             }
         }
 
-        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
+        if ($lemQuestionInfo['info']['mandatory'] == 'Y' || $lemQuestionInfo['info']['mandatory'] == 'S') {
             $aQuestionClass .= ' mandatory';
         }
 
@@ -269,43 +272,44 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function image($sImagePath, $alt = '', $htmlOptions = array( ))
     {
-        // Reccurence on templates to find the file
-        $oTemplate = self::getTemplateForRessource($sImagePath);
-        $sUrlImgAsset = '';
-
-        if ($oTemplate) {
-            $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
+        $sUrlImgAsset = self::imageSrc($sImagePath,'');
+        if(!$sUrlImgAsset) {
+            return '';
         }
-
-        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
-            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
-        }
-
-
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
     }
 
     /**
      * @var $sImagePath  string                 the image path relative to the template root
-     * @var $default     string                 an alternative image if the provided one cant be found
-     * @return string
+     * @var $default     string|false                 an alternative image if the provided one cant be found
+     * @return string|false
      */
-    /* @TODO => implement the default in a secure way */
-    public static function imageSrc($sImagePath, $default = './files/pattern.png')
+    public static function imageSrc($sImagePath, $default = false)
     {
         // Reccurence on templates to find the file
         $oTemplate = self::getTemplateForRessource($sImagePath);
         $sUrlImgAsset =  $sImagePath;
 
-
         if ($oTemplate) {
-            $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
+            $sFullPath = $oTemplate->path.$sImagePath;
+        } else {
+            if(!is_file(Yii::app()->getConfig('rootdir').'/'.$sImagePath)) {
+                if($default) {
+                    return self::imageSrc($default);
+                }
+                return false;
+            }
+            $sFullPath = Yii::app()->getConfig('rootdir').'/'.$sImagePath;
         }
 
-        if (@is_array(getimagesize(Yii::app()->getConfig('rootdir').'/'.$sImagePath))) {
-            $sUrlImgAsset = self::assetPublish(Yii::app()->getConfig('rootdir').'/'.$sImagePath);
+        // check if this is a true image
+        $checkImage = LSYii_ImageValidator::validateImage($sFullPath);
+
+        if (!$checkImage['check']) {
+            return false;
         }
-        $myTemplateAsset = $sUrlImgAsset;
+
+        $sUrlImgAsset = self::assetPublish($sFullPath);
         return $sUrlImgAsset;
     }
 

@@ -15,6 +15,13 @@
     This file is empty in Vanilla, and contains the code for the background option in Fruity
 #}
 
+{# Have no-more-tables activated on every screen size or completely off #}
+{% if (aSurveyInfo.options.notables == "2" ) %}
+    {{ registerTemplateCssFile('./css/noTablesGeneral.css') }}
+{% elseif (aSurveyInfo.options.notables == "1" ) %}
+    {{ registerTemplateCssFile('./css/noTablesOnMobile.css') }}
+{% endif %}
+
 {# Custom backgroud option #}
 <style>
     {% if (aSurveyInfo.options.backgroundimage == "on" ) %}
@@ -176,6 +183,7 @@
     {% endif %}
 
     {% if (aSurveyInfo.options.stickymatrixheaders == "on" ) %}
+
         .sticky .ls-heading.stickyBar {
             background: white;
             opacity: 1;
@@ -197,6 +205,11 @@
         tbody>.ls-heading-repeat:not(.stickyBar) {
             display: none;
         }
+        @media (max-width: 1024px){
+            .sticky .ls-heading.stickyBar {
+                display: none;
+            }
+        }
     {% endif %}
 
     {% if (aSurveyInfo.options.greyoutselected == "on" ) %}
@@ -211,29 +224,31 @@
     {% endif %}
 
     {% if (aSurveyInfo.options.crosshover == "on" ) %}
-        table.ls-answers.table-hover
-         {
-            overflow: hidden;
+        @media (min-width: 1024px){
+            table.ls-answers.table-hover
+            {
+                overflow: hidden;
+                }
+
+            table.ls-answers.table-hover>tbody>tr:hover td,
+            table.ls-answers.table-hover>tbody>tr:hover th {
+                background-color: {{ darkencss(aSurveyInfo.options.questionbackgroundcolor, 50, 0.2) }};
             }
 
-        table.ls-answers.table-hover>tbody>tr:hover td,
-        table.ls-answers.table-hover>tbody>tr:hover th {
-            background-color: {{ darkencss(aSurveyInfo.options.questionbackgroundcolor, 50, 0.2) }};
-        }
-
-        table.ls-answers.table-hover>tbody>tr>td, th {
-            position: relative;
-        }
-        table.ls-answers.table-hover>tbody>tr>td:hover::after {
-            content: "";
-            position: absolute;
-            background-color: {{ darkencss(aSurveyInfo.options.questionbackgroundcolor, 50, 0.2) }};
-            left: 0;
-            top: -5000px;
-            height: 10000px;
-            width: 100%;
-            z-index: 2;
-            pointer-events: none;
+            table.ls-answers.table-hover>tbody>tr>td, th {
+                position: relative;
+            }
+            table.ls-answers.table-hover>tbody>tr>td:hover::after {
+                content: "";
+                position: absolute;
+                background-color: {{ darkencss(aSurveyInfo.options.questionbackgroundcolor, 50, 0.2) }};
+                left: 0;
+                top: -5000px;
+                height: 10000px;
+                width: 100%;
+                z-index: 2;
+                pointer-events: none;
+            }
         }
     {% endif %}
 

@@ -1,4 +1,4 @@
-var uploadModalObjects = uploadModalObjects || {};
+window.uploadModalObjects = window.uploadModalObjects || {};
 
 $(function() {
     openUploadModalDialog();
@@ -29,7 +29,7 @@ function openUploadModalDialog(){
         $('#file-upload-modal-' + fieldname).on('hide.bs.modal', function() {
             var pass;
             var uploaderId = 'uploader' + fieldname;
-            uploadModalObjects[fieldname].saveAndExit(fieldname,show_title,show_comment,pos);
+            window.uploadModalObjects[fieldname].saveAndExit(fieldname,show_title,show_comment,pos);
             // if(document.getElementById(uploaderId).contentDocument) {
             //     if(document.getElementById(uploaderId).contentDocument.defaultView)
             //         {       /*Firefox*/
@@ -107,8 +107,12 @@ var displayUploadedFiles = function ( filecount, fieldname, show_title, show_com
     }
 
     if (jsonstring !== '')
-    {
-        jsonobj = JSON.parse(jsonstring);
+    {   
+        var jsonobj = [];
+        try{
+            jsonobj = JSON.parse(jsonstring);
+        } catch(e) {};
+
         var table = $('<table width="100%" class="question uploadedfiles"></table>');
         $('<thead></thead>').appendTo(table)
             .append($('<tr></tr>').append('<th width="20%">&nbsp;</th>'));

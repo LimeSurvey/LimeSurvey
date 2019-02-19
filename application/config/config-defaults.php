@@ -609,6 +609,13 @@ $config['proxy_host_port'] = 80;
  */
 $config['forcedsuperadmin'] = array(1);
 
+/** final theme set if default theme didn't exist. Updatebale only via PHP file
+ * if this theme didn't exist in standardthemerootdir and url : this can broke your instance.
+ * Choose vanilla since it's parent of other's core theme.
+ * @var string
+ */
+$config['defaultfixedtheme'] = 'vanilla';
+
 // === Advanced Setup
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.

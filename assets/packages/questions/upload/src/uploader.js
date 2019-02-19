@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 "use strict"
 var uploadHandler = function (qid, options) {
 
@@ -20,7 +18,7 @@ var uploadHandler = function (qid, options) {
         var previewblock = $('<li id="' + fieldname + '_li_' + i + '" class="previewblock file-element"></li>');
         var previewContainer = $('<div class="file-preview"></div>');
 
-        if (_.includes(image_extensions, item.ext.toLowerCase())) {
+        if (RegExp(image_extensions).test(item.ext.toLowerCase())) {
             previewContainer.append('<img src="' + options.uploadurl + '/filegetcontents/' + item.filename + '" class="uploaded" />');
         } else {
             previewContainer.append('<div class="upload-placeholder"></div>');
@@ -98,7 +96,12 @@ var uploadHandler = function (qid, options) {
 
         if (filecount > 0) {
             var jsontext = $('#' + fieldname).val();
-            var json = JSON.parse(jsontext);
+
+            var json = '';
+            try{
+                json = JSON.parse(jsontext);
+            } catch(e) {}
+
             if ($('#field' + fieldname + '_listfiles').length == 0) {
                 $('<ul id="field' + fieldname + '_listfiles" class="files-list" />').insertAfter('#uploadstatus_' + qid);
             }
@@ -351,4 +354,8 @@ function escapeHtml(unsafe) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+window.getUploadHandler = function(qid, options){
+    return new uploadHandler(qid, options);
 }

@@ -4,7 +4,7 @@
         <name>Authwebserver</name>
         <type>plugin</type>
         <creationDate>2013-03-28</creationDate>
-        <last_update>2018-02-03</last_update>
+        <lastUpdate>2018-02-03</lastUpdate>
         <author>Menno Dekker</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
         <version>1.0.0</version>

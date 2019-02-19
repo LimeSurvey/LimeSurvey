@@ -15,7 +15,6 @@ $(document).on('ready pjax:scriptcomplete',function()
         var coordinates = $(element).val();
         var latLng = coordinates.split(" ");
         var question_id = question.substr(0,question.length-2);
-        var question_id = question.substr(0,question.length-2);
         if ($("#mapservice_"+question_id).val()==1){
             // Google Maps
             if (gmaps[''+question] == undefined) {
@@ -325,6 +324,12 @@ function GMapsInitialize(question,lat,lng) {
 
 
     var name = question.substr(0,question.length - 2);
+    if(isNaN(lat) || lat==""){
+        lat=53.582665;
+    }
+    if(isNaN(lng) || lng==""){
+        lng=10.018924;
+    }
     var latlng = new google.maps.LatLng(lat, lng);
 
     var mapOptions = {

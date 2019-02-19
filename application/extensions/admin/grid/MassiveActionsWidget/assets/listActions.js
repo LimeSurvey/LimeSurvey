@@ -52,7 +52,7 @@ var onClickListAction =  function () {
             'value': $oCheckedItems.join("|"),
             'type': 'hidden'
         })).append(jQuery('<input>', {
-            'name': 'YII_CSRF_TOKEN',
+            'name': LS.data.csrfTokenName,
             'value': LS.data.csrfToken,
             'type': 'hidden'
         })).appendTo('body');
@@ -131,7 +131,14 @@ var onClickListAction =  function () {
         var $postDatas  = {sItems:$oCheckedItems};
         $modal.find('.custom-data').each(function(i, el)
         {
-            $postDatas[$(this).attr('name')]=$(this).val();
+            if ($(this).hasClass('btn-group')){ // yiiwheels.widgets.buttongroup.WhButtonGroup
+                $(this).find('input:checked').each(function(i, el)
+                {
+                    $postDatas[$(this).attr('name')]=$(this).val();
+                });
+            } else {
+                $postDatas[$(this).attr('name')]=$(this).val();
+            }
         });
 
         // Custom attributes to updates (like question attributes)

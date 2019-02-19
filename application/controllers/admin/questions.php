@@ -32,6 +32,7 @@ class questions extends Survey_Common_Action
     public function view($surveyid, $gid, $qid)
     {
         $aData = array();
+        $qid = (int) $qid;
 
         // Init general variables
         $aData['surveyid'] = $iSurveyID = (int) $surveyid;
@@ -259,6 +260,10 @@ class questions extends Survey_Common_Action
      */
     public function editdefaultvalues($surveyid, $gid, $qid)
     {
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
+            Yii::app()->user->setFlash('error', gT("Access denied"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+        }
         $iSurveyID = (int) $surveyid;
         $survey = Survey::model()->findByPk($iSurveyID);
 
@@ -1445,7 +1450,7 @@ class questions extends Survey_Common_Action
     {
         $aQidsAndLang   = json_decode($_POST['sItems']); // List of question ids to update
         $iSid           = Yii::app()->request->getPost('sid');
-        $bMandatory     = (Yii::app()->request->getPost('mandatory') === 'true') ? 'Y' : 'N';
+        $bMandatory     = Yii::app()->request->getPost('mandatory', 'N');
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             $oSurvey          = Survey::model()->findByPk($iSid);
@@ -1641,8 +1646,7 @@ class questions extends Survey_Common_Action
             foreach ($aUsedLanguages as $sLanguage) {
                 $aResult[$sLanguage] = $oLabelSet->attributes;
                 foreach ($oLabelSet->labels as $oLabel) {
-                    if($oLabel->language === $sLanguage)
-                        $aResult[$sLanguage]['labels'][] = $oLabel->attributes;
+                    $aResult[$sLanguage]['labels'][] = $oLabel->getTranslated($sLanguage);
                 };
                 $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
             };
@@ -1812,5 +1816,32 @@ class questions extends Survey_Common_Action
             Yii::app()->user->setFlash('error', gT("You can't add questions while the survey is active."));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
+    }
+
+    public function saveQuestion($aQuestion, $aSettings, $ajax=false){
+        
+        $iQid = $aQuestion['qid'];
+        unset($aQuestion['qid']);
+
+        $oQuestion = (isset($iQid) && $iQid != '') ? Question::model()->findByPk($iQid) : new Question();
+
+        $oQuestion->setAttributes($aQuestion);
+        $success = $oQuestion->save();
+        $message = $success ? gT("Question successfully saved.") : gT("Question could not be saved");
+        if($ajax) {
+            Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => [
+                'success' => $success,
+                'message' => $message
+            ]]);
+            return;
+        }
+        
+        Yii::app()->user->setFlash($success?'success':'error', $message);
+        Yii::app()->getController()->redirect(
+            Yii::app()->getController()->createUrl(
+                "admin/questions/sa/view/", 
+                ['surveyid' => $oQuestion->sid, 'gid'=> $oQuestion->gid, "qid" => $oQuestion->qid]
+            )
+        );
     }
 }

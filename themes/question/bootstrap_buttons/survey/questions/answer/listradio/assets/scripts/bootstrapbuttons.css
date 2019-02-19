@@ -1,12 +1,1 @@
-.bootstrap-item input {
-    visibility:hidden !important;
-    display: none !important;
-}
-
- .bootstrap-item {
-    margin: 2px 2px; 
-}
-
- .bootstrap-buttons-div {
-    padding: 0 2px;
- }
+.bootstrap-buttons-div{margin-bottom:0.2em} /* Usage of em since we don't know size set by theme */

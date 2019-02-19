@@ -40,7 +40,11 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
             <div class="form-group">
                 <label class=" control-label" for='tokenlength'><?php  eT("Set token length to:"); ?></label>
                 <div class="">
-                    <input type='text' value="<?php echo $oSurvey->tokenlength ?>" name='tokenlength' id='tokenlength' size='4' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')"  class="form-control" />
+                    <input type='text' value="<?php echo $oSurvey->tokenlength ?>" name='tokenlength' id='tokenlength' size='4' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')"  class="form-control selector-numerical-input" />
+                    <?php if ($bShowInherited){ ?>
+                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->tokenlength . ']'; ?></span></br>
+                        <span class='annotation'> <?php echo eT("Set this field to -1 to apply inherited value."); ?></span>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -61,14 +65,13 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                     <input type='hidden' id='anonymized' name='anonymized' value="<?php echo $oSurvey->anonymized; ?>" />
                     <?php } else {
 
-                        $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'anonymized',
-                            'value'=> $oSurvey->isAnonymized,
-                            'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off'),
-                            'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                            'value'=> $oSurvey->anonymized,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                            /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 alertPrivacy();
-                            }")
+                            }")*/
                             ));
                         }?>
                 </div>
@@ -81,23 +84,22 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                 </label>
                 <div class="">
                 <?php
-                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'tokenanswerspersistence',
-                    'value'=> $oSurvey->isTokenAnswersPersistence,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off'),
-                    'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                    'value'=> $oSurvey->tokenanswerspersistence,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->tokenanswerspersistence . ']')): $optionsOnOff,
+                    /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                         if ($('#anonymized').is(':checked') == true) {
                         $('#tokenanswerspersistenceModal').modal();
                         }
-                    }")
+                    }")*/
                     ));
-                    $this->widget('bootstrap.widgets.TbModal', array(
+                    /*$this->widget('bootstrap.widgets.TbModal', array(
                         'id' => 'tokenanswerspersistenceModal',
                         'header' => gt('Error','unescaped'),
                         'content' => '<p>'.gT("This option can't be used if the -Anonymized responses- option is active.").'</p>',
                         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
-                    ));
+                    ));*/
                 ?>
                 </div>
             </div>
@@ -109,11 +111,10 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                 </label>
                 <div class="">
                 <?php
-                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'alloweditaftercompletion',
-                        'value'=> $oSurvey->isAllowEditAfterCompletion,
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
+                        'value'=> $oSurvey->alloweditaftercompletion,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->alloweditaftercompletion . ']')): $optionsOnOff
                     ));
                 ?>
                 </div>
@@ -124,11 +125,10 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                 <label class=" control-label" for='allowregister'><?php  eT("Allow public registration:"); ?></label>
                 <div class="">
                 <?php
-                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'allowregister',
-                        'value'=> $oSurvey->isAllowRegister,
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
+                        'value'=> $oSurvey->allowregister,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->allowregister . ']')): $optionsOnOff
                     ));
                 ?>
                 </div>
@@ -139,19 +139,18 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                 <label class=" control-label" for='htmlemail'><?php  eT("Use HTML format for token emails:"); ?></label>
                 <div class="">
                 <?php
-                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'htmlemail',
-                    'value'=> $oSurvey->isHtmlEmail,
-                    'onLabel'=>gT('On'),
-                    'offLabel'=>gT('Off'),
-                    'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                    'value'=> $oSurvey->htmlemail,
+                    'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->htmlemail . ']')): $optionsOnOff,
+                    /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                         $('#htmlemailModal').modal();
-                    }")
+                    }")*/
                     ));
                     $this->widget('bootstrap.widgets.TbModal', array(
                         'id' => 'htmlemailModal',
                         'header' => gt('Error','unescaped'),
-                        'content' => '<p>'.gT("If you switch email mode, you'll have to review your email templates to fit the new format").'</p>',
+                        'content' => '<p>'.gT("If you buttongroup email mode, you'll have to review your email templates to fit the new format").'</p>',
                         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
                     ));
                     ?>
@@ -163,11 +162,10 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
                 <label class=" control-label" for='sendconfirmation'><?php  eT("Send confirmation emails:"); ?></label>
                 <div class="">
                 <?php
-                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                    $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'sendconfirmation',
-                        'value'=> $oSurvey->isSendConfirmation,
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
+                        'value'=> $oSurvey->sendconfirmation,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->sendconfirmation . ']')): $optionsOnOff
                     ));
                 ?>
                 </div>

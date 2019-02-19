@@ -132,6 +132,12 @@ class TemplateConfiguration extends TemplateConfig
         );
     }
 
+    /** @inheritdoc */
+    public function defaultScope()
+    {
+        return array('order'=> $this->getTableAlias(false, false).'.template_name');
+    }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -232,8 +238,14 @@ class TemplateConfiguration extends TemplateConfig
     public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName = null, $abstractInstance = false)
     {
 
-        //if a template name is given also check against that
-        $sTemplateName = $sTemplateName != null ? $sTemplateName : Survey::model()->findByPk($iSurveyId)->template;
+        // set template name if it does not exists or if it is inherit
+        if ($sTemplateName === null || $sTemplateName == 'inherit'){
+            $oSurvey = Survey::model()->findByPk($iSurveyId);
+            // set real value from inheritance
+            if (!empty($oSurvey->oOptions->template)){
+                $sTemplateName = $oSurvey->oOptions->template;
+            }
+        }
 
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid=:sid');
@@ -855,11 +867,13 @@ class TemplateConfiguration extends TemplateConfig
         $oOptions = (array) $oSimpleInheritanceTemplate->oOptions;
         // translation of database values, to match labels on the page
         foreach ($oOptions as $key=>$value){
-                if ($key == 'showpopups'){
-                    $oOptions[$key] = str_replace(array('1', '0', '-1'), array(gT("Popup"), gT("On page"), gT("No")), $value);
-                } else {
-                    $oOptions[$key] = str_replace(array('on', 'off', 'top', 'bottom'), array(gT("Yes"), gT("No"), gT("Top"), gT("Bottom")), $value);
-                }
+            if ($key == 'showpopups'){
+                $oOptions[$key] = str_replace(array('1', '0', '-1'), array(gT("Popup"), gT("On page"), gT("No")), $value);
+            } elseif ($key == 'notables'){
+                $oOptions[$key] = str_replace(array('2', '1', '0'), array(gT("Always on"), gT("Small screens"), gT("Off")), $value);
+            } else {
+                $oOptions[$key] = str_replace(array('on', 'off', 'top', 'bottom'), array(gT("Yes"), gT("No"), gT("Top"), gT("Bottom")), $value);
+            }
         }
 
         //We add some extra values to the option page
@@ -1201,7 +1215,9 @@ class TemplateConfiguration extends TemplateConfig
             //check for surveygroup id if a survey is given
             if ($this->sid != null) {
                 $oSurvey = Survey::model()->findByPk($this->sid);
-                $oParentTemplate = Template::getTemplateConfiguration($this->template->name, null, $oSurvey->gsid);
+                // set template name from real inherited value
+                $sTemplateName = !empty($oSurvey->oOptions->template) ? $oSurvey->oOptions->template : $this->template->name;
+                $oParentTemplate = Template::getTemplateConfiguration($sTemplateName, null, $oSurvey->gsid);
                 if (is_a($oParentTemplate, 'TemplateConfiguration')) {
                     $this->oParentTemplate = $oParentTemplate;
                     $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;

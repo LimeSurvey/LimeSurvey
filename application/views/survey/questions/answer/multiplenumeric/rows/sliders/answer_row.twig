@@ -92,13 +92,12 @@
         'separator' : "{{sSeparator}}",
         'number' : true,
         'integer' : {{integeronly}},
-        'position' : "{{slider_position}}",
+        'position' : parseInt({{slider_position}}),
         'custom_handle' : "{{slider_custom_handle}}",
         'setPosition' : "{{slider_reset_set}}",
         'reversed' : {{slider_reversed}},
     });
     window.activeSliders.s{{myfname}}.init();
-
 {% endset %}
 {{ registerScript( 'SliderQuestion'~myfname, script, 'POS_POSTSCRIPT') }}
 

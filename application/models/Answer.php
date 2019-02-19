@@ -53,12 +53,6 @@ class Answer extends LSActiveRecord
         return 'aid';
     }
 
-
-    public function defaultScope()
-    {
-        return array('order'=>'sortorder');
-    }    
-
     /** @inheritdoc */
     public function relations()
     {
@@ -233,6 +227,24 @@ class Answer extends LSActiveRecord
     public function getAnswersForStatistics($fields, $condition, $orderby)
     {
         return Answer::model()->findAll($condition);
+    }
+
+    /**
+     * @param string $fields
+     * @param string $orderby
+     * @param mixed $condition
+     * @return array
+     */
+    public function getQuestionsForStatistics($fields, $condition, $orderby)
+    {
+
+        $oAnswers = Answer::model()->with('answerL10ns')->findAll($condition);
+        $arr = array();
+        foreach($oAnswers as $key => $answer)
+        {
+            $arr[$key] = array_merge($answer->attributes, current($answer->answerL10ns)->attributes);
+        }
+        return $arr;
     }
     
     

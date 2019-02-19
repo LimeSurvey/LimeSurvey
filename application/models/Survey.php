@@ -145,6 +145,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
+ * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @method mixed active()
  */
 class Survey extends LSActiveRecord
@@ -159,10 +160,19 @@ class Survey extends LSActiveRecord
     protected $findByPkCache = array();
 
 
+    // survey options
+    public $oOptions;
+    public $oOptionLabels;
+    // used for twig files, same content as $oOptions, but in array format
+    public $aOptions = array();
+    
+    public $showInherited = 1;
 
     public $searched_value;
 
     public $showsurveypolicynotice = 0;
+
+    public $bShowRealOptionValues = true;
 
 
     private $sSurveyUrl;
@@ -186,7 +196,7 @@ class Survey extends LSActiveRecord
             $this->googleanalyticsapikeysetting = "G";
         }
         /* default template */
-        $this->template = Template::templateNameFilter(App()->getConfig('defaulttheme'));
+        $this->template = 'inherit';
         /* default language */
         $validator = new LSYii_Validators;
         $this->language = $validator->languageFilter(App()->getConfig('defaultlang'));
@@ -205,6 +215,10 @@ class Survey extends LSActiveRecord
                 }
             }
         }
+
+        // set inherited values for new survey
+        $this->setOptions($this->gsid);
+        
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
 
@@ -276,17 +290,31 @@ class Survey extends LSActiveRecord
             }
             SettingGlobal::model()->deleteAll($oCriteria);
 
-            $oResult = Question::model()->findAllByAttributes(array('sid' => $this->sid));
-            foreach ($oResult as $aRow) {
-                Answer::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                Condition::model()->deleteAllByAttributes(array('qid' =>$aRow['qid']));
-                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
-                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aRow['qid']));
+            $oQuestions = Question::model()->findAllByAttributes(array('sid' => $this->sid));
+            foreach ($oQuestions as $aQuestion) {
+                // answers
+                $oAnswers = Answer::model()->findAllByAttributes(array('qid' => $aQuestion['qid']));
+                foreach ($oAnswers as $aAnswer) {
+                    AnswerL10n::model()->deleteAllByAttributes(array('aid' =>$aAnswer['aid']));
+                }
+                Answer::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+
+                Condition::model()->deleteAllByAttributes(array('qid' =>$aQuestion['qid']));
+                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+                QuestionL10n::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
             }
 
             Question::model()->deleteAllByAttributes(array('sid' => $this->sid));
             Assessment::model()->deleteAllByAttributes(array('sid' => $this->sid));
+
+            // question groups
+            $oQuestionGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $this->sid));
+            foreach ($oQuestionGroups as $aQuestionGroup) {
+                QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' =>$aQuestionGroup['gid']));
+            }
             QuestionGroup::model()->deleteAllByAttributes(array('sid' => $this->sid));
+
             SurveyLanguageSetting::model()->deleteAllByAttributes(array('surveyls_survey_id' => $this->sid));
             Permission::model()->deleteAllByAttributes(array('entity_id' => $this->sid, 'entity'=>'survey'));
             SavedControl::model()->deleteAllByAttributes(array('sid' => $this->sid));
@@ -402,6 +430,7 @@ class Survey extends LSActiveRecord
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid', 'order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid')),
+            'surveysettings' => array(self::BELONGS_TO, 'SurveysGroupSettings', array('gsid' => 'gsid')),
             'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template')),
             'templateConfiguration' => array(self::HAS_ONE, 'TemplateConfiguration', array('sid' => 'sid'))
         );
@@ -442,45 +471,45 @@ class Survey extends LSActiveRecord
             array('admin,faxto', 'LSYii_Validators'),
             array('adminemail', 'filter', 'filter'=>'trim'),
             array('bounce_email', 'filter', 'filter'=>'trim'),
-            array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
+            //array('bounce_email', 'LSYii_EmailIDNAValidator', 'allowEmpty'=>true),
             array('active', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('gsid', 'numerical', 'min'=>'0', 'allowEmpty'=>true),
-            array('anonymized', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('savetimings', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('datestamp', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('usecookie', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('allowregister', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('allowsave', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('autoredirect', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('allowprev', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('printanswers', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('ipaddr', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('refurl', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('publicstatistics', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('publicgraphs', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('listpublic', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('htmlemail', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('sendconfirmation', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('tokenanswerspersistence', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('assessments', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('anonymized', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('savetimings', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('datestamp', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('usecookie', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('allowregister', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('allowsave', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('autoredirect', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('allowprev', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('printanswers', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('ipaddr', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('refurl', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('publicstatistics', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('publicgraphs', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('listpublic', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('htmlemail', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('sendconfirmation', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('tokenanswerspersistence', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('assessments', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
             array('usetokens', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('showxquestions', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('shownoanswer', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('showwelcome', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('showxquestions', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('shownoanswer', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('showwelcome', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
             array('showsurveypolicynotice', 'in', 'range'=>array('0', '1', '2'), 'allowEmpty'=>true),
-            array('showprogress', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('questionindex', 'numerical', 'min' => 0, 'max' => 2, 'allowEmpty'=>false),
-            array('nokeyboard', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('alloweditaftercompletion', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('showprogress', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('questionindex', 'numerical', 'min' => -1, 'max' => 2, 'allowEmpty'=>false),
+            array('nokeyboard', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
+            array('alloweditaftercompletion', 'in', 'range'=>array('Y', 'N', 'I'), 'allowEmpty'=>true),
             array('bounceprocessing', 'in', 'range'=>array('L', 'N', 'G'), 'allowEmpty'=>true),
-            array('usecaptcha', 'in', 'range'=>array('A', 'B', 'C', 'D', 'X', 'R', 'S', 'N'), 'allowEmpty'=>true),
-            array('showgroupinfo', 'in', 'range'=>array('B', 'N', 'D', 'X'), 'allowEmpty'=>true),
-            array('showqnumcode', 'in', 'range'=>array('B', 'N', 'C', 'X'), 'allowEmpty'=>true),
-            array('format', 'in', 'range'=>array('G', 'S', 'A'), 'allowEmpty'=>true),
-            array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'2', 'allowEmpty'=>true),
+            array('usecaptcha', 'in', 'range'=>array('A', 'B', 'C', 'D', 'X', 'R', 'S', 'N', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'T', 'U', '1', '2', '3', '4', '5', '6'), 'allowEmpty'=>true),
+            array('showgroupinfo', 'in', 'range'=>array('B', 'N', 'D', 'X', 'I'), 'allowEmpty'=>true),
+            array('showqnumcode', 'in', 'range'=>array('B', 'N', 'C', 'X', 'I'), 'allowEmpty'=>true),
+            array('format', 'in', 'range'=>array('G', 'S', 'A', 'I'), 'allowEmpty'=>true),
+            array('googleanalyticsstyle', 'numerical', 'integerOnly'=>true, 'min'=>'0', 'max'=>'3', 'allowEmpty'=>true),
             array('autonumber_start', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('tokenlength', 'default', 'value'=>15),
-            array('tokenlength', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false, 'min'=>'5', 'max'=>'36'),
+            array('tokenlength', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>false, 'min'=>'-1', 'max'=>'36'),
             array('bouncetime', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('navigationdelay', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('template', 'filter', 'filter'=>array($this, 'filterTemplateSave')),
@@ -517,7 +546,13 @@ class Survey extends LSActiveRecord
                 $this->{$attribute} = $event->get($attribute);
             }
         }
-        $this->template = Template::templateNameFilter($this->template);
+
+        // set inherited values for existing survey
+        $this->setOptions($this->gsid);
+        
+        if ($this->template != 'inherit'){
+            $this->template = Template::templateNameFilter($this->template);
+        }
     }
 
 
@@ -537,10 +572,15 @@ class Survey extends LSActiveRecord
                     $sTemplateName = getGlobalSetting('defaulttheme');
                 }
             } else {
-                $sTemplateName = getGlobalSetting('defaulttheme');
+                $sTemplateName = 'inherit';
             }
         }
-        return Template::templateNameFilter($sTemplateName);
+        if ($sTemplateName == 'inherit'){
+            return $sTemplateName;
+        } else {
+            return Template::templateNameFilter($sTemplateName);
+        }
+        
     }
 
 
@@ -1014,9 +1054,9 @@ class Survey extends LSActiveRecord
     public function setAllowjumps($value)
     {
         if ($value === 'Y') {
-            $this->questionindex = 1;
+            $this->oOptions->questionindex = 1;
         } else {
-            $this->questionindex = 0;
+            $this->oOptions->questionindex = 0;
         }
     }
 
@@ -1068,7 +1108,7 @@ class Survey extends LSActiveRecord
      */
     public function getAnonymizedResponses()
     {
-        return ($this->anonymized == 'Y') ? gT('Yes') : gT('No');
+        return ($this->oOptions->anonymized == 'Y') ? gT('Yes') : gT('No');
     }
 
     /**
@@ -1121,6 +1161,23 @@ class Survey extends LSActiveRecord
         else {
             return 'running';
         }
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function getIsDateExpired()
+    {
+        if (!empty($this->expires)) {
+            $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $sStop = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
+
+            $oNow = new DateTime($sNow);
+            $oStop = new DateTime($sStop);
+            return $oStop < $oNow;
+        }
+        return false;
     }
 
 
@@ -1208,28 +1265,28 @@ class Survey extends LSActiveRecord
      */
     public function getIsAnonymized()
     {
-        return ($this->anonymized === 'Y');
+        return ($this->oOptions->anonymized === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsSaveTimings()
     {
-        return ($this->savetimings === 'Y');
+        return ($this->oOptions->savetimings === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsDateStamp()
     {
-        return ($this->datestamp === 'Y');
+        return ($this->oOptions->datestamp === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsUseCookie()
     {
-        return ($this->usecookie === 'Y');
+        return ($this->oOptions->usecookie === 'Y');
     }
 
     /**
@@ -1237,154 +1294,154 @@ class Survey extends LSActiveRecord
      */
     public function getIsAllowRegister()
     {
-        return ($this->allowregister === 'Y');
+        return ($this->oOptions->allowregister === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAllowSave()
     {
-        return ($this->allowsave === 'Y');
+        return ($this->oOptions->allowsave === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAutoRedirect()
     {
-        return ($this->autoredirect === 'Y');
+        return ($this->oOptions->autoredirect === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAllowPrev()
     {
-        return ($this->allowprev === 'Y');
+        return ($this->oOptions->allowprev === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsPrintAnswers()
     {
-        return ($this->printanswers === 'Y');
+        return ($this->oOptions->printanswers === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsIpAddr()
     {
-        return ($this->ipaddr === 'Y');
+        return ($this->oOptions->ipaddr === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsRefUrl()
     {
-        return ($this->refurl === 'Y');
+        return ($this->oOptions->refurl === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsPublicStatistics()
     {
-        return ($this->publicstatistics === 'Y');
+        return ($this->oOptions->publicstatistics === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsPublicGraphs()
     {
-        return ($this->publicgraphs === 'Y');
+        return ($this->oOptions->publicgraphs === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsListPublic()
     {
-        return ($this->listpublic === 'Y');
+        return ($this->oOptions->listpublic === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsHtmlEmail()
     {
-        return ($this->htmlemail === 'Y');
+        return ($this->oOptions->htmlemail === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsSendConfirmation()
     {
-        return ($this->sendconfirmation === 'Y');
+        return ($this->oOptions->sendconfirmation === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsTokenAnswersPersistence()
     {
-        return ($this->tokenanswerspersistence === 'Y');
+        return ($this->oOptions->tokenanswerspersistence === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAssessments()
     {
-        return ($this->assessments === 'Y');
+        return ($this->oOptions->assessments === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowXQuestions()
     {
-        return ($this->showxquestions === 'Y');
+        return ($this->oOptions->showxquestions === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowGroupInfo()
     {
-        return ($this->showgroupinfo === 'Y');
+        return ($this->oOptions->showgroupinfo === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowNoAnswer()
     {
-        return ($this->shownoanswer === 'Y');
+        return ($this->oOptions->shownoanswer === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowQnumCode()
     {
-        return ($this->showqnumcode === 'Y');
+        return ($this->oOptions->showqnumcode === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowWelcome()
     {
-        return ($this->showwelcome === 'Y');
+        return ($this->oOptions->showwelcome === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsShowProgress()
     {
-        return ($this->showprogress === 'Y');
+        return ($this->oOptions->showprogress === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsNoKeyboard()
     {
-        return ($this->nokeyboard === 'Y');
+        return ($this->oOptions->nokeyboard === 'Y');
     }
     /**
      * @return bool
      */
     public function getIsAllowEditAfterCompletion()
     {
-        return ($this->alloweditaftercompletion === 'Y');
+        return ($this->oOptions->alloweditaftercompletion === 'Y');
     }
 
     /**
@@ -1640,48 +1697,6 @@ class Survey extends LSActiveRecord
 
     /**
      * Transcribe from 3 checkboxes to 1 char for captcha usages
-     * Uses variables from $_POST
-     *
-     * 'A' = All three captcha enabled
-     * 'B' = All but save and load
-     * 'C' = All but registration
-     * 'D' = All but survey access
-     * 'X' = Only survey access
-     * 'R' = Only registration
-     * 'S' = Only save and load
-     * 'N' = None
-     *
-     * @return string One character that corresponds to captcha usage
-     * @todo Should really be saved as three fields in the database!
-     */
-    public static function transcribeCaptchaOptions()
-    {
-        // TODO POST handling should be done in controller!
-        $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
-        $registration = App()->request->getPost('usecaptcha_registration');
-        $saveandload = App()->request->getPost('usecaptcha_saveandload');
-
-        if ($surveyaccess && $registration && $saveandload) {
-            return 'A';
-        } elseif ($surveyaccess && $registration) {
-            return 'B';
-        } elseif ($surveyaccess && $saveandload) {
-            return 'C';
-        } elseif ($registration && $saveandload) {
-            return 'D';
-        } elseif ($surveyaccess) {
-            return 'X';
-        } elseif ($registration) {
-            return 'R';
-        } elseif ($saveandload) {
-            return 'S';
-        }
-
-        return 'N';
-    }
-
-    /**
-     * Transcribe from 3 checkboxes to 1 char for captcha usages
      * Uses variables from $_POST and transferred Surveyobject
      *
      * 'A' = All three captcha enabled
@@ -1691,35 +1706,93 @@ class Survey extends LSActiveRecord
      * 'X' = Only survey access
      * 'R' = Only registration
      * 'S' = Only save and load
+     * 
+     * 'E' = All inherited
+     * 'F' = Inherited save and load + survey access + registration
+     * 'G' = Inherited survey access + registration + save and load
+     * 'H' = Inherited registration + save and load + survey access
+     * 'I' = Inherited save and load + inherited survey access + registration
+     * 'J' = Inherited survey access + inherited registration + save and load
+     * 'K' = Inherited registration + inherited save and load + survey access
+     * 
+     * 'L' = Inherited survey access + save and load
+     * 'M' = Inherited survey access + registration
+     * 'O' = Inherited registration + survey access
+     * '1' = Inherited survey access + inherited registration
+     * '2' = Inherited survey access + inherited save and load
+     * '3' = Inherited registration + inherited save and load
+     * '4' = Inherited survey access
+     * '5' = Inherited save and load
+     * '6' = Inherited registration
+     * 
      * 'N' = None
      *
      * @return string One character that corresponds to captcha usage
      * @todo Should really be saved as three fields in the database!
      */
-    public static function saveTranscribeCaptchaOptions(Survey $oSurvey)
+    public static function saveTranscribeCaptchaOptions(Survey $oSurvey = null)
     {
-        // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
         $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
 
         if ($surveyaccess === null && $registration === null && $saveandload === null) {
-            return $oSurvey->usecaptcha;
+            if ($oSurvey !== null){
+                return $oSurvey->usecaptcha;
+            }
         }
 
-        if ($surveyaccess && $registration && $saveandload) {
+        if ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'I') {
+            return 'E';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'I') {
+            return 'F';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'Y') {
+            return 'G';
+        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'Y') {
+            return 'H';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y' && $saveandload == 'I') {
+            return 'I';
+        } elseif ($surveyaccess == 'I' && $registration == 'I' && $saveandload == 'Y') {
+            return 'J';
+        } elseif ($surveyaccess == 'Y' && $registration == 'I' && $saveandload == 'I') {
+            return 'K';
+        } elseif ($surveyaccess == 'I' && $saveandload == 'Y') {
+            return 'L';
+        } elseif ($surveyaccess == 'I' && $registration == 'Y') {
+            return 'M';
+        } elseif ($registration == 'I' && $surveyaccess == 'Y') {
+            return 'O';
+        } elseif ($registration == 'I' && $saveandload == 'Y') {
+            return 'P';
+        } elseif ($saveandload == 'I' && $surveyaccess == 'Y') {
+            return 'T';
+        } elseif ($saveandload == 'I' && $registration == 'Y') {
+            return 'U';
+        } elseif ($surveyaccess == 'I' && $registration == 'I') {
+            return '1';
+        } elseif ($surveyaccess == 'I' && $saveandload == 'I') {
+            return '2';
+        } elseif ($registration == 'I' && $saveandload == 'I') {
+            return '3';
+        } elseif ($surveyaccess == 'I') {
+            return '4';
+        } elseif ($saveandload == 'I') {
+            return '5';
+        } elseif ($registration == 'I') {
+            return '6';
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y' && $saveandload == 'Y') {
             return 'A';
-        } elseif ($surveyaccess && $registration) {
+        } elseif ($surveyaccess == 'Y' && $registration == 'Y') {
             return 'B';
-        } elseif ($surveyaccess && $saveandload) {
+        } elseif ($surveyaccess == 'Y' && $saveandload == 'Y') {
             return 'C';
-        } elseif ($registration && $saveandload) {
+        } elseif ($registration == 'Y' && $saveandload == 'Y') {
             return 'D';
-        } elseif ($surveyaccess) {
+        } elseif ($surveyaccess == 'Y') {
             return 'X';
-        } elseif ($registration) {
+        } elseif ($registration == 'Y') {
             return 'R';
-        } elseif ($saveandload) {
+        } elseif ($saveandload == 'Y') {
             return 'S';
         }
 
@@ -1996,5 +2069,40 @@ return $s->hasTokensTable; });
         }
         $criteria->addColumnCondition(['type'=>$type]);
         return Question::model()->find($criteria);
-    }    
+    }
+
+    public function setOptions($gsid)
+    {
+        // set gsid to 1 if empty
+        if (empty($gsid)){
+            $gsid = 1;
+        }
+
+        $instance = SurveysGroupsettings::getInstance($gsid, $this, null, 1, $this->bShowRealOptionValues);
+        if ($instance){
+            $this->oOptions = $instance->oOptions;
+            $this->oOptionLabels = $instance->oOptionLabels;
+            $this->aOptions = (array) $instance->oOptions;
+            $this->showInherited = $instance->showInherited;
+        }
+
+    }
+
+    public function setOptionsFromDatabase()
+    {
+        // set real survey options with inheritance
+        $this->bShowRealOptionValues = false;
+        $this->setOptions($this->gsid);
+    }
+
+    public function setToInherit()
+    {
+        $settings = new SurveysGroupsettings();
+        $settings->setToInherit();        
+        // set Survey attributes to 'inherit' values
+        foreach ($settings as $key => $value){
+            $this->$key = $value;
+        }
+    }
+
 }

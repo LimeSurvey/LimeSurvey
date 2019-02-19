@@ -4,7 +4,7 @@
         <name>AuthLDAP</name>
         <type>plugin</type>
         <creationDate>2013-04-05</creationDate>
-        <last_update>2018-01-24</last_update>
+        <lastUpdate>2018-01-24</lastUpdate>
         <author>Menno Dekker</author>
         <authorUrl>https://www.limesurvey.org</authorUrl>
         <version>1.0.0</version>

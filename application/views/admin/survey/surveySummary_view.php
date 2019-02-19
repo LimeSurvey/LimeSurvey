@@ -14,7 +14,7 @@ $templates = Template::getTemplateListWithPreviews();
 //print_r($templates);
 $count = 0;
 $surveyid = $oSurvey->sid;
-
+$templateModel = Template::model()->findByPk($oSurvey->oOptions->template);
      $surveylocale = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read');
      // EDIT SURVEY SETTINGS BUTTON
      $surveysettings = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read');
@@ -41,10 +41,10 @@ $surveyid = $oSurvey->sid;
 </div>
 */ ?>
 <div class="row ls-space margin top-10">
-<?php  
+<?php
     $possiblePanelFolder = realpath(Yii::app()->getConfig('rootdir').'/application/views/admin/survey/subview/surveydashboard/'); 
     $possiblePanels = scandir($possiblePanelFolder); 
-    foreach ($possiblePanels as $i => $panel) { 
+    foreach ($possiblePanels as $i => $panel) {
          
         // If it's no twig file => ignore 
         if(!preg_match('/^.*\.twig$/',$panel)){  
@@ -59,6 +59,7 @@ $surveyid = $oSurvey->sid;
             <?php $surveyTextContent = $oSurvey->currentLanguageSettings->attributes; ?>
         <?=Yii::app()->twigRenderer->renderViewFromFile('/application/views/admin/survey/subview/surveydashboard/'.$panel, get_defined_vars(), true)?> 
         </div> 
-    <?php } ?> 
+    <?php }
+?> 
 </div>
 <!-- END surveySummary -->

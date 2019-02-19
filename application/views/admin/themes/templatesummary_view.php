@@ -126,19 +126,18 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                 <?php foreach ($otherfiles as $fileName => $file) { ?>
                     <div class="row other-files-row">
                         <div class="col-sm-9 other-files-filename">
-                            <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
+                            <?php echo CHtml::encode($fileName) ;?>
                         </div>
                         <div class="col-sm-3">
                             <?php //TODO: make it ajax and less messy ?>
                             <?php if ( $oEditedTemplate->getTemplateForFile($fileName, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName) {
                                 if (Permission::model()->hasGlobalPermission('templates','delete')) { ?>
-                                    <?=CHtml::form(array('admin/themes/sa/templatefiledelete'), 'post'); ?>
-                                        <input type='hidden' name="otherfile" value="<?php echo $file; ?>" />
+                                    <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
+                                        <input type='hidden' name="otherfile" value="<?php echo CHtml::encode($fileName); ?>" />
                                         <input type='submit' class='btn btn-default btn-xs other-files-delete-button' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to delete this file? ", "js"); ?>')"/>
-                                        <input type='hidden' name='screenname' value='<?php echo htmlspecialchars($screenname); ?>' />
-                                        <input type='hidden' name='templatename' value='<?php echo htmlspecialchars($templatename); ?>' />
-                                        <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>' />
-                                        <input type='hidden' name='action' value='templatefiledelete' />
+                                        <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
+                                        <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
+                                        <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
                                     </form>
                                 <?php } ?>
                             <?php } else { ?>

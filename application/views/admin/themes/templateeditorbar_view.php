@@ -177,10 +177,16 @@ echo viewHelper::getViewTestTag('themeEditor');
                     <?php endif;?>
 
                 <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
-                    <a class="btn btn-default" id="button-delete" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this theme?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/delete/templatename/'.$templatename); ?>", "_top")'>
-                        <span class="fa fa-trash  text-warning"></span>
-                        <?php eT("Delete"); ?>
-                    </a>
+                    <a
+                        id="button-delete"
+                        href="<?php echo Yii::app()->getController()->createUrl('admin/themes/sa/delete/'); ?>"
+                        data-post='{ "templatename": "<?php echo $templatename; ?>" }'
+                        data-text="<?php eT('Are you sure you want to delete this theme?'); ?>"
+                        title="<?php eT('Delete'); ?>"
+                        class="btn btn-danger selector--ConfirmModal">
+                            <span class="fa fa-trash "></span>
+                            <?php eT('Delete'); ?>
+                        </a>
                     <?php endif;?>
                 <?php endif;?>
         </div>

@@ -462,21 +462,24 @@ class themes extends Survey_Common_Action
             $oEditedTemplate = Template::getInstance($sTemplateName);
             $templatedir     = $oEditedTemplate->viewPath;
             $filesdir        = $oEditedTemplate->filesPath;
-            $sPostedFile     = App()->request->getPost('otherfile');
+            $sPostedFile     = CHtml::decode(App()->request->getPost('otherfile')); // Filename is encode, need to decode.
             $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
-            $sFileToDelete   = sanitize_filename($sFileToDelete, false, false, false);
-            $the_full_file_path = $filesdir.$sFileToDelete;
-
+            $the_full_file_path = realpath($filesdir.$sFileToDelete);
+            if(substr($the_full_file_path, 0, strlen(realpath($filesdir))) != realpath($filesdir)) {
+                /* User tries to delete a file outside of files dir */
+                Yii::app()->user->setFlash('error', sprintf(gT("File %s cannot be deleted for security reasons."), CHtml::encode($sPostedFile)));
+                $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=> App()->request->getPost('editfile'), 'screenname'=>App()->request->getPost('screenname'), 'templatename'=>$sTemplateName));
+            }
+            /* No try to hack, go to delete */
             if (@unlink($the_full_file_path)) {
-                Yii::app()->user->setFlash('success', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
+                Yii::app()->user->setFlash('success', sprintf(gT("The file %s was deleted."), CHtml::encode($sPostedFile)));
                 Template::model()->findByPk($sTemplateName)->resetAssetVersion(); // Delete a files, asset need to be resetted (maybe)
             } else {
-                Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/themes folder"), htmlspecialchars($sFileToDelete)));
+                Yii::app()->user->setFlash('error', sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/themes folder"), CHtml::encode($sPostedFile)));
             }
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
         }
-
         $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=> App()->request->getPost('editfile'), 'screenname'=>App()->request->getPost('screenname'), 'templatename'=>$sTemplateName));
     }
 
@@ -584,8 +587,9 @@ class themes extends Survey_Common_Action
      * @param string $templatename
      * @return void
      */
-    public function delete($templatename)
+    public function delete()
     {
+        $templatename = trim( Yii::app()->request->getPost('templatename') );
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
             Yii::app()->loadHelper("admin/template");
 
@@ -631,17 +635,47 @@ class themes extends Survey_Common_Action
         $this->getController()->redirect(array("admin/themeoptions"));
     }
 
-    public function deleteBrokenTheme($templatename)
+    public function deleteBrokenTheme()
     {
-        // First we check that the theme is really broken
-        $aBrokenThemes = Template::getBrokenThemes();
-        $templatename  = sanitize_dirname($templatename);
-        if (array_key_exists($templatename, $aBrokenThemes)) {
-            if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
-                Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+        $templatename = trim( Yii::app()->request->getPost('templatename') );
+
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
+            // First we check that the theme is really broken
+            $aBrokenThemes = Template::getBrokenThemes();
+            $templatename  = sanitize_dirname($templatename);
+            if (array_key_exists($templatename, $aBrokenThemes)) {
+                if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
+                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+                }
+            }else{
+                Yii::app()->setFlashMessage(gT("Not a broken theme!"), 'error');
             }
-        }else{
-            Yii::app()->setFlashMessage(gT("Not a broken theme!"), 'error');
+        }
+
+        $this->getController()->redirect(array("admin/themeoptions"));
+    }
+
+
+    public function deleteAvailableTheme()
+    {
+        $templatename = trim( Yii::app()->request->getPost('templatename') );
+
+        if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
+
+            // CheckIfTemplateExists check if the template is installed....
+            if ( ! Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename) ) {
+                if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
+                    Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
+                }else{
+                    Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
+                }
+            }else{
+                // This should never happen... trying to submit the form via a script? so no translation
+                Yii::app()->setFlashMessage( "You're trying to delete a theme that is installed. Please, uninstall it first", 'error');
+            }
+
+
+
         }
 
         $this->getController()->redirect(array("admin/themeoptions"));

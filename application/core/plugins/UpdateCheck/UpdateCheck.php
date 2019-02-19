@@ -72,7 +72,7 @@ class UpdateCheck extends PluginBase
 
             // Render some JavaScript that will Ajax call update check.
             $this->spitOutUrl();
-            $this->registerScript();
+            $this->registerMyScript();
 
             // Unset flag.
             Yii::app()->session['do_extensions_update_check'] = false;
@@ -222,7 +222,7 @@ JS
     /**
      * @return void
      */
-    protected function registerScript()
+    protected function registerMyScript()
     {
         $assetsUrl = Yii::app()->assetManager->publish(dirname(__FILE__) . '/assets/js');
         Yii::app()->clientScript->registerScriptFile($assetsUrl . '/updateCheck.js');

@@ -1954,6 +1954,10 @@ h3,.h3 {
     text-align: left;
 }
 
+.push-grid-pager {/* push the pager for massive action dropup */
+    min-height:25em;
+}
+
 .has-link
 {
     cursor: pointer;
@@ -2463,6 +2467,17 @@ input[type="file"].form-control {
 .currentQuestionTypeImageContainer img {
   max-width: 100%;
 }
+
+#accordion-container .panel-heading>a {
+  width:100%;
+  display: block;
+}
+
+#accordion_questionTypeSelector .panel-title>a {
+  width:100%;
+  display: block;
+}
+
 /*custom margin and padding*/
 
 .custom.custom-no-padding {
