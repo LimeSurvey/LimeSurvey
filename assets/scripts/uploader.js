@@ -3,12 +3,17 @@ $(document).on('ready pjax:scriptcomplete',function(){
     fixParentHeigth();
 });
 
-function fixParentHeigth()
+function fixParentHeigth(fieldname = '', elementHeight = 0)
 {
     if(window != top)
     {
         //~ frameheight=Math.max($(document).height(),$('html').outerHeight()+30,150);
-        frameheight=Math.max($(document).height()+30,150);
+        if (fieldname != ''){
+            frameheight=Math.max($(document).height()+elementHeight,$('#field'+fieldname+'_listfiles').parent().height());
+        } else {
+            frameheight=Math.max($(document).height()+elementHeight,150);
+        }
+
         if(jQuery.isFunction(parent.updateUploadFrame))
         {
             parent.updateUploadFrame(window.name,frameheight);
@@ -38,7 +43,7 @@ function doFileUpload(){
             var previewblock =  "<li id='"+fieldname+"_li_"+i+"' class='previewblock file-element'>";
             previewblock +="<div class='file-preview'>";
             if (isValueInArray(image_extensions, json[i-1].ext.toLowerCase()))
-                previewblock += "<img src='"+uploadurl+"/filegetcontents/"+json[i-1].filename+"' class='uploaded' onload='fixParentHeigth()' />";
+                previewblock += "<img src='"+uploadurl+"/filegetcontents/"+json[i-1].filename+"' class='uploaded' onload='fixParentHeigth(fieldname)' />";
             else
                 previewblock += "<div class='upload-placeholder' />";
 
@@ -71,7 +76,7 @@ function doFileUpload(){
 
             // add file to the list
             $('#field'+fieldname+'_listfiles').append(previewblock);
-            fixParentHeigth();
+            fixParentHeigth(fieldname);
         }
     }
 
@@ -100,7 +105,7 @@ function doFileUpload(){
             if (filecount >= maxfiles)
             {
                 $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;'+uploadLang.errorNoMoreFiles+'</p>');
-                fixParentHeigth();
+                fixParentHeigth(fieldname);
                 return false;
             }
 
@@ -120,7 +125,7 @@ function doFileUpload(){
             if (allowSubmit == false)
             {
                 $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;'+uploadLang.errorOnlyAllowed.replace('%s',$('#'+fieldname+'_allowed_filetypes').val())+'</p>');
-                fixParentHeigth();
+                fixParentHeigth(fieldname);
                 return false;
             }
 
@@ -167,7 +172,7 @@ function doFileUpload(){
 
                 previewblock +="<div class='file-preview'>";
                 if (isValueInArray(image_extensions, metadata.ext.toLowerCase()))
-                    previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' class='uploaded'  onload='fixParentHeigth()' />";
+                    previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' class='uploaded'  onload='fixParentHeigth(fieldname)' />";
                 else
                     previewblock += "<div class='upload-placeholder' />";
                 previewblock += "<span class='file-name'>"+escapeHtml(decodeURIComponent(metadata.name))+"<span>";
@@ -210,15 +215,15 @@ function doFileUpload(){
                     $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
                 else
                     $('#uploadstatus').html(uploadLang.errorMaxReached);
-                fixParentHeigth();
+                fixParentHeigth(fieldname);
                 if (filecount >= maxfiles)
                     $('#notice').html('<p class="alert alert-success"><span class="fa fa-check"></span>&nbsp;'+uploadLang.errorTooMuch+'</p>');
-                fixParentHeigth();
+                fixParentHeigth(fieldname);
             }
             else
             {
                 $('#notice').html('<p class="alert alert-danger"><span class="fa fa-exclamation-circle"></span>&nbsp;'+metadata.msg+'</p>');
-                fixParentHeigth();
+                fixParentHeigth(fieldname);
             }
 
         }
@@ -299,6 +304,9 @@ function deletefile(fieldname, count) {
     var filecount = parseInt($('#'+fieldname+'_filecount').val());
     var licount   = parseInt($('#'+fieldname+'_licount').val());
 
+    fileheight = $("#"+fieldname+"_li_"+count).height();
+    $("#"+fieldname+"_li_"+count).remove();
+
     $.ajax(
     {
         method: "POST",
@@ -334,12 +342,12 @@ function deletefile(fieldname, count) {
         if (filecount < minfiles)
         {
             $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s',(minfiles - filecount)));
-            fixParentHeigth();
+            fixParentHeigth(fieldname, -fileheight);
         }
         else
         {
             $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
-            fixParentHeigth();
+            fixParentHeigth(fieldname, -fileheight);
         }
     });
 }
