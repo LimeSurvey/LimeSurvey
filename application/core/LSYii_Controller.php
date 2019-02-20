@@ -44,6 +44,19 @@ abstract class LSYii_Controller extends CController
     }
 
     /**
+     * @param CAction $action
+     * @return bool
+     */
+    protected function beforeAction($action)
+    {
+        $beforeAction = new PluginEvent('beforeAction');
+        $beforeAction->set('action', $action);
+        App()->getPluginManager()->dispatchEvent($beforeAction);
+
+        return parent::beforeAction($action);
+    }
+
+    /**
      * Check that installation was already done by looking for config.php
      * Will redirect to the installer script if not exists.
      *
@@ -103,7 +116,7 @@ abstract class LSYii_Controller extends CController
 
         if (ini_get("max_execution_time") < Yii::app()->getConfig('max_execution_time')) {
             try {
-                set_time_limit(Yii::app()->getConfig('max_execution_time')); // Maximum execution time - works only if safe_mode is off 
+                set_time_limit(Yii::app()->getConfig('max_execution_time')); // Maximum execution time - works only if safe_mode is off
             } catch (Exception $e) {};
         }
         if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit').'M')) {
