@@ -133,7 +133,7 @@ class Question extends LSActiveRecord
             array('title', 'required', 'on' => 'update, insert', 'message'=>gT('The question code is mandatory.', 'unescaped')),
             array('title', 'length', 'min' => 1, 'max'=>20, 'on' => 'update, insert'),
             array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly'=>true),
-            array('qid', 'unique','message'=>sprintf(gT("Question id (qid) : '%s' is already in use."),$this->qid)),// Still needed ?
+            array('qid', 'unique','message'=>sprintf(gT("Question id (qid) : '%s' is already in use."), $this->qid)),// Still needed ?
             array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('mandatory', 'in', 'range'=>array('Y', 'S', 'N'), 'allowEmpty'=>true),
             array('question_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
@@ -206,7 +206,7 @@ class Question extends LSActiveRecord
                     'QID','GID','SGQ', // current question related var
                     'self','that','this', // EM reserved variables
                 ),
-                'message'=> sprintf(gT("Code: '%s' is a reserved word."),$this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
+                'message'=> sprintf(gT("Code: '%s' is a reserved word."), $this->title), // Usage of {attribute} need attributeLabels, {value} never exist in message
                 'except' => 'archiveimport'
             );
         } else {
@@ -518,14 +518,14 @@ class Question extends LSActiveRecord
      */
     public static function typeList($language = null)
     {
-        $questionTypes = QuestionType::modelsAttributes($language);
+        $QuestionTypes = QuestionType::modelsAttributes($language);
 
         /**
          * @todo Check if this actually does anything, since the values are arrays.
          */
-        asort($questionTypes);
+        asort($QuestionTypes);
 
-        return $questionTypes;
+        return $QuestionTypes;
     }
 
     /**
@@ -621,17 +621,35 @@ class Question extends LSActiveRecord
         return $button;
     }
 
-    public function getOrderedAnswers($random = 0, $alpha = 0)
+    public function getOrderedAnswers($scale_id=null)
     {
-        if ($random == 1) {
-            $sOrder = dbRandom();
-        } elseif ($alpha == 1) {
-            $sOrder = 'answer';
-        } else {
-            $sOrder = 'sortorder';
+        $alpha = $this->getQuestionAttribute('alphasort');
+        // Get questions and answers by defined order
+        $sOrder = ($this->getQuestionAttribute('random_order') == 1)
+            ? dbRandom()
+            : ($alpha ? 'answer' : 'question_order');
+        $oCriteria = new CDbCriteria();
+        $oCriteria->order = $sOrder;
+        $oCriteria->addCondition('parent_qid=:parent_qid');
+
+        $oCriteria->params = [':parent_qid'=>$this->qid];
+
+        //reset answers set prior to this call
+        $aAnswerOptions = [
+            0 => []
+        ];
+        foreach ($this->answers as $oAnswer) {
+            if ($scale_id !== null && $oAnswer->scale_id != $scale_id) {
+                continue;
+            }
+            $aAnswerOptions[$oAnswer->scale_id][] = $oAnswer;
         }
-        $aAnswers = Answer::model()->findAll(array('order'=>$sOrder, 'condition'=>'qid=:qid AND scale_id=0', 'params'=>array(':qid'=>$this->qid)));
-        return $aAnswers;
+        
+        if($scale_id !== null) {
+            return $aAnswerOptions[$scale_id];
+        }
+
+        return $aAnswerOptions;
     }
 
     /**
@@ -640,33 +658,45 @@ class Question extends LSActiveRecord
      * @param string $exclude_all_others
      * @return array
      */
-    public function getOrderedSubQuestions($random = 0, $exclude_all_others = '')
+    public function getOrderedSubQuestions($scale_id = null)
     {
-        $criteria = (new CDbCriteria());
-        $criteria->addCondition('t.parent_qid=:qid');
-        $criteria->addCondition('t.scale_id=0');
-        $criteria->params = [':qid'=>$this->qid];
-        $criteria->order = ($random == 1 ? (new CDbExpression(dbRandom())) : 'question_order ASC');
-        $ansresult = Question::model()->findAll($criteria);
+        // Get questions and answers by defined order
+        $sOrder = ($this->getQuestionAttribute('random_order') == 1) ? dbRandom() : 'question_order';
+        $oCriteria = new CDbCriteria();
+        $oCriteria->order = $sOrder;
+        $oCriteria->addCondition('parent_qid=:parent_qid');
+        $oCriteria->params = [':parent_qid' => $this->qid];
 
-        //if  exclude_all_others is set then the related answer should keep its position at all times
-        //thats why we have to re-position it if it has been randomized
-        if (trim($exclude_all_others) != '' && $random == 1) {
-            $position = 0;
-            foreach ($ansresult as $answer) {
-                if (($answer['title'] == trim($exclude_all_others))) {
-                    if ($position == $answer['question_order'] - 1) {
-                        //already in the right position
-                        break;
-                    }
-                    $tmp = array_splice($ansresult, $position, 1);
-                    array_splice($ansresult, $answer['question_order'] - 1, 0, $tmp);
-                    break;
-                }
-                $position++;
+        //reset subquestions set prior to this call
+        $aSubQuestions = [
+            0 => []
+        ];
+        $excludedSubquestion = null;
+        foreach ($this->subquestions as $i => $oSubquestion) {
+            if ($scale_id !== null && $oSubquestion->scale_id != $scale_id) {
+                continue;
             }
+            //if  exclude_all_others is set then the related answer should keep its position at all times
+            //thats why we have to re-position it if it has been randomized            
+            if ( 
+                ($this->getQuestionAttribute('exclude_all_others') != '' && $this->getQuestionAttribute('random_order') == 1)
+                && ($oSubquestion->title == $this->getQuestionAttribute('exclude_all_others'))
+            ) {
+                $excludedSubquestion = $oSubquestion;
+                continue;
+            }
+            $aSubQuestions[$oSubquestion->scale_id][] = $oSubquestion;   
         }
-        return $ansresult;
+        
+        if($excludedSubquestion !== null) {
+            array_splice($aSubQuestions[$excludedSubquestion->scale_id][], ($excludedSubquestion->question_order-1), 0, $excludedSubquestion);
+        }
+
+        if($scale_id !== null) {
+            return $aSubQuestions[$scale_id];
+        }
+
+        return $aSubQuestions;
     }
 
     public function getMandatoryIcon()
@@ -889,17 +919,23 @@ class Question extends LSActiveRecord
         return QuestionAttribute::model()->findAll($criteria);
     }
 
-    // /**
-    //  * @return QuestionAttribute[]
-    //  */
-    // public function getQuestionAttribute($sAttribute)
-    // {
-    //     $criteria = new CDbCriteria();
-    //     $criteria->addCondition('qid=:qid');
-    //     $criteria->addCondition('attribute=:attribute');
-    //     $criteria->params = [':qid'=>$this->qid, ':attribute' => $sAttribute];
-    //     return QuestionAttribute::model()->find($criteria);
-    // }
+    /**
+     * @return QuestionAttribute[]
+     */
+    public function getQuestionAttribute($sAttribute)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('qid=:qid');
+        $criteria->addCondition('attribute=:attribute');
+        $criteria->params = [':qid'=>$this->qid, ':attribute' => $sAttribute];
+        $oQuestionAttribute =  QuestionAttribute::model()->find($criteria);
+        
+        if($oQuestionAttribute != null) {
+            $oQuestionAttribute->value;
+        }
+        
+        return null;
+    }
 
     /**
      * @return null|QuestionType
@@ -908,7 +944,7 @@ class Question extends LSActiveRecord
     {
         $model = QuestionType::findOne($this->type);
         if (!empty($model)) {
-            $model->question = $this;
+            $model->applyToQuestion($this);
         }
         return $model;
     }
@@ -927,40 +963,83 @@ class Question extends LSActiveRecord
         return $result;
     }
     
-    public function getRenderererObject($aFieldArray)
+    public function getRenderererObject($aFieldArray, $type = null)
     {
-        switch ($this->type) {
-            case Question::QT_X_BOILERPLATE_QUESTION: return new RenderBoilerplate($aFieldArray);
-            case Question::QT_5_POINT_CHOICE: return new RenderFivePointChoice($aFieldArray);
-            case Question::QT_ASTERISK_EQUATION: return new RenderEquation($aFieldArray);
-            case Question::QT_D_DATE: return new RenderDate($aFieldArray);
-            case Question::QT_1_ARRAY_MULTISCALE: return new RenderArrayDual($aFieldArray);
-            case Question::QT_L_LIST_DROPDOWN: return new RenderListRadio($aFieldArray);
-            case Question::QT_EXCLAMATION_LIST_DROPDOWN: return new RenderListDropdown($aFieldArray);
-            case Question::QT_O_LIST_WITH_COMMENT: return new RenderListComment($aFieldArray);
+        LoadQuestionTypes::loadAll();
+        $type = $type === null ? $this->type : $type;
+        switch ($type) {
+            case Question::QT_X_BOILERPLATE_QUESTION: $oRenderer = new RenderBoilerplate($aFieldArray); break;
+            case Question::QT_5_POINT_CHOICE: $oRenderer = new RenderFivePointChoice($aFieldArray); break;
+            case Question::QT_ASTERISK_EQUATION: $oRenderer = new RenderEquation($aFieldArray); break;
+            case Question::QT_D_DATE: $oRenderer = new RenderDate($aFieldArray); break;
+            case Question::QT_1_ARRAY_MULTISCALE: $oRenderer = new RenderArrayMultiscale($aFieldArray); break;
+            case Question::QT_L_LIST_DROPDOWN: $oRenderer = new RenderListRadio($aFieldArray); break;
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN: $oRenderer = new RenderListDropdown($aFieldArray); break;
+            case Question::QT_O_LIST_WITH_COMMENT: $oRenderer = new RenderListComment($aFieldArray); break;
+            case Question::QT_R_RANKING_STYLE: $oRenderer = new RenderRanking($aFieldArray); break;
+            case Question::QT_M_MULTIPLE_CHOICE: $oRenderer = new RenderMultipleChoice($aFieldArray); break;
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: $oRenderer = new RenderMultipleChoiceWithComments($aFieldArray); break;
+            case Question::QT_I_LANGUAGE: $oRenderer = new RenderLanguageSelector($aFieldArray); break;
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT: $oRenderer = new RenderMultipleShortText($aFieldArray); break;
+            case Question::QT_T_LONG_FREE_TEXT: $oRenderer = new RenderLongFreeText($aFieldArray); break;
+            case Question::QT_U_HUGE_FREE_TEXT: $oRenderer = new RenderHugeFreeText($aFieldArray); break;
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: $oRenderer = new RenderMultipleNumerical($aFieldArray); break;
+            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: $oRenderer = new RenderArray5ChoiceQuestion($aFieldArray); break;
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: $oRenderer = new RenderArray10ChoiceQuestion($aFieldArray); break;
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: $oRenderer = new RenderArrayYesUncertainNo($aFieldArray); break;
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: $oRenderer = new RenderArrayOfIncSameDecQuestions($aFieldArray); break;
+            case Question::QT_F_ARRAY_FLEXIBLE_ROW: $oRenderer = new RenderArrayFlexibleRow($aFieldArray); break;
+            case Question::QT_G_GENDER_DROPDOWN: $oRenderer = new RenderGenderDropdown($aFieldArray); break;
+            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: $oRenderer = new RendererArrayFlexibleColumn($aFieldArray); break;
+            case Question::QT_N_NUMERICAL: $oRenderer = new RenderNumerical($aFieldArray); break;
+            case Question::QT_S_SHORT_FREE_TEXT: $oRenderer = new RenderShortFreeText($aFieldArray); break;
+            case Question::QT_Y_YES_NO_RADIO: $oRenderer = new RenderYesNoRadio($aFieldArray); break;
+            case Question::QT_Z_LIST_RADIO_FLEXIBLE: $oRenderer = new RenderListRadioFlexible($aFieldArray); break;
+            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: $oRenderer = new RenderArrayMultiFlexNumbers($aFieldArray); break;
+            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: $oRenderer = new RenderArrayMultiFlexText($aFieldArray); break;
+            case Question::QT_VERTICAL_FILE_UPLOAD: $oRenderer = new RenderFileUpload($aFieldArray); break;
+            default:  $oRenderer = new DummyQuestionEditContainer($aFieldArray); break;
+        };
+        
+        return $oRenderer;
+    }
+    
+    public function getDataSetObject($type = null)
+    {
+        LoadQuestionTypes::loadAll();
+        $type = $type === null ? $this->type : $type;
+        switch ($type) {
+            case Question::QT_X_BOILERPLATE_QUESTION: return new DataSetBoilerplate($this->qid);
+            case Question::QT_5_POINT_CHOICE: return new DataSetFivePointChoice($this->qid);
+            case Question::QT_ASTERISK_EQUATION: return new DataSetEquation($this->qid);
+            case Question::QT_D_DATE: return new DataSetDate($this->qid);
+            case Question::QT_1_ARRAY_MULTISCALE: return new DataSetArrayMultiscale($this->qid);
+            case Question::QT_L_LIST_DROPDOWN: return new DataSetListDropdown($this->qid);
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN: return new DataSetListRadio($this->qid);
+            case Question::QT_O_LIST_WITH_COMMENT: return new DataSetListWithComment($this->qid);
             case Question::QT_R_RANKING_STYLE: return new RenderRanking($aFieldArray);
-            case Question::QT_M_MULTIPLE_CHOICE: return new RenderMultipleChoice($aFieldArray);
-            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: return new RenderMultipleChoiceWithComments($aFieldArray);
-            case Question::QT_I_LANGUAGE: return new RenderLanguageSelector($aFieldArray);
-            case Question::QT_Q_MULTIPLE_SHORT_TEXT: return new RenderMultipleShortText($aFieldArray);
-            case Question::QT_T_LONG_FREE_TEXT: //fallthrough
-            case Question::QT_U_HUGE_FREE_TEXT: return new RenderFreeText($aFieldArray);
+            case Question::QT_M_MULTIPLE_CHOICE: return new DataSetMultipleChoice($this->qid);
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: return new DataSetMultipleChoiceWithComments($this->qid);
+            case Question::QT_I_LANGUAGE: return new DataSetLanguage($this->qid);
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT: new DataSetMultipleShortText($this->qid);
+            case Question::QT_T_LONG_FREE_TEXT: return new DataSetHugeFreeText($this->qid);
+            case Question::QT_U_HUGE_FREE_TEXT: return new DataSetLongFreeText($this->qid);
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: return new RenderMultipleNumerical($aFieldArray);
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return 'arrays/5point';
-            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return 'arrays/10point';
-            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return 'arrays/yesnouncertain';
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: return 'arrays/increasesamedecrease';
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW: return 'arrays/multiflexi';
-            case Question::QT_G_GENDER_DROPDOWN: return 'gender';
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: return 'arrays/multiflexi';
-            case Question::QT_N_NUMERICAL: return 'numerical';
-            case Question::QT_S_SHORT_FREE_TEXT: return 'shortfreetext';
-            case Question::QT_Y_YES_NO_RADIO: return 'yesno';
-            case Question::QT_Z_LIST_RADIO_FLEXIBLE: return 'listradioflexible';
-            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: return 'arrays/texts';
-            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: return 'arrays/texts';
-            case Question::QT_VERTICAL_FILE_UPLOAD: return 'file_upload';
-            default:  return 'generic_question'; // fallback
+            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return new DataSetArray5ChoiceQuestion($this->qid);
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return new DataSetArray10ChoiceQuestion($this->qid);
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return new DataSetArrayYesUncertainNo($this->qid);
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: return new DataSetArrayOfIncSameDecQuestions($this->qid);
+            case Question::QT_F_ARRAY_FLEXIBLE_ROW: return new DataSetArrayFlexibleRow($this->qid);
+            case Question::QT_G_GENDER_DROPDOWN: return new DataSetGenderDropdown($this->qid);
+            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: return new DataSetArrayFlexibleColumn($this->qid);
+            case Question::QT_N_NUMERICAL: return new DataSetNumerical($this->qid);
+            case Question::QT_S_SHORT_FREE_TEXT: return new DataSetShortFreeText($this->qid);
+            case Question::QT_Y_YES_NO_RADIO: return new DataSetYesNoRadio($this->qid);
+            case Question::QT_Z_LIST_RADIO_FLEXIBLE: return new DataSetListRadioFlexible($this->qid);
+            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: return new DataSetArrayMultiFlexNumbers($this->qid);
+            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: return new DataSetArrayMultiFlexText($this->qid);
+            case Question::QT_VERTICAL_FILE_UPLOAD: return new DataSetFileUpload($this->qid);
+            default:  return new DummyQuestionEditContainer($aFieldArray);
         };
     }
 
@@ -978,5 +1057,14 @@ class Question extends LSActiveRecord
             return $oRecord->save();
         }
         Yii::log(\CVarDumper::dumpAsString($oRecord->getErrors()), 'warning', 'application.models.Question.insertRecords');
+    }
+
+
+    public function getHasSubquestions(){
+
+    }  
+    
+    public function getHasAnsweroptions(){
+
     }
 }

@@ -47,10 +47,18 @@ abstract class QuestionBaseRenderer extends StaticModel
         $this->sSGQA = $this->aFieldArray[1];
         $this->oQuestion = Question::model()->findByPk($aFieldArray[0]);
         $this->bRenderDirect = $bRenderDirect;
-        $this->sLanguage = $_SESSION['survey_'.$this->oQuestion->sid]['s_lang'];
+        $this->sLanguage = $this->setDefaultIfEmpty(@$aFieldArray['language'], @$_SESSION['survey_'.$this->oQuestion->sid]['s_lang']);
+        if(!$this->sLanguage) {
+                $this->sLanguage = $this->oQuestion->survey->language;
+        }
+        
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid);
-        $this->aSurveySessionArray = $_SESSION['survey_'.$this->oQuestion->sid];
+        $this->aSurveySessionArray = @$_SESSION['survey_'.$this->oQuestion->sid];
         $this->mSessionValue = @$this->setDefaultIfEmpty($this->aSurveySessionArray[$this->sSGQA], '');
+        
+        $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
+        $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
+        
     }
     
     protected function getTimeSettingRender()
@@ -206,72 +214,51 @@ abstract class QuestionBaseRenderer extends StaticModel
         return $output;
     }
 
-    private function getSubquestions(){
-        // Get questions and answers by defined order
-        $bRandomOrder = (bool) $this->setDefaultIfEmpty($this->aQuestionAttributes['random_order'], 0);
-        $sOrder = ($bRandomOrder ? dbRandom() : 'question_order');
-        $oCriteria = new CDbCriteria();
-        $oCriteria->order = $sOrder;
-        $oCriteria->addCondition('parent_qid=:parent_qid');
-        $oCriteria->params = [':parent_qid'=>$this->oQuestion->qid];
-
-        return Question::model()->findAll($oCriteria);
-    }
-
-
-    protected function setSubquestions( $scale_id = null ){
-        //reset subquestions set prior to this call
-        $this->aSubQuestions = [];
-        foreach ($this->getSubquestions() as $oQuestion) {
-            if($scale_id !== null && $oQuestion->scale_id != $scale_id) { continue; }
-            $this->aSubQuestions[$oQuestion->scale_id][] = $oQuestion;
+    protected function getQuestionAttribute($key1, $key2=null) {
+        $result =  isset($this->aQuestionAttributes[$key1]) ? $this->aQuestionAttributes[$key1] : null;
+        if($key2 !== null && $result !== null) {
+            $result =  isset($result[$key2]) ? $result[$key2] : null;
         }
+        return $result;
     }
 
-    private function getAnsweroptions(){
-        $bAlphasort    = (bool) $this->setDefaultIfEmpty($this->aQuestionAttributes['alphasort'], 0);
-        $bRandomOrder = (bool) $this->setDefaultIfEmpty($this->aQuestionAttributes['random_order'], 0);
-        // Get questions and answers by defined order
-        $sOrder = ($bRandomOrder) 
-        ? dbRandom() 
-        : ($bAlphasort ? 'answer' : 'question_order');
-
-        $oCriteria = new CDbCriteria();
-        $oCriteria->order = $sOrder;
-        $oCriteria->addCondition('parent_qid=:parent_qid');
-        $oCriteria->params = [':parent_qid'=>$this->oQuestion->qid];
-        
-        return Answers::model()->findAll($oCriteria);
+    protected function setSubquestions($scale_id = null)
+    {
+       
+        $this->aSubQuestions = $this->oQuestion->getOrderedSubQuestions($scale_id);
     }
 
-    protected function setAnsweroptions( $scale_id = null){
-        //reset answers set prior to this call
-        $this->aAnswerOptions = [];
-        foreach ($this->oQuestion->answers as $oAnswer) {
-            if( $scale_id !== null && $oAnswer->scale_id != $scale_id) { continue; }
-            $this->aAnswerOptions[$oAnswer->scale_id][] = $oAnswer;
-        }
+    protected function setAnsweroptions($scale_id = null)
+    {
+        $this->aAnswerOptions = $this->oQuestion->getOrderedAnswers($scale_id);
     }
 
-    protected function getAnswerCount($iScaleId=0){
+    protected function getAnswerCount($iScaleId=0)
+    {
         return count($this->aAnswerOptions[$iScaleId]);
     }
 
-    protected function getQuestionCount($iScaleId=0){
+    protected function getQuestionCount($iScaleId=0)
+    {
         return count($this->aSubQuestions[$iScaleId]);
     }
 
-    protected function getFromSurveySession($sIndex){
-        return $_SESSION['survey_'.$this->oQuestion->sid][$sIndex];
+    protected function getFromSurveySession($sIndex, $default="")
+    {
+        return isset($_SESSION['survey_'.$this->oQuestion->sid][$sIndex]) 
+            ? $_SESSION['survey_'.$this->oQuestion->sid][$sIndex]
+            : $default;
     }
 
-    protected function applyPackages(){
-        foreach($this->aPackages as $sPackage) {
+    protected function applyPackages()
+    {
+        foreach ($this->aPackages as $sPackage) {
             Yii::app()->getClientScript()->registerPackage($sPackage);
         }
     }
 
-    protected function addScript($name, $content, $position = LSYii_ClientScript::POS_BEGIN, $appendId = false){
+    protected function addScript($name, $content, $position = LSYii_ClientScript::POS_BEGIN, $appendId = false)
+    {
         $this->aScripts[] = [
             'name' => $name.($appendId ? '_'.$this->oQuestion->qid : ''),
             'content' => $content,
@@ -279,29 +266,36 @@ abstract class QuestionBaseRenderer extends StaticModel
         ];
     }
 
-    protected function applyScripts(){
-        foreach($this->aScripts as $aScript) {
+    protected function applyScripts()
+    {
+        foreach ($this->aScripts as $aScript) {
             Yii::app()->getClientScript()->registerScript($aScript['name'], $aScript['content'], $aScript['position']);
         }
     }
-    protected function applyScriptfiles(){
-        foreach($this->aScriptFiles as $aScriptFile) {
+    protected function applyScriptfiles()
+    {
+        foreach ($this->aScriptFiles as $aScriptFile) {
             Yii::app()->getClientScript()->registerScriptFile($aScriptFile['path'], $aScriptFile['position']);
         }
     }
 
-    protected function applyStyles(){
-        foreach($this->aStyles as $aStyle) {
+    protected function applyStyles()
+    {
+        foreach ($this->aStyles as $aStyle) {
             Yii::app()->getClientScript()->registerCss($aStyle['name'], $aStyle['content']);
         }
     }
 
     protected function setDefaultIfEmpty($value, $default)
     {
+        if(!$value) {
+            return $default;
+        }
         return trim($value) == '' ? $default : $value;
     }
 
-    protected function registerAssets() {
+    protected function registerAssets()
+    {
         $this->applyPackages();
         $this->applyScripts();
         $this->applyScriptfiles();
@@ -321,7 +315,7 @@ abstract class QuestionBaseRenderer extends StaticModel
             return "";
         }
 
-        $sExcludeAllOther = $this->setDefaultIfEmpty($this->aQuestionAttributes['exclude_all_others'], false);
+        $sExcludeAllOther = $this->setDefaultIfEmpty($this->getQuestionAttribute('exclude_all_others'), false);
         /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
         if ($sExcludeAllOther !== false) {
             foreach (explode(';', $sExcludeAllOther) as $sExclude) {
@@ -335,20 +329,19 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
     
         // Currently null/0/false=> hidden , 1 : disabled
-        $filterStyle = !empty($this->aQuestionAttributes['array_filter_style']); 
+        $filterStyle = !empty($this->aQuestionAttribute('array_filter_style'));
         return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
-
     }
     /**
     * Find the label / input width
     * @param string|int $labelAttributeWidth label width from attribute
     * @param string|int $inputAttributeWidth input width from attribute
     * @return array labelWidth as integer,inputWidth as integer,defaultWidth as boolean
-    */              
+    */
     public function getLabelInputWidth()
     {
-        $labelAttributeWidth = @trim($this->aQuestionAttributes['label_input_columns']);
-        $inputAttributeWidth = @trim($this->aQuestionAttributes['text_input_columns']);
+        $labelAttributeWidth = trim($this->getQuestionAttribute('label_input_columns'));
+        $inputAttributeWidth = trim($this->getQuestionAttribute('text_input_columns'));
 
         $attributeInputContainerWidth = intval($inputAttributeWidth);
         if ($attributeInputContainerWidth < 1 || $attributeInputContainerWidth > 12) {
@@ -356,10 +349,10 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
 
         $attributeLabelWidth =  ($labelAttributeWidth === 'hidden')
-            ? 0 
+            ? 0
             : (
-                ($labelAttributeWidth < 1 || $labelAttributeWidth > 12) 
-                ? null 
+                ($labelAttributeWidth < 1 || $labelAttributeWidth > 12)
+                ? null
                 : intval($labelAttributeWidth)
             );
         
@@ -368,7 +361,6 @@ abstract class QuestionBaseRenderer extends StaticModel
             $sLabelWidth = 4;
             $defaultWidth = true;
         } else {
-
             if ($attributeInputContainerWidth !== null) {
                 $sInputContainerWidth = $attributeInputContainerWidth;
             } elseif ($attributeLabelWidth == 12) {
@@ -397,7 +389,7 @@ abstract class QuestionBaseRenderer extends StaticModel
     /**
     * Include Keypad headers
     */
-    function includeKeypad()
+    public function includeKeypad()
     {
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party')."jquery-keypad/jquery.keypad.alt.css");
         
@@ -412,5 +404,4 @@ abstract class QuestionBaseRenderer extends StaticModel
     abstract public function getMainView();
     abstract public function getRows();
     abstract public function render();
-
 }

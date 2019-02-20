@@ -171,7 +171,7 @@
         <?php else: ?>
         <div class="col-md-7 text-right col-md-offset-5">
             <?php if(isset($menu['save'])): ?>
-                <a class="btn btn-success" href="#" role="button" id="save-button">
+                <a class="btn btn-success" href="#" role="button" id="save-button"> 
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
                 </a>

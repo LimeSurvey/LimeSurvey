@@ -52,11 +52,8 @@
 /tmp/runtime/*
 /tmp/upload/*
 !/tmp/index.html
-!/tmp/assets/
 !/tmp/assets/index.html
-!/tmp/runtime/
 !/tmp/runtime/index.html
-!/tmp/upload/
 !/tmp/upload/index.html
 
 # ignore plugins directory by default except LS plugin

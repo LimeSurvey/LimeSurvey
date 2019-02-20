@@ -130,11 +130,12 @@ return array(
     'pjaxbackend' => array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
-        'js' => ($debug > 0 ?
+        'js' => (
+            $debug > 0 ?
             array(
                 'pjax.js',
                 'loadPjax.js'
-            ) 
+            )
             : array(
                 'min/pjax.combined.min.js',
             )
@@ -144,15 +145,29 @@ return array(
         )
     ),
     'adminpanel' => array(
-        'devBaseUrl' => 'assets/packages/adminpanel/',
-        'basePath' => 'core.adminpanel',
+       'devBaseUrl' => 'assets/packages/adminpanel/',
+       'basePath' => 'core.adminpanel',
+       'js' => array(
+           'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
+           'build/surveysettings'.$minVersion.'.js',
+           //'build/hammer'.$minVersion.'.js'
+       ),
+       'css' => array(
+           'build/lsadminpanel'.$minVersion.'.css'
+       ),
+       'depends' => array(
+           'adminbasics'
+       )
+    ),
+    'questioneditor' => array(
+        'devBaseUrl' => 'assets/packages/questioneditor/',
+        'basePath' => 'core.questioneditor',
+        'position' =>CClientScript::POS_END,
         'js' => array(
-            'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
-            'build/surveysettings'.$minVersion.'.js',
-            'build/hammer'.$minVersion.'.js'
+            'build/lsquestioneditor'.(($debug > 0) ? '' : '.min').'.js'
         ),
         'css' => array(
-            'build/lsadminpanel'.$minVersion.'.css'
+            'build/lsquestioneditor'.$minVersion.'.css'
         ),
         'depends' => array(
             'adminbasics'

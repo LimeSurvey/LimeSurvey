@@ -132,96 +132,8 @@ function retrieveAnswers($ia)
     $oQuestion = Question::model()->findByPk($ia[0]);
     $oQuestionTemplate = QuestionTemplate::getNewInstance($oQuestion);
     $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
-
-    switch ($ia[4]) {
-        case Question::QT_ASTERISK_EQUATION: // Equation
-        case Question::QT_X_BOILERPLATE_QUESTION: //BOILERPLATE QUESTION
-        case Question::QT_5_POINT_CHOICE: //5 POINT CHOICE radio-buttons
-        case Question::QT_D_DATE: //DATE
-        case Question::QT_1_ARRAY_MULTISCALE:
-        case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
-        case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
-        case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
-        case Question::QT_R_RANKING_STYLE: //RANKING STYLE
-        case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
-        case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
-        case Question::QT_I_LANGUAGE: //Language Question
-        case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
-        case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-        case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
-        case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
-            $oRenderer = $oQuestion->getRenderererObject($ia);
-            $values = $oRenderer->render();
-            break;
-
-        case Question::QT_N_NUMERICAL: //NUMERICAL QUESTION TYPE
-            $values = do_numerical($ia);
-            break;
-
-        case Question::QT_S_SHORT_FREE_TEXT: //SHORT FREE TEXT
-            $values = do_shortfreetext($ia);
-            break;
-
-        case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
-            $values = do_longfreetext($ia);
-            break;
-
-        case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
-            $values = do_hugefreetext($ia);
-            break;
-
-        case Question::QT_Y_YES_NO_RADIO: //YES/NO radio-buttons
-            $values = do_yesno($ia);
-            break;
-
-        case Question::QT_G_GENDER_DROPDOWN: //GENDER drop-down list
-            $values = do_gender($ia);
-            break;
-
-        case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: //ARRAY (5 POINT CHOICE) radio-buttons
-            $values = do_array_5point($ia);
-            break;
-
-        case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: //ARRAY (10 POINT CHOICE) radio-buttons
-            $values = do_array_10point($ia);
-            break;
-
-        case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-            $values = do_array_yesnouncertain($ia);
-            break;
-
-        case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: //ARRAY (Increase/Same/Decrease) radio-buttons
-            $values = do_array_increasesamedecrease($ia);
-            break;
-
-        case Question::QT_F_ARRAY_FLEXIBLE_ROW: //ARRAY (Flexible) - Row Format
-            $values = do_array($ia);
-            break;
-
-        case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: //ARRAY (Flexible) - Column Format
-            $values = do_arraycolumns($ia);
-            break;
-
-        case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: //ARRAY (Multi Flexi) 1 to 10
-            $values = do_array_multiflexi($ia);
-            break;
-
-        case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: //ARRAY (Multi Flexi) Text
-            $values = do_array_texts($ia); //It's like the "5th element" movie, come to life
-            break;
-
-        case Question::QT_1_ARRAY_MULTISCALE: //Array (Flexible Labels) dual scale
-            $values = do_array_dual($ia);
-            break;
-
-        case Question::QT_ASTERISK_EQUATION: // Equation
-            $values = do_equation($ia);
-            break;
-                    
-            case Question::QT_VERTICAL_FILE_UPLOAD: //File Upload
-            $values = do_file_upload($ia);
-            break;
-    }
+    $oRenderer = $oQuestion->getRenderererObject($ia);
+    $values = $oRenderer->render();
 
 
     if (isset($values)) {
@@ -3820,7 +3732,7 @@ function do_array($ia)
 
         $fn         = 1;
         $inputnames = [];
-
+        //$aAnswer->answerL10ns[$sSurveyLanguage]->answer
         $sRows = "";
         foreach ($aQuestions as $j => $ansrow) {
             $myfname        = $ia[1].$ansrow['title'];
@@ -3829,8 +3741,8 @@ function do_array($ia)
             $error          = (in_array($myfname, $aMandatoryViolationSubQ)) ?true:false; /* Check the mandatory sub Q violation */
             $value          = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
 
-            if ($right_exists && (strpos($ansrow['question'], '|') !== false)) {
-                $answertextright = substr($ansrow['question'], strpos($ansrow['question'], '|') + 1);
+            if ($right_exists && (strpos($ansrow->questionL10ns[$sSurveyLanguage]['question'], '|') !== false)) {
+                $answertextright = substr($ansrow->questionL10ns[$sSurveyLanguage]['question'], strpos($ansrow['question'], '|') + 1);
             } else {
                 $answertextright = null;
             }

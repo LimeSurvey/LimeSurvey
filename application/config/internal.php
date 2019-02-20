@@ -15,7 +15,6 @@ if (!file_exists(dirname(__FILE__).'/config.php')) {
 }
 
 if (!date_default_timezone_set(@date_default_timezone_get())) {
-
     date_default_timezone_set('Europe/London');
 }
 
@@ -26,7 +25,6 @@ if (function_exists('mb_internal_encoding')) {
     if (ini_get('mbstring.internal_encoding')) {
         ini_set('mbstring.internal_encoding', 'UTF-8');
     }
-
 } else {
     // Do nothing, will be checked in installation
 }
@@ -46,12 +44,13 @@ $internalConfig = array(
 
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__.'/../extensions/bootstrap'),
-        'questiontypes' => realpath(__DIR__.'/../extensions/questionTypes'),
         'vendor.twbs.bootstrap.dist' => realpath(__DIR__.'/../extensions/bootstrap'),
         // yiiwheels configuration
         'yiiwheels' => realpath(__DIR__.'/../extensions/yiiwheels'),
         'vendor.twbs.bootstrap.dist',
 
+        //Basic questiontype objects
+        'questiontypes' => realpath(__DIR__.'/../core/QuestionTypes'),
         // Twig aliases. We don't want to change the file ETwigViewRenderer, so we can update it without difficulties
         // However, LimeSurvey directory tree is not a standard Yii Application tree.
         // we use 'third_party' instead of 'vendor'
@@ -105,7 +104,7 @@ $internalConfig = array(
         'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
-        'application.views.QuestionTypeRenderer.*',
+        'application.core.questiontypes.*',
         'bootstrap.helpers.*',
         'bootstrap.widgets.*',
         'bootstrap.behaviors.*',

@@ -39,6 +39,7 @@ import {globalStartUpMethods, globalWindowMethods, globalOnloadMethods} from './
 import * as notifyFader from './parts/notifyFader';
 import * as AjaxHelper from './parts/ajaxHelper';
 import saveBindings from './parts/save';
+import parameterGlobals from './parts/parameterGlobals';
 
 // import components
 import activateSubSubMenues from './components/bootstrap-sub-submenues';
@@ -115,12 +116,17 @@ const AdminCore = function(){
             surveyGrid();
             LOG.log("Refreshed Admin core methods");
         },
+        addToNamespace = (object, name="globalAddition") => {
+            window.LS[name] = window.LS[name] || {};
+            window.LS[name] = _.merge(window.LS[name], object);
+        },
         setNameSpace = () => {
             const BaseNameSpace = {
                 adminCore : {
                     refresh: refreshAdminCore,
                     onload: onLoadRegister,
-                    appendToLoad: appendToLoad
+                    appendToLoad: appendToLoad,
+                    addToNamespace: addToNamespace,
                 }
             };
 
@@ -134,7 +140,7 @@ const AdminCore = function(){
                 initNotification : notificationSystem.initNotification
             }
 
-            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, AjaxHelper, notifyFader, subquestionAndAnswersGlobalMethods, notificationSystem,gridAction);
+            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, AjaxHelper, notifyFader, subquestionAndAnswersGlobalMethods, notificationSystem,gridAction);
             
             /*
             * Set the namespace to the global variable LS
@@ -147,6 +153,8 @@ const AdminCore = function(){
             window.hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'function';
 
         };
+
+
         setNameSpace();
         onLoadRegister();
         LOG.log("AdminCore", eventsBound);

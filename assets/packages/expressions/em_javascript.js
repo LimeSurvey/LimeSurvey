@@ -121,7 +121,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
     /**
      * If have to fix numbers automatically.
      */
-    if(LSvar.bFixNumAuto))
+    if(LSvar.bFixNumAuto)
     {
         if(window.correctNumberField!=null) {
             clearTimeout(window.correctNumberField);
