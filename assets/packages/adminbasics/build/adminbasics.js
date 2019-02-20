@@ -21305,7 +21305,6 @@ const globalWindowMethods = {
         _.each(contentObject, (value,key) => {
             $("<input type='hidden'>").attr("name", key).attr("value", value).appendTo($form);
         });
-        
         $("<input type='hidden'>").attr("name", LS.data.csrfTokenName).attr("value", LS.data.csrfToken).appendTo($form);
         $form.appendTo("body");
         $form.submit();

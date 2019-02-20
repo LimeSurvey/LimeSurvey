@@ -1230,6 +1230,19 @@ input[type="checkbox"]:checked:before,
   -o-transform: rotate(45deg);
   transform: rotate(45deg); }
 
+input[type="checkbox"]:indeterminate:before,
+.checkbox input[type="checkbox"]:indeterminate:before,
+.checkbox-inline input[type="checkbox"]:indeterminate:before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 2px;
+  display: table;
+  width: 12px;
+  height: 0px;
+  border: 1px solid #fff;
+ }
+
 input[type="checkbox"]:disabled:after,
 .checkbox input[type="checkbox"]:disabled:after,
 .checkbox-inline input[type="checkbox"]:disabled:after {
