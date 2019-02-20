@@ -111,8 +111,8 @@ $internalConfig = array(
         'yiiwheels.widgets.select2.WhSelect2',
         'third_party.Twig.*',
         'ext.captchaExtended.CaptchaExtendedAction',
-        'ext.captchaExtended.CaptchaExtendedValidator'
-
+        'ext.captchaExtended.CaptchaExtendedValidator',
+        'questiontypes.*'
     ),
     'preload' => array('log'),
     'components' => array(
