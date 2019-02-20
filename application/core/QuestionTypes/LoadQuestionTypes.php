@@ -4,36 +4,36 @@ class LoadQuestionTypes
 {
     public static function loadAll()
     {
-        Yii::import('questiontypes.5pointchoice.*');
-        Yii::import('questiontypes.array10choicequestions.*');
-        Yii::import('questiontypes.array5choicequestions.*');
-        Yii::import('questiontypes.arrayflexiblecolumn.*');
-        Yii::import('questiontypes.arrayflexiblerow.*');
-        Yii::import('questiontypes.arraymultiflexnumbers.*');
-        Yii::import('questiontypes.arraymultiflextext.*');
-        Yii::import('questiontypes.arraymultiscale.*');
-        Yii::import('questiontypes.arrayofincsamedecquestions.*');
-        Yii::import('questiontypes.arrayyesuncertainno.*');
-        Yii::import('questiontypes.boilerplatequestion.*');
-        Yii::import('questiontypes.date.*');
-        Yii::import('questiontypes.dummyquestion.*');
-        Yii::import('questiontypes.equation.*');
-        Yii::import('questiontypes.fileupload.*');
-        Yii::import('questiontypes.genderdropdown.*');
-        Yii::import('questiontypes.hugefreetext.*');
-        Yii::import('questiontypes.language.*');
-        Yii::import('questiontypes.listdropdown.*');
-        Yii::import('questiontypes.listradio.*');
-        Yii::import('questiontypes.listradioflexible.*');
-        Yii::import('questiontypes.listwithcomment.*');
-        Yii::import('questiontypes.longfreetext.*');
-        Yii::import('questiontypes.multiplechoice.*');
-        Yii::import('questiontypes.multiplechoicewithcomments.*');
-        Yii::import('questiontypes.multiplenumericalquestion.*');
-        Yii::import('questiontypes.multipleshorttext.*');
-        Yii::import('questiontypes.numerical.*');
-        Yii::import('questiontypes.rankingstyle.*');
-        Yii::import('questiontypes.shortfreetext.*');
-        Yii::import('questiontypes.yesnoradio.*');
+        Yii::import('questiontypes.5PointChoice.*');
+        Yii::import('questiontypes.Array10ChoiceQuestions.*');
+        Yii::import('questiontypes.Array5ChoiceQuestions.*');
+        Yii::import('questiontypes.ArrayFlexibleColumn.*');
+        Yii::import('questiontypes.ArrayFlexibleRow.*');
+        Yii::import('questiontypes.ArrayMultiFlexNumbers.*');
+        Yii::import('questiontypes.ArrayMultiFlexText.*');
+        Yii::import('questiontypes.ArrayMultiScale.*');
+        Yii::import('questiontypes.ArrayOfIncSameDecQuestions.*');
+        Yii::import('questiontypes.ArrayYesUncertainNo.*');
+        Yii::import('questiontypes.BoilerplateQuestion.*');
+        Yii::import('questiontypes.Date.*');
+        Yii::import('questiontypes.DummyQuestion.*');
+        Yii::import('questiontypes.Equation.*');
+        Yii::import('questiontypes.FileUpload.*');
+        Yii::import('questiontypes.GenderDropdown.*');
+        Yii::import('questiontypes.HugeFreeText.*');
+        Yii::import('questiontypes.Language.*');
+        Yii::import('questiontypes.ListDropdown.*');
+        Yii::import('questiontypes.ListRadio.*');
+        Yii::import('questiontypes.ListRadioFlexible.*');
+        Yii::import('questiontypes.ListWithComment.*');
+        Yii::import('questiontypes.LongFreeText.*');
+        Yii::import('questiontypes.MultipleChoice.*');
+        Yii::import('questiontypes.MultipleChoiceWithComments.*');
+        Yii::import('questiontypes.MultipleNumericalQuestion.*');
+        Yii::import('questiontypes.MultipleShortText.*');
+        Yii::import('questiontypes.Numerical.*');
+        Yii::import('questiontypes.RankingStyle.*');
+        Yii::import('questiontypes.ShortFreeText.*');
+        Yii::import('questiontypes.YesNoRadio.*');
     }
 }
