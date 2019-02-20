@@ -4,7 +4,7 @@
  */
 $surveyid = App()->request->getParam('surveyid', 0);
 ?>
-<form class="custom-modal-datas">
+<form class="custom-modal-datas form-horizontal">
     <div  class="form-group" id="CssClass">
         <label class="col-sm-4 control-label"><?php eT("Random order:"); ?></label>
         <div class="col-sm-8">
@@ -17,4 +17,3 @@ $surveyid = App()->request->getParam('surveyid', 0);
         <input type="hidden" name="aValidQuestionTypes" value="!ABCEFHKLMOPQRWZ1:;" class="custom-data"/>
     </div>
 </form>
-<br/><br/>

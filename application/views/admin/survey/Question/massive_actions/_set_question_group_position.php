@@ -7,8 +7,7 @@
 ?>
 
 <?php eT("Set question group for those question"); ?>
-<form class="custom-modal-datas">
-
+<form class="custom-modal-datas  form-horizontal">
     <!-- select group -->
     <div class="form-group">
         <label class="control-label col-sm-4" for="group_gid"><?php et('Group:'); ?></label>
@@ -23,9 +22,6 @@
         </div>
 
     </div>
-
-    <br/><br/>
-
     <!-- Position widget -->
     <?php $this->widget('ext.admin.survey.question.PositionWidget.PositionWidget', array(
                 'display' => 'ajax_form_group',

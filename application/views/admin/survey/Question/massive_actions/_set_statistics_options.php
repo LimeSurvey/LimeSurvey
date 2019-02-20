@@ -3,7 +3,7 @@
  * Set subquestion/answer order
  */
 ?>
-<form class="custom-modal-datas">
+<form class="custom-modal-datas form-horizontal">
 
     <!-- Public statistics -->
     <div  class="form-group" id="PublicStatistcs">
@@ -22,7 +22,6 @@
             ?>
         </div>
     </div>
-<br/><br/>
     <!-- Display charts -->
     <div  class="form-group" id="StatisticsShowgraph">
         <label class="col-sm-4 control-label" for="statistics_showgraph"><?php eT("Display chart:"); ?></label>
@@ -40,7 +39,6 @@
             ?>
         </div>
     </div>
-<br/><br/>
     <!-- Display charts -->
     <div  class="form-group" id="StatisticsGraphType">
         <label class="col-sm-4 control-label" for="statistics_showgraph"><?php eT("Chart type:"); ?></label>
@@ -59,4 +57,3 @@
     <input type="hidden" name="sid" value="<?php echo (int) Yii::app()->request->getParam('surveyid',0); ?>" class="custom-data"/>
     <input type="hidden" name="aValidQuestionTypes" value="15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*" class="custom-data"/>
 </form>
-<br/><br/>
