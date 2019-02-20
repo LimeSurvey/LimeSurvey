@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import VModal from 'vue-js-modal'
 
 import App from './App.vue';
 
 import getAppState from "./storage/store";
 import LOG from "./mixins/logSystem";
+
 
 
 
@@ -15,6 +17,7 @@ Vue.config.ignoredElements = ["x-test"];
 
 Vue.use( LOG );
 Vue.use( CKEditor );
+Vue.use(VModal, { dynamic: true });
 
 Vue.mixin({
     methods: {

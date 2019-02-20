@@ -1,15 +1,20 @@
 <script>
-import max from 'lodash/max';
+
 import merge from 'lodash/merge';
 import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import foreach from 'lodash/foreach';
 
+import SimpleEditor from './_simpleEditor.vue';
+import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
+
 export default {
     name: 'answeroptions',
+    mixins: [AbstractSubQuestionAndAnswerBase],
     data(){
         return {
-            tmpansweroptions: []
+            uniqueSelector: 'aid',
+            baseNonNumericPart : "AO"
         };
     },
     computed: {
@@ -25,38 +30,24 @@ export default {
             } 
             return [];
         },
-        currentansweroptions() {
-            return this.$store.state.currentQuestionAnswerOptions.map((scaleArray, scaleId) => {
-                    if(!isEmpty(this.tmpansweroptions[scaleId])) {
-                        return scaleArray.concat(this.tmpansweroptions[scaleId]);
-                    }
-                    return scaleArray;
-                }
-            );
+        currentDataSet: {
+            get() {
+                return this.$store.state.currentQuestionAnswerOptions;
+            },
+            set(newValue) {
+                this.$store.commit('setCurrentQuestionAnswerOptions', newValue);
+            }
         },
     },
     methods: {
-        getNewCodeFromCurrent(scaleId) {
-            let nonNumericPart = 'AO';
-            if(this.currentansweroptions[scaleId].length > 0) {
-                nonNumericPart = this.currentansweroptions[scaleId][0].code.replace(/[0-9]/,'');
-            }
-            let numericPart = this.currentansweroptions[scaleId].reduce((prev, oAnswerOption) => {
-                return parseInt(max([prev,oAnswerOption.code.replace(/[^0-9]/,'')]));
-            }, 0) + 1 ;
-            return nonNumericPart+''+numericPart;
-        },
-        getRandomId(){
-            return 'random'+Math.random().toString(36).substr(2, 7);
-        },
-        getAnsweroptionTemplate(scaleId = 0){
+        getTemplate(scaleId = 0){
             let randomId = this.getRandomId();
 
             let answerOptionTemplate = {
                 aid: randomId,
                 qid: this.$store.state.currentQuestion.qid,
-                code: this.getNewCodeFromCurrent(scaleId),
-                sortorder: (this.currentansweroptions.length + 1),
+                code: this.getNewTitleFromCurrent(scaleId),
+                sortorder: (this.currentDataSet.length + 1),
                 scale_id: ''+scaleId,
                 assessment_value: 0,
                 };
@@ -72,20 +63,8 @@ export default {
 
             return answerOptionTemplate;
         },
-        openLabelSets() {},
-        openQuickAdd() {},
-        saveAsLabelSet() {},
-        resetansweroptions() {},
-        saveansweroptions() {
-            const allAnsweroptions = this.$store.state.currentQuestionAnswerOptions.map((scaleArray, scaleId) => {
-                    if(!isEmpty(this.tmpansweroptions[scaleId])) {
-                        return scaleArray.concat(this.tmpansweroptions[scaleId]);
-                    }
-                    return scaleArray;
-                }
-            );
-            this.tmpansweroptions = {};
-            this.$store.commit('setCurrentQuestionAnswerOptions', allAnsweroptions);
+        resetansweroptions() {
+            this.currentDataSet = this.$store.state.questionAnswerOptionsImmutable;
         },
         getAnswerForCurrentLanguage(answerOptionObject) {
             try {
@@ -93,26 +72,26 @@ export default {
             } catch(e){
                 this.$log.error('PROBLEM GETTING LANGUAGE', answerOptionObject);
             }
-            return JSON.stringify(answeroptionObject);
+            return '';
         },
-        deleteThisAnsweroption(oAnsweroption, scaleId) {
-            if(/^random.*$/.test(oAnsweroption.qid)) {
-                let tmpArray = merge([], this.tmpansweroptions);
-                tmpArray[scaleId] = remove(tmpArray[scaleId], (oAnsweroptionIterator) => oAnsweroptionIterator.qid == oAnsweroption.qid);
-                this.tmpansweroptions = tmpArray;
+        setAnswerForCurrentLanguage(answerOptionObject, $event) {
+            this.$log.log('setAnswerOption',$event);
+            if(!answerOptionObject[this.$store.state.activeLanguage]) {
+                answerOptionObject[this.$store.state.activeLanguage] = {};
             }
+            answerOptionObject[this.$store.state.activeLanguage].answer = $event.srcElement.value;
         },
-        openEditorForThisAnsweroption(oAnsweroption, scaleId) {
-
-        },
-        duplicateThisAnsweroption(oAnsweroption, scaleId) {
-
-        },
-        addAnsweroption(scaleId) {
-            let tmpArray = merge([], this.tmpansweroptions);
-            tmpArray[scaleId] = tmpArray[scaleId] || new Array();
-            tmpArray[scaleId].push(this.getAnsweroptionTemplate(scaleId));
-            this.tmpansweroptions = tmpArray;
+        openEditorForAnswerOption(oDataSet, scaleId) {
+            this.$modal.show(
+                SimpleEditor, 
+                { value: oDataSet[this.$store.state.activeLanguage].answer },
+                { draggable: true },
+                {'change': (event) => { 
+                        this.$log.log('CHANGE IN MODAL', event);
+                        oDataSet[this.$store.state.activeLanguage].answer = event;
+                    }
+                }
+            )
         },
     }
 }
@@ -130,7 +109,6 @@ export default {
                 </div>
                 <div class="col-sm-4 text-right">
                     <button class="btn btn-danger col-5" @click.prevent="resetansweroptions">{{ "Reset" | translate }}</button>
-                    <button class="btn btn-primary col-6" @click.prevent="saveansweroptions">{{ "Save" | translate }}</button>
                 </div>
             </div>
             <div class="row">
@@ -147,7 +125,7 @@ export default {
                 >
                     <div 
                         class="list-group-item scoped-answeroption-block"
-                        v-for="answeroption in currentansweroptions[answeroptionscale]"
+                        v-for="answeroption in currentDataSet[answeroptionscale]"
                         :key="answeroption.aid"
                     >
                         <div class="scoped-move-block">
@@ -161,7 +139,8 @@ export default {
                                 size='5'
                                 :class="surveyActive ? ' disabled' : ' '"
                                 :name="'code_'+answeroption.sortorder+'_'+answeroptionscale" 
-                                :value="answeroption.code"
+                                v-model="answeroption.code"
+                                @keyup.enter.prevent="switchinput('assessment_'+answeroption.sortorder+'_'+answeroptionscale)"
                             />
                         </div>
                         <div class="scoped-assessments-block">
@@ -170,9 +149,10 @@ export default {
                                     class='assessment form-control input'
                                     :id="'assessment_'+answeroption.sortorder+'_'+answeroptionscale"
                                     :name="'assessment_'+answeroption.sortorder+'_'+answeroptionscale"
-                                    :value="answeroption.assessment_value"
+                                    v-model="answeroption.assessment_value"
                                     maxlength='5'
                                     size='5'
+                                    @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+answeroption.aid+"_"+answeroptionscale)'
                                 />
                         </div>
                         <div class="scoped-content-block">
@@ -184,18 +164,20 @@ export default {
                                 :name='"answer_"+$store.state.activeLanguage+"_"+answeroption.aid+"_"+answeroptionscale'
                                 :placeholder='translate("Some example answer option")'
                                 :value="getAnswerForCurrentLanguage(answeroption)"
+                                @change="setAnswerForCurrentLanguage(answeroption,$event)"
+                                @keyup.enter.prevent='switchinput(false, $event)'
                             />
                         </div>
                         <div class="scoped-actions-block">
-                            <button class="btn btn-default btn-small" @click.prevent="deleteThisAnsweroption(answeroption, answeroptionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(answeroption, answeroptionscale)">
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="openEditorForThisAnsweroption(answeroption, answeroptionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="openEditorForAnswerOption(answeroption, answeroptionscale)">
                                 <i class="fa fa-edit"></i>
                                 {{ "Open editor" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="duplicateThisAnsweroption(answeroption, answeroptionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="duplicateThisDataSet(answeroption, answeroptionscale)">
                                 <i class="fa fa-copy"></i>
                                 {{ "Duplicate" | translate }}
                             </button>
@@ -205,7 +187,7 @@ export default {
                 </div>
                 <div class="row" :key="answeroptionscale+'addRow'">
                     <div class="col-sm-12 text-right">
-                        <button @click.prevent="addAnsweroption(answeroptionscale)" class="btn btn-primary">
+                        <button @click.prevent="addDataSet(answeroptionscale)" class="btn btn-primary">
                             <i class="fa fa-plus"></i>
                             {{ "Add answeroption" | translate}}
                         </button>

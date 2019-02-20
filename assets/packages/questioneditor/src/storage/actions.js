@@ -2,6 +2,29 @@ import ajax from '../mixins/runAjax.js';
 import _ from 'lodash';
 
 export default {
+    updateObjects: (context, newObjectBlock) => {
+        context.commit('setCurrentQuestion', newObjectBlock.question);
+        context.commit('setCurrentQuestionI10N', newObjectBlock.questionI10N);
+        context.commit('unsetQuestionImmutable');
+        context.commit('setQuestionImmutable', _.cloneDeep(newObjectBlock.question));
+        context.commit('unsetQuestionImmutableI10N');
+        context.commit('setQuestionImmutableI10N', _.cloneDeep(newObjectBlock.questionI10N));
+        context.commit('setCurrentQuestionSubquestions', newObjectBlock.scaledSubquestions);
+        context.commit('setCurrentQuestionAnswerOptions', newObjectBlock.scaledAnswerOptions);
+        context.commit('unsetQuestionSubquestionsImmutable')
+        context.commit('setQuestionSubquestionsImmutable',  _.cloneDeep(newObjectBlock.scaledSubquestions));
+        context.commit('unsetQuestionAnswerOptionsImmutable')
+        context.commit('setQuestionAnswerOptionsImmutable', _.cloneDeep(newObjectBlock.scaledAnswerOptions))
+        context.commit('setCurrentQuestionAttributes', newObjectBlock.questionAttributes);
+        context.commit('unsetImmutableQuestionAttributes');
+        context.commit('setImmutableQuestionAttributes', newObjectBlock.questionAttributes);
+        context.commit('setCurrentQuestionGeneralSettings', newObjectBlock.generalSettings);
+        context.commit('unsetImmutableQuestionGeneralSettings');
+        context.commit('setImmutableQuestionGeneralSettings', newObjectBlock.generalSettings);
+        context.commit('setCurrentQuestionAdvancedSettings', newObjectBlock.advancedSettings);
+        context.commit('unsetImmutableQuestionAdvancedSettings');
+        context.commit('setImmutableQuestionAdvancedSettings', newObjectBlock.advancedSettings);
+    },
     loadQuestion: (context) => {
         ajax.methods.$_get(
             window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 

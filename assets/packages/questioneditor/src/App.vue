@@ -1,4 +1,6 @@
 <script>
+import Mousetrap from 'mousetrap';
+
 import MainEditor from './components/mainEditor.vue';
 import GeneralSettings from './components/generalSettings.vue';
 import AdvancedSettings from './components/advancedSettings.vue';
@@ -21,8 +23,22 @@ export default {
     mounted() {
         this.toggleLoading(false);
         $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
+        this.applyHotkeys();
     },
     methods: {
+        applyHotkeys() {
+            Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
+            Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);
+            Mousetrap.bind('ctrl+s', this.submitCurrentState);
+        },
+        chooseNextLanguage() {
+            this.$log.log('HOTKEY', 'chooseNextLanguage');
+            this.$store.commit('nextLanguage');
+        },
+        choosePreviousLanguage() {
+            this.$log.log('HOTKEY', 'choosePreviousLanguage');
+            this.$store.commit('previousLanguage');
+        },
         jqueryTriggered(event, data){
             //this.$log.log('data', data);
             this.event = JSON.parse(data.emitter);
@@ -36,7 +52,6 @@ export default {
                 question: this.$store.state.currentQuestion,
                 scaledSubquestions: this.$store.state.currentQuestionSubquestions,
                 scaledAnswerOptions: this.$store.state.currentQuestionAnswerOptions,
-                questionSettings: this.$store.state.currentQuestionSettings,
                 questionI10N: this.$store.state.currentQuestionI10N,
                 questionAttributes: this.$store.state.currentQuestionAttributes,
                 generalSettings: this.$store.state.currentQuestionGeneralSettings,
@@ -46,6 +61,7 @@ export default {
             this.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', {'questionData': transferObject}).then((result) => {
                 this.toggleLoading();
                 $('#in_survey_common').trigger('lsStopLoading');
+                this.$store.dispatch('updateObjects', result.data.newQuestionDetails);
                 this.$log.log('OBJECT AFTER TRANSFER: ', result);
             })
         }
@@ -68,6 +84,7 @@ export default {
             <generalsettings :event="event" v-on:eventSet="eventSet"></generalsettings>
             <advancedsettings :event="event" v-on:eventSet="eventSet"></advancedsettings>
         </template>
+        <modals-container/>
     </div>
 </template>
 

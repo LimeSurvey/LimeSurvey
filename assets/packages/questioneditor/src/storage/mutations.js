@@ -1,6 +1,7 @@
 import Vue from "vue";
 import isEmpty from "lodash/isEmpty";
-import clone from "lodash/clone";
+import keys from "lodash/keys";
+import indexOf from "lodash/indexOf";
 
 export default {
     //mutables
@@ -129,6 +130,20 @@ export default {
     },
     setLanguages : (state, newValue) => {
         state.languages = newValue;
+    },
+    nextLanguage: (state) => {
+        let keyList = keys(state.languages);
+        let currentIndex = indexOf(keyList, state.activeLanguage);
+        if(currentIndex < keyList.length) {
+            state.activeLanguage = keyList[currentIndex+1];
+        }
+    },
+    previousLanguage: (state) => {
+        let keyList = keys(state.languages);
+        let currentIndex = indexOf(keyList, state.activeLanguage);
+        if(currentIndex > 0) {
+            state.activeLanguage = keyList[currentIndex-1];
+        }
     },
     setSurvey : (state, newValue) => {
         state.survey = newValue;

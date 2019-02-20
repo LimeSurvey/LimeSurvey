@@ -21,7 +21,6 @@ export default function(questionId){
         currentQuestion: {},
         currentQuestionSubquestions: {},
         currentQuestionAnswerOptions: {},
-        currentQuestionSettings: {},
         currentQuestionI10N: {},
         currentQuestionAttributes: {},
         currentQuestionGeneralSettings: [],

@@ -5,11 +5,17 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import foreach from 'lodash/foreach';
 
+import SimpleEditor from './_simpleEditor.vue';
+import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
+
 export default {
     name: 'subquestions',
+    mixins: [AbstractSubQuestionAndAnswerBase],
+    components: {SimpleEditor},
     data(){
         return {
-            tmpSubquestions: []
+            uniqueSelector: 'qid',
+            baseNonNumericPart : "SQ",
         };
     },
     computed: {
@@ -25,31 +31,17 @@ export default {
             } 
             return [];
         },
-        currentSubquestions() {
-            return this.$store.state.currentQuestionSubquestions.map((scaleArray, scaleId) => {
-                    if(!isEmpty(this.tmpSubquestions[scaleId])) {
-                        return scaleArray.concat(this.tmpSubquestions[scaleId]);
-                    }
-                    return scaleArray;
-                }
-            );
+        currentDataSet: {
+            get() {
+                return this.$store.state.currentQuestionSubquestions;
+            },
+            set(newValue) {
+                this.$store.commit('setCurrentQuestionSubquestions', newValue);
+            }
         },
     },
     methods: {
-        getNewTitleFromCurrent(scaleId) {
-            let nonNumericPart = "SQ";
-            if(this.currentSubquestions[scaleId].length > 0) {
-                nonNumericPart = this.currentSubquestions[scaleId][0].title.replace(/[0-9]/,'');
-            }
-            let numericPart = this.currentSubquestions[scaleId].reduce((prev, oSubquestion) => {
-                return max([prev,oSubquestion.title.replace(/[^0-9]/,'')]);
-            }, 0) + 1 ;
-            return nonNumericPart+''+numericPart;
-        },
-        getRandomId(){
-            return 'random'+Math.random().toString(36).substr(2, 7);
-        },
-        getSubquestionTemplate(scaleId = 0){
+        getTemplate(scaleId = 0){
             let randomId = this.getRandomId();
 
             let subQuestionTemplate = {
@@ -62,7 +54,7 @@ export default {
                 preg: null,
                 other: "N",
                 mandatory: "N",
-                question_order: (this.currentSubquestions.length + 1),
+                question_order: (this.currentDataSet.length + 1),
                 scale_id: ''+scaleId,
                 same_default: "0",
                 relevance: "1",
@@ -81,20 +73,8 @@ export default {
 
             return subQuestionTemplate;
         },
-        openLabelSets() {},
-        openQuickAdd() {},
-        saveAsLabelSet() {},
-        resetSubquestions() {},
-        saveSubquestions() {
-            const allSubquestions = this.$store.state.currentQuestionSubquestions.map((scaleArray, scaleId) => {
-                    if(!isEmpty(this.tmpSubquestions[scaleId])) {
-                        return scaleArray.concat(this.tmpSubquestions[scaleId]);
-                    }
-                    return scaleArray;
-                }
-            );
-            this.tmpSubquestions = {};
-            this.$store.state.commit('setCurrentQuestionSubquestions', allSubquestions);
+        resetSubquestions() {
+            this.currentDataSet = this.$store.state.questionSubquestionsImmutable;
         },
         getQuestionForCurrentLanguage(subquestionObject) {
             try {
@@ -102,26 +82,22 @@ export default {
             } catch(e){
                 this.$log.error('PROBLEM GETTING LANGUAGE', subquestionObject);
             }
-            return JSON.stringify(subquestionObject);
+            return '';
         },
-        deleteThisSubquestion(oSubquestion, scaleId) {
-            if(/^random.*$/.test(oSubquestion.qid)) {
-                let tmpArray = merge([], this.tmpSubquestions);
-                tmpArray[scaleId] = remove(tmpArray[scaleId], (oSubquestionIterator) => oSubquestionIterator.qid == oSubquestion.qid);
-                this.tmpSubquestions = tmpArray;
-            }
+        openEditorForSubquestion(oDataSet, scaleId) {
+            this.$modal.show(
+                SimpleEditor, 
+                { value: subquestionObject[this.$store.state.activeLanguage].question },
+                { draggable: true },
+                {'change': (event) => { 
+                        this.$log.log('CHANGE IN MODAL', event);
+                        subquestionObject[this.$store.state.activeLanguage].question = event;
+                    }
+                }
+            )
         },
-        openEditorForThisSubquestion(oSubquestion, scaleId) {
-
-        },
-        duplicateThisSubquestion(oSubquestion, scaleId) {
-
-        },
-        addSubquestion(scaleId) {
-            let tmpArray = merge([], this.tmpSubquestions);
-            tmpArray[scaleId] = tmpArray[scaleId] || new Array();
-            tmpArray[scaleId].push(this.getSubquestionTemplate(scaleId));
-            this.tmpSubquestions = tmpArray;
+        setQuestionForCurrentLanguage(subquestionObject, $event) {
+            subquestionObject[this.$store.state.activeLanguage].question = $event.srcElement.value;
         },
     }
 }
@@ -139,7 +115,6 @@ export default {
                 </div>
                 <div class="col-sm-4 text-right">
                     <button class="btn btn-danger col-5" @click.prevent="resetSubquestions">{{ "Reset" | translate }}</button>
-                    <button class="btn btn-primary col-6" @click.prevent="saveSubquestions">{{ "Save" | translate }}</button>
                 </div>
             </div>
             <div class="row">
@@ -156,7 +131,7 @@ export default {
                 >
                     <div 
                         class="list-group-item scoped-subquestion-block"
-                        v-for="subquestion in currentSubquestions[subquestionscale]"
+                        v-for="subquestion in currentDataSet[subquestionscale]"
                         :key="subquestion.qid"
                     >
                         <div class="scoped-move-block">
@@ -170,7 +145,8 @@ export default {
                                 size='5'
                                 :class="surveyActive ? ' disabled' : ' '"
                                 :name="'code_'+subquestion.question_order+'_'+subquestionscale" 
-                                :value="subquestion.title"
+                                v-model="subquestion.title"
+                                @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale)'
                             />
                         </div>
                         <div class="scoped-content-block">
@@ -182,6 +158,8 @@ export default {
                                 :name='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
                                 :placeholder='translate("Some example subquestion")'
                                 :value="getQuestionForCurrentLanguage(subquestion)"
+                                @change="setQuestionForCurrentLanguage(subquestion,$event, arguments)"
+                                @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
                             />
                         </div>
                         <div class="scoped-relevance-block">
@@ -190,19 +168,20 @@ export default {
                                 class='relevance form-control input' 
                                 :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
                                 :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
-                                :value="subquestion.relevance" 
+                                v-model="subquestion.relevance"
+                                 @keyup.enter.prevent='switchinput(false,$event)'
                             />
                         </div>
                         <div class="scoped-actions-block">
-                            <button class="btn btn-default btn-small" @click.prevent="deleteThisSubquestion(subquestion, subquestionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(subquestion, subquestionscale)">
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="openEditorForThisSubquestion(subquestion, subquestionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="openEditorForSubquestion(subquestion, subquestionscale)">
                                 <i class="fa fa-edit"></i>
                                 {{ "Open editor" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="duplicateThisSubquestion(subquestion, subquestionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)">
                                 <i class="fa fa-copy"></i>
                                 {{ "Duplicate" | translate }}
                             </button>
@@ -212,7 +191,7 @@ export default {
                 </div>
                 <div class="row" :key="subquestionscale+'addRow'">
                     <div class="col-sm-12 text-right">
-                        <button @click.prevent="addSubquestion(subquestionscale)" class="btn btn-primary">
+                        <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary">
                             <i class="fa fa-plus"></i>
                             {{ "Add subquestion" | translate}}
                         </button>
