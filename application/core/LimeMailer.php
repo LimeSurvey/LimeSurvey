@@ -25,14 +25,27 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 
     /* var string */
     private $eventName = 'sendGlobalEmail';
+    private $eventParam = array(
+        'subject' => '',
+        'body' => '',
+        'type' => 'unknow',
+        'survey' => null,
+        'send' => true,
+    );
+
+    /* replacement fields */
+    private $aReplacements = array();
+
+    /* @todo */
+    private $errors;
+    private $debug;
+    private $debugbody;
 
     /**
      * WIP Set all needed fixed in params
      */
     public function __construct()
     {
-        global $maildebug, $maildebugbody;
-
         /* Global configuration for ALL email of this LimeSurvey instance */
         $emailmethod = Yii::app()->getConfig('emailmethod');
         $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
@@ -92,7 +105,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         /* @todo : set default return path */
     }
 
-
     /**
      * needed by Yii::app() ?
      */
@@ -128,7 +140,28 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     public function setSurvey($surveyId)
     {
+        $this->surveyId = $surveyId;
+        $this->eventParam['survey'] = $surveyId;
+    }
 
+    /**
+     * Set email for this survey
+     * @param string token
+     * @throw CException
+     */
+    public function setToken($token)
+    {
+        if(empty($this->surveyId)) {
+            throw new \CException("Survey is must be set before set token");
+        }
+        /* Did need to check all here ? */
+        $oToken =  \Token::model($this->surveyId)->findByToken($token);
+        if(empty($oToken)) {
+            throw new \CException("Invalid token");
+        }
+        $this->oToken = $oToken;
+        $this->eventParam['token'] = $oToken->getAttributes();
+        $this->eventName = 'beforeTokenEmail';
     }
 
     /**
@@ -137,9 +170,29 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     private function manageEvent()
     {
-
+        $event = new PluginEvent($this->eventName);
+        $event->set('survey', $iSurveyId);
+        $event->set('type', $sTemplate);
+        $event->set('model', $sSubAction);
+        $event->set('subject', $modsubject);
+        $event->set('to', $to);
+        $event->set('body', $modmessage);
+        $event->set('from', $from);
+        $event->set('bounce', getBounceEmail($iSurveyId));
+        $event->set('token', $emrow);
+        App()->getPluginManager()->dispatchEvent($event);
+        /* Manage what can be updated */
+        $subject = $event->get('subject');
+        $message = (string) $event->get('body');
+        $to = $event->get('to');
+        $from = $event->get('from');
+        $bounce = $event->get('bounce');
     }
 
+    /**
+     * Set replacements (by language)
+     */
+    
     /**
      * Surely need to extend parent
      */
