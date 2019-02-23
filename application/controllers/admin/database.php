@@ -549,7 +549,7 @@ class database extends Survey_Common_Action
         }
 
         /* Check if we need to save QuestionAttribute testing advancedquestionsettings , see mantis #14563 */
-        if(Yii::app()->request->getPost('advancedquestionsettings')!='dontsave') {
+        if(Yii::app()->request->getPost('advancedquestionsettingsLoaded',true)) {
             // Remove invalid question attributes on saving
             $criteria = new CDbCriteria;
             $criteria->compare('qid', $this->iQuestionID);
