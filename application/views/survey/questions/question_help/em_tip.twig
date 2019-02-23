@@ -1,4 +1,4 @@
-<?php
+{#
 /**
  * Question tips. For now, called from em_manager_helper::_ValidateQuestion
  * @var $qid
@@ -7,10 +7,10 @@
  * @var $vclass
  * @var $vtip
  */
-?>
-<?php if (isset($hideTip) && $hideTip === false){ ?>
-<div id='<?php echo $coreId; ?>' class='ls-question-message <?php echo $coreClass; ?>'>
+#}
+{% if not hideTip %}
+<div id='{{ coreId }}' class='ls-question-message {{ coreClass }}'>
     <span class='fa fa-exclamation-circle' aria-hidden="true"></span>
-    <?php echo $vtip; ?>
+   {{ vtip }}
 </div>
-<?php } ?>
+{% endif %}
