@@ -263,7 +263,7 @@
  
             <!-- Close -->
             <?php if(isset($questiongroupbar['closebutton']['url'])):?>
-                <a class="btn btn-danger" href="<?php echo $questiongroupbar['closebutton']['url']; ?>" role="button">
+                <a class="btn btn-danger" id="close-button" href="<?php echo $questiongroupbar['closebutton']['url']; ?>" role="button">
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>

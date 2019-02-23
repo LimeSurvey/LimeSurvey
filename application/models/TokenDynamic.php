@@ -238,23 +238,23 @@ class TokenDynamic extends LSActiveRecord
         }
 
         if ($SQLemailstatuscondition) {
-                    $command->addCondition($SQLemailstatuscondition);
+            $command->addCondition($SQLemailstatuscondition);
         }
 
         if ($SQLremindercountcondition) {
-                    $command->addCondition($SQLremindercountcondition);
+            $command->addCondition($SQLremindercountcondition);
         }
 
         if ($SQLreminderdelaycondition) {
-                    $command->addCondition($SQLreminderdelaycondition);
+            $command->addCondition($SQLreminderdelaycondition);
         }
 
         if ($aTokenIds) {
-                    $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')");
+            $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')");
         }
 
         if ($iMaxEmails) {
-                    $command->limit = $iMaxEmails;
+            $command->limit = $iMaxEmails;
         }
 
         $command->order = 'tid';
@@ -275,8 +275,8 @@ class TokenDynamic extends LSActiveRecord
         $token = new self;
         foreach ($data as $k => $v) {
             $token->$k = $v;
-
-        } try {
+        }
+        try {
             $token->save();
             return $token->tid;
         } catch (Exception $e) {
@@ -887,7 +887,7 @@ class TokenDynamic extends LSActiveRecord
                 'title'=>gT('Edit this survey participant'),
                 'data-sid' => self::$sid
             ),
-            'visible' => 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update').')',
+            'visible' => ''.Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'update'),
             'click' => 'startEditToken'
         );
         /* delete button */
@@ -900,7 +900,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>gT('Delete survey participant'),
             ),
-            'visible' => 'boolval('.Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'delete').')',
+            'visible' => ''.Permission::model()->hasSurveyPermission(self::$sid, 'tokens', 'delete'),
             'click' => 'function(event){ window.LS.gridButton.confirmGridAction(event,$(this)); }',
         );
         /* CPDB link */
@@ -915,7 +915,7 @@ class TokenDynamic extends LSActiveRecord
                 'title'=>gT('View this participant in the central participants database'),
             ),
             'click' => 'function(event){ window.LS.gridButton.postGridAction(event,$(this)); }',
-            'visible' => 'boolval('.$baseVisible.') && $data->participant_id',
+            'visible' => $baseVisible.' && $data->participant_id',
         );
         $gridButtons['viewparticipantspacer'] = array(
             'label'=>'<span class="icon-cpdb text-muted" aria-hidden="true"></span>',
@@ -926,7 +926,7 @@ class TokenDynamic extends LSActiveRecord
                 'data-toggle'=>"tooltip",
                 'title'=>"",
             ),
-            'visible' => 'boolval('.$baseVisible.') && empty($data->participant_id)',
+            'visible' => $baseVisible.' && empty($data->participant_id)',
             'click' => 'function(event){ window.LS.gridButton.noGridAction(event,$(this)); }',
         );
         return $gridButtons;
@@ -1080,14 +1080,14 @@ class TokenDynamic extends LSActiveRecord
         ));
 
         return $dataProvider;
-
     }
 
     /**
      * Get current surveyId for other model/function
      * @return int
      */
-    public function getSurveyId() {
+    public function getSurveyId()
+    {
         return self::$sid;
     }
 }

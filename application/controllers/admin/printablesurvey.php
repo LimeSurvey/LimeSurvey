@@ -520,7 +520,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                             $question['number'] = '';
                         }
 
-                        if ($arQuestion['mandatory'] == 'Y') {
+                        if ($arQuestion['mandatory'] == 'Y' || $arQuestion['mandatory'] == 'S') {
                             $question['mandatory'] = gT('*'); // Must add a real string here !
                             $question['class'] .= ' mandatory';
                         }

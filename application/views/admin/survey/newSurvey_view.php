@@ -14,7 +14,7 @@ echo viewHelper::getViewTestTag('createSurvey');
     extract($data);
     Yii::app()->loadHelper('admin/htmleditor');
     PrepareEditorScript(false, $this);
-    $active = (isset($_GET['tab']))?$_GET['tab']:'create';
+    $active = Yii::app()->request->getParam('tab', 'create');
 ?>
 <script type="text/javascript">
     standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl');?>';

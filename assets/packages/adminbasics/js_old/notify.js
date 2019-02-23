@@ -1,10 +1,10 @@
 $(document).on('ready pjax:scriptcomplete', function(){
     if($('.side-body').length){
         $('#notif-container .alert').attr('style', 'margin-top: 20px');
-        if($('#vue-app-main-container').length>0)
+        if($('#vue-apps-main-container').length>0)
         {
             //$('#notif-container .alert').prependTo('.side-body');
-            //$('#notif-container .alert').before('#vue-app-main-container');
+            //$('#notif-container .alert').before('#vue-apps-main-container');
         }
         else
         {

@@ -75,15 +75,15 @@ class QuestionType extends StaticModel
     public $class;
 
 
+
     /**
      * {@inheritdoc}
      */
     public function attributeNames()
     {
-        return ['code', 'description', 'group', 'ubquestions', 'assessable',
+        return ['code', 'description', 'group', 'subquestions', 'assessable',
             'hasdefaultvalues', 'answerscales', 'class'];
     }
-
 
     /**
      * {@inheritdoc}
@@ -97,6 +97,13 @@ class QuestionType extends StaticModel
         ];
     }
 
+    public function applyToQuestion($oQuestion) {
+        $this->question = $oQuestion;
+        $aSettingsArray = self::modelsAttributes($oQuestion->survey->language)[$oQuestion->type];
+        foreach($aSettingsArray as $settingKey => $setting) {
+            $this->$settingKey = $setting;
+        }
+    }
 
     /**
      * @param string $language
@@ -524,7 +531,6 @@ class QuestionType extends StaticModel
 
     }
 
-
     /**
      * @return string
      */
@@ -539,5 +545,4 @@ class QuestionType extends StaticModel
 
         throw new \Exception("Undefined field data type for QuestionType {$this->code}");
     }
-
 }

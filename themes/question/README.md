@@ -24,10 +24,10 @@ Also, there is a difference between `name` and `title` tags.
 `title` tag is used to enter a nice title which would be visible on Question theme dropdown on edit question page.
 Both tags are required.
 
-The `metadatas` part should therefore look something like this:
+The `metadata` part should therefore look something like this:
 
 ```xml
-    <metadatas>
+    <metadata>
         <name>MyAwesomeQuestionView</name> 
         <title>My Awesome Question View</title> 
         <creationDate>23/12/2016</creationDate>
@@ -39,7 +39,7 @@ The `metadatas` part should therefore look something like this:
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Everything will be better with this question type</description>
-    </metadatas>
+    </metadata>
 ```
 
 ### Files - Or, do we need some other stuff?
@@ -130,7 +130,7 @@ Just take this as a base and build on top of it.
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 
-    <metadatas>
+    <metadata>
         <name>MyAwesomeQuestionView</name>  
         <title>My Awesome Question View</title>
         <creationDate>23/12/2016</creationDate>
@@ -142,7 +142,7 @@ Just take this as a base and build on top of it.
         <version>1.0</version>
         <apiVersion>1</apiVersion>
         <description>Everything will be better with this question type</description>
-    </metadatas>
+    </metadata>
 
     <files>
         <css>

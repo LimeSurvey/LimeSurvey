@@ -213,7 +213,7 @@ class viewHelper
     public static function flatEllipsizeText($sString, $bFlat = true, $iAbbreviated = 0, $sEllipsis = '...', $fPosition = 1)
     {
         if ($bFlat || $iAbbreviated) {
-            $sString = flattenText($sString, false, true);
+            $sString = self::flatten($sString);
         }
 
         if ($iAbbreviated > 0) {
@@ -230,12 +230,12 @@ class viewHelper
      * @return void
      * @author Menno Dekker
      */
-        public static function disableHtmlLogging()
-        {
+    public static function disableHtmlLogging()
+    {
         foreach (App()->log->routes as $route) {
             $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
         }
-        }
+    }
 
     /**
      * Deactivate script but show it for debuging
@@ -247,28 +247,44 @@ class viewHelper
      * @return string
      * @author Denis Chenu
      */
-        public static function filterScript($sHtml)
-        {
+    public static function filterScript($sHtml)
+    {
         return preg_replace('#<script(.*?)>(.*?)</script>#is', '<pre>&lt;script&gt;${2}&lt;/script&gt;</pre>', $sHtml);
-        }
+    }
+
     /**
      * Show purified html
      * @param string : Html to purify
-     * @param string $sHtml
      * @return string
      */
-        public static function purified($sHtml)
-        {
+    public static function purified($sHtml)
+    {
         $oPurifier = new CHtmlPurifier();
         return $oPurifier->purify($sHtml);
-        }
+    }
+
+    /**
+     * return cleaned HTML
+     * @param string : Html to purify
+     * @return string
+     */
+    public static function flatten($sHtml)
+    {
+        $oPurifier = new CHtmlPurifier();
+        $oPurifier->options = array(
+            'HTML.Allowed'=>'',
+            'Output.Newline'=> ' '
+        );
+        return $oPurifier->purify($sHtml);
+    }
+
     /**
      * Show clean string, leaving ONLY tag for Expression
      * @param string : Html to clean
      * @return string
      */
-        public static function stripTagsEM($sHtml)
-        {
+    public static function stripTagsEM($sHtml)
+    {
         $oPurifier = new CHtmlPurifier();
         $oPurifier->options = array(
             'HTML.Allowed'=>'span[title|class],a[class|title|href]',
@@ -291,26 +307,27 @@ class viewHelper
                 )
         );
         return $oPurifier->purify($sHtml);
-        }
+    }
 
-        /**
-         * NOTE:  A real class helper is needed for twig, so I used this one for now.
-         * TODO: convert surveytranslator to a real helper
-         */
-        public static function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
-        {
-            Yii::app()->loadHelper("surveytranslator");
-            return getLanguageData($bOrderByNative, $sLanguageCode);
-        }
+    
+    /**
+     * NOTE:  A real class helper is needed for twig, so I used this one for now.
+     * TODO: convert surveytranslator to a real helper
+     */
+    public static function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
+    {
+        Yii::app()->loadHelper("surveytranslator");
+        return getLanguageData($bOrderByNative, $sLanguageCode);
+    }
 
-        /**
-         * Get a tag to help automated tests identify pages
-         * @param string $name unique view name
-         * @return string
-         */
-        public static function getViewTestTag($name)
-        {
-            return sprintf('<x-test id="action::%s"></x-test>', $name);
-        }
+    /**
+     * Get a tag to help automated tests identify pages
+     * @param string $name unique view name
+     * @return string
+     */
+    public static function getViewTestTag($name)
+    {
+        return sprintf('<x-test id="action::%s"></x-test>', $name);
+    }
 
 }

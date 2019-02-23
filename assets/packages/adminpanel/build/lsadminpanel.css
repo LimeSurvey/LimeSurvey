@@ -1,6 +1,7 @@
 /* New adminpanel */
 #sidebar {
-  padding-top: 15px; }
+  padding-top: 15px;
+  width: 100%; }
   #sidebar .tabbutton.btn-primary {
     outline: none; }
     #sidebar .tabbutton.btn-primary:after {

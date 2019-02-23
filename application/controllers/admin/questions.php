@@ -1450,7 +1450,7 @@ class questions extends Survey_Common_Action
     {
         $aQidsAndLang   = json_decode($_POST['sItems']); // List of question ids to update
         $iSid           = Yii::app()->request->getPost('sid');
-        $bMandatory     = (Yii::app()->request->getPost('mandatory') === 'true') ? 'Y' : 'N';
+        $bMandatory     = Yii::app()->request->getPost('mandatory', 'N');
 
         if (Permission::model()->hasSurveyPermission($iSid, 'surveycontent', 'update')) {
             $oSurvey          = Survey::model()->findByPk($iSid);
@@ -1574,7 +1574,7 @@ class questions extends Survey_Common_Action
         // get all attributes from old custom question theme and then unset them, only attributes from selected question theme should be visible  
         if (!empty($sOldQuestionTemplate) && $sOldQuestionTemplate !== 'core'){
             // get old custom question theme attributes
-            $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sOldQuestionTemplate, $questionTypeList[$type]);
+            $aOldQuestionThemeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($questionTypeList[$type], $sOldQuestionTemplate);
             if (!empty($aOldQuestionThemeAttributes)){ 
                 foreach ($aOldQuestionThemeAttributes as $key => $value) {
                     unset($aAttributesWithValues[$value['name']]);
@@ -1583,7 +1583,7 @@ class questions extends Survey_Common_Action
         }
         // INSERTING CUSTOM ATTRIBUTES FROM CORE QUESTION THEME XML FILE
         if (!empty($sQuestionTemplate) && $sQuestionTemplate !== 'core') {
-                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($sQuestionTemplate, $questionTypeList[$type]);
+                $themeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues( $questionTypeList[$type], $sQuestionTemplate);
                 $aAttributesWithValues = array_merge($aAttributesWithValues,$themeAttributes); // theme can update core/plugin attribute
         }
         uasort($aAttributesWithValues, 'categorySort');

@@ -419,7 +419,7 @@ class database extends Survey_Common_Action
         foreach ($aoSubquestions as $oSubQuestion) {
             $bAnswerSave = false;
             while (!$bAnswerSave) {
-                $oSubQuestion->title = strvalrand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                $oSubQuestion->title = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                 if ($oSubQuestion->save()) {
                     $bAnswerSave = true;
                 }
@@ -653,9 +653,6 @@ class database extends Survey_Common_Action
 
         // For Bootstrap Version using BAD YiiWheels switch only if needed
         // Alt solution : filter_var($fixedQuestionAttributes['mandatory'], FILTER_VALIDATE_BOOLEAN); then on is true and off is false
-        if(!in_array($fixedQuestionAttributes['mandatory'],array('Y','N'))) {
-            $fixedQuestionAttributes['mandatory'] = boolval($fixedQuestionAttributes['mandatory']) ? 'Y' : 'N';
-        }
         if(!in_array($fixedQuestionAttributes['other'],array('Y','N'))) {
             $fixedQuestionAttributes['other'] = boolval($fixedQuestionAttributes['other']) ? 'Y' : 'N';
         }
@@ -1231,9 +1228,6 @@ class database extends Survey_Common_Action
             /* Already done in model : must control if return a good system or not here : BUT difficult to submit an empty string here */
             Yii::app()->setFlashMessage(gT("The question could not be added. You must enter at least a question code."), 'error');
         } else {
-            // For Bootstrap Version usin YiiWheels switch :
-            $_POST['mandatory'] = (Yii::app()->request->getPost('mandatory') == '1') ? 'Y' : 'N';
-            $_POST['other'] = (Yii::app()->request->getPost('other') == '1') ? 'Y' : 'N';
 
             if (Yii::app()->request->getPost('questionposition', "") != "") {
                 $iQuestionOrder = intval(Yii::app()->request->getPost('questionposition'));

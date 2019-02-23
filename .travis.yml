@@ -5,8 +5,6 @@
 
 language: php
 php:
-    - 7.0
-    - 7.1
     - 7.2
 
 notifications:
@@ -22,23 +20,22 @@ before_script:
 
     # disable xdebug to speed up tests
     - phpenv config-rm xdebug.ini
+
     # Install LimeSurvey.
-    - phpunit --version
     - mysql --version
     - touch enabletests
-      #- rm composer.lock
-      #- rm -r third_party
-    - composer remove --dev vimeo/psalm
-    - composer install
+    # NB: PHPUnit 6.5.* is installed with composer.
+    - composer update
+    - ./third_party/bin/phpunit --version
     - chmod -R 777 tmp
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
     - chmod -R 777 tests/tmp
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
-    # Enable debug=2 in config file. OBS: This assumes debug is on line 59.
+    # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
     # TODO: Disable, a lines was added to config file and some tests started to fail.
-    # - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
+    # - sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
 
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
@@ -80,6 +77,6 @@ before_script:
   
 script:
     # Run tests.
-    - DOMAIN=localhost phpunit # --stop-on-failure
+    - DOMAIN=localhost ./third_party/bin/phpunit
 
 

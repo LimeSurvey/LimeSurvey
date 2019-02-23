@@ -49,7 +49,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     /// older versions to match current functionality
 
     Yii::app()->loadHelper('database');
-    Yii::app()->loadHelper('admin/import');
+    Yii::import('application.helpers.admin.import_helper', true);
     $sUserTemplateRootDir       = Yii::app()->getConfig('userthemerootdir');
     $sStandardTemplateRootDir   = Yii::app()->getConfig('standardthemerootdir');
     $oDB                        = Yii::app()->getDb();
@@ -2253,8 +2253,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oTheme->setGlobalOption("ajaxmode", "off");
             }
 
-            $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>352], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 353) {
@@ -2266,8 +2266,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oTheme->addOptionFromXMLToLiveTheme();
             }
 
-            $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>353], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
 
@@ -2286,12 +2286,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $aIdMap = [];
             $aDefaultSurveyMenus = LsDefaultDataSets::getSurveyMenuData();
+            switchMSSQLIdentityInsert('surveymenu', true);
             foreach ($aDefaultSurveyMenus as $i => $aSurveymenu) {
                 $oDB->createCommand()->delete('{{surveymenu}}', 'name=:name', [':name' => $aSurveymenu['name']]);
                 $oDB->createCommand()->delete('{{surveymenu}}', 'id=:id', [':id' => $aSurveymenu['id']]);
                 $oDB->createCommand()->insert('{{surveymenu}}', $aSurveymenu);
                 $aIdMap[$aSurveymenu['name']] = $aSurveymenu['id'];
             }
+            switchMSSQLIdentityInsert('surveymenu', false);
             
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
@@ -2305,8 +2307,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand()->insert('{{surveymenu_entries}}', $aSurveymenuentry);
             }
 
-            $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>354], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 355) {
@@ -2335,12 +2337,35 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
 
 
-            $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>355], "stg_name='DBVersion'");
+            $oTransaction->commit();
         }
 
+        // Replace "Label sets" box with "LimeStore" box.
+        if ($iOldDBVersion < 356) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand("UPDATE {{boxes}} SET ico = CONCAT('icon-', ico)")->execute();
 
-        
+            // Only change label box if it's there.
+            $labelBox = $oDB->createCommand("SELECT * FROM {{boxes}} WHERE id = 5 AND position = 5 AND title = 'Label sets'")->queryRow();
+            if ($labelBox) {
+                $oDB
+                    ->createCommand()
+                    ->update(
+                        '{{boxes}}',
+                        [
+                            'title' => 'LimeStore',
+                            'ico'   => 'fa fa-cart-plus',
+                            'desc'  => 'LimeSurvey extension marketplace',
+                            'url'   => 'https://www.limesurvey.org/limestore'
+                        ],
+                        'id = 5'
+                    );
+            }
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>356], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
         if ($iOldDBVersion < 400) {
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();
@@ -2379,8 +2404,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $oDB->createCommand("delete from  {{groups}} where gid={$row['gid']} and language='{$row['language']}'")->execute();
             }
             modifyPrimaryKey('groups', array('gid'));
-            $oDB->createCommand()->dropindex('{{idx2_groups}}', '{{groups}}');
-            $oDB->createCommand()->dropindex('{{idx3_groups}}', '{{groups}}');
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('idx2_groups','{{groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('idx3_groups','{{groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             dropColumn('{{groups}}', 'group_name');
             dropColumn('{{groups}}', 'description');
             dropColumn('{{groups}}', 'language');
@@ -2424,7 +2449,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $sPrevCode = $row['code'];
                 $iPrevScaleId = $row['scale_id'];
             }
-            $oDB->createCommand()->dropindex('answer_idx_10', 'answertemp');
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('answer_idx_10','{{answertemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             $oDB->createCommand()->dropTable('answertemp');
             $oDB->createCommand()->createIndex('{{answer_idx_10}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
             
@@ -2464,7 +2489,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $sPrevCode = $row['code'];
             }
             switchMSSQLIdentityInsert('labels', false);
-            $oDB->createCommand()->dropindex('label_idx_10', 'labelstemp');
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('label_idx_10','{{labelstemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             $oDB->createCommand()->dropTable('labelstemp');
             $oDB->createCommand()->createIndex('{{label_idx_10}}', '{{labels}}', ['lid', 'sortorder'], true);
 
@@ -2530,7 +2555,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>404),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-      
+
+        // In case any LS4 user missed database update from version 356.
+        if ($iOldDBVersion < 405) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand("
+                UPDATE
+                    {{boxes}}
+                SET ico = CASE
+                    WHEN ico IN ('add', 'list', 'settings', 'shield', 'templates', 'label') THEN CONCAT('icon-', ico)
+                    ELSE ico
+                END
+                "
+            )->execute();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>405),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

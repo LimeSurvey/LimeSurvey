@@ -35,9 +35,10 @@
         "vendor-dir": "third_party",
         "bin-dir": "third_party/bin"
     },
-    "require-dev": {
+	"require-dev": {
         "squizlabs/php_codesniffer": "2.*",
+        "phpmd/phpmd" : "@stable",
         "vimeo/psalm": "dev-master",
-        "phpmd/phpmd" : "@stable"
-    }
+        "phpunit/phpunit": "6.5.*"
+	}
 }
