@@ -548,76 +548,78 @@ class database extends Survey_Common_Action
             $sQuestionType = Yii::app()->request->getPost('type');
         }
 
-
-        // Remove invalid question attributes on saving
-        $criteria = new CDbCriteria;
-        $criteria->compare('qid', $this->iQuestionID);
-        $validAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
-        // If the question has a custom template, we first check if it provides custom attributes
-        $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'", array('qid'=>$cqr->qid));
-        if (is_object($oAttributeValues) && $oAttributeValues->value) {
-            $aAttributeValues['question_template'] = $oAttributeValues->value;
-        } else {
-            $aAttributeValues['question_template'] = 'core';
-        }
-        $validAttributes = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr);
-        foreach ($validAttributes as  $validAttribute) {
-            $criteria->compare('attribute', '<>'.$validAttribute['name']);
-        }
-        QuestionAttribute::model()->deleteAll($criteria);
-
-        $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-        foreach ($validAttributes as $validAttribute) {
-            /* Readonly attribute : disable save */
-            if( $validAttribute['readonly'] || ( $validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive() ) ) {
-                continue;
+        /* Check if we need to save QuestionAttribute testing advancedquestionsettings , see mantis #14563 */
+        if(Yii::app()->request->getPost('advancedquestionsettings')!='dontsave') {
+            // Remove invalid question attributes on saving
+            $criteria = new CDbCriteria;
+            $criteria->compare('qid', $this->iQuestionID);
+            $validAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
+            // If the question has a custom template, we first check if it provides custom attributes
+            $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'", array('qid'=>$cqr->qid));
+            if (is_object($oAttributeValues) && $oAttributeValues->value) {
+                $aAttributeValues['question_template'] = $oAttributeValues->value;
+            } else {
+                $aAttributeValues['question_template'] = 'core';
             }
-            if ($validAttribute['i18n']) {
-                /* Delete invalid language : not needed but cleaner */
-                $langCriteria = new CDbCriteria;
-                $langCriteria->compare('qid', $this->iQuestionID);
-                $langCriteria->compare('attribute', $validAttribute['name']);
-                $langCriteria->addNotInCondition('language', $aLanguages);
-                QuestionAttribute::model()->deleteAll($langCriteria);
-                /* delete IS NULL too*/
-                QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-                foreach ($aLanguages as $sLanguage) {
-                    // TODO sanitise XSS
-                    $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                    $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
-                    if ($iInsertCount > 0) {
-                        if ($value != '') {
-                            QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
-                        } else {
-                            QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
+            $validAttributes = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr);
+            foreach ($validAttributes as  $validAttribute) {
+                $criteria->compare('attribute', '<>'.$validAttribute['name']);
+            }
+            QuestionAttribute::model()->deleteAll($criteria);
+
+            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+            foreach ($validAttributes as $validAttribute) {
+                /* Readonly attribute : disable save */
+                if( $validAttribute['readonly'] || ( $validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive() ) ) {
+                    continue;
+                }
+                if ($validAttribute['i18n']) {
+                    /* Delete invalid language : not needed but cleaner */
+                    $langCriteria = new CDbCriteria;
+                    $langCriteria->compare('qid', $this->iQuestionID);
+                    $langCriteria->compare('attribute', $validAttribute['name']);
+                    $langCriteria->addNotInCondition('language', $aLanguages);
+                    QuestionAttribute::model()->deleteAll($langCriteria);
+                    /* delete IS NULL too*/
+                    QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
+                    foreach ($aLanguages as $sLanguage) {
+                        // TODO sanitise XSS
+                        $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
+                        $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
+                        if ($iInsertCount > 0) {
+                            if ($value != '') {
+                                QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
+                            } else {
+                                QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
+                            }
+                        } elseif ($value != '') {
+                            $attribute = new QuestionAttribute;
+                            $attribute->qid = $this->iQuestionID;
+                            $attribute->value = $value;
+                            $attribute->attribute = $validAttribute['name'];
+                            $attribute->language = $sLanguage;
+                            $attribute->save();
                         }
-                    } elseif ($value != '') {
+                    }
+                } else {
+                    $default = isset($validAttribute['default']) ? $validAttribute['default'] : '';
+                    $value = Yii::app()->request->getPost($validAttribute['name'], $default);
+                    if ($validAttribute['name'] == "slider_layout") {
+                        tracevar("delete $value");
+                    }
+                    /* we must have only one element, and this element must be null, then reset always (see #11980)*/
+                    /* We can update, but : this happen only for admin and not a lot, then : delete + add */
+                    QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
+                    if ($value != $default) {
+                        if ($validAttribute['name'] == "slider_layout") {
+                            tracevar("save $value");
+                        }
                         $attribute = new QuestionAttribute;
                         $attribute->qid = $this->iQuestionID;
                         $attribute->value = $value;
                         $attribute->attribute = $validAttribute['name'];
-                        $attribute->language = $sLanguage;
                         $attribute->save();
                     }
-                }
-            } else {
-                $default = isset($validAttribute['default']) ? $validAttribute['default'] : '';
-                $value = Yii::app()->request->getPost($validAttribute['name'], $default);
-                if ($validAttribute['name'] == "slider_layout") {
-                    tracevar("delete $value");
-                }
-                /* we must have only one element, and this element must be null, then reset always (see #11980)*/
-                /* We can update, but : this happen only for admin and not a lot, then : delete + add */
-                QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-                if ($value != $default) {
-                    if ($validAttribute['name'] == "slider_layout") {
-                        tracevar("save $value");
-                    }
-                    $attribute = new QuestionAttribute;
-                    $attribute->qid = $this->iQuestionID;
-                    $attribute->value = $value;
-                    $attribute->attribute = $validAttribute['name'];
-                    $attribute->save();
                 }
             }
         }

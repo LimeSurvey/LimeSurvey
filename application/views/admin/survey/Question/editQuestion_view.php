@@ -364,6 +364,7 @@ foreach ( $aQuestionTypeList as $key => $questionType)
                     </div>
                     <?php if (!$copying): ?>
                         <div id="container-advanced-question-settings" class="custom custom-margin top-5">
+                            <input type='hidden' name='advancedquestionsettings' value='dontsave' />
                             <div class="panel"></div>
                             <!-- Advanced settings -->
                         </div>
