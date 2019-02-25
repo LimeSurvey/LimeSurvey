@@ -35,6 +35,58 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.15.9 (build 190214) to 3.16.0 (build 190225) January 25, 2019
+-New feature : allow update of fix num auto in theme (vanilla) (Denis Chenu)
+-Fixed issue #14547: Simple mode statistic crash with L question (#1225) (Jean-Sébastien B)
+-Fixed issue #14548: Fix public statistic with question L (#1226) (Jean-Sébastien B)
+-Fixed issue #12103: Single response overview shows CSS and JS embedded at question text (Denis Chenu)
+-Fixed issue #14404: Boilerplate question type not properly included at "Print answers" overview (Dominik Vitt)
+-Fixed issue #14495: Enforce filter to avoid 'comment' keyword (#1228) (Jean-Sébastien B)
+-Fixed issue #14518: Upload modals/iframes: growing height after repeated delete actions (Dominik Vitt)
+-Fixed issue #14519: Letters do not get automatically deleted any longer in only numbers fields (Dominik Vitt)
+-Fixed issue #14522: print answers HTML view not translating/getting the proper text for multiple choice with comment (Dominik Vitt)
+-Fixed issue #14522: print answers HTML view not translating/getting the proper text for multiple choice with comment - update (Dominik Vitt)
+-Fixed issue #14527: Error in import : "This is not a valid LimeSurvey survey structure XML file" (Dominik Vitt)
+-Fixed issue #14533: Error in console when enter . or , in number (Denis Chenu)
+-Fixed issue #14534 : unable to set complex template for email (Denis Chenu)
+-Fixed issue #14536: spurious "?>" in "Create new box" page (#1221) (Dorin)
+-Fixed issue #14536: spurious "?>" in "Create new box" page (Dorin)
+-Fixed issue #14537: Export results displayed twice (#1222) (Dorin)
+-Fixed issue #14537: Export results displayed twice (Dorin)
+-Fixed issue #14538: Valid number with radix as "," shown as invalid (Denis Chenu)
+-Fixed issue #14539: Export -> export a vv file (double text) (see screenshot) (Dorin)
+-Fixed issue #14540: Hard to enter some value (decimal values with 0) (Denis Chenu)
+-Fixed issue #14543: Response Table - ID search box is too small & does not display the text (Dominik Vitt)
+-Fixed issue #14545: Unable to reset menu entries with MSSQL (Denis Chenu)
+-Fixed issue #14546: Theme option menu are not show to user with Surveysettings update right (Denis Chenu)
+-Fixed issue #14554: Javascript error when try to use Questions list option (Denis Chenu)
+-Fixed issue : css glitch on massive actions / mandatory (Denis Chenu)
+-Fixed issue : email html activated with survey with text email (Denis Chenu)
+-Fixed issue : empty numerci string if only alpha (no numeric) (Denis Chenu)
+-Fixed issue: sticky headers sometimes visible in minified views and cross hovers inhibiting clicks (Markus Flür)
+-Fixed issue : usage of bNumRealValue from config (Denis Chenu)
+#Updated translation: Armenian by Lilit
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Czech by jelen1
+#Updated translation: Danish by c_schmitz, nielsb, docl, robin_sharp, antispam, Mikkel
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Estonian by TonisOrmisson
+#Updated translation: Georgian by Davitus
+#Updated translation: Hebrew by golanta
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by ritapas, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Macedonian by SimonaOgnenovska
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Romanian by cdorin
+
+
+
 Changes from 3.15.8 (build 190130) to 3.15.9 (build 190214) January 14, 2019
 -Fixed issue #14499: Add first and last name to the "To" of confirmation email (#1214) (Jean-Sébastien B)
 -Fixed issue #12992: PHP-function each() has been deprecated (Dominik Vitt)
@@ -71,14 +123,14 @@ Changes from 3.15.8 (build 190130) to 3.15.9 (build 190214) January 14, 2019
 #Updated translation: Arabic by zainabalbazzal
 #Updated translation: Catalan by qualitatuvic
 #Updated translation: Croatian by dominikvitt
-#Updated translation: Dutch by Han 
-#Updated translation: Dutch (Informal) by Han 
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
 #Updated translation: French (France) by DenisChenu
 #Updated translation: German by c_schmitz
 #Updated translation: German by ulisdd
 #Updated translation: German (Informal) by c_schmitz
 #Updated translation: German (Informal) by ulisdd
-#Updated translation: Hungarian by kkd 
+#Updated translation: Hungarian by kkd
 #Updated translation: Italian by lfanfoni
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Norwegian (Bokmål) by pmonstad
@@ -96,7 +148,7 @@ Changes from 3.15.7 (build 190122) to 3.15.8 (build 190130) January 30, 2019
 -Fixed issue: At export page the dropdown list of CSV separators is not translated (Denis Chenu)
 -Fixed issue: Some IE versions were not properly detected (Carsten Schmitz)
 
-Changes from 3.15.6 (build 190108) to 3.15.7 (build 190122) January 22, 2019 
+Changes from 3.15.6 (build 190108) to 3.15.7 (build 190122) January 22, 2019
 -[security] Fixed issue:  possible to delete a broken theme by bait clicking an administrator (LouisGac)
 -[security] Fixed issue:  possible to delete a theme by bait clicking an administrator (LouisGac)
 -Fixed issue: avoid rare QID colision in checkintegrety (LouisGac)
