@@ -24,7 +24,7 @@
 * @param string[] $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
 * @param mixed[] $redata : array of global var used in the function
 * @param string|null $debugSrc deprecated
-* @param boolean $anonymized Determines if token data is being used or just replaced with blanks
+* @param boolean $anonymized @deprecated (all done in EM now)
 * @param integer|null $questionNum - needed to support dynamic JavaScript-based tailoring within questions
 * @param void $registerdata - deprecated
 * @param boolean bStaticReplacement - Default off, forces non-dynamic replacements without <SPAN> tags (e.g. for the Completed page)
@@ -102,9 +102,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (!isset($templateurl)) {
         $templateurl = getTemplateURL($templatename)."/";
-    }
-    if (!$anonymized && isset($thissurvey['anonymized'])) {
-        $anonymized = ($thissurvey['anonymized'] == "Y");
     }
 
     /**
@@ -331,8 +328,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['RESTART'] = $_restart;
     $coreReplacements['RETURNTOSURVEY'] = $_return_to_survey;
     $coreReplacements['SAVE'] = isset($_saveall) ? $_saveall : '';
-    $coreReplacements['SAVEDID'] = isset(Yii::app()->session['survey_'.$_surveyid]['srid']) ? Yii::app()->session['survey_'.$_surveyid]['srid'] : '';
-    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID', ''); // Allways use surveyID from config
     $coreReplacements['SITELOGO'] = $sitelogo;
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
@@ -342,7 +337,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
     $coreReplacements['TEMPLATEURL'] = $templateurl;
     $coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
-    $coreReplacements['TOKEN'] = (!$anonymized ? $_token : ''); // Silently replace TOKEN by empty string
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
@@ -361,19 +355,12 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
 function getStandardsReplacementFields($thissurvey)
 {
-    $_surveyid = $_SESSION['LEMsid'];
-
-    if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
+    $surveyid = $_SESSION['LEMsid'];
 
     Yii::app()->loadHelper('surveytranslator');
 
     if (isset($thissurvey['sid'])) {
         $surveyid = $thissurvey['sid'];
-    }
-
-    $anonymized = true;
-    if (isset($thissurvey['anonymized'])) {
-        $anonymized = ($thissurvey['anonymized'] == "Y");
     }
 
     // surveyformat
@@ -408,15 +395,6 @@ function getStandardsReplacementFields($thissurvey)
         $surveycontact = "";
     }
 
-    global $token;
-    if (isset($token)) {
-        $_token = $token;
-    } elseif (isset($clienttoken)) {
-        $_token = htmlentities($clienttoken, ENT_QUOTES, 'UTF-8'); // or should it be URL-encoded?
-    } else {
-        $_token = '';
-    }
-
     // Expiry
     if (isset($thissurvey['expiry'])) {
         $dateformatdetails = getDateFormatData($thissurvey['surveyls_dateformat']);
@@ -447,7 +425,7 @@ function getStandardsReplacementFields($thissurvey)
     // Set the array of replacement variables here - don't include curly braces
     $coreReplacements = array();
     $coreReplacements['FLASHMESSAGE'] = makeFlashMessage();
-    $coreReplacements['NUMBEROFGROUPS'] = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
+    $coreReplacements['NUMBEROFGROUPS'] = QuestionGroup::model()->getTotalGroupsWithQuestions($surveyid);
     $coreReplacements['NUMBEROFQUESTIONS'] = $totalquestions;
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['DATESTAMP'] = $_datestamp;
@@ -469,15 +447,12 @@ function getStandardsReplacementFields($thissurvey)
     /* indexItems is static but not rendering, seem better to call it here ? */
     $coreReplacements['QUESTION_INDEX'] = isset($questionindex) ? $questionindex : '';
     $coreReplacements['QUESTION_INDEX_MENU'] = isset($questionindexmenu) ? $questionindexmenu : '';
-    $coreReplacements['SAVEDID'] = isset(Yii::app()->session['survey_'.$_surveyid]['srid']) ? Yii::app()->session['survey_'.$_surveyid]['srid'] : '';
-    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID', ''); // Allways use surveyID from config
     $coreReplacements['SURVEYCONTACT'] = $surveycontact;
     $coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
     $coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : ''; // global
     $coreReplacements['SURVEYLANGUAGE'] = $surveylanguage = App()->language;
     $coreReplacements['SURVEYNAME'] = (isset($thissurvey['name']) ? $thissurvey['name'] : Yii::app()->getConfig('sitename'));
     $coreReplacements['SURVEYRESOURCESURL'] = (isset($thissurvey['sid']) ? Yii::app()->getConfig("uploadurl").'/surveys/'.$thissurvey['sid'].'/' : '');
-    $coreReplacements['TOKEN'] = (!$anonymized ? $_token : ''); // Silently replace TOKEN by empty string
     $coreReplacements['URL'] = $_linkreplace;
     $coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
     $coreReplacements['CLOSE_TRANSLATION'] = gT('Close');
