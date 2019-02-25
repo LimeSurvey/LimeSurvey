@@ -1,4 +1,4 @@
-FROM php:7.2.12-apache
+FROM php:7.3.2-apache
 
 RUN apt update && apt install -y \
     unzip \
@@ -12,7 +12,7 @@ RUN apt update && apt install -y \
     libpng-dev \
   && rm -rf /var/lib/apt/lists/*
 
-RUN curl -o limesurvey.zip https://download.limesurvey.org/latest-stable-release/limesurvey3.15.5+181115.zip \
+RUN curl -o limesurvey.zip https://download.limesurvey.org/latest-stable-release/limesurvey3.15.9+190214.zip \
   && unzip limesurvey.zip \
   && mv limesurvey/* . \
   && rm -rf limesurvey limesurvey.zip \
@@ -26,5 +26,7 @@ RUN docker-php-ext-install -j$(nproc) iconv \
   && docker-php-ext-install pdo pdo_pgsql \
   && docker-php-ext-install zip \
   && docker-php-ext-install ldap
+
+VOLUME [ "/var/www/hmtl" ]
 
 CMD ["apache2-foreground"]
