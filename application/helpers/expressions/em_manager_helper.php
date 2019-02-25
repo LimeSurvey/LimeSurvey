@@ -3683,6 +3683,18 @@
                 'jsName'=>'',
                 'readWrite'=>'N',
             );
+            $this->knownVars['TOKEN'] = array(
+                'code'=>'',
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+            );
+            $this->knownVars['SAVEDID'] = array(
+                'code'=>'',
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+            );
             if($survey->getIsAssessments()) {
                 $this->knownVars['ASSESSMENT_CURRENT_TOTAL'] = array(
                     'code'=> 0,
@@ -4313,6 +4325,7 @@
             $this->q2subqInfo = $q2subqInfo;
             // Now set tokens
             if ($survey->hasTokensTable && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '') {
+                
                 //Gather survey data for tokenised surveys, for use in presenting questions
                 $this->knownVars['TOKEN:TOKEN'] = array(
                     'code'=>$_SESSION[$this->sessid]['token'],
@@ -5655,6 +5668,12 @@
                     $message .= $query;
                 }
             }
+            $this->knownVars["SAVEDID"] = array(
+                'code'=>$_SESSION[$this->sessid]['srid'],
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+            );
             return $message;
         }
 
@@ -10109,11 +10128,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 'token' => $sToken
             ));
 
-            if ($oToken) {
+            if ($oToken && !$bAnonymize) {
+                $this->knownVars["TOKEN"] = array(
+                    'code'=>$sToken,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
                 foreach ($oToken->attributes as $attribute => $value) {
-                    if ($bAnonymize) {
-                        $value = "";
-                    }
                     $this->knownVars["TOKEN:" . strtoupper($attribute)] = array(
                         'code'=>$value,
                         'jsName_on'=>'',

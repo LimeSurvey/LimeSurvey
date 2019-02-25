@@ -1650,7 +1650,7 @@ class userstatistics_helper
 
             //"other" handling
             //"Answer" means that we show an option to list answer to "other" text field
-            elseif ($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === Question::QT_O_LIST_WITH_COMMENT && $al[0] === gT("Comments")) || $outputs['qtype'] === Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+            elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === Question::QT_O_LIST_WITH_COMMENT && $al[0] === gT("Comments")) || $outputs['qtype'] === Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) && count($al) > 2) {
                 if ($outputs['qtype'] == "P") {
                     $sColumnName = $al[2]."comment";
                 } else {

@@ -90,14 +90,14 @@ Changes from 3.15.8 (build 190130) to 3.15.9 (build 190214) January 14, 2019
 #Updated translation: Arabic by zainabalbazzal
 #Updated translation: Catalan by qualitatuvic
 #Updated translation: Croatian by dominikvitt
-#Updated translation: Dutch by Han 
-#Updated translation: Dutch (Informal) by Han 
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
 #Updated translation: French (France) by DenisChenu
 #Updated translation: German by c_schmitz
 #Updated translation: German by ulisdd
 #Updated translation: German (Informal) by c_schmitz
 #Updated translation: German (Informal) by ulisdd
-#Updated translation: Hungarian by kkd 
+#Updated translation: Hungarian by kkd
 #Updated translation: Italian by lfanfoni
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Norwegian (Bokmål) by pmonstad
@@ -115,7 +115,7 @@ Changes from 3.15.7 (build 190122) to 3.15.8 (build 190130) January 30, 2019
 -Fixed issue: At export page the dropdown list of CSV separators is not translated (Denis Chenu)
 -Fixed issue: Some IE versions were not properly detected (Carsten Schmitz)
 
-Changes from 3.15.6 (build 190108) to 3.15.7 (build 190122) January 22, 2019 
+Changes from 3.15.6 (build 190108) to 3.15.7 (build 190122) January 22, 2019
 -[security] Fixed issue:  possible to delete a broken theme by bait clicking an administrator (LouisGac)
 -[security] Fixed issue:  possible to delete a theme by bait clicking an administrator (LouisGac)
 -Fixed issue: avoid rare QID colision in checkintegrety (LouisGac)
