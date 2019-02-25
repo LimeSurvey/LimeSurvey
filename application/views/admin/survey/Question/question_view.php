@@ -180,12 +180,12 @@
                 <?php endif; ?>
 
                 <!-- Group Relevance equation -->
-                <?php if (trim($oQuestion->groups->grelevance)!=''): ?>
+                <?php if (trim($oQuestion->group->grelevance)!=''): ?>
                     <tr>
                         <td><?php eT("Group relevance:"); ?></td>
                         <td>
                             <?php
-                            templatereplace('{' . $oQuestion->groups->grelevance . '}');
+                            templatereplace('{' . $oQuestion->group->grelevance . '}');
                             echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             ?>
                         </td>
