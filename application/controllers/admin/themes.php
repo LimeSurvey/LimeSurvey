@@ -1039,7 +1039,7 @@ class themes extends Survey_Common_Action
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
                     'QUESTION_CODE' => 'Q1 ',
                     'QUESTIONHELP' => $this->getController()->renderPartial('/survey/questions/question_help/questionhelp', array('classes' => '', 'questionHelp'=>gT("This is some helpful text.")), true),
-                    'QUESTION_MANDATORY' => $this->getController()->renderPartial('/survey/questions/question_help/asterisk', array(), true),
+                    'QUESTION_MANDATORY' => App()->twigRenderer->renderPartial('/survey/questions/question_help/asterisk', array()),
                     'QUESTION_MAN_CLASS' => ' mandatory',
                     'QUESTION_ESSENTIALS' => 'id="question1"',
                     'QUESTION_CLASS' => 'list-radio',

@@ -1,4 +1,4 @@
-<?php
+{#
 /**
  * Question error tips. For now, called from em_manager_helper::_ValidateQuestion and used for real error (db issue for example)
  * @var $qid
@@ -7,9 +7,9 @@
  * @var $vclass
  * @var $vtip
  */
-?>
-<div id='<?php echo $coreId; ?>' class='ls-question-message alert alert-danger alert-dismissible <?php echo $coreClass; ?>'>
-    <button type="button" class="close" data-dismiss="alert" aria-label="<?php echo gT("Close") ?>"><span aria-hidden="true">&times;</span></button>
+#}
+<div id='{{ coreId }}' class='ls-question-message alert alert-danger alert-dismissible {{ coreClass }}'>
+    <button type="button" class="close" data-dismiss="alert" aria-label="{{ gT("Close") }} "><span aria-hidden="true">&times;</span></button>
     <span class='fa fa-exclamation' aria-hidden="true"></span>
-    <?php echo $vtip; ?>
+    {{ vtip }}
 </div>

@@ -6542,9 +6542,11 @@
             if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft')))
             {
                 //$mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='fa fa-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
-                $mandatoryTip = Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                $mandatoryTip = App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                         'sMandatoryText'=>$LEM->gT('This question is mandatory'),
-                ), true);
+                        'part' => 'initial',
+                        'qInfo' => $qInfo
+                ));
                 switch ($qInfo['type'])
                 {
                     case Question::QT_M_MULTIPLE_CHOICE:
@@ -6558,10 +6560,11 @@
                         }
                         if (!($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST_DROPDOWN))
                         {
-                            $sMandatoryText = $LEM->gT('Please check at least one item.');
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                            $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
-                            ), true);
+                                    'part' => 'multiplechoice',
+                                    'qInfo' => $qInfo
+                            ));
                         }
                         if ($qInfo['other']=='Y')
                         {
@@ -6574,10 +6577,11 @@
                             }
                             //$mandatoryTip .= "\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                             $sMandatoryText = "\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                            $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
-                            ), true);
-
+                                    'part' => 'other',
+                                    'qInfo' => $qInfo
+                            ));
                         }
                         break;
                     case Question::QT_X_BOILERPLATE_QUESTION:   // Boilerplate can never be mandatory
@@ -6599,9 +6603,11 @@
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
                         $sMandatoryText = $LEM->gT('Please complete all parts.');
-                        $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                        $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                 'sMandatoryText'=>$sMandatoryText,
-                        ), true);
+                                'part' => 'array',
+                                'qInfo' => $qInfo
+                        ));
                         break;
                     case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                         $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
@@ -6631,10 +6637,11 @@
                                 }
                             }
                             $sMandatoryText = $LEM->gT('Please check at least one box per row.');
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                            $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
-                            ), true);
-
+                                    'part' => 'arraycolumn',
+                                    'qInfo' => $qInfo
+                            ));
                         }
                         else
                         {
@@ -6643,9 +6650,11 @@
                                 $qmandViolation = true; // TODO - what about 'other'?
                             }
                             $sMandatoryText = $LEM->gT('Please complete all parts.');
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                            $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
-                            ), true);
+                                    'part' => 'arraycolumn',
+                                    'qInfo' => $qInfo
+                            ));
                         }
                         break;
                     case Question::QT_R_RANKING_STYLE:
@@ -6654,9 +6663,11 @@
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
                         $sMandatoryText = $LEM->gT('Please rank all items.');
-                        $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                        $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                 'sMandatoryText'=>$sMandatoryText,
-                        ), true);
+                                'part' => 'ranking',
+                                'qInfo' => $qInfo
+                        ));
                         break;
                     case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                         $iViolationCount=0;
@@ -6749,15 +6760,17 @@
                             $hideTip = array_key_exists('hide_tip', $qattr)?$qattr['hide_tip']:0;
 
                             $tipsDatas = array(
+
+                            );
+                            $stringToParse = App()->twigRenderer->renderPartial('/survey/questions/question_help/em_tip.twig',array(
                                 'qid'       =>$qid,
                                 'coreId'    =>"vmsg_{$qid}_{$vclass}", // If it's not this id : EM is broken
                                 'coreClass' =>"ls-em-tip em_{$vclass}",
                                 'vclass'    =>$vclass,
                                 'vtip'      =>$vtip,
-                                'hideTip'   =>($vclass == 'default' && $hideTip == 1)?true:false  // hide default tip if attribute hide_tip is set to 1
-                            );
-
-                            $stringToParse .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/em-tip', $tipsDatas, true);
+                                'hideTip'   =>($vclass == 'default' && $hideTip == 1)?true:false,  // hide default tip if attribute hide_tip is set to 1
+                                'qInfo'    => $qInfo,
+                            ));
                         }
                     }
 
@@ -6786,13 +6799,13 @@
                 if($validityString && $qrel && !$qhidden)
                 {
                     /* Add the string to be showned , no js error or another class ? */
-                    $stringToParse .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/error-tip', array(
+                    $stringToParse .= App()->twigRenderer->renderPartial('/survey/questions/question_help/error_tip.twig',array(
                         'qid'=>$qid,
                         'coreId'    =>"vmsg_{$qid}_dberror",
                         'vclass'=>'dberror',
                         'coreClass'=>'ls-em-tip em_dberror',
-                        'vtip'  =>$validityString)
-                    , true);
+                        'vtip'  =>$validityString,
+                    ));
                     /* Set this question invalid (only if move next due to $force) */
                     $qvalid=false;
                 }
