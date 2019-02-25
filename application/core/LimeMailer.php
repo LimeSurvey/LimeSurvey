@@ -165,6 +165,47 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
+     * Set from
+     * @param string from
+     */
+    public function setFrom($from)
+    {
+        $fromemail = $from;
+        $fromname = "";
+        if (strpos($from, '<')) {
+            $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
+            $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
+        }
+        /* @todo : validate email format */
+        parent::SetFrom($fromemail, $fromname);
+        $mail->Sender = $fromemail;
+    }
+
+    /**
+     * Set bounce
+     * @param string from
+     */
+    public function setBounce($bounce)
+    {
+        /* @todo : validate email format */
+        $mail->Sender = $bounce;
+    }
+
+    public function setRawSubject($subject)
+    {
+
+    }
+
+    public function setRawBody($subject)
+    {
+
+    }
+
+    public function getDebug($format='html')
+    {
+
+    }
+    /**
      * Launch the needed event : beforeTokenEmail, beforeSurveyEmail, beforeGlobalEmail
      * and update this according to action
      */

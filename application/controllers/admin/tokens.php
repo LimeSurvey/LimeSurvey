@@ -1350,6 +1350,8 @@ class tokens extends Survey_Common_Action
             $bInvalidDate = false;
             $bSendError = false;
             if ($emcount > 0) {
+                $mail =  Yii::app()->LimeMailer::getInstance();
+                $mail->setSurvey($iSurveyId);
                 foreach ($emresult as $emrow) {
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'])) {
                         // The email has already been send this session, skip.
@@ -1361,51 +1363,10 @@ class tokens extends Survey_Common_Action
                         }
                         continue;
                     }
-
-                    $to = $fieldsarray = array();
-                    $aEmailaddresses = preg_split("/(,|;)/", $emrow['email']);
-                    foreach ($aEmailaddresses as $sEmailaddress) {
-                        $to[] = ($emrow['firstname']." ".$emrow['lastname']." <{$sEmailaddress}>");
-                    }
-
-                    $fieldsarray["{SID}"] = $iSurveyId;
-                    /* mantis #14288 */
-                    LimeExpressionManager::singleton()->loadTokenInformation($iSurveyId, $emrow['token']);
-                    foreach ($emrow as $attribute => $value) {
-                        $fieldsarray['{'.strtoupper($attribute).'}'] = $value;
-                    }
-
-                    $emrow['language'] = trim($emrow['language']);
-                    $found = array_search($emrow['language'], $aSurveyLangs);
-                    if ($emrow['language'] == '' || $found == false) {
-                        $emrow['language'] = $sBaseLanguage;
-                    }
-
-                    $from = Yii::app()->request->getPost('from_'.$emrow['language']);
-
-                    $fieldsarray["{OPTOUTURL}"] = $this->getController()
-                        ->createAbsoluteUrl("/optout/tokens", array("surveyid"=>$iSurveyId, "langcode"=>trim($emrow['language']), "token"=>$emrow['token']));
-                    $fieldsarray["{OPTINURL}"] = $this->getController()
-                        ->createAbsoluteUrl("/optin/tokens", array("surveyid"=>$iSurveyId, "langcode"=>trim($emrow['language']), "token"=>$emrow['token']));
-                    $fieldsarray["{SURVEYURL}"] = $this->getController()
-                        ->createAbsoluteUrl("/survey/index", array("sid"=>$iSurveyId, "token"=>$emrow['token'], "lang"=>trim($emrow['language'])));
-                    // Add some var for expression : actually only EXPIRY because : it's used in limereplacement field and have good reason to have it.
-                    $fieldsarray["{EXPIRY}"] = $aData['thissurvey']["expires"];
-                    $customheaders = array('1' => "X-surveyid: ".$iSurveyId,
-                        '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
-                    global $maildebug;
-                    $modsubject = $sSubject[$emrow['language']];
-                    $modmessage = $sMessage[$emrow['language']];
-                    foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key) {
-                        $url = $fieldsarray["{{$key}URL}"];
-                        if ($bHtml) {
-                            $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>".htmlspecialchars($url).'</a>';
-                        }
-                        $modsubject = str_replace("@@{$key}URL@@", $url, $modsubject);
-                        $modmessage = str_replace("@@{$key}URL@@", $url, $modmessage);
-                    }
-                    $modsubject = Replacefields($modsubject, $fieldsarray);
-                    $modmessage = Replacefields($modmessage, $fieldsarray);
+                    $mail->setToken($emrow['token']);
+                    $mail->setFrom(Yii::app()->request->getPost('from_'.$emrow['language']));
+                    $mail->setRawSubject($sSubject[$emrow['language']]);
+                    $mail->setRawMessage($sMessage[$emrow['language']]);
 
                     if (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
                         $tokenoutput .= $emrow['tid']." ".htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.", 'unescaped'), $fieldsarray))."<br />";
@@ -1414,64 +1375,8 @@ class tokens extends Survey_Common_Action
                         $tokenoutput .= $emrow['tid']." ".htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.", 'unescaped'), $fieldsarray))."<br />";
                         $bInvalidDate = true;
                     } else {
-                        /*
-                         * Get attachments.
-                         */
-                        if ($sSubAction == 'invite') {
-                            $sTemplate = 'invitation';
-                        } elseif ($sSubAction == 'remind') {
-                            $sTemplate = 'reminder';
-                        }
-                        $aRelevantAttachments = array();
-                        if (isset($aData['thissurvey'][$emrow['language']]['attachments'])) {
-                            $aAttachments = unserialize($aData['thissurvey'][$emrow['language']]['attachments']);
-                            if (!empty($aAttachments)) {
-                                if (isset($aAttachments[$sTemplate])) {
-                                    LimeExpressionManager::singleton()->loadTokenInformation($aData['thissurvey']['sid'], $emrow['token']);
 
-                                    foreach ($aAttachments[$sTemplate] as $aAttachment) {
-                                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
-                                            $aRelevantAttachments[] = $aAttachment['url'];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        /**
-                         * Event for email handling.
-                         * Parameter    type    description:
-                         * subject      rw      Body of the email
-                         * to           rw      Recipient(s)
-                         * from         rw      Sender(s)
-                         * type         r       "invitation" or "reminder"
-                         * send         w       If true limesurvey will send the email. Setting this to false will cause limesurvey to assume the mail has been sent by the plugin.
-                         * error        w       If set and "send" is true, log the error as failed email attempt.
-                         * token        r       Raw token data.
-                         */
-                        $event = new PluginEvent('beforeTokenEmail');
-                        $event->set('survey', $iSurveyId);
-                        $event->set('type', $sTemplate);
-                        $event->set('model', $sSubAction);
-                        $event->set('subject', $modsubject);
-                        $event->set('to', $to);
-                        $event->set('body', $modmessage);
-                        $event->set('from', $from);
-                        $event->set('bounce', getBounceEmail($iSurveyId));
-                        $event->set('token', $emrow);
-                        App()->getPluginManager()->dispatchEvent($event);
-                        $modsubject = $event->get('subject');
-                        $modmessage = (string) $event->get('body'); // You never know what type you could get back here
-                        $to = $event->get('to');
-                        $from = $event->get('from');
-                        $bounce = $event->get('bounce');
-                        if ($event->get('send', true) == false) {
-                            // This is some ancient global used for error reporting instead of a return value from the actual mail function..
-                            $maildebug = (string) $event->get('error', $maildebug);
-                            $success = $event->get('error') == null;
-                        } else {
-                            $success = SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, $bounce, $aRelevantAttachments, $customheaders);
-                        }
+                        $success = $mail->sendMessage();
 
                         if ($success) {
                             // Put date into sent
@@ -1503,6 +1408,7 @@ class tokens extends Survey_Common_Action
                                 $tokenoutput .= $maildebug;
                             }
                         } else {
+                            $maildebug = $mail->getDebug('html');
                             $tokenoutput .= sprintf(htmlspecialchars(ReplaceFields("{$emrow['tid']}: {FIRSTNAME} {LASTNAME} ({EMAIL}). Error message: %s", $fieldsarray)), $maildebug)."<br />\n";
                             $bSendError = true;
                         }
