@@ -77,6 +77,12 @@
   100.00% {
     box-shadow: 0 0 1em #0f3e12; } }
 
+.simpleWrapper {
+  padding: 0;
+  margin: 0;
+  border: none;
+  display: inline-block; }
+
 /**
  * Lime Admin Common CSS File
  *
@@ -2247,6 +2253,10 @@ table#responsedetail tr td{
     background-color: inherit;
 }
 
+#responses-grid .filter-container{
+    min-width: 75px;
+}
+
 .edit-participant-modal-body {
     max-height: 500px;
     overflow-y: auto;
@@ -2402,9 +2412,9 @@ input[type="file"].form-control {
   body.onStatistics h5:not(.printable),
   body.onStatistics .jumbotron,
   body.onStatistics .menubar,
-  body.onStatistics>div:not(#vue-app-main-container),
-  body.onStatistics div#vue-app-main-container>div:not(#pjax-content),
-  body.onStatistics div#vue-app-main-container>div#pjax-content>div:not(#in_survey_common),
+  body.onStatistics>div:not(#vue-apps-main-container),
+  body.onStatistics div#vue-apps-main-container>div:not(#pjax-content),
+  body.onStatistics div#vue-apps-main-container>div#pjax-content>div:not(#in_survey_common),
   body.onStatistics div#in_survey_common>div:not(#statisticsview)
   {
     display: none !important;
@@ -2428,9 +2438,9 @@ input[type="file"].form-control {
     position: static;
   }
 
-  body.onStatistics>div#vue-app-main-container,
+  body.onStatistics>div#vue-apps-main-container,
   body.onStatistics div#in_survey_common,
-  body.onStatistics>div#vue-app-main-container>div#pjax-content,
+  body.onStatistics>div#vue-apps-main-container>div#pjax-content,
   body.onStatistics #statisticsview {
     display: block;
     position: static;

@@ -666,6 +666,8 @@ class UserAction extends Survey_Common_Action
                 Yii::app()->session['questionselectormode'] = Yii::app()->request->getPost('questionselectormode');
                 Yii::app()->session['templateeditormode'] = Yii::app()->request->getPost('templateeditormode');
                 Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
+                
+                SettingsUser::setUserSetting('preselectquestiontype', Yii::app()->request->getPost('preselectquestiontype'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -703,6 +705,7 @@ class UserAction extends Survey_Common_Action
         $oSurveymenu->user_id = $oUser->uid;
         $oSurveymenuEntries = SurveymenuEntries::model();
         $oSurveymenuEntries->user_id = $oUser->uid;
+        $aData['oUserSettings'] = SettingsUser::model()->findAllByAttributes(['uid' => $oUser->uid]);
         $aData['surveymenu_data']['model'] = $oSurveymenu;
         $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
         // Render personal settings view
