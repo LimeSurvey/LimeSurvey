@@ -2344,8 +2344,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         // Replace "Label sets" box with "LimeStore" box.
         if ($iOldDBVersion < 356) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand("UPDATE {{boxes}} SET ico = CONCAT('icon-', ico)")->execute();
-
+            switch (Yii::app()->db->driverName) {
+                case 'sqlsrv':
+                case 'dblib':
+                case 'mssql':
+                    $oDB->createCommand("UPDATE {{boxes}} SET ico = 'icon-' + ico")->execute();
+                    break;
+                default:
+                    $oDB->createCommand("UPDATE {{boxes}} SET ico = CONCAT('icon-', ico)")->execute();
+                    break;
+            }
             // Only change label box if it's there.
             $labelBox = $oDB->createCommand("SELECT * FROM {{boxes}} WHERE id = 5 AND position = 5 AND title = 'Label sets'")->queryRow();
             if ($labelBox) {
