@@ -1,3 +1,82 @@
+.fa-stack.halfed {
+  height: 1em;
+  width: 1em;
+  line-height: 1em; }
+
+.fa-stack-1x.halfed {
+  font-size: 0.5em; }
+
+.fa-1x.halfed {
+  font-size: 0.5em; }
+
+.contain-pulse {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: bottom;
+  height: 3em; }
+
+.grid-view .table td.button-column, .grid-view .table th.button-column {
+  white-space: nowrap;
+  text-align: initial; }
+
+.dropdown-menu.larger-dropdown {
+  min-width: 240px; }
+
+.dropdown-submenu {
+  position: relative; }
+  .dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px 6px;
+    border-radius: 0 6px 6px 6px; }
+  .dropdown-submenu:hover > a:after {
+    border-left-color: #555; }
+  .dropdown-submenu.pull-left {
+    float: none; }
+  .dropdown-submenu.pull-left > .dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px; }
+
+.square {
+  background: #0f3e12;
+  border-radius: 0.6em;
+  box-sizing: border-box;
+  height: 2em;
+  margin: 0.2em;
+  overflow: hidden;
+  padding: 0.5em;
+  width: 2em; }
+
+.animate-pulse .square:nth-of-type(1) {
+  animation: pulse ease-in-out 1.8s infinite 0.2s; }
+
+.animate-pulse .square:nth-of-type(2) {
+  animation: pulse ease-in-out 1.8s infinite 0.6s; }
+
+.animate-pulse .square:nth-of-type(3) {
+  animation: pulse ease-in-out 1.8s infinite 1.0s; }
+
+.animate-pulse .square:nth-of-type(4) {
+  animation: pulse ease-in-out 1.8s infinite 1.4s; }
+
+@keyframes pulse {
+  00.000% {
+    box-shadow: 0 0 1em #0f3e12; }
+  50.000% {
+    box-shadow: 0 0 0.3em #2db936;
+    height: 1em;
+    margin-top: 1em;
+    opacity: 0.8; }
+  100.00% {
+    box-shadow: 0 0 1em #0f3e12; } }
+
 /**
  * Lime Admin Common CSS File
  *
@@ -3341,84 +3420,10 @@ input[type="file"].form-control {
   margin-bottom: 35px;
 }
 
-.fa-stack.halfed {
-  height: 1em;
-  width: 1em;
-  line-height: 1em; }
-
-.fa-stack-1x.halfed {
-  font-size: 0.5em; }
-
-.fa-1x.halfed {
-  font-size: 0.5em; }
-
-.contain-pulse {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-content: bottom;
-  height: 3em; }
-
-.grid-view .table td.button-column, .grid-view .table th.button-column {
-  white-space: nowrap;
-  text-align: initial; }
-
-.dropdown-menu.larger-dropdown {
-  min-width: 240px; }
-
-.dropdown-submenu {
-  position: relative; }
-  .dropdown-submenu > .dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-top: -6px;
-    margin-left: -1px;
-    -webkit-border-radius: 0 6px 6px 6px;
-    -moz-border-radius: 0 6px 6px 6px;
-    border-radius: 0 6px 6px 6px; }
-  .dropdown-submenu:hover > a:after {
-    border-left-color: #555; }
-  .dropdown-submenu.pull-left {
-    float: none; }
-  .dropdown-submenu.pull-left > .dropdown-menu {
-    left: -100%;
-    margin-left: 10px;
-    -webkit-border-radius: 6px 0 6px 6px;
-    -moz-border-radius: 6px 0 6px 6px;
-    border-radius: 6px 0 6px 6px; }
-
-.square {
-  background: #0f3e12;
-  border-radius: 0.6em;
-  box-sizing: border-box;
-  height: 2em;
-  margin: 0.2em;
-  overflow: hidden;
-  padding: 0.5em;
-  width: 2em; }
-
-.animate-pulse .square:nth-of-type(1) {
-  animation: pulse ease-in-out 1.8s infinite 0.2s; }
-
-.animate-pulse .square:nth-of-type(2) {
-  animation: pulse ease-in-out 1.8s infinite 0.6s; }
-
-.animate-pulse .square:nth-of-type(3) {
-  animation: pulse ease-in-out 1.8s infinite 1.0s; }
-
-.animate-pulse .square:nth-of-type(4) {
-  animation: pulse ease-in-out 1.8s infinite 1.4s; }
-
-@keyframes pulse {
-  00.000% {
-    box-shadow: 0 0 1em #0f3e12; }
-  50.000% {
-    box-shadow: 0 0 0.3em #2db936;
-    height: 1em;
-    margin-top: 1em;
-    opacity: 0.8; }
-  100.00% {
-    box-shadow: 0 0 1em #0f3e12; } }
+textarea.form-control.input-text{
+/* Show a textarea not so big at starting */
+height:2.4em;
+}
 
 .jcarousel-wrapper {
     margin: 20px auto;
