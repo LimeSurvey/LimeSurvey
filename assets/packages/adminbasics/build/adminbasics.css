@@ -2254,7 +2254,7 @@ table#responsedetail tr td{
 }
 
 #responses-grid .filter-container{
-    min-width: 75px;
+    min-width: 6em; /* defaut em is 13px : 75/13 = 5.76… */
 }
 
 .edit-participant-modal-body {
