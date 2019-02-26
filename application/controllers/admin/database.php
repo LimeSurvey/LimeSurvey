@@ -559,35 +559,24 @@ class database extends Survey_Common_Action
         }
 
 
-        // Remove invalid question attributes on saving
-        $criteria = new CDbCriteria;
-        $criteria->compare('qid', $this->iQuestionID);
-        $validAttributes = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
-        // If the question has a custom template, we first check if it provides custom attributes
-        //~ $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
-        //~ if (is_object($oAttributeValues && $oAttributeValues->value)){
-            //~ $aAttributeValues['question_template'] = $oAttributeValues->value;
-        //~ }else{
-            //~ $aAttributeValues['question_template'] = 'core';
-        //~ }
-        //~ $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );
-        foreach ($validAttributes as  $validAttribute) {
-            $criteria->compare('attribute', '<>'.$validAttribute['name']);
-        }
-        QuestionAttribute::model()->deleteAll($criteria);
-
-        $aLanguages = $oSurvey->allLanguages;
-        foreach ($validAttributes as $validAttribute) {
-            /* Readonly attribute : disable save */
-            if ($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive())) {
-                continue;
+        /* Check if we need to save QuestionAttribute testing advancedquestionsettings , see mantis #14563 */
+        if(Yii::app()->request->getPost('advancedquestionsettingsLoaded',true)) {
+            // Remove invalid question attributes on saving
+            $criteria = new CDbCriteria;
+            $criteria->compare('qid', $this->iQuestionID);
+            $validAttributes = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
+            // If the question has a custom template, we first check if it provides custom attributes
+            $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'", array('qid'=>$cqr->qid));
+            if (is_object($oAttributeValues) && $oAttributeValues->value) {
+                $aAttributeValues['question_template'] = $oAttributeValues->value;
+            } else {
+                $aAttributeValues['question_template'] = 'core';
             }
             $validAttributes = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr);
             foreach ($validAttributes as  $validAttribute) {
                 $criteria->compare('attribute', '<>'.$validAttribute['name']);
             }
             QuestionAttribute::model()->deleteAll($criteria);
-
             $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
             foreach ($validAttributes as $validAttribute) {
                 /* Readonly attribute : disable save */
