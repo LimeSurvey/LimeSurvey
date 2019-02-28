@@ -7,7 +7,8 @@ echo viewHelper::getViewTestTag('configurePlugin');
 ?>
 <div class="pagetitle h3"><?php echo sprintf(gT("Settings for plugin: %s"), $plugin['name']); ?></div>
 
-<div class="col-md-6 col-md-offset-1">
+<div class="col-md-10 col-md-offset-1">
+    <div class="container-fluid">
 <?php
     $title = isset($properties['pluginName']) ? sprintf(gT("Settings for plugin: %s"), $properties['pluginName']) : null;
     if (is_null($title)) $title = isset($plugin['name']) ? sprintf(gT("Settings for plugin %s"), $plugin['name']) : null;
@@ -32,4 +33,5 @@ echo viewHelper::getViewTestTag('configurePlugin');
             </div>"
     ));
 ?>
+    </div>
 </div>
