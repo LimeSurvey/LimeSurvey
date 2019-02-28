@@ -478,7 +478,7 @@ class dataentry extends Survey_Common_Action
             $fnames = array_merge($fnames, createFieldMap($survey, 'full', false, false, $sDataEntryLanguage));
             // Fix private if disallowed to view token
             if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')) {
-                            unset($fnames['token']);
+                unset($fnames['token']);
             }
             $nfncount = count($fnames) - 1;
 
@@ -897,19 +897,18 @@ class dataentry extends Survey_Common_Action
                             while (isset($fname) && $fname['type'] == "P") {
                                 $thefieldname = $fname['fieldname'];
                                 if (substr($thefieldname, -7) == "comment") {
-                                    $aDataentryoutput .= "<td><input type='text' name='{$fname['fieldname']}' size='50' value='"
-                                    .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' /></td>\n"
+                                    $aDataentryoutput .= "<td>";
+                                    $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']],array('size'=>50));
+                                    $aDataentryoutput .= "</td>\n"
                                     ."\t</tr>\n";
                                 } elseif (substr($fname['fieldname'], -5) == "other") {
                                     $aDataentryoutput .= "\t<tr>\n"
                                     ."<td>\n"
-                                    ."\t<input type='text' name='{$fname['fieldname']}' size='30' value='"
-                                    .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' />\n"
+                                    . CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']],array('size'=>30))
                                     ."</td>\n"
                                     ."<td>\n";
                                     $fname = next($fnames);
-                                    $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' size='50' value='"
-                                    .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' />\n"
+                                    $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']],array('size'=>50))
                                     ."</td>\n"
                                     ."\t</tr>\n";
                                 } else {
@@ -1189,9 +1188,8 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\t<tr>\n"
                                 . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
-                                $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
-                                if (!empty($idrow[$fname['fieldname']])) {$aDataentryoutput .= $idrow[$fname['fieldname']]; }
-                                $aDataentryoutput .= "' /></td>\n"
+                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                                  $aDataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
                                 $fname = next($fnames);
                             }
@@ -1200,17 +1198,16 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "token":
                             if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
-                                                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
                             } else {
-                                                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('disabled'=>'disabled'));
+                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']], array('disabled'=>'disabled'));
                             }
                             break;
                         case "submitdate":
                         case "startlanguage":
                         default:
-                            $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
-                            .$idrow[$fname['fieldname']]."' />\n";
-                            break;
+                            $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                           break;
                     }
 
                     $aDataentryoutput .= "        </td>
