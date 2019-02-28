@@ -556,7 +556,6 @@ class dataentry extends Survey_Common_Action
             $aDataentryoutput = '';
             foreach ($results as $idrow) {
                 $fname = reset($fnames);
-
                 do {
                     $question = $fname['question'];
                     $aDataentryoutput .= "\t<tr";
@@ -628,17 +627,19 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "D": //DATE
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $surveyid);
+                            $datetimeobj = null;
+                            $thisdate = '';
                             if ($idrow[$fname['fieldname']] != '') {
                                 $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']]);
                                 if($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
                                     $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']]);
                                 }
-                                $thisdate = $datetimeobj->format($dateformatdetails['phpdate']);
-                            } else {
-                                $thisdate = '';
                             }
 
                             if (canShowDatePicker($dateformatdetails)) {
+                                if($datetimeobj) {
+                                    $thisdate = $datetimeobj->format($dateformatdetails['phpdate']);
+                                }
                                 $goodchars = str_replace(array("m", "d", "y", "H", "M"), "", $dateformatdetails['dateformat']);
                                 $goodchars = "0123456789".$goodchars[0];
                                 $aDataentryoutput .= CHtml::textField($fname['fieldname'], $thisdate,
@@ -680,7 +681,10 @@ class dataentry extends Survey_Common_Action
                                 // $aDataentryoutput .= "\t<input type='text' class='popupdate' size='12' name='{$fname['fieldname']}' value='{$thisdate}' onkeypress=\"return window.LS.goodchars(event,'".$goodchars."')\"/>\n";
                                 // $aDataentryoutput .= "\t<input type='hidden' name='dateformat{$fname['fieldname']}' id='dateformat{$fname['fieldname']}' value='{$dateformatdetails['jsdate']}'  />\n";
                             } else {
-                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $thisdate);
+                                if($datetimeobj) {
+                                    $thisdate = $datetimeobj->format("Y-m-d\TH:i");
+                                }
+                                $aDataentryoutput .= CHtml::dateTimeLocalField($fname['fieldname'], $thisdate);
                             }
                             break;
                         case "G": //GENDER drop-down list
@@ -776,8 +780,7 @@ class dataentry extends Survey_Common_Action
                             $fname = next($fnames);
                             $aDataentryoutput .= "\t</select>\n"
                             ."\t<br />\n"
-                            ."\t<textarea cols='45' rows='5' name='{$fname['fieldname']}'>"
-                            .htmlspecialchars($idrow[$fname['fieldname']])."</textarea>\n";
+                            .CHtml::textArea($fname['fieldname'],$idrow[$fname['fieldname']],array('cols'=>45,'rows'=>5));
                             break;
                         case "R": //RANKING TYPE QUESTION
                             $thisqid = $fname['qid'];
@@ -925,18 +928,18 @@ class dataentry extends Survey_Common_Action
                         case "|": //FILE UPLOAD
                             $aDataentryoutput .= "<table class='table'>\n";
                             if ($fname['aid'] !== 'filecount' && isset($idrow[$fname['fieldname'].'_filecount']) && ($idrow[$fname['fieldname'].'_filecount'] > 0)) {
-//file metadata
+                                //file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
                                 $qAttributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                                 for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++) {
                                     if ($qAttributes['show_title']) {
-                                                                            $aDataentryoutput .= '<tr><td>Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i.'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"]).'" /></td></tr>';
+                                        $aDataentryoutput .= '<tr><td>'.gT("Title").'</td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i.'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"]).'" /></td></tr>';
                                     }
                                     if ($qAttributes['show_comment']) {
-                                                                            $aDataentryoutput .= '<tr><td >Comment  </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i.'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]).'" /></td></tr>';
+                                        $aDataentryoutput .= '<tr><td >'.gT("Comment").'</td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i.'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]).'" /></td></tr>';
                                     }
 
-                                    $aDataentryoutput .= '<tr><td>        File name</td><td><input   class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_name_'.$i.'" name="name" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["name"])).'" /></td></tr>'
+                                    $aDataentryoutput .= '<tr><td>'.gT("File name").'</td><td><input   class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_name_'.$i.'" name="name" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["name"])).'" /></td></tr>'
                                     .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_size_'.$i.'" name="size" size=50 value="'.htmlspecialchars($metadata[$i]["size"]).'" /></td></tr>'
                                     .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_ext_'.$i.'" name="ext" size=50 value="'.htmlspecialchars($metadata[$i]["ext"]).'" /></td></tr>'
                                     .'<tr><td></td><td><input type="hidden"  class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_filename_'.$i.'" name="filename" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["filename"])).'" /></td></tr>';
@@ -972,21 +975,17 @@ class dataentry extends Survey_Common_Action
                             }
                             break;
                         case "N": //NUMERICAL TEXT
-                            $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='{$idrow[$fname['fieldname']]}' "
-                            ."onkeypress=\"return window.LS.goodchars(event,'0123456789.,')\" />\n";
+                            $aDataentryoutput .= CHtml::textField($fname['fieldname'],$idrow[$fname['fieldname']],array('onkeypress'=>"return window.LS.goodchars(event,'0123456789.,')"));
                             break;
                         case "S": //SHORT FREE TEXT
-                            $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
-                            .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."' />\n";
+                            $aDataentryoutput .= CHtml::textField($fname['fieldname'],$idrow[$fname['fieldname']]);
                             break;
                         case "T": //LONG FREE TEXT
-                            $aDataentryoutput .= "\t<textarea rows='5' cols='45' name='{$fname['fieldname']}'>"
-                            .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."</textarea>\n";
+                            $aDataentryoutput .= CHtml::textArea($fname['fieldname'],$idrow[$fname['fieldname']],array('cols'=>45,'rows'=>5));
                             break;
                         case "U": //HUGE FREE TEXT
-                            $aDataentryoutput .= "\t<textarea rows='50' cols='70' name='{$fname['fieldname']}'>"
-                            .htmlspecialchars($idrow[$fname['fieldname']], ENT_QUOTES)."</textarea>\n";
-                            break;
+                            $aDataentryoutput .= CHtml::textArea($fname['fieldname'],$idrow[$fname['fieldname']],array('cols'=>70,'rows'=>50));
+                             break;
                         case "Y": //YES/NO radio-buttons
                             $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n"
                             ."<option value=''";
@@ -1161,9 +1160,7 @@ class dataentry extends Survey_Common_Action
                                 . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
                                 if ($qidattributes['input_boxes'] != 0) {
-                                    $aDataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='";
-                                    if (!empty($idrow[$fname['fieldname']])) {$aDataentryoutput .= $idrow[$fname['fieldname']]; }
-                                    $aDataentryoutput .= "' size=4 />";
+                                    $aDataentryoutput .= CHtml::textField($fname['fieldname'],$idrow[$fname['fieldname']],array('onkeypress'=>"return window.LS.goodchars(event,'0123456789.,')",'size'=>12));
                                 } else {
                                     $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n";
                                     $aDataentryoutput .= "<option value=''>...</option>\n";
@@ -1204,6 +1201,20 @@ class dataentry extends Survey_Common_Action
                             }
                             break;
                         case "submitdate":
+                        case "startdate":
+                        case "datestamp":
+                            $thisdate = "";
+                            if ($idrow[$fname['fieldname']] != '') {
+                                $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s", $idrow[$fname['fieldname']]);
+                                if($datetimeobj == null) { //MSSQL uses microseconds by default in any datetime object
+                                    $datetimeobj = DateTime::createFromFormat("Y-m-d H:i:s.u", $idrow[$fname['fieldname']]);
+                                }
+                                if($datetimeobj) {
+                                    $thisdate = $datetimeobj->format("Y-m-d\TH:i");
+                                }
+                            }
+                            $aDataentryoutput .= CHtml::dateTimeLocalField($fname['fieldname'], $thisdate);
+                            break;
                         case "startlanguage":
                         default:
                             $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
@@ -1296,98 +1307,145 @@ class dataentry extends Survey_Common_Action
      */
     public function update()
     {
-        $subaction = Yii::app()->request->getPost('subaction');
-        if (isset($_REQUEST['surveyid'])) {
-            $surveyid = $_REQUEST['surveyid'];
-        } else {
-            $surveyid = $_REQUEST['sid'];
+        $surveyid = App()->getRequest()->getParam('surveyid',App()->getRequest()->getParam('sid'));
+        if(!Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
+            throw new CHttpException(403);
         }
+
         $surveyid = (int) ($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
-
+        if(!$survey->getIsActive()) {
+            throw new CHttpException(404,gT("Invalid survey id"));
+        }
         $id = Yii::app()->request->getPost('id');
-
-        if ($subaction == "update" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
-
-            Yii::app()->loadHelper("database");
-            $surveytable = $survey->responsesTableName;
-            $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
-            // restet token if user is not allowed to update
-            if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
-// If not allowed to read: remove it
-                unset($fieldmap['token']);
+        $oReponse = Response::model($surveyid)->findByPk($id);
+        if(empty($oReponse)) {
+            throw new CHttpException(404,gT("Invalid id"));
+        }
+        $aExistingAttributes = 
+        Yii::app()->loadHelper("database");
+        $surveytable = $survey->responsesTableName;
+        $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
+        // reset token if user is not allowed to update
+        if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
+            // If not allowed to read: remove it
+            unset($fieldmap['token']);
+        }
+        // unset timings
+        foreach ($fieldmap as $fname) {
+            if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time") {
+                unset($fieldmap[$fname['fieldname']]);
             }
-            // unset timings
-            foreach ($fieldmap as $fname) {
-                if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time") {
-                    unset($fieldmap[$fname['fieldname']]);
-                }
+        }
+
+        $thissurvey = getSurveyInfo($surveyid);
+        foreach ($fieldmap as $irow) {
+            $fieldname = $irow['fieldname'];
+            if ($fieldname == 'id') {
+                continue;
             }
-
-            $thissurvey = getSurveyInfo($surveyid);
-            $updateqr = "UPDATE $surveytable SET \n";
-
-            foreach ($fieldmap as $irow) {
-                $fieldname = $irow['fieldname'];
-                if ($fieldname == 'id') {
-                    continue;
-                }
-                if (isset($_POST[$fieldname])) {
-                    $thisvalue = $_POST[$fieldname];
-                } else {
-                    $thisvalue = "";
-                }
-                if ($irow['type'] == 'lastpage') {
+            $thisvalue = Yii::app()->request->getPost($fieldname);
+            switch ($irow['type']) {
+                case 'lastpage':
                     $thisvalue = 0;
-                } elseif ($irow['type'] == 'D') {
-                    if ($thisvalue == "") {
-                        $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
+                    // Last page not updated : not in view 
+                    break;
+                case 'D' :
+                    if(empty($thisvalue)) {
+                        $oReponse->$fieldname = null;
+                        break;
+                    } 
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
+                    $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
+                    $datetimeobj = DateTime::createFromFormat('!'.$dateformatdetails['phpdate'], $thisvalue);
+                    if (!$datetimeobj) {
+                        /* Not able to use js system */
+                        $datetimeobj = DateTime::createFromFormat('Y-m-d\TH:i', $thisvalue);
+                    }
+                    if ($datetimeobj) {
+                        $oReponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
-                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
-                        $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
-
-                        $datetimeobj = DateTime::createFromFormat('!'.$dateformatdetails['phpdate'], $thisvalue);
-                        if ($datetimeobj) {
-                            $dateoutput = $datetimeobj->format('Y-m-d H:i');
-                        } else {
-                            $dateoutput = '';
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid date time value for %"),$fieldname), 'warning');
+                        $oReponse->$fieldname = null;
+                    }
+                    break;
+                case 'N':
+                case 'K':
+                    if(empty($thisvalue)) {
+                        $oReponse->$fieldname = null;
+                        break;
+                    }
+                    if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$thisvalue)) {
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %"),$fieldname), 'warning');
+                        $oReponse->$fieldname = null;
+                        break;
+                    }
+                    $oReponse->$fieldname = $thisvalue;
+                    break;
+                case '|':
+                    if(strpos($irow['fieldname'], '_filecount')) {
+                        if(empty($thisvalue)) {
+                            $oReponse->$fieldname = null;
+                            break;
                         }
-                        //need to check if library get initialized with new value of constructor or not.
-
-                        $updateqr .= App()->db->quoteColumnName($fieldname)." = '{$dateoutput}', \n";
+                        $oReponse->$fieldname = $thisvalue;
+                        break;
                     }
-                } elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "") {
-                    $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
-                } elseif ($irow['type'] == '|' && strpos($irow['fieldname'], '_filecount') && $thisvalue == "") {
-                    $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
-                } elseif ($irow['type'] == 'submitdate') {
-                    if (isset($_POST['completed']) && ($_POST['completed'] == "N")) {
-                        $updateqr .= App()->db->quoteColumnName($fieldname)." = NULL, \n";
-                    } elseif (isset($_POST['completed']) && $thisvalue == "") {
-                        $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($_POST['completed']).", \n";
+                    $oReponse->$fieldname = $thisvalue;
+                    break;
+                case ':':
+                    if( !empty($thisvalue) && strval($thisvalue) !=strval(floatval($thisvalue)) ) {
+                        // mysql not need, unsure about mssql
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %"),$fieldname), 'warning');
+                        $oReponse->$fieldname = null;
+                        break;
+                    }
+                    $oReponse->$fieldname = $thisvalue;
+                    break;
+                case 'submitdate':
+                    if(Yii::app()->request->getPost('completed') == "N") {
+                        $oReponse->$fieldname = null;
+                        break;
+                    }
+                    if(Yii::app()->request->getPost('completed')) {
+                        $thisvalue = Yii::app()->request->getPost('completed');
+                    }
+                case 'startdate':
+                case 'datestamp':
+                    $dateformatdetails = getDateFormatForSID($surveyid);
+                    $datetimeobj = DateTime::createFromFormat('!'.$dateformatdetails['phpdate'], $thisvalue);
+                    if (!$datetimeobj) {
+                        /* Not able to use js system */
+                        $datetimeobj = DateTime::createFromFormat('Y-m-d\TH:i', $thisvalue);
+                    }
+                    if ($datetimeobj) {
+                        $oReponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
-                        $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($thisvalue).", \n";
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid date time %s value for %s"),$thisvalue,$fieldname), 'warning');
+                        if($irow['type'] != 'submitdate') {
+                            $oReponse->$fieldname = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));// Need not null value
+                        } else {
+                            $oReponse->$fieldname = null;
+                        }
                     }
-                } else {
-                    $updateqr .= App()->db->quoteColumnName($fieldname)." = ".App()->db->quoteValue($thisvalue).", \n";
-                }
+                    break;
+                default:
+                    $oReponse->$fieldname = $thisvalue;
             }
-            $updateqr = substr($updateqr, 0, -3);
-            $updateqr .= " WHERE id=$id";
-
-            $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
-            $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
-            $beforeDataEntryUpdate->set('iResponseID', $id);
-            App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
-
-            dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
-
+        }
+        $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
+        $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
+        $beforeDataEntryUpdate->set('iResponseID', $id);
+        App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
+        if(!$oReponse->save()) {
+            Yii::app()->setFlashMessage(CHtml::errorSummary($oReponse), 'error');
+        } else {
             Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."), $id));
-            if (Yii::app()->request->getPost('close-after-save') == 'true') {
-                $this->getController()->redirect($this->getController()->createUrl("admin/responses/sa/view/surveyid/{$surveyid}/id/{$id}"));
-            } else {
-                $this->getController()->redirect($this->getController()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}"));
-            }
+        }
+        if (Yii::app()->request->getPost('close-after-save') == 'true') {
+            $this->getController()->redirect($this->getController()->createUrl("admin/responses/sa/view/surveyid/{$surveyid}/id/{$id}"));
+        } else {
+            $this->getController()->redirect($this->getController()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$id}"));
         }
     }
 
