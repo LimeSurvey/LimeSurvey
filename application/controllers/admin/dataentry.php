@@ -1322,8 +1322,7 @@ class dataentry extends Survey_Common_Action
         if(empty($oReponse)) {
             throw new CHttpException(404,gT("Invalid id"));
         }
-        Yii::app()->loadHelper("database");
-        $surveytable = $survey->responsesTableName;
+        //~ Yii::app()->loadHelper("database");
         $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
         // reset token if user is not allowed to update
         if (!Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'update')) {
@@ -1346,7 +1345,6 @@ class dataentry extends Survey_Common_Action
             $thisvalue = Yii::app()->request->getPost($fieldname);
             switch ($irow['type']) {
                 case 'lastpage':
-                    $thisvalue = 0;
                     // Last page not updated : not in view 
                     break;
                 case 'D' :
