@@ -579,23 +579,10 @@ class dataentry extends Survey_Common_Action
                     }
                     switch ($fname['type']) {
                         case "completed":
-                            // First compute the submitdate
-                            if (isset($private) && $private == "Y") {
-                                // In case of anonymized responses survey with no datestamp
-                                // then the the answer submitdate gets a conventional timestamp
-                                // 1st Jan 1980
-                                $mysubmitdate = date("Y-m-d H:i", (int) mktime(0, 0, 0, 1, 1, 1980)); // Note that the completed field only supports 17 chars (so no seconds!)
-                            } else {
-                                $mysubmitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')); // Note that the completed field only supports 17 chars (so no seconds!)
-                            }
-
-                            $completedate = empty($idrow['submitdate']) ? $mysubmitdate : $idrow['submitdate'];
-
-                            $selected = (empty($idrow['submitdate'])) ? 'N' : $completedate;
-
+                            $selected = (empty($idrow['submitdate'])) ? 'N' : 'Y';
                             $select_options = array(
-                            'N' => gT('No', 'unescaped'),
-                            $completedate => gT('Yes', 'unescaped')
+                                'N' => gT('No', 'unescaped'),
+                                'Y' => gT('Yes', 'unescaped')
                             );
 
                             $aDataentryoutput .= CHtml::dropDownList('completed', $selected, $select_options, array('class'=>'form-control'));
@@ -605,9 +592,17 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "";
                             break;
                         case "Q":
-                        case "K":
                             $aDataentryoutput .= $fname['subquestion'].'&nbsp;';
                             $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                            break;
+                        case "K":
+                            $aDataentryoutput .= $fname['subquestion'].'&nbsp;';
+                            /* Fix DB DECIMAL type */
+                            $value = $idrow[$fname['fieldname']];
+                            if (strpos($value, ".")) {
+                                $value = rtrim(rtrim($value, "0"), ".");
+                            }
+                            $aDataentryoutput .= CHtml::textField($fname['fieldname'],$value,array('pattern'=>"[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title'=>gT("Only numbers may be entered in this field.")));
                             break;
                         case "id":
                             $aDataentryoutput .= CHtml::tag('span', array('style' => 'font-weight: bold;'), '&nbsp;'.$idrow[$fname['fieldname']]);
@@ -975,7 +970,13 @@ class dataentry extends Survey_Common_Action
                             }
                             break;
                         case "N": //NUMERICAL TEXT
-                            $aDataentryoutput .= CHtml::textField($fname['fieldname'],$idrow[$fname['fieldname']],array('onkeypress'=>"return window.LS.goodchars(event,'0123456789.,')"));
+                            /* Fix DB DECIMAL type */
+                            $value = $idrow[$fname['fieldname']];
+                            if (strpos($value, ".")) {
+                                $value = rtrim(rtrim($value, "0"), ".");
+                            }
+                            /* no number fix with return window.LS.goodchars … */
+                            $aDataentryoutput .= CHtml::textField($fname['fieldname'],$value,array('pattern'=>"[-]?([0-9]{0,20}([\.][0-9]{0,10})?)?",'title'=>gT("Only numbers may be entered in this field.")));
                             break;
                         case "S": //SHORT FREE TEXT
                             $aDataentryoutput .= CHtml::textField($fname['fieldname'],$idrow[$fname['fieldname']]);
@@ -1185,7 +1186,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\t<tr>\n"
                                 . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
-                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
+                                $aDataentryoutput .= CHtml::numberField($fname['fieldname'], $idrow[$fname['fieldname']],array('step'=>'any'));
                                   $aDataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
                                 $fname = next($fnames);
@@ -1365,13 +1366,13 @@ class dataentry extends Survey_Common_Action
                     if ($datetimeobj) {
                         $oReponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
-                        Yii::app()->setFlashMessage(sprintf(gT("Invalid date time value for %"),$fieldname), 'warning');
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %"),htmlentities($thisvalue),$fieldname), 'warning');
                         $oReponse->$fieldname = null;
                     }
                     break;
                 case 'N':
                 case 'K':
-                    if(empty($thisvalue)) {
+                    if($thisvalue === "") {
                         $oReponse->$fieldname = null;
                         break;
                     }
@@ -1407,11 +1408,19 @@ class dataentry extends Survey_Common_Action
                         $oReponse->$fieldname = null;
                         break;
                     }
-                    if(Yii::app()->request->getPost('completed')) {
-                        $thisvalue = Yii::app()->request->getPost('completed');
+                    if(empty($thisvalue)) {
+                        if (Survey::model()->findByPk($surveyid)->isDateStamp) {
+                            $thisvalue = dateShift(date("Y-m-d H:i"), "Y-m-d\TH:i", Yii::app()->getConfig('timeadjust'));
+                        } else {
+                            $thisvalue = date("Y-m-d\TH:i", (int) mktime(0, 0, 0, 1, 1, 1980));
+                        }
                     }
                 case 'startdate':
                 case 'datestamp':
+                    if(empty($thisvalue)) {
+                        $oReponse->$fieldname = null;
+                        break;
+                    }
                     $dateformatdetails = getDateFormatForSID($surveyid);
                     $datetimeobj = DateTime::createFromFormat('!'.$dateformatdetails['phpdate'], $thisvalue);
                     if (!$datetimeobj) {
@@ -1421,9 +1430,9 @@ class dataentry extends Survey_Common_Action
                     if ($datetimeobj) {
                         $oReponse->$fieldname = $datetimeobj->format('Y-m-d H:i');
                     } else {
-                        Yii::app()->setFlashMessage(sprintf(gT("Invalid date time %s value for %s"),$thisvalue,$fieldname), 'warning');
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid datetime %s value for %s"),htmlentities($thisvalue),$fieldname), 'warning');
                         if($irow['type'] != 'submitdate') {
-                            $oReponse->$fieldname = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));// Need not null value
+                            $oReponse->$fieldname = date("Y-m-d H:i:s");// Need not null value
                         } else {
                             $oReponse->$fieldname = null;
                         }
