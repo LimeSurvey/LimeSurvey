@@ -467,7 +467,6 @@ class dataentry extends Survey_Common_Action
             $fnrows = array(); //Create an empty array in case FetchRow does not return any rows
             foreach ($fnresult as $fnrow) {
                 $fnrows[] = $fnrow;
-                $private = $fnrow['anonymized'];
             } // Get table output into array
 
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
@@ -1161,7 +1160,7 @@ class dataentry extends Survey_Common_Action
                                 . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
                                 if ($qidattributes['input_boxes'] != 0) {
-                                    $aDataentryoutput .= CHtml::textField($fname['fieldname'],$idrow[$fname['fieldname']],array('onkeypress'=>"return window.LS.goodchars(event,'0123456789.,')",'size'=>12));
+                                    $aDataentryoutput .= CHtml::numberField($fname['fieldname'], $idrow[$fname['fieldname']],array('step'=>'any'));
                                 } else {
                                     $aDataentryoutput .= "\t<select name='{$fname['fieldname']}' class='form-control'>\n";
                                     $aDataentryoutput .= "<option value=''>...</option>\n";
@@ -1186,7 +1185,7 @@ class dataentry extends Survey_Common_Action
                                 $aDataentryoutput .= "\t<tr>\n"
                                 . "<td>{$fname['subquestion1']}:{$fname['subquestion2']}</td>\n";
                                 $aDataentryoutput .= "<td>\n";
-                                $aDataentryoutput .= CHtml::numberField($fname['fieldname'], $idrow[$fname['fieldname']],array('step'=>'any'));
+                                $aDataentryoutput .= CHtml::textField($fname['fieldname'], $idrow[$fname['fieldname']]);
                                   $aDataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
                                 $fname = next($fnames);
@@ -1323,7 +1322,6 @@ class dataentry extends Survey_Common_Action
         if(empty($oReponse)) {
             throw new CHttpException(404,gT("Invalid id"));
         }
-        $aExistingAttributes = 
         Yii::app()->loadHelper("database");
         $surveytable = $survey->responsesTableName;
         $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
@@ -1377,7 +1375,7 @@ class dataentry extends Survey_Common_Action
                         break;
                     }
                     if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$thisvalue)) {
-                        Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %"),$fieldname), 'warning');
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %s"),$fieldname), 'warning');
                         $oReponse->$fieldname = null;
                         break;
                     }
@@ -1397,7 +1395,7 @@ class dataentry extends Survey_Common_Action
                 case ':':
                     if( !empty($thisvalue) && strval($thisvalue) !=strval(floatval($thisvalue)) ) {
                         // mysql not need, unsure about mssql
-                        Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %"),$fieldname), 'warning');
+                        Yii::app()->setFlashMessage(sprintf(gT("Invalid numeric value for %s"),$fieldname), 'warning');
                         $oReponse->$fieldname = null;
                         break;
                     }
