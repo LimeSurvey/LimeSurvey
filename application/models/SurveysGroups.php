@@ -241,6 +241,16 @@ class SurveysGroups extends LSActiveRecord
         return $nbSurvey > 0;
     }
 
+    /**
+     * Returns true if survey group has child survey groups
+     * @return boolean
+     */
+    public function getHasChildGroups()
+    {
+        $nbSurvey = SurveysGroups::model()->countByAttributes(array("parent_id"=>$this->gsid));
+        return $nbSurvey > 0;
+    }
+
 
     public function getAllParents($bOnlyGsid=false)
     {
