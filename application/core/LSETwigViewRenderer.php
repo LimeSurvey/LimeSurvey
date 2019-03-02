@@ -529,6 +529,15 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
     private function getAdditionalInfos($aDatas, $oTemplate)
     {
+        /* get minimal surveyInfo if we can have a sid, used in ExpressionManager for example */
+        if(empty($aDatas["aSurveyInfo"])) {
+            $aDatas["aSurveyInfo"] = array();
+            if(!empty($aDatas["sid"]) || LimeExpressionManager::getLEMsurveyId() ) {
+                $sid = empty($aDatas["sid"]) ? LimeExpressionManager::getLEMsurveyId() : $aDatas["sid"];
+                $language = empty($aDatas["language"]) ? App()->getLanguage() : $aDatas["language"];
+                $aDatas["aSurveyInfo"] = getSurveyInfo($sid, $language);
+            }
+        }
         // We retreive the definition of the core class and attributes (in the future, should be template dependant done via XML file)
         $aDatas["aSurveyInfo"] = array_merge($aDatas["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 

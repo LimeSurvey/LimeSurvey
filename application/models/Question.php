@@ -163,7 +163,7 @@ class Question extends LSActiveRecord
             }
             // #14495: comment suffix can't be used with P Question (collapse with table name in database)
             if ($oParentQuestion->type == "P") {
-                $aRules[] = array('title', 'match', 'pattern'=>'/.+comment$/', 'not'=>true, 'message'=> gT("'comment' suffix can not be used with multiple choice with comments."));
+                $aRules[] = array('title', 'match', 'pattern'=>'/comment$/', 'not'=>true, 'message'=> gT("'comment' suffix can not be used with multiple choice with comments."));
             }
         } else {
             // Disallow other if sub question have 'other' for title
@@ -610,7 +610,7 @@ class Question extends LSActiveRecord
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"'
-                ." onclick='$.bsconfirm(\"".gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?", "js")
+                ." onclick='$.bsconfirm(\"".CHtml::encode(gT("Deleting  will also delete any answer options and subquestions it includes. Are you sure you want to continue?"))
                             ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
                             . convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $this->sid, "qid" => $this->qid, "gid" => $gid_search]))
                         ."});'>"

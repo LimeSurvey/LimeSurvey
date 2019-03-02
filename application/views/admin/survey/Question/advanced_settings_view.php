@@ -170,6 +170,7 @@ $categoryNum=0;
             </div>
         </div>
 <?php endforeach;?>
+<input type='hidden' name='advancedquestionsettingsLoaded' value="ok" />
  </div></div></div></div>
 <?php
 /* Launch all needed script (here after load) needed for widget */

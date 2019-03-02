@@ -1164,7 +1164,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $sXMLdata = (string) file_get_contents($sFullFilePath);    
     }
 
-    $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
+    $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET | LIBXML_PARSEHUGE);
 
     if (!$xml || $xml->LimeSurveyDocType != 'Survey') {
         $results['error'] = gT("This is not a valid LimeSurvey survey structure XML file.");

@@ -8,7 +8,7 @@ $surveyid = App()->request->getParam('surveyid', 0);
 /** @var Survey $oSurvey */
 
 ?>
-<form class="custom-modal-datas">
+<form class="custom-modal-datas form-horizontal">
     <div id='MandatorySelection' class="form-group">
         <label class="col-sm-4 control-label"><?php eT("Mandatory:"); ?></label>
         <div class="col-sm-8">
