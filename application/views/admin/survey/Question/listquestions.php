@@ -103,9 +103,9 @@
                                 'value'=>'$data->groups->group_name',
                             ),
                             array(
-                                'header' => gT('Group'),
-                                'name' => 'group',
-                                'value'=>'$data->groups->group_name',
+                                'header' => gT('Order'),
+                                'name' => 'group_order',
+                                'value'=>'$data->groups->group_order',
                             ),
 
                             array(
