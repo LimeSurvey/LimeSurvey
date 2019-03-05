@@ -252,6 +252,7 @@ class Assessments extends Survey_Common_Action
      */
     private function _collectGroupData($iSurveyID, &$aData = array())
     {
+        $aData['groups'] = [];
         $groups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
         foreach ($groups as $group) {
             $groupId = $group->attributes['gid'];
