@@ -1242,16 +1242,15 @@ class questions extends Survey_Common_Action
                 }
 
                 $eqresult = Question::model()->with('groups')->together()->findByAttributes(array(
-                'sid' => $surveyid,
-                'gid' => $gid,
-                'qid' => $qid,
-                'language' => $baselang
+                    'sid' => $surveyid,
+                    'gid' => $gid,
+                    'qid' => $qid,
+                    'language' => $baselang
                 ));
             } else {
                 // This is needed to properly color-code content if it contains replacements
                 LimeExpressionManager::StartProcessingPage(false, true); // so can click on syntax highlighting to edit questions
             }
-
             $qtypelist = getQuestionTypeList('', 'array');
             $aData['qTypeOutput'] = json_encode($qtypelist);
 
@@ -1404,82 +1403,64 @@ class questions extends Survey_Common_Action
      * @param int $qid
      * @return array
      */
-    public function delete($surveyid, $qid, $ajax = false, $gid = 0)
+    public function delete($surveyid=null, $qid=null, $ajax = false, $gid = 0)
     {
-        $surveyid = sanitize_int($surveyid);
-        $qid = (int) $qid;
-        $rqid = $qid;
-        $gid_search = sanitize_int($gid); // gid from search filter
-        if ($gid_search == 0){
-            $gid_search = '';
+        if(is_null($qid)) {
+            $qid = Yii::app()->getRequest()->getPost('qid');
+        }
+        $oQuestion = Question::model()->find("qid = :qid",array(":qid"=>$qid));
+        if(empty($oQuestion)) {
+            throw new CHttpException(401, gT("Invalid question id"));
+        }
+        /* Test the surveyid from question, not from submitted value */
+        $surveyid = $oQuestion->sid;
+        if(!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
+            throw new CHttpException(403, gT("You are not authorized to delete questions."));
+        }
+        if(!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
         }
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete')) {
-            if ($qid == 0) {
-                $qid = returnGlobal('qid');
-            }
+        $rqid = $qid; // Used for last qid seen
+        $gid_search = sanitize_int($gid); // gid from search filter
+        if ($gid_search == 0){
+            $gid_search = null;
+        }
 
-            LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance(null, $qid);
 
-            // Check if any other questions have conditions which rely on this question. Don't delete if there are.
-            // TMSW Condition->Relevance:  Allow such deletes - can warn about missing relevance separately.
-            $ccresult = Condition::model()->findAllByAttributes(array('cqid' => $qid));
-            $cccount = count($ccresult);
+        // Check if any other questions have conditions which rely on this question. Don't delete if there are.
+        // TMSW Condition->Relevance:  Allow such deletes - can warn about missing relevance separately.
+        $ccresult = Condition::model()->findAllByAttributes(array('cqid' => $qid));
+        $cccount = count($ccresult);
 
-            // There are conditions dependent on this question
-            if ($cccount) {
-                $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
-
-                if (!$ajax) {
-                    Yii::app()->setFlashMessage($sMessage, 'error');
-                    $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
-                } else {
-                    return array('status'=>false, 'message'=>$sMessage);
-                }
-            } else {
-                $row = Question::model()->findByAttributes(array('qid' => $qid))->attributes;
-                $gid = $row['gid'];
-
-                // See if there are any conditions/attributes/answers/defaultvalues for this question,
-                // and delete them now as well
-                Condition::model()->deleteAllByAttributes(array('qid' => $qid));
-                QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $qid));
-                Answer::model()->deleteAllByAttributes(array('qid' => $qid));
-
-                $criteria = new CDbCriteria;
-                $criteria->addCondition('qid = :qid1 or parent_qid = :qid2');
-                $criteria->params[':qid1'] = $qid;
-                $criteria->params[':qid2'] = $qid;
-                Question::model()->deleteAll($criteria);
-
-                DefaultValue::model()->deleteAllByAttributes(array('qid' => $qid));
-                QuotaMember::model()->deleteAllByAttributes(array('qid' => $qid));
-
-                Question::model()->updateQuestionOrder($gid, $surveyid);
-            }
-
-            $sMessage = gT("Question was successfully deleted.");
-
-            // remove question from lastVisited
-            $oCriteria = new CDbCriteria();
-            $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
-            $oCriteria->compare('stg_value', $rqid, false, 'AND');
-            SettingGlobal::model()->deleteAll($oCriteria);
-            $redirectUrl = array('admin/survey/sa/listquestions/', 'surveyid' => $surveyid, 'gid' => $gid_search);
+        // There are conditions dependent on this question
+        if ($cccount) {
+            $sMessage = gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed.");
             if (!$ajax) {
-                Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect($redirectUrl);
-            } else {
-                return array('status'=>true, 'message'=>$sMessage);
-            }
-        } else {
-            $sMessage = gT("You are not authorized to delete questions.");
-            if (!$ajax) {
-                Yii::app()->session['flashmessage'] = $sMessage;
-                $this->getController()->redirect($redirectUrl);
+                Yii::app()->setFlashMessage($sMessage, 'error');
+                $this->getController()->redirect(array('admin/survey/sa/listquestions/surveyid/'.$surveyid));
             } else {
                 return array('status'=>false, 'message'=>$sMessage);
             }
+        } else {
+            Question::model()->deleteAllById($qid);
+            Question::model()->updateSortOrder($oQuestion->gid, $surveyid);
+        }
+
+        $sMessage = gT("Question was successfully deleted.");
+
+        // remove question from lastVisited
+        $oCriteria = new CDbCriteria();
+        $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
+        $oCriteria->compare('stg_value', $rqid, false, 'AND');
+        SettingGlobal::model()->deleteAll($oCriteria);
+        $redirectUrl = array('admin/survey/sa/listquestions/', 'surveyid' => $surveyid, 'gid' => $gid_search);
+        if (!$ajax) {
+            Yii::app()->session['flashmessage'] = $sMessage;
+            $this->getController()->redirect($redirectUrl);
+        } else {
+            return array('status'=>true, 'message'=>$sMessage);
         }
     }
 
