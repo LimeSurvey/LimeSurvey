@@ -996,6 +996,10 @@ class Question extends LSActiveRecord
                 'asc'=>'groups.group_name asc',
                 'desc'=>'groups.group_name desc',
             ),
+            'group_order'=>array(
+                'asc'=>'groups.group_order asc',
+                'desc'=>'groups.group_order desc',
+            ),
 
             'mandatory'=>array(
                 'asc'=>'t.mandatory asc',
@@ -1008,7 +1012,11 @@ class Question extends LSActiveRecord
             ),
         );
 
-        $sort->defaultOrder = array('question_order' => CSort::SORT_ASC);
+        $sort->multiSort = true;
+        $sort->defaultOrder = array(
+            'group_order' => CSort::SORT_ASC,
+            'question_order' => CSort::SORT_ASC,
+        );
 
         $criteria = new CDbCriteria;
         $criteria->with = array('groups');

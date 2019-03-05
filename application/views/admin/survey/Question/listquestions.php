@@ -96,11 +96,18 @@
                                 'value'=>'$data->typedesc',
                                 'htmlOptions' => array('class' => 'col-md-1'),
                             ),
+
                             array(
                                 'header' => gT('Group'),
                                 'name' => 'group',
                                 'value'=>'$data->groups->group_name',
                             ),
+                            array(
+                                'header' => gT('Group'),
+                                'name' => 'group',
+                                'value'=>'$data->groups->group_name',
+                            ),
+
                             array(
                                 'header' => gT('Mandatory'),
                                 'type' => 'raw',
