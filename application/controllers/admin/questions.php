@@ -1345,7 +1345,6 @@ class questions extends Survey_Common_Action
             throw new CHttpException(405, gT("Invalid action"));
         }
 
-        $rqid = $qid; // Used for last qid seen
         $gid_search = sanitize_int($gid); // gid from search filter
         if ($gid_search == 0){
             $gid_search = null;
@@ -1367,19 +1366,12 @@ class questions extends Survey_Common_Action
                 return array('status'=>false, 'message'=>$sMessage);
             }
         } else {
-            Question::model()->deleteAllById($qid);
-            Question::model()->updateSortOrder($oQuestion->gid, $surveyid);
+            $oQuestion->delete();
         }
 
         $sMessage = gT("Question was successfully deleted.");
-
-        // remove question from lastVisited
-        $oCriteria = new CDbCriteria();
-        $oCriteria->compare('stg_name', 'last_question_%', true, 'AND', false);
-        $oCriteria->compare('stg_value', $rqid, false, 'AND');
-        SettingGlobal::model()->deleteAll($oCriteria);
-        $redirectUrl = array('admin/survey/sa/listquestions/', 'surveyid' => $surveyid, 'gid' => $gid_search);
         if (!$ajax) {
+            $redirectUrl = array('admin/survey/sa/listquestions/', 'surveyid' => $surveyid, 'gid' => $gid_search);
             Yii::app()->session['flashmessage'] = $sMessage;
             $this->getController()->redirect($redirectUrl);
         } else {
