@@ -234,7 +234,7 @@ class Question extends LSActiveRecord
     public static function updateSortOrder($gid, $surveyid)
     {
         $questions = self::model()->findAllByAttributes(
-            array('gid' => $gid, 'sid' => $surveyid, 'parent_qid'=>0, 'language' => Survey::model()->findByPk($surveyid)->language),
+            array('gid' => $gid, 'sid' => $surveyid, 'parent_qid'=>0),
             array('order'=>'question_order')
         );
         $p = 0;

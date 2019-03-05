@@ -1735,6 +1735,12 @@ class SurveyRuntimeHelper
 
             $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
 
+            // #14595
+            if(empty($this->aStepInfo)) {
+                $sMessage = gT('This group is empty');
+                renderError('', $sMessage, $this->aSurveyInfo, $this->sTemplateViewPath);
+            }
+
         } elseif ($this->sSurveyMode == 'question' && $this->previewquestion) {
             $_qid       = sanitize_int($this->param['qid']);
 

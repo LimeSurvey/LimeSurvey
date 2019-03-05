@@ -1447,7 +1447,7 @@ function getNavigatorDatas()
     if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep !== false && $iSessionMaxStep == $iSessionStep)) {
         $aNavigator['disabled'] = " disabled";
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."/navigator-countdown.js");
-        App()->getClientScript()->registerScript('navigator_countdown', "navigator_countdown(".$thissurvey['navigationdelay'].");\n", CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript('navigator_countdown', "navigator_countdown(".$thissurvey['navigationdelay'].");\n", LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
     // Previous ?
