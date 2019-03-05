@@ -1410,7 +1410,7 @@ class questions extends Survey_Common_Action
         }
         $oQuestion = Question::model()->find("qid = :qid",array(":qid"=>$qid));
         if(empty($oQuestion)) {
-            throw new CHttpException(401, gT("Invalid question id"));
+            throw new CHttpException(404, gT("Invalid question id"));
         }
         /* Test the surveyid from question, not from submitted value */
         $surveyid = $oQuestion->sid;

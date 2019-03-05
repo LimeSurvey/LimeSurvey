@@ -108,24 +108,27 @@
 
                         <!-- has question -->
                         <?php if(is_null($condarray)):?>
-
                             <!-- can delete group and question -->
-                            <a class="btn btn-default" onclick="if (confirm('<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroups/sa/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }" role="button">
+                            <button
+                                class="btn btn-default"
+                                data-toggle="modal"
+                                data-target="#confirmation-modal"
+                                data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $surveyid, "gid"=>$gid])); ?> })'
+                                data-message="<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>"
+                                >
                                 <span class="fa fa-trash"></span>
                                 <?php eT("Delete current question group"); ?>
-                            </a>
+                            </button>
                         <?php else: ?>
-
                             <!-- there is at least one question having a condition on its content -->
-                            <a href='<?php echo $this->createUrl("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$gid"); ?>'  class="btn btn-default" onclick="alert('<?php eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>'); return false;">
+                            <button type="button" class="btn btn-default btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("Impossible to delete this group because there is at least one question having a condition on its content"); ?>" >
                                 <span class="fa fa-trash"></span>
                                 <?php eT("Delete current question group"); ?>
                             </a>
                         <?php endif; ?>
                     <?php else:?>
-
                         <!-- Activated -->
-                        <button type="button" class="btn btn-default btntooltip readonly" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete this question group because the survey is currently active."); ?>" >
+                        <button type="button" class="btn btn-default btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete this question group because the survey is currently active."); ?>" >
                             <span class="fa fa-trash"></span>
                             <?php eT("Delete current question group"); ?>
                         </button>
