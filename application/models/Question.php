@@ -1008,7 +1008,6 @@ class Question extends LSActiveRecord
             ),
         );
 
-        $sort->multiSort = true;
         $sort->defaultOrder = array(
             'question_order' => CSort::SORT_ASC,
         );
