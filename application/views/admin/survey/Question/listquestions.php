@@ -75,7 +75,7 @@
                             array(
                                 'header' => gT('Question order'),
                                 'name' => 'question_order',
-                                'value'=>'$data->question_order',
+                                'value'=>'$data->groups->group_order ." / ". $data->question_order',
                             ),
                             array(
                                 'header' => gT('Code'),
@@ -101,11 +101,6 @@
                                 'header' => gT('Group'),
                                 'name' => 'group',
                                 'value'=>'$data->groups->group_name',
-                            ),
-                            array(
-                                'header' => gT('Order'),
-                                'name' => 'group_order',
-                                'value'=>'$data->groups->group_order',
                             ),
 
                             array(

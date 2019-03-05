@@ -980,8 +980,8 @@ class Question extends LSActiveRecord
                 'desc'=>'t.qid desc',
             ),
             'question_order'=>array(
-                'asc'=>'t.question_order asc',
-                'desc'=>'t.question_order desc',
+                'asc'=>'groups.group_order asc, t.question_order asc',
+                'desc'=>'groups.group_order desc,t.question_order desc',
             ),
             'title'=>array(
                 'asc'=>'t.title asc',
@@ -995,10 +995,6 @@ class Question extends LSActiveRecord
             'group'=>array(
                 'asc'=>'groups.group_name asc',
                 'desc'=>'groups.group_name desc',
-            ),
-            'group_order'=>array(
-                'asc'=>'groups.group_order asc',
-                'desc'=>'groups.group_order desc',
             ),
 
             'mandatory'=>array(
@@ -1014,7 +1010,6 @@ class Question extends LSActiveRecord
 
         $sort->multiSort = true;
         $sort->defaultOrder = array(
-            'group_order' => CSort::SORT_ASC,
             'question_order' => CSort::SORT_ASC,
         );
 
