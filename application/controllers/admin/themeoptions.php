@@ -340,14 +340,26 @@ class themeoptions  extends Survey_Common_Action
 
         $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
         $templateOptionPage           = $oModelWithInheritReplacement->optionPage;
+        $aOptionAttributes            = TemplateManifest::getOptionAttributes($oModelWithInheritReplacement->path);
+        $aTemplateConfiguration = $oModelWithInheritReplacement->getOptionPageAttributes();
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+
+        $oSimpleInheritance = Template::getInstance($oModelWithInheritReplacement->sTemplateName, $sid, $gsid, null, true);
+        $oSimpleInheritance->options = 'inherit';
+        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($oModelWithInheritReplacement->sTemplateName);
+        $oParentOptions = (array) $oSimpleInheritanceTemplate->oOptions;
+        $oParentOptions = TemplateConfiguration::translateOptionLabels($oParentOptions);
+
         $aData = array(
             'model'=>$model,
             'templateOptionPage' => $templateOptionPage,
             'optionInheritedValues' => $oModelWithInheritReplacement->oOptions,
             'optionCssFiles' => $oModelWithInheritReplacement->files_css,
             'optionCssFramework' => $oModelWithInheritReplacement->cssframework_css,
-            'sid' => $sid
+            'aTemplateConfiguration' => $aTemplateConfiguration,
+            'aOptionAttributes' => $aOptionAttributes,
+            'sid' => $sid,
+            'oParentOptions' => $oParentOptions
         );
 
         if ($sid !== null) {
