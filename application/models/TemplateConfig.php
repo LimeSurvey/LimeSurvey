@@ -63,6 +63,7 @@ class TemplateConfig extends CActiveRecord
 
     /** @var array $oOptions The template options */
     public $oOptions;
+    public $oOptionAttributes;
 
 
     /** @var string[] $depends List of all dependencies (could be more that just the config.xml packages) */
@@ -89,6 +90,8 @@ class TemplateConfig extends CActiveRecord
     public $allDbTemplateFolders = null;
 
     public static $aTemplatesWithoutDB = null;
+
+    public $options_page = 'core';
 
     /**
      * get the template API version

@@ -825,7 +825,7 @@ class TemplateConfiguration extends TemplateConfig
         return ['preview' => $previewFilePath, 'filepath' => $filePath, 'filepathOptions' => $filePath ,'filename'=>basename($file)];
     }
 
-    protected function getOptionPageAttributes()
+    public function getOptionPageAttributes()
     {
         $aData = $this->attributes;
         $fileList = array_merge(Template::getOtherFiles($this->filesPath), Template::getOtherFiles($this->generalFilesPath));
@@ -865,16 +865,7 @@ class TemplateConfiguration extends TemplateConfig
         $oTemplate->setOptionInheritance();
 
         $oOptions = (array) $oSimpleInheritanceTemplate->oOptions;
-        // translation of database values, to match labels on the page
-        foreach ($oOptions as $key=>$value){
-            if ($key == 'showpopups'){
-                $oOptions[$key] = str_replace(array('1', '0', '-1'), array(gT("Popup"), gT("On page"), gT("No")), $value);
-            } elseif ($key == 'notables'){
-                $oOptions[$key] = str_replace(array('2', '1', '0'), array(gT("Always on"), gT("Small screens"), gT("Off")), $value);
-            } else {
-                $oOptions[$key] = str_replace(array('on', 'off', 'top', 'bottom'), array(gT("Yes"), gT("No"), gT("Top"), gT("Bottom")), $value);
-            }
-        }
+        $oOptions = TemplateConfiguration::translateOptionLabels($oOptions);
 
         //We add some extra values to the option page
         //This is just a dirty hack, and somewhere in the future we will correct it
@@ -1354,5 +1345,19 @@ class TemplateConfiguration extends TemplateConfig
             }
             $this->options = json_encode($aOptions);
         }
+    }
+
+    public static function translateOptionLabels($oOptions){
+        // translation of database values, to match labels on the page
+        foreach ($oOptions as $key=>$value){
+            if ($key == 'showpopups'){
+                $oOptions[$key] = str_replace(array('1', '0', '-1'), array(gT("Popup"), gT("On page"), gT("No")), $value);
+            } elseif ($key == 'notables'){
+                $oOptions[$key] = str_replace(array('2', '1', '0'), array(gT("Always on"), gT("Small screens"), gT("Off")), $value);
+            } else {
+                $oOptions[$key] = str_replace(array('on', 'off', 'top', 'bottom'), array(gT("Yes"), gT("No"), gT("Top"), gT("Bottom")), $value);
+            }
+        }
+        return $oOptions;
     }
 }

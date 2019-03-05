@@ -126,7 +126,7 @@ var ThemeOptions = function () {
 
         globalForm.find('.selector-numerical-input').each(function (i, item) {
             var element = $(item);
-            element.attr('title', element.attr('title')+optionObjectInheritedValues[$(item).attr('name')]);
+            //element.attr('title', element.attr('title')+optionObjectInheritedValues[$(item).attr('name')]);
             element.tooltip();
         });
 
