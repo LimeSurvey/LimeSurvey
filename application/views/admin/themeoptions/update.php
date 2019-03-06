@@ -362,9 +362,11 @@ Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
             $("#theme-options-tabs li a").click(function(e){
                 if ($(this).attr("href") == "#advanced"){
                     $("#advanced").show();
+                    $("#simple").hide();
                     $("[id^=category-]").hide();
                 } else {
                     $("#advanced").hide();
+                    $("#simple").show();
                     $("[id^=category-]").hide();
                     $($(this).attr("href")).show();
                 }
