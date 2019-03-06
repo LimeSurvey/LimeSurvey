@@ -21,7 +21,6 @@
     * @author Denis Chenu <http://sondages.pro>
     */
     Yii::import('application.helpers.expressions.em_core_helper', true);
-    Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
     Yii::import("application.libraries.Date_Time_Converter");
@@ -830,7 +829,6 @@
 
             foreach ($releqns as $key=>$value) {
                 $query = "UPDATE {{questions}} SET relevance=1 WHERE qid=".$key;
-                //dbExecuteAssoc($query);
                 $data = Yii::app()->db->createCommand($query)->query();
             }
             return count($releqns);
@@ -4277,7 +4275,7 @@
             $this->q2subqInfo = $q2subqInfo;
             // Now set tokens
             if ($survey->hasTokensTable && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '') {
-                
+
                 //Gather survey data for tokenised surveys, for use in presenting questions
                 $this->knownVars['TOKEN:TOKEN'] = array(
                     'code'=>$_SESSION[$this->sessid]['token'],
@@ -4991,11 +4989,11 @@
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
 
-            // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF 
+            // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF
             if (array_key_exists('startingValues', $_SESSION[$LEM->sessid]) && !array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])){
-                $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';  
+                $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';
             }
-            
+
             // NOTE: now that we use a seed, count($_SESSION[$LEM->sessid]['startingValues']) start at 1
             if (isset($_SESSION[$LEM->sessid]['startingValues']) && is_array($_SESSION[$LEM->sessid]['startingValues']) && count($_SESSION[$LEM->sessid]['startingValues']) > 1)
             {
@@ -5576,7 +5574,6 @@
                     $result = true;
                     if ($oSurveyResponse->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
                         $result = !Yii::app()->db->createCommand($query)->query();
-                        //$result = !dbExecuteAssoc($query);
                     }
 
                     if ($result)
@@ -5640,7 +5637,6 @@
                             }
                             $sQuery .= " WHERE ID=".$_SESSION[$this->sessid]['srid'];
                             Yii::app()->db->createCommand($sQuery)->query();
-                            //dbExecuteAssoc($sQuery);   // Checked
                         }
                     }
 
@@ -7246,28 +7242,28 @@
                 $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
                 $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
                 $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
-                
+
                 $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
                 Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
                 Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
-                Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/      
-                
+                Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
+
                 $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
                 $LEM->FinishProcessingPage();
-                
+
                 return $sHiddenInputs;
             } else if($applyJavaScriptAnyway && !self::isInitialized()){
                 $LEM =& LimeExpressionManager::singleton();
                 $aScriptsAndHiddenInputs = self::GetRelevanceAndTailoringJavaScript(true);
-                
+
                 $sScripts = implode('', $aScriptsAndHiddenInputs['scripts']);
                 Yii::app()->clientScript->registerScript('lemscripts', $sScripts, LSYii_ClientScript::POS_BEGIN);
                 Yii::app()->clientScript->registerScript('triggerEmRelevance', "triggerEmRelevance();", LSYii_ClientScript::POS_END);
-                Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/      
-                
+                Yii::app()->clientScript->registerScript('updateMandatoryErrorClass', "updateMandatoryErrorClass();", LSYii_ClientScript::POS_POSTSCRIPT); /* Maybe only if we have mandatory error ?*/
+
                 $sHiddenInputs = implode('', $aScriptsAndHiddenInputs['inputs']);
                 $LEM->FinishProcessingPage();
-                
+
                 return $sHiddenInputs;
             }
         }
@@ -8733,8 +8729,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             ." WHERE ".$where
             .$lang
             ." ORDER BY a.qid, a.scale_id, a.sortorder";
-
-            //$data = dbExecuteAssoc($query);
+            
             $data = Yii::app()->db->createCommand($query)->query();
             $qans = array();
 
@@ -9445,14 +9440,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 'html'=>sprintf($LEM->gT('Invalid question - probably missing subquestions or language-specific settings for language %s'),$_SESSION['LEMlang'])
                 );
             }
-            
+
             /* return app language to adminlang, otherwise admin interface get rendered in survey language #13814 */
             Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
             $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title'])));
 
             $out = '<div id="showlogicfilediv" class="table-responsive"><h3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</h3>\n";
             $out .= "<table id='logicfiletable' class='table table-bordered'>";
-            
+
             if (is_null($gid) && is_null($qid))
             {
                 if ($aSurveyInfo['surveyls_description'] != '')
