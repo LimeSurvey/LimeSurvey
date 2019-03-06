@@ -363,6 +363,7 @@ class themeoptions  extends Survey_Common_Action
         );
 
         if ($sid !== null) {
+            $aData['surveybar']['buttons']['view'] = true;
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $sid;
             $aData['title_bar']['title'] = gT("Survey template options");
