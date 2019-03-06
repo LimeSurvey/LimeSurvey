@@ -6241,6 +6241,7 @@
 
             $gRelInfo = $LEM->gRelInfo[$qInfo['gseq']];
             $grel = $gRelInfo['result'];
+            $sMandatoryText = '';
 
             ///////////////////////////
             // IS QUESTION RELEVANT? //
