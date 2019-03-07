@@ -2351,68 +2351,70 @@ function tsvSurveyExport($surveyid){
     $groups = array();
     $index_languages = 0;
     foreach ($aSurveyLanguages as $key => $language) {
-        // groups
+        // groups data
         if (array_key_exists('groups', $xmlData)){
-            $groups_data = $xmlData['groups']['rows']['row'];
-            if (!array_key_exists('0', $groups_data)){
-                $groups_data = array($groups_data);
+            foreach($xmlData['groups']['rows']['row'] as $group){
+                $groups_data[$group['gid']] = $group;
+            }
+
+            foreach($xmlData['group_l10ns']['rows']['row'] as $group_l10ns){
+                $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
             }
         } else {
-            $groups_data = array();
-        }
-        $groups = array();
-        foreach ($groups_data as $key => $group) {
-            if ($group['language'] === $language){
-                $groups[$language][$group['gid']] = $group;
-            }                 
+            $groups = array();
         }
 
         // questions data
         if (array_key_exists('questions', $xmlData)){
-            $questions_data = $xmlData['questions']['rows']['row'];
-            if (!array_key_exists('0', $questions_data)){
-                $questions_data = array($questions_data);
+            foreach($xmlData['questions']['rows']['row'] as $question){
+                $questions_data[$question['qid']] = $question;
+            }
+
+            foreach($xmlData['question_l10ns']['rows']['row'] as $question_l10ns){
+                if (array_key_exists($question_l10ns['qid'], $questions_data)){
+                    if ($question_l10ns['language'] === $language){
+                        $questions[$language][$questions_data[$question_l10ns['qid']]['gid']][$question_l10ns['qid']] = array_merge($question_l10ns, $questions_data[$question_l10ns['qid']]);
+                    }
+                }
+                
             }
         } else {
-            $questions_data = array();
-        }
-        $questions = array();
-        foreach ($questions_data as $key => $question) {
-            if ($question['language'] === $language){
-                $questions[$language][$question['gid']][$question['qid']] = $question;
-            } 
+            $questions = array();
         }
 
         // subquestions data
         if (array_key_exists('subquestions', $xmlData)){
-            $subquestions_data = $xmlData['subquestions']['rows']['row'];
-            if (!array_key_exists('0', $subquestions_data)){
-                $subquestions_data = array($subquestions_data);
+            foreach($xmlData['subquestions']['rows']['row'] as $subquestion){
+                $subquestions_data[$subquestion['qid']] = $subquestion;
+            }
+
+            foreach($xmlData['question_l10ns']['rows']['row'] as $subquestion_l10ns){
+                if (array_key_exists($subquestion_l10ns['qid'], $subquestions_data)){
+                    if ($subquestion_l10ns['language'] === $language){
+                        $subquestions[$language][$subquestions_data[$subquestion_l10ns['qid']]['parent_qid']][] = array_merge($subquestion_l10ns, $subquestions_data[$subquestion_l10ns['qid']]);
+                    }
+                }
+                
             }
         } else {
-            $subquestions_data = array();
-        }
-        $subquestions = array();
-        foreach ($subquestions_data as $key => $subquestion) {
-            if ($subquestion['language'] === $language){
-                $subquestions[$language][$subquestion['parent_qid']][] = $subquestion;
-            } 
+            $subquestions = array();
         }
         
         // answers data
         if (array_key_exists('answers', $xmlData)){
-            $answers_data = $xmlData['answers']['rows']['row'];
-            if (!array_key_exists('0', $answers_data)){
-                $answers_data = array($answers_data);
+            foreach($xmlData['answers']['rows']['row'] as $answer){
+                $answers_data[$answer['aid']] = $answer;
+            }
+
+            foreach($xmlData['answer_l10ns']['rows']['row'] as $answer_l10ns){
+                if (array_key_exists($answer_l10ns['aid'], $answers_data)){
+                    if ($answer_l10ns['language'] === $language){
+                        $answers[$language][$answers_data[$answer_l10ns['aid']]['qid']][] = array_merge($answer_l10ns, $answers_data[$answer_l10ns['aid']]);
+                    }
+                }                
             }
         } else {
-            $answers_data = array();
-        }
-        $answers = array();
-        foreach ($answers_data as $key => $answer) {
-            if ($answer['language'] === $language){
-                $answers[$language][$answer['qid']][] = $answer;
-            } 
+            $answers = array();
         }
         
         // assessments data
@@ -2560,6 +2562,7 @@ function tsvSurveyExport($surveyid){
                         }
                     }
                     
+                    // subquestions
                     if (!empty($subquestions[$language][$qid])){
                         $subquestions[$language][$qid] = sortArrayByColumn($subquestions[$language][$qid], 'question_order');
                         foreach ($subquestions[$language][$qid] as $key => $subquestion) {
@@ -2582,6 +2585,7 @@ function tsvSurveyExport($surveyid){
                         }
                     }
 
+                    // answers
                     if (!empty($answers[$language][$qid])){
                         $answers[$language][$qid] = sortArrayByColumn($answers[$language][$qid], 'sortorder');
                         foreach ($answers[$language][$qid] as $key => $answer) {
