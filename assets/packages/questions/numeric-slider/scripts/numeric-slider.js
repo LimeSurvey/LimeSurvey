@@ -24,9 +24,9 @@ var LSSlider = function (options) {
         custom_handle = options.custom_handle || null,
         settings = {
             value: options.value || null,
-            min: options.min || '1',
-            max: options.max || '10',
-            step: options.step || '1',
+            min: (typeof options.min != 'undefined') ? options.min : 0,
+            max: (typeof options.max != 'undefined') ? options.max : 100,
+            step: options.step || 1,
             orientation: options.orientation || 'horizontal',
             handle: options.handle || '',
             tooltip: options.tooltip || '',
