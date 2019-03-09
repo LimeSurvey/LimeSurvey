@@ -91,6 +91,8 @@ class Expressions extends Survey_Common_Action
             $language = sanitize_languagecode($language);
         }
 
+        $aData['lang'] = $language;
+
         $aData['sid'] = $sid;
         $aData['title_bar']['title'] = gT("Survey logic file");
         $aData['subaction'] = gT("Survey logic file");
