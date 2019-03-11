@@ -25,6 +25,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /* Current token object */
     public $oToken;
 
+    /* Array for barebone url and url */
+    public $aUrlsPlaceholders = array('OPTOUT', 'OPTIN', 'SURVEY');
     /**
      * Current email type, used for updating email raw subject and body
      * for survey : invite, 
@@ -44,8 +46,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     public $rawBody = '';
 
-    /* var boolean */
-    public $mailDisable = false;
+    /**
+     * Charset of Body and Subject
+     */
+    public $BodySubjectCharset = 'utf-8';
 
     /* var string */
     private $eventName = 'sendEmail';
@@ -84,7 +88,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         
         $this->Debugoutput = function($str, $level) { $this->addDebug($str, $level); };
         if (Yii::app()->getConfig('demoMode')) {
-            $this->mailDisable = true;
             return;
         }
 
@@ -322,23 +325,27 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if($event->get('send', true) == false) {
             $this->sent = $event->get('error') == null;
             $this->ErrorInfo = $event->get('error');
-            return true;
+            return $this->sent;
         }
         return false;
     }
 
     public function sendMessage()
     {
-        if($this->surveyId) {
-            $this->aReplacements["SID"] = $this->surveyId;
-            $this->aReplacements["EXPIRY"] = Survey::model()->findByPk($this->surveyId)->expires;
+        if (Yii::app()->getConfig('demoMode')) {
+            $this->setError(gT('Email was not sent because demo-mode is activated.'));
+            return false;
         }
-        $this->setTokenReplacements();
         if(!empty($this->rawSubject)) {
             $this->Subject = $this->doReplacements($this->rawSubject);
         }
         if(!empty($this->rawBody)) {
             $this->Body = $this->doReplacements($this->rawBody);
+        }
+        if($this->CharSet != $this->BodySubjectCharset) {
+            /* Must test this … */
+            $this->Subject = mb_convert_encoding($this->Subject,$this->CharSet,$this->BodySubjectCharset);
+            $this->Body = mb_convert_encoding($this->Body,$this->CharSet,$this->BodySubjectCharset);
         }
         $this->setCoreAttachements();
         /* All core done, next are done for all survey */
@@ -357,34 +364,31 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $this->AltBody = $this->getText();
             }
         }
+        
         $this->sent = $this->Send();
         return $this->sent;
     }
-
-
-
 
     /**
      * Surely need to extend parent
      */
     public function Send()
     {
-        if($this->mailDisable) {
-            $this->setError("");
-            return;
+        if (Yii::app()->getConfig('demoMode')) {
+            $this->setError(gT('Email was not sent because demo-mode is activated.'));
+            return false;
         }
-        
         return parent::Send();
     }
 
     /**
-     * Update the replacements for token.
-     * @param string 
-     * @return string
+     * Get the replacements for token.
+     * @return string[]
      */
-    public function setTokenReplacements() {
+    public function getTokenReplacements() {
+        $aTokenReplacements = array();
         if(empty($this->oToken)) { // Did need to check if sent to token ?
-            return;
+            return $aTokenReplacements;
         }
         $language = Yii::app()->getLanguage();
         if(!in_array($language,Survey::model()->findByPk($this->surveyId)->getAllLanguages())) {
@@ -397,15 +401,16 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
         if($this->emailType == 'invite' or $this->emailType == 'remind') {
             foreach ($this->oToken->attributes as $attribute => $value) {
-                $this->aReplacements[strtoupper($attribute)] = $value;
+                $aTokenReplacements[strtoupper($attribute)] = $value;
             }
         }
-        $this->aReplacements["OPTOUTURL"] = App()->getController()
+        $aTokenReplacements["OPTOUTURL"] = App()->getController()
             ->createAbsoluteUrl("/optout/tokens", array("surveyid"=>$this->surveyId, "token"=>$token,"langcode"=>$language));
-        $this->aReplacements["OPTINURL"] = App()->getController()
+        $aTokenReplacements["OPTINURL"] = App()->getController()
             ->createAbsoluteUrl("/optin/tokens", array("surveyid"=>$this->surveyId, "token"=>$token,"langcode"=>$language));
-        $this->aReplacements["SURVEYURL"] = App()->getController()
+        $aTokenReplacements["SURVEYURL"] = App()->getController()
             ->createAbsoluteUrl("/survey/index", array("sid"=>$this->surveyId, "token"=>$token,"lang"=>$language));
+        return $aTokenReplacements;
     }
 
     /**
@@ -415,7 +420,22 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     public function doReplacements($string)
     {
-        return LimeExpressionManager::ProcessString($string, null, $this->aReplacements, 3, 1, false, false, true);
+        $aReplacements = array();
+        if($this->surveyId) {
+            $aReplacements["SID"] = $this->surveyId;
+            $aReplacements["EXPIRY"] = Survey::model()->findByPk($this->surveyId)->expires;
+        }
+        $aReplacements = array_merge($aReplacements,$this->getTokenReplacements());
+        /* Fix Url replacements : by option ? */
+        foreach ($this->aUrlsPlaceholders as $urlPlaceholder) {
+            if(!empty($aReplacements["{$urlPlaceholder}URL"])) {
+                $url = $aReplacements["{$urlPlaceholder}URL"];
+                $string = str_replace("@@{$urlPlaceholder}URL@@", $url, $string);
+                $aReplacements["{$urlPlaceholder}URL"] = Chtml::link("{$urlPlaceholder}URL","{$urlPlaceholder}URL");
+            }
+        }
+        $aReplacements = array_merge($this->aReplacement,$aReplacements);
+        return LimeExpressionManager::ProcessString($string, null, $aReplacements, 3, 1, false, false, true);
     }
 
     /**
