@@ -1352,6 +1352,7 @@ class tokens extends Survey_Common_Action
             if ($emcount > 0) {
                 $mail =  Yii::app()->LimeMailer::getInstance();
                 $mail->setSurvey($iSurveyId);
+                $mail->type = $sSubAction;
                 foreach ($emresult as $emrow) {
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'])) {
                         // The email has already been send this session, skip.
@@ -1365,8 +1366,8 @@ class tokens extends Survey_Common_Action
                     }
                     $mail->setToken($emrow['token']);
                     $mail->setFrom(Yii::app()->request->getPost('from_'.$emrow['language']));
-                    $mail->setRawSubject($sSubject[$emrow['language']]);
-                    $mail->setRawMessage($sMessage[$emrow['language']]);
+                    $mail->rawSubject = $sSubject[$emrow['language']];
+                    $mail->rawBody = $sMessage[$emrow['language']];
 
                     if (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
                         $tokenoutput .= $emrow['tid']." ".htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.", 'unescaped'), $fieldsarray))."<br />";
@@ -1377,7 +1378,7 @@ class tokens extends Survey_Common_Action
                     } else {
 
                         $success = $mail->sendMessage();
-
+                        $stringInfo = CHtml::encode("{$emrow['tid']}: {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']}).");
                         if ($success) {
                             // Put date into sent
                             $token = Token::model($iSurveyId)->findByPk($emrow['tid']);
@@ -1403,13 +1404,13 @@ class tokens extends Survey_Common_Action
                                     $slquery->save();
                                 }
                             }
-                            $tokenoutput .= htmlspecialchars(ReplaceFields("{$emrow['tid']}: {FIRSTNAME} {LASTNAME} ({EMAIL})", $fieldsarray))."<br />\n";
+                            $tokenoutput .= $stringInfo."<br />\n";
                             if (Yii::app()->getConfig("emailsmtpdebug") > 1) {
-                                $tokenoutput .= $maildebug;
+                                $tokenoutput .= $mail->getDebug();
                             }
                         } else {
                             $maildebug = $mail->getDebug('html');
-                            $tokenoutput .= sprintf(htmlspecialchars(ReplaceFields("{$emrow['tid']}: {FIRSTNAME} {LASTNAME} ({EMAIL}). Error message: %s", $fieldsarray)), $maildebug)."<br />\n";
+                            $tokenoutput .= $stringInfo.sprintf(gT("Error message: %s"), $mail->getDebug())."<br />\n";
                             $bSendError = true;
                         }
                     }
