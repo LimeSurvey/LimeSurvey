@@ -501,9 +501,11 @@ class CheckIntegrity extends Survey_Common_Action
         Yii::app()->db->schema->getTable('{{surveys}}', true);
         Yii::app()->db->schema->getTable('{{templates}}', true);
         Survey::model()->refreshMetaData();
-
-        if (!(defined('YII_DEBUG') && YII_DEBUG)) {
+        /* Check method before using #14596 */
+        if (method_exists(Yii::app()->cache, 'flush')) {
             Yii::app()->cache->flush();
+        }
+        if (method_exists(Yii::app()->cache, 'gc')) {
             Yii::app()->cache->gc();
         }
 

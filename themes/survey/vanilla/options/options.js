@@ -210,7 +210,7 @@ var ThemeOptions = function(){
                 var packageName         = selectedFontPackage.data('font-package');
                 var formatedPackageName = "font-"+packageName;
 
-                var filteredAdd = currentFontObject.add.filter(function(value,index){return !(/^font-.*$/.test(String(value)))})
+                var filteredAdd = currentPackageObject.add.filter(function(value,index){return !(/^font-.*$/.test(String(value)))});
                 filteredAdd.push(formatedPackageName);
                 currentPackageObject.add = filteredAdd
                 $('#TemplateConfiguration_packages_to_load').val(JSON.stringify(currentPackageObject));

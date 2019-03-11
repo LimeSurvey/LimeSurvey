@@ -23,10 +23,10 @@ var LSSlider = function (options) {
         setPosition = options.setPosition || '',
         custom_handle = options.custom_handle || null,
         settings = {
-            value: options.value || options.position || null,
-            min: options.min || '0',
-            max: options.max || '1',
-            step: options.step || '1',
+            value: options.value || null,
+            min: (typeof options.min != 'undefined') ? options.min : 0,
+            max: (typeof options.max != 'undefined') ? options.max : 100,
+            step: options.step || 1,
             orientation: options.orientation || 'horizontal',
             handle: options.handle || '',
             tooltip: options.tooltip || '',
@@ -137,7 +137,7 @@ var LSSlider = function (options) {
                 /* if don't set position : reset to '' */
                 if (!setPosition) {
                     listItemObject.find('div.tooltip').hide();
-                    elementObject.val('').trigger('keyup');
+                    rootElementObject.val('').trigger('keyup');
                 } else {
                     elementObject.trigger('keyup');
                 }
@@ -155,12 +155,16 @@ var LSSlider = function (options) {
                customStyleSheet.appendTo('body');
                 // document.styleSheets[0].addRule('#' + elementObject.attr('id') + ' .slider-handle.custom::before', '{ content: "' + custom_handle + '" }');
             }
-            
             sliderObject = new Slider(elementObject[0], createSliderSettings());
-            sliderObject.$sliderElem.addClass('slider-untouched');
-            triggerChanges();
-            
-            
+            if(rootElementObject.val() === "") {
+                sliderObject.$sliderElem.addClass('slider-untouched');
+                if(setPosition) {
+                    triggerChanges();
+                }
+            } else {
+                sliderObject.setValue(rootElementObject.val().toString().replace(separator,'.'), true, true);
+            }
+
             if (debugMode > 0) {
                 console.ls.log('sliderDebug slider created', sliderObject);
                 console.ls.log('sliderDebug slider settings', sliderSettings);

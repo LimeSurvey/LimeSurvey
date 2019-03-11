@@ -68,45 +68,52 @@
     <!-- for animations, see https://daneden.github.io/animate.css/ -->
     <!-- for checkbox icons, use the Unicode of the charcter (eg: http://fontawesome.io/icon/check/ is f00c ) -->
     <options>
-        <ajaxmode>off</ajaxmode>
-        <brandlogo>on</brandlogo>
-        <brandlogofile>themes/survey/fruity/files/logo.png</brandlogofile>
-        <container>on</container>
-        <backgroundimage>off</backgroundimage>
-        <backgroundimagefile>./files/pattern.png</backgroundimagefile>
-        <animatebody>off</animatebody>
-        <bodyanimation>fadeInRight</bodyanimation>
-        <bodyanimationduration>500</bodyanimationduration>
-        <animatequestion>off</animatequestion>
-        <questionanimation>flipInX</questionanimation>
-        <questionanimationduration>500</questionanimationduration>
-        <animatealert>off</animatealert>
-        <alertanimation>shake</alertanimation>
-        <alertanimationduration>500</alertanimationduration>
-        <font>noto</font>
-        <bodybackgroundcolor>#ffffff</bodybackgroundcolor>
-        <fontcolor>#444444</fontcolor>
-        <questionbackgroundcolor>#ffffff</questionbackgroundcolor>
-        <questionborder>on</questionborder>
-        <questioncontainershadow>on</questioncontainershadow>
-        <checkicon>f00c</checkicon>
-        <animatecheckbox>on</animatecheckbox>
-        <checkboxanimation>rubberBand</checkboxanimation>
-        <checkboxanimationduration>500</checkboxanimationduration>
-        <animateradio>on</animateradio>
-        <radioanimation>zoomIn</radioanimation>
-        <radioanimationduration>500</radioanimationduration>
-        <zebrastriping>off</zebrastriping>
-        <stickymatrixheaders>off</stickymatrixheaders>
-        <greyoutselected>off</greyoutselected>
-        <hideprivacyinfo>off</hideprivacyinfo>
-        <crosshover>off</crosshover>
-        <showpopups>1</showpopups>
-        <notables>1</notables>
-        <showclearall>off</showclearall>
-        <questionhelptextposition>top</questionhelptextposition>
-        <fixnumauto>off</fixnumauto>
+        <ajaxmode type="buttons" category="Simple options" width="4" title="Ajax mode" options="on|off" optionlabels="Yes|No">on</ajaxmode>
+        <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off" optionlabels="Yes|No">on</container>
+        <zebrastriping type="buttons" category="Simple options" width="4" title="Zebra-striped questions" options="on|off" optionlabels="Yes|No">off</zebrastriping>
+        <stickymatrixheaders type="buttons" category="Simple options" width="4" title="Sticky array headers" options="on|off" optionlabels="Yes|No">off</stickymatrixheaders>
+        <greyoutselected type="buttons" category="Simple options" width="4" title="Dim answered array rows" options="on|off" optionlabels="Yes|No">off</greyoutselected>
+        <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
+        <crosshover type="buttons" category="Simple options" width="4" title="Cross-hover in matrix questions" options="on|off" optionlabels="Yes|No">off</crosshover>
+        <showpopups type="buttons" category="Simple options" width="4" title="Show popups" options="1|0|-1" optionlabels="Popup|On page|No">1</showpopups>
+        <notables type="buttons" category="Simple options" width="4" title="Break tables" options="2|1|0" optionlabels="Always on|Small screens|Off">1</notables>
+        <showclearall type="buttons" category="Simple options" width="4" title="Show Clear All button" options="on|off" optionlabels="Yes|No">off</showclearall>
+        <questionhelptextposition type="buttons" category="Simple options" width="4" title="Question help text position" options="top|bottom" optionlabels="Top|Bottom">top</questionhelptextposition>
+        <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
+        <questionborder type="buttons" category="Simple options" width="4" title="Question borders" options="on|off" optionlabels="Yes|No">on</questionborder>
+        <questioncontainershadow type="buttons" category="Simple options" width="4" title="Question shadow" options="on|off" optionlabels="Yes|No">on</questioncontainershadow>
+        <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
+        <fontcolor type="colorpicker" category="Colors" width="4" title="Font color" options="on|off" optionlabels="Yes|No">#444444</fontcolor>
+        <questionbackgroundcolor type="colorpicker" category="Colors" width="4" title="Question background color" options="on|off" optionlabels="Yes|No">#ffffff</questionbackgroundcolor>
+        <checkicon type="icon" category="Colors" width="4" title="Check icon">f00c</checkicon>
+        <backgroundimage type="buttons" category="Images" width="4" title="Background image" options="on|off" optionlabels="Yes|No">off</backgroundimage>
+        <backgroundimagefile type="dropdown" category="Images" width="6" title="Background image file" parent="backgroundimage">./files/pattern.png</backgroundimagefile>
+        <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
+        <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">themes/survey/fruity/files/logo.png</brandlogofile>
+        <animatebody type="buttons" category="Animations" width="4" title="Animate body" options="on|off" optionlabels="Yes|No">off</animatebody>
+        <bodyanimation type="dropdown" category="Animations" width="6" title="Body animation" parent="animatebody">fadeInRight</bodyanimation>
+        <bodyanimationduration type="duration" category="Animations" width="2" title="Duration" parent="animatebody">500</bodyanimationduration>
+        <animatequestion type="buttons" category="Animations" width="4" title="Animate question" options="on|off" optionlabels="Yes|No">off</animatequestion>
+        <questionanimation type="dropdown" category="Animations" width="6" title="Question animation" parent="animatequestion">flipInX</questionanimation>
+        <questionanimationduration type="duration" category="Animations" width="2" title="Duration" parent="animatequestion">500</questionanimationduration>
+        <animatealert type="buttons" category="Animations" width="4" title="Animate alert" options="on|off" optionlabels="Yes|No">off</animatealert>
+        <alertanimation type="dropdown" category="Animations" width="6" title="Alert animation" parent="animatealert">shake</alertanimation>
+        <alertanimationduration type="duration" category="Animations" width="2" title="Duration" parent="animatealert">500</alertanimationduration>
+        <animatecheckbox type="buttons" category="Animations" width="4" title="Animate checkbox" options="on|off" optionlabels="Yes|No">on</animatecheckbox>
+        <checkboxanimation type="dropdown" category="Animations" width="6" title="Alert animation" parent="animatecheckbox">rubberBand</checkboxanimation>
+        <checkboxanimationduration type="duration" category="Animations" width="2" title="Duration" parent="animatecheckbox">500</checkboxanimationduration>
+        <animateradio type="buttons" category="Animations" width="4" title="Animate radio buttons" options="on|off" optionlabels="Yes|No">on</animateradio>
+        <radioanimation type="dropdown" category="Animations" width="6" title="Radio button animation" parent="animateradio">zoomIn</radioanimation>
+        <radioanimationduration type="duration" category="Animations" width="2" title="Duration" parent="animateradio">500</radioanimationduration>
+        <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto</font>
+        <cssframework type="dropdown" category="Fonts" width="12" title="Variations" parent="cssframework">noto</cssframework>
     </options>
+
+    <engine>
+        <!-- core: use core options view file, custom: use customized options.twig view file -->
+        <optionspage>core</optionspage>
+    </engine>
+
 
     <!-- Engine configuration is the very same as vanilla  -->
 

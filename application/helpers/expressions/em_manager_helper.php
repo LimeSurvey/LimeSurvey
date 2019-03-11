@@ -6241,6 +6241,7 @@
 
             $gRelInfo = $LEM->gRelInfo[$qInfo['gseq']];
             $grel = $gRelInfo['result'];
+            $sMandatoryText = '';
 
             ///////////////////////////
             // IS QUESTION RELEVANT? //
@@ -7165,7 +7166,8 @@
                     return $LEM->lastMoveResult;
                     // NB: No break needed
                 case 'group':
-                    if (is_null($step)) {
+                    // #14595
+                    if (is_null($step) || !array_key_exists($step, $LEM->indexGseq)) {
                         return $LEM->indexGseq;
                     }
                     return $LEM->indexGseq[$step];
@@ -7396,9 +7398,11 @@
             {
                 foreach($LEM->pageRelevanceInfo as $prel)
                 {
-                    foreach($prel as $rel)
-                    {
-                        $pageRelevanceInfo[] = $rel;
+                    if(is_array($prel)) {
+                        foreach($prel as $rel)
+                        {
+                            $pageRelevanceInfo[] = $rel;
+                        }
                     }
                 }
             }

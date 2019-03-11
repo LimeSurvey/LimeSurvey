@@ -60,19 +60,27 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
     </div>
         <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" id="theme-options-tabs">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#simple" aria-controls="home" role="tab" data-toggle="tab"><?php eT('Simple options')?></a></li>
-                <li role="presentation"><a href="#advanced" aria-controls="profile" role="tab" data-toggle="tab"><?php eT('Advanced options')?></a></li>
+                <?php 
+                    if ($aOptionAttributes['optionsPage'] == 'core'){
+                        foreach($aOptionAttributes['categories'] as $key => $category){ ?>
+                        <li role="presentation" class="<?php echo $key==0 ? 'active' : 'action_hide_on_inherit'; ?>"><a href="#category-<?php echo $key; ?>" aria-controls="category-<?php echo $key; ?>" role="tab" data-toggle="tab"><?php echo $category; ?></a></li>
+                    <?php } ?>
+                <?php } else { ?>
+                        <li role="presentation" class="active"><a href="#simple" aria-controls="home" role="tab" data-toggle="tab"><?php eT('Simple options')?></a></li>
+                <?php } ?>
+                <li role="presentation"><a href="#advanced" aria-controls="profile" role="tab" data-toggle="tab" class="<?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>"><?php eT('Advanced options')?></a></li>
             </ul>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
             <!-- Tab panes -->
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="simple">
+            <?php /* Begin theme option form */ ?>
+            <form class='form action_update_options_string_form' action=''>
+                <div class="tab-content">
                     <?php
                         /***
                          * Here we render just the options as a simple form.
@@ -98,13 +106,26 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                              * So the name attribute should contain the object key we want to change
                              */
 
-                            echo $templateOptionPage;
+                            if ($aOptionAttributes['optionsPage'] == 'core'){
+                                $this->renderPartial('./themeoptions/options_core', array(
+                                    'aOptionAttributes' => $aOptionAttributes, 
+                                    'aTemplateConfiguration' => $aTemplateConfiguration, 
+                                    'oParentOptions' => $oParentOptions
+                                    )
+                                );
+                            } else {
+                                echo '<div role="tabpanel" class="tab-pane active" id="simple">';
+                                echo $templateOptionPage;
+                                echo '</div>';
+                            }
                         }
 
                         //
                     ?>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="advanced">
+            </form>
+            <div class="tab-content">                    
+                <div role="tabpanel" class="tab-pane <?php echo Yii::app()->getConfig('debug') > 1 ? '' : 'hidden'; ?>" id="advanced">
                     <div class="alert alert-info alert-dismissible" role="alert">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <p><?php eT('All fields below (except CSS framework name) must be either a valid JSON array or the string "inherit".'); ?></p>
@@ -338,6 +359,20 @@ Yii::app()->getClientScript()->registerScript("themeoptions-scripts", '
                 input: \'#upload_image\',
                 progress: \'#upload_progress\'
             });
+            $("#theme-options-tabs li a").click(function(e){
+                if ($(this).attr("href") == "#advanced"){
+                    $("#advanced").show();
+                    $("#simple").hide();
+                    $("[id^=category-]").hide();
+                } else {
+                    $("#advanced").hide();
+                    $("#simple").show();
+                    $("[id^=category-]").hide();
+                    $($(this).attr("href")).show();
+                }
+            });
+            
+
         });
     ', LSYii_ClientScript::POS_END);
 ?>
