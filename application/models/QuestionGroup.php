@@ -169,6 +169,7 @@ class QuestionGroup extends LSActiveRecord
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
+        QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' =>$groupId));
         return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
     }
 
