@@ -159,6 +159,7 @@ class UserAction extends Survey_Common_Action
                 $from = Yii::app()->getConfig("siteadminname")." <".Yii::app()->getConfig("siteadminemail").">";
                 $extra = '';
                 $classMsg = '';
+                global $maildebug;
                 if (SendEmailMessage($body, $subject, $to, $from, Yii::app()->getConfig("sitename"), true, Yii::app()->getConfig("siteadminbounce"))) {
                     $extra .= "<br />".gT("Username").": $new_user<br />".gT("Email").": $new_email<br />";
                     $extra .= "<br />".gT("An email with a generated password was sent to the user.");
@@ -167,7 +168,8 @@ class UserAction extends Survey_Common_Action
                 } else {
                     // has to be sent again or no other way
                     $tmp = str_replace("{NAME}", "<strong>".$new_user."</strong>", gT("Email to {NAME} ({EMAIL}) failed."));
-                    $extra .= "<br />".str_replace("{EMAIL}", $new_email, $tmp)."<br />";
+                    $extra .= "<br />".$maildebug ."<br />";
+                    
                     $classMsg = 'text-warning';
                     $sHeader = gT("Warning");
                 }

@@ -1410,7 +1410,7 @@ class tokens extends Survey_Common_Action
                             }
                         } else {
                             $maildebug = $mail->getDebug('html');
-                            $tokenoutput .= $stringInfo.sprintf(gT("Error message: %s"), $mail->getDebug())."<br />\n";
+                            $tokenoutput .= $stringInfo.sprintf(gT("Error message: %s"), $mail->getDebug('html'))."<br />\n";
                             $bSendError = true;
                         }
                     }

@@ -1981,36 +1981,13 @@ function jsonEscape($str, $strip_tags = false, $htmldecode = false)
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
 {
     global $maildebug, $maildebugbody;
-    require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
-
-    $emailmethod = Yii::app()->getConfig('emailmethod');
-    $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
-    $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
-    $emailsmtppassword = Yii::app()->getConfig("emailsmtppassword");
-    $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
-    $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
-    $defaultlang = Yii::app()->getConfig("defaultlang");
-    $emailcharset = Yii::app()->getConfig("emailcharset");
-
-    if ($emailcharset != 'utf-8') {
-        $body = mb_convert_encoding($body, $emailcharset, 'utf-8');
-        $subject = mb_convert_encoding($subject, $emailcharset, 'utf-8');
-        $sitename = mb_convert_encoding($sitename, $emailcharset, 'utf-8');
-    }
 
     if (!is_array($to)) {
         $to = array($to);
     }
 
-
-
     if (!is_array($customheaders) && $customheaders == '') {
         $customheaders = array();
-    }
-    if (Yii::app()->getConfig('demoMode')) {
-        $maildebug = gT('Email was not sent because demo-mode is activated.');
-        $maildebugbody = '';
-        return false;
     }
 
     if (is_null($bouncemail)) {
@@ -2018,9 +1995,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     } else {
         $sender = $bouncemail;
     }
-    /* Need to find a way to call this ! F**O** */
-    $mail =  Yii::app()->LimeMailer::getInstance(); //  Class 'LimeSurvey\Mailer\LimeMailer' not found
-
+    $mail =  new LimeMailer;
+    $mail->emailType = 'deprecated';
+    
     $fromname = '';
     $fromemail = $from;
     if (strpos($from, '<')) {
@@ -2029,40 +2006,20 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     }
 
     $senderemail = $sender;
-    if (strpos($sender, '<')) {
-        $senderemail = substr($sender, strpos($sender, '<') + 1, strpos($sender, '>') - 1 - strpos($sender, '<'));
-    }
 
-    $mail->SetFrom($fromemail, $fromname);
+    $mail->SetFrom($sender);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
     foreach ($to as $singletoemail) {
-        if (strpos($singletoemail, '<')) {
-            $toemail = substr($singletoemail, strpos($singletoemail, '<') + 1, strpos($singletoemail, '>') - 1 - strpos($singletoemail, '<'));
-            $toname = trim(substr($singletoemail, 0, strpos($singletoemail, '<') - 1));
-            $mail->AddAddress($toemail, $toname);
-        } else {
-            $mail->AddAddress($singletoemail);
-        }
+        $mail->addAddress($singletoemail);
     }
     if (is_array($customheaders)) {
         foreach ($customheaders as $key=>$val) {
             $mail->AddCustomHeader($val);
         }
     }
-    $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.org)");
-    if (get_magic_quotes_gpc() != "0") {$body = stripcslashes($body); }
-    if ($ishtml) {
-        $mail->IsHTML(true);
-        if (strpos($body, "<html>") === false) {
-            $body = "<html>".$body."</html>";
-        }
-        $mail->msgHTML($body, App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
-        $html = new \Html2Text\Html2Text($body);
-        $mail->AltBody = $html->getText();
-    } else {
-        $mail->IsHTML(false);
-        $mail->Body = $body;
-    }
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+    $mail->IsHTML($ishtml);
     // Add attachments if they are there.
     if (is_array($attachments)) {
         foreach ($attachments as $attachment) {
@@ -2070,23 +2027,19 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
             if (is_array($attachment)) {
                 $mail->AddAttachment($attachment[0], $attachment[1]);
             } else {
-// Or a string with the filename.
+                // Or a string with the filename.
                 $mail->AddAttachment($attachment);
             }
         }
     }
     $mail->Subject = $subject;
 
-    if ($emailsmtpdebug > 0) {
-        ob_start();
-    }
     $sent = $mail->Send();
     $maildebug = $mail->ErrorInfo;
-    if ($emailsmtpdebug > 0) {
-        $maildebug .= '<br><strong>'.gT('SMTP debug output:').'</strong><pre>'.\CHtml::encode(ob_get_contents()).'</pre>';
-        ob_end_clean();
+    if (Yii::app()->getConfig("emailsmtpdebug") > 0 && $mail->getDebug()) {
+        $maildebug .= '<br><strong>'.gT('SMTP debug output:').'</strong>'.$mail->getDebug('html');
     }
-    $maildebugbody = $mail->Body;
+    tracevar($maildebug);
     return $sent;
 }
 

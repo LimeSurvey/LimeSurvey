@@ -85,8 +85,12 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
 
         $this->mailLanguage = Yii::app()->getLanguage();
-        
-        $this->Debugoutput = function($str, $level) { $this->addDebug($str, $level); };
+
+        $this->SMTPDebug = Yii::app()->getConfig("emailsmtpdebug");
+        $this->Debugoutput = function($str, $level) {
+            $this->addDebug($str);
+        };
+
         if (Yii::app()->getConfig('demoMode')) {
             return;
         }
@@ -219,9 +223,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
-     * Set from
-     * @param string from
-     */
+     * @inheritdoc
+     * Fix first parameters if he had email + name ( Name <email> format)
+      */
     public function setFrom($from,$fromname = "",$auto = true)
     {
         $fromemail = $from;
@@ -231,7 +235,23 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
             }
         }
-        parent::SetFrom($fromemail, $fromname, $auto);
+        parent::setFrom($fromemail, $fromname, $auto);
+    }
+
+    /**
+     * @inheritdoc
+     * Fix first parameters if he had email + name ( Name <email> format)
+     */
+    public function addAddress($addressTo, $name = '')
+    {
+        $address = $addressTo;
+        if (strpos($address, '<')) {
+            $address = substr($addressTo, strpos($addressTo, '<') + 1, strpos($addressTo, '>') - 1 - strpos($addressTo, '<'));
+            if(empty($name)) {
+                $name = trim(substr($addressTo, 0, strpos($addressTo, '<') - 1));
+            }
+        }
+        return parent::addAddress($address, $name);
     }
 
     /**
@@ -252,9 +272,14 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * Hate to use global var
      * maybe add format : raw (array of errors), html : clean html etc …
+     * @param string $format
+     * @return null|string|array
      */
-    public function getDebug($format='html')
+    public function getDebug($format='')
     {
+        if(empty($this->debug)) {
+            return null;
+        }
         switch ($format) {
             case 'html':
                 $debug = array_map('CHtml::encode',$this->debug);
