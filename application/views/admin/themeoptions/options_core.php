@@ -192,28 +192,51 @@ $animationOptions =
         <option value="f138"> <i class="fa fa-chevron-circle-right"></i> Chevron circle right </option>
         <option value="f1d0"> <i class="fa fa-resistance"></i> Resistance </option>';
 
-    $dropdown_options['font'] = ($bInherit ? '<option value="inherit">' . gT("Inherit") . ' [' . gT("inherited value:") . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '') . '
-        <optgroup  label="' . gT("Local Server") . '">
-                <option class="font-roboto"     value="roboto"     data-font-package="roboto"      >Roboto</option>
-                <option class="font-news_cycle" value="news_cycle" data-font-package="news_cycle"  >News Cycle</option>
-                <option class="font-lato"       value="lato"       data-font-package="lato"        >Lato</option>
-                <option class="font-noto"       value="noto"       data-font-package="noto"        >Noto Sans</option>
-                <option class="font-ubuntu"     value="ubuntu"     data-font-package="ubuntu"       >Ubuntu</option>
-        </optgroup>
+    $dropdown_options['font'] = ($bInherit ? '<option value="inherit">' . gT("Inherit") . ' [' . gT("inherited value:") . ' ' . (isset($oParentOptions['font']) ? $oParentOptions['font'] : '') . ']</option>' : '');
+    
+    $fontPackages = App()->getClientScript()->fontPackages;
+    $coreFontPackages = $fontPackages['core'];
+    $userFontPackages = $fontPackages['user'];
 
-        <optgroup  label="' . gT("User browser") . '">
-            <option class="font-georgia         " value="georgia"         data-font-package="websafe" >Georgia</option>
-            <option class="font-palatino        " value="palatino"        data-font-package="websafe" >Palatino Linotype</option>
-            <option class="font-times_new_roman " value="times_new_roman" data-font-package="websafe" >Times New Roman</option>
-            <option class="font-arial           " value="arial"           data-font-package="websafe" >Arial</option>
-            <option class="font-arial_black     " value="arial_black"     data-font-package="websafe" >Arial Black</option>
-            <option class="font-comic_sans      " value="comic_sans"      data-font-package="websafe" >Comic Sans</option>
-            <option class="font-impact          " value="impact"          data-font-package="websafe" >Impact</option>
-            <option class="font-lucida_sans     " value="lucida_sans"     data-font-package="websafe" >Lucida Sans</option>
-            <option class="font-trebuchet       " value="trebuchet"       data-font-package="websafe" >Trebuchet</option>
-            <option class="font-courier         " value="courier"         data-font-package="websafe" >Courier New</option>
-            <option class="font-lucida_console  " value="lucida_console"  data-font-package="websafe" >Lucida Console</option>
-        </optgroup>';
+    // generate CORE fonts package list
+    $i = 0;
+    foreach($coreFontPackages as $coreKey => $corePackage){
+        $i+=1;
+        if ($i === 1){
+            $dropdown_options['font'] .='<optgroup  label="' . gT("Local Server") . ' - ' . gT("Core") . '">';
+        }
+        $dropdown_options['font'] .='<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
+    }
+    if ($i > 0){
+        $dropdown_options['font'] .='</optgroup>';
+    }
+
+    // generate USER fonts package list
+    $i = 0;
+    foreach($userFontPackages as $userKey => $userPackage){
+        $i+=1;
+        if ($i === 1){
+            $dropdown_options['font'] .='<optgroup  label="' . gT("Local Server") . ' - ' . gT("User") . '">';
+        }
+        $dropdown_options['font'] .='<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
+    }
+    if ($i > 0){
+        $dropdown_options['font'] .='</optgroup>';
+    }
+
+    $dropdown_options['font'] .='<optgroup  label="' . gT("User browser") . '">
+        <option class="font-georgia         " value="georgia"         data-font-package="websafe" >Georgia</option>
+        <option class="font-palatino        " value="palatino"        data-font-package="websafe" >Palatino Linotype</option>
+        <option class="font-times_new_roman " value="times_new_roman" data-font-package="websafe" >Times New Roman</option>
+        <option class="font-arial           " value="arial"           data-font-package="websafe" >Arial</option>
+        <option class="font-arial_black     " value="arial_black"     data-font-package="websafe" >Arial Black</option>
+        <option class="font-comic_sans      " value="comic_sans"      data-font-package="websafe" >Comic Sans</option>
+        <option class="font-impact          " value="impact"          data-font-package="websafe" >Impact</option>
+        <option class="font-lucida_sans     " value="lucida_sans"     data-font-package="websafe" >Lucida Sans</option>
+        <option class="font-trebuchet       " value="trebuchet"       data-font-package="websafe" >Trebuchet</option>
+        <option class="font-courier         " value="courier"         data-font-package="websafe" >Courier New</option>
+        <option class="font-lucida_console  " value="lucida_console"  data-font-package="websafe" >Lucida Console</option>
+    </optgroup>';
 
     // background file
     $backgroundImageFile = '';
@@ -318,6 +341,7 @@ $animationOptions =
                     $iTotalWidth = 0;
                     $iCount = 0;
                     foreach($aOptionAttributes['optionAttributes'] as $attributeKey => $attribute){
+                        $sParentOption =  array_key_exists($attributeKey, $oParentOptions) ? $oParentOptions[$attributeKey] : '';
                         if ($category == $attribute['category']){
                             $width = $attribute['width'];
 
@@ -339,8 +363,8 @@ $animationOptions =
                                 $optionsValues = !empty($attribute['options']) ? explode('|', $attribute['options']) : array();
                                 $optionLabels = !empty($attribute['optionlabels']) ? explode('|', $attribute['optionlabels']) : array();
                                 $options = array_combine($optionsValues, $optionLabels);
-                                if ($bInherit && isset($oParentOptions[$attributeKey])){
-                                    $options['inherit'] = gT("Inherit") . ' [' . $oParentOptions[$attributeKey] . ']';
+                                if ($bInherit && isset($sParentOption)){
+                                    $options['inherit'] = gT("Inherit") . ' [' . $sParentOption . ']';
                                 }
 
                                 echo '<div class="col-sm-12">
@@ -356,18 +380,19 @@ $animationOptions =
                             } elseif ($attribute['type'] == 'colorpicker'){
                                 echo '<div class="input-group">
                                     <div class="input-group-addon style__colorpicker">
-                                        <input type="color" name="' . $attributeKey . '_picker" data-value="' . $oParentOptions[$attributeKey] . '" class="selector__colorpicker-inherit-value"/>
+                                        <input type="color" name="' . $attributeKey . '_picker" data-value="' . $sParentOption . '" class="selector__colorpicker-inherit-value"/>
                                     </div>
-                                    <input type="text" name="' . $attributeKey . '" data-inheritvalue="' . $oParentOptions[$attributeKey] . '" value="inherit" class="selector_option_value_field selector__color-picker form-control simple_edit_options_' . $attributeKey . '" id="' . $attributeKey . '" />';
-                                    if ($bInherit && isset($oParentOptions[$attributeKey])){
+                                    <input type="text" name="' . $attributeKey . '" data-inheritvalue="' . $sParentOption . '" value="inherit" class="selector_option_value_field selector__color-picker form-control simple_edit_options_' . $attributeKey . '" id="' . $attributeKey . '" />';
+                                    if ($bInherit && isset($sParentOption)){
                                         echo '<div class="input-group-addon">
                                             <button class="btn btn-default btn-xs selector__reset-colorfield-to-inherit"><i class="fa fa-refresh"></i></button>
                                         </div>';
                                     }
                                 echo '</div>';
                             } elseif ($attribute['type'] == 'dropdown'){
+                                $test = 1;
                                 echo ' <div class="col-sm-12">
-                                <select class="form-control selector_option_value_field selector_radio_childfield selector_image_selector" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"  >';
+                                <select class="form-control selector_option_value_field selector_radio_childfield selector_image_selector" data-parent="' . $attribute['parent'] . '" data-inheritvalue=\'' . ($attributeKey == 'font' && isset($sPackagesToLoad) ? $sPackagesToLoad : $sParentOption) . '\' id="simple_edit_options_' . $attributeKey . '" name="' . $attributeKey . '"  >';
                                     echo $dropdown_options[$attributeKey];
                                 echo '</select>
                                     </div>';
@@ -378,8 +403,8 @@ $animationOptions =
                                     echo $dropdown_options[$attributeKey];
                                 echo '</select>
                                         <div class="input-group-addon selector__' . $attributeKey . '-preview">
-                                        ( <i class="fa" data-inheritvalue="' . $oParentOptions[$attributeKey] . '" style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
-                                            &#x' . $oParentOptions[$attributeKey] . ';
+                                        ( <i class="fa" data-inheritvalue="' . $sParentOption . '" style=" background-color: #328637; color: white; width: 16px; height: 16px;  padding: 3px; font-size: 11px; ">
+                                            &#x' . $sParentOption . ';
                                         </i> )
                                     </div>
                                     </div>';
@@ -388,7 +413,7 @@ $animationOptions =
 
                             } elseif ($attribute['type'] == 'duration'){
                                 echo '<div class="col-sm-12">
-                                            <input type="text" class="form-control selector-numerical-input selector_option_value_field selector_radio_childfield" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $optionKey .'" title="' . gT("inherited value:") . ' ' . $oParentOptions[$attributeKey] . '" />
+                                            <input type="text" class="form-control selector-numerical-input selector_option_value_field selector_radio_childfield" data-parent="' . $attribute['parent'] . '" id="simple_edit_options_' . $attributeKey . '" name="' . $optionKey .'" title="' . gT("inherited value:") . ' ' . $sParentOption . '" />
                                         </div>';
                             }
                             

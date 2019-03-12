@@ -57,6 +57,23 @@ class LSYii_ClientScript extends CClientScript
     }
 
     /**
+     * 
+     * @return array
+     */
+    public function getFontPackages()
+    {
+        $aPackages = array();
+        foreach($this->packages as $key => $package){
+            if (strpos($key, 'font-') === 0){
+                $key = str_replace('font-', '', $key);
+                $aPackages[$package['type']][$key] = $package;
+            }
+        }
+        unset($aPackages['core']['websafe']);
+        return $aPackages;
+    }
+
+    /**
      * Remove a package from coreScript.
      * It can be useful when mixing backend/frontend rendering (see: template editor)
      *

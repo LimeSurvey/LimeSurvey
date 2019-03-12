@@ -110,7 +110,8 @@ $sid = Yii::app()->request->getQuery('surveyid', null);
                                 $this->renderPartial('./themeoptions/options_core', array(
                                     'aOptionAttributes' => $aOptionAttributes, 
                                     'aTemplateConfiguration' => $aTemplateConfiguration, 
-                                    'oParentOptions' => $oParentOptions
+                                    'oParentOptions' => $oParentOptions, 
+                                    'sPackagesToLoad' => $sPackagesToLoad
                                     )
                                 );
                             } else {
