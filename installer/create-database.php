@@ -256,7 +256,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{permissions}}', array(
             'id' =>  "pk",
             'entity' =>  "string(50) NOT NULL",
-            'entity_id' =>  "integer NOT NULL",
+            'entity_id' =>  "integer NOT NULL default 0",
             'uid' =>  "integer NOT NULL",
             'permission' =>  "string(100) NOT NULL",
             'create_p' =>  "integer NOT NULL default 0",
