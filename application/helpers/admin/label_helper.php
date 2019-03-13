@@ -89,6 +89,7 @@ function deletelabelset($lid)
 {
     Yii::app()->db->createCommand()->delete(Label::model()->tableName(), array('in', 'lid', $lid));
     Yii::app()->db->createCommand()->delete(LabelSet::model()->tableName(), array('in', 'lid', $lid));
+    rmdirr(Yii::app()->getConfig('uploaddir').'/labels/'.$lid);
     return true;
 }
 
