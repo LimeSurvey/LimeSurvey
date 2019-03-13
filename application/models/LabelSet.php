@@ -129,8 +129,13 @@ class LabelSet extends LSActiveRecord
 
             // Delete labelset
             if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
-                $url = Yii::app()->createUrl("admin/labels/sa/delete/lid/$this->lid");
-                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete label set').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this label set?').'"><span class="fa fa-trash text-warning"></span></a>';
+                $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete label set").'" href="#" role="button"'
+                    ." onclick='$.bsconfirm(\"".CHtml::encode(gT("Are you sure you want to delete this label set?"))
+                                ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
+                                . convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete/", ["lid" => $this->lid,]))
+                            ."});'>"
+                        .' <i class="text-danger fa fa-trash"></i>
+                    </a>';
             }
 
             return $button;

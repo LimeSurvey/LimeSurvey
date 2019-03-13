@@ -378,18 +378,16 @@ class labels extends Survey_Common_Action
      */
     public function delete()
     {
-        $lid = returnGlobal('lid');
-
-        if (Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
-            Yii::app()->loadHelper('admin/label');
-
-            if (deletelabelset($lid)) {
-                Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."));
-            }
-        } else {
-            Yii::app()->setFlashMessage(gT("You are not authorized to delete label sets."));
+        $lid = Yii::app()->getRequest()->getPost('lid');
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
+            throw new CHttpException(403, gT("You are not authorized to delete label sets.",'unescaped'));
         }
-
+        $oLabelsSet = LabelSet::model()->find("lid = :lid",array(":lid"=>$lid));
+        if(empty($oLabelsSet)) {
+            throw new CHttpException(404, gT("Invalid label set."));
+        }
+        Yii::app()->loadHelper('admin/label');
+        deletelabelset($lid);
         $this->getController()->redirect(array("admin/labels/sa/view"));
     }
 
