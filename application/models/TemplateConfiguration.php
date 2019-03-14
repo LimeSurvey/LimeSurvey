@@ -877,6 +877,8 @@ class TemplateConfiguration extends TemplateConfig
             )
         );
 
+        $renderArray['aOptionAttributes'] = TemplateManifest::getOptionAttributes($oSimpleInheritance->path);
+        $renderArray['aFontOptions'] = TemplateManifest::getFontDropdownOptions();
         return Yii::app()->twigRenderer->renderOptionPage($oTemplate, $renderArray);
     }
 

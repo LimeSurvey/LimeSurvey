@@ -992,6 +992,20 @@ class TemplateManifest extends TemplateConfiguration
                 $aOptions['optionAttributes'][$key]['optionlabels'] = !empty($option['optionlabels']) ? (string)$option['optionlabels'] : '';
                 $aOptions['optionAttributes'][$key]['parent'] = !empty($option['parent']) ? (string)$option['parent'] : '';
 
+                if (!empty($option->dropdownoptions)){
+                    $dropdownOptions = '';
+                    if ($key == 'font'){
+                        $dropdownOptions .= TemplateManifest::getFontDropdownOptions();
+                    }
+                    foreach($option->xpath('//options/' . $key . '/dropdownoptions') as $option){
+                        $dropdownOptions .= $option->asXml();
+                    }
+
+                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = $dropdownOptions;
+                } else {
+                    $aOptions['optionAttributes'][$key]['dropdownoptions'] = '';
+                }
+
                 if (!in_array($aOptions['optionAttributes'][$key]['category'], $aOptions['categories'])){
                     $aOptions['categories'][] = $aOptions['optionAttributes'][$key]['category'];
                 }
@@ -1002,5 +1016,41 @@ class TemplateManifest extends TemplateConfiguration
             return $aOptions;
         }
         return false;
+    }
+
+    public static function getFontDropdownOptions(){
+        $fontOptions = '';
+        $fontPackages = App()->getClientScript()->fontPackages;
+        $coreFontPackages = $fontPackages['core'];
+        $userFontPackages = $fontPackages['user'];
+
+        // generate CORE fonts package list
+        $i = 0;
+        foreach($coreFontPackages as $coreKey => $corePackage){
+            $i+=1;
+            if ($i === 1){
+                $fontOptions .='<optgroup  label="' . gT("Local Server") . ' - ' . gT("Core") . '">';
+            }
+            $fontOptions .='<option class="font-' . $coreKey . '"     value="' . $coreKey . '"     data-font-package="' . $coreKey . '"      >' . $corePackage['title'] . '</option>';
+        }
+        if ($i > 0){
+            $fontOptions .='</optgroup>';
+        }
+
+        // generate USER fonts package list
+        $i = 0;
+        foreach($userFontPackages as $userKey => $userPackage){
+            $i+=1;
+            if ($i === 1){
+                $fontOptions .='<optgroup  label="' . gT("Local Server") . ' - ' . gT("User") . '">';
+            }
+            $fontOptions .='<option class="font-' . $userKey . '"     value="' . $userKey . '"     data-font-package="' . $userKey . '"      >' . $userPackage['title'] . '</option>';
+        }
+        if ($i > 0){
+            $fontOptions .='</optgroup>';
+        }
+
+        $fontOptions .='';
+        return $fontOptions;
     }
 }
