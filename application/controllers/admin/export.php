@@ -919,6 +919,7 @@ class export extends Survey_Common_Action
     public function downloadZip($sZip)
     {
         $sTempDir     = Yii::app()->getConfig("tempdir");
+        $sZip         = get_absolute_path($sZip);
         $aZIPFileName = $sTempDir.DIRECTORY_SEPARATOR.$sZip;
 
         if (is_file($aZIPFileName)) {
