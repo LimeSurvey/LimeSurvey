@@ -35,7 +35,41 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 3.15.9 (build 190214) to 3.16.0 (build 190225) January 25, 2019
+Changes from 3.16.0 (build 190225) to 3.16.1 (build 190314) March 14, 2019
+-[security] Fixed issue #14617: relative path allowed in lsa multiple download (LouisGac)
+-New feature: Add reference to group relevance (if any) in question view (#1227) (Tõnis Ormisson)
+-New Feature: listifop EM function (#1215) (Jurgen)
+-New Feature: listifop EM function (Jurgen)
+-Fixed issue #14595: Php Crash when trying to preview empty group (#1235) (Jean-Sébastien B)
+-Fixed issue #13302: Slider "Slider starts at the middle position" and "Slider initial value" settings not working (Denis Chenu)
+-Fixed issue #14435: Survey logic view -> Open printable view is not showing the correct language version (Dominik Vitt)
+-Fixed issue #14507: Unable to use TOKEN or SAVEDID var in EM twig (#1216) (Denis Chenu)
+-Fixed issue #14507: Unable to use TOKEN or SAVEDID var in EM twig (Denis Chenu)
+-Fixed issue #14553: The countdown does not work most of the time (Dominik Vitt)
+-Fixed issue #14555: Deleting question are not CRSF protected (Denis Chenu)
+-Fixed issue #14563: Save question before attributes get loaded remove all attributes (Denis Chenu)
+-Fixed issue #14563: Save question before attributes loaded remove all attributes (#1231) (Denis Chenu)
+-Fixed issue #14572: Unable to edit answers whith fields contains a quote (' or ") (Denis Chenu)
+-Fixed issue #14575: Deleting a parent Survey Group orphans child Survey Groups, causing Survey Groups List page to crash (Dominik Vitt)
+-Fixed issue #14596: CApcCache enabled gives error 500 when checking data integrity. (Denis Chenu)
+-Fixed issue #14597: deleting question group are not CRSF protected (Denis Chenu)
+-Fixed issue #14599: Crash when enabling evaluation on an empty survey (#1238) (Jean-Sébastien B)
+-Fixed issue #14618: slider resets when moving backwards with a starting value (Denis Chenu)
+-Fixed issue #14628: Array numbers question type doesn't include proper subquestion and answer details at "print answers" overview (Dominik Vitt)
+-Fixed issue #14645: Unable to update "Reminder count" option when using batch-edit menu (Dominik Vitt)
+-Fixed issue : clear popover on response-grid reload (Denis Chenu)
+-Fixed issue : dataentry are not filtered before save in database (Denis Chenu)
+-Fixed issue : delete label set don't delete related files (Denis Chenu)
+-Fixed issue : Label set delete are not XSS protected (Denis Chenu)
+-Fixed issue : Label set delete button didn't work (Denis Chenu)
+-Fixed issue: no survey bar on survey theme options page (Dominik Vitt)
+-Fixed issue: remotecontrol create too many sessions (LouisGac)
+-Fixed issue: selected font not loaded during the survey execution (Dominik Vitt)
+-Fixed issue : slider_default_set settings didn't work (Denis Chenu)
+-Fixed issue: TSV export fails if group name is empty (Dominik Vitt)
+-Fixed issue: upgrade error when upgrading to version 3.16.0+190225 using SQL Server 2008 DB (Dominik Vitt)
+
+Changes from 3.15.9 (build 190214) to 3.16.1 (build 190225) February 25, 2019
 -New feature : allow update of fix num auto in theme (vanilla) (Denis Chenu)
 -Fixed issue #14547: Simple mode statistic crash with L question (#1225) (Jean-Sébastien B)
 -Fixed issue #14548: Fix public statistic with question L (#1226) (Jean-Sébastien B)
