@@ -359,7 +359,8 @@ class themeoptions  extends Survey_Common_Action
             'aTemplateConfiguration' => $aTemplateConfiguration,
             'aOptionAttributes' => $aOptionAttributes,
             'sid' => $sid,
-            'oParentOptions' => $oParentOptions
+            'oParentOptions' => $oParentOptions,
+            'sPackagesToLoad' => $oModelWithInheritReplacement->packages_to_load
         );
 
         if ($sid !== null) {
