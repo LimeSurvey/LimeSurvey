@@ -4,6 +4,7 @@ require_once(APPPATH.'/third_party/phpmailer/load_phpmailer.php');
 
 /**
  * WIP
+ * A SubClass of phpMailer adapted for LimeSurvey
  */
 class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 {
@@ -12,6 +13,16 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      * @var LimeMailer
      */
     private static $instance = null;
+
+    /**
+     * Reset part
+     */
+    /* No reset */
+    CONST resetNone = 0;
+    /* Basic reset */
+    CONST resetBasic = 1;
+    /* Complete reset : all except survey part */
+    CONST resetComplete = 2;
 
     /* Current survey id */
     public $surveyId;
@@ -26,7 +37,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     public $oToken;
 
     /* Array for barebone url and url */
-    public $aUrlsPlaceholders = array('OPTOUT', 'OPTIN', 'SURVEY');
+    public $aUrlsPlaceholders = [];
     /**
      * Current email type, used for updating email raw subject and body
      * for survey : invite, 
@@ -60,8 +71,15 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /* replacement fields */
     private $aReplacements = array();
 
-    /* @todo */
+    /* @var string[] */
     private $debug = array();
+
+    /**
+     * @inheritdoc
+     * Set default to idna (unsure is needed : need an idna email to check since seems PHPMailer do the job here ?)
+     * @var string|callable
+     */
+    public static $validator = 'php-idna';
 
     /**
      * WIP Set all needed fixed in params
@@ -153,7 +171,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      * @param boolean reset partially $this
      * return self
      */
-    public static function getInstance($reset=true)
+    public static function getInstance($reset=1)
     {
         Yii::log("Call instance", 'info', 'application.Mailer.LimeMailer.getInstance');
         if (empty(self::$instance)) {
@@ -163,35 +181,71 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             return self::$instance;
         }
         Yii::log("Existing mailer instance", 'info', 'application.Mailer.LimeMailer.getInstance');
-        self::$instance->send = true;
+        self::$instance->send = false;
         if($reset) {
             self::$instance->clearAddresses(); // Unset only $this->to recepient
-            self::$instance->clearAttachments(); // Unset attachments (maybe only under condition ?
+            self::$instance->clearAttachments(); // Unset attachments (maybe only under condition ?)
+            self::$instance->oToken = null;
+            self::$instance->eventParam['send'] = true;
+            if($reset > 1) {
+                self::$instance->AltBody = "";
+                self::$instance->Body = "";
+                self::$instance->Subject = "";
+                /* Clear extra to */
+                self::$instance->clearAllRecipients(); /* clearAddresses + clearCCs + clearBCCs */
+                self::$instance->clearCustomHeaders();
+                self::$instance->eventParam = array(
+                    'send'=>true,
+                );
+                if(self::$instance->surveyId) {
+                    /* Reset cleaned part for this survey (no from or sender resetted) */
+                    self::$instance->setSurvey(self::$instance->surveyId);
+                }
+            }
         }
         return self::$instance;
     }
 
     /**
      * Set email for this survey
+     * If surveyId are not updated : no reset of from or sender
      * @param integer surveyid
      */
     public function setSurvey($surveyId)
     {
-        $this->surveyId = $surveyId;
+        
         $this->eventParam['survey'] = $surveyId;
-        $oSurvey = Survey::model()->findByPk($surveyId);
-        if(!empty($oSurvey->oOptions->adminemail)) {
-            $this->setFrom($oSurvey->oOptions->adminemail,$oSurvey->oOptions->admin);
-        }
-        if(!empty($oSurvey->oOptions->bounce_email)) {
-            // Check what for N : dis we leave default or not (if it's set and valid ?)
-            $this->Sender = $oSurvey->oOptions->bounce_email;
-        }
         $this->addCustomHeader("X-surveyid",$surveyId);
+        $oSurvey = Survey::model()->findByPk($surveyId);
         $this->isHtml($oSurvey->getIsHtmlEmail());
         if(!in_array($this->mailLanguage,$oSurvey->getAllLanguages())) {
             $this->mailLanguage = $oSurvey->language;
         }
+        if($this->surveyId == $surveyId) {
+            // Other part not needed (to confirm)
+            return;
+        }
+        $this->surveyId = $surveyId;
+        if(!empty($oSurvey->oOptions->adminemail) && self::validateAddress($oSurvey->oOptions->adminemail)) {
+            $this->setFrom($oSurvey->oOptions->adminemail,$oSurvey->oOptions->admin);
+        }
+        if(!empty($oSurvey->oOptions->bounce_email) && self::validateAddress($oSurvey->oOptions->bounce_email)) {
+            // Check what for N : did we leave default or not (if it's set and valid ?)
+            $this->Sender = $oSurvey->oOptions->bounce_email;
+        }
+    }
+
+    /**
+     * Add url place holder
+     * @param string|string[]
+     * @return void
+     */
+    public function addUrlsPlaceholders($aUrlsPlaceholders)
+    {
+        if(is_string($aUrlsPlaceholders)){
+            $aUrlsPlaceholders = [$aUrlsPlaceholders];
+        }
+        $this->aUrlsPlaceholders = array_merge($this->aUrlsPlaceholders,$aUrlsPlaceholders);
     }
 
     /**
@@ -451,7 +505,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $aReplacements["EXPIRY"] = Survey::model()->findByPk($this->surveyId)->expires;
         }
         $aReplacements = array_merge($aReplacements,$this->getTokenReplacements());
-        /* Fix Url replacements : by option ? */
+        /* Fix Url replacements */
         foreach ($this->aUrlsPlaceholders as $urlPlaceholder) {
             if(!empty($aReplacements["{$urlPlaceholder}URL"])) {
                 $url = $aReplacements["{$urlPlaceholder}URL"];
@@ -488,5 +542,50 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             }
         }
         
+    }
+
+    /**
+     * @inheritdoc
+     * Adding php with idna support
+     */
+    public static function validateAddress($address, $patternselect = null)
+    {
+        if (null === $patternselect) {
+            $patternselect = static::$validator;
+        }
+        if($patternselect != 'idna') {
+            return parent::validateAddress($address, $patternselect);
+        }
+        require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
+        $oIdnConverter = new idna_convert();
+        $sEmailAddress = $oIdnConverter->encode($sEmailAddress);
+        $bResult = filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
+        if ($bResult !== false) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+    * Validate an list of email addresses - either as array or as semicolon-limited text
+    * @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+    * @param string $aEmailAddressList  Email address to check
+    * @param string|callable $patternselect Which pattern to use (default to static::$validator)
+    * @returns array
+    */
+    function validateAddresses($aEmailAddressList, $patternselect = null)
+    {
+        $aOutList = [];
+        if (!is_array($aEmailAddressList)) {
+            $aEmailAddressList = explode(';', $aEmailAddressList);
+        }
+
+        foreach ($aEmailAddressList as $sEmailAddress) {
+            $sEmailAddress = trim($sEmailAddress);
+            if (self::validateEmailAddress($sEmailAddress,$patternselect)) {
+                $aOutList[] = $sEmailAddress;
+            }
+        }
+        return $aOutList;
     }
 }

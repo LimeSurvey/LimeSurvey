@@ -1042,24 +1042,19 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 
 /**
 * Validate an email address - also supports IDN email addresses
+* @deprecated : use LimeMailer::validateAddress($sEmailAddress);
 * @returns True/false for valid/invalid
 *
 * @param mixed $sEmailAddress  Email address to check
 */
 function validateEmailAddress($sEmailAddress)
 {
-    require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
-    $oIdnConverter = new idna_convert();
-    $sEmailAddress = $oIdnConverter->encode($sEmailAddress);
-    $bResult = filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
-    if ($bResult !== false) {
-        return true;
-    }
-    return false;
+    return LimeMailer::validateAddress($sEmailAddress);
 }
 
 /**
 * Validate an list of email addresses - either as array or as semicolon-limited text
+* @deprecated : use LimeMailer::validateAddresses($aEmailAddressList);
 * @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
 *
 * @param string $aEmailAddressList  Email address to check
@@ -1067,18 +1062,7 @@ function validateEmailAddress($sEmailAddress)
 */
 function validateEmailAddresses($aEmailAddressList)
 {
-    $aOutList = [];
-    if (!is_array($aEmailAddressList)) {
-        $aEmailAddressList = explode(';', $aEmailAddressList);
-    }
-
-    foreach ($aEmailAddressList as $sEmailAddress) {
-        $sEmailAddress = trim($sEmailAddress);
-        if (validateEmailAddress($sEmailAddress)) {
-            $aOutList[] = $sEmailAddress;
-        }
-    }
-    return $aOutList;
+    return LimeMailer::validateAddresses($aEmailAddressList);
 }
 
 /**
