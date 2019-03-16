@@ -51,7 +51,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     public $emailType = 'unknow';
 
     /**
-     * @var boolean replace token attributes (FIRSTNAME etc …)
+     * @var boolean replace token attributes (FIRSTNAME etc …) and replace to TOKEN:XXX by XXXX
      */
     public $replaceTokenAttributes = false;
 
@@ -60,6 +60,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      * @see parent::addAttachment
      **/
     public $aAttachements = array();
+
     /**
      * The Raw Subject of the message. before any update
      * @var string
@@ -79,9 +80,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 
     /* var string */
     private $eventName = 'sendEmail';
-    private $eventParam = array(
-        'send' => true,
-    );
+
+    /* @var string event message */
+    private $eventMessage = null;
 
     /* @var string[] */
     public $debug = array();
@@ -194,13 +195,11 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
         Yii::log("Existing mailer instance", 'info', 'application.Mailer.LimeMailer.getInstance');
         /* Some part must be always resetted */
-        self::$instance->send = false;
         self::$instance->debug = [];
         if($reset) {
             self::$instance->clearAddresses(); // Unset only $this->to recepient
             self::$instance->clearAttachments(); // Unset attachments (maybe only under condition ?)
             self::$instance->oToken = null;
-            self::$instance->eventParam['send'] = true;
             if($reset > 1) {
                 self::$instance->AltBody = "";
                 self::$instance->Body = "";
@@ -208,9 +207,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 /* Clear extra to */
                 self::$instance->clearAllRecipients(); /* clearAddresses + clearCCs + clearBCCs */
                 self::$instance->clearCustomHeaders();
-                self::$instance->eventParam = array(
-                    'send'=>true,
-                );
                 if(self::$instance->surveyId) {
                     /* Reset cleaned part for this survey (no from or sender resetted) */
                     self::$instance->setSurvey(self::$instance->surveyId);
@@ -227,8 +223,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     public function setSurvey($surveyId)
     {
-        
-        $this->eventParam['survey'] = $surveyId;
         $this->addCustomHeader("X-surveyid",$surveyId);
         $oSurvey = Survey::model()->findByPk($surveyId);
         $this->isHtml($oSurvey->getIsHtmlEmail());
@@ -381,7 +375,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     private function manageEvent($eventParams=array())
     {
-        $model = $this->emailType;
         switch($this->emailType) {
             case 'invite':
                 $model = 'invitation';
@@ -390,7 +383,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $model = 'reminder';
                 break;
             default:
-                // $model == $this->emailType
+                $model = $this->emailType;
         }
         $eventBaseParams = array(
             'survey'=>$this->surveyId,
@@ -423,12 +416,18 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->setFrom($event->get('from'));
         $this->to = $event->get('to');
         $this->Sender = $event->get('bounce');
+        $this->eventMessage = $event->get('message');
         if($event->get('send', true) == false) {
             $this->sent = $event->get('error') == null;
             $this->ErrorInfo = $event->get('error');
             return $this->sent;
         }
         return false;
+    }
+
+    public function getEventMessage()
+    {
+        return $this->eventMessage;
     }
 
     public function sendMessage()
@@ -465,7 +464,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $this->AltBody = $this->getText();
             }
         }
-        
         $this->sent = $this->Send();
         return $this->sent;
     }
@@ -525,10 +523,23 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $aReplacements = array();
         if($this->surveyId) {
             $aReplacements["SID"] = $this->surveyId;
-            $aReplacements["EXPIRY"] = Survey::model()->findByPk($this->surveyId)->expires;
-            /* Other replacements ? Like in Survey related languagesettings ? */
+            $oSurvey = Survey::model()->findByPk($this->surveyId);
+            $aReplacements["EXPIRY"] = $oSurvey->expires;
+            $aReplacements["ADMINNAME"] = $oSurvey->oOptions->admin;
+            $aReplacements["ADMINEMAIL"] = $oSurvey->oOptions->adminemail;
+            if(!in_array($this->mailLanguage,$oSurvey->getAllLanguages())) {
+                $this->mailLanguage = $oSurvey->language;
+            }
+            /* Get it separatly since (not Survey::model()->with('languagesetting')) since need to be sure to get current language ? */
+            $oSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
+            $aReplacements["SURVEYNAME"] = $oSurveyLanguageSettings->surveyls_title;
+            $aReplacements["SURVEYDESCRIPTION"] = $oSurveyLanguageSettings->surveyls_description;
         }
-        $aReplacements = array_merge($aReplacements,$this->getTokenReplacements());
+        $aTokenReplacements = $this->getTokenReplacements();
+        if($this->replaceTokenAttributes && !empty($aTokenReplacements)) {
+            $string = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", $string);
+        }
+        $aReplacements = array_merge($aReplacements,$aTokenReplacements);
         /* Fix Url replacements */
         foreach ($this->aUrlsPlaceholders as $urlPlaceholder) {
             if(!empty($aReplacements["{$urlPlaceholder}URL"])) {
@@ -542,13 +553,29 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
-     * Set the attahchments according to current survey,language and emailtype
+     * Set the attachments according to current survey,language and emailtype
      * @param string
      * @return string
      */
     public function setCoreAttachements()
     {
         if(empty($this->surveyId)) {
+            return;
+        }
+        switch ($this->emailType) {
+            case 'invite':
+                $attachementType = 'invitation';
+                break;
+            case 'remind':
+                $attachementType = 'reminder';
+                break;
+            case 'register':
+                $attachementType = 'registration';
+                break;
+            default:
+                $attachementType = $this->emailType;
+        }
+        if(!in_array($attachementType,['invitation','reminder','registration','admin_notification','admin_detailed_notification'])) {
             return;
         }
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
@@ -597,7 +624,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     * @param string|callable $patternselect Which pattern to use (default to static::$validator)
     * @returns array
     */
-    function validateAddresses($aEmailAddressList, $patternselect = null)
+    public static function validateAddresses($aEmailAddressList, $patternselect = null)
     {
         $aOutList = [];
         if (!is_array($aEmailAddressList)) {
@@ -606,7 +633,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 
         foreach ($aEmailAddressList as $sEmailAddress) {
             $sEmailAddress = trim($sEmailAddress);
-            if (self::validateEmailAddress($sEmailAddress,$patternselect)) {
+            if (self::validateAddress($sEmailAddress,$patternselect)) {
                 $aOutList[] = $sEmailAddress;
             }
         }
