@@ -1350,11 +1350,13 @@ class tokens extends Survey_Common_Action
             $bInvalidDate = false;
             $bSendError = false;
             if ($emcount > 0) {
-                $mail =  Yii::app()->LimeMailer::getInstance();
+                $mail = Yii::app()->LimeMailer::getInstance(LimeMailer::ResetComplete);
                 $mail->setSurvey($iSurveyId);
-                $mail->type = $sSubAction;
+                $mail->emailType = $sSubAction;
+                $mail->replaceTokenAttributes = true;
                 $mail->addUrlsPlaceholders(array('OPTOUT', 'OPTIN', 'SURVEY'));
                 foreach ($emresult as $emrow) {
+                    $mail = Yii::app()->LimeMailer::getInstance();
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'])) {
                         // The email has already been send this session, skip.
                         // Happens if user reloads page or double clicks on "Send".
@@ -1369,7 +1371,6 @@ class tokens extends Survey_Common_Action
                     $mail->setFrom(Yii::app()->request->getPost('from_'.$emrow['language']));
                     $mail->rawSubject = $sSubject[$emrow['language']];
                     $mail->rawBody = $sMessage[$emrow['language']];
-
                     if (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1) {
                         $tokenoutput .= $emrow['tid']." ".htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.", 'unescaped'), $fieldsarray))."<br />";
                         $bInvalidDate = true;
@@ -1407,7 +1408,7 @@ class tokens extends Survey_Common_Action
                             }
                             $tokenoutput .= $stringInfo."<br />\n";
                             if (Yii::app()->getConfig("emailsmtpdebug") > 1) {
-                                $tokenoutput .= $mail->getDebug();
+                                $tokenoutput .= $mail->getDebug('html');
                             }
                         } else {
                             $maildebug = $mail->getDebug('html');

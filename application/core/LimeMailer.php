@@ -18,11 +18,11 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      * Reset part
      */
     /* No reset */
-    CONST resetNone = 0;
+    CONST ResetNone = 0;
     /* Basic reset */
-    CONST resetBasic = 1;
-    /* Complete reset : all except survey part */
-    CONST resetComplete = 2;
+    CONST ResetBase = 1;
+    /* Complete reset : all except survey part , remind : you always can get a new one */
+    CONST ResetComplete = 2;
 
     /* Current survey id */
     public $surveyId;
@@ -36,14 +36,29 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /* Current token object */
     public $oToken;
 
-    /* Array for barebone url and url */
+    /* @var string[] Array for barebone url and url */
     public $aUrlsPlaceholders = [];
+
+    /*  @var string[] Array of replacements */
+    public $aReplacements = [];
+
     /**
-     * Current email type, used for updating email raw subject and body
-     * for survey : invite, 
+     * @var string Current email type, used for updating email raw subject and body
+     * for survey (token) : invite, remind, confirm, register …
+     * for survey (admin) :
+     * other : newuser, passwordreminder … 
      **/
     public $emailType = 'unknow';
-    /* Current attachements */
+
+    /**
+     * @var boolean replace token attributes (FIRSTNAME etc …)
+     */
+    public $replaceTokenAttributes = false;
+
+    /**
+     * @var array Current attachements (as string or array)
+     * @see parent::addAttachment
+     **/
     public $aAttachements = array();
     /**
      * The Raw Subject of the message. before any update
@@ -68,11 +83,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         'send' => true,
     );
 
-    /* replacement fields */
-    private $aReplacements = array();
-
     /* @var string[] */
-    private $debug = array();
+    public $debug = array();
 
     /**
      * @inheritdoc
@@ -86,6 +98,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     public function __construct()
     {
+        /* Launch parent without Exceptions */
         parent::__construct(false);
         /* Global configuration for ALL email of this LimeSurvey instance */
         $emailmethod = Yii::app()->getConfig('emailmethod');
@@ -155,7 +168,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if(!empty(Yii::app()->getConfig('siteadminbounce'))) {
             $this->Sender = Yii::app()->getConfig('siteadminbounce');
         }
-
         $this->addCustomHeader("X-Surveymailer",Yii::app()->getConfig("sitename")." Emailer (LimeSurvey.org)");
     }
 
@@ -171,7 +183,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      * @param boolean reset partially $this
      * return self
      */
-    public static function getInstance($reset=1)
+    public static function getInstance($reset=self::ResetBase)
     {
         Yii::log("Call instance", 'info', 'application.Mailer.LimeMailer.getInstance');
         if (empty(self::$instance)) {
@@ -181,7 +193,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             return self::$instance;
         }
         Yii::log("Existing mailer instance", 'info', 'application.Mailer.LimeMailer.getInstance');
+        /* Some part must be always resetted */
         self::$instance->send = false;
+        self::$instance->debug = [];
         if($reset) {
             self::$instance->clearAddresses(); // Unset only $this->to recepient
             self::$instance->clearAttachments(); // Unset attachments (maybe only under condition ?)
@@ -320,9 +334,16 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         return $this->FromName." <".$this->From.">";
     }
 
+    /**
+     * Add a debug line (with a new line like SMTP echo)
+     * @param string
+     * @param integer
+     * @return void
+     */
     public function addDebug($str, $level = 0) {
-        $this->debug[] = $str;
+        $this->debug[] = rtrim($str)."\n";
     }
+
     /**
      * Hate to use global var
      * maybe add format : raw (array of errors), html : clean html etc …
@@ -343,6 +364,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 return $this->debug;
         }
     }
+
     /**
      * Hate to use global var
      * maybe add format : raw (array of errors), html : clean html etc …
@@ -478,11 +500,12 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $language = trim($this->oToken->language);
         }
         LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
-        if($this->emailType == 'invite' or $this->emailType == 'remind') {
+        if($this->replaceTokenAttributes) {
             foreach ($this->oToken->attributes as $attribute => $value) {
                 $aTokenReplacements[strtoupper($attribute)] = $value;
             }
         }
+        /* Did we need to check if each url are in $this->aUrlsPlaceholders ? */
         $aTokenReplacements["OPTOUTURL"] = App()->getController()
             ->createAbsoluteUrl("/optout/tokens", array("surveyid"=>$this->surveyId, "token"=>$token,"langcode"=>$language));
         $aTokenReplacements["OPTINURL"] = App()->getController()
@@ -493,7 +516,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
-     * Do the replacements
+     * Do the replacements : if current replacement jey is set and LimeSurvey core have it too : it reset to the needed one.
      * @param string
      * @return string
      */
@@ -503,6 +526,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if($this->surveyId) {
             $aReplacements["SID"] = $this->surveyId;
             $aReplacements["EXPIRY"] = Survey::model()->findByPk($this->surveyId)->expires;
+            /* Other replacements ? Like in Survey related languagesettings ? */
         }
         $aReplacements = array_merge($aReplacements,$this->getTokenReplacements());
         /* Fix Url replacements */
@@ -510,10 +534,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             if(!empty($aReplacements["{$urlPlaceholder}URL"])) {
                 $url = $aReplacements["{$urlPlaceholder}URL"];
                 $string = str_replace("@@{$urlPlaceholder}URL@@", $url, $string);
-                $aReplacements["{$urlPlaceholder}URL"] = Chtml::link("{$urlPlaceholder}URL","{$urlPlaceholder}URL");
+                $aReplacements["{$urlPlaceholder}URL"] = Chtml::link($url,$url);
             }
         }
-        $aReplacements = array_merge($this->aReplacement,$aReplacements);
+        $aReplacements = array_merge($this->aReplacements,$aReplacements);
         return LimeExpressionManager::ProcessString($string, null, $aReplacements, 3, 1, false, false, true);
     }
 
