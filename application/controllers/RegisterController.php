@@ -278,14 +278,11 @@ class RegisterController extends LSYii_Controller
         $sLanguage = App()->language;
         $aSurveyInfo = getSurveyInfo($iSurveyId, $sLanguage);
 
+         $oToken = Token::model($iSurveyId)->findByPk($iTokenId); // Reload the token (needed if just created)
         $mailer = new LimeMailer();
         $mailer->setSurvey($iSurveyId);
-        /* Maybe mive this part in LimeMailer ? Somewhere in setType by survey ? */
-        $mailer->rawSubject = $aSurveyInfo['email_register_subj'];
-        $mailer->rawBody = $aSurveyInfo['email_register'];
-        $mailer->mailType = 'register';
-        $oToken = Token::model($iSurveyId)->findByPk($iTokenId); // Reload the token (needed if just created)
         $mailer->setToken($oToken->token);
+        $mailer->setTypeWithRaw('register',$sLanguage);
         $mailer->replaceTokenAttributes = true;
         $mailerSent = $mailer->sendMessage();
         if($mailer->getEventMessage()) {

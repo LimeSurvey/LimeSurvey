@@ -259,6 +259,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * Set email for this survey
      * @param string token
+
      * @throw CException
      */
     public function setToken($token)
@@ -284,6 +285,37 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->addCustomHeader("X-tokenid",$oToken->token);
     }
 
+    /**
+     * set the rawSubject and rawBody according to type
+     * @param string|null emailType : set the rawSubject and rawBody at same time
+     * @param string|null forced language
+     */
+    public function setTypeWithRaw($emailType, $language=null)
+    {
+        $mailer->emailType = $emailType;
+        if(empty($language) and !empty($this->oToken)) {
+            $language = $this->oToken->language;
+        }
+        if(empty($language)) {
+            $language = App()->language;
+        }
+        $this->mailLanguage = $language;
+        if(empty($this->surveyId)) {
+            return;
+        }
+        if(!in_array($language,Survey::model()->findByPk($this->surveyId)->getAllLanguages())) {
+            $this->mailLanguage = Survey::model()->findByPk($this->surveyId)->language;
+        }
+        $this->mailLanguage = $language;
+        if(!in_array($emailType,['invite','remind','register','confirm','admin_notification','admin_responses'])) {
+            return;
+        }
+        $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
+        $attributeSubject = "email_{$emailType}_subj";
+        $attributeBody = "email_{$emailType}";
+        $this->rawSubject = $oSurveyLanguageSetting->{$attributeSubject};
+        $this->rawBody = $oSurveyLanguageSetting->{$attributeBody};
+    }
     /**
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
