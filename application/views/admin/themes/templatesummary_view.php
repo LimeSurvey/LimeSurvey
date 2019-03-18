@@ -38,7 +38,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
                                         <input type='hidden' name="filetype" value="<?php echo CHtml::encode('screen'); ?>" />
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to delete this file? ", "js"); ?>')"/>
+                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
@@ -69,7 +69,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
                                     <input type='hidden' name="filetype" value="<?php echo CHtml::encode('js'); ?>" />
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to delete this file? ", "js"); ?>')"/>
+                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
@@ -99,7 +99,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
                                     <input type='hidden' name="filetype" value="<?php echo CHtml::encode('css'); ?>" />
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to delete this file? ", "js"); ?>')"/>
+                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
@@ -162,7 +162,7 @@ Yii::app()->getClientScript()->registerScript('editorfiletype',"editorfiletype =
                                     <?=CHtml::form(array('admin/themes','sa'=>'templatefiledelete'), 'post'); ?>
                                         <input type='hidden' name="filetype" value="<?php echo CHtml::encode('other'); ?>" />
                                         <input type='hidden' name="filename" value="<?php echo CHtml::encode($file); ?>" />
-                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button other-files-delete-button' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to delete this file? ", "js"); ?>')"/>
+                                        <input type='submit' class='btn btn-default btn-xs template-files-delete-button other-files-delete-button' value='<?php eT("Reset"); ?>' onclick="javascript:return confirm('<?php eT(" Are you sure you want to reset this file? ", "js"); ?>')"/>
                                         <input type='hidden' name='screenname' value='<?php echo CHtml::encode($screenname); ?>' />
                                         <input type='hidden' name='templatename' value='<?php echo CHtml::encode($templatename); ?>' />
                                         <input type='hidden' name='editfile' value='<?php echo CHtml::encode($relativePathEditfile); ?>' />
