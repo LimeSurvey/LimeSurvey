@@ -3349,3 +3349,8 @@ textarea.form-control.input-text{
 /* Show a textarea not so big at starting */
 height:2.4em;
 }
+
+.template-files-delete-button{
+    margin: 1px 0 0 0;
+    padding: 0 5px;
+}
