@@ -88,6 +88,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
     public function renderTemplateForQuestionEditPreview($sLayout, $aDatas, $root = false, $bReturn  = false)
     {
+        $root = (bool) $root;
         $oTemplate = Template::model()->getInstance();
         $oLayoutTemplate = $this->getTemplateForView($sLayout, $oTemplate);
         if ($oLayoutTemplate) {
@@ -95,14 +96,14 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $line = '<div class="{{ aSurveyInfo.class.outerframe }}  {% if (aSurveyInfo.options.container == "on") %} container {% else %} container-fluid {% endif %} " id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >';
             $line .= file_get_contents($oLayoutTemplate->viewPath.$sLayout);
             $line .= '</div>';
-            //if($root === true) {
+            if($root === true) {
                 $line = '<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>'
-                    . '<body style="padding-top: 0px !important;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >'
                     . file_get_contents($oLayoutTemplate->viewPath.'/subviews/header/head.twig')
+                    . '<body style="padding-top: 0px !important;" class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >'
                     . $line;
                 $line .= '</body>';
                 $line .= '</html>';
-            //}
+            }
 
             $sHtml     = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
             

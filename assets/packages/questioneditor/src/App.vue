@@ -30,6 +30,7 @@ export default {
             Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
             Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);
             Mousetrap.bind('ctrl+s', this.submitCurrentState);
+            Mousetrap.bind('ctrl+alt+d', () => {this.$store.commit('toggleDebugMode');});
         },
         chooseNextLanguage() {
             this.$log.log('HOTKEY', 'chooseNextLanguage');

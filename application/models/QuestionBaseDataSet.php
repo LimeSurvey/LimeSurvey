@@ -278,7 +278,17 @@ abstract class QuestionBaseDataSet extends StaticModel
         unset($aAttributeArray['help']);
         unset($aAttributeArray['inputtype']);
 
-        $aAdvancedAttributeArray['aFormElementOptions'] = array_merge(['classes' => ['form-control']], $aAttributeArray);
+        $aFormElementOptions = $aAttributeArray;
+        $aFormElementOptions['classes'] = isset($aFormElementOptions['classes']) ? array_merge($aFormElementOptions['classes'], ['form-control']) : ['form-control'];
+
+        if(!is_array($aFormElementOptions['expression']) && $aFormElementOptions['expression'] == 2) {
+            $aFormElementOptions['inputGroup'] = [
+                'prefix' => '{',
+                'suffix' => '}',
+                ];
+        }
+
+        $aAdvancedAttributeArray['aFormElementOptions'] = $aFormElementOptions;
         
         return $aAdvancedAttributeArray;
     }

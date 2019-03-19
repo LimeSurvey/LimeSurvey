@@ -13179,7 +13179,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-new-questioneditor[data-v-05c0cfb0] {\r\n    min-height: 75vh;\n}\n.loading-back-greyed[data-v-05c0cfb0] {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\n}\r\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/App.vue?3efd6f78"],"names":[],"mappings":";AA2FA;IACA,iBAAA;CACA;AACA;IACA,wCAAA;IACA,YAAA;IACA,aAAA;IACA,iBAAA;CACA","file":"App.vue","sourcesContent":["<script>\r\nimport Mousetrap from 'mousetrap';\r\n\r\nimport MainEditor from './components/mainEditor.vue';\r\nimport GeneralSettings from './components/generalSettings.vue';\r\nimport AdvancedSettings from './components/advancedSettings.vue';\r\n\r\nimport runAjax from './mixins/runAjax.js';\r\n\r\nexport default {\r\n    name: 'lsnextquestioneditor',\r\n    mixins: [runAjax],\r\n    data() {\r\n        return {\r\n            event: null,\r\n        }\r\n    },\r\n    components: {\r\n        'maineditor' : MainEditor,\r\n        'generalsettings' : GeneralSettings,\r\n        'advancedsettings' : AdvancedSettings\r\n    },\r\n    mounted() {\r\n        this.toggleLoading(false);\r\n        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);\r\n        this.applyHotkeys();\r\n    },\r\n    methods: {\r\n        applyHotkeys() {\r\n            Mousetrap.bind('ctrl+right', this.chooseNextLanguage);\r\n            Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);\r\n            Mousetrap.bind('ctrl+s', this.submitCurrentState);\r\n        },\r\n        chooseNextLanguage() {\r\n            this.$log.log('HOTKEY', 'chooseNextLanguage');\r\n            this.$store.commit('nextLanguage');\r\n        },\r\n        choosePreviousLanguage() {\r\n            this.$log.log('HOTKEY', 'choosePreviousLanguage');\r\n            this.$store.commit('previousLanguage');\r\n        },\r\n        jqueryTriggered(event, data){\r\n            //this.$log.log('data', data);\r\n            this.event = JSON.parse(data.emitter);\r\n        },\r\n        eventSet() {\r\n            this.event = null;\r\n        },\r\n        submitCurrentState() {\r\n            this.toggleLoading();\r\n            let transferObject = {\r\n                question: this.$store.state.currentQuestion,\r\n                scaledSubquestions: this.$store.state.currentQuestionSubquestions,\r\n                scaledAnswerOptions: this.$store.state.currentQuestionAnswerOptions,\r\n                questionI10N: this.$store.state.currentQuestionI10N,\r\n                questionAttributes: this.$store.state.currentQuestionAttributes,\r\n                generalSettings: this.$store.state.currentQuestionGeneralSettings,\r\n                advancedSettings: this.$store.state.currentQuestionAdvancedSettings,\r\n            };\r\n            this.$log.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});\r\n            this.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', {'questionData': transferObject}).then((result) => {\r\n                this.toggleLoading();\r\n                $('#in_survey_common').trigger('lsStopLoading');\r\n                this.$store.dispatch('updateObjects', result.data.newQuestionDetails);\r\n                this.$log.log('OBJECT AFTER TRANSFER: ', result);\r\n            })\r\n        }\r\n\r\n    },\r\n    created(){\r\n        this.$store.dispatch('loadQuestion');\r\n        this.$store.dispatch('getQuestionTypes');\r\n        this.$store.dispatch('getQuestionGeneralSettings');\r\n        this.$store.dispatch('getQuestionAdvancedSettings');\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"container-center scoped-new-questioneditor\">\r\n        <input type=\"submit\" class=\"hidden\" name=\"triggerSubmitQuestionEditor\" id=\"triggerSubmitQuestionEditor\" @click.prevent=\"submitCurrentState\" />\r\n        <template v-if=\"$store.getters.fullyLoaded\">\r\n            <maineditor :event=\"event\" v-on:eventSet=\"eventSet\"></maineditor>\r\n            <generalsettings :event=\"event\" v-on:eventSet=\"eventSet\"></generalsettings>\r\n            <advancedsettings :event=\"event\" v-on:eventSet=\"eventSet\"></advancedsettings>\r\n        </template>\r\n        <modals-container/>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n.scoped-new-questioneditor {\r\n    min-height: 75vh;\r\n}\r\n.loading-back-greyed {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-new-questioneditor[data-v-05c0cfb0] {\r\n    min-height: 75vh;\n}\n.loading-back-greyed[data-v-05c0cfb0] {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\n}\r\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/App.vue?6109e776"],"names":[],"mappings":";AA4FA;IACA,iBAAA;CACA;AACA;IACA,wCAAA;IACA,YAAA;IACA,aAAA;IACA,iBAAA;CACA","file":"App.vue","sourcesContent":["<script>\r\nimport Mousetrap from 'mousetrap';\r\n\r\nimport MainEditor from './components/mainEditor.vue';\r\nimport GeneralSettings from './components/generalSettings.vue';\r\nimport AdvancedSettings from './components/advancedSettings.vue';\r\n\r\nimport runAjax from './mixins/runAjax.js';\r\n\r\nexport default {\r\n    name: 'lsnextquestioneditor',\r\n    mixins: [runAjax],\r\n    data() {\r\n        return {\r\n            event: null,\r\n        }\r\n    },\r\n    components: {\r\n        'maineditor' : MainEditor,\r\n        'generalsettings' : GeneralSettings,\r\n        'advancedsettings' : AdvancedSettings\r\n    },\r\n    mounted() {\r\n        this.toggleLoading(false);\r\n        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);\r\n        this.applyHotkeys();\r\n    },\r\n    methods: {\r\n        applyHotkeys() {\r\n            Mousetrap.bind('ctrl+right', this.chooseNextLanguage);\r\n            Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);\r\n            Mousetrap.bind('ctrl+s', this.submitCurrentState);\r\n            Mousetrap.bind('ctrl+alt+d', () => {this.$store.commit('toggleDebugMode');});\r\n        },\r\n        chooseNextLanguage() {\r\n            this.$log.log('HOTKEY', 'chooseNextLanguage');\r\n            this.$store.commit('nextLanguage');\r\n        },\r\n        choosePreviousLanguage() {\r\n            this.$log.log('HOTKEY', 'choosePreviousLanguage');\r\n            this.$store.commit('previousLanguage');\r\n        },\r\n        jqueryTriggered(event, data){\r\n            //this.$log.log('data', data);\r\n            this.event = JSON.parse(data.emitter);\r\n        },\r\n        eventSet() {\r\n            this.event = null;\r\n        },\r\n        submitCurrentState() {\r\n            this.toggleLoading();\r\n            let transferObject = {\r\n                question: this.$store.state.currentQuestion,\r\n                scaledSubquestions: this.$store.state.currentQuestionSubquestions,\r\n                scaledAnswerOptions: this.$store.state.currentQuestionAnswerOptions,\r\n                questionI10N: this.$store.state.currentQuestionI10N,\r\n                questionAttributes: this.$store.state.currentQuestionAttributes,\r\n                generalSettings: this.$store.state.currentQuestionGeneralSettings,\r\n                advancedSettings: this.$store.state.currentQuestionAdvancedSettings,\r\n            };\r\n            this.$log.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});\r\n            this.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', {'questionData': transferObject}).then((result) => {\r\n                this.toggleLoading();\r\n                $('#in_survey_common').trigger('lsStopLoading');\r\n                this.$store.dispatch('updateObjects', result.data.newQuestionDetails);\r\n                this.$log.log('OBJECT AFTER TRANSFER: ', result);\r\n            })\r\n        }\r\n\r\n    },\r\n    created(){\r\n        this.$store.dispatch('loadQuestion');\r\n        this.$store.dispatch('getQuestionTypes');\r\n        this.$store.dispatch('getQuestionGeneralSettings');\r\n        this.$store.dispatch('getQuestionAdvancedSettings');\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"container-center scoped-new-questioneditor\">\r\n        <input type=\"submit\" class=\"hidden\" name=\"triggerSubmitQuestionEditor\" id=\"triggerSubmitQuestionEditor\" @click.prevent=\"submitCurrentState\" />\r\n        <template v-if=\"$store.getters.fullyLoaded\">\r\n            <maineditor :event=\"event\" v-on:eventSet=\"eventSet\"></maineditor>\r\n            <generalsettings :event=\"event\" v-on:eventSet=\"eventSet\"></generalsettings>\r\n            <advancedsettings :event=\"event\" v-on:eventSet=\"eventSet\"></advancedsettings>\r\n        </template>\r\n        <modals-container/>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n.scoped-new-questioneditor {\r\n    min-height: 75vh;\r\n}\r\n.loading-back-greyed {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -13264,6 +13264,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             __WEBPACK_IMPORTED_MODULE_0_mousetrap___default.a.bind('ctrl+right', this.chooseNextLanguage);
             __WEBPACK_IMPORTED_MODULE_0_mousetrap___default.a.bind('ctrl+left', this.choosePreviousLanguage);
             __WEBPACK_IMPORTED_MODULE_0_mousetrap___default.a.bind('ctrl+s', this.submitCurrentState);
+            __WEBPACK_IMPORTED_MODULE_0_mousetrap___default.a.bind('ctrl+alt+d', () => {
+                this.$store.commit('toggleDebugMode');
+            });
         },
         chooseNextLanguage() {
             this.$log.log('HOTKEY', 'chooseNextLanguage');
@@ -14489,6 +14492,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             previewLoading: false,
             previewActive: true,
             debug: false,
+            firstStart: true,
             questionEditButton: window.questionEditButton,
             changeTriggered: __WEBPACK_IMPORTED_MODULE_1_lodash_debounce___default.a((content, event) => {
                 this.$log.log('Debounced load triggered', { content, event });
@@ -14570,7 +14574,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.getQuestionPreview();
             this.$store.dispatch('getQuestionGeneralSettingsWithType');
         },
-        getQuestionPreview(firstStart = false) {
+        getQuestionPreview() {
             this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);
             if (!window.QuestionEditData.qid) {
                 this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`;
@@ -14579,8 +14583,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.previewLoading === true) {
                 return;
             }
+            this.firstStart = false;
             this.previewLoading = true;
-            this.$_load(this.previewRootUrl + '/sLanguage/' + this.$store.state.activeLanguage + (firstStart ? '/root/1' : ''), this.changedParts(), 'POST').then(result => {
+            this.$_load(this.previewRootUrl + '/sLanguage/' + this.$store.state.activeLanguage, this.changedParts(), 'POST').then(result => {
                 this.previewContent = result.data;
                 this.previewLoading = false;
             });
@@ -14588,11 +14593,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         selectLanguage(sLanguage) {
             this.$log.log('LANGUAGE CHANGED', sLanguage);
             this.$store.commit('setActiveLanguage', sLanguage);
+        },
+        setPreviewReady() {
+            this.previewLoading = false;
+            this.firstStart = false;
         }
     },
+    created() {
+        this.previewRootUrl = window.QuestionEditData.qid != null ? window.QuestionEditData.connectorBaseUrl + '/getRenderedPreview/iQuestionId/' + window.QuestionEditData.qid + (this.firstStart ? '/root/1' : '') + '/sLanguage/' + this.$store.state.activeLanguage : 'about:blank';
+    },
     mounted() {
-        this.previewRootUrl = window.QuestionEditData.qid != null ? window.QuestionEditData.connectorBaseUrl + '/getRenderedPreview/iQuestionId/' + window.QuestionEditData.qid : 'about:blank';
-        this.getQuestionPreview(true);
+        this.previewLoading = true;
     }
 });
 
@@ -16559,7 +16570,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         id: { type: String, required: true },
         content: { type: String, default: '' },
         htmlClass: { type: String, default: '' },
-        loading: { type: Boolean, default: true }
+        loading: { type: Boolean, default: true },
+        firstStart: { type: Boolean, default: false }
     },
     data() {
         return {
@@ -16582,8 +16594,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 const contents = this.documentIframe.contents();
                 this.$log.log(this.$documentIframe);
                 this.$log.log(contents);
-                this.documentIframe.contents().find('html').text('');
-                this.documentIframe.contents().find('html').html(newContent);
+                this.documentIframe.contents().find('body').text('');
+                this.documentIframe.contents().find('body').html(newContent);
                 this.documentIframe[0].contentWindow.jQuery(document).trigger('pjax:scriptcomplete');
             } catch (e) {
                 this.$log.error(e);
@@ -16591,12 +16603,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted() {
+        this.documentIframe = $(this.documentIframe);
+        this.documentIframe.on('load', () => {
+            this.$emit('ready');
+        });
+        this.documentIframe.attr('src', this.rootUrl);
         $('#' + this.id).append(this.documentIframe);
     },
     created() {
         const iframeID = this.getRandomId();
         this.iframeId = iframeID;
-        this.documentIframe = $(`<iframe src="${this.rootUrl}" id='${iframeID}' style='width:100%;height:100%;border:none;' />`);
+        this.documentIframe = `<iframe id='${iframeID}' style='width:100%;height:100%;border:none;' />`;
     }
 });
 
@@ -18080,7 +18097,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": 'previewFrame',
       "content": _vm.previewContent,
       "root-url": _vm.previewRootUrl,
+      "firstStart": _vm.firstStart,
       "loading": _vm.previewLoading
+    },
+    on: {
+      "ready": _vm.setPreviewReady
     }
   })], 1)])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -19871,7 +19892,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticStyle: {
-      "display": "none"
+      "overflow": "scroll",
+      "max-height": "4rem"
     }
   }, [_c('pre', [_vm._v(_vm._s(_vm.debug))])])
 },staticRenderFns: []}
@@ -20206,10 +20228,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     components: {
         'setting-switch': __WEBPACK_IMPORTED_MODULE_2__inputtypes_switch_vue___default.a,
-        'setting-text': __WEBPACK_IMPORTED_MODULE_6__inputtypes_textdisplay_vue___default.a,
+        'setting-text': __WEBPACK_IMPORTED_MODULE_3__inputtypes_text_vue___default.a,
         'setting-integer': __WEBPACK_IMPORTED_MODULE_4__inputtypes_integer_vue___default.a,
         'setting-select': __WEBPACK_IMPORTED_MODULE_5__inputtypes_select_vue___default.a,
-        'setting-textinput': __WEBPACK_IMPORTED_MODULE_3__inputtypes_text_vue___default.a,
+        'setting-textdisplay': __WEBPACK_IMPORTED_MODULE_6__inputtypes_textdisplay_vue___default.a,
         'setting-textarea': __WEBPACK_IMPORTED_MODULE_7__inputtypes_textarea_vue___default.a,
         'stub-set': __WEBPACK_IMPORTED_MODULE_8__inputtypes_stub_vue___default.a
     },
@@ -20659,7 +20681,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('div', {
       key: advancedSetting.name,
       staticClass: "list-group-item question-option-advanced-setting-block"
-    }, [_c(_vm.getComponentName(advancedSetting.inputtype), {
+    }, [_c('pre', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (_vm.$store.debugMode === true),
+        expression: "$store.debugMode === true"
+      }]
+    }, [_vm._v(_vm._s(advancedSetting))]), _vm._v(" "), _c(_vm.getComponentName(advancedSetting.inputtype), {
       tag: "component",
       attrs: {
         "elId": advancedSetting.formElementId,
@@ -21988,6 +22017,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODU
         questionAnswerOptionsImmutable: {},
         languages: [],
         survey: {},
+        debugMode: false,
         questionTypes: [
             {
                 code : '',
@@ -25854,6 +25884,9 @@ process.umask = function() { return 0; };
     setQuestionTypeList : (state, newValue) => {
         state.questionTypes = newValue;
     },
+    toggleDebugMode: (state) => {
+        state.debugMode = !state.debugMode;
+    }
 });
 
 /***/ }),

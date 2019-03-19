@@ -25,6 +25,7 @@ export default {
             previewLoading: false,
             previewActive: true,
             debug: false,
+            firstStart: true,
             questionEditButton: window.questionEditButton,
             changeTriggered: debounce((content,event) => {
                 this.$log.log('Debounced load triggered',{content,event});
@@ -103,7 +104,7 @@ export default {
             this.getQuestionPreview();
             this.$store.dispatch('getQuestionGeneralSettingsWithType');
         },
-        getQuestionPreview(firstStart = false){
+        getQuestionPreview(){
             this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);
             if(!window.QuestionEditData.qid) {
                 this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`;
@@ -112,9 +113,10 @@ export default {
             if(this.previewLoading === true) {
                 return;
             }
+            this.firstStart = false;
             this.previewLoading = true;
             this.$_load(
-                this.previewRootUrl+'/sLanguage/'+this.$store.state.activeLanguage+(firstStart ? '/root/1' : ''), 
+                this.previewRootUrl+'/sLanguage/'+this.$store.state.activeLanguage, 
                 this.changedParts(),
                 'POST'
             ).then((result) => {
@@ -125,13 +127,19 @@ export default {
         selectLanguage(sLanguage) {
             this.$log.log('LANGUAGE CHANGED', sLanguage);
             this.$store.commit('setActiveLanguage', sLanguage);
+        },
+        setPreviewReady() {
+            this.previewLoading = false;
+            this.firstStart = false;
         }
     },
-    mounted(){
+    created(){
         this.previewRootUrl = window.QuestionEditData.qid != null 
-            ? window.QuestionEditData.connectorBaseUrl+'/getRenderedPreview/iQuestionId/'+window.QuestionEditData.qid
+            ? window.QuestionEditData.connectorBaseUrl+'/getRenderedPreview/iQuestionId/'+window.QuestionEditData.qid+(this.firstStart ? '/root/1' : '')+'/sLanguage/'+this.$store.state.activeLanguage
             : 'about:blank';
-        this.getQuestionPreview(true);
+    },
+    mounted(){
+        this.previewLoading = true;
     },
 }
 </script>
@@ -181,7 +189,7 @@ export default {
                 </div>
                 <div class="col-sm-12 ls-space margin top-5 bottom-5">
                     <div class="scope-preview" v-show="previewActive">
-                        <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :loading="previewLoading" />
+                        <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :firstStart="firstStart" @ready="setPreviewReady" :loading="previewLoading" />
                     </div>
                 </div>
             </div>

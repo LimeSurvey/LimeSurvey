@@ -34,6 +34,7 @@ export default function(questionId){
         questionAnswerOptionsImmutable: {},
         languages: [],
         survey: {},
+        debugMode: false,
         questionTypes: [
             {
                 code : '',

@@ -151,4 +151,7 @@ export default {
     setQuestionTypeList : (state, newValue) => {
         state.questionTypes = newValue;
     },
+    toggleDebugMode: (state) => {
+        state.debugMode = !state.debugMode;
+    }
 };

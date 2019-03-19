@@ -965,8 +965,8 @@ class Question extends LSActiveRecord
     
     public function getRenderererObject($aFieldArray, $type = null)
     {
-        LoadQuestionTypes::loadAll();
         $type = $type === null ? $this->type : $type;
+        LoadQuestionTypes::load($type);
         switch ($type) {
             case Question::QT_X_BOILERPLATE_QUESTION: $oRenderer = new RenderBoilerplate($aFieldArray); break;
             case Question::QT_5_POINT_CHOICE: $oRenderer = new RenderFivePointChoice($aFieldArray); break;
@@ -1006,39 +1006,40 @@ class Question extends LSActiveRecord
     
     public function getDataSetObject($type = null)
     {
-        LoadQuestionTypes::loadAll();
         $type = $type === null ? $this->type : $type;
+        LoadQuestionTypes::load($type);
+
         switch ($type) {
-            case Question::QT_X_BOILERPLATE_QUESTION: return new DataSetBoilerplate($this->qid);
-            case Question::QT_5_POINT_CHOICE: return new DataSetFivePointChoice($this->qid);
-            case Question::QT_ASTERISK_EQUATION: return new DataSetEquation($this->qid);
-            case Question::QT_D_DATE: return new DataSetDate($this->qid);
-            case Question::QT_1_ARRAY_MULTISCALE: return new DataSetArrayMultiscale($this->qid);
-            case Question::QT_L_LIST_DROPDOWN: return new DataSetListDropdown($this->qid);
-            case Question::QT_EXCLAMATION_LIST_DROPDOWN: return new DataSetListRadio($this->qid);
-            case Question::QT_O_LIST_WITH_COMMENT: return new DataSetListWithComment($this->qid);
-            case Question::QT_R_RANKING_STYLE: return new RenderRanking($aFieldArray);
-            case Question::QT_M_MULTIPLE_CHOICE: return new DataSetMultipleChoice($this->qid);
-            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: return new DataSetMultipleChoiceWithComments($this->qid);
-            case Question::QT_I_LANGUAGE: return new DataSetLanguage($this->qid);
-            case Question::QT_Q_MULTIPLE_SHORT_TEXT: new DataSetMultipleShortText($this->qid);
-            case Question::QT_T_LONG_FREE_TEXT: return new DataSetHugeFreeText($this->qid);
-            case Question::QT_U_HUGE_FREE_TEXT: return new DataSetLongFreeText($this->qid);
-            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: return new RenderMultipleNumerical($aFieldArray);
-            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS: return new DataSetArray5ChoiceQuestion($this->qid);
-            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS: return new DataSetArray10ChoiceQuestion($this->qid);
-            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO: return new DataSetArrayYesUncertainNo($this->qid);
-            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS: return new DataSetArrayOfIncSameDecQuestions($this->qid);
-            case Question::QT_F_ARRAY_FLEXIBLE_ROW: return new DataSetArrayFlexibleRow($this->qid);
-            case Question::QT_G_GENDER_DROPDOWN: return new DataSetGenderDropdown($this->qid);
-            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN: return new DataSetArrayFlexibleColumn($this->qid);
-            case Question::QT_N_NUMERICAL: return new DataSetNumerical($this->qid);
-            case Question::QT_S_SHORT_FREE_TEXT: return new DataSetShortFreeText($this->qid);
-            case Question::QT_Y_YES_NO_RADIO: return new DataSetYesNoRadio($this->qid);
-            case Question::QT_Z_LIST_RADIO_FLEXIBLE: return new DataSetListRadioFlexible($this->qid);
-            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS: return new DataSetArrayMultiFlexNumbers($this->qid);
-            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT: return new DataSetArrayMultiFlexText($this->qid);
-            case Question::QT_VERTICAL_FILE_UPLOAD: return new DataSetFileUpload($this->qid);
+            case Question::QT_X_BOILERPLATE_QUESTION:           return new DataSetBoilerplate($this->qid);
+            case Question::QT_5_POINT_CHOICE:                   return new DataSetFivePointChoice($this->qid);
+            case Question::QT_ASTERISK_EQUATION:                return new DataSetEquation($this->qid);
+            case Question::QT_D_DATE:                           return new DataSetDate($this->qid);
+            case Question::QT_1_ARRAY_MULTISCALE:               return new DataSetArrayMultiscale($this->qid);
+            case Question::QT_L_LIST_DROPDOWN:                  return new DataSetListDropdown($this->qid);
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN:        return new DataSetListRadio($this->qid);
+            case Question::QT_O_LIST_WITH_COMMENT:              return new DataSetListWithComment($this->qid);
+            case Question::QT_R_RANKING_STYLE:                  return new RenderRanking($aFieldArray);
+            case Question::QT_M_MULTIPLE_CHOICE:                return new DataSetMultipleChoice($this->qid);
+            case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  return new DataSetMultipleChoiceWithComments($this->qid);
+            case Question::QT_I_LANGUAGE:                       return new DataSetLanguage($this->qid);
+            case Question::QT_Q_MULTIPLE_SHORT_TEXT:            return new DataSetMultipleShortText($this->qid);
+            case Question::QT_T_LONG_FREE_TEXT:                 return new DataSetHugeFreeText($this->qid);
+            case Question::QT_U_HUGE_FREE_TEXT:                 return new DataSetLongFreeText($this->qid);
+            case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:    return new RenderMultipleNumerical($aFieldArray);
+            case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:       return new DataSetArray5ChoiceQuestion($this->qid);
+            case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:      return new DataSetArray10ChoiceQuestion($this->qid);
+            case Question::QT_C_ARRAY_YES_UNCERTAIN_NO:         return new DataSetArrayYesUncertainNo($this->qid);
+            case Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS:return new DataSetArrayOfIncSameDecQuestions($this->qid);
+            case Question::QT_F_ARRAY_FLEXIBLE_ROW:             return new DataSetArrayFlexibleRow($this->qid);
+            case Question::QT_G_GENDER_DROPDOWN:                return new DataSetGenderDropdown($this->qid);
+            case Question::QT_H_ARRAY_FLEXIBLE_COLUMN:          return new DataSetArrayFlexibleColumn($this->qid);
+            case Question::QT_N_NUMERICAL:                      return new DataSetNumerical($this->qid);
+            case Question::QT_S_SHORT_FREE_TEXT:                return new DataSetShortFreeText($this->qid);
+            case Question::QT_Y_YES_NO_RADIO:                   return new DataSetYesNoRadio($this->qid);
+            case Question::QT_Z_LIST_RADIO_FLEXIBLE:            return new DataSetListRadioFlexible($this->qid);
+            case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:   return new DataSetArrayMultiFlexNumbers($this->qid);
+            case Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT:  return new DataSetArrayMultiFlexText($this->qid);
+            case Question::QT_VERTICAL_FILE_UPLOAD:             return new DataSetFileUpload($this->qid);
             default:  return new DummyQuestionEditContainer($aFieldArray);
         };
     }
