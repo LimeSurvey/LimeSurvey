@@ -181,7 +181,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
     /**
      * To get a singleton : some part are not needed to do X times
-     * @param boolean reset partially $this
+     * @param integer $reset partially $this
      * return self
      */
     public static function getInstance($reset=self::ResetBase)
@@ -219,7 +219,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * Set email for this survey
      * If surveyId are not updated : no reset of from or sender
-     * @param integer surveyid
+     * @param integer $surveyId
+     * @return void
      */
     public function setSurvey($surveyId)
     {
@@ -246,7 +247,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 
     /**
      * Add url place holder
-     * @param string|string[]
+     * @param string|string[] $aUrlsPlaceholders an array of url placeholder to set automatically
      * @return void
      */
     public function addUrlsPlaceholders($aUrlsPlaceholders)
@@ -259,8 +260,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 
     /**
      * Set email for this survey
-     * @param string token
-
+     * @param string $token
+     * @return void
      * @throw CException
      */
     public function setToken($token)
@@ -288,12 +289,12 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 
     /**
      * set the rawSubject and rawBody according to type
-     * @param string|null emailType : set the rawSubject and rawBody at same time
-     * @param string|null forced language
+     * @param string|null $emailType : set the rawSubject and rawBody at same time
+     * @param string|null $language forced language
      */
     public function setTypeWithRaw($emailType, $language=null)
     {
-        $mailer->emailType = $emailType;
+        $this->emailType = $emailType;
         if(empty($language) and !empty($this->oToken)) {
             $language = $this->oToken->language;
         }
@@ -374,7 +375,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * Hate to use global var
      * maybe add format : raw (array of errors), html : clean html etc …
-     * @param string $format
+     * @param string $format (currently only html or null (return array))
      * @return null|string|array
      */
     public function getDebug($format='')
@@ -455,7 +456,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $this->Body = $event->get('body');
         }
         if(empty($updateDisable['from'])) {
-            $this->setFrom = $event->get('from');
+            $this->setFrom($event->get('from'));
         }
         if(empty($updateDisable['to'])) {
             /* Warning : pre 4 version send array of string, here we send array of array (email+name) */
@@ -562,7 +563,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 
     /**
      * Do the replacements : if current replacement jey is set and LimeSurvey core have it too : it reset to the needed one.
-     * @param string
+     * @param string $string wher need to replace
      * @return string
      */
     public function doReplacements($string)
@@ -601,8 +602,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 
     /**
      * Set the attachments according to current survey,language and emailtype
-     * @param string
-     * @return string
+     * @ return void
      */
     public function setCoreAttachements()
     {
