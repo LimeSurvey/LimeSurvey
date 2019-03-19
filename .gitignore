@@ -62,6 +62,8 @@
 !/plugins/index.html
 !/plugins/Demo/
 !/plugins/AuditLog/
+!/plugins/mailSenderToFrom/
+
 
 #ignore old styles
 /styles/

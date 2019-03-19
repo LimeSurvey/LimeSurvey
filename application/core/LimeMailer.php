@@ -79,7 +79,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     public $BodySubjectCharset = 'utf-8';
 
     /* var string */
-    private $eventName = 'sendEmail';
+    private $eventName = 'beforeEmail';
 
     /* @var string event message */
     private $eventMessage = null;
@@ -224,6 +224,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     public function setSurvey($surveyId)
     {
         $this->addCustomHeader("X-surveyid",$surveyId);
+        $this->eventName = "beforeSurveyEmail";
         $oSurvey = Survey::model()->findByPk($surveyId);
         $this->isHtml($oSurvey->getIsHtmlEmail());
         if(!in_array($this->mailLanguage,$oSurvey->getAllLanguages())) {
@@ -401,9 +402,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
-     * Launch the needed event : beforeTokenEmail, beforeSurveyEmail, beforeGlobalEmail
+     * Launch the needed event : beforeTokenEmail, beforeSurveyEmail, beforeEmail
      * and update this according to action
-     * return boolean : stop sending or not
+     * return boolean|null : if it's not null : stop sending, boolean are the result of sended.
      */
     private function manageEvent($eventParams=array())
     {
@@ -441,20 +442,35 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         foreach($eventParams as $param=>$value) {
             $event->set($param, $value);
         }
+        /* A plugin can update any part : here true, but i really think it's best if it false */
+        /* Maybe part by part ? $event->get('updated') as arry : update only what is updated */
+        $event->set('updateDisable',array());
         App()->getPluginManager()->dispatchEvent($event);
         /* Manage what can be updated */
-        $this->Subject = $event->get('subject');
-        $this->Body = (string) $event->get('body');
-        $this->setFrom($event->get('from'));
-        $this->to = $event->get('to');
-        $this->Sender = $event->get('bounce');
+        $updateDisable = $event->get('updateDisable');
+        if(empty($updateDisable['subject'])) {
+            $this->Subject = $event->get('subject');
+        }
+        if(empty($updateDisable['body'])) {
+            $this->Body = $event->get('body');
+        }
+        if(empty($updateDisable['from'])) {
+            $this->setFrom = $event->get('from');
+        }
+        if(empty($updateDisable['to'])) {
+            /* Warning : pre 4 version send array of string, here we send array of array (email+name) */
+            /* I think it's better BUT it broke plugin API for email : need a compatible API ? */
+            /* But then with a new settings for «plugin have updated the to event param ? */
+            $this->to = $event->get('to');
+        }
+        if(empty($updateDisable['bounce'])) {
+            $this->Sender = $event->get('bounce');
+        }
         $this->eventMessage = $event->get('message');
         if($event->get('send', true) == false) {
-            $this->sent = $event->get('error') == null;
             $this->ErrorInfo = $event->get('error');
-            return $this->sent;
+            return $event->get('error') == null;
         }
-        return false;
     }
 
     public function getEventMessage()
@@ -482,8 +498,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $this->setCoreAttachements();
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
-        if($eventResult) {
-            return $this->sent;
+        if(!is_null($eventResult)) {
+            return $eventResult;
         }
         /* Fix body according to HTML on/off */
         if($this->ContentType == 'text/html') {
@@ -496,8 +512,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 $this->AltBody = $this->getText();
             }
         }
-        $this->sent = $this->Send();
-        return $this->sent;
+        return $this->Send();
     }
 
     /**

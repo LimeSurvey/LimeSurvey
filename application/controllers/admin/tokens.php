@@ -1412,7 +1412,10 @@ class tokens extends Survey_Common_Action
                             }
                         } else {
                             $maildebug = $mail->getDebug('html');
-                            $tokenoutput .= $stringInfo.sprintf(gT("Error message: %s"), $mail->getDebug('html'))."<br />\n";
+                            $tokenoutput .= $stringInfo.CHtml::tag("span",array('class'=>"text-warning"),sprintf(gT("Error message: %s"), $mail->getError()))."<br>\n";
+                            if (Yii::app()->getConfig("emailsmtpdebug") > 0) {
+                                $tokenoutput .= $mail->getDebug('html');
+                            }
                             $bSendError = true;
                         }
                     }
