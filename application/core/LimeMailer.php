@@ -649,6 +649,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if(empty($this->surveyId)) {
             return;
         }
+        
         switch ($this->emailType) {
             case 'invite':
                 $attachementType = 'invitation';
@@ -659,10 +660,13 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             case 'register':
                 $attachementType = 'registration';
                 break;
+            case 'confirm':
+                $attachementType = 'confirmation';
+                break;
             default:
                 $attachementType = $this->emailType;
         }
-        if(!in_array($attachementType,['invitation','reminder','registration','admin_notification','admin_detailed_notification'])) {
+        if(!in_array($attachementType,['invitation','reminder','confirmation','registration','admin_notification','admin_detailed_notification'])) {
             return;
         }
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));

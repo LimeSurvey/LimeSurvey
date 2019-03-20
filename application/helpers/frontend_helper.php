@@ -425,95 +425,17 @@ function submittokens($quotaexit = false)
 
     if ($quotaexit == false) {
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
-            //   if($token->completed == "Y" || $token->completed == $today)
-//            {
-                $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                $subject = $thissurvey['email_confirm_subj'];
-
-                $aReplacementVars = array();
-                $aReplacementVars["ADMINNAME"] = $thissurvey['admin'];
-                $aReplacementVars["ADMINEMAIL"] = $thissurvey['adminemail'];
-                $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
-                //Fill with token info, because user can have his information with anonimity control
-                $aReplacementVars["FIRSTNAME"] = $token->firstname;
-                $aReplacementVars["LASTNAME"] = $token->lastname;
-                $aReplacementVars["TOKEN"] = $token->token;
-                $aReplacementVars["EMAIL"] = $token->email;
-                // added survey url in replacement vars
-                $surveylink = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}", array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'], 'token'=>$token->token));
-                $aReplacementVars['SURVEYURL'] = $surveylink;
-
-                $attrfieldnames = getAttributeFieldNames($surveyid);
-                foreach ($attrfieldnames as $attr_name) {
-                    $aReplacementVars[strtoupper($attr_name)] = $token->$attr_name;
-                }
-
-                $redata = array('thissurvey'=>$thissurvey);
-
-                // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                $subject = templatereplace($subject, $aReplacementVars, $redata, 'email_confirm_subj', false, null, array(), true);
-
-                $subject = html_entity_decode($subject, ENT_QUOTES, $emailcharset);
-
-                if (getEmailFormat($surveyid) == 'html') {
-                    $ishtml = true;
-                } else {
-                    $ishtml = false;
-                }
-
-                $message = $thissurvey['email_confirm'];
-                //$message=ReplaceFields($message, $fieldsarray, true);
-                // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                $message = templatereplace($message, $aReplacementVars, $redata, 'email_confirm', false, null, array(), true);
-                if (!$ishtml) {
-                    $message = strip_tags(breakToNewline(html_entity_decode($message, ENT_QUOTES, $emailcharset)));
-                } else {
-                    $message = html_entity_decode($message, ENT_QUOTES, $emailcharset);
-                }
-
-                //Only send confirmation email if there is a valid email address
             $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {
-                // #14499: Add first and last name to the "To" of confirmation email
-                $to = array($token->firstname." ".$token->lastname." <".$sToAddress[0].">");
-                $aAttachments = unserialize($thissurvey['attachments']);
-
-                $aRelevantAttachments = array();
-                /*
-                 * Iterate through attachments and check them for relevance.
-                 */
-                if (isset($aAttachments['confirmation'])) {
-                    foreach ($aAttachments['confirmation'] as $aAttachment) {
-                        $relevance = $aAttachment['relevance'];
-                        // If the attachment is relevant it will be added to the mail.
-                        if (LimeExpressionManager::ProcessRelevance($relevance) && file_exists($aAttachment['url'])) {
-                            $aRelevantAttachments[] = $aAttachment['url'];
-                        }
-                    }
-                }
-                $event = new PluginEvent('beforeTokenEmail');
-                $event->set('survey', $surveyid);
-                $event->set('type', 'confirm');
-                $event->set('model', 'confirm');
-                $event->set('subject', $subject);
-                $event->set('to', $to);
-                $event->set('body', $message);
-                $event->set('from', $from);
-                $event->set('bounce', getBounceEmail($surveyid));
-                $event->set('token', $token->attributes);
-                App()->getPluginManager()->dispatchEvent($event);
-                $subject = $event->get('subject');
-                $message = $event->get('body');
-                $to = $event->get('to');
-                $from = $event->get('from');
-                $bounce = $event->get('bounce');
-                if ($event->get('send', true) != false) {
-                    SendEmailMessage($message, $subject, $to, $from, Yii::app()->getConfig("sitename"), $ishtml, $bounce, $aRelevantAttachments);
-                }
+                templatereplace("{SID}",$thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+                $mail = new \LimeMailer;
+                $mail->setSurvey($surveyid);
+                $mail->setToken($token->token);
+                $mail->setTypeWithRaw('confirm',Yii::app()->getLanguage());
+                $mail->replaceTokenAttributes = true;
+                $mail->addUrlsPlaceholders(array('SURVEY'));
+                $mail->sendMessage();
             }
-        //   } else {
-                // Leave it to send optional confirmation at closed token
-    //          }
         }
     }
 }
