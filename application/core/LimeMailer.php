@@ -24,16 +24,14 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /* Complete reset : all except survey part , remind : you always can get a new one */
     CONST ResetComplete = 2;
 
-    /* Current survey id */
+    /* @var null|integer $surveyId Current survey id */
     public $surveyId;
-    /* Current language */
+    /* @var null|string $mailLanguage Current language for the mail (=language is used for language of mailer (error etc …) */
     public $mailLanguage;
-    /* Current email use html */
+    /* @var boolean $html Current email use html */
     public $html = true;
-    /* email must be sent */
-    private $sent = false;
 
-    /* Current token object */
+    /* @var \Token $oToken Current token object */
     public $oToken;
 
     /* @var string[] Array for barebone url and url */
@@ -51,40 +49,46 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     public $emailType = 'unknow';
 
     /**
-     * @var boolean replace token attributes (FIRSTNAME etc …) and replace to TOKEN:XXX by XXXX
+     * @var boolean $replaceTokenAttributes replace token attributes (FIRSTNAME etc …) and replace to TOKEN:XXX by XXXX
      */
     public $replaceTokenAttributes = false;
 
     /**
-     * @var array Current attachements (as string or array)
+     * @var array $aAttachements Current attachements (as string or array)
      * @see parent::addAttachment
      **/
     public $aAttachements = array();
 
     /**
-     * The Raw Subject of the message. before any update
-     * @var string
+     * The Raw Subject of the message. before any Expression Replacements and other update
+     * @var string $rawSubject $rawBody
      */
     public $rawSubject = '';
 
     /**
-     * The Rw Body of the message, before any update
+     * The Rw Body of the message, before any Expression Replacements and other update
      * @var string
      */
     public $rawBody = '';
 
     /**
-     * Charset of Body and Subject
+     * @var string $BodySubjectCharset Charset of Body and Subject
+     * @see parent @CharSet
      */
     public $BodySubjectCharset = 'utf-8';
 
-    /* var string */
+    /**
+     * @inheritdoc, defaultto utf-8
+     */
+    public $CharSet = 'utf-8';
+
+    /* @var string $eventName to send to events */
     private $eventName = 'beforeEmail';
 
-    /* @var string event message */
+    /* @var string $eventMessage optionnal event message to return (used in some event (beforeTokenRegister) */
     private $eventMessage = null;
 
-    /* @var string[] */
+    /* @var string[] $debug the debug lines one by one */
     public $debug = array();
 
     /**
@@ -95,12 +99,13 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     public static $validator = 'php-idna';
 
     /**
+     * @inheritdoc
+     * Default exception to false (we use getError or getDebug)
      * WIP Set all needed fixed in params
      */
-    public function __construct()
+    public function __construct($exceptions = false)
     {
-        /* Launch parent without Exceptions */
-        parent::__construct(false);
+        parent::__construct($exceptions);
         /* Global configuration for ALL email of this LimeSurvey instance */
         $emailmethod = Yii::app()->getConfig('emailmethod');
         $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
@@ -115,7 +120,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if (!$this->SetLanguage(Yii::app()->getConfig("defaultlang"),APPPATH.'/third_party/phpmailer/language/')) {
             $this->SetLanguage('en',APPPATH.'/third_party/phpmailer/language/');
         }
-
+        /* Default language to current one */
         $this->mailLanguage = Yii::app()->getLanguage();
 
         $this->SMTPDebug = Yii::app()->getConfig("emailsmtpdebug");
@@ -124,6 +129,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         };
 
         if (Yii::app()->getConfig('demoMode')) {
+            /* in demo mode no need to do something else */
             return;
         }
 
@@ -164,7 +170,15 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             default:
                 $this->IsMail();
         }
+        $this->init();
+    }
 
+    /**
+     * Set the minimal default for LimeSurvey
+     */
+    public function init()
+    {
+        $this->setFrom(Yii::app()->getConfig('siteadminemail'),Yii::app()->getConfig('siteadminname'));
         /* set default return path */
         if(!empty(Yii::app()->getConfig('siteadminbounce'))) {
             $this->Sender = Yii::app()->getConfig('siteadminbounce');
@@ -173,16 +187,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
-     * needed by Yii::app() ?
-     */
-    public function init()
-    {
-
-    }
-    /**
      * To get a singleton : some part are not needed to do X times
-     * @param integer $reset partially $this
-     * return self
+     * @param integer $reset partially the instance
+     * return \LimeMailer
      */
     public static function getInstance($reset=self::ResetBase)
     {
@@ -207,6 +214,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                 /* Clear extra to */
                 self::$instance->clearAllRecipients(); /* clearAddresses + clearCCs + clearBCCs */
                 self::$instance->clearCustomHeaders();
+                self::$instance->init();
                 if(self::$instance->surveyId) {
                     /* Reset cleaned part for this survey (no from or sender resetted) */
                     self::$instance->setSurvey(self::$instance->surveyId);
@@ -259,7 +267,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
-     * Set email for this survey
+     * Set token for this survey
      * @param string $token
      * @return void
      * @throw CException
@@ -306,7 +314,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             return;
         }
         if(!in_array($language,Survey::model()->findByPk($this->surveyId)->getAllLanguages())) {
-            $this->mailLanguage = Survey::model()->findByPk($this->surveyId)->language;
+            $language = Survey::model()->findByPk($this->surveyId)->language;
         }
         $this->mailLanguage = $language;
         if(!in_array($emailType,['invite','remind','register','confirm','admin_notification','admin_responses'])) {
@@ -352,7 +360,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
 
     /**
      * Get from
-     * @return string from (email + name)
+     * @return string from (name <email>)
      */
     public function getFrom()
     {
@@ -394,8 +402,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
-     * Hate to use global var
-     * maybe add format : raw (array of errors), html : clean html etc …
+     * Get the the most recent mailer error message.
+     * @see parent::ErrorInfo
+     * @return null|string
      */
     public function getError()
     {
@@ -405,7 +414,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * Launch the needed event : beforeTokenEmail, beforeSurveyEmail, beforeEmail
      * and update this according to action
-     * return boolean|null : if it's not null : stop sending, boolean are the result of sended.
+     * @var array $eventParams specific event parameters to add
+     * return boolean|null : sended of not, if null : no action are done by event, can use default action.
      */
     private function manageEvent($eventParams=array())
     {
@@ -423,11 +433,15 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             'survey'=>$this->surveyId,
             'type'=>$this->emailType,
             'model'=>$model,
-            'to'=>$this->to, // To review for multiple tokens
+            // This send array of array, different behaviour than in 3.X where it send array of string (Name <email>)
+            'to'=>$this->to, 
             'subject'=>$this->Subject,
             'body'=>$this->Body,
             'from'=>$this->getFrom(),
             'bounce'=>$this->Sender,
+            /* plugin can update itself some value, then allowing to disable update by default event */
+            /* PS : plugin MUST use $this->get('mailer') for better compatibility for each plugin …*/
+            'updateDisable'=>array(),
         );
         if(!empty($this->oToken)) {
             $eventBaseParams['token'] = $this->oToken->getAttributes();
@@ -437,8 +451,9 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         /**
          * plugin can get this mailer with $oEvent->get('mailer')
          * This allow udpate of anythings : $this->getEvent()->get('mailer')->addCC or $this->getEvent()->get('mailer')->addCustomHeader etc …
+         * Usage of this solution can disable all other event get param …
          **/
-        $event->set('mailer',$this); //  no need to add other event param
+        $event->set('mailer',$this); 
         /* Previous plugin compatibility … */
         foreach($eventParams as $param=>$value) {
             $event->set($param, $value);
@@ -460,8 +475,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
         if(empty($updateDisable['to'])) {
             /* Warning : pre 4 version send array of string, here we send array of array (email+name) */
-            /* I think it's better BUT it broke plugin API for email : need a compatible API ? */
-            /* But then with a new settings for «plugin have updated the to event param ? */
             $this->to = $event->get('to');
         }
         if(empty($updateDisable['bounce'])) {
@@ -474,11 +487,19 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
     }
 
+    /**
+     * Return the event message
+     * @return string
+     */
     public function getEventMessage()
     {
         return $this->eventMessage;
     }
 
+    /**
+     * Construct and do what must be done before sending a message
+     * @return boolean
+     */
     public function sendMessage()
     {
         if (Yii::app()->getConfig('demoMode')) {
@@ -497,11 +518,13 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $this->Body = mb_convert_encoding($this->Body,$this->CharSet,$this->BodySubjectCharset);
         }
         $this->setCoreAttachements();
+
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
         if(!is_null($eventResult)) {
             return $eventResult;
         }
+
         /* Fix body according to HTML on/off */
         if($this->ContentType == 'text/html') {
             if (strpos($this->Body, "<html>") === false) {
@@ -517,7 +540,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     }
 
     /**
-     * Surely need to extend parent
+     * @inheritdoc
+     * Disable all sending in demoMode
      */
     public function Send()
     {
