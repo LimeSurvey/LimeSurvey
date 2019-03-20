@@ -1350,13 +1350,13 @@ class tokens extends Survey_Common_Action
             $bInvalidDate = false;
             $bSendError = false;
             if ($emcount > 0) {
-                $mail = Yii::app()->LimeMailer::getInstance(LimeMailer::ResetComplete);
+                $mail = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
                 $mail->setSurvey($iSurveyId);
                 $mail->emailType = $sSubAction;
                 $mail->replaceTokenAttributes = true;
                 $mail->addUrlsPlaceholders(array('OPTOUT', 'OPTIN', 'SURVEY'));
                 foreach ($emresult as $emrow) {
-                    $mail = Yii::app()->LimeMailer::getInstance();
+                    $mail = \LimeMailer::getInstance();
                     if ($this->tokenIsSetInEmailCache($iSurveyId, $emrow['tid'])) {
                         // The email has already been send this session, skip.
                         // Happens if user reloads page or double clicks on "Send".

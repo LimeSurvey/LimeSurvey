@@ -303,28 +303,40 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     public function setTypeWithRaw($emailType, $language=null)
     {
         $this->emailType = $emailType;
+        if(empty($this->surveyId)) {
+            if(empty($language)) {
+                $language = App()->language;
+            }
+            $this->mailLanguage = $language;
+            return;
+        }
         if(empty($language) and !empty($this->oToken)) {
             $language = $this->oToken->language;
         }
         if(empty($language)) {
             $language = App()->language;
         }
-        $this->mailLanguage = $language;
-        if(empty($this->surveyId)) {
-            return;
-        }
         if(!in_array($language,Survey::model()->findByPk($this->surveyId)->getAllLanguages())) {
             $language = Survey::model()->findByPk($this->surveyId)->language;
         }
         $this->mailLanguage = $language;
+        
         if(!in_array($emailType,['invite','remind','register','confirm','admin_notification','admin_responses'])) {
             return;
         }
+        $emailColumns = array(
+            'invite' => 'surveyls_email_invite',
+            'remind' => 'surveyls_email_remind',
+            'register' => 'surveyls_email_register',
+            'confirm' => 'surveyls_email_confirm',
+            'admin_notification' => 'email_admin_notification',
+            'admin_responses' => 'email_admin_responses',
+        );
+        
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
-        $attributeSubject = "email_{$emailType}_subj";
-        $attributeBody = "email_{$emailType}";
+        $attributeSubject = "{$emailColumns[$emailType]}_subj";
         $this->rawSubject = $oSurveyLanguageSetting->{$attributeSubject};
-        $this->rawBody = $oSurveyLanguageSetting->{$attributeBody};
+        $this->rawBody = $oSurveyLanguageSetting->{$emailColumns[$emailType]};
     }
     /**
      * @inheritdoc
@@ -656,7 +668,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
         if(!empty($oSurveyLanguageSetting->attachments) ) {
             $aAttachments = unserialize($oSurveyLanguageSetting->attachments);
-            if(!empty($aAttachments[$attachementType)) {
+            if(!empty($aAttachments[$attachementType])) {
                 if($this->oToken) {
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }

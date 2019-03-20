@@ -278,8 +278,8 @@ class RegisterController extends LSYii_Controller
         $sLanguage = App()->language;
         $aSurveyInfo = getSurveyInfo($iSurveyId, $sLanguage);
 
-         $oToken = Token::model($iSurveyId)->findByPk($iTokenId); // Reload the token (needed if just created)
-        $mailer = new LimeMailer();
+        $oToken = Token::model($iSurveyId)->findByPk($iTokenId); // Reload the token (needed if just created)
+        $mailer = new \LimeMailer();
         $mailer->setSurvey($iSurveyId);
         $mailer->setToken($oToken->token);
         $mailer->setTypeWithRaw('register',$sLanguage);
