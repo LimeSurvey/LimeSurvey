@@ -44,7 +44,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      * @var string Current email type, used for updating email raw subject and body
      * for survey (token) : invite, remind, confirm, register …
      * for survey (admin) :
-     * other : newuser, passwordreminder … 
+     * other : addadminuser, passwordreminder … 
      **/
     public $emailType = 'unknow';
 
@@ -330,9 +330,12 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      * @inheritdoc
      * Fix first parameters if he had email + name ( Name <email> format)
       */
-    public function setFrom($from,$fromname = "",$auto = true)
+    public function setFrom($from,$fromname = null,$auto = true)
     {
         $fromemail = $from;
+        if(empty($fromname)) {
+            $fromname = $this->FromName;
+        }
         if (strpos($from, '<')) {
             $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
             if(empty($fromname)) {
@@ -517,7 +520,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $this->Subject = mb_convert_encoding($this->Subject,$this->CharSet,$this->BodySubjectCharset);
             $this->Body = mb_convert_encoding($this->Body,$this->CharSet,$this->BodySubjectCharset);
         }
-        $this->setCoreAttachements();
+        $this->addCoreAttachements();
 
         /* All core done, next are done for all survey */
         $eventResult = $this->manageEvent();
@@ -532,8 +535,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             }
             $this->msgHTML($this->Body, App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
             if(empty($this->AltBody)) {
-                $html = new \Html2Text\Html2Text($body);
-                $this->AltBody = $this->getText();
+                $html = new \Html2Text\Html2Text($this->Body);
+                $this->AltBody = $html->getText();
             }
         }
         return $this->Send();
@@ -545,6 +548,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      */
     public function Send()
     {
+
         if (Yii::app()->getConfig('demoMode')) {
             $this->setError(gT('Email was not sent because demo-mode is activated.'));
             return false;
@@ -628,7 +632,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
      * Set the attachments according to current survey,language and emailtype
      * @ return void
      */
-    public function setCoreAttachements()
+    public function addCoreAttachements()
     {
         if(empty($this->surveyId)) {
             return;
@@ -652,11 +656,11 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
         if(!empty($oSurveyLanguageSetting->attachments) ) {
             $aAttachments = unserialize($oSurveyLanguageSetting->attachments);
-            if(!empty($aAttachments[$this->emailType])) {
+            if(!empty($aAttachments[$attachementType)) {
                 if($this->oToken) {
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
-                foreach ($aAttachments[$sTemplate] as $aAttachment) {
+                foreach ($aAttachments[$attachementType] as $aAttachment) {
                     if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
                         $this->addAttachment($aAttachment['url']);
                     }
@@ -669,18 +673,19 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * @inheritdoc
      * Adding php with idna support
+     * Must review , seems phpMailer have something with idn ? @see parent::idnSupported
      */
     public static function validateAddress($address, $patternselect = null)
     {
         if (null === $patternselect) {
             $patternselect = static::$validator;
         }
-        if($patternselect != 'idna') {
+        if($patternselect != 'php-idna') {
             return parent::validateAddress($address, $patternselect);
         }
         require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
         $oIdnConverter = new idna_convert();
-        $sEmailAddress = $oIdnConverter->encode($sEmailAddress);
+        $sEmailAddress = $oIdnConverter->encode($address);
         $bResult = filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
         if ($bResult !== false) {
             return true;

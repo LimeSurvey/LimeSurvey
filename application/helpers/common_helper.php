@@ -1974,11 +1974,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         $customheaders = array();
     }
 
-    if (is_null($bouncemail)) {
-        $sender = $from;
-    } else {
-        $sender = $bouncemail;
-    }
     $mail =  new LimeMailer;
     $mail->emailType = 'deprecated';
     
@@ -1988,10 +1983,13 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
         $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
         $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
     }
+    if (is_null($bouncemail)) {
+        $senderemail = $fromemail;
+    } else {
+        $senderemail = $bouncemail;
+    }
 
-    $senderemail = $sender;
-
-    $mail->SetFrom($sender);
+    $mail->SetFrom($fromemail,$fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
     foreach ($to as $singletoemail) {
         $mail->addAddress($singletoemail);

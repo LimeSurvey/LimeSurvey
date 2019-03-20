@@ -137,6 +137,7 @@ class UserAction extends Survey_Common_Action
                 //$sresult = User::model()->findAllByAttributes(array('uid' => $iNewUID));
 
                 // send Mail
+                /* @todo : must move this to Plugin (or sendMail as boolean in plugin event) */
                 $body = sprintf(gT("Hello %s,"), $new_full_name)."<br /><br />\n";
                 $body .= sprintf(gT("this is an automated email to notify that a user has been created for you on the site '%s'."), Yii::app()->getConfig("sitename"))."<br /><br />\n";
                 $body .= gT("You can use now the following credentials to log into the site:")."<br />\n";
@@ -154,22 +155,21 @@ class UserAction extends Survey_Common_Action
                 $body .= "<a href='".$this->getController()->createAbsoluteUrl("/admin")."'>".gT("Click here to log in.")."</a><br /><br />\n";
                 $body .= sprintf(gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'), Yii::app()->getConfig("siteadminemail"))."<br />\n";
 
-                $subject = sprintf(gT("User registration at '%s'", "unescaped"), Yii::app()->getConfig("sitename"));
-                $to = $new_user." <$new_email>";
-                $from = Yii::app()->getConfig("siteadminname")." <".Yii::app()->getConfig("siteadminemail").">";
-                $extra = '';
-                $classMsg = '';
-                global $maildebug;
-                if (SendEmailMessage($body, $subject, $to, $from, Yii::app()->getConfig("sitename"), true, Yii::app()->getConfig("siteadminbounce"))) {
-                    $extra .= "<br />".gT("Username").": $new_user<br />".gT("Email").": $new_email<br />";
-                    $extra .= "<br />".gT("An email with a generated password was sent to the user.");
+                $mailer = new LimeMailer;
+                $mailer->addAddress($new_email,$new_user);
+                $mailer->Subject = sprintf(gT("User registration at '%s'", "unescaped"), Yii::app()->getConfig("sitename"));;
+                $mailer->Body = $body;
+                $mailer->isHtml(true);
+                $mailer->emailType = "addadminuser";
+                if ($mailer->sendMessage()) {
+                    $extra = CHtml::tag("p",array(),sprintf(gT("Username : %s - Email : %s."),$new_user,$new_email));
+                    $extra .= CHtml::tag("p",array(),gT("An email with a generated password was sent to the user."));
                     $classMsg = 'text-success';
                     $sHeader = gT("Success");
                 } else {
                     // has to be sent again or no other way
-                    $tmp = str_replace("{NAME}", "<strong>".$new_user."</strong>", gT("Email to {NAME} ({EMAIL}) failed."));
-                    $extra .= "<br />".$maildebug ."<br />";
-                    
+                    $extra = CHtml::tag("p",array(),sprintf(gT("Email to %s (%s) failed."),"<strong>".$new_user."</strong>",$new_email));
+                    $extra .= CHtml::tag("p",array('class'=>'alert alert-danger'),$mailer->getError());
                     $classMsg = 'text-warning';
                     $sHeader = gT("Warning");
                 }
