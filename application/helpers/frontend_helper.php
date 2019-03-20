@@ -387,7 +387,6 @@ function submittokens($quotaexit = false)
     }
     $clienttoken = $_SESSION['survey_'.$surveyid]['token'];
 
-    $emailcharset = Yii::app()->getConfig("emailcharset");
     // Shift the date due to global timeadjust setting
     $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
