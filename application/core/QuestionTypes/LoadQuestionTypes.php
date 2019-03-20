@@ -11,7 +11,7 @@ class LoadQuestionTypes
         Yii::import('questiontypes.ArrayFlexibleRow.*');
         Yii::import('questiontypes.ArrayMultiFlexNumbers.*');
         Yii::import('questiontypes.ArrayMultiFlexText.*');
-        Yii::import('questiontypes.ArrayMultiScale.*');
+        Yii::import('questiontypes.ArrayMultiscale.*');
         Yii::import('questiontypes.ArrayOfIncSameDecQuestions.*');
         Yii::import('questiontypes.ArrayYesUncertainNo.*');
         Yii::import('questiontypes.BoilerplateQuestion.*');
