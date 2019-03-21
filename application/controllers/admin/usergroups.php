@@ -50,7 +50,7 @@ class Usergroups extends Survey_Common_Action
                 $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
                 $mailer->emailType = "mailsendusergroup";
                 $oUserFrom = User::model()->findByPk(Yii::app()->session['loginID']);
-                $fromName = empty($oUserFrom->full_name) ? $from_user_row->users_name : $oUserFrom->full_name;
+                $fromName = empty($oUserFrom->full_name) ? $oUserFrom->users_name : $oUserFrom->full_name;
                 $mailer->setFrom($oUserFrom->email,$fromName);
                 if(Yii::app()->getRequest()->getPost('copymail') == 1) {
                     $mailer->addCC($oUserFrom->email,$fromName);
