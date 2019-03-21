@@ -408,7 +408,6 @@ class InstallerConfigForm extends CFormModel
             if ($this->dbtype != self::DB_TYPE_SQLSRV && $this->dbtype != self::DB_TYPE_DBLIB) {
                 $this->db->emulatePrepare = true;
             }
-            $this->db->active = true;
             $this->db->tablePrefix = $this->dbprefix;
             $this->setMySQLDefaultEngine($this->dbengine);
 
