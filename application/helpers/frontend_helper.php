@@ -592,7 +592,13 @@ function submitfailed($errormsg = '', $query = null)
         . ($query ? $query : '')."\n\n"  // In case we have no global subquery, but an argument to the function
         . gT("ERROR MESSAGE", "unescaped").":\n"
         . $errormsg."\n\n";
-        SendEmailMessage($email, gT("Error saving results", "unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
+        $mailer = new \LimeMailer;
+        $mailer->emailType = "errorsavingresults";
+        $mailer->Subject = gT("Error saving results","unescaped");
+        $mailer->Body = $email;
+        $mailer->setSurvey($surveyid);
+        $mailer->addAddress($thissurvey['adminemail']);
+        $mailer->sendMessage();
     } else {
         $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a><br /><br />\n";
         $completed .= $subquery;
