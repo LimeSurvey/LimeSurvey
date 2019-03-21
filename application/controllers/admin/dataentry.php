@@ -1662,7 +1662,7 @@ class dataentry extends Survey_Common_Action
                     $arSaveControl->identifier = $saver['identifier'];
                     $arSaveControl->access_code = $password;
                     $arSaveControl->email = $saver['email'];
-                    $arSaveControl->ip = $aUserData['ip_address'];
+                    $arSaveControl->ip = !empty($aUserData['ip_address']) ? $aUserData['ip_address'] : "";
                     $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
                     $arSaveControl->saved_thisstep = 0;
                     $arSaveControl->status = 'S';
@@ -1689,7 +1689,11 @@ class dataentry extends Survey_Common_Action
                         if ($saver['email']) {
                             //Send email
                             if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
-                                $subject = gT("Saved Survey Details");
+                                $mailer = New \LimeMailer;
+                                $mailer->addAddress($saver['email']);
+                                $mailer->setSurvey($surveyid);
+                                $mailer->emailType = 'savesurveydetails';
+                                $mailer->Subject = gT("Saved Survey Details");
                                 $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                                 $message .= "\n\n".$thissurvey['name']."\n\n";
                                 $message .= gT("Name").": ".$saver['identifier']."\n";
@@ -1697,10 +1701,11 @@ class dataentry extends Survey_Common_Action
                                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
                                 $aParams = array('lang'=>$saver['language'], 'loadname'=>$saver['identifier'], 'loadpass'=>$saver['password']);
                                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$arSaveControl->scid}/", $aParams);
-                                $from     = $thissurvey['adminemail'];
-                                $sitename = Yii::app()->getConfig('sitename');
-                                if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid))) {
-                                    $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("An email has been sent with details about your saved survey"));
+                                $mailer->Body = $message;
+                                if ($mailer->sendMessage()) {
+                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class'=>'successtitle text-success'), gT("An email has been sent with details about your saved survey"));
+                                } else {
+                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class'=>'errortitle text-danger'), sprintf(gT("Unable to send email about your saved survey with error %s."),$mailer->getError()));
                                 }
                             }
                         }

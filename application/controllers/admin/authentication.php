@@ -283,7 +283,7 @@ class Authentication extends Survey_Common_Action
         $body   = implode("\n", $body);
         $mailer->Body = $body;
         /* Go to send email and set password */
-        if ($mailer->SendEmailMessage()) {
+        if ($mailer->sendMessage()) {
             User::updatePassword($arUser['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
             $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.');
