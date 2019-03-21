@@ -2021,7 +2021,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
     if (Yii::app()->getConfig("emailsmtpdebug") > 0 && $mail->getDebug()) {
         $maildebug .= '<br><strong>'.gT('SMTP debug output:').'</strong>'.$mail->getDebug('html');
     }
-    tracevar($maildebug);
     return $sent;
 }
 

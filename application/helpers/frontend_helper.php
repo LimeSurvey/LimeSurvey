@@ -465,7 +465,6 @@ function sendSubmitNotifications($surveyid)
     $aReplacementVars['ANSWERTABLE'] = '';
     $aEmailResponseTo = array();
     $aEmailNotificationTo = array();
-    $sResponseData = "";
 
     if (!empty($thissurvey['emailnotificationto'])) {
         $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' =>$thissurvey['adminemail']),3, true));
@@ -496,8 +495,6 @@ function sendSubmitNotifications($surveyid)
         $aFullResponseTable = getFullResponseTable($surveyid, $_SESSION['survey_'.$surveyid]['srid'], $_SESSION['survey_'.$surveyid]['s_lang']);
         $ResultTableHTML = "<table class='printouttable' >\n";
         $ResultTableText = "\n\n";
-        $oldgid = 0;
-        $oldqid = 0;
         Yii::import('application.helpers.viewHelper');
         foreach ($aFullResponseTable as $sFieldname=>$fname) {
             if (substr($sFieldname, 0, 4) == 'gid_') {
