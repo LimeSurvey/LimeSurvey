@@ -1951,7 +1951,8 @@ function jsonEscape($str, $strip_tags = false, $htmldecode = false)
 /**
 * This function mails a text $body to the recipient $to.
 * You can use more than one recipient when using a semicolon separated string with recipients.
-*
+* @deprecated : leave it in 4.0 for plugins ? Must remove in 5.0 at minima.
+* 
 * @param string $body Body text of the email in plain text or HTML
 * @param mixed $subject Email subject
 * @param mixed $to Array with several email addresses or single string with one email address
@@ -1964,7 +1965,7 @@ function jsonEscape($str, $strip_tags = false, $htmldecode = false)
 */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
 {
-    global $maildebug, $maildebugbody;
+    global $maildebug;
 
     if (!is_array($to)) {
         $to = array($to);
