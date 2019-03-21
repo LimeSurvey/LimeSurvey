@@ -656,17 +656,17 @@ class statistics_helper
             $qaid = $aQuestionInfo['aid'];
 
             //get question data
-            $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
+            $nresult = Question::model()->with('questionL10ns')->find('language=:language AND parent_qid=0 AND t.qid=:qid', array(':language'=>$language, ':qid'=>$qqid));
             $qtitle = $nresult->title;
             $qtype = $nresult->type;
-            $qquestion = flattenText($nresult->question);
+            $qquestion = flattenText($nresult->questionL10ns[$language]->question);
 
             //get answers / subquestion text
-            $nresult = Question::model()->find(array('order'=>'question_order',
+            $nresult = Question::model()->with('questionL10ns')->find(array('order'=>'question_order',
                 'condition'=>'language=:language AND parent_qid=:parent_qid AND title=:title',
                 'params'=>array(':language'=>$language, ':parent_qid'=>$qqid, ':title'=>$qaid)
             ));
-            $atext = flattenText($nresult->question);
+            $atext = flattenText($nresult->questionL10ns[$language]->question);
             //add this to the question title
             $qtitle .= " [$atext]";
 
@@ -688,7 +688,7 @@ class statistics_helper
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-") - ($lengthofnumeral + 1)), 3);
 
             //get question data
-            $nquery = "SELECT title, type, question FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+            $nquery = "SELECT title, type, question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid WHERE q.parent_qid=0 AND q.qid='$qqid' AND l.language='{$language}'";
             $nresult = Yii::app()->db->createCommand($nquery)->query();
 
             //loop through question data
@@ -700,7 +700,7 @@ class statistics_helper
             }
 
             //get answers
-            $query = "SELECT code, answer FROM {{answers}} WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+            $query = "SELECT code, answer FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid WHERE a.qid='$qqid' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, l.answer";
             $result = Yii::app()->db->createCommand($query)->query();
 
             //loop through answers
@@ -845,7 +845,7 @@ class statistics_helper
 
                 $qtitle = flattenText($fielddata['title']);
                 $qtype = $fielddata['type'];
-                $qquestion = $fielddata['question'];
+                $qquestion = LimeExpressionManager::ProcessString($fielddata['question'], $qqid, NULL, 1, 1, false, true, true);
 
                 //Get answer texts for multiple numerical
                 if (substr($rt, 0, 1) == "K") {
@@ -1166,7 +1166,6 @@ class statistics_helper
                     $qresult = Question::model()->findAll(array('condition'=>'parent_qid=:parent_qid AND title=:title', 'params'=>array(":parent_qid"=>$qiqid, ':title'=>$qanswer)));
                     //loop through results
                     foreach ($qresult as $qrow) {
-                        $qrow = array_values($qrow);
                         //5-point array
                         for ($i = 1; $i <= 5; $i++) {
                             //add data
@@ -1339,7 +1338,8 @@ class statistics_helper
                 case Question::QT_1_ARRAY_MULTISCALE:    //array (dual scale)
 
 
-                    $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
+                    $sSubquestionQuery = "SELECT  question FROM {{questions}} q JOIN {{question_l10ns}} l ON q.qid = l.qid  WHERE q.parent_qid='$qiqid' AND q.title='$qanswer' AND l.language='{$language}' ORDER BY q.question_order";
+
                     $questionDesc = Yii::app()->db->createCommand($sSubquestionQuery)->query()->read();
                     $sSubquestion = flattenText($questionDesc['question']);
 
@@ -1350,7 +1350,7 @@ class statistics_helper
                     //check last character -> label 1
                     if (substr($rt, -1, 1) == 0) {
                         //get label 1
-                        $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qqid}' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, code";
+                        $fquery = "SELECT * FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='{$qqid}' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, a.code";
 
                         //header available?
                         if (trim($aQuestionAttributes['dualscale_headerA'][$language]) != '') {
@@ -1370,7 +1370,7 @@ class statistics_helper
                     //label 2
                     else {
                         //get label 2
-                        $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qqid}' AND scale_id=1 AND language='{$language}' ORDER BY sortorder, code";
+                        $fquery = "SELECT * FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='{$qqid}' AND a.scale_id=1 AND l.language='{$language}' ORDER BY a.sortorder, a.code";
 
                         //header available?
                         if (trim($aQuestionAttributes['dualscale_headerB'][$language]) != '') {
@@ -1551,7 +1551,7 @@ class statistics_helper
 
             //"other" handling
             //"Answer" means that we show an option to list answer to "other" text field
-            elseif ($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") {
+            elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
 
                 if ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
                     $sColumnName = $al[2]."comment";
@@ -2311,8 +2311,8 @@ class statistics_helper
 
             //"other" handling
             //"Answer" means that we show an option to list answer to "other" text field
-            elseif ($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") {
-                if ($outputs['qtype'] == Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS) {
+            elseif (($al[0] === gT("Other") || $al[0] === "Answer" || ($outputs['qtype'] === "O" && $al[0] === gT("Comments")) || $outputs['qtype'] === "P") && count($al) > 2) {
+                if ($outputs['qtype'] == "P") {
                     $sColumnName = $al[2]."comment";
                 } else {
                     $sColumnName = $al[2];
@@ -3572,7 +3572,7 @@ class statistics_helper
                 if ($field['type'] == Question::QT_F_ARRAY_FLEXIBLE_ROW || $field['type'] == "Question::QT_H_ARRAY_FLEXIBLE_COLUMN") {
                     {
                         //Get answers. We always use the answer code because the label might be too long elsewise
-                        $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+                        $query = "SELECT code, answer FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='".$field['qid']."' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, l.answer";
                         $result = Yii::app()->db->createCommand($query)->query();
 
                         //check all the answers
@@ -3785,7 +3785,7 @@ class statistics_helper
 
                 if ($field['type'] == "F" || $field['type'] == "H") {
                     //Get answers. We always use the answer code because the label might be too long elsewise
-                    $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+                    $query = "SELECT code, answer FROM {{answers}} a JOIN {{answer_l10ns}} l ON a.aid = l.aid  WHERE a.qid='".$field['qid']."' AND a.scale_id=0 AND l.language='{$language}' ORDER BY a.sortorder, l.answer";
                     $result = Yii::app()->db->createCommand($query)->query();
 
                     //check all the answers

@@ -122,20 +122,20 @@ $aReplacementData=array();
 
             <!-- Delete -->
             <?php if( $activated != "Y" && Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete' )):?>
-                <a class="btn btn-default"
+                <button class="btn btn-default"
                    data-toggle="modal"
-                   data-href="<?php echo $this->createUrl("admin/questions/sa/delete/surveyid/$surveyid/qid/$qid"); ?>"
                    data-target="#confirmation-modal"
+                   data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $surveyid, "qid" => $qid, "gid"=>$gid])); ?> })'
                    data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
                    >
                     <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete"); ?>
-                </a>
+                </button>
             <?php elseif (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete')): ?>
-                <a class="btn btn-default readonly btntooltip" href="#" role="button" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
+                <button class="btn btn-default btntooltip" disabled data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
                     <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete"); ?>
-                </a>
+                </button>
                 <?php // NB: Don't show delete button if user has no delete permission. ?>
             <?php endif; ?>
 

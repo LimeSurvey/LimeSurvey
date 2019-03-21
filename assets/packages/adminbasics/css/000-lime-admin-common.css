@@ -2168,6 +2168,10 @@ table#responsedetail tr td{
     background-color: inherit;
 }
 
+#responses-grid .filter-container{
+    min-width: 6em; /* defaut em is 13px : 75/13 = 5.76… */
+}
+
 .edit-participant-modal-body {
     max-height: 500px;
     overflow-y: auto;
@@ -2323,9 +2327,9 @@ input[type="file"].form-control {
   body.onStatistics h5:not(.printable),
   body.onStatistics .jumbotron,
   body.onStatistics .menubar,
-  body.onStatistics>div:not(#vue-app-main-container),
-  body.onStatistics div#vue-app-main-container>div:not(#pjax-content),
-  body.onStatistics div#vue-app-main-container>div#pjax-content>div:not(#in_survey_common),
+  body.onStatistics>div:not(#vue-apps-main-container),
+  body.onStatistics div#vue-apps-main-container>div:not(#pjax-content),
+  body.onStatistics div#vue-apps-main-container>div#pjax-content>div:not(#in_survey_common),
   body.onStatistics div#in_survey_common>div:not(#statisticsview)
   {
     display: none !important;
@@ -2349,9 +2353,9 @@ input[type="file"].form-control {
     position: static;
   }
 
-  body.onStatistics>div#vue-app-main-container,
+  body.onStatistics>div#vue-apps-main-container,
   body.onStatistics div#in_survey_common,
-  body.onStatistics>div#vue-app-main-container>div#pjax-content,
+  body.onStatistics>div#vue-apps-main-container>div#pjax-content,
   body.onStatistics #statisticsview {
     display: block;
     position: static;
@@ -3339,4 +3343,14 @@ input[type="file"].form-control {
 }
 .custom.custom-margin-responsive.small.bottom-35 {
   margin-bottom: 35px;
+}
+
+textarea.form-control.input-text{
+/* Show a textarea not so big at starting */
+height:2.4em;
+}
+
+.template-files-delete-button{
+    margin: 1px 0 0 0;
+    padding: 0 5px;
 }

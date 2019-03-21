@@ -499,7 +499,7 @@ export default {
 };
 </script>
 <template>
-    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}" @mouseleave="mouseleave" @mouseup="mouseup">
+    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{'max-height': $store.state.inSurveyViewHeight}" @mouseleave="mouseleave" @mouseup="mouseup">
         <div class="sidebar_loader" :style="{width: getSideBarWidth, height: getloaderHeight}" v-if="showLoader"><div class="ls-flex ls-flex-column fill align-content-center align-items-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></div></div>
         <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
             <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">

@@ -5,14 +5,17 @@
 
 language: php
 php:
-    - 7.0
-    - 7.1
     - 7.2
 env:
   - DBENGINE=MYISAM
   - DBENGINE=INNODB
 
-
+notifications:
+  email:
+    recipients:
+      - secure: "1x0CmJbr8GWdS7OJ5PRchf0lDxNk4quRfbZ4Slu4GnEMh599Bo1jhsRZnc5ghOf9Yuwn4FzB4Oyfr6tIXP63FbUE2F4lhCwluxw7BWRmjvwMncctWqgDu7Jn3HRXlTdoVNhPlspBsbsNw7waeER6+jv6YFyMKH6gYXtUqloCuyrrhkLWetpj5qvGXmEV22Rhh0kLl9q/Khu0hI8eS022wLs1hQFurc4xbCvpSpcSzmxaD6gevKCuRiLJbG3QsT7lTAwm6U1QqSEMQP5QKhvQ01klttVD3KG2/F6Gs5pKhiNSKYmzeI5OqU7BggQQKCTBi1G0FNsqtFi+InwBoY09RrHpbGDzCOfeRqr/DQAiZKxt2p4d7OEwPcbojvHSG4gG3hIfScCyJGNVa9hZAfR7qyg1wcQdAUfZB+DFNE9FaYdXHFsjKtq/iHROqnS6FNFJF2hRR8diltDTdra5A81LuZcsA82WAj1PPT07kzzKfcbSHHfHaT2H8bzZ3LLd7rjUqW1hd5pK/TfhtPOLCiSLmcktbppcM5V64e9ZoPmywVsFD3GJ+kxBqQ6hx40JcyKkFmiU6WGoYurt/OhXMvRtkWVbeF52M7Mzpx9Iyh48mf3Xm55Q5GnYv0gKKgwYAllPOFXuNCk+DVcs4inpTvwQsCt/7W2RGwMIxlDhJ0+QySk="
+    on_success: change
+    on_failure: always 
 before_script:
     # Test
     #- sudo apt-get update
@@ -20,14 +23,13 @@ before_script:
 
     # disable xdebug to speed up tests
     - phpenv config-rm xdebug.ini
+
     # Install LimeSurvey.
-    - phpunit --version
     - mysql --version
     - touch enabletests
-      #- rm composer.lock
-      #- rm -r third_party
-    - composer remove --dev vimeo/psalm
-    - composer install
+    # NB: PHPUnit 6.5.* is installed with composer.
+    - composer update
+    - ./third_party/bin/phpunit --version
     - chmod -R 777 tmp
     - chmod -R 777 upload
     - chmod -R 777 themes  # Need 777 so both console and web server can cd into the folder.
@@ -45,9 +47,9 @@ before_script:
 
     - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
-    # Enable debug=2 in config file. OBS: This assumes debug is on line 59.
+    # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
     # TODO: Disable, a lines was added to config file and some tests started to fail.
-    # - sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
+    # - sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
 
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
@@ -86,7 +88,9 @@ before_script:
     - tar xvzf geckodriver-v0.23.0-linux64.tar.gz
     - export MOZ_HEADLESS=1
     - java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
-
+  
 script:
     # Run tests.
-    - DOMAIN=localhost phpunit # --stop-on-failure
+    - DOMAIN=localhost ./third_party/bin/phpunit
+
+

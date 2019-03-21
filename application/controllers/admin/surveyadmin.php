@@ -516,6 +516,7 @@ class SurveyAdmin extends Survey_Common_Action
                     if (is_object($question)) {
                         $curQuestion = $question->attributes;
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questions/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
+                        $curQuestion['editLink'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($question->questionL10ns[$baselang]->question, true);
                         $curGroup['questions'][] = $curQuestion;
                     }
@@ -1434,13 +1435,10 @@ class SurveyAdmin extends Survey_Common_Action
     {
         $aData = [];
         $aData['surveyid'] = $iSurveyID;
-        if ($iSurveyID > 0){
-            $survey = Survey::model()->findByPk($iSurveyID);
-        } else {
-            $survey = new Survey;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (empty($oSurvey)) {
+            $oSurvey = new Survey;
         }
-
-        // Get users, but we only need id and name (NOT password etc)
         $inheritOwner = empty($oSurvey->oOptions->ownerLabel) ? $oSurvey->owner_id : $oSurvey->oOptions->ownerLabel;
         $users = getUserList();
         $aData['users'] = array();
@@ -1491,6 +1489,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editDataSecurityLocalSettings_view', $aLanguageData, true);
         }
 
+
         $aData['aTabContents'] = $aTabContents;
         $aData['aTabTitles'] = $aTabTitles;
         return $aData;
@@ -1501,6 +1500,7 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _getTextEditData($survey)
     {
+
         Yii::app()->loadHelper("admin/htmleditor");
         $aData = $aTabTitles = $aTabContents = array();
 

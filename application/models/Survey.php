@@ -145,6 +145,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property bool $isNoKeyboard Show on-screen keyboard
  * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  * @property SurveyLanguageSetting $defaultlanguage
+ * @property boolean $isDateExpired Whether survey is expired depending on the current time and survey configuration status
  * @method mixed active()
  */
 class Survey extends LSActiveRecord
@@ -1162,6 +1163,23 @@ class Survey extends LSActiveRecord
         }
     }
 
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function getIsDateExpired()
+    {
+        if (!empty($this->expires)) {
+            $sNow = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
+            $sStop = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
+
+            $oNow = new DateTime($sNow);
+            $oStop = new DateTime($sStop);
+            return $oStop < $oNow;
+        }
+        return false;
+    }
+
 
     /**
      * @todo Document code, please.
@@ -1221,7 +1239,9 @@ class Survey extends LSActiveRecord
     public function getPartialAnswers()
     {
         $table = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if (!Yii::app()->db->schema->getTable($table)) {
             return null;
         } else {
@@ -1445,7 +1465,9 @@ class Survey extends LSActiveRecord
     public function getFullAnswers()
     {
         $table = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if (!Yii::app()->db->schema->getTable($table)) {
             return null;
         } else {
@@ -1465,7 +1487,9 @@ class Survey extends LSActiveRecord
     public function getCountFullAnswers()
     {
         $sResponseTable = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1484,7 +1508,9 @@ class Survey extends LSActiveRecord
     public function getCountPartialAnswers()
     {
         $table = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if ($this->active != 'Y') {
             return 0;
         } else {

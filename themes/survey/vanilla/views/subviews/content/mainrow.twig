@@ -19,9 +19,10 @@
     <div class="{{ aSurveyInfo.class.maincol }} col-centered  space-col" id="{{ aSurveyInfo.id.maincol }}" {{ aSurveyInfo.attr.maincol }}>
 
         {# This is the main block that will be replaced/extended by other layouts#}
-
             {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
             {{ include('./subviews/messages/warnings.twig') }}
+            {# Include the just saved success #}
+            {{ include('./subviews/messages/justsaved.twig') }}
 
             {# Wich file to include for content is decided inside the layout #}
             {% if(include_content) != "./subviews/content/" %}

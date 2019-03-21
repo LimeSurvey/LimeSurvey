@@ -261,6 +261,44 @@
                     </div>
                 </div>
 
+                {# Fix num auto (and real num value) #}
+                <div class='col-sm-12 col-md-4 col-lg-3'>
+                    <div class='form-group row'>
+                        <label for='simple_edit_options_fixnumauto' class='control-label'>{{ gT("Fix automatically numeric value") }}</label>
+                        <div class='col-sm-12'>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    {# bFixNumAuto : 1 and bNumRealValue : 0 #}
+                                    <input type='radio' name='fixnumauto' value='enable' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
+                                    {{ gT("Yes") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    {# bFixNumAuto : 0 and bNumRealValue : 0 #}
+                                    <input type='radio' name='fixnumauto' value='partial' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
+                                    {{ gT("For expression") }}
+                                </label>
+                                <label class="btn btn-default">
+                                    {# bFixNumAuto : 0 and bNumRealValue : 1 #}
+                                    <input type='radio' name='fixnumauto' value='disable' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
+                                    {{ gT("No") }}
+                                </label>
+                                {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='fixnumauto' value='inherit' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
+                                        {{ gT("Inherit") }} [{{ oParentOptions.fixnumauto == gT("No") ? gT("Default") : oParentOptions.fixnumauto }}]
+                                    </label>
+                                {% else %}
+                                    {# Since added after theme distribution and don't want reset : use empty value for leave default #}
+                                    <label class="btn btn-default">
+                                        <input type='radio' name='fixnumauto' value='off' class='selector_option_radio_field simple_edit_options_fixnumauto' data-id='fixnumauto'/>
+                                        {{ gT("Default") }}
+                                    </label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class='row action_hide_on_inherit'>
                 <hr/>
@@ -336,12 +374,12 @@
             <div class='row'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>{{ gT("Fruity fonts") }}</div>
+                        <div class='panel-heading'>{{ sprintf( gT("%s fonts"), templateConfiguration.template_name)|capitalize }}</div>
                         <div class='panel-body'>
                             <div class='form-group row'>
-                                <label for='simple_edit_font' class='control-label'>{{ gT("Select font:") }}</label>
+                                <label for='simple_edit_options_font' class='control-label'>{{ gT("Select font:") }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load|json_encode}}'>
+                                    <select class='form-control selector_option_value_field' id='simple_edit_options_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>
                                         {{ fontOptions }}
                                     </select>
                                 </div>

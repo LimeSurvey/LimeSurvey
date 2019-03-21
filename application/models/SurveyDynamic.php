@@ -782,6 +782,14 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         $aQuestionAttributes = $oQuestion->attributes;
+        $aQuestionAttributes['questionSrc'] = $oQuestion->question;
+        $result = LimeExpressionManager::ProcessString($oQuestion->question, 40, NULL, 1, 1);
+        $aQuestionAttributes['question'] = $result;
+
+        $aQuestionAttributes['helpSrc'] = $oQuestion->help;
+        $result = LimeExpressionManager::ProcessString($oQuestion->help, 40, NULL, 1, 1);
+        $aQuestionAttributes['help'] = $result;
+
 
         $aQuestionAttributes['questionSrc'] = $oQuestion->question;
         $result = LimeExpressionManager::ProcessString($oQuestion->question, 40, NULL, 1, 1);
@@ -817,7 +825,7 @@ class SurveyDynamic extends LSActiveRecord
                     "type" => "T",
                     "parent_qid" => $oQuestion->qid,
                     "qid" => "other",
-                    "question" => "other",
+                    "question" => !empty($attributes['other_replace_text'][$oQuestion->language]) ? $attributes['other_replace_text'][$oQuestion->language] : gT("Other"),
                     "title" => "other",
                 ), false);
                 $aQuestionAttributes['subquestions']["other"] = $this->getQuestionArray($oOtherQuestion, $oResponses,  $bHonorConditions, true);
@@ -871,8 +879,12 @@ class SurveyDynamic extends LSActiveRecord
                 return $aQuestionAttributes['answervalue'] == $oAnswer->code ? $oAnswer : $carry;
             });
 
-            if($oSelectedAnswerOption !== null)
+            if($oSelectedAnswerOption !== null){
                 $aQuestionAttributes['answeroption'] = $oSelectedAnswerOption->attributes;
+            } elseif ($oQuestion->other == 'Y'){
+                $aQuestionAttributes['answervalue'] = !empty($attributes['other_replace_text'][$oQuestion->language]) ? $attributes['other_replace_text'][$oQuestion->language] : gT("Other");
+                $aQuestionAttributes['answeroption']['answer'] = isset($oResponses[$fieldname.'other']) ? $oResponses[$fieldname.'other'] : null;
+            }
         }
 
         if ($aQuestionAttributes['questionclass'] === 'language') {

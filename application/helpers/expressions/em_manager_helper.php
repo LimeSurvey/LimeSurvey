@@ -333,7 +333,7 @@
         * 'type' => 'N'    // the one character question type
         * 'hidden' => 0    // 1 if it should be always_hidden
         * 'gid' => "34"    // group id
-        * 'mandatory' => 'N'   // 'Y' if mandatory
+        * 'mandatory' => 'N'   // 'Y' if mandatory, 'S' if soft mandatory
         * 'eqn' => ""  // TODO ??
         * 'help' => "" // the help text
         * 'qtext' => "Enter a larger number than {num}"    // the question text
@@ -1827,7 +1827,7 @@
                             'qtype' => $type,
                             'type' => 'equals_num_value',
                             'class' => 'sum_equals',
-                            'eqn' =>  ($qinfo['mandatory']=='Y')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
+                            'eqn' =>  ($qinfo['mandatory']=='Y' || $qinfo['mandatory']=='S')?'(' . $mainEqn . ' == (' . $equals_num_value . '))':'(' . $mainEqn . ' == (' . $equals_num_value . ')' . $noanswer_option . ')',
                             'qid' => $questionNum,
                             'sumEqn' => $sumEqn,
                             'sumRemainingEqn' => $sumRemainingEqn,
@@ -3683,6 +3683,18 @@
                 'jsName'=>'',
                 'readWrite'=>'N',
             );
+            $this->knownVars['TOKEN'] = array(
+                'code'=>'',
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+            );
+            $this->knownVars['SAVEDID'] = array(
+                'code'=>'',
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+            );
             if($survey->getIsAssessments()) {
                 $this->knownVars['ASSESSMENT_CURRENT_TOTAL'] = array(
                     'code'=> 0,
@@ -4313,6 +4325,7 @@
             $this->q2subqInfo = $q2subqInfo;
             // Now set tokens
             if ($survey->hasTokensTable && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '') {
+                
                 //Gather survey data for tokenised surveys, for use in presenting questions
                 $this->knownVars['TOKEN:TOKEN'] = array(
                     'code'=>$_SESSION[$this->sessid]['token'],
@@ -5137,6 +5150,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=> (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
                                 'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5199,6 +5213,7 @@
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'qseq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> $result['mandViolation'],
+                                'mandSoft'=> (isset($result['mandSoft'])) ? $result['mandSoft'] : false,
                                 'valid'=> $result['valid'],
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5246,6 +5261,7 @@
                         'gseq'=>1,
                         'seq'=>1,
                         'mandViolation'=>$result['mandViolation'],
+                        'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                         'valid'=>$result['valid'],
                         'unansweredSQs'=>$result['unansweredSQs'],
                         'invalidSQs'=>$result['invalidSQs'],
@@ -5273,6 +5289,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=>$result['mandViolation'],
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=>$result['valid'],
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5293,6 +5310,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=>(isset($result['valid']) ? $result['valid'] : false), // Why return invalid if it's not set ?
                                 'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                                 'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
@@ -5322,6 +5340,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5354,6 +5373,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> $result['mandViolation'],
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=> $result['valid'],
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5375,6 +5395,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                                 'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                                 'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
@@ -5417,6 +5438,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : false),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5646,6 +5668,12 @@
                     $message .= $query;
                 }
             }
+            $this->knownVars["SAVEDID"] = array(
+                'code'=>$_SESSION[$this->sessid]['srid'],
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+            );
             return $message;
         }
 
@@ -5716,6 +5744,7 @@
                         'gseq'=>1,
                         'seq'=>1,
                         'mandViolation'=>$result['mandViolation'],
+                        'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                         'valid'=>$result['valid'],
                         'unansweredSQs'=>$result['unansweredSQs'],
                         'invalidSQs'=>$result['invalidSQs'],
@@ -5746,6 +5775,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=>$result['mandViolation'],
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=>$result['valid'],
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5769,6 +5799,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=>(isset($result['valid']) ? $result['valid'] : false),
                                 'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                                 'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
@@ -5806,6 +5837,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentGroupSeq,
                                 'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5840,6 +5872,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5864,6 +5897,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> (isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=> (isset($result['valid']) ? $result['valid'] : false),
                                 'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
                                 'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
@@ -5915,6 +5949,7 @@
                                 'gseq'=>$LEM->currentGroupSeq,
                                 'seq'=>$LEM->currentQuestionSeq,
                                 'mandViolation'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['mandViolation'] : false),
+                                'mandSoft'=>(isset($result['mandSoft']) ? $result['mandSoft'] : false),
                                 'valid'=> (($LEM->maxQuestionSeq > $LEM->currentQuestionSeq) ? $result['valid'] : true),
                                 'unansweredSQs'=>$result['unansweredSQs'],
                                 'invalidSQs'=>$result['invalidSQs'],
@@ -5939,6 +5974,7 @@
             $srel=false;
             $shidden=true;
             $smandViolation=false;
+            $smandSoft=false;
             $svalid=true;
             $unansweredSQs = array();
             $invalidSQs = array();
@@ -5965,6 +6001,9 @@
                 if ($gStatus['relevant'] && !$gStatus['hidden'] && $gStatus['mandViolation']) {
                     $smandViolation = true;
                 }
+                if ($gStatus['mandSoft']) {
+                    $smandSoft = true;
+                }
                 if ($gStatus['relevant'] && !$gStatus['hidden'] && !$gStatus['valid']) {
                     $svalid=false;
                 }
@@ -5990,6 +6029,7 @@
             'relevant' => $srel,
             'hidden' => $shidden,
             'mandViolation' => $smandViolation,
+            'mandSoft'=>(isset($smandSoft) ? $smandSoft : false),
             'valid' => $svalid,
             'anyUnanswered' => $sanyUnanswered,
             'message' => $message,
@@ -6026,6 +6066,7 @@
             $grel=false;  // assume irrelevant until find a relevant question
             $ghidden=true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
             $gmandViolation=false;  // assume that the group contains no manditory questions that have not been fully answered
+            $gmandSoft=false;  // assume that the group contains no SOFT manditory questions that have not been fully answered
             $gvalid=true;   // assume valid until discover otherwise
             $debug_message = '';
             $messages = array();
@@ -6068,6 +6109,11 @@
                 }
                 if (strlen($qStatus['invalidSQs']) > 0) {
                     $invalidSQs[] = $qStatus['invalidSQs'];
+                }
+
+                // SOFT mandatory
+                if ($qStatus['mandSoft'] == true){
+                    $gmandSoft=true;   // at least one relevant question fails mandatory test
                 }
             }
             $unansweredSQList = implode('|',$unansweredSQs);
@@ -6131,31 +6177,33 @@
             // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
             //////////////////////////////////////////////////////////////////////////
             $currentGroupInfo = array(
-                'gseq' => $groupSeq,
-                'message' => $debug_message,
-                'relevant' => $grel,
-                'hidden' => $ghidden,
-                'mandViolation' => $gmandViolation,
-                'valid' => $gvalid,
-                'qset' => $currentQset,
-                'unansweredSQs' => $unansweredSQList,
-                'anyUnanswered' => $ganyUnanswered,
-                'invalidSQs' => $invalidSQList,
-                'updatedValues' => $updatedValues,
+            'gseq' => $groupSeq,
+            'message' => $debug_message,
+            'relevant' => $grel,
+            'hidden' => $ghidden,
+            'mandViolation' => $gmandViolation,
+            'mandSoft' => $gmandSoft,
+            'valid' => $gvalid,
+            'qset' => $currentQset,
+            'unansweredSQs' => $unansweredSQList,
+            'anyUnanswered' => $ganyUnanswered,
+            'invalidSQs' => $invalidSQList,
+            'updatedValues' => $updatedValues,
             );
 
             ////////////////////////////////////////////////////////
             // STORE METADATA NEEDED TO GENERATE NAVIGATION INDEX //
             ////////////////////////////////////////////////////////
             $LEM->indexGseq[$groupSeq] = array(
-                'gtext' => $LEM->gseq2info[$groupSeq]['description'],
-                'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
-                'gid' => $LEM->gseq2info[$groupSeq]['gid'], // TODO how used if random?
-                'anyUnanswered' => $ganyUnanswered,
-                'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
-                'valid' => $gvalid,
-                'mandViolation' => $gmandViolation,
-                'show' => (($grel && !$ghidden) ? true : false),
+            'gtext' => $LEM->gseq2info[$groupSeq]['description'],
+            'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
+            'gid' => $LEM->gseq2info[$groupSeq]['gid'], // TODO how used if random?
+            'anyUnanswered' => $ganyUnanswered,
+            'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
+            'valid' => $gvalid,
+            'mandViolation' => $gmandViolation,
+            'mandSoft' => $gmandSoft,
+            'show' => (($grel && !$ghidden) ? true : false),
             );
 
             $LEM->gseq2relevanceStatus[$gseq] = $grel;
@@ -6193,6 +6241,7 @@
 
             $gRelInfo = $LEM->gRelInfo[$qInfo['gseq']];
             $grel = $gRelInfo['result'];
+            $sMandatoryText = '';
 
             ///////////////////////////
             // IS QUESTION RELEVANT? //
@@ -6509,12 +6558,15 @@
             //////////////////////////////////////////////
             $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
             $mandatoryTip = '';
-            if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y'))
+            // bypass validation if soft mandatory button was pressed
+            if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft')))
             {
                 //$mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='fa fa-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
-                $mandatoryTip = Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                $mandatoryTip = App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                         'sMandatoryText'=>$LEM->gT('This question is mandatory'),
-                ), true);
+                        'part' => 'initial',
+                        'qInfo' => $qInfo
+                ));
                 switch ($qInfo['type'])
                 {
                     case Question::QT_M_MULTIPLE_CHOICE:
@@ -6528,10 +6580,11 @@
                         }
                         if (!($qInfo['type'] == Question::QT_EXCLAMATION_LIST_DROPDOWN || $qInfo['type'] == Question::QT_L_LIST_DROPDOWN))
                         {
-                            $sMandatoryText = $LEM->gT('Please check at least one item.');
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                            $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
-                            ), true);
+                                    'part' => 'multiplechoice',
+                                    'qInfo' => $qInfo
+                            ));
                         }
                         if ($qInfo['other']=='Y')
                         {
@@ -6544,10 +6597,11 @@
                             }
                             //$mandatoryTip .= "\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
                             $sMandatoryText = "\n".sprintf($this->gT("If you choose '%s' please also specify your choice in the accompanying text field."),$othertext);
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                            $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
-                            ), true);
-
+                                    'part' => 'other',
+                                    'qInfo' => $qInfo
+                            ));
                         }
                         break;
                     case Question::QT_X_BOILERPLATE_QUESTION:   // Boilerplate can never be mandatory
@@ -6569,9 +6623,11 @@
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
                         $sMandatoryText = $LEM->gT('Please complete all parts.');
-                        $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                        $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                 'sMandatoryText'=>$sMandatoryText,
-                        ), true);
+                                'part' => 'array',
+                                'qInfo' => $qInfo
+                        ));
                         break;
                     case Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS:
                         $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
@@ -6601,10 +6657,11 @@
                                 }
                             }
                             $sMandatoryText = $LEM->gT('Please check at least one box per row.');
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                            $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
-                            ), true);
-
+                                    'part' => 'arraycolumn',
+                                    'qInfo' => $qInfo
+                            ));
                         }
                         else
                         {
@@ -6613,9 +6670,11 @@
                                 $qmandViolation = true; // TODO - what about 'other'?
                             }
                             $sMandatoryText = $LEM->gT('Please complete all parts.');
-                            $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                            $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                     'sMandatoryText'=>$sMandatoryText,
-                            ), true);
+                                    'part' => 'arraycolumn',
+                                    'qInfo' => $qInfo
+                            ));
                         }
                         break;
                     case Question::QT_R_RANKING_STYLE:
@@ -6624,9 +6683,11 @@
                             $qmandViolation = true; // TODO - what about 'other'?
                         }
                         $sMandatoryText = $LEM->gT('Please rank all items.');
-                        $mandatoryTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/mandatory_tip', array(
+                        $mandatoryTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
                                 'sMandatoryText'=>$sMandatoryText,
-                        ), true);
+                                'part' => 'ranking',
+                                'qInfo' => $qInfo
+                        ));
                         break;
                     case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                         $iViolationCount=0;
@@ -6719,15 +6780,17 @@
                             $hideTip = array_key_exists('hide_tip', $qattr)?$qattr['hide_tip']:0;
 
                             $tipsDatas = array(
+
+                            );
+                            $stringToParse = App()->twigRenderer->renderPartial('/survey/questions/question_help/em_tip.twig',array(
                                 'qid'       =>$qid,
                                 'coreId'    =>"vmsg_{$qid}_{$vclass}", // If it's not this id : EM is broken
                                 'coreClass' =>"ls-em-tip em_{$vclass}",
                                 'vclass'    =>$vclass,
                                 'vtip'      =>$vtip,
-                                'hideTip'   =>($vclass == 'default' && $hideTip == 1)?true:false  // hide default tip if attribute hide_tip is set to 1
-                            );
-
-                            $stringToParse .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/em-tip', $tipsDatas, true);
+                                'hideTip'   =>($vclass == 'default' && $hideTip == 1)?true:false,  // hide default tip if attribute hide_tip is set to 1
+                                'qInfo'    => $qInfo,
+                            ));
                         }
                     }
 
@@ -6756,13 +6819,13 @@
                 if($validityString && $qrel && !$qhidden)
                 {
                     /* Add the string to be showned , no js error or another class ? */
-                    $stringToParse .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/error-tip', array(
+                    $stringToParse .= App()->twigRenderer->renderPartial('/survey/questions/question_help/error_tip.twig',array(
                         'qid'=>$qid,
                         'coreId'    =>"vmsg_{$qid}_dberror",
                         'vclass'=>'dberror',
                         'coreClass'=>'ls-em-tip em_dberror',
-                        'vtip'  =>$validityString)
-                    , true);
+                        'vtip'  =>$validityString,
+                    ));
                     /* Set this question invalid (only if move next due to $force) */
                     $qvalid=false;
                 }
@@ -6789,7 +6852,7 @@
                 . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
                 . ($qrel ? 'relevant' : " <span style='color:red'>irrelevant</span> ")
                 . ($qhidden ? " <span style='color:red'>always-hidden</span> " : ' ')
-                . (($qInfo['mandatory'] == 'Y')? ' mandatory' : ' ')
+                . (($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')? ' mandatory' : ' ')
                 . (($hasValidationEqn) ? (!$qvalid ? " <span style='color:red'>(fails validation rule)</span> " : ' valid') : '')
                 . ($qmandViolation ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' ')
                 . $prettyPrintRelEqn
@@ -6962,6 +7025,13 @@
                 }
             }
 
+            // SOFT mandatory
+            if ($qInfo['mandatory'] == 'S' && !empty(App()->request->getPost('mandSoft'))){
+                $qvalid=true;
+                $qmandViolation=false;
+                $anyUnanswered = false;
+            }
+            
             //////////////////////////////////////////////////////////////////////////
             // STORE METADATA NEEDED FOR SUBSEQUENT PROCESSING AND DISPLAY PURPOSES //
             //////////////////////////////////////////////////////////////////////////
@@ -6984,6 +7054,8 @@
             'irrelevantSQs' => implode('|',$irrelevantSQs),
             'subQrelEqn' => implode('<br />',$prettyPrintSQRelEqns),
             'mandViolation' => (!$force) ? $qmandViolation : false,
+            'mandSoft' => $qInfo['mandatory'] == 'S' ? true : false,
+            'mandatory' => isset($qInfo['mandatory']) ? $qInfo['mandatory'] : 'N',
             'anyUnanswered' => $anyUnanswered,
             'mandTip' => (!$force) ? $mandatoryTip : '',
             'message' => $debug_qmessage,
@@ -7015,6 +7087,8 @@
             'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
             'gid' => $LEM->gseq2info[$groupSeq]['gid'],
             'mandViolation' => $qmandViolation,
+            'mandSoft' => $qInfo['mandatory'] == 'S' ? true : false,
+            'mandatory' => isset($qInfo['mandatory']) ? $qInfo['mandatory'] : 'N',
             'valid' => $qvalid,
             );
             $_SESSION[$LEM->sessid]['relevanceStatus'][$qid] = $qrel;
@@ -7092,7 +7166,8 @@
                     return $LEM->lastMoveResult;
                     // NB: No break needed
                 case 'group':
-                    if (is_null($step)) {
+                    // #14595
+                    if (is_null($step) || !array_key_exists($step, $LEM->indexGseq)) {
                         return $LEM->indexGseq;
                     }
                     return $LEM->indexGseq[$step];
@@ -7323,9 +7398,11 @@
             {
                 foreach($LEM->pageRelevanceInfo as $prel)
                 {
-                    foreach($prel as $rel)
-                    {
-                        $pageRelevanceInfo[] = $rel;
+                    if(is_array($prel)) {
+                        foreach($prel as $rel)
+                        {
+                            $pageRelevanceInfo[] = $rel;
+                        }
                     }
                 }
             }
@@ -7757,6 +7834,7 @@
                     $relJsVarsUsed = array_merge($relJsVarsUsed,$valJsVarsUsed);
                     $relJsVarsUsed = array_unique($relJsVarsUsed);
                     $qrelQIDs = array();
+                    $qrelgseqs = array();
                     foreach ($relJsVarsUsed as $jsVar)
                     {
                         if ($jsVar != '' && isset($LEM->knownVars[substr($jsVar,4)]['qid']))
@@ -7792,23 +7870,24 @@
                     if ($LEM->surveyMode=='question') {
                         $qrelQIDs=array();  // in question-by-questin mode, should never test for dependencies on self or other questions.
                     }
-
+                    if ($LEM->surveyMode!='survey') {
+                        $qrelgseqs=array();  // in group by group or question by question mode, should never test for dependencies on self or other group.
+                    }
                     $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                     $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
-                    // if (count($qrelQIDs) > 0)
-                    // {
-                    //     $qrelJS .= "  if(" . implode(' || ', $qrelQIDs) . "){\n    ;\n  }\n  else";
-                    // }
-                    // if (count($qrelgseqs) > 0)
-                    // {
-                    //     $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
-                    // }
-
-                    /* Trigger reevaluation only for relevant questions */
-                    /* even for equation question : using updated specific event, this allow update previous text too, see mantis #14047 */
-                    /* And this disable launch again equation update if equation is not updated */
-                    $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
-                    $qrelJS .= "  return;\n }\n";
+                    //Normally trigger reevaluation only for relevant questions except for equation questions
+                    if($arg['type'] != '*') {
+                        /* If current relevance are updated in a previous function : must appy this one */
+                        /* See issue #14465 . Warning : expression manager trigger this by order of question */
+                        if (count($qrelQIDs) > 0) {
+                             $qrelJS .= "  if(" . implode(' || ', $qrelQIDs) . "){\n    ;\n  }\n  else";
+                        }
+                        if (count($qrelgseqs) > 0) {
+                             $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
+                        }
+                        $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
+                        $qrelJS .= "  return;\n }\n";
+                    }
 
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
@@ -9417,7 +9496,10 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             );
 
             $varNamesUsed = array(); // keeps track of whether variables have been declared
-
+            /* tempVars are resetted when ProcessString call with replacement, review it in 4.0 that have specific functions for this.*/
+            $standardsReplacementFields = getStandardsReplacementFields(array(
+                'sid' => $sid,
+            ));
             if (!is_null($qid))
             {
                 $surveyMode='question';
@@ -9450,12 +9532,11 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             
             /* return app language to adminlang, otherwise admin interface get rendered in survey language #13814 */
             Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
-
             $surveyname = viewHelper::stripTagsEM(templatereplace('{SURVEYNAME}',array('SURVEYNAME'=>$aSurveyInfo['surveyls_title'])));
 
             $out = '<div id="showlogicfilediv" class="table-responsive"><h3>' . $LEM->gT('Logic File for Survey # ') . '[' . $LEM->sid . "]: $surveyname</h3>\n";
             $out .= "<table id='logicfiletable' class='table table-bordered'>";
-
+            
             if (is_null($gid) && is_null($qid))
             {
                 if ($aSurveyInfo['surveyls_description'] != '')
@@ -9534,11 +9615,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     $_gseq = $gseq;
                     $ginfo = $LEM->gseq2info[$gseq];
                     $sGroupRelevance= '{'.($ginfo['grelevance']=='' ? 1 : $ginfo['grelevance']).'}';
-                    $LEM->ProcessString($sGroupRelevance, $qid,array('GID'=>$ginfo['gid']),1,1,false,false);
+                    $LEM->ProcessString($sGroupRelevance, $qid,array_merge($standardsReplacementFields,array('GID'=>$ginfo['gid'])),1,1,false,false);
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
                     $sGroupRelevance= viewHelper::stripTagsEM($LEM->GetLastPrettyPrintExpression());
                     $sGroupText = ((trim($ginfo['description']) == '') ? '&nbsp;' : $ginfo['description']);
                     $LEM->ProcessString($sGroupText, $qid,NULL,1,1,false,false);
+
                     $bGroupHaveError=$bGroupHaveError || $LEM->em->HasErrors();
                     $sGroupText= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $editlink = Yii::app()->getController()->createUrl('admin/questiongroups/sa/view/surveyid/' . $LEM->sid . '/gid/' . $gid);
@@ -9558,16 +9640,15 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 //////
                 // SHOW QUESTION-LEVEL INFO
                 //////
-                $mandatory = (($q['info']['mandatory']=='Y') ? "<span class='mandatory'>*</span>" : '');
+                $mandatory = (($q['info']['mandatory']=='Y' || $q['info']['mandatory']=='S') ? "<span class='mandatory'>*</span>" : '');
                 $type = $q['info']['type'];
                 $typedesc = $qtypes[$type]['description'];
-
                 $sgqas = explode('|',$q['sgqa']);
-                $qReplacement = array(
+                $qReplacement = array_merge($standardsReplacementFields,array(
                     'QID' => $q['info']['qid'],
                     'GID' => $q['info']['gid'],
                     'SGQ' => end($sgqas),
-                );
+                ));
                 if (count($sgqas) == 1 && !is_null($q['info']['default']))
                 {
                     $LEM->ProcessString($q['info']['default'], $qid,$qReplacement,1,1,false,false);// Default value is Y or answer code or go to input/textarea, then we can filter it
@@ -10051,11 +10132,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 'token' => $sToken
             ));
 
-            if ($oToken) {
+            if ($oToken && !$bAnonymize) {
+                $this->knownVars["TOKEN"] = array(
+                    'code'=>$sToken,
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
                 foreach ($oToken->attributes as $attribute => $value) {
-                    if ($bAnonymize) {
-                        $value = "";
-                    }
                     $this->knownVars["TOKEN:" . strtoupper($attribute)] = array(
                         'code'=>$value,
                         'jsName_on'=>'',

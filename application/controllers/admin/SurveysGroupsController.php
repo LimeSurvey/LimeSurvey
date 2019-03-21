@@ -194,7 +194,13 @@ class SurveysGroupsController extends Survey_Common_Action
         $oGroupToDelete = $this->loadModel($id);
         $sGroupTitle    = $oGroupToDelete->title;
 
-        if (!$oGroupToDelete->hasSurveys) {
+        if ($oGroupToDelete->hasSurveys) {
+            Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
+            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
+        } elseif ($oGroupToDelete->hasChildGroups) {
+            Yii::app()->setFlashMessage(gT("You can't delete a group because one or more groups depend on it as parent!"), 'error');
+            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
+        } else {
             $oGroupToDelete->delete();
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -202,12 +208,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 Yii::app()->setFlashMessage(sprintf(gT("The survey group '%s' was deleted."), $sGroupTitle), 'success');
                 $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
             }
-
-        } else {
-            Yii::app()->setFlashMessage(gT("You can't delete a group if it's not empty!"), 'error');
-            $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
         }
-
     }
 
     /**

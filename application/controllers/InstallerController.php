@@ -481,7 +481,9 @@ class InstallerController extends CController
                 $aData['progressValue'] = 40;
 
                 // Flush query cache because Yii does not handle properly the new DB prefix
-                Yii::app()->cache->flush();
+                if (method_exists(Yii::app()->cache, 'flush')) {
+                    Yii::app()->cache->flush();
+                }
 
                 $aDbConfigArray = $this->_getDatabaseConfigArray();
                 $aDbConfigArray['class'] = '\CDbConnection';

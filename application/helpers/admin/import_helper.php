@@ -1164,7 +1164,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         $sXMLdata = (string) file_get_contents($sFullFilePath);    
     }
 
-    $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
+    $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET | LIBXML_PARSEHUGE);
 
     if (!$xml || $xml->LimeSurveyDocType != 'Survey') {
         $results['error'] = gT("This is not a valid LimeSurvey survey structure XML file.");
@@ -3235,26 +3235,4 @@ function createXMLfromData($aData = array()){
     $xml->endElement();
     $xml->endDocument();
     return $xml->outputMemory(true);
-}
-
-/**
-* This function switches identity insert on/off for the MSSQL database
-*
-* @param string $table table name (without prefix)
-* @param boolean $state  Set to true to activate ID insert, or false to deactivate
-* @return void
-*/
-function switchMSSQLIdentityInsert($table, $state)
-{
-    if (in_array(Yii::app()->db->getDriverName(), array('mssql', 'sqlsrv', 'dblib'))) {
-        if ($state === true) {
-            // This needs to be done directly on the PDO object because when using CdbCommand or similar
-            // it won't have any effect
-            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' ON');
-        } else {
-            // This needs to be done directly on the PDO object because when using CdbCommand or similar
-            // it won't have any effect
-            Yii::app()->db->pdoInstance->exec('SET IDENTITY_INSERT '.Yii::app()->db->tablePrefix.$table.' OFF');
-        }
-    }
 }

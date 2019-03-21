@@ -310,7 +310,7 @@ class database extends Survey_Common_Action
                     $bAnswerSave = false;
 
                     while (!$bAnswerSave) {
-                        $oAnswer->code = rand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                        $oAnswer->code = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                         if ($oAnswer->save()) {
                             $bAnswerSave = true;
                         }
@@ -318,22 +318,24 @@ class database extends Survey_Common_Action
 
                     Yii::app()->setFlashMessage(gT("Failed to update answer: ").$sCode.$sErrors, 'error');
                 }
-                foreach ($survey->allLanguages as $sLanguage) {
-                    $sAnswerText = Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
-                    // Fix bug with FCKEditor saving strange BR types
-                    $sAnswerText = $this->oFixCKeditor->fixCKeditor($sAnswerText);
+                if($bAnswerSave) {
+                    foreach ($survey->allLanguages as $sLanguage) {
+                        $sAnswerText = Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
+                        // Fix bug with FCKEditor saving strange BR types
+                        $sAnswerText = $this->oFixCKeditor->fixCKeditor($sAnswerText);
 
-                    // Now we insert the answers
-                    $oAnswerL10n = new AnswerL10n;
-                    $oAnswerL10n->aid = $oAnswer->aid;
-                    $oAnswerL10n->answer            = $sAnswerText;
-                    $oAnswerL10n->language          = $sLanguage;
-                    $oAnswerL10n->save();
-                }
-                // Updating code (oldcode!==null) => update condition with the new code
-                $sOldCode = Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID);
-                if (isset($sOldCode) && $sCode !== $sOldCode) {
-                    Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$this->iQuestionID, ':value'=>$sOldCode));
+                        // Now we insert the answers by language
+                        $oAnswerL10n = new AnswerL10n;
+                        $oAnswerL10n->aid = $oAnswer->aid;
+                        $oAnswerL10n->answer            = $sAnswerText;
+                        $oAnswerL10n->language          = $sLanguage;
+                        $oAnswerL10n->save();
+                    }
+                    // Updating code (oldcode!==null) => update condition with the new code
+                    $sOldCode = Yii::app()->request->getPost('oldcode_'.$iSortOrderID.'_'.$iScaleID);
+                    if (isset($sOldCode) && $sCode !== $sOldCode) {
+                        Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$this->iQuestionID, ':value'=>$sOldCode));
+                    }
                 }
 
             }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
@@ -417,7 +419,7 @@ class database extends Survey_Common_Action
         foreach ($aoSubquestions as $oSubQuestion) {
             $bAnswerSave = false;
             while (!$bAnswerSave) {
-                $oSubQuestion->title = (string) rand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                $oSubQuestion->title = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                 if ($oSubQuestion->save()) {
                     $bAnswerSave = true;
                 }
@@ -498,7 +500,7 @@ class database extends Survey_Common_Action
                             $bAnswerSave = false;
 
                             while (!$bAnswerSave) {
-                                $oSubQuestion->title = rand(11111, 99999); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
+                                $oSubQuestion->title = strval(rand(11111, 99999)); // If the random code already exist (very low probablilty), answer will not be save and a new code will be generated
                                 if ($oSubQuestion->save()) {
                                     $sError = '<strong>'.sprintf(gT('A code has been updated to %s.'), $oSubQuestion->title).'</strong><br/>';
                                     Yii::app()->setFlashMessage($sError, 'error');
@@ -557,75 +559,77 @@ class database extends Survey_Common_Action
         }
 
 
-        // Remove invalid question attributes on saving
-        $criteria = new CDbCriteria;
-        $criteria->compare('qid', $this->iQuestionID);
-        $validAttributes = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
-        // If the question has a custom template, we first check if it provides custom attributes
-        //~ $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
-        //~ if (is_object($oAttributeValues && $oAttributeValues->value)){
-            //~ $aAttributeValues['question_template'] = $oAttributeValues->value;
-        //~ }else{
-            //~ $aAttributeValues['question_template'] = 'core';
-        //~ }
-        //~ $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );
-        foreach ($validAttributes as  $validAttribute) {
-            $criteria->compare('attribute', '<>'.$validAttribute['name']);
-        }
-        QuestionAttribute::model()->deleteAll($criteria);
-
-        $aLanguages = $oSurvey->allLanguages;
-        foreach ($validAttributes as $validAttribute) {
-            /* Readonly attribute : disable save */
-            if ($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive())) {
-                continue;
+        /* Check if we need to save QuestionAttribute testing advancedquestionsettings , see mantis #14563 */
+        if(Yii::app()->request->getPost('advancedquestionsettingsLoaded',true)) {
+            // Remove invalid question attributes on saving
+            $criteria = new CDbCriteria;
+            $criteria->compare('qid', $this->iQuestionID);
+            $validAttributes = QuestionAttribute::getQuestionAttributesSettings($sQuestionType);
+            // If the question has a custom template, we first check if it provides custom attributes
+            $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'", array('qid'=>$cqr->qid));
+            if (is_object($oAttributeValues) && $oAttributeValues->value) {
+                $aAttributeValues['question_template'] = $oAttributeValues->value;
+            } else {
+                $aAttributeValues['question_template'] = 'core';
             }
-            if ($validAttribute['i18n']) {
-                /* Delete invalid language : not needed but cleaner */
-                $langCriteria = new CDbCriteria;
-                $langCriteria->compare('qid', $this->iQuestionID);
-                $langCriteria->compare('attribute', $validAttribute['name']);
-                $langCriteria->addNotInCondition('language', $aLanguages);
-                QuestionAttribute::model()->deleteAll($langCriteria);
-                /* delete IS NULL too*/
-                QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-                foreach ($aLanguages as $sLanguage) {
-                    // TODO sanitise XSS
-                    $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                    $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
-                    if ($iInsertCount > 0) {
-                        if ($value != '') {
-                            QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
-                        } else {
-                            QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
+            $validAttributes = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr);
+            foreach ($validAttributes as  $validAttribute) {
+                $criteria->compare('attribute', '<>'.$validAttribute['name']);
+            }
+            QuestionAttribute::model()->deleteAll($criteria);
+            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
+            foreach ($validAttributes as $validAttribute) {
+                /* Readonly attribute : disable save */
+                if( $validAttribute['readonly'] || ( $validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive() ) ) {
+                    continue;
+                }
+                if ($validAttribute['i18n']) {
+                    /* Delete invalid language : not needed but cleaner */
+                    $langCriteria = new CDbCriteria;
+                    $langCriteria->compare('qid', $this->iQuestionID);
+                    $langCriteria->compare('attribute', $validAttribute['name']);
+                    $langCriteria->addNotInCondition('language', $aLanguages);
+                    QuestionAttribute::model()->deleteAll($langCriteria);
+                    /* delete IS NULL too*/
+                    QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
+                    foreach ($aLanguages as $sLanguage) {
+                        // TODO sanitise XSS
+                        $value = Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
+                        $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$this->iQuestionID, 'language'=>$sLanguage));
+                        if ($iInsertCount > 0) {
+                            if ($value != '') {
+                                QuestionAttribute::model()->updateAll(array('value'=>$value), 'attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
+                            } else {
+                                QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language=:language', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID, ':language'=>$sLanguage));
+                            }
+                        } elseif ($value != '') {
+                            $attribute = new QuestionAttribute;
+                            $attribute->qid = $this->iQuestionID;
+                            $attribute->value = $value;
+                            $attribute->attribute = $validAttribute['name'];
+                            $attribute->language = $sLanguage;
+                            $attribute->save();
                         }
-                    } elseif ($value != '') {
+                    }
+                } else {
+                    $default = isset($validAttribute['default']) ? $validAttribute['default'] : '';
+                    $value = Yii::app()->request->getPost($validAttribute['name'], $default);
+                    if ($validAttribute['name'] == "slider_layout") {
+                        tracevar("delete $value");
+                    }
+                    /* we must have only one element, and this element must be null, then reset always (see #11980)*/
+                    /* We can update, but : this happen only for admin and not a lot, then : delete + add */
+                    QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
+                    if ($value != $default) {
+                        if ($validAttribute['name'] == "slider_layout") {
+                            tracevar("save $value");
+                        }
                         $attribute = new QuestionAttribute;
                         $attribute->qid = $this->iQuestionID;
                         $attribute->value = $value;
                         $attribute->attribute = $validAttribute['name'];
-                        $attribute->language = $sLanguage;
                         $attribute->save();
                     }
-                }
-            } else {
-                $default = isset($validAttribute['default']) ? $validAttribute['default'] : '';
-                $value = Yii::app()->request->getPost($validAttribute['name'], $default);
-                if ($validAttribute['name'] == "slider_layout") {
-                    tracevar("delete $value");
-                }
-                /* we must have only one element, and this element must be null, then reset always (see #11980)*/
-                /* We can update, but : this happen only for admin and not a lot, then : delete + add */
-                QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$this->iQuestionID));
-                if ($value != $default) {
-                    if ($validAttribute['name'] == "slider_layout") {
-                        tracevar("save $value");
-                    }
-                    $attribute = new QuestionAttribute;
-                    $attribute->qid = $this->iQuestionID;
-                    $attribute->value = $value;
-                    $attribute->attribute = $validAttribute['name'];
-                    $attribute->save();
                 }
             }
         }
@@ -651,9 +655,6 @@ class database extends Survey_Common_Action
 
         // For Bootstrap Version using BAD YiiWheels switch only if needed
         // Alt solution : filter_var($fixedQuestionAttributes['mandatory'], FILTER_VALIDATE_BOOLEAN); then on is true and off is false
-        if(!in_array($fixedQuestionAttributes['mandatory'],array('Y','N'))) {
-            $fixedQuestionAttributes['mandatory'] = boolval($fixedQuestionAttributes['mandatory']) ? 'Y' : 'N';
-        }
         if(!in_array($fixedQuestionAttributes['other'],array('Y','N'))) {
             $fixedQuestionAttributes['other'] = boolval($fixedQuestionAttributes['other']) ? 'Y' : 'N';
         }
@@ -688,7 +689,7 @@ class database extends Survey_Common_Action
                 $oQuestion = Question::model()->findByPk($this->iQuestionID);
                 $oQuestion->type = $sQuestionType; 
                 $oQuestion->title = Yii::app()->request->getPost('title');
-                $oQuestion->preg = $fixedQuestionAttributes['preg'],
+                $oQuestion->preg = $fixedQuestionAttributes['preg'];
                 $oQuestion->gid = $this->iQuestionGroupID;
                 $oQuestion->other = $fixedQuestionAttributes['other'];
                 $oQuestion->mandatory = $fixedQuestionAttributes['mandatory'];
@@ -1229,9 +1230,6 @@ class database extends Survey_Common_Action
             /* Already done in model : must control if return a good system or not here : BUT difficult to submit an empty string here */
             Yii::app()->setFlashMessage(gT("The question could not be added. You must enter at least a question code."), 'error');
         } else {
-            // For Bootstrap Version usin YiiWheels switch :
-            $_POST['mandatory'] = (Yii::app()->request->getPost('mandatory') == '1') ? 'Y' : 'N';
-            $_POST['other'] = (Yii::app()->request->getPost('other') == '1') ? 'Y' : 'N';
 
             if (Yii::app()->request->getPost('questionposition', "") != "") {
                 $iQuestionOrder = intval(Yii::app()->request->getPost('questionposition'));

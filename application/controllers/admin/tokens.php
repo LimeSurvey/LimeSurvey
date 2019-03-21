@@ -420,7 +420,7 @@ class tokens extends Survey_Common_Action
                 }
 
                 // Core Fields
-                $aCoreTokenFields = array('firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft');
+                $aCoreTokenFields = array('firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'remindercount', 'completed', 'usesleft');
                 foreach ($aCoreTokenFields as $sCoreTokenField) {
                     if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep') {
                         $value = flattenText(Yii::app()->request->getPost($sCoreTokenField));

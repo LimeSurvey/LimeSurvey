@@ -35,8 +35,7 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 3.15.6 (build 190108) to 4.0.0-alpha (build 190108) January 8, 2019
-
+Changes from 3.15.8 (build 190130) to 4.0.0-alpha (build 190130) January 30, 2019
 -New feature: Inherited survey settings - corrections (Dominik Vitt)
 -New feature #13288: Validation settings for more question type (#980) (Denis Chenu)
 -New feature #13513 : allow plugins to add expresssion manager function (#1081) (Denis Chenu)
@@ -54,6 +53,112 @@ Changes from 3.15.6 (build 190108) to 4.0.0-alpha (build 190108) January 8, 2019
 -New feature: afterSuccessfulLogin has argument $identity (Olle Haerstedt)
 -New feature: automatic consistency fixer (markusfluer)
 -New feature: helper library to add contextual help. (markusfluer)
+
+Changes from 3.15.8 (build 190130) to 3.15.9 (build 190214) January 14, 2019
+-Fixed issue #14499: Add first and last name to the "To" of confirmation email (#1214) (Jean-Sébastien B)
+-Fixed issue #12992: PHP-function each() has been deprecated (Dominik Vitt)
+-Fixed issue #14309: Upgrade to 3.15 SQL Error (Dominik Vitt)
+-Fixed issue #14410: Ranking : no alert when try to put more than answer (Dominik Vitt)
+-Fixed issue #14453: Deletion of responses broken (Denis Chenu)
+-Fixed issue #14465: EM relevance not being recalculated after conditions changed (Full survey included) (Denis Chenu)
+-Fixed issue #14472: Central participants not exporting (Denis Chenu)
+-Fixed issue #14476: Better error message than token_id doesn't have a default value (Denis Chenu)
+-Fixed issue #14480: No information shown after alert withot js, no way to have this managed by theme (Denis Chenu)
+-Fixed issue #14481: Filter of answers not working (Denis Chenu)
+-Fixed issue #14487: End-URL doesn't work correctly (Denis Chenu)
+-Fixed issue #14488: Potential SQL exception when creating a subquestion (Denis Chenu)
+-Fixed issue #14489: Some question html broke response browsing (Denis Chenu)
+-Fixed issue #14490: PHP error with Question L on statistic with pgsql (#1212) (Jean-Sébastien B)
+-Fixed issue #14492: Setting question as Mandatory does not save attribute (Dominik Vitt)
+-Fixed issue #14495: Error with P type and comment suffix (Jean-Sébastien B)
+-Fixed issue #14498: Participant view for statistics goes unformatted (Dominik Vitt)
+-Fixed issue #14503: Save button in "Copy survey" panel does not do anything (Markus Flür)
+-Fixed issue #14505: [security] XSS Attack Vector - Participant Attributes (Denis Chenu)
+-Fixed issue #14508: [security] XSS Attack Vector - Assessment editing (Denis Chenu)
+-Fixed issue #14509: [security] XSS Attack Vector - CPDB upload (Denis Chenu)
+-Fixed issue #14511: Equations or code in questions are visible on statistics (Dominik Vitt)
+-Fixed issue #14519: Letters do not get automatically deleted any longer in only numbers fields (Dominik Vitt)
+-Fixed issue #14524: Take bFixNumAuto and bNumRealValue into account (Denis Chenu)
+-Fixed issue: 2 delete buttons in template editor (Denis Chenu)
+-Fixed issue: Display participant failing with specific set permissions (Markus Flür)
+-Fixed issue: Empty Create menu shown in token with only view permission (Denis Chenu)
+-Fixed issue: Error message "division by zero" when "display _columns" attribute is missing, only in debug mode (Dominik Vitt)
+-Fixed issue: PHP warning message when saving new response without uploaded file (Dominik Vitt)
+-Fixed issue: Printable view containe em function instead of values (Markus Flür)
+-Fixed issue: Tip for numeric input still show error after fixed (Denis Chenu)
+-Fixed issue: Wrong encoding specification in R script (Carsten Schmitz)
+#Updated translation: Arabic by zainabalbazzal
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German by c_schmitz
+#Updated translation: German by ulisdd
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by ulisdd
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Portugal) by Heldinha
+#Updated translation: Romanian by cdorin
+#Updated translation: Russian by vavankor, vipgroup
+#Updated translation: Russian by vipgroup
+
+Changes from 3.15.7 (build 190122) to 3.15.8 (build 190130) January 30, 2019
+-Fixed issue #13859: Question full index lose color when try submit (Denis Chenu)
+-Fixed issue #14450: Export responses not working (Denis Chenu)
+-Fixed issue #14455: {SURVEYRESOURCESURL} show as error in question on survey logic file (Denis Chenu)
+-Fixed issue: At export page the dropdown list of CSV separators is not translated (Denis Chenu)
+-Fixed issue: Some IE versions were not properly detected (Carsten Schmitz)
+
+Changes from 3.15.6 (build 190108) to 3.15.7 (build 190122) January 22, 2019
+-[security] Fixed issue:  possible to delete a broken theme by bait clicking an administrator (LouisGac)
+-[security] Fixed issue:  possible to delete a theme by bait clicking an administrator (LouisGac)
+-Fixed issue: avoid rare QID colision in checkintegrety (LouisGac)
+-Fixed issue : 500 error just after survey creation (Denis Chenu)
+-Fixed issue : don't replace question title starting with self or that in expression (Denis Chenu)
+-Fixed issue : invalid HTML in ranking question (Denis Chenu)
+-Fixed issue : unable to disable samechoiceheight and samelistheight in ranking (Denis Chenu)
+-Fixed issue: Printanwers not using evaluated question and helptext (Markus Flür)
+-Fixed issue: Slider not always in middle position (Markus Flür)
+-Fixed issue: no "loading" icon on survey list page (Dominik Vitt)
+-Fixed issue: placeholder fields can't be inserted and expresions validation doesn't work on edit email templates page (Dominik Vitt)
+-Fixed issue: wrong link to noto italic (LouisGac)
+-Fixed issue #14135: Evaluation of survey statistics generates a query error when using PostgreSQL DB server (Dominik Vitt)
+-Fixed issue #14229: Popover showed multiple times when saving survey (#1167) (amicci)
+-Fixed issue #14389: never same order in Theme list (#1208) (Denis Chenu)
+-Fixed issue #14398: Unable to set a different standardthemerootdir than default one (#1201) (Denis Chenu)
+-Fixed issue #14400: Unable to use self ot that fixed string in Expression (#1202) (Denis Chenu)
+-Fixed issue #14406: 'Ranking' Question same choice height not updated when a expression update choice (Denis Chenu)
+-Fixed issue #14411: Ranking choice height is to big than needed in case of filter (Denis Chenu)
+-Fixed issue #14415: (partial) unable to use Expression Manager var in submit.twig (#1206) (Denis Chenu)
+-Fixed issue #14416: Sort LDAP participant names alphabetically in the survey creation form (#1205) (s-nirali)
+-Fixed issue #14424: Ranking question totally hang browser with same height (Denis Chenu)
+-Fixed issue #14425: Improve Ranking speed without same height (Denis Chenu)
+-Fixed issue #14426: Error exporting PDF with graphs (Dominik Vitt)
+-Fixed issue #14427: On an Active survey, Option 'Other' switched to Off when update question (Denis Chenu)
+-Fixed issue #14431: error 500 in question list with postgresql (Denis Chenu)
+-Fixed issue #14437: Statistics - Clear button not working (LouisGac)
+-Fixed issue #14441: Survey summary invalid values for administrator (Denis Chenu)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Romanian by cdorin
+#Updated translation: Turkish by kayazeren
+#Updated translation: Vietnamese by c_schmitz, namphuong, tuannm, dnvservices
 
 Changes from 3.15.5 (build 181115) to 3.15.6 (build 190108) January 8, 2019
 -New feature: added afterSurveyActivate, afterSurveyDeactivate Plugin Events (#1168) (Marko Bischof)

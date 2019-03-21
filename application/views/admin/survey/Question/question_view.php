@@ -1,5 +1,8 @@
+<?php
+/** @var Question $oQuestion */
+?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <div class="pagetitle h3"><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</small></div>
+    <div class="pagetitle h3"><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo (int) $qid;?>)</small></div>
     <div class="row">
         <div class="col-lg-12 content-right">
 
@@ -154,6 +157,8 @@
                         <td>
                             <?php if ($qrrow['mandatory'] == "Y") : ?>
                                 <?php eT("Yes"); ?>
+                            <?php elseif ($qrrow['mandatory'] == "S") : ?>
+                                <?php eT("Soft"); ?>
                             <?php else:?>
                                 <?php eT("No"); ?>
                             <?php endif;  ?>
@@ -168,6 +173,19 @@
                         <td>
                             <?php
                             LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
+                            echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                            ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+
+                <!-- Group Relevance equation -->
+                <?php if (trim($oQuestion->group->grelevance)!=''): ?>
+                    <tr>
+                        <td><?php eT("Group relevance:"); ?></td>
+                        <td>
+                            <?php
+                            templatereplace('{' . $oQuestion->group->grelevance . '}');
                             echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             ?>
                         </td>

@@ -368,12 +368,11 @@ class SurveysGroupsettings extends LSActiveRecord
             }
         } elseif ($attribute == 'owner_id' && $value != -1){
             $instance->oOptions->owner = "";
-            $instance->oOptions->ownerName = "";
-            $instance->oOptions->ownerEmail = "";
+            $instance->oOptions->ownerLabel = "";
             $oUser = User::model()->findByPk($instance->oOptions->{$attribute});
             if(!empty($oUser)) {
                 $instance->oOptions->owner = $oUser->attributes;
-                $instance->oOptions->ownerLabel = $oUser->users_name." - ".$oUser->email;
+                $instance->oOptions->ownerLabel = $oUser->users_name.($oUser->full_name ? " - ".$oUser->full_name : "");
             }
         } elseif ($attribute == 'format' && $value != -1){
             return str_replace(array('S', 'G', 'A'), array(gT("Question by question"), gT("Group by group"), gT("All in one")), $value);

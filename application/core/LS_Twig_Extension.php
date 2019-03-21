@@ -224,7 +224,7 @@ class LS_Twig_Extension extends Twig_Extension
             }
         }
 
-        if ($lemQuestionInfo['info']['mandatory'] == 'Y') {
+        if ($lemQuestionInfo['info']['mandatory'] == 'Y' || $lemQuestionInfo['info']['mandatory'] == 'S') {
             $aQuestionClass .= ' mandatory';
         }
 

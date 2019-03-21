@@ -78,7 +78,7 @@ gulp.task('webpack', function (cb) {
     process.env.WEBPACK_ENV = 'developement';
     pump(
         [
-            gulp.src('src/main.js'),
+            gulp.src('src/adminpanelmain.js'),
             gulpWebpack(require('./webpack.config.js'), webpack),
             gulp.dest('build/')
         ],
@@ -90,7 +90,7 @@ gulp.task('webpack:production', function (cb) {
     process.env.WEBPACK_ENV = 'production';
     pump(
         [
-            gulp.src('src/main.js'),
+            gulp.src('src/adminpanelmain.js'),
             gulpWebpack(require('./webpack.config.js'), webpack),
             gulp.dest('build/')
         ],
