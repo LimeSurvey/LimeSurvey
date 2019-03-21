@@ -36,8 +36,6 @@ class Usergroups extends Survey_Common_Action
     {
 
         $ugid = sanitize_int($ugid);
-
-
         $action = Yii::app()->request->getPost("action");
 
         if ($action == "mailsendusergroup") {
@@ -48,47 +46,33 @@ class Usergroups extends Survey_Common_Action
                 $criteria = new CDbCriteria;
                 $criteria->compare('ugid', $ugid)->addNotInCondition('users.uid', array(Yii::app()->session['loginID']));
                 $eguresult = UserInGroup::model()->with('users')->findAll($criteria);
-                //die('me');
-                $to = array();
 
-                foreach ($eguresult as $egurow) {
-                    $to[] = \CHtml::encode($egurow->users->users_name).' <'.$egurow->users->email.'>';
+                $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
+                $mailer->emailType = "mailsendusergroup";
+                $oUserFrom = User::model()->findByPk(Yii::app()->session['loginID']);
+                $fromName = empty($oUserFrom->full_name) ? $from_user_row->users_name : $oUserFrom->full_name;
+                $mailer->setFrom($oUserFrom->email,$fromName);
+                if(Yii::app()->getRequest()->getPost('copymail') == 1) {
+                    $mailer->addCC($oUserFrom->email,$fromName);
                 }
-                $from_user_result = User::model()->findByPk(Yii::app()->session['loginID']);
-                $from_user_row = $from_user_result;
-
-                if ($from_user_row->full_name) {
-                    $from = $from_user_row->full_name;
-                    $from .= ' <';
-                    $from .= $from_user_row->email.'> ';
-                } else {
-                    $from = $from_user_row->users_name.' <'.$from_user_row->email.'> ';
-                }
-
-                $body = $_POST['body'];
-                $subject = $_POST['subject'];
-
-                if (isset($_POST['copymail']) && $_POST['copymail'] == 1) {
-                    $to[] = $from;
-                }
+                $mailer->Subject = Yii::app()->getRequest()->getPost('subject');
+                $body = Yii::app()->getRequest()->getPost('body');
                 $body = str_replace("\n.", "\n..", $body);
                 $body = wordwrap($body, 70);
-
-                if (SendEmailMessage($body, $subject, $to, $from, '')) {
-                    list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => gT("Message(s) sent successfully!")));
-                } else {
-                    global $maildebug;
-                    global $debug;
-                    global $maildebugbody;
-                    //$maildebug = (isset($maildebug)) ? $maildebug : "Their was a unknown error in the mailing part :)";
-                    //$debug = (isset($debug)) ? $debug : 9;
-                    //$maildebugbody = (isset($maildebugbody)) ? $maildebugbody : 'an unknown error accourd';
-                    $headercfg["type"] = "warning";
-                    $headercfg["message"] = sprintf(gT("Email to %s failed. Error Message:"), $to)." ".$maildebug;
-                    list($aViewUrls, $aData) = $this->index($ugid, $headercfg);
+                $mailer->Body = $body;
+                foreach ($eguresult as $egurow) {
+                    $mailer = \LimeMailer::getInstance(); // To reset error
+                    $mailer->setTo($egurow->users->email,$egurow->users->users_name);
+                    if($mailer->sendMessage()) {
+                        list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => gT("Message(s) sent successfully!")));
+                    } else {
+                        $headercfg["type"] = "warning";
+                        $headercfg["message"] = sprintf(gT("Email to %s failed. Error Message : %s"), \CHtml::encode("{$egurow->users->users_name} <{$egurow->users->email}>"),$mailer->getError());
+                        list($aViewUrls, $aData) = $this->index($ugid, $headercfg);
+                    }
                 }
             } else {
-                die();
+                throw new CHttpException(403);
             }
 
         } else {
@@ -295,7 +279,7 @@ class Usergroups extends Survey_Common_Action
                     $userloop[$row]["userid"] = $egurow['uid'];
 
                     //	output users
-                    $userloop[$row]["rowclass"] = $bgcc;                                                                                       
+                    $userloop[$row]["rowclass"] = $bgcc;
                     if (Permission::model()->hasGlobalPermission('usergroups', 'update') && $egurow['owner_id']==Yii::app()->session['loginID'])  {
                         $userloop[$row]["displayactions"] = true;
                     } else {

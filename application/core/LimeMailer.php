@@ -43,8 +43,8 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
     /**
      * @var string Current email type, used for updating email raw subject and body
      * for survey (token) : invite, remind, confirm, register …
-     * for survey (admin) :
-     * other : addadminuser, passwordreminderadminuser … 
+     * for survey (admin or not ) : admin_notification, admin_responses, savesurveydetails
+     * other : addadminuser, passwordreminderadminuser, mailsendusergroup … 
      **/
     public $emailType = 'unknow';
 
