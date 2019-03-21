@@ -8234,7 +8234,8 @@
         }
 
         /**
-         * @param array $vars
+         * Add or replace fixed variable replacement for current page (or until self::resetTempVars was called)
+         * @param array $vars 'replacement' => "fixed value"
          */
         public static function updateReplacementFields($replacementFields)
         {
@@ -8252,6 +8253,9 @@
         }
 
         /**
+         * Reset the current temporary variable replacement
+         * Done automatically when page start or page finish
+         * ( @see self::FinishProcessPublicPage, @see self::StartProcessingPage )
          * @param array $vars
          */
         public static function resetTempVars()

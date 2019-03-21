@@ -7,7 +7,7 @@
         <last_update>2019-03-18</last_update>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
-        <version>0.0.1</version>
+        <version>0.0.2</version>
         <license>GNU General Public License version 2 or later</license>
         <description><![CDATA[deactivate mail send to @example.org or @example.com. A simple demo plugin for beforeEmail and related event.]]></description>
     </metadata>

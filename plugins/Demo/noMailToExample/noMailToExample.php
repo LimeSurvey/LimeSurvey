@@ -22,14 +22,16 @@ class noMailToExample extends PluginBase
     
     public function init()
     {
-        $this->subscribe('beforeTokenEmail');
+        $this->subscribe('beforeEmail','beforeEmail');
+        $this->subscribe('beforeSurveyEmail','beforeEmail');
+        $this->subscribe('beforeTokenEmail','beforeEmail');
     }
 
     /**
      * Set event send to false when sending an email to example.(com|org)
      * @link https://manual.limesurvey.org/BeforeTokenEmail
      */
-    public function beforeTokenEmail()
+    public function beforeEmail()
     {
         $emailTos=$this->getEvent()->get("to");
         if(empty($emailTos)) {

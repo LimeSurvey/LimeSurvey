@@ -22,9 +22,9 @@ class mailSenderToFrom extends PluginBase
     
     public function init()
     {
-        $this->subscribe('beforeTokenEmail','beforeEmail');
-        $this->subscribe('beforeSurveyEmail','beforeEmail');
         $this->subscribe('beforeEmail','beforeEmail');
+        $this->subscribe('beforeSurveyEmail','beforeEmail');
+        $this->subscribe('beforeTokenEmail','beforeEmail');
     }
 
     /**
