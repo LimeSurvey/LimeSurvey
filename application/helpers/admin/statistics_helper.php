@@ -3881,6 +3881,9 @@ class statistics_helper
             $headerlogo = '';
             $logowidth = 10;
             $at = AdminTheme::getInstance();
+            if (!defined('K_PATH_IMAGES')) {
+                define($at->path.DIRECTORY_SEPARATOR.'images');
+            }
             $path = array($at->path, 'images', 'logo_statistics.jpg');
             if (file_exists(implode(DIRECTORY_SEPARATOR, $path))) {
                 $headerlogo = 'logo_statistics.jpg';
