@@ -661,7 +661,13 @@ class themes extends Survey_Common_Action
         $templatename = trim( Yii::app()->request->getPost('templatename') );
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-
+            $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir')."/".$templatename);
+            if(!is_dir($completeFileName)) {
+                throw new CHttpException(401,sprintf(gT("Invalid %s template name"),$templatename)); // No need to encode : error do it for us
+            }
+            if(substr($completeFileName, 0, strlen(Yii::app()->getConfig('userthemerootdir'))) !== Yii::app()->getConfig('userthemerootdir')) {
+                throw new CHttpException(403,"Disable for security reasons."); // No need more information, put security therm for logger.
+            }
             // CheckIfTemplateExists check if the template is installed....
             if ( ! Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename) ) {
                 if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
