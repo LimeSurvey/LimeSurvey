@@ -94,7 +94,7 @@ if (!defined('K_PATH_IMAGES')) {
 	$tcpdf_images_dirs = array(K_PATH_MAIN.'examples/images/', K_PATH_MAIN.'images/', '/usr/share/doc/php-tcpdf/examples/images/', '/usr/share/doc/tcpdf/examples/images/', '/usr/share/doc/php/tcpdf/examples/images/', '/var/www/tcpdf/images/', '/var/www/html/tcpdf/images/', '/usr/local/apache2/htdocs/tcpdf/images/', K_PATH_MAIN);
 	foreach ($tcpdf_images_dirs as $tcpdf_images_path) {
 		if (@file_exists($tcpdf_images_path)) {
-			//define ('K_PATH_IMAGES', $tcpdf_images_path);
+			define ('K_PATH_IMAGES', $tcpdf_images_path);
 			break;
 		}
 	}
