@@ -59,6 +59,17 @@
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;
                 $data = json_decode(urldecode($this->getAttribute($field)), true);
                 if (is_array($data)) {
+                    /* adding the title and qid to fileinfo , see #14659 */
+                    $index = 0;
+                    $data = array_map( function($fileInfo) use (&$index, $question) {
+                        return array_merge($fileInfo, array(
+                            'question' => array(
+                                'title' => $question->title,
+                                'qid' => $question->qid,
+                            ),
+                            'index' => $index++,
+                        ));
+                    }, $data);
                     $files = array_merge($files, $data);
                 }
             }

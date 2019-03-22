@@ -641,7 +641,7 @@ class responses extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
             if (!$sResponseId) {
-// No response id : get all survey files
+                // No response id : get all survey files
                 $oCriteria = new CDbCriteria();
                 $oCriteria->select = "id";
                 $oSurvey = SurveyDynamic::model($iSurveyId);
@@ -654,9 +654,9 @@ class responses extends Survey_Common_Action
             if (!empty($aResponseId)) {
                 // Now, zip all the files in the filelist
                 if (count($aResponseId) == 1) {
-                                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
+                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
                 } else {
-                                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
+                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
                 }
 
                 $this->_zipFiles($iSurveyId, $aResponseId, $zipfilename);
@@ -974,16 +974,18 @@ class responses extends Survey_Common_Action
         $responses = Response::model($iSurveyID)->findAllByPk($responseIds);
         $filecount = 0;
         foreach ($responses as $response) {
-            foreach ($response->getFiles() as $file) {
+            foreach ($response->getFiles() as $fileInfo) {
                 $filecount++;
                 /*
                 * Now add the file to the archive, prefix files with responseid_index to keep them
                 * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
                 * files from a different source with the same name.
                 */
-                if (file_exists($tmpdir.basename($file['filename']))) {
-                    $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir.basename($file['filename']),
-                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $response->id, $filecount, sanitize_filename(rawurldecode($file['name']))));
+                if (file_exists($tmpdir.basename($fileInfo['filename']))) {
+                    $filelist[] = array(
+                        PCLZIP_ATT_FILE_NAME => $tmpdir.basename($fileInfo['filename']),
+                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s-%s_%02s-%s", $response->id, $filecount, $fileInfo['question']['title'],$fileInfo['index'], sanitize_filename(rawurldecode($fileInfo['name'])))
+                    );
                 }
             }
         }
