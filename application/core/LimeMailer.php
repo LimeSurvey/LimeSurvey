@@ -228,6 +228,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             }
             self::$instance->debug = [];
         }
+        
         return self::$instance;
     }
 
@@ -388,6 +389,14 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         return parent::addAddress($address, $name);
     }
 
+    /**
+     * Find if current email is in HTML
+     * @return boolean
+     */
+    public function getIsHtml()
+    {
+        return $this->ContentType == 'text/html';
+    }
     /**
      * Get from
      * @return string from (name <email>)
@@ -555,7 +564,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         }
 
         /* Fix body according to HTML on/off */
-        if($this->ContentType == 'text/html') {
+        if($this->getIsHtml()) {
             if (strpos($this->Body, "<html>") === false) {
                 $this->Body = "<html>".$this->Body."</html>";
             }
@@ -642,12 +651,14 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             $string = preg_replace("/{TOKEN:([A-Z0-9_]+)}/", "{"."$1"."}", $string);
         }
         $aReplacements = array_merge($aReplacements,$aTokenReplacements);
-        /* Fix Url replacements */
-        foreach ($this->aUrlsPlaceholders as $urlPlaceholder) {
-            if(!empty($aReplacements["{$urlPlaceholder}URL"])) {
-                $url = $aReplacements["{$urlPlaceholder}URL"];
-                $string = str_replace("@@{$urlPlaceholder}URL@@", $url, $string);
-                $aReplacements["{$urlPlaceholder}URL"] = Chtml::link($url,$url);
+        if($this->getIsHtml()) {
+            /* Fix Url replacements */
+            foreach ($this->aUrlsPlaceholders as $urlPlaceholder) {
+                if(!empty($aReplacements["{$urlPlaceholder}URL"])) {
+                    $url = $aReplacements["{$urlPlaceholder}URL"];
+                    $string = str_replace("@@{$urlPlaceholder}URL@@", $url, $string);
+                    $aReplacements["{$urlPlaceholder}URL"] = Chtml::link($url,$url);
+                }
             }
         }
         $aReplacements = array_merge($this->aReplacements,$aReplacements);
