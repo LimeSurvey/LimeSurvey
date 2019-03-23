@@ -181,6 +181,25 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
+     * Remove a directory checking inside another directory
+     * @var string $dirPath complete directory path
+     * @var string $baseDir the directory where it must be, default to upload dir
+     * Throw Exception
+     * @return boolean
+     */
+    public function rmdirr($dirPath,$baseDir = null)
+    {
+        if(empty($baseDir)) {
+            $baseDir = $this->getConfig('uploaddir');
+        }
+        $dirPath = realpath($dirPath);
+        if(!is_dir($dirPath) || substr($dirPath, 0, strlen($baseDir)) !== $baseDir) {
+            throw new CHttpException(403,"Disable for security reasons.");
+        }
+        return rmdirr($dirPath);
+    }
+
+    /**
      * Loads a library
      *
      * @access public

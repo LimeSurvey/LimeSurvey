@@ -661,14 +661,9 @@ class themes extends Survey_Common_Action
         $templatename = trim( Yii::app()->request->getPost('templatename') );
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-            $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir')."/".$templatename);
-            /* If retuirn false, not a dir or not inside userthemerootdir: try to hack : throw a 403 for security */
-            if(!is_dir($completeFileName) || substr($completeFileName, 0, strlen(Yii::app()->getConfig('userthemerootdir'))) !== Yii::app()->getConfig('userthemerootdir')) {
-                throw new CHttpException(403,"Disable for security reasons.");
-            }
             // CheckIfTemplateExists check if the template is installed....
             if ( ! Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename) ) {
-                if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
+                if (Yii::app()->rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
                     Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' was successfully deleted."), $templatename));
                 }else{
                     Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename), 'error');
