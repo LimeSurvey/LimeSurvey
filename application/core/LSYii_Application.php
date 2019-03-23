@@ -194,6 +194,7 @@ class LSYii_Application extends CWebApplication
         }
         $dirPath = realpath($dirPath);
         if(!is_dir($dirPath) || substr($dirPath, 0, strlen($baseDir)) !== $baseDir) {
+            Yii::log("Disable access to ".$dirPath." directory", 'error', 'application.security.files.rmdirr');
             throw new CHttpException(403,"Disable for security reasons.");
         }
         return rmdirr($dirPath);
