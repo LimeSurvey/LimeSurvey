@@ -136,7 +136,7 @@ class SurveysGroups extends LSActiveRecord
                 array(
                     'header' => gT('Owner'),
                     'name' => 'owner',
-                    'value'=>'$data->owner->users_name',
+                    'value'=>'!empty($data->owner) ? $data->owner->users_name : ""',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs has-link'),
                 ),
