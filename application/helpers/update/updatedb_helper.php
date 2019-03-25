@@ -3293,7 +3293,7 @@ function upgradeTokens176()
     $arSurveys = $oDB
     ->createCommand()
     ->select('*')
-    ->from('surveys')
+    ->from('{{surveys}}')
     ->queryAll();
     // Fix any active token tables
     foreach ( $arSurveys as $arSurvey )

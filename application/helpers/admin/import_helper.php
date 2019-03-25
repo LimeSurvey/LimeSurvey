@@ -863,11 +863,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
         }
         $iOldSID = $results['oldsid'] = $insertdata['sid'];
 
-        if ($iDesiredSurveyId != null) {
-            $insertdata['wishSID'] = GetNewSurveyID($iDesiredSurveyId);
-        } else {
-            $insertdata['wishSID'] = $iOldSID;
-        }
+        // Fix#14609
+        // wishSID overwrite sid
+        $iDesiredSurveyId = ($iDesiredSurveyId == null) ? $iOldSID : $iDesiredSurveyId;
+        $insertdata['wishSID'] = GetNewSurveyID($iDesiredSurveyId);
 
         if ($iDBVersion < 145) {
             if (isset($insertdata['private'])) {
