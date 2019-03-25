@@ -297,6 +297,11 @@
                     <file type="view" role="subview">./subviews/navigation/question_index_groups_buttons.twig</file>
                 </navigation>
 
+                <maintenance>
+                    <file type="view" role="layout">layout_maintenance.twig</file>
+                    <file type="view" role="subview">./subviews/footer/footer.twig</file>
+                </maintenance>
+
             </screens>
         </template_editor>
     </engine>

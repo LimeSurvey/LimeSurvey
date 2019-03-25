@@ -956,6 +956,7 @@ class themes extends Survey_Common_Action
         $screens['printanswers']    = gT('Print answers', 'unescaped');
         $screens['pdf']             = gT('PDF', 'unescaped');
         $screens['navigation']      = gT('Navigation', 'unescaped');
+        $screens['maintenance']     = gT('Maintenance', 'unescaped');
         //$screens['misc']            = gT('Miscellaneous files', 'unescaped');
 
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
@@ -1249,6 +1250,9 @@ class themes extends Survey_Common_Action
                         ]
                     ]
                 ];
+                break;
+
+            case 'maintenance':
                 break;
 
             case 'error':

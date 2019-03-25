@@ -178,4 +178,19 @@
 
         </ul>
     </div><!-- /.nav-collapse -->
+
+    <!-- Maintenance mode -->
+    <?php $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        if ($sMaintenanceMode == 'hard' || $sMaintenanceMode == 'soft'){ ?>
+            <div class="collapse navbar-collapse js-navbar-collapse pull-right">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                    <a class="text-warning" href="<?php echo $this->createUrl("admin/globalsettings"); ?>" title="<?php eT("Click here to change maintenance mode setting."); ?>" >
+                            <span class="fa fa-warning" ></span>
+                            <?php eT("Maintenance mode is active!");?>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        <?php } ?>
 </nav>
