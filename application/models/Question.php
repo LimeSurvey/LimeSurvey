@@ -1023,8 +1023,8 @@ class Question extends LSActiveRecord
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  return new DataSetMultipleChoiceWithComments($this->qid);
             case Question::QT_I_LANGUAGE:                       return new DataSetLanguage($this->qid);
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:            return new DataSetMultipleShortText($this->qid);
-            case Question::QT_T_LONG_FREE_TEXT:                 return new DataSetHugeFreeText($this->qid);
-            case Question::QT_U_HUGE_FREE_TEXT:                 return new DataSetLongFreeText($this->qid);
+            case Question::QT_T_LONG_FREE_TEXT:                 return new DataSetLongFreeText($this->qid);
+            case Question::QT_U_HUGE_FREE_TEXT:                 return new DataSetHugeFreeText($this->qid);
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:    return new RenderMultipleNumerical($aFieldArray);
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:       return new DataSetArray5ChoiceQuestion($this->qid);
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:      return new DataSetArray10ChoiceQuestion($this->qid);
