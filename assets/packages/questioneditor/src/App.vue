@@ -18,12 +18,7 @@ export default {
     components: {
         'maineditor' : MainEditor,
         'generalsettings' : GeneralSettings,
-        'advancedsettings' : AdvancedSettings
-    },
-    mounted() {
-        this.toggleLoading(false);
-        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
-        this.applyHotkeys();
+        'advancedsettings' : AdvancedSettings,
     },
     methods: {
         applyHotkeys() {
@@ -44,27 +39,35 @@ export default {
             //this.$log.log('data', data);
             this.event = JSON.parse(data.emitter);
         },
+        setModalEvent(payload) {
+            this.$log.log('New event set', payload);
+            this.event = payload;
+        },
         eventSet() {
             this.event = null;
         },
-        submitCurrentState() {
+        submitCurrentState(redirect = false) {
             this.toggleLoading();
-            let transferObject = {
-                question: this.$store.state.currentQuestion,
-                scaledSubquestions: this.$store.state.currentQuestionSubquestions,
-                scaledAnswerOptions: this.$store.state.currentQuestionAnswerOptions,
-                questionI10N: this.$store.state.currentQuestionI10N,
-                questionAttributes: this.$store.state.currentQuestionAttributes,
-                generalSettings: this.$store.state.currentQuestionGeneralSettings,
-                advancedSettings: this.$store.state.currentQuestionAdvancedSettings,
-            };
-            this.$log.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
-            this.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', {'questionData': transferObject}).then((result) => {
-                this.toggleLoading();
-                $('#in_survey_common').trigger('lsStopLoading');
-                this.$store.dispatch('updateObjects', result.data.newQuestionDetails);
-                this.$log.log('OBJECT AFTER TRANSFER: ', result);
-            })
+            this.$store.dispatch('saveQuestionData').then(
+                (result) => {
+                    this.toggleLoading();
+                    if(redirect == true) {
+                        window.location.href = result.data.redirect;
+                    }
+
+                    $('#in_survey_common').trigger('lsStopLoading');
+                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
+                    this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
+                    this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
+                    this.$log.log('OBJECT AFTER TRANSFER: ', result);
+                },
+                (reject) => {
+                    this.toggleLoading();
+                    $('#in_survey_common').trigger('lsStopLoading');
+                    window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
+                    setTimeout(()=>{window.location.reload();}, 1500);
+                }
+            )
         }
 
     },
@@ -73,19 +76,37 @@ export default {
         this.$store.dispatch('getQuestionTypes');
         this.$store.dispatch('getQuestionGeneralSettings');
         this.$store.dispatch('getQuestionAdvancedSettings');
+    },
+    
+    mounted() {
+        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
+        this.applyHotkeys();
+
+        $('#frmeditquestion').on('submit', (e)=>{
+            e.preventDefault();
+        });
+
+        $('#save-button').on('click', (e)=>{
+            this.submitCurrentState();
+        });
+
+        $('#save-and-close-button').on('click', (e)=>{
+            this.submitCurrentState(true);
+        });
+
+        this.toggleLoading(false);
     }
 }
 </script>
 
 <template>
     <div class="container-center scoped-new-questioneditor">
-        <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor" @click.prevent="submitCurrentState" />
         <template v-if="$store.getters.fullyLoaded">
             <maineditor :event="event" v-on:eventSet="eventSet"></maineditor>
             <generalsettings :event="event" v-on:eventSet="eventSet"></generalsettings>
             <advancedsettings :event="event" v-on:eventSet="eventSet"></advancedsettings>
         </template>
-        <modals-container/>
+        <modals-container @modalEvent="setModalEvent"/>
     </div>
 </template>
 

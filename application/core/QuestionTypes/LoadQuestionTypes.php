@@ -53,8 +53,8 @@ class LoadQuestionTypes
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:   Yii::import('questiontypes.MultipleChoiceWithComments.*'); break;
             case Question::QT_I_LANGUAGE:                        Yii::import('questiontypes.Language.*'); break;
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:             Yii::import('questiontypes.MultipleShortText.*'); break;
-            case Question::QT_T_LONG_FREE_TEXT:                  Yii::import('questiontypes.HugeFreeText.*'); break;
-            case Question::QT_U_HUGE_FREE_TEXT:                  Yii::import('questiontypes.LongFreeText.*'); break;
+            case Question::QT_T_LONG_FREE_TEXT:                  Yii::import('questiontypes.LongFreeText.*'); break;
+            case Question::QT_U_HUGE_FREE_TEXT:                  Yii::import('questiontypes.HugeFreeText.*'); break;
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:     Yii::import('questiontypes.MultipleNumericalQuestion.*');break;
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:        Yii::import('questiontypes.Array5ChoiceQuestions.*'); break;
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:       Yii::import('questiontypes.Array10ChoiceQuestions.*'); break;

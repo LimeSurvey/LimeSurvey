@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import forEach from 'lodash/forEach';
+
 import LOG from '../components/lslog';
 
 const SaveController = () => {
@@ -181,6 +182,7 @@ const SaveController = () => {
                 check: '#in_survey_common',
                 run: function(ev) {
                     stopDisplayLoadingState();
+                    formSubmitting = false;
                 },
                 on: 'lsStopLoading'
             }
@@ -188,14 +190,14 @@ const SaveController = () => {
     };
     //############PUBLIC
     return () => {
-        _.each(checks(), (checkItem) => {
+        forEach(checks(), (checkItem) => {
             let item = checkItem.check;
             $(document).off(checkItem.on, item);
 
             LOG.log('saveBindings', checkItem, $(item));
 
             if ($(item).length > 0) {
-                $(document).on(checkItem.on, item, _.debounce(checkItem.run, 300));
+                $(document).on(checkItem.on, item, checkItem.run);
                 LOG.log($(item), 'on', checkItem.on, 'run', checkItem.run);
             }
         });

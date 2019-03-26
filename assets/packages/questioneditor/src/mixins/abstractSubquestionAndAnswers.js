@@ -1,8 +1,14 @@
 import max from 'lodash/max';
 import merge from 'lodash/merge';
 import remove from 'lodash/remove';
+import foreach from 'lodash/foreach';
+import findIndex from 'lodash/findIndex';
+
+import QuickEdit from '../helperComponents/QuickEdit.vue';
+import SimplePopUpEditor from '../helperComponents/SimplePopUpEditor.vue';
 
 export default {
+    components: {QuickEdit, SimplePopUpEditor},
     methods: {
         getNewTitleFromCurrent(scaleId) {
             let nonNumericPart = this.baseNonNumericPart;
@@ -33,7 +39,51 @@ export default {
             this.currentDataSet = tmpArray;
         },
         openLabelSets() {},
-        openQuickAdd() {},
+        openQuickAdd() {
+            this.$modal.show(QuickEdit, {
+                current : this.currentDataSet,
+                type : this.type,
+                typedef : this.typeDefininition,
+                typekey : this.typeDefininitionKey
+              }, {
+                width: '75%',
+                height: '75%',
+                scrollable: true,
+                resizable: true
+              }
+              )
+        },
+        openPopUpEditor(dataSetObject, scaleId) {
+            this.$modal.show(
+                SimplePopUpEditor, 
+                { 
+                    target: this.type,
+                    dataSetObject: dataSetObject,
+                    typeDef: this.typeDefininition,
+                    typeDefKey: this.typeDefininitionKey
+                },
+                {
+                    width: '75%',
+                    height: '75%',
+                    scrollable: true,
+                    resizable: true
+                },
+                {
+                    'closed': (event, payload) => { 
+                        this.$log.log('MODAL CLOSED', event, payload);
+                        if(event.save == true) {
+                            dataSetObject[this.$store.state.activeLanguage][this.typeDefininition] = event.value;
+                        }
+                    },
+                    'change': (event, payload) => { 
+                        this.$log.log('CHANGE IN MODAL', event, payload);
+                        if(event.save == true) {
+                            dataSetObject[this.$store.state.activeLanguage][this.typeDefininition] = event.value;
+                        }
+                    }
+                }
+            )
+        },
         saveAsLabelSet() {},
         switchinput(newTarget, $event = null) {
             if(newTarget == false) {
@@ -41,6 +91,47 @@ export default {
                 return;
             }
             $('#'+newTarget).focus();
+        }, 
+        replaceFromQuickAdd(contents){
+            this.$log.log('replaceFromQuickAdd triggered on: '+this.$options.name, contents);
+            let tempObject = merge({}, this.currentDataSet);
+            foreach(contents, (scaleObject, scale) => {
+                tempObject[scale] = [];
+                foreach(scaleObject, (lngSet, key) => {
+                    const newDataSetBlock = this.getTemplate(scale);
+                    newDataSetBlock[this.typeDefininitionKey] = key;
+                    foreach(lngSet, (dataSetValue, lngKey) => { 
+                        newDataSetBlock[lngKey][this.typeDefininition] = dataSetValue; 
+                    });
+                    tempObject[scale].push(newDataSetBlock);
+                });
+            });
+            this.currentDataSet = tempObject;
+        },
+        addToFromQuickAdd(contents){
+            this.$log.log('addToFromQuickAdd triggered on: '+this.$options.name, contents);
+            let tempObject = merge({}, this.currentDataSet);
+            foreach(contents, (scaleObject, scale) => {
+                foreach(scaleObject, (lngSet, key) => {
+                    const newDataSetBlock = this.getTemplate(scale);
+                    newDataSetBlock[this.typeDefininitionKey] = key;
+                    foreach(lngSet, (dataSetValue, lngKey) => { 
+                        newDataSetBlock[lngKey][this.typeDefininition] = dataSetValue; 
+                    });
+                    tempObject[scale].push(newDataSetBlock);
+                });
+            });
+            this.currentDataSet = tempObject;
+        },
+        editFromSimplePopupEditor(contents){
+            this.$log.log('Event editFromSimplePopupEditor', contents);
+            const tempFullObject = merge({}, this.currentDataSet);
+            let identifier = findIndex(tempFullObject[contents.scale_id], (dataSetObject,i) => 
+            dataSetObject[this.typeDefininitionKey] === contents[this.typeDefininitionKey] 
+            );
+            tempFullObject[contents.scale_id][identifier] = contents;
+            this.$log.log('Event editFromSimplePopupEditor result', {identifier, tempFullObject});
+            this.currentDataSet = tempFullObject;
         }
     }
 }

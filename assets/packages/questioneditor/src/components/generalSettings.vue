@@ -8,8 +8,11 @@ import SettingTextdisplay from './_inputtypes/textdisplay.vue';
 import SettingTextarea from './_inputtypes/textarea.vue';
 import StubSet from './_inputtypes/stub.vue';
 
+import eventChild from '../mixins/eventChild.js';
+
 export default {
     name: 'GeneralSettings',
+    mixins: [eventChild],
     components: {
         'setting-switch': SettingSwitch,
         'setting-text': SettingTextdisplay,

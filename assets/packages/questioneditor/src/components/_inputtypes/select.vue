@@ -29,7 +29,7 @@
             curValue: {
                 get() { return this.currentValue },
                 set(newValue) { 
-                    this.$emit('change', {value: newValue, 'element': elId});
+                    this.$emit('change', newValue);
                 },
             },
             showHelp(){

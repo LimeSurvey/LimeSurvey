@@ -6,6 +6,7 @@ import VueLocalStorage from 'vue-localstorage';
 import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
+import statePreset from './state';
 
 Vue.use(VueLocalStorage);
 Vue.use(Vuex);
@@ -16,36 +17,7 @@ export default function(questionId){
         key: 'lsquestionedit_'+questionId,
         storage: window.localStorage
     });
-
-    const statePreset = {
-        currentQuestion: {},
-        currentQuestionSubquestions: {},
-        currentQuestionAnswerOptions: {},
-        currentQuestionI10N: {},
-        currentQuestionAttributes: {},
-        currentQuestionGeneralSettings: [],
-        currentQuestionAdvancedSettings: {},
-        questionAttributesImmutable: {},
-        questionGeneralSettingsImmutable: [],
-        questionAdvancedSettingsImmutable: {},
-        questionImmutable: {},
-        questionImmutableI10N: {},
-        questionSubquestionsImmutable: {},
-        questionAnswerOptionsImmutable: {},
-        languages: [],
-        survey: {},
-        debugMode: false,
-        questionTypes: [
-            {
-                code : '',
-                type : '',
-                title : ''
-            }
-        ],
-        questionAdvancedSettingsCategory: '',
-        activeLanguage: '',
-    };
-
+    
     return new Vuex.Store({
         state: statePreset,
         plugins: [

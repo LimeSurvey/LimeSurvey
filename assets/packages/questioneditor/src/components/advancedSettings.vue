@@ -7,8 +7,11 @@ import SettingsTab from './subcomponents/_settingstab.vue';
 import Subquestions from './subcomponents/_subquestions.vue';
 import Answeroptions from './subcomponents/_answeroptions.vue';
 
+import eventChild from '../mixins/eventChild.js';
+
 export default {
     name: 'AdvancedSettings',
+    mixins: [eventChild],
     components: {
         "settings-tab" : SettingsTab,
         "subquestions" : Subquestions,
@@ -90,6 +93,8 @@ export default {
             <div class="row scope-border-open-top">
                 <component 
                 v-bind:is="currentTabComponent" 
+                :event="event"
+                v-on:eventSet="eventSet"
                 tabData
                 />
             </div>    
