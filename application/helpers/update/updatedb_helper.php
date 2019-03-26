@@ -2606,7 +2606,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ));
             }
             $oDB->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>405),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>406),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
       
