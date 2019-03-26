@@ -36,7 +36,7 @@ import {onExistBinding as surveyGrid} from './pages/surveyGrid';
 //import parts for globalscope
 import confirmationModal from './parts/confirmationModal'; 
 import {globalStartUpMethods, globalWindowMethods, globalOnloadMethods} from './parts/globalMethods';
-import * as notifyFader from './parts/notifyFader';
+import notifyFader from './parts/notifyFader';
 import * as AjaxHelper from './parts/ajaxHelper';
 import saveBindings from './parts/save';
 
@@ -132,7 +132,7 @@ const AdminCore = function(){
                 initNotification : notificationSystem.initNotification
             }
 
-            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, AjaxHelper, notifyFader, subquestionAndAnswersGlobalMethods, notificationSystem,gridAction);
+            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, AjaxHelper, {notifyFader}, subquestionAndAnswersGlobalMethods, notificationSystem,gridAction);
             
             /*
             * Set the namespace to the global variable LS
