@@ -212,6 +212,9 @@ class TokenDynamic extends LSActiveRecord
         $command->order = 'tid';
 
         $oResult = TokenDynamic::model()->findAll($command);
+        foreach($oResult as $key=>$result){
+            $oResult[$key] = $result->decrypt();
+        }
         return $oResult;
     }
 
@@ -1071,7 +1074,7 @@ class TokenDynamic extends LSActiveRecord
             $criteria->compare($sColName, $this->$sColName, true);
         }
 
-        $dataProvider = new CActiveDataProvider('TokenDynamic', array(
+        $dataProvider = new LSCActiveDataProvider('TokenDynamic', array(
             'sort'=>$sort,
             'criteria'=>$criteria,
             'pagination'=>array(
