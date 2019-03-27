@@ -659,11 +659,6 @@ class database extends Survey_Common_Action
             $fixedQuestionAttributes['other'] = boolval($fixedQuestionAttributes['other']) ? 'Y' : 'N';
         }
 
-        // For Bootstrap Version usin YiiWheels switch :
-        $_POST['mandatory'] = (Yii::app()->request->getPost('mandatory') == '1') ? 'Y' : 'N';
-        $_POST['encrypted'] = (Yii::app()->request->getPost('encrypted') == '1') ? 'Y' : 'N';
-        $_POST['other'] = (Yii::app()->request->getPost('other') == '1') ? 'Y' : 'N';
-
         // These are the questions types that have no mandatory property - so zap it accordingly
         if ($sQuestionType == "X" || $sQuestionType == "|") {
             $fixedQuestionAttributes['mandatory'] = 'N';

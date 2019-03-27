@@ -175,7 +175,7 @@
                             </strong>
                         </td>
                         <td>
-                            <?php if ($qrrow['mandatory'] == "Y") : ?>
+                            <?php if ($qrrow['encrypted'] == "Y") : ?>
                                 <?php eT("Yes"); ?>
                             <?php else:?>
                                 <?php eT("No"); ?>

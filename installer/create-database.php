@@ -244,7 +244,7 @@ function createDatabase($oDB){
         foreach($aCoreAttributes as $attribute){
             $oDB->createCommand()->insert('{{participant_attribute_names}}', array(
                 'attribute_type'    => 'TB',
-                'defaultname'       => '$attribute',
+                'defaultname'       => $attribute,
                 'visible'           => 'TRUE',
                 'encrypted'         => 'N',
                 'core_attribute'    => 'Y'

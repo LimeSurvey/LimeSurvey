@@ -342,6 +342,8 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                                 'offLabel'=>gT('Off'),
                                                 'htmlOptions'=>array(
                                                     'disabled'=>$oSurvey->isActive,
+                                                    'value'=> 'Y',
+                                                    'uncheckValue' => 'N',
                                                 ),
                                             ));?>
                                         </div>

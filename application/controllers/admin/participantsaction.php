@@ -1360,7 +1360,7 @@ $url .= "_view"; });
                 foreach($oParticipants as $participant){
                     $aUpdateData = array();
                     if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N'){
-                        $aUpdateData[$participant] = LSActiveRecord::decryptSingle($participant->$sDefaultname);
+                        $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname);
                     } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y'){
                         $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname);
                         $test = 1;

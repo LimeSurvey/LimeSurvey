@@ -27,7 +27,7 @@ use \LimeSurvey\Helpers\questionHelper;
  * @property string $title Question Code
  * @property string $preg
  * @property string $other Other option enabled for question (Y/N)
- * @property string $mandatory Whether question is mandatory (Y/N)
+ * @property string $mandatory Whether question is mandatory (Y/S/N)
  * @property string $encrypted Whether question is encrypted (Y/N)
  * @property integer $question_order Question order in greoup
  * @property integer $parent_qid Questions parent question ID eg for subquestions
@@ -136,7 +136,7 @@ class Question extends LSActiveRecord
             array('qid,sid,gid,parent_qid', 'numerical', 'integerOnly'=>true),
             array('qid', 'unique','message'=>sprintf(gT("Question id (qid) : '%s' is already in use."), $this->qid)),// Still needed ?
             array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
-            array('mandatory', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
+            array('mandatory', 'in', 'range'=>array('Y', 'S', 'N'), 'allowEmpty'=>true),
             array('encrypted', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('question_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
