@@ -347,10 +347,7 @@ class SurveyActivator
         //if there is an autonumber_start field, start auto numbering here
         if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
             if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-                mssql_drop_primary_index($this->survey->responsesTableName);
-                mssql_drop_constraint('id', $this->survey->responsesTableName);
-                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} drop column id ";
-                Yii::app()->db->createCommand($sQuery)->execute();
+                mssql_drop_coulmn_with_constraints($this->survey->responsesTableName, 'id');
                 $sQuery = "ALTER TABLE {$this->survey->responsesTableName} ADD [id] int identity({$iAutoNumberStart},1)";
                 Yii::app()->db->createCommand($sQuery)->execute();
                 // Add back the primaryKey
