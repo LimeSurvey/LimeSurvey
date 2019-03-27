@@ -40,7 +40,7 @@ class Authdb extends AuthPluginBase
         $oEvent = $this->getEvent();
         $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
         $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
-        if (!validateEmailAddress($new_email)) {
+        if (!LimeMailer::validateAddress($new_email)) {
             $oEvent->set('errorCode', self::ERROR_INVALID_EMAIL);
             $oEvent->set('errorMessageTitle', gT("Failed to add user"));
             $oEvent->set('errorMessageBody', gT("The email address is not valid."));

@@ -263,26 +263,29 @@ class Save
             $_SESSION['survey_'.$surveyid]['holdpass'] = $_POST['savepass']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
 
             //Email if needed
-            if (isset($_POST['saveemail']) && validateEmailAddress($_POST['saveemail'])) {
-                $subject  = gT("Saved Survey Details")." - ".$thissurvey['name'];
+            if (Yii::app()->getRequest()->getPost('saveemail') && validateEmailAddress(Yii::app()->getRequest()->getPost('saveemail'))) {
+                $mailer = new \LimeMailer;
+                $mailer->setSurvey($thissurvey['sid']);
+                $mailer->emailType = 'savesurveydetails';
+                $mailer->Subject = gT("Saved Survey Details")." - ".$thissurvey['name'];
                 $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                 $message .= "\n\n".$thissurvey['name']."\n\n";
-                $message .= gT("Name").": ".$_POST['savename']."\n";
-                $message .= gT("Password").": ".$_POST['savepass']."\n\n";
+                $message .= gT("Name").": ".Yii::app()->getRequest()->getPost('savename')."\n";
+                $message .= gT("Password").": ".Yii::app()->getRequest()->getPost('savepass')."\n\n";
                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                $aParams = array('scid'=>$scid, 'lang'=>App()->language, 'loadname'=>$_POST['savename'], 'loadpass'=>$_POST['savepass']);
+                $aParams  = array('scid'=>$scid, 'lang'=>App()->language, 'loadname'=>Yii::app()->getRequest()->getPost('savename'), 'loadpass'=>Yii::app()->getRequest()->getPost('savepass'));
                 if (!empty($clienttoken)) {
                     $aParams['token'] = $clienttoken;
                 }
                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload", $aParams);
-
-                $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid))) {
+                $mailer->Body = $message;
+                $mailer->addAddress(Yii::app()->getRequest()->getPost('saveemail'));
+                if ($mailer->sendMessage()) {
                     $emailsent = "Y";
                 } else {
-                    $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
-                    if (trim($thissurvey['adminemail']) == '') {
-                        $errormsg .= gT('(Reason: Admin email address empty)');
+                    $errormsg .= gT('Send email failed. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
+                    if (Permission::model()->hasSurveyPermission($thissurvey['sid'],'surveysettings')) {
+                        $errormsg .= sprintf(gT("Email error message %s"),$mailer->getError());
                     }
                 }
             }
@@ -402,34 +405,32 @@ class Save
             $_SESSION['survey_'.$surveyid]['holdpass'] = $_POST['savepass']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
 
             //Email if needed
-            if (isset($_POST['saveemail']) && validateEmailAddress($_POST['saveemail'])) {
-
-                $subject  = gT("Saved Survey Details")." - ".$thissurvey['name'];
+            if (Yii::app()->getRequest()->getPost('saveemail') && validateEmailAddress(Yii::app()->getRequest()->getPost('saveemail'))) {
+                $mailer = new \LimeMailer;
+                $mailer->setSurvey($thissurvey['sid']);
+                $mailer->emailType = 'savesurveydetails';
+                $mailer->Subject = gT("Saved Survey Details")." - ".$thissurvey['name'];
                 $message  = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                 $message .= "\n\n".$thissurvey['name']."\n\n";
-                $message .= gT("Name").": ".$_POST['savename']."\n";
-                $message .= gT("Password").": ".$_POST['savepass']."\n\n";
+                $message .= gT("Name").": ".Yii::app()->getRequest()->getPost('savename')."\n";
+                $message .= gT("Password").": ".Yii::app()->getRequest()->getPost('savepass')."\n\n";
                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
-                $aParams  = array('scid'=>$scid, 'lang'=>App()->language, 'loadname'=>$_POST['savename'], 'loadpass'=>$_POST['savepass']);
-
+                $aParams  = array('scid'=>$scid, 'lang'=>App()->language, 'loadname'=>Yii::app()->getRequest()->getPost('savename'), 'loadpass'=>Yii::app()->getRequest()->getPost('savepass'));
                 if (!empty($clienttoken)) {
                     $aParams['token'] = $clienttoken;
                 }
-
                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload", $aParams);
-                $from     = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-
-                if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid))) {
+                $mailer->Body = $message;
+                $mailer->addAddress(Yii::app()->getRequest()->getPost('saveemail'));
+                if ($mailer->sendMessage()) {
                     $emailsent = "Y";
                 } else {
-
-                    $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
-                    if (trim($thissurvey['adminemail']) == '') {
-                        $errormsg .= gT('(Reason: Admin email address empty)');
+                    $errormsg .= gT('Send email failed. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
+                    if (Permission::model()->hasSurveyPermission($thissurvey['sid'],'surveysettings')) {
+                        $errormsg .= sprintf(gT("Email error message %s"),$mailer->getError());
                     }
                 }
             }
-
             return array('success' => true, 'message' => gT('Your survey was successfully saved.'));
         }
 

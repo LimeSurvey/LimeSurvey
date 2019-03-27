@@ -124,11 +124,9 @@ $internalConfig = array(
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',
         ),
-
         'sodium'=>array(
             'class' => 'Sodium',
        ),
-
         'clientScript'=>array(
             'packages' => array_merge(
                 require('third_party.php'),
@@ -216,7 +214,10 @@ $internalConfig = array(
         'format'=>array(
             'class'=>'application.extensions.CustomFormatter'
         ),
-
+        'LimeMailer' => array(
+            /* This allow update LimeMailer in config, but no namespace in this condition … */
+            'class' => 'application.core.LimeMailer',
+        ),
         'twigRenderer' => array(
             'class' => 'application.core.LSETwigViewRenderer',
 
