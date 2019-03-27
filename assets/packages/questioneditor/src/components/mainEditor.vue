@@ -3,6 +3,8 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
+import merge from 'lodash/merge';
+
 import PreviewFrame from './subcomponents/_previewFrame.vue';
 import LanguageSelector from './subcomponents/_languageSelector.vue';
 import runAjax from '../mixins/runAjax.js';
@@ -21,10 +23,10 @@ export default {
             editorHelpData: '',
             editorHelpConfig: {},
             previewContent: ' ',
-            previewRootUrl: 'about:blank',
             previewLoading: false,
             previewActive: true,
             debug: false,
+            firstStart: true,
             questionEditButton: window.questionEditButton,
             changeTriggered: debounce((content,event) => {
                 this.$log.log('Debounced load triggered',{content,event});
@@ -33,6 +35,17 @@ export default {
         };
     },
     computed: {
+        previewRootUrl() {
+            return window.QuestionEditData.qid != null 
+            ? [
+                window.QuestionEditData.connectorBaseUrl,
+                '/getRenderedPreview/iQuestionId/',
+                window.QuestionEditData.qid,
+                (this.firstStart ? '/root/1' : ''),
+                '/sLanguage/',
+                this.$store.state.activeLanguage].join('')
+            : 'about:blank';
+        },
         currentQuestionCode: {
             get() {return this.$store.state.currentQuestion.title;},
             set(newValue) {
@@ -83,7 +96,7 @@ export default {
             }
             this.$log.log('CHANGEOBJECT',changed);
             
-            return changed;
+            return merge(changed, window.LS.data.csrfTokenData);
         },
         runDebouncedChange(content,event){
             this.changeTriggered(content,event);
@@ -103,7 +116,7 @@ export default {
             this.getQuestionPreview();
             this.$store.dispatch('getQuestionGeneralSettingsWithType');
         },
-        getQuestionPreview(firstStart = false){
+        getQuestionPreview(){
             this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);
             if(!window.QuestionEditData.qid) {
                 this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`;
@@ -112,26 +125,34 @@ export default {
             if(this.previewLoading === true) {
                 return;
             }
+            this.firstStart = false;
             this.previewLoading = true;
             this.$_load(
-                this.previewRootUrl+'/sLanguage/'+this.$store.state.activeLanguage+(firstStart ? '/root/1' : ''), 
+                this.previewRootUrl, 
                 this.changedParts(),
                 'POST'
-            ).then((result) => {
-                this.previewContent = result.data;
-                this.previewLoading = false;
-            });
+            ).then(
+                (result) => {
+                    this.previewContent = result.data;
+                    this.previewLoading = false;
+                }, 
+                (error) => {
+                    this.$log.error('Error loading preview', error);
+                    this.previewLoading = false;
+                }
+            );
         },
         selectLanguage(sLanguage) {
             this.$log.log('LANGUAGE CHANGED', sLanguage);
             this.$store.commit('setActiveLanguage', sLanguage);
+        },
+        setPreviewReady() {
+            this.previewLoading = false;
+            this.firstStart = false;
         }
     },
     mounted(){
-        this.previewRootUrl = window.QuestionEditData.qid != null 
-            ? window.QuestionEditData.connectorBaseUrl+'/getRenderedPreview/iQuestionId/'+window.QuestionEditData.qid
-            : 'about:blank';
-        this.getQuestionPreview(true);
+        this.previewLoading = true;
     },
 }
 </script>
@@ -181,7 +202,7 @@ export default {
                 </div>
                 <div class="col-sm-12 ls-space margin top-5 bottom-5">
                     <div class="scope-preview" v-show="previewActive">
-                        <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :loading="previewLoading" />
+                        <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :firstStart="firstStart" @ready="setPreviewReady" :loading="previewLoading" />
                     </div>
                 </div>
             </div>

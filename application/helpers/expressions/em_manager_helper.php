@@ -5600,7 +5600,7 @@
                     $response = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
                     if ($response->submitdate == null || Survey::model()->findByPk($this->sid)->alloweditaftercompletion == 'Y') {
 	                    $response->setAttributes($aResponseAttributes, false);
-	                    if (!$response->save())
+	                    if (!$response->encryptSave())
 	                    {
 	                        // @todo This kills the session if adminemail is defined, so the queries below won't work.
 	                        $message = submitfailed('', join("\n",$response->getErorrs()));  // TODO - report SQL error?
@@ -5657,9 +5657,9 @@
                             }  else {
                                 $submitdate  = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                             }
-                            $aResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid']);
+                            $aResponse = Response::model($this->sid)->findByPk($_SESSION[$this->sessid]['srid'])->decrypt();
                             $aResponse->submitdate = $submitdate;
-                            $aResponse->save();
+                            $aResponse->encryptSave();
                         }
                     }
 

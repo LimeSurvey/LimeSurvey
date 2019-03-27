@@ -29,11 +29,24 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         function(){
             $(this).removeClass('mixed');
             $(this).closest('tr').find('input').prop('checked',$(this).prop('checked')).prop('indeterminate',false);
+            updateAllCheckboxes();
+        }
+    )
+
+    // mark all checkboxes
+    $(".markall").click(
+        function(){
+            $(this).removeClass('mixed');
+            var checked = $(this).prop('checked');
+            $('.usersurveypermissions tbody tr').each(function(){
+                var rowSelector = $(this).find('input');
+                $(rowSelector).prop('checked',checked).prop('indeterminate',false);
+            });
         }
     )
 
     $('.extended input').click(
-     function(){
+        function(){
             if ($(this).closest('tr').find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
             {
                 $(this).closest('tr').find('.markrow').prop('checked',true).removeClass('mixed');
@@ -44,9 +57,10 @@ $(document).on('ready  pjax:scriptcomplete', function(){
             }
             else
             {
-                $(this).closest('tr').find('.markrow').prop('checked',true).addClass('mixed');;
+                $(this).closest('tr').find('.markrow').prop('checked',true).addClass('mixed');
             }
-     }
+            updateAllCheckboxes();
+        }
     )
 
     if (Cookies.get('surveysecurityas')!='true')
@@ -54,19 +68,19 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         $('.usersurveypermissions .extended').hide();
     }
 
-    $('.usersurveypermissions tr').each(function(){
-            if ($(this).find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
-            {
-                $(this).find('.markrow').prop('checked',true).removeClass('mixed');
-            }
-            else if ($(this).find('.extended input:checked').size()==0)
-            {
-                $(this).find('.markrow').prop('checked',false).removeClass('mixed');
-            }
-            else
-            {
-                $(this).find('.markrow').prop('checked',true).addClass('mixed');
-            }
+    $('.usersurveypermissions tbody tr').each(function(){
+        if ($(this).find('.extended input:checked').size()==$(this).closest('tr').find('.extended input').size())
+        {
+            $(this).find('.markrow').prop('checked',true).removeClass('mixed');
+        }
+        else if ($(this).find('.extended input:checked').size()==0)
+        {
+            $(this).find('.markrow').prop('checked',false).removeClass('mixed');
+        }
+        else
+        {
+            $(this).find('.markrow').prop('checked',true).addClass('mixed');
+        }
     })
 
     $('#btnToggleAdvanced').click(function(){
@@ -81,8 +95,10 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         }
         updateExtendedButton(!extendoptionsvisible);
         Cookies.set('surveysecurityas',!extendoptionsvisible);
-    })
+    });
     updateExtendedButton(true);
+
+    updateAllCheckboxes();
 });
 
 function updateExtendedButton(bVisible)
@@ -96,4 +112,30 @@ function updateExtendedButton(bVisible)
         $('#btnToggleAdvanced').val('>>');
     }
 
+}
+
+function updateAllCheckboxes(){
+    var iFullCheckedRows = 0;
+    var iHalfCheckedRows = 0;
+    var iNoCheckedRows = 0;
+    $('.usersurveypermissions tbody tr').each(function(){
+        var rowSelector = $(this).find('.markrow');
+        if (rowSelector.prop('checked') === true && !rowSelector.hasClass('mixed')){
+            iFullCheckedRows += 1;
+        } else if (rowSelector.prop('checked') === true && rowSelector.hasClass('mixed')){
+            iHalfCheckedRows += 1;
+        } else if (rowSelector.prop('checked') === false){
+            iNoCheckedRows += 1;
+        }
+    });
+
+    var markAllSelector = $('.usersurveypermissions thead tr').find('.markall');
+
+    if (iFullCheckedRows > 0 && iHalfCheckedRows == 0 && iNoCheckedRows == 0){
+        markAllSelector.prop('checked',true).removeClass('mixed');
+    } else if (iFullCheckedRows > 0 || iHalfCheckedRows > 0){
+        markAllSelector.prop('checked',true).addClass('mixed');
+    } else {
+        markAllSelector.prop('checked',false).removeClass('mixed');
+    }
 }

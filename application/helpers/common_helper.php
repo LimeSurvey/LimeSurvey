@@ -706,11 +706,11 @@ function getSurveyInfo($surveyid, $languagecode = '')
     $languagecode = sanitize_languagecode($languagecode);
     $thissurvey = false;
     $oSurvey = Survey::model()->findByPk($surveyid);
-    $aSurveyOptions = $oSurvey->aOptions;
     // Do job only if this survey exist
     if (!$oSurvey) {
         return false;
     }
+    $aSurveyOptions = $oSurvey->aOptions;
     // if no language code is set then get the base language one
     if ((!isset($languagecode) || $languagecode == '')) {
         $languagecode = $oSurvey->language;

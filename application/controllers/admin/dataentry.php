@@ -479,6 +479,7 @@ class dataentry extends Survey_Common_Action
             $results = array();
             if ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 $idresult = Response::model($surveyid)->findByPk($id);
+                $idresult->decrypt();
                 $results[] = $idresult->attributes;
             } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 if (isset($_GET['public']) && $_GET['public'] == "true") {
@@ -496,6 +497,7 @@ class dataentry extends Survey_Common_Action
 
                 $saver = array();
                 foreach ($svresult as $svrow) {
+                    $svrow->decrypt();
                     $saver['email'] = $svrow['email'];
                     $saver['scid'] = $svrow['scid'];
                     $saver['ip'] = $svrow['ip'];
@@ -504,6 +506,7 @@ class dataentry extends Survey_Common_Action
                 $svresult = SavedControl::model()->findAllByAttributes(array('scid'=>$saver['scid']));
                 $responses = [];
                 foreach ($svresult as $svrow) {
+                    $svrow->decrypt();
                     $responses[$svrow['fieldname']] = $svrow['value'];
                 } // while
 
@@ -1414,14 +1417,16 @@ class dataentry extends Survey_Common_Action
                 default:
                     $oReponse->$fieldname = $thisvalue;
             }
-        }
-        $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
-        $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
-        $beforeDataEntryUpdate->set('iResponseID', $id);
-        App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
-        if(!$oReponse->save()) {
-            Yii::app()->setFlashMessage(CHtml::errorSummary($oReponse), 'error');
-        } else {
+
+            $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
+            $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
+            $beforeDataEntryUpdate->set('iResponseID', $id);
+            App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
+
+            $arResponse = Response::model($surveyid)->findByPk($id);
+            $arResponse->setAttributes($aFieldAttributes, false);
+            $arResponse->encryptSave();
+
             Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."), $id));
         }
         if (Yii::app()->request->getPost('close-after-save') == 'true') {
@@ -1617,7 +1622,7 @@ class dataentry extends Survey_Common_Action
                 $beforeDataEntryCreate->set('oModel', $new_response);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryCreate);
 
-                $new_response->save();
+                $new_response->encryptSave();
                 $last_db_id = $new_response->getPrimaryKey();
                 if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') {
                     // submittoken
@@ -1683,7 +1688,7 @@ class dataentry extends Survey_Common_Action
 
                             $aToken = new Token($surveyid);  
                             $aToken->setAttributes($tokendata, false);  
-                            $aToken->save();
+                            $aToken->encryptSave();
                             $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
                         }
                         if ($saver['email']) {

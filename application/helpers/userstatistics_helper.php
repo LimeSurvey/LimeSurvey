@@ -1537,7 +1537,22 @@ class userstatistics_helper
         }
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
+
+        //check filter option
+        $criteria = new CDbCriteria();        
+        if (incompleteAnsFilterState() == "incomplete") {
+            $criteria->addCondition("submitdate is null");
+        } elseif (incompleteAnsFilterState() == "complete") {
+            $criteria->addCondition("submitdate is not null");
+        }
+        // prepare and decrypt data
+        $oResponses = Response::model($surveyid)->findAll($criteria);
+        foreach($oResponses as $key => $oResponse){
+            $oResponses[$key] = $oResponse->decrypt(); 
+        }
+
         foreach ($outputs['alist'] as $al) {
+            $row = 0;
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
             if (isset($al[2]) && $al[2]) {
 
@@ -1547,11 +1562,21 @@ class userstatistics_helper
                         // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                         // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
                         /* This query selects a count of responses where "other" has been selected */
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName(substr($al[2], 0, strlen($al[2]) - 5))."='-oth-'";
+                        foreach ($oResponses as $oResponse){
+                            $sResponseColumn = $al[2];
+                            $column = substr($sResponseColumn, 0, strlen($sResponseColumn) - 5);
+                            if ($column =='-oth-' && !empty($oResponse->$sResponseColumn)){
+                                $row += 1;
+                            }
+                        }
                     } else {
                         //get data - select a count of responses where no answer is provided
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        foreach ($oResponses as $oResponse){
+                            $sResponseColumn = $al[2];
+                            if ($oResponse->$sResponseColumn != ''){
+                                $row += 1;
+                            }
+                        }
                     }
                 }
 
@@ -1568,42 +1593,60 @@ class userstatistics_helper
 
                     //free text answers
                     if ($al[0] == "Answer") {
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." != ''" : "NOT (".Yii::app()->db->quoteColumnName($al[2])." LIKE '')";
+                        foreach ($oResponses as $oResponse){
+                            $sResponseColumn = $al[2];
+                            if ($oResponse->$sResponseColumn != ''){
+                                $row += 1;
+                            }
+                        }
                     }
                     //"no answer" handling
                     elseif ($al[0] == "NoAnswer") {
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
-                        $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." = '')" : " (".Yii::app()->db->quoteColumnName($al[2])." LIKE ''))";
+                        foreach ($oResponses as $oResponse){
+                            $sResponseColumn = $al[2];
+                            if ($oResponse->$sResponseColumn == ''){
+                                $row += 1;
+                            }
+                        }
                     }
                 } elseif ($outputs['qtype'] == Question::QT_O_LIST_WITH_COMMENT) {
-                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
-                    $query .= ($sDatabaseType == "mysql") ?  Yii::app()->db->quoteColumnName($al[2])." <> '')" : " (".Yii::app()->db->quoteColumnName($al[2])." NOT LIKE ''))";
-                    // all other question types
+                    foreach ($oResponses as $oResponse){
+                        $sResponseColumn = $al[2];
+                        if ($oResponse->$sResponseColumn != ''){
+                            $row += 1;
+                        }
+                    }
+                // all other question types
                 } else {
-                    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($al[2])." =";
-
-                    //ranking question?
-                    if (substr($rt, 0, 1) == "R") {
-                        $query .= " '$al[0]'";
-                    } else {
-                        $query .= " 'Y'";
+                    foreach ($oResponses as $oResponse){
+                        $sResponseColumn = $al[2];
+                        if (substr($rt, 0, 1) == "R") {
+                            $sSubquestionCode = $al[0];
+                            if ($oResponse->$sResponseColumn == $sSubquestionCode){
+                                $row += 1;
+                            }
+                        } else {
+                            if ($oResponse->$sResponseColumn == 'Y'){
+                                $row += 1;
+                            }
+                        }
                     }
                 }
+
             }    //end if -> alist set
 
             else {
                 if ($al[0] != "") {
                     //get more data
-                    $sDatabaseType = Yii::app()->db->getDriverName();
-                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
-                        // mssql cannot compare text blobs so we have to cast here
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".Yii::app()->db->quoteColumnName($rt)." as varchar)= '$al[0]'";
-                    } else {
-                                            $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".Yii::app()->db->quoteColumnName($rt)." = '$al[0]'";
-                    }
+                    foreach ($oResponses as $oResponse){
+                        $sResponseColumn = $rt;
+                        $sSubquestionCode = $al[0];
+                        if ($oResponse->$sResponseColumn == $sSubquestionCode){
+                            $row += 1;
+                        }
+                    }                   
                 } else {
-// This is for the 'NoAnswer' case
+                    // This is for the 'NoAnswer' case
                     // We need to take into account several possibilities
                     // * NoAnswer cause the participant clicked the NoAnswer radio
                     //  ==> in this case value is '' or ' '
@@ -1611,17 +1654,11 @@ class userstatistics_helper
                     //  ==> value is ''
                     // * NoAnswer due to conditions, or a page not displayed
                     //  ==> value is NULL
-                    if ($sDatabaseType == 'mssql' || $sDatabaseType == 'sqlsrv' || $sDatabaseType == 'dblib') {
-                        // mssql cannot compare text blobs so we have to cast here
-                        //$query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".sanitize_int($rt)." IS NULL "
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
-                        //                                    . "OR cast(".sanitize_int($rt)." as varchar) = '' "
-                        . "cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = '' "
-                        . "OR cast(".Yii::app()->db->quoteColumnName($rt)." as varchar) = ' ' )";
-                    } else {
-                        $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
-                        . " ".Yii::app()->db->quoteColumnName($rt)." = '' "
-                        . "OR ".Yii::app()->db->quoteColumnName($rt)." = ' ') ";
+                    foreach ($oResponses as $oResponse){
+                        $sResponseColumn = $rt;
+                        if ($oResponse->$sResponseColumn == '' || $oResponse->$sResponseColumn == ' '){
+                            $row += 1;
+                        }
                     }
                 }
 
@@ -1633,8 +1670,6 @@ class userstatistics_helper
             //check for any "sql" that has been passed from another script
             if (!empty($sql)) {$query .= " AND $sql"; }
 
-            //get data
-            $row = Yii::app()->db->createCommand($query)->queryScalar();
 
             // $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
 

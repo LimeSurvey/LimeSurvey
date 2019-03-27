@@ -104,12 +104,12 @@ $internalConfig = array(
         'application.helpers.*',
         'application.controllers.*',
         'application.modules.*',
-        'application.core.QuestionTypes.*',
         'bootstrap.helpers.*',
         'bootstrap.widgets.*',
         'bootstrap.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
         'third_party.Twig.*',
+        'third_party.sodium.*',
         'ext.captchaExtended.CaptchaExtendedAction',
         'ext.captchaExtended.CaptchaExtendedValidator',
         'questiontypes.*'
@@ -124,7 +124,9 @@ $internalConfig = array(
         'yiiwheels' => array(
             'class' => 'yiiwheels.YiiWheels',
         ),
-        
+        'sodium'=>array(
+            'class' => 'Sodium',
+       ),
         'clientScript'=>array(
             'packages' => array_merge(
                 require('third_party.php'),

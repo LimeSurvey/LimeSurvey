@@ -5,7 +5,7 @@ import VModal from 'vue-js-modal'
 import App from './App.vue';
 
 import getAppState from "./storage/store";
-import LOG from "./mixins/logSystem";
+import {PluginLog} from "./mixins/logSystem";
 
 
 
@@ -15,7 +15,7 @@ import LOG from "./mixins/logSystem";
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
 
-Vue.use( LOG );
+Vue.use( PluginLog );
 Vue.use( CKEditor );
 Vue.use(VModal, { dynamic: true });
 

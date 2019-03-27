@@ -1090,6 +1090,7 @@ class TemplateConfiguration extends TemplateConfig
         if (!empty($this->options)) {
             $this->oOptions = json_decode($this->options);
         }
+        unset($this->oOptions->comment); // unset "comment" property which is auto generated from HTML comments in xml file
 
         $this->setOptionInheritance();
     }

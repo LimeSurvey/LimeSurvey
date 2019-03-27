@@ -68,6 +68,7 @@
     <!-- for animations, see https://daneden.github.io/animate.css/ -->
     <!-- for checkbox icons, use the Unicode of the charcter (eg: http://fontawesome.io/icon/check/ is f00c ) -->
     <options>
+        <!-- simple options -->
         <ajaxmode type="buttons" category="Simple options" width="4" title="Ajax mode" options="on|off" optionlabels="Yes|No">on</ajaxmode>
         <container type="buttons" category="Simple options" width="4" title="Survey container" options="on|off" optionlabels="Yes|No">on</container>
         <zebrastriping type="buttons" category="Simple options" width="4" title="Zebra-striped questions" options="on|off" optionlabels="Yes|No">off</zebrastriping>
@@ -82,6 +83,7 @@
         <fixnumauto type="buttons" category="Simple options" width="4" title="Fix automatically numeric value" options="enable|partial|disable" optionlabels="Yes|For expression|No">off</fixnumauto>
         <questionborder type="buttons" category="Simple options" width="4" title="Question borders" options="on|off" optionlabels="Yes|No">on</questionborder>
         <questioncontainershadow type="buttons" category="Simple options" width="4" title="Question shadow" options="on|off" optionlabels="Yes|No">on</questioncontainershadow>
+        <!-- colors -->
         <bodybackgroundcolor type="colorpicker" category="Colors" width="4" title="Background color" options="on|off" optionlabels="Yes|No">#ffffff</bodybackgroundcolor>
         <fontcolor type="colorpicker" category="Colors" width="4" title="Font color" options="on|off" optionlabels="Yes|No">#444444</fontcolor>
         <questionbackgroundcolor type="colorpicker" category="Colors" width="4" title="Question background color" options="on|off" optionlabels="Yes|No">#ffffff</questionbackgroundcolor>
@@ -101,10 +103,12 @@
                 <option value="f1d0"> <i class="fa fa-resistance"></i> Resistance </option>
             </dropdownoptions>
         </checkicon>
+        <!-- images -->
         <backgroundimage type="buttons" category="Images" width="4" title="Background image" options="on|off" optionlabels="Yes|No">off</backgroundimage>
         <backgroundimagefile type="dropdown" category="Images" width="6" title="Background image file" parent="backgroundimage">./files/pattern.png</backgroundimagefile>
         <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">themes/survey/fruity/files/logo.png</brandlogofile>
+        <!-- animations -->
         <animatebody type="buttons" category="Animations" width="4" title="Animate body" options="on|off" optionlabels="Yes|No">off</animatebody>
         <bodyanimation type="dropdown" category="Animations" width="6" title="Body animation" parent="animatebody">fadeInRight
             <dropdownoptions>
@@ -655,7 +659,8 @@
             </dropdownoptions>
         </radioanimation>
         <radioanimationduration type="duration" category="Animations" width="2" title="Duration" parent="animateradio">500</radioanimationduration>
-        <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
+       <!-- fonts -->
+         <font type="dropdown" category="Fonts" width="12" title="Fonts" parent="font">noto
             <dropdownoptions>
                 <optgroup  label="User browser">
                 <option class="font-georgia         " value="georgia"         data-font-package="websafe" >Georgia</option>

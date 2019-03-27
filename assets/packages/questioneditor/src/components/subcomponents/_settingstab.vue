@@ -27,10 +27,10 @@
         },
         components: {
             'setting-switch': SettingSwitch,
-            'setting-text': SettingTextdisplay,
+            'setting-text': SettingText,
             'setting-integer': SettingInteger,
             'setting-select': SettingSelect,
-            'setting-textinput': SettingText,
+            'setting-textdisplay': SettingTextdisplay,
             'setting-textarea': SettingTextarea,
             'stub-set' : StubSet
         },
@@ -70,6 +70,8 @@
                 v-for="advancedSetting in currentSettingsTab" 
                 :key="advancedSetting.name"
             >
+                <!-- Here be debug information -->
+                <pre v-show="$store.debugMode === true">{{ advancedSetting }}</pre>
                 <component 
                 v-bind:is="getComponentName(advancedSetting.inputtype)" 
                 :elId="advancedSetting.formElementId"

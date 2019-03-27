@@ -254,67 +254,65 @@ class responses extends Survey_Common_Action
                 }
 
                 $oCriteria->addCondition("id = {$iId}");
-                $iIdresult = SurveyDynamic::model($iSurveyID)->findAllAsArray($oCriteria);
-                foreach ($iIdresult as $iIdrow) {
-                    $iId = $iIdrow['id'];
-                    $rlanguage = $iIdrow['startlanguage'];
-                }
+                $iIdresult = SurveyDynamic::model($iSurveyID)->find($oCriteria);
+                $aResult = array_merge($iIdresult->tokens->decrypt()->attributes, $iIdresult->decrypt()->attributes);
+
+                $iId = $aResult['id'];
+                $rlanguage = $aResult['startlanguage'];
                 $aData['bHasFile'] = false;
                 if (isset($rlanguage)) {
                     $aData['rlanguage'] = $rlanguage;
                 }
-                foreach ($iIdresult as $iIdrow) {
-                    $highlight = false;
-                    for ($i = 0; $i < $nfncount + 1; $i++) {
-                        if ($fnames[$i][0] != 'completed' && is_null($iIdrow[$fnames[$i][0]])) {
-                            continue; // irrelevant, so don't show
-                        }
-                        $inserthighlight = '';
-                        if ($highlight) {
-                                                    $inserthighlight = "class='highlight'";
-                        }
+                $highlight = false;
+                for ($i = 0; $i < $nfncount + 1; $i++) {
+                    if ($fnames[$i][0] != 'completed' && is_null($aResult[$fnames[$i][0]])) {
+                        continue; // irrelevant, so don't show
+                    }
+                    $inserthighlight = '';
+                    if ($highlight) {
+                                                $inserthighlight = "class='highlight'";
+                    }
 
-                        if ($fnames[$i][0] == 'completed') {
-                            if ($iIdrow['submitdate'] == null || $iIdrow['submitdate'] == "N") {
-                                $answervalue = "N";
+                    if ($fnames[$i][0] == 'completed') {
+                        if ($aResult['submitdate'] == null || $aResult['submitdate'] == "N") {
+                            $answervalue = "N";
+                        } else {
+                            $answervalue = "Y";
+                        }
+                    } else {
+                        // File upload question type.
+                        if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
+                            $index = $fnames[$i]['index'];
+                            $metadata = $fnames[$i]['metadata'];
+                            $phparray = json_decode_ls($aResult[$fnames[$i][0]]);
+
+                            if (isset($phparray[$index])) {
+                                switch ($metadata) {
+                                    case "size":
+                                        $answervalue = sprintf(gT("%s KB"), intval($phparray[$index][$metadata]));
+                                        break;
+                                    case "name":
+                                        $answervalue = CHtml::link(
+                                            htmlspecialchars($oPurifier->purify(rawurldecode($phparray[$index][$metadata]))),
+                                            $this->getController()->createUrl("/admin/responses", array("sa"=>"actionDownloadfile", "surveyid"=>$iSurveyID, "iResponseId"=>$iId, "iQID"=>$fnames[$i]['qid'], "iIndex"=>$index))
+                                        );
+                                        break;
+                                    default:
+                                        $answervalue = htmlspecialchars(strip_tags(stripJavaScript($phparray[$index][$metadata])));
+                                }
+                                $aData['bHasFile'] = true;
                             } else {
-                                $answervalue = "Y";
+                                $answervalue = "";
                             }
                         } else {
-                            // File upload question type.
-                            if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == Question::QT_VERTICAL_FILE_UPLOAD) {
-                                $index = $fnames[$i]['index'];
-                                $metadata = $fnames[$i]['metadata'];
-                                $phparray = json_decode_ls($iIdrow[$fnames[$i][0]]);
-
-                                if (isset($phparray[$index])) {
-                                    switch ($metadata) {
-                                        case "size":
-                                            $answervalue = sprintf(gT("%s KB"), intval($phparray[$index][$metadata]));
-                                            break;
-                                        case "name":
-                                            $answervalue = CHtml::link(
-                                                htmlspecialchars($oPurifier->purify(rawurldecode($phparray[$index][$metadata]))),
-                                                $this->getController()->createUrl("/admin/responses", array("sa"=>"actionDownloadfile", "surveyid"=>$iSurveyID, "iResponseId"=>$iId, "iQID"=>$fnames[$i]['qid'], "iIndex"=>$index))
-                                            );
-                                            break;
-                                        default:
-                                            $answervalue = htmlspecialchars(strip_tags(stripJavaScript($phparray[$index][$metadata])));
-                                    }
-                                    $aData['bHasFile'] = true;
-                                } else {
-                                    $answervalue = "";
-                                }
-                            } else {
-                                $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $fnames[$i][0], $iIdrow[$fnames[$i][0]], $sBrowseLanguage))), ENT_QUOTES);
-                            }
+                            $answervalue = htmlspecialchars(strip_tags(stripJavaScript(getExtendedAnswer($iSurveyID, $fnames[$i][0], $aResult[$fnames[$i][0]], $sBrowseLanguage))), ENT_QUOTES);
                         }
-                        $aData['answervalue'] = $answervalue;
-                        $aData['inserthighlight'] = $inserthighlight;
-                        $aData['fnames'] = $fnames;
-                        $aData['i'] = $i;
-                        $aViewUrls['browseidrow_view'][] = $aData;
                     }
+                    $aData['answervalue'] = $answervalue;
+                    $aData['inserthighlight'] = $inserthighlight;
+                    $aData['fnames'] = $fnames;
+                    $aData['i'] = $i;
+                    $aViewUrls['browseidrow_view'][] = $aData;
                 }
             } else {
                 Yii::app()->session['flashmessage'] = gT("This response ID is invalid.");
@@ -423,6 +421,7 @@ class responses extends Survey_Common_Action
             $bHaveToken                 = $survey->anonymized == "N" && tableExists('tokens_'.$iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read'); // Boolean : show (or not) the token
             $aViewUrls                  = array('listResponses_view');
             $model                      = SurveyDynamic::model($iSurveyId);
+            $model->bEncryption         = true;
 
             // Reset filters from stats
             if (Yii::app()->request->getParam('filters') == "reset") {

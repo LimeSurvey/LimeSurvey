@@ -192,8 +192,8 @@ function createDatabase($oDB){
         //  participants
         $oDB->createCommand()->createTable('{{participants}}', array(
             'participant_id' =>  "string(50) NOT NULL",
-            'firstname' =>  "string(150) NULL",
-            'lastname' =>  "string(150) NULL",
+            'firstname' =>  "text NULL",
+            'lastname' =>  "text NULL",
             'email' =>  "text",
             'language' =>  "string(40) NULL",
             'blacklisted' =>  "string(1) NOT NULL",
@@ -204,8 +204,6 @@ function createDatabase($oDB){
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{participant_pk}}', '{{participants}}', 'participant_id', false);
-        $oDB->createCommand()->createIndex('{{idx1_participants}}', '{{participants}}', 'firstname', false);
-        $oDB->createCommand()->createIndex('{{idx2_participants}}', '{{participants}}', 'lastname', false);
         $oDB->createCommand()->createIndex('{{idx3_participants}}', '{{participants}}', 'language', false);
 
 
@@ -236,10 +234,22 @@ function createDatabase($oDB){
             'attribute_type' =>  "string(4) NOT NULL",
             'defaultname' =>  "string(255) NOT NULL",
             'visible' =>  "string(5) NOT NULL",
+            'encrypted' =>  "string(5) NOT NULL",
+            'core_attribute' =>  "string(5) NOT NULL",
             'composite_pk' => array('attribute_id', 'attribute_type')
         ));
 
         $oDB->createCommand()->createIndex('{{idx_participant_attribute_names}}', '{{participant_attribute_names}}', ['attribute_id', 'attribute_type']);
+        $aCoreAttributes = array('firstname', 'lastname', 'email');
+        foreach($aCoreAttributes as $attribute){
+            $oDB->createCommand()->insert('{{participant_attribute_names}}', array(
+                'attribute_type'    => 'TB',
+                'defaultname'       => '$attribute',
+                'visible'           => 'TRUE',
+                'encrypted'         => 'N',
+                'core_attribute'    => 'Y'
+            ));
+        }
 
 
         //participant_attribute_values
@@ -314,6 +324,7 @@ function createDatabase($oDB){
             'preg' =>  "text",
             'other' =>  "string(1) NOT NULL default 'N'",
             'mandatory' =>  "string(1) NULL",
+            'encrypted' =>  "string(1) NULL default 'N'",
             'question_order' =>  "integer NOT NULL",
             'scale_id' =>  "integer NOT NULL default '0'",
             'same_default' =>  "integer NOT NULL default '0'",
@@ -590,6 +601,7 @@ function createDatabase($oDB){
             'alloweditaftercompletion' => "string(1) default 'N'",
             'googleanalyticsstyle' => "string(1) NULL",
             'googleanalyticsapikey' => "string(25) NULL",
+            'tokenencryptionoptions' => "text NULL",
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');

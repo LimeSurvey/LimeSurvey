@@ -5,17 +5,19 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import foreach from 'lodash/foreach';
 
-import SimpleEditor from './_simpleEditor.vue';
 import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
+import eventChild from '../../mixins/eventChild.js';
 
 export default {
     name: 'subquestions',
-    mixins: [AbstractSubQuestionAndAnswerBase],
-    components: {SimpleEditor},
+    mixins: [AbstractSubQuestionAndAnswerBase, eventChild],
     data(){
         return {
             uniqueSelector: 'qid',
             baseNonNumericPart : "SQ",
+            type: 'subquestions',
+            typeDefininition: 'question',
+            typeDefininitionKey: 'title'
         };
     },
     computed: {
@@ -84,18 +86,6 @@ export default {
             }
             return '';
         },
-        openEditorForSubquestion(oDataSet, scaleId) {
-            this.$modal.show(
-                SimpleEditor, 
-                { value: subquestionObject[this.$store.state.activeLanguage].question },
-                { draggable: true },
-                {'change': (event) => { 
-                        this.$log.log('CHANGE IN MODAL', event);
-                        subquestionObject[this.$store.state.activeLanguage].question = event;
-                    }
-                }
-            )
-        },
         setQuestionForCurrentLanguage(subquestionObject, $event) {
             subquestionObject[this.$store.state.activeLanguage].question = $event.srcElement.value;
         },
@@ -162,7 +152,8 @@ export default {
                                 @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
                             />
                         </div>
-                        <div class="scoped-relevance-block">
+                        <div class="scoped-relevance-block input-group">
+                            <div class="input-group-addon">{</div>
                             <input 
                                 type='text' 
                                 class='relevance form-control input' 
@@ -171,13 +162,14 @@ export default {
                                 v-model="subquestion.relevance"
                                  @keyup.enter.prevent='switchinput(false,$event)'
                             />
+                            <div class="input-group-addon">}</div>
                         </div>
                         <div class="scoped-actions-block">
                             <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(subquestion, subquestionscale)">
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="openEditorForSubquestion(subquestion, subquestionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="openPopUpEditor(subquestion, subquestionscale)">
                                 <i class="fa fa-edit"></i>
                                 {{ "Open editor" | translate }}
                             </button>
