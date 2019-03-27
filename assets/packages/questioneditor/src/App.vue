@@ -65,7 +65,7 @@ export default {
                     this.toggleLoading();
                     $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
-                    setTimeout(()=>{window.location.reload();}, 1500);
+                    //setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
         }

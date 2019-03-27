@@ -18,8 +18,19 @@
         },
         computed: {
             curValue: {
-                get() { return this.currentValue },
+                get() { 
+                    if(typeof this.currentValue !== 'string') {
+                        return this.currentValue[this.$store.state.activeLanguage];
+                    }
+                    return this.currentValue
+                },
                 set(newValue) { 
+                    if(typeof this.currentValue !== 'string') {
+                        let tmpCurrentValue = this.currentValue;
+                        tmpCurrentValue[this.$store.state.activeLanguage] = newValue;
+                        this.$emit('change', tmpCurrentValue);
+                        return;
+                    }
                     this.$emit('change', newValue);
                 },
             },

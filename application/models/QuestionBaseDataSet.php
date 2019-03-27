@@ -87,7 +87,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         if($this->aQuestionAttributes['question_template'] !== 'core' && $sQuestionTemplate === null) {
             $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
         }
-        $sQuestionTemplate = $sQuestionTemplate == '' ? 'core' : $sQuestionTemplate;
+        $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
         $questionTemplateFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
         $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($questionTemplateFolderName, $sQuestionTemplate);
         

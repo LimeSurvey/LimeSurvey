@@ -13777,7 +13777,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\switch.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\switch.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] switch.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -13817,7 +13817,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\text.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\text.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] text.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -13857,7 +13857,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\select.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\select.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] select.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -13897,7 +13897,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\textdisplay.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\textdisplay.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] textdisplay.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -13937,7 +13937,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\textarea.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\textarea.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] textarea.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -13981,7 +13981,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\stub.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\stub.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] stub.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -14621,7 +14621,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\App.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\App.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] App.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -14679,7 +14679,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-new-questioneditor[data-v-05c0cfb0] {\r\n    min-height: 75vh;\n}\n.loading-back-greyed[data-v-05c0cfb0] {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\n}\r\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/App.vue?7a5eb6fa"],"names":[],"mappings":";AAiHA;IACA,iBAAA;CACA;AACA;IACA,wCAAA;IACA,YAAA;IACA,aAAA;IACA,iBAAA;CACA","file":"App.vue","sourcesContent":["<script>\r\nimport Mousetrap from 'mousetrap';\r\n\r\nimport MainEditor from './components/mainEditor.vue';\r\nimport GeneralSettings from './components/generalSettings.vue';\r\nimport AdvancedSettings from './components/advancedSettings.vue';\r\n\r\nimport runAjax from './mixins/runAjax.js';\r\n\r\nexport default {\r\n    name: 'lsnextquestioneditor',\r\n    mixins: [runAjax],\r\n    data() {\r\n        return {\r\n            event: null,\r\n        }\r\n    },\r\n    components: {\r\n        'maineditor' : MainEditor,\r\n        'generalsettings' : GeneralSettings,\r\n        'advancedsettings' : AdvancedSettings,\r\n    },\r\n    methods: {\r\n        applyHotkeys() {\r\n            Mousetrap.bind('ctrl+right', this.chooseNextLanguage);\r\n            Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);\r\n            Mousetrap.bind('ctrl+s', this.submitCurrentState);\r\n            Mousetrap.bind('ctrl+alt+d', () => {this.$store.commit('toggleDebugMode');});\r\n        },\r\n        chooseNextLanguage() {\r\n            this.$log.log('HOTKEY', 'chooseNextLanguage');\r\n            this.$store.commit('nextLanguage');\r\n        },\r\n        choosePreviousLanguage() {\r\n            this.$log.log('HOTKEY', 'choosePreviousLanguage');\r\n            this.$store.commit('previousLanguage');\r\n        },\r\n        jqueryTriggered(event, data){\r\n            //this.$log.log('data', data);\r\n            this.event = JSON.parse(data.emitter);\r\n        },\r\n        setModalEvent(payload) {\r\n            this.$log.log('New event set', payload);\r\n            this.event = payload;\r\n        },\r\n        eventSet() {\r\n            this.event = null;\r\n        },\r\n        submitCurrentState(redirect = false) {\r\n            this.toggleLoading();\r\n            this.$store.dispatch('saveQuestionData').then(\r\n                (result) => {\r\n                    this.toggleLoading();\r\n                    if(redirect == true) {\r\n                        window.location.href = result.data.redirect;\r\n                    }\r\n\r\n                    $('#in_survey_common').trigger('lsStopLoading');\r\n                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');\r\n                    this.$store.dispatch('updateObjects', result.data.newQuestionDetails)\r\n                    this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };\r\n                    this.$log.log('OBJECT AFTER TRANSFER: ', result);\r\n                },\r\n                (reject) => {\r\n                    this.toggleLoading();\r\n                    $('#in_survey_common').trigger('lsStopLoading');\r\n                    window.LS.notifyFader(\"Question could not be stored. Reloading page.\", 'well-lg bg-danger text-center');\r\n                    setTimeout(()=>{window.location.reload();}, 1500);\r\n                }\r\n            )\r\n        }\r\n\r\n    },\r\n    created(){\r\n        this.$store.dispatch('loadQuestion');\r\n        this.$store.dispatch('getQuestionTypes');\r\n        this.$store.dispatch('getQuestionGeneralSettings');\r\n        this.$store.dispatch('getQuestionAdvancedSettings');\r\n    },\r\n    \r\n    mounted() {\r\n        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);\r\n        this.applyHotkeys();\r\n\r\n        $('#frmeditquestion').on('submit', (e)=>{\r\n            e.preventDefault();\r\n        });\r\n\r\n        $('#save-button').on('click', (e)=>{\r\n            this.submitCurrentState();\r\n        });\r\n\r\n        $('#save-and-close-button').on('click', (e)=>{\r\n            this.submitCurrentState(true);\r\n        });\r\n\r\n        this.toggleLoading(false);\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"container-center scoped-new-questioneditor\">\r\n        <template v-if=\"$store.getters.fullyLoaded\">\r\n            <maineditor :event=\"event\" v-on:eventSet=\"eventSet\"></maineditor>\r\n            <generalsettings :event=\"event\" v-on:eventSet=\"eventSet\"></generalsettings>\r\n            <advancedsettings :event=\"event\" v-on:eventSet=\"eventSet\"></advancedsettings>\r\n        </template>\r\n        <modals-container @modalEvent=\"setModalEvent\"/>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n.scoped-new-questioneditor {\r\n    min-height: 75vh;\r\n}\r\n.loading-back-greyed {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-new-questioneditor[data-v-05c0cfb0] {\n    min-height: 75vh;\n}\n.loading-back-greyed[data-v-05c0cfb0] {\n    background-color: rgba(200,200,200,0.4);\n    width: 100%;\n    height: 100%;\n    min-height: 60vh;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/App.vue?0d3566a0"],"names":[],"mappings":";AAiHA;IACA,iBAAA;CACA;AACA;IACA,wCAAA;IACA,YAAA;IACA,aAAA;IACA,iBAAA;CACA","file":"App.vue","sourcesContent":["<script>\nimport Mousetrap from 'mousetrap';\n\nimport MainEditor from './components/mainEditor.vue';\nimport GeneralSettings from './components/generalSettings.vue';\nimport AdvancedSettings from './components/advancedSettings.vue';\n\nimport runAjax from './mixins/runAjax.js';\n\nexport default {\n    name: 'lsnextquestioneditor',\n    mixins: [runAjax],\n    data() {\n        return {\n            event: null,\n        }\n    },\n    components: {\n        'maineditor' : MainEditor,\n        'generalsettings' : GeneralSettings,\n        'advancedsettings' : AdvancedSettings,\n    },\n    methods: {\n        applyHotkeys() {\n            Mousetrap.bind('ctrl+right', this.chooseNextLanguage);\n            Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);\n            Mousetrap.bind('ctrl+s', this.submitCurrentState);\n            Mousetrap.bind('ctrl+alt+d', () => {this.$store.commit('toggleDebugMode');});\n        },\n        chooseNextLanguage() {\n            this.$log.log('HOTKEY', 'chooseNextLanguage');\n            this.$store.commit('nextLanguage');\n        },\n        choosePreviousLanguage() {\n            this.$log.log('HOTKEY', 'choosePreviousLanguage');\n            this.$store.commit('previousLanguage');\n        },\n        jqueryTriggered(event, data){\n            //this.$log.log('data', data);\n            this.event = JSON.parse(data.emitter);\n        },\n        setModalEvent(payload) {\n            this.$log.log('New event set', payload);\n            this.event = payload;\n        },\n        eventSet() {\n            this.event = null;\n        },\n        submitCurrentState(redirect = false) {\n            this.toggleLoading();\n            this.$store.dispatch('saveQuestionData').then(\n                (result) => {\n                    this.toggleLoading();\n                    if(redirect == true) {\n                        window.location.href = result.data.redirect;\n                    }\n\n                    $('#in_survey_common').trigger('lsStopLoading');\n                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');\n                    this.$store.dispatch('updateObjects', result.data.newQuestionDetails)\n                    this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };\n                    this.$log.log('OBJECT AFTER TRANSFER: ', result);\n                },\n                (reject) => {\n                    this.toggleLoading();\n                    $('#in_survey_common').trigger('lsStopLoading');\n                    window.LS.notifyFader(\"Question could not be stored. Reloading page.\", 'well-lg bg-danger text-center');\n                    //setTimeout(()=>{window.location.reload();}, 1500);\n                }\n            )\n        }\n\n    },\n    created(){\n        this.$store.dispatch('loadQuestion');\n        this.$store.dispatch('getQuestionTypes');\n        this.$store.dispatch('getQuestionGeneralSettings');\n        this.$store.dispatch('getQuestionAdvancedSettings');\n    },\n    \n    mounted() {\n        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);\n        this.applyHotkeys();\n\n        $('#frmeditquestion').on('submit', (e)=>{\n            e.preventDefault();\n        });\n\n        $('#save-button').on('click', (e)=>{\n            this.submitCurrentState();\n        });\n\n        $('#save-and-close-button').on('click', (e)=>{\n            this.submitCurrentState(true);\n        });\n\n        this.toggleLoading(false);\n    }\n}\n</script>\n\n<template>\n    <div class=\"container-center scoped-new-questioneditor\">\n        <template v-if=\"$store.getters.fullyLoaded\">\n            <maineditor :event=\"event\" v-on:eventSet=\"eventSet\"></maineditor>\n            <generalsettings :event=\"event\" v-on:eventSet=\"eventSet\"></generalsettings>\n            <advancedsettings :event=\"event\" v-on:eventSet=\"eventSet\"></advancedsettings>\n        </template>\n        <modals-container @modalEvent=\"setModalEvent\"/>\n    </div>\n</template>\n\n<style scoped>\n.scoped-new-questioneditor {\n    min-height: 75vh;\n}\n.loading-back-greyed {\n    background-color: rgba(200,200,200,0.4);\n    width: 100%;\n    height: 100%;\n    min-height: 60vh;\n}\n</style>\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -14799,9 +14799,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.toggleLoading();
                 $('#in_survey_common').trigger('lsStopLoading');
                 window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
+                //setTimeout(()=>{window.location.reload();}, 1500);
             });
         }
 
@@ -15919,7 +15917,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\mainEditor.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\mainEditor.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] mainEditor.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -15977,7 +15975,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scope-set-min-height[data-v-33645a86] {\n  min-height: 40vh;\n}\n.scope-border-simple[data-v-33645a86] {\n  border: 1px solid #cfcfcf;\n}\n.scope-overflow-scroll[data-v-33645a86] {\n  overflow: scroll;\n  height: 100%;\n  width: 100%;\n}\n.scope-preview[data-v-33645a86] {\n  margin: 15px 5px;\n  padding: 2rem;\n  border: 3px double #dfdfdf;\n  min-height: 20vh;\n  resize: vertical;\n  overflow: auto;\n}\n.scope-contains-ckeditor[data-v-33645a86] {\n  min-height: 10rem;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/mainEditor.vue"],"names":[],"mappings":";AAAA;EACE,iBAAiB;CAAE;AAErB;EACE,0BAA0B;CAAE;AAE9B;EACE,iBAAiB;EACjB,aAAa;EACb,YAAY;CAAE;AAEhB;EACE,iBAAiB;EACjB,cAAc;EACd,2BAA2B;EAC3B,iBAAiB;EACjB,iBAAiB;EACjB,eAAe;CAAE;AAEnB;EACE,kBAAkB;CAAE","file":"mainEditor.vue","sourcesContent":[".scope-set-min-height {\n  min-height: 40vh; }\n\n.scope-border-simple {\n  border: 1px solid #cfcfcf; }\n\n.scope-overflow-scroll {\n  overflow: scroll;\n  height: 100%;\n  width: 100%; }\n\n.scope-preview {\n  margin: 15px 5px;\n  padding: 2rem;\n  border: 3px double #dfdfdf;\n  min-height: 20vh;\n  resize: vertical;\n  overflow: auto; }\n\n.scope-contains-ckeditor {\n  min-height: 10rem; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scope-set-min-height[data-v-33645a86] {\n  min-height: 40vh;\n}\n.scope-border-simple[data-v-33645a86] {\n  border: 1px solid #cfcfcf;\n}\n.scope-overflow-scroll[data-v-33645a86] {\n  overflow: scroll;\n  height: 100%;\n  width: 100%;\n}\n.scope-preview[data-v-33645a86] {\n  margin: 15px 5px;\n  padding: 2rem;\n  border: 3px double #dfdfdf;\n  min-height: 20vh;\n  resize: vertical;\n  overflow: auto;\n}\n.scope-contains-ckeditor[data-v-33645a86] {\n  min-height: 10rem;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/components/mainEditor.vue"],"names":[],"mappings":";AAAA;EACE,iBAAiB;CAAE;AAErB;EACE,0BAA0B;CAAE;AAE9B;EACE,iBAAiB;EACjB,aAAa;EACb,YAAY;CAAE;AAEhB;EACE,iBAAiB;EACjB,cAAc;EACd,2BAA2B;EAC3B,iBAAiB;EACjB,iBAAiB;EACjB,eAAe;CAAE;AAEnB;EACE,kBAAkB;CAAE","file":"mainEditor.vue","sourcesContent":[".scope-set-min-height {\n  min-height: 40vh; }\n\n.scope-border-simple {\n  border: 1px solid #cfcfcf; }\n\n.scope-overflow-scroll {\n  overflow: scroll;\n  height: 100%;\n  width: 100%; }\n\n.scope-preview {\n  margin: 15px 5px;\n  padding: 2rem;\n  border: 3px double #dfdfdf;\n  min-height: 20vh;\n  resize: vertical;\n  overflow: auto; }\n\n.scope-contains-ckeditor {\n  min-height: 10rem; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -18807,7 +18805,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_previewFrame.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_previewFrame.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _previewFrame.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -18865,7 +18863,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scope-loader[data-v-6b27a1ca] {\n  position: absolute;\n  left: 20%;\n  top: 20%;\n  height: 60%;\n  width: 60%;\n  background-color: whitesmoke;\n}\n.scope-iframe-fill[data-v-6b27a1ca] {\n  width: 100%;\n  height: 100%;\n  padding: 0;\n  margin: 0;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/subcomponents/_previewFrame.vue"],"names":[],"mappings":";AAAA;EACE,mBAAmB;EACnB,UAAU;EACV,SAAS;EACT,YAAY;EACZ,WAAW;EACX,6BAA6B;CAAE;AAEjC;EACE,YAAY;EACZ,aAAa;EACb,WAAW;EACX,UAAU;CAAE","file":"_previewFrame.vue","sourcesContent":[".scope-loader {\n  position: absolute;\n  left: 20%;\n  top: 20%;\n  height: 60%;\n  width: 60%;\n  background-color: whitesmoke; }\n\n.scope-iframe-fill {\n  width: 100%;\n  height: 100%;\n  padding: 0;\n  margin: 0; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scope-loader[data-v-6b27a1ca] {\n  position: absolute;\n  left: 20%;\n  top: 20%;\n  height: 60%;\n  width: 60%;\n  background-color: whitesmoke;\n}\n.scope-iframe-fill[data-v-6b27a1ca] {\n  width: 100%;\n  height: 100%;\n  padding: 0;\n  margin: 0;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/components/subcomponents/_previewFrame.vue"],"names":[],"mappings":";AAAA;EACE,mBAAmB;EACnB,UAAU;EACV,SAAS;EACT,YAAY;EACZ,WAAW;EACX,6BAA6B;CAAE;AAEjC;EACE,YAAY;EACZ,aAAa;EACb,WAAW;EACX,UAAU;CAAE","file":"_previewFrame.vue","sourcesContent":[".scope-loader {\n  position: absolute;\n  left: 20%;\n  top: 20%;\n  height: 60%;\n  width: 60%;\n  background-color: whitesmoke; }\n\n.scope-iframe-fill {\n  width: 100%;\n  height: 100%;\n  padding: 0;\n  margin: 0; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -19103,7 +19101,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_languageSelector.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_languageSelector.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _languageSelector.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19161,7 +19159,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.button-toolbar>.btn-group[data-v-b9bdb026] {\n    margin-top: 0.3rem;\n    margin-bottom: 0.5rem;\n}\n.button-toolbar>.btn-group[data-v-b9bdb026] {\n    width: 100%;\n}\n.button-toolbar>.btn-group>.btn[data-v-b9bdb026] {\n    min-width: 20%;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/subcomponents/_languageSelector.vue?13d81b56"],"names":[],"mappings":";AAwEA;IACA,mBAAA;IACA,sBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,eAAA;CACA","file":"_languageSelector.vue","sourcesContent":["\r\n<script>\r\nimport size from 'lodash/size';\r\nimport pick from 'lodash/pick';\r\nimport keys from 'lodash/keys';\r\nimport slice from 'lodash/slice';\r\nimport foreach from 'lodash/foreach';\r\n\r\nexport default {\r\n    name: 'language-selector',\r\n    props: {\r\n        elId: {type: String, required: true},\r\n        aLanguages: {type: [Array, Object], required: true},\r\n        parentCurrentLanguage: {type: String, required: true}\r\n    },\r\n    computed: {\r\n        currentLanguage: {\r\n            get() { return this.parentCurrentLanguage},\r\n            set(newValue) { this.$emit('change', newValue)}\r\n        },\r\n        getInChunks(){\r\n            if(size(this.aLanguages) <= 5) {\r\n                return [this.aLanguages];\r\n            };\r\n            let firstfour = pick(this.aLanguages, slice(keys(this.aLanguages), 0, 4));\r\n            let rest = pick(this.aLanguages, slice(keys(this.aLanguages), 5));\r\n            return [firstfour, rest];\r\n        }\r\n    },\r\n    methods: {\r\n        setCurrentLanguage(newValue) { this.$emit('change', newValue)},\r\n    }\r\n}\r\n</script>\r\n<template>\r\n    <div class=\"col-xs-12\" >                    \r\n        <div class=\"button-toolbar\" :id=\"elId+'-language-selector'\">\r\n            <div \r\n                class=\"btn-group\" \r\n            >\r\n                <button \r\n                    v-for=\"(languageTerm, language) in getInChunks[0]\" \r\n                    :key=\"language+'-button'\"\r\n                    :class=\"'btn btn-'+(language==currentLanguage ? 'primary active' : 'default')\"\r\n                    @click.prevent=\"setCurrentLanguage(language)\"\r\n                >\r\n                    {{ languageTerm }}\r\n                </button>\r\n                <button\r\n                    v-if=\"getInChunks.length > 1\"\r\n                    class=\"btn btn-default dropdown-toggle\"\r\n                    data-toggle=\"dropdown\"\r\n                >\r\n                    {{ \"More Languages\" | translate }}\r\n                    <span class=\"caret\"></span>\r\n                </button>\r\n                 <ul class=\"dropdown-menu\">\r\n                    <li\r\n                        v-for=\"(languageTerm, language) in getInChunks[1]\" \r\n                        :key=\"language+'-dropdown'\"\r\n                        @click.prevent=\"setCurrentLanguage(language)\"\r\n                    >\r\n                        <a href=\"#\">{{ languageTerm }}</a>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n        <hr/>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n    .button-toolbar>.btn-group {\r\n        margin-top: 0.3rem;\r\n        margin-bottom: 0.5rem;\r\n    }\r\n    .button-toolbar>.btn-group {\r\n        width: 100%;\r\n    }\r\n    .button-toolbar>.btn-group>.btn {\r\n        min-width: 20%;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.button-toolbar>.btn-group[data-v-b9bdb026] {\n    margin-top: 0.3rem;\n    margin-bottom: 0.5rem;\n}\n.button-toolbar>.btn-group[data-v-b9bdb026] {\n    width: 100%;\n}\n.button-toolbar>.btn-group>.btn[data-v-b9bdb026] {\n    min-width: 20%;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/components/subcomponents/_languageSelector.vue?28fd3f9c"],"names":[],"mappings":";AAwEA;IACA,mBAAA;IACA,sBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,eAAA;CACA","file":"_languageSelector.vue","sourcesContent":["\n<script>\nimport size from 'lodash/size';\nimport pick from 'lodash/pick';\nimport keys from 'lodash/keys';\nimport slice from 'lodash/slice';\nimport foreach from 'lodash/foreach';\n\nexport default {\n    name: 'language-selector',\n    props: {\n        elId: {type: String, required: true},\n        aLanguages: {type: [Array, Object], required: true},\n        parentCurrentLanguage: {type: String, required: true}\n    },\n    computed: {\n        currentLanguage: {\n            get() { return this.parentCurrentLanguage},\n            set(newValue) { this.$emit('change', newValue)}\n        },\n        getInChunks(){\n            if(size(this.aLanguages) <= 5) {\n                return [this.aLanguages];\n            };\n            let firstfour = pick(this.aLanguages, slice(keys(this.aLanguages), 0, 4));\n            let rest = pick(this.aLanguages, slice(keys(this.aLanguages), 5));\n            return [firstfour, rest];\n        }\n    },\n    methods: {\n        setCurrentLanguage(newValue) { this.$emit('change', newValue)},\n    }\n}\n</script>\n<template>\n    <div class=\"col-xs-12\" >                    \n        <div class=\"button-toolbar\" :id=\"elId+'-language-selector'\">\n            <div \n                class=\"btn-group\" \n            >\n                <button \n                    v-for=\"(languageTerm, language) in getInChunks[0]\" \n                    :key=\"language+'-button'\"\n                    :class=\"'btn btn-'+(language==currentLanguage ? 'primary active' : 'default')\"\n                    @click.prevent=\"setCurrentLanguage(language)\"\n                >\n                    {{ languageTerm }}\n                </button>\n                <button\n                    v-if=\"getInChunks.length > 1\"\n                    class=\"btn btn-default dropdown-toggle\"\n                    data-toggle=\"dropdown\"\n                >\n                    {{ \"More Languages\" | translate }}\n                    <span class=\"caret\"></span>\n                </button>\n                 <ul class=\"dropdown-menu\">\n                    <li\n                        v-for=\"(languageTerm, language) in getInChunks[1]\" \n                        :key=\"language+'-dropdown'\"\n                        @click.prevent=\"setCurrentLanguage(language)\"\n                    >\n                        <a href=\"#\">{{ languageTerm }}</a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n        <hr/>\n    </div>\n</template>\n\n<style scoped>\n    .button-toolbar>.btn-group {\n        margin-top: 0.3rem;\n        margin-bottom: 0.5rem;\n    }\n    .button-toolbar>.btn-group {\n        width: 100%;\n    }\n    .button-toolbar>.btn-group>.btn {\n        min-width: 20%;\n    }\n</style>\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -20228,7 +20226,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\generalSettings.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\generalSettings.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] generalSettings.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -20286,7 +20284,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scope-general-setting-block[data-v-df131e4a] {\n  margin: 1rem  0.1rem;\n}\n.scope-set-min-height[data-v-df131e4a] {\n  min-height: 40vh;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/generalSettings.vue"],"names":[],"mappings":";AAAA;EACE,qBAAqB;CAAE;AAEzB;EACE,iBAAiB;CAAE","file":"generalSettings.vue","sourcesContent":[".scope-general-setting-block {\n  margin: 1rem  0.1rem; }\n\n.scope-set-min-height {\n  min-height: 40vh; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scope-general-setting-block[data-v-df131e4a] {\n  margin: 1rem  0.1rem;\n}\n.scope-set-min-height[data-v-df131e4a] {\n  min-height: 40vh;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/components/generalSettings.vue"],"names":[],"mappings":";AAAA;EACE,qBAAqB;CAAE;AAEzB;EACE,iBAAiB;CAAE","file":"generalSettings.vue","sourcesContent":[".scope-general-setting-block {\n  margin: 1rem  0.1rem; }\n\n.scope-set-min-height {\n  min-height: 40vh; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -20824,9 +20822,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         curValue: {
             get() {
+                if (typeof this.currentValue !== 'string') {
+                    return this.currentValue[this.$store.state.activeLanguage];
+                }
                 return this.currentValue;
             },
             set(newValue) {
+                if (typeof this.currentValue !== 'string') {
+                    let tmpCurrentValue = this.currentValue;
+                    tmpCurrentValue[this.$store.state.activeLanguage] = newValue;
+                    this.$emit('change', tmpCurrentValue);
+                    return;
+                }
                 this.$emit('change', newValue);
             }
         },
@@ -21420,7 +21427,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\advancedSettings.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\advancedSettings.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] advancedSettings.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -21478,7 +21485,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scope-divider[data-v-710006e5] {\n  display: block;\n  width: 2em;\n  height: 42px;\n  line-height: 42px;\n  font-size: 38px;\n  text-align: center;\n}\n.scoped-tablist-container[data-v-710006e5] {\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n  align-content: flex-start;\n}\n.scoped-tablist-subquestionandanswers[data-v-710006e5] {\n  flex-grow: 1;\n  flex-shrink: 3;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n}\n.scoped-tablist-advanced-settings[data-v-710006e5] {\n  flex-grow: 3;\n  flex-shrink: 1;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n}\n.scoped-tablist-advanced-settings > li[data-v-710006e5],\n.scoped-tablist-subquestionandanswers > li[data-v-710006e5] {\n  display: block;\n  width: 100%;\n  float: none;\n  text-align: center;\n}\n.scope-min-height[data-v-710006e5] {\n  min-height: 20vh;\n}\n.scope-apply-base-style[data-v-710006e5] {\n  border-top: 1px solid #cfcfcf;\n  margin-top: 1rem;\n  padding-top: 1rem;\n}\n.scope-border-open-top[data-v-710006e5] {\n  border-left: 1px solid #cfcfcf;\n  border-right: 1px solid #cfcfcf;\n  border-bottom: 1px solid #cfcfcf;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/advancedSettings.vue"],"names":[],"mappings":";AAAA;EACE,eAAe;EACf,WAAW;EACX,aAAa;EACb,kBAAkB;EAClB,gBAAgB;EAChB,mBAAmB;CAAE;AAEvB;EACE,cAAc;EACd,YAAY;EACZ,kBAAkB;EAClB,0BAA0B;CAAE;AAE9B;EACE,aAAa;EACb,eAAe;EACf,cAAc;EACd,YAAY;EACZ,kBAAkB;CAAE;AAEtB;EACE,aAAa;EACb,eAAe;EACf,cAAc;EACd,YAAY;EACZ,kBAAkB;CAAE;AAEtB;;EAEE,eAAe;EACf,YAAY;EACZ,YAAY;EACZ,mBAAmB;CAAE;AAEvB;EACE,iBAAiB;CAAE;AAErB;EACE,8BAA8B;EAC9B,iBAAiB;EACjB,kBAAkB;CAAE;AAEtB;EACE,+BAA+B;EAC/B,gCAAgC;EAChC,iCAAiC;CAAE","file":"advancedSettings.vue","sourcesContent":[".scope-divider {\n  display: block;\n  width: 2em;\n  height: 42px;\n  line-height: 42px;\n  font-size: 38px;\n  text-align: center; }\n\n.scoped-tablist-container {\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n  align-content: flex-start; }\n\n.scoped-tablist-subquestionandanswers {\n  flex-grow: 1;\n  flex-shrink: 3;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap; }\n\n.scoped-tablist-advanced-settings {\n  flex-grow: 3;\n  flex-shrink: 1;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap; }\n\n.scoped-tablist-advanced-settings > li,\n.scoped-tablist-subquestionandanswers > li {\n  display: block;\n  width: 100%;\n  float: none;\n  text-align: center; }\n\n.scope-min-height {\n  min-height: 20vh; }\n\n.scope-apply-base-style {\n  border-top: 1px solid #cfcfcf;\n  margin-top: 1rem;\n  padding-top: 1rem; }\n\n.scope-border-open-top {\n  border-left: 1px solid #cfcfcf;\n  border-right: 1px solid #cfcfcf;\n  border-bottom: 1px solid #cfcfcf; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scope-divider[data-v-710006e5] {\n  display: block;\n  width: 2em;\n  height: 42px;\n  line-height: 42px;\n  font-size: 38px;\n  text-align: center;\n}\n.scoped-tablist-container[data-v-710006e5] {\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n  align-content: flex-start;\n}\n.scoped-tablist-subquestionandanswers[data-v-710006e5] {\n  flex-grow: 1;\n  flex-shrink: 3;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n}\n.scoped-tablist-advanced-settings[data-v-710006e5] {\n  flex-grow: 3;\n  flex-shrink: 1;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n}\n.scoped-tablist-advanced-settings > li[data-v-710006e5],\n.scoped-tablist-subquestionandanswers > li[data-v-710006e5] {\n  display: block;\n  width: 100%;\n  float: none;\n  text-align: center;\n}\n.scope-min-height[data-v-710006e5] {\n  min-height: 20vh;\n}\n.scope-apply-base-style[data-v-710006e5] {\n  border-top: 1px solid #cfcfcf;\n  margin-top: 1rem;\n  padding-top: 1rem;\n}\n.scope-border-open-top[data-v-710006e5] {\n  border-left: 1px solid #cfcfcf;\n  border-right: 1px solid #cfcfcf;\n  border-bottom: 1px solid #cfcfcf;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/components/advancedSettings.vue"],"names":[],"mappings":";AAAA;EACE,eAAe;EACf,WAAW;EACX,aAAa;EACb,kBAAkB;EAClB,gBAAgB;EAChB,mBAAmB;CAAE;AAEvB;EACE,cAAc;EACd,YAAY;EACZ,kBAAkB;EAClB,0BAA0B;CAAE;AAE9B;EACE,aAAa;EACb,eAAe;EACf,cAAc;EACd,YAAY;EACZ,kBAAkB;CAAE;AAEtB;EACE,aAAa;EACb,eAAe;EACf,cAAc;EACd,YAAY;EACZ,kBAAkB;CAAE;AAEtB;;EAEE,eAAe;EACf,YAAY;EACZ,YAAY;EACZ,mBAAmB;CAAE;AAEvB;EACE,iBAAiB;CAAE;AAErB;EACE,8BAA8B;EAC9B,iBAAiB;EACjB,kBAAkB;CAAE;AAEtB;EACE,+BAA+B;EAC/B,gCAAgC;EAChC,iCAAiC;CAAE","file":"advancedSettings.vue","sourcesContent":[".scope-divider {\n  display: block;\n  width: 2em;\n  height: 42px;\n  line-height: 42px;\n  font-size: 38px;\n  text-align: center; }\n\n.scoped-tablist-container {\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n  align-content: flex-start; }\n\n.scoped-tablist-subquestionandanswers {\n  flex-grow: 1;\n  flex-shrink: 3;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap; }\n\n.scoped-tablist-advanced-settings {\n  flex-grow: 3;\n  flex-shrink: 1;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap; }\n\n.scoped-tablist-advanced-settings > li,\n.scoped-tablist-subquestionandanswers > li {\n  display: block;\n  width: 100%;\n  float: none;\n  text-align: center; }\n\n.scope-min-height {\n  min-height: 20vh; }\n\n.scope-apply-base-style {\n  border-top: 1px solid #cfcfcf;\n  margin-top: 1rem;\n  padding-top: 1rem; }\n\n.scope-border-open-top {\n  border-left: 1px solid #cfcfcf;\n  border-right: 1px solid #cfcfcf;\n  border-bottom: 1px solid #cfcfcf; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -21571,7 +21578,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_settingstab.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_settingstab.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _settingstab.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -21629,7 +21636,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-custom-list-group[data-v-73a4ac28] {\n  display: flex;\n  flex-wrap: wrap;\n  align-content: space-between;\n  align-items: flex-start;\n  width: 100%;\n  margin: 0;\n  padding: 1rem 0;\n}\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28] {\n    width: 98%;\n    display: inline-block;\n    margin: 0.5% 1%;\n}\n@media (min-width: 992px) {\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28] {\n      width: 48%;\n      display: inline-block;\n}\n}\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28]:first-child,\n  .scoped-custom-list-group .list-group-item[data-v-73a4ac28]:last-child {\n    border-radius: 0;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/subcomponents/_settingstab.vue"],"names":[],"mappings":";AAAA;EACE,cAAc;EACd,gBAAgB;EAChB,6BAA6B;EAC7B,wBAAwB;EACxB,YAAY;EACZ,UAAU;EACV,gBAAgB;CAAE;AAClB;IACE,WAAW;IACX,sBAAsB;IACtB,gBAAgB;CAAE;AACpB;AACE;MACE,WAAW;MACX,sBAAsB;CAAE;CAAE;AAC9B;;IAEE,iBAAiB;CAAE","file":"_settingstab.vue","sourcesContent":[".scoped-custom-list-group {\n  display: flex;\n  flex-wrap: wrap;\n  align-content: space-between;\n  align-items: flex-start;\n  width: 100%;\n  margin: 0;\n  padding: 1rem 0; }\n  .scoped-custom-list-group .list-group-item {\n    width: 98%;\n    display: inline-block;\n    margin: 0.5% 1%; }\n  @media (min-width: 992px) {\n    .scoped-custom-list-group .list-group-item {\n      width: 48%;\n      display: inline-block; } }\n  .scoped-custom-list-group .list-group-item:first-child,\n  .scoped-custom-list-group .list-group-item:last-child {\n    border-radius: 0; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-custom-list-group[data-v-73a4ac28] {\n  display: flex;\n  flex-wrap: wrap;\n  align-content: space-between;\n  align-items: flex-start;\n  width: 100%;\n  margin: 0;\n  padding: 1rem 0;\n}\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28] {\n    width: 98%;\n    display: inline-block;\n    margin: 0.5% 1%;\n}\n@media (min-width: 992px) {\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28] {\n      width: 48%;\n      display: inline-block;\n}\n}\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28]:first-child,\n  .scoped-custom-list-group .list-group-item[data-v-73a4ac28]:last-child {\n    border-radius: 0;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/components/subcomponents/_settingstab.vue"],"names":[],"mappings":";AAAA;EACE,cAAc;EACd,gBAAgB;EAChB,6BAA6B;EAC7B,wBAAwB;EACxB,YAAY;EACZ,UAAU;EACV,gBAAgB;CAAE;AAClB;IACE,WAAW;IACX,sBAAsB;IACtB,gBAAgB;CAAE;AACpB;AACE;MACE,WAAW;MACX,sBAAsB;CAAE;CAAE;AAC9B;;IAEE,iBAAiB;CAAE","file":"_settingstab.vue","sourcesContent":[".scoped-custom-list-group {\n  display: flex;\n  flex-wrap: wrap;\n  align-content: space-between;\n  align-items: flex-start;\n  width: 100%;\n  margin: 0;\n  padding: 1rem 0; }\n  .scoped-custom-list-group .list-group-item {\n    width: 98%;\n    display: inline-block;\n    margin: 0.5% 1%; }\n  @media (min-width: 992px) {\n    .scoped-custom-list-group .list-group-item {\n      width: 48%;\n      display: inline-block; } }\n  .scoped-custom-list-group .list-group-item:first-child,\n  .scoped-custom-list-group .list-group-item:last-child {\n    border-radius: 0; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -21971,7 +21978,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\integer.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\integer.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] integer.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -22185,7 +22192,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_subquestions.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_subquestions.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _subquestions.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -22243,7 +22250,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-spacer[data-v-c3a778ba] {\n  content: ' ';\n  display: inline-block;\n}\n.scoped-main-subquestions-container[data-v-c3a778ba] {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh;\n}\n.scoped-subquestion-block[data-v-c3a778ba] {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: space-evenly;\n}\n.scoped-subquestion-block > div[data-v-c3a778ba] {\n    flex-basis: auto;\n    padding: 1px 2px;\n}\n.scoped-move-block[data-v-c3a778ba] {\n  flex-grow: 1;\n  text-align: center;\n}\n.scoped-move-block > i[data-v-c3a778ba] {\n    font-size: 28px;\n    line-height: 32px;\n}\n.scoped-move-block > i[data-v-c3a778ba]:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom;\n}\n.scoped-content-block[data-v-c3a778ba] {\n  flex-grow: 6;\n}\n.scoped-relevance-block[data-v-c3a778ba] {\n  flex-grow: 4;\n}\n.scoped-actions-block[data-v-c3a778ba] {\n  flex-grow: 2;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/subcomponents/_subquestions.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,sBAAsB;CAAE;AAE1B;EACE,oBAAoB;EACpB,oBAAoB;EACpB,iBAAiB;CAAE;AAErB;EACE,cAAc;EACd,kBAAkB;EAClB,YAAY;EACZ,8BAA8B;CAAE;AAChC;IACE,iBAAiB;IACjB,iBAAiB;CAAE;AAEvB;EACE,aAAa;EACb,mBAAmB;CAAE;AACrB;IACE,gBAAgB;IAChB,kBAAkB;CAAE;AACpB;MACE,cAAc;MACd,gBAAgB;MAChB,4BAA4B;CAAE;AAEpC;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;CAAE","file":"_subquestions.vue","sourcesContent":[".scoped-spacer {\n  content: ' ';\n  display: inline-block; }\n\n.scoped-main-subquestions-container {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh; }\n\n.scoped-subquestion-block {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: space-evenly; }\n  .scoped-subquestion-block > div {\n    flex-basis: auto;\n    padding: 1px 2px; }\n\n.scoped-move-block {\n  flex-grow: 1;\n  text-align: center; }\n  .scoped-move-block > i {\n    font-size: 28px;\n    line-height: 32px; }\n    .scoped-move-block > i:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom; }\n\n.scoped-content-block {\n  flex-grow: 6; }\n\n.scoped-relevance-block {\n  flex-grow: 4; }\n\n.scoped-actions-block {\n  flex-grow: 2; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-spacer[data-v-c3a778ba] {\n  content: ' ';\n  display: inline-block;\n}\n.scoped-main-subquestions-container[data-v-c3a778ba] {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh;\n}\n.scoped-subquestion-block[data-v-c3a778ba] {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: flex-start;\n}\n.scoped-subquestion-block > div[data-v-c3a778ba] {\n    flex-basis: 10rem;\n    padding: 1px 2px;\n    transition: all 1s ease-in-out;\n    white-space: nowrap;\n}\n.scoped-move-block[data-v-c3a778ba] {\n  text-align: center;\n  width: 64px;\n}\n.scoped-move-block > i[data-v-c3a778ba] {\n    font-size: 28px;\n    line-height: 32px;\n}\n.scoped-move-block > i[data-v-c3a778ba]:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom;\n}\n.scoped-content-block[data-v-c3a778ba] {\n  flex-grow: 8;\n}\n.scoped-relevance-block[data-v-c3a778ba] {\n  flex-grow: 1;\n  max-width: 10rem;\n}\n.scoped-actions-block[data-v-c3a778ba] {\n  flex-grow: 2;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/components/subcomponents/_subquestions.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,sBAAsB;CAAE;AAE1B;EACE,oBAAoB;EACpB,oBAAoB;EACpB,iBAAiB;CAAE;AAErB;EACE,cAAc;EACd,kBAAkB;EAClB,YAAY;EACZ,4BAA4B;CAAE;AAC9B;IACE,kBAAkB;IAClB,iBAAiB;IACjB,+BAA+B;IAC/B,oBAAoB;CAAE;AAE1B;EACE,mBAAmB;EACnB,YAAY;CAAE;AACd;IACE,gBAAgB;IAChB,kBAAkB;CAAE;AACpB;MACE,cAAc;MACd,gBAAgB;MAChB,4BAA4B;CAAE;AAEpC;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;EACb,iBAAiB;CAAE;AAErB;EACE,aAAa;CAAE","file":"_subquestions.vue","sourcesContent":[".scoped-spacer {\n  content: ' ';\n  display: inline-block; }\n\n.scoped-main-subquestions-container {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh; }\n\n.scoped-subquestion-block {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: flex-start; }\n  .scoped-subquestion-block > div {\n    flex-basis: 10rem;\n    padding: 1px 2px;\n    transition: all 1s ease-in-out;\n    white-space: nowrap; }\n\n.scoped-move-block {\n  text-align: center;\n  width: 64px; }\n  .scoped-move-block > i {\n    font-size: 28px;\n    line-height: 32px; }\n    .scoped-move-block > i:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom; }\n\n.scoped-content-block {\n  flex-grow: 8; }\n\n.scoped-relevance-block {\n  flex-grow: 1;\n  max-width: 10rem; }\n\n.scoped-actions-block {\n  flex-grow: 2; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -22356,6 +22363,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         setQuestionForCurrentLanguage(subquestionObject, $event) {
             subquestionObject[this.$store.state.activeLanguage].question = $event.srcElement.value;
+        },
+        triggerScale($event) {
+            $('.scoped-relevance-block').css({ 'flex-grow': 4, 'max-width': 'initial' });
+        },
+        untriggerScale($event) {
+            $('.scoped-relevance-block').css({ 'flex-grow': 4, 'max-width': '' });
         }
     }
 });
@@ -22617,7 +22630,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\helperComponents\\QuickEdit.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\helperComponents\\QuickEdit.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] QuickEdit.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -22675,7 +22688,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-textarea-class[data-v-17c78e35] {\n  height: 100%;\n  width: 100%;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/helperComponents/QuickEdit.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,YAAY;CAAE","file":"QuickEdit.vue","sourcesContent":[".scoped-textarea-class {\n  height: 100%;\n  width: 100%; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-textarea-class[data-v-17c78e35] {\n  height: 100%;\n  width: 100%;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/helperComponents/QuickEdit.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,YAAY;CAAE","file":"QuickEdit.vue","sourcesContent":[".scoped-textarea-class {\n  height: 100%;\n  width: 100%; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -22802,10 +22815,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         replaceCurrent() {
             this.$store.dispatch('resetContentFromQuickEdit', { type: this.type, payload: this.parsed });
             this.$emit('modalEvent', { target: this.type, method: 'replaceFromQuickAdd', content: this.parsed });
+            this.$emit('close');
         },
         addToCurrent() {
             this.$store.dispatch('addToCurrentFromQuickEdit', { type: this.type, payload: this.parsed });
             this.$emit('modalEvent', { target: this.type, method: 'addToFromQuickAdd', content: this.parsed });
+            this.$emit('close');
         }
     },
     mounted() {
@@ -23018,7 +23033,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\helperComponents\\SimplePopUpEditor.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\helperComponents\\SimplePopUpEditor.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] SimplePopUpEditor.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -23076,7 +23091,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.unscoped--SimplePopup-editor-container .ck.ck-editor,\n.unscoped--SimplePopup-editor-container .ck.ck-editor__main,\n.unscoped--SimplePopup-editor-container .ck.ck-content {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/helperComponents/SimplePopUpEditor.vue"],"names":[],"mappings":";AAAA;;;EAGE,cAAc;EACd,uBAAuB;EACvB,aAAa;CAAE","file":"SimplePopUpEditor.vue","sourcesContent":[".unscoped--SimplePopup-editor-container .ck.ck-editor,\n.unscoped--SimplePopup-editor-container .ck.ck-editor__main,\n.unscoped--SimplePopup-editor-container .ck.ck-content {\n  display: flex;\n  flex-direction: column;\n  height: 100%; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.unscoped--SimplePopup-editor-container .ck.ck-editor,\n.unscoped--SimplePopup-editor-container .ck.ck-editor__main,\n.unscoped--SimplePopup-editor-container .ck.ck-content {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/helperComponents/SimplePopUpEditor.vue"],"names":[],"mappings":";AAAA;;;EAGE,cAAc;EACd,uBAAuB;EACvB,aAAa;CAAE","file":"SimplePopUpEditor.vue","sourcesContent":[".unscoped--SimplePopup-editor-container .ck.ck-editor,\n.unscoped--SimplePopup-editor-container .ck.ck-editor__main,\n.unscoped--SimplePopup-editor-container .ck.ck-content {\n  display: flex;\n  flex-direction: column;\n  height: 100%; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -23252,12 +23267,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         key: subquestion.qid,
         staticClass: "list-group-item scoped-subquestion-block"
       }, [_c('div', {
-        staticClass: "scoped-move-block"
+        staticClass: "scoped-move-block "
       }, [_c('i', {
         staticClass: "fa fa-bars",
         class: _vm.surveyActive ? ' disabled' : ' '
       })]), _vm._v(" "), _c('div', {
-        staticClass: "scoped-code-block"
+        staticClass: "scoped-code-block   "
       }, [_c('input', {
         directives: [{
           name: "model",
@@ -23288,7 +23303,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       })]), _vm._v(" "), _c('div', {
-        staticClass: "scoped-content-block"
+        staticClass: "scoped-content-block   "
       }, [_c('input', {
         staticClass: "answer form-control input",
         attrs: {
@@ -23312,7 +23327,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       })]), _vm._v(" "), _c('div', {
-        staticClass: "scoped-relevance-block input-group"
+        staticClass: "scoped-relevance-block   "
+      }, [_c('div', {
+        staticClass: "input-group"
       }, [_c('div', {
         staticClass: "input-group-addon"
       }, [_vm._v("{")]), _vm._v(" "), _c('input', {
@@ -23322,7 +23339,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           value: (subquestion.relevance),
           expression: "subquestion.relevance"
         }],
-        staticClass: "relevance form-control input",
+        staticClass: "relevance_input_field form-control input",
         attrs: {
           "type": "text",
           "id": "relevance_" + subquestion.qid + "_" + subquestionscale,
@@ -23337,6 +23354,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             $event.preventDefault();
             _vm.switchinput(false, $event)
           },
+          "focus": _vm.triggerScale,
+          "blur": _vm.untriggerScale,
           "input": function($event) {
             if ($event.target.composing) { return; }
             _vm.$set(subquestion, "relevance", $event.target.value)
@@ -23344,8 +23363,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }), _vm._v(" "), _c('div', {
         staticClass: "input-group-addon"
-      }, [_vm._v("}")])]), _vm._v(" "), _c('div', {
-        staticClass: "scoped-actions-block"
+      }, [_vm._v("}")])])]), _vm._v(" "), _c('div', {
+        staticClass: "scoped-actions-block   "
       }, [_c('button', {
         staticClass: "btn btn-default btn-small",
         on: {
@@ -23430,7 +23449,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_answeroptions.vue"
+Component.options.__file = "D:\\www\\limesurveydev\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_answeroptions.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _answeroptions.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -23488,7 +23507,7 @@ exports = module.exports = __webpack_require__(2)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-spacer[data-v-0a0212fa] {\n  content: ' ';\n  display: inline-block;\n}\n.scoped-main-answeroptions-container[data-v-0a0212fa] {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh;\n}\n.scoped-answeroption-block[data-v-0a0212fa] {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: space-evenly;\n}\n.scoped-answeroption-block > div[data-v-0a0212fa] {\n    flex-basis: auto;\n    padding: 1px 2px;\n}\n.scoped-move-block[data-v-0a0212fa] {\n  flex-grow: 1;\n  text-align: center;\n}\n.scoped-move-block > i[data-v-0a0212fa] {\n    font-size: 28px;\n    line-height: 32px;\n}\n.scoped-move-block > i[data-v-0a0212fa]:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom;\n}\n.scoped-content-block[data-v-0a0212fa] {\n  flex-grow: 6;\n}\n.scoped-assessments-block[data-v-0a0212fa] {\n  flex-grow: 2;\n}\n.scoped-actions-block[data-v-0a0212fa] {\n  flex-grow: 2;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/subcomponents/_answeroptions.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,sBAAsB;CAAE;AAE1B;EACE,oBAAoB;EACpB,oBAAoB;EACpB,iBAAiB;CAAE;AAErB;EACE,cAAc;EACd,kBAAkB;EAClB,YAAY;EACZ,8BAA8B;CAAE;AAChC;IACE,iBAAiB;IACjB,iBAAiB;CAAE;AAEvB;EACE,aAAa;EACb,mBAAmB;CAAE;AACrB;IACE,gBAAgB;IAChB,kBAAkB;CAAE;AACpB;MACE,cAAc;MACd,gBAAgB;MAChB,4BAA4B;CAAE;AAEpC;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;CAAE","file":"_answeroptions.vue","sourcesContent":[".scoped-spacer {\n  content: ' ';\n  display: inline-block; }\n\n.scoped-main-answeroptions-container {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh; }\n\n.scoped-answeroption-block {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: space-evenly; }\n  .scoped-answeroption-block > div {\n    flex-basis: auto;\n    padding: 1px 2px; }\n\n.scoped-move-block {\n  flex-grow: 1;\n  text-align: center; }\n  .scoped-move-block > i {\n    font-size: 28px;\n    line-height: 32px; }\n    .scoped-move-block > i:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom; }\n\n.scoped-content-block {\n  flex-grow: 6; }\n\n.scoped-assessments-block {\n  flex-grow: 2; }\n\n.scoped-actions-block {\n  flex-grow: 2; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-spacer[data-v-0a0212fa] {\n  content: ' ';\n  display: inline-block;\n}\n.scoped-main-answeroptions-container[data-v-0a0212fa] {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh;\n}\n.scoped-answeroption-block[data-v-0a0212fa] {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: space-evenly;\n}\n.scoped-answeroption-block > div[data-v-0a0212fa] {\n    flex-basis: auto;\n    padding: 1px 2px;\n}\n.scoped-move-block[data-v-0a0212fa] {\n  flex-grow: 1;\n  text-align: center;\n}\n.scoped-move-block > i[data-v-0a0212fa] {\n    font-size: 28px;\n    line-height: 32px;\n}\n.scoped-move-block > i[data-v-0a0212fa]:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom;\n}\n.scoped-content-block[data-v-0a0212fa] {\n  flex-grow: 6;\n}\n.scoped-assessments-block[data-v-0a0212fa] {\n  flex-grow: 2;\n}\n.scoped-actions-block[data-v-0a0212fa] {\n  flex-grow: 2;\n}\n", "", {"version":3,"sources":["D:/www/limesurveydev/assets/packages/questioneditor/src/components/subcomponents/_answeroptions.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,sBAAsB;CAAE;AAE1B;EACE,oBAAoB;EACpB,oBAAoB;EACpB,iBAAiB;CAAE;AAErB;EACE,cAAc;EACd,kBAAkB;EAClB,YAAY;EACZ,8BAA8B;CAAE;AAChC;IACE,iBAAiB;IACjB,iBAAiB;CAAE;AAEvB;EACE,aAAa;EACb,mBAAmB;CAAE;AACrB;IACE,gBAAgB;IAChB,kBAAkB;CAAE;AACpB;MACE,cAAc;MACd,gBAAgB;MAChB,4BAA4B;CAAE;AAEpC;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;CAAE","file":"_answeroptions.vue","sourcesContent":[".scoped-spacer {\n  content: ' ';\n  display: inline-block; }\n\n.scoped-main-answeroptions-container {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh; }\n\n.scoped-answeroption-block {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: space-evenly; }\n  .scoped-answeroption-block > div {\n    flex-basis: auto;\n    padding: 1px 2px; }\n\n.scoped-move-block {\n  flex-grow: 1;\n  text-align: center; }\n  .scoped-move-block > i {\n    font-size: 28px;\n    line-height: 32px; }\n    .scoped-move-block > i:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom; }\n\n.scoped-content-block {\n  flex-grow: 6; }\n\n.scoped-assessments-block {\n  flex-grow: 2; }\n\n.scoped-actions-block {\n  flex-grow: 2; }\n"],"sourceRoot":""}]);
 
 // exports
 

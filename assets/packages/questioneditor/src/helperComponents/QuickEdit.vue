@@ -109,10 +109,12 @@ export default {
         replaceCurrent() {
             this.$store.dispatch('resetContentFromQuickEdit', {type: this.type, payload: this.parsed});
             this.$emit('modalEvent', {target: this.type, method: 'replaceFromQuickAdd', content: this.parsed});
+            this.$emit('close');
         },
         addToCurrent() {
             this.$store.dispatch('addToCurrentFromQuickEdit', {type: this.type, payload: this.parsed});
             this.$emit('modalEvent', {target: this.type, method: 'addToFromQuickAdd', content: this.parsed});
+            this.$emit('close');
         },
     },
     mounted(){

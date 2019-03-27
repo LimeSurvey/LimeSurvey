@@ -465,10 +465,14 @@ class questionedit extends Survey_Common_Action
         foreach($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
             if($sAttributeCategory === 'debug') continue;
             foreach($aAttributeCategorySettings as $sAttributeKey => $aAttributeValueArray) {
+                $newValue = is_array($aAttributeValueArray['formElementValue']) 
+                    ? $aAttributeValueArray['formElementValue'][$oQuestion->survey->language] 
+                    : $aAttributeValueArray['formElementValue'];
+                
                 if(array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
-                    $oQuestion->$sAttributeKey = $aAttributeValueArray['formElementValue'];
+                    $oQuestion->$sAttributeKey = $newValue;
                 } else { 
-                    $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttribute($oQuestion->qid,$sAttributeKey,$aAttributeValueArray['formElementValue']);
+                    $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttribute($oQuestion->qid,$sAttributeKey,$newValue);
                 }
             }
         }
