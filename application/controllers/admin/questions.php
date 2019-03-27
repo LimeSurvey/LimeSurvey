@@ -1309,12 +1309,13 @@ class questions extends Survey_Common_Action
         foreach ($aQidsAndLang as $sQidAndLang) {
             $aQidAndLang = explode(',', $sQidAndLang);
             $iQid        = $aQidAndLang[0];
-            $sLanguage   = $aQidAndLang[1];
-
-            $oQuestion   = Question::model()->find('qid=:qid and language=:language', array(":qid"=>$iQid, ":language"=>$sLanguage));
+            
+            $oQuestion      = Question::model()->with('questionL10ns')->findByPk($iQid);
+            $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
+            $sBaseLanguage  = $oSurvey->language;
 
             if (is_object($oQuestion)) {
-                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->question, true, 0);
+                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionL10ns[$sBaseLanguage]->question, true, 0);
                 $result = $this->delete($oQuestion->sid, $iQid, true);
                 $aResults[$iQid]['result'] = $result['status'];
             }
@@ -1370,6 +1371,7 @@ class questions extends Survey_Common_Action
                 return array('status'=>false, 'message'=>$sMessage);
             }
         } else {
+            QuestionL10n::model()->deleteAllByAttributes(array('qid' => $qid));
             $oQuestion->delete();
         }
 
