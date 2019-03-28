@@ -125,7 +125,8 @@ class LSYii_Application extends CWebApplication
         $emailConfig = require(__DIR__.'/../config/email.php');
         $versionConfig = require(__DIR__.'/../config/version.php');
         $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
-        $this->config = array_merge($this->config,$coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+        $securityConfig = require(__DIR__.'/../config/security.php');
+        $this->config = array_merge($this->config,$coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig, $securityConfig);
 
         /* Custom config file */
         $configdir = $coreConfig['configdir'];

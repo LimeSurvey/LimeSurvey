@@ -479,6 +479,7 @@ class dataentry extends Survey_Common_Action
             $results = array();
             if ($subaction == "edit" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 $idresult = Response::model($surveyid)->findByPk($id);
+                $idresult->decrypt();
                 $results[] = $idresult->attributes;
             } elseif ($subaction == "editsaved" && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
                 if (isset($_GET['public']) && $_GET['public'] == "true") {
@@ -496,6 +497,7 @@ class dataentry extends Survey_Common_Action
 
                 $saver = array();
                 foreach ($svresult as $svrow) {
+                    $svrow->decrypt();
                     $saver['email'] = $svrow['email'];
                     $saver['scid'] = $svrow['scid'];
                     $saver['ip'] = $svrow['ip'];
@@ -504,6 +506,7 @@ class dataentry extends Survey_Common_Action
                 $svresult = SavedControl::model()->findAllByAttributes(array('scid'=>$saver['scid']));
                 $responses = [];
                 foreach ($svresult as $svrow) {
+                    $svrow->decrypt();
                     $responses[$svrow['fieldname']] = $svrow['value'];
                 } // while
 
@@ -1414,14 +1417,16 @@ class dataentry extends Survey_Common_Action
                 default:
                     $oReponse->$fieldname = $thisvalue;
             }
-        }
-        $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
-        $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
-        $beforeDataEntryUpdate->set('iResponseID', $id);
-        App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
-        if(!$oReponse->save()) {
-            Yii::app()->setFlashMessage(CHtml::errorSummary($oReponse), 'error');
-        } else {
+
+            $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
+            $beforeDataEntryUpdate->set('iSurveyID', $surveyid);
+            $beforeDataEntryUpdate->set('iResponseID', $id);
+            App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
+
+            $arResponse = Response::model($surveyid)->findByPk($id);
+            $arResponse->setAttributes($aFieldAttributes, false);
+            $arResponse->encryptSave();
+
             Yii::app()->setFlashMessage(sprintf(gT("The response record %s was updated."), $id));
         }
         if (Yii::app()->request->getPost('close-after-save') == 'true') {
@@ -1617,7 +1622,7 @@ class dataentry extends Survey_Common_Action
                 $beforeDataEntryCreate->set('oModel', $new_response);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryCreate);
 
-                $new_response->save();
+                $new_response->encryptSave();
                 $last_db_id = $new_response->getPrimaryKey();
                 if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') {
                     // submittoken
@@ -1662,7 +1667,7 @@ class dataentry extends Survey_Common_Action
                     $arSaveControl->identifier = $saver['identifier'];
                     $arSaveControl->access_code = $password;
                     $arSaveControl->email = $saver['email'];
-                    $arSaveControl->ip = $aUserData['ip_address'];
+                    $arSaveControl->ip = !empty($aUserData['ip_address']) ? $aUserData['ip_address'] : "";
                     $arSaveControl->refurl = (string) getenv("HTTP_REFERER");
                     $arSaveControl->saved_thisstep = 0;
                     $arSaveControl->status = 'S';
@@ -1683,13 +1688,17 @@ class dataentry extends Survey_Common_Action
 
                             $aToken = new Token($surveyid);  
                             $aToken->setAttributes($tokendata, false);  
-                            $aToken->save();
+                            $aToken->encryptSave();
                             $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("A survey participant entry for the saved survey has been created too."));
                         }
                         if ($saver['email']) {
                             //Send email
                             if (validateEmailAddress($saver['email']) && !returnGlobal('redo')) {
-                                $subject = gT("Saved Survey Details");
+                                $mailer = New \LimeMailer;
+                                $mailer->addAddress($saver['email']);
+                                $mailer->setSurvey($surveyid);
+                                $mailer->emailType = 'savesurveydetails';
+                                $mailer->Subject = gT("Saved Survey Details");
                                 $message = gT("Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you.");
                                 $message .= "\n\n".$thissurvey['name']."\n\n";
                                 $message .= gT("Name").": ".$saver['identifier']."\n";
@@ -1697,10 +1706,11 @@ class dataentry extends Survey_Common_Action
                                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
                                 $aParams = array('lang'=>$saver['language'], 'loadname'=>$saver['identifier'], 'loadpass'=>$saver['password']);
                                 $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$arSaveControl->scid}/", $aParams);
-                                $from     = $thissurvey['adminemail'];
-                                $sitename = Yii::app()->getConfig('sitename');
-                                if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid))) {
-                                    $aDataentrymsgs[] = CHtml::tag('font', array('class'=>'successtitle'), gT("An email has been sent with details about your saved survey"));
+                                $mailer->Body = $message;
+                                if ($mailer->sendMessage()) {
+                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class'=>'successtitle text-success'), gT("An email has been sent with details about your saved survey"));
+                                } else {
+                                    $aDataentrymsgs[] = CHtml::tag('strong', array('class'=>'errortitle text-danger'), sprintf(gT("Unable to send email about your saved survey with error %s."),$mailer->getError()));
                                 }
                             }
                         }

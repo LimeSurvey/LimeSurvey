@@ -159,8 +159,8 @@ abstract class Token extends Dynamic
         $fields = array(
             'tid' => 'pk',
             'participant_id' => 'string(50)',
-            'firstname' => 'string(150)',
-            'lastname' => 'string(150)',
+            'firstname' => 'text',
+            'lastname' => 'text',
             'email' => 'text',
             'emailstatus' => 'text',
             'token' => "string(36) {$sCollation}",
@@ -415,4 +415,20 @@ abstract class Token extends Dynamic
     public function getSurveyId() {
         return $this->getDynamicId();
     }
+
+    public static function getEncryptedAttributes(){
+        return self::$aEncryptedAttributes;
+    }
+
+    public static function getDefaultEncryptionOptions(){
+        return array(
+                'enabled' => 'N',
+                'columns' => array(
+                    'firstname' =>  'Y',
+                    'lastname' =>  'Y',
+                    'email' =>  'Y'
+                )
+        );
+    }
+    
 }

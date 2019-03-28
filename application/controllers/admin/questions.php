@@ -995,6 +995,7 @@ class questions extends Survey_Common_Action
         $oQuestion->type = Question::QT_T_LONG_FREE_TEXT;
         $oQuestion->other = 'N';
         $oQuestion->mandatory = 'N';
+        $oQuestion->encrypted = 'N';
         $oQuestion->relevance = 1;
         $oQuestion->group_name = '';
         $oQuestion->modulename = '';
@@ -1153,6 +1154,7 @@ class questions extends Survey_Common_Action
                         'question_order' => $oQuestion->question_order,
                         'other' => $oQuestion->other,
                         'mandatory' => $oQuestion->mandatory,
+                        'encrypted' => $oQuestion->encrypted,
                         'type' => $oQuestion->type,
                         'title' => $oQuestion->title,
                         'preg' => $oQuestion->preg,
@@ -1177,6 +1179,7 @@ class questions extends Survey_Common_Action
                         $arQuestion->help = $basesettings['help'];
                         $arQuestion->other = $basesettings['other'];
                         $arQuestion->mandatory = $basesettings['mandatory'];
+                        $arQuestion->encrypted = $basesettings['encrypted'];
                         $arQuestion->question_order = $basesettings['question_order'];
                         $arQuestion->language = $key;
                         $arQuestion->insert();
@@ -1207,6 +1210,7 @@ class questions extends Survey_Common_Action
                 $oQuestion->gid = $gid;
                 $oQuestion->other = 'N';
                 $oQuestion->mandatory = 'N';
+                $oQuestion->encrypted = 'N';
                 $oQuestion->preg = '';
                 $oQuestion->relevance = 1;
                 $oQuestion->group_name = '';
@@ -1305,12 +1309,13 @@ class questions extends Survey_Common_Action
         foreach ($aQidsAndLang as $sQidAndLang) {
             $aQidAndLang = explode(',', $sQidAndLang);
             $iQid        = $aQidAndLang[0];
-            $sLanguage   = $aQidAndLang[1];
-
-            $oQuestion   = Question::model()->find('qid=:qid and language=:language', array(":qid"=>$iQid, ":language"=>$sLanguage));
+            
+            $oQuestion      = Question::model()->with('questionL10ns')->findByPk($iQid);
+            $oSurvey        = Survey::model()->findByPk($oQuestion->sid);
+            $sBaseLanguage  = $oSurvey->language;
 
             if (is_object($oQuestion)) {
-                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->question, true, 0);
+                $aResults[$iQid]['title'] = viewHelper::flatEllipsizeText($oQuestion->questionL10ns[$sBaseLanguage]->question, true, 0);
                 $result = $this->delete($oQuestion->sid, $iQid, true);
                 $aResults[$iQid]['result'] = $result['status'];
             }
@@ -1366,6 +1371,7 @@ class questions extends Survey_Common_Action
                 return array('status'=>false, 'message'=>$sMessage);
             }
         } else {
+            QuestionL10n::model()->deleteAllByAttributes(array('qid' => $qid));
             $oQuestion->delete();
         }
 

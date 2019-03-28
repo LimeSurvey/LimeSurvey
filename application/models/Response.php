@@ -198,4 +198,23 @@
         {
 
         }
+
+        public static function getEncryptedAttributes(){
+            if (!empty($_SESSION['fieldmap-' . $_SESSION['LEMsid'] . $_SESSION['LEMlang']])){
+                $aSessionData = $_SESSION['fieldmap-' . $_SESSION['LEMsid'] . $_SESSION['LEMlang']];
+                $aAttributes = array();
+                $oQuestions = Question::model()->findAll("encrypted='Y' and sid={$_SESSION['LEMsid']}");
+                foreach ($oQuestions as $question){
+                    if (!empty($question['qid'])){
+                        foreach ($aSessionData as $response){
+                            if (!empty($response['qid']) && $response['qid'] == $question['qid']){
+                                $aAttributes[] = $response['fieldname'];
+                            }
+                        }
+                    }
+                }
+                return $aAttributes;
+            }
+        }
+    
     }

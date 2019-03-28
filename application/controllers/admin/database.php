@@ -659,14 +659,6 @@ class database extends Survey_Common_Action
             $fixedQuestionAttributes['other'] = boolval($fixedQuestionAttributes['other']) ? 'Y' : 'N';
         }
 
-        // Other specific
-        if (($sQuestionType != "L") && ($sQuestionType != "!") && ($sQuestionType != "P") && ($sQuestionType != "M")) {
-            $fixedQuestionAttributes['other'] = 'N';
-        }
-        if ($survey->isActive && !empty($cqr) ) {
-            $fixedQuestionAttributes['other'] = $cqr['other'];
-        }
-
         // These are the questions types that have no mandatory property - so zap it accordingly
         if ($sQuestionType == "X" || $sQuestionType == "|") {
             $fixedQuestionAttributes['mandatory'] = 'N';
@@ -691,9 +683,10 @@ class database extends Survey_Common_Action
                 $oQuestion->title = Yii::app()->request->getPost('title');
                 $oQuestion->preg = $fixedQuestionAttributes['preg'];
                 $oQuestion->gid = $this->iQuestionGroupID;
-                $oQuestion->other = $fixedQuestionAttributes['other'];
-                $oQuestion->mandatory = $fixedQuestionAttributes['mandatory'];
-                $oQuestion->relevance = $fixedQuestionAttributes['relevance'];
+                $oQuestion->other = Yii::app()->request->getPost('other');
+                $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
+                $oQuestion->encrypted = Yii::app()->request->getPost('encrypted');
+                $oQuestion->relevance = Yii::app()->request->getPost('relevance');  
                 // Update question module
                 if (Yii::app()->request->getPost('module_name') != '') {
                     // The question module is not empty. So it's an external question module.
@@ -1258,6 +1251,7 @@ class database extends Survey_Common_Action
 
             // For Bootstrap Version usin YiiWheels switch :
             $oQuestion->mandatory = Yii::app()->request->getPost('mandatory');
+            $oQuestion->encrypted = Yii::app()->request->getPost('encrypted');
             $oQuestion->other = Yii::app()->request->getPost('other');
 
             $oQuestion->relevance = Yii::app()->request->getPost('relevance');

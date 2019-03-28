@@ -119,7 +119,7 @@ class SurveyActivator
                     break;
                 case Question::QT_N_NUMERICAL:
                 case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:
-                    $aTableDefinition[$aRow['fieldname']] = "decimal (30,10)";
+                    $aTableDefinition[$aRow['fieldname']] = "text";
                     break;
                 case Question::QT_S_SHORT_FREE_TEXT:
                     $aTableDefinition[$aRow['fieldname']] = "text";
@@ -130,7 +130,7 @@ class SurveyActivator
                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:
                 case Question::QT_O_LIST_WITH_COMMENT:
                     if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false) {
-                        $aTableDefinition[$aRow['fieldname']] = "string(5)";
+                        $aTableDefinition[$aRow['fieldname']] = "text";
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
                     }
@@ -143,21 +143,21 @@ class SurveyActivator
                     $aTableDefinition[$aRow['fieldname']] = "text";
                     break;
                 case Question::QT_D_DATE:
-                    $aTableDefinition[$aRow['fieldname']] = "datetime";
+                    $aTableDefinition[$aRow['fieldname']] = "text";
                     break;
                 case Question::QT_5_POINT_CHOICE:
                 case Question::QT_G_GENDER_DROPDOWN:
                 case Question::QT_Y_YES_NO_RADIO:
                 case Question::QT_X_BOILERPLATE_QUESTION:
-                    $aTableDefinition[$aRow['fieldname']] = "string(1)";
+                    $aTableDefinition[$aRow['fieldname']] = "text";
                     break;
                 case Question::QT_I_LANGUAGE:
-                    $aTableDefinition[$aRow['fieldname']] = "string(20)";
+                    $aTableDefinition[$aRow['fieldname']] = "text";
                     break;
                 case Question::QT_VERTICAL_FILE_UPLOAD:
                     $this->createSurveyDir = true;
                     if (strpos($aRow['fieldname'], "_")) {
-                        $aTableDefinition[$aRow['fieldname']] = "integer";
+                        $aTableDefinition[$aRow['fieldname']] = "text";
                     } else {
                         $aTableDefinition[$aRow['fieldname']] = "text";
                     }
@@ -173,7 +173,7 @@ class SurveyActivator
                     }
                     break;
                 case "token":
-                    $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$this->collation;
+                    $aTableDefinition[$aRow['fieldname']] = 'text'.$this->collation;
                     break;
                 case Question::QT_ASTERISK_EQUATION:
                     $aTableDefinition[$aRow['fieldname']] = "text";
@@ -202,10 +202,10 @@ class SurveyActivator
                         $oQuestionAttribute->value = $nrOfAnswers;
                         $oQuestionAttribute->save();
                     }
-                    $aTableDefinition[$aRow['fieldname']] = "string(5)";
+                    $aTableDefinition[$aRow['fieldname']] = "text";
                     break;
                 default:
-                    $aTableDefinition[$aRow['fieldname']] = "string(5)";
+                    $aTableDefinition[$aRow['fieldname']] = "text";
             }
             if (!$this->survey->isAnonymized && !array_key_exists('token', $aTableDefinition)) {
                 $aTableDefinition['token'] = 'string(35)'.$this->collation;
@@ -349,10 +349,7 @@ class SurveyActivator
         //if there is an autonumber_start field, start auto numbering here
         if ($iAutoNumberStart !== false && $iAutoNumberStart > 0) {
             if (Yii::app()->db->driverName == 'mssql' || Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib') {
-                mssql_drop_primary_index($this->survey->responsesTableName);
-                mssql_drop_constraint('id', $this->survey->responsesTableName);
-                $sQuery = "ALTER TABLE {$this->survey->responsesTableName} drop column id ";
-                Yii::app()->db->createCommand($sQuery)->execute();
+                mssql_drop_coulmn_with_constraints($this->survey->responsesTableName, 'id');
                 $sQuery = "ALTER TABLE {$this->survey->responsesTableName} ADD [id] int identity({$iAutoNumberStart},1)";
                 Yii::app()->db->createCommand($sQuery)->execute();
                 // Add back the primaryKey

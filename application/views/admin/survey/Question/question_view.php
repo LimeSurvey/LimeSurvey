@@ -166,6 +166,24 @@
                     </tr>
                 <?php endif; ?>
 
+                <!-- Encrypted -->
+                <?php if (isset($qrrow['mandatory'])):?>
+                    <tr>
+                        <td>
+                            <strong>
+                                <?php eT("Encrypted:"); ?>
+                            </strong>
+                        </td>
+                        <td>
+                            <?php if ($qrrow['encrypted'] == "Y") : ?>
+                                <?php eT("Yes"); ?>
+                            <?php else:?>
+                                <?php eT("No"); ?>
+                            <?php endif;  ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+
                 <!-- Relevance equation -->
                 <?php if (trim($qrrow['relevance']) != ''): ?>
                     <tr>

@@ -80,6 +80,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $alloweditaftercompletion Allow multiple responses or update responses with one token: (Y/N)
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
  * @property string $googleanalyticsapikey Google Analytics Tracking ID
+ * @property string $tokenencryptionoptions Token encryption options
  *
  * @property Permission[] $permissions
  * @property SurveyLanguageSetting[] $languagesettings
@@ -188,6 +189,7 @@ class Survey extends LSActiveRecord
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
+        $this->tokenencryptionoptions = '';
 
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = App()->getConfig('googleanalyticsapikey');
@@ -675,6 +677,7 @@ class Survey extends LSActiveRecord
                     $fields[$fieldname] = array(
                         'description' => $desc,
                         'mandatory' => 'N',
+                        'encrypted' => 'N',
                         'show_register' => 'N',
                         'cpdbmap' =>''
                     );
@@ -707,6 +710,7 @@ class Survey extends LSActiveRecord
                 $aCompleteData[$sKey] = array_merge(array(
                     'description' => $sKey,
                     'mandatory' => 'N',
+                    'encrypted' => 'N',
                     'show_register' => 'N',
                     'cpdbmap' =>''
                 ), $aValues);
@@ -2077,6 +2081,19 @@ return $s->hasTokensTable; });
         }
         $criteria->addColumnCondition(['type'=>$type]);
         return Question::model()->find($criteria);
+    }
+
+    /**
+     * decodes the tokenencryptionoptions to be used anywhere necessary
+     * @return Array
+     */
+    public function getTokenEncryptionOptions()
+    {
+        $aOptions = json_decode_ls($this->tokenencryptionoptions);
+        if (empty($aOptions)){
+            $aOptions = Token::getDefaultEncryptionOptions();
+        }
+        return $aOptions;
     }
 
     public function setOptions($gsid)

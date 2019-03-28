@@ -5,16 +5,19 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import foreach from 'lodash/foreach';
 
-import SimpleEditor from './_simpleEditor.vue';
 import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
+import eventChild from '../../mixins/eventChild.js';
 
 export default {
     name: 'answeroptions',
-    mixins: [AbstractSubQuestionAndAnswerBase],
+    mixins: [AbstractSubQuestionAndAnswerBase, eventChild],
     data(){
         return {
             uniqueSelector: 'aid',
-            baseNonNumericPart : "AO"
+            baseNonNumericPart : "AO",
+            type: 'answeroptions',
+            typeDefininition: 'answer',
+            typeDefininitionKey: 'code'
         };
     },
     computed: {
@@ -81,17 +84,8 @@ export default {
             }
             answerOptionObject[this.$store.state.activeLanguage].answer = $event.srcElement.value;
         },
-        openEditorForAnswerOption(oDataSet, scaleId) {
-            this.$modal.show(
-                SimpleEditor, 
-                { value: oDataSet[this.$store.state.activeLanguage].answer },
-                { draggable: true },
-                {'change': (event) => { 
-                        this.$log.log('CHANGE IN MODAL', event);
-                        oDataSet[this.$store.state.activeLanguage].answer = event;
-                    }
-                }
-            )
+        replaceByQuickAddObject(quickAddContent) {
+            this.$_log.log({AOQuickAddContent: quickAddContent});
         },
     }
 }
@@ -173,7 +167,7 @@ export default {
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="openEditorForAnswerOption(answeroption, answeroptionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="openPopUpEditor(answeroption, answeroptionscale)">
                                 <i class="fa fa-edit"></i>
                                 {{ "Open editor" | translate }}
                             </button>

@@ -72,6 +72,7 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="container-fluid">
         <?php echo CHtml::form(array("admin/questionedit/update"), 'post',array('class'=>'form30 ','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
+            <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor"/>
             <div class="alert alert-danger">EXPERIMENTAL EDITOR! - Use at your own risk! </div>
             <div class="pagetitle h3">
             <?php 

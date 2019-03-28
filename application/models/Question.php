@@ -28,6 +28,7 @@ use \LimeSurvey\Helpers\questionHelper;
  * @property string $preg
  * @property string $other Other option enabled for question (Y/N)
  * @property string $mandatory Whether question is mandatory (Y/S/N)
+ * @property string $encrypted Whether question is encrypted (Y/N)
  * @property integer $question_order Question order in greoup
  * @property integer $parent_qid Questions parent question ID eg for subquestions
  * @property integer $scale_id  The scale ID
@@ -136,6 +137,7 @@ class Question extends LSActiveRecord
             array('qid', 'unique','message'=>sprintf(gT("Question id (qid) : '%s' is already in use."), $this->qid)),// Still needed ?
             array('other', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('mandatory', 'in', 'range'=>array('Y', 'S', 'N'), 'allowEmpty'=>true),
+            array('encrypted', 'in', 'range'=>array('Y', 'N'), 'allowEmpty'=>true),
             array('question_order', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('scale_id', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
             array('same_default', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
@@ -800,6 +802,11 @@ class Question extends LSActiveRecord
                 'desc'=>'t.mandatory desc',
             ),
 
+            'encrypted'=>array(
+                'asc'=>'t.encrypted asc',
+                'desc'=>'t.encrypted desc',
+            ),
+
             'other'=>array(
                 'asc'=>'t.other asc',
                 'desc'=>'t.other desc',
@@ -1023,8 +1030,8 @@ class Question extends LSActiveRecord
             case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS:  return new DataSetMultipleChoiceWithComments($this->qid);
             case Question::QT_I_LANGUAGE:                       return new DataSetLanguage($this->qid);
             case Question::QT_Q_MULTIPLE_SHORT_TEXT:            return new DataSetMultipleShortText($this->qid);
-            case Question::QT_T_LONG_FREE_TEXT:                 return new DataSetHugeFreeText($this->qid);
-            case Question::QT_U_HUGE_FREE_TEXT:                 return new DataSetLongFreeText($this->qid);
+            case Question::QT_T_LONG_FREE_TEXT:                 return new DataSetLongFreeText($this->qid);
+            case Question::QT_U_HUGE_FREE_TEXT:                 return new DataSetHugeFreeText($this->qid);
             case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION:    return new RenderMultipleNumerical($aFieldArray);
             case Question::QT_A_ARRAY_5_CHOICE_QUESTIONS:       return new DataSetArray5ChoiceQuestion($this->qid);
             case Question::QT_B_ARRAY_10_CHOICE_QUESTIONS:      return new DataSetArray10ChoiceQuestion($this->qid);

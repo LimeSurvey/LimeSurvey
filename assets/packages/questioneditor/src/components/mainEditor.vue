@@ -3,6 +3,8 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
+import merge from 'lodash/merge';
+
 import PreviewFrame from './subcomponents/_previewFrame.vue';
 import LanguageSelector from './subcomponents/_languageSelector.vue';
 import runAjax from '../mixins/runAjax.js';
@@ -21,7 +23,6 @@ export default {
             editorHelpData: '',
             editorHelpConfig: {},
             previewContent: ' ',
-            previewRootUrl: 'about:blank',
             previewLoading: false,
             previewActive: true,
             debug: false,
@@ -34,6 +35,17 @@ export default {
         };
     },
     computed: {
+        previewRootUrl() {
+            return window.QuestionEditData.qid != null 
+            ? [
+                window.QuestionEditData.connectorBaseUrl,
+                '/getRenderedPreview/iQuestionId/',
+                window.QuestionEditData.qid,
+                (this.firstStart ? '/root/1' : ''),
+                '/sLanguage/',
+                this.$store.state.activeLanguage].join('')
+            : 'about:blank';
+        },
         currentQuestionCode: {
             get() {return this.$store.state.currentQuestion.title;},
             set(newValue) {
@@ -84,7 +96,7 @@ export default {
             }
             this.$log.log('CHANGEOBJECT',changed);
             
-            return changed;
+            return merge(changed, window.LS.data.csrfTokenData);
         },
         runDebouncedChange(content,event){
             this.changeTriggered(content,event);
@@ -116,13 +128,19 @@ export default {
             this.firstStart = false;
             this.previewLoading = true;
             this.$_load(
-                this.previewRootUrl+'/sLanguage/'+this.$store.state.activeLanguage, 
+                this.previewRootUrl, 
                 this.changedParts(),
                 'POST'
-            ).then((result) => {
-                this.previewContent = result.data;
-                this.previewLoading = false;
-            });
+            ).then(
+                (result) => {
+                    this.previewContent = result.data;
+                    this.previewLoading = false;
+                }, 
+                (error) => {
+                    this.$log.error('Error loading preview', error);
+                    this.previewLoading = false;
+                }
+            );
         },
         selectLanguage(sLanguage) {
             this.$log.log('LANGUAGE CHANGED', sLanguage);
@@ -132,11 +150,6 @@ export default {
             this.previewLoading = false;
             this.firstStart = false;
         }
-    },
-    created(){
-        this.previewRootUrl = window.QuestionEditData.qid != null 
-            ? window.QuestionEditData.connectorBaseUrl+'/getRenderedPreview/iQuestionId/'+window.QuestionEditData.qid+(this.firstStart ? '/root/1' : '')+'/sLanguage/'+this.$store.state.activeLanguage
-            : 'about:blank';
     },
     mounted(){
         this.previewLoading = true;

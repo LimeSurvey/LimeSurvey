@@ -2,6 +2,7 @@
 # Never include config.php
 /application/config/config.php
 /application/config/config.*.php
+/application/config/security.php
 
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode
@@ -62,6 +63,8 @@
 !/plugins/index.html
 !/plugins/Demo/
 !/plugins/AuditLog/
+!/plugins/mailSenderToFrom/
+
 
 #ignore old styles
 /styles/

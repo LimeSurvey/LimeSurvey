@@ -95,6 +95,17 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
     $rownr = 0;
 
     foreach ($result as $row) {
+        // prepare the data for decryption
+        $oToken = Token::model($iSurveyID);
+        $oToken->setAttributes($row, false);
+        $oToken->decrypt();
+
+        $oResponse = Response::model($iSurveyID);
+        $oResponse->setAttributes($row, false);
+        $oResponse->decrypt();
+
+        $row = array_merge($oToken->attributes, $oResponse->attributes);
+
         $rownr++;
         if ($rownr == 1) {
             $num_fields = safecount($row);
@@ -694,8 +705,28 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
     // Read table in smaller chunks
     $iStart = 0;
     do {
-        $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
-        $result = $QueryResult->readAll();
+        
+        // data need to be converted to model to be able to decrypt responses and tokens
+        if ($TableName == 'responses' || $TableName == 'tokens'){
+            $criteria = new CDbCriteria;
+            $criteria->limit = $iChunkSize;
+            $criteria->offset = $iStart;
+            if ($TableName == 'responses'){
+                $results = Response::model(Yii::app()->session['LEMsid'])->findAll($criteria);
+            } elseif ($TableName == 'tokens'){
+                $results = Token::model(Yii::app()->session['LEMsid'])->findAll($criteria);
+            }
+            
+            foreach($results as $row){
+                $result[] = $row->decrypt()->attributes;
+            }
+
+        } else {
+            $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
+            $result = $QueryResult->readAll();
+        }
+        
+
         if ($iStart == 0 && safecount($result) > 0) {
             $exclude = array_flip($excludes); //Flip key/value in array for faster checks
             $xmlwriter->startElement($TableName);
@@ -1328,7 +1359,7 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
             $search = "sqid";
         }
         foreach ($fieldmap as $key => $detail) {
-            if ($detail[$search] == $qid) {
+            if (array_key_exists($search, $detail) && $detail[$search] == $qid) {
                 if (($fieldadd == false || substr($key, (strlen($fieldadd) * -1)) == $fieldadd) &&
                     ($usesaid == false || ($detail["aid"] == $usesaid)) &&
                     ($usesscale == false || ($detail["scale_id"] == $usesscale))) {
@@ -1338,13 +1369,10 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
             }
         }
         if ($colname != "") {
-            $QRE = Yii::app()->db->createCommand()
-                ->select($colname.' AS value')
-                ->from("{{survey_$iSurveyID}}")
-                ->where('id = :id', ['id' => $iResponseID])
-                ->query();
-            $QROW = $QRE->read();
-            $value = $QROW['value'];
+            // prepare and decrypt data
+            $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
+            $oResponse->decrypt(); 
+            $value = $oResponse->$colname;
             $element->setAttribute("defaultValue", $value);
         }
     }
@@ -1979,13 +2007,21 @@ function tokensExport($iSurveyID)
     $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}} lt");
     $databasetype = Yii::app()->db->getDriverName();
     $oRecordSet->where("1=1");
+    
     if ($sEmailFiter != '') {
+        // check if email is encrypted field
+        $aAttributes = $oSurvey->getTokenEncryptionOptions();
+        if (array_key_exists('columns', $aAttributes) && array_key_exists('enabled', $aAttributes) && $aAttributes['enabled'] = 'Y' && array_key_exists('email', $aAttributes['columns']) && $aAttributes['columns']['email'] = 'Y'){
+            $sEmailFiter = LSActiveRecord::encryptSingle($sEmailFiter);
+        }
+
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib'))) {
             $oRecordSet->andWhere("CAST(lt.email as varchar) like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
         } else {
             $oRecordSet->andWhere("lt.email like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
         }
     }
+    
     if ($iTokenStatus == 1) {
         $oRecordSet->andWhere("lt.completed<>'N'");
     } elseif ($iTokenStatus == 2) {
@@ -2030,6 +2066,20 @@ function tokensExport($iSurveyID)
     }
     $oRecordSet->order("lt.tid");
     $bresult = $oRecordSet->query();
+    // fetching all records into array, values need to be decrypted 
+    $bresultAll = $bresult->readAll();
+    foreach($bresultAll as $tokenKey => $tokenValue){
+        // creating TokenDynamic object to be able to decrypt easier
+        $token = TokenDynamic::model($iSurveyID);
+        // populate TokenDynamic object with values
+        foreach($tokenValue as $key=>$value){
+            $token->$key = $value;
+        }
+        // decrypting
+        $token->decrypt();
+        $bresultAll[$tokenKey] = $token->attributes;
+    }
+
     //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
     header("Content-Disposition: attachment; filename=tokens_".$iSurveyID.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
@@ -2057,7 +2107,7 @@ function tokensExport($iSurveyID)
     // Export token line by line and fill $aExportedTokens with token exported
     Yii::import('application.libraries.Date_Time_Converter', true);
     $aExportedTokens = array();
-    while ($brow = $bresult->read()) {
+    foreach ($bresultAll as $brow) {
         if (trim($brow['validfrom'] != '')) {
             $datetimeobj = new Date_Time_Converter($brow['validfrom'], "Y-m-d H:i:s");
             $brow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');

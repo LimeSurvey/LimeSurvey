@@ -5,17 +5,19 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import foreach from 'lodash/foreach';
 
-import SimpleEditor from './_simpleEditor.vue';
 import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
+import eventChild from '../../mixins/eventChild.js';
 
 export default {
     name: 'subquestions',
-    mixins: [AbstractSubQuestionAndAnswerBase],
-    components: {SimpleEditor},
+    mixins: [AbstractSubQuestionAndAnswerBase, eventChild],
     data(){
         return {
             uniqueSelector: 'qid',
             baseNonNumericPart : "SQ",
+            type: 'subquestions',
+            typeDefininition: 'question',
+            typeDefininitionKey: 'title'
         };
     },
     computed: {
@@ -84,20 +86,14 @@ export default {
             }
             return '';
         },
-        openEditorForSubquestion(oDataSet, scaleId) {
-            this.$modal.show(
-                SimpleEditor, 
-                { value: subquestionObject[this.$store.state.activeLanguage].question },
-                { draggable: true },
-                {'change': (event) => { 
-                        this.$log.log('CHANGE IN MODAL', event);
-                        subquestionObject[this.$store.state.activeLanguage].question = event;
-                    }
-                }
-            )
-        },
         setQuestionForCurrentLanguage(subquestionObject, $event) {
             subquestionObject[this.$store.state.activeLanguage].question = $event.srcElement.value;
+        },
+        triggerScale($event) {
+            $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': 'initial'});
+        },
+        untriggerScale($event) {
+            $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': ''});
         },
     }
 }
@@ -134,10 +130,10 @@ export default {
                         v-for="subquestion in currentDataSet[subquestionscale]"
                         :key="subquestion.qid"
                     >
-                        <div class="scoped-move-block">
+                        <div class="scoped-move-block ">
                             <i class="fa fa-bars" :class="surveyActive ? ' disabled' : ' '"></i>
                         </div>
-                        <div class="scoped-code-block">
+                        <div class="scoped-code-block   ">
                             <input
                                 type='text'
                                 class="form-control"
@@ -149,7 +145,7 @@ export default {
                                 @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale)'
                             />
                         </div>
-                        <div class="scoped-content-block">
+                        <div class="scoped-content-block   ">
                             <input
                                 type='text'
                                 size='20'
@@ -162,22 +158,28 @@ export default {
                                 @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
                             />
                         </div>
-                        <div class="scoped-relevance-block">
-                            <input 
-                                type='text' 
-                                class='relevance form-control input' 
-                                :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
-                                :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
-                                v-model="subquestion.relevance"
-                                 @keyup.enter.prevent='switchinput(false,$event)'
-                            />
+                        <div class="scoped-relevance-block   ">
+                            <div class="input-group">
+                                <div class="input-group-addon">{</div>
+                                <input 
+                                    type='text' 
+                                    class='relevance_input_field form-control input'
+                                    :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                    :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                    v-model="subquestion.relevance"
+                                    @keyup.enter.prevent='switchinput(false,$event)'
+                                    @focus='triggerScale'
+                                    @blur='untriggerScale'
+                                />
+                                <div class="input-group-addon">}</div>
+                            </div>
                         </div>
-                        <div class="scoped-actions-block">
+                        <div class="scoped-actions-block   ">
                             <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(subquestion, subquestionscale)">
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="openEditorForSubquestion(subquestion, subquestionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="openPopUpEditor(subquestion, subquestionscale)">
                                 <i class="fa fa-edit"></i>
                                 {{ "Open editor" | translate }}
                             </button>
@@ -216,16 +218,18 @@ export default {
         display: flex;
         flex-wrap: nowrap;
         width: 100%;
-        justify-content: space-evenly;
+        justify-content: flex-start;
         &>div {
-            flex-basis: auto;
+            flex-basis: 10rem;
             padding: 1px 2px;
+            transition: all 1s ease-in-out;
+            white-space: nowrap;
         }
     }
     
     .scoped-move-block {
-        flex-grow: 1;
         text-align: center;
+        width: 64px;
         &>i {
             font-size: 28px;
             line-height: 32px;
@@ -237,13 +241,15 @@ export default {
         }
     }
     .scoped-content-block {
-        flex-grow: 6;
+        flex-grow: 8;
     }
     .scoped-relevance-block {
-        flex-grow: 4;
+        flex-grow: 1;
+        max-width: 10rem;
     }
     .scoped-actions-block {
         flex-grow: 2;
     }
+    
 
 </style>
