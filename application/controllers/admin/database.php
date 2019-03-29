@@ -1318,48 +1318,49 @@ class database extends Survey_Common_Action
                     $oldQID = returnGlobal('oldqid');
 
                     if (returnGlobal('copysubquestions') == 1) {
-                        $aSubquestionIds = array();
                         if ($oldQID) {
-                            // get all survey languages
-                            $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-                            foreach ($aLanguages as $sLanguageIndex => $sLanguage) {
-                                // create a Question model for each language
-                                $oOldQuestion = Question::model()->findByPk(
-                                    array(
-                                        'qid' => $oldQID,
-                                        'language' => $sLanguage
-                                    )
-                                );
+                            $oOldQuestion = Question::model()->findByPk( array('qid' => $oldQID));
 
-                                // subquestions
-                                foreach ($oOldQuestion->subquestions as $sSubquestionIndex => $qr1) {
-                                    $aInsertData = $qr1->attributes;
-                                    if ($sLanguageIndex == 0){ // main language
-                                        $aInsertData['qid'] = null;
-                                    } else {  // additional languages
-                                        $aInsertData['qid'] = $aSubquestionIds[$sSubquestionIndex]; // get qid from array
-                                    }
-
-                                    $aInsertData['parent_qid'] = $this->iQuestionID;
-                                    if (Question::model()->insertRecords($aInsertData)){
-                                        if ($sLanguageIndex == 0){ // main language
-                                            $aSubquestionIds[$sSubquestionIndex] = Yii::app()->db->getLastInsertID(); // save qid into the array
+                            // subquestions
+                            $oOldSubQuestions = Question::model()->with('questionL10ns')->findAllByAttributes(array("parent_qid"=>$oldQID), array('order'=>'question_order'));
+                            foreach ($oOldSubQuestions as $sSubquestionIndex => $subquestion) {
+                                $aInsertData = $subquestion->attributes;
+                                unset($aInsertData['qid']);
+                                $aInsertData['parent_qid'] = $this->iQuestionID;
+                                if (Question::model()->insertRecords($aInsertData)){
+                                    $iNewSubquestionId = Yii::app()->db->getLastInsertID();
+                                    
+                                    if (isset($subquestion->questionL10ns)){
+                                        foreach($subquestion->questionL10ns as $language => $questionL10ns){
+                                            $oQuestionLS = new QuestionL10n;
+                                            $oQuestionLS->language = $language;
+                                            $oQuestionLS->question = $questionL10ns->question;
+                                            $oQuestionLS->help = $questionL10ns->help;
+                                            $oQuestionLS->qid = $iNewSubquestionId;
+                                            $oQuestionLS->save();
                                         }
                                     }
                                 }
                             }
-
                         }
                     }
                     if (returnGlobal('copyanswers') == 1) {
-                        $r1 = Answer::model()->getAnswers((int) returnGlobal('oldqid'));
-                        $aAnswerOptions = $r1->readAll();
-                        foreach ($aAnswerOptions as $qr1) {
+                        $oOldAnswers = Answer::model()->with('answerL10ns')->findAllByAttributes(array("qid"=>$oldQID));
+                        foreach ($oOldAnswers as $answer) {
                             $newAnswer = new Answer();
-                            $newAnswer->attributes = $qr1;
+                            $newAnswer->attributes = $answer->attributes;
                             $newAnswer->qid = $this->iQuestionID;
-                            if (!$newAnswer->save()) {
-                                Yii::log(\CVarDumper::dumpAsString($newAnswer->getErrors()), 'warning', __METHOD__);
+                            if ($newAnswer->save()) {
+                                $iNewAnswerId = Yii::app()->db->getLastInsertID();                                 
+                                if (isset($answer->answerL10ns)){
+                                    foreach($answer->answerL10ns as $language => $answerL10ns){
+                                        $oAnswerLS = new AnswerL10n;
+                                        $oAnswerLS->language = $language;
+                                        $oAnswerLS->answer = $answerL10ns->answer;
+                                        $oAnswerLS->aid = $iNewAnswerId;
+                                        $oAnswerLS->save();
+                                    }
+                                }
                             }
                         }
                     }
