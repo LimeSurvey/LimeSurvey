@@ -462,7 +462,7 @@ class database extends Survey_Common_Action
                             //new record: additional language
                             $oSubQuestionL10n = QuestionL10n::model()->find("qid=:qid AND language=:language", array(":qid"=>$aInsertQID[$iScaleID][$iPosition], ':language'=>$sLanguage));
                             if (!$oSubQuestionL10n) {
-                                $oSubQuestionL10n = new Question;
+                                $oSubQuestionL10n = new QuestionL10n;
                             }
                             $oSubQuestionL10n->qid = $aInsertQID[$iScaleID][$iPosition];
                             $oSubQuestionL10n->question = $subquestionvalue;
