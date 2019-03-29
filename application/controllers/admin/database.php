@@ -300,6 +300,7 @@ class database extends Survey_Common_Action
                 $oAnswer->sortorder         = $iSortOrderID;
                 $oAnswer->assessment_value  = $iAssessmentValue;
                 $oAnswer->scale_id          = $iScaleID;
+                $bAnswerSave = true;
                 if (!$oAnswer->save()) {
                     $sErrors = '<br/>';
                     foreach ($oAnswer->getErrors() as $sError) {
