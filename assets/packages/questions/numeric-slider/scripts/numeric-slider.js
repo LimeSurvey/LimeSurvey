@@ -96,7 +96,7 @@ var LSSlider = function (options) {
 
         },
         setValue = function (value) {
-            value = value || parseInt(position);
+            value = value || parseFloat(position);
             sliderObject.setValue(value, true, true);
             elementObject.val(value.toString().replace('.', separator)).trigger('keyup');
             writeToRootElement(value);
@@ -132,10 +132,10 @@ var LSSlider = function (options) {
                 /* Position slider button at position */
                 listItemObject.find('.slider-container').removeClass('slider-touched').addClass('slider-reset');
                 sliderObject.$sliderElem.removeClass('slider-touched').addClass('slider-reset');
-                rootElementObject.addClass('slider-untouched');
                 setValue(null, true, true);
                 /* if don't set position : reset to '' */
                 if (!setPosition) {
+                    sliderObject.$sliderElem.addClass('slider-untouched');
                     listItemObject.find('div.tooltip').hide();
                     rootElementObject.val('').trigger('keyup');
                 } else {
@@ -161,6 +161,7 @@ var LSSlider = function (options) {
                 if(setPosition) {
                     triggerChanges();
                 }
+
             } else {
                 sliderObject.setValue(rootElementObject.val().toString().replace(separator,'.'), true, true);
             }

@@ -2637,12 +2637,11 @@ function do_multiplenumeric($ia)
 
         /* Put the slider init to initial state (when no click is set or when 'reset') */
         if ($slider_default !== '') {
-        /* can be 0 */
+            /* can be 0 */
             $slider_position = $slider_default;
         } elseif ($aQuestionAttributes['slider_middlestart'] == 1) {
             $slider_position = intval(($slider_max + $slider_min) / 2);
         }
-
         $slider_separator = (trim($aQuestionAttributes['slider_separator']) != '') ? $aQuestionAttributes['slider_separator'] : "";
         $slider_reset = ($aQuestionAttributes['slider_reset']) ? 1 : 0;
 
@@ -2819,7 +2818,7 @@ function do_multiplenumeric($ia)
                     'slider_mintext'         => $slider_mintext,
                     'slider_max'             => $slider_max,
                     'slider_maxtext'         => $slider_maxtext,
-                    'slider_position'        => intval($slider_position),
+                    'slider_position'        => $slider_position,
                     'slider_reset_set'       => $slider_default_set,
                     'slider_handle'          => (isset($slider_handle)) ? $slider_handle : '',
                     'slider_reset'           => $slider_reset,
