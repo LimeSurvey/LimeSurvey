@@ -99,6 +99,7 @@ class index extends CAction
                 }
                 throw new CHttpException(401, $message);
             } else {
+                killSurveySession($surveyid);
                 if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
                     $previewmode = 'question';
                 }
