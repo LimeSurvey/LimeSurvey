@@ -2849,8 +2849,8 @@ class statistics_helper
                     //mark that we have done soemthing special here
                     $aggregated = true;
 
-                    if (($results - $grawdata[5]) > 0) {
-                        $percentage = $grawdata[$i] / ($results - $grawdata[5]) * 100; // Only answered
+                    if (($results - $grawdata[5] - $TotalIncomplete) > 0) {
+                        $percentage = $grawdata[$i] / ($results - $grawdata[5] - $TotalIncomplete) * 100; // Only answered
                     } else {
                         $percentage = 0;
                     }
@@ -2858,7 +2858,7 @@ class statistics_helper
                     switch ($itemcounter) {
                         case 1:
                             if (($results - $grawdata[5]) > 0) {
-                                $aggregatedPercentage = ($grawdata[0] + $grawdata[1]) / ($results - $grawdata[5]) * 100;
+                                $aggregatedPercentage = ($grawdata[0] + $grawdata[1]) / ($results - $grawdata[5] - $TotalIncomplete) * 100;
                             } else {
                                 $aggregatedPercentage = 0;
                             }
@@ -2870,7 +2870,7 @@ class statistics_helper
 
                         case 5:
                             if (($results - $grawdata[5]) > 0) {
-                                $aggregatedPercentage = ($grawdata[3] + $grawdata[4]) / ($results - $grawdata[5]) * 100;
+                                $aggregatedPercentage = ($grawdata[3] + $grawdata[4]) / ($results - $grawdata[5] - $TotalIncomplete) * 100;
                             } else {
                                 $aggregatedPercentage = 0;
                             }
@@ -3051,7 +3051,7 @@ class statistics_helper
 
             $aData['extraline']            = (isset($extraline)) ? $extraline : false;
             $aData['aggregated']           = (isset($aggregated)) ? $aggregated : false;
-            $aData['aggregatedPercentage'] = (isset($aggregatedPercentage)) ? $aggregatedPercentage : false;
+            $aData['aggregatedPercentage'] = (isset($aggregatedPercentage)) ? ($i < 6 ? $aggregatedPercentage : false) : false;
             $aData['sumitems']             = (isset($sumitems)) ? $sumitems : false;
             $aData['sumpercentage']        = (isset($sumpercentage)) ? $sumpercentage : false;
             $aData['TotalCompleted']       = (isset($TotalCompleted)) ? $TotalCompleted : false;
@@ -3085,6 +3085,9 @@ class statistics_helper
         }    //end while
 
         $aData['showaggregateddata'] = false;
+
+        $aData['sumallitems']             = array_sum($grawdata);
+        $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_gross_total', $aData, true);
 
         //only show additional values when this setting is enabled
         if (Yii::app()->getConfig('showaggregateddata') == 1) {
@@ -3178,6 +3181,8 @@ class statistics_helper
                         //calculate standard deviation
                         $aData['am'] = $am;
                         $aData['stddev'] = $stddev;
+                        $aData['bShowSumAnswer'] = true;
+                        $aData['sumitems'] = $results;
                         $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_arithmetic', $aData, true);
                         break;
                     default:

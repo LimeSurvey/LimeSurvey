@@ -21,7 +21,7 @@
 <!-- _statisticsoutput_answer -->
 <tr>
     <td align='right' ><?php echo $label[$i]; ?></td>
-    <td align='right' ><?php echo $grawdata[$i]; ?></td>
+    <td align='center' ><?php echo $grawdata[$i]; ?></td>
 
     <?php if ($bNAgData): ?>
 
@@ -35,7 +35,9 @@
 
         <?php if ($showAggregatedPercentage):?>
             <td  align='right' >
-                <?php echo sprintf("%01.2f", $aggregatedPercentage); ?>%
+                <?php if ($aggregatedPercentage !== false){ ?>
+                    <?php echo sprintf("%01.2f", $aggregatedPercentage); ?>%
+                <?php } ?>
             </td>
         <?php elseif($showEmptyAggregatedPercentage):?>
             <td  align='right' >
@@ -50,18 +52,15 @@
     <tr>
         <td align='right'>
             <strong>
-                <?php eT("Sum");?>(<?php eT("Answers"); ?>)
+                <?php eT("Total");?>(<?php eT("valid"); ?>)
             </strong>
         </td>
-        <td align='right'>
+        <td align='center'>
             <strong>
                 <?php echo $sumitems; ?>
             </strong>
         </td>
         <td align='right'>
-            <strong>
-                <?php echo $sumpercentage; ?>%
-            </strong>
         </td>
         <td align='right'>
             <strong>
