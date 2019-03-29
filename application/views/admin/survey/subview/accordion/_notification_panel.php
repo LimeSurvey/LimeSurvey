@@ -77,7 +77,7 @@ $googleAnalyticsStyleOptions = array(
                         if ($oSurvey->ipaddr!= "Y") {
                             eT("Responses will not have the IP address logged.");
                         } else {
-                            eT("Responses will have the IP address logged");
+                            eT("Responses will have the IP address logged.");
                         } ?>
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
                         <?php echo CHtml::hiddenField('ipaddr',$oSurvey->ipaddr);
