@@ -24,7 +24,7 @@
 {# Register script for modal #}
 {% if( empty(json_decode(aSurveyInfo.jPopup)) == false ) %}
     {{ registerScript('startPopup',"LSvar.startPopups = " ~ aSurveyInfo.jPopup , "POS_HEAD") }}
-    {{ registerScript('showStartPopups',"window.templateCore.showStartPopups();", "POS_END") }}
+    {{ registerScript('showStartPopups',"window.templateCore.alertSurveyDialog(" ~ aSurveyInfo.jPopup ~ ");", "POS_END") }}
 {% endif %}
 
 <!-- Bootstrap Modal Alert -->

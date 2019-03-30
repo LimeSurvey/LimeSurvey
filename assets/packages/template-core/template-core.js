@@ -9,7 +9,7 @@ var TemplateCoreClass = function () {
         /**
          * Dialog and confirm
          */
-        /* showStartPopups : replace core function : allow HTML and use it. */
+        /* showStartPopups : replace core function : allow HTML and use it. Unusuable with ajax */
         showStartPopups: function () {
             if (LSvar.showpopup  && LSvar.startPopups.length) {
                 startPopups = LSvar.startPopups.map(function (text) {
@@ -18,9 +18,19 @@ var TemplateCoreClass = function () {
                 window.templateCore.alertSurveyDialog(startPopups.join(""));
             }
         },
-        /* alertSurveyDialog @see application/core/package/limesurvey */
-        alertSurveyDialog: function (text, title) {
-            if (LSvar.showpopup===1 && text) {
+        /* alertSurveyDialog @see application/core/package/limesurvey
+         * @var string[] startPopups array of text to be shown
+         * @var string title
+         */
+        alertSurveyDialog: function (startPopups, title) {
+            text = "";
+            if (LSvar.showpopup  && startPopups.length) {
+                startPopups = startPopups.map(function (text) {
+                    return "<p>"+text+"<p>";
+                });
+                text = startPopups.join("");
+            }
+            if (text) {
                 $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title || "");
                 $("#bootstrap-alert-box-modal .modal-body").html(text);
                 $("#bootstrap-alert-box-modal").modal('show');
