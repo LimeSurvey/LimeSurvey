@@ -12,18 +12,17 @@ var TemplateCoreClass = function () {
         /* showStartPopups : replace core function : allow HTML and use it. */
         showStartPopups: function () {
             if (LSvar.showpopup  && LSvar.startPopups.length) {
-                startPopup = LSvar.startPopups.map(function (text) {
-                    return text;
-
+                startPopups = LSvar.startPopups.map(function (text) {
+                    return "<p>"+text+"<p>";
                 });
-                window.templateCore.alertSurveyDialog(startPopup);
+                window.templateCore.alertSurveyDialog(startPopups.join(""));
             }
         },
         /* alertSurveyDialog @see application/core/package/limesurvey */
         alertSurveyDialog: function (text, title) {
-            if (LSvar.showpopup===1) {
+            if (LSvar.showpopup===1 && text) {
                 $("#bootstrap-alert-box-modal .modal-header .modal-title").text(title || "");
-                $("#bootstrap-alert-box-modal .modal-body").html("<p>" + text + "</p>" || "");
+                $("#bootstrap-alert-box-modal .modal-body").html(text);
                 $("#bootstrap-alert-box-modal").modal('show');
             }
         },
