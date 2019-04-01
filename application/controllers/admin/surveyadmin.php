@@ -728,11 +728,9 @@ class SurveyAdmin extends Survey_Common_Action
 
                 $aData['tnewtable'] = $tnewtable;
                 $aData['toldtable'] = $toldtable;
-
-                // Reset the session of the survey when deactivating it
-                killSurveySession($iSurveyID);
             }
-
+            // Reset the session of the survey when deactivating it
+            killSurveySession($iSurveyID);
             //Remove any survey_links to the CPDB
             SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
 

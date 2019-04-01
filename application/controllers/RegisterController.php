@@ -131,12 +131,14 @@ class RegisterController extends LSYii_Controller
         if (empty($this->aRegisterErrors) && $iTokenId && $this->sMessage === null) {
             $directLogin = $event->get('directLogin', false);
             if ($directLogin == true) {
+                if($event->get('sendRegistrationEmail', false)) {
+                    self::sendRegistrationEmail($iSurveyId, $iTokenId);
+                }
                 $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
                 $redirectUrl = Yii::app()->getController()->createUrl('/survey/', array('sid' => $iSurveyId,'token' => $oToken->token, 'lang'=>$sLanguage));
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
             }
-            
             self::sendRegistrationEmail($iSurveyId, $iTokenId);
             self::display($iSurveyId, $iTokenId, 'register_success');
             Yii::app()->end();

@@ -36,7 +36,7 @@
 
                             <?php if(isset($sSubaction) && !isset($oQuestionGroup) && !isset($oQuestion)):  ?>
                                 <li class="marks_as_active">
-                                    <?php echo $sSubaction;?>
+                                    <?php echo gT($sSubaction)?>
                                 </li>
                             <?php /* else: ?>
                                 <li>
