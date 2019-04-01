@@ -1,11 +1,10 @@
 <?php
 /**
- * noMailToExample : just don't send email to example.org or example.com
- * http://example.org/ is a great tool for demonstration and test, but sending an email to user@example.org: you receive 4 hour after a notification
- * This plugin just disable sending email to this website, then you can use it when testing syste.
+ * mailSenderToFrom : Set the smtp user to sender and from
+ * Needed for some smtp server, see mantis issue #10529 <https://bugs.limesurvey.org/view.php?id=10529>
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2016 Denis Chenu <http://www.sondages.pro>
+ * @copyright 2019 Denis Chenu <http://www.sondages.pro>
  * @license MIT
  * @version 1.0.0
  *
