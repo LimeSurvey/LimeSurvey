@@ -110,11 +110,10 @@ export default {
         questionTypeChangeTriggered(newValue) {
             this.$log.log('CHANGE OF TYPE', newValue);
             this.currentQuestionType = newValue;
-            let tempQuestionObject = this.$store.state.currentQuestion;
-            tempQuestionObject.type = newValue;
+            this.$set(this.$store.state.currentQuestion, 'type', newValue);
             this.$store.commit('setCurrentQuestion', tempQuestionObject);
             this.getQuestionPreview();
-            this.$store.dispatch('getQuestionGeneralSettingsWithType');
+            this.$store.dispatch('reloadQuestion');
         },
         getQuestionPreview(){
             this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);

@@ -43,6 +43,10 @@ export default {
             this.$log.log('New event set', payload);
             this.event = payload;
         },
+        triggerEvent(payload) {
+            this.$log.log('New event set', payload);
+            this.event = payload;
+        },
         eventSet() {
             this.event = null;
         },
@@ -102,9 +106,9 @@ export default {
 <template>
     <div class="container-center scoped-new-questioneditor">
         <template v-if="$store.getters.fullyLoaded">
-            <maineditor :event="event" v-on:eventSet="eventSet"></maineditor>
-            <generalsettings :event="event" v-on:eventSet="eventSet"></generalsettings>
-            <advancedsettings :event="event" v-on:eventSet="eventSet"></advancedsettings>
+            <maineditor :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
+            <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></generalsettings>
+            <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></advancedsettings>
         </template>
         <modals-container @modalEvent="setModalEvent"/>
     </div>

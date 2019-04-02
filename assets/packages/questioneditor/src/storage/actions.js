@@ -90,6 +90,21 @@ export default {
             context.commit('setQuestionTypeList', result.data);
         });
     },
+    reloadQuestion: (context) => {
+        ajax.methods.$_get(
+            window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 
+            {
+                'iQuestionId' : window.QuestionEditData.qid, 
+                type: context.state.currentQuestion.type || window.QuestionEditData.startType
+            }
+        ).then((result) => {
+            context.commit('updateCurrentQuestion', newObjectBlock.question);
+            context.commit('updateCurrentQuestionSubquestions', newObjectBlock.scaledSubquestions);
+            context.commit('updateCurrentQuestionAnswerOptions', newObjectBlock.scaledAnswerOptions);
+            context.commit('updateCurrentQuestionGeneralSettings', newObjectBlock.generalSettings);
+            context.commit('updateCurrentQuestionAdvancedSettings', newObjectBlock.advancedSettings);
+        });
+    },
     saveQuestionData: (context) => {
         
         let transferObject = _.merge({

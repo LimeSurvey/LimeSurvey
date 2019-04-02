@@ -248,6 +248,14 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON(QuestionType::modelsAttributes());
     }
     
+    public function getQuestionTypeInformation($sQuestionType) {
+        $aTypeInformations = QuestionType::modelsAttributes();
+        $aQuestionTypeInformation = $aTypeInformations[$sQuestionType];
+
+        $this->renderJSON($aQuestionTypeInformation);
+
+    }
+    
     public function getGeneralOptions($iQuestionId, $sQuestionType=null, $returnArray = false)
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);

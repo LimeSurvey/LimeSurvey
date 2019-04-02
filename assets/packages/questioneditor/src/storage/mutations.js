@@ -1,6 +1,7 @@
 import Vue from "vue";
 import isEmpty from "lodash/isEmpty";
 import keys from "lodash/keys";
+import merge from "lodash/merge";
 import indexOf from "lodash/indexOf";
 
 export default {
@@ -28,6 +29,23 @@ export default {
     },
     setCurrentQuestionAnswerOptions : (state, newValue) => {
         state.currentQuestionAnswerOptions = newValue;
+    },
+
+    //Update currently set values
+    updateCurrentQuestion(state, valueObject) {
+        state.currentQuestion = merge({}, newValue, state.currentQuestion);
+    },
+    updateCurrentQuestionGeneralSettings(state, valueObject) {
+        state.currentQuestionGeneralSettings = merge({}, newValue, state.currentQuestionGeneralSettings);
+    },
+    updateCurrentQuestionAdvancedSettings(state, valueObject) {
+        state.currentQuestionAdvancedSettings = merge({}, newValue, state.currentQuestionAdvancedSettings);
+    },
+    updateCurrentQuestionSubquestions(state, valueObject) {
+        state.currentQuestionSubquestions = merge({}, newValue, state.currentQuestionSubquestions);
+    },
+    updateCurrentQuestionAnswerOptions(state, valueObject) {
+        state.currentQuestionAnswerOptions = merge({}, newValue, state.currentQuestionAnswerOptions);
     },
 
     //Immutables
