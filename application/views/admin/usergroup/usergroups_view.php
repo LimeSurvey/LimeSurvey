@@ -53,7 +53,6 @@
                             'header' => gT('Description'),
                             'name' => 'description',
                             'value'=> '$data->description',
-                            'type' => 'LongText',
                             'htmlOptions' => array('class' => 'col-md-5'),
                         ),
 

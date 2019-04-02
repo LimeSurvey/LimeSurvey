@@ -599,12 +599,16 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getButtons()
     {
+        // don't show any buttons if user doesn't have update permission
+        if (!Permission::model()->hasGlobalPermission('templates', 'update')) {
+            return '';
+        }
+        $gsid          = Yii::app()->request->getQuery('id', null);
         $sEditorUrl = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->template_name));
         $sUninstallUrl = Yii::app()->getController()->createUrl('admin/themeoptions/sa/uninstall/');
         $sExtendUrl    = Yii::app()->getController()->createUrl('admin/themes/sa/templatecopy');
-        $sResetUrl     = Yii::app()->getController()->createUrl('admin/themeoptions/sa/reset/');
-        $gisd          = Yii::app()->request->getQuery('id', null);
-        $sOptionUrl    = (App()->getController()->action->id == "surveysgroups")?Yii::app()->getController()->createUrl('admin/themeoptions/sa/updatesurveygroup', array("id"=>$this->id, "gsid"=>$gisd)):Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id"=>$this->id));
+        $sResetUrl     = Yii::app()->getController()->createUrl('admin/themeoptions/sa/reset/', array("gsid"=>$gsid));
+        $sOptionUrl    = (App()->getController()->action->id == "surveysgroups")?Yii::app()->getController()->createUrl('admin/themeoptions/sa/updatesurveygroup', array("id"=>$this->id, "gsid"=>$gsid)):Yii::app()->getController()->createUrl('admin/themeoptions/sa/update', array("id"=>$this->id));
 
         $sEditorLink = "<a
             id='template_editor_link_".$this->template_name."'
