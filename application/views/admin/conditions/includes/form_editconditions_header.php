@@ -92,7 +92,7 @@
                         </div>
                     </div>
                     <div role='tabpanel' class='tab-pane ' id='SRCTOKENATTRS'>
-                        <?php if(true || $surveyIsAnonymized) {
+                        <?php if($surveyIsAnonymized) {
                             echo CHtml::tag("p",array("class"=>"alert alert-warning"),gT("This survey is anonymized, usage of participant attributes need not anonymized survey."));
                         }?>
                         <div class='form-group question-option'>
