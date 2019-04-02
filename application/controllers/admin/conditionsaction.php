@@ -1218,11 +1218,13 @@ protected function getTheseRows(array $questionlist)
     foreach ($questionlist as $ql) {
         
         $result = Question::model()->with(array(
-        'groups' => array(
-        'condition' => 'groups.language = :lang',
-        'params' => array(':lang' => $this->language)
+        'group' => array(
+            'condition' => 'questionGroupL10ns.language = :lang',
+            'params' => array(':lang' => $this->language)
         ),
-        ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $this->iSurveyID, 'language' => $this->language));
+        'group.questionGroupL10ns',
+        'questionL10ns'
+        ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $this->iSurveyID));
         
         // And store again these questions in this array...
         foreach ($result as $myrows) {
@@ -1231,7 +1233,7 @@ protected function getTheseRows(array $questionlist)
             "qid"        =>    $myrows['qid'],
             "sid"        =>    $myrows['sid'],
             "gid"        =>    $myrows['gid'],
-            "question"    =>    $myrows['question'],
+            "question"    =>    $myrows->questionL10ns[$this->language]['question'],
             "type"        =>    $myrows['type'],
             "mandatory"    =>    $myrows['mandatory'],
             "other"        =>    $myrows['other'],
@@ -1612,11 +1614,17 @@ protected function getCAnswersAndCQuestions(array $theserows)
                 break;
 
                 default:
-                    $aresult = Answer::model()->findAllByAttributes(array(
-                    'qid' => $rows['qid'],
-                    'scale_id' => 0,
-                    'language' => $this->language
-                    ), array('order' => 'sortorder, answer'));
+                    $aresult = Answer::model()->with(array(
+                        'answerL10ns' => array(
+                            'condition' => 'answerL10ns.language = :lang',
+                            'params' => array(':lang' => $this->language)
+                            ))
+                        )->findAllByAttributes(array(
+                        'qid' => $rows['qid'],
+                        'scale_id' => 0,
+                        ), array('order' => 'sortorder, answer'
+                        )
+                    );
                     
                     foreach ($aresult as $arows) {
                         $theanswer = $arows['answer'];
