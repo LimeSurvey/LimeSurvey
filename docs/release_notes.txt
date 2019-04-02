@@ -36,6 +36,12 @@ CHANGE LOG
 ------------------------------------------------------
 
 Changes from 3.16.1 (build 190314) to 4.0.0-alpha (build 190130) April 01, 2019
+-New feature #13513 : allow plugins to add expresssion manager function
+-New feature : allow to add cc, bcc to any email.
+-New feature : allow to update cc, bcc or add attachemnts in beforeEmail event
+-New feature : beforeEmail and beforeSurveyEmail new event
+-Fixed issue #12243: beforeTokenEmail didn't happen for remote control
+-Fixed issue #10529: Unable to send email via some smtp server
 -New feature: Inherited survey settings - corrections (Dominik Vitt)
 -New feature #13288: Validation settings for more question type (#980) (Denis Chenu)
 -New feature #13513 : allow plugins to add expresssion manager function (#1081) (Denis Chenu)
