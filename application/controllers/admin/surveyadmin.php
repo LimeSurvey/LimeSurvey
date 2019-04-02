@@ -1498,56 +1498,23 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _getTextEditData($survey)
     {
-
-        Yii::app()->loadHelper("admin/htmleditor");
-        $aData = $aTabTitles = $aTabContents = array();
-
-        $aData['scripts'] = PrepareEditorScript(false, $this->getController());
-        $aLanguageData = [];
-        if ($survey->sid) {
-            foreach ($survey->allLanguages as $i => $sLang) {
-                $aLanguageData = $this->_getGeneralTemplateData($survey->sid);
-                // this one is created to get the right default texts fo each language
-                Yii::app()->loadHelper('database');
-                Yii::app()->loadHelper('surveytranslator');
-
-                $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $survey->sid, 'surveyls_language' => $sLang))->getAttributes();
-
-                $aTabTitles[$sLang] = getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false);
-
-                if ($aSurveyLanguageSettings['surveyls_language'] == $survey->language) {
-                    $aTabTitles[$sLang] .= ' ('.gT("Base language").')';
+        Yii::app()->getClientScript()->registerScript("TextEditDataGlobal",
+            "window.TextEditData = {
+                connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/sid/'.$survey->sid.'/sa/')."',
+                i10N: {
+                    'Survey title' : '".gT('Survey title')."',
+                    'Date format' : '".gT('Date format')."',
+                    'Decimal mark' : '".gT('Decimal mark')."',
+                    'End url' : '".gT('End url')."',
+                    'URL description (link text)' : '".gT('URL description (link text)')."',
+                    'Description' : '".gT('Description')."',
+                    'Welcome' : '".gT('Welcome')."',
+                    'End message' : '".gT('End message')."'
                 }
-
-                $aLanguageData['aSurveyLanguageSettings'] = $aSurveyLanguageSettings;
-                $aLanguageData['action'] = "surveygeneralsettings";
-                $aLanguageData['i'] = $i;
-                $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-                $aLanguageData['oSurvey'] = $survey;
-                $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aLanguageData, true);
-            }
-        } else {
-
-            $baseLang = Yii::app()->session['adminlang'];
-            $aTabTitles[$baseLang] = (string) getLanguageNameFromCode($baseLang, false).' ('.gT("Base language").')';
-            $aLanguageData['aSurveyLanguageSettings'] = [
-                'surveyls_language' => $baseLang,
-                'surveyls_title' => '',
-                'surveyls_description' => '',
-                'surveyls_url' => '',
-                'surveyls_urldescription' => '',
-                'surveyls_numberformat' => '',
-                'surveyls_welcometext' => '',
-                'surveyls_endtext' => '',
-                'surveyls_dateformat' => Yii::app()->session['dateformat'],
-            ];
-            $aLanguageData['surveyid'] = 0;
-
-            $aTabContents = $aLanguageData;
-        }
-
-        $aData['aTabContents'] = $aTabContents;
-        $aData['aTabTitles'] = $aTabTitles;
+            };", LSYii_ClientScript::POS_BEGIN);
+            
+        App()->getClientScript()->registerPackage('textelements');
+        $aData = $aTabTitles = $aTabContents = array();
         return $aData;
     }
 
@@ -1984,7 +1951,74 @@ class SurveyAdmin extends Survey_Common_Action
         $this->getController()->redirect(Yii::app()->request->urlReferrer);
 
     }
+    
+    public function getCurrentEditorValues($sid){
+        $iSurveyId = (int) $sid;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $aLanguages = [];
+        $aReturner = [
+            "surveyTitle" => [],
+            "welcome" => [],
+            "description" => [],
+            "endText" => [],
+            "endUrl" => [],
+            "endUrlDescription" => [],
+            "dateFormat" => [],
+            "decimalDivider" => [],
+        ];
 
+        foreach ($oSurvey->allLanguages as $sLanguage) {
+            $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
+            $aReturner["surveyTitle"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_title;
+            $aReturner["welcome"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_description;
+            $aReturner["description"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_welcometext;
+            $aReturner["endText"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_endtext;
+            $aReturner["endUrl"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_url;
+            $aReturner["endUrlDescription"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_urldescription;
+            $aReturner["dateFormat"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_dateformat;
+            $aReturner["decimalDivider"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_numberformat;
+        }
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                "textdata" => $aReturner,
+                "languages" => $aLanguages
+            ]],
+            false,
+            false
+        );
+    }
+
+    public function getDateFormatOptions($sid){
+        $iSurveyId = (int) $sid;
+        $aRawDateFormats = getDateFormatData();
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => array_map(function($aDateFormats) {return $aDateFormats['dateformat']; }, $aRawDateFormats)],
+            false,
+            false
+        );
+    }
+
+    public function saveTextData($sid){
+        $iSurveyId = (int) $sid;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        foreach ($oSurvey->allLanguages as $sLanguage) {
+            $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
+            $aReturner["surveyTitle"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_title;
+            $aReturner["welcome"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_description;
+            $aReturner["description"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_welcometext;
+            $aReturner["endText"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_endtext;
+            $aReturner["endUrl"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_url;
+            $aReturner["endUrlDescription"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_urldescription;
+            $aReturner["dateFormat"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_dateformat;
+            $aReturner["decimalDivider"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_numberformat;
+        }
+    }
+
+    
     /**
      * This private function creates a sample group
      *

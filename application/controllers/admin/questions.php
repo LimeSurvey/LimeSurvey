@@ -958,17 +958,24 @@ class questions extends Survey_Common_Action
      * @param $surveyid int the sid
      * @return string html
      */
-    public function newquestion($surveyid)
+    public function newquestion($surveyid, $gid=null)
     {
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
+        $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($iSurveyID);
 
+        if($gid == null ) {
+            $gid = $survey->groups[0]->gid;
+        }
+        return $this->getController()->redirect(Yii::app()->createUrl('admin/questioneditor/sa/view', ['surveyid' => $surveyid, 'gid' => $gid]));
+        
+        
         Yii::app()->loadHelper('admin/htmleditor');
         $aData = [];
         $surveyid = $iSurveyID = $aData['surveyid'] = sanitize_int($surveyid);
-
         $survey = Survey::model()->findByPk($iSurveyID);
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
@@ -997,8 +1004,8 @@ class questions extends Survey_Common_Action
         $oQuestion->group_name = '';
         $oQuestion->modulename = '';
         $oQuestion->questionL10ns = array($baselang=>new QuestionL10n);
-        if (isset($_GET['gid'])) {
-            $oQuestion->gid = $_GET['gid'];
+        if ($gid != null) {
+            $oQuestion->gid = $gid;
         }
         $aData['oQuestion'] = $oQuestion;
         $aData['groupid'] = $oQuestion->gid;
@@ -1033,8 +1040,8 @@ class questions extends Survey_Common_Action
 
         // Get the questions for this group, for position
         // NB: gid won't be set if user clicks quick-button Add question
-        if (isset($_GET['gid'])) {
-            $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$_GET['gid']));
+        if ($gid != null) {
+            $oQuestionGroup = QuestionGroup::model()->find('gid=:gid', array(':gid'=>$gid));
         } else {
             $aData['oqresult'] = array();
             $oQuestionGroup = QuestionGroup::model()->find(array('condition'=>'sid=:sid', 'params'=> array(':sid'=>$surveyid), 'order'=>'group_order'));

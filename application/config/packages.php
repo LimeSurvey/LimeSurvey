@@ -159,6 +159,20 @@ return array(
            'adminbasics'
        )
     ),
+    'textelements' => array(
+        'devBaseUrl' => 'assets/packages/textelements/',
+        'basePath' => 'core.textelements',
+        'position' =>CClientScript::POS_END,
+        'js' => array(
+            'build/lstextelements'.(($debug > 0) ? '' : '.min').'.js'
+        ),
+        'css' => array(
+            'build/lstextelements'.$minVersion.'.css'
+        ),
+        'depends' => array(
+            'adminbasics'
+        )
+    ),
     'questioneditor' => array(
         'devBaseUrl' => 'assets/packages/questioneditor/',
         'basePath' => 'core.questioneditor',

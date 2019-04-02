@@ -12,9 +12,9 @@ Vue.use(VueLocalStorage);
 Vue.use(Vuex);
 
 
-export default function(sid){
+export default function(questionId){
     const vuexLocal = new VuexPersistence({
-        key: 'lstextedit_'+sid,
+        key: 'lstextedit_'+questionId,
         storage: window.localStorage
     });
     

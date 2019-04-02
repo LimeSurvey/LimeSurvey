@@ -15,36 +15,33 @@ Vue.use( CKEditor );
 Vue.mixin({
     methods: {
         toggleLoading(forceState=null) {
-            this.loading = !this.loading;
             if(forceState !== null) {
-                this.loading = forceState;
                 if(forceState) {
-                    $('#textEditLoader').fadeIn(200);
+                    $('#questionEditLoader').fadeIn(200);
                 } else {
-                    $('#textEditLoader').fadeOut(400);
+                    $('#questionEditLoader').fadeOut(400);
                 }
                 return;
             }
-            if($('#textEditLoader').css('display') == 'none') {
-                $('#textEditLoader').fadeIn(200);
+            if($('#questionEditLoader').css('display') == 'none') {
+                $('#questionEditLoader').fadeIn(200);
                 return;
             }
-            $('#textEditLoader').fadeOut(400);
+            $('#questionEditLoader').fadeOut(400);
         },
         translate(value) {
-            return window.TextEditData.i10N[value] || value;
+            return window.QuestionEditData.i10N[value] || value;
         }
     },
     filters: {
         translate: (value) => {
-            return window.TextEditData.i10N[value] || value;
+            return window.QuestionEditData.i10N[value] || value;
         }
     }
 });
-const AppState = getAppState(window.LS.parameters.sid);
-
-const newTextEditor = new Vue({
-    el: '#advancedTextEditor',
+const AppState = getAppState(window.LS.parameters.qid);
+const questionEditor = new Vue({
+    el: '#advancedQuestionEditor',
     store: AppState,
     components: {App},
 });

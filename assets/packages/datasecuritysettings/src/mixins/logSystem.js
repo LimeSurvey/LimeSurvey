@@ -6,7 +6,7 @@
  */
 import ConsoleShim from '../lib/ConsoleShim.js';
 
-const LOG = new ConsoleShim('TEXTEDITOR');
+const LOG = new ConsoleShim('QUESTIONEDIT');
 
 const PluginLog = function (Vue) {
     if(window.debugState.backend) {

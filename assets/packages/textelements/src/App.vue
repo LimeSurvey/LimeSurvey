@@ -1,22 +1,58 @@
 <script>
 import Mousetrap from 'mousetrap';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-import Editor from './components/Editor.vue';
-import LanguageSelector from './subcomponents/_languageSelector.vue';
-
+import LanguageSelector from './components/subcomponents/_languageSelector.vue';
 import runAjax from './mixins/runAjax.js';
 
 export default {
     name: 'lsnexttexteditor',
+    components: {
+        'language-selector' : LanguageSelector,
+    },
     mixins: [runAjax],
     data() {
         return {
+            loading: true,
             event: null,
+            descriptionEditorObject: ClassicEditor,
+            welcomeEditorObject: ClassicEditor,
+            endTextEditorObject: ClassicEditor,
         }
     },
-    components: {
-        'editor' : Editor,
-        'language-selector' : LanguageSelector,
+    computed: {
+        currentSurveyTitle: {
+            get() { return this.$store.state.surveyTitle[this.$store.state.activeLanguage]; },
+            set(newValue) { this.$store.commit('setSurveyTitleForCurrentLanguage', newValue); },
+        },
+        currentWelcome: {
+            get() { return this.$store.state.welcome[this.$store.state.activeLanguage]; },
+            set(newValue) { this.$store.commit('setWelcomeForCurrentLanguage', newValue); },
+        },
+        currentDescription: {
+            get() { return this.$store.state.description[this.$store.state.activeLanguage]; },
+            set(newValue) { this.$store.commit('setDescriptionForCurrentLanguage', newValue); },
+        },
+        currentEndText: {
+            get() { return this.$store.state.endText[this.$store.state.activeLanguage]; },
+            set(newValue) { this.$store.commit('setEndTextForCurrentLanguage', newValue); },
+        },
+        currentEndUrl: {
+            get() { return this.$store.state.endUrl[this.$store.state.activeLanguage]; },
+            set(newValue) { this.$store.commit('setEndUrlForCurrentLanguage', newValue); },
+        },
+        currentEndUrlDescription: {
+            get() { return this.$store.state.endUrlDescription[this.$store.state.activeLanguage]; },
+            set(newValue) { this.$store.commit('setEndUrlDescriptionForCurrentLanguage', newValue); },
+        },
+        currentDateFormat: {
+            get() { return this.$store.state.dateFormat[this.$store.state.activeLanguage]; },
+            set(newValue) { this.$store.commit('setDateFormatForCurrentLanguage', newValue); },
+        },
+        currentDecimalDivider: {
+            get() { return this.$store.state.decimalDivider[this.$store.state.activeLanguage]; },
+            set(newValue) { this.$store.commit('setDecimalDividerForCurrentLanguage', newValue); },
+        },
     },
     methods: {
         applyHotkeys() {
@@ -35,7 +71,7 @@ export default {
         },
         submitCurrentState(redirect = false) {
             this.toggleLoading();
-            this.$store.dispatch('saveQuestionData').then(
+            this.$store.dispatch('saveData').then(
                 (result) => {
                     this.toggleLoading();
                     if(redirect == true) {
@@ -44,14 +80,13 @@ export default {
 
                     $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
-                    this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
-                    this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
+                    this.$store.dispatch('updateObjects', result.data.newTextDetails)
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
                 (reject) => {
                     this.toggleLoading();
                     $('#in_survey_common').trigger('lsStopLoading');
-                    window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
+                    window.LS.notifyFader("Texts could not be stored. Reloading page.", 'well-lg bg-danger text-center');
                     //setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
@@ -63,17 +98,15 @@ export default {
 
     },
     created(){
-        this.$store.dispatch('loadQuestion');
-        this.$store.dispatch('getQuestionTypes');
-        this.$store.dispatch('getQuestionGeneralSettings');
-        this.$store.dispatch('getQuestionAdvancedSettings');
+        this.$store.dispatch('getDateFormatOptions');
+        this.$store.dispatch('getDataSet');
     },
     
     mounted() {
-        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
+        $('#advancedTextEditor').on('jquery:trigger', this.jqueryTriggered);
         this.applyHotkeys();
 
-        $('#frmeditquestion').on('submit', (e)=>{
+        $('#surveytexts').on('submit', (e)=>{
             e.preventDefault();
         });
 
@@ -92,44 +125,97 @@ export default {
 </script>
 
 <template>
-    <div class="container-center scoped-new-questioneditor">
-        <template v-if="$store.getters.fullyLoaded">
-            <div class="row">
-                <div class="form-group col-sm-6">
-                    <label for="questionCode">{{'Code' | translate }}</label>
-                    <input type="text" class="form-control" id="questionCode" v-model="currentQuestionCode">
-                </div>
-            </div>
+    <div class="container-center scoped-new-texteditor">
+        <template v-show="!loading">
             <div class="row">
                 <language-selector 
-                    :elId="'questioneditor'" 
+                    :elId="'texteditor'" 
                     :aLanguages="$store.state.languages" 
                     :parentCurrentLanguage="$store.state.activeLanguage" 
                     @change="selectLanguage"
                 />
             </div>
             <div class="row">
-                <editor :label="'Description'" :editor-value="'dingDong'" />
+                <div class="form-group col-md-4 col-sm-6">
+                    <label for="surveyTitle">{{'Survey title' | translate }}</label>
+                    <input type="text" class="form-control" id="surveyTitle" v-model="currentSurveyTitle">
+                </div>
+                <div class="form-group col-md-4 col-sm-6">
+                    <label for="dateFormat">{{'Date format' | translate }}</label>
+                    <select class="form-control" id="dateFormat" v-model="currentDateFormat">
+                        <option 
+                            v-for="(dateFormatOptionDescription, dateFormatOption) in $store.state.dateFormatOptions"
+                            :key="dateFormatOption"
+                            :value="dateFormatOption"
+                        > {{dateFormatOptionDescription}} </option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4 col-sm-12">
+                    <label for="">{{'Decimal mark' | translate }}</label>
+                    <div class="fullystyled--radioButtons" role="group">
+                        <div class="radioButtons--container">
+                            <input type="radio" class="radio" id="decimalDivider-0" name="decimalDivider" :value="0" v-model="currentDecimalDivider">
+                            <label for="decimalDivider-0"> {{"Dot " |translate}} (.) </label>
+                        </div>
+                        <div class="radioButtons--container">
+                            <input type="radio" class="radio" id="decimalDivider-1" name="decimalDivider" :value="1" v-model="currentDecimalDivider">
+                            <label for="decimalDivider-1"> {{"Comma " |translate}} (,) </label>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
-                <editor :label="'Welcome'" :editor-value="'dingDong'" />
+                <div class="form-group col-sm-4">
+                    <label for="endUrl">{{'End url' | translate }}</label>
+                    <input type="text" class="form-control" id="endUrl" v-model="currentEndUrl">
+                </div>
+                <div class="form-group col-sm-8">
+                    <label for="endUrlDescription">{{'URL description (link text)' | translate }}</label>
+                    <input type="text" class="form-control" id="endUrlDescription" v-model="currentEndUrlDescription">
+                </div>
             </div>
-            <div class="row">
-                <editor :label="'End message'" :editor-value="'dingDong'" />
+            <div class="row scoped-editor-row">
+                <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
+                    <label class="">{{ "Description" | translate }}:</label>
+                    <ckeditor :editor="descriptionEditorObject" v-model="currentDescription" :config="{}"></ckeditor>
+                </div>
+            </div>
+            <div class="row scoped-editor-row">
+                <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
+                    <label class="">{{ "Welcome" | translate }}:</label>
+                    <ckeditor :editor="welcomeEditorObject" v-model="currentWelcome" :config="{}"></ckeditor>
+                </div>
+            </div>
+            <div class="row scoped-editor-row">
+                <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
+                    <label class="">{{ "End message" | translate }}:</label>
+                    <ckeditor :editor="endTextEditorObject" v-model="currentEndText" :config="{}"></ckeditor>
+                </div>
             </div>
         </template>
-        <modals-container @modalEvent="setModalEvent"/>
+        <div class="loading-back-greyed" v-show="loading"></div>
     </div>
 </template>
 
-<style scoped>
-.scoped-new-questioneditor {
-    min-height: 75vh;
-}
+<style lang="scss" scoped>
 .loading-back-greyed {
     background-color: rgba(200,200,200,0.4);
     width: 100%;
-    height: 100%;
-    min-height: 60vh;
+    min-height: 65vh;
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+.scoped-editor-row {
+    &:before {
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        border-top: 1px solid #dedede;
+        width: 95%;
+        margin: 0.5rem auto;
+        display: block
+    }
 }
 </style>
+
