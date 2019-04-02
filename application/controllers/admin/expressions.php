@@ -129,11 +129,6 @@ class Expressions extends Survey_Common_Action
             $aData['qid'] = $qid;
         }
 
-        App()->getClientScript()->registerPackage('decimal');
-        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
-        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', '/expressions/em_javascript.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'expressionlogicfile.css');
-
         SetSurveyLanguage($sid, $language);
 
         LimeExpressionManager::SetDirtyFlag();
@@ -172,12 +167,6 @@ class Expressions extends Survey_Common_Action
     {
 
         $aData['surveylist'] = getSurveyList();
-        
-        App()->getClientScript()->registerPackage('decimal');
-        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
-        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', '/expressions/em_javascript.js');
-
-        
         $this->_renderWrappedTemplate('expressions', 'test/survey_logic_form', $aData);        
     }
 
