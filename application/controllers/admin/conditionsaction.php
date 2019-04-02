@@ -476,7 +476,7 @@ class conditionsaction extends Survey_Common_Action
                                     "text" => $cqn[0]." ({$rows['value']})"
                                     );
                                 } else {
-                                    //$aViewUrls['output'] .= "\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
+                                    $data['name'] = sprintf(gT("Variable not found: %s"),$rows['cfieldname']);
                                 }
                             }
                         }
