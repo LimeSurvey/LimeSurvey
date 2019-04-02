@@ -238,7 +238,7 @@ class conditionsaction extends Survey_Common_Action
     //BEGIN: GATHER INFORMATION
     // 1: Get information for this question
     // @todo : use viewHelper::getFieldText and getFieldCode for 2.06 for string show to user
-    $surveyIsAnonymized = $this->getSurveyIsAnonymized();
+    $aData['surveyIsAnonymized'] = $surveyIsAnonymized = $this->getSurveyIsAnonymized();
     
     list($questiontitle, $sCurrentFullQuestionText) = $this->getQuestionTitleAndText($qid);
     
@@ -1689,27 +1689,28 @@ protected function getEditConditionForm(array $args)
     }
     
     $data = array(
-    'subaction'     => $subaction,
-    'iSurveyID'     => $iSurveyID,
-    'gid'           => $gid,
-    'qid'           => $qid,
-    'title'         => $title,
-    'showScenario'  => $this->shouldShowScenario($subaction, $scenariocount),
-    'qcountI'       => $qcount + 1,
-    'cquestions'    => $cquestions,
-    'p_csrctoken'   => $p_csrctoken,
-    'p_prevquestionsgqa'  => $p_prevquestionsgqa,
-    'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
-    'method'        => $method,
-    'subaction'     => $subaction,
-    'EDITConditionConst'  => $this->getEDITConditionConst($subaction),
-    'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction),
-    'submitLabel'   => $submitLabel,
-    'submitSubaction'     => $submitSubaction,
-    'submitcid'     => $submitcid,
-    'editSourceTab' => $this->getEditSourceTab(),
-    'editTargetTab' => $this->getEditTargetTab(),
-    'addConditionToScenarioNr' => Yii::app()->request->getQuery('scenarioNr')
+        'subaction'     => $subaction,
+        'iSurveyID'     => $iSurveyID,
+        'gid'           => $gid,
+        'qid'           => $qid,
+        'title'         => $title,
+        'showScenario'  => $this->shouldShowScenario($subaction, $scenariocount),
+        'qcountI'       => $qcount + 1,
+        'cquestions'    => $cquestions,
+        'p_csrctoken'   => $p_csrctoken,
+        'p_prevquestionsgqa'  => $p_prevquestionsgqa,
+        'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
+        'method'        => $method,
+        'subaction'     => $subaction,
+        'EDITConditionConst'  => $this->getEDITConditionConst($subaction),
+        'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction),
+        'submitLabel'   => $submitLabel,
+        'submitSubaction'     => $submitSubaction,
+        'submitcid'     => $submitcid,
+        'editSourceTab' => $this->getEditSourceTab(),
+        'editTargetTab' => $this->getEditTargetTab(),
+        'addConditionToScenarioNr' => Yii::app()->request->getQuery('scenarioNr'),
+        'surveyIsAnonymized' => $this->getSurveyIsAnonymized(),
     );
     $result .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
     
