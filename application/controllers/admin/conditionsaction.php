@@ -454,18 +454,19 @@ class conditionsaction extends Survey_Common_Action
                         $data['method'] = $method;
                         
                         $leftOperandType = 'unknown'; // prevquestion, tokenattr
-                        if (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/', $rows['cfieldname'], $extractedTokenAttr) > 0) {
-                            $leftOperandType = 'tokenattr';
-                            
-                            $thisAttrName = $this->getAttributeName($extractedTokenAttr);
-                            
-                            $data['name'] = $thisAttrName;
-                            
-                            // TIBO not sure this is used anymore !!
-                            $conditionsList[] = array(
-                            "cid"  => $rows['cid'],
-                            "text" => $thisAttrName
-                            );
+                        if (preg_match('/^{TOKEN:([^}]*)}$/', $rows['cfieldname'], $extractedTokenAttr) > 0) {
+                            if($surveyIsAnonymized) {
+                                $data['name'] = sprintf(gT("Unable to use %s in anonymized survey."),trim($rows['cfieldname'],"{}"));
+                            } else {
+                                $leftOperandType = 'tokenattr';
+                                $thisAttrName = $this->getAttributeName($extractedTokenAttr);
+                                $data['name'] = $thisAttrName;
+                                // TIBO not sure this is used anymore !!
+                                $conditionsList[] = array(
+                                    "cid"  => $rows['cid'],
+                                    "text" => $thisAttrName
+                                );
+                            }
                         } else {
                             $leftOperandType = 'prevquestion';
                             foreach ($cquestions as $cqn) {
@@ -475,10 +476,11 @@ class conditionsaction extends Survey_Common_Action
                                     "cid"  => $rows['cid'],
                                     "text" => $cqn[0]." ({$rows['value']})"
                                     );
-                                } else {
-                                    $data['name'] = sprintf(gT("Variable not found: %s"),$rows['cfieldname']);
                                 }
                             }
+                        }
+                        if(!isset($data['name'])) {
+                            $data['name'] = sprintf(gT("Variable not found: %s"),$rows['cfieldname']);
                         }
                         
                         // let's read the condition's right operand
