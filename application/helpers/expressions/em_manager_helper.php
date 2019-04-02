@@ -6942,9 +6942,9 @@
                             $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$_SESSION[$LEM->sessid][$sgqa]);
                         }
                         /* Add it in view for user with Permission surveycontent update right */
+                        $validityString=self::getValidityString($sgqa);
                         if($validityString)
                         {
-                            /* Add the string to be showned , no js error or another class ? */
                             $validTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/error-tip', array(
                                 'qid'=>$qid,
                                 'coreId'    =>"vmsg_{$qid}_defaultvalueerror",
