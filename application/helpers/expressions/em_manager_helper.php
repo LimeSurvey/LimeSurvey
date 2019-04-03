@@ -6937,8 +6937,9 @@
                 foreach ($allSQs as $sgqa)
                 {
                     if (!isset($_SESSION[$LEM->sessid][$sgqa]) && !is_null($LEM->knownVars[$sgqa]['default'])) {
-                        $_SESSION[$LEM->sessid][$sgqa]=$LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], NULL, 1, 1, false, false, true);// Fill the $_SESSION to don't do it again a second time
+                        $_SESSION[$LEM->sessid][$sgqa] = ""; // Fill the $_SESSION to don't do it again a second time, but wait to fill with good value
                         if(self::checkValidityAnswer($qInfo['type'],$_SESSION[$LEM->sessid][$sgqa],$sgqa,$qInfo,Permission::model()->hasSurveyPermission($LEM->sid, 'surveycontent', 'update'))) {
+                            $_SESSION[$LEM->sessid][$sgqa]=$LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], NULL, 1, 1, false, false, true);// Ok can fill with good value
                             $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$_SESSION[$LEM->sessid][$sgqa]);
                         }
                         /* cleanup  $LEM->validityString[$sgqa] */
@@ -10347,7 +10348,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             $sid = intval($this->sid); // Show 0 for null, more clear
             Yii::log(sprintf("Survey %s invalid value %s for %s : %s (%s)",$sid,$value,$sgqa,$message,($add ? "added":"silently")),'error','application.LimeExpressionManager.invalidAnswerString.addValidityString');
             if($add) {
-                $this->invalidAnswerString[$sgqa]=sprintf($message,Chtml::encode($value));
+                $this->invalidAnswerString[$sgqa]=sprintf($message,CHtml::tag('code',array(),CHtml::encode($value)));
             }
         }
         /**
