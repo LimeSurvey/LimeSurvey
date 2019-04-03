@@ -171,7 +171,7 @@
                         <td>
                             <?php
                             LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
-                            echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                            echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             ?>
                         </td>
                     </tr>
@@ -183,8 +183,8 @@
                         <td><?php eT("Group relevance:"); ?></td>
                         <td>
                             <?php
-                            templatereplace('{' . $oQuestion->groups->grelevance . '}');
-                            echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                            LimeExpressionManager::ProcessString("{" . $oQuestion->groups->grelevance . "}", $qid);
+                            echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             ?>
                         </td>
                     </tr>
