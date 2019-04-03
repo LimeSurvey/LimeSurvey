@@ -38,6 +38,7 @@ class SurveysGroups extends LSActiveRecord
             array('name, sortorder, created_by, title', 'required'),
             array('sortorder, owner_uid, parent_id, created_by', 'numerical', 'integerOnly'=>true),
             array('name', 'length', 'max'=>45),
+            array('name', 'match', 'pattern'=> '/^[A-Za-z0-9_\.]+$/u','message'=> gT('Group name can contain only alphanumeric character, underscore or dot.')),
             array('title', 'length', 'max'=>100),
             array('description, created, modified', 'safe'),
             // The following rule is used by search().
@@ -91,46 +92,41 @@ class SurveysGroups extends LSActiveRecord
                 array(
                     'header' => gT('Survey group ID'),
                     'name' => 'gsid',
-                    'type' => 'raw',
                     'value'=>'CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'type'=>'raw',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                    'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
                     'header' => gT('Name'),
                     'name' => 'name',
-                    'type' => 'raw',
                     'value'=>'CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'type'=>'raw',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'has-link'),
                 ),
 
                 array(
                     'header' => gT('Title'),
                     'name' => 'title',
-                    'type' => 'raw',
-                    'value'=>'CHtml::link($data->title, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'value'=>'$data->title',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'has-link'),
                 ),
 
                 array(
                     'header' => gT('Description'),
                     'name' => 'description',
-                    'type' => 'raw',
-                    'value'=>'CHtml::link($data->description, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'value'=>'$data->description',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                    'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
                     'header' => gT('Parent group'),
                     'name' => 'parent',
-                    'type' => 'raw',
-                    'value'=>'CHtml::link( $data->parentTitle, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'value'=>'$data->parentTitle',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                    'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
@@ -138,16 +134,15 @@ class SurveysGroups extends LSActiveRecord
                     'name' => 'owner',
                     'value'=>'!empty($data->owner) ? $data->owner->users_name : ""',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                    'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
                 array(
                     'header' => gT('Order'),
                     'name' => 'sortorder',
-                    'type' => 'raw',
-                    'value'=>'CHtml::link($data->sortorder, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'value'=>'$data->sortorder',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                    'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
 
