@@ -15,7 +15,7 @@ var PreviewModalScript = function () {
         this.inputItem = $('#selector__' + this.widgetsJsName);
         //Define default settings 
         var defaultSettings = {
-            onUpdate: function onUpdate(value, itemData) {},
+            onUpdate: function onUpdate(value) {},
             onReady: function onReady() {},
             onModalClose: function onModalClose() {},
             onModalOpen: function onModalOpen() {},
@@ -84,13 +84,13 @@ var PreviewModalScript = function () {
          * Workaround for the crazy person to use '*' as the short for a question type
          */
         value: function preSelectFromValue(value) {
-            value = value || this.options.value;
+            value = value || this.inputItem.val() || this.options.value;
             var selectedItem = null;
             if (/[^~!@\$%\^&\*\( \)\+=,\.\/';:"\?><\[\]\\\{\}\|`#]/.test(value)) {
-                selectedItem = $('.selector__Item--select-' + this.widgetsJsName + '[data-selector=' + value.toString().trim() + ']');
+                selectedItem = $('.selector__Item--select-' + this.widgetsJsName + '[data-key=' + value.toString().trim() + ']');
             }
             if ((selectedItem === null || selectedItem.length !== 1) && this.options.selectedClass != '') {
-                selectedItem = $('.selector__Item--select-' + this.widgetsJsName + '[data-selector=' + this.options.selectedClass.toString().trim() + ']');
+                selectedItem = $('.selector__Item--select-' + this.widgetsJsName + '[data-key=' + this.options.selectedClass.toString().trim() + ']');
             }
 
             return selectedItem;
@@ -105,6 +105,7 @@ var PreviewModalScript = function () {
         value: function onModalShown() {
 
             var selectedItem = this.preSelectFromValue();
+
             if (selectedItem) {
                 $(selectedItem).trigger('click');
                 $(selectedItem).closest('div.panel-collapse').addClass('in');
@@ -118,6 +119,9 @@ var PreviewModalScript = function () {
          * event triggered when the modal closes
          */
         value: function onModalClosed() {
+            $(this.modalItem).find('.panel-collapse.collapse').each(function (i, item) {
+                $(item).removeClass('in');
+            });
             this.options.onModalClose();
         }
     }, {
@@ -133,7 +137,7 @@ var PreviewModalScript = function () {
                 $(this.modalItem).on('hide.bs.modal', function () {
                     _this.onModalClosed();
                 });
-                $(this.modalItem).on('show.bs.modal', function () {
+                $(this.modalItem).on('shown.bs.modal', function () {
                     _this.onModalShown();
                 });
                 $('.selector__Item--select-' + this.widgetsJsName + ':not(.disabled)').on('click', function (ev) {

@@ -5,26 +5,34 @@ import {LOG} from '../mixins/logSystem.js'
 export default {
     updateObjects: (context, newObjectBlock) => {
         context.commit('setCurrentQuestion', newObjectBlock.question);
-        context.commit('setCurrentQuestionI10N', newObjectBlock.questionI10N);
         context.commit('unsetQuestionImmutable');
         context.commit('setQuestionImmutable', _.cloneDeep(newObjectBlock.question));
+
+        context.commit('setCurrentQuestionI10N', newObjectBlock.questionI10N);
         context.commit('unsetQuestionImmutableI10N');
         context.commit('setQuestionImmutableI10N', _.cloneDeep(newObjectBlock.questionI10N));
+
         context.commit('setCurrentQuestionSubquestions', newObjectBlock.scaledSubquestions);
-        context.commit('setCurrentQuestionAnswerOptions', newObjectBlock.scaledAnswerOptions);
         context.commit('unsetQuestionSubquestionsImmutable')
         context.commit('setQuestionSubquestionsImmutable',  _.cloneDeep(newObjectBlock.scaledSubquestions));
+
+        context.commit('setCurrentQuestionAnswerOptions', newObjectBlock.scaledAnswerOptions);
         context.commit('unsetQuestionAnswerOptionsImmutable')
         context.commit('setQuestionAnswerOptionsImmutable', _.cloneDeep(newObjectBlock.scaledAnswerOptions))
+
         context.commit('setCurrentQuestionAttributes', newObjectBlock.questionAttributes);
         context.commit('unsetImmutableQuestionAttributes');
-        context.commit('setImmutableQuestionAttributes', newObjectBlock.questionAttributes);
+        context.commit('setImmutableQuestionAttributes', _cloneDeep(newObjectBlock.questionAttributes));
+
         context.commit('setCurrentQuestionGeneralSettings', newObjectBlock.generalSettings);
         context.commit('unsetImmutableQuestionGeneralSettings');
-        context.commit('setImmutableQuestionGeneralSettings', newObjectBlock.generalSettings);
+        context.commit('setImmutableQuestionGeneralSettings', _.clonbeDeep(newObjectBlock.generalSettings));
+
         context.commit('setCurrentQuestionAdvancedSettings', newObjectBlock.advancedSettings);
         context.commit('unsetImmutableQuestionAdvancedSettings');
-        context.commit('setImmutableQuestionAdvancedSettings', newObjectBlock.advancedSettings);
+        context.commit('setImmutableQuestionAdvancedSettings', _cloneDeep(newObjectBlock.advancedSettings));
+
+        context.commit('setCurrentQuestionGroupInfo', newObjectBlock.questiongroup);
     },
     loadQuestion: (context) => {
         ajax.methods.$_get(
@@ -32,19 +40,22 @@ export default {
             {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
         ).then((result) => {
             context.commit('setCurrentQuestion', result.data.question);
-            context.commit('setCurrentQuestionI10N', result.data.i10n);
             context.commit('unsetQuestionImmutable');
             context.commit('setQuestionImmutable', _.cloneDeep(result.data.question));
+
+            context.commit('setCurrentQuestionI10N', result.data.i10n);
             context.commit('unsetQuestionImmutableI10N');
             context.commit('setQuestionImmutableI10N', _.cloneDeep(result.data.i10n));
             
             context.commit('setCurrentQuestionSubquestions', result.data.subquestions);
-            context.commit('setCurrentQuestionAnswerOptions', result.data.answerOptions);
             context.commit('unsetQuestionSubquestionsImmutable')
             context.commit('setQuestionSubquestionsImmutable',  _.cloneDeep(result.data.subquestions));
+
+            context.commit('setCurrentQuestionAnswerOptions', result.data.answerOptions);
             context.commit('unsetQuestionAnswerOptionsImmutable')
             context.commit('setQuestionAnswerOptionsImmutable', _.cloneDeep(result.data.answerOptions))
 
+            context.commit('setCurrentQuestionGroupInfo', result.data.questiongroup);
             context.commit('setLanguages', result.data.languages);
             context.commit('setActiveLanguage', result.data.mainLanguage);
         });
@@ -53,8 +64,8 @@ export default {
             {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
         ).then((result) => {
             context.commit('setCurrentQuestionAttributes', result.data);
-            context.commit('unsetImmutableQuestionAttributes', result.data);
-            context.commit('setImmutableQuestionAttributes', result.data);
+            context.commit('unsetImmutableQuestionAttributes');
+            context.commit('setImmutableQuestionAttributes', _.cloneDeep(result.data));
         });
     },
     getQuestionGeneralSettings: (context) => {
@@ -98,11 +109,12 @@ export default {
                 type: context.state.currentQuestion.type || window.QuestionEditData.startType
             }
         ).then((result) => {
-            context.commit('updateCurrentQuestion', newObjectBlock.question);
-            context.commit('updateCurrentQuestionSubquestions', newObjectBlock.scaledSubquestions);
-            context.commit('updateCurrentQuestionAnswerOptions', newObjectBlock.scaledAnswerOptions);
-            context.commit('updateCurrentQuestionGeneralSettings', newObjectBlock.generalSettings);
-            context.commit('updateCurrentQuestionAdvancedSettings', newObjectBlock.advancedSettings);
+            context.commit('updateCurrentQuestion', result.data.question);
+            context.commit('updateCurrentQuestionSubquestions', result.data.scaledSubquestions);
+            context.commit('updateCurrentQuestionAnswerOptions', result.data.scaledAnswerOptions);
+            context.commit('updateCurrentQuestionGeneralSettings', result.data.generalSettings);
+            context.commit('updateCurrentQuestionAdvancedSettings', result.data.advancedSettings);
+            context.commit('setCurrentQuestionGroupInfo', result.data.questiongroup);
         });
     },
     saveQuestionData: (context) => {

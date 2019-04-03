@@ -9,6 +9,9 @@ export default {
     setCurrentQuestion : (state, newValue) => {
         state.currentQuestion = newValue;
     },
+    setCurrentQuestionGroupInfo : (state, newValue) => {
+        state.currentQuestionGroupInfo = newValue;
+    },
     setCurrentQuestionI10N : (state, newValue) => {
         state.currentQuestionI10N = newValue;
     },
@@ -33,19 +36,20 @@ export default {
 
     //Update currently set values
     updateCurrentQuestion(state, valueObject) {
-        state.currentQuestion = merge({}, newValue, state.currentQuestion);
+        state.currentQuestion = merge({}, valueObject, state.currentQuestion);
+        Vue.set(state.currentQuestion, 'typeInformation', valueObject.typeInformation);
     },
     updateCurrentQuestionGeneralSettings(state, valueObject) {
-        state.currentQuestionGeneralSettings = merge({}, newValue, state.currentQuestionGeneralSettings);
+        state.currentQuestionGeneralSettings = merge({}, valueObject, state.currentQuestionGeneralSettings);
     },
     updateCurrentQuestionAdvancedSettings(state, valueObject) {
-        state.currentQuestionAdvancedSettings = merge({}, newValue, state.currentQuestionAdvancedSettings);
+        state.currentQuestionAdvancedSettings = merge({}, valueObject, state.currentQuestionAdvancedSettings);
     },
     updateCurrentQuestionSubquestions(state, valueObject) {
-        state.currentQuestionSubquestions = merge({}, newValue, state.currentQuestionSubquestions);
+        state.currentQuestionSubquestions = merge({}, valueObject, state.currentQuestionSubquestions);
     },
     updateCurrentQuestionAnswerOptions(state, valueObject) {
-        state.currentQuestionAnswerOptions = merge({}, newValue, state.currentQuestionAnswerOptions);
+        state.currentQuestionAnswerOptions = merge({}, valueObject, state.currentQuestionAnswerOptions);
     },
 
     //Immutables

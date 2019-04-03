@@ -87,6 +87,11 @@ export default {
         replaceByQuickAddObject(quickAddContent) {
             this.$_log.log({AOQuickAddContent: quickAddContent});
         },
+    },
+    mounted() {
+        if(isEmpty(this.$store.state.currentQuestionAnswerOptions)){
+            this.$store.state.currentQuestionAnswerOptions = {"0": [this.getTemplate()]};
+        };
     }
 }
 </script>

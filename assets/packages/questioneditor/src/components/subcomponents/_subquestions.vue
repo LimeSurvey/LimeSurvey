@@ -95,6 +95,11 @@ export default {
         untriggerScale($event) {
             $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': ''});
         },
+    },
+    mounted() {
+        if(isEmpty(this.$store.state.currentQuestionSubquestions)){
+            this.$store.state.currentQuestionSubquestions = {"0": [this.getTemplate()]};
+        };
     }
 }
 </script>

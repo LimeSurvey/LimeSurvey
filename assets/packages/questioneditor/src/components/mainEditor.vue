@@ -110,7 +110,8 @@ export default {
         questionTypeChangeTriggered(newValue) {
             this.$log.log('CHANGE OF TYPE', newValue);
             this.currentQuestionType = newValue;
-            this.$set(this.$store.state.currentQuestion, 'type', newValue);
+            let tempQuestionObject = this.$store.state.currentQuestion;
+            tempQuestionObject.type = newValue;
             this.$store.commit('setCurrentQuestion', tempQuestionObject);
             this.getQuestionPreview();
             this.$store.dispatch('reloadQuestion');
@@ -119,6 +120,7 @@ export default {
             this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);
             if(!window.QuestionEditData.qid) {
                 this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`;
+                this.previewLoading = false;
                 return;
             }
             if(this.previewLoading === true) {
@@ -152,6 +154,7 @@ export default {
     },
     mounted(){
         this.previewLoading = true;
+        this.toggleLoading(false);
     },
 }
 </script>
