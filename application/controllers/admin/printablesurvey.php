@@ -529,7 +529,7 @@ class printablesurvey extends Survey_Common_Action
                         }
                         if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
                             $attributeClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true));
-                            $question['class'] .= " ".Chtml::encode($attributeClass);
+                            $question['class'] .= " ".CHtml::encode($attributeClass);
                         }
                         /* Add a PRINT_QUESTION_CODE : same than used in "automatic system generation (with EM condition) */
                         $question['print_code'] = "{$question['number']} [{$question['code']}]";

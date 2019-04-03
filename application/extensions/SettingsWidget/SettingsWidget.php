@@ -325,7 +325,7 @@ class SettingsWidget extends CWidget
             //~ 0 => 'False',
             //~ 1 => 'True'
         //~ ), $htmlOptions);
-        return Chtml::tag('div', $htmlOptions,
+        return CHtml::tag('div', $htmlOptions,
             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                 'name' => $name,
                 'value' => $value,
@@ -360,7 +360,7 @@ class SettingsWidget extends CWidget
         $editorOptions = array_merge(array(
             'html' => true,
         ), isset($metaData['editorOptions']) ? $metaData['editorOptions'] : array());
-        return Chtml::tag('div', array("style"=>'height:auto;width:100%','class'=>'well'),
+        return CHtml::tag('div', array("style"=>'height:auto;width:100%','class'=>'well'),
             $this->widget('yiiwheels.widgets.html5editor.WhHtml5Editor', array(
                 'name' => $name,
                 'value' => $value,
@@ -377,7 +377,7 @@ class SettingsWidget extends CWidget
         $value = isset($metaData['content']) ? $metaData['content'] : '';
         if (is_array($value)) { throw new CException('wrong type' . $name); }
         $htmlOptions = $this->htmlOptions($metaData);
-        return Chtml::tag('div',$htmlOptions,$value);
+        return CHtml::tag('div',$htmlOptions,$value);
     }
 
     public function renderInt($name, array $metaData, $form = null)
