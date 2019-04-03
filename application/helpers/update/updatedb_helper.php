@@ -2589,8 +2589,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addColumn('{{surveys}}', 'tokenencryptionoptions', "text");
             $oDB->createCommand()->update('{{surveys}}',array('tokenencryptionoptions'=>json_encode(Token::getDefaultEncryptionOptions())));
             // participants
-            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{idx1_participants}', '{{participants}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
-            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{idx2_participants}', '{{participants}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{idx1_participants}}', '{{participants}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{idx2_participants}}', '{{participants}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
             alterColumn('{{participants}}', 'firstname', "text", false);
             alterColumn('{{participants}}', 'lastname', "text", false);
             $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'encrypted', "string(5)");
