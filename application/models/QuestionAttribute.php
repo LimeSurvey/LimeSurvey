@@ -422,9 +422,15 @@ class QuestionAttribute extends LSActiveRecord
 
         // set $aAttributes array with attribute data
         if (!empty($aXmlAttributes['attribute'])){
-            foreach ($aXmlAttributes['attribute'] as $key => $value) { 
-                foreach ($value as $key2 => $value2) {                 
-
+            foreach ($aXmlAttributes['attribute'] as $key => $value) {
+                if(empty($value['name'])) {
+                    /* Allow comments in attributes */
+                    continue;
+                }
+                /* settings the default value */
+                $aAttributes[$value['name']] =self::getDefaultSettings();
+                /* settings the xml value */
+                foreach ($value as $key2 => $value2) {
                     if ($key2 === 'options' && !empty($value2)){
                         foreach ($value2['option'] as $key3 => $value3) {
                             if (isset($value3['value'])){
@@ -435,25 +441,6 @@ class QuestionAttribute extends LSActiveRecord
                     } else {
                         $aAttributes[$value['name']][$key2] = $value2;
                     }
-                }
-
-                // seting array keys if they doesn't exist
-                if (empty($value['i18n']) && $value['i18n'] !== '0'){ 
-                    $aAttributes[$value['name']]['i18n'] = '';
-                }
-                if (empty($value['readonly']) && $value['readonly'] !== '0'){ 
-                    $aAttributes[$value['name']]['readonly'] = '';
-                }
-                if (empty($value['readonly_when_active']) && $value['readonly_when_active'] !== '0'){ 
-                    $aAttributes[$value['name']]['readonly_when_active'] = '';
-                }
-                if (empty($value['expression']) && $value['expression'] !== '0'){ 
-                    $aAttributes[$value['name']]['expression'] = '';
-                }                
-                if (isset($value['default']) && $value['default'] == '0'){ 
-                    $aAttributes[$value['name']]['default'] = '0';
-                } elseif (empty($value['default'])){ 
-                    $aAttributes[$value['name']]['default'] = '';
                 }
             }
         }
