@@ -114,12 +114,13 @@ export default {
             tempQuestionObject.type = newValue;
             this.$store.commit('setCurrentQuestion', tempQuestionObject);
             this.getQuestionPreview();
-            this.$store.dispatch('getQuestionGeneralSettingsWithType');
+            this.$store.dispatch('reloadQuestion');
         },
         getQuestionPreview(){
             this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);
             if(!window.QuestionEditData.qid) {
                 this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`;
+                this.previewLoading = false;
                 return;
             }
             if(this.previewLoading === true) {
@@ -153,6 +154,7 @@ export default {
     },
     mounted(){
         this.previewLoading = true;
+        this.toggleLoading(false);
     },
 }
 </script>

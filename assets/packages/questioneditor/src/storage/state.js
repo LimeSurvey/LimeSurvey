@@ -1,5 +1,6 @@
 export default {
     currentQuestion: {},
+    currentQuestionGroupInfo: {},
     currentQuestionSubquestions: {},
     currentQuestionAnswerOptions: {},
     currentQuestionI10N: {},

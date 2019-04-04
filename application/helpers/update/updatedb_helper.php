@@ -2589,8 +2589,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addColumn('{{surveys}}', 'tokenencryptionoptions', "text");
             $oDB->createCommand()->update('{{surveys}}',array('tokenencryptionoptions'=>json_encode(Token::getDefaultEncryptionOptions())));
             // participants
-            $oDB->createCommand()->dropindex('{{idx1_participants}}', '{{participants}}');
-            $oDB->createCommand()->dropindex('{{idx2_participants}}', '{{participants}}');
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{idx1_participants}}', '{{participants}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{idx2_participants}}', '{{participants}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
             alterColumn('{{participants}}', 'firstname', "text", false);
             alterColumn('{{participants}}', 'lastname', "text", false);
             $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'encrypted', "string(5)");
@@ -3681,7 +3681,7 @@ function upgradeTokens176()
     $arSurveys = $oDB
     ->createCommand()
     ->select('*')
-    ->from('surveys')
+    ->from('{{surveys}}')
     ->queryAll();
     // Fix any active token tables
     foreach ( $arSurveys as $arSurvey )

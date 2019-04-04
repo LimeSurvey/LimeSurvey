@@ -139,8 +139,7 @@ const AdminCore = function(){
                 panelsAnimation,
                 initNotification : notificationSystem.initNotification
             }
-
-            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, AjaxHelper, {notifyFader}, subquestionAndAnswersGlobalMethods, notificationSystem,gridAction);
+            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, AjaxHelper, {notifyFader}, subquestionAndAnswersGlobalMethods, notificationSystem, gridAction);
             
             /*
             * Set the namespace to the global variable LS

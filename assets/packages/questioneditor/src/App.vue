@@ -1,6 +1,7 @@
 <script>
 import Mousetrap from 'mousetrap';
 
+import QuestionOverview from './components/questionoverview.vue';
 import MainEditor from './components/mainEditor.vue';
 import GeneralSettings from './components/generalSettings.vue';
 import AdvancedSettings from './components/advancedSettings.vue';
@@ -10,17 +11,35 @@ import runAjax from './mixins/runAjax.js';
 export default {
     name: 'lsnextquestioneditor',
     mixins: [runAjax],
-    data() {
-        return {
-            event: null,
-        }
-    },
     components: {
+        'questionoverview' : QuestionOverview,
         'maineditor' : MainEditor,
         'generalsettings' : GeneralSettings,
         'advancedsettings' : AdvancedSettings,
     },
+    data() {
+        return {
+            event: null,
+            editQuestion: false
+        }
+    },
+    computed: {
+        isCreateQuestion(){
+            return this.$store.state.currentQuestion.qid == null;
+        }
+    },
     methods: {
+        triggerEditQuestion(){
+            this.toggleLoading(true);
+            if(this.editQuestion) {
+                $('#questionbarid').css('display', '');
+                $('#questiongroupbarid').css('display','none');
+            } else {
+                $('#questionbarid').css('display', 'none');
+                $('#questiongroupbarid').css('display','');
+            }
+            this.editQuestion = !this.editQuestion;
+        },
         applyHotkeys() {
             Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
             Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);
@@ -43,8 +62,15 @@ export default {
             this.$log.log('New event set', payload);
             this.event = payload;
         },
+        triggerEvent(payload) {
+            this.$log.log('New event set', payload);
+            this.event = payload;
+        },
         eventSet() {
             this.event = null;
+        },
+        toggleOverview() {
+            this.editQuestion = !this.editQuestion;
         },
         submitCurrentState(redirect = false) {
             this.toggleLoading();
@@ -95,22 +121,53 @@ export default {
         });
 
         this.toggleLoading(false);
+        $('#questionbarid').css('display', '');
+        $('#questiongroupbarid').css('display','none');
     }
 }
 </script>
 
 <template>
     <div class="container-center scoped-new-questioneditor">
+        <button 
+            v-if="!isCreateQuestion" 
+            @click.prevent.stop="triggerEditQuestion" 
+            class="pull-right clear btn "
+            :class="editQuestion ? 'btn-primary' : 'btn-default'"
+        >
+            {{editQuestion ? 'Question overview' : 'Question editor'}}
+        </button>
+        <div class="pagetitle h3 scoped-unset-pointer-events">
+            <template v-if="isCreateQuestion">
+                    {{'Create new Question'|translate}}
+            </template>
+            <template v-else>
+                    {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
+            </template>
+        </div>
         <template v-if="$store.getters.fullyLoaded">
-            <maineditor :event="event" v-on:eventSet="eventSet"></maineditor>
-            <generalsettings :event="event" v-on:eventSet="eventSet"></generalsettings>
-            <advancedsettings :event="event" v-on:eventSet="eventSet"></advancedsettings>
+            <transition name="fade">
+                <div class="row" v-if="editQuestion || isCreateQuestion">
+                    <maineditor :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
+                    <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></generalsettings>
+                    <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></advancedsettings>
+                </div>
+            </transition>
+            <transition name="fade">
+                <div class="row" v-if="!editQuestion && !isCreateQuestion">
+                    <questionoverview :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                </div>
+            </transition>
         </template>
         <modals-container @modalEvent="setModalEvent"/>
     </div>
 </template>
 
 <style scoped>
+.scoped-unset-pointer-events {
+    pointer-events: none;
+}
+
 .scoped-new-questioneditor {
     min-height: 75vh;
 }
@@ -119,5 +176,27 @@ export default {
     width: 100%;
     height: 100%;
     min-height: 60vh;
+}
+
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(-10px);
+  opacity: 0;
+}
+.slide-fade-enter-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(0px);
+  opacity: 1;
+}
+.slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>

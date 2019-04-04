@@ -16,10 +16,14 @@
                 'questionGroupName' => $questionType['group']
             );
         }
-            $imageName = $key;
-            if ($imageName == ":") $imageName = "COLON";
-            else if ($imageName == "|") $imageName = "PIPE";
-            else if ($imageName == "*") $imageName = "EQUATION";
+        $imageName = $key;
+        if ($imageName == ":") {
+            $imageName = "COLON";
+        } elseif ($imageName == "|") {
+            $imageName = "PIPE";
+        } elseif ($imageName == "*") {
+            $imageName = "EQUATION";
+        }
 
         $questionType['detailpage'] = '
         <div class="col-sm-12 currentImageContainer">
@@ -71,24 +75,20 @@
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <div class="container-fluid">
-        <?php echo CHtml::form(array("admin/questionedit/update"), 'post',array('class'=>'form30 ','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
-            <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor"/>
-            <div class="alert alert-danger">EXPERIMENTAL EDITOR! - Use at your own risk! </div>
-            <div class="pagetitle h3">
-            <?php 
-                if($oQuestion instanceof QuestionCreate) {
-                    eT('Create new Question');
-                } else {
-                    eT('Question').': '.$qrrow['title'].'<small>(ID: '.$qid.')</small>';
-                }
-            ?>
-            </div>
-            <div class="row">
-                <div id="advancedQuestionEditor" class="col-xs-12"><app/></div>
-            </div>
+        <?php echo CHtml::form(array("admin/questionedit/update"), 'post', array('class'=>'form30 ','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
+        <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor" />
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <?=gT("EXPERIMENTAL EDITOR! - Please keep an eye out for bugs and report them on ")?>
+            <a href="https://bugs.limesurvey.org">https://bugs.limesurvey.org</a>
+        </div>
+        <div id="advancedQuestionEditor"><app /></div>
         </form>
-        
-        <div id="questionEditLoader" class="ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">
+
+        <div id="questionEditLoader" class="ls-flex ls-flex-column align-content-center align-items-center"
+            style="min-height: 100%;">
             <div class="ls-flex align-content-center align-items-center">
                 <div class="loader-advancedquestionsettings text-center">
                     <div class="contain-pulse animate-pulse">

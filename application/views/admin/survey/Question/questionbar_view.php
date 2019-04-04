@@ -104,7 +104,7 @@ $aReplacementData=array();
 
             <!-- Edit button -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
-                <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>' role="button">
+                <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questioneditor/sa/view", ["surveyid" => $surveyid,"gid" => $gid, "qid"=> $qid]); ?>' role="button">
                     <span class="icon-edit"></span>
                     <?php eT("Edit");?>
                 </a>

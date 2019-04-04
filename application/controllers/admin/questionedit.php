@@ -53,9 +53,10 @@ class questionedit extends Survey_Common_Action
         
         $condarray = ($oQuestion->qid != null) ? getQuestDepsForConditions($iSurveyID, "all", "all", $oQuestion->qid, "by-targqid", "outsidegroup") : [];
         
-  
+        $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
+        $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
+        $aData['questionbar']['buttons']['view'] = true;
         
-
         // Last question visited : By user (only one by user)
         $setting_entry = 'last_question_'.Yii::app()->user->getId();
         SettingGlobal::setSetting($setting_entry, $oQuestion->qid);
@@ -108,8 +109,10 @@ class questionedit extends Survey_Common_Action
             'startType' => $oQuestion->type,
             'connectorBaseUrl' => $this->getController()->createUrl('admin/questioneditor/sid/'.$iSurveyID.'/gid/'.$gid.'/sa'),
             'i10N' => [
+                'Create new Question' => gT('Create new Question'),
                 'General Settings' => gT("General Settings"),
                 'Code' => gT('Code'),
+                'Text elements' => gT('Text elements'),
                 'Question type' => gT('Question type'),
                 'Question' => gT('Question'),
                 'Help' => gT('Help'),
@@ -187,7 +190,7 @@ class questionedit extends Survey_Common_Action
             $setApplied['scaledAnswerOptions'] = $this->_storeAnswerOptions($oQuestion, $questionData['scaledAnswerOptions']);
         }
  
-        $aCompiledQuestionData = $this->getCompiledQuestionData($oQuestion);
+        $aCompiledQuestionData = $this->_getCompiledQuestionData($oQuestion);
         $aQuestionAttributeData = $this->getQuestionAttributeData($oQuestion->qid, true);
         $aQuestionGeneralOptions = $this->getGeneralOptions($oQuestion->qid, null, true);
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
@@ -218,7 +221,7 @@ class questionedit extends Survey_Common_Action
         $iQuestionId = (int) $iQuestionId;
         $oQuestion = $this->_getQuestionObject($iQuestionId, $type);
 
-        $aQuestionInformationObject = $this->getCompiledQuestionData($oQuestion);
+        $aQuestionInformationObject = $this->_getCompiledQuestionData($oQuestion);
 
         $aLanguages = [];
         $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
@@ -246,6 +249,14 @@ class questionedit extends Survey_Common_Action
     public function getQuestionTypeList()
     {
         $this->renderJSON(QuestionType::modelsAttributes());
+    }
+    
+    public function getQuestionTypeInformation($sQuestionType) {
+        $aTypeInformations = QuestionType::modelsAttributes();
+        $aQuestionTypeInformation = $aTypeInformations[$sQuestionType];
+
+        $this->renderJSON($aQuestionTypeInformation);
+
     }
     
     public function getGeneralOptions($iQuestionId, $sQuestionType=null, $returnArray = false)
@@ -390,7 +401,7 @@ class questionedit extends Survey_Common_Action
         } else {
             $aQuestionData['question_order'] = getMaxQuestionOrder($iQuestionGroupId);
         }
-
+        
         $oQuestion = new Question();
         $oQuestion->setAttributes($aQuestionData, false);
         if ($oQuestion == null) {
@@ -399,7 +410,7 @@ class questionedit extends Survey_Common_Action
 
         $saved = $oQuestion->save();
         if ($saved == false) {
-            throw new CException("Object creation failed, couldn't save. ERRORS:".print_r($oQuestion->getErrors(), true));
+            throw new CException("Object creation failed, couldn't save.\n ERRORS:".print_r($oQuestion->getErrors(), true));
         }
         
         $i10N = [];
@@ -546,6 +557,7 @@ class questionedit extends Survey_Common_Action
                 if ($oSubQuestion != null) {
                     $oSubQuestion = $this->_editQuestion($oSubQuestion, $aSubquestionDataSet);
                 } else {
+                    $aSubquestionDataSet['parent_qid'] = $oQuestion->qid;
                     $oSubQuestion = $this->_newQuestion($aSubquestionDataSet, true);
                 }
                 $storeValid = $storeValid && $this->_applyI10NSubquestion($oSubQuestion, $aSubquestionDataSet);
@@ -576,9 +588,12 @@ class questionedit extends Survey_Common_Action
         return $storeValid;
     }
 
-    private function getCompiledQuestionData(&$oQuestion) {
+    private function _getCompiledQuestionData(&$oQuestion) {
       
         $aQuestionDefinition = array_merge($oQuestion->attributes, ['typeInformation' => $oQuestion->questionType]);
+        $oQuestionGroup = QuestionGroup::model()->findByPk($oQuestion->gid);
+        $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questionGroupL10ns);
+
 
         $aScaledSubquestions = $oQuestion->getOrderedSubQuestions();
         foreach ($aScaledSubquestions as $scaleId => $aSubquestions) {
@@ -596,6 +611,7 @@ class questionedit extends Survey_Common_Action
 
         return [
             'question' => $aQuestionDefinition,
+            'questiongroup' => $aQuestionGroupDefinition,
             'i10n' => $oQuestion->questionL10ns,
             'subquestions' => $aScaledSubquestions,
             'answerOptions' => $aScaledAnswerOptions,

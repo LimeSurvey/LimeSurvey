@@ -6,7 +6,7 @@ import slice from 'lodash/slice';
 export default {
     name: 'quickedit',
     props: {
-        current: {type: Array, required: true},
+        current: {type: [Array,Object], required: true},
         type: {type: String, required: true},
         typedef: {type: String, required: true},
         typekey: {type: String, required: true},
@@ -72,7 +72,7 @@ export default {
         unparseContent(delimiter = null ) {
             delimiter = delimiter || this.delimiter;
 
-            this.parsed.forEach((scaleArray, scale) => {
+            foreach(this.parsed,(scaleArray, scale) => {
                 this.$set(this.unparsed, scale, '');
                 let rows = [];
                 foreach(scaleArray, (rowContent, key) => {
@@ -84,7 +84,7 @@ export default {
             });
         },
         resetContent() {
-            this.current.forEach((scaleArray, scale) => {
+            foreach(this.current, (scaleArray, scale) => {
                 this.$set(this.unparsed, scale, '');
                 let rows = [];
                 scaleArray.forEach(rowObject => {

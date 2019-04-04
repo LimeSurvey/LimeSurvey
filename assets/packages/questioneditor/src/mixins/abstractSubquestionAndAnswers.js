@@ -1,8 +1,12 @@
 import max from 'lodash/max';
+import keys from 'lodash/keys';
 import merge from 'lodash/merge';
 import remove from 'lodash/remove';
+import reduce from 'lodash/reduce';
 import foreach from 'lodash/foreach';
 import findIndex from 'lodash/findIndex';
+import isArrayLike from 'lodash/isArrayLike';
+import isObjectLike from 'lodash/isObjectLike';
 
 import QuickEdit from '../helperComponents/QuickEdit.vue';
 import SimplePopUpEditor from '../helperComponents/SimplePopUpEditor.vue';
@@ -10,12 +14,21 @@ import SimplePopUpEditor from '../helperComponents/SimplePopUpEditor.vue';
 export default {
     components: {QuickEdit, SimplePopUpEditor},
     methods: {
+        getLength(arrayOrObject) {
+            if(isArrayLike(arrayOrObject)) {
+                return arrayOrObject.length;
+            }
+            if(isObjectLike(arrayOrObject)) {
+                return keys(arrayOrObject).length;
+            }
+            return 0;
+        },
         getNewTitleFromCurrent(scaleId) {
             let nonNumericPart = this.baseNonNumericPart;
-            if(this.currentDataSet[scaleId].length > 0) {
+            if(this.getLength(this.currentDataSet[scaleId]) > 0) {
                 nonNumericPart = (this.currentDataSet[scaleId][0].title || this.currentDataSet[scaleId][0].code).replace(/[0-9]/g,'');
             }
-            let numericPart = this.currentDataSet[scaleId].reduce((prev, oDataSet) => {
+            let numericPart = reduce(this.currentDataSet[scaleId],(prev, oDataSet) => {
                 return max([prev, parseInt((oDataSet.title || oDataSet.code  ).replace(/[^0-9]/g,''))]);
             }, 0) + 1 ;
             this.$log.log('NewTitle', {nonNumericPart, numericPart});

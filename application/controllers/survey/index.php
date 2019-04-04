@@ -92,14 +92,14 @@ class index extends CAction
 
             if (!$this->_canUserPreviewSurvey($surveyid)) {
 
-                // @todo : throw a 401
                 $aErrors  = array(gT('Error'));
-                $message = gT("We are sorry but you don't have permissions to do this.");
+                $message = gT("We are sorry but you don't have permissions to do this.",'unescaped');
                 if(Permission::getUserId()) {
                     throw new CHttpException(403, $message);
                 }
                 throw new CHttpException(401, $message);
             } else {
+                killSurveySession($surveyid);
                 if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
                     $previewmode = 'question';
                 }
@@ -248,7 +248,7 @@ class index extends CAction
                 if(Permission::getUserId()) {
                     throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this."));
                 }
-                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this."));
+                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this.",'unescaped'));
             }
         }
 

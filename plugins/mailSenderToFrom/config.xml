@@ -7,8 +7,8 @@
         <last_update>2019-03-18</last_update>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
-        <version>0.0.2</version>
-        <license>GNU General Public License version 2 or later</license>
+        <version>1.0.0</version>
+        <license>MIT</license>
         <description><![CDATA[Force sender, From etc … to be the mail set for sending email. Some SMTP server need smtp user as From and Return-Path.]]></description>
     </metadata>
 
