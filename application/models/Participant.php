@@ -1705,6 +1705,7 @@ $test = 1;
                 $oToken->firstname = $oParticipant->firstname;
                 $oToken->lastname = $oParticipant->lastname;
                 $oToken->email = $oParticipant->email;
+                $oToken->language = $oParticipant->language;
                 if(!$oToken->save()) {
                     throw new Exception(CHtml::errorSummary($oToken));
                 }

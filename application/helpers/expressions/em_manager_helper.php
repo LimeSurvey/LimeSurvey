@@ -6989,10 +6989,26 @@
                 $allSQs = explode('|',$LEM->qid2code[$qid]);
                 foreach ($allSQs as $sgqa)
                 {
-                    if (!isset($_SESSION[$LEM->sessid][$sgqa]) && !is_null($LEM->knownVars[$sgqa]['default']))
-                    {
-                        $_SESSION[$LEM->sessid][$sgqa]=$LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], NULL, 1, 1, false, false, true);// Fill the $_SESSION to don't do it again a second time
-                        $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$_SESSION[$LEM->sessid][$sgqa]);
+                    if (!isset($_SESSION[$LEM->sessid][$sgqa]) && !is_null($LEM->knownVars[$sgqa]['default'])) {
+                        $_SESSION[$LEM->sessid][$sgqa] = ""; // Fill the $_SESSION to don't do it again a second time, but wait to fill with good value
+                        $defaultValue = $LEM->ProcessString($LEM->knownVars[$sgqa]['default'], $qInfo['qid'], NULL, 1, 1, false, false, true);
+                        if(self::checkValidityAnswer($qInfo['type'],$defaultValue,$sgqa,$qInfo,Permission::model()->hasSurveyPermission($LEM->sid, 'surveycontent', 'update'))) {
+                            $_SESSION[$LEM->sessid][$sgqa] = $defaultValue;// Ok can fill with good value
+                            $LEM->updatedValues[$sgqa] = $updatedValues[$sgqa] = array('type'=>$qInfo['type'],'value'=>$_SESSION[$LEM->sessid][$sgqa]);
+                        }
+                        /* cleanup  $LEM->validityString[$sgqa] */
+                        $validityString = self::getValidityString($sgqa);
+                        /* Add it in view for user with Permission surveycontent update right (double check, but I think it's more clear)*/
+                        if( $validityString && Permission::model()->hasSurveyPermission($LEM->sid, 'surveycontent', 'update') )
+                        {
+                            $validTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/error-tip', array(
+                                'qid'=>$qid,
+                                'coreId'    =>"vmsg_{$qid}_defaultvalueerror",
+                                'vclass'=>'defaultvalueerror',
+                                'coreClass'=>'ls-em-tip em_defaultvalueerror',
+                                'vtip'  => sprintf(gT("Error in default value : %s"),$validityString)
+                            ), true);
+                        }
                     }
                 }
             }
@@ -10224,12 +10240,13 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
          * @param string $value : the value
          * @param string $sgq : the sgqa
          * @param array $qinfo : an array with information from question
-         *
+         * @param boolean $set : update the invalid string or not. Used for #14649 (invalid default value)
+         * 
          * @return boolean true : if question is OK to be put in session, false if must be set to null
          */
-        private static function checkValidityAnswer($type,$value,$sgq,$qinfo)
+        private static function checkValidityAnswer($type,$value,$sgq,$qinfo,$set = true)
         {
-            if(isset($value) && $value!=="")
+            if(!empty($value))
             {
                 /* This function is called by a static function , then set it to static .... */
                 $LEM =& LimeExpressionManager::singleton();
@@ -10241,26 +10258,26 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case '5': // 5 point choice
                         if(!in_array($value,array("1","2","3","4","5")))
                         {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
                     case '!': //List - dropdown
                     case 'L': //LIST drop-down/radio-button list
-                        if(substr($sgq,-5)!='other')// We must validate $value==="0", then don't use empty. $value is not set if irrelevant , then don't use $value!==null
+                        if(substr($sgq,-5)!='other')
                         {
                             if($value=="-oth-")
                             {
                                 if($qinfo['info']['other']!='Y')
                                 {
-                                    $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                    $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                                     return false;
                                 }
                             }
                             else
                             {
                                 if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
-                                    $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                    $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                                     return false;
                                 }
                             }
@@ -10270,35 +10287,35 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         if(substr($sgq,-7)!='comment')
                         {
                             if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
-                                $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                                $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                                 return false;
                             }
                         }
                         break;
                     case 'F': // Array
                         if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
                     case 'B': // Array 10 point
                         if(!in_array($value,array("1","2","3","4","5","6","7","8","9","10")))
                         {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
                     case 'A': // Array 5 point
                         if(!in_array($value,array("1","2","3","4","5")))
                         {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
                     case 'E': // Array increase decrease same
                         if(!in_array($value,array("I","D","S")))
                         {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
@@ -10311,20 +10328,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case 'C': // Array Yes No Uncertain
                         if(!in_array($value,array("Y","N","U")))
                         {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
                     case 'H': // Array by column
                         if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
                     case '1': // Array dual scale
                         $scale=intval(substr($sgq,-1)); // Get the scale {SGQ}#0 or {SGQ}#1 actually
                         if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language,$scale)==null) {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
@@ -10340,14 +10357,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case 'G': // Gender
                         if(!in_array($value,array("M","F")))
                         {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
                     case 'I': // Language switch
                         if(!in_array($value,Survey::model()->findByPk($LEM->sid)->getAllLanguages()))
                         {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
@@ -10355,13 +10372,13 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case 'N': // Numerical
                         if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$value)) // DECIMAL(30,10)
                         {
-                            $LEM->invalidAnswerString[$sgq]=gT("This question only accept 30 digits including 10 decimals.");
+                            $LEM->addValidityString($sgq,$value,gT("This question only accept 30 digits including 10 decimals."),$set);
                             /* Show an error but don't unset value : this can happen without hack */
                         }
                         break;
                     case 'R':  // Ranking
                         if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
@@ -10371,7 +10388,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case 'Y': // Gender
                         if(!in_array($value,array("Y","N")))
                         {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
@@ -10384,14 +10401,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case 'M':
                         if($value!="Y" && (substr($sgq,-5)!='other' && $qinfo['info']['other']=='Y'))
                         {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
                     case 'P':
                         if(substr($sgq,-7)!='comment' && $value!="Y" && (substr($sgq,-5)!='other' && $qinfo['info']['other']=='Y'))
                         {
-                            $LEM->invalidAnswerString[$sgq]=sprintf(gT("%s is an invalid value for this question"),htmlspecialchars($value));
+                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
@@ -10402,6 +10419,21 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             return true;
         }
 
+        /**
+         * Set or log an invalid answer string
+         * @param string $sgqa : the SGQ (answer column / SGQA)
+         * @param string $message : the message
+         * @param boolean $add : add it to current validity or only og it
+         * @return void
+         */
+        public function addValidityString($sgqa,$value,$message,$add = true )
+        {
+            $sid = intval($this->sid); // Show 0 for null, more clear
+            Yii::log(sprintf("Survey %s invalid value %s for %s : %s (%s)",$sid,$value,$sgqa,$message,($add ? "added":"silently")),'error','application.LimeExpressionManager.invalidAnswerString.addValidityString');
+            if($add) {
+                $this->invalidAnswerString[$sgqa]=sprintf($message,CHtml::tag('code',array(),CHtml::encode($value)));
+            }
+        }
         /**
          * return the actual validity string , and reset the variable used ($_SESSION)
          * @param string $sgqa : the SGQ (answer name)

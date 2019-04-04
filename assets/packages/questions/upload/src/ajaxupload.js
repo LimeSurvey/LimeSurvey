@@ -559,7 +559,7 @@
             addEvent(iframe, 'load', function(){
 
                 if (// For Safari
-                    iframe.src == "javascript:'%3Chtml%3E%3C/html%3E';" ||
+                    iframe.src == "javascript:'%3CHtml%3E%3C/html%3E';" ||
                     // For FF, IE
                     iframe.src == "javascript:'<html></html>';"){
                         // First time around, do not delete.
