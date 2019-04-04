@@ -635,7 +635,6 @@ function sendSubmitNotifications($surveyid)
         $sMessage = templatereplace($thissurvey['email_admin_notification'], $aReplacementVars, $redata, 'admin_notification', $thissurvey['anonymized'] == "Y", null, array(), true);
         $sSubject = templatereplace($thissurvey['email_admin_notification_subj'], $aReplacementVars, $redata, 'admin_notification_subj', ($thissurvey['anonymized'] == "Y"), null, array(), true);
         foreach ($aEmailNotificationTo as $sRecipient) {
-            /* TEAMB-1102 */
             $event = new PluginEvent('beforeAdminEmail');
             $event->set('survey', $surveyid);
             $event->set('type', 'confirm');
@@ -679,7 +678,6 @@ function sendSubmitNotifications($surveyid)
         $sMessage = templatereplace($thissurvey['email_admin_responses'], $aReplacementVars, $redata, 'detailed_admin_notification', $thissurvey['anonymized'] == "Y", null, array(), true);
         $sSubject = templatereplace($thissurvey['email_admin_responses_subj'], $aReplacementVars, $redata, 'detailed_admin_notification_subj', $thissurvey['anonymized'] == "Y", null, array(), true);
         foreach ($aEmailResponseTo as $sRecipient) {
-            /* TEAMB-1102 */
             $event = new PluginEvent('beforeAdminEmail');
             $event->set('survey', $surveyid);
             $event->set('type', 'confirm');
