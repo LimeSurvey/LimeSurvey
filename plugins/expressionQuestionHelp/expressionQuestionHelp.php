@@ -47,5 +47,7 @@ class expressionQuestionHelp extends PluginBase
                 }
             }
         }
+        $this->event->set('knownVars',$knownVars);
+        $this->event->append('newExpressionSuffixes',['help']);
     }
 }

@@ -4414,9 +4414,10 @@
             $event->set('surveyId',$surveyid);
             $event->set('language',self::getEMlanguage());
             $event->set('knownVars',$this->knownVars);
+            $event->set('newExpressionSuffixes',array());
             $result = App()->getPluginManager()->dispatchEvent($event);
+            $this->em->addRegexpExtraAttribute($event->get('newExpressionSuffixes'));
             $this->knownVars = $result->get('knownVars');
-
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
             $this->numQuestions = count($this->questionSeq2relevance);
@@ -9400,8 +9401,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     return (isset($var[$attr])) ? $var[$attr] : $default;
                     // NB: No break needed
                 default:
-                    print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br />\n";
-                    return $default;
+                    return (isset($var[$attr])) ? $var[$attr] : $default;
                     // NB: No break needed
             }
         }

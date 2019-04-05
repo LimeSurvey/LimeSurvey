@@ -32,6 +32,7 @@ class ExpressionManager
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
     public static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
 
+    private $RDP_regexpExtraAttribute = array();
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
     private $RDP_TokenType;
@@ -95,8 +96,8 @@ class ExpressionManager
         $RDP_regex_binary = '[+*/-]';
         $RDP_regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
         $RDP_regex_assign = '='; // '=|\+=|-=|\*=|/=';
-        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.(?:'.ExpressionManager::$RDP_regex_var_attr.'))?';
-        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:[A-Z][A-Z0-9_]*))*(?:\.(?:'.ExpressionManager::$RDP_regex_var_attr.'))?';
+        $RDP_regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?(?:\.(?:[a-zA-Z0-9_]*))?';
+        $RDP_regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:[A-Z][A-Z0-9_]*))*(?:\.(?:[a-zA-Z0-9_]*))?';
         $RDP_regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $RDP_regex_andor = '\band\b|\bor\b|&&|\|\|';
         $RDP_regex_lcb = '{';
@@ -1230,7 +1231,7 @@ class ExpressionManager
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
         $nonNAvarsUsed = array();
         foreach ($this->GetVarsUsed() as $var) {
-// this function wants to see the NAOK suffix
+            // this function wants to see the NAOK suffix
             if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var)) {
                 if ($this->GetVarAttribute($var, 'jsName', '') != '') {
                     $nonNAvarsUsed[] = $var;
@@ -1601,13 +1602,29 @@ class ExpressionManager
     }
 
     /**
+     * Add an extra attribut for var
+     * @param string[] $extraAttribute
+     * @return void
+     */
+    public function addRegexpExtraAttribute($extraAttribute)
+    {
+        $this->RDP_regexpExtraAttribute = array_merge($this->RDP_regexpExtraAttribute,$extraAttribute);
+    }
+
+    private function getRegexpValidAttributes()
+    {
+        $regexpAttribute = $this->RDP_regexpExtraAttribute;
+        $regexpAttribute[] = ExpressionManager::$RDP_regex_var_attr;
+        return implode("|",$regexpAttribute);
+    }
+    /**
      * Return true if the variable name is registered
      * @param string $name
      * @return boolean
      */
     private function RDP_isValidVariable($name)
     {
-        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:".ExpressionManager::$RDP_regex_var_attr."))?$/", "$1", $name);
+        $varName = preg_replace("/^(?:INSERTANS:)?(.*?)(?:\.(?:".$this->getRegexpValidAttributes()."))?$/", "$1", $name);
         return LimeExpressionManager::isValidVariable($varName);
     }
 
@@ -1642,14 +1659,14 @@ class ExpressionManager
         if (is_null($result)) {
             return false; // if there are errors in the expression, hide it?
         }
-//        if ($result == 'false') {
-//            return false;    // since the string 'false' is not considered boolean false, but an expression in JavaScript can return 'false'
-//        }
-//        return !empty($result);
+        //~ if ($result == 'false') {
+            //~ return false;    // since the string 'false' is not considered boolean false, but an expression in JavaScript can return 'false'
+        //~ }
+        //~ return !empty($result);
 
         // Check whether any variables are irrelevant - making this comparable to JavaScript which uses LEManyNA(varlist) to do the same thing
         foreach ($this->GetVarsUsed() as $var) {
-// this function wants to see the NAOK suffix
+            // this function wants to see the NAOK suffix
             if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var)) {
                 if (!LimeExpressionManager::GetVarAttribute($var, 'relevanceStatus', false, $groupSeq, $questionSeq)) {
                     return false;
@@ -2229,7 +2246,6 @@ class ExpressionManager
         } else {
                     $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
         }
-
         // $aTokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE if !$bOnEdit, but will contain OTHER
         $aTokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
