@@ -608,7 +608,7 @@ class Question extends LSActiveRecord
         }
 
         $oSurvey = Survey::model()->findByPk($this->sid);
-        $gid_search = Yii::app()->request->getParam('gid');
+        $gid_search = $this->gid;
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"'

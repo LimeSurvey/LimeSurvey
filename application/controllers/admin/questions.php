@@ -1341,6 +1341,9 @@ class questions extends Survey_Common_Action
         if(is_null($qid)) {
             $qid = Yii::app()->getRequest()->getPost('qid');
         }
+        if($gid === 0) {
+            $gid = Yii::app()->getRequest()->getPost('gid');
+        }
         $oQuestion = Question::model()->findByPk($qid);
         if(empty($oQuestion)) {
             throw new CHttpException(404, gT("Invalid question id"));
