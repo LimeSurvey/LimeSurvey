@@ -411,12 +411,18 @@ class Question extends LSActiveRecord
         $ids = array_merge([$this->qid], $this->allSubQuestionIds);
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
 
-
         self::model()->deleteAll((new CDbCriteria())->addInCondition('parent_qid', $ids));
         QuestionAttribute::model()->deleteAll($qidsCriteria);
         QuestionL10n::model()->deleteAll($qidsCriteria);
-        DefaultValue::model()->deleteAll($qidsCriteria);
         QuotaMember::model()->deleteAll($qidsCriteria);
+
+        // delete defaultvalues and defaultvalueL10ns
+        $oDefaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
+        foreach($oDefaultValues as $defaultvalue){
+            DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+            DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+        }
+
         $this->deleteAllAnswers();
         $this->removeFromLastVisited();
 

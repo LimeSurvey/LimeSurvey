@@ -303,8 +303,15 @@ class Survey extends LSActiveRecord
 
                 Condition::model()->deleteAllByAttributes(array('qid' =>$aQuestion['qid']));
                 QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
-                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
                 QuestionL10n::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+
+                // delete defaultvalues and defaultvalueL10ns
+                $oDefaultValues = DefaultValue::model()->findAll('qid = :qid', array(':qid' => $aQuestion['qid']));
+                foreach($oDefaultValues as $defaultvalue){
+                    DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                    DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                };
+
             }
 
             Question::model()->deleteAllByAttributes(array('sid' => $this->sid));

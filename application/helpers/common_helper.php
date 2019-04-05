@@ -1306,10 +1306,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     App()->setLanguage($sLanguage);
     // Collect all default values once so don't need separate query for each question with defaults
     // First collect language specific defaults
-    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
-    . " FROM {{defaultvalues}} as a, {{questions}} as b"
-    . " WHERE a.qid = b.qid"
-    . " AND a.language = '{$sLanguage}'"
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
+    . " FROM {{defaultvalues}} as a, {{defaultvalue_l10ns}} as al10, {{questions}} as b"
+    . " WHERE a.qid = b.qid AND a.dvid = al10.dvid"
+    . " AND al10.language = '{$sLanguage}'"
     . " AND b.same_default=0"
     . " AND b.sid = ".$surveyid;
     $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
@@ -1326,10 +1326,10 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     // Now overwrite language-specific defaults (if any) base language values for each question that uses same_defaults=1
     $baseLanguage = $survey->language;
-    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
-    . " FROM {{defaultvalues}} as a, {{questions}} as b"
-    . " WHERE a.qid = b.qid"
-    . " AND a.language = '{$baseLanguage}'"
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
+    . " FROM {{defaultvalues}} as a, {{defaultvalue_l10ns}} as al10, {{questions}} as b"
+    . " WHERE a.qid = b.qid AND a.dvid = al10.dvid"
+    . " AND al10.language = '{$baseLanguage}'"
     . " AND b.same_default=1"
     . " AND b.sid = ".$surveyid;
     $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();

@@ -2509,9 +2509,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             
             // Drop autoincrement on timings table primary key
             upgradeSurveyTimings350();
-            
-            $oDB->createCommand()->dropPrimaryKey('{{defaultvalues_pk}}','{{defaultvalues}}');
-            $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid']);
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>400), "stg_name='DBVersion'");
 
@@ -2606,6 +2603,49 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ));
             }
             $oDB->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
+
+            // defaultvalues
+            $oDB->createCommand()->createTable('{{defaultvalue_l10ns}}', array(
+                'id' =>  "pk",
+                'dvid' =>  "integer NOT NULL default '0'",
+                'language' =>  "string(20) NOT NULL",
+                'defaultvalue' =>  "text",
+            ));  
+            $oDB->createCommand()->createIndex('{{idx1_defaultvalue_l10ns}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], true);
+            
+            $oDB->createCommand()->renameTable('{{defaultvalues}}', 'defaultvaluestemp');
+            $oDB->createCommand()->createIndex('defaultvalues_idx_10', 'defaultvaluestemp', ['qid', 'scale_id', 'sqid', 'specialtype', 'language']);
+            $oDB->createCommand()->createTable('{{defaultvalues}}',[
+                'dvid' =>  "pk",
+                'qid' =>  "integer NOT NULL default '0'",
+                'scale_id' =>  "integer NOT NULL default '0'",
+                'sqid' =>  "integer NOT NULL default '0'",
+                'specialtype' =>  "string(20) NOT NULL default ''",
+            ]);               
+        
+            $iCounter1 = 0;
+            $iPrevQid = 0;
+            $iPrevScaleId = 0;
+            $iPrevSqid = 0;
+            $iPrevSpecialType = '';
+            switchMSSQLIdentityInsert('defaultvalues', true);
+            $dataReader = $oDB->createCommand("SELECT * FROM defaultvaluestemp order by qid, scale_id, sqid, specialtype, language")->query();
+            while (($row = $dataReader->read()) !== false) {
+                if ($iPrevQid != $row['qid'] || $iPrevScaleId != $row['scale_id'] || $iPrevSqid != $row['sqid'] || $iPrevSpecialType != $row['specialtype']){
+                    $iCounter1++;
+                    $oDB->createCommand()->insert('{{defaultvalues}}', array('dvid' => $iCounter1, 'qid' => $row['qid'], 'scale_id' => $row['scale_id'],'sqid' => $row['sqid'], 'specialtype' => $row['specialtype']));
+                }
+                $oDB->createCommand()->insert('{{defaultvalue_l10ns}}', array('dvid' => $iCounter1, 'language' => $row['language'], 'defaultvalue' => $row['defaultvalue']));
+                
+                $iPrevQid = $row['qid'];
+                $iPrevScaleId = $row['scale_id'];
+                $iPrevSqid = $row['sqid'];
+                $iPrevSpecialType = $row['specialtype'];
+            }
+            switchMSSQLIdentityInsert('defaultvalues', false);
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('label_idx_10','{{defaultvaluestemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            $oDB->createCommand()->dropTable('defaultvaluestemp');
+
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>406),"stg_name='DBVersion'");
             $oTransaction->commit();
         }

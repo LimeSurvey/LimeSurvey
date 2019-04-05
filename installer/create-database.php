@@ -90,15 +90,21 @@ function createDatabase($oDB){
 
         // defaultvalues
         $oDB->createCommand()->createTable('{{defaultvalues}}', array(
+            'dvid' =>  "pk",
             'qid' =>  "integer NOT NULL default '0'",
             'scale_id' =>  "integer NOT NULL default '0'",
             'sqid' =>  "integer NOT NULL default '0'",
-            'language' =>  "string(20) NOT NULL",
             'specialtype' =>  "string(20) NOT NULL default ''",
-            'defaultvalue' =>  "text",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid'], true);
+        // defaultvalue_l10ns
+        $oDB->createCommand()->createTable('{{defaultvalue_l10ns}}', array(
+            'id' =>  "pk",
+            'dvid' =>  "integer NOT NULL default '0'",
+            'language' =>  "string(20) NOT NULL",
+            'defaultvalue' =>  "text",
+        ));
+        $oDB->createCommand()->createIndex('{{idx1_defaultvalue_ls}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], false);
 
         // expression_errors
         $oDB->createCommand()->createTable('{{expression_errors}}', array(
