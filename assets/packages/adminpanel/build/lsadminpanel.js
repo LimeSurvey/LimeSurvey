@@ -28507,7 +28507,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
 });
 
 const LsAdminPanel = () => {
-    const AppState = Object(__WEBPACK_IMPORTED_MODULE_4__store_vuex_store_js__["a" /* default */])(LS.globalUserId);
+    const AppState = Object(__WEBPACK_IMPORTED_MODULE_4__store_vuex_store_js__["a" /* default */])(window.LS.globalUserId);
     const panelNameSpace = {};
 
     const applySurveyId = (store) => {

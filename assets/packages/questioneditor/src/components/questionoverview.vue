@@ -10,7 +10,7 @@ import eventChild from '../mixins/eventChild.js';
 export default {
     name: 'questionoverview',
     mixin: [eventChild],
-    components: [LanguageSelector],
+    components: {LanguageSelector},
     data(){
         return {
             currentTab: '',
@@ -76,14 +76,6 @@ export default {
     <div class="col-sm-12">
         <div class="container-center">
             <div class="row">
-                <language-selector 
-                    :elId="'questionpreview'" 
-                    :aLanguages="$store.state.languages" 
-                    :parentCurrentLanguage="$store.state.activeLanguage" 
-                    @change="selectLanguage"
-                />
-            </div>
-            <div class="row">
                 <div class="col-sm-6 ls-space margin bottom-15">
                     <div class="scoped-small-border row">
                         <div class="col-sm-4">{{'Code'|translate}}:</div>
@@ -96,6 +88,14 @@ export default {
                         <div class="col-sm-8">{{questionGroupWithId}}</div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <language-selector 
+                    :elId="'questionpreview'" 
+                    :aLanguages="$store.state.languages" 
+                    :parentCurrentLanguage="$store.state.activeLanguage" 
+                    @change="selectLanguage"
+                />
             </div>
             <div class="row">
                 <div class="col-sm-6">

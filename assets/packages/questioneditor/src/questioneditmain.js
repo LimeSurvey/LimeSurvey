@@ -46,7 +46,7 @@ Vue.mixin({
         }
     }
 });
-const AppState = getAppState(window.LS.parameters.qid);
+const AppState = getAppState(window.QuestionEditData.qid);
 const questionEditor = new Vue({
     el: '#advancedQuestionEditor',
     store: AppState,
