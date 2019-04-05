@@ -780,6 +780,15 @@
         }
 
         /**
+         * Get the current public language
+         * @return string;
+         */
+        public static function getEMlanguage()
+        {
+            return Yii::app()->session['LEMlang'];
+        }
+
+        /**
         * Do bulk-update/save of Condition to Relevance
         * @param integer|null $surveyId - if NULL, processes the entire database, otherwise just the specified survey
         * @param integer|null $qid - if specified, just updates that one question
@@ -4374,6 +4383,7 @@
                     }
                 }
             }
+
             // set default value for reserved 'this' variable
             $this->knownVars['this'] = array(
             'jsName_on'=>'',
@@ -4399,6 +4409,13 @@
             'rootVarName'=>'this',
             'subqtext'=>'',
             );
+
+            $event = new \LimeSurvey\PluginManager\PluginEvent('setVariableExpressionEnd');
+            $event->set('surveyId',$surveyid);
+            $event->set('language',self::getEMlanguage());
+            $event->set('knownVars',$this->knownVars);
+            $result = App()->getPluginManager()->dispatchEvent($event);
+            $this->knownVars = $result->get('knownVars');
 
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
@@ -4964,7 +4981,6 @@
             $survey = Survey::model()->findByPk($surveyid);
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sid=$survey->sid;
-
             $LEM->sessid = 'survey_' . $survey->sid;
             $LEM->em->StartProcessingGroup($survey->sid);
             if (is_null($aSurveyOptions)) {
@@ -4991,7 +5007,6 @@
             $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
             $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
             $LEM->surveyOptions['token'] = (isset($aSurveyOptions['token']) ? $aSurveyOptions['token'] : NULL);
-
             $LEM->debugLevel=$debugLevel;
             $_SESSION[$LEM->sessid]['LEMdebugLevel']=$debugLevel; // need acces to SESSSION to decide whether to cache serialized instance of $LEM
             switch ($surveyMode) {
@@ -5010,14 +5025,12 @@
                     $LEM->surveyMode = 'group';
                     break;
             }
-
             $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$LEM->surveyOptions['anonymized']);
             $LEM->currentGroupSeq=-1;
             $LEM->currentQuestionSeq=-1;    // for question-by-question mode
             $LEM->indexGseq=array();
             $LEM->indexQseq=array();
             $LEM->qrootVarName2arrayFilter=array();
-
             // set seed key if it doesn't exist to be able to pass count of startingValues check at next IF 
             if (array_key_exists('startingValues', $_SESSION[$LEM->sessid]) && !array_key_exists('seed', $_SESSION[$LEM->sessid]['startingValues'])){
                 $_SESSION[$LEM->sessid]['startingValues']['seed'] = '';  
@@ -5082,10 +5095,10 @@
                 }
                 $LEM->_UpdateValuesInDatabase();
             }
-
+            
             return array(
-            'hasNext'=>true,
-            'hasPrevious'=>false,
+                'hasNext'=>true,
+                'hasPrevious'=>false,
             );
         }
 

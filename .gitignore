@@ -64,6 +64,7 @@
 !/plugins/Demo/
 !/plugins/AuditLog/
 !/plugins/mailSenderToFrom/
+!/plugins/expressionQuestionHelp/
 
 
 #ignore old styles
