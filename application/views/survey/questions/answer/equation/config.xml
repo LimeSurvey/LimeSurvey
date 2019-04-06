@@ -121,7 +121,7 @@
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
-            <expression>1</expression>
+            <expression>2</expression>
         </attribute>
         <attribute>
             <name>hidden_type</name>

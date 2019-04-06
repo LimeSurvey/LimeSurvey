@@ -534,7 +534,7 @@ class questionHelper
             'sortorder'=>101,
             'inputtype'=>'text',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
-            'default'=>0,
+            'default'=>"",
             'help'=>gT('Hide this question at any time. This is useful for including data using answer prefilling.'),
             'caption'=>gT('Always hide this question'),
             'expression' => 2,

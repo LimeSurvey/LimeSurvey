@@ -3734,7 +3734,6 @@
             }
 
             $qattr = $this->getQuestionAttributesForEM($surveyid,0,$_SESSION['LEMlang']);
-
             $this->qattr = $qattr;
 
             $this->runtimeTimings[] = array(__METHOD__ . ' - question_attributes_model->getQuestionAttributesForEM',(microtime(true) - $now));
@@ -3768,7 +3767,7 @@
                 $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
                 $SQrelevance = (isset($fielddata['SQrelevance'])) ? $fielddata['SQrelevance'] : 1;
                 $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
-                $hidden = (isset($qattr[$questionNum]['hidden'])) ? ($qattr[$questionNum]['hidden'] == '1') : false;
+                $hidden = (isset($qattr[$questionNum]['hidden'])) ? "{".trim($qattr[$questionNum]['hidden'])."}" : "";
                 $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
                 $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : NULL; // a perl regular exrpession validation function
                 $defaultValue = (isset($fielddata['defaultvalue']) ? $fielddata['defaultvalue'] : NULL);
@@ -4114,11 +4113,13 @@
                         }
                         break;
                 }
+                /* Forced hidden */
+                $forcedHidden = ($hidden == "{1}");
+                $hiddenStyle = isset($qattr[$questionNum]['hidden_type']) ? $qattr[$questionNum]['hidden_type'] : ($type==Question::QT_ASTERISK_EQUATION ? 'css' : 'html');
                 // Hidden question are never on same page (except for equation)
-                if($hidden && $type!=Question::QT_ASTERISK_EQUATION){
+                if($forcedHidden && $hiddenStyle=="html"){
                     $jsVarName_on = '';
                 }
-
                 if (!is_null($rowdivid) || $type == Question::QT_L_LIST_DROPDOWN || $type == Question::QT_N_NUMERICAL || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN || $type == Question::QT_O_LIST_WITH_COMMENT  || !is_null($preg)
                 || $type == Question::QT_S_SHORT_FREE_TEXT || $type == Question::QT_D_DATE || $type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_U_HUGE_FREE_TEXT || $type == Question::QT_VERTICAL_FILE_UPLOAD) {
                     if (!isset($q2subqInfo[$questionNum])) {
@@ -4608,13 +4609,17 @@
         * @param string $questionNum - needed to align question-level relevance and tailoring
         * @param string $jsResultVar - this variable determines whether irrelevant questions are hidden
         * @param string $type - question type
-        * @param int $hidden - whether question should always be hidden
+        * @param string $hidden - whether question should always be hidden
         * @return boolean
         */
-        public static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
+        public static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden="")
         {
             $LEM =& LimeExpressionManager::singleton();
-            return $LEM->_ProcessRelevance($eqn,$questionNum,NULL,$jsResultVar,$type,$hidden);
+            if($hidden) {
+                $hidden = self::ProcessStepString($hidden);
+            }
+            $bHidden = boolval($hidden);
+            return $LEM->_ProcessRelevance($eqn,$questionNum,NULL,$jsResultVar,$type,$bHidden);
         }
 
         /**
@@ -4626,7 +4631,7 @@
         * @param int $hidden - whether question should always be hidden
         * @return boolean
         */
-        private function _ProcessRelevance($eqn,$questionNum=NULL,$gseq=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
+        private function _ProcessRelevance($eqn,$questionNum=NULL,$gseq=NULL,$jsResultVar=NULL,$type=NULL,$hidden="")
         {
             // These will be called in the order that questions are supposed to be asked
             // TODO - cache results and generated JavaScript equations?
@@ -6237,8 +6242,8 @@
             $qid=$qInfo['qid'];
             $gid=$qInfo['gid'];
             $qhidden = $qInfo['hidden'];
+            $qCurrentHidden = boolval(self::ProcessStepString($qhidden));
             $debug_qmessage='';
-
             $gRelInfo = $LEM->gRelInfo[$qInfo['gseq']];
             $grel = $gRelInfo['result'];
             $sMandatoryText = '';
@@ -6559,7 +6564,7 @@
             $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
             $mandatoryTip = '';
             // bypass validation if soft mandatory button was pressed
-            if (($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft')))
+            if (($qrel && !$qCurrentHidden && ($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')) && empty(App()->request->getPost('mandSoft')))
             {
                 //$mandatoryTip = "<p class='errormandatory alert alert-danger' role='alert'><span class='fa fa-exclamation-sign'></span>&nbsp" . $LEM->gT('This question is mandatory') . "</p>";
                 $mandatoryTip = App()->twigRenderer->renderPartial('/survey/questions/question_help/mandatory_tip.twig', array(
@@ -6717,7 +6722,7 @@
             // DETECT WHETHER QUESTION SHOULD BE FLAGGED AS UNANSWERED //
             /////////////////////////////////////////////////////////////
 
-            if ($qrel && !$qhidden)
+            if ($qrel && !$qCurrentHidden)
             {
                 switch ($qInfo['type'])
                 {
@@ -6752,7 +6757,7 @@
                 $hasValidationEqn=true;
 
                 // do this even is starts irrelevant, else will never show this information.
-                if (!$qhidden)
+                if (!$qCurrentHidden)
                 {
                     $validationEqns = $LEM->qid2validationEqn[$qid]['eqn'];
                     $validationEqn = implode(' and ', $validationEqns);
@@ -6816,7 +6821,7 @@
             foreach($sgqas as $sgqa)
             {
                 $validityString=self::getValidityString($sgqa);
-                if($validityString && $qrel && !$qhidden)
+                if($validityString && $qrel && !$qCurrentHidden)
                 {
                     /* Add the string to be showned , no js error or another class ? */
                     $stringToParse .= App()->twigRenderer->renderPartial('/survey/questions/question_help/error_tip.twig',array(
@@ -6851,7 +6856,6 @@
                 . "[<a href='$editlink'>"
                 . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
                 . ($qrel ? 'relevant' : " <span style='color:red'>irrelevant</span> ")
-                . ($qhidden ? " <span style='color:red'>always-hidden</span> " : ' ')
                 . (($qInfo['mandatory'] == 'Y' || $qInfo['mandatory'] == 'S')? ' mandatory' : ' ')
                 . (($hasValidationEqn) ? (!$qvalid ? " <span style='color:red'>(fails validation rule)</span> " : ' valid') : '')
                 . ($qmandViolation ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' ')
@@ -7055,7 +7059,7 @@
             $qStatus = array(
             'info' => $qInfo,   // collect all questions within the group - includes mandatory and always-hiddden status
             'relevant' => $qrel,
-            'hidden' => $qInfo['hidden'],
+            'hidden' => $qCurrentHidden,
             'relEqn' => $prettyPrintRelEqn,
             'sgqa' => $LEM->qid2code[$qid],
             'unansweredSQs' => implode('|',$unansweredSQs),
@@ -7097,7 +7101,7 @@
             'qhelp' => $qInfo['help'],
             'anyUnanswered' => $anyUnanswered,
             'anyErrors' => (($qmandViolation || !$qvalid) ? true : false),
-            'show' => (($qrel && !$qInfo['hidden']) ? true : false),
+            'show' => (($qrel && !$qCurrentHidden) ? true : false),
             'gseq' => $groupSeq,
             'gtext' => $LEM->gseq2info[$groupSeq]['description'],
             'gname' => $LEM->gseq2info[$groupSeq]['group_name'],

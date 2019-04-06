@@ -1819,7 +1819,6 @@ class SurveyRuntimeHelper
         $data['help']['text']       = $event->get('help');
         $data['help']['show']       = flattenText($data['help']['text'], true, true) != '';
         $data['attributes']         = CHtml::renderAttributes(array_merge((array) $event->get('aHtmlOptions'), ['id' => "question{$data['qid']}"]));
-
         return $data;
     }
     /**
@@ -1839,8 +1838,7 @@ class SurveyRuntimeHelper
             $aQuestionClass .= ' ls-irrelevant';
             $aQuestionClass .= ' ls-hidden';
         }
-
-        /* Can use aQuestionAttributes too */
+        /* If use aQuestionAttributes need to process EM on attribute */
         if ($lemQuestionInfo['hidden']) {
             $aQuestionClass .= ' ls-hidden-attribute'; /* another string ? */
             $aQuestionClass .= ' ls-hidden';

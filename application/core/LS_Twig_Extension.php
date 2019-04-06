@@ -206,8 +206,7 @@ class LS_Twig_Extension extends Twig_Extension
             $aQuestionClass .= ' ls-irrelevant';
             $aQuestionClass .= ' ls-hidden';
         }
-
-        /* Can use aQuestionAttributes too */
+        /* If use aQuestionAttributes : need to EM hidden attribute */
         if ($lemQuestionInfo['hidden']) {
             $aQuestionClass .= ' ls-hidden-attribute'; /* another string ? */
             $aQuestionClass .= ' ls-hidden';
