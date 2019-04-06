@@ -268,8 +268,10 @@ class SurveyRuntimeHelper
                         }
 
                         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
-
-                        if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1)) {
+                        $hiddenAttribute = !isset($qidattributes['hidden']) ? $qidattributes['hidden'] : "{0}";
+                        $bHidden = LimeExpressionManager::ProcessStepString($hiddenAttribute);
+                        $hiddenTypeAttribute = (isset($qidattributes['hidden_type']) && $qidattributes['hidden_type']) ? $qidattributes['hidden_type'] : ($ia[4]==Question::QT_ASTERISK_EQUATION ? 'css' : 'html');
+                        if ($bHidden && $hiddenTypeAttribute!='css') {
                             continue;
                         }
 
