@@ -234,20 +234,34 @@
             <name>hidden</name>
             <category>Display</category>
             <sortorder>101</sortorder>
+            <inputtype>text</inputtype>
+            <default></default>
+            <help>Hide this question at any time. This is useful for including data using answer prefilling. You can use expression manager evaluated when display the page only.</help>
+            <caption>Always hide this question</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression>2</expression>
+        </attribute>
+        <attribute>
+            <name>hidden_type</name>
+            <category>Display</category>
+            <sortorder>102</sortorder>
             <inputtype>switch</inputtype>
+            <!-- singleselect seems better but broken currently -->
             <options>
                 <option>
-                    <value>0</value>
-                    <text>No</text>
+                    <value>html</value>
+                    <text>Completely</text>
                 </option>
                 <option>
-                    <value>1</value>
-                    <text>Yes</text>
+                    <value>css</value>
+                    <text>Visually</text>
                 </option>
             </options>
-            <default>0</default>
-            <help>Hide this question at any time. This is useful for including data using answer prefilling.</help>
-            <caption>Always hide this question</caption>
+            <default>html</default>
+            <help>Using completely and no HTML is produced for the question, else only a css class his used, this allow javascript workaround.</help>
+            <caption>Hidden way</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
@@ -256,7 +270,7 @@
         <attribute>
             <name>cssclass</name>
             <category>Display</category>
-            <sortorder>102</sortorder>
+            <sortorder>110</sortorder>
             <inputtype>text</inputtype>
             <expression>1</expression>
             <help>Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.</help>

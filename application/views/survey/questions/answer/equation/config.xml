@@ -116,7 +116,7 @@
             <sortorder>101</sortorder>
             <inputtype>text</inputtype>
             <default></default>
-            <help>Hide this question at any time. This is useful for including data directly. You can use expression manager evaluated when display the page only.</help>
+            <help>Hide this question at any time. This is useful for including data directly without show the question to respondant. Expression is evaluated when display the page.</help>
             <caption>Always hide this question</caption>
             <i18n></i18n>
             <readonly></readonly>

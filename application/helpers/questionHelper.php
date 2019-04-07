@@ -529,25 +529,48 @@ class questionHelper
         );
 
         self::$attributes['hidden'] = array(
-        'types'=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_I_LANGUAGE.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_VERTICAL_FILE_UPLOAD.Question::QT_ASTERISK_EQUATION,
+        'types'=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_I_LANGUAGE.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_VERTICAL_FILE_UPLOAD,
             'category'=>gT('Display'),
             'sortorder'=>101,
             'inputtype'=>'text',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>"",
-            'help'=>gT('Hide this question at any time. This is useful for including data using answer prefilling.'),
+            'help'=>gT('Hide this question at any time. This is useful for including data using answer prefilling. Expression is evaluated when display the page.'),
+            'caption'=>gT('Always hide this question'),
+            'expression' => 2,
+        );
+        self::$attributes['hidden_EQUATION'] = array(
+            'types'=>Question::QT_ASTERISK_EQUATION,
+            'name' => 'hidden',
+            'category'=>gT('Display'),
+            'sortorder'=>101,
+            'inputtype'=>'text',
+            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
+            'default'=>"",
+            'help'=>gT('Hide this question at any time. This is useful for including data directly without show the question to respondant.'),
             'caption'=>gT('Always hide this question'),
             'expression' => 2,
         );
 
         self::$attributes['hidden_type'] = array(
-        'types'=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_I_LANGUAGE.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_VERTICAL_FILE_UPLOAD.Question::QT_ASTERISK_EQUATION,
+        'types'=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_I_LANGUAGE.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_VERTICAL_FILE_UPLOAD,
             'category'=>gT('Display'),
             'sortorder'=>102,
             'inputtype'=>'singleselect',
             'options'=>array('html'=>gT('Completely'), 'css'=>gT('Visually')),
             'default'=>'html',
             'help'=>gT('Using completely and no HTML is produced for the question, else only a css class his used, this allow javascript workaround.'),
+            'caption'=>gT('Hidden way'),
+        );
+        self::$attributes['hidden_type_EQUATION'] = array(
+            'types'=>Question::QT_ASTERISK_EQUATION,
+            'name' => 'hidden_type',
+            'category'=>gT('Display'),
+            'sortorder'=>102,
+            'inputtype'=>'singleselect',
+            'options'=>array('html'=>gT('Completely'), 'css'=>gT('Visually')),
+            'default'=>'css',
+            'help'=>gT('Using completely and no HTML is produced for the question. Visually allow to use updated result of the equation in same page.'),
             'caption'=>gT('Hidden way'),
         );
 

@@ -357,12 +357,12 @@ class QuestionAttribute extends LSActiveRecord
                 return stripos($attribute['types'], $sType) !== false;
             });
             foreach ($aQuestionTypeAttributes as $attribute=>$settings) {
-                  self::$questionAttributesSettings[$sType][$attribute] = array_merge(
-                      QuestionAttribute::getDefaultSettings(),
-                      array("category"=>gT("Plugins")),
-                      $settings,
-                      array("name"=>$attribute)
-                  );
+                $settings['name'] = isset($settings['name']) ? $settings['name'] : $attribute;
+                self::$questionAttributesSettings[$sType][$attribute] = array_merge(
+                    QuestionAttribute::getDefaultSettings(),
+                    array("category"=>gT("Plugins")),
+                    $settings
+                );
             }
         }
 
