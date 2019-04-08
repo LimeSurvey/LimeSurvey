@@ -681,7 +681,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if(!array_key_exists($this->emailType,$this->_aAttachementByType)) {
             return;
         }
-        $throwError = Yii::app()->getConfig('debug') && in_array($this->emailType,['invitation','reminder']);
+        $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId,'surveylocale','update'));
         $attachementType = $this->_aAttachementByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
         if(!empty($oSurveyLanguageSetting->attachments) ) {
@@ -691,7 +691,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
                 foreach ($aAttachments[$attachementType] as $aAttachment) {
-                    if(Yii::app()->is_file($aAttachment['url'],Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$iSurveyId,$throwError)) {
+                    if(Yii::app()->is_file($aAttachment['url'],Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$this->surveyId,$throwError)) {
                         if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
                             $this->addAttachment($aAttachment['url']);
                         }
