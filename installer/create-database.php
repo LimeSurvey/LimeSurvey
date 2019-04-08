@@ -96,6 +96,7 @@ function createDatabase($oDB){
             'sqid' =>  "integer NOT NULL default '0'",
             'specialtype' =>  "string(20) NOT NULL default ''",
         ));
+        $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], false);
 
         // defaultvalue_l10ns
         $oDB->createCommand()->createTable('{{defaultvalue_l10ns}}', array(

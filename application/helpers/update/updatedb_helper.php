@@ -2645,6 +2645,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             switchMSSQLIdentityInsert('defaultvalues', false);
             try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('label_idx_10','{{defaultvaluestemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             $oDB->createCommand()->dropTable('defaultvaluestemp');
+            $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], true);
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>406),"stg_name='DBVersion'");
             $oTransaction->commit();

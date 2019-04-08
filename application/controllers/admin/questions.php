@@ -307,10 +307,14 @@ class questions extends Survey_Common_Action
                     $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
                     $langopts[$language][$questionrow['type']][$scale_id]['defaultvalue'] = $defaultvalue;
 
-                    $answerresult = Answer::model()->findAllByAttributes(array(
-                    'qid' => $qid,
-                    'language' => $language
-                    ), array('order' => 'sortorder'));
+                    $answerresult = Answer::model()->with('answerL10ns')->findAll(
+                        'qid = :qid AND answerL10ns.language = :language',
+                        array(
+                            ':qid' => $qid,
+                            ':language' => $language
+                            ), 
+                        array('order' => 'sortorder'));
+                    $langopts[$language][$questionrow['type']][$scale_id]['answers'] = $answerresult;
                     $langopts[$language][$questionrow['type']][$scale_id]['answers'] = $answerresult;
 
                     if ($questionrow['other'] == 'Y') {
@@ -390,12 +394,11 @@ class questions extends Survey_Common_Action
                 $defaultvalue = DefaultValue::model()
                     ->with('defaultValueL10ns')                            
                     ->find(
-                        'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                        'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
                         array(
                         ':specialtype' => '',
                         ':qid' => $qid,
-                        ':sqid' => $aSubquestion['qid'],
-                        ':scale_id' => $scale_id,
+                        ':scale_id' => 0,
                         ':language' => $language,
                         )
                 );

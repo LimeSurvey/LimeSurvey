@@ -156,30 +156,32 @@ class database extends Survey_Common_Action
     public function _updateDefaultValues($qid, $sqid, $scale_id, $specialtype, $language, $defaultvalue)
     {
         $arDefaultValue = DefaultValue::model()
-            ->with('defaultValueL10ns')                            
             ->find(
-                'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id',
                 array(
-                ':specialtype' => '',
+                ':specialtype' => $specialtype,
                 ':qid' => $qid,
                 ':sqid' => $sqid,
                 ':scale_id' => $scale_id,
-                ':language' => $language,
                 )
         );
-        $dvid = !empty($arDefaultValue->defaultValueL10ns) && array_key_exists($language, $arDefaultValue->defaultValueL10ns) ? $arDefaultValue->defaultValueL10ns[$language]->dvid : null;
+        $dvid = !empty($arDefaultValue->dvid) ? $arDefaultValue->dvid : null;
 
         if ($defaultvalue == '') {
             // Remove the default value if it is empty
             if ($dvid !== null){
-                DefaultValueL10n::model()->deleteAllByAttributes(array('dvid'=>$dvid));
-                DefaultValue::model()->deleteByPk($dvid);
+                DefaultValueL10n::model()->deleteAllByAttributes(array('dvid'=>$dvid, 'language' => $language ));
+                $iRowCount = DefaultValueL10n::model()->countByAttributes(array('dvid' => $dvid));
+                if ($iRowCount == 0){
+                    DefaultValue::model()->deleteByPk($dvid);
+                }
             }
         } else {
             if (is_null($dvid)) {
                 $data = array('qid'=>$qid, 'sqid'=>$sqid, 'scale_id'=>$scale_id, 'specialtype'=>$specialtype);
                 $oDefaultvalue = new DefaultValue();
                 $oDefaultvalue->attributes = $data;
+                $oDefaultvalue->specialtype = $specialtype;
                 $oDefaultvalue->save();
                 if (!empty($oDefaultvalue->dvid)){
                     $dataL10n = array('dvid'=>$oDefaultvalue->dvid, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
@@ -189,7 +191,16 @@ class database extends Survey_Common_Action
                 }   
             } else {
                 if ($dvid !== null){
-                    DefaultValueL10n::model()->updateAll(array('defaultvalue'=>$defaultvalue), 'dvid = ' . $dvid . ' AND language = \'' . $language . '\'');
+                    $arDefaultValue->with('defaultValueL10ns');
+                    $idL10n = !empty($arDefaultValue->defaultValueL10ns) && array_key_exists($language, $arDefaultValue->defaultValueL10ns) ? $arDefaultValue->defaultValueL10ns[$language]->id : null;
+                    if ($idL10n !== null){
+                        DefaultValueL10n::model()->updateAll(array('defaultvalue'=>$defaultvalue), 'dvid = ' . $dvid . ' AND language = \'' . $language . '\'');
+                    } else {
+                        $dataL10n = array('dvid'=>$dvid, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
+                        $oDefaultvalueL10n = new DefaultValueL10n();
+                        $oDefaultvalueL10n->attributes = $dataL10n;
+                        $oDefaultvalueL10n->save();
+                    }
                 }
             }
         }
