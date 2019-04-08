@@ -51,8 +51,16 @@ class ConsoleApplication extends CConsoleApplication
         $emailConfig = require(__DIR__.'/../config/email.php');
         $versionConfig = require(__DIR__.'/../config/version.php');
         $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
-        $securityConfig = require(__DIR__.'/../config/security.php');
-        $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig, $securityConfig);
+        $lsConfig = array_merge($coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
+
+        /* Custom config file */
+        $configdir = $coreConfig['configdir'];
+        if (file_exists( $configdir .  '/security.php')) {
+            $securityConfig = require(  $configdir .'/security.php');
+            if (is_array($securityConfig['config'])) {
+                $lsConfig = array_merge($lsConfig, $securityConfigs['config']);
+            }
+        }
         if (file_exists(__DIR__.'/../config/config.php')) {
             $userConfigs = require(__DIR__.'/../config/config.php');
             if (is_array($userConfigs['config'])) {
