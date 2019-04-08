@@ -732,5 +732,10 @@ $config['pluginCoreList'] = [
 
 $config['pluginWhitelist'] = [];
 
+/* replaced in generated application/config/security.php if exist */
+$config['encryptionkeypair'] = '';
+$config['encryptionpublickey'] = '';
+$config['encryptionsecretkey'] = '';
+
 return $config;
 //settings deleted
