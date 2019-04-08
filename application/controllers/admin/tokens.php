@@ -58,7 +58,6 @@ class tokens extends Survey_Common_Action
 
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
         if (!$survey->hasTokensTable) {
-//If no tokens table exists
             $this->_newtokentable($iSurveyId);
         } else {
             $aData['thissurvey'] = $thissurvey;
@@ -1444,7 +1443,6 @@ class tokens extends Survey_Common_Action
                         $tokenoutput .= $emrow['tid']." ".htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.", 'unescaped'), $fieldsarray))."<br />";
                         $bInvalidDate = true;
                     } else {
-
                         $success = $mail->sendMessage();
                         $stringInfo = CHtml::encode("{$emrow['tid']}: {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']}).");
                         if ($success) {
