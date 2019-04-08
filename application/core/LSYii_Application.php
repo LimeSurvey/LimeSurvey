@@ -131,8 +131,8 @@ class LSYii_Application extends CWebApplication
         $configdir = $coreConfig['configdir'];
         if (file_exists( $configdir .  '/security.php')) {
             $securityConfig = require(  $configdir .'/security.php');
-            if (is_array($securityConfig['config'])) {
-                $this->config = array_merge($this->config, $securityConfigs['config']);
+            if (is_array($securityConfig)) {
+                $this->config = array_merge($this->config, $securityConfig);
             }
         }
         if (file_exists( $configdir .  '/config.php')) {

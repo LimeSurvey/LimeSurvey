@@ -17,6 +17,7 @@ ONCE SET, ENCRYPTION KEYS SHOULD NEVER BE CHANGED, OTHERWISE ALL ENCRYPTED DATA 
 
 */
 
+$config = array();
 $config['encryptionkeypair'] = '';
 $config['encryptionpublickey'] = '';
 $config['encryptionsecretkey'] = '';
