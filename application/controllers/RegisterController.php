@@ -339,10 +339,11 @@ class RegisterController extends LSYii_Controller
             if (!empty($aAttachments)) {
                 if (isset($aAttachments['registration'])) {
                     LimeExpressionManager::singleton()->loadTokenInformation($aSurveyInfo['sid'], $sToken);
-
                     foreach ($aAttachments['registration'] as $aAttachment) {
-                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
-                            $aRelevantAttachments[] = $aAttachment['url'];
+                        if(Yii::app()->is_file($aAttachment['url'],Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$iSurveyId,false)) {
+                            if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
+                                $aRelevantAttachments[] = $aAttachment['url'];
+                            }
                         }
                     }
                 }
