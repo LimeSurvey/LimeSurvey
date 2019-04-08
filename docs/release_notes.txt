@@ -35,6 +35,18 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.17.0 (build 190402) to 3.17.1 (build 190408) April 8, 2019
+-[security] Fixed issue #14728: Persistent XSS for question groups (Thanks to bewi) (Denis Chenu)
+-[security] Fixed issue #14737: XSS with file upload (Denis Chenu)
+-[security] Fixed issue #14753: No control on attachments email files (Denis Chenu)
+-[security] Fixed issue #14727: Persistent XSS in relevance equation (Denis Chenu)
+-Fixed issue #14649: CDbException when a "default answer" option is not compatible with a question type (#1252) (Denis Chenu)
+-Fixed issue : CPDB sharing participant 500 error and language missing (Markus Flür)
+-Fixed issue : Detailed admin attachments not set (Denis Chenu)
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Hungarian by kkd
+#Updated translation: Norwegian (Bokmål) by pmonstad
+
 Changes from 3.16.1 (build 190314) to 3.17.0 (build 190402) April 2, 2019
 -New feature: Allow event to send core email if redirect after register (Denis Chenu)
 -[security] Fixed issue #14634: XSS in KCFinder (Denis Chenu)
@@ -68,12 +80,12 @@ Changes from 3.16.1 (build 190314) to 3.17.0 (build 190402) April 2, 2019
 #Updated translation: Croatian by dominikvitt
 #Updated translation: Czech by jelen1
 #Updated translation: Danish by Mikkel
-#Updated translation: Dutch by Han 
-#Updated translation: Dutch (Informal) by Han 
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
 #Updated translation: French (France) by JMI, fred78, DenisChenu, LouisGac
 #Updated translation: German by ulisdd
 #Updated translation: German (Informal) by ulisdd
-#Updated translation: Hungarian by kkd 
+#Updated translation: Hungarian by kkd
 #Updated translation: Indonesian by c_schmitz, radhwaw, ysulistya
 #Updated translation: Italian by ritapas, bienen, lfanfoni
 #Updated translation: Italian (Informal) by ritapas, lfanfoni
