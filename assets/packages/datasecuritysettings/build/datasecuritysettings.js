@@ -12384,7 +12384,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
         }
     }
 });
-const AppState = Object(__WEBPACK_IMPORTED_MODULE_3__storage_store__["a" /* default */])(LS.parameters.surveyid);
+const AppState = Object(__WEBPACK_IMPORTED_MODULE_3__storage_store__["a" /* default */])(LS.parameters.surveyid || 0);
 const questionEditor = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
     el: '#advancedDataSecurityTextEditor',
     store: AppState,
@@ -12806,6 +12806,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     computed: {
+        isNewSurvey() {
+            return window.DataSecTextEditData.isNewSurvey;
+        },
         currentShowsurveypolicynotice: {
             get() {
                 return this.$store.state.showsurveypolicynotice;
@@ -12886,10 +12889,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         $('#datasecurity').on('submit', e => {
             e.preventDefault();
         });
-
-        $('#save-button').on('click', e => {
-            this.submitCurrentState();
-        });
+        if (!window.DataSecTextEditData.isNewSurvey) {
+            $('#save-button').on('click', e => {
+                this.submitCurrentState();
+            });
+        }
 
         this.toggleLoading(false);
     }
@@ -16938,7 +16942,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         expression: "$store.state.showsurveypolicynotice > 0"
       }],
       staticClass: "cointainer-center"
-    }, [_c('div', {
+    }, [(!_vm.isNewSurvey) ? _c('div', {
       staticClass: "row"
     }, [_c('language-selector', {
       attrs: {
@@ -16949,7 +16953,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       on: {
         "change": _vm.selectLanguage
       }
-    })], 1), _vm._v(" "), _c('div', {
+    })], 1) : _vm._e(), _vm._v(" "), _c('div', {
       staticClass: "row scoped-editor-row"
     }, [_c('div', {
       staticClass: "col-sm-6 ls-space margin top-5 bottom-5 scope-contains-ckeditor "

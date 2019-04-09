@@ -12377,16 +12377,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
             $('#textEditLoader').fadeOut(400);
         },
         translate(value) {
-            return window.DataSecTextEditData.i10N[value] || value;
+            return window.TextEditData.i10N[value] || value;
         }
     },
     filters: {
         translate: (value) => {
-            return window.DataSecTextEditData.i10N[value] || value;
+            return window.TextEditData.i10N[value] || value;
         }
     }
 });
-const TextElementsStore = Object(__WEBPACK_IMPORTED_MODULE_3__storage_store__["a" /* default */])(LS.parameters.surveyid);
+const TextElementsStore = Object(__WEBPACK_IMPORTED_MODULE_3__storage_store__["a" /* default */])(LS.parameters.surveyid || 0);
 
 const newTextEditor = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
     el: '#advancedTextEditor',
@@ -12810,6 +12810,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     computed: {
+        isNewSurvey() {
+            return window.TextEditData.isNewSurvey;
+        },
         currentSurveyTitle: {
             get() {
                 return this.$store.state.surveyTitle[this.$store.state.activeLanguage];
@@ -12929,9 +12932,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             e.preventDefault();
         });
 
-        $('#save-button').on('click', e => {
-            this.submitCurrentState();
-        });
+        if (!window.TextEditData.isNewSurvey) {
+            $('#save-button').on('click', e => {
+                this.submitCurrentState();
+            });
+        }
 
         this.toggleLoading(false);
     }
@@ -16935,7 +16940,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "container-center scoped-new-texteditor"
   }, [
-    [_c('div', {
+    [(!_vm.isNewSurvey) ? _c('div', {
       staticClass: "row"
     }, [_c('language-selector', {
       attrs: {
@@ -16946,7 +16951,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       on: {
         "change": _vm.selectLanguage
       }
-    })], 1), _vm._v(" "), _c('div', {
+    })], 1) : _vm._e(), _vm._v(" "), _c('div', {
       staticClass: "row"
     }, [_c('div', {
       staticClass: "form-group col-md-4 col-sm-6"
@@ -16964,6 +16969,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "form-control",
       attrs: {
         "type": "text",
+        "name": "surveyls_title",
         "id": "surveyTitle"
       },
       domProps: {
@@ -16990,7 +16996,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }],
       staticClass: "form-control",
       attrs: {
-        "id": "dateFormat"
+        "id": "dateFormat",
+        "name": "dateformat"
       },
       on: {
         "change": function($event) {
@@ -17034,7 +17041,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "type": "radio",
         "id": "decimalDivider-0",
-        "name": "decimalDivider"
+        "name": "numberformat"
       },
       domProps: {
         "value": 0,
@@ -17062,7 +17069,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "type": "radio",
         "id": "decimalDivider-1",
-        "name": "decimalDivider"
+        "name": "numberformat"
       },
       domProps: {
         "value": 1,
@@ -17095,6 +17102,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "form-control",
       attrs: {
         "type": "text",
+        "name": "url",
         "id": "endUrl"
       },
       domProps: {
@@ -17122,6 +17130,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "form-control",
       attrs: {
         "type": "text",
+        "name": "urldescrip",
         "id": "endUrlDescription"
       },
       domProps: {
@@ -17140,6 +17149,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('label', {}, [_vm._v(_vm._s(_vm._f("translate")("Description")) + ":")]), _vm._v(" "), _c('ckeditor', {
       attrs: {
         "editor": _vm.descriptionEditorObject,
+        "name": "description",
         "config": {}
       },
       model: {
@@ -17156,6 +17166,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('label', {}, [_vm._v(_vm._s(_vm._f("translate")("Welcome")) + ":")]), _vm._v(" "), _c('ckeditor', {
       attrs: {
         "editor": _vm.welcomeEditorObject,
+        "name": "welcome",
         "config": {}
       },
       model: {
@@ -17172,6 +17183,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('label', {}, [_vm._v(_vm._s(_vm._f("translate")("End message")) + ":")]), _vm._v(" "), _c('ckeditor', {
       attrs: {
         "editor": _vm.endTextEditorObject,
+        "name": "description",
         "config": {}
       },
       model: {

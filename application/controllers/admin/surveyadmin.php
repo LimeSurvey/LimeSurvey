@@ -159,7 +159,7 @@ class SurveyAdmin extends Survey_Common_Action
         $esrow = $this->_fetchSurveyInfo('newsurvey');
         Yii::app()->loadHelper('admin/htmleditor');
 
-        $aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
+        //$aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
         $aData                = $this->_generalTabNewSurvey();
         $aData                = array_merge($aData, $this->_getGeneralTemplateData(0));
         $aData['esrow']       = $esrow;
@@ -176,6 +176,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         //Prepare the edition panes
         $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
+        $aData['datasecdata']              = array_merge($aData, $this->_getDataSecurityEditData($survey));
         $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey($survey));
         $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
         $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
@@ -1462,6 +1463,7 @@ class SurveyAdmin extends Survey_Common_Action
         Yii::app()->getClientScript()->registerScript("DataSecTextEditDataGlobal",
             "window.DataSecTextEditData = {
                 connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/sid/'.$survey->sid.'/sa/')."',
+                isNewSurvey: ".($survey->getIsNewRecord() ? "true" : "false").",
                 i10N: {
                     'Survey data policy checkbox label:' : '".gT('Survey data policy checkbox label:')."',
                     'Survey data policy error message:' : '".gT('Survey data policy error message:')."',
@@ -1488,6 +1490,7 @@ class SurveyAdmin extends Survey_Common_Action
         Yii::app()->getClientScript()->registerScript("TextEditDataGlobal",
             "window.TextEditData = {
                 connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/sid/'.$survey->sid.'/sa/')."',
+                isNewSurvey: ".($survey->getIsNewRecord() ? "true" : "false").",
                 i10N: {
                     'Survey title' : '".gT('Survey title')."',
                     'Date format' : '".gT('Date format')."',
@@ -1948,6 +1951,8 @@ class SurveyAdmin extends Survey_Common_Action
     public function getCurrentEditorValues($sid){
         $iSurveyId = (int) $sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
+      
+
         $aLanguages = [];
         $aReturner = [
             "surveyTitle" => [],
@@ -1959,6 +1964,29 @@ class SurveyAdmin extends Survey_Common_Action
             "dateFormat" => [],
             "decimalDivider" => [],
         ];
+  
+        if($oSurvey == null ) {
+            $defaultLanguage = App()->getConfig('defaultlang');
+            $aLanguages = [$defaultLanguage];
+            $aReturner["surveyTitle"][$defaultLanguage] = "";
+            $aReturner["welcome"][$defaultLanguage] = "";
+            $aReturner["description"][$defaultLanguage] = "";
+            $aReturner["endText"][$defaultLanguage] = "";
+            $aReturner["endUrl"][$defaultLanguage] = "";
+            $aReturner["endUrlDescription"][$defaultLanguage] = "";
+            $aReturner["dateFormat"][$defaultLanguage] = "";
+            $aReturner["decimalDivider"][$defaultLanguage] = "";
+
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => [
+                    "textdata" => $aReturner,
+                    "languages" => $aLanguages
+                ]],
+                false,
+                false
+            );
+        }
 
         foreach ($oSurvey->allLanguages as $sLanguage) {
             $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
@@ -2053,6 +2081,7 @@ class SurveyAdmin extends Survey_Common_Action
     public function getDataSecTextSettings($sid=null) {
         $iSurveyId = (int) $sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
+        
         $aLanguages = [];
         $aReturner = [
             "dataseclabel" => [],
@@ -2060,8 +2089,24 @@ class SurveyAdmin extends Survey_Common_Action
             "datasecerror" => []
         ];
         
-        if($oSurvey == null) {
-            $oSurvey = new Survey();
+        if($oSurvey == null ) {
+
+            $defaultLanguage = App()->getConfig('defaultlang');
+            $aLanguages = [$defaultLanguage];
+            $aReturner["datasecmessage"][$defaultLanguage] = "";
+            $aReturner["datasecerror"][$defaultLanguage] = "";
+            $aReturner["dataseclabel"][$defaultLanguage] = "";
+            
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                ['data' => [
+                    "showsurveypolicynotice" => 0,
+                    "textdata" => $aReturner,
+                    "languages" => $aLanguages
+                ]],
+                false,
+                false
+            );
         }
 
         foreach ($oSurvey->allLanguages as $sLanguage) {

@@ -39,7 +39,7 @@ Vue.mixin({
         }
     }
 });
-const AppState = getAppState(LS.parameters.surveyid);
+const AppState = getAppState(LS.parameters.surveyid || 0);
 const questionEditor = new Vue({
     el: '#advancedDataSecurityTextEditor',
     store: AppState,

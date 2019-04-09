@@ -21,6 +21,9 @@ export default {
         }
     },
     computed: {
+        isNewSurvey() {
+            return window.TextEditData.isNewSurvey;
+        },
         currentSurveyTitle: {
             get() { return this.$store.state.surveyTitle[this.$store.state.activeLanguage]; },
             set(newValue) { this.$store.commit('setSurveyTitleForCurrentLanguage', newValue); },
@@ -109,9 +112,11 @@ export default {
             e.preventDefault();
         });
 
-        $('#save-button').on('click', (e)=>{
-            this.submitCurrentState();
-        });
+        if(!window.TextEditData.isNewSurvey) {
+            $('#save-button').on('click', (e)=>{
+                this.submitCurrentState();
+            });
+        }
 
 
         this.toggleLoading(false);
@@ -123,7 +128,7 @@ export default {
 <template>
     <div class="container-center scoped-new-texteditor">
         <template v-show="!loading">
-            <div class="row">
+            <div class="row" v-if="!isNewSurvey">
                 <language-selector 
                     :elId="'texteditor'" 
                     :aLanguages="$store.state.languages" 
@@ -134,11 +139,11 @@ export default {
             <div class="row">
                 <div class="form-group col-md-4 col-sm-6">
                     <label for="surveyTitle">{{'Survey title' | translate }}</label>
-                    <input type="text" class="form-control" id="surveyTitle" v-model="currentSurveyTitle">
+                    <input type="text" class="form-control" name="surveyls_title" id="surveyTitle" v-model="currentSurveyTitle">
                 </div>
                 <div class="form-group col-md-4 col-sm-6">
                     <label for="dateFormat">{{'Date format' | translate }}</label>
-                    <select class="form-control" id="dateFormat" v-model="currentDateFormat">
+                    <select class="form-control" id="dateFormat" name="dateformat" v-model="currentDateFormat">
                         <option 
                             v-for="(dateFormatOptionDescription, dateFormatOption) in $store.state.dateFormatOptions"
                             :key="dateFormatOption"
@@ -150,11 +155,11 @@ export default {
                     <label for="">{{'Decimal mark' | translate }}</label>
                     <div class="fullystyled--radioButtons" role="group">
                         <div class="radioButtons--container">
-                            <input type="radio" class="radio" id="decimalDivider-0" name="decimalDivider" :value="0" v-model="currentDecimalDivider">
+                            <input type="radio" class="radio" id="decimalDivider-0" name="numberformat" :value="0" v-model="currentDecimalDivider">
                             <label for="decimalDivider-0"> {{"Dot " |translate}} (.) </label>
                         </div>
                         <div class="radioButtons--container">
-                            <input type="radio" class="radio" id="decimalDivider-1" name="decimalDivider" :value="1" v-model="currentDecimalDivider">
+                            <input type="radio" class="radio" id="decimalDivider-1" name="numberformat" :value="1" v-model="currentDecimalDivider">
                             <label for="decimalDivider-1"> {{"Comma " |translate}} (,) </label>
                         </div>
                     </div>
@@ -163,29 +168,29 @@ export default {
             <div class="row">
                 <div class="form-group col-sm-4">
                     <label for="endUrl">{{'End url' | translate }}</label>
-                    <input type="text" class="form-control" id="endUrl" v-model="currentEndUrl">
+                    <input type="text" name="url" class="form-control" id="endUrl" v-model="currentEndUrl">
                 </div>
                 <div class="form-group col-sm-8">
                     <label for="endUrlDescription">{{'URL description (link text)' | translate }}</label>
-                    <input type="text" class="form-control" id="endUrlDescription" v-model="currentEndUrlDescription">
+                    <input type="text" name="urldescrip" class="form-control" id="endUrlDescription" v-model="currentEndUrlDescription">
                 </div>
             </div>
             <div class="row scoped-editor-row">
                 <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                     <label class="">{{ "Description" | translate }}:</label>
-                    <ckeditor :editor="descriptionEditorObject" v-model="currentDescription" :config="{}"></ckeditor>
+                    <ckeditor :editor="descriptionEditorObject" v-model="currentDescription" name="description" :config="{}"></ckeditor>
                 </div>
             </div>
             <div class="row scoped-editor-row">
                 <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                     <label class="">{{ "Welcome" | translate }}:</label>
-                    <ckeditor :editor="welcomeEditorObject" v-model="currentWelcome" :config="{}"></ckeditor>
+                    <ckeditor :editor="welcomeEditorObject" v-model="currentWelcome" name="welcome" :config="{}"></ckeditor>
                 </div>
             </div>
             <div class="row scoped-editor-row">
                 <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                     <label class="">{{ "End message" | translate }}:</label>
-                    <ckeditor :editor="endTextEditorObject" v-model="currentEndText" :config="{}"></ckeditor>
+                    <ckeditor :editor="endTextEditorObject" v-model="currentEndText" name="description" :config="{}"></ckeditor>
                 </div>
             </div>
         </template>

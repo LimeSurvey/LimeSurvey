@@ -32,16 +32,16 @@ Vue.mixin({
             $('#textEditLoader').fadeOut(400);
         },
         translate(value) {
-            return window.DataSecTextEditData.i10N[value] || value;
+            return window.TextEditData.i10N[value] || value;
         }
     },
     filters: {
         translate: (value) => {
-            return window.DataSecTextEditData.i10N[value] || value;
+            return window.TextEditData.i10N[value] || value;
         }
     }
 });
-const TextElementsStore = getAppState(LS.parameters.surveyid);
+const TextElementsStore = getAppState(LS.parameters.surveyid || 0);
 
 const newTextEditor = new Vue({
     el: '#advancedTextEditor',

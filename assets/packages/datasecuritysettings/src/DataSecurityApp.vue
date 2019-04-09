@@ -20,6 +20,7 @@ export default {
         }
     },
     computed: {
+        isNewSurvey() {return window.DataSecTextEditData.isNewSurvey},
         currentShowsurveypolicynotice: {
             get() { return this.$store.state.showsurveypolicynotice},
             set(newValue) { this.$store.commit('setShowsurveypolicynotice', newValue); }
@@ -87,10 +88,11 @@ export default {
         $('#datasecurity').on('submit', (e)=>{
             e.preventDefault();
         });
-
-        $('#save-button').on('click', (e)=>{
-            this.submitCurrentState();
-        });
+        if(!window.DataSecTextEditData.isNewSurvey) {
+            $('#save-button').on('click', (e)=>{
+                this.submitCurrentState();
+            });
+        }
 
         this.toggleLoading(false);
         
@@ -130,7 +132,7 @@ export default {
                 <hr />
             </div>
             <div v-show="$store.state.showsurveypolicynotice > 0" class="cointainer-center">
-                <div class="row">
+                <div class="row" v-if="!isNewSurvey">
                     <language-selector 
                         :elId="'questioneditor'" 
                         :aLanguages="$store.state.languages" 
