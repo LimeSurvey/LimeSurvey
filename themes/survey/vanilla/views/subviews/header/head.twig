@@ -32,8 +32,9 @@
     <title>
         {{ processString(aSurveyInfo.surveyls_title,1) }}
     </title>
-
-    <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}" />
+    {% if(imageSrc('./files/favicon.ico')) %}
+        <link rel="shortcut icon" href="{{ imageSrc('./files/favicon.ico') }}" />
+    {% endif %}
     <script type="text/javascript">
         if(window.basicThemeScripts === undefined){ 
             window.basicThemeScripts = new ThemeScripts(); 
