@@ -705,7 +705,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
     // Read table in smaller chunks
     $iStart = 0;
     do {
-        
+        $result = array();
         // data need to be converted to model to be able to decrypt responses and tokens
         if ($TableName == 'responses' || $TableName == 'tokens'){
             $criteria = new CDbCriteria;
@@ -724,8 +724,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
         } else {
             $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
             $result = $QueryResult->readAll();
-        }
-        
+        }        
 
         if ($iStart == 0 && safecount($result) > 0) {
             $exclude = array_flip($excludes); //Flip key/value in array for faster checks
