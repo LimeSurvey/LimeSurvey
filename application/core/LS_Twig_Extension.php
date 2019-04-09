@@ -268,7 +268,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function image($sImagePath, $alt = '', $htmlOptions = array( ))
     {
         $sUrlImgAsset = self::imageSrc($sImagePath,'');
-        if( $sUrlImgAsset === "ERROR") {
+        if(!$sUrlImgAsset) {
             return '';
         }
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
@@ -292,7 +292,7 @@ class LS_Twig_Extension extends Twig_Extension
                 if($default) {
                     return self::imageSrc($default);
                 }
-                return "ERROR";
+                return false;
             }
             $sFullPath = Yii::app()->getConfig('rootdir').'/'.$sImagePath;
         }
@@ -301,7 +301,7 @@ class LS_Twig_Extension extends Twig_Extension
         $checkImage = LSYii_ImageValidator::validateImage($sFullPath);
 
         if (!$checkImage['check']) {
-            return "ERROR";
+            return false;
         }
 
         $sUrlImgAsset = self::assetPublish($sFullPath);
