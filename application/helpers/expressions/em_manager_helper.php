@@ -10160,6 +10160,17 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         {
             if(!empty($value))
             {
+                // create array keys if they don't exist, because code below expect them
+                // it is used only in a case when default values are loaded on page
+                if (!array_key_exists('info', $qinfo)){
+                    if (array_key_exists('qid', $qinfo)){
+                        $qinfo['info']['qid'] = $qinfo['qid'];
+                    }
+                    if (array_key_exists('other', $qinfo)){
+                        $qinfo['info']['other'] = $qinfo['other'];
+                    }
+
+                }
                 /* This function is called by a static function , then set it to static .... */
                 $LEM =& LimeExpressionManager::singleton();
                 // Using language to find some valid value : set it to an existing language of this survey (can be Survey::model()->findByPk($LEM->sessid)->language too)
