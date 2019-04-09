@@ -810,9 +810,14 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         buildXMLFromQuery($xmlwriter, $cquery);
     }
 
-    //Default values
+    // Default values
     $query = "SELECT {{defaultvalues}}.*
-    FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID";
+    FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID ORDER BY dvid";
+    buildXMLFromQuery($xmlwriter, $query);
+
+    // DefaultValues L10n
+    $query = "SELECT {{defaultvalue_l10ns}}.*
+    FROM {{defaultvalue_l10ns}} JOIN {{defaultvalues}} ON {{defaultvalue_l10ns}}.dvid = {{defaultvalues}}.dvid JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID ORDER BY {{defaultvalues}}.dvid";
     buildXMLFromQuery($xmlwriter, $query);
 
     // QuestionGroup

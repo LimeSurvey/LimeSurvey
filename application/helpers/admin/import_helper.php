@@ -1156,6 +1156,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements = array();
+    $aDvidReplacements = array();
     $aQuestionCodeReplacements = array();
     $aQuotaReplacements = array();
     $results['defaultvalues'] = 0;
@@ -1761,6 +1762,8 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
+            $iDvidOld = $insertdata['dvid'];
+            unset($insertdata['dvid']);
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
             if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
                 // remap the subquestion id
@@ -1770,13 +1773,32 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 XSSFilterArray($insertdata);
             }
             
-            // now translate any links
             $defaultValue = new DefaultValue();
             $defaultValue->setAttributes($insertdata, false);
-            if (!$defaultValue->save()) {
+            if ($defaultValue->save()) {
+                $aDvidReplacements[$iDvidOld] = $defaultValue->dvid;
+            } else {
                 safeDie(gT("Error").": Failed to insert data[9]<br />");
             }
             $results['defaultvalues']++;
+        }
+    }
+
+    // Import defaultvalue_l10ns ------------------------------------------------------
+    if (isset($xml->defaultvalue_l10ns)) {
+        foreach ($xml->defaultvalue_l10ns->rows->row as $row) {
+            $insertdata = array();
+            foreach ($row as $key=>$value) {
+                $insertdata[(string) $key] = (string) $value;
+            }
+            $insertdata['dvid'] = $aDvidReplacements[$insertdata['dvid']];
+            unset($insertdata['id']);
+
+            $defaultValueL10n = new DefaultValueL10n();
+            $defaultValueL10n->setAttributes($insertdata, false);
+            if (!$defaultValueL10n->save()) {
+                safeDie(gT("Error").": Failed to insert data[19]<br />");
+            }
         }
     }
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
