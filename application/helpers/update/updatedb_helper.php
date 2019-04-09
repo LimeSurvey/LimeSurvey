@@ -2604,6 +2604,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
             $oDB->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
 
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>406),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 407) {
+            $oTransaction = $oDB->beginTransaction();
             // defaultvalues
             $oDB->createCommand()->createTable('{{defaultvalue_l10ns}}', array(
                 'id' =>  "pk",
@@ -2647,7 +2653,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->dropTable('defaultvaluestemp');
             $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], true);
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>406),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>407),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
       
