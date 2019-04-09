@@ -128,7 +128,7 @@ export default {
 <template>
     <div class="container-center scoped-new-texteditor">
         <template v-show="!loading">
-            <div class="row" v-if="!isNewSurvey">
+            <div class="row" v-if="$store.state.languages.length > 1">
                 <language-selector 
                     :elId="'texteditor'" 
                     :aLanguages="$store.state.languages" 
@@ -178,19 +178,22 @@ export default {
             <div class="row scoped-editor-row">
                 <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                     <label class="">{{ "Description" | translate }}:</label>
-                    <ckeditor :editor="descriptionEditorObject" v-model="currentDescription" name="description" :config="{}"></ckeditor>
+                    <ckeditor :editor="descriptionEditorObject" v-model="currentDescription" :config="{}"></ckeditor>
+                    <input type="hidden" name="description" v-model="currentDescription" />
                 </div>
             </div>
             <div class="row scoped-editor-row">
                 <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                     <label class="">{{ "Welcome" | translate }}:</label>
-                    <ckeditor :editor="welcomeEditorObject" v-model="currentWelcome" name="welcome" :config="{}"></ckeditor>
+                    <ckeditor :editor="welcomeEditorObject" v-model="currentWelcome" :config="{}"></ckeditor>
+                    <input type="hidden" name="welcome" v-model="currentWelcome" />
                 </div>
             </div>
             <div class="row scoped-editor-row">
                 <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                     <label class="">{{ "End message" | translate }}:</label>
-                    <ckeditor :editor="endTextEditorObject" v-model="currentEndText" name="description" :config="{}"></ckeditor>
+                    <ckeditor :editor="endTextEditorObject" v-model="currentEndText" :config="{}"></ckeditor>
+                    <input type="hidden" name="endtext" v-model="currentEndText" />
                 </div>
             </div>
         </template>

@@ -132,7 +132,7 @@ export default {
                 <hr />
             </div>
             <div v-show="$store.state.showsurveypolicynotice > 0" class="cointainer-center">
-                <div class="row" v-if="!isNewSurvey">
+                <div class="row" v-if="$store.state.languages.length > 1">
                     <language-selector 
                         :elId="'questioneditor'" 
                         :aLanguages="$store.state.languages" 
@@ -143,7 +143,7 @@ export default {
                 <div class="row scoped-editor-row">
                     <div class="col-sm-6 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                         <label for="inputdataseclabel" class="">{{ "Survey data policy checkbox label:" | translate }}:</label>
-                        <input type="text" id="inputdataseclabel" class="form-control" v-model="currentDataseclabel"  />
+                        <input type="text" id="inputdataseclabel" name="surveyls_policy_notice_label" class="form-control" v-model="currentDataseclabel"  />
                     </div>
                     <div class="col-sm-6 ls-space margin top-5 bottom-5 ">
                         <div class="col-sm-12 well" v-html="translate('__INFOTEXT')" />
@@ -153,6 +153,7 @@ export default {
                     <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                         <label class="">{{ "Description" | translate }}:</label>
                         <ckeditor :editor="datasecmessageEditorObject" v-model="currentDatasecmessage" :config="{}"></ckeditor>
+                        <input type="hidden" name="surveyls_policy_notice" v-model="currentDatasecmessage"/>
                     </div>
                 </div>
             </div>

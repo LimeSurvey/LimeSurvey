@@ -16940,7 +16940,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "container-center scoped-new-texteditor"
   }, [
-    [(!_vm.isNewSurvey) ? _c('div', {
+    [(_vm.$store.state.languages.length > 1) ? _c('div', {
       staticClass: "row"
     }, [_c('language-selector', {
       attrs: {
@@ -17149,7 +17149,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('label', {}, [_vm._v(_vm._s(_vm._f("translate")("Description")) + ":")]), _vm._v(" "), _c('ckeditor', {
       attrs: {
         "editor": _vm.descriptionEditorObject,
-        "name": "description",
         "config": {}
       },
       model: {
@@ -17159,6 +17158,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         },
         expression: "currentDescription"
       }
+    }), _vm._v(" "), _c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.currentDescription),
+        expression: "currentDescription"
+      }],
+      attrs: {
+        "type": "hidden",
+        "name": "description"
+      },
+      domProps: {
+        "value": (_vm.currentDescription)
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          _vm.currentDescription = $event.target.value
+        }
+      }
     })], 1)]), _vm._v(" "), _c('div', {
       staticClass: "row scoped-editor-row"
     }, [_c('div', {
@@ -17166,7 +17185,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('label', {}, [_vm._v(_vm._s(_vm._f("translate")("Welcome")) + ":")]), _vm._v(" "), _c('ckeditor', {
       attrs: {
         "editor": _vm.welcomeEditorObject,
-        "name": "welcome",
         "config": {}
       },
       model: {
@@ -17176,6 +17194,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         },
         expression: "currentWelcome"
       }
+    }), _vm._v(" "), _c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.currentWelcome),
+        expression: "currentWelcome"
+      }],
+      attrs: {
+        "type": "hidden",
+        "name": "welcome"
+      },
+      domProps: {
+        "value": (_vm.currentWelcome)
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          _vm.currentWelcome = $event.target.value
+        }
+      }
     })], 1)]), _vm._v(" "), _c('div', {
       staticClass: "row scoped-editor-row"
     }, [_c('div', {
@@ -17183,7 +17221,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('label', {}, [_vm._v(_vm._s(_vm._f("translate")("End message")) + ":")]), _vm._v(" "), _c('ckeditor', {
       attrs: {
         "editor": _vm.endTextEditorObject,
-        "name": "description",
         "config": {}
       },
       model: {
@@ -17192,6 +17229,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.currentEndText = $$v
         },
         expression: "currentEndText"
+      }
+    }), _vm._v(" "), _c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.currentEndText),
+        expression: "currentEndText"
+      }],
+      attrs: {
+        "type": "hidden",
+        "name": "endtext"
+      },
+      domProps: {
+        "value": (_vm.currentEndText)
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          _vm.currentEndText = $event.target.value
+        }
       }
     })], 1)])], _vm._v(" "), _c('div', {
       directives: [{

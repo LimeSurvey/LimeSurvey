@@ -16942,7 +16942,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         expression: "$store.state.showsurveypolicynotice > 0"
       }],
       staticClass: "cointainer-center"
-    }, [(!_vm.isNewSurvey) ? _c('div', {
+    }, [(_vm.$store.state.languages.length > 1) ? _c('div', {
       staticClass: "row"
     }, [_c('language-selector', {
       attrs: {
@@ -16971,7 +16971,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "form-control",
       attrs: {
         "type": "text",
-        "id": "inputdataseclabel"
+        "id": "inputdataseclabel",
+        "name": "surveyls_policy_notice_label"
       },
       domProps: {
         "value": (_vm.currentDataseclabel)
@@ -17004,6 +17005,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.currentDatasecmessage = $$v
         },
         expression: "currentDatasecmessage"
+      }
+    }), _vm._v(" "), _c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.currentDatasecmessage),
+        expression: "currentDatasecmessage"
+      }],
+      attrs: {
+        "type": "hidden",
+        "name": "surveyls_policy_notice"
+      },
+      domProps: {
+        "value": (_vm.currentDatasecmessage)
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          _vm.currentDatasecmessage = $event.target.value
+        }
       }
     })], 1)])])]
   ], 2)
