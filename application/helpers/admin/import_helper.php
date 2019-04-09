@@ -436,7 +436,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     }
 
 
-    // Import defaultvalues --------------------------------------------------------------
+    // Import defaultvalues ------------------------------------------------------
     if (isset($xml->defaultvalues)) {
         $results['defaultvalues'] = 0;
         foreach ($xml->defaultvalues->rows->row as $row) {
@@ -444,18 +444,43 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
+            $iDvidOld = $insertdata['dvid'];
+            unset($insertdata['dvid']);
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
-            if ($insertdata['sqid'] > 0) {
-                if (!isset($aQIDReplacements[(int) $insertdata['sqid']])) {
-                    // Skip questions with invalid subquestion id
-                    continue;
-                }
-                $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']]; // remap the subquestion id
+            if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
+                // remap the subquestion id
+                $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']];
             }
-
-            // now translate any links
-            Yii::app()->db->createCommand()->insert('{{defaultvalues}}', $insertdata);
+            if ($insertdata) {
+                XSSFilterArray($insertdata);
+            }
+            
+            $defaultValue = new DefaultValue();
+            $defaultValue->setAttributes($insertdata, false);
+            if ($defaultValue->save()) {
+                $aDvidReplacements[$iDvidOld] = $defaultValue->dvid;
+            } else {
+                safeDie(gT("Error").": Failed to insert data[9]<br />");
+            }
             $results['defaultvalues']++;
+        }
+    }
+
+    // Import defaultvalue_l10ns ------------------------------------------------------
+    if (isset($xml->defaultvalue_l10ns)) {
+        foreach ($xml->defaultvalue_l10ns->rows->row as $row) {
+            $insertdata = array();
+            foreach ($row as $key=>$value) {
+                $insertdata[(string) $key] = (string) $value;
+            }
+            $insertdata['dvid'] = $aDvidReplacements[$insertdata['dvid']];
+            unset($insertdata['id']);
+
+            $defaultValueL10n = new DefaultValueL10n();
+            $defaultValueL10n->setAttributes($insertdata, false);
+            if (!$defaultValueL10n->save()) {
+                safeDie(gT("Error").": Failed to insert data[19]<br />");
+            }
         }
     }
 
@@ -880,8 +905,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
         }
     }
 
-
-    // Import defaultvalues --------------------------------------------------------------
+    // Import defaultvalues ------------------------------------------------------
     if (isset($xml->defaultvalues)) {
         $results['defaultvalues'] = 0;
         foreach ($xml->defaultvalues->rows->row as $row) {
@@ -889,21 +913,43 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options = array('
             foreach ($row as $key=>$value) {
                 $insertdata[(string) $key] = (string) $value;
             }
+            $iDvidOld = $insertdata['dvid'];
+            unset($insertdata['dvid']);
             $insertdata['qid'] = $aQIDReplacements[(int) $insertdata['qid']]; // remap the qid
-            $insertdata['sqid'] = $aSQIDReplacements[(int) $insertdata['sqid']]; // remap the subquestion id
-
-            // now translate any links
-            $default = new DefaultValue;
+            if (isset($aQIDReplacements[(int) $insertdata['sqid']])) {
+                // remap the subquestion id
+                $insertdata['sqid'] = $aQIDReplacements[(int) $insertdata['sqid']];
+            }
             if ($insertdata) {
                 XSSFilterArray($insertdata);
             }
-
-            foreach ($insertdata as $k => $v) {
-                $default->$k = $v;
+            
+            $defaultValue = new DefaultValue();
+            $defaultValue->setAttributes($insertdata, false);
+            if ($defaultValue->save()) {
+                $aDvidReplacements[$iDvidOld] = $defaultValue->dvid;
+            } else {
+                safeDie(gT("Error").": Failed to insert data[9]<br />");
             }
-
-            $default->save();
             $results['defaultvalues']++;
+        }
+    }
+
+    // Import defaultvalue_l10ns ------------------------------------------------------
+    if (isset($xml->defaultvalue_l10ns)) {
+        foreach ($xml->defaultvalue_l10ns->rows->row as $row) {
+            $insertdata = array();
+            foreach ($row as $key=>$value) {
+                $insertdata[(string) $key] = (string) $value;
+            }
+            $insertdata['dvid'] = $aDvidReplacements[$insertdata['dvid']];
+            unset($insertdata['id']);
+
+            $defaultValueL10n = new DefaultValueL10n();
+            $defaultValueL10n->setAttributes($insertdata, false);
+            if (!$defaultValueL10n->save()) {
+                safeDie(gT("Error").": Failed to insert data[19]<br />");
+            }
         }
     }
     
