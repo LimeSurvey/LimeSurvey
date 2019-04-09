@@ -1458,38 +1458,25 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _getDataSecurityEditData($survey)
     {
-        Yii::app()->loadHelper("admin/htmleditor");
+        
+        Yii::app()->getClientScript()->registerScript("DataSecTextEditDataGlobal",
+            "window.DataSecTextEditData = {
+                connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/sid/'.$survey->sid.'/sa/')."',
+                i10N: {
+                    'Survey data policy checkbox label:' : '".gT('Survey data policy checkbox label:')."',
+                    'Survey data policy error message:' : '".gT('Survey data policy error message:')."',
+                    'Survey data policy message:' : '".gT('Survey data policy message:')."',
+                    'Don\'t show:' : '".gT('Don\'t show')."',
+                    'Inline text' : '".gT('Inline text')."',
+                    'Collapsible text' : '".gT('Collapsible text')."',
+                    '__INFOTEXT' : '".gT('If you want to specify a link to the survey data policy, set "Show survey policy text with mandatory checkbox" to "Collapsible text" and use the placeholders {STARTPOLICYLINK} and {ENDPOLICYLINK} in the "Survey data policy checkbox label" field to define the link that opens the policy popup. If there is no placeholder given, there will be an appendix.')."',
+                    'Deactivated' : '".gT('Deactivated')."',
+                    'Activated' : '".gT('Activated')."'
+                }
+            };", LSYii_ClientScript::POS_BEGIN);
+            
+        App()->getClientScript()->registerPackage('datasectextelements');
         $aData = $aTabTitles = $aTabContents = array();
-
-        $aData['scripts'] = PrepareEditorScript(false, $this->getController());
-        $aLanguageData = [];
-
-        foreach ($survey->allLanguages as $i => $sLang) {
-            $aLanguageData = $this->_getGeneralTemplateData($survey->sid);
-            // this one is created to get the right default texts fo each language
-            Yii::app()->loadHelper('database');
-            Yii::app()->loadHelper('surveytranslator');
-
-            $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $survey->sid, 'surveyls_language' => $sLang))->getAttributes();
-
-            $aTabTitles[$sLang] = getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false);
-
-            if ($aSurveyLanguageSettings['surveyls_language'] == $survey->language) {
-                $aTabTitles[$sLang] .= ' ('.gT("Base language").')';
-            }
-
-            $aLanguageData['aSurveyLanguageSettings'] = $aSurveyLanguageSettings;
-            $aLanguageData['action'] = "surveygeneralsettings";
-            $aLanguageData['subaction'] = gT('Add a new question');
-            $aLanguageData['i'] = $i;
-            $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-            $aLanguageData['oSurvey'] = $survey;
-            $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editDataSecurityLocalSettings_view', $aLanguageData, true);
-        }
-
-
-        $aData['aTabContents'] = $aTabContents;
-        $aData['aTabTitles'] = $aTabTitles;
         return $aData;
     }
     /**
@@ -1952,6 +1939,12 @@ class SurveyAdmin extends Survey_Common_Action
 
     }
     
+    /**
+     * Function to call current Editor Values by Ajax
+     *
+     * @param integer $sid
+     * @return JSON 
+     */
     public function getCurrentEditorValues($sid){
         $iSurveyId = (int) $sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
@@ -1990,6 +1983,12 @@ class SurveyAdmin extends Survey_Common_Action
         );
     }
 
+    /**
+     * Method to call current date information by ajax
+     *
+     * @param [type] $sid
+     * @return JSON
+     */
     public function getDateFormatOptions($sid){
         $iSurveyId = (int) $sid;
         $aRawDateFormats = getDateFormatData();
@@ -2002,23 +2001,132 @@ class SurveyAdmin extends Survey_Common_Action
         );
     }
 
+    /**
+     * Method to store data edited in the the text editor component
+     *
+     * @param integer $sid
+     * @return JSON
+     */
     public function saveTextData($sid){
         $iSurveyId = (int) $sid;
-        $oSurvey = Survey::model()->findByPk($iSurveyId);
-        foreach ($oSurvey->allLanguages as $sLanguage) {
-            $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage, false);
-            $aReturner["surveyTitle"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_title;
-            $aReturner["welcome"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_description;
-            $aReturner["description"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_welcometext;
-            $aReturner["endText"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_endtext;
-            $aReturner["endUrl"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_url;
-            $aReturner["endUrlDescription"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_urldescription;
-            $aReturner["dateFormat"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_dateformat;
-            $aReturner["decimalDivider"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_numberformat;
+        $changes = Yii::app()->request->getPost('changes');
+        $aSuccess = [];
+        foreach ($changes as $sLanguage => $contentChange) {
+            $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(["surveyls_survey_id" => $iSurveyId, "surveyls_language" => $sLanguage]);
+            if($oSurveyLanguageSetting == null) {
+                $oSurveyLanguageSetting = new SurveyLanguageSetting();
+                $oSurveyLanguageSetting->surveyls_survey_id = $iSurveyId;
+                $oSurveyLanguageSetting->surveyls_language = $sLanguage;
+            }
+            $oSurveyLanguageSetting->surveyls_title = $contentChange['surveyTitle'];
+            $oSurveyLanguageSetting->surveyls_welcometext = $contentChange['welcome'];
+            $oSurveyLanguageSetting->surveyls_description = $contentChange['description'];
+            $oSurveyLanguageSetting->surveyls_endtext = $contentChange['endText'];
+            $oSurveyLanguageSetting->surveyls_url = $contentChange['endUrl'];
+            $oSurveyLanguageSetting->surveyls_urldescription = $contentChange['endUrlDescription'];
+            $oSurveyLanguageSetting->surveyls_dateformat = $contentChange['dateFormat'];
+            $oSurveyLanguageSetting->surveyls_numberformat = $contentChange['decimalDivider'];
+            $success[$sLanguage] = $oSurveyLanguageSetting->save();
+            unset($oSurveyLanguageSetting);
         }
+        
+        $success = array_reduce($aSuccess, function($carry, $subsuccess){ $carry = $carry && $subsuccess; }, true);
+       
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                "success" => $success,
+                "message" => ($success ? gT("Successfully stored survey texts") : gT("Error in storing survey texts"))
+                ]
+            ],
+            false,
+            false
+        );
     }
 
+    /**
+     * Collect the data necessary for the data security settings and return a JSON document
+     * 
+     * @param integer $sid
+     * @return JSON
+     */
+    public function getDataSecTextSettings($sid=null) {
+        $iSurveyId = (int) $sid;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $aLanguages = [];
+        $aReturner = [
+            "dataseclabel" => [],
+            "datasecmessage" => [],
+            "datasecerror" => []
+        ];
+        
+        if($oSurvey == null) {
+            $oSurvey = new Survey();
+        }
+
+        foreach ($oSurvey->allLanguages as $sLanguage) {
+            $aLanguages[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
+            $aReturner["datasecmessage"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_policy_notice;
+            $aReturner["datasecerror"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_policy_error;
+            $aReturner["dataseclabel"][$sLanguage] = $oSurvey->languagesettings[$sLanguage]->surveyls_policy_notice_label;
+        }
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                "showsurveypolicynotice" => $oSurvey->showsurveypolicynotice,
+                "textdata" => $aReturner,
+                "languages" => $aLanguages
+            ]],
+            false,
+            false
+        );
+    }
     
+    /**
+     * Method to store data edited in the the data security text editor component
+     *
+     * @param integer $sid
+     * @return JSON
+     */
+    public function saveDataSecTextData($sid){
+        $iSurveyId = (int) $sid;
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $changes = Yii::app()->request->getPost('changes', []);
+        $aSuccess = [];
+        
+        $oSurvey->showsurveypolicynotice = isset($changes['showsurveypolicynotice']) ? $changes['showsurveypolicynotice'] : 0;
+        $aSuccess[] = $oSurvey->save();
+        foreach ($oSurvey->allLanguages as $sLanguage ) {
+            $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(["surveyls_survey_id" => $iSurveyId, "surveyls_language" => $sLanguage]);
+            if($oSurveyLanguageSetting == null) {
+                $oSurveyLanguageSetting = new SurveyLanguageSetting();
+                $oSurveyLanguageSetting->surveyls_title = "";
+                $oSurveyLanguageSetting->surveyls_survey_id = $iSurveyId;
+                $oSurveyLanguageSetting->surveyls_language = $sLanguage;
+            }
+
+            $oSurveyLanguageSetting->surveyls_policy_notice = isset($changes['datasecmessage'][$sLanguage]) ? $changes['datasecmessage'][$sLanguage] : '';
+            $oSurveyLanguageSetting->surveyls_policy_error = isset($changes['datasecerror'][$sLanguage]) ? $changes['datasecerror'][$sLanguage] : '';
+            $oSurveyLanguageSetting->surveyls_policy_notice_label = isset($changes['dataseclabel'][$sLanguage]) ? $changes['dataseclabel'][$sLanguage] : '';
+            $success[$sLanguage] = $oSurveyLanguageSetting->save();
+            unset($oSurveyLanguageSetting);
+        }
+        
+        $success = array_reduce($aSuccess, function($carry, $subsuccess){ $carry = $carry && $subsuccess; }, true);
+       
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            ['data' => [
+                "success" => $success,
+                "message" => ($success ? gT("Successfully stored survey texts") : gT("Error in storing survey texts"))
+                ]
+            ],
+            false,
+            false
+        );
+    }
+
     /**
      * This private function creates a sample group
      *

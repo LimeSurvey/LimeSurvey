@@ -65,7 +65,6 @@ export default {
                 </ul>
             </div>
         </div>
-        <hr/>
     </div>
 </template>
 

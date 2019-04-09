@@ -173,6 +173,20 @@ return array(
             'adminbasics'
         )
     ),
+    'datasectextelements' => array(
+        'devBaseUrl' => 'assets/packages/datasecuritysettings/',
+        'basePath' => 'core.datasecuritysettings',
+        'position' =>CClientScript::POS_END,
+        'js' => array(
+            'build/datasecuritysettings'.(($debug > 0) ? '' : '.min').'.js'
+        ),
+        'css' => array(
+            'build/datasecuritysettings'.$minVersion.'.css'
+        ),
+        'depends' => array(
+            'adminbasics'
+        )
+    ),
     'questioneditor' => array(
         'devBaseUrl' => 'assets/packages/questioneditor/',
         'basePath' => 'core.questioneditor',

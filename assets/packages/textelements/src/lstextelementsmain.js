@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
-import App from './App.vue';
+import TextElementsApp from './TextElementsApp.vue';
 
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
@@ -32,19 +32,19 @@ Vue.mixin({
             $('#textEditLoader').fadeOut(400);
         },
         translate(value) {
-            return window.TextEditData.i10N[value] || value;
+            return window.DataSecTextEditData.i10N[value] || value;
         }
     },
     filters: {
         translate: (value) => {
-            return window.TextEditData.i10N[value] || value;
+            return window.DataSecTextEditData.i10N[value] || value;
         }
     }
 });
-const AppState = getAppState(window.LS.parameters.sid);
+const TextElementsStore = getAppState(LS.parameters.surveyid);
 
 const newTextEditor = new Vue({
     el: '#advancedTextEditor',
-    store: AppState,
-    components: {App},
+    store: TextElementsStore,
+    components: {'lsnexttexteditor': TextElementsApp},
 });

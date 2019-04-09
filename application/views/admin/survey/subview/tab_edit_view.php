@@ -15,7 +15,7 @@ if(isset($data)){
 
 ?>
 <div class="container-center">
-    <div id="advancedTextEditor"><app/></div>
+    <div id="advancedTextEditor"><lsnexttexteditor/></div>
     <div id="textEditLoader" class="ls-flex ls-flex-column align-content-center align-items-center">
         <div class="ls-flex align-content-center align-items-center">
             <div class="loader-advancedquestionsettings text-center">

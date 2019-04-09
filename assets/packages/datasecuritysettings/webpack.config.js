@@ -3,8 +3,8 @@ var path = require('path');
 
 
 // Naming and path settings
-var appName = 'lstextelements';
-var entryPoint = ['./src/lstextelementsmain.js'];
+var appName = 'datasecuritysettings';
+var entryPoint = ['./src/datasecuritysettingsmain.js'];
 var exportPath = path.resolve(__dirname, './build');
 
 // Enviroment flag

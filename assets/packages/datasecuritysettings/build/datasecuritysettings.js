@@ -12302,7 +12302,7 @@ module.exports = toInteger;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return PluginLog; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LOG; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_ConsoleShim_js__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_ConsoleShim_js__ = __webpack_require__(158);
 /* eslint-disable no-alert, no-console */
 
 /**
@@ -12311,7 +12311,7 @@ module.exports = toInteger;
  */
 
 
-const LOG = new __WEBPACK_IMPORTED_MODULE_0__lib_ConsoleShim_js__["a" /* default */]('TEXTEDITOR');
+const LOG = new __WEBPACK_IMPORTED_MODULE_0__lib_ConsoleShim_js__["a" /* default */]('DataSecTextEdit');
 
 const PluginLog = function (Vue) {
     if(window.debugState.backend) {
@@ -12339,8 +12339,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_vue__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__TextElementsApp_vue__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__TextElementsApp_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__TextElementsApp_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DataSecurityApp_vue__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DataSecurityApp_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__DataSecurityApp_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__storage_store__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_logSystem__ = __webpack_require__(39);
 
@@ -12360,21 +12360,19 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use( __WEBPACK_IMPORTED_MOD
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
     methods: {
         toggleLoading(forceState=null) {
-            this.loading = !this.loading;
             if(forceState !== null) {
-                this.loading = forceState;
                 if(forceState) {
-                    $('#textEditLoader').fadeIn(200);
+                    $('#datasecTextEditLoader').fadeIn(200);
                 } else {
-                    $('#textEditLoader').fadeOut(400);
+                    $('#datasecTextEditLoader').fadeOut(400);
                 }
                 return;
             }
-            if($('#textEditLoader').css('display') == 'none') {
-                $('#textEditLoader').fadeIn(200);
+            if($('#datasecTextEditLoader').css('display') == 'none') {
+                $('#datasecTextEditLoader').fadeIn(200);
                 return;
             }
-            $('#textEditLoader').fadeOut(400);
+            $('#datasecTextEditLoader').fadeOut(400);
         },
         translate(value) {
             return window.DataSecTextEditData.i10N[value] || value;
@@ -12386,12 +12384,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
         }
     }
 });
-const TextElementsStore = Object(__WEBPACK_IMPORTED_MODULE_3__storage_store__["a" /* default */])(LS.parameters.surveyid);
-
-const newTextEditor = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
-    el: '#advancedTextEditor',
-    store: TextElementsStore,
-    components: {'lsnexttexteditor': __WEBPACK_IMPORTED_MODULE_2__TextElementsApp_vue___default.a},
+const AppState = Object(__WEBPACK_IMPORTED_MODULE_3__storage_store__["a" /* default */])(LS.parameters.surveyid);
+const questionEditor = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */]({
+    el: '#advancedDataSecurityTextEditor',
+    store: AppState,
+    components: {lsdatasectexteditor: __WEBPACK_IMPORTED_MODULE_2__DataSecurityApp_vue___default.a},
 });
 
 /***/ }),
@@ -12674,13 +12671,13 @@ var Component = __webpack_require__(26)(
   /* styles */
   injectStyle,
   /* scopeId */
-  "data-v-2e671295",
+  "data-v-0c7a58f8",
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\textelements\\src\\TextElementsApp.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\datasecuritysettings\\src\\DataSecurityApp.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] TextElementsApp.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] DataSecurityApp.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -12689,9 +12686,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2e671295", Component.options)
+    hotAPI.createRecord("data-v-0c7a58f8", Component.options)
   } else {
-    hotAPI.reload("data-v-2e671295", Component.options)
+    hotAPI.reload("data-v-0c7a58f8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -12712,13 +12709,13 @@ var content = __webpack_require__(47);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(25)("021c535f", content, false);
+var update = __webpack_require__(25)("ec6fa478", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2e671295\",\"scoped\":true,\"hasInlineConfig\":false}!../node_modules/sass-loader/lib/loader.js!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TextElementsApp.vue", function() {
-     var newContent = require("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2e671295\",\"scoped\":true,\"hasInlineConfig\":false}!../node_modules/sass-loader/lib/loader.js!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TextElementsApp.vue");
+   module.hot.accept("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0c7a58f8\",\"scoped\":true,\"hasInlineConfig\":false}!../node_modules/sass-loader/lib/loader.js!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./DataSecurityApp.vue", function() {
+     var newContent = require("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0c7a58f8\",\"scoped\":true,\"hasInlineConfig\":false}!../node_modules/sass-loader/lib/loader.js!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./DataSecurityApp.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -12736,7 +12733,7 @@ exports = module.exports = __webpack_require__(24)(true);
 
 
 // module
-exports.push([module.i, "\n.loading-back-greyed[data-v-2e671295] {\n  background-color: rgba(200, 200, 200, 0.4);\n  width: 100%;\n  min-height: 65vh;\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.scoped-editor-row[data-v-2e671295]:before {\n  margin-top: 1.5rem;\n  margin-bottom: 0.5rem;\n  border-top: 1px solid #dedede;\n  width: 95%;\n  margin: 0.5rem auto;\n  display: block;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/textelements/src/TextElementsApp.vue"],"names":[],"mappings":";AAAA;EACE,2CAA2C;EAC3C,YAAY;EACZ,iBAAiB;EACjB,mBAAmB;EACnB,OAAO;EACP,QAAQ;CAAE;AAEZ;EACE,mBAAmB;EACnB,sBAAsB;EACtB,8BAA8B;EAC9B,WAAW;EACX,oBAAoB;EACpB,eAAe;CAAE","file":"TextElementsApp.vue","sourcesContent":[".loading-back-greyed {\n  background-color: rgba(200, 200, 200, 0.4);\n  width: 100%;\n  min-height: 65vh;\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.scoped-editor-row:before {\n  margin-top: 1.5rem;\n  margin-bottom: 0.5rem;\n  border-top: 1px solid #dedede;\n  width: 95%;\n  margin: 0.5rem auto;\n  display: block; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.loading-back-greyed[data-v-0c7a58f8] {\n  background-color: rgba(200, 200, 200, 0.4);\n  width: 100%;\n  min-height: 65vh;\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.scoped-editor-row[data-v-0c7a58f8]:before {\n  margin-top: 1.5rem;\n  margin-bottom: 0.5rem;\n  border-top: 1px solid #dedede;\n  width: 95%;\n  margin: 0.5rem auto;\n  display: block;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/datasecuritysettings/src/DataSecurityApp.vue"],"names":[],"mappings":";AAAA;EACE,2CAA2C;EAC3C,YAAY;EACZ,iBAAiB;EACjB,mBAAmB;EACnB,OAAO;EACP,QAAQ;CAAE;AAEZ;EACE,mBAAmB;EACnB,sBAAsB;EACtB,8BAA8B;EAC9B,WAAW;EACX,oBAAoB;EACpB,eAAe;CAAE","file":"DataSecurityApp.vue","sourcesContent":[".loading-back-greyed {\n  background-color: rgba(200, 200, 200, 0.4);\n  width: 100%;\n  min-height: 65vh;\n  position: absolute;\n  top: 0;\n  left: 0; }\n\n.scoped-editor-row:before {\n  margin-top: 1.5rem;\n  margin-bottom: 0.5rem;\n  border-top: 1px solid #dedede;\n  width: 95%;\n  margin: 0.5rem auto;\n  display: block; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -12794,84 +12791,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'lsnexttexteditor',
+    name: 'lsnextdataseceditor',
+    mixins: [__WEBPACK_IMPORTED_MODULE_3__mixins_runAjax_js__["a" /* default */]],
     components: {
         'language-selector': __WEBPACK_IMPORTED_MODULE_2__components_subcomponents_languageSelector_vue___default.a
     },
-    mixins: [__WEBPACK_IMPORTED_MODULE_3__mixins_runAjax_js__["a" /* default */]],
     data() {
         return {
-            loading: true,
+            datasecmessageEditorObject: __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic___default.a,
             event: null,
-            descriptionEditorObject: __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic___default.a,
-            welcomeEditorObject: __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic___default.a,
-            endTextEditorObject: __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic___default.a
+            loading: null
         };
     },
     computed: {
-        currentSurveyTitle: {
+        currentShowsurveypolicynotice: {
             get() {
-                return this.$store.state.surveyTitle[this.$store.state.activeLanguage];
+                return this.$store.state.showsurveypolicynotice;
             },
             set(newValue) {
-                this.$store.commit('setSurveyTitleForCurrentLanguage', newValue);
+                this.$store.commit('setShowsurveypolicynotice', newValue);
             }
         },
-        currentWelcome: {
+        currentDataseclabel: {
             get() {
-                return this.$store.state.welcome[this.$store.state.activeLanguage];
+                return this.$store.state.dataseclabel[this.$store.state.activeLanguage];
             },
             set(newValue) {
-                this.$store.commit('setWelcomeForCurrentLanguage', newValue);
+                this.$store.commit('setDataseclabelForCurrentLanguage', newValue);
             }
         },
-        currentDescription: {
+        currentDatasecmessage: {
             get() {
-                return this.$store.state.description[this.$store.state.activeLanguage];
+                return this.$store.state.datasecmessage[this.$store.state.activeLanguage];
             },
             set(newValue) {
-                this.$store.commit('setDescriptionForCurrentLanguage', newValue);
-            }
-        },
-        currentEndText: {
-            get() {
-                return this.$store.state.endText[this.$store.state.activeLanguage];
-            },
-            set(newValue) {
-                this.$store.commit('setEndTextForCurrentLanguage', newValue);
-            }
-        },
-        currentEndUrl: {
-            get() {
-                return this.$store.state.endUrl[this.$store.state.activeLanguage];
-            },
-            set(newValue) {
-                this.$store.commit('setEndUrlForCurrentLanguage', newValue);
-            }
-        },
-        currentEndUrlDescription: {
-            get() {
-                return this.$store.state.endUrlDescription[this.$store.state.activeLanguage];
-            },
-            set(newValue) {
-                this.$store.commit('setEndUrlDescriptionForCurrentLanguage', newValue);
-            }
-        },
-        currentDateFormat: {
-            get() {
-                return this.$store.state.dateFormat[this.$store.state.activeLanguage];
-            },
-            set(newValue) {
-                this.$store.commit('setDateFormatForCurrentLanguage', newValue);
-            }
-        },
-        currentDecimalDivider: {
-            get() {
-                return this.$store.state.decimalDivider[this.$store.state.activeLanguage];
-            },
-            set(newValue) {
-                this.$store.commit('setDecimalDividerForCurrentLanguage', newValue);
+                this.$store.commit('setDatasecmessageForCurrentLanguage', newValue);
             }
         }
     },
@@ -12896,18 +12852,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.toggleLoading();
             this.$store.dispatch('saveData').then(result => {
                 this.toggleLoading();
+                this.$store.state.commit('toggleVisible', true);
                 if (redirect == true) {
                     window.location.href = result.data.redirect;
                 }
-
                 $('#in_survey_common').trigger('lsStopLoading');
                 window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                 this.$log.log('OBJECT AFTER TRANSFER: ', result);
             }, reject => {
                 this.toggleLoading();
+                this.$store.state.commit('toggleVisible', true);
                 $('#in_survey_common').trigger('lsStopLoading');
                 window.LS.notifyFader("Texts could not be stored. Reloading page.", 'well-lg bg-danger text-center');
-                //setTimeout(()=>{window.location.reload();}, 1500);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
             });
         },
         selectLanguage(sLanguage) {
@@ -12917,15 +12876,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     },
     created() {
-        this.$store.dispatch('getDateFormatOptions');
-        this.$store.dispatch('getDataSet');
+        this.$store.dispatch('loadData');
     },
 
     mounted() {
-        $('#advancedTextEditor').on('jquery:trigger', this.jqueryTriggered);
+        $('#advancedDataSecurityTextEditor').on('jquery:trigger', this.jqueryTriggered);
         this.applyHotkeys();
 
-        $('#surveytexts').on('submit', e => {
+        $('#datasecurity').on('submit', e => {
             e.preventDefault();
         });
 
@@ -14030,11 +13988,11 @@ var Component = __webpack_require__(26)(
   /* styles */
   injectStyle,
   /* scopeId */
-  "data-v-bd000b08",
+  "data-v-6e06a81a",
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\textelements\\src\\components\\subcomponents\\_languageSelector.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\datasecuritysettings\\src\\components\\subcomponents\\_languageSelector.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _languageSelector.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -14045,9 +14003,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-bd000b08", Component.options)
+    hotAPI.createRecord("data-v-6e06a81a", Component.options)
   } else {
-    hotAPI.reload("data-v-bd000b08", Component.options)
+    hotAPI.reload("data-v-6e06a81a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -14068,13 +14026,13 @@ var content = __webpack_require__(54);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(25)("0a57f916", content, false);
+var update = __webpack_require__(25)("300710b5", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-bd000b08\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./_languageSelector.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-bd000b08\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./_languageSelector.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6e06a81a\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./_languageSelector.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js?sourceMap!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6e06a81a\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./_languageSelector.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -14092,7 +14050,7 @@ exports = module.exports = __webpack_require__(24)(true);
 
 
 // module
-exports.push([module.i, "\n.button-toolbar>.btn-group[data-v-bd000b08] {\n    margin-top: 0.3rem;\n    margin-bottom: 0.5rem;\n}\n.button-toolbar>.btn-group[data-v-bd000b08] {\n    width: 100%;\n}\n.button-toolbar>.btn-group>.btn[data-v-bd000b08] {\n    min-width: 20%;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/textelements/src/components/subcomponents/_languageSelector.vue?13d81b56"],"names":[],"mappings":";AAwEA;IACA,mBAAA;IACA,sBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,eAAA;CACA","file":"_languageSelector.vue","sourcesContent":["\r\n<script>\r\nimport size from 'lodash/size';\r\nimport pick from 'lodash/pick';\r\nimport keys from 'lodash/keys';\r\nimport slice from 'lodash/slice';\r\nimport foreach from 'lodash/foreach';\r\n\r\nexport default {\r\n    name: 'language-selector',\r\n    props: {\r\n        elId: {type: String, required: true},\r\n        aLanguages: {type: [Array, Object], required: true},\r\n        parentCurrentLanguage: {type: String, required: true}\r\n    },\r\n    computed: {\r\n        currentLanguage: {\r\n            get() { return this.parentCurrentLanguage},\r\n            set(newValue) { this.$emit('change', newValue)}\r\n        },\r\n        getInChunks(){\r\n            if(size(this.aLanguages) <= 5) {\r\n                return [this.aLanguages];\r\n            };\r\n            let firstfour = pick(this.aLanguages, slice(keys(this.aLanguages), 0, 4));\r\n            let rest = pick(this.aLanguages, slice(keys(this.aLanguages), 5));\r\n            return [firstfour, rest];\r\n        }\r\n    },\r\n    methods: {\r\n        setCurrentLanguage(newValue) { this.$emit('change', newValue)},\r\n    }\r\n}\r\n</script>\r\n<template>\r\n    <div class=\"col-xs-12\" >                    \r\n        <div class=\"button-toolbar\" :id=\"elId+'-language-selector'\">\r\n            <div \r\n                class=\"btn-group\" \r\n            >\r\n                <button \r\n                    v-for=\"(languageTerm, language) in getInChunks[0]\" \r\n                    :key=\"language+'-button'\"\r\n                    :class=\"'btn btn-'+(language==currentLanguage ? 'primary active' : 'default')\"\r\n                    @click.prevent=\"setCurrentLanguage(language)\"\r\n                >\r\n                    {{ languageTerm }}\r\n                </button>\r\n                <button\r\n                    v-if=\"getInChunks.length > 1\"\r\n                    class=\"btn btn-default dropdown-toggle\"\r\n                    data-toggle=\"dropdown\"\r\n                >\r\n                    {{ \"More Languages\" | translate }}\r\n                    <span class=\"caret\"></span>\r\n                </button>\r\n                 <ul class=\"dropdown-menu\">\r\n                    <li\r\n                        v-for=\"(languageTerm, language) in getInChunks[1]\" \r\n                        :key=\"language+'-dropdown'\"\r\n                        @click.prevent=\"setCurrentLanguage(language)\"\r\n                    >\r\n                        <a href=\"#\">{{ languageTerm }}</a>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n        <hr/>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n    .button-toolbar>.btn-group {\r\n        margin-top: 0.3rem;\r\n        margin-bottom: 0.5rem;\r\n    }\r\n    .button-toolbar>.btn-group {\r\n        width: 100%;\r\n    }\r\n    .button-toolbar>.btn-group>.btn {\r\n        min-width: 20%;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.button-toolbar>.btn-group[data-v-6e06a81a] {\n    margin-top: 0.3rem;\n    margin-bottom: 0.5rem;\n}\n.button-toolbar>.btn-group[data-v-6e06a81a] {\n    width: 100%;\n}\n.button-toolbar>.btn-group>.btn[data-v-6e06a81a] {\n    min-width: 20%;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/datasecuritysettings/src/components/subcomponents/_languageSelector.vue?6caaa29f"],"names":[],"mappings":";AAuEA;IACA,mBAAA;IACA,sBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,eAAA;CACA","file":"_languageSelector.vue","sourcesContent":["\r\n<script>\r\nimport size from 'lodash/size';\r\nimport pick from 'lodash/pick';\r\nimport keys from 'lodash/keys';\r\nimport slice from 'lodash/slice';\r\nimport foreach from 'lodash/foreach';\r\n\r\nexport default {\r\n    name: 'language-selector',\r\n    props: {\r\n        elId: {type: String, required: true},\r\n        aLanguages: {type: [Array, Object], required: true},\r\n        parentCurrentLanguage: {type: String, required: true}\r\n    },\r\n    computed: {\r\n        currentLanguage: {\r\n            get() { return this.parentCurrentLanguage},\r\n            set(newValue) { this.$emit('change', newValue)}\r\n        },\r\n        getInChunks(){\r\n            if(size(this.aLanguages) <= 5) {\r\n                return [this.aLanguages];\r\n            };\r\n            let firstfour = pick(this.aLanguages, slice(keys(this.aLanguages), 0, 4));\r\n            let rest = pick(this.aLanguages, slice(keys(this.aLanguages), 5));\r\n            return [firstfour, rest];\r\n        }\r\n    },\r\n    methods: {\r\n        setCurrentLanguage(newValue) { this.$emit('change', newValue)},\r\n    }\r\n}\r\n</script>\r\n<template>\r\n    <div class=\"col-xs-12\" >                    \r\n        <div class=\"button-toolbar\" :id=\"elId+'-language-selector'\">\r\n            <div \r\n                class=\"btn-group\" \r\n            >\r\n                <button \r\n                    v-for=\"(languageTerm, language) in getInChunks[0]\" \r\n                    :key=\"language+'-button'\"\r\n                    :class=\"'btn btn-'+(language==currentLanguage ? 'primary active' : 'default')\"\r\n                    @click.prevent=\"setCurrentLanguage(language)\"\r\n                >\r\n                    {{ languageTerm }}\r\n                </button>\r\n                <button\r\n                    v-if=\"getInChunks.length > 1\"\r\n                    class=\"btn btn-default dropdown-toggle\"\r\n                    data-toggle=\"dropdown\"\r\n                >\r\n                    {{ \"More Languages\" | translate }}\r\n                    <span class=\"caret\"></span>\r\n                </button>\r\n                 <ul class=\"dropdown-menu\">\r\n                    <li\r\n                        v-for=\"(languageTerm, language) in getInChunks[1]\" \r\n                        :key=\"language+'-dropdown'\"\r\n                        @click.prevent=\"setCurrentLanguage(language)\"\r\n                    >\r\n                        <a href=\"#\">{{ languageTerm }}</a>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n    .button-toolbar>.btn-group {\r\n        margin-top: 0.3rem;\r\n        margin-bottom: 0.5rem;\r\n    }\r\n    .button-toolbar>.btn-group {\r\n        width: 100%;\r\n    }\r\n    .button-toolbar>.btn-group>.btn {\r\n        min-width: 20%;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -16917,13 +16875,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "href": "#"
       }
     }, [_vm._v(_vm._s(languageTerm))])])
-  }))], 2)]), _vm._v(" "), _c('hr')])
+  }))], 2)])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-bd000b08", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-6e06a81a", module.exports)
   }
 }
 
@@ -16933,13 +16891,58 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "container-center scoped-new-texteditor"
+    staticClass: "container-center"
   }, [
     [_c('div', {
       staticClass: "row"
+    }, [_c('div', {
+      staticClass: "btn-group",
+      attrs: {
+        "data-toggle": " buttons"
+      }
+    }, [_c('button', {
+      staticClass: "btn btn-primary",
+      class: _vm.currentShowsurveypolicynotice == 0 ? 'active' : '',
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+          _vm.currentShowsurveypolicynotice = 0
+        }
+      }
+    }, [_vm._v("\n                    " + _vm._s(_vm._f("translate")("Disabled")) + "\n                ")]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-primary",
+      class: _vm.currentShowsurveypolicynotice == 1 ? 'active' : '',
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+          _vm.currentShowsurveypolicynotice = 1
+        }
+      }
+    }, [_vm._v("\n                    " + _vm._s(_vm._f("translate")("Inline text")) + "\n                ")]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-primary",
+      class: _vm.currentShowsurveypolicynotice == 2 ? 'active' : '',
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+          _vm.currentShowsurveypolicynotice = 2
+        }
+      }
+    }, [_vm._v("\n                    " + _vm._s(_vm._f("translate")("Collapsible text")) + "\n                ")])])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (_vm.$store.state.showsurveypolicynotice > 0),
+        expression: "$store.state.showsurveypolicynotice > 0"
+      }],
+      staticClass: "cointainer-center"
+    }, [_c('div', {
+      staticClass: "row"
     }, [_c('language-selector', {
       attrs: {
-        "elId": 'texteditor',
+        "elId": 'questioneditor',
         "aLanguages": _vm.$store.state.languages,
         "parentCurrentLanguage": _vm.$store.state.activeLanguage
       },
@@ -16947,191 +16950,40 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "change": _vm.selectLanguage
       }
     })], 1), _vm._v(" "), _c('div', {
-      staticClass: "row"
+      staticClass: "row scoped-editor-row"
     }, [_c('div', {
-      staticClass: "form-group col-md-4 col-sm-6"
+      staticClass: "col-sm-6 ls-space margin top-5 bottom-5 scope-contains-ckeditor "
     }, [_c('label', {
       attrs: {
-        "for": "surveyTitle"
+        "for": "inputdataseclabel"
       }
-    }, [_vm._v(_vm._s(_vm._f("translate")('Survey title')))]), _vm._v(" "), _c('input', {
+    }, [_vm._v(_vm._s(_vm._f("translate")("Survey data policy checkbox label:")) + ":")]), _vm._v(" "), _c('input', {
       directives: [{
         name: "model",
         rawName: "v-model",
-        value: (_vm.currentSurveyTitle),
-        expression: "currentSurveyTitle"
+        value: (_vm.currentDataseclabel),
+        expression: "currentDataseclabel"
       }],
       staticClass: "form-control",
       attrs: {
         "type": "text",
-        "id": "surveyTitle"
+        "id": "inputdataseclabel"
       },
       domProps: {
-        "value": (_vm.currentSurveyTitle)
+        "value": (_vm.currentDataseclabel)
       },
       on: {
         "input": function($event) {
           if ($event.target.composing) { return; }
-          _vm.currentSurveyTitle = $event.target.value
+          _vm.currentDataseclabel = $event.target.value
         }
       }
     })]), _vm._v(" "), _c('div', {
-      staticClass: "form-group col-md-4 col-sm-6"
-    }, [_c('label', {
-      attrs: {
-        "for": "dateFormat"
-      }
-    }, [_vm._v(_vm._s(_vm._f("translate")('Date format')))]), _vm._v(" "), _c('select', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (_vm.currentDateFormat),
-        expression: "currentDateFormat"
-      }],
-      staticClass: "form-control",
-      attrs: {
-        "id": "dateFormat"
-      },
-      on: {
-        "change": function($event) {
-          var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-            return o.selected
-          }).map(function(o) {
-            var val = "_value" in o ? o._value : o.value;
-            return val
-          });
-          _vm.currentDateFormat = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-        }
-      }
-    }, _vm._l((_vm.$store.state.dateFormatOptions), function(dateFormatOptionDescription, dateFormatOption) {
-      return _c('option', {
-        key: dateFormatOption,
-        domProps: {
-          "value": dateFormatOption
-        }
-      }, [_vm._v(" " + _vm._s(dateFormatOptionDescription) + " ")])
-    }))]), _vm._v(" "), _c('div', {
-      staticClass: "form-group col-md-4 col-sm-12"
-    }, [_c('label', {
-      attrs: {
-        "for": ""
-      }
-    }, [_vm._v(_vm._s(_vm._f("translate")('Decimal mark')))]), _vm._v(" "), _c('div', {
-      staticClass: "fullystyled--radioButtons",
-      attrs: {
-        "role": "group"
-      }
+      staticClass: "col-sm-6 ls-space margin top-5 bottom-5 "
     }, [_c('div', {
-      staticClass: "radioButtons--container"
-    }, [_c('input', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (_vm.currentDecimalDivider),
-        expression: "currentDecimalDivider"
-      }],
-      staticClass: "radio",
-      attrs: {
-        "type": "radio",
-        "id": "decimalDivider-0",
-        "name": "decimalDivider"
-      },
+      staticClass: "col-sm-12 well",
       domProps: {
-        "value": 0,
-        "checked": _vm._q(_vm.currentDecimalDivider, 0)
-      },
-      on: {
-        "change": function($event) {
-          _vm.currentDecimalDivider = 0
-        }
-      }
-    }), _vm._v(" "), _c('label', {
-      attrs: {
-        "for": "decimalDivider-0"
-      }
-    }, [_vm._v(" " + _vm._s(_vm._f("translate")("Dot ")) + " (.) ")])]), _vm._v(" "), _c('div', {
-      staticClass: "radioButtons--container"
-    }, [_c('input', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (_vm.currentDecimalDivider),
-        expression: "currentDecimalDivider"
-      }],
-      staticClass: "radio",
-      attrs: {
-        "type": "radio",
-        "id": "decimalDivider-1",
-        "name": "decimalDivider"
-      },
-      domProps: {
-        "value": 1,
-        "checked": _vm._q(_vm.currentDecimalDivider, 1)
-      },
-      on: {
-        "change": function($event) {
-          _vm.currentDecimalDivider = 1
-        }
-      }
-    }), _vm._v(" "), _c('label', {
-      attrs: {
-        "for": "decimalDivider-1"
-      }
-    }, [_vm._v(" " + _vm._s(_vm._f("translate")("Comma ")) + " (,) ")])])])])]), _vm._v(" "), _c('div', {
-      staticClass: "row"
-    }, [_c('div', {
-      staticClass: "form-group col-sm-4"
-    }, [_c('label', {
-      attrs: {
-        "for": "endUrl"
-      }
-    }, [_vm._v(_vm._s(_vm._f("translate")('End url')))]), _vm._v(" "), _c('input', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (_vm.currentEndUrl),
-        expression: "currentEndUrl"
-      }],
-      staticClass: "form-control",
-      attrs: {
-        "type": "text",
-        "id": "endUrl"
-      },
-      domProps: {
-        "value": (_vm.currentEndUrl)
-      },
-      on: {
-        "input": function($event) {
-          if ($event.target.composing) { return; }
-          _vm.currentEndUrl = $event.target.value
-        }
-      }
-    })]), _vm._v(" "), _c('div', {
-      staticClass: "form-group col-sm-8"
-    }, [_c('label', {
-      attrs: {
-        "for": "endUrlDescription"
-      }
-    }, [_vm._v(_vm._s(_vm._f("translate")('URL description (link text)')))]), _vm._v(" "), _c('input', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (_vm.currentEndUrlDescription),
-        expression: "currentEndUrlDescription"
-      }],
-      staticClass: "form-control",
-      attrs: {
-        "type": "text",
-        "id": "endUrlDescription"
-      },
-      domProps: {
-        "value": (_vm.currentEndUrlDescription)
-      },
-      on: {
-        "input": function($event) {
-          if ($event.target.composing) { return; }
-          _vm.currentEndUrlDescription = $event.target.value
-        }
+        "innerHTML": _vm._s(_vm.translate('__INFOTEXT'))
       }
     })])]), _vm._v(" "), _c('div', {
       staticClass: "row scoped-editor-row"
@@ -17139,64 +16991,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor "
     }, [_c('label', {}, [_vm._v(_vm._s(_vm._f("translate")("Description")) + ":")]), _vm._v(" "), _c('ckeditor', {
       attrs: {
-        "editor": _vm.descriptionEditorObject,
+        "editor": _vm.datasecmessageEditorObject,
         "config": {}
       },
       model: {
-        value: (_vm.currentDescription),
+        value: (_vm.currentDatasecmessage),
         callback: function($$v) {
-          _vm.currentDescription = $$v
+          _vm.currentDatasecmessage = $$v
         },
-        expression: "currentDescription"
+        expression: "currentDatasecmessage"
       }
-    })], 1)]), _vm._v(" "), _c('div', {
-      staticClass: "row scoped-editor-row"
-    }, [_c('div', {
-      staticClass: "col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor "
-    }, [_c('label', {}, [_vm._v(_vm._s(_vm._f("translate")("Welcome")) + ":")]), _vm._v(" "), _c('ckeditor', {
-      attrs: {
-        "editor": _vm.welcomeEditorObject,
-        "config": {}
-      },
-      model: {
-        value: (_vm.currentWelcome),
-        callback: function($$v) {
-          _vm.currentWelcome = $$v
-        },
-        expression: "currentWelcome"
-      }
-    })], 1)]), _vm._v(" "), _c('div', {
-      staticClass: "row scoped-editor-row"
-    }, [_c('div', {
-      staticClass: "col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor "
-    }, [_c('label', {}, [_vm._v(_vm._s(_vm._f("translate")("End message")) + ":")]), _vm._v(" "), _c('ckeditor', {
-      attrs: {
-        "editor": _vm.endTextEditorObject,
-        "config": {}
-      },
-      model: {
-        value: (_vm.currentEndText),
-        callback: function($$v) {
-          _vm.currentEndText = $$v
-        },
-        expression: "currentEndText"
-      }
-    })], 1)])], _vm._v(" "), _c('div', {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: (_vm.loading),
-        expression: "loading"
-      }],
-      staticClass: "loading-back-greyed"
-    })
+    })], 1)])])]
   ], 2)
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('hr')])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-2e671295", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-0c7a58f8", module.exports)
   }
 }
 
@@ -17212,10 +17028,8 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_localstorage__ = __webpack_require__(148);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_localstorage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_localstorage__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mutations__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__actions__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__getters__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__state__ = __webpack_require__(160);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__actions__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__state__ = __webpack_require__(159);
 
 
 
@@ -17229,20 +17043,19 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODU
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
 
 
-/* harmony default export */ __webpack_exports__["a"] = (function(sid){
+/* harmony default export */ __webpack_exports__["a"] = (function(questionId){
     const vuexLocal = new __WEBPACK_IMPORTED_MODULE_2_vuex_persist___default.a({
-        key: 'lstextedit_'+sid,
+        key: 'lsdatasecedit_'+questionId,
         storage: window.localStorage
     });
     
     return new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
-        state: __WEBPACK_IMPORTED_MODULE_7__state__["a" /* default */],
+        state: __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */],
         plugins: [
             vuexLocal.plugin
         ],
         mutations: __WEBPACK_IMPORTED_MODULE_4__mutations__["a" /* default */],
-        actions: __WEBPACK_IMPORTED_MODULE_5__actions__["a" /* default */],
-        getters: __WEBPACK_IMPORTED_MODULE_6__getters__["a" /* default */]
+        actions: __WEBPACK_IMPORTED_MODULE_5__actions__["a" /* default */]
     });
 });
 
@@ -20881,70 +20694,49 @@ return index;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_keys__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_keys___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_keys__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_indexOf__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_indexOf___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_indexOf__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_isEmpty__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_isEmpty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_isEmpty__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_keys__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_keys___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_keys__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_indexOf__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_indexOf___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_indexOf__);
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    setSurveyTitle : (state, newValue) => {
-        state.surveyTitle = newValue;
+
+    setShowsurveypolicynotice(state, newValue) {
+        state.showsurveypolicynotice = newValue;
     },
-    setWelcome : (state, newValue) => {
-        state.welcome = newValue;
+
+    setDataseclabel(state, newValue) {
+        state.dataseclabel = newValue;
     },
-    setDescription : (state, newValue) => {
-        state.description = newValue;
+    setDatasecmessage(state, newValue) {
+        state.datasecmessage = newValue;
     },
-    setEndText : (state, newValue) => {
-        state.endText = newValue;
+    setDatasecerror(state, newValue) {
+        state.datasecerror = newValue;
     },
-    setEndUrl : (state, newValue) => {
-        state.endUrl = newValue;
+
+    setDataseclabelForCurrentLanguage(state, newValue) {
+        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.dataseclabel, state.activeLanguage, newValue);
     },
-    setEndUrlDescription : (state, newValue) => {
-        state.endUrlDescription = newValue;
+    setDatasecmessageForCurrentLanguage(state, newValue) {
+        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.datasecmessage, state.activeLanguage, newValue);
     },
-    setDateFormat : (state, newValue) => {
-        state.dateFormat = newValue;
-    },
-    setDecimalDivider : (state, newValue) => {
-        state.decimalDivider = newValue;
-    },
-    setDateFormatOptions : (state, newValue) => {
-        state.dateFormatOptions = newValue;
-    },
-    
-    //language specific setter
-    setSurveyTitleForCurrentLanguage : (state, newValue) => {
-        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.surveyTitle, state.activeLanguage, newValue);
-    },
-    setWelcomeForCurrentLanguage : (state, newValue) => {
-        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.welcome, state.activeLanguage, newValue);
-    },
-    setDescriptionForCurrentLanguage : (state, newValue) => {
-        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.description, state.activeLanguage, newValue);
-    },
-    setEndTextForCurrentLanguage : (state, newValue) => {
-        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.endText, state.activeLanguage, newValue);
-    },
-    setEndUrlForCurrentLanguage : (state, newValue) => {
-        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.endUrl, state.activeLanguage, newValue);
-    },
-    setEndUrlDescriptionForCurrentLanguage : (state, newValue) => {
-        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.endUrlDescription, state.activeLanguage, newValue);
-    },
-    setDateFormatForCurrentLanguage : (state, newValue) => {
-        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.dateFormat, state.activeLanguage, newValue);
-    },
-    setDecimalDividerForCurrentLanguage : (state, newValue) => {
-        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.decimalDivider, state.activeLanguage, newValue);
+    setDatasecerrorForCurrentLanguage(state, newValue) {
+        __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].set(state.datasecerror, state.activeLanguage, newValue);
     },
 
     //view controllers
+    toggleVisible(state, newValue=null) {
+        newValue = newValue === null ? !state.visible : newValue;
+        state.visible = newValue;
+    },
+    
     setActiveLanguage : (state, newValue) => {
         state.activeLanguage = newValue;
     },
@@ -20952,21 +20744,18 @@ return index;
         state.languages = newValue;
     },
     nextLanguage: (state) => {
-        let keyList = __WEBPACK_IMPORTED_MODULE_1_lodash_keys___default()(state.languages);
-        let currentIndex = __WEBPACK_IMPORTED_MODULE_2_lodash_indexOf___default()(keyList, state.activeLanguage);
+        let keyList = __WEBPACK_IMPORTED_MODULE_2_lodash_keys___default()(state.languages);
+        let currentIndex = __WEBPACK_IMPORTED_MODULE_3_lodash_indexOf___default()(keyList, state.activeLanguage);
         if(currentIndex < keyList.length) {
             state.activeLanguage = keyList[currentIndex+1];
         }
     },
     previousLanguage: (state) => {
-        let keyList = __WEBPACK_IMPORTED_MODULE_1_lodash_keys___default()(state.languages);
-        let currentIndex = __WEBPACK_IMPORTED_MODULE_2_lodash_indexOf___default()(keyList, state.activeLanguage);
+        let keyList = __WEBPACK_IMPORTED_MODULE_2_lodash_keys___default()(state.languages);
+        let currentIndex = __WEBPACK_IMPORTED_MODULE_3_lodash_indexOf___default()(keyList, state.activeLanguage);
         if(currentIndex > 0) {
             state.activeLanguage = keyList[currentIndex-1];
         }
-    },
-    setSurvey : (state, newValue) => {
-        state.survey = newValue;
     },
     toggleDebugMode: (state) => {
         state.debugMode = !state.debugMode;
@@ -20977,7 +20766,90 @@ return index;
 /* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIndexOf = __webpack_require__(151),
+var baseKeys = __webpack_require__(18),
+    getTag = __webpack_require__(28),
+    isArguments = __webpack_require__(15),
+    isArray = __webpack_require__(0),
+    isArrayLike = __webpack_require__(6),
+    isBuffer = __webpack_require__(35),
+    isPrototype = __webpack_require__(27),
+    isTypedArray = __webpack_require__(36);
+
+/** `Object#toString` result references. */
+var mapTag = '[object Map]',
+    setTag = '[object Set]';
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Checks if `value` is an empty object, collection, map, or set.
+ *
+ * Objects are considered empty if they have no own enumerable string keyed
+ * properties.
+ *
+ * Array-like values such as `arguments` objects, arrays, buffers, strings, or
+ * jQuery-like collections are considered empty if they have a `length` of `0`.
+ * Similarly, maps and sets are considered empty if they have a `size` of `0`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is empty, else `false`.
+ * @example
+ *
+ * _.isEmpty(null);
+ * // => true
+ *
+ * _.isEmpty(true);
+ * // => true
+ *
+ * _.isEmpty(1);
+ * // => true
+ *
+ * _.isEmpty([1, 2, 3]);
+ * // => false
+ *
+ * _.isEmpty({ 'a': 1 });
+ * // => false
+ */
+function isEmpty(value) {
+  if (value == null) {
+    return true;
+  }
+  if (isArrayLike(value) &&
+      (isArray(value) || typeof value == 'string' || typeof value.splice == 'function' ||
+        isBuffer(value) || isTypedArray(value) || isArguments(value))) {
+    return !value.length;
+  }
+  var tag = getTag(value);
+  if (tag == mapTag || tag == setTag) {
+    return !value.size;
+  }
+  if (isPrototype(value)) {
+    return !baseKeys(value).length;
+  }
+  for (var key in value) {
+    if (hasOwnProperty.call(value, key)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+module.exports = isEmpty;
+
+
+/***/ }),
+/* 151 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseIndexOf = __webpack_require__(152),
     toInteger = __webpack_require__(37);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -21022,12 +20894,12 @@ module.exports = indexOf;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFindIndex = __webpack_require__(152),
-    baseIsNaN = __webpack_require__(153),
-    strictIndexOf = __webpack_require__(154);
+var baseFindIndex = __webpack_require__(153),
+    baseIsNaN = __webpack_require__(154),
+    strictIndexOf = __webpack_require__(155);
 
 /**
  * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
@@ -21048,7 +20920,7 @@ module.exports = baseIndexOf;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports) {
 
 /**
@@ -21078,7 +20950,7 @@ module.exports = baseFindIndex;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports) {
 
 /**
@@ -21096,7 +20968,7 @@ module.exports = baseIsNaN;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports) {
 
 /**
@@ -21125,12 +20997,12 @@ module.exports = strictIndexOf;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_logSystem_js__ = __webpack_require__(39);
 
@@ -21138,57 +21010,40 @@ module.exports = strictIndexOf;
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    getDataSet: (context) => {
+    updateObjects: (context, newObjectBlock) => {
+    },
+    loadData: (context) => {
         __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
-            window.TextEditData.connectorBaseUrl+'/getCurrentEditorValues'
+            window.DataSecTextEditData.connectorBaseUrl+'/getDataSecTextSettings', {}
         ).then((result) => {
-            context.dispatch('updateObjects', result.data.textdata);
+            __WEBPACK_IMPORTED_MODULE_2__mixins_logSystem_js__["a" /* LOG */].log('AjaxCall: ',result);
+            context.commit('setShowsurveypolicynotice', parseInt(result.data.showsurveypolicynotice) );
+            context.commit('setDataseclabel', result.data.textdata.dataseclabel );
+            context.commit('setDatasecmessage', result.data.textdata.datasecmessage );
+            context.commit('setDatasecerror', result.data.textdata.datasecerror );
+
             context.commit('setLanguages', result.data.languages);
             context.commit('setActiveLanguage', __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.keys(result.data.languages)[0]);
-        });
-    },
-    updateObjects: (context, newObjectBlock) => {
-        __WEBPACK_IMPORTED_MODULE_2__mixins_logSystem_js__["a" /* LOG */].log('UPDATING AJAX', newObjectBlock);
-        context.commit('setSurveyTitle', newObjectBlock.surveyTitle);
-        context.commit('setWelcome', newObjectBlock.welcome);
-        context.commit('setDescription', newObjectBlock.description);
-        context.commit('setEndText', newObjectBlock.endText);
-        context.commit('setEndUrl', newObjectBlock.endUrl);
-        context.commit('setEndUrlDescription', newObjectBlock.endUrlDescription);
-        context.commit('setDateFormat', newObjectBlock.dateFormat);
-        context.commit('setDecimalDivider', newObjectBlock.decimalDivider);
-    },
-    getDateFormatOptions: (context) => {
-        __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
-            window.TextEditData.connectorBaseUrl+'/getDateFormatOptions'
-        ).then((result) => {
-            context.commit('setDateFormatOptions', result.data);
+            context.commit('toggleVisible', true);
         });
     },
     saveData: (context) => {
-        let postObject = {};
-        __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.each(__WEBPACK_IMPORTED_MODULE_1_lodash___default.a.keys(context.state.languages), (lngKey) => {
-            postObject[lngKey] = {
-                surveyTitle: context.state.surveyTitle[lngKey],
-                welcome: context.state.welcome[lngKey],
-                description: context.state.description[lngKey],
-                endText: context.state.endText[lngKey],
-                endUrl: context.state.endUrl[lngKey],
-                endUrlDescription: context.state.endUrlDescription[lngKey],
-                dateFormat: context.state.dateFormat[lngKey],
-                decimalDivider: context.state.decimalDivider[lngKey],
-            }
-        });
+        context.commit('toggleVisible', false);
+        let transferObject = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.merge({
+            'changes': {
+            showsurveypolicynotice: context.state.showsurveypolicynotice,
+            dataseclabel: context.state.dataseclabel,
+            datasecmessage: context.state.datasecmessage,
+            datasecerror: context.state.datasecerror,
+        }}, window.LS.data.csrfTokenData);
 
-        let transferObject = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.merge({changes: postObject}, window.LS.data.csrfTokenData);
-
-        __WEBPACK_IMPORTED_MODULE_2__mixins_logSystem_js__["a" /* LOG */].log('OBJECT TO BE TRANSFERRED: ', {'postObject': transferObject});
-        return __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_post(window.TextEditData.connectorBaseUrl+'/saveTextData', transferObject)
+        __WEBPACK_IMPORTED_MODULE_2__mixins_logSystem_js__["a" /* LOG */].log('OBJECT TO BE TRANSFERRED: ', {'dataSecTextData': transferObject});
+        return __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_post(window.DataSecTextEditData.connectorBaseUrl+'/saveDataSecTextData', transferObject)
     }
 });
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -38280,7 +38135,7 @@ module.exports = strictIndexOf;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(16)(module)))
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38438,117 +38293,17 @@ class ConsoleShim {
 /* harmony default export */ __webpack_exports__["a"] = (ConsoleShim);
 
 /***/ }),
-/* 158 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_isEmpty__ = __webpack_require__(159);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_isEmpty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash_isEmpty__);
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-    fullyLoaded: (state) => {
-        return !__WEBPACK_IMPORTED_MODULE_0_lodash_isEmpty___default()(state.welcome);
-    },
-});
-
-/***/ }),
 /* 159 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var baseKeys = __webpack_require__(18),
-    getTag = __webpack_require__(28),
-    isArguments = __webpack_require__(15),
-    isArray = __webpack_require__(0),
-    isArrayLike = __webpack_require__(6),
-    isBuffer = __webpack_require__(35),
-    isPrototype = __webpack_require__(27),
-    isTypedArray = __webpack_require__(36);
-
-/** `Object#toString` result references. */
-var mapTag = '[object Map]',
-    setTag = '[object Set]';
-
-/** Used for built-in method references. */
-var objectProto = Object.prototype;
-
-/** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
-
-/**
- * Checks if `value` is an empty object, collection, map, or set.
- *
- * Objects are considered empty if they have no own enumerable string keyed
- * properties.
- *
- * Array-like values such as `arguments` objects, arrays, buffers, strings, or
- * jQuery-like collections are considered empty if they have a `length` of `0`.
- * Similarly, maps and sets are considered empty if they have a `size` of `0`.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is empty, else `false`.
- * @example
- *
- * _.isEmpty(null);
- * // => true
- *
- * _.isEmpty(true);
- * // => true
- *
- * _.isEmpty(1);
- * // => true
- *
- * _.isEmpty([1, 2, 3]);
- * // => false
- *
- * _.isEmpty({ 'a': 1 });
- * // => false
- */
-function isEmpty(value) {
-  if (value == null) {
-    return true;
-  }
-  if (isArrayLike(value) &&
-      (isArray(value) || typeof value == 'string' || typeof value.splice == 'function' ||
-        isBuffer(value) || isTypedArray(value) || isArguments(value))) {
-    return !value.length;
-  }
-  var tag = getTag(value);
-  if (tag == mapTag || tag == setTag) {
-    return !value.size;
-  }
-  if (isPrototype(value)) {
-    return !baseKeys(value).length;
-  }
-  for (var key in value) {
-    if (hasOwnProperty.call(value, key)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-module.exports = isEmpty;
-
-
-/***/ }),
-/* 160 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    surveyTitle: {},
-    welcome: {},
-    description: {},
-    endText: {},
-    endUrl: {},
-    endUrlDescription: {},
-    dateFormat: {},
-    decimalDivider: {},
-    dateFormatOptions: {},
+    visible: false,
+    //0 - don't show, 1- inline text, 2- dropdown
+    showsurveypolicynotice: 0, 
+    dataseclabel: [],
+    datasecmessage: [],
+    datasecerror: [],
     languages: [],
     survey: {},
     debugMode: false,
@@ -38557,4 +38312,4 @@ module.exports = isEmpty;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=lstextelements.js.map
+//# sourceMappingURL=datasecuritysettings.js.map

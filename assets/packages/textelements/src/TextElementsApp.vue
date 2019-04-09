@@ -58,7 +58,7 @@ export default {
         applyHotkeys() {
             Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
             Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);
-            Mousetrap.bind('ctrl+s', this.submitCurrentState);
+            Mousetrap.bind('ctrl+shift+s', this.submitCurrentState);
             Mousetrap.bind('ctrl+alt+d', () => {this.$store.commit('toggleDebugMode');});
         },
         chooseNextLanguage() {
@@ -80,7 +80,6 @@ export default {
 
                     $('#in_survey_common').trigger('lsStopLoading');
                     window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
-                    this.$store.dispatch('updateObjects', result.data.newTextDetails)
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
                 (reject) => {
@@ -114,9 +113,6 @@ export default {
             this.submitCurrentState();
         });
 
-        $('#save-and-close-button').on('click', (e)=>{
-            this.submitCurrentState(true);
-        });
 
         this.toggleLoading(false);
         

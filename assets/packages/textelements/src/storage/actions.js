@@ -45,7 +45,7 @@ export default {
             }
         });
 
-        let transferObject = _.merge(postObject, window.LS.data.csrfTokenData);
+        let transferObject = _.merge({changes: postObject}, window.LS.data.csrfTokenData);
 
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'postObject': transferObject});
         return ajax.methods.$_post(window.TextEditData.connectorBaseUrl+'/saveTextData', transferObject)

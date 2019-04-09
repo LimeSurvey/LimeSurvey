@@ -5,7 +5,6 @@ import VueLocalStorage from 'vue-localstorage';
 
 import mutations from './mutations';
 import actions from './actions';
-import getters from './getters';
 import statePreset from './state';
 
 Vue.use(VueLocalStorage);
@@ -14,7 +13,7 @@ Vue.use(Vuex);
 
 export default function(questionId){
     const vuexLocal = new VuexPersistence({
-        key: 'lstextedit_'+questionId,
+        key: 'lsdatasecedit_'+questionId,
         storage: window.localStorage
     });
     
@@ -24,7 +23,6 @@ export default function(questionId){
             vuexLocal.plugin
         ],
         mutations,
-        actions,
-        getters
+        actions
     });
 }
