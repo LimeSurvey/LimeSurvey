@@ -13,6 +13,9 @@ import SimplePopUpEditor from '../helperComponents/SimplePopUpEditor.vue';
 
 export default {
     components: {QuickEdit, SimplePopUpEditor},
+    props: {
+        readonly : {type: Boolean, default: false}
+    },
     methods: {
         getLength(arrayOrObject) {
             if(isArrayLike(arrayOrObject)) {

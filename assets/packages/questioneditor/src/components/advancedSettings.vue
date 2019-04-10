@@ -1,7 +1,11 @@
 <script>
 
 import keys from 'lodash/keys';
+import foreach from 'lodash/foreach';
+import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
+import isEmpty from 'lodash/isEmpty';
+import isObject from 'lodash/isObject';
 
 import SettingsTab from './subcomponents/_settingstab.vue';
 import Subquestions from './subcomponents/_subquestions.vue';
@@ -16,6 +20,9 @@ export default {
         "settings-tab" : SettingsTab,
         "subquestions" : Subquestions,
         "Answeroptions" : Answeroptions,
+    },
+    props: {
+        readonly : {type: Boolean, default: false}
     },
     data() {
         return {
@@ -32,7 +39,20 @@ export default {
     },
     computed: {
         tabs(){
-            return filter(keys(this.$store.state.currentQuestionAdvancedSettings), (category) => category != 'debug');
+            if(this.readonly == false) {
+                return filter(keys(this.$store.state.currentQuestionAdvancedSettings), (category) => category != 'debug');
+            }
+
+            let tabsWithContent = [];
+            foreach(this.$store.state.currentQuestionAdvancedSettings, (categoryContents, categoryName) => {
+                if(reduce(categoryContents, (carry, settingOption) => {
+                    return carry = carry || !isEmpty(this.parseForLocalizedOption(settingOption.formElementValue));
+                }, false) && categoryName != 'debug') {
+                    tabsWithContent.push(categoryName);
+                }
+            });
+            return tabsWithContent;
+            
         },
         showSubquestionEdit(){
             return this.$store.state.currentQuestion.typeInformation.subquestions == 1;
@@ -40,9 +60,6 @@ export default {
         showAnswerOptionEdit(){
             return this.$store.state.currentQuestion.typeInformation.answerscales >= 1;
         },
-        tabData() {
-
-        }
     },
     methods: {
         selectCurrentTab(tabComponent, categoryName='') {
@@ -51,6 +68,12 @@ export default {
                 this.$store.commit('setQuestionAdvancedSettingsCategory',categoryName);
             }
         },
+        parseForLocalizedOption(value) {
+            if(isObject(value) && value[this.$store.state.activeLanguage] != undefined) {
+                return value[this.$store.state.activeLanguage];
+            }
+            return value;
+        }
     },
     mounted(){
         this.selectCurrentTab('settings-tab', this.tabs[0]);
@@ -95,7 +118,7 @@ export default {
                 v-bind:is="currentTabComponent" 
                 :event="event"
                 v-on:eventSet="eventSet"
-                tabData
+                :readonly="readonly"
                 />
             </div>    
         </div>

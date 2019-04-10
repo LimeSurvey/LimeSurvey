@@ -1,36 +1,37 @@
 import ajax from '../mixins/runAjax.js';
-import _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import merge from 'lodash/merge';
 import {LOG} from '../mixins/logSystem.js'
 
 export default {
     updateObjects: (context, newObjectBlock) => {
         context.commit('setCurrentQuestion', newObjectBlock.question);
         context.commit('unsetQuestionImmutable');
-        context.commit('setQuestionImmutable', _.cloneDeep(newObjectBlock.question));
+        context.commit('setQuestionImmutable', cloneDeep(newObjectBlock.question));
 
         context.commit('setCurrentQuestionI10N', newObjectBlock.questionI10N);
         context.commit('unsetQuestionImmutableI10N');
-        context.commit('setQuestionImmutableI10N', _.cloneDeep(newObjectBlock.questionI10N));
+        context.commit('setQuestionImmutableI10N', cloneDeep(newObjectBlock.questionI10N));
 
         context.commit('setCurrentQuestionSubquestions', newObjectBlock.scaledSubquestions);
         context.commit('unsetQuestionSubquestionsImmutable')
-        context.commit('setQuestionSubquestionsImmutable',  _.cloneDeep(newObjectBlock.scaledSubquestions));
+        context.commit('setQuestionSubquestionsImmutable',  cloneDeep(newObjectBlock.scaledSubquestions));
 
         context.commit('setCurrentQuestionAnswerOptions', newObjectBlock.scaledAnswerOptions);
         context.commit('unsetQuestionAnswerOptionsImmutable')
-        context.commit('setQuestionAnswerOptionsImmutable', _.cloneDeep(newObjectBlock.scaledAnswerOptions))
+        context.commit('setQuestionAnswerOptionsImmutable', cloneDeep(newObjectBlock.scaledAnswerOptions))
 
         context.commit('setCurrentQuestionAttributes', newObjectBlock.questionAttributes);
         context.commit('unsetImmutableQuestionAttributes');
-        context.commit('setImmutableQuestionAttributes', _cloneDeep(newObjectBlock.questionAttributes));
+        context.commit('setImmutableQuestionAttributes', cloneDeep(newObjectBlock.questionAttributes));
 
         context.commit('setCurrentQuestionGeneralSettings', newObjectBlock.generalSettings);
         context.commit('unsetImmutableQuestionGeneralSettings');
-        context.commit('setImmutableQuestionGeneralSettings', _.clonbeDeep(newObjectBlock.generalSettings));
+        context.commit('setImmutableQuestionGeneralSettings', cloneDeep(newObjectBlock.generalSettings));
 
         context.commit('setCurrentQuestionAdvancedSettings', newObjectBlock.advancedSettings);
         context.commit('unsetImmutableQuestionAdvancedSettings');
-        context.commit('setImmutableQuestionAdvancedSettings', _cloneDeep(newObjectBlock.advancedSettings));
+        context.commit('setImmutableQuestionAdvancedSettings', cloneDeep(newObjectBlock.advancedSettings));
 
         context.commit('setCurrentQuestionGroupInfo', newObjectBlock.questiongroup);
     },
@@ -41,19 +42,19 @@ export default {
         ).then((result) => {
             context.commit('setCurrentQuestion', result.data.question);
             context.commit('unsetQuestionImmutable');
-            context.commit('setQuestionImmutable', _.cloneDeep(result.data.question));
+            context.commit('setQuestionImmutable', cloneDeep(result.data.question));
 
             context.commit('setCurrentQuestionI10N', result.data.i10n);
             context.commit('unsetQuestionImmutableI10N');
-            context.commit('setQuestionImmutableI10N', _.cloneDeep(result.data.i10n));
+            context.commit('setQuestionImmutableI10N', cloneDeep(result.data.i10n));
             
             context.commit('setCurrentQuestionSubquestions', result.data.subquestions);
             context.commit('unsetQuestionSubquestionsImmutable')
-            context.commit('setQuestionSubquestionsImmutable',  _.cloneDeep(result.data.subquestions));
+            context.commit('setQuestionSubquestionsImmutable',  cloneDeep(result.data.subquestions));
 
             context.commit('setCurrentQuestionAnswerOptions', result.data.answerOptions);
             context.commit('unsetQuestionAnswerOptionsImmutable')
-            context.commit('setQuestionAnswerOptionsImmutable', _.cloneDeep(result.data.answerOptions))
+            context.commit('setQuestionAnswerOptionsImmutable', cloneDeep(result.data.answerOptions))
 
             context.commit('setCurrentQuestionGroupInfo', result.data.questiongroup);
             context.commit('setLanguages', result.data.languages);
@@ -65,7 +66,7 @@ export default {
         ).then((result) => {
             context.commit('setCurrentQuestionAttributes', result.data);
             context.commit('unsetImmutableQuestionAttributes');
-            context.commit('setImmutableQuestionAttributes', _.cloneDeep(result.data));
+            context.commit('setImmutableQuestionAttributes', cloneDeep(result.data));
         });
     },
     getQuestionGeneralSettings: (context) => {
@@ -119,7 +120,7 @@ export default {
     },
     saveQuestionData: (context) => {
         
-        let transferObject = _.merge({
+        let transferObject = merge({
             'questionData': {
             question: context.state.currentQuestion,
             scaledSubquestions: context.state.currentQuestionSubquestions,

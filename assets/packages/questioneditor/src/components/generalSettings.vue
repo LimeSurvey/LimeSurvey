@@ -21,6 +21,9 @@ export default {
         'setting-textarea': SettingTextarea,
         'stub-set' : StubSet
     },
+    props: {
+        readonly : {type: Boolean, default: false}
+    },
     data() {
         return {};
     },
@@ -45,7 +48,7 @@ export default {
 </script>
 
 <template>
-    <div class="col-sm-4 col-xs-12 scope-border-simple scope-set-min-height">
+    <div class="col-sm-4 col-xs-12 scope-set-min-height">
         <div class="panel panel-default question-option-general-container">
             <div class="panel-heading"> {{"General Settings" | translate }}</div>
             <div class="panel-body">
@@ -60,6 +63,7 @@ export default {
                         :currentValue="generalSetting.formElementValue"
                         :elOptions="generalSetting.formElementOptions"
                         :debug="generalSetting"
+                        :readonly="readonly"
                         @change="reactOnChange($event, generalSetting)"
                         ></component>
                     </div>

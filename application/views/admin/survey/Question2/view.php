@@ -60,7 +60,7 @@
                 ."$('#question_type').val(value);"
                 ."var event = jQuery.Event('jquery:trigger');"
                 ."event.emitter = JSON.stringify({"
-                    ."target: 'MainEditor',"
+                    ."target: 'lsnextquestioneditor',"
                     ."method: 'questionTypeChangeTriggered',"
                     ."content: value"
                 ."});"

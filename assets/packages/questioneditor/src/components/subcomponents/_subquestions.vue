@@ -107,7 +107,7 @@ export default {
 <template>
     <div class="col-sm-12">
         <div class="container-fluid scoped-main-subquestions-container">
-            <div class="row">
+            <div class="row" v-show="!readonly">
                 <div class="col-sm-8">
                     <button class="btn btn-default col-3" @click.prevent="openQuickAdd">{{ "Quick add" | translate }}</button>
                     <span class="scoped-spacer col-1" />
@@ -135,7 +135,7 @@ export default {
                         v-for="subquestion in currentDataSet[subquestionscale]"
                         :key="subquestion.qid"
                     >
-                        <div class="scoped-move-block ">
+                        <div class="scoped-move-block" v-show="!readonly">
                             <i class="fa fa-bars" :class="surveyActive ? ' disabled' : ' '"></i>
                         </div>
                         <div class="scoped-code-block   ">
@@ -146,6 +146,7 @@ export default {
                                 size='5'
                                 :class="surveyActive ? ' disabled' : ' '"
                                 :name="'code_'+subquestion.question_order+'_'+subquestionscale" 
+                                :readonly="readonly"
                                 v-model="subquestion.title"
                                 @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale)'
                             />
@@ -159,6 +160,7 @@ export default {
                                 :name='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
                                 :placeholder='translate("Some example subquestion")'
                                 :value="getQuestionForCurrentLanguage(subquestion)"
+                                :readonly="readonly"
                                 @change="setQuestionForCurrentLanguage(subquestion,$event, arguments)"
                                 @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
                             />
@@ -171,6 +173,7 @@ export default {
                                     class='relevance_input_field form-control input'
                                     :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
                                     :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                    :readonly="readonly"
                                     v-model="subquestion.relevance"
                                     @keyup.enter.prevent='switchinput(false,$event)'
                                     @focus='triggerScale'
@@ -179,7 +182,7 @@ export default {
                                 <div class="input-group-addon">}</div>
                             </div>
                         </div>
-                        <div class="scoped-actions-block   ">
+                        <div class="scoped-actions-block" v-show="!readonly">
                             <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(subquestion, subquestionscale)">
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
@@ -196,7 +199,7 @@ export default {
 
                     </div>
                 </div>
-                <div class="row" :key="subquestionscale+'addRow'">
+                <div class="row" :key="subquestionscale+'addRow'" v-show="!readonly">
                     <div class="col-sm-12 text-right">
                         <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary">
                             <i class="fa fa-plus"></i>

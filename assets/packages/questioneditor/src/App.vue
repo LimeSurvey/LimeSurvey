@@ -5,28 +5,40 @@ import QuestionOverview from './components/questionoverview.vue';
 import MainEditor from './components/mainEditor.vue';
 import GeneralSettings from './components/generalSettings.vue';
 import AdvancedSettings from './components/advancedSettings.vue';
+import LanguageSelector from './helperComponents/LanguageSelector.vue';
 
 import runAjax from './mixins/runAjax.js';
+import eventRoot from './mixins/eventRoot.js';
 
 export default {
     name: 'lsnextquestioneditor',
-    mixins: [runAjax],
+    mixins: [runAjax,eventRoot],
     components: {
         'questionoverview' : QuestionOverview,
         'maineditor' : MainEditor,
         'generalsettings' : GeneralSettings,
         'advancedsettings' : AdvancedSettings,
+        'languageselector' : LanguageSelector
     },
     data() {
         return {
-            event: null,
-            editQuestion: false
+            editQuestion: false,
+            questionEditButton: window.questionEditButton,
         }
     },
     computed: {
         isCreateQuestion(){
             return this.$store.state.currentQuestion.qid == null;
-        }
+        },
+        questionGroupWithId(){
+            return `${this.$store.state.currentQuestionGroupInfo[this.$store.state.activeLanguage].group_name} (GID: ${this.$store.state.currentQuestionGroupInfo.gid})`;
+        },
+        currentQuestionCode: {
+            get() {return this.$store.state.currentQuestion.title;},
+            set(newValue) {
+                this.$store.commit('updateCurrentQuestionTitle', newValue);
+            }
+        },
     },
     methods: {
         triggerEditQuestion(){
@@ -94,8 +106,20 @@ export default {
                     //setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
-        }
-
+        },
+        questionTypeChangeTriggered(newValue) {
+            this.$log.log('CHANGE OF TYPE', newValue);
+            this.currentQuestionType = newValue;
+            let tempQuestionObject = this.$store.state.currentQuestion;
+            tempQuestionObject.type = newValue;
+            this.$store.commit('setCurrentQuestion', tempQuestionObject);
+            this.$store.dispatch('reloadQuestion');
+            this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
+        },
+        selectLanguage(sLanguage) {
+            this.$log.log('LANGUAGE CHANGED', sLanguage);
+            this.$store.commit('setActiveLanguage', sLanguage);
+        },
     },
     created(){
         this.$store.dispatch('loadQuestion');
@@ -146,18 +170,35 @@ export default {
             </template>
         </div>
         <template v-if="$store.getters.fullyLoaded">
-            <transition name="fade">
-                <div class="row" v-if="editQuestion || isCreateQuestion">
-                    <maineditor :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
-                    <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></generalsettings>
-                    <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></advancedsettings>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="questionCode">{{'Code' | translate }}</label>
+                    <input type="text" class="form-control" id="questionCode" :readonly="!(editQuestion || isCreateQuestion)" v-model="currentQuestionCode">
                 </div>
-            </transition>
-            <transition name="fade">
-                <div class="row" v-if="!editQuestion && !isCreateQuestion">
-                    <questionoverview :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                <div class="form-group col-sm-6 contains-question-selector">
+                    <label for="questionCode">{{'Question type' | translate }}</label>
+                    <div v-if="editQuestion || isCreateQuestion"  v-html="questionEditButton" />
+                    <div v-else class="scoped-small-border row">
+                        <div class="col-sm-4">{{'Question group'|translate}}:</div>
+                        <div class="col-sm-8">{{questionGroupWithId}}</div>
+                    </div>
+                    <input type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
                 </div>
-            </transition>
+            </div>
+            <div class="row">
+                <languageselector
+                    :elId="'question-language-changer'" 
+                    :aLanguages="$store.state.languages" 
+                    :parentCurrentLanguage="$store.state.activeLanguage" 
+                    @change="selectLanguage"
+                />
+            </div>
+            <div class="row">
+                <maineditor v-if="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
+                <questionoverview v-else :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
+                <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
+            </div>
         </template>
         <modals-container @modalEvent="setModalEvent"/>
     </div>
@@ -177,6 +218,12 @@ export default {
     height: 100%;
     min-height: 60vh;
 }
+
+.scoped-small-border{
+     border: 1px solid rgba(184,184,184,0.8);
+     padding: 0.6rem 1rem;
+     border-radius: 4px;
+ }
 
 .slide-fade-enter-active {
   transition: all .3s ease;
