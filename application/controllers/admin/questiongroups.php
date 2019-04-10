@@ -74,7 +74,7 @@ class questiongroups extends Survey_Common_Action
 
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
             if (strtolower($sExtension) == 'lsg') {
-                $aImportResults = XMLImportGroup($sFullFilepath, $iSurveyID);
+                $aImportResults = XMLImportGroup($sFullFilepath, $iSurveyID, (Yii::app()->request->getPost('translinksfields') == '1'));
             } else {
                 Yii::app()->user->setFlash('error', gT("Unknown file extension"));
                 $this->getController()->redirect(array('admin/questiongroups/sa/importview/surveyid/'.$surveyid));

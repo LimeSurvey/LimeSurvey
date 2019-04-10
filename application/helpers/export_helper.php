@@ -1815,7 +1815,7 @@ function group_export($action, $iSurveyID, $gid)
     $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
 
-    $lresult = QuestionGroup::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language', 'group' => 'language'));
+    $lresult = QuestionGroupL10n::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language', 'group' => 'language'));
     foreach ($lresult as $row) {
         $xml->writeElement('language', $row->language);
     }
@@ -1833,19 +1833,34 @@ function groupGetXMLStructure($xml, $gid)
     // QuestionGroup
     $gquery = "SELECT *
     FROM {{groups}}
-    WHERE gid=$gid";
-    buildXMLFromQuery($xml, $gquery);
+    WHERE {{groups}}.gid=$gid";
+    buildXMLFromQuery($xml, $gquery, 'groups');
+
+    // QuestionGroup localization
+    $gquery = "SELECT *
+    FROM {{group_l10ns}}
+    JOIN {{groups}} ON {{group_l10ns}}.gid = {{groups}}.gid
+    WHERE {{groups}}.gid=$gid";
+    buildXMLFromQuery($xml, $gquery, 'group_l10ns');
 
     // Questions table
-    $qquery = "SELECT *
+    $qquery = "SELECT {{questions}}.*
     FROM {{questions}}
-    WHERE gid=$gid and parent_qid=0 order by question_order, language, scale_id";
-    buildXMLFromQuery($xml, $qquery);
+    WHERE gid=$gid and parent_qid=0 order by question_order, scale_id";
+    buildXMLFromQuery($xml, $qquery, 'questions');
+
+    // Questions localization
+    $qqueryl10n = "SELECT {{question_l10ns}}.*
+    FROM {{question_l10ns}}
+    JOIN {{questions}} ON {{question_l10ns}}.qid = {{questions}}.qid
+    WHERE gid=$gid and parent_qid=0 order by question_order, {{question_l10ns}}.language, scale_id";
+    buildXMLFromQuery($xml, $qqueryl10n, 'question_l10ns');
 
     // Questions table - Subquestions
     $qquery = "SELECT *
     FROM {{questions}}
-    WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
+    JOIN {{question_l10ns}} ON {{question_l10ns}}.qid = {{questions}}.qid
+    WHERE gid=$gid and parent_qid>0 order by question_order, {{question_l10ns}}.language, scale_id";
     buildXMLFromQuery($xml, $qquery, 'subquestions');
 
     //Answer
@@ -1853,7 +1868,15 @@ function groupGetXMLStructure($xml, $gid)
     FROM {{answers}}, {{questions}}
     WHERE ({{answers}}.qid={{questions}}.qid)
     AND ({{questions}}.gid=$gid)";
-    buildXMLFromQuery($xml, $aquery);
+    buildXMLFromQuery($xml, $aquery, 'answers');
+
+    //Answer localization
+    $aquery = "SELECT DISTINCT {{answer_l10ns}}.*
+    FROM {{answer_l10ns}}
+    JOIN {{answers}} ON ({{answers}}.aid={{answer_l10ns}}.aid)
+    JOIN {{questions}} ON ({{answers}}.qid={{questions}}.qid)
+    WHERE {{questions}}.gid=$gid";
+    buildXMLFromQuery($xml, $aquery, 'answer_l10ns');
 
     //Condition - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
     $cquery = "SELECT DISTINCT c.*
@@ -1872,11 +1895,13 @@ function groupGetXMLStructure($xml, $gid)
     if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
+        JOIN {{question_l10ns}} ql10n ON ql10n.qid = q.qid
+        where ql10n.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
     } else {
         $query = "SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
+        JOIN {{question_l10ns}} ql10n ON ql10n.qid = q.qid
+        where ql10n.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
     }
     buildXMLFromQuery($xml, $query, 'question_attributes');
 
@@ -1884,10 +1909,20 @@ function groupGetXMLStructure($xml, $gid)
     $query = "SELECT dv.*
     FROM {{defaultvalues}} dv
     JOIN {{questions}} ON {{questions}}.qid = dv.qid
-    AND {{questions}}.language=dv.language
-    AND {{questions}}.gid=$gid
-    order by dv.language, dv.scale_id";
+    WHERE {{questions}}.gid=$gid
+    order by dv.qid, dv.scale_id, dv.sqid, dv.specialtype";
     buildXMLFromQuery($xml, $query, 'defaultvalues');
+
+    // Default values localization
+    $query = "SELECT {{defaultvalue_l10ns}}.*
+    FROM {{defaultvalues}} dv
+    JOIN {{defaultvalue_l10ns}} ON {{defaultvalue_l10ns}}.dvid = dv.dvid
+    JOIN {{questions}} ON {{questions}}.qid = dv.qid
+    JOIN {{question_l10ns}} ON {{question_l10ns}}.qid = {{questions}}.qid
+    AND {{question_l10ns}}.language={{defaultvalue_l10ns}}.language
+    AND {{questions}}.gid=$gid
+    order by {{defaultvalue_l10ns}}.language, dv.scale_id";
+    buildXMLFromQuery($xml, $query, 'defaultvalue_l10ns');
 }
 
 

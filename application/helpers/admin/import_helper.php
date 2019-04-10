@@ -19,7 +19,7 @@ use \LimeSurvey\Helpers\questionHelper;
 * @param string $sFullFilePath  The full filepath of the uploaded file
 * @param integer $iNewSID The new survey id - the group will always be added after the last group in the survey
 */
-function XMLImportGroup($sFullFilePath, $iNewSID)
+function XMLImportGroup($sFullFilePath, $iNewSID, $bConvertInvalidQuestionCodes)
 {
     $sBaseLanguage         = Survey::model()->findByPk($iNewSID)->language;
     $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
@@ -88,7 +88,10 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         }
         if (!isset($aGIDReplacements[$oldgid])) {
             $questionGroup = new QuestionGroup();
-            $questionGroup->attributes = $insertdata;
+            $questionGroup->sid = $insertdata['sid'];
+            $questionGroup->group_order = $insertdata['group_order'];
+            $questionGroup->randomization_group = $insertdata['randomization_group'];
+            $questionGroup->grelevance = $insertdata['grelevance'];
             if (!$questionGroup->save()) {
                 safeDie(gT("Error").": Failed to insert data [3]<br />");
             }
@@ -150,7 +153,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
             $iOldSID = $insertdata['sid'];
             $insertdata['sid'] = $iNewSID;
             $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
-            $oldqid = $insertdata['qid']; // save the old qid
+            $iOldQID = $insertdata['qid']; // save the old qid
             unset($insertdata['qid']);
 
             if ($insertdata) {
@@ -170,7 +173,14 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
                 unset($insertdata['help']);
                 unset($insertdata['language']);
             }
-            $oQuestion = new Question('import');
+            
+            if (!$bConvertInvalidQuestionCodes) {
+                $sScenario = 'archiveimport';
+            } else {
+                $sScenario = 'import';
+            }
+
+            $oQuestion = new Question($sScenario);
             $oQuestion->setAttributes($insertdata, false);
 
             if (!isset($aQIDReplacements[$iOldQID])) {
@@ -202,7 +212,6 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
                     safeDie(gT("Error while saving: ").print_r($oQuestion->errors, true));
                 }
                 $aQIDReplacements[$iOldQID] = $oQuestion->qid;
-                ;
                 $results['questions']++;
             }
             
@@ -516,9 +525,9 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
 
             // recreate the cfieldname with the new IDs
             if (preg_match("/^\+/", $oldcsid)) {
-                $newcfieldname = '+'.$iNewSID."X".$newgid."X".$insertdata["cqid"].substr($oldqidanscode, strlen($oldqid));
+                $newcfieldname = '+'.$iNewSID."X".$newgid."X".$insertdata["cqid"].substr($oldqidanscode, strlen($iOldQID));
             } else {
-                $newcfieldname = $iNewSID."X".$newgid."X".$insertdata["cqid"].substr($oldqidanscode, strlen($oldqid));
+                $newcfieldname = $iNewSID."X".$newgid."X".$insertdata["cqid"].substr($oldqidanscode, strlen($iOldQID));
             }
 
             $insertdata["cfieldname"] = $newcfieldname;
