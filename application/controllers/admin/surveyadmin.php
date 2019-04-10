@@ -1967,15 +1967,16 @@ class SurveyAdmin extends Survey_Common_Action
   
         if($oSurvey == null ) {
             $defaultLanguage = App()->getConfig('defaultlang');
-            $aLanguages = [$defaultLanguage];
+            $aLanguageDetails = getLanguageDetails($defaultLanguage);
+            $aLanguages = [$defaultLanguage => getLanguageCodefromLanguage($defaultLanguage)];
             $aReturner["surveyTitle"][$defaultLanguage] = "";
             $aReturner["welcome"][$defaultLanguage] = "";
             $aReturner["description"][$defaultLanguage] = "";
             $aReturner["endText"][$defaultLanguage] = "";
             $aReturner["endUrl"][$defaultLanguage] = "";
             $aReturner["endUrlDescription"][$defaultLanguage] = "";
-            $aReturner["dateFormat"][$defaultLanguage] = "";
-            $aReturner["decimalDivider"][$defaultLanguage] = "";
+            $aReturner["dateFormat"][$defaultLanguage] = $aLanguageDetails['dateformat'];
+            $aReturner["decimalDivider"][$defaultLanguage] = $aLanguageDetails['radixpoint'];
 
             return Yii::app()->getController()->renderPartial(
                 '/admin/super/_renderJson',
@@ -2092,7 +2093,7 @@ class SurveyAdmin extends Survey_Common_Action
         if($oSurvey == null ) {
 
             $defaultLanguage = App()->getConfig('defaultlang');
-            $aLanguages = [$defaultLanguage];
+            $aLanguages = [$defaultLanguage => getLanguageCodefromLanguage($defaultLanguage)];
             $aReturner["datasecmessage"][$defaultLanguage] = "";
             $aReturner["datasecerror"][$defaultLanguage] = "";
             $aReturner["dataseclabel"][$defaultLanguage] = "";

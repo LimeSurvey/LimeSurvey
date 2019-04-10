@@ -1306,9 +1306,11 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     App()->setLanguage($sLanguage);
     // Collect all default values once so don't need separate query for each question with defaults
     // First collect language specific defaults
+    
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
-    . " FROM {{defaultvalues}} as a, {{defaultvalue_l10ns}} as al10, {{questions}} as b"
-    . " WHERE a.qid = b.qid AND a.dvid = al10.dvid"
+    . " FROM {{defaultvalues}} as a "
+    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
+    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
     . " AND al10.language = '{$sLanguage}'"
     . " AND b.same_default=0"
     . " AND b.sid = ".$surveyid;
@@ -1327,8 +1329,9 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     // Now overwrite language-specific defaults (if any) base language values for each question that uses same_defaults=1
     $baseLanguage = $survey->language;
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
-    . " FROM {{defaultvalues}} as a, {{defaultvalue_l10ns}} as al10, {{questions}} as b"
-    . " WHERE a.qid = b.qid AND a.dvid = al10.dvid"
+    . " FROM {{defaultvalues}} as a "
+    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
+    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
     . " AND al10.language = '{$baseLanguage}'"
     . " AND b.same_default=1"
     . " AND b.sid = ".$surveyid;

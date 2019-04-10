@@ -7,6 +7,7 @@ export default {
         ajax.methods.$_get(
             window.TextEditData.connectorBaseUrl+'/getCurrentEditorValues'
         ).then((result) => {
+            LOG.log('Getting Data', result);
             context.dispatch('updateObjects', result.data.textdata);
             context.commit('setLanguages', result.data.languages);
             context.commit('setActiveLanguage', _.keys(result.data.languages)[0]);
