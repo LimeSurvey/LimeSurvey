@@ -253,7 +253,7 @@ function createDatabase($oDB){
                 'attribute_type'    => 'TB',
                 'defaultname'       => $attribute,
                 'visible'           => 'TRUE',
-                'encrypted'         => 'N',
+                'encrypted'         => 'Y',
                 'core_attribute'    => 'Y'
             ));
         }

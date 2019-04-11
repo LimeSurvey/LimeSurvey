@@ -1088,7 +1088,8 @@ class tokens extends Survey_Common_Action
                 'mandatory' => $key == 'email' ? true : false,
                 'encrypted' => $attribute,
                 'show_register' => true,
-                'description' => gT('Mandatory attribute')
+                'description' => gT('Mandatory attribute'),
+                'cpdbmap'=>''
             );
         }
         $aData['tokenfielddata'] = $aAttributesDesc;

@@ -477,8 +477,9 @@ class ParticipantAttributeName extends LSActiveRecord
         } else {
             return Yii::app()->db->createCommand()
                 ->select('*')
-                ->from('{{participant_attribute_values}}')
-                ->where('attribute_id = :attribute_id AND core_attribute <> "Y"')
+                ->from('{{participant_attribute_values}} attr_val')
+                ->join('{{participant_attribute_names}} attr_name', 'attr_val.attribute_id = attr_name.attribute_id')
+                ->where("attr_val.attribute_id = :attribute_id AND core_attribute <> 'Y'")
                 ->order('value_id ASC')
                 ->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)
                 ->queryAll();
