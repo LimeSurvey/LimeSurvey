@@ -156,12 +156,15 @@ var LSSlider = function (options) {
                 // document.styleSheets[0].addRule('#' + elementObject.attr('id') + ' .slider-handle.custom::before', '{ content: "' + custom_handle + '" }');
             }
             sliderObject = new Slider(elementObject[0], createSliderSettings());
+            /* a11y : slider need a label */
+            if(rootElementObject.attr("aria-labelledby") && $(sliderObject.getElement()).find("[role='slider']:not('.hide')").length) {
+                $(sliderObject.getElement()).find("[role='slider']:not('.hide')").attr("aria-labelledby",rootElementObject.attr("aria-labelledby"));
+            }
             if(rootElementObject.val() === "") {
                 sliderObject.$sliderElem.addClass('slider-untouched');
                 if(setPosition) {
                     triggerChanges();
                 }
-
             } else {
                 sliderObject.setValue(rootElementObject.val().toString().replace(separator,'.'), true, true);
             }
