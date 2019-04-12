@@ -120,63 +120,50 @@ class Sodium extends CApplicationComponent{
 	 * Write encryption key to version.php config file
 	 */
 	protected function generateEncryptionKeys(){			 	
-        @ini_set('auto_detect_line_endings', '1');
-        $bLineFound1 = 0;
-        $bLineFound2 = 0;
-        $bLineFound3 = 0;
-        $sRootdir      = Yii::app()->getConfig("rootdir");
-        $versionlines = file($sRootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'security.php');
-        $handle       = fopen($sRootdir.DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'security.php', "w");
         $sEncryptionKeypair   = ParagonIE_Sodium_Compat::crypto_sign_keypair();
-        $sEncryptionPublicKey = ParagonIE_Sodium_Compat::crypto_sign_publickey($sEncryptionKeypair);
-        $sEncryptionSecretKey = ParagonIE_Sodium_Compat::crypto_sign_secretkey($sEncryptionKeypair);
+        $sEncryptionPublicKey = ParagonIE_Sodium_Compat::bin2hex(ParagonIE_Sodium_Compat::crypto_sign_publickey($sEncryptionKeypair));
+        $sEncryptionSecretKey = ParagonIE_Sodium_Compat::bin2hex(ParagonIE_Sodium_Compat::crypto_sign_secretkey($sEncryptionKeypair));
+        $sEncryptionKeypair   = ParagonIE_Sodium_Compat::bin2hex($sEncryptionKeypair);
 
         if (empty($sEncryptionKeypair)){
-            fclose($handle);
             return false;
         }
+        
+        $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');"."\n"
+."/*"."\n"
+." * LimeSurvey"."\n"
+ ." * Copyright (C) 2007-2019 The LimeSurvey Project Team / Carsten Schmitz"."\n"
+ ." * All rights reserved."."\n"
+ ." * License: GNU/GPL License v3 or later, see LICENSE.php"."\n"
+ ." * LimeSurvey is free software. This version may have been modified pursuant"."\n"
+ ." * to the GNU General Public License, and as distributed it includes or"."\n"
+ ." * is derivative of works licensed under the GNU General Public License or"."\n"
+ ." * other free or open source software licenses."."\n"
+ ." * See COPYRIGHT.php for copyright notices and details."."\n"
+ ." */"."\n"
+ ."\n"
+ ."/* "."\n"
+ ."WARNING!!!"."\n"
+ ."ONCE SET, ENCRYPTION KEYS SHOULD NEVER BE CHANGED, OTHERWISE ALL ENCRYPTED DATA COULD BE LOST !!!"."\n"
+ ."\n"
+ ."*/"."\n"
+ ."\n"
+ ."\$config = array();"."\n"
+ ."\$config['encryptionkeypair'] = '".$sEncryptionKeypair."';"."\n"
+ ."\$config['encryptionpublickey'] = '".$sEncryptionPublicKey."';"."\n"
+ ."\$config['encryptionsecretkey'] = '".$sEncryptionSecretKey."';"."\n"
+ ."return \$config;";
 
-        // new configuration entries
-        $sNewLine1  = '$config[\'encryptionkeypair\'] = \''.ParagonIE_Sodium_Compat::bin2hex($sEncryptionKeypair).'\';'."\r\n";       
-        $sNewLine2 = '$config[\'encryptionpublickey\'] = \''.ParagonIE_Sodium_Compat::bin2hex($sEncryptionPublicKey).'\';'."\r\n";       
-        $sNewLine3 = '$config[\'encryptionsecretkey\'] = \''.ParagonIE_Sodium_Compat::bin2hex($sEncryptionSecretKey).'\';'."\r\n";       
-
-        foreach ($versionlines as $line) {
-            // replace configuration entries if exists
-            if (strpos($line, 'encryptionkeypair') !== false) {
-                $bLineFound1 = 1;
-                fwrite($handle, $sNewLine1);
-                continue;
-            }
-            if (strpos($line, 'encryptionpublickey') !== false) {
-                $bLineFound2 = 1;
-                fwrite($handle, $sNewLine2);
-                continue;
-            }
-            if (strpos($line, 'encryptionsecretkey') !== false) {
-                $bLineFound3 = 1;
-                fwrite($handle, $sNewLine3);
-                continue;
-            }
-
-            // write configuration entries into configuration file for each entry that doesn't exist
-            if (strpos($line, 'return $config;') !== false) {
-                if ($bLineFound1 == 0){
-                    fwrite($handle, $sNewLine1);
-                }
-                if ($bLineFound2 == 0){
-                    fwrite($handle, $sNewLine2);
-                }
-                if ($bLineFound3 == 0){
-                    fwrite($handle, $sNewLine3);
-                }
-            }
-
-            fwrite($handle, $line);
+        Yii::app()->setConfig("encryptionkeypair", $sEncryptionKeypair);
+        Yii::app()->setConfig("encryptionpublickey", $sEncryptionPublicKey);
+        Yii::app()->setConfig("encryptionsecretkey", $sEncryptionSecretKey);
+        if (is_writable(APPPATH.'config')) {
+            file_put_contents(APPPATH.'config/security.php', $sConfig);
+        } else {
+            header('refresh:5;url='.$this->createUrl("installer/welcome"));
+            echo "<b>".gT("Configuration directory is not writable")."</b><br/>";
+            printf(gT('You will be redirected in about 5 secs. If not, click <a href="%s">here</a>.', 'unescaped'), $this->createUrl('installer/welcome'));
+            Yii::app()->end();
         }
-        fclose($handle);
-        Yii::app()->setConfig("encryptionkeypair", ParagonIE_Sodium_Compat::bin2hex($sEncryptionKeypair));
-        Yii::app()->setConfig("encryptionpublickey", ParagonIE_Sodium_Compat::bin2hex($sEncryptionPublicKey));
-        Yii::app()->setConfig("encryptionsecretkey", ParagonIE_Sodium_Compat::bin2hex($sEncryptionSecretKey));
     }
 }
