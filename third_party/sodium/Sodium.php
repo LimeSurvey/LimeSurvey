@@ -104,11 +104,13 @@ class Sodium extends CApplicationComponent{
 	 */
 	public function decrypt($sEncryptedString, $bReturnFalseIfError=false){ 	
         if (!empty($sEncryptedString)  && $sEncryptedString != 'null'){
-            $plaintext = ParagonIE_Sodium_Compat::crypto_sign_open(base64_decode($sEncryptedString), $this->sEncryptionPublicKey);
-            
-            if ($plaintext === false) {
-                //throw new Exception("Bad ciphertext");
+
+            try {
+                $plaintext = ParagonIE_Sodium_Compat::crypto_sign_open(base64_decode($sEncryptedString), $this->sEncryptionPublicKey);
+            } catch (SodiumException $e) {
+                throw new SodiumException(gT("Bad ciphertext"));
             }
+
             return $plaintext;
         }
 
@@ -160,10 +162,8 @@ class Sodium extends CApplicationComponent{
         if (is_writable(APPPATH.'config')) {
             file_put_contents(APPPATH.'config/security.php', $sConfig);
         } else {
-            header('refresh:5;url='.$this->createUrl("installer/welcome"));
-            echo "<b>".gT("Configuration directory is not writable")."</b><br/>";
-            printf(gT('You will be redirected in about 5 secs. If not, click <a href="%s">here</a>.', 'unescaped'), $this->createUrl('installer/welcome'));
-            Yii::app()->end();
+            throw new CHttpException(500, gT("Configuration directory is not writable"));
+            
         }
     }
 }
