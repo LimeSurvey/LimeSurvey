@@ -2673,6 +2673,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
         if ($iOldDBVersion < 409) {
+
             $oTransaction = $oDB->beginTransaction();
             
             // load sodium library
@@ -2689,6 +2690,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 410) {
+            $oTransaction = $oDB->beginTransaction();            
+            $oDB->createCommand()->addColumn('{{question_l10ns}}', 'script', " text NULL default NULL");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>409),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+      
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

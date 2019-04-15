@@ -187,6 +187,20 @@ return array(
             'adminbasics'
         )
     ),
+    'questiongroupeditor' => array(
+        'devBaseUrl' => 'assets/packages/questiongroup/',
+        'basePath' => 'core.questiongroup',
+        'position' =>CClientScript::POS_END,
+        'js' => array(
+            'build/lsquestiongroupeditor'.(($debug > 0) ? '' : '.min').'.js'
+        ),
+        'css' => array(
+            'build/lsquestiongroupeditor'.$minVersion.'.css'
+        ),
+        'depends' => array(
+            'adminbasics'
+        )
+    ),
     'questioneditor' => array(
         'devBaseUrl' => 'assets/packages/questioneditor/',
         'basePath' => 'core.questioneditor',

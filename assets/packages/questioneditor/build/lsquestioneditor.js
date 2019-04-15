@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 106);
+/******/ 	return __webpack_require__(__webpack_require__.s = 107);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -331,7 +331,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(115)
+var listToStyles = __webpack_require__(116)
 
 /*
 type StyleObject = {
@@ -536,7 +536,7 @@ function applyToTag (styleElement, obj) {
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseKeys = __webpack_require__(43),
+var baseKeys = __webpack_require__(44),
     getTag = __webpack_require__(37),
     isArguments = __webpack_require__(19),
     isArray = __webpack_require__(1),
@@ -619,8 +619,8 @@ module.exports = isEmpty;
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayLikeKeys = __webpack_require__(63),
-    baseKeys = __webpack_require__(43),
+var arrayLikeKeys = __webpack_require__(64),
+    baseKeys = __webpack_require__(44),
     isArrayLike = __webpack_require__(10);
 
 /**
@@ -662,7 +662,7 @@ module.exports = keys;
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var freeGlobal = __webpack_require__(64);
+var freeGlobal = __webpack_require__(65);
 
 /** Detect free variable `self`. */
 var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -677,9 +677,9 @@ module.exports = root;
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayEach = __webpack_require__(61),
+var arrayEach = __webpack_require__(62),
     baseEach = __webpack_require__(28),
-    castFunction = __webpack_require__(133),
+    castFunction = __webpack_require__(138),
     isArray = __webpack_require__(1);
 
 /**
@@ -759,8 +759,8 @@ module.exports = isObjectLike;
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(44),
-    isLength = __webpack_require__(42);
+var isFunction = __webpack_require__(45),
+    isLength = __webpack_require__(43);
 
 /**
  * Checks if `value` is array-like. A value is considered array-like if it's
@@ -798,8 +798,8 @@ module.exports = isArrayLike;
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseMerge = __webpack_require__(196),
-    createAssigner = __webpack_require__(204);
+var baseMerge = __webpack_require__(201),
+    createAssigner = __webpack_require__(209);
 
 /**
  * This method is like `_.assign` except that it recursively merges own and
@@ -844,8 +844,8 @@ module.exports = merge;
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(14),
-    getRawTag = __webpack_require__(126),
-    objectToString = __webpack_require__(127);
+    getRawTag = __webpack_require__(131),
+    objectToString = __webpack_require__(132);
 
 /** `Object#toString` result references. */
 var nullTag = '[object Null]',
@@ -877,8 +877,8 @@ module.exports = baseGetTag;
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsNative = __webpack_require__(147),
-    getValue = __webpack_require__(150);
+var baseIsNative = __webpack_require__(152),
+    getValue = __webpack_require__(155);
 
 /**
  * Gets the native function at `key` of `object`.
@@ -1034,7 +1034,7 @@ module.exports = toKey;
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsArguments = __webpack_require__(125),
+var baseIsArguments = __webpack_require__(130),
     isObjectLike = __webpack_require__(9);
 
 /** Used for built-in method references. */
@@ -1077,7 +1077,7 @@ module.exports = isArguments;
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(7),
-    stubFalse = __webpack_require__(128);
+    stubFalse = __webpack_require__(133);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -1149,8 +1149,8 @@ module.exports = isIndex;
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(67),
-    baseFilter = __webpack_require__(134),
+var arrayFilter = __webpack_require__(68),
+    baseFilter = __webpack_require__(139),
     baseIteratee = __webpack_require__(23),
     isArray = __webpack_require__(1);
 
@@ -1203,11 +1203,11 @@ module.exports = filter;
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseMatches = __webpack_require__(135),
-    baseMatchesProperty = __webpack_require__(176),
+var baseMatches = __webpack_require__(140),
+    baseMatchesProperty = __webpack_require__(181),
     identity = __webpack_require__(15),
     isArray = __webpack_require__(1),
-    property = __webpack_require__(185);
+    property = __webpack_require__(190);
 
 /**
  * The base implementation of `_.iteratee`.
@@ -1284,9 +1284,9 @@ module.exports = eq;
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(1),
-    isKey = __webpack_require__(50),
-    stringToPath = __webpack_require__(178),
-    toString = __webpack_require__(181);
+    isKey = __webpack_require__(51),
+    stringToPath = __webpack_require__(183),
+    toString = __webpack_require__(186);
 
 /**
  * Casts `value` to a path array if it's not one.
@@ -1310,8 +1310,8 @@ module.exports = castPath;
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assignValue = __webpack_require__(55),
-    baseAssignValue = __webpack_require__(52);
+var assignValue = __webpack_require__(56),
+    baseAssignValue = __webpack_require__(53);
 
 /**
  * Copies properties of `source` to `object`.
@@ -1383,8 +1383,8 @@ module.exports = g;
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseForOwn = __webpack_require__(122),
-    createBaseEach = __webpack_require__(132);
+var baseForOwn = __webpack_require__(127),
+    createBaseEach = __webpack_require__(137);
 
 /**
  * The base implementation of `_.forEach` without support for iteratee shorthands.
@@ -1431,9 +1431,9 @@ module.exports = function(module) {
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsTypedArray = __webpack_require__(129),
-    baseUnary = __webpack_require__(65),
-    nodeUtil = __webpack_require__(130);
+var baseIsTypedArray = __webpack_require__(134),
+    baseUnary = __webpack_require__(66),
+    nodeUtil = __webpack_require__(135);
 
 /* Node.js helper references. */
 var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
@@ -1489,11 +1489,11 @@ module.exports = isPrototype;
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(33),
-    stackClear = __webpack_require__(142),
-    stackDelete = __webpack_require__(143),
-    stackGet = __webpack_require__(144),
-    stackHas = __webpack_require__(145),
-    stackSet = __webpack_require__(146);
+    stackClear = __webpack_require__(147),
+    stackDelete = __webpack_require__(148),
+    stackGet = __webpack_require__(149),
+    stackHas = __webpack_require__(150),
+    stackSet = __webpack_require__(151);
 
 /**
  * Creates a stack cache object to store key-value pairs.
@@ -1521,11 +1521,11 @@ module.exports = Stack;
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var listCacheClear = __webpack_require__(137),
-    listCacheDelete = __webpack_require__(138),
-    listCacheGet = __webpack_require__(139),
-    listCacheHas = __webpack_require__(140),
-    listCacheSet = __webpack_require__(141);
+var listCacheClear = __webpack_require__(142),
+    listCacheDelete = __webpack_require__(143),
+    listCacheGet = __webpack_require__(144),
+    listCacheHas = __webpack_require__(145),
+    listCacheSet = __webpack_require__(146);
 
 /**
  * Creates an list cache object.
@@ -1598,7 +1598,7 @@ module.exports = nativeCreate;
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isKeyable = __webpack_require__(159);
+var isKeyable = __webpack_require__(164);
 
 /**
  * Gets the data for `map`.
@@ -1622,13 +1622,13 @@ module.exports = getMapData;
 /* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var DataView = __webpack_require__(171),
-    Map = __webpack_require__(45),
-    Promise = __webpack_require__(172),
-    Set = __webpack_require__(173),
-    WeakMap = __webpack_require__(174),
+var DataView = __webpack_require__(176),
+    Map = __webpack_require__(46),
+    Promise = __webpack_require__(177),
+    Set = __webpack_require__(178),
+    WeakMap = __webpack_require__(179),
     baseGetTag = __webpack_require__(12),
-    toSource = __webpack_require__(68);
+    toSource = __webpack_require__(69);
 
 /** `Object#toString` result references. */
 var mapTag = '[object Map]',
@@ -1716,10 +1716,10 @@ module.exports = baseGet;
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayReduce = __webpack_require__(51),
+var arrayReduce = __webpack_require__(52),
     baseEach = __webpack_require__(28),
     baseIteratee = __webpack_require__(23),
-    baseReduce = __webpack_require__(187),
+    baseReduce = __webpack_require__(192),
     isArray = __webpack_require__(1);
 
 /**
@@ -1773,8 +1773,8 @@ module.exports = reduce;
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayLikeKeys = __webpack_require__(63),
-    baseKeysIn = __webpack_require__(202),
+var arrayLikeKeys = __webpack_require__(64),
+    baseKeysIn = __webpack_require__(207),
     isArrayLike = __webpack_require__(10);
 
 /**
@@ -12372,10 +12372,54 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["a"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(27), __webpack_require__(108).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(27), __webpack_require__(109).setImmediate))
 
 /***/ }),
 /* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(119)
+}
+var Component = __webpack_require__(0)(
+  /* script */
+  __webpack_require__(121),
+  /* template */
+  __webpack_require__(122),
+  /* styles */
+  injectStyle,
+  /* scopeId */
+  "data-v-8b6a2576",
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\helperComponents\\loader.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] loader.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8b6a2576", Component.options)
+  } else {
+    hotAPI.reload("data-v-8b6a2576", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 43 */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -12416,11 +12460,11 @@ module.exports = isLength;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isPrototype = __webpack_require__(31),
-    nativeKeys = __webpack_require__(131);
+    nativeKeys = __webpack_require__(136);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -12452,7 +12496,7 @@ module.exports = baseKeys;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(12),
@@ -12495,7 +12539,7 @@ module.exports = isFunction;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(13),
@@ -12508,14 +12552,14 @@ module.exports = Map;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var mapCacheClear = __webpack_require__(151),
-    mapCacheDelete = __webpack_require__(158),
-    mapCacheGet = __webpack_require__(160),
-    mapCacheHas = __webpack_require__(161),
-    mapCacheSet = __webpack_require__(162);
+var mapCacheClear = __webpack_require__(156),
+    mapCacheDelete = __webpack_require__(163),
+    mapCacheGet = __webpack_require__(165),
+    mapCacheHas = __webpack_require__(166),
+    mapCacheSet = __webpack_require__(167);
 
 /**
  * Creates a map cache object to store key-value pairs.
@@ -12546,10 +12590,10 @@ module.exports = MapCache;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqualDeep = __webpack_require__(163),
+var baseIsEqualDeep = __webpack_require__(168),
     isObjectLike = __webpack_require__(9);
 
 /**
@@ -12580,7 +12624,7 @@ module.exports = baseIsEqual;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 /**
@@ -12606,11 +12650,11 @@ module.exports = arrayPush;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(67),
-    stubArray = __webpack_require__(75);
+var arrayFilter = __webpack_require__(68),
+    stubArray = __webpack_require__(76);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -12642,7 +12686,7 @@ module.exports = getSymbols;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(1),
@@ -12677,7 +12721,7 @@ module.exports = isKey;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 /**
@@ -12709,10 +12753,10 @@ module.exports = arrayReduce;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineProperty = __webpack_require__(84);
+var defineProperty = __webpack_require__(85);
 
 /**
  * The base implementation of `assignValue` and `assignMergeValue` without
@@ -12740,10 +12784,10 @@ module.exports = baseAssignValue;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Uint8Array = __webpack_require__(70);
+var Uint8Array = __webpack_require__(71);
 
 /**
  * Creates a clone of `arrayBuffer`.
@@ -12762,10 +12806,10 @@ module.exports = cloneArrayBuffer;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var overArg = __webpack_require__(66);
+var overArg = __webpack_require__(67);
 
 /** Built-in value references. */
 var getPrototype = overArg(Object.getPrototypeOf, Object);
@@ -12774,10 +12818,10 @@ module.exports = getPrototype;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseAssignValue = __webpack_require__(52),
+var baseAssignValue = __webpack_require__(53),
     eq = __webpack_require__(24);
 
 /** Used for built-in method references. */
@@ -12808,7 +12852,7 @@ module.exports = assignValue;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var eq = __webpack_require__(24),
@@ -12844,7 +12888,7 @@ module.exports = isIterateeCall;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12901,11 +12945,11 @@ module.exports = isIterateeCall;
 });
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(23),
-    basePullAt = __webpack_require__(260);
+    basePullAt = __webpack_require__(265);
 
 /**
  * Removes all elements from `array` that `predicate` returns truthy for
@@ -12960,10 +13004,10 @@ module.exports = remove;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toFinite = __webpack_require__(265);
+var toFinite = __webpack_require__(270);
 
 /**
  * Converts `value` to an integer.
@@ -13002,7 +13046,7 @@ module.exports = toInteger;
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -13192,7 +13236,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports) {
 
 /**
@@ -13220,10 +13264,10 @@ module.exports = arrayEach;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var createBaseFor = __webpack_require__(123);
+var createBaseFor = __webpack_require__(128);
 
 /**
  * The base implementation of `baseForOwn` which iterates over `object`
@@ -13242,10 +13286,10 @@ module.exports = baseFor;
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseTimes = __webpack_require__(124),
+var baseTimes = __webpack_require__(129),
     isArguments = __webpack_require__(19),
     isArray = __webpack_require__(1),
     isBuffer = __webpack_require__(20),
@@ -13297,7 +13341,7 @@ module.exports = arrayLikeKeys;
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -13308,7 +13352,7 @@ module.exports = freeGlobal;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports) {
 
 /**
@@ -13328,7 +13372,7 @@ module.exports = baseUnary;
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports) {
 
 /**
@@ -13349,7 +13393,7 @@ module.exports = overArg;
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports) {
 
 /**
@@ -13380,7 +13424,7 @@ module.exports = arrayFilter;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -13412,12 +13456,12 @@ module.exports = toSource;
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SetCache = __webpack_require__(164),
-    arraySome = __webpack_require__(167),
-    cacheHas = __webpack_require__(168);
+var SetCache = __webpack_require__(169),
+    arraySome = __webpack_require__(172),
+    cacheHas = __webpack_require__(173);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -13501,7 +13545,7 @@ module.exports = equalArrays;
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(7);
@@ -13513,7 +13557,7 @@ module.exports = Uint8Array;
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports) {
 
 /**
@@ -13537,7 +13581,7 @@ module.exports = mapToArray;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports) {
 
 /**
@@ -13561,11 +13605,11 @@ module.exports = setToArray;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetAllKeys = __webpack_require__(74),
-    getSymbols = __webpack_require__(49),
+var baseGetAllKeys = __webpack_require__(75),
+    getSymbols = __webpack_require__(50),
     keys = __webpack_require__(6);
 
 /**
@@ -13583,10 +13627,10 @@ module.exports = getAllKeys;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(48),
+var arrayPush = __webpack_require__(49),
     isArray = __webpack_require__(1);
 
 /**
@@ -13609,7 +13653,7 @@ module.exports = baseGetAllKeys;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports) {
 
 /**
@@ -13638,7 +13682,7 @@ module.exports = stubArray;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(2);
@@ -13659,7 +13703,7 @@ module.exports = isStrictComparable;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports) {
 
 /**
@@ -13685,7 +13729,7 @@ module.exports = matchesStrictComparable;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports) {
 
 /**
@@ -13712,11 +13756,11 @@ module.exports = arrayMap;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseHasIn = __webpack_require__(183),
-    hasPath = __webpack_require__(184);
+var baseHasIn = __webpack_require__(188),
+    hasPath = __webpack_require__(189);
 
 /**
  * Checks if `path` is a direct or inherited property of `object`.
@@ -13752,7 +13796,7 @@ module.exports = hasIn;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports) {
 
 /**
@@ -13772,7 +13816,7 @@ module.exports = baseProperty;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -13783,7 +13827,7 @@ module.exports = baseProperty;
 //# sourceMappingURL=ckeditor.js.map
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(2),
@@ -13855,10 +13899,10 @@ module.exports = toNumber;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseAssignValue = __webpack_require__(52),
+var baseAssignValue = __webpack_require__(53),
     eq = __webpack_require__(24);
 
 /**
@@ -13881,7 +13925,7 @@ module.exports = assignMergeValue;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(13);
@@ -13898,7 +13942,7 @@ module.exports = defineProperty;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(7);
@@ -13940,10 +13984,10 @@ module.exports = cloneBuffer;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)(module)))
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var cloneArrayBuffer = __webpack_require__(53);
+var cloneArrayBuffer = __webpack_require__(54);
 
 /**
  * Creates a clone of `typedArray`.
@@ -13962,7 +14006,7 @@ module.exports = cloneTypedArray;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports) {
 
 /**
@@ -13988,11 +14032,11 @@ module.exports = copyArray;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseCreate = __webpack_require__(198),
-    getPrototype = __webpack_require__(54),
+var baseCreate = __webpack_require__(203),
+    getPrototype = __webpack_require__(55),
     isPrototype = __webpack_require__(31);
 
 /**
@@ -14012,12 +14056,12 @@ module.exports = initCloneObject;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var identity = __webpack_require__(15),
-    overRest = __webpack_require__(90),
-    setToString = __webpack_require__(91);
+    overRest = __webpack_require__(91),
+    setToString = __webpack_require__(92);
 
 /**
  * The base implementation of `_.rest` which doesn't validate or coerce arguments.
@@ -14035,10 +14079,10 @@ module.exports = baseRest;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var apply = __webpack_require__(205);
+var apply = __webpack_require__(210);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMax = Math.max;
@@ -14077,11 +14121,11 @@ module.exports = overRest;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSetToString = __webpack_require__(206),
-    shortOut = __webpack_require__(208);
+var baseSetToString = __webpack_require__(211),
+    shortOut = __webpack_require__(213);
 
 /**
  * Sets the `toString` method of `func` to return `string`.
@@ -14097,15 +14141,15 @@ module.exports = setToString;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(219),
+  __webpack_require__(224),
   /* template */
-  __webpack_require__(221),
+  __webpack_require__(226),
   /* styles */
   null,
   /* scopeId */
@@ -14113,7 +14157,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\switch.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\switch.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] switch.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -14137,15 +14181,15 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(222),
+  __webpack_require__(227),
   /* template */
-  __webpack_require__(223),
+  __webpack_require__(228),
   /* styles */
   null,
   /* scopeId */
@@ -14153,7 +14197,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\text.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\text.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] text.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -14177,15 +14221,15 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(224),
+  __webpack_require__(229),
   /* template */
-  __webpack_require__(225),
+  __webpack_require__(230),
   /* styles */
   null,
   /* scopeId */
@@ -14193,7 +14237,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\select.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\select.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] select.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -14217,15 +14261,15 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(226),
+  __webpack_require__(231),
   /* template */
-  __webpack_require__(227),
+  __webpack_require__(232),
   /* styles */
   null,
   /* scopeId */
@@ -14233,7 +14277,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\textdisplay.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\textdisplay.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] textdisplay.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -14257,15 +14301,15 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(228),
+  __webpack_require__(233),
   /* template */
-  __webpack_require__(229),
+  __webpack_require__(234),
   /* styles */
   null,
   /* scopeId */
@@ -14273,7 +14317,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\textarea.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\textarea.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] textarea.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -14297,19 +14341,19 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(230)
+  __webpack_require__(235)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(232),
+  __webpack_require__(237),
   /* template */
-  __webpack_require__(233),
+  __webpack_require__(238),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -14317,7 +14361,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\stub.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\stub.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] stub.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -14341,11 +14385,11 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(48),
-    isFlattenable = __webpack_require__(244);
+var arrayPush = __webpack_require__(49),
+    isFlattenable = __webpack_require__(249);
 
 /**
  * The base implementation of `_.flatten` with support for restricting flattening.
@@ -14385,11 +14429,11 @@ module.exports = baseFlatten;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseExtremum = __webpack_require__(258),
-    baseGt = __webpack_require__(259),
+var baseExtremum = __webpack_require__(263),
+    baseGt = __webpack_require__(264),
     identity = __webpack_require__(15);
 
 /**
@@ -14420,7 +14464,7 @@ module.exports = max;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports) {
 
 /**
@@ -14457,31 +14501,31 @@ module.exports = baseSlice;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_max__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_max__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_max___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash_max__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_keys__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_keys___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_keys__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_remove__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_remove__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_remove___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_remove__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_reduce__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_reduce___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash_reduce__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_lodash_foreach__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_lodash_foreach___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_lodash_foreach__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_lodash_findIndex__ = __webpack_require__(264);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_lodash_findIndex__ = __webpack_require__(269);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_lodash_findIndex___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_lodash_findIndex__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash_isArrayLike__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash_isArrayLike___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_lodash_isArrayLike__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_lodash_isObjectLike__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_lodash_isObjectLike___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_lodash_isObjectLike__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__helperComponents_QuickEdit_vue__ = __webpack_require__(266);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__helperComponents_QuickEdit_vue__ = __webpack_require__(271);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__helperComponents_QuickEdit_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__helperComponents_QuickEdit_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__helperComponents_SimplePopUpEditor_vue__ = __webpack_require__(271);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__helperComponents_SimplePopUpEditor_vue__ = __webpack_require__(276);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__helperComponents_SimplePopUpEditor_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__helperComponents_SimplePopUpEditor_vue__);
 
 
@@ -14638,7 +14682,7 @@ module.exports = baseSlice;
 });
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports) {
 
 /**
@@ -14668,12 +14712,12 @@ module.exports = baseFindIndex;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSlice = __webpack_require__(100),
-    isIterateeCall = __webpack_require__(56),
-    toInteger = __webpack_require__(59);
+var baseSlice = __webpack_require__(101),
+    isIterateeCall = __webpack_require__(57),
+    toInteger = __webpack_require__(60);
 
 /**
  * Creates a slice of `array` from `start` up to, but not including, `end`.
@@ -14711,13 +14755,13 @@ module.exports = slice;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(48),
-    getPrototype = __webpack_require__(54),
-    getSymbols = __webpack_require__(49),
-    stubArray = __webpack_require__(75);
+var arrayPush = __webpack_require__(49),
+    getPrototype = __webpack_require__(55),
+    getSymbols = __webpack_require__(50),
+    stubArray = __webpack_require__(76);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeGetSymbols = Object.getOwnPropertySymbols;
@@ -14742,13 +14786,13 @@ module.exports = getSymbolsIn;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return PluginLog; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LOG; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_ConsoleShim_js__ = __webpack_require__(329);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_ConsoleShim_js__ = __webpack_require__(334);
 /* eslint-disable no-alert, no-console */
 
 /**
@@ -14770,27 +14814,27 @@ const PluginLog = function (Vue) {
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(107);
+module.exports = __webpack_require__(108);
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_vue__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_vue__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_js_modal__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_js_modal__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_js_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_js_modal__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__App_vue__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__App_vue__ = __webpack_require__(113);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__storage_store__ = __webpack_require__(302);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_logSystem__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__storage_store__ = __webpack_require__(307);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_logSystem__ = __webpack_require__(106);
 
 
 
@@ -14847,7 +14891,7 @@ const questionEditor = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */](
 });
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -14900,13 +14944,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(109);
+__webpack_require__(110);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -15096,10 +15140,10 @@ exports.clearImmediate = clearImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27), __webpack_require__(60)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27), __webpack_require__(61)))
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -15110,25 +15154,25 @@ exports.clearImmediate = clearImmediate;
 //# sourceMappingURL=ckeditor.js.map
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 !function(e,t){ true?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports["vue-js-modal"]=t():e["vue-js-modal"]=t()}(window,function(){return function(n){var i={};function o(e){if(i[e])return i[e].exports;var t=i[e]={i:e,l:!1,exports:{}};return n[e].call(t.exports,t,t.exports,o),t.l=!0,t.exports}return o.m=n,o.c=i,o.d=function(e,t,n){o.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:n})},o.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},o.t=function(t,e){if(1&e&&(t=o(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var n=Object.create(null);if(o.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var i in t)o.d(n,i,function(e){return t[e]}.bind(null,i));return n},o.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return o.d(t,"a",t),t},o.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},o.p="/dist/",o(o.s=11)}([function(e,t,n){var i=n(6);"string"==typeof i&&(i=[[e.i,i,""]]),i.locals&&(e.exports=i.locals);(0,n(4).default)("27d83796",i,!1,{})},function(e,t,n){var i=n(8);"string"==typeof i&&(i=[[e.i,i,""]]),i.locals&&(e.exports=i.locals);(0,n(4).default)("0e783494",i,!1,{})},function(e,t,n){var i=n(10);"string"==typeof i&&(i=[[e.i,i,""]]),i.locals&&(e.exports=i.locals);(0,n(4).default)("17757f60",i,!1,{})},function(e,t){e.exports=function(n){var a=[];return a.toString=function(){return this.map(function(e){var t=function(e,t){var n=e[1]||"",i=e[3];if(!i)return n;if(t&&"function"==typeof btoa){var o=(a=i,"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(a))))+" */"),r=i.sources.map(function(e){return"/*# sourceURL="+i.sourceRoot+e+" */"});return[n].concat(r).concat([o]).join("\n")}var a;return[n].join("\n")}(e,n);return e[2]?"@media "+e[2]+"{"+t+"}":t}).join("")},a.i=function(e,t){"string"==typeof e&&(e=[[null,e,""]]);for(var n={},i=0;i<this.length;i++){var o=this[i][0];"number"==typeof o&&(n[o]=!0)}for(i=0;i<e.length;i++){var r=e[i];"number"==typeof r[0]&&n[r[0]]||(t&&!r[2]?r[2]=t:t&&(r[2]="("+r[2]+") and ("+t+")"),a.push(r))}},a}},function(e,t,n){"use strict";function l(e,t){for(var n=[],i={},o=0;o<t.length;o++){var r=t[o],a=r[0],s={id:e+":"+o,css:r[1],media:r[2],sourceMap:r[3]};i[a]?i[a].parts.push(s):n.push(i[a]={id:a,parts:[s]})}return n}n.r(t),n.d(t,"default",function(){return p});var i="undefined"!=typeof document;if("undefined"!=typeof DEBUG&&DEBUG&&!i)throw new Error("vue-style-loader cannot be used in a non-browser environment. Use { target: 'node' } in your Webpack config to indicate a server-rendering environment.");var d={},o=i&&(document.head||document.getElementsByTagName("head")[0]),r=null,a=0,u=!1,s=function(){},c=null,h="data-vue-ssr-id",f="undefined"!=typeof navigator&&/msie [6-9]\b/.test(navigator.userAgent.toLowerCase());function p(a,e,t,n){u=t,c=n||{};var s=l(a,e);return v(s),function(e){for(var t=[],n=0;n<s.length;n++){var i=s[n];(o=d[i.id]).refs--,t.push(o)}e?v(s=l(a,e)):s=[];for(n=0;n<t.length;n++){var o;if(0===(o=t[n]).refs){for(var r=0;r<o.parts.length;r++)o.parts[r]();delete d[o.id]}}}}function v(e){for(var t=0;t<e.length;t++){var n=e[t],i=d[n.id];if(i){i.refs++;for(var o=0;o<i.parts.length;o++)i.parts[o](n.parts[o]);for(;o<n.parts.length;o++)i.parts.push(g(n.parts[o]));i.parts.length>n.parts.length&&(i.parts.length=n.parts.length)}else{var r=[];for(o=0;o<n.parts.length;o++)r.push(g(n.parts[o]));d[n.id]={id:n.id,refs:1,parts:r}}}}function m(){var e=document.createElement("style");return e.type="text/css",o.appendChild(e),e}function g(t){var n,i,e=document.querySelector("style["+h+'~="'+t.id+'"]');if(e){if(u)return s;e.parentNode.removeChild(e)}if(f){var o=a++;e=r||(r=m()),n=w.bind(null,e,o,!1),i=w.bind(null,e,o,!0)}else e=m(),n=function(e,t){var n=t.css,i=t.media,o=t.sourceMap;i&&e.setAttribute("media",i);c.ssrId&&e.setAttribute(h,t.id);o&&(n+="\n/*# sourceURL="+o.sources[0]+" */",n+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(o))))+" */");if(e.styleSheet)e.styleSheet.cssText=n;else{for(;e.firstChild;)e.removeChild(e.firstChild);e.appendChild(document.createTextNode(n))}}.bind(null,e),i=function(){e.parentNode.removeChild(e)};return n(t),function(e){if(e){if(e.css===t.css&&e.media===t.media&&e.sourceMap===t.sourceMap)return;n(t=e)}else i()}}var b,y=(b=[],function(e,t){return b[e]=t,b.filter(Boolean).join("\n")});function w(e,t,n,i){var o=n?"":i.css;if(e.styleSheet)e.styleSheet.cssText=y(t,o);else{var r=document.createTextNode(o),a=e.childNodes;a[t]&&e.removeChild(a[t]),a.length?e.insertBefore(r,a[t]):e.appendChild(r)}}},function(e,t,n){"use strict";var i=n(0);n.n(i).a},function(e,t,n){(e.exports=n(3)(!1)).push([e.i,"\n.vue-modal-resizer {\n  display: block;\n  overflow: hidden;\n  position: absolute;\n  width: 12px;\n  height: 12px;\n  right: 0;\n  bottom: 0;\n  z-index: 9999999;\n  background: transparent;\n  cursor: se-resize;\n}\n.vue-modal-resizer::after {\n  display: block;\n  position: absolute;\n  content: '';\n  background: transparent;\n  left: 0;\n  top: 0;\n  width: 0;\n  height: 0;\n  border-bottom: 10px solid #ddd;\n  border-left: 10px solid transparent;\n}\n.vue-modal-resizer.clicked::after {\n  border-bottom: 10px solid #369be9;\n}\n",""])},function(e,t,n){"use strict";var i=n(1);n.n(i).a},function(e,t,n){(e.exports=n(3)(!1)).push([e.i,"\n.v--modal-block-scroll {\n  overflow: hidden;\n  width: 100vw;\n}\n.v--modal-overlay {\n  position: fixed;\n  box-sizing: border-box;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100vh;\n  background: rgba(0, 0, 0, 0.2);\n  z-index: 999;\n  opacity: 1;\n}\n.v--modal-overlay.scrollable {\n  height: 100%;\n  min-height: 100vh;\n  overflow-y: auto;\n  -webkit-overflow-scrolling: touch;\n}\n.v--modal-overlay .v--modal-background-click {\n  width: 100%;\n  height: 100%;\n}\n.v--modal-overlay .v--modal-box {\n  position: relative;\n  overflow: hidden;\n  box-sizing: border-box;\n}\n.v--modal-overlay.scrollable .v--modal-box {\n  margin-bottom: 2px;\n}\n.v--modal {\n  background-color: white;\n  text-align: left;\n  border-radius: 3px;\n  box-shadow: 0 20px 60px -2px rgba(27, 33, 58, 0.4);\n  padding: 0;\n}\n.v--modal.v--modal-fullscreen {\n  width: 100vw;\n  height: 100vh;\n  margin: 0;\n  left: 0;\n  top: 0;\n}\n.v--modal-top-right {\n  display: block;\n  position: absolute;\n  right: 0;\n  top: 0;\n}\n.overlay-fade-enter-active,\n.overlay-fade-leave-active {\n  transition: all 0.2s;\n}\n.overlay-fade-enter,\n.overlay-fade-leave-active {\n  opacity: 0;\n}\n.nice-modal-fade-enter-active,\n.nice-modal-fade-leave-active {\n  transition: all 0.4s;\n}\n.nice-modal-fade-enter,\n.nice-modal-fade-leave-active {\n  opacity: 0;\n  transform: translateY(-20px);\n}\n",""])},function(e,t,n){"use strict";var i=n(2);n.n(i).a},function(e,t,n){(e.exports=n(3)(!1)).push([e.i,"\n.vue-dialog div {\n  box-sizing: border-box;\n}\n.vue-dialog .dialog-flex {\n  width: 100%;\n  height: 100%;\n}\n.vue-dialog .dialog-content {\n  flex: 1 0 auto;\n  width: 100%;\n  padding: 15px;\n  font-size: 14px;\n}\n.vue-dialog .dialog-c-title {\n  font-weight: 600;\n  padding-bottom: 15px;\n}\n.vue-dialog .dialog-c-text {\n}\n.vue-dialog .vue-dialog-buttons {\n  display: flex;\n  flex: 0 1 auto;\n  width: 100%;\n  border-top: 1px solid #eee;\n}\n.vue-dialog .vue-dialog-buttons-none {\n  width: 100%;\n  padding-bottom: 15px;\n}\n.vue-dialog-button {\n  font-size: 12px !important;\n  background: transparent;\n  padding: 0;\n  margin: 0;\n  border: 0;\n  cursor: pointer;\n  box-sizing: border-box;\n  line-height: 40px;\n  height: 40px;\n  color: inherit;\n  font: inherit;\n  outline: none;\n}\n.vue-dialog-button:hover {\n  background: rgba(0, 0, 0, 0.01);\n}\n.vue-dialog-button:active {\n  background: rgba(0, 0, 0, 0.025);\n}\n.vue-dialog-button:not(:first-of-type) {\n  border-left: 1px solid #eee;\n}\n",""])},function(e,t,n){"use strict";n.r(t);var i=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("transition",{attrs:{name:t.overlayTransition}},[t.visibility.overlay?n("div",{ref:"overlay",class:t.overlayClass,attrs:{"aria-expanded":t.visibility.overlay.toString(),"data-modal":t.name}},[n("div",{staticClass:"v--modal-background-click",on:{mousedown:function(e){return e.target!==e.currentTarget?null:t.handleBackgroundClick(e)},touchstart:function(e){return e.target!==e.currentTarget?null:t.handleBackgroundClick(e)}}},[n("div",{staticClass:"v--modal-top-right"},[t._t("top-right")],2),t._v(" "),n("transition",{attrs:{name:t.transition},on:{"before-enter":t.beforeTransitionEnter,"after-enter":t.afterTransitionEnter,"after-leave":t.afterTransitionLeave}},[t.visibility.modal?n("div",{ref:"modal",class:t.modalClass,style:t.modalStyle},[t._t("default"),t._v(" "),t.resizable&&!t.isAutoHeight?n("resizer",{attrs:{"min-width":t.minWidth,"min-height":t.minHeight},on:{resize:t.handleModalResize}}):t._e()],2):t._e()])],1)]):t._e()])},o=function(){var e=this.$createElement;return(this._self._c||e)("div",{class:this.className})};o._withStripped=i._withStripped=!0;var s=function(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:0;return function(){return(e++).toString()}}(),u=function(e,t,n){return n<e?e:t<n?t:n},r=function(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{};return function(o){for(var e=1;e<arguments.length;e++){var r=null!=arguments[e]?arguments[e]:{},t=Object.keys(r);"function"==typeof Object.getOwnPropertySymbols&&(t=t.concat(Object.getOwnPropertySymbols(r).filter(function(e){return Object.getOwnPropertyDescriptor(r,e).enumerable}))),t.forEach(function(e){var t,n,i;t=o,i=r[n=e],n in t?Object.defineProperty(t,n,{value:i,enumerable:!0,configurable:!0,writable:!0}):t[n]=i})}return o}({id:s(),timestamp:Date.now(),canceled:!1},e)},a={name:"VueJsModalResizer",props:{minHeight:{type:Number,default:0},minWidth:{type:Number,default:0}},data:function(){return{clicked:!1,size:{}}},mounted:function(){this.$el.addEventListener("mousedown",this.start,!1)},computed:{className:function(){return{"vue-modal-resizer":!0,clicked:this.clicked}}},methods:{start:function(e){this.clicked=!0,window.addEventListener("mousemove",this.mousemove,!1),window.addEventListener("mouseup",this.stop,!1),e.stopPropagation(),e.preventDefault()},stop:function(){this.clicked=!1,window.removeEventListener("mousemove",this.mousemove,!1),window.removeEventListener("mouseup",this.stop,!1),this.$emit("resize-stop",{element:this.$el.parentElement,size:this.size})},mousemove:function(e){this.resize(e)},resize:function(e){var t=this.$el.parentElement;if(t){var n=e.clientX-t.offsetLeft,i=e.clientY-t.offsetTop;n=u(this.minWidth,window.innerWidth,n),i=u(this.minHeight,window.innerHeight,i),this.size={width:n,height:i},t.style.width=n+"px",t.style.height=i+"px",this.$emit("resize",{element:t,size:this.size})}}}};n(5);function l(e,t,n,i,o,r,a,s){var l,d="function"==typeof e?e.options:e;if(t&&(d.render=t,d.staticRenderFns=n,d._compiled=!0),i&&(d.functional=!0),r&&(d._scopeId="data-v-"+r),a?(l=function(e){(e=e||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(e=__VUE_SSR_CONTEXT__),o&&o.call(this,e),e&&e._registeredComponents&&e._registeredComponents.add(a)},d._ssrRegister=l):o&&(l=s?function(){o.call(this,this.$root.$options.shadowRoot)}:o),l)if(d.functional){d._injectStyles=l;var u=d.render;d.render=function(e,t){return l.call(t),u(e,t)}}else{var c=d.beforeCreate;d.beforeCreate=c?[].concat(c,l):[l]}return{exports:e,options:d}}var d=l(a,o,[],!1,null,null,null);d.options.__file="src/Resizer.vue";var c=d.exports;function h(e){return(h="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}var f="[-+]?[0-9]*.?[0-9]+",p=[{name:"px",regexp:new RegExp("^".concat(f,"px$"))},{name:"%",regexp:new RegExp("^".concat(f,"%$"))},{name:"px",regexp:new RegExp("^".concat(f,"$"))}],v=function(e){switch(h(e)){case"number":return{type:"px",value:e};case"string":return function(e){if("auto"===e)return{type:e,value:0};for(var t=0;t<p.length;t++){var n=p[t];if(n.regexp.test(e))return{type:n.name,value:parseFloat(e)}}return{type:"",value:e}}(e);default:return{type:"",value:e}}},m=function(e){if("string"!=typeof e)return 0<=e;var t=v(e);return("%"===t.type||"px"===t.type)&&0<t.value};var g={name:"VueJsModal",props:{name:{required:!0,type:String},delay:{type:Number,default:0},resizable:{type:Boolean,default:!1},adaptive:{type:Boolean,default:!1},draggable:{type:[Boolean,String],default:!1},scrollable:{type:Boolean,default:!1},reset:{type:Boolean,default:!1},overlayTransition:{type:String,default:"overlay-fade"},transition:{type:String},clickToClose:{type:Boolean,default:!0},classes:{type:[String,Array],default:"v--modal"},minWidth:{type:Number,default:0,validator:function(e){return 0<=e}},minHeight:{type:Number,default:0,validator:function(e){return 0<=e}},maxWidth:{type:Number,default:1/0},maxHeight:{type:Number,default:1/0},width:{type:[Number,String],default:600,validator:m},height:{type:[Number,String],default:300,validator:function(e){return"auto"===e||m(e)}},pivotX:{type:Number,default:.5,validator:function(e){return 0<=e&&e<=1}},pivotY:{type:Number,default:.5,validator:function(e){return 0<=e&&e<=1}}},components:{Resizer:c},data:function(){return{visible:!1,visibility:{modal:!1,overlay:!1},shift:{left:0,top:0},modal:{width:0,widthType:"px",height:0,heightType:"px",renderedHeight:0},window:{width:0,height:0},mutationObserver:null}},created:function(){this.setInitialSize()},beforeMount:function(){var t=this;if(T.event.$on("toggle",this.handleToggleEvent),window.addEventListener("resize",this.handleWindowResize),this.handleWindowResize(),this.scrollable&&!this.isAutoHeight&&console.warn('Modal "'.concat(this.name,'" has scrollable flag set to true ')+'but height is not "auto" ('.concat(this.height,")")),this.isAutoHeight){var e=function(){if("undefined"!=typeof window)for(var e=["","WebKit","Moz","O","Ms"],t=0;t<e.length;t++){var n=e[t]+"MutationObserver";if(n in window)return window[n]}return!1}();e&&(this.mutationObserver=new e(function(e){t.updateRenderedHeight()}))}this.clickToClose&&window.addEventListener("keyup",this.handleEscapeKeyUp)},beforeDestroy:function(){T.event.$off("toggle",this.handleToggleEvent),window.removeEventListener("resize",this.handleWindowResize),this.clickToClose&&window.removeEventListener("keyup",this.handleEscapeKeyUp),this.scrollable&&document.body.classList.remove("v--modal-block-scroll")},computed:{isAutoHeight:function(){return"auto"===this.modal.heightType},position:function(){var e=this.window,t=this.shift,n=this.pivotX,i=this.pivotY,o=this.trueModalWidth,r=this.trueModalHeight,a=e.width-o,s=e.height-r,l=t.left+n*a,d=t.top+i*s;return{left:parseInt(u(0,a,l)),top:parseInt(u(0,s,d))}},trueModalWidth:function(){var e=this.window,t=this.modal,n=this.adaptive,i=this.minWidth,o=this.maxWidth,r="%"===t.widthType?e.width/100*t.width:t.width,a=Math.min(e.width,o);return n?u(i,a,r):r},trueModalHeight:function(){var e=this.window,t=this.modal,n=this.isAutoHeight,i=this.adaptive,o=this.maxHeight,r="%"===t.heightType?e.height/100*t.height:t.height;if(n)return this.modal.renderedHeight;var a=Math.min(e.height,o);return i?u(this.minHeight,a,r):r},overlayClass:function(){return{"v--modal-overlay":!0,scrollable:this.scrollable&&this.isAutoHeight}},modalClass:function(){return["v--modal-box",this.classes]},modalStyle:function(){return{top:this.position.top+"px",left:this.position.left+"px",width:this.trueModalWidth+"px",height:this.isAutoHeight?"auto":this.trueModalHeight+"px"}}},watch:{visible:function(e){var t=this;e?(this.visibility.overlay=!0,setTimeout(function(){t.visibility.modal=!0,t.$nextTick(function(){t.addDraggableListeners(),t.callAfterEvent(!0)})},this.delay)):(this.visibility.modal=!1,setTimeout(function(){t.visibility.overlay=!1,t.$nextTick(function(){t.removeDraggableListeners(),t.callAfterEvent(!1)})},this.delay))}},methods:{handleToggleEvent:function(e,t,n){if(this.name===e){var i=void 0===t?!this.visible:t;this.toggle(i,n)}},setInitialSize:function(){var e=this.modal,t=v(this.width),n=v(this.height);e.width=t.value,e.widthType=t.type,e.height=n.value,e.heightType=n.type},handleEscapeKeyUp:function(e){27===e.which&&this.visible&&this.$modal.hide(this.name)},handleWindowResize:function(){this.window.width=window.innerWidth,this.window.height=window.innerHeight},createModalEvent:function(){var e=0<arguments.length&&void 0!==arguments[0]?arguments[0]:{};return r(function(o){for(var e=1;e<arguments.length;e++){var r=null!=arguments[e]?arguments[e]:{},t=Object.keys(r);"function"==typeof Object.getOwnPropertySymbols&&(t=t.concat(Object.getOwnPropertySymbols(r).filter(function(e){return Object.getOwnPropertyDescriptor(r,e).enumerable}))),t.forEach(function(e){var t,n,i;t=o,i=r[n=e],n in t?Object.defineProperty(t,n,{value:i,enumerable:!0,configurable:!0,writable:!0}):t[n]=i})}return o}({name:this.name,ref:this.$refs.modal},e))},handleModalResize:function(e){this.modal.widthType="px",this.modal.width=e.size.width,this.modal.heightType="px",this.modal.height=e.size.height;var t=this.modal.size;this.$emit("resize",this.createModalEvent({size:t}))},toggle:function(e,t){var n=this.reset,i=this.scrollable,o=this.visible;if(o!==e){var r=o?"before-close":"before-open";"before-open"===r?(document.activeElement&&"BODY"!==document.activeElement.tagName&&document.activeElement.blur&&document.activeElement.blur(),n&&(this.setInitialSize(),this.shift.left=0,this.shift.top=0),i&&document.body.classList.add("v--modal-block-scroll")):i&&document.body.classList.remove("v--modal-block-scroll");var a=!1,s=this.createModalEvent({stop:function(){a=!0},state:e,params:t});this.$emit(r,s),a||(this.visible=e)}},getDraggableElement:function(){var e="string"!=typeof this.draggable?".v--modal-box":this.draggable;return e?this.$refs.overlay.querySelector(e):null},handleBackgroundClick:function(){this.clickToClose&&this.toggle(!1)},callAfterEvent:function(e){e?this.connectObserver():this.disconnectObserver();var t=e?"opened":"closed",n=this.createModalEvent({state:e});this.$emit(t,n)},addDraggableListeners:function(){var r=this;if(this.draggable){var e=this.getDraggableElement();if(e){var a=0,s=0,l=0,d=0,u=function(e){return e.touches&&0<e.touches.length?e.touches[0]:e},t=function(e){var t=e.target;if(!t||"INPUT"!==t.nodeName){var n=u(e),i=n.clientX,o=n.clientY;document.addEventListener("mousemove",c),document.addEventListener("touchmove",c),document.addEventListener("mouseup",h),document.addEventListener("touchend",h),a=i,s=o,l=r.shift.left,d=r.shift.top}},c=function(e){var t=u(e),n=t.clientX,i=t.clientY;r.shift.left=l+n-a,r.shift.top=d+i-s,e.preventDefault()},h=function e(t){document.removeEventListener("mousemove",c),document.removeEventListener("touchmove",c),document.removeEventListener("mouseup",e),document.removeEventListener("touchend",e),t.preventDefault()};e.addEventListener("mousedown",t),e.addEventListener("touchstart",t)}}},removeDraggableListeners:function(){},updateRenderedHeight:function(){this.$refs.modal&&(this.modal.renderedHeight=this.$refs.modal.getBoundingClientRect().height)},connectObserver:function(){this.mutationObserver&&this.mutationObserver.observe(this.$refs.overlay,{childList:!0,attributes:!0,subtree:!0})},disconnectObserver:function(){this.mutationObserver&&this.mutationObserver.disconnect()},beforeTransitionEnter:function(){this.connectObserver()},afterTransitionEnter:function(){},afterTransitionLeave:function(){}}},b=(n(7),l(g,i,[],!1,null,null,null));b.options.__file="src/Modal.vue";var y=b.exports,w=function(){var n=this,e=n.$createElement,i=n._self._c||e;return i("modal",{attrs:{name:"dialog",height:"auto",classes:["v--modal","vue-dialog",this.params.class],width:n.width,"pivot-y":.3,adaptive:!0,clickToClose:n.clickToClose,transition:n.transition},on:{"before-open":n.beforeOpened,"before-close":n.beforeClosed,opened:function(e){n.$emit("opened",e)},closed:function(e){n.$emit("closed",e)}}},[i("div",{staticClass:"dialog-content"},[n.params.title?i("div",{staticClass:"dialog-c-title",domProps:{innerHTML:n._s(n.params.title||"")}}):n._e(),n._v(" "),n.params.component?i(n.params.component,n._b({tag:"component"},"component",n.params.props,!1)):i("div",{staticClass:"dialog-c-text",domProps:{innerHTML:n._s(n.params.text||"")}})],1),n._v(" "),n.buttons?i("div",{staticClass:"vue-dialog-buttons"},n._l(n.buttons,function(e,t){return i("button",{key:t,class:e.class||"vue-dialog-button",style:n.buttonStyle,attrs:{type:"button"},domProps:{innerHTML:n._s(e.title)},on:{click:function(e){e.stopPropagation(),n.click(t,e)}}},[n._v("\n      "+n._s(e.title)+"\n    ")])})):i("div",{staticClass:"vue-dialog-buttons-none"})])};w._withStripped=!0;var x={name:"VueJsDialog",props:{width:{type:[Number,String],default:400},clickToClose:{type:Boolean,default:!0},transition:{type:String,default:"fade"}},data:function(){return{params:{},defaultButtons:[{title:"CLOSE"}]}},computed:{buttons:function(){return this.params.buttons||this.defaultButtons},buttonStyle:function(){return{flex:"1 1 ".concat(100/this.buttons.length,"%")}}},methods:{beforeOpened:function(e){window.addEventListener("keyup",this.onKeyUp),this.params=e.params||{},this.$emit("before-opened",e)},beforeClosed:function(e){window.removeEventListener("keyup",this.onKeyUp),this.params={},this.$emit("before-closed",e)},click:function(e,t){var n=2<arguments.length&&void 0!==arguments[2]?arguments[2]:"click",i=this.buttons[e];i&&"function"==typeof i.handler?i.handler(e,t,{source:n}):this.$modal.hide("dialog")},onKeyUp:function(e){if(13===e.which&&0<this.buttons.length){var t=1===this.buttons.length?0:this.buttons.findIndex(function(e){return e.default});-1!==t&&this.click(t,e,"keypress")}}}},_=(n(9),l(x,w,[],!1,null,null,null));_.options.__file="src/Dialog.vue";var E=_.exports,k=function(){var n=this,e=n.$createElement,i=n._self._c||e;return i("div",{attrs:{id:"modals-container"}},n._l(n.modals,function(t){return i("modal",n._g(n._b({key:t.id,on:{closed:function(e){n.remove(t.id)}}},"modal",t.modalAttrs,!1),t.modalListeners),[i(t.component,n._g(n._b({tag:"component",on:{close:function(e){n.$modal.hide(t.modalAttrs.name)}}},"component",t.componentAttrs,!1),n.$listeners))],1)}))};k._withStripped=!0;var S=l({data:function(){return{modals:[]}},created:function(){this.$root._dynamicContainer=this},methods:{add:function(e){var t=this,n=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{},i=2<arguments.length&&void 0!==arguments[2]?arguments[2]:{},o=3<arguments.length?arguments[3]:void 0,r=s(),a=i.name||"_dynamic_modal_"+r;this.modals.push({id:r,modalAttrs:function(o){for(var e=1;e<arguments.length;e++){var r=null!=arguments[e]?arguments[e]:{},t=Object.keys(r);"function"==typeof Object.getOwnPropertySymbols&&(t=t.concat(Object.getOwnPropertySymbols(r).filter(function(e){return Object.getOwnPropertyDescriptor(r,e).enumerable}))),t.forEach(function(e){var t,n,i;t=o,i=r[n=e],n in t?Object.defineProperty(t,n,{value:i,enumerable:!0,configurable:!0,writable:!0}):t[n]=i})}return o}({},i,{name:a}),modalListeners:o,component:e,componentAttrs:n}),this.$nextTick(function(){t.$modal.show(a)})},remove:function(e){for(var t in this.modals)if(this.modals[t].id===e)return void this.modals.splice(t,1)}}},k,[],!1,null,null,null);S.options.__file="src/ModalsContainer.vue";var C=S.exports,O={install:function(a){var s=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{};this.installed||(this.installed=!0,this.event=new a,this.rootInstance=null,this.componentName=s.componentName||"Modal",a.prototype.$modal={show:function(e,t,n){var i=3<arguments.length&&void 0!==arguments[3]?arguments[3]:{};if("string"!=typeof e){var o=n&&n.root?n.root:O.rootInstance,r=function(e,t,n){if(!n._dynamicContainer&&t.injectModalsContainer){var i=document.createElement("div");document.body.appendChild(i),new e({parent:n,render:function(e){return e(C)}}).$mount(i)}return n._dynamicContainer}(a,s,o);r?r.add(e,t,n,i):console.warn("[vue-js-modal] In order to render dynamic modals, a <modals-container> component must be present on the page")}else O.event.$emit("toggle",e,!0,t)},hide:function(e,t){O.event.$emit("toggle",e,!1,t)},toggle:function(e,t){O.event.$emit("toggle",e,void 0,t)}},a.component(this.componentName,y),s.dialog&&a.component("VDialog",E),s.dynamic&&(a.component("ModalsContainer",C),a.mixin({beforeMount:function(){null===O.rootInstance&&(O.rootInstance=this.$root)}})))}};var T=t.default=O}])});
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(113)
+  __webpack_require__(114)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(116),
+  __webpack_require__(117),
   /* template */
-  __webpack_require__(301),
+  __webpack_require__(306),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -15136,7 +15180,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\App.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\App.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] App.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -15160,13 +15204,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(114);
+var content = __webpack_require__(115);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -15186,7 +15230,7 @@ if(false) {
 }
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -15194,13 +15238,13 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-unset-pointer-events[data-v-05c0cfb0] {\r\n    pointer-events: none;\n}\n.scoped-new-questioneditor[data-v-05c0cfb0] {\r\n    min-height: 75vh;\n}\n.loading-back-greyed[data-v-05c0cfb0] {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\n}\n.scoped-small-border[data-v-05c0cfb0]{\r\n     border: 1px solid rgba(184,184,184,0.8);\r\n     padding: 0.6rem 1rem;\r\n     border-radius: 4px;\n}\n.slide-fade-enter-active[data-v-05c0cfb0] {\r\n  transition: all .3s ease;\n}\n.slide-fade-leave-active[data-v-05c0cfb0] {\r\n  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);\n}\n.slide-fade-enter[data-v-05c0cfb0]\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(-10px);\r\n  opacity: 0;\n}\n.slide-fade-enter-to[data-v-05c0cfb0]\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(0px);\r\n  opacity: 1;\n}\n.slide-fade-leave-to[data-v-05c0cfb0]\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(10px);\r\n  opacity: 0;\n}\r\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/App.vue?3833fada"],"names":[],"mappings":";AA+MA;IACA,qBAAA;CACA;AAEA;IACA,iBAAA;CACA;AACA;IACA,wCAAA;IACA,YAAA;IACA,aAAA;IACA,iBAAA;CACA;AAEA;KACA,wCAAA;KACA,qBAAA;KACA,mBAAA;CACA;AAEA;EACA,yBAAA;CACA;AACA;EACA,qDAAA;CACA;AACA;;EAEA,6BAAA;EACA,WAAA;CACA;AACA;;EAEA,2BAAA;EACA,WAAA;CACA;AACA;;EAEA,4BAAA;EACA,WAAA;CACA","file":"App.vue","sourcesContent":["<script>\r\nimport Mousetrap from 'mousetrap';\r\n\r\nimport QuestionOverview from './components/questionoverview.vue';\r\nimport MainEditor from './components/mainEditor.vue';\r\nimport GeneralSettings from './components/generalSettings.vue';\r\nimport AdvancedSettings from './components/advancedSettings.vue';\r\nimport LanguageSelector from './helperComponents/LanguageSelector.vue';\r\n\r\nimport runAjax from './mixins/runAjax.js';\r\nimport eventRoot from './mixins/eventRoot.js';\r\n\r\nexport default {\r\n    name: 'lsnextquestioneditor',\r\n    mixins: [runAjax,eventRoot],\r\n    components: {\r\n        'questionoverview' : QuestionOverview,\r\n        'maineditor' : MainEditor,\r\n        'generalsettings' : GeneralSettings,\r\n        'advancedsettings' : AdvancedSettings,\r\n        'languageselector' : LanguageSelector\r\n    },\r\n    data() {\r\n        return {\r\n            editQuestion: false,\r\n            questionEditButton: window.questionEditButton,\r\n        }\r\n    },\r\n    computed: {\r\n        isCreateQuestion(){\r\n            return this.$store.state.currentQuestion.qid == null;\r\n        },\r\n        questionGroupWithId(){\r\n            return `${this.$store.state.currentQuestionGroupInfo[this.$store.state.activeLanguage].group_name} (GID: ${this.$store.state.currentQuestionGroupInfo.gid})`;\r\n        },\r\n        currentQuestionCode: {\r\n            get() {return this.$store.state.currentQuestion.title;},\r\n            set(newValue) {\r\n                this.$store.commit('updateCurrentQuestionTitle', newValue);\r\n            }\r\n        },\r\n    },\r\n    methods: {\r\n        triggerEditQuestion(){\r\n            this.toggleLoading(true);\r\n            if(this.editQuestion) {\r\n                $('#questionbarid').css('display', '');\r\n                $('#questiongroupbarid').css('display','none');\r\n            } else {\r\n                $('#questionbarid').css('display', 'none');\r\n                $('#questiongroupbarid').css('display','');\r\n            }\r\n            this.editQuestion = !this.editQuestion;\r\n        },\r\n        applyHotkeys() {\r\n            Mousetrap.bind('ctrl+right', this.chooseNextLanguage);\r\n            Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);\r\n            Mousetrap.bind('ctrl+s', this.submitCurrentState);\r\n            Mousetrap.bind('ctrl+alt+d', () => {this.$store.commit('toggleDebugMode');});\r\n        },\r\n        chooseNextLanguage() {\r\n            this.$log.log('HOTKEY', 'chooseNextLanguage');\r\n            this.$store.commit('nextLanguage');\r\n        },\r\n        choosePreviousLanguage() {\r\n            this.$log.log('HOTKEY', 'choosePreviousLanguage');\r\n            this.$store.commit('previousLanguage');\r\n        },\r\n        jqueryTriggered(event, data){\r\n            //this.$log.log('data', data);\r\n            this.event = JSON.parse(data.emitter);\r\n        },\r\n        setModalEvent(payload) {\r\n            this.$log.log('New event set', payload);\r\n            this.event = payload;\r\n        },\r\n        triggerEvent(payload) {\r\n            this.$log.log('New event set', payload);\r\n            this.event = payload;\r\n        },\r\n        eventSet() {\r\n            this.event = null;\r\n        },\r\n        toggleOverview() {\r\n            this.editQuestion = !this.editQuestion;\r\n        },\r\n        submitCurrentState(redirect = false) {\r\n            this.toggleLoading();\r\n            this.$store.dispatch('saveQuestionData').then(\r\n                (result) => {\r\n                    this.toggleLoading();\r\n                    if(redirect == true) {\r\n                        window.location.href = result.data.redirect;\r\n                    }\r\n\r\n                    $('#in_survey_common').trigger('lsStopLoading');\r\n                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');\r\n                    this.$store.dispatch('updateObjects', result.data.newQuestionDetails)\r\n                    this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };\r\n                    this.$log.log('OBJECT AFTER TRANSFER: ', result);\r\n                },\r\n                (reject) => {\r\n                    this.toggleLoading();\r\n                    $('#in_survey_common').trigger('lsStopLoading');\r\n                    window.LS.notifyFader(\"Question could not be stored. Reloading page.\", 'well-lg bg-danger text-center');\r\n                    //setTimeout(()=>{window.location.reload();}, 1500);\r\n                }\r\n            )\r\n        },\r\n        questionTypeChangeTriggered(newValue) {\r\n            this.$log.log('CHANGE OF TYPE', newValue);\r\n            this.currentQuestionType = newValue;\r\n            let tempQuestionObject = this.$store.state.currentQuestion;\r\n            tempQuestionObject.type = newValue;\r\n            this.$store.commit('setCurrentQuestion', tempQuestionObject);\r\n            this.$store.dispatch('reloadQuestion');\r\n            this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };\r\n        },\r\n        selectLanguage(sLanguage) {\r\n            this.$log.log('LANGUAGE CHANGED', sLanguage);\r\n            this.$store.commit('setActiveLanguage', sLanguage);\r\n        },\r\n    },\r\n    created(){\r\n        this.$store.dispatch('loadQuestion');\r\n        this.$store.dispatch('getQuestionTypes');\r\n        this.$store.dispatch('getQuestionGeneralSettings');\r\n        this.$store.dispatch('getQuestionAdvancedSettings');\r\n    },\r\n    \r\n    mounted() {\r\n        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);\r\n        this.applyHotkeys();\r\n\r\n        $('#frmeditquestion').on('submit', (e)=>{\r\n            e.preventDefault();\r\n        });\r\n\r\n        $('#save-button').on('click', (e)=>{\r\n            this.submitCurrentState();\r\n        });\r\n\r\n        $('#save-and-close-button').on('click', (e)=>{\r\n            this.submitCurrentState(true);\r\n        });\r\n\r\n        this.toggleLoading(false);\r\n        $('#questionbarid').css('display', '');\r\n        $('#questiongroupbarid').css('display','none');\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"container-center scoped-new-questioneditor\">\r\n        <button \r\n            v-if=\"!isCreateQuestion\" \r\n            @click.prevent.stop=\"triggerEditQuestion\" \r\n            class=\"pull-right clear btn \"\r\n            :class=\"editQuestion ? 'btn-primary' : 'btn-default'\"\r\n        >\r\n            {{editQuestion ? 'Question overview' : 'Question editor'}}\r\n        </button>\r\n        <div class=\"pagetitle h3 scoped-unset-pointer-events\">\r\n            <template v-if=\"isCreateQuestion\">\r\n                    {{'Create new Question'|translate}}\r\n            </template>\r\n            <template v-else>\r\n                    {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>\r\n            </template>\r\n        </div>\r\n        <template v-if=\"$store.getters.fullyLoaded\">\r\n            <div class=\"row\">\r\n                <div class=\"form-group col-sm-6\">\r\n                    <label for=\"questionCode\">{{'Code' | translate }}</label>\r\n                    <input type=\"text\" class=\"form-control\" id=\"questionCode\" :readonly=\"!(editQuestion || isCreateQuestion)\" v-model=\"currentQuestionCode\">\r\n                </div>\r\n                <div class=\"form-group col-sm-6 contains-question-selector\">\r\n                    <label for=\"questionCode\">{{'Question type' | translate }}</label>\r\n                    <div v-if=\"editQuestion || isCreateQuestion\"  v-html=\"questionEditButton\" />\r\n                    <div v-else class=\"scoped-small-border row\">\r\n                        <div class=\"col-sm-4\">{{'Question group'|translate}}:</div>\r\n                        <div class=\"col-sm-8\">{{questionGroupWithId}}</div>\r\n                    </div>\r\n                    <input type=\"hidden\" id=\"question_type\" name=\"type\" @change=\"questionTypeChangeTriggered\" :value=\"$store.state.currentQuestion.type\" />\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <languageselector\r\n                    :elId=\"'question-language-changer'\" \r\n                    :aLanguages=\"$store.state.languages\" \r\n                    :parentCurrentLanguage=\"$store.state.activeLanguage\" \r\n                    @change=\"selectLanguage\"\r\n                />\r\n            </div>\r\n            <div class=\"row\">\r\n                <maineditor v-if=\"(editQuestion || isCreateQuestion)\" :event=\"event\" v-on:triggerEvent=\"triggerEvent\" v-on:eventSet=\"eventSet\"></maineditor>\r\n                <questionoverview v-else :event=\"event\" v-on:triggerEvent=\"triggerEvent\" v-on:eventSet=\"eventSet\"></questionoverview>\r\n                <generalsettings :event=\"event\" v-on:triggerEvent=\"triggerEvent\" v-on:eventSet=\"eventSet\" :readonly=\"!(editQuestion || isCreateQuestion)\"></generalsettings>\r\n                <advancedsettings :event=\"event\" v-on:triggerEvent=\"triggerEvent\" v-on:eventSet=\"eventSet\" :readonly=\"!(editQuestion || isCreateQuestion)\"></advancedsettings>\r\n            </div>\r\n        </template>\r\n        <modals-container @modalEvent=\"setModalEvent\"/>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n.scoped-unset-pointer-events {\r\n    pointer-events: none;\r\n}\r\n\r\n.scoped-new-questioneditor {\r\n    min-height: 75vh;\r\n}\r\n.loading-back-greyed {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\r\n}\r\n\r\n.scoped-small-border{\r\n     border: 1px solid rgba(184,184,184,0.8);\r\n     padding: 0.6rem 1rem;\r\n     border-radius: 4px;\r\n }\r\n\r\n.slide-fade-enter-active {\r\n  transition: all .3s ease;\r\n}\r\n.slide-fade-leave-active {\r\n  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);\r\n}\r\n.slide-fade-enter\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(-10px);\r\n  opacity: 0;\r\n}\r\n.slide-fade-enter-to\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(0px);\r\n  opacity: 1;\r\n}\r\n.slide-fade-leave-to\r\n/* .slide-fade-leave-active below version 2.1.8 */ {\r\n  transform: translateX(10px);\r\n  opacity: 0;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-unset-pointer-events[data-v-05c0cfb0] {\r\n    pointer-events: none;\n}\n.scoped-new-questioneditor[data-v-05c0cfb0] {\r\n    min-height: 75vh;\n}\n.loading-back-greyed[data-v-05c0cfb0] {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\n}\n.scoped-small-border[data-v-05c0cfb0]{\r\n     border: 1px solid rgba(184,184,184,0.8);\r\n     padding: 0.6rem 1rem;\r\n     border-radius: 4px;\n}\r\n\r\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/App.vue?59bc1996"],"names":[],"mappings":";AAqOA;IACA,qBAAA;CACA;AAEA;IACA,iBAAA;CACA;AACA;IACA,wCAAA;IACA,YAAA;IACA,aAAA;IACA,iBAAA;CACA;AAEA;KACA,wCAAA;KACA,qBAAA;KACA,mBAAA;CACA","file":"App.vue","sourcesContent":["<script>\r\nimport Mousetrap from 'mousetrap';\r\n\r\nimport Loader from './helperComponents/loader.vue';\r\nimport QuestionOverview from './components/questionoverview.vue';\r\nimport MainEditor from './components/mainEditor.vue';\r\nimport GeneralSettings from './components/generalSettings.vue';\r\nimport AdvancedSettings from './components/advancedSettings.vue';\r\nimport LanguageSelector from './helperComponents/LanguageSelector.vue';\r\n\r\nimport runAjax from './mixins/runAjax.js';\r\nimport eventRoot from './mixins/eventRoot.js';\r\n\r\nexport default {\r\n    name: 'lsnextquestioneditor',\r\n    mixins: [runAjax,eventRoot],\r\n    components: {\r\n        'questionoverview' : QuestionOverview,\r\n        'maineditor' : MainEditor,\r\n        'generalsettings' : GeneralSettings,\r\n        'advancedsettings' : AdvancedSettings,\r\n        'languageselector' : LanguageSelector,\r\n        Loader\r\n    },\r\n    data() {\r\n        return {\r\n            editQuestion: false,\r\n            questionEditButton: window.questionEditButton,\r\n            loading: true\r\n        }\r\n    },\r\n    computed: {\r\n        isCreateQuestion(){\r\n            return this.$store.state.currentQuestion.qid == null;\r\n        },\r\n        questionGroupWithId(){\r\n            return `${this.$store.state.currentQuestionGroupInfo[this.$store.state.activeLanguage].group_name} (GID: ${this.$store.state.currentQuestionGroupInfo.gid})`;\r\n        },\r\n        currentQuestionCode: {\r\n            get() {return this.$store.state.currentQuestion.title;},\r\n            set(newValue) {\r\n                this.$store.commit('updateCurrentQuestionTitle', newValue);\r\n            }\r\n        },\r\n    },\r\n    methods: {\r\n        triggerEditQuestion(){\r\n            this.toggleLoading(true);\r\n            if(this.editQuestion) {\r\n                $('#questionbarid').slideDown()\r\n                $('#questiongroupbarid').slideUp();\r\n            } else {\r\n                $('#questionbarid').slideUp();\r\n                $('#questiongroupbarid').slideDown()\r\n            }\r\n            this.editQuestion = !this.editQuestion;\r\n        },\r\n        applyHotkeys() {\r\n            Mousetrap.bind('ctrl+right', this.chooseNextLanguage);\r\n            Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);\r\n            Mousetrap.bind('ctrl+s', this.submitCurrentState);\r\n            Mousetrap.bind('ctrl+alt+d', () => {this.$store.commit('toggleDebugMode');});\r\n        },\r\n        chooseNextLanguage() {\r\n            this.$log.log('HOTKEY', 'chooseNextLanguage');\r\n            this.$store.commit('nextLanguage');\r\n        },\r\n        choosePreviousLanguage() {\r\n            this.$log.log('HOTKEY', 'choosePreviousLanguage');\r\n            this.$store.commit('previousLanguage');\r\n        },\r\n        jqueryTriggered(event, data){\r\n            //this.$log.log('data', data);\r\n            this.event = JSON.parse(data.emitter);\r\n        },\r\n        setModalEvent(payload) {\r\n            this.$log.log('New event set', payload);\r\n            this.event = payload;\r\n        },\r\n        triggerEvent(payload) {\r\n            this.$log.log('New event set', payload);\r\n            this.event = payload;\r\n        },\r\n        eventSet() {\r\n            this.event = null;\r\n        },\r\n        toggleOverview() {\r\n            if(this.$store.state.currentQuestionPermissions.update == true) {\r\n                this.editQuestion = !this.editQuestion;\r\n                return;\r\n            }\r\n            this.editQuestion=false;\r\n        },\r\n        submitCurrentState(redirect = false) {\r\n            this.toggleLoading();\r\n            this.$store.dispatch('saveQuestionData').then(\r\n                (result) => {\r\n                    this.toggleLoading();\r\n                    if(redirect == true) {\r\n                        window.location.href = result.data.redirect;\r\n                    }\r\n\r\n                    $('#in_survey_common').trigger('lsStopLoading');\r\n                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');\r\n                    this.$store.dispatch('updateObjects', result.data.newQuestionDetails)\r\n                    this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };\r\n                    this.$log.log('OBJECT AFTER TRANSFER: ', result);\r\n                },\r\n                (reject) => {\r\n                    this.toggleLoading();\r\n                    $('#in_survey_common').trigger('lsStopLoading');\r\n                    window.LS.notifyFader(\"Question could not be stored. Reloading page.\", 'well-lg bg-danger text-center');\r\n                    //setTimeout(()=>{window.location.reload();}, 1500);\r\n                }\r\n            )\r\n        },\r\n        questionTypeChangeTriggered(newValue) {\r\n            this.$log.log('CHANGE OF TYPE', newValue);\r\n            this.currentQuestionType = newValue;\r\n            let tempQuestionObject = this.$store.state.currentQuestion;\r\n            tempQuestionObject.type = newValue;\r\n            this.$store.commit('setCurrentQuestion', tempQuestionObject);\r\n            this.$store.dispatch('reloadQuestion');\r\n            this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };\r\n        },\r\n        selectLanguage(sLanguage) {\r\n            this.$log.log('LANGUAGE CHANGED', sLanguage);\r\n            this.$store.commit('setActiveLanguage', sLanguage);\r\n        },\r\n    },\r\n    created(){\r\n        Promise.all([\r\n        this.$store.dispatch('loadQuestion'),\r\n        this.$store.dispatch('getQuestionTypes')\r\n        ]).then(()=>{\r\n            this.loading = false;\r\n        })\r\n    },\r\n    \r\n    mounted() {\r\n        $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);\r\n        this.applyHotkeys();\r\n\r\n        $('#frmeditquestion').on('submit', (e)=>{\r\n            e.preventDefault();\r\n        });\r\n\r\n        $('#save-button').on('click', (e)=>{\r\n            this.submitCurrentState();\r\n        });\r\n\r\n        $('#save-and-close-button').on('click', (e)=>{\r\n            this.submitCurrentState(true);\r\n        });\r\n\r\n        this.toggleLoading(false);\r\n        $('#questionbarid').css({'display': ''});\r\n        $('#questiongroupbarid').css({'display':'none'});\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"container-center scoped-new-questioneditor\">\r\n        <div class=\"btn-group pull-right clear\" v-if=\"!!$store.state.currentQuestionPermissions.update\">\r\n            <button \r\n                @click.prevent.stop=\"triggerEditQuestion\" \r\n                :class=\"editQuestion ? 'btn-default' : 'btn-primary'\"\r\n                class=\"btn \"\r\n            >\r\n                {{'Question overview'| translate}}\r\n            </button>\r\n            <button \r\n                @click.prevent.stop=\"triggerEditQuestion\" \r\n                :class=\"editQuestion ? 'btn-primary' : 'btn-default'\"\r\n                class=\"btn \"\r\n            >\r\n                {{'Question editor'| translate}}\r\n            </button>\r\n        </div>\r\n        <div class=\"pagetitle h3 scoped-unset-pointer-events\">\r\n            <template v-if=\"isCreateQuestion\">\r\n                    {{'Create new Question'|translate}}\r\n            </template>\r\n            <template v-else>\r\n                    {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>\r\n            </template>\r\n        </div>\r\n        <template v-if=\"!loading\">\r\n            <div class=\"row\">\r\n                <div class=\"form-group col-sm-6\">\r\n                    <label for=\"questionCode\">{{'Code' | translate }}</label>\r\n                    <input type=\"text\" class=\"form-control\" id=\"questionCode\" :readonly=\"!(editQuestion || isCreateQuestion)\" v-model=\"currentQuestionCode\">\r\n                </div>\r\n                <div class=\"form-group col-sm-6 contains-question-selector\">\r\n                    <label for=\"questionCode\">{{'Question type' | translate }}</label>\r\n                    <div v-if=\"editQuestion || isCreateQuestion\"  v-html=\"questionEditButton\" />\r\n                    <div v-else class=\"scoped-small-border row\">\r\n                        <div class=\"col-sm-4\">{{'Question group'|translate}}:</div>\r\n                        <div class=\"col-sm-8\">{{questionGroupWithId}}</div>\r\n                    </div>\r\n                    <input type=\"hidden\" id=\"question_type\" name=\"type\" @change=\"questionTypeChangeTriggered\" :value=\"$store.state.currentQuestion.type\" />\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <languageselector\r\n                    :elId=\"'question-language-changer'\" \r\n                    :aLanguages=\"$store.state.languages\" \r\n                    :parentCurrentLanguage=\"$store.state.activeLanguage\" \r\n                    @change=\"selectLanguage\"\r\n                />\r\n            </div>\r\n            <div class=\"row\">\r\n                <transition name=\"slide-fade\">\r\n                    <maineditor v-show=\"(editQuestion || isCreateQuestion)\" :event=\"event\" v-on:triggerEvent=\"triggerEvent\" v-on:eventSet=\"eventSet\"></maineditor>\r\n                </transition>\r\n                <transition name=\"slide-fade\">\r\n                    <questionoverview v-show=\"!(editQuestion || isCreateQuestion)\" :event=\"event\" v-on:triggerEvent=\"triggerEvent\" v-on:eventSet=\"eventSet\"></questionoverview>\r\n                </transition>\r\n                <generalsettings :event=\"event\" v-on:triggerEvent=\"triggerEvent\" v-on:eventSet=\"eventSet\" :readonly=\"!(editQuestion || isCreateQuestion)\"></generalsettings>\r\n                <advancedsettings :event=\"event\" v-on:triggerEvent=\"triggerEvent\" v-on:eventSet=\"eventSet\" :readonly=\"!(editQuestion || isCreateQuestion)\"></advancedsettings>\r\n            </div>\r\n        </template>\r\n        <template v-else><loader id=\"mainViewLoader\" /></template>\r\n        <modals-container @modalEvent=\"setModalEvent\"/>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n.scoped-unset-pointer-events {\r\n    pointer-events: none;\r\n}\r\n\r\n.scoped-new-questioneditor {\r\n    min-height: 75vh;\r\n}\r\n.loading-back-greyed {\r\n    background-color: rgba(200,200,200,0.4);\r\n    width: 100%;\r\n    height: 100%;\r\n    min-height: 60vh;\r\n}\r\n\r\n.scoped-small-border{\r\n     border: 1px solid rgba(184,184,184,0.8);\r\n     padding: 0.6rem 1rem;\r\n     border-radius: 4px;\r\n }\r\n\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports) {
 
 /**
@@ -15233,25 +15277,28 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mousetrap__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mousetrap__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mousetrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mousetrap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_questionoverview_vue__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_questionoverview_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_questionoverview_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_mainEditor_vue__ = __webpack_require__(189);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_mainEditor_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_mainEditor_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_generalSettings_vue__ = __webpack_require__(215);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_generalSettings_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_generalSettings_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_advancedSettings_vue__ = __webpack_require__(235);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_advancedSettings_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_advancedSettings_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__helperComponents_LanguageSelector_vue__ = __webpack_require__(283);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__helperComponents_LanguageSelector_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__helperComponents_LanguageSelector_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mixins_runAjax_js__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__mixins_eventRoot_js__ = __webpack_require__(300);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helperComponents_loader_vue__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helperComponents_loader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__helperComponents_loader_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_questionoverview_vue__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_questionoverview_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_questionoverview_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_mainEditor_vue__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_mainEditor_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_mainEditor_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_generalSettings_vue__ = __webpack_require__(220);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_generalSettings_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_generalSettings_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_advancedSettings_vue__ = __webpack_require__(240);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_advancedSettings_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_advancedSettings_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__helperComponents_LanguageSelector_vue__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__helperComponents_LanguageSelector_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__helperComponents_LanguageSelector_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__mixins_runAjax_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__mixins_eventRoot_js__ = __webpack_require__(305);
+
 
 
 
@@ -15266,18 +15313,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'lsnextquestioneditor',
-    mixins: [__WEBPACK_IMPORTED_MODULE_6__mixins_runAjax_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_7__mixins_eventRoot_js__["a" /* default */]],
+    mixins: [__WEBPACK_IMPORTED_MODULE_7__mixins_runAjax_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_8__mixins_eventRoot_js__["a" /* default */]],
     components: {
-        'questionoverview': __WEBPACK_IMPORTED_MODULE_1__components_questionoverview_vue___default.a,
-        'maineditor': __WEBPACK_IMPORTED_MODULE_2__components_mainEditor_vue___default.a,
-        'generalsettings': __WEBPACK_IMPORTED_MODULE_3__components_generalSettings_vue___default.a,
-        'advancedsettings': __WEBPACK_IMPORTED_MODULE_4__components_advancedSettings_vue___default.a,
-        'languageselector': __WEBPACK_IMPORTED_MODULE_5__helperComponents_LanguageSelector_vue___default.a
+        'questionoverview': __WEBPACK_IMPORTED_MODULE_2__components_questionoverview_vue___default.a,
+        'maineditor': __WEBPACK_IMPORTED_MODULE_3__components_mainEditor_vue___default.a,
+        'generalsettings': __WEBPACK_IMPORTED_MODULE_4__components_generalSettings_vue___default.a,
+        'advancedsettings': __WEBPACK_IMPORTED_MODULE_5__components_advancedSettings_vue___default.a,
+        'languageselector': __WEBPACK_IMPORTED_MODULE_6__helperComponents_LanguageSelector_vue___default.a,
+        Loader: __WEBPACK_IMPORTED_MODULE_1__helperComponents_loader_vue___default.a
     },
     data() {
         return {
             editQuestion: false,
-            questionEditButton: window.questionEditButton
+            questionEditButton: window.questionEditButton,
+            loading: true
         };
     },
     computed: {
@@ -15300,11 +15349,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         triggerEditQuestion() {
             this.toggleLoading(true);
             if (this.editQuestion) {
-                $('#questionbarid').css('display', '');
-                $('#questiongroupbarid').css('display', 'none');
+                $('#questionbarid').slideDown();
+                $('#questiongroupbarid').slideUp();
             } else {
-                $('#questionbarid').css('display', 'none');
-                $('#questiongroupbarid').css('display', '');
+                $('#questionbarid').slideUp();
+                $('#questiongroupbarid').slideDown();
             }
             this.editQuestion = !this.editQuestion;
         },
@@ -15340,7 +15389,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.event = null;
         },
         toggleOverview() {
-            this.editQuestion = !this.editQuestion;
+            if (this.$store.state.currentQuestionPermissions.update == true) {
+                this.editQuestion = !this.editQuestion;
+                return;
+            }
+            this.editQuestion = false;
         },
         submitCurrentState(redirect = false) {
             this.toggleLoading();
@@ -15377,10 +15430,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     created() {
-        this.$store.dispatch('loadQuestion');
-        this.$store.dispatch('getQuestionTypes');
-        this.$store.dispatch('getQuestionGeneralSettings');
-        this.$store.dispatch('getQuestionAdvancedSettings');
+        Promise.all([this.$store.dispatch('loadQuestion'), this.$store.dispatch('getQuestionTypes')]).then(() => {
+            this.loading = false;
+        });
     },
 
     mounted() {
@@ -15400,13 +15452,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         this.toggleLoading(false);
-        $('#questionbarid').css('display', '');
-        $('#questiongroupbarid').css('display', 'none');
+        $('#questionbarid').css({ 'display': '' });
+        $('#questiongroupbarid').css({ 'display': 'none' });
     }
 });
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/*global define:false */
@@ -16471,19 +16523,138 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/*global define:false */
 
 
 /***/ }),
-/* 118 */
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(120);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("18355018", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../node_modules/css-loader/index.js?sourceMap!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8b6a2576\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./loader.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js?sourceMap!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8b6a2576\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./loader.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(true);
+// imports
+
+
+// module
+exports.push([module.i, "\n.loader--loaderWidget[data-v-8b6a2576]{\n    position: absolute;\n    top:0;\n    left:0;\n    width: 100%;\n    height: 100%;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/helperComponents/loader.vue?550e9194"],"names":[],"mappings":";AAiBA;IACA,mBAAA;IACA,MAAA;IACA,OAAA;IACA,YAAA;IACA,aAAA;CACA","file":"loader.vue","sourcesContent":["<template>\r\n<div :id=\"'loader-'+id\" class=\" loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center\"\r\n        style=\"min-height: 100%;\">\r\n        <div class=\"ls-flex align-content-center align-items-center\">\r\n            <div class=\"loader-advancedquestionsettings text-center\">\r\n                <div class=\"contain-pulse animate-pulse\">\r\n                    <div class=\"square\"></div>\r\n                    <div class=\"square\"></div>\r\n                    <div class=\"square\"></div>\r\n                    <div class=\"square\"></div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n    .loader--loaderWidget{\r\n        position: absolute;\r\n        top:0;\r\n        left:0;\r\n        width: 100%;\r\n        height: 100%;\r\n    }\r\n</style>\r\n\r\n<script>\r\nexport default {\r\n    name: 'loaderWidget',\r\n    props: {\r\n        id: {type: String, default: Math.floor(1000*Math.random())}\r\n    },\r\n}\r\n</script>\r\n"],"sourceRoot":""}]);
+
+// exports
+
+
+/***/ }),
+/* 121 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'loaderWidget',
+    props: {
+        id: { type: String, default: Math.floor(1000 * Math.random()) }
+    }
+});
+
+/***/ }),
+/* 122 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: " loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center",
+    staticStyle: {
+      "min-height": "100%"
+    },
+    attrs: {
+      "id": 'loader-' + _vm.id
+    }
+  }, [_vm._m(0)])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "ls-flex align-content-center align-items-center"
+  }, [_c('div', {
+    staticClass: "loader-advancedquestionsettings text-center"
+  }, [_c('div', {
+    staticClass: "contain-pulse animate-pulse"
+  }, [_c('div', {
+    staticClass: "square"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "square"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "square"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "square"
+  })])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-8b6a2576", module.exports)
+  }
+}
+
+/***/ }),
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(119)
+  __webpack_require__(124)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(121),
+  __webpack_require__(126),
   /* template */
-  __webpack_require__(188),
+  __webpack_require__(193),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -16491,7 +16662,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\questionoverview.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\questionoverview.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] questionoverview.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -16515,13 +16686,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 119 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(120);
+var content = __webpack_require__(125);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -16541,7 +16712,7 @@ if(false) {
 }
 
 /***/ }),
-/* 120 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -16549,13 +16720,13 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-small-border[data-v-368d96df]{\n     border: 1px solid rgba(184,184,184,0.8);\n     padding: 1rem;\n     border-radius: 4px;\n}\n.scope-border-open-top[data-v-368d96df] {\n    border-left: 1px solid #cfcfcf;\n    border-right: 1px solid #cfcfcf;\n    border-bottom: 1px solid #cfcfcf;\n}\n.scoped-fit-padding[data-v-368d96df] {\n    padding-left: 15px;\n    padding-right: 15px;\n    padding-bottom: 5px;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/questionoverview.vue?0dab2495"],"names":[],"mappings":";AAiGA;KACA,wCAAA;KACA,cAAA;KACA,mBAAA;CACA;AACA;IACA,+BAAA;IACA,gCAAA;IACA,iCAAA;CACA;AACA;IACA,mBAAA;IACA,oBAAA;IACA,oBAAA;CACA","file":"questionoverview.vue","sourcesContent":["\r\n<script>\r\n\r\nimport foreach from 'lodash/foreach';\r\nimport keys from 'lodash/keys';\r\nimport filter from 'lodash/filter';\r\nimport reduce from 'lodash/reduce';\r\nimport isEmpty from 'lodash/isEmpty';\r\nimport isObject from 'lodash/isObject';\r\n\r\nimport eventChild from '../mixins/eventChild.js';\r\n\r\nexport default {\r\n    name: 'questionoverview',\r\n    mixin: [eventChild],\r\n    data(){\r\n        return {\r\n            currentTab: '',\r\n        };\r\n    },\r\n    computed: {\r\n        cleanCurrentQuestion(){\r\n            return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].question);\r\n        },\r\n        cleanCurrentQuestionHelp(){\r\n            return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].help);\r\n        },\r\n        getNiceQuestionType(){\r\n            return `${this.$store.state.currentQuestion.typeInformation.description} (${this.translate('Group')}: ${this.$store.state.currentQuestion.typeInformation.group})`;\r\n        },\r\n        getNiceMandatory(){\r\n            let result = this.$store.state.currentQuestion.mandatory == 'Y' ? this.translate('Yes') : this.translate('No');\r\n            result += `&nbsp;<i class='fa ${(this.$store.state.currentQuestion.mandatory == 'Y' ? \"fa-check\" : \"fa-times\")} fa-ls'></i>`;\r\n            return result;\r\n        },\r\n        getNiceEncrypted(){\r\n            let result = this.$store.state.currentQuestion.encrypted == 'Y' ? this.translate('Yes') : this.translate('No');\r\n            result += `&nbsp;<i class='fa ${(this.$store.state.currentQuestion.encrypted == 'Y' ? \"fa-check\" : \"fa-times\")} fa-ls'></i>`;\r\n            return result;\r\n        },\r\n        parsedRelevance(){\r\n            return this.$store.state.currentQuestion.relevance;\r\n        },\r\n    },\r\n    methods: {\r\n         stripScripts(s) {\r\n            const div = document.createElement('div');\r\n            div.innerHTML = s;\r\n            const scripts = div.getElementsByTagName('script');\r\n            let i = scripts.length;\r\n            while (i--) {\r\n                scripts[i].parentNode.removeChild(scripts[i]);\r\n            }\r\n            return div.innerHTML;\r\n        },\r\n        selectLanguage(sLanguage) {\r\n            this.$log.log('LANGUAGE CHANGED', sLanguage);\r\n            this.$store.commit('setActiveLanguage', sLanguage);\r\n        },\r\n        parseForLocalizedOption(value) {\r\n            if(isObject(value) && value[this.$store.state.activeLanguage] != undefined) {\r\n                return value[this.$store.state.activeLanguage];\r\n            }\r\n            return value;\r\n        }\r\n    },\r\n    mounted(){\r\n        this.toggleLoading(false);\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"col-sm-8 col-xs-12\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n            {{'Text elements'|translate}}\r\n            </div>\r\n            <ul class=\"list-group\">\r\n                <li class=\"list-group-item\">\r\n                    <div class=\"ls-flex-row wrap col-12\">\r\n                        <div class=\"col-12\">{{'Question'|translate}}</div>\r\n                        <div class=\"col-12 scoped-small-border\" v-html=\"cleanCurrentQuestion\" />\r\n                    </div>\r\n                </li>\r\n                <li class=\"list-group-item\">\r\n                    <div class=\"ls-flex-row wrap col-12\">\r\n                        <div class=\"col-12\">{{'Help'|translate}}</div>\r\n                        <div class=\"col-12 scoped-small-border\" v-html=\"cleanCurrentQuestionHelp\" />\r\n                    </div>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<style type=\"scss\" scoped>\r\n .scoped-small-border{\r\n     border: 1px solid rgba(184,184,184,0.8);\r\n     padding: 1rem;\r\n     border-radius: 4px;\r\n }\r\n.scope-border-open-top {\r\n    border-left: 1px solid #cfcfcf;\r\n    border-right: 1px solid #cfcfcf;\r\n    border-bottom: 1px solid #cfcfcf;\r\n}\r\n.scoped-fit-padding {\r\n    padding-left: 15px;\r\n    padding-right: 15px;\r\n    padding-bottom: 5px;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-small-border[data-v-368d96df]{\n     border: 1px solid rgba(184,184,184,0.8);\n     padding: 1rem;\n     border-radius: 4px;\n}\n.scope-border-open-top[data-v-368d96df] {\n    border-left: 1px solid #cfcfcf;\n    border-right: 1px solid #cfcfcf;\n    border-bottom: 1px solid #cfcfcf;\n}\n.scoped-fit-padding[data-v-368d96df] {\n    padding-left: 15px;\n    padding-right: 15px;\n    padding-bottom: 5px;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/components/questionoverview.vue?1d265c95"],"names":[],"mappings":";AAgHA;KACA,wCAAA;KACA,cAAA;KACA,mBAAA;CACA;AACA;IACA,+BAAA;IACA,gCAAA;IACA,iCAAA;CACA;AACA;IACA,mBAAA;IACA,oBAAA;IACA,oBAAA;CACA","file":"questionoverview.vue","sourcesContent":["\r\n<script>\r\n\r\nimport foreach from 'lodash/foreach';\r\nimport keys from 'lodash/keys';\r\nimport filter from 'lodash/filter';\r\nimport reduce from 'lodash/reduce';\r\nimport isEmpty from 'lodash/isEmpty';\r\nimport isObject from 'lodash/isObject';\r\n\r\nimport eventChild from '../mixins/eventChild.js';\r\n\r\nexport default {\r\n    name: 'questionoverview',\r\n    mixin: [eventChild],\r\n    data(){\r\n        return {\r\n            currentTab: '',\r\n        };\r\n    },\r\n    computed: {\r\n        cleanCurrentQuestion(){\r\n            return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].question);\r\n        },\r\n        cleanCurrentQuestionHelp(){\r\n            return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].help);\r\n        },\r\n        currentQuestionScript(){\r\n            return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].script;\r\n        },\r\n        getNiceQuestionType(){\r\n            return `${this.$store.state.currentQuestion.typeInformation.description} (${this.translate('Group')}: ${this.$store.state.currentQuestion.typeInformation.group})`;\r\n        },\r\n        getNiceMandatory(){\r\n            let result = this.$store.state.currentQuestion.mandatory == 'Y' ? this.translate('Yes') : this.translate('No');\r\n            result += `&nbsp;<i class='fa ${(this.$store.state.currentQuestion.mandatory == 'Y' ? \"fa-check\" : \"fa-times\")} fa-ls'></i>`;\r\n            return result;\r\n        },\r\n        getNiceEncrypted(){\r\n            let result = this.$store.state.currentQuestion.encrypted == 'Y' ? this.translate('Yes') : this.translate('No');\r\n            result += `&nbsp;<i class='fa ${(this.$store.state.currentQuestion.encrypted == 'Y' ? \"fa-check\" : \"fa-times\")} fa-ls'></i>`;\r\n            return result;\r\n        },\r\n        parsedRelevance(){\r\n            return this.$store.state.currentQuestion.relevance;\r\n        },\r\n    },\r\n    methods: {\r\n         stripScripts(s) {\r\n            const div = document.createElement('div');\r\n            div.innerHTML = s;\r\n            const scripts = div.getElementsByTagName('script');\r\n            let i = scripts.length;\r\n            while (i--) {\r\n                scripts[i].parentNode.removeChild(scripts[i]);\r\n            }\r\n            return div.innerHTML;\r\n        },\r\n        selectLanguage(sLanguage) {\r\n            this.$log.log('LANGUAGE CHANGED', sLanguage);\r\n            this.$store.commit('setActiveLanguage', sLanguage);\r\n        },\r\n        parseForLocalizedOption(value) {\r\n            if(isObject(value) && value[this.$store.state.activeLanguage] != undefined) {\r\n                return value[this.$store.state.activeLanguage];\r\n            }\r\n            return value;\r\n        },\r\n        toggleEditMode(){\r\n            this.$emit('triggerEvent', { target: 'lsnextquestioneditor', method: 'toggleOverview', content: {} });\r\n        }\r\n    },\r\n    mounted(){\r\n        this.toggleLoading(false);\r\n    }\r\n}\r\n</script>\r\n\r\n<template>\r\n    <div class=\"col-sm-8 col-xs-12\">\r\n        <div class=\"panel panel-default\" @dblclick=\"toggleEditMode\">\r\n            <div class=\"panel-heading\">\r\n            {{'Text elements'|translate}}\r\n            </div>\r\n            <ul class=\"list-group\">\r\n                <li class=\"list-group-item\">\r\n                    <div class=\"ls-flex-row wrap col-12\">\r\n                        <div class=\"col-12\">{{'Question'|translate}}</div>\r\n                        <div class=\"col-12 scoped-small-border\" v-html=\"cleanCurrentQuestion\" />\r\n                    </div>\r\n                </li>\r\n                <li class=\"list-group-item\" v-show=\"!!cleanCurrentQuestionHelp\">\r\n                    <div class=\"ls-flex-row wrap col-12\">\r\n                        <div class=\"col-12\">{{'Help'|translate}}</div>\r\n                        <div class=\"col-12 scoped-small-border\" v-html=\"cleanCurrentQuestionHelp\" />\r\n                    </div>\r\n                </li>\r\n                <li class=\"list-group-item\" v-show=\"!!currentQuestionScript\">\r\n                    <div class=\"ls-flex-row wrap col-12\">\r\n                        <div class=\"col-12\">{{'Script'|translate}}</div>\r\n                        <div class=\"col-12 scoped-small-border\">\r\n                            {{currentQuestionScript}}\r\n                        </div>\r\n                        <p class=\"alert well\">{{\"__SCRIPTHELP\"|translate}}</p>\r\n                    </div>\r\n                </li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</template>\r\n\r\n<style type=\"scss\" scoped>\r\n .scoped-small-border{\r\n     border: 1px solid rgba(184,184,184,0.8);\r\n     padding: 1rem;\r\n     border-radius: 4px;\r\n }\r\n.scope-border-open-top {\r\n    border-left: 1px solid #cfcfcf;\r\n    border-right: 1px solid #cfcfcf;\r\n    border-bottom: 1px solid #cfcfcf;\r\n}\r\n.scoped-fit-padding {\r\n    padding-left: 15px;\r\n    padding-right: 15px;\r\n    padding-bottom: 5px;\r\n}\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 121 */
+/* 126 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16600,6 +16771,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         cleanCurrentQuestionHelp() {
             return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].help);
         },
+        currentQuestionScript() {
+            return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].script;
+        },
         getNiceQuestionType() {
             return `${this.$store.state.currentQuestion.typeInformation.description} (${this.translate('Group')}: ${this.$store.state.currentQuestion.typeInformation.group})`;
         },
@@ -16637,6 +16811,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return value[this.$store.state.activeLanguage];
             }
             return value;
+        },
+        toggleEditMode() {
+            this.$emit('triggerEvent', { target: 'lsnextquestioneditor', method: 'toggleOverview', content: {} });
         }
     },
     mounted() {
@@ -16645,10 +16822,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 122 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFor = __webpack_require__(62),
+var baseFor = __webpack_require__(63),
     keys = __webpack_require__(6);
 
 /**
@@ -16667,7 +16844,7 @@ module.exports = baseForOwn;
 
 
 /***/ }),
-/* 123 */
+/* 128 */
 /***/ (function(module, exports) {
 
 /**
@@ -16698,7 +16875,7 @@ module.exports = createBaseFor;
 
 
 /***/ }),
-/* 124 */
+/* 129 */
 /***/ (function(module, exports) {
 
 /**
@@ -16724,7 +16901,7 @@ module.exports = baseTimes;
 
 
 /***/ }),
-/* 125 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(12),
@@ -16748,7 +16925,7 @@ module.exports = baseIsArguments;
 
 
 /***/ }),
-/* 126 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(14);
@@ -16800,7 +16977,7 @@ module.exports = getRawTag;
 
 
 /***/ }),
-/* 127 */
+/* 132 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -16828,7 +17005,7 @@ module.exports = objectToString;
 
 
 /***/ }),
-/* 128 */
+/* 133 */
 /***/ (function(module, exports) {
 
 /**
@@ -16852,11 +17029,11 @@ module.exports = stubFalse;
 
 
 /***/ }),
-/* 129 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(12),
-    isLength = __webpack_require__(42),
+    isLength = __webpack_require__(43),
     isObjectLike = __webpack_require__(9);
 
 /** `Object#toString` result references. */
@@ -16918,10 +17095,10 @@ module.exports = baseIsTypedArray;
 
 
 /***/ }),
-/* 130 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(64);
+/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(65);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -16947,10 +17124,10 @@ module.exports = nodeUtil;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)(module)))
 
 /***/ }),
-/* 131 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var overArg = __webpack_require__(66);
+var overArg = __webpack_require__(67);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeKeys = overArg(Object.keys, Object);
@@ -16959,7 +17136,7 @@ module.exports = nativeKeys;
 
 
 /***/ }),
-/* 132 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArrayLike = __webpack_require__(10);
@@ -16997,7 +17174,7 @@ module.exports = createBaseEach;
 
 
 /***/ }),
-/* 133 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var identity = __webpack_require__(15);
@@ -17017,7 +17194,7 @@ module.exports = castFunction;
 
 
 /***/ }),
-/* 134 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseEach = __webpack_require__(28);
@@ -17044,12 +17221,12 @@ module.exports = baseFilter;
 
 
 /***/ }),
-/* 135 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsMatch = __webpack_require__(136),
-    getMatchData = __webpack_require__(175),
-    matchesStrictComparable = __webpack_require__(77);
+var baseIsMatch = __webpack_require__(141),
+    getMatchData = __webpack_require__(180),
+    matchesStrictComparable = __webpack_require__(78);
 
 /**
  * The base implementation of `_.matches` which doesn't clone `source`.
@@ -17072,11 +17249,11 @@ module.exports = baseMatches;
 
 
 /***/ }),
-/* 136 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Stack = __webpack_require__(32),
-    baseIsEqual = __webpack_require__(47);
+    baseIsEqual = __webpack_require__(48);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -17140,7 +17317,7 @@ module.exports = baseIsMatch;
 
 
 /***/ }),
-/* 137 */
+/* 142 */
 /***/ (function(module, exports) {
 
 /**
@@ -17159,7 +17336,7 @@ module.exports = listCacheClear;
 
 
 /***/ }),
-/* 138 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(34);
@@ -17200,7 +17377,7 @@ module.exports = listCacheDelete;
 
 
 /***/ }),
-/* 139 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(34);
@@ -17225,7 +17402,7 @@ module.exports = listCacheGet;
 
 
 /***/ }),
-/* 140 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(34);
@@ -17247,7 +17424,7 @@ module.exports = listCacheHas;
 
 
 /***/ }),
-/* 141 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(34);
@@ -17279,7 +17456,7 @@ module.exports = listCacheSet;
 
 
 /***/ }),
-/* 142 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(33);
@@ -17300,7 +17477,7 @@ module.exports = stackClear;
 
 
 /***/ }),
-/* 143 */
+/* 148 */
 /***/ (function(module, exports) {
 
 /**
@@ -17324,7 +17501,7 @@ module.exports = stackDelete;
 
 
 /***/ }),
-/* 144 */
+/* 149 */
 /***/ (function(module, exports) {
 
 /**
@@ -17344,7 +17521,7 @@ module.exports = stackGet;
 
 
 /***/ }),
-/* 145 */
+/* 150 */
 /***/ (function(module, exports) {
 
 /**
@@ -17364,12 +17541,12 @@ module.exports = stackHas;
 
 
 /***/ }),
-/* 146 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(33),
-    Map = __webpack_require__(45),
-    MapCache = __webpack_require__(46);
+    Map = __webpack_require__(46),
+    MapCache = __webpack_require__(47);
 
 /** Used as the size to enable large array optimizations. */
 var LARGE_ARRAY_SIZE = 200;
@@ -17404,13 +17581,13 @@ module.exports = stackSet;
 
 
 /***/ }),
-/* 147 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(44),
-    isMasked = __webpack_require__(148),
+var isFunction = __webpack_require__(45),
+    isMasked = __webpack_require__(153),
     isObject = __webpack_require__(2),
-    toSource = __webpack_require__(68);
+    toSource = __webpack_require__(69);
 
 /**
  * Used to match `RegExp`
@@ -17457,10 +17634,10 @@ module.exports = baseIsNative;
 
 
 /***/ }),
-/* 148 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var coreJsData = __webpack_require__(149);
+var coreJsData = __webpack_require__(154);
 
 /** Used to detect methods masquerading as native. */
 var maskSrcKey = (function() {
@@ -17483,7 +17660,7 @@ module.exports = isMasked;
 
 
 /***/ }),
-/* 149 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(7);
@@ -17495,7 +17672,7 @@ module.exports = coreJsData;
 
 
 /***/ }),
-/* 150 */
+/* 155 */
 /***/ (function(module, exports) {
 
 /**
@@ -17514,12 +17691,12 @@ module.exports = getValue;
 
 
 /***/ }),
-/* 151 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Hash = __webpack_require__(152),
+var Hash = __webpack_require__(157),
     ListCache = __webpack_require__(33),
-    Map = __webpack_require__(45);
+    Map = __webpack_require__(46);
 
 /**
  * Removes all key-value entries from the map.
@@ -17541,14 +17718,14 @@ module.exports = mapCacheClear;
 
 
 /***/ }),
-/* 152 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var hashClear = __webpack_require__(153),
-    hashDelete = __webpack_require__(154),
-    hashGet = __webpack_require__(155),
-    hashHas = __webpack_require__(156),
-    hashSet = __webpack_require__(157);
+var hashClear = __webpack_require__(158),
+    hashDelete = __webpack_require__(159),
+    hashGet = __webpack_require__(160),
+    hashHas = __webpack_require__(161),
+    hashSet = __webpack_require__(162);
 
 /**
  * Creates a hash object.
@@ -17579,7 +17756,7 @@ module.exports = Hash;
 
 
 /***/ }),
-/* 153 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(35);
@@ -17600,7 +17777,7 @@ module.exports = hashClear;
 
 
 /***/ }),
-/* 154 */
+/* 159 */
 /***/ (function(module, exports) {
 
 /**
@@ -17623,7 +17800,7 @@ module.exports = hashDelete;
 
 
 /***/ }),
-/* 155 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(35);
@@ -17659,7 +17836,7 @@ module.exports = hashGet;
 
 
 /***/ }),
-/* 156 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(35);
@@ -17688,7 +17865,7 @@ module.exports = hashHas;
 
 
 /***/ }),
-/* 157 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(35);
@@ -17717,7 +17894,7 @@ module.exports = hashSet;
 
 
 /***/ }),
-/* 158 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(36);
@@ -17741,7 +17918,7 @@ module.exports = mapCacheDelete;
 
 
 /***/ }),
-/* 159 */
+/* 164 */
 /***/ (function(module, exports) {
 
 /**
@@ -17762,7 +17939,7 @@ module.exports = isKeyable;
 
 
 /***/ }),
-/* 160 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(36);
@@ -17784,7 +17961,7 @@ module.exports = mapCacheGet;
 
 
 /***/ }),
-/* 161 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(36);
@@ -17806,7 +17983,7 @@ module.exports = mapCacheHas;
 
 
 /***/ }),
-/* 162 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(36);
@@ -17834,13 +18011,13 @@ module.exports = mapCacheSet;
 
 
 /***/ }),
-/* 163 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Stack = __webpack_require__(32),
-    equalArrays = __webpack_require__(69),
-    equalByTag = __webpack_require__(169),
-    equalObjects = __webpack_require__(170),
+    equalArrays = __webpack_require__(70),
+    equalByTag = __webpack_require__(174),
+    equalObjects = __webpack_require__(175),
     getTag = __webpack_require__(37),
     isArray = __webpack_require__(1),
     isBuffer = __webpack_require__(20),
@@ -17923,12 +18100,12 @@ module.exports = baseIsEqualDeep;
 
 
 /***/ }),
-/* 164 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MapCache = __webpack_require__(46),
-    setCacheAdd = __webpack_require__(165),
-    setCacheHas = __webpack_require__(166);
+var MapCache = __webpack_require__(47),
+    setCacheAdd = __webpack_require__(170),
+    setCacheHas = __webpack_require__(171);
 
 /**
  *
@@ -17956,7 +18133,7 @@ module.exports = SetCache;
 
 
 /***/ }),
-/* 165 */
+/* 170 */
 /***/ (function(module, exports) {
 
 /** Used to stand-in for `undefined` hash values. */
@@ -17981,7 +18158,7 @@ module.exports = setCacheAdd;
 
 
 /***/ }),
-/* 166 */
+/* 171 */
 /***/ (function(module, exports) {
 
 /**
@@ -18001,7 +18178,7 @@ module.exports = setCacheHas;
 
 
 /***/ }),
-/* 167 */
+/* 172 */
 /***/ (function(module, exports) {
 
 /**
@@ -18030,7 +18207,7 @@ module.exports = arraySome;
 
 
 /***/ }),
-/* 168 */
+/* 173 */
 /***/ (function(module, exports) {
 
 /**
@@ -18049,15 +18226,15 @@ module.exports = cacheHas;
 
 
 /***/ }),
-/* 169 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(14),
-    Uint8Array = __webpack_require__(70),
+    Uint8Array = __webpack_require__(71),
     eq = __webpack_require__(24),
-    equalArrays = __webpack_require__(69),
-    mapToArray = __webpack_require__(71),
-    setToArray = __webpack_require__(72);
+    equalArrays = __webpack_require__(70),
+    mapToArray = __webpack_require__(72),
+    setToArray = __webpack_require__(73);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -18167,10 +18344,10 @@ module.exports = equalByTag;
 
 
 /***/ }),
-/* 170 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getAllKeys = __webpack_require__(73);
+var getAllKeys = __webpack_require__(74);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1;
@@ -18262,7 +18439,7 @@ module.exports = equalObjects;
 
 
 /***/ }),
-/* 171 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(13),
@@ -18275,7 +18452,7 @@ module.exports = DataView;
 
 
 /***/ }),
-/* 172 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(13),
@@ -18288,7 +18465,7 @@ module.exports = Promise;
 
 
 /***/ }),
-/* 173 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(13),
@@ -18301,7 +18478,7 @@ module.exports = Set;
 
 
 /***/ }),
-/* 174 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(13),
@@ -18314,10 +18491,10 @@ module.exports = WeakMap;
 
 
 /***/ }),
-/* 175 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isStrictComparable = __webpack_require__(76),
+var isStrictComparable = __webpack_require__(77),
     keys = __webpack_require__(6);
 
 /**
@@ -18344,15 +18521,15 @@ module.exports = getMatchData;
 
 
 /***/ }),
-/* 176 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqual = __webpack_require__(47),
-    get = __webpack_require__(177),
-    hasIn = __webpack_require__(79),
-    isKey = __webpack_require__(50),
-    isStrictComparable = __webpack_require__(76),
-    matchesStrictComparable = __webpack_require__(77),
+var baseIsEqual = __webpack_require__(48),
+    get = __webpack_require__(182),
+    hasIn = __webpack_require__(80),
+    isKey = __webpack_require__(51),
+    isStrictComparable = __webpack_require__(77),
+    matchesStrictComparable = __webpack_require__(78),
     toKey = __webpack_require__(17);
 
 /** Used to compose bitmasks for value comparisons. */
@@ -18383,7 +18560,7 @@ module.exports = baseMatchesProperty;
 
 
 /***/ }),
-/* 177 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(38);
@@ -18422,10 +18599,10 @@ module.exports = get;
 
 
 /***/ }),
-/* 178 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var memoizeCapped = __webpack_require__(179);
+var memoizeCapped = __webpack_require__(184);
 
 /** Used to match property names within property paths. */
 var reLeadingDot = /^\./,
@@ -18456,10 +18633,10 @@ module.exports = stringToPath;
 
 
 /***/ }),
-/* 179 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var memoize = __webpack_require__(180);
+var memoize = __webpack_require__(185);
 
 /** Used as the maximum memoize cache size. */
 var MAX_MEMOIZE_SIZE = 500;
@@ -18488,10 +18665,10 @@ module.exports = memoizeCapped;
 
 
 /***/ }),
-/* 180 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MapCache = __webpack_require__(46);
+var MapCache = __webpack_require__(47);
 
 /** Error message constants. */
 var FUNC_ERROR_TEXT = 'Expected a function';
@@ -18567,10 +18744,10 @@ module.exports = memoize;
 
 
 /***/ }),
-/* 181 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseToString = __webpack_require__(182);
+var baseToString = __webpack_require__(187);
 
 /**
  * Converts `value` to a string. An empty string is returned for `null`
@@ -18601,11 +18778,11 @@ module.exports = toString;
 
 
 /***/ }),
-/* 182 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(14),
-    arrayMap = __webpack_require__(78),
+    arrayMap = __webpack_require__(79),
     isArray = __webpack_require__(1),
     isSymbol = __webpack_require__(16);
 
@@ -18644,7 +18821,7 @@ module.exports = baseToString;
 
 
 /***/ }),
-/* 183 */
+/* 188 */
 /***/ (function(module, exports) {
 
 /**
@@ -18663,14 +18840,14 @@ module.exports = baseHasIn;
 
 
 /***/ }),
-/* 184 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var castPath = __webpack_require__(25),
     isArguments = __webpack_require__(19),
     isArray = __webpack_require__(1),
     isIndex = __webpack_require__(21),
-    isLength = __webpack_require__(42),
+    isLength = __webpack_require__(43),
     toKey = __webpack_require__(17);
 
 /**
@@ -18708,12 +18885,12 @@ module.exports = hasPath;
 
 
 /***/ }),
-/* 185 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseProperty = __webpack_require__(80),
-    basePropertyDeep = __webpack_require__(186),
-    isKey = __webpack_require__(50),
+var baseProperty = __webpack_require__(81),
+    basePropertyDeep = __webpack_require__(191),
+    isKey = __webpack_require__(51),
     toKey = __webpack_require__(17);
 
 /**
@@ -18746,7 +18923,7 @@ module.exports = property;
 
 
 /***/ }),
-/* 186 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(38);
@@ -18768,7 +18945,7 @@ module.exports = basePropertyDeep;
 
 
 /***/ }),
-/* 187 */
+/* 192 */
 /***/ (function(module, exports) {
 
 /**
@@ -18797,14 +18974,17 @@ module.exports = baseReduce;
 
 
 /***/ }),
-/* 188 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-sm-8 col-xs-12"
   }, [_c('div', {
-    staticClass: "panel panel-default"
+    staticClass: "panel panel-default",
+    on: {
+      "dblclick": _vm.toggleEditMode
+    }
   }, [_c('div', {
     staticClass: "panel-heading"
   }, [_vm._v("\n        " + _vm._s(_vm._f("translate")('Text elements')) + "\n        ")]), _vm._v(" "), _c('ul', {
@@ -18821,6 +19001,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "innerHTML": _vm._s(_vm.cleanCurrentQuestion)
     }
   })])]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!!_vm.cleanCurrentQuestionHelp),
+      expression: "!!cleanCurrentQuestionHelp"
+    }],
     staticClass: "list-group-item"
   }, [_c('div', {
     staticClass: "ls-flex-row wrap col-12"
@@ -18831,7 +19017,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     domProps: {
       "innerHTML": _vm._s(_vm.cleanCurrentQuestionHelp)
     }
-  })])])])])])
+  })])]), _vm._v(" "), _c('li', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!!_vm.currentQuestionScript),
+      expression: "!!currentQuestionScript"
+    }],
+    staticClass: "list-group-item"
+  }, [_c('div', {
+    staticClass: "ls-flex-row wrap col-12"
+  }, [_c('div', {
+    staticClass: "col-12"
+  }, [_vm._v(_vm._s(_vm._f("translate")('Script')))]), _vm._v(" "), _c('div', {
+    staticClass: "col-12 scoped-small-border"
+  }, [_vm._v("\n                        " + _vm._s(_vm.currentQuestionScript) + "\n                    ")]), _vm._v(" "), _c('p', {
+    staticClass: "alert well"
+  }, [_vm._v(_vm._s(_vm._f("translate")("__SCRIPTHELP")))])])])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -18842,19 +19044,19 @@ if (false) {
 }
 
 /***/ }),
-/* 189 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(190)
+  __webpack_require__(195)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(192),
+  __webpack_require__(197),
   /* template */
-  __webpack_require__(214),
+  __webpack_require__(219),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -18862,7 +19064,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\mainEditor.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\mainEditor.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] mainEditor.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -18886,13 +19088,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 190 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(191);
+var content = __webpack_require__(196);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -18912,7 +19114,7 @@ if(false) {
 }
 
 /***/ }),
-/* 191 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -18920,28 +19122,28 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.scope-set-min-height[data-v-33645a86] {\n  min-height: 40vh;\n}\n.scope-border-simple[data-v-33645a86] {\n  border: 1px solid #cfcfcf;\n}\n.scope-overflow-scroll[data-v-33645a86] {\n  overflow: scroll;\n  height: 100%;\n  width: 100%;\n}\n.scope-preview[data-v-33645a86] {\n  margin: 15px 5px;\n  padding: 2rem;\n  border: 3px double #dfdfdf;\n  min-height: 20vh;\n  resize: vertical;\n  overflow: auto;\n}\n.scope-contains-ckeditor[data-v-33645a86] {\n  min-height: 10rem;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/mainEditor.vue"],"names":[],"mappings":";AAAA;EACE,iBAAiB;CAAE;AAErB;EACE,0BAA0B;CAAE;AAE9B;EACE,iBAAiB;EACjB,aAAa;EACb,YAAY;CAAE;AAEhB;EACE,iBAAiB;EACjB,cAAc;EACd,2BAA2B;EAC3B,iBAAiB;EACjB,iBAAiB;EACjB,eAAe;CAAE;AAEnB;EACE,kBAAkB;CAAE","file":"mainEditor.vue","sourcesContent":[".scope-set-min-height {\n  min-height: 40vh; }\n\n.scope-border-simple {\n  border: 1px solid #cfcfcf; }\n\n.scope-overflow-scroll {\n  overflow: scroll;\n  height: 100%;\n  width: 100%; }\n\n.scope-preview {\n  margin: 15px 5px;\n  padding: 2rem;\n  border: 3px double #dfdfdf;\n  min-height: 20vh;\n  resize: vertical;\n  overflow: auto; }\n\n.scope-contains-ckeditor {\n  min-height: 10rem; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scope-set-min-height[data-v-33645a86] {\n  min-height: 40vh;\n}\n.scope-border-simple[data-v-33645a86] {\n  border: 1px solid #cfcfcf;\n}\n.scope-overflow-scroll[data-v-33645a86] {\n  overflow: scroll;\n  height: 100%;\n  width: 100%;\n}\n.scope-preview[data-v-33645a86] {\n  margin: 15px 5px;\n  padding: 2rem;\n  border: 3px double #dfdfdf;\n  min-height: 20vh;\n  resize: vertical;\n  overflow: auto;\n}\n.scope-contains-ckeditor[data-v-33645a86] {\n  min-height: 10rem;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/components/mainEditor.vue"],"names":[],"mappings":";AAAA;EACE,iBAAiB;CAAE;AAErB;EACE,0BAA0B;CAAE;AAE9B;EACE,iBAAiB;EACjB,aAAa;EACb,YAAY;CAAE;AAEhB;EACE,iBAAiB;EACjB,cAAc;EACd,2BAA2B;EAC3B,iBAAiB;EACjB,iBAAiB;EACjB,eAAe;CAAE;AAEnB;EACE,kBAAkB;CAAE","file":"mainEditor.vue","sourcesContent":[".scope-set-min-height {\n  min-height: 40vh; }\n\n.scope-border-simple {\n  border: 1px solid #cfcfcf; }\n\n.scope-overflow-scroll {\n  overflow: scroll;\n  height: 100%;\n  width: 100%; }\n\n.scope-preview {\n  margin: 15px 5px;\n  padding: 2rem;\n  border: 3px double #dfdfdf;\n  min-height: 20vh;\n  resize: vertical;\n  overflow: auto; }\n\n.scope-contains-ckeditor {\n  min-height: 10rem; }\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 192 */
+/* 197 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ckeditor_ckeditor5_build_classic__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ckeditor_ckeditor5_build_classic__ = __webpack_require__(82);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ckeditor_ckeditor5_build_classic___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ckeditor_ckeditor5_build_classic__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_debounce__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_debounce__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_debounce___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_debounce__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_isEqual__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_isEqual__ = __webpack_require__(200);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_isEqual___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_isEqual__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_merge__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__subcomponents_previewFrame_vue__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__subcomponents_previewFrame_vue__ = __webpack_require__(214);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__subcomponents_previewFrame_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__subcomponents_previewFrame_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_runAjax_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_runAjax_js__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mixins_eventChild_js__ = __webpack_require__(18);
 
 
@@ -18995,6 +19197,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             set(newValue) {
                 this.$store.commit('updateCurrentQuestionI10NValue', { value: 'help', newValue });
+            }
+        },
+        currentQuestionScript: {
+            get() {
+                return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].script;
+            },
+            set(newValue) {
+                this.$store.commit('updateCurrentQuestionI10NValue', { value: 'script', newValue });
             }
         },
         currentQuestionI10N() {
@@ -19069,12 +19279,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 193 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(2),
-    now = __webpack_require__(194),
-    toNumber = __webpack_require__(82);
+    now = __webpack_require__(199),
+    toNumber = __webpack_require__(83);
 
 /** Error message constants. */
 var FUNC_ERROR_TEXT = 'Expected a function';
@@ -19263,7 +19473,7 @@ module.exports = debounce;
 
 
 /***/ }),
-/* 194 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(7);
@@ -19292,10 +19502,10 @@ module.exports = now;
 
 
 /***/ }),
-/* 195 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqual = __webpack_require__(47);
+var baseIsEqual = __webpack_require__(48);
 
 /**
  * Performs a deep comparison between two values to determine if they are
@@ -19333,13 +19543,13 @@ module.exports = isEqual;
 
 
 /***/ }),
-/* 196 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Stack = __webpack_require__(32),
-    assignMergeValue = __webpack_require__(83),
-    baseFor = __webpack_require__(62),
-    baseMergeDeep = __webpack_require__(197),
+    assignMergeValue = __webpack_require__(84),
+    baseFor = __webpack_require__(63),
+    baseMergeDeep = __webpack_require__(202),
     isObject = __webpack_require__(2),
     keysIn = __webpack_require__(40);
 
@@ -19380,23 +19590,23 @@ module.exports = baseMerge;
 
 
 /***/ }),
-/* 197 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assignMergeValue = __webpack_require__(83),
-    cloneBuffer = __webpack_require__(85),
-    cloneTypedArray = __webpack_require__(86),
-    copyArray = __webpack_require__(87),
-    initCloneObject = __webpack_require__(88),
+var assignMergeValue = __webpack_require__(84),
+    cloneBuffer = __webpack_require__(86),
+    cloneTypedArray = __webpack_require__(87),
+    copyArray = __webpack_require__(88),
+    initCloneObject = __webpack_require__(89),
     isArguments = __webpack_require__(19),
     isArray = __webpack_require__(1),
-    isArrayLikeObject = __webpack_require__(199),
+    isArrayLikeObject = __webpack_require__(204),
     isBuffer = __webpack_require__(20),
-    isFunction = __webpack_require__(44),
+    isFunction = __webpack_require__(45),
     isObject = __webpack_require__(2),
-    isPlainObject = __webpack_require__(200),
+    isPlainObject = __webpack_require__(205),
     isTypedArray = __webpack_require__(30),
-    toPlainObject = __webpack_require__(201);
+    toPlainObject = __webpack_require__(206);
 
 /**
  * A specialized version of `baseMerge` for arrays and objects which performs
@@ -19479,7 +19689,7 @@ module.exports = baseMergeDeep;
 
 
 /***/ }),
-/* 198 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(2);
@@ -19515,7 +19725,7 @@ module.exports = baseCreate;
 
 
 /***/ }),
-/* 199 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArrayLike = __webpack_require__(10),
@@ -19554,11 +19764,11 @@ module.exports = isArrayLikeObject;
 
 
 /***/ }),
-/* 200 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(12),
-    getPrototype = __webpack_require__(54),
+    getPrototype = __webpack_require__(55),
     isObjectLike = __webpack_require__(9);
 
 /** `Object#toString` result references. */
@@ -19622,7 +19832,7 @@ module.exports = isPlainObject;
 
 
 /***/ }),
-/* 201 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(26),
@@ -19660,12 +19870,12 @@ module.exports = toPlainObject;
 
 
 /***/ }),
-/* 202 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(2),
     isPrototype = __webpack_require__(31),
-    nativeKeysIn = __webpack_require__(203);
+    nativeKeysIn = __webpack_require__(208);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -19699,7 +19909,7 @@ module.exports = baseKeysIn;
 
 
 /***/ }),
-/* 203 */
+/* 208 */
 /***/ (function(module, exports) {
 
 /**
@@ -19725,11 +19935,11 @@ module.exports = nativeKeysIn;
 
 
 /***/ }),
-/* 204 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseRest = __webpack_require__(89),
-    isIterateeCall = __webpack_require__(56);
+var baseRest = __webpack_require__(90),
+    isIterateeCall = __webpack_require__(57);
 
 /**
  * Creates a function like `_.assign`.
@@ -19768,7 +19978,7 @@ module.exports = createAssigner;
 
 
 /***/ }),
-/* 205 */
+/* 210 */
 /***/ (function(module, exports) {
 
 /**
@@ -19795,11 +20005,11 @@ module.exports = apply;
 
 
 /***/ }),
-/* 206 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var constant = __webpack_require__(207),
-    defineProperty = __webpack_require__(84),
+var constant = __webpack_require__(212),
+    defineProperty = __webpack_require__(85),
     identity = __webpack_require__(15);
 
 /**
@@ -19823,7 +20033,7 @@ module.exports = baseSetToString;
 
 
 /***/ }),
-/* 207 */
+/* 212 */
 /***/ (function(module, exports) {
 
 /**
@@ -19855,7 +20065,7 @@ module.exports = constant;
 
 
 /***/ }),
-/* 208 */
+/* 213 */
 /***/ (function(module, exports) {
 
 /** Used to detect hot functions by number of calls within a span of milliseconds. */
@@ -19898,19 +20108,19 @@ module.exports = shortOut;
 
 
 /***/ }),
-/* 209 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(210)
+  __webpack_require__(215)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(212),
+  __webpack_require__(217),
   /* template */
-  __webpack_require__(213),
+  __webpack_require__(218),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -19918,7 +20128,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_previewFrame.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_previewFrame.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _previewFrame.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19942,13 +20152,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 210 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(211);
+var content = __webpack_require__(216);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -19968,7 +20178,7 @@ if(false) {
 }
 
 /***/ }),
-/* 211 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -19976,13 +20186,13 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.scope-loader[data-v-6b27a1ca] {\n  position: absolute;\n  left: 20%;\n  top: 20%;\n  height: 60%;\n  width: 60%;\n  background-color: whitesmoke;\n}\n.scope-iframe-fill[data-v-6b27a1ca] {\n  width: 100%;\n  height: 100%;\n  padding: 0;\n  margin: 0;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/subcomponents/_previewFrame.vue"],"names":[],"mappings":";AAAA;EACE,mBAAmB;EACnB,UAAU;EACV,SAAS;EACT,YAAY;EACZ,WAAW;EACX,6BAA6B;CAAE;AAEjC;EACE,YAAY;EACZ,aAAa;EACb,WAAW;EACX,UAAU;CAAE","file":"_previewFrame.vue","sourcesContent":[".scope-loader {\n  position: absolute;\n  left: 20%;\n  top: 20%;\n  height: 60%;\n  width: 60%;\n  background-color: whitesmoke; }\n\n.scope-iframe-fill {\n  width: 100%;\n  height: 100%;\n  padding: 0;\n  margin: 0; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scope-loader[data-v-6b27a1ca] {\n  position: absolute;\n  left: 20%;\n  top: 20%;\n  height: 60%;\n  width: 60%;\n  background-color: whitesmoke;\n}\n.scope-iframe-fill[data-v-6b27a1ca] {\n  width: 100%;\n  height: 100%;\n  padding: 0;\n  margin: 0;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/components/subcomponents/_previewFrame.vue"],"names":[],"mappings":";AAAA;EACE,mBAAmB;EACnB,UAAU;EACV,SAAS;EACT,YAAY;EACZ,WAAW;EACX,6BAA6B;CAAE;AAEjC;EACE,YAAY;EACZ,aAAa;EACb,WAAW;EACX,UAAU;CAAE","file":"_previewFrame.vue","sourcesContent":[".scope-loader {\n  position: absolute;\n  left: 20%;\n  top: 20%;\n  height: 60%;\n  width: 60%;\n  background-color: whitesmoke; }\n\n.scope-iframe-fill {\n  width: 100%;\n  height: 100%;\n  padding: 0;\n  margin: 0; }\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 212 */
+/* 217 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20048,7 +20258,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 213 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20086,7 +20296,7 @@ if (false) {
 }
 
 /***/ }),
-/* 214 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20136,7 +20346,33 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "currentQuestionHelp"
     }
-  })], 1)])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
+  })], 1), _vm._v(" "), (!!_vm.$store.state.currentQuestionPermissions.script) ? _c('div', {
+    staticClass: "col-12 ls-space margin all-5 scope-contains-ckeditor "
+  }, [_c('label', {
+    staticClass: "col-sm-12"
+  }, [_vm._v(_vm._s(_vm._f("translate")('Script')) + ":")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentQuestionScript),
+      expression: "currentQuestionScript"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "rows": "2"
+    },
+    domProps: {
+      "value": (_vm.currentQuestionScript)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.currentQuestionScript = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "alert well"
+  }, [_vm._v(_vm._s(_vm._f("translate")("__SCRIPTHELP")))])]) : _vm._e()])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-12 ls-space margin bottom-5"
@@ -20186,19 +20422,19 @@ if (false) {
 }
 
 /***/ }),
-/* 215 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(216)
+  __webpack_require__(221)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(218),
+  __webpack_require__(223),
   /* template */
-  __webpack_require__(234),
+  __webpack_require__(239),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -20206,7 +20442,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\generalSettings.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\generalSettings.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] generalSettings.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -20230,13 +20466,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 216 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(217);
+var content = __webpack_require__(222);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -20256,7 +20492,7 @@ if(false) {
 }
 
 /***/ }),
-/* 217 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -20264,32 +20500,35 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.scope-general-setting-block[data-v-df131e4a] {\n  margin: 1rem  0.1rem;\n}\n.scope-set-min-height[data-v-df131e4a] {\n  min-height: 40vh;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/generalSettings.vue"],"names":[],"mappings":";AAAA;EACE,qBAAqB;CAAE;AAEzB;EACE,iBAAiB;CAAE","file":"generalSettings.vue","sourcesContent":[".scope-general-setting-block {\n  margin: 1rem  0.1rem; }\n\n.scope-set-min-height {\n  min-height: 40vh; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scope-general-setting-block[data-v-df131e4a] {\n  margin: 1rem  0.1rem;\n}\n.scope-set-min-height[data-v-df131e4a] {\n  min-height: 40vh;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/components/generalSettings.vue"],"names":[],"mappings":";AAAA;EACE,qBAAqB;CAAE;AAEzB;EACE,iBAAiB;CAAE","file":"generalSettings.vue","sourcesContent":[".scope-general-setting-block {\n  margin: 1rem  0.1rem; }\n\n.scope-set-min-height {\n  min-height: 40vh; }\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 218 */
+/* 223 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_filter__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash_filter__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__inputtypes_switch_vue__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__inputtypes_switch_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__inputtypes_switch_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputtypes_text_vue__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputtypes_text_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__inputtypes_text_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputtypes_select_vue__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputtypes_select_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__inputtypes_select_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputtypes_textdisplay_vue__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputtypes_textdisplay_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__inputtypes_textdisplay_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__inputtypes_textarea_vue__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__inputtypes_textarea_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__inputtypes_textarea_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputtypes_stub_vue__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputtypes_stub_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__inputtypes_stub_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__mixins_eventChild_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helperComponents_loader_vue__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helperComponents_loader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__helperComponents_loader_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputtypes_switch_vue__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__inputtypes_switch_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__inputtypes_switch_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputtypes_text_vue__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__inputtypes_text_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__inputtypes_text_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputtypes_select_vue__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputtypes_select_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__inputtypes_select_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__inputtypes_textdisplay_vue__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__inputtypes_textdisplay_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__inputtypes_textdisplay_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputtypes_textarea_vue__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputtypes_textarea_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__inputtypes_textarea_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputtypes_stub_vue__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputtypes_stub_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__inputtypes_stub_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__mixins_eventChild_js__ = __webpack_require__(18);
+
 
 
 
@@ -20304,20 +20543,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'GeneralSettings',
-    mixins: [__WEBPACK_IMPORTED_MODULE_7__mixins_eventChild_js__["a" /* default */]],
+    mixins: [__WEBPACK_IMPORTED_MODULE_8__mixins_eventChild_js__["a" /* default */]],
     components: {
-        'setting-switch': __WEBPACK_IMPORTED_MODULE_1__inputtypes_switch_vue___default.a,
-        'setting-text': __WEBPACK_IMPORTED_MODULE_4__inputtypes_textdisplay_vue___default.a,
-        'setting-select': __WEBPACK_IMPORTED_MODULE_3__inputtypes_select_vue___default.a,
-        'setting-textinput': __WEBPACK_IMPORTED_MODULE_2__inputtypes_text_vue___default.a,
-        'setting-textarea': __WEBPACK_IMPORTED_MODULE_5__inputtypes_textarea_vue___default.a,
-        'stub-set': __WEBPACK_IMPORTED_MODULE_6__inputtypes_stub_vue___default.a
+        'setting-switch': __WEBPACK_IMPORTED_MODULE_2__inputtypes_switch_vue___default.a,
+        'setting-text': __WEBPACK_IMPORTED_MODULE_5__inputtypes_textdisplay_vue___default.a,
+        'setting-select': __WEBPACK_IMPORTED_MODULE_4__inputtypes_select_vue___default.a,
+        'setting-textinput': __WEBPACK_IMPORTED_MODULE_3__inputtypes_text_vue___default.a,
+        'setting-textarea': __WEBPACK_IMPORTED_MODULE_6__inputtypes_textarea_vue___default.a,
+        'stub-set': __WEBPACK_IMPORTED_MODULE_7__inputtypes_stub_vue___default.a,
+        Loader: __WEBPACK_IMPORTED_MODULE_1__helperComponents_loader_vue___default.a
     },
     props: {
         readonly: { type: Boolean, default: false }
     },
     data() {
-        return {};
+        return {
+            loading: true
+        };
     },
     computed: {
         generalSettingOptions() {
@@ -20334,11 +20576,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         reactOnChange(newValue, oSettingObject) {
             this.$store.commit('setQuestionGeneralSetting', { newValue, settingName: oSettingObject.formElementId });
         }
+    },
+    created() {
+        this.$store.dispatch('getQuestionGeneralSettings').then(() => {
+            this.loading = false;
+        });
     }
 });
 
 /***/ }),
-/* 219 */
+/* 224 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20349,7 +20596,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_isEmpty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_isEmpty__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_filter__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_filter__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_bootstrap_toggle__ = __webpack_require__(220);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_bootstrap_toggle__ = __webpack_require__(225);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_bootstrap_toggle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_bootstrap_toggle__);
 
 
@@ -20425,7 +20672,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 220 */
+/* 225 */
 /***/ (function(module, exports) {
 
 module.exports=function(t){function e(n){if(o[n])return o[n].exports;var i=o[n]={i:n,l:!1,exports:{}};return t[n].call(i.exports,i,i.exports,e),i.l=!0,i.exports}var o={};return e.m=t,e.c=o,e.i=function(t){return t},e.d=function(t,o,n){e.o(t,o)||Object.defineProperty(t,o,{configurable:!1,enumerable:!0,get:n})},e.n=function(t){var o=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(o,"a",o),o},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=8)}([function(t,e,o){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=o(7),i=function(t){return t&&t.__esModule?t:{default:t}}(n);jQuery().bootstrapToggle||o(4);var r={};e.default={defaults:r,props:{value:Boolean,options:{type:Object,default:function(){return{}}},disabled:{type:Boolean,default:!1}},data:function(){return{updating:!1}},computed:{$$el:function(){return jQuery(this.$el)}},watch:{value:function(t){this.updating||this.$$el.bootstrapToggle(t?"on":"off")},disabled:function(t){this.$$el.bootstrapToggle(t?"disable":"enable")}},mounted:function(){var t=this;this.value&&(this.$el.checked=!0),this.$$el.bootstrapToggle(i.default.recursive(!0,r,this.options)),this.disabled&&this.$$el.bootstrapToggle("disable"),this.$$el.change(function(){t.updating=!0,t.$emit("input",t.$$el.prop("checked")),t.$nextTick(function(){return t.updating=!1})})},beforeDestroy:function(){this.$$el.bootstrapToggle("destroy"),this.$$el.off("change")}}},function(t,e){t.exports=function(t,e,o,n){var i,r=t=t||{},s=typeof t.default;"object"!==s&&"function"!==s||(i=t,r=t.default);var l="function"==typeof r?r.options:r;if(e&&(l.render=e.render,l.staticRenderFns=e.staticRenderFns),o&&(l._scopeId=o),n){var a=Object.create(l.computed||null);Object.keys(n).forEach(function(t){var e=n[t];a[t]=function(){return e}}),l.computed=a}return{esModule:i,exports:r,options:l}}},function(t,e){t.exports={render:function(){var t=this,e=t.$createElement;return(t._self._c||e)("input",{attrs:{type:"checkbox"}})},staticRenderFns:[]}},function(t,e,o){var n=o(5);"string"==typeof n&&(n=[[t.i,n,""]]),n.locals&&(t.exports=n.locals);o(9)("837c61fc",n,!0)},function(t,e){/*! ========================================================================
@@ -20439,7 +20686,7 @@ module.exports=function(t){function e(n){if(o[n])return o[n].exports;var i=o[n]=
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 221 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20487,7 +20734,7 @@ if (false) {
 }
 
 /***/ }),
-/* 222 */
+/* 227 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20556,7 +20803,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 223 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20620,7 +20867,7 @@ if (false) {
 }
 
 /***/ }),
-/* 224 */
+/* 229 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20677,7 +20924,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 225 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20742,7 +20989,7 @@ if (false) {
 }
 
 /***/ }),
-/* 226 */
+/* 231 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20788,7 +21035,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 227 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20831,7 +21078,7 @@ if (false) {
 }
 
 /***/ }),
-/* 228 */
+/* 233 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20922,7 +21169,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 229 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -20984,13 +21231,13 @@ if (false) {
 }
 
 /***/ }),
-/* 230 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(231);
+var content = __webpack_require__(236);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -21010,7 +21257,7 @@ if(false) {
 }
 
 /***/ }),
-/* 231 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -21024,7 +21271,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sour
 
 
 /***/ }),
-/* 232 */
+/* 237 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21042,7 +21289,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 233 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -21062,13 +21309,17 @@ if (false) {
 }
 
 /***/ }),
-/* 234 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-sm-4 col-xs-12 scope-set-min-height"
-  }, [_c('div', {
+  }, [_c('transition', {
+    attrs: {
+      "name": "slide-fade"
+    }
+  }, [(!_vm.loading) ? _c('div', {
     staticClass: "panel panel-default question-option-general-container"
   }, [_c('div', {
     staticClass: "panel-heading"
@@ -21098,7 +21349,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     })], 1)
-  }))])])])
+  }))])]) : _vm._e()]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "slide-fade"
+    }
+  }, [(_vm.loading) ? _c('div', {
+    staticClass: "row"
+  }, [_c('loader', {
+    attrs: {
+      "id": "generalSettingsLoader"
+    }
+  })], 1) : _vm._e()])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -21109,19 +21370,19 @@ if (false) {
 }
 
 /***/ }),
-/* 235 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(236)
+  __webpack_require__(241)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(238),
+  __webpack_require__(243),
   /* template */
-  __webpack_require__(282),
+  __webpack_require__(287),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -21129,7 +21390,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\advancedSettings.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\advancedSettings.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] advancedSettings.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -21153,13 +21414,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 236 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(237);
+var content = __webpack_require__(242);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -21179,7 +21440,7 @@ if(false) {
 }
 
 /***/ }),
-/* 237 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -21187,13 +21448,13 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.scope-divider[data-v-710006e5] {\n  display: block;\n  width: 2em;\n  height: 42px;\n  line-height: 42px;\n  font-size: 38px;\n  text-align: center;\n}\n.scoped-tablist-container[data-v-710006e5] {\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n  align-content: flex-start;\n}\n.scoped-tablist-subquestionandanswers[data-v-710006e5] {\n  flex-grow: 1;\n  flex-shrink: 3;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n}\n.scoped-tablist-advanced-settings[data-v-710006e5] {\n  flex-grow: 3;\n  flex-shrink: 1;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n}\n.scoped-tablist-advanced-settings > li[data-v-710006e5],\n.scoped-tablist-subquestionandanswers > li[data-v-710006e5] {\n  display: block;\n  width: 100%;\n  float: none;\n  text-align: center;\n}\n.scope-min-height[data-v-710006e5] {\n  min-height: 20vh;\n}\n.scope-apply-base-style[data-v-710006e5] {\n  border-top: 1px solid #cfcfcf;\n  margin-top: 1rem;\n  padding-top: 1rem;\n}\n.scope-border-open-top[data-v-710006e5] {\n  border-left: 1px solid #cfcfcf;\n  border-right: 1px solid #cfcfcf;\n  border-bottom: 1px solid #cfcfcf;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/advancedSettings.vue"],"names":[],"mappings":";AAAA;EACE,eAAe;EACf,WAAW;EACX,aAAa;EACb,kBAAkB;EAClB,gBAAgB;EAChB,mBAAmB;CAAE;AAEvB;EACE,cAAc;EACd,YAAY;EACZ,kBAAkB;EAClB,0BAA0B;CAAE;AAE9B;EACE,aAAa;EACb,eAAe;EACf,cAAc;EACd,YAAY;EACZ,kBAAkB;CAAE;AAEtB;EACE,aAAa;EACb,eAAe;EACf,cAAc;EACd,YAAY;EACZ,kBAAkB;CAAE;AAEtB;;EAEE,eAAe;EACf,YAAY;EACZ,YAAY;EACZ,mBAAmB;CAAE;AAEvB;EACE,iBAAiB;CAAE;AAErB;EACE,8BAA8B;EAC9B,iBAAiB;EACjB,kBAAkB;CAAE;AAEtB;EACE,+BAA+B;EAC/B,gCAAgC;EAChC,iCAAiC;CAAE","file":"advancedSettings.vue","sourcesContent":[".scope-divider {\n  display: block;\n  width: 2em;\n  height: 42px;\n  line-height: 42px;\n  font-size: 38px;\n  text-align: center; }\n\n.scoped-tablist-container {\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n  align-content: flex-start; }\n\n.scoped-tablist-subquestionandanswers {\n  flex-grow: 1;\n  flex-shrink: 3;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap; }\n\n.scoped-tablist-advanced-settings {\n  flex-grow: 3;\n  flex-shrink: 1;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap; }\n\n.scoped-tablist-advanced-settings > li,\n.scoped-tablist-subquestionandanswers > li {\n  display: block;\n  width: 100%;\n  float: none;\n  text-align: center; }\n\n.scope-min-height {\n  min-height: 20vh; }\n\n.scope-apply-base-style {\n  border-top: 1px solid #cfcfcf;\n  margin-top: 1rem;\n  padding-top: 1rem; }\n\n.scope-border-open-top {\n  border-left: 1px solid #cfcfcf;\n  border-right: 1px solid #cfcfcf;\n  border-bottom: 1px solid #cfcfcf; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scope-divider[data-v-710006e5] {\n  display: block;\n  width: 2em;\n  height: 42px;\n  line-height: 42px;\n  font-size: 38px;\n  text-align: center;\n}\n.scoped-tablist-container[data-v-710006e5] {\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n  align-content: flex-start;\n}\n.scoped-tablist-subquestionandanswers[data-v-710006e5] {\n  flex-grow: 1;\n  flex-shrink: 3;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n}\n.scoped-tablist-advanced-settings[data-v-710006e5] {\n  flex-grow: 3;\n  flex-shrink: 1;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n}\n.scoped-tablist-advanced-settings > li[data-v-710006e5],\n.scoped-tablist-subquestionandanswers > li[data-v-710006e5] {\n  display: block;\n  width: 100%;\n  float: none;\n  text-align: center;\n}\n.scope-min-height[data-v-710006e5] {\n  min-height: 20vh;\n}\n.scope-apply-base-style[data-v-710006e5] {\n  border-top: 1px solid #cfcfcf;\n  margin-top: 1rem;\n  padding-top: 1rem;\n}\n.scope-border-open-top[data-v-710006e5] {\n  border-left: 1px solid #cfcfcf;\n  border-right: 1px solid #cfcfcf;\n  border-bottom: 1px solid #cfcfcf;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/components/advancedSettings.vue"],"names":[],"mappings":";AAAA;EACE,eAAe;EACf,WAAW;EACX,aAAa;EACb,kBAAkB;EAClB,gBAAgB;EAChB,mBAAmB;CAAE;AAEvB;EACE,cAAc;EACd,YAAY;EACZ,kBAAkB;EAClB,0BAA0B;CAAE;AAE9B;EACE,aAAa;EACb,eAAe;EACf,cAAc;EACd,YAAY;EACZ,kBAAkB;CAAE;AAEtB;EACE,aAAa;EACb,eAAe;EACf,cAAc;EACd,YAAY;EACZ,kBAAkB;CAAE;AAEtB;;EAEE,eAAe;EACf,YAAY;EACZ,YAAY;EACZ,mBAAmB;CAAE;AAEvB;EACE,iBAAiB;CAAE;AAErB;EACE,8BAA8B;EAC9B,iBAAiB;EACjB,kBAAkB;CAAE;AAEtB;EACE,+BAA+B;EAC/B,gCAAgC;EAChC,iCAAiC;CAAE","file":"advancedSettings.vue","sourcesContent":[".scope-divider {\n  display: block;\n  width: 2em;\n  height: 42px;\n  line-height: 42px;\n  font-size: 38px;\n  text-align: center; }\n\n.scoped-tablist-container {\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap;\n  align-content: flex-start; }\n\n.scoped-tablist-subquestionandanswers {\n  flex-grow: 1;\n  flex-shrink: 3;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap; }\n\n.scoped-tablist-advanced-settings {\n  flex-grow: 3;\n  flex-shrink: 1;\n  display: flex;\n  width: 100%;\n  flex-wrap: nowrap; }\n\n.scoped-tablist-advanced-settings > li,\n.scoped-tablist-subquestionandanswers > li {\n  display: block;\n  width: 100%;\n  float: none;\n  text-align: center; }\n\n.scope-min-height {\n  min-height: 20vh; }\n\n.scope-apply-base-style {\n  border-top: 1px solid #cfcfcf;\n  margin-top: 1rem;\n  padding-top: 1rem; }\n\n.scope-border-open-top {\n  border-left: 1px solid #cfcfcf;\n  border-right: 1px solid #cfcfcf;\n  border-bottom: 1px solid #cfcfcf; }\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 238 */
+/* 243 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21210,13 +21471,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_isEmpty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash_isEmpty__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_lodash_isObject__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_lodash_isObject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_lodash_isObject__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__subcomponents_settingstab_vue__ = __webpack_require__(239);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__subcomponents_settingstab_vue__ = __webpack_require__(244);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__subcomponents_settingstab_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__subcomponents_settingstab_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__subcomponents_subquestions_vue__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__subcomponents_subquestions_vue__ = __webpack_require__(259);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__subcomponents_subquestions_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__subcomponents_subquestions_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__subcomponents_answeroptions_vue__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__subcomponents_answeroptions_vue__ = __webpack_require__(282);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__subcomponents_answeroptions_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__subcomponents_answeroptions_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__mixins_eventChild_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__helperComponents_loader_vue__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__helperComponents_loader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__helperComponents_loader_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__mixins_eventChild_js__ = __webpack_require__(18);
+
 
 
 
@@ -21234,11 +21498,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'AdvancedSettings',
-    mixins: [__WEBPACK_IMPORTED_MODULE_9__mixins_eventChild_js__["a" /* default */]],
+    mixins: [__WEBPACK_IMPORTED_MODULE_10__mixins_eventChild_js__["a" /* default */]],
     components: {
         "settings-tab": __WEBPACK_IMPORTED_MODULE_6__subcomponents_settingstab_vue___default.a,
         "subquestions": __WEBPACK_IMPORTED_MODULE_7__subcomponents_subquestions_vue___default.a,
-        "Answeroptions": __WEBPACK_IMPORTED_MODULE_8__subcomponents_answeroptions_vue___default.a
+        "Answeroptions": __WEBPACK_IMPORTED_MODULE_8__subcomponents_answeroptions_vue___default.a,
+        Loader: __WEBPACK_IMPORTED_MODULE_9__helperComponents_loader_vue___default.a
     },
     props: {
         readonly: { type: Boolean, default: false }
@@ -21246,7 +21511,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data() {
         return {
             aComponentArray: ['switch', 'text', 'integer', 'select', 'textinput', 'textarea'],
-            currentTabComponent: 'settings-tab'
+            currentTabComponent: 'settings-tab',
+            loading: true
         };
     },
     computed: {
@@ -21286,25 +21552,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return value;
         }
     },
-    mounted() {
-        this.selectCurrentTab('settings-tab', this.tabs[0]);
+    created() {
+        this.$store.dispatch('getQuestionAdvancedSettings').then(() => {
+            this.loading = false;
+            this.selectCurrentTab('settings-tab', this.tabs[0]);
+        });
     }
 });
 
 /***/ }),
-/* 239 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(240)
+  __webpack_require__(245)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(242),
+  __webpack_require__(247),
   /* template */
-  __webpack_require__(253),
+  __webpack_require__(258),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -21312,7 +21581,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_settingstab.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_settingstab.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _settingstab.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -21336,13 +21605,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 240 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(241);
+var content = __webpack_require__(246);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -21362,7 +21631,7 @@ if(false) {
 }
 
 /***/ }),
-/* 241 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -21370,13 +21639,13 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-custom-list-group[data-v-73a4ac28] {\n  display: flex;\n  flex-wrap: wrap;\n  align-content: space-between;\n  align-items: flex-start;\n  width: 100%;\n  margin: 0;\n  padding: 1rem 0;\n}\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28] {\n    width: 98%;\n    display: inline-block;\n    margin: 0.5% 1%;\n}\n@media (min-width: 992px) {\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28] {\n      width: 48%;\n      display: inline-block;\n}\n}\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28]:first-child,\n  .scoped-custom-list-group .list-group-item[data-v-73a4ac28]:last-child {\n    border-radius: 0;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/subcomponents/_settingstab.vue"],"names":[],"mappings":";AAAA;EACE,cAAc;EACd,gBAAgB;EAChB,6BAA6B;EAC7B,wBAAwB;EACxB,YAAY;EACZ,UAAU;EACV,gBAAgB;CAAE;AAClB;IACE,WAAW;IACX,sBAAsB;IACtB,gBAAgB;CAAE;AACpB;AACE;MACE,WAAW;MACX,sBAAsB;CAAE;CAAE;AAC9B;;IAEE,iBAAiB;CAAE","file":"_settingstab.vue","sourcesContent":[".scoped-custom-list-group {\n  display: flex;\n  flex-wrap: wrap;\n  align-content: space-between;\n  align-items: flex-start;\n  width: 100%;\n  margin: 0;\n  padding: 1rem 0; }\n  .scoped-custom-list-group .list-group-item {\n    width: 98%;\n    display: inline-block;\n    margin: 0.5% 1%; }\n  @media (min-width: 992px) {\n    .scoped-custom-list-group .list-group-item {\n      width: 48%;\n      display: inline-block; } }\n  .scoped-custom-list-group .list-group-item:first-child,\n  .scoped-custom-list-group .list-group-item:last-child {\n    border-radius: 0; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-custom-list-group[data-v-73a4ac28] {\n  display: flex;\n  flex-wrap: wrap;\n  align-content: space-between;\n  align-items: flex-start;\n  width: 100%;\n  margin: 0;\n  padding: 1rem 0;\n}\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28] {\n    width: 98%;\n    display: inline-block;\n    margin: 0.5% 1%;\n}\n@media (min-width: 992px) {\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28] {\n      width: 48%;\n      display: inline-block;\n}\n}\n.scoped-custom-list-group .list-group-item[data-v-73a4ac28]:first-child,\n  .scoped-custom-list-group .list-group-item[data-v-73a4ac28]:last-child {\n    border-radius: 0;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/components/subcomponents/_settingstab.vue"],"names":[],"mappings":";AAAA;EACE,cAAc;EACd,gBAAgB;EAChB,6BAA6B;EAC7B,wBAAwB;EACxB,YAAY;EACZ,UAAU;EACV,gBAAgB;CAAE;AAClB;IACE,WAAW;IACX,sBAAsB;IACtB,gBAAgB;CAAE;AACpB;AACE;MACE,WAAW;MACX,sBAAsB;CAAE;CAAE;AAC9B;;IAEE,iBAAiB;CAAE","file":"_settingstab.vue","sourcesContent":[".scoped-custom-list-group {\n  display: flex;\n  flex-wrap: wrap;\n  align-content: space-between;\n  align-items: flex-start;\n  width: 100%;\n  margin: 0;\n  padding: 1rem 0; }\n  .scoped-custom-list-group .list-group-item {\n    width: 98%;\n    display: inline-block;\n    margin: 0.5% 1%; }\n  @media (min-width: 992px) {\n    .scoped-custom-list-group .list-group-item {\n      width: 48%;\n      display: inline-block; } }\n  .scoped-custom-list-group .list-group-item:first-child,\n  .scoped-custom-list-group .list-group-item:last-child {\n    border-radius: 0; }\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 242 */
+/* 247 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21389,25 +21658,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_reduce___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_reduce__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_filter__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_filter__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_sortBy__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_sortBy__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_sortBy___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash_sortBy__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_lodash_isEmpty__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_lodash_isEmpty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_lodash_isEmpty__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_lodash_isObject__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_lodash_isObject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_lodash_isObject__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputtypes_switch_vue__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputtypes_switch_vue__ = __webpack_require__(93);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__inputtypes_switch_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__inputtypes_switch_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inputtypes_text_vue__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inputtypes_text_vue__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__inputtypes_text_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__inputtypes_text_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__inputtypes_integer_vue__ = __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__inputtypes_integer_vue__ = __webpack_require__(255);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__inputtypes_integer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__inputtypes_integer_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__inputtypes_select_vue__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__inputtypes_select_vue__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__inputtypes_select_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__inputtypes_select_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__inputtypes_textdisplay_vue__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__inputtypes_textdisplay_vue__ = __webpack_require__(96);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__inputtypes_textdisplay_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__inputtypes_textdisplay_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__inputtypes_textarea_vue__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__inputtypes_textarea_vue__ = __webpack_require__(97);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__inputtypes_textarea_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__inputtypes_textarea_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__inputtypes_stub_vue__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__inputtypes_stub_vue__ = __webpack_require__(98);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__inputtypes_stub_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__inputtypes_stub_vue__);
 //
 
@@ -21490,13 +21759,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 243 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFlatten = __webpack_require__(98),
-    baseOrderBy = __webpack_require__(245),
-    baseRest = __webpack_require__(89),
-    isIterateeCall = __webpack_require__(56);
+var baseFlatten = __webpack_require__(99),
+    baseOrderBy = __webpack_require__(250),
+    baseRest = __webpack_require__(90),
+    isIterateeCall = __webpack_require__(57);
 
 /**
  * Creates an array of elements, sorted in ascending order by the results of
@@ -21544,7 +21813,7 @@ module.exports = sortBy;
 
 
 /***/ }),
-/* 244 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(14),
@@ -21570,15 +21839,15 @@ module.exports = isFlattenable;
 
 
 /***/ }),
-/* 245 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayMap = __webpack_require__(78),
+var arrayMap = __webpack_require__(79),
     baseIteratee = __webpack_require__(23),
-    baseMap = __webpack_require__(246),
-    baseSortBy = __webpack_require__(247),
-    baseUnary = __webpack_require__(65),
-    compareMultiple = __webpack_require__(248),
+    baseMap = __webpack_require__(251),
+    baseSortBy = __webpack_require__(252),
+    baseUnary = __webpack_require__(66),
+    compareMultiple = __webpack_require__(253),
     identity = __webpack_require__(15);
 
 /**
@@ -21610,7 +21879,7 @@ module.exports = baseOrderBy;
 
 
 /***/ }),
-/* 246 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseEach = __webpack_require__(28),
@@ -21638,7 +21907,7 @@ module.exports = baseMap;
 
 
 /***/ }),
-/* 247 */
+/* 252 */
 /***/ (function(module, exports) {
 
 /**
@@ -21665,10 +21934,10 @@ module.exports = baseSortBy;
 
 
 /***/ }),
-/* 248 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var compareAscending = __webpack_require__(249);
+var compareAscending = __webpack_require__(254);
 
 /**
  * Used by `_.orderBy` to compare multiple properties of a value to another
@@ -21715,7 +21984,7 @@ module.exports = compareMultiple;
 
 
 /***/ }),
-/* 249 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isSymbol = __webpack_require__(16);
@@ -21762,15 +22031,15 @@ module.exports = compareAscending;
 
 
 /***/ }),
-/* 250 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(251),
+  __webpack_require__(256),
   /* template */
-  __webpack_require__(252),
+  __webpack_require__(257),
   /* styles */
   null,
   /* scopeId */
@@ -21778,7 +22047,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\integer.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\_inputtypes\\integer.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] integer.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -21802,7 +22071,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 251 */
+/* 256 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21862,7 +22131,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 252 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -21927,7 +22196,7 @@ if (false) {
 }
 
 /***/ }),
-/* 253 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -21975,19 +22244,19 @@ if (false) {
 }
 
 /***/ }),
-/* 254 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(255)
+  __webpack_require__(260)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(257),
+  __webpack_require__(262),
   /* template */
-  __webpack_require__(276),
+  __webpack_require__(281),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -21995,7 +22264,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_subquestions.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_subquestions.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _subquestions.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -22019,13 +22288,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 255 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(256);
+var content = __webpack_require__(261);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -22045,7 +22314,7 @@ if(false) {
 }
 
 /***/ }),
-/* 256 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -22053,28 +22322,28 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-spacer[data-v-c3a778ba] {\n  content: ' ';\n  display: inline-block;\n}\n.scoped-main-subquestions-container[data-v-c3a778ba] {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh;\n}\n.scoped-subquestion-block[data-v-c3a778ba] {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: flex-start;\n}\n.scoped-subquestion-block > div[data-v-c3a778ba] {\n    flex-basis: 10rem;\n    padding: 1px 2px;\n    transition: all 1s ease-in-out;\n    white-space: nowrap;\n}\n.scoped-move-block[data-v-c3a778ba] {\n  text-align: center;\n  width: 64px;\n}\n.scoped-move-block > i[data-v-c3a778ba] {\n    font-size: 28px;\n    line-height: 32px;\n}\n.scoped-move-block > i[data-v-c3a778ba]:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom;\n}\n.scoped-content-block[data-v-c3a778ba] {\n  flex-grow: 8;\n}\n.scoped-relevance-block[data-v-c3a778ba] {\n  flex-grow: 1;\n  max-width: 10rem;\n}\n.scoped-actions-block[data-v-c3a778ba] {\n  flex-grow: 2;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/subcomponents/_subquestions.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,sBAAsB;CAAE;AAE1B;EACE,oBAAoB;EACpB,oBAAoB;EACpB,iBAAiB;CAAE;AAErB;EACE,cAAc;EACd,kBAAkB;EAClB,YAAY;EACZ,4BAA4B;CAAE;AAC9B;IACE,kBAAkB;IAClB,iBAAiB;IACjB,+BAA+B;IAC/B,oBAAoB;CAAE;AAE1B;EACE,mBAAmB;EACnB,YAAY;CAAE;AACd;IACE,gBAAgB;IAChB,kBAAkB;CAAE;AACpB;MACE,cAAc;MACd,gBAAgB;MAChB,4BAA4B;CAAE;AAEpC;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;EACb,iBAAiB;CAAE;AAErB;EACE,aAAa;CAAE","file":"_subquestions.vue","sourcesContent":[".scoped-spacer {\n  content: ' ';\n  display: inline-block; }\n\n.scoped-main-subquestions-container {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh; }\n\n.scoped-subquestion-block {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: flex-start; }\n  .scoped-subquestion-block > div {\n    flex-basis: 10rem;\n    padding: 1px 2px;\n    transition: all 1s ease-in-out;\n    white-space: nowrap; }\n\n.scoped-move-block {\n  text-align: center;\n  width: 64px; }\n  .scoped-move-block > i {\n    font-size: 28px;\n    line-height: 32px; }\n    .scoped-move-block > i:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom; }\n\n.scoped-content-block {\n  flex-grow: 8; }\n\n.scoped-relevance-block {\n  flex-grow: 1;\n  max-width: 10rem; }\n\n.scoped-actions-block {\n  flex-grow: 2; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-spacer[data-v-c3a778ba] {\n  content: ' ';\n  display: inline-block;\n}\n.scoped-main-subquestions-container[data-v-c3a778ba] {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh;\n}\n.scoped-subquestion-block[data-v-c3a778ba] {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: flex-start;\n}\n.scoped-subquestion-block > div[data-v-c3a778ba] {\n    flex-basis: 10rem;\n    padding: 1px 2px;\n    transition: all 1s ease-in-out;\n    white-space: nowrap;\n}\n.scoped-move-block[data-v-c3a778ba] {\n  text-align: center;\n  width: 64px;\n}\n.scoped-move-block > i[data-v-c3a778ba] {\n    font-size: 28px;\n    line-height: 32px;\n}\n.scoped-move-block > i[data-v-c3a778ba]:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom;\n}\n.scoped-content-block[data-v-c3a778ba] {\n  flex-grow: 8;\n}\n.scoped-relevance-block[data-v-c3a778ba] {\n  flex-grow: 1;\n  max-width: 10rem;\n}\n.scoped-actions-block[data-v-c3a778ba] {\n  flex-grow: 2;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/components/subcomponents/_subquestions.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,sBAAsB;CAAE;AAE1B;EACE,oBAAoB;EACpB,oBAAoB;EACpB,iBAAiB;CAAE;AAErB;EACE,cAAc;EACd,kBAAkB;EAClB,YAAY;EACZ,4BAA4B;CAAE;AAC9B;IACE,kBAAkB;IAClB,iBAAiB;IACjB,+BAA+B;IAC/B,oBAAoB;CAAE;AAE1B;EACE,mBAAmB;EACnB,YAAY;CAAE;AACd;IACE,gBAAgB;IAChB,kBAAkB;CAAE;AACpB;MACE,cAAc;MACd,gBAAgB;MAChB,4BAA4B;CAAE;AAEpC;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;EACb,iBAAiB;CAAE;AAErB;EACE,aAAa;CAAE","file":"_subquestions.vue","sourcesContent":[".scoped-spacer {\n  content: ' ';\n  display: inline-block; }\n\n.scoped-main-subquestions-container {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh; }\n\n.scoped-subquestion-block {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: flex-start; }\n  .scoped-subquestion-block > div {\n    flex-basis: 10rem;\n    padding: 1px 2px;\n    transition: all 1s ease-in-out;\n    white-space: nowrap; }\n\n.scoped-move-block {\n  text-align: center;\n  width: 64px; }\n  .scoped-move-block > i {\n    font-size: 28px;\n    line-height: 32px; }\n    .scoped-move-block > i:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom; }\n\n.scoped-content-block {\n  flex-grow: 8; }\n\n.scoped-relevance-block {\n  flex-grow: 1;\n  max-width: 10rem; }\n\n.scoped-actions-block {\n  flex-grow: 2; }\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 257 */
+/* 262 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_max__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_max__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_max___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash_max__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_merge__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_remove__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_remove__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_remove___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_remove__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_isEmpty__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_isEmpty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_isEmpty__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_foreach__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_foreach___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash_foreach__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_abstractSubquestionAndAnswers_js__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_abstractSubquestionAndAnswers_js__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mixins_eventChild_js__ = __webpack_require__(18);
 
 
@@ -22182,7 +22451,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 258 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isSymbol = __webpack_require__(16);
@@ -22220,7 +22489,7 @@ module.exports = baseExtremum;
 
 
 /***/ }),
-/* 259 */
+/* 264 */
 /***/ (function(module, exports) {
 
 /**
@@ -22240,10 +22509,10 @@ module.exports = baseGt;
 
 
 /***/ }),
-/* 260 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseUnset = __webpack_require__(261),
+var baseUnset = __webpack_require__(266),
     isIndex = __webpack_require__(21);
 
 /** Used for built-in method references. */
@@ -22283,12 +22552,12 @@ module.exports = basePullAt;
 
 
 /***/ }),
-/* 261 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var castPath = __webpack_require__(25),
-    last = __webpack_require__(262),
-    parent = __webpack_require__(263),
+    last = __webpack_require__(267),
+    parent = __webpack_require__(268),
     toKey = __webpack_require__(17);
 
 /**
@@ -22309,7 +22578,7 @@ module.exports = baseUnset;
 
 
 /***/ }),
-/* 262 */
+/* 267 */
 /***/ (function(module, exports) {
 
 /**
@@ -22335,11 +22604,11 @@ module.exports = last;
 
 
 /***/ }),
-/* 263 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(38),
-    baseSlice = __webpack_require__(100);
+    baseSlice = __webpack_require__(101);
 
 /**
  * Gets the parent value at `path` of `object`.
@@ -22357,12 +22626,12 @@ module.exports = parent;
 
 
 /***/ }),
-/* 264 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFindIndex = __webpack_require__(102),
+var baseFindIndex = __webpack_require__(103),
     baseIteratee = __webpack_require__(23),
-    toInteger = __webpack_require__(59);
+    toInteger = __webpack_require__(60);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMax = Math.max;
@@ -22418,10 +22687,10 @@ module.exports = findIndex;
 
 
 /***/ }),
-/* 265 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toNumber = __webpack_require__(82);
+var toNumber = __webpack_require__(83);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0,
@@ -22466,19 +22735,19 @@ module.exports = toFinite;
 
 
 /***/ }),
-/* 266 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(267)
+  __webpack_require__(272)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(269),
+  __webpack_require__(274),
   /* template */
-  __webpack_require__(270),
+  __webpack_require__(275),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -22486,7 +22755,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\helperComponents\\QuickEdit.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\helperComponents\\QuickEdit.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] QuickEdit.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -22510,13 +22779,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 267 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(268);
+var content = __webpack_require__(273);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -22536,7 +22805,7 @@ if(false) {
 }
 
 /***/ }),
-/* 268 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -22544,13 +22813,13 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-textarea-class[data-v-17c78e35] {\n  height: 100%;\n  width: 100%;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/helperComponents/QuickEdit.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,YAAY;CAAE","file":"QuickEdit.vue","sourcesContent":[".scoped-textarea-class {\n  height: 100%;\n  width: 100%; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-textarea-class[data-v-17c78e35] {\n  height: 100%;\n  width: 100%;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/helperComponents/QuickEdit.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,YAAY;CAAE","file":"QuickEdit.vue","sourcesContent":[".scoped-textarea-class {\n  height: 100%;\n  width: 100%; }\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 269 */
+/* 274 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22559,7 +22828,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_keys___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash_keys__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_foreach__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_foreach___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_foreach__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_slice__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_slice__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_slice___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_slice__);
 
 
@@ -22688,7 +22957,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 270 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -22869,19 +23138,19 @@ if (false) {
 }
 
 /***/ }),
-/* 271 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(272)
+  __webpack_require__(277)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(274),
+  __webpack_require__(279),
   /* template */
-  __webpack_require__(275),
+  __webpack_require__(280),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -22889,7 +23158,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\helperComponents\\SimplePopUpEditor.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\helperComponents\\SimplePopUpEditor.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] SimplePopUpEditor.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -22913,13 +23182,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 272 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(273);
+var content = __webpack_require__(278);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -22939,7 +23208,7 @@ if(false) {
 }
 
 /***/ }),
-/* 273 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -22947,18 +23216,18 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.unscoped--SimplePopup-editor-container .ck.ck-editor,\n.unscoped--SimplePopup-editor-container .ck.ck-editor__main,\n.unscoped--SimplePopup-editor-container .ck.ck-content {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/helperComponents/SimplePopUpEditor.vue"],"names":[],"mappings":";AAAA;;;EAGE,cAAc;EACd,uBAAuB;EACvB,aAAa;CAAE","file":"SimplePopUpEditor.vue","sourcesContent":[".unscoped--SimplePopup-editor-container .ck.ck-editor,\n.unscoped--SimplePopup-editor-container .ck.ck-editor__main,\n.unscoped--SimplePopup-editor-container .ck.ck-content {\n  display: flex;\n  flex-direction: column;\n  height: 100%; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.unscoped--SimplePopup-editor-container .ck.ck-editor,\n.unscoped--SimplePopup-editor-container .ck.ck-editor__main,\n.unscoped--SimplePopup-editor-container .ck.ck-content {\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/helperComponents/SimplePopUpEditor.vue"],"names":[],"mappings":";AAAA;;;EAGE,cAAc;EACd,uBAAuB;EACvB,aAAa;CAAE","file":"SimplePopUpEditor.vue","sourcesContent":[".unscoped--SimplePopup-editor-container .ck.ck-editor,\n.unscoped--SimplePopup-editor-container .ck.ck-editor__main,\n.unscoped--SimplePopup-editor-container .ck.ck-content {\n  display: flex;\n  flex-direction: column;\n  height: 100%; }\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 274 */
+/* 279 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ckeditor_ckeditor5_build_classic__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ckeditor_ckeditor5_build_classic__ = __webpack_require__(82);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ckeditor_ckeditor5_build_classic___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ckeditor_ckeditor5_build_classic__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_merge__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_merge__);
@@ -23006,7 +23275,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 275 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -23066,7 +23335,7 @@ if (false) {
 }
 
 /***/ }),
-/* 276 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -23312,19 +23581,19 @@ if (false) {
 }
 
 /***/ }),
-/* 277 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(278)
+  __webpack_require__(283)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(280),
+  __webpack_require__(285),
   /* template */
-  __webpack_require__(281),
+  __webpack_require__(286),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -23332,7 +23601,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_answeroptions.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\components\\subcomponents\\_answeroptions.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] _answeroptions.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -23356,13 +23625,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 278 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(279);
+var content = __webpack_require__(284);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -23382,7 +23651,7 @@ if(false) {
 }
 
 /***/ }),
-/* 279 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -23390,26 +23659,26 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.scoped-spacer[data-v-0a0212fa] {\n  content: ' ';\n  display: inline-block;\n}\n.scoped-main-answeroptions-container[data-v-0a0212fa] {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh;\n}\n.scoped-answeroption-block[data-v-0a0212fa] {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: space-evenly;\n}\n.scoped-answeroption-block > div[data-v-0a0212fa] {\n    flex-basis: auto;\n    padding: 1px 2px;\n}\n.scoped-move-block[data-v-0a0212fa] {\n  flex-grow: 1;\n  text-align: center;\n}\n.scoped-move-block > i[data-v-0a0212fa] {\n    font-size: 28px;\n    line-height: 32px;\n}\n.scoped-move-block > i[data-v-0a0212fa]:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom;\n}\n.scoped-content-block[data-v-0a0212fa] {\n  flex-grow: 6;\n}\n.scoped-assessments-block[data-v-0a0212fa] {\n  flex-grow: 2;\n}\n.scoped-actions-block[data-v-0a0212fa] {\n  flex-grow: 2;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/components/subcomponents/_answeroptions.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,sBAAsB;CAAE;AAE1B;EACE,oBAAoB;EACpB,oBAAoB;EACpB,iBAAiB;CAAE;AAErB;EACE,cAAc;EACd,kBAAkB;EAClB,YAAY;EACZ,8BAA8B;CAAE;AAChC;IACE,iBAAiB;IACjB,iBAAiB;CAAE;AAEvB;EACE,aAAa;EACb,mBAAmB;CAAE;AACrB;IACE,gBAAgB;IAChB,kBAAkB;CAAE;AACpB;MACE,cAAc;MACd,gBAAgB;MAChB,4BAA4B;CAAE;AAEpC;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;CAAE","file":"_answeroptions.vue","sourcesContent":[".scoped-spacer {\n  content: ' ';\n  display: inline-block; }\n\n.scoped-main-answeroptions-container {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh; }\n\n.scoped-answeroption-block {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: space-evenly; }\n  .scoped-answeroption-block > div {\n    flex-basis: auto;\n    padding: 1px 2px; }\n\n.scoped-move-block {\n  flex-grow: 1;\n  text-align: center; }\n  .scoped-move-block > i {\n    font-size: 28px;\n    line-height: 32px; }\n    .scoped-move-block > i:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom; }\n\n.scoped-content-block {\n  flex-grow: 6; }\n\n.scoped-assessments-block {\n  flex-grow: 2; }\n\n.scoped-actions-block {\n  flex-grow: 2; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.scoped-spacer[data-v-0a0212fa] {\n  content: ' ';\n  display: inline-block;\n}\n.scoped-main-answeroptions-container[data-v-0a0212fa] {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh;\n}\n.scoped-answeroption-block[data-v-0a0212fa] {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: space-evenly;\n}\n.scoped-answeroption-block > div[data-v-0a0212fa] {\n    flex-basis: auto;\n    padding: 1px 2px;\n}\n.scoped-move-block[data-v-0a0212fa] {\n  flex-grow: 1;\n  text-align: center;\n}\n.scoped-move-block > i[data-v-0a0212fa] {\n    font-size: 28px;\n    line-height: 32px;\n}\n.scoped-move-block > i[data-v-0a0212fa]:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom;\n}\n.scoped-content-block[data-v-0a0212fa] {\n  flex-grow: 6;\n}\n.scoped-assessments-block[data-v-0a0212fa] {\n  flex-grow: 2;\n}\n.scoped-actions-block[data-v-0a0212fa] {\n  flex-grow: 2;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/components/subcomponents/_answeroptions.vue"],"names":[],"mappings":";AAAA;EACE,aAAa;EACb,sBAAsB;CAAE;AAE1B;EACE,oBAAoB;EACpB,oBAAoB;EACpB,iBAAiB;CAAE;AAErB;EACE,cAAc;EACd,kBAAkB;EAClB,YAAY;EACZ,8BAA8B;CAAE;AAChC;IACE,iBAAiB;IACjB,iBAAiB;CAAE;AAEvB;EACE,aAAa;EACb,mBAAmB;CAAE;AACrB;IACE,gBAAgB;IAChB,kBAAkB;CAAE;AACpB;MACE,cAAc;MACd,gBAAgB;MAChB,4BAA4B;CAAE;AAEpC;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;CAAE;AAEjB;EACE,aAAa;CAAE","file":"_answeroptions.vue","sourcesContent":[".scoped-spacer {\n  content: ' ';\n  display: inline-block; }\n\n.scoped-main-answeroptions-container {\n  margin: 1rem 0.2rem;\n  padding-top: 0.2rem;\n  min-height: 25vh; }\n\n.scoped-answeroption-block {\n  display: flex;\n  flex-wrap: nowrap;\n  width: 100%;\n  justify-content: space-evenly; }\n  .scoped-answeroption-block > div {\n    flex-basis: auto;\n    padding: 1px 2px; }\n\n.scoped-move-block {\n  flex-grow: 1;\n  text-align: center; }\n  .scoped-move-block > i {\n    font-size: 28px;\n    line-height: 32px; }\n    .scoped-move-block > i:after {\n      content: ' |';\n      font-size: 24px;\n      vertical-align: text-bottom; }\n\n.scoped-content-block {\n  flex-grow: 6; }\n\n.scoped-assessments-block {\n  flex-grow: 2; }\n\n.scoped-actions-block {\n  flex-grow: 2; }\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 280 */
+/* 285 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_merge__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_remove__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_remove__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_remove___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_remove__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_isEmpty__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_isEmpty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_isEmpty__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_foreach__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_foreach___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_foreach__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_abstractSubquestionAndAnswers_js__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_abstractSubquestionAndAnswers_js__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mixins_eventChild_js__ = __webpack_require__(18);
 
 
@@ -23509,7 +23778,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 281 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -23749,13 +24018,17 @@ if (false) {
 }
 
 /***/ }),
-/* 282 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "col-xs-12 scope-apply-base-style scope-min-height"
-  }, [_c('div', {
+  }, [_c('transition', {
+    attrs: {
+      "name": "slide-fade"
+    }
+  }, [(!_vm.loading) ? _c('div', {
     staticClass: "container-fluid"
   }, [_c('div', {
     staticClass: "row scoped-tablist-container"
@@ -23824,7 +24097,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "eventSet": _vm.eventSet
     }
-  })], 1)])])
+  })], 1)]) : _vm._e()]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "slide-fade"
+    }
+  }, [(_vm.loading) ? _c('div', {
+    staticClass: "container-fluid"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('loader', {
+    attrs: {
+      "id": "advanced-panel-loader"
+    }
+  })], 1)]) : _vm._e()])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -23835,19 +24120,19 @@ if (false) {
 }
 
 /***/ }),
-/* 283 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(284)
+  __webpack_require__(289)
 }
 var Component = __webpack_require__(0)(
   /* script */
-  __webpack_require__(286),
+  __webpack_require__(291),
   /* template */
-  __webpack_require__(299),
+  __webpack_require__(304),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -23855,7 +24140,7 @@ var Component = __webpack_require__(0)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\IISPages\\LimeSurveyDevelop\\assets\\packages\\questioneditor\\src\\helperComponents\\LanguageSelector.vue"
+Component.options.__file = "C:\\Developement\\vagrant-limesurvey-dev\\webroot\\assets\\packages\\questioneditor\\src\\helperComponents\\LanguageSelector.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] LanguageSelector.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -23879,13 +24164,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 284 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(285);
+var content = __webpack_require__(290);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -23905,7 +24190,7 @@ if(false) {
 }
 
 /***/ }),
-/* 285 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(true);
@@ -23913,24 +24198,24 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.button-toolbar>.btn-group[data-v-fede2bae] {\n    margin-top: 0.3rem;\n    margin-bottom: 0.5rem;\n}\n.button-toolbar>.btn-group[data-v-fede2bae] {\n    width: 100%;\n}\n.button-toolbar>.btn-group>.btn[data-v-fede2bae] {\n    min-width: 20%;\n}\n", "", {"version":3,"sources":["C:/IISPages/LimeSurveyDevelop/assets/packages/questioneditor/src/helperComponents/LanguageSelector.vue?7f549d42"],"names":[],"mappings":";AAwEA;IACA,mBAAA;IACA,sBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,eAAA;CACA","file":"LanguageSelector.vue","sourcesContent":["\r\n<script>\r\nimport size from 'lodash/size';\r\nimport pick from 'lodash/pick';\r\nimport keys from 'lodash/keys';\r\nimport slice from 'lodash/slice';\r\nimport foreach from 'lodash/foreach';\r\n\r\nexport default {\r\n    name: 'language-selector',\r\n    props: {\r\n        elId: {type: String, required: true},\r\n        aLanguages: {type: [Array, Object], required: true},\r\n        parentCurrentLanguage: {type: String, required: true}\r\n    },\r\n    computed: {\r\n        currentLanguage: {\r\n            get() { return this.parentCurrentLanguage},\r\n            set(newValue) { this.$emit('change', newValue)}\r\n        },\r\n        getInChunks(){\r\n            if(size(this.aLanguages) <= 5) {\r\n                return [this.aLanguages];\r\n            };\r\n            let firstfour = pick(this.aLanguages, slice(keys(this.aLanguages), 0, 4));\r\n            let rest = pick(this.aLanguages, slice(keys(this.aLanguages), 5));\r\n            return [firstfour, rest];\r\n        }\r\n    },\r\n    methods: {\r\n        setCurrentLanguage(newValue) { this.$emit('change', newValue)},\r\n    }\r\n}\r\n</script>\r\n<template>\r\n    <div class=\"col-xs-12\" >                    \r\n        <div class=\"button-toolbar\" :id=\"elId+'-language-selector'\">\r\n            <div \r\n                class=\"btn-group\" \r\n            >\r\n                <button \r\n                    v-for=\"(languageTerm, language) in getInChunks[0]\" \r\n                    :key=\"language+'-button'\"\r\n                    :class=\"'btn btn-'+(language==currentLanguage ? 'primary active' : 'default')\"\r\n                    @click.prevent=\"setCurrentLanguage(language)\"\r\n                >\r\n                    {{ languageTerm }}\r\n                </button>\r\n                <button\r\n                    v-if=\"getInChunks.length > 1\"\r\n                    class=\"btn btn-default dropdown-toggle\"\r\n                    data-toggle=\"dropdown\"\r\n                >\r\n                    {{ \"More Languages\" | translate }}\r\n                    <span class=\"caret\"></span>\r\n                </button>\r\n                 <ul class=\"dropdown-menu\">\r\n                    <li\r\n                        v-for=\"(languageTerm, language) in getInChunks[1]\" \r\n                        :key=\"language+'-dropdown'\"\r\n                        @click.prevent=\"setCurrentLanguage(language)\"\r\n                    >\r\n                        <a href=\"#\">{{ languageTerm }}</a>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n        <hr/>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n    .button-toolbar>.btn-group {\r\n        margin-top: 0.3rem;\r\n        margin-bottom: 0.5rem;\r\n    }\r\n    .button-toolbar>.btn-group {\r\n        width: 100%;\r\n    }\r\n    .button-toolbar>.btn-group>.btn {\r\n        min-width: 20%;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.button-toolbar>.btn-group[data-v-fede2bae] {\n    margin-top: 0.3rem;\n    margin-bottom: 0.5rem;\n}\n.button-toolbar>.btn-group[data-v-fede2bae] {\n    width: 100%;\n}\n.button-toolbar>.btn-group>.btn[data-v-fede2bae] {\n    min-width: 20%;\n}\n", "", {"version":3,"sources":["C:/Developement/vagrant-limesurvey-dev/webroot/assets/packages/questioneditor/src/helperComponents/LanguageSelector.vue?7f549d42"],"names":[],"mappings":";AAwEA;IACA,mBAAA;IACA,sBAAA;CACA;AACA;IACA,YAAA;CACA;AACA;IACA,eAAA;CACA","file":"LanguageSelector.vue","sourcesContent":["\r\n<script>\r\nimport size from 'lodash/size';\r\nimport pick from 'lodash/pick';\r\nimport keys from 'lodash/keys';\r\nimport slice from 'lodash/slice';\r\nimport foreach from 'lodash/foreach';\r\n\r\nexport default {\r\n    name: 'language-selector',\r\n    props: {\r\n        elId: {type: String, required: true},\r\n        aLanguages: {type: [Array, Object], required: true},\r\n        parentCurrentLanguage: {type: String, required: true}\r\n    },\r\n    computed: {\r\n        currentLanguage: {\r\n            get() { return this.parentCurrentLanguage},\r\n            set(newValue) { this.$emit('change', newValue)}\r\n        },\r\n        getInChunks(){\r\n            if(size(this.aLanguages) <= 5) {\r\n                return [this.aLanguages];\r\n            };\r\n            let firstfour = pick(this.aLanguages, slice(keys(this.aLanguages), 0, 4));\r\n            let rest = pick(this.aLanguages, slice(keys(this.aLanguages), 5));\r\n            return [firstfour, rest];\r\n        }\r\n    },\r\n    methods: {\r\n        setCurrentLanguage(newValue) { this.$emit('change', newValue)},\r\n    }\r\n}\r\n</script>\r\n<template>\r\n    <div class=\"col-xs-12\" >                    \r\n        <div class=\"button-toolbar\" :id=\"elId+'-language-selector'\">\r\n            <div \r\n                class=\"btn-group\" \r\n            >\r\n                <button \r\n                    v-for=\"(languageTerm, language) in getInChunks[0]\" \r\n                    :key=\"language+'-button'\"\r\n                    :class=\"'btn btn-'+(language==currentLanguage ? 'primary active' : 'default')\"\r\n                    @click.prevent=\"setCurrentLanguage(language)\"\r\n                >\r\n                    {{ languageTerm }}\r\n                </button>\r\n                <button\r\n                    v-if=\"getInChunks.length > 1\"\r\n                    class=\"btn btn-default dropdown-toggle\"\r\n                    data-toggle=\"dropdown\"\r\n                >\r\n                    {{ \"More Languages\" | translate }}\r\n                    <span class=\"caret\"></span>\r\n                </button>\r\n                 <ul class=\"dropdown-menu\">\r\n                    <li\r\n                        v-for=\"(languageTerm, language) in getInChunks[1]\" \r\n                        :key=\"language+'-dropdown'\"\r\n                        @click.prevent=\"setCurrentLanguage(language)\"\r\n                    >\r\n                        <a href=\"#\">{{ languageTerm }}</a>\r\n                    </li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n        <hr/>\r\n    </div>\r\n</template>\r\n\r\n<style scoped>\r\n    .button-toolbar>.btn-group {\r\n        margin-top: 0.3rem;\r\n        margin-bottom: 0.5rem;\r\n    }\r\n    .button-toolbar>.btn-group {\r\n        width: 100%;\r\n    }\r\n    .button-toolbar>.btn-group>.btn {\r\n        min-width: 20%;\r\n    }\r\n</style>\r\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ }),
-/* 286 */
+/* 291 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_size__ = __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_size__ = __webpack_require__(292);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_size___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash_size__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_pick__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_pick__ = __webpack_require__(298);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_pick___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_pick__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_keys__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_keys___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_keys__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_slice__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_slice__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_slice___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_slice__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_foreach__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_foreach___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash_foreach__);
@@ -23975,14 +24260,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 287 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseKeys = __webpack_require__(43),
+var baseKeys = __webpack_require__(44),
     getTag = __webpack_require__(37),
     isArrayLike = __webpack_require__(10),
-    isString = __webpack_require__(288),
-    stringSize = __webpack_require__(289);
+    isString = __webpack_require__(293),
+    stringSize = __webpack_require__(294);
 
 /** `Object#toString` result references. */
 var mapTag = '[object Map]',
@@ -24027,7 +24312,7 @@ module.exports = size;
 
 
 /***/ }),
-/* 288 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(12),
@@ -24063,12 +24348,12 @@ module.exports = isString;
 
 
 /***/ }),
-/* 289 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var asciiSize = __webpack_require__(290),
-    hasUnicode = __webpack_require__(291),
-    unicodeSize = __webpack_require__(292);
+var asciiSize = __webpack_require__(295),
+    hasUnicode = __webpack_require__(296),
+    unicodeSize = __webpack_require__(297);
 
 /**
  * Gets the number of symbols in `string`.
@@ -24087,10 +24372,10 @@ module.exports = stringSize;
 
 
 /***/ }),
-/* 290 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseProperty = __webpack_require__(80);
+var baseProperty = __webpack_require__(81);
 
 /**
  * Gets the size of an ASCII `string`.
@@ -24105,7 +24390,7 @@ module.exports = asciiSize;
 
 
 /***/ }),
-/* 291 */
+/* 296 */
 /***/ (function(module, exports) {
 
 /** Used to compose unicode character classes. */
@@ -24137,7 +24422,7 @@ module.exports = hasUnicode;
 
 
 /***/ }),
-/* 292 */
+/* 297 */
 /***/ (function(module, exports) {
 
 /** Used to compose unicode character classes. */
@@ -24187,11 +24472,11 @@ module.exports = unicodeSize;
 
 
 /***/ }),
-/* 293 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var basePick = __webpack_require__(294),
-    flatRest = __webpack_require__(297);
+var basePick = __webpack_require__(299),
+    flatRest = __webpack_require__(302);
 
 /**
  * Creates an object composed of the picked `object` properties.
@@ -24218,11 +24503,11 @@ module.exports = pick;
 
 
 /***/ }),
-/* 294 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var basePickBy = __webpack_require__(295),
-    hasIn = __webpack_require__(79);
+var basePickBy = __webpack_require__(300),
+    hasIn = __webpack_require__(80);
 
 /**
  * The base implementation of `_.pick` without support for individual
@@ -24243,11 +24528,11 @@ module.exports = basePick;
 
 
 /***/ }),
-/* 295 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGet = __webpack_require__(38),
-    baseSet = __webpack_require__(296),
+    baseSet = __webpack_require__(301),
     castPath = __webpack_require__(25);
 
 /**
@@ -24279,10 +24564,10 @@ module.exports = basePickBy;
 
 
 /***/ }),
-/* 296 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assignValue = __webpack_require__(55),
+var assignValue = __webpack_require__(56),
     castPath = __webpack_require__(25),
     isIndex = __webpack_require__(21),
     isObject = __webpack_require__(2),
@@ -24332,12 +24617,12 @@ module.exports = baseSet;
 
 
 /***/ }),
-/* 297 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var flatten = __webpack_require__(298),
-    overRest = __webpack_require__(90),
-    setToString = __webpack_require__(91);
+var flatten = __webpack_require__(303),
+    overRest = __webpack_require__(91),
+    setToString = __webpack_require__(92);
 
 /**
  * A specialized version of `baseRest` which flattens the rest array.
@@ -24354,10 +24639,10 @@ module.exports = flatRest;
 
 
 /***/ }),
-/* 298 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFlatten = __webpack_require__(98);
+var baseFlatten = __webpack_require__(99);
 
 /**
  * Flattens `array` a single level deep.
@@ -24382,7 +24667,7 @@ module.exports = flatten;
 
 
 /***/ }),
-/* 299 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -24440,7 +24725,7 @@ if (false) {
 }
 
 /***/ }),
-/* 300 */
+/* 305 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24475,14 +24760,26 @@ if (false) {
 });
 
 /***/ }),
-/* 301 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container-center scoped-new-questioneditor"
-  }, [(!_vm.isCreateQuestion) ? _c('button', {
-    staticClass: "pull-right clear btn ",
+  }, [(!!_vm.$store.state.currentQuestionPermissions.update) ? _c('div', {
+    staticClass: "btn-group pull-right clear"
+  }, [_c('button', {
+    staticClass: "btn ",
+    class: _vm.editQuestion ? 'btn-default' : 'btn-primary',
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        _vm.triggerEditQuestion($event)
+      }
+    }
+  }, [_vm._v("\n            " + _vm._s(_vm._f("translate")('Question overview')) + "\n        ")]), _vm._v(" "), _c('button', {
+    staticClass: "btn ",
     class: _vm.editQuestion ? 'btn-primary' : 'btn-default',
     on: {
       "click": function($event) {
@@ -24491,9 +24788,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.triggerEditQuestion($event)
       }
     }
-  }, [_vm._v("\n        " + _vm._s(_vm.editQuestion ? 'Question overview' : 'Question editor') + "\n    ")]) : _vm._e(), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n            " + _vm._s(_vm._f("translate")('Question editor')) + "\n        ")])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "pagetitle h3 scoped-unset-pointer-events"
-  }, [(_vm.isCreateQuestion) ? [_vm._v("\n                " + _vm._s(_vm._f("translate")('Create new Question')) + "\n        ")] : [_vm._v("\n                " + _vm._s(_vm._f("translate")('Question')) + ": " + _vm._s(_vm.$store.state.currentQuestion.title) + "  "), _c('small', [_vm._v("(ID: " + _vm._s(_vm.$store.state.currentQuestion.qid) + ")")])]], 2), _vm._v(" "), (_vm.$store.getters.fullyLoaded) ? [_c('div', {
+  }, [(_vm.isCreateQuestion) ? [_vm._v("\n                " + _vm._s(_vm._f("translate")('Create new Question')) + "\n        ")] : [_vm._v("\n                " + _vm._s(_vm._f("translate")('Question')) + ": " + _vm._s(_vm.$store.state.currentQuestion.title) + "  "), _c('small', [_vm._v("(ID: " + _vm._s(_vm.$store.state.currentQuestion.qid) + ")")])]], 2), _vm._v(" "), (!_vm.loading) ? [_c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "form-group col-sm-6"
@@ -24564,7 +24861,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('div', {
     staticClass: "row"
-  }, [((_vm.editQuestion || _vm.isCreateQuestion)) ? _c('maineditor', {
+  }, [_c('transition', {
+    attrs: {
+      "name": "slide-fade"
+    }
+  }, [_c('maineditor', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: ((_vm.editQuestion || _vm.isCreateQuestion)),
+      expression: "(editQuestion || isCreateQuestion)"
+    }],
     attrs: {
       "event": _vm.event
     },
@@ -24572,7 +24879,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "triggerEvent": _vm.triggerEvent,
       "eventSet": _vm.eventSet
     }
-  }) : _c('questionoverview', {
+  })], 1), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "slide-fade"
+    }
+  }, [_c('questionoverview', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!(_vm.editQuestion || _vm.isCreateQuestion)),
+      expression: "!(editQuestion || isCreateQuestion)"
+    }],
     attrs: {
       "event": _vm.event
     },
@@ -24580,7 +24897,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "triggerEvent": _vm.triggerEvent,
       "eventSet": _vm.eventSet
     }
-  }), _vm._v(" "), _c('generalsettings', {
+  })], 1), _vm._v(" "), _c('generalsettings', {
     attrs: {
       "event": _vm.event,
       "readonly": !(_vm.editQuestion || _vm.isCreateQuestion)
@@ -24598,7 +24915,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "triggerEvent": _vm.triggerEvent,
       "eventSet": _vm.eventSet
     }
-  })], 1)] : _vm._e(), _vm._v(" "), _c('modals-container', {
+  })], 1)] : [_c('loader', {
+    attrs: {
+      "id": "mainViewLoader"
+    }
+  })], _vm._v(" "), _c('modals-container', {
     on: {
       "modalEvent": _vm.setModalEvent
     }
@@ -24613,20 +24934,20 @@ if (false) {
 }
 
 /***/ }),
-/* 302 */
+/* 307 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(303);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex_persist__ = __webpack_require__(304);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(308);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex_persist__ = __webpack_require__(309);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex_persist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vuex_persist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_localstorage__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_localstorage__ = __webpack_require__(311);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_localstorage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_localstorage__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mutations__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__actions__ = __webpack_require__(312);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__getters__ = __webpack_require__(330);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__state__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mutations__ = __webpack_require__(312);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__actions__ = __webpack_require__(317);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__getters__ = __webpack_require__(335);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__state__ = __webpack_require__(336);
 
 
 
@@ -24660,7 +24981,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODU
 
 
 /***/ }),
-/* 303 */
+/* 308 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25605,7 +25926,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 304 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25615,7 +25936,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var merge = _interopDefault(__webpack_require__(305));
+var merge = _interopDefault(__webpack_require__(310));
 
 /**
  * Created by championswimmer on 22/07/17.
@@ -25851,7 +26172,7 @@ exports['default'] = VuexPersistence;
 
 
 /***/ }),
-/* 305 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -28065,7 +28386,7 @@ module.exports = merge;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27), __webpack_require__(29)(module)))
 
 /***/ }),
-/* 306 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {/**
@@ -28285,10 +28606,10 @@ return index;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(61)))
 
 /***/ }),
-/* 307 */
+/* 312 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28299,7 +28620,7 @@ return index;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_keys___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_keys__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_merge__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_indexOf__ = __webpack_require__(308);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_indexOf__ = __webpack_require__(313);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash_indexOf___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash_indexOf__);
 
 
@@ -28318,8 +28639,8 @@ return index;
     setCurrentQuestionI10N : (state, newValue) => {
         state.currentQuestionI10N = newValue;
     },
-    setCurrentQuestionAttributes : (state, newValue) => {
-        state.currentQuestionAttributes = newValue;
+    setCurrentQuestionPermissions : (state, newValue) => {
+        state.currentQuestionPermissions = newValue;
     },
     setCurrentQuestionGeneralSettings : (state, newValue) => {
         state.currentQuestionGeneralSettings = newValue;
@@ -28356,14 +28677,6 @@ return index;
     },
 
     //Immutables
-    unsetImmutableQuestionAttributes : (state, newValue) => {
-        state.questionAttributesImmutable = {};
-    },
-    setImmutableQuestionAttributes : (state, newValue) => {
-        if(__WEBPACK_IMPORTED_MODULE_1_lodash_isEmpty___default()(state.questionAttributesImmutable)) {
-            state.questionAttributesImmutable = newValue;
-        }
-    },
 
     unsetQuestionImmutable : (state) => {
         state.questionImmutable = {};
@@ -28482,11 +28795,11 @@ return index;
 });
 
 /***/ }),
-/* 308 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIndexOf = __webpack_require__(309),
-    toInteger = __webpack_require__(59);
+var baseIndexOf = __webpack_require__(314),
+    toInteger = __webpack_require__(60);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMax = Math.max;
@@ -28530,12 +28843,12 @@ module.exports = indexOf;
 
 
 /***/ }),
-/* 309 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFindIndex = __webpack_require__(102),
-    baseIsNaN = __webpack_require__(310),
-    strictIndexOf = __webpack_require__(311);
+var baseFindIndex = __webpack_require__(103),
+    baseIsNaN = __webpack_require__(315),
+    strictIndexOf = __webpack_require__(316);
 
 /**
  * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
@@ -28556,7 +28869,7 @@ module.exports = baseIndexOf;
 
 
 /***/ }),
-/* 310 */
+/* 315 */
 /***/ (function(module, exports) {
 
 /**
@@ -28574,7 +28887,7 @@ module.exports = baseIsNaN;
 
 
 /***/ }),
-/* 311 */
+/* 316 */
 /***/ (function(module, exports) {
 
 /**
@@ -28603,16 +28916,16 @@ module.exports = strictIndexOf;
 
 
 /***/ }),
-/* 312 */
+/* 317 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep__ = __webpack_require__(318);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_merge__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_logSystem_js__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_logSystem_js__ = __webpack_require__(106);
 
 
 
@@ -28651,63 +28964,87 @@ module.exports = strictIndexOf;
         context.commit('setCurrentQuestionGroupInfo', newObjectBlock.questiongroup);
     },
     loadQuestion: (context) => {
-        __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 
-            {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
-        ).then((result) => {
-            context.commit('setCurrentQuestion', result.data.question);
-            context.commit('unsetQuestionImmutable');
-            context.commit('setQuestionImmutable', __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep___default()(result.data.question));
+        return Promise.all([
+            (new Promise((resolve, reject) => {
+                __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
+                    window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 
+                    {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
+                ).then((result) => {
+                    context.commit('setCurrentQuestion', result.data.question);
+                    context.commit('unsetQuestionImmutable');
+                    context.commit('setQuestionImmutable', __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep___default()(result.data.question));
 
-            context.commit('setCurrentQuestionI10N', result.data.i10n);
-            context.commit('unsetQuestionImmutableI10N');
-            context.commit('setQuestionImmutableI10N', __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep___default()(result.data.i10n));
-            
-            context.commit('setCurrentQuestionSubquestions', result.data.subquestions);
-            context.commit('unsetQuestionSubquestionsImmutable')
-            context.commit('setQuestionSubquestionsImmutable',  __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep___default()(result.data.subquestions));
+                    context.commit('setCurrentQuestionI10N', result.data.i10n);
+                    context.commit('unsetQuestionImmutableI10N');
+                    context.commit('setQuestionImmutableI10N', __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep___default()(result.data.i10n));
+                    
+                    context.commit('setCurrentQuestionSubquestions', result.data.subquestions);
+                    context.commit('unsetQuestionSubquestionsImmutable')
+                    context.commit('setQuestionSubquestionsImmutable',  __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep___default()(result.data.subquestions));
 
-            context.commit('setCurrentQuestionAnswerOptions', result.data.answerOptions);
-            context.commit('unsetQuestionAnswerOptionsImmutable')
-            context.commit('setQuestionAnswerOptionsImmutable', __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep___default()(result.data.answerOptions))
+                    context.commit('setCurrentQuestionAnswerOptions', result.data.answerOptions);
+                    context.commit('unsetQuestionAnswerOptionsImmutable')
+                    context.commit('setQuestionAnswerOptionsImmutable', __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep___default()(result.data.answerOptions))
 
-            context.commit('setCurrentQuestionGroupInfo', result.data.questiongroup);
-            context.commit('setLanguages', result.data.languages);
-            context.commit('setActiveLanguage', result.data.mainLanguage);
-        });
-        __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getQuestionAttributeData', 
-            {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
-        ).then((result) => {
-            context.commit('setCurrentQuestionAttributes', result.data);
-            context.commit('unsetImmutableQuestionAttributes');
-            context.commit('setImmutableQuestionAttributes', __WEBPACK_IMPORTED_MODULE_1_lodash_cloneDeep___default()(result.data));
-        });
+                    context.commit('setCurrentQuestionGroupInfo', result.data.questiongroup);
+                    context.commit('setLanguages', result.data.languages);
+                    context.commit('setActiveLanguage', result.data.mainLanguage);
+                    resolve(true);
+                },
+                (rejectAnswer) => {
+                    reject(rejectAnswer);
+                })
+            })),
+            (new Promise((resolve, reject) => {
+                __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
+                    window.QuestionEditData.connectorBaseUrl+'/getQuestionPermissions', 
+                    {'iQuestionId' : window.QuestionEditData.qid }
+                ).then((result) => {
+                    context.commit('setCurrentQuestionPermissions', result.data);
+                    resolve(true);
+                },
+                (rejectAnswer) => {
+                    reject(rejectAnswer);
+                });
+            }))
+        ]);
     },
     getQuestionGeneralSettings: (context) => {
-        __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
-            {
-                'iQuestionId' : window.QuestionEditData.qid,
-                'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
-            }
-        ).then((result) => {
-            context.commit('setCurrentQuestionGeneralSettings', result.data);
-            context.commit('unsetImmutableQuestionGeneralSettings', result.data);
-            context.commit('setImmutableQuestionGeneralSettings', result.data);
+        return new Promise((resolve, reject) => {
+            __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
+                window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
+                {
+                    'iQuestionId' : window.QuestionEditData.qid,
+                    'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
+                }
+            ).then((result) => {
+                context.commit('setCurrentQuestionGeneralSettings', result.data);
+                context.commit('unsetImmutableQuestionGeneralSettings', result.data);
+                context.commit('setImmutableQuestionGeneralSettings', result.data);
+                resolve(true);
+            },
+            (rejectAnswer) => {
+                reject(rejectAnswer);
+            });
         });
     },
     getQuestionAdvancedSettings: (context) => {
-        __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
-            {
-                'iQuestionId' : window.QuestionEditData.qid,
-                'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
-            }
-        ).then((result) => {
-            context.commit('setCurrentQuestionAdvancedSettings', result.data);
-            context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
-            context.commit('setImmutableQuestionAdvancedSettings', result.data);
+        return new Promise((resolve, reject) => {
+            __WEBPACK_IMPORTED_MODULE_0__mixins_runAjax_js__["a" /* default */].methods.$_get(
+                window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
+                {
+                    'iQuestionId' : window.QuestionEditData.qid,
+                    'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
+                }
+            ).then((result) => {
+                context.commit('setCurrentQuestionAdvancedSettings', result.data);
+                context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
+                context.commit('setImmutableQuestionAdvancedSettings', result.data);
+                resolve(true);
+            },
+            (rejectAnswer) => {
+                reject(rejectAnswer);
+            });
         });
     },
     getQuestionTypes: (context) => {
@@ -28752,10 +29089,10 @@ module.exports = strictIndexOf;
 });
 
 /***/ }),
-/* 313 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseClone = __webpack_require__(314);
+var baseClone = __webpack_require__(319);
 
 /** Used to compose bitmasks for cloning. */
 var CLONE_DEEP_FLAG = 1,
@@ -28787,24 +29124,24 @@ module.exports = cloneDeep;
 
 
 /***/ }),
-/* 314 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Stack = __webpack_require__(32),
-    arrayEach = __webpack_require__(61),
-    assignValue = __webpack_require__(55),
-    baseAssign = __webpack_require__(315),
-    baseAssignIn = __webpack_require__(316),
-    cloneBuffer = __webpack_require__(85),
-    copyArray = __webpack_require__(87),
-    copySymbols = __webpack_require__(317),
-    copySymbolsIn = __webpack_require__(318),
-    getAllKeys = __webpack_require__(73),
-    getAllKeysIn = __webpack_require__(319),
+    arrayEach = __webpack_require__(62),
+    assignValue = __webpack_require__(56),
+    baseAssign = __webpack_require__(320),
+    baseAssignIn = __webpack_require__(321),
+    cloneBuffer = __webpack_require__(86),
+    copyArray = __webpack_require__(88),
+    copySymbols = __webpack_require__(322),
+    copySymbolsIn = __webpack_require__(323),
+    getAllKeys = __webpack_require__(74),
+    getAllKeysIn = __webpack_require__(324),
     getTag = __webpack_require__(37),
-    initCloneArray = __webpack_require__(320),
-    initCloneByTag = __webpack_require__(321),
-    initCloneObject = __webpack_require__(88),
+    initCloneArray = __webpack_require__(325),
+    initCloneByTag = __webpack_require__(326),
+    initCloneObject = __webpack_require__(89),
     isArray = __webpack_require__(1),
     isBuffer = __webpack_require__(20),
     isObject = __webpack_require__(2),
@@ -28946,7 +29283,7 @@ module.exports = baseClone;
 
 
 /***/ }),
-/* 315 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(26),
@@ -28969,7 +29306,7 @@ module.exports = baseAssign;
 
 
 /***/ }),
-/* 316 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(26),
@@ -28992,11 +29329,11 @@ module.exports = baseAssignIn;
 
 
 /***/ }),
-/* 317 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(26),
-    getSymbols = __webpack_require__(49);
+    getSymbols = __webpack_require__(50);
 
 /**
  * Copies own symbols of `source` to `object`.
@@ -29014,11 +29351,11 @@ module.exports = copySymbols;
 
 
 /***/ }),
-/* 318 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(26),
-    getSymbolsIn = __webpack_require__(104);
+    getSymbolsIn = __webpack_require__(105);
 
 /**
  * Copies own and inherited symbols of `source` to `object`.
@@ -29036,11 +29373,11 @@ module.exports = copySymbolsIn;
 
 
 /***/ }),
-/* 319 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetAllKeys = __webpack_require__(74),
-    getSymbolsIn = __webpack_require__(104),
+var baseGetAllKeys = __webpack_require__(75),
+    getSymbolsIn = __webpack_require__(105),
     keysIn = __webpack_require__(40);
 
 /**
@@ -29059,7 +29396,7 @@ module.exports = getAllKeysIn;
 
 
 /***/ }),
-/* 320 */
+/* 325 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -29091,16 +29428,16 @@ module.exports = initCloneArray;
 
 
 /***/ }),
-/* 321 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var cloneArrayBuffer = __webpack_require__(53),
-    cloneDataView = __webpack_require__(322),
-    cloneMap = __webpack_require__(323),
-    cloneRegExp = __webpack_require__(325),
-    cloneSet = __webpack_require__(326),
-    cloneSymbol = __webpack_require__(328),
-    cloneTypedArray = __webpack_require__(86);
+var cloneArrayBuffer = __webpack_require__(54),
+    cloneDataView = __webpack_require__(327),
+    cloneMap = __webpack_require__(328),
+    cloneRegExp = __webpack_require__(330),
+    cloneSet = __webpack_require__(331),
+    cloneSymbol = __webpack_require__(333),
+    cloneTypedArray = __webpack_require__(87);
 
 /** `Object#toString` result references. */
 var boolTag = '[object Boolean]',
@@ -29177,10 +29514,10 @@ module.exports = initCloneByTag;
 
 
 /***/ }),
-/* 322 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var cloneArrayBuffer = __webpack_require__(53);
+var cloneArrayBuffer = __webpack_require__(54);
 
 /**
  * Creates a clone of `dataView`.
@@ -29199,12 +29536,12 @@ module.exports = cloneDataView;
 
 
 /***/ }),
-/* 323 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMapEntry = __webpack_require__(324),
-    arrayReduce = __webpack_require__(51),
-    mapToArray = __webpack_require__(71);
+var addMapEntry = __webpack_require__(329),
+    arrayReduce = __webpack_require__(52),
+    mapToArray = __webpack_require__(72);
 
 /** Used to compose bitmasks for cloning. */
 var CLONE_DEEP_FLAG = 1;
@@ -29227,7 +29564,7 @@ module.exports = cloneMap;
 
 
 /***/ }),
-/* 324 */
+/* 329 */
 /***/ (function(module, exports) {
 
 /**
@@ -29248,7 +29585,7 @@ module.exports = addMapEntry;
 
 
 /***/ }),
-/* 325 */
+/* 330 */
 /***/ (function(module, exports) {
 
 /** Used to match `RegExp` flags from their coerced string values. */
@@ -29271,12 +29608,12 @@ module.exports = cloneRegExp;
 
 
 /***/ }),
-/* 326 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addSetEntry = __webpack_require__(327),
-    arrayReduce = __webpack_require__(51),
-    setToArray = __webpack_require__(72);
+var addSetEntry = __webpack_require__(332),
+    arrayReduce = __webpack_require__(52),
+    setToArray = __webpack_require__(73);
 
 /** Used to compose bitmasks for cloning. */
 var CLONE_DEEP_FLAG = 1;
@@ -29299,7 +29636,7 @@ module.exports = cloneSet;
 
 
 /***/ }),
-/* 327 */
+/* 332 */
 /***/ (function(module, exports) {
 
 /**
@@ -29320,7 +29657,7 @@ module.exports = addSetEntry;
 
 
 /***/ }),
-/* 328 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(14);
@@ -29344,7 +29681,7 @@ module.exports = cloneSymbol;
 
 
 /***/ }),
-/* 329 */
+/* 334 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29502,7 +29839,7 @@ class ConsoleShim {
 /* harmony default export */ __webpack_exports__["a"] = (ConsoleShim);
 
 /***/ }),
-/* 330 */
+/* 335 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29523,7 +29860,7 @@ class ConsoleShim {
 });
 
 /***/ }),
-/* 331 */
+/* 336 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29533,7 +29870,7 @@ class ConsoleShim {
     currentQuestionSubquestions: {},
     currentQuestionAnswerOptions: {},
     currentQuestionI10N: {},
-    currentQuestionAttributes: {},
+    currentQuestionPermissions: {},
     currentQuestionGeneralSettings: [],
     currentQuestionAdvancedSettings: {},
     questionAttributesImmutable: {},

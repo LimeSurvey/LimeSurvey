@@ -36,63 +36,87 @@ export default {
         context.commit('setCurrentQuestionGroupInfo', newObjectBlock.questiongroup);
     },
     loadQuestion: (context) => {
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 
-            {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
-        ).then((result) => {
-            context.commit('setCurrentQuestion', result.data.question);
-            context.commit('unsetQuestionImmutable');
-            context.commit('setQuestionImmutable', cloneDeep(result.data.question));
+        return Promise.all([
+            (new Promise((resolve, reject) => {
+                ajax.methods.$_get(
+                    window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 
+                    {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
+                ).then((result) => {
+                    context.commit('setCurrentQuestion', result.data.question);
+                    context.commit('unsetQuestionImmutable');
+                    context.commit('setQuestionImmutable', cloneDeep(result.data.question));
 
-            context.commit('setCurrentQuestionI10N', result.data.i10n);
-            context.commit('unsetQuestionImmutableI10N');
-            context.commit('setQuestionImmutableI10N', cloneDeep(result.data.i10n));
-            
-            context.commit('setCurrentQuestionSubquestions', result.data.subquestions);
-            context.commit('unsetQuestionSubquestionsImmutable')
-            context.commit('setQuestionSubquestionsImmutable',  cloneDeep(result.data.subquestions));
+                    context.commit('setCurrentQuestionI10N', result.data.i10n);
+                    context.commit('unsetQuestionImmutableI10N');
+                    context.commit('setQuestionImmutableI10N', cloneDeep(result.data.i10n));
+                    
+                    context.commit('setCurrentQuestionSubquestions', result.data.subquestions);
+                    context.commit('unsetQuestionSubquestionsImmutable')
+                    context.commit('setQuestionSubquestionsImmutable',  cloneDeep(result.data.subquestions));
 
-            context.commit('setCurrentQuestionAnswerOptions', result.data.answerOptions);
-            context.commit('unsetQuestionAnswerOptionsImmutable')
-            context.commit('setQuestionAnswerOptionsImmutable', cloneDeep(result.data.answerOptions))
+                    context.commit('setCurrentQuestionAnswerOptions', result.data.answerOptions);
+                    context.commit('unsetQuestionAnswerOptionsImmutable')
+                    context.commit('setQuestionAnswerOptionsImmutable', cloneDeep(result.data.answerOptions))
 
-            context.commit('setCurrentQuestionGroupInfo', result.data.questiongroup);
-            context.commit('setLanguages', result.data.languages);
-            context.commit('setActiveLanguage', result.data.mainLanguage);
-        });
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getQuestionAttributeData', 
-            {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
-        ).then((result) => {
-            context.commit('setCurrentQuestionAttributes', result.data);
-            context.commit('unsetImmutableQuestionAttributes');
-            context.commit('setImmutableQuestionAttributes', cloneDeep(result.data));
-        });
+                    context.commit('setCurrentQuestionGroupInfo', result.data.questiongroup);
+                    context.commit('setLanguages', result.data.languages);
+                    context.commit('setActiveLanguage', result.data.mainLanguage);
+                    resolve(true);
+                },
+                (rejectAnswer) => {
+                    reject(rejectAnswer);
+                })
+            })),
+            (new Promise((resolve, reject) => {
+                ajax.methods.$_get(
+                    window.QuestionEditData.connectorBaseUrl+'/getQuestionPermissions', 
+                    {'iQuestionId' : window.QuestionEditData.qid }
+                ).then((result) => {
+                    context.commit('setCurrentQuestionPermissions', result.data);
+                    resolve(true);
+                },
+                (rejectAnswer) => {
+                    reject(rejectAnswer);
+                });
+            }))
+        ]);
     },
     getQuestionGeneralSettings: (context) => {
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
-            {
-                'iQuestionId' : window.QuestionEditData.qid,
-                'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
-            }
-        ).then((result) => {
-            context.commit('setCurrentQuestionGeneralSettings', result.data);
-            context.commit('unsetImmutableQuestionGeneralSettings', result.data);
-            context.commit('setImmutableQuestionGeneralSettings', result.data);
+        return new Promise((resolve, reject) => {
+            ajax.methods.$_get(
+                window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
+                {
+                    'iQuestionId' : window.QuestionEditData.qid,
+                    'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
+                }
+            ).then((result) => {
+                context.commit('setCurrentQuestionGeneralSettings', result.data);
+                context.commit('unsetImmutableQuestionGeneralSettings', result.data);
+                context.commit('setImmutableQuestionGeneralSettings', result.data);
+                resolve(true);
+            },
+            (rejectAnswer) => {
+                reject(rejectAnswer);
+            });
         });
     },
     getQuestionAdvancedSettings: (context) => {
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
-            {
-                'iQuestionId' : window.QuestionEditData.qid,
-                'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
-            }
-        ).then((result) => {
-            context.commit('setCurrentQuestionAdvancedSettings', result.data);
-            context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
-            context.commit('setImmutableQuestionAdvancedSettings', result.data);
+        return new Promise((resolve, reject) => {
+            ajax.methods.$_get(
+                window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
+                {
+                    'iQuestionId' : window.QuestionEditData.qid,
+                    'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
+                }
+            ).then((result) => {
+                context.commit('setCurrentQuestionAdvancedSettings', result.data);
+                context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
+                context.commit('setImmutableQuestionAdvancedSettings', result.data);
+                resolve(true);
+            },
+            (rejectAnswer) => {
+                reject(rejectAnswer);
+            });
         });
     },
     getQuestionTypes: (context) => {

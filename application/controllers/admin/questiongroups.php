@@ -274,6 +274,7 @@ class questiongroups extends Survey_Common_Action
         $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         $aData['condarray'] = $condarray;
 
+        Yii::app()->getClientScript()->registerPackage('questiongroupeditor');
         $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
         $grow           = $oQuestionGroup->attributes;
 
@@ -296,9 +297,101 @@ class questiongroups extends Survey_Common_Action
         $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
         $aData['sidemenu']['explorer']['qid'] = false;
 
+        $aData['jsData'] = [
+            'surveyid' => $iSurveyID,
+            'gid' => $gid,
+            'connectorBaseUrl' => $this->getController()->createUrl('admin/questiongroups/sid/'.$iSurveyID.'/sa'),
+            'i10N' => [
+                'Question group' => gT('Question group'),
+                'Create new question group' => gT('Create new question group'),
+                'General Settings' => gT("General Settings"),
+                'Group summary' => gT('Group summary'),
+                'Title' => gT('Title'),
+                'Description' => gT('Description'),
+                'Quick actions' => gT('Quick actions'),
+                'Question list' => gT('Question list'),
+                'Subquestions' => gT('Subquestions'),
+                'Answeroptions' => gT('Answer options'),
+                'Question type' => gT('Question type'),
+                'Default answer' => gT('Default answer'),
+               ]
+        ];
+
         $this->_renderWrappedTemplate('survey/QuestionGroups', 'group_view', $aData);
     }
 
+    public function loadQuestionGroup($surveyid,$iQuestionGroupId=null) {
+        $oQuestionGroup = QuestionGroup::model()->findByPk($iQuestionGroupId);
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        
+        $aLanguages = [];
+        $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
+        $aSurveyLanguages = $oSurvey->getAllLanguages();
+
+        array_walk($aSurveyLanguages, function ($lngString) use (&$aLanguages, $aAllLanguages) {
+            $aLanguages[$lngString] = $aAllLanguages[$lngString]['description'];
+        });
+
+        if($oQuestionGroup == null) {
+            $oQuestionGroup = new QuestionGroup();
+            $oQuestionGroup->sid = $oSurvey->sid;
+            $i10N = [];
+            array_walk($aSurveyLanguages, function($sLanguage) use(&$i10N) {
+                $i10N[$sLanguage] = [
+                    'language' => $sLanguage,
+                    'group_name' => '',
+                    'description' => '',
+                ];
+            });
+        } else {
+            $i10N = $oQuestionGroup->questionGroupL10ns;
+        }
+
+
+        $this->renderJSON([
+            'questionGroup' => $oQuestionGroup,
+            'questonGroupI10N' => $i10N,
+            'languages' => $aLanguages
+        ]);
+    }
+    public function getQuestionsForGroup($surveyid,$iQuestionGroupId) {
+        $iQuestionGroupId = (int) $iQuestionGroupId;
+        $oQuestionGroup = QuestionGroup::model()->findByPk($iQuestionGroupId);
+        if($oQuestionGroup == null) {
+            $this->renderJSON([]);
+            return;
+        }
+        $aQuestions = [];
+        $aAllQuestions = $oQuestionGroup->questions;
+        array_walk($aAllQuestions, function($oQuestion) use(&$aQuestions) {
+            $aQuestions[$oQuestion->qid] = array_merge($oQuestion->attributes, $oQuestion->questionL10ns);
+        });
+
+        $this->renderJSON($aQuestions);
+    }
+    public function saveQuestionGroupData($surveyid) {
+        $questionGroupData = App()->request->getPost('questionGroupData', []);
+        $iSurveyId = (int) $sid;
+        
+        $oQuestionGroup = QuestionGroup::model()->findByPk($questionGroupData['questionGroup']['gid']);
+        if ($oQuestionGroup != null) {
+            $oQuestionGroup = $this->_newQuestionGroup($oQuestionGroup, $oQuestionGroup['questionGroup']);
+        } else {
+            $oQuestionGroup = $this->_editQuestionGroup($oQuestionGroup['questionGroup']);
+        }
+        $this->_applyI10N($oQuestionGroup, $oQuestionGroup['questionGroupI10N']); 
+        
+        $success = $this->_applyI10N($oQuestionGroup, $oQuestionGroup['questionGroupI10N']);
+
+        $this->renderJSON([
+            'success' => $success,
+            'message' => gT('Question group successfully stored'),
+            'questionGroupId' => $oQuestionGroup->gid,
+            'redirect' => $this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyId),
+            'transfer' => $questionGroupData,
+        ]);
+        Yii::app()->close();
+    }
     /**
      * questiongroup::edit()
      * Load editing of a question group screen.
@@ -549,7 +642,94 @@ class questiongroups extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
     }
+/**
+     * Method to store and filter questionData for a new question
+     */
+    private function _newQuestionGroup($aQuestionGroupData = null)
+    {
+        $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
 
+        $aQuestionData = array_merge([
+                'sid' => $iSurveyId,
+        ], $aQuestionData);
+        unset($aQuestionData['gid']);
+   
+        $oQuestionGroup = new QuestionGroup();
+        $oQuestionGroup->setAttributes($aQuestionData, false);
+        if ($oQuestionGroup == null) {
+            throw new CException("Object creation failed, input array malformed or invalid");
+        }
+
+        $saved = $oQuestionGroup->save();
+        if ($saved == false) {
+            throw new CException("Object creation failed, couldn't save.\n ERRORS:".print_r($oQuestionGroup->getErrors(), true));
+        }
+        
+        $i10N = [];
+        foreach ($oSurvey->allLanguages as $sLanguage) {
+            $i10N[$sLanguage] = new QuestionGroupL10n();
+            $i10N[$sLanguage]->setAttributes([
+                'gid' => $oQuestionGroup->gid,
+                'language' => $sLanguage,
+                'group_name' => '',
+                'description' => '',
+            ], false);
+            $i10N[$sLanguage]->save();
+        }
+        
+        return $oQuestionGroup;
+    }
+    
+    /**
+     * Method to store and filter questionGroupData for editing a questionGroup
+     */
+    private function _editQuestionGroup(&$oQuestionGroup, $aQuestionGroupData)
+    {
+        $aOldQuestionGroupData = $oQuestionGroup->attributes;
+        $oQuestionGroup->setAttributes($aQuestionGroupData, false);
+        if ($oQuestionGroup == null) {
+            throw new CException("Object update failed, input array malformed or invalid");
+        }
+
+        $saved = $oQuestionGroup->save();
+        if ($saved == false) {
+            throw new CException("Object update failed, couldn't save. ERRORS:".print_r($oQuestionGroup->getErrors(), true));
+        }
+        return $oQuestionGroup;
+    }
+
+    private function _applyI10N(&$oQuestionGroup, $dataSet)
+    {
+        $storeValid = true;
+
+        foreach ($dataSet as $sLanguage => $aI10NBlock) {
+            $i10N = QuestionGroupL10n::model()->findByAttributes(['gid' => $oQuestionGroup->gid,'language' => $sLanguage]);
+            $i10N->setAttributes([
+                'group_name' => $aI10NBlock['group_name'],
+                'description' => $aI10NBlock['description'],
+            ], false);
+            $storeValid = $storeValid && $i10N->save();
+        }
+
+        return $storeValid;
+    }
+
+    /**
+     * Method to render an array as a json document
+     *
+     * @param array $aData
+     * @return void
+     */
+    protected function renderJSON($aData)
+    {
+        if (Yii::app()->getConfig('debug') > 0) {
+            $aData['debug'] = [$_POST, $_GET];
+        }
+
+        echo Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData], true, false);
+        return;
+    }
     /**
      * Renders template(s) wrapped in header and footer
      *

@@ -361,6 +361,7 @@ function createDatabase($oDB){
             'qid' =>  "integer NOT NULL",
             'question' =>  "text NOT NULL",
             'help' =>  "text",
+            'script', " text NULL default NULL",
             'language' =>  "string(20) NOT NULL"
         ));        
 

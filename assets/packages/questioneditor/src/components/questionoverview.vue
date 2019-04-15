@@ -25,6 +25,9 @@ export default {
         cleanCurrentQuestionHelp(){
             return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].help);
         },
+        currentQuestionScript(){
+            return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].script;
+        },
         getNiceQuestionType(){
             return `${this.$store.state.currentQuestion.typeInformation.description} (${this.translate('Group')}: ${this.$store.state.currentQuestion.typeInformation.group})`;
         },
@@ -62,6 +65,9 @@ export default {
                 return value[this.$store.state.activeLanguage];
             }
             return value;
+        },
+        toggleEditMode(){
+            this.$emit('triggerEvent', { target: 'lsnextquestioneditor', method: 'toggleOverview', content: {} });
         }
     },
     mounted(){
@@ -72,7 +78,7 @@ export default {
 
 <template>
     <div class="col-sm-8 col-xs-12">
-        <div class="panel panel-default">
+        <div class="panel panel-default" @dblclick="toggleEditMode">
             <div class="panel-heading">
             {{'Text elements'|translate}}
             </div>
@@ -83,10 +89,19 @@ export default {
                         <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestion" />
                     </div>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item" v-show="!!cleanCurrentQuestionHelp">
                     <div class="ls-flex-row wrap col-12">
                         <div class="col-12">{{'Help'|translate}}</div>
                         <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestionHelp" />
+                    </div>
+                </li>
+                <li class="list-group-item" v-show="!!currentQuestionScript">
+                    <div class="ls-flex-row wrap col-12">
+                        <div class="col-12">{{'Script'|translate}}</div>
+                        <div class="col-12 scoped-small-border">
+                            {{currentQuestionScript}}
+                        </div>
+                        <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
                     </div>
                 </li>
             </ul>

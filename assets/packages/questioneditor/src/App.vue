@@ -1,6 +1,7 @@
 <script>
 import Mousetrap from 'mousetrap';
 
+import Loader from './helperComponents/loader.vue';
 import QuestionOverview from './components/questionoverview.vue';
 import MainEditor from './components/mainEditor.vue';
 import GeneralSettings from './components/generalSettings.vue';
@@ -18,12 +19,14 @@ export default {
         'maineditor' : MainEditor,
         'generalsettings' : GeneralSettings,
         'advancedsettings' : AdvancedSettings,
-        'languageselector' : LanguageSelector
+        'languageselector' : LanguageSelector,
+        Loader
     },
     data() {
         return {
             editQuestion: false,
             questionEditButton: window.questionEditButton,
+            loading: true
         }
     },
     computed: {
@@ -44,11 +47,11 @@ export default {
         triggerEditQuestion(){
             this.toggleLoading(true);
             if(this.editQuestion) {
-                $('#questionbarid').css('display', '');
-                $('#questiongroupbarid').css('display','none');
+                $('#questionbarid').slideDown()
+                $('#questiongroupbarid').slideUp();
             } else {
-                $('#questionbarid').css('display', 'none');
-                $('#questiongroupbarid').css('display','');
+                $('#questionbarid').slideUp();
+                $('#questiongroupbarid').slideDown()
             }
             this.editQuestion = !this.editQuestion;
         },
@@ -82,7 +85,11 @@ export default {
             this.event = null;
         },
         toggleOverview() {
-            this.editQuestion = !this.editQuestion;
+            if(this.$store.state.currentQuestionPermissions.update == true) {
+                this.editQuestion = !this.editQuestion;
+                return;
+            }
+            this.editQuestion=false;
         },
         submitCurrentState(redirect = false) {
             this.toggleLoading();
@@ -122,10 +129,12 @@ export default {
         },
     },
     created(){
-        this.$store.dispatch('loadQuestion');
-        this.$store.dispatch('getQuestionTypes');
-        this.$store.dispatch('getQuestionGeneralSettings');
-        this.$store.dispatch('getQuestionAdvancedSettings');
+        Promise.all([
+        this.$store.dispatch('loadQuestion'),
+        this.$store.dispatch('getQuestionTypes')
+        ]).then(()=>{
+            this.loading = false;
+        })
     },
     
     mounted() {
@@ -145,22 +154,30 @@ export default {
         });
 
         this.toggleLoading(false);
-        $('#questionbarid').css('display', '');
-        $('#questiongroupbarid').css('display','none');
+        $('#questionbarid').css({'display': ''});
+        $('#questiongroupbarid').css({'display':'none'});
     }
 }
 </script>
 
 <template>
     <div class="container-center scoped-new-questioneditor">
-        <button 
-            v-if="!isCreateQuestion" 
-            @click.prevent.stop="triggerEditQuestion" 
-            class="pull-right clear btn "
-            :class="editQuestion ? 'btn-primary' : 'btn-default'"
-        >
-            {{editQuestion ? 'Question overview' : 'Question editor'}}
-        </button>
+        <div class="btn-group pull-right clear" v-if="!!$store.state.currentQuestionPermissions.update">
+            <button 
+                @click.prevent.stop="triggerEditQuestion" 
+                :class="editQuestion ? 'btn-default' : 'btn-primary'"
+                class="btn "
+            >
+                {{'Question overview'| translate}}
+            </button>
+            <button 
+                @click.prevent.stop="triggerEditQuestion" 
+                :class="editQuestion ? 'btn-primary' : 'btn-default'"
+                class="btn "
+            >
+                {{'Question editor'| translate}}
+            </button>
+        </div>
         <div class="pagetitle h3 scoped-unset-pointer-events">
             <template v-if="isCreateQuestion">
                     {{'Create new Question'|translate}}
@@ -169,7 +186,7 @@ export default {
                     {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
             </template>
         </div>
-        <template v-if="$store.getters.fullyLoaded">
+        <template v-if="!loading">
             <div class="row">
                 <div class="form-group col-sm-6">
                     <label for="questionCode">{{'Code' | translate }}</label>
@@ -194,12 +211,17 @@ export default {
                 />
             </div>
             <div class="row">
-                <maineditor v-if="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
-                <questionoverview v-else :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                <transition name="slide-fade">
+                    <maineditor v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
+                </transition>
+                <transition name="slide-fade">
+                    <questionoverview v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                </transition>
                 <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
                 <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
             </div>
         </template>
+        <template v-else><loader id="mainViewLoader" /></template>
         <modals-container @modalEvent="setModalEvent"/>
     </div>
 </template>
@@ -225,25 +247,4 @@ export default {
      border-radius: 4px;
  }
 
-.slide-fade-enter-active {
-  transition: all .3s ease;
-}
-.slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-fade-enter
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(-10px);
-  opacity: 0;
-}
-.slide-fade-enter-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(0px);
-  opacity: 1;
-}
-.slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
 </style>

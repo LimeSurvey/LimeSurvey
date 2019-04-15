@@ -56,6 +56,12 @@ export default {
                 this.$store.commit('updateCurrentQuestionI10NValue', {value:'help', newValue})
             } 
         },
+        currentQuestionScript: {
+            get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].script },
+            set(newValue) {
+                this.$store.commit('updateCurrentQuestionI10NValue', {value:'script', newValue})
+            } 
+        },
         currentQuestionI10N() {
             return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage];
         },
@@ -150,6 +156,11 @@ export default {
                 <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
                     <label class="col-sm-12">{{ 'Help' | translate }}:</label>
                     <ckeditor :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></ckeditor>
+                </div>
+                <div class="col-12 ls-space margin all-5 scope-contains-ckeditor " v-if="!!$store.state.currentQuestionPermissions.script">
+                    <label class="col-sm-12">{{ 'Script' | translate }}:</label>
+                    <textarea rows="2" class="form-control" v-model="currentQuestionScript"></textarea>
+                    <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
                 </div>
             </div>
         </div>
