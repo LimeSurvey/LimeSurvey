@@ -339,6 +339,9 @@ class UserAction extends Survey_Common_Action
                 $aData['fullpagebar']['closebutton']['url_keep'] = true;
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin/user/sa/index"));
 
+                $psettings = isset(Yii::app()->params['passwordValidator']) ? Yii::app()->params['passwordValidator'] : array();
+                $aData['passwordHelpText'] = $oUser->getPasswordHelpText($psettings);
+
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
             } else {
@@ -383,6 +386,16 @@ class UserAction extends Survey_Common_Action
             } else {
                 $oUser->email = $email;
                 $oUser->full_name = $full_name;
+
+                if(!empty($sPassword)){
+                  $settings = isset(Yii::app()->params['passwordValidator']) ? Yii::app()->params['passwordValidator'] : array();
+                  $error = $oUser->checkPasswordStrength($sPassword,$settings);
+                  if($error){
+                    Yii::app()->setFlashMessage(gT($error), 'error');
+                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$user_uid));
+                  }
+                }
+
                 if (!empty($sPassword)) {
                     $oUser->setPassword($sPassword);
                 }
@@ -616,7 +629,14 @@ class UserAction extends Survey_Common_Action
                 $newPassword = Yii::app()->request->getPost('password');
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
 
-                if (!$oUserModel->checkPassword($oldPassword)) {
+                if(!empty($newPassword)){
+                  $settings = isset(Yii::app()->params['passwordValidator']) ? Yii::app()->params['passwordValidator'] : array();
+                  $error = $oUserModel->checkPasswordStrength($newPassword,$settings);
+                  if($error){
+                    Yii::app()->setFlashMessage(gT($error), 'error');
+                    $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                  }
+                } elseif (!$oUserModel->checkPassword($oldPassword)) {
                     // Always check password
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
@@ -681,6 +701,9 @@ class UserAction extends Survey_Common_Action
         $aData['sUsername'] = $oUser->users_name;
         $aData['sFullname'] = $oUser->full_name;
         $aData['sEmailAdress'] = $oUser->email;
+
+        $psettings = isset(Yii::app()->params['passwordValidator']) ? Yii::app()->params['passwordValidator'] : array();
+        $aData['passwordHelpText'] = $oUser->getPasswordHelpText($psettings);
 
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
