@@ -34,6 +34,7 @@
  * @property User $parentUser Parent user
  * @property string $parentUserName  Parent user's name
  */
+
 class User extends LSActiveRecord
 {
     /**
@@ -273,6 +274,7 @@ class User extends LSActiveRecord
         if (empty($this->password)) {
             return false;
         }
+
         // Password is OK
         if (password_verify($sPassword, $this->password)) {
             return true;
@@ -283,6 +285,81 @@ class User extends LSActiveRecord
             return true;
         }
         return false;
+    }
+
+    public function checkPasswordStrength($password,$settings = array()){
+        $uppercase = preg_match_all('@[A-Z]@', $password);
+        $lowercase = preg_match_all('@[a-z]@', $password);
+        $number    = preg_match_all('@[0-9]@', $password);
+        $specialChars = preg_match_all('@[^\w]@', $password);
+        $length = strlen($password);
+
+        $error = "";
+        if(isset($settings['min'])){
+          $min = $settings['min'];
+          if($length < $min) $error = "Password must be at least ".$min." long.";
+        }
+        if(isset($settings['max'])){
+          $max = $settings['max'];
+          if($length > $max) $error = "Password must be at most ".$max." long.";
+        }
+        if(isset($settings['upper'])){
+          $upper = $settings['upper'];
+          if($uppercase < $upper) $error = "Password must include at least ".$upper." uppercase letter".($upper != 1 ? 's' : '').".";
+        }
+        if(isset($settings['lower'])){
+          $lower = $settings['lower'];
+          if($lowercase < $lower) $error = "Password must include at least ".$lower." lowercase letter".($lower != 1 ? 's' : '').".";
+        }
+        if(isset($settings['numeric'])){
+          $numeric = $settings['numeric'];
+          if($number < $numeric) $error = "Password must include at least ".$numeric." number".($numeric != 1 ? 's' : '').".";
+        }
+        if(isset($settings['symbol'])){
+          $symbol = $settings['symbol'];
+          if($specialChars < $symbol) $error = "Password must include at least ".$symbol." special character".($symbol != 1 ? 's' : '').".";
+        }
+
+
+        return($error);
+    }
+
+    public function getPasswordHelpText($settings){
+        $txt = '';
+        if(isset($settings['min'])) $txt = 'Password should be at least '.$settings['min'].' characters in length';
+        if(isset($settings['max'])) $txt = 'Password should be at most '.$settings['max'].' characters in length';
+        if(isset($settings['min']) && isset($settings['max'])){
+          if($settings['min'] == $settings['max']){
+            $txt = 'Password should be exactly '.$settings['min'].' characters in length';
+          } else
+          if($settings['min'] < $settings['max']){
+            $txt = 'Password must be between '.$settings['min'].' - '.$settings['max'].' characters in length';
+          }
+        }
+
+        $txt1 = array();
+        if(isset($settings['upper'])) $txt1[] = $settings['upper'].' upper case letter'.($settings['upper'] != 1 ? 's' : '');
+        if(isset($settings['numeric'])) $txt1[] = $settings['numeric'].' number'.($settings['numeric'] != 1 ? 's' : '');
+        if(isset($settings['symbol'])) $txt1[] = $settings['symbol'].' special character'.($settings['symbol'] != 1 ? 's' : '');
+        if(!empty($txt1)){
+          $txt2 = '';
+          foreach($txt1 as $i => $tmp){
+            if($i == (count($txt1)-1)){
+              if($txt2) $txt2 .= " and ";
+            } else {
+              if($txt2) $txt2 .= ", ";
+            }
+            $txt2 .= $tmp;
+          }
+        }
+
+        if($txt && $txt2){
+          $txt = $txt.' and must include at least '.$txt2.'.';
+        } else
+        if($txt2){
+          $txt = 'Password must include at least '.$txt2.'.';
+        }
+        return($txt);
     }
 
     /**
