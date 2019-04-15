@@ -9,7 +9,7 @@
  * @property string $title
  * @property string $description
  * @property integer $sortorder
- * @property integer $owner_uid
+ * @property integer $owner_id
  * @property integer $parent_id
  * @property string $created
  * @property string $modified
@@ -36,14 +36,14 @@ class SurveysGroups extends LSActiveRecord
         // will receive user inputs.
         return array(
             array('name, sortorder, created_by, title', 'required'),
-            array('sortorder, owner_uid, parent_id, created_by', 'numerical', 'integerOnly'=>true),
+            array('sortorder, owner_id, parent_id, created_by', 'numerical', 'integerOnly'=>true),
             array('name', 'length', 'max'=>45),
             array('name', 'match', 'pattern'=> '/^[A-Za-z0-9_\.]+$/u','message'=> gT('Group name can contain only alphanumeric character, underscore or dot.')),
             array('title', 'length', 'max'=>100),
             array('description, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('gsid, name, title, description, owner_uid, parent_id, created, modified, created_by', 'safe', 'on'=>'search'),
+            array('gsid, name, title, description, owner_id, parent_id, created, modified, created_by', 'safe', 'on'=>'search'),
         );
     }
 
@@ -56,7 +56,7 @@ class SurveysGroups extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'parentgroup' => array(self::BELONGS_TO, 'SurveysGroups', array('parent_id' => 'gsid'), 'together' => true),
-            'owner'       => array(self::BELONGS_TO, 'User', 'owner_uid', 'together' => true),
+            'owner'       => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
         );
     }
 
@@ -71,7 +71,7 @@ class SurveysGroups extends LSActiveRecord
             'title'       => gT('Title'),
             'description' => gT('Description'),
             'sortorder'   => gT('Sort order'),
-            'owner_uid'   => gT('Owner UID'),
+            'owner_id'   => gT('Owner UID'),
             'parent_id'   => gT('Parent group'),
             'created'     => gT('Created on'),
             'modified'    => gT('Modified on'),
@@ -183,7 +183,7 @@ class SurveysGroups extends LSActiveRecord
         $criteria->compare('title', $this->title, true);
         $criteria->compare('description', $this->description, true);
         $criteria->compare('sortorder', $this->sortorder);
-        $criteria->compare('owner_uid', $this->owner_uid);
+        $criteria->compare('owner_id', $this->owner_id);
         $criteria->compare('parent_id', $this->parent_id);
         $criteria->compare('created', $this->created, true);
         $criteria->compare('modified', $this->modified, true);
@@ -200,7 +200,7 @@ class SurveysGroups extends LSActiveRecord
                         LEFT JOIN {{permissions}} AS permissions ON (permissions.entity_id = surveys.sid AND permissions.permission='survey' AND permissions.entity='survey' AND permissions.uid='".Yii::app()->user->id."') ",
             ));
 
-            $criteriaPerm->compare('t.owner_uid', Yii::app()->user->id, false);
+            $criteriaPerm->compare('t.owner_id', Yii::app()->user->id, false);
             $criteriaPerm->compare('surveys.owner_id', Yii::app()->user->id, false, 'OR');
             $criteriaPerm->compare('permissions.read_p', '1', false, 'OR');
             $criteriaPerm->compare('t.gsid', '1', false, 'OR');  // "default" survey group
@@ -286,7 +286,7 @@ class SurveysGroups extends LSActiveRecord
         $criteria = new CDbCriteria;
 
         if (!Permission::model()->hasGlobalPermission("surveys", 'read')) {
-            $criteria->compare('t.owner_uid', Yii::app()->user->id, false);
+            $criteria->compare('t.owner_id', Yii::app()->user->id, false);
             $criteria->compare('t.gsid', '1', false, 'OR');  // "default" survey group
         }
 
