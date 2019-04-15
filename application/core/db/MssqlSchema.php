@@ -23,8 +23,6 @@ class MssqlSchema extends CMssqlSchema
         $this->columnTypes['autoincrement'] = 'integer NOT NULL IDENTITY (1,1)';
         
         $this->columnTypes['longbinary'] = 'varbinary(max)';
-
-        $this->columnTypes['binary'] = 'varbinary(max)';
     }
 
     
