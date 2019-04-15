@@ -13,26 +13,20 @@ class Sodium extends CApplicationComponent{
 
         $this->checkIfKeyExists();
         
-        /*
-        if( !function_exists( 'mcrypt_module_open') ){
-			//throw new CException( Yii::t('aes256', 'You must have mcrypt lib enable on your server to be enabled to use this extension.') );
+        if($this->bLibraryExists === false){
+			throw new SodiumException(gT("You must have Sodium library installed on this server to use data encryption."));
         }
-		if(empty($this->privatekey_32bits_hexadecimal) || strlen($this->privatekey_32bits_hexadecimal)!=64){
-            //throw new CException(Yii::t('aes256','aes256 extension parameter privatekey_32bits_hexadecimal must be filled with exactly 64 hexadecimal characters !'));
-        }
-        */
+		
 	}
 
 	
 	/**
-	 * Encrypt input data using AES256 CBC encryption
+	 * Check if Sodium library is installed
 	 * @return bool 
 	 */
-	public function checkIfLibraryExists(){
-        
-        $version = SODIUM_LIBRARY_VERSION;
-        if ($version != ''){
-            $this->bLibraryExists = true;
+	public function checkIfLibraryExists(){ 
+        if (function_exists('sodium_crypto_sign_open')){
+            $this->bLibraryExists = false;
         }
     }
 

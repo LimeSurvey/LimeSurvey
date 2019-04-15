@@ -882,8 +882,8 @@ class InstallerController extends CController
         // imap php library check
         $this->checkPHPFunction('imap_open', $aData['bIMAPPresent']);
 
-        // imap php Sodium check
-        $this->checkPHPFunction('sodium_bin2hex', $aData['sodiumPresent']);
+        // Sodium php check
+        $this->checkPHPFunction('sodium_crypto_sign_open', $aData['sodiumPresent']);
 
         // Silently check some default PHP extensions
         $this->checkDefaultExtensions();
