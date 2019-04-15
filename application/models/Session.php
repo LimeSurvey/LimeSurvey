@@ -17,13 +17,22 @@
 
 /**
  * Class Session
- *
+ * Extend CActiveRecord and not LSActiveRecord to disable plugin event (session can be used a lot)
+ * 
  * @property string $id Primary Key
  * @property integer $expire
  * @property string $data
  */
 class Session extends CActiveRecord
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->attachEventHandler("onBeforeSave", array($this, 'fixDataType'));
+    }
     /**
      * @inheritdoc
      * @return Session
@@ -71,4 +80,28 @@ class Session extends CActiveRecord
         return $string;
     }
 
+    /**
+     * Update data before saving
+     * @see \CDbHttpSession
+     * @return void
+     */
+    public function fixDataType()
+    {
+        $db = $this->getDbConnection();
+        $dbType = $db->getDriverName();
+        switch($dbType) {
+            case 'sqlsrv':
+            case 'mssql':
+            case 'dblib':
+                $this->data=new CDbExpression('CONVERT(VARBINARY(MAX), '.$db->quoteValue($this->data).')');
+                break;
+            case 'pgsql':
+                $this->data=new CDbExpression($db->quoteValueWithType($this->data, PDO::PARAM_LOB)."::bytea");
+                break;
+            case 'mysql':
+                // Don't seems to need something
+            default:
+                // No update
+        }
+    }
 }
