@@ -48,14 +48,12 @@ class remotecontrol_handle
         if ($loginResult === true) {
             $this->_jumpStartSession($username);
             $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
-            $sDatabasetype = Yii::app()->db->getDriverName();
             $session = new Session;
             $session->id = $sSessionKey;
             $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime',ini_get('session.gc_maxlifetime'));
             $session->data = $username;
             $session->save();
             return $sSessionKey;
-
         }
         if (is_string($loginResult)) {
             return array('status' => $loginResult);
