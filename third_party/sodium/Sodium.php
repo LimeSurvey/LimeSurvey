@@ -1,7 +1,7 @@
 <?php
 class Sodium extends CApplicationComponent{
 
-    protected $bLibraryExists = false;
+    public $bLibraryExists = false;
     protected $sEncryptionKeypair = null;
     protected $sEncryptionPublicKey = null;
     protected $sEncryptionSecretKey = null;
@@ -11,14 +11,14 @@ class Sodium extends CApplicationComponent{
 
         $this->checkIfLibraryExists();
 
-        $this->checkIfKeyExists();
-        
         if($this->bLibraryExists === false){
-			throw new SodiumException(gT("You must have Sodium library installed on this server to use data encryption."));
+            /*throw new SodiumException(sprintf(gT("This operation uses data encryption functions which require Sodium library to be installed, but library was not found. If you don't want to use data encryption, you have to disable encryption in attribute settings. Here is a link to the manual page: 
+            %s", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));*/
+        } else {
+            $this->checkIfKeyExists();
         }
 		
 	}
-
 	
 	/**
 	 * Check if Sodium library is installed
@@ -26,7 +26,7 @@ class Sodium extends CApplicationComponent{
 	 */
 	public function checkIfLibraryExists(){ 
         if (function_exists('sodium_crypto_sign_open')){
-            $this->bLibraryExists = false;
+            $this->bLibraryExists = true;
         }
     }
 
@@ -83,10 +83,16 @@ class Sodium extends CApplicationComponent{
 	 * @return string Return encrypted AES256 CBC value
 	 */
 	public function encrypt($sDataToEncrypt){
-        if (!empty($sDataToEncrypt)){
-            $sEncrypted = base64_encode(ParagonIE_Sodium_Compat::crypto_sign((string) $sDataToEncrypt, $this->sEncryptionSecretKey));
+        if ($this->bLibraryExists === true){
+            if (!empty($sDataToEncrypt)){
+                $sEncrypted = base64_encode(ParagonIE_Sodium_Compat::crypto_sign((string) $sDataToEncrypt, $this->sEncryptionSecretKey));
+                return $sEncrypted;
+            } else {
+                return '';
+            }
+        } else {
+            return $sDataToEncrypt;
         }
-        return $sEncrypted;
 	}
  
 	/**
@@ -97,18 +103,20 @@ class Sodium extends CApplicationComponent{
 	 * @return string Return decrypted value (string or unsezialized object) if suceeded. Return FALSE if an error occurs (bad password/salt given) or inpyt encryptedString
 	 */
 	public function decrypt($sEncryptedString, $bReturnFalseIfError=false){ 	
-        if (!empty($sEncryptedString)  && $sEncryptedString != 'null'){
-
-            try {
+        if ($this->bLibraryExists === true){
+            if (!empty($sEncryptedString) && $sEncryptedString != 'null'){
                 $plaintext = ParagonIE_Sodium_Compat::crypto_sign_open(base64_decode($sEncryptedString), $this->sEncryptionPublicKey);
-            } catch (SodiumException $e) {
-                throw new SodiumException(gT("Bad ciphertext"));
+                if ($plaintext === false){
+                    throw new SodiumException(sprintf(gT("Wrong decryption key! Decryption key has changed since this data were last saved, so data can't be decrypted. Here is a link to the manual page: 
+                    %s", 'unescaped'), 'https://manual.limesurvey.org/Data_encryption#Errors'));
+                } else {
+                    return $plaintext;
+                }
             }
-
-            return $plaintext;
+        } else {
+            return $sEncryptedString;
         }
 
-        return '';
 	}	
  
 	/**

@@ -2672,6 +2672,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 409) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            // load sodium library
+            $sodium = Yii::app()->sodium;
+            // check if sodium library exists
+            if ($sodium->bLibraryExists === true){
+                $sEncrypted = 'Y';
+            } else {
+                $sEncrypted = 'N';
+            }
+
+            $oDB->createCommand()->update('{{participant_attribute_names}}',array('encrypted'=>$sEncrypted),"core_attribute='Y'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>409),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

@@ -1119,6 +1119,9 @@ class tokens extends Survey_Common_Action
         foreach (ParticipantAttributeName::model()->getCPDBAttributes() as $aCPDBAttribute) {
             $aData['aCPDBAttributes'][$aCPDBAttribute['attribute_id']] = $aCPDBAttribute['attribute_name'];
         }
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $aData['bEncrypted'] = $sodium->bLibraryExists;
         $this->_renderWrappedTemplate('token', array('managetokenattributes'), $aData);
     }
 

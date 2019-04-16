@@ -196,7 +196,10 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getEncryptedSwitch()
     {
-        $inputHtml = "<input type='checkbox' data-size='small' data-encrypted='".$this->encrypted."' data-on-color='primary' data-off-color='warning' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeEncrypted' "            . ($this->encrypted == "Y" ? "checked" : "")
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $bEncrypted = $sodium->bLibraryExists;
+        $inputHtml = "<input type='checkbox' data-size='small' data-encrypted='".$this->encrypted."' data-on-color='primary' data-off-color='warning' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeEncrypted' " . ($bEncrypted === true ? " " : "disabled='' ") . ($this->encrypted == "Y" ? "checked" : "")
             . "/>";
         return  $inputHtml;
     }
@@ -218,6 +221,9 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getColumns()
     {
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $bEncrypted = $sodium->bLibraryExists;
         $cols = array(
             array(
                 "name" => 'massiveActionCheckbox',
@@ -251,7 +257,8 @@ class ParticipantAttributeName extends LSActiveRecord
                 "name" => 'encrypted',
                 "value" => '$data->getEncryptedSwitch()',
                 "type" => "raw",
-                "filter" => array("Y" => gT("Yes"), "N" => gT("No"))
+                "filter" => array("Y" => gT("Yes"), "N" => gT("No")),
+                "header" => '<span ' . ($bEncrypted === true ? '' :  'title="' . gT("Buttons are disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted"). '</span>',
             ),
             array(
                 "name" => 'core_attribute',

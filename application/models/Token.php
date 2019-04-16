@@ -417,12 +417,20 @@ abstract class Token extends Dynamic
     }
 
     public static function getDefaultEncryptionOptions(){
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        // check if sodium library exists
+        if ($sodium->bLibraryExists === true){
+            $sEncrypted = 'Y';
+        } else {
+            $sEncrypted = 'N';
+        }
         return array(
                 'enabled' => 'N',
                 'columns' => array(
-                    'firstname' =>  'Y',
-                    'lastname' =>  'Y',
-                    'email' =>  'Y'
+                    'firstname' =>  $sEncrypted,
+                    'lastname' =>  $sEncrypted,
+                    'email' =>  $sEncrypted
                 )
         );
     }

@@ -37,7 +37,7 @@
                                         <th><?php eT("Attribute field"); ?></th>
                                         <th><?php eT("Field description"); ?></th>
                                         <th><?php eT("Mandatory?"); ?></th>
-                                        <th><?php eT("Encrypted?"); ?></th>
+                                        <th title="<?php !$bEncrypted ? eT("Buttons are disabled because Sodium library isn't installed") : ''; ?>"><?php eT("Encrypted?"); ?></th>
                                         <th><?php eT("Show during registration?") ?></th>
                                         <th><?php eT("Field caption"); ?></th>
                                         <th><?php eT("CPDB mapping"); ?></th>
@@ -85,6 +85,9 @@
                                                         'value' => $tokenvalues['encrypted']=='Y'?'1':'0',
                                                         'onLabel'=>gT('On'),
                                                         'offLabel' => gT('Off'),
+                                                        'htmlOptions'=>array(
+                                                            'disabled' => !$bEncrypted,
+                                                        )
                                                     ));
                                                 ?>
                                             </td>
