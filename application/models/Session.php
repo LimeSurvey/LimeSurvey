@@ -26,12 +26,16 @@
 class Session extends CActiveRecord
 {
 
+    /** @var mixed $dataBackup to reset $data after save */
+    private $dataBackup = null;
+
     /**
      * @inheritdoc
      */
     public function init()
     {
         $this->attachEventHandler("onBeforeSave", array($this, 'fixDataType'));
+        $this->attachEventHandler("onAfterSave", array($this, 'resetDataType'));
     }
     /**
      * @inheritdoc
@@ -74,6 +78,7 @@ class Session extends CActiveRecord
      */
     public function fixDataType()
     {
+        $this->dataBackup = $this->data;
         $db = $this->getDbConnection();
         $dbType = $db->getDriverName();
         switch($dbType) {
@@ -90,5 +95,15 @@ class Session extends CActiveRecord
             default:
                 // No update
         }
+    }
+
+    /**
+     * Reset data after saving
+     * @return void
+     */
+    public function resetDataType()
+    {
+        $this->data = $this->dataBackup;
+        $this->dataBackup = null;
     }
 }
