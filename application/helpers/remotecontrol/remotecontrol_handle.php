@@ -51,7 +51,7 @@ class remotecontrol_handle
             $sDatabasetype = Yii::app()->db->getDriverName();
             $session = new Session;
             $session->id = $sSessionKey;
-            $session->expire = time() + (int) $this->getConfig('iSessionExpirationTime',ini_get('session.gc_maxlifetime'));
+            $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime',ini_get('session.gc_maxlifetime'));
             $session->data = $username;
             $session->save();
             return $sSessionKey;
