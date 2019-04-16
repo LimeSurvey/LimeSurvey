@@ -570,8 +570,36 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                 $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
             }
         }
+
+        $aDatas = $this->fixDataCoherence($aDatas);
+
         return $aDatas;
     }
+
+
+    /**
+     * It can happen that user set incoherent values for options (like background is on, but no image file is selected)
+     * With some server configuration, it can lead to critical errors : empty values in image src or url() can block submition
+     * This function will check thoses cases. It can be used in the future for further checks
+     * @param array $aDatas
+     * @return array
+     *
+     */
+    private function fixDataCoherence($aDatas)
+    {
+        // Clean option with files
+        $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
+
+        foreach ($aFilesOptions as $sOption => $sFileOption) {
+            if ( array_key_exists ( $sFileOption ,$aDatas["aSurveyInfo"]["options"]) )
+                if ( empty ($aDatas["aSurveyInfo"]["options"][$sFileOption])  ){
+                    $aDatas["aSurveyInfo"]["options"][$sOption] = "false";
+                }
+        }
+
+        return $aDatas;
+    }
+
 
     /**
      * Adds custom extensions.

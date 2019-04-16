@@ -2274,7 +2274,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 354) {
             $oTransaction = $oDB->beginTransaction();
             $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
-            
+
             if (!isset($surveymenuTable->columns['showincollapse'])) {
                 $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
             }
@@ -2294,7 +2294,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $aIdMap[$aSurveymenu['name']] = $aSurveymenu['id'];
             }
             switchMSSQLIdentityInsert('surveymenu', false);
-            
+
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
                 $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
@@ -2323,7 +2323,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ->where('name=:name', [':name' => $aSurveymenu['name']])
                 ->queryScalar();
             }
-            
+
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
                 $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
@@ -2371,6 +2371,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     );
             }
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>356], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 357) {
+            $oTransaction = $oDB->beginTransaction();
+            //// IKI
+            $oDB->createCommand()->renameColumn('{{surveys_groups}}','owner_uid','owner_id');
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>357], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -2663,7 +2671,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>408),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-      
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
