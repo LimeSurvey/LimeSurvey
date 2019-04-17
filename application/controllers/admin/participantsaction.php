@@ -1440,6 +1440,10 @@ $url .= "_view"; });
         // Default visibility to false
         $model->visible = $model->visible ?: 'FALSE';
 
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $aData['bEncrypted'] = $sodium->bLibraryExists;
+
         $html = $this->getController()->renderPartial(
             '/admin/participants/modal_subviews/_editAttribute',
             $aData,

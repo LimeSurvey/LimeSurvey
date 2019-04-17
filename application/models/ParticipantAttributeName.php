@@ -258,7 +258,7 @@ class ParticipantAttributeName extends LSActiveRecord
                 "value" => '$data->getEncryptedSwitch()',
                 "type" => "raw",
                 "filter" => array("Y" => gT("Yes"), "N" => gT("No")),
-                "header" => '<span ' . ($bEncrypted === true ? '' :  'title="' . gT("Buttons are disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted"). '</span>',
+                "header" => '<span ' . ($bEncrypted === true ? '' :  'title="' . gT("Encryption is disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted"). '</span>',
             ),
             array(
                 "name" => 'core_attribute',

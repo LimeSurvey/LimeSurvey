@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class=" form-group" id="">
-        <label class=" control-label selector_languageAddLabel" for="dummyNameForInputLabel"><?php eT('Encrypted'); ?></label>
+        <label class=" control-label selector_languageAddLabel" for="dummyNameForInputLabel" title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT('Encrypted'); ?></label>
         <div>
             <?php
             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -51,7 +51,11 @@
                 'id'=>"encrypted",
                 'value' => $model['encrypted']=='Y'?'1':'0',
                 'onLabel'=>gT('On'),
-                'offLabel' => gT('Off')));
+                'offLabel' => gT('Off'),
+                'htmlOptions'=>array(
+                    'disabled'=>!$bEncrypted,
+                )
+            ));
             ?>
         </div>
     </div>
