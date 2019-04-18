@@ -143,19 +143,31 @@ export default {
         });
     },
     saveQuestionData: (context) => {
-        
-        let transferObject = merge({
-            'questionData': {
-            question: context.state.currentQuestion,
-            scaledSubquestions: context.state.currentQuestionSubquestions,
-            scaledAnswerOptions: context.state.currentQuestionAnswerOptions,
-            questionI10N: context.state.currentQuestionI10N,
-            questionAttributes: context.state.currentQuestionAttributes,
-            generalSettings: context.state.currentQuestionGeneralSettings,
-            advancedSettings: context.state.currentQuestionAdvancedSettings,
-        }}, window.LS.data.csrfTokenData);
-
-        LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
-        return ajax.methods.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', transferObject)
+        if(!context.state.inTransfer) {
+            context.commit('setInTransfer', true);
+            let transferObject = merge({
+                'questionData': {
+                question: context.state.currentQuestion,
+                scaledSubquestions: context.state.currentQuestionSubquestions,
+                scaledAnswerOptions: context.state.currentQuestionAnswerOptions,
+                questionI10N: context.state.currentQuestionI10N,
+                questionAttributes: context.state.currentQuestionAttributes,
+                generalSettings: context.state.currentQuestionGeneralSettings,
+                advancedSettings: context.state.currentQuestionAdvancedSettings,
+            }}, window.LS.data.csrfTokenData);
+    
+            LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
+            return new Promise((resolve, reject) => {
+                ajax.methods.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', transferObject)
+                    .then(
+                        (result) => {
+                            context.commit('setInTransfer', false);
+                            resolve(result);
+                        },
+                        reject
+                    )
+            });
+        }
+        return false;
     }
 };

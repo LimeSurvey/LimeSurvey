@@ -84,13 +84,6 @@ export default {
         eventSet() {
             this.event = null;
         },
-        toggleOverview() {
-            if(this.$store.state.currentQuestionPermissions.update == true) {
-                this.editQuestion = !this.editQuestion;
-                return;
-            }
-            this.editQuestion=false;
-        },
         submitCurrentState(redirect = false) {
             this.toggleLoading();
             this.$store.dispatch('saveQuestionData').then(
@@ -154,8 +147,13 @@ export default {
         });
 
         this.toggleLoading(false);
-        $('#questionbarid').css({'display': ''});
-        $('#questiongroupbarid').css({'display':'none'});
+        if(!this.isCreateQuestion) {
+            $('#questionbarid').css({'display': ''});
+            $('#questiongroupbarid').css({'display':'none'});
+        } else {
+            $('#questionbarid').css({'display': 'none'});
+            $('#questiongroupbarid').css({'display':''});
+        }
     }
 }
 </script>

@@ -956,6 +956,7 @@ function do_list_radio($ia)
             'answer'        => $ansrow->answerL10ns[$sSurveyLang]->answer,
             'checkedState'  => $checkedState,
             'myfname'       => $myfname,
+            'i'             => $i
             ), true);
 
         ////

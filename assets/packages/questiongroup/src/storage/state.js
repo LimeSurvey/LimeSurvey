@@ -7,4 +7,5 @@ export default {
     survey: {},
     debugMode: false,
     activeLanguage: '',
+    inTransfer: false
 };

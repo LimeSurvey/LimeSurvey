@@ -67,7 +67,7 @@ export default {
             return value;
         },
         toggleEditMode(){
-            this.$emit('triggerEvent', { target: 'lsnextquestioneditor', method: 'toggleOverview', content: {} });
+            this.$emit('triggerEvent', { target: 'lsnextquestioneditor', method: 'triggerEditQuestion', content: {} });
         }
     },
     mounted(){

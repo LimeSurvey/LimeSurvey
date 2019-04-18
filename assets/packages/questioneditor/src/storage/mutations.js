@@ -167,5 +167,8 @@ export default {
     },
     toggleDebugMode: (state) => {
         state.debugMode = !state.debugMode;
+    },
+    setInTransfer: (state, transferState) => {
+        state.inTransfer = transferState;
     }
 };

@@ -51,11 +51,15 @@
                     <?php endif; ?>
 
                     <?php //If we are in a questiongroup view render the breadcrumb with question group ?>
-                    <?php if (isset($oQuestionGroup)): ?>
+                    <?php if (isset($oQuestionGroup) ): ?>
                         <?php //If the questiongroup view is active right now, don't link it?>
                         <?php if(!$sSubaction && !isset($oQuestion)): ?>
                             <li class="marks_as_active">
-                                <?php echo viewHelper::flatEllipsizeText($oQuestionGroup->questionGroupL10ns[$oSurvey->language]->group_name, 1);?>
+                                <?= (
+                                    $oQuestionGroup->isNewRecord 
+                                    ? gT('New question group') 
+                                    : viewHelper::flatEllipsizeText($oQuestionGroup->questionGroupL10ns[$oSurvey->language]->group_name, 1)
+                                ); ?>
                             </li>                                                                     
                         <?php else: ?>
                             <li>

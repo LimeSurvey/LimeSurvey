@@ -33,11 +33,11 @@ export default {
         triggerEditQuestionGroup(){
             this.toggleLoading(true);
             if(this.editQuestionGroup) {
-                $('#questionbarid').slideDown()
-                $('#questiongroupbarid').slideUp();
+                $('#questiongroupbar--savebuttons').fadeOut();
+                $('#questiongroupbar--questiongroupbuttons').fadeIn();
             } else {
-                $('#questionbarid').slideUp();
-                $('#questiongroupbarid').slideDown()
+                $('#questiongroupbar--savebuttons').fadeIn();
+                $('#questiongroupbar--questiongroupbuttons').fadeOut();
             }
             this.editQuestionGroup = !this.editQuestionGroup;
         },
@@ -69,9 +69,6 @@ export default {
         },
         eventSet() {
             this.event = null;
-        },
-        toggleOverview() {
-            this.editQuestionGroup = !this.editQuestionGroup;
         },
         submitCurrentState(redirect = false) {
             this.toggleLoading();
@@ -121,8 +118,16 @@ export default {
         });
 
         this.toggleLoading(false);
-        $('#questionbarid').css({'display': ''});
-        $('#questiongroupbarid').css({'display':'none'});
+        $('#questiongroupbarid').css({'display':''});
+
+        if(!this.isCreateQuestionGroup) {
+            $('#questiongroupbar--savebuttons').css({'display':'none'});
+            $('#questiongroupbar--questiongroupbuttons').css({'display':''});
+        } else {
+            $('#questiongroupbar--savebuttons').css({'display':''});
+            $('#questiongroupbar--questiongroupbuttons').css({'display':'none'});
+
+        }
     }
 }
 </script>
@@ -155,8 +160,10 @@ export default {
                 />
             </div>
             <div class="row">
-                <question-group-overview v-show="(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-overview>
-                <question-group-editor v-show="!(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-editor>
+                <question-group-overview v-show="!(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-overview>
+                <question-group-editor v-show="(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-editor>
+            </div>
+            <div class="row">
                 <question-list :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestionGroup || isCreateQuestionGroup)"></question-list>
             </div>
         </template>

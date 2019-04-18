@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
+
 import App from './App.vue';
 
 import getAppState from "./storage/store";

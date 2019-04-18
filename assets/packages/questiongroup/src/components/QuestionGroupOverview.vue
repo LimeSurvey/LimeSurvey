@@ -20,7 +20,7 @@ export default {
     },
     computed: {
         cleanCurrentTitle(){
-            return this.stripScripts(this.$store.state.currentQuestionGroupI10N[this.$store.state.activeLanguage].title);
+            return this.stripScripts(this.$store.state.currentQuestionGroupI10N[this.$store.state.activeLanguage].group_name);
         },
         cleancurrentQuestionGroupDescription(){
             return this.stripScripts(this.$store.state.currentQuestionGroupI10N[this.$store.state.activeLanguage].description);
@@ -61,7 +61,7 @@ ${scriptContent}
             return value;
         },
         toggleEditMode(){
-            this.$emit('triggerEvent', { target: 'lsnextquestiongroupeditor', method: 'toggleOverview', content: {} });
+            this.$emit('triggerEvent', { target: 'lsnextquestiongroupeditor', method: 'triggerEditQuestionGroup', content: {} });
         }
     },
     mounted(){
@@ -71,7 +71,7 @@ ${scriptContent}
 </script>
 
 <template>
-    <div class="col-sm-8 col-xs-12">
+    <div class="col-sm-12 col-xs-12">
         <div class="panel panel-default" @dblclick="toggleEditMode">
             <div class="panel-heading">
             {{'Group overview'|translate}}
@@ -90,14 +90,14 @@ ${scriptContent}
                     </div>
                 </li>
                 <li class="list-group-item">
-                    <div class="ls-flex-row wrap col-6" v-show="!!currentQuestionGroupRandomgroup">
-                        <div class="col-12">{{'Script'|translate}}</div>
+                    <div class="ls-flex-row wrap" :class="(parsedRelevance!=1 && parsedRelevance!='') ? 'col-6' : 'col-12'" v-show="!!currentQuestionGroupRandomgroup">
+                        <div class="col-12">{{'Random Group'|translate}}</div>
                         <div class="col-12 scoped-small-border">
                             {{currentQuestionGroupRandomgroup}}
                         </div>
                     </div>
-                    <div class="ls-flex-row wrap col-6" v-show="parsedRelevance!=1">
-                        <div class="col-12">{{'Script'|translate}}</div>
+                    <div class="ls-flex-row wrap" :class="!!currentQuestionGroupRandomgroup ? 'col-6' : 'col-12'" v-show="(parsedRelevance!=1 && parsedRelevance!='')">
+                        <div class="col-12">{{'Relevance'|translate}}</div>
                         <div class="col-12 scoped-small-border"  v-html="parsedRelevance" />
                     </div>
                 </li>

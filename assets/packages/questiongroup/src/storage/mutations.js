@@ -1,5 +1,5 @@
 import Vue from "vue";
-import isEmpty from "lodash/isEmpty";
+import pickBy from 'lodash/pickBy';
 import keys from "lodash/keys";
 import merge from "lodash/merge";
 import indexOf from "lodash/indexOf";
@@ -13,14 +13,20 @@ export default {
         state.currentQuestionGroupI10N = newValue;
     },
     setQuestionList : (state, newValue) => {
-        state.questionList = newValue;
+        state.questionList = pickBy(newValue, (questionData,key) => {return key !== 'debug'});
     },
 
     //Update currently set values
     updateCurrentQuestionGroup(state, valueObject) {
         state.currentQuestionGroup = merge({}, state.currentQuestionGroup, valueObject);
     },
-
+    setCurrentQuestionGroupI10NForCurrentLanguage : (state, payload) => {
+        Vue.set(
+            state.currentQuestionGroupI10N[state.activeLanguage],
+            payload.setting,
+            payload.newValue
+        );
+    },
     //special and single settings
     setCurrentQuestionGroupSetting : (state, payload) => {
         //const newCurrentQuestionGeneralSettings = state.currentQuestionGeneralSettings;
@@ -62,5 +68,8 @@ export default {
     },
     toggleDebugMode: (state) => {
         state.debugMode = !state.debugMode;
+    },
+    setInTransfer: (state, transferState) => {
+        state.inTransfer = transferState;
     }
 };
