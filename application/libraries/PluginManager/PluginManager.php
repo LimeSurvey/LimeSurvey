@@ -87,7 +87,7 @@ class PluginManager extends \CApplicationComponent
     public function getInstalledPlugins()
     {
         $pluginModel = Plugin::model();
-        $records = $pluginModel->findAll();
+        $records = $pluginModel->findAll(['order'=>'loadorder ASC']);
 
         $plugins = array();
 
@@ -132,6 +132,7 @@ class PluginManager extends \CApplicationComponent
         }
 
         $newName = (string) $extensionConfig->xml->metadata->name;
+        $pluginOrder = (empty($extensionConfig->xml->order) || !is_int($extensionConfig->xml->order)) ? 0 : $extensionConfig->xml->order;
         $otherPlugin = Plugin::model()->findAllByAttributes(['name' => $newName]);
         if (!empty($otherPlugin)) {
             return [false, sprintf(gT('Plugin "%s" is already installed.'), $newName)];
@@ -141,6 +142,7 @@ class PluginManager extends \CApplicationComponent
         $plugin->name        = $newName;
         $plugin->version     = (string) $extensionConfig->xml->metadata->version;
         $plugin->active      = 0;
+        $plugin->loadorder   = $pluginOrder;
         $plugin->plugin_type = $pluginType;
         $plugin->save();
         return [true, null];
@@ -470,7 +472,11 @@ class PluginManager extends \CApplicationComponent
         $dbVersion = \SettingGlobal::model()->find("stg_name=:name", array(':name'=>'DBVersion')); // Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
         if ($dbVersion && $dbVersion->stg_value >= 165) {
             $pluginModel = Plugin::model();
-            $records = $pluginModel->findAllByAttributes(array('active'=>1));
+            if($dbVersion->stg_value >= 411) {
+                $records = $pluginModel->findAllByAttributes(array('active'=>1),['order'=>'loadorder ASC']);
+            } else {
+                $records = $pluginModel->findAllByAttributes(array('active'=>1));
+            }
 
             foreach ($records as $record) {
                 if (!isset($record->load_error) || $record->load_error == 0) {
