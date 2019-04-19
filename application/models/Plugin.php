@@ -20,6 +20,7 @@
  * @property string $name
  * @property integer $active
  * @property string $version
+ * @property integer $loadorder
  */
 class Plugin extends LSActiveRecord
 {
@@ -40,6 +41,13 @@ class Plugin extends LSActiveRecord
         return '{{plugins}}';
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->loadorder = 0;
+    }
     /**
      * Set this plugin as load error in database, and saves the error message.
      * @param array $error Array with 'message' and 'file' keys (as get from error_get_last).

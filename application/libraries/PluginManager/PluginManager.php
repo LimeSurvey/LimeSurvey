@@ -142,7 +142,9 @@ class PluginManager extends \CApplicationComponent
         $plugin->name        = $newName;
         $plugin->version     = (string) $extensionConfig->xml->metadata->version;
         $plugin->active      = 0;
-        $plugin->loadorder   = $pluginOrder;
+        if(!empty($extensionConfig->xml->order)) {
+            $plugin->loadorder   = (int) $extensionConfig->xml->order;
+        }
         $plugin->plugin_type = $pluginType;
         $plugin->save();
         return [true, null];
