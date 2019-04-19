@@ -132,7 +132,7 @@ class PluginManager extends \CApplicationComponent
         }
 
         $newName = (string) $extensionConfig->xml->metadata->name;
-        $pluginOrder = (empty($extensionConfig->xml->order) || !is_int($extensionConfig->xml->order)) ? 0 : $extensionConfig->xml->order;
+        $pluginOrder = empty($extensionConfig->xml->order) ? 0 : (int) $extensionConfig->xml->order;
         $otherPlugin = Plugin::model()->findAllByAttributes(['name' => $newName]);
         if (!empty($otherPlugin)) {
             return [false, sprintf(gT('Plugin "%s" is already installed.'), $newName)];

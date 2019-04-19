@@ -2699,7 +2699,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if($iOldDBVersion < 411) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->addColumn('{{plugins}}','loadorder',"int default 0");
+            $oDB->createCommand()->addColumn('{{plugins}}','loadorder',"int NOT NULL default 0");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>411),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
