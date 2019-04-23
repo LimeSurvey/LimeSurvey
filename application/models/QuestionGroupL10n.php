@@ -17,9 +17,9 @@
 /**
  * Class SurveyLanguageSetting
  *
- * @property string $language QuestionGroup language code. Note: There is a unique key on qid & language columns combined
- * @property string $group_name QuestionGroup dieplay text. The actual question.
- * @property string $description QuestionGroup help-text for display
+ * @property string $language Question language code. Note: There is a unique key on qid & language columns combined
+ * @property string $question Question dieplay text. The actual question.
+ * @property string $help Question help-text for display
  */
 class QuestionGroupL10n extends LSActiveRecord
 {

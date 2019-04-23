@@ -5,7 +5,7 @@
 
 <div class="col-lg-12 list-surveys">
 
-    <h3><?php eT('Update survey group: '); echo '<strong><em>'.CHtml::encode($model->title).'</strong></em>'; ?></h3>
+    <h3><?php eT('Update survey group: '); echo '<strong><em>'.$model->title.'</strong></em>'; ?></h3>
     <?php $this->renderPartial('super/fullpagebar_view', array(
             'fullpagebar' => array(
                 'returnbutton'=>array(

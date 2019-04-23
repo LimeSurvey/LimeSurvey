@@ -5,19 +5,17 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import foreach from 'lodash/foreach';
 
+import SimpleEditor from './_simpleEditor.vue';
 import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
-import eventChild from '../../mixins/eventChild.js';
 
 export default {
     name: 'subquestions',
-    mixins: [AbstractSubQuestionAndAnswerBase, eventChild],
+    mixins: [AbstractSubQuestionAndAnswerBase],
+    components: {SimpleEditor},
     data(){
         return {
             uniqueSelector: 'qid',
             baseNonNumericPart : "SQ",
-            type: 'subquestions',
-            typeDefininition: 'question',
-            typeDefininitionKey: 'title'
         };
     },
     computed: {
@@ -86,20 +84,21 @@ export default {
             }
             return '';
         },
+        openEditorForSubquestion(oDataSet, scaleId) {
+            this.$modal.show(
+                SimpleEditor, 
+                { value: subquestionObject[this.$store.state.activeLanguage].question },
+                { draggable: true },
+                {'change': (event) => { 
+                        this.$log.log('CHANGE IN MODAL', event);
+                        subquestionObject[this.$store.state.activeLanguage].question = event;
+                    }
+                }
+            )
+        },
         setQuestionForCurrentLanguage(subquestionObject, $event) {
             subquestionObject[this.$store.state.activeLanguage].question = $event.srcElement.value;
         },
-        triggerScale($event) {
-            $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': 'initial'});
-        },
-        untriggerScale($event) {
-            $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': ''});
-        },
-    },
-    mounted() {
-        if(isEmpty(this.$store.state.currentQuestionSubquestions)){
-            this.$store.state.currentQuestionSubquestions = {"0": [this.getTemplate()]};
-        };
     }
 }
 </script>
@@ -107,7 +106,7 @@ export default {
 <template>
     <div class="col-sm-12">
         <div class="container-fluid scoped-main-subquestions-container">
-            <div class="row" v-show="!readonly">
+            <div class="row">
                 <div class="col-sm-8">
                     <button class="btn btn-default col-3" @click.prevent="openQuickAdd">{{ "Quick add" | translate }}</button>
                     <span class="scoped-spacer col-1" />
@@ -135,10 +134,10 @@ export default {
                         v-for="subquestion in currentDataSet[subquestionscale]"
                         :key="subquestion.qid"
                     >
-                        <div class="scoped-move-block" v-show="!readonly">
+                        <div class="scoped-move-block">
                             <i class="fa fa-bars" :class="surveyActive ? ' disabled' : ' '"></i>
                         </div>
-                        <div class="scoped-code-block   ">
+                        <div class="scoped-code-block">
                             <input
                                 type='text'
                                 class="form-control"
@@ -146,12 +145,11 @@ export default {
                                 size='5'
                                 :class="surveyActive ? ' disabled' : ' '"
                                 :name="'code_'+subquestion.question_order+'_'+subquestionscale" 
-                                :readonly="readonly"
                                 v-model="subquestion.title"
                                 @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale)'
                             />
                         </div>
-                        <div class="scoped-content-block   ">
+                        <div class="scoped-content-block">
                             <input
                                 type='text'
                                 size='20'
@@ -160,34 +158,26 @@ export default {
                                 :name='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
                                 :placeholder='translate("Some example subquestion")'
                                 :value="getQuestionForCurrentLanguage(subquestion)"
-                                :readonly="readonly"
                                 @change="setQuestionForCurrentLanguage(subquestion,$event, arguments)"
                                 @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
                             />
                         </div>
-                        <div class="scoped-relevance-block   ">
-                            <div class="input-group">
-                                <div class="input-group-addon">{</div>
-                                <input 
-                                    type='text' 
-                                    class='relevance_input_field form-control input'
-                                    :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
-                                    :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
-                                    :readonly="readonly"
-                                    v-model="subquestion.relevance"
-                                    @keyup.enter.prevent='switchinput(false,$event)'
-                                    @focus='triggerScale'
-                                    @blur='untriggerScale'
-                                />
-                                <div class="input-group-addon">}</div>
-                            </div>
+                        <div class="scoped-relevance-block">
+                            <input 
+                                type='text' 
+                                class='relevance form-control input' 
+                                :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                v-model="subquestion.relevance"
+                                 @keyup.enter.prevent='switchinput(false,$event)'
+                            />
                         </div>
-                        <div class="scoped-actions-block" v-show="!readonly">
+                        <div class="scoped-actions-block">
                             <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(subquestion, subquestionscale)">
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="openPopUpEditor(subquestion, subquestionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="openEditorForSubquestion(subquestion, subquestionscale)">
                                 <i class="fa fa-edit"></i>
                                 {{ "Open editor" | translate }}
                             </button>
@@ -199,7 +189,7 @@ export default {
 
                     </div>
                 </div>
-                <div class="row" :key="subquestionscale+'addRow'" v-show="!readonly">
+                <div class="row" :key="subquestionscale+'addRow'">
                     <div class="col-sm-12 text-right">
                         <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary">
                             <i class="fa fa-plus"></i>
@@ -226,18 +216,16 @@ export default {
         display: flex;
         flex-wrap: nowrap;
         width: 100%;
-        justify-content: flex-start;
+        justify-content: space-evenly;
         &>div {
-            flex-basis: 10rem;
+            flex-basis: auto;
             padding: 1px 2px;
-            transition: all 1s ease-in-out;
-            white-space: nowrap;
         }
     }
     
     .scoped-move-block {
+        flex-grow: 1;
         text-align: center;
-        width: 64px;
         &>i {
             font-size: 28px;
             line-height: 32px;
@@ -249,15 +237,13 @@ export default {
         }
     }
     .scoped-content-block {
-        flex-grow: 8;
+        flex-grow: 6;
     }
     .scoped-relevance-block {
-        flex-grow: 1;
-        max-width: 10rem;
+        flex-grow: 4;
     }
     .scoped-actions-block {
         flex-grow: 2;
     }
-    
 
 </style>

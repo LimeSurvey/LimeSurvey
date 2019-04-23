@@ -479,6 +479,10 @@ table > tbody > tr > td.ddprefix {
     margin-right: 5px;
 }
 
+.geoloc-item .search-icon, .geoloc-item .checkbox  {
+    padding-top: 10px;
+}
+
 .geoname_search {
     margin-bottom: 10px;
 }

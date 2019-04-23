@@ -249,8 +249,7 @@ class uploader {
         // HOST APPLICATIONS INIT
         if (isset($_GET['CKEditorFuncNum'])) {
             $this->opener['name'] = "ckeditor";
-            /* mantis #14634 @see https://ckeditor.com/docs/ckeditor4/latest/guide/dev_file_browser_api.html#interaction-between-ckeditor-and-file-manager */
-            $this->opener['CKEditor'] = array('funcNum' => intval($_GET['CKEditorFuncNum']));
+            $this->opener['CKEditor'] = array('funcNum' => $_GET['CKEditorFuncNum']);
 
         } elseif (isset($_GET['opener'])) {
             $this->opener['name'] = $_GET['opener'];

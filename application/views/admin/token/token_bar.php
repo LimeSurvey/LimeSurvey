@@ -8,7 +8,7 @@
     <div class='row container-fluid'>
 
         <!-- left buttons -->
-        <div class="col-md-10">
+        <div class="col-md-9">
 
             <!-- Token view buttons -->
             <?php if( isset($token_bar['buttons']['view']) ): ?>
@@ -187,7 +187,7 @@
         </div>
 
         <!-- Right buttons -->
-        <div class="col-md-2 text-right">
+        <div class="col-md-3 text-right">
 
             <!-- View token buttons -->
             <?php if( isset($token_bar['buttons']['view'] )): ?>

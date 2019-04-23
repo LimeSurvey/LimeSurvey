@@ -9,8 +9,8 @@
 ?>
 <?php
 extract($data);
-//Yii::app()->loadHelper('admin/htmleditor');
-
+Yii::app()->loadHelper('admin/htmleditor');
+PrepareEditorScript(false, $this);
 
 App()->getClientScript()->registerScript("tabCreate-view-variables", "
     var jsonUrl = '';
@@ -38,11 +38,10 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
             <ul class="nav nav-tabs" role="tablist" id="create_survey_tablist">
                 <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab"><?=gT("Text elements")?></a></li>
                 <li><a class="create_survey_wizard_tabs" data-count="2" href="#general-settings" data-toggle="tab"><?=gT("General settings")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="3" href="#datasecurity" data-toggle="tab"><?=gT("Data policy settings")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="4" href="#presentation" data-toggle="tab"><?=gT("Presentation & navigation")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="5" href="#publication" data-toggle="tab"><?=gT("Publication & access control")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="6" href="#data-management" data-toggle="tab"><?=gT("Notification & data management")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="7" href="#tokens" data-toggle="tab"><?=gT("Participant settings")?></a></li>
+                <li><a class="create_survey_wizard_tabs" data-count="3" href="#presentation" data-toggle="tab"><?=gT("Presentation & navigation")?></a></li>
+                <li><a class="create_survey_wizard_tabs" data-count="4" href="#publication" data-toggle="tab"><?=gT("Publication & access control")?></a></li>
+                <li><a class="create_survey_wizard_tabs" data-count="5" href="#data-management" data-toggle="tab"><?=gT("Notification & data management")?></a></li>
+                <li><a class="create_survey_wizard_tabs" data-count="6" href="#tokens" data-toggle="tab"><?=gT("Participant settings")?></a></li>
             </ul>
         </div>
         <div class="grow-1 ls-flex-column fill align-items-center align-content-center">
@@ -54,24 +53,21 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
         <div class="grow-10 ls-space padding left-10 right-10">
             <div class="tab-content">
                 <div class="tab-pane active" id="texts" data-count="1">
-                    <?php echo $this->renderPartial('/admin/survey/subview/tab_edit_view', $edittextdata); ?>
+                    <?php echo $this->renderPartial('/admin/survey/subview/_create_survey_text', $edittextdata); ?>
                 </div>
                 <div class="tab-pane" id="general-settings" data-count="2">
                     <?php echo $this->renderPartial('/admin/survey/subview/accordion/_generaloptions_panel', $generalsettingsdata); ?>
                 </div>
-                <div class="tab-pane" id="datasecurity" data-count="3">
-                    <?php echo $this->renderPartial('/admin/survey/subview/tab_edit_view_datasecurity', $datasecdata); ?>
-                </div>
-                <div class="tab-pane" id="presentation" data-count="4">
+                <div class="tab-pane" id="presentation" data-count="3">
                     <?php echo $this->renderPartial('/admin/survey/subview/accordion/_presentation_panel', $presentationsettingsdata); ?>
                 </div>
-                <div class="tab-pane" id="publication" data-count="5">
+                <div class="tab-pane" id="publication" data-count="4">
                     <?php echo $this->renderPartial('/admin/survey/subview/accordion/_publication_panel', $publicationsettingsdata); ?>
                 </div>
-                <div class="tab-pane" id="data-management" data-count="6">
+                <div class="tab-pane" id="data-management" data-count="5">
                     <?php echo $this->renderPartial('/admin/survey/subview/accordion/_notification_panel', $notificationsettingsdata); ?>
                 </div>
-                <div class="tab-pane" id="tokens" data-count="7">
+                <div class="tab-pane" id="tokens" data-count="6">
                     <?php echo $this->renderPartial('/admin/survey/subview/accordion/_tokens_panel', $tokensettingsdata); ?>
                 </div>
             </div>

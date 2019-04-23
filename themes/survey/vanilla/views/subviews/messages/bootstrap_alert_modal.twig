@@ -23,8 +23,8 @@
 
 {# Register script for modal #}
 {% if( empty(json_decode(aSurveyInfo.jPopup)) == false ) %}
-    {{ registerScript('startPopup',"LSvar.startPopups = " ~ aSurveyInfo.jPopup , "POS_HEAD") }}
-    {{ registerScript('showStartPopups',"window.templateCore.alertSurveyDialog(" ~ aSurveyInfo.jPopup ~ ");", "POS_END") }}
+    {{ registerScript('startPopup',"LSvar.startPopups=" ~ aSurveyInfo.jPopup, "POS_HEAD") }}
+    {{ registerScript('showStartPopups',"window.templateCore.alertSurveyDialog(" ~ aSurveyInfo.jPopup ~");", "POS_END") }}
     {{ registerScript('activateSoftMandatory',"activateSoftMandatory();", "POS_END") }}
 {% endif %}
 
@@ -38,6 +38,7 @@
                 <div class="{{ aSurveyInfo.class.modaltitle }}" {{ aSurveyInfo.attr.modaltitle }}>&nbsp;</div>
             </div>
             <div class="{{ aSurveyInfo.class.modalbody }}" {{ aSurveyInfo.attr.modalbody }}>
+                <p></p>
             </div>
             {% if(aSurveyInfo.mandSoft)%}
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
@@ -48,7 +49,7 @@
             <div class="{{ aSurveyInfo.class.modalfooter }}" {{ aSurveyInfo.attr.modalfooter }}>
                 <a {{ aSurveyInfo.attr.modalfooterlink }}  class="{{ aSurveyInfo.class.modalfooterlink }}">{{ gT("Close") }}</a>
             </div>
-            {% endif %}
+            {% endif %}            
         </div>
     </div>
 </div>

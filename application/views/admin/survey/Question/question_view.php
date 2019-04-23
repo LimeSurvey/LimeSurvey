@@ -166,45 +166,27 @@
                     </tr>
                 <?php endif; ?>
 
-                <!-- Encrypted -->
-                <?php if (isset($qrrow['mandatory'])):?>
-                    <tr>
-                        <td>
-                            <strong>
-                                <?php eT("Encrypted:"); ?>
-                            </strong>
-                        </td>
-                        <td>
-                            <?php if ($qrrow['encrypted'] == "Y") : ?>
-                                <?php eT("Yes"); ?>
-                            <?php else:?>
-                                <?php eT("No"); ?>
-                            <?php endif;  ?>
-                        </td>
-                    </tr>
-                <?php endif; ?>
-
                 <!-- Relevance equation -->
-                <?php if (trim($qrrow['relevance']) != '' && trim($qrrow['relevance']) != '1'): ?>
+                <?php if (trim($qrrow['relevance']) != ''): ?>
                     <tr>
                         <td><?php eT("Relevance equation:"); ?></td>
                         <td>
                             <?php
                             LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
-                            echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                            echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             ?>
                         </td>
                     </tr>
                 <?php endif; ?>
 
                 <!-- Group Relevance equation -->
-                <?php if (trim($oQuestion->group->grelevance)!='' && trim($oQuestion->group->grelevance)!='1'): ?>
+                <?php if (trim($oQuestion->group->grelevance)!=''): ?>
                     <tr>
                         <td><?php eT("Group relevance:"); ?></td>
                         <td>
                             <?php
-                            LimeExpressionManager::ProcessString("{" . $oQuestion->group->grelevance . "}", $qid);
-                            echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
+                            templatereplace('{' . $oQuestion->group->grelevance . '}');
+                            echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             ?>
                         </td>
                     </tr>

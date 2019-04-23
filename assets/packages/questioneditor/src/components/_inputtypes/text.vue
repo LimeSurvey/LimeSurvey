@@ -9,8 +9,7 @@
             elHelp: {type: String, default: ''},
             currentValue: {default: ''},
             elOptions: {type: Object, default: {}},
-            debug: {type: [Object, Boolean]},
-            readonly: {type: Boolean, default: false}
+            debug: {type: [Object, Boolean]}
         },
         data(){
             return {
@@ -19,19 +18,8 @@
         },
         computed: {
             curValue: {
-                get() { 
-                    if(typeof this.currentValue !== 'string') {
-                        return this.currentValue[this.$store.state.activeLanguage];
-                    }
-                    return this.currentValue
-                },
+                get() { return this.currentValue },
                 set(newValue) { 
-                    if(typeof this.currentValue !== 'string') {
-                        let tmpCurrentValue = this.currentValue;
-                        tmpCurrentValue[this.$store.state.activeLanguage] = newValue;
-                        this.$emit('change', tmpCurrentValue);
-                        return;
-                    }
                     this.$emit('change', newValue);
                 },
             },
@@ -62,7 +50,7 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0) && !readonly" />
+        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
             <div class="input-group col-12">
                 <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
@@ -73,7 +61,6 @@
                     :class="getClasses" 
                     :name="elName || elId" 
                     :id="elId" 
-                    :readonly="readonly"
                 />
                 <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
             </div>

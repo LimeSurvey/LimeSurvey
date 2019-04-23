@@ -39,7 +39,6 @@ class RenderHugeFreeText extends QuestionBaseRenderer
         $maxlength = "";
         $withColumn = false;
         $inputsize = null;
-        $placeholder = "";
 
         $drows = $this->setDefaultIfEmpty(
             $this->getQuestionAttribute('display_rows'), 
@@ -70,10 +69,6 @@ class RenderHugeFreeText extends QuestionBaseRenderer
             $extraclass .= " ls-input-sized";
         }
 
-        if (trim($this->getQuestionAttribute('placeholder',$this->sLanguage)) != '') {
-            $placeholder = htmlspecialchars($this->getQuestionAttribute('placeholder',$this->sLanguage));
-        }
-
         $answer = Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
             'extraclass'             => $extraclass,
             'coreClass'              => "ls-answers answer-item text-item ".$sCoreClasses,
@@ -86,7 +81,6 @@ class RenderHugeFreeText extends QuestionBaseRenderer
             'dispVal'                => htmlspecialchars($this->mSessionValue),
             'inputsize'              => $inputsize,
             'maxlength'              => $maxlength,
-            'placeholder'            => $placeholder,
         ), true);
 
         if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {

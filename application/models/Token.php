@@ -155,8 +155,8 @@ abstract class Token extends Dynamic
         $fields = array(
             'tid' => 'pk',
             'participant_id' => 'string(50)',
-            'firstname' => 'text',
-            'lastname' => 'text',
+            'firstname' => 'string(150)',
+            'lastname' => 'string(150)',
             'email' => 'text',
             'emailstatus' => 'text',
             'token' => "string(36) {$sCollation}",
@@ -411,28 +411,4 @@ abstract class Token extends Dynamic
     public function getSurveyId() {
         return $this->getDynamicId();
     }
-
-    public static function getEncryptedAttributes(){
-        return self::$aEncryptedAttributes;
-    }
-
-    public static function getDefaultEncryptionOptions(){
-        // load sodium library
-        $sodium = Yii::app()->sodium;
-        // check if sodium library exists
-        if ($sodium->bLibraryExists === true){
-            $sEncrypted = 'Y';
-        } else {
-            $sEncrypted = 'N';
-        }
-        return array(
-                'enabled' => 'N',
-                'columns' => array(
-                    'firstname' =>  $sEncrypted,
-                    'lastname' =>  $sEncrypted,
-                    'email' =>  $sEncrypted
-                )
-        );
-    }
-    
 }

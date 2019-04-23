@@ -46,14 +46,14 @@
 
             <?php if ($bShowPercentage  = true): ?>
                 <th width='' align='center' >
-                    <strong><?php eT("Gross percentage");?></strong>
+                    <strong><?php eT("Percentage");?></strong>
                 </th>
             <?php endif;?>
 
             <?php if($bSum): ?>
                 <th width='' align='center' >
                     <strong>
-                        <?php eT("Top 2, Middle, Bottom 2");?>
+                        <?php eT("Sum");?>
                     </strong>
                 </th>
             <?php endif; ?>

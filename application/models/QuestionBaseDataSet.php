@@ -87,9 +87,8 @@ abstract class QuestionBaseDataSet extends StaticModel
         if($this->aQuestionAttributes['question_template'] !== 'core' && $sQuestionTemplate === null) {
             $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
         }
-        $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
-        $questionTemplateFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
-        $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($questionTemplateFolderName, $sQuestionTemplate);
+
+        $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues(QuestionTemplate::getFolderName($this->sQuestionType), $sQuestionTemplate);
         
         $aAdvancedOptionsArray = [];
         foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
@@ -120,7 +119,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementName' => false, //false means identical to id
                 'formElementHelp' => gT("Use a customized question theme for this question"),
                 'inputtype' => 'select',
-                'formElementValue' => (isset($aQuestionTemplateAttributes['value']) &&  $aQuestionTemplateAttributes['value'] !== '') ? $aQuestionTemplateAttributes['value'] : 'core',
+                'formElementValue' => isset($aQuestionTemplateAttributes['value']) ? $aQuestionTemplateAttributes['value'] : '',
                 'formElementOptions' => [
                     'classes' => ['form-control'],
                     'options' => $aOptionsArray,
@@ -279,17 +278,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         unset($aAttributeArray['help']);
         unset($aAttributeArray['inputtype']);
 
-        $aFormElementOptions = $aAttributeArray;
-        $aFormElementOptions['classes'] = isset($aFormElementOptions['classes']) ? array_merge($aFormElementOptions['classes'], ['form-control']) : ['form-control'];
-
-        if(!is_array($aFormElementOptions['expression']) && $aFormElementOptions['expression'] == 2) {
-            $aFormElementOptions['inputGroup'] = [
-                'prefix' => '{',
-                'suffix' => '}',
-                ];
-        }
-
-        $aAdvancedAttributeArray['aFormElementOptions'] = $aFormElementOptions;
+        $aAdvancedAttributeArray['aFormElementOptions'] = array_merge(['classes' => ['form-control']], $aAttributeArray);
         
         return $aAdvancedAttributeArray;
     }

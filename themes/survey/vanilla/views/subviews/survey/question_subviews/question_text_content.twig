@@ -16,10 +16,8 @@
     This file render the quetion text content.
     NOTE: see views/subviews/survey/question.twig comments for more infos
 #}
-{# Use twig from core, if the question is mandatory,return ./subviews/survey/question_subviews/asterisk.twig #}
-{% if (aQuestion.mandatory == 'Y') %}
-    {{ include('./subviews/survey/question_subviews/asterisk.twig') }}
-{% endif %}
+{# Use twig from core, if the question is mandatory,return ./survey/questions/question_gelp/asterisk.twig #}
+{{ aQuestion.mandatory }}
 
 {# If the question number is to be shown (set in survey settings) #}
 {% if (aShow.question_number) %}

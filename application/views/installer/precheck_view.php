@@ -139,11 +139,6 @@ function dirReport($dir, $write)
                <td><span class='fa fa-check text-success' alt="Check"></span></td>
                <td><?php echo $bIMAPPresent ; ?></td>
         </tr>
-        <tr>
-               <td><?php eT("PHP Sodium library [data encryption]"); ?></td>
-               <td><span class='fa fa-check text-success' alt="Check"></span></td>
-               <td><?php echo $sodiumPresent ; ?></td>
-        </tr>
         </tbody>
 
         </table>

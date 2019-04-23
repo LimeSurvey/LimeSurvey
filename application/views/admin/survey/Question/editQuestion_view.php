@@ -331,24 +331,6 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                     </div>
                                 </div>
 
-                                <div  class="form-group" id="EncryptedSelection">
-                                    <label class=" control-label" for="encrypted"><?php eT("Encrypted:"); ?></label>
-                                        <div class="">
-                                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                'name' => 'encrypted',
-                                                'id' => 'encrypted',
-                                                'value'=> $oQuestion->encrypted === "Y",
-                                                'onLabel'=>gT('On'),
-                                                'offLabel'=>gT('Off'),
-                                                'htmlOptions'=>array(
-                                                    'disabled'=>$oSurvey->isActive,
-                                                    'value'=> 'Y',
-                                                    'uncheckValue' => 'N',
-                                                ),
-                                            ));?>
-                                        </div>
-                                </div>
-
                                 <div class="form-group" id="relevanceContainer">
                                     <label class=" control-label" for='relevance'>
                                         <?php eT("Relevance equation:"); ?>

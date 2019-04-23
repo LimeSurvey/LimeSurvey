@@ -59,13 +59,13 @@ class PreviewModalScript {
      * Workaround for the crazy person to use '*' as the short for a question type
      */
     preSelectFromValue (value){
-        value = value || this.inputItem.val() || this.options.value;
+        value = value || this.options.value;
         let selectedItem = null;
         if(/[^~!@\$%\^&\*\( \)\+=,\.\/';:"\?><\[\]\\\{\}\|`#]/.test(value)){
-            selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-key=${value.toString().trim()}]`);
+            selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-selector=${value.toString().trim()}]`);
         }
         if((selectedItem === null || selectedItem.length !== 1) && this.options.selectedClass != '') {
-            selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-key=${this.options.selectedClass.toString().trim()}]`);
+            selectedItem = $(`.selector__Item--select-${this.widgetsJsName}[data-selector=${this.options.selectedClass.toString().trim()}]`);
         }
 
         return selectedItem;
@@ -77,7 +77,6 @@ class PreviewModalScript {
     onModalShown (){
 
         const selectedItem = this.preSelectFromValue();
-
         if(selectedItem) {
             $(selectedItem).trigger('click');
             $(selectedItem).closest('div.panel-collapse').addClass('in');
@@ -88,10 +87,7 @@ class PreviewModalScript {
      * event triggered when the modal closes
      */
     onModalClosed (){
-        $(this.modalItem).find('.panel-collapse.collapse').each((i, item) => {
-            $(item).removeClass('in');
-        });
-        this.options.onModalClose();
+            this.options.onModalClose();
     };
     /**
      * bind to all necessary events
@@ -99,7 +95,7 @@ class PreviewModalScript {
     bind() {
         if(/modal/.test(this.options.viewType)){
             $(this.modalItem).on('hide.bs.modal', ()=>{this.onModalClosed()});
-            $(this.modalItem).on('shown.bs.modal', ()=>{this.onModalShown()});
+            $(this.modalItem).on('show.bs.modal', ()=>{this.onModalShown()});
             $(`.selector__Item--select-${this.widgetsJsName}:not(.disabled)`).on('click', (ev)=>{this.selectItemClick(ev)});
             $(`#selector__select-this-${this.widgetsJsName}`).on('click', () => {
                 this.options.onUpdate(this.options.value);

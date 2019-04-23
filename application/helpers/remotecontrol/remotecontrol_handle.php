@@ -1345,13 +1345,7 @@ class remotecontrol_handle
                     $sCriteria->params[':qid'] = $iQuestionID;
                     Question::model()->deleteAll($sCriteria);
 
-                    // delete defaultvalues and defaultvalueL10ns
-                    $oDefaultValues = DefaultValue::model()->findAll(array('qid' => $iQuestionID));
-                    foreach($oDefaultValues as $defaultvalue){
-                        DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
-                        DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
-                    }
-
+                    DefaultValue::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
                     QuotaMember::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
                     Question::updateSortOrder($iGroupID, $iSurveyID);
 
@@ -1499,27 +1493,23 @@ class remotecontrol_handle
             Yii::app()->loadHelper("surveytranslator");
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion)) {
-                return array('status' => 'Error: Invalid questionid');
+                            return array('status' => 'Error: Invalid questionid');
             }
 
             $iSurveyID = $oQuestion->sid;
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
                 if (is_null($sLanguage)) {
-                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                    return array('status' => 'Error: Invalid language');
+                                    return array('status' => 'Error: Invalid language');
                 }
 
-                $oQuestion = Question::model()->with('questionL10ns')
-                    ->find(
-                        't.qid = :qid and questionL10ns.language = :language',
-                        array(':qid' => $iQuestionID, ':language'=>$sLanguage)
-                );
+                $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
                 if (!isset($oQuestion)) {
-                    return array('status' => 'Error: Invalid questionid');
+                                    return array('status' => 'Error: Invalid questionid');
                 }
 
                 $aBasicDestinationFields = Question::model()->tableSchema->columnNames;
@@ -1536,27 +1526,21 @@ class remotecontrol_handle
                 }
 
                 if (empty($aQuestionSettings)) {
-                    return array('status' => 'No valid Data');
+                                    return array('status' => 'No valid Data');
                 }
 
                 $aResult = array();
                 foreach ($aQuestionSettings as $sPropertyName) {
                     if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions') {
-                        $oSubQuestions = Question::model()->with('questionL10ns')
-                            ->findAll(
-                                't.parent_qid = :parent_qid and questionL10ns.language = :language',
-                                array(':parent_qid' => $iQuestionID, ':language'=>$sLanguage),
-                                array('order'=>'title')
-                        );
-                
+                        $oSubQuestions = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionID, 'language'=>$sLanguage), array('order'=>'title'));
                         if (count($oSubQuestions) > 0) {
                             $aData = array();
                             foreach ($oSubQuestions as $oSubQuestion) {
                                 if ($sPropertyName == 'available_answers') {
-                                    $aData[$oSubQuestion['title']] = array_key_exists($language, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
+                                                                    $aData[$oSubQuestion['title']] = $oSubQuestion['question'];
                                 } else {
                                     $aData[$oSubQuestion['qid']]['title'] = $oSubQuestion['title'];
-                                    $aData[$oSubQuestion['qid']]['question'] = array_key_exists($language, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
+                                    $aData[$oSubQuestion['qid']]['question'] = $oSubQuestion['question'];
                                     $aData[$oSubQuestion['qid']]['scale_id'] = $oSubQuestion['scale_id'];
                                 }
 
@@ -1564,58 +1548,48 @@ class remotecontrol_handle
 
                             $aResult[$sPropertyName] = $aData;
                         } else {
-                            $aResult[$sPropertyName] = 'No available answers';
+                                                    $aResult[$sPropertyName] = 'No available answers';
                         }
                     } else if ($sPropertyName == 'attributes') {
                         $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> null), array('order'=>'attribute'));
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['attribute']] = $oAttribute['value'];
+                                                            $aData[$oAttribute['attribute']] = $oAttribute['value'];
                             }
 
                             $aResult['attributes'] = $aData;
                         } else {
-                            $aResult['attributes'] = 'No available attributes';
+                                                    $aResult['attributes'] = 'No available attributes';
                         }
                     } else if ($sPropertyName == 'attributes_lang') {
                         $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage), array('order'=>'attribute'));
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['attribute']] = $oAttribute['value'];
+                                                            $aData[$oAttribute['attribute']] = $oAttribute['value'];
                             }
 
                             $aResult['attributes_lang'] = $aData;
                         } else {
-                            $aResult['attributes_lang'] = 'No available attributes';
+                                                    $aResult['attributes_lang'] = 'No available attributes';
                         }
                     } else if ($sPropertyName == 'answeroptions') {
-                        $oAttributes = Answer::model()->with('answerL10ns')
-                            ->findAll(
-                                't.qid = :qid and answerL10ns.language = :language',
-                                array(':qid' => $iQuestionID, ':language'=> $sLanguage),
-                                array('order'=>'sortorder')
-                        );
+                        $oAttributes = Answer::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage), array('order'=>'sortorder'));
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['code']]['answer'] = array_key_exists($language, $oAttribute->answerL10ns) ? $oAttribute->answerL10ns[$sLanguage]->answer : '';
+                                $aData[$oAttribute['code']]['answer'] = $oAttribute['answer'];
                                 $aData[$oAttribute['code']]['assessment_value'] = $oAttribute['assessment_value'];
                                 $aData[$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
                                 $aData[$oAttribute['code']]['order'] = $oAttribute['sortorder'];
                             }
                             $aResult['answeroptions'] = $aData;
                         } else {
-                             $aResult['answeroptions'] = 'No available answer options';
+                                                    $aResult['answeroptions'] = 'No available answer options';
                         }
                     } else if ($sPropertyName == 'defaultvalue') {
-                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultValueL10ns')
-                            ->find(
-                                'qid = :qid AND defaultValueL10ns.language = :language',
-                                array(':qid' => $iQuestionID, ':language'=> $sLanguage)
-                            )
-                            ->defaultvalue;
+                        $aResult['defaultvalue'] = DefaultValue::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage))->defaultvalue;
                     } else {
                         $aResult[$sPropertyName] = $oQuestion->$sPropertyName;
                     }
@@ -2457,12 +2431,13 @@ class remotecontrol_handle
         $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey)) {
-            return array('status' => 'Error: Invalid survey ID');
+                    return array('status' => 'Error: Invalid survey ID');
         }
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'update')) {
+
             if (!tableExists("{{tokens_$iSurveyID}}")) {
-                return array('status' => 'Error: No survey participants table');
+                            return array('status' => 'Error: No survey participants table');
             }
 
             $iMaxEmails = (int) Yii::app()->getConfig("maxemails");
@@ -2474,7 +2449,7 @@ class remotecontrol_handle
             $iAllTokensCount = count($aAllTokens);
             unset($aAllTokens);
             if (empty($aResultTokens)) {
-                return array('status' => 'Error: No candidate tokens');
+                            return array('status' => 'Error: No candidate tokens');
             }
 
             foreach ($aResultTokens as $key=>$oToken) {
@@ -2483,12 +2458,12 @@ class remotecontrol_handle
 
                 //if(!filter_var($emailaddress, FILTER_VALIDATE_EMAIL))
                 if (preg_match($pattern, $oToken['email']) !== 1) {
-                    unset($aResultTokens[$key]);
+                                    unset($aResultTokens[$key]);
                 }
             }
 
             if (empty($aResultTokens)) {
-                return array('status' => 'Error: No candidate tokens');
+                            return array('status' => 'Error: No candidate tokens');
             }
             $aResult = emailTokens($iSurveyID, $aResultTokens, 'invite');
             $iLeft = $iAllTokensCount - count($aResultTokens);
@@ -2496,7 +2471,7 @@ class remotecontrol_handle
 
             return $aResult;
         } else {
-            return array('status' => 'No permission');
+                    return array('status' => 'No permission');
         }
     }
 

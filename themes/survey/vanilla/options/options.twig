@@ -374,12 +374,12 @@
             <div class='row'>
                 <div class='col-sm-12'>
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>{{ sprintf( gT("%s fonts"), templateConfiguration.template_name)|capitalize }}</div>
+                        <div class='panel-heading'>{{ gT("Fruity fonts") }}</div>
                         <div class='panel-body'>
                             <div class='form-group row'>
-                                <label for='simple_edit_options_font' class='control-label'>{{ gT("Select font:") }}</label>
+                                <label for='simple_edit_font' class='control-label'>{{ gT("Select font:") }}</label>
                                 <div class='col-sm-12'>
-                                    <select class='form-control selector_option_value_field' id='simple_edit_options_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load}}'>
+                                    <select class='form-control selector_option_value_field' id='simple_edit_font' name='font' data-inheritvalue='{{oParentOptions.packages_to_load|json_encode}}'>
                                         {{ fontOptions }}
                                     </select>
                                 </div>

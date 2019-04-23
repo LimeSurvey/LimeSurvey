@@ -10,7 +10,6 @@ export default {
         content: {type: String, default: ''},
         htmlClass: {type: String, default: ''},
         loading: {type: Boolean, default: true},
-        firstStart: {type: Boolean, default: false},
     },
     data() {
         return {
@@ -33,8 +32,8 @@ export default {
                 const contents = this.documentIframe.contents();
                 this.$log.log(this.$documentIframe);
                 this.$log.log(contents);
-                this.documentIframe.contents().find('body').text('');
-                this.documentIframe.contents().find('body').html(newContent);
+                this.documentIframe.contents().find('html').text('');
+                this.documentIframe.contents().find('html').html(newContent);
                 this.documentIframe[0].contentWindow.jQuery(document).trigger('pjax:scriptcomplete');
             } catch(e){
                 this.$log.error(e);
@@ -42,15 +41,12 @@ export default {
         }
     },
     mounted() {
-        this.documentIframe = $(this.documentIframe);
-        this.documentIframe.on('load', ()=>{this.$emit('ready')});
-        this.documentIframe.attr('src', this.rootUrl);
         $('#'+this.id).append(this.documentIframe);
     },
     created(){
         const iframeID = this.getRandomId();
         this.iframeId = iframeID;
-        this.documentIframe = `<iframe id='${iframeID}' style='width:100%;height:100%;border:none;' />`
+        this.documentIframe = $(`<iframe src="${this.rootUrl}" id='${iframeID}' style='width:100%;height:100%;border:none;' />`);
     }
 }
 </script>

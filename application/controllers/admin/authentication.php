@@ -268,22 +268,23 @@ class Authentication extends Survey_Common_Action
      */
     private function _sendPasswordEmail( $arUser)
     {
-        $mailer = New \LimeMailer;
-        $mailer->emailType = 'passwordreminderadminuser';
-        $mailer->addAddress($arUser->email,$arUser->full_name);
-        $mailer->Subject = gT('User data');
-        /* Body construct */
+        $sFrom = Yii::app()->getConfig("siteadminname")." <".Yii::app()->getConfig("siteadminemail").">";
+        $sTo = $arUser->email;
+        $sSubject = gT('User data');
         $sNewPass = createPassword();
+        $sSiteName = Yii::app()->getConfig('sitename');
+        $sSiteAdminBounce = Yii::app()->getConfig('siteadminbounce');
+
         $username = sprintf(gT('Username: %s'), $arUser['users_name']);
         $password = sprintf(gT('New password: %s'), $sNewPass);
+
         $body   = array();
         $body[] = sprintf(gT('Your user data for accessing %s'), Yii::app()->getConfig('sitename'));
         $body[] = $username;
         $body[] = $password;
         $body   = implode("\n", $body);
-        $mailer->Body = $body;
-        /* Go to send email and set password */
-        if ($mailer->sendMessage()) {
+
+        if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce)) {
             User::updatePassword($arUser['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
             $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you.');

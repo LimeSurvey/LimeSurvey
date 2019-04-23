@@ -17,7 +17,7 @@
                     <?php
                     foreach ($firstline as $value)
                     {
-                        echo CHtml::tag(
+                        echo Chtml::tag(
                             "div",
                             array('id'=>"cs_{$value}",'data-name'=>$value,'class'=>"draggable well well-sm csv-attribute-item"),
                             $value

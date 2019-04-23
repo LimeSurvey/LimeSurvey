@@ -38,7 +38,7 @@ gulp.task('lint', ['sass:lint', 'js:lint']);
 
 
 //Watcher tasks
-gulp.task('watch', ['compile', 'webpack:watch', 'sass:watch']);
+gulp.task('watch', ['compile', 'lint', 'webpack:watch', 'sass:watch']);
 gulp.task('sass:watch', function () {
     gulp.watch('./scss/*.scss', ['sass']);
 });
@@ -139,7 +139,7 @@ gulp.task('sass:lint', function (cb) {
 gulp.task('js:lint', function (cb) {
     pump(
         [
-            gulp.src(['./src/**/*.js','./src/**/*.vue', '!node_modules/**', ]),
+            gulp.src(['./src/**/*.js', '!node_modules/**', ]),
             eslint(),
             eslint.formatEach(),
             eslint.failAfterError('compact', process.stderr),

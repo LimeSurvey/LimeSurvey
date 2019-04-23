@@ -31,14 +31,6 @@
 class SavedControl extends LSActiveRecord
 {
 
-    /**
-     * Set defaults
-     * @inheritdoc
-     */
-    public function init()
-    {
-        $this->ip = "";
-    }
     /** @inheritdoc */
     public function tableName()
     {

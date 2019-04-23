@@ -80,7 +80,6 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property string $alloweditaftercompletion Allow multiple responses or update responses with one token: (Y/N)
  * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
  * @property string $googleanalyticsapikey Google Analytics Tracking ID
- * @property string $tokenencryptionoptions Token encryption options
  *
  * @property Permission[] $permissions
  * @property SurveyLanguageSetting[] $languagesettings
@@ -189,7 +188,6 @@ class Survey extends LSActiveRecord
         // Set the default values
         $this->htmlemail = 'Y';
         $this->format = 'G';
-        $this->tokenencryptionoptions = '';
 
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = App()->getConfig('googleanalyticsapikey');
@@ -303,15 +301,8 @@ class Survey extends LSActiveRecord
 
                 Condition::model()->deleteAllByAttributes(array('qid' =>$aQuestion['qid']));
                 QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
                 QuestionL10n::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
-
-                // delete defaultvalues and defaultvalueL10ns
-                $oDefaultValues = DefaultValue::model()->findAll('qid = :qid', array(':qid' => $aQuestion['qid']));
-                foreach($oDefaultValues as $defaultvalue){
-                    DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
-                    DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
-                };
-
             }
 
             Question::model()->deleteAllByAttributes(array('sid' => $this->sid));
@@ -684,7 +675,6 @@ class Survey extends LSActiveRecord
                     $fields[$fieldname] = array(
                         'description' => $desc,
                         'mandatory' => 'N',
-                        'encrypted' => 'N',
                         'show_register' => 'N',
                         'cpdbmap' =>''
                     );
@@ -717,7 +707,6 @@ class Survey extends LSActiveRecord
                 $aCompleteData[$sKey] = array_merge(array(
                     'description' => $sKey,
                     'mandatory' => 'N',
-                    'encrypted' => 'N',
                     'show_register' => 'N',
                     'cpdbmap' =>''
                 ), $aValues);
@@ -1250,9 +1239,7 @@ class Survey extends LSActiveRecord
     public function getPartialAnswers()
     {
         $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
+        Yii::app()->cache->flush();
         if (!Yii::app()->db->schema->getTable($table)) {
             return null;
         } else {
@@ -1476,9 +1463,7 @@ class Survey extends LSActiveRecord
     public function getFullAnswers()
     {
         $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
+        Yii::app()->cache->flush();
         if (!Yii::app()->db->schema->getTable($table)) {
             return null;
         } else {
@@ -1498,9 +1483,7 @@ class Survey extends LSActiveRecord
     public function getCountFullAnswers()
     {
         $sResponseTable = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
+        Yii::app()->cache->flush();
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1519,9 +1502,7 @@ class Survey extends LSActiveRecord
     public function getCountPartialAnswers()
     {
         $table = $this->responsesTableName;
-        if (method_exists(Yii::app()->cache, 'flush')) {
-            Yii::app()->cache->flush();
-        }
+        Yii::app()->cache->flush();
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -2088,19 +2069,6 @@ return $s->hasTokensTable; });
         }
         $criteria->addColumnCondition(['type'=>$type]);
         return Question::model()->find($criteria);
-    }
-
-    /**
-     * decodes the tokenencryptionoptions to be used anywhere necessary
-     * @return Array
-     */
-    public function getTokenEncryptionOptions()
-    {
-        $aOptions = json_decode_ls($this->tokenencryptionoptions);
-        if (empty($aOptions)){
-            $aOptions = Token::getDefaultEncryptionOptions();
-        }
-        return $aOptions;
     }
 
     public function setOptions($gsid)

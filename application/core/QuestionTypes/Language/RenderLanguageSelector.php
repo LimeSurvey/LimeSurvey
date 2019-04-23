@@ -62,3 +62,32 @@ class RenderLanguageSelector extends QuestionBaseRenderer
         return array($answer, $inputnames);
     }
 }
+
+/*
+function do_language($ia)
+{
+    $checkconditionFunction = "checkconditions";
+    $answerlangs            = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->additionalLanguages;
+    $answerlangs[]          = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+    $sLang                  = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
+    $coreClass              = "ls-answers answer-item dropdow-item langage-item";
+    $inputnames = [];
+
+    if (!in_array($sLang, $answerlangs)) {
+        $sLang = Survey::model()->findByPk(Yii::app()->getConfig('surveyID'))->language;
+    }
+
+    $inputnames[] = $ia[1];
+
+    $languageData = array(
+        'name'=>$ia[1],
+        'basename'=> $ia[1],
+        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
+        'answerlangs'=>$answerlangs,
+        'sLang'=>$sLang,
+        'coreClass'=>$coreClass,
+    );
+
+    $answer = doRender('/survey/questions/answer/language/answer', $languageData, true);
+    return array($answer, $inputnames);
+}*/

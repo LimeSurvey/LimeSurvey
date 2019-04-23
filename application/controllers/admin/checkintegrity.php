@@ -334,8 +334,7 @@ class CheckIntegrity extends Survey_Common_Action
 
         $aRecords = DefaultValue::model()->findAll($criteria);
         foreach ($aRecords as $aRecord) {
-            DefaultValueL10n::model()->deleteAllByAttributes(array('dvid' => $aRecord->dvid));
-            DefaultValue::model()->deleteAllByAttributes(array('dvid' => $aRecord->dvid));
+            DefaultValue::model()->deleteAllByAttributes($aRecord);
         }
         $aData['messages'][] = gT('Deleting orphaned default values.');
         return $aData;
@@ -502,11 +501,9 @@ class CheckIntegrity extends Survey_Common_Action
         Yii::app()->db->schema->getTable('{{surveys}}', true);
         Yii::app()->db->schema->getTable('{{templates}}', true);
         Survey::model()->refreshMetaData();
-        /* Check method before using #14596 */
-        if (method_exists(Yii::app()->cache, 'flush')) {
+
+        if (!(defined('YII_DEBUG') && YII_DEBUG)) {
             Yii::app()->cache->flush();
-        }
-        if (method_exists(Yii::app()->cache, 'gc')) {
             Yii::app()->cache->gc();
         }
 

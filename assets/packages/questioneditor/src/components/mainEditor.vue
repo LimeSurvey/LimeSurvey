@@ -3,16 +3,15 @@
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
-import merge from 'lodash/merge';
-
 import PreviewFrame from './subcomponents/_previewFrame.vue';
+import LanguageSelector from './subcomponents/_languageSelector.vue';
 import runAjax from '../mixins/runAjax.js';
 import eventChild from '../mixins/eventChild.js';
 
 export default {
     name: 'MainEditor',
     mixins: [runAjax, eventChild],
-    components: {PreviewFrame},
+    components: {PreviewFrame, LanguageSelector},
     data() {
         return {
             editorQuestion: ClassicEditor,
@@ -22,10 +21,11 @@ export default {
             editorHelpData: '',
             editorHelpConfig: {},
             previewContent: ' ',
+            previewRootUrl: 'about:blank',
             previewLoading: false,
             previewActive: true,
             debug: false,
-            firstStart: true,
+            questionEditButton: window.questionEditButton,
             changeTriggered: debounce((content,event) => {
                 this.$log.log('Debounced load triggered',{content,event});
                 this.getQuestionPreview();
@@ -33,16 +33,11 @@ export default {
         };
     },
     computed: {
-        previewRootUrl() {
-            return window.QuestionEditData.qid != null 
-            ? [
-                window.QuestionEditData.connectorBaseUrl,
-                '/getRenderedPreview/iQuestionId/',
-                window.QuestionEditData.qid,
-                (this.firstStart ? '/root/1' : ''),
-                '/sLanguage/',
-                this.$store.state.activeLanguage].join('')
-            : 'about:blank';
+        currentQuestionCode: {
+            get() {return this.$store.state.currentQuestion.title;},
+            set(newValue) {
+                this.$store.commit('updateCurrentQuestionTitle', newValue);
+            }
         },
         currentQuestionQuestion: { 
             get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].question; },
@@ -54,12 +49,6 @@ export default {
             get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].help },
             set(newValue) {
                 this.$store.commit('updateCurrentQuestionI10NValue', {value:'help', newValue})
-            } 
-        },
-        currentQuestionScript: {
-            get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].script },
-            set(newValue) {
-                this.$store.commit('updateCurrentQuestionI10NValue', {value:'script', newValue})
             } 
         },
         currentQuestionI10N() {
@@ -94,7 +83,7 @@ export default {
             }
             this.$log.log('CHANGEOBJECT',changed);
             
-            return merge(changed, window.LS.data.csrfTokenData);
+            return changed;
         },
         runDebouncedChange(content,event){
             this.changeTriggered(content,event);
@@ -105,79 +94,95 @@ export default {
                 this.getQuestionPreview();
             }
         },
-        getQuestionPreview(){
+        questionTypeChangeTriggered(newValue) {
+            this.$log.log('CHANGE OF TYPE', newValue);
+            this.currentQuestionType = newValue;
+            let tempQuestionObject = this.$store.state.currentQuestion;
+            tempQuestionObject.type = newValue;
+            this.$store.commit('setCurrentQuestion', tempQuestionObject);
+            this.getQuestionPreview();
+            this.$store.dispatch('getQuestionGeneralSettingsWithType');
+        },
+        getQuestionPreview(firstStart = false){
             this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);
             if(!window.QuestionEditData.qid) {
                 this.previewContent = `<div><h3>${this.translate('No preview available')}</h3></div>`;
-                this.previewLoading = false;
                 return;
             }
             if(this.previewLoading === true) {
                 return;
             }
-            this.firstStart = false;
             this.previewLoading = true;
             this.$_load(
-                this.previewRootUrl, 
+                this.previewRootUrl+'/sLanguage/'+this.$store.state.activeLanguage+(firstStart ? '/root/1' : ''), 
                 this.changedParts(),
                 'POST'
-            ).then(
-                (result) => {
-                    this.previewContent = result.data;
-                    this.previewLoading = false;
-                }, 
-                (error) => {
-                    this.$log.error('Error loading preview', error);
-                    this.previewLoading = false;
-                }
-            );
+            ).then((result) => {
+                this.previewContent = result.data;
+                this.previewLoading = false;
+            });
         },
-        setPreviewReady() {
-            this.previewLoading = false;
-            this.firstStart = false;
+        selectLanguage(sLanguage) {
+            this.$log.log('LANGUAGE CHANGED', sLanguage);
+            this.$store.commit('setActiveLanguage', sLanguage);
         }
     },
     mounted(){
-        this.previewLoading = true;
-        this.toggleLoading(false);
+        this.previewRootUrl = window.QuestionEditData.qid != null 
+            ? window.QuestionEditData.connectorBaseUrl+'/getRenderedPreview/iQuestionId/'+window.QuestionEditData.qid
+            : 'about:blank';
+        this.getQuestionPreview(true);
     },
 }
 </script>
 
 <template>
-    <div class="col-sm-8 col-xs-12">
-        <div class="panel panel-default question-option-general-container">
-            <div class="panel-heading"> {{"Text elements" | translate }}</div>
-            <div class="panel-body">
-                <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
+    <div class="col-sm-8 col-xs-12 ls-space padding all-5">
+        <div class="container-center">
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="questionCode">{{'Code' | translate }}</label>
+                    <input type="text" class="form-control" id="questionCode" v-model="currentQuestionCode">
+                </div>
+                <div class="form-group col-sm-6 contains-question-selector">
+                    <label for="questionCode">{{'Question type' | translate }}</label>
+                    <div v-html="questionEditButton" />
+                    <input type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
+                </div>
+            </div>
+            <div class="row">
+                <language-selector 
+                    :elId="'questioneditor'" 
+                    :aLanguages="$store.state.languages" 
+                    :parentCurrentLanguage="$store.state.activeLanguage" 
+                    @change="selectLanguage"
+                />
+            </div>
+            <div class="row">
+                <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                     <label class="col-sm-12">{{ 'Question' | translate }}:</label>
                     <ckeditor :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></ckeditor>
                 </div>
-                <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
+                <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
                     <label class="col-sm-12">{{ 'Help' | translate }}:</label>
                     <ckeditor :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></ckeditor>
                 </div>
-                <div class="col-12 ls-space margin all-5 scope-contains-ckeditor " v-if="!!$store.state.currentQuestionPermissions.script">
-                    <label class="col-sm-12">{{ 'Script' | translate }}:</label>
-                    <textarea rows="2" class="form-control" v-model="currentQuestionScript"></textarea>
-                    <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 ls-space margin top-5 bottom-5" >
+                    <hr/>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 ls-space margin top-5 bottom-5" >
-                <hr/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 ls-space margin bottom-5">
-                <button class="btn btn-default pull-right" @click.prevent="triggerPreview">
-                    {{previewActive ? "Hide Preview" : "Show Preview"}}
-                </button>
-            </div>
-            <div class="col-sm-12 ls-space margin top-5 bottom-5">
-                <div class="scope-preview" v-show="previewActive">
-                    <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :firstStart="firstStart" @ready="setPreviewReady" :loading="previewLoading" />
+            <div class="row">
+                <div class="col-sm-12 ls-space margin bottom-5">
+                    <button class="btn btn-default pull-right" @click.prevent="triggerPreview">
+                        {{previewActive ? "Hide Preview" : "Show Preview"}}
+                    </button>
+                </div>
+                <div class="col-sm-12 ls-space margin top-5 bottom-5">
+                    <div class="scope-preview" v-show="previewActive">
+                        <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :loading="previewLoading" />
+                    </div>
                 </div>
             </div>
         </div>

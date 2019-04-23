@@ -37,7 +37,6 @@
                                         <th><?php eT("Attribute field"); ?></th>
                                         <th><?php eT("Field description"); ?></th>
                                         <th><?php eT("Mandatory?"); ?></th>
-                                        <th title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT("Encrypted?"); ?></th>
                                         <th><?php eT("Show during registration?") ?></th>
                                         <th><?php eT("Field caption"); ?></th>
                                         <th><?php eT("CPDB mapping"); ?></th>
@@ -49,60 +48,32 @@
                                         if (isset($tokenfielddata[$sTokenField]))
                                             $tokenvalues = $tokenfielddata[$sTokenField];
                                         else
-                                            $tokenvalues = array('description' => '','mandatory' => 'N','encrypted' => 'N','show_register' => 'N','cpdbmap'=>'');
+                                            $tokenvalues = array('description' => '','mandatory' => 'N','show_register' => 'N','cpdbmap'=>'');
                                         $nrofattributes++;
                                         echo "
                                         <tr>
                                         <td>{$sTokenField}</td>";
                                         if ($sLanguage == $oSurvey->language)
                                         { ?>
-                                            <td>
-                                                <?php if (empty($tokenvalues['coreattribute'])){ ?>
-                                                    <input type='text' name='description_<?php echo $sTokenField; ?>' value='<?php echo htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'); ?>' />
-                                                <?php } else { ?>
-                                                    <span><?php echo gT('Mandatory attribute'); ?></span>
-                                                <?php } ?>
-                                            </td>
+                                            <td><input type='text' name='description_<?php echo $sTokenField; ?>' value='<?php echo htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'); ?>' /></td>
                                             <td>
                                                 <?php
-                                                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                        'name' => "mandatory_{$sTokenField}",
-                                                        'id'=>"mandatory_{$sTokenField}",
-                                                        'value' => $tokenvalues['mandatory']=='Y'?'1':'0',
-                                                        'onLabel'=>gT('On'),
-                                                        'offLabel' => gT('Off'),
-                                                        'htmlOptions'=>array(
-                                                            'disabled'=>empty($tokenvalues['coreattribute']) ? false : true,
-                                                        )
-                                                    ));
+                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                    'name' => "mandatory_{$sTokenField}",
+                                                    'id'=>"mandatory_{$sTokenField}",
+                                                    'value' => $tokenvalues['mandatory']=='Y'?'1':'0',
+                                                    'onLabel'=>gT('On'),
+                                                    'offLabel' => gT('Off')));
                                                 ?>
                                             </td>
                                             <td>
                                                 <?php
-                                                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                        'name' => "encrypted_{$sTokenField}",
-                                                        'id'=>"encrypted_{$sTokenField}",
-                                                        'value' => $tokenvalues['encrypted']=='Y'?'1':'0',
-                                                        'onLabel'=>gT('On'),
-                                                        'offLabel' => gT('Off'),
-                                                        'htmlOptions'=>array(
-                                                            'disabled' => !$bEncrypted,
-                                                        )
-                                                    ));
-                                                ?>
-                                            </td>
-                                            <td>
-                                                <?php 
-                                                    $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                                        'name' => "show_register_{$sTokenField}",
-                                                        'id'=>"show_register_{$sTokenField}",
-                                                        'value' => $tokenvalues['show_register']=='Y'?'1':'0',
-                                                        'onLabel'=>gT('On'),
-                                                        'offLabel' => gT('Off'),
-                                                        'htmlOptions'=>array(
-                                                            'disabled'=>empty($tokenvalues['coreattribute']) ? false : true,
-                                                        )
-                                                    ));
+                                                $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                                    'name' => "show_register_{$sTokenField}",
+                                                    'id'=>"show_register_{$sTokenField}",
+                                                    'value' => $tokenvalues['show_register']=='Y'?'1':'0',
+                                                    'onLabel'=>gT('On'),
+                                                    'offLabel' => gT('Off')));
                                                 ?>
                                             </td>
                                             <?php
@@ -112,15 +83,13 @@
                                             echo "
                                             <td>", htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
                                             <td>", $tokenvalues['mandatory'] == 'Y' ? eT('Yes') : eT('No'), "</td>
-                                            <td>", $tokenvalues['encrypted'] == 'Y' ? eT('Yes') : eT('No'), "</td>
                                             <td>", $tokenvalues['show_register'] == 'Y' ? eT('Yes') : eT('No'), "</td>";
                                         }; ?>
                                         <td><input type='text' name='caption_<?php echo $sTokenField; ?>_<?php echo $sLanguage; ?>' value='<?php echo htmlspecialchars(!empty($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '', ENT_QUOTES, 'UTF-8'); ?>' /></td>
                                         <td><?php
-                                            if ($sLanguage == $oSurvey->language){
-                                                if (empty($tokenvalues['coreattribute'])){
-                                                    echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-control'));
-                                                }
+                                            if ($sLanguage == $oSurvey->language)
+                                            {
+                                                echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-control'));
                                             }
                                             else
                                             {
@@ -131,7 +100,7 @@
                                         <?php
                                         if ($examplerow !== false)
                                         {
-                                            //echo htmlspecialchars($examplerow[$sTokenField]);
+                                            echo htmlspecialchars($examplerow[$sTokenField]);
                                         }
                                         else
                                         {

@@ -169,3 +169,151 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     }
 }
 
+
+/*
+function do_multiplechoice($ia)
+{
+    //// Init variables
+
+    // General variables
+    global $thissurvey;
+    $kpclass                = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
+    $inputnames             = array(); // It is used!
+    $checkconditionFunction = "checkconditions"; // name of the function to check condition TODO : check is used more than once
+    $iSurveyId              = Yii::app()->getConfig('surveyID'); // survey id
+    $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
+    $coreClass = "ls-answers checkbox-list answers-list";
+    // Question attribute variables
+    $aQuestionAttributes    = (array) QuestionAttribute::model()->getQuestionAttributes($ia[0]); // Question attributes
+    $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang]) != '') ? $aQuestionAttributes['other_replace_text'][$sSurveyLang] : gT('Other:'); // text for 'other'
+    $iNbCols                = (trim($aQuestionAttributes['display_columns']) != '') ? $aQuestionAttributes['display_columns'] : 1; // number of columns
+    $aSeparator             = getRadixPointData($thissurvey['surveyls_numberformat']);
+    $sSeparator             = $aSeparator['separator'];
+
+    $oth_checkconditionFunction = ($aQuestionAttributes['other_numbers_only'] == 1) ? "fixnum_checkconditions" : "checkconditions";
+
+    //// Retrieving datas
+
+    // Getting question
+    $oQuestion = Question::model()->findByPk(array('qid'=>$ia[0], 'language'=>$sSurveyLang));
+    $other     = $oQuestion->other;
+
+    // Getting answers
+    $aQuestions = $oQuestion->getOrderedSubQuestions($aQuestionAttributes['random_order'], $aQuestionAttributes['exclude_all_others']);
+    $anscount  = count($aQuestions);
+    $anscount  = ($other == 'Y') ? $anscount + 1 : $anscount; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
+
+    // First we calculate the width of each column
+    // Max number of column is 12 http://getbootstrap.com/css/#grid
+    $iColumnWidth = round(12 / $iNbCols);
+    $iColumnWidth = ($iColumnWidth >= 1) ? $iColumnWidth : 1;
+    $iColumnWidth = ($iColumnWidth <= 12) ? $iColumnWidth : 12;
+    $iMaxRowsByColumn = ceil($anscount / $iNbCols);
+
+    if ($iNbCols > 1) {
+        $coreClass .= " multiple-list nbcol-{$iNbCols}";
+    }
+
+    /// Generate answer rows
+    foreach ($aQuestions as $aQuestion) {
+        $myfname = $ia[1].$aQuestion['title'];
+
+        $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
+        $checkedState = '';
+        /* If the question has already been ticked, check the checkbox
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
+            if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == 'Y') {
+                $checkedState = 'CHECKED';
+            }
+        }
+
+        $sCheckconditionFunction = $checkconditionFunction.'(this.value, this.name, this.type)';
+        $sValue                  = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
+        $inputnames[]            = $myfname;
+
+
+        ////
+        // Insert row
+        // Display the answer row
+        $aRows[] = array(
+            'name'                    => $ia[1], // field name
+            'title'                   => $aQuestion['title'],
+            'question'                => $aQuestion->questionL10ns[$sSurveyLang]->question,
+            'ansrow'                  => $aQuestion,
+            'checkedState'            => $checkedState,
+            'sCheckconditionFunction' => $sCheckconditionFunction,
+            'myfname'                 => $myfname,
+            'sValue'                  => $sValue,
+            'relevanceClass'          => $relevanceClass,
+            );
+
+    }
+
+    //==>  rows
+    if ($other == 'Y') {
+        $myfname = $ia[1].'other';
+        $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
+        $checkedState = '';
+        // othercbox can be not display, because only input text goes to database
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) != '') {
+            $checkedState = 'CHECKED';
+        }
+
+        $sValue = '';
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
+            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            if ($aQuestionAttributes['other_numbers_only'] == 1) {
+                $dispVal = str_replace('.', $sSeparator, $dispVal);
+            }
+            $sValue .= htmlspecialchars($dispVal, ENT_QUOTES);
+        }
+
+        // TODO : check if $sValueHidden === $sValue
+        $sValueHidden = '';
+        if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) {
+            $dispVal = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
+            if ($aQuestionAttributes['other_numbers_only'] == 1) {
+                $dispVal = str_replace('.', $sSeparator, $dispVal);
+            }
+            $sValueHidden = htmlspecialchars($dispVal, ENT_QUOTES); ;
+        }
+
+        $inputnames[] = $myfname;
+        ++$anscount;
+
+        ////
+        // Insert row
+        // Display the answer row
+        $aRows[] = array(
+            'myfname'                    => $myfname,
+            'othertext'                  => $othertext,
+            'checkedState'               => $checkedState,
+            'kpclass'                    => $kpclass,
+            'sValue'                     => $sValue,
+            'oth_checkconditionFunction' => $oth_checkconditionFunction,
+            'checkconditionFunction'     => $checkconditionFunction,
+            'sValueHidden'               => $sValueHidden,
+            'relevanceClass'             => $relevanceClass,
+            'other'                      => true
+            );
+
+
+    }
+
+
+
+    // ==> answer
+    $answer = doRender('/survey/questions/answer/multiplechoice/answer', array(
+        'aRows'            => $aRows,
+        'name'             => $ia[1],
+        'basename'         => $ia[1],
+        'anscount'         => $anscount,
+        'iColumnWidth'     => $iColumnWidth,
+        'iMaxRowsByColumn' => $iMaxRowsByColumn,
+        'iNbCols'          => $iNbCols,
+        'coreClass'        => $coreClass,
+        ), true);
+
+    return array($answer, $inputnames);
+}
+*/

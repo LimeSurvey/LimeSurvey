@@ -21,7 +21,6 @@
  * @property string $language Question language code. Note: There is a unique key on qid & language columns combined
  * @property string $question Question display text. The actual question.
  * @property string $help Question help-text for display
- * @property string $script Question script to be executed on runtime
  *
  */
 class QuestionL10n extends LSActiveRecord
@@ -78,8 +77,8 @@ class QuestionL10n extends LSActiveRecord
             ['qid', 'numerical', 'integerOnly'=>true],
             array('question', 'LSYii_Validators'),
             array('help', 'LSYii_Validators'),
-            array('script', 'LSYii_Validators'),
             array('language', 'length', 'min' => 2, 'max'=>20), // in array languages ?
         );
     }
+
 }

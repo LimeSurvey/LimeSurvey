@@ -1,7 +1,6 @@
 import Vue from "vue";
 import isEmpty from "lodash/isEmpty";
 import keys from "lodash/keys";
-import merge from "lodash/merge";
 import indexOf from "lodash/indexOf";
 
 export default {
@@ -9,14 +8,11 @@ export default {
     setCurrentQuestion : (state, newValue) => {
         state.currentQuestion = newValue;
     },
-    setCurrentQuestionGroupInfo : (state, newValue) => {
-        state.currentQuestionGroupInfo = newValue;
-    },
     setCurrentQuestionI10N : (state, newValue) => {
         state.currentQuestionI10N = newValue;
     },
-    setCurrentQuestionPermissions : (state, newValue) => {
-        state.currentQuestionPermissions = newValue;
+    setCurrentQuestionAttributes : (state, newValue) => {
+        state.currentQuestionAttributes = newValue;
     },
     setCurrentQuestionGeneralSettings : (state, newValue) => {
         state.currentQuestionGeneralSettings = newValue;
@@ -34,25 +30,15 @@ export default {
         state.currentQuestionAnswerOptions = newValue;
     },
 
-    //Update currently set values
-    updateCurrentQuestion(state, valueObject) {
-        state.currentQuestion = merge({}, valueObject, state.currentQuestion);
-        Vue.set(state.currentQuestion, 'typeInformation', valueObject.typeInformation);
-    },
-    updateCurrentQuestionGeneralSettings(state, valueObject) {
-        state.currentQuestionGeneralSettings = merge({}, valueObject, state.currentQuestionGeneralSettings);
-    },
-    updateCurrentQuestionAdvancedSettings(state, valueObject) {
-        state.currentQuestionAdvancedSettings = merge({}, valueObject, state.currentQuestionAdvancedSettings);
-    },
-    updateCurrentQuestionSubquestions(state, valueObject) {
-        state.currentQuestionSubquestions = merge({}, valueObject, state.currentQuestionSubquestions);
-    },
-    updateCurrentQuestionAnswerOptions(state, valueObject) {
-        state.currentQuestionAnswerOptions = merge({}, valueObject, state.currentQuestionAnswerOptions);
-    },
-
     //Immutables
+    unsetImmutableQuestionAttributes : (state, newValue) => {
+        state.questionAttributesImmutable = {};
+    },
+    setImmutableQuestionAttributes : (state, newValue) => {
+        if(isEmpty(state.questionAttributesImmutable)) {
+            state.questionAttributesImmutable = newValue;
+        }
+    },
 
     unsetQuestionImmutable : (state) => {
         state.questionImmutable = {};
@@ -165,10 +151,4 @@ export default {
     setQuestionTypeList : (state, newValue) => {
         state.questionTypes = newValue;
     },
-    toggleDebugMode: (state) => {
-        state.debugMode = !state.debugMode;
-    },
-    setInTransfer: (state, transferState) => {
-        state.inTransfer = transferState;
-    }
 };

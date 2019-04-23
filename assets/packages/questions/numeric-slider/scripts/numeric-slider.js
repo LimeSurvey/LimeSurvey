@@ -23,11 +23,10 @@ var LSSlider = function (options) {
         setPosition = options.setPosition || '',
         custom_handle = options.custom_handle || null,
         settings = {
-            labelledby: options.labelElement || null,
-            value: options.value || null,
-            min: (typeof options.min != 'undefined') ? options.min : 0,
-            max: (typeof options.max != 'undefined') ? options.max : 100,
-            step: options.step || 1,
+            value: options.value || options.position || null,
+            min: options.min || '0',
+            max: options.max || '1',
+            step: options.step || '1',
             orientation: options.orientation || 'horizontal',
             handle: options.handle || '',
             tooltip: options.tooltip || '',
@@ -97,7 +96,7 @@ var LSSlider = function (options) {
 
         },
         setValue = function (value) {
-            value = value || parseFloat(position);
+            value = value || parseInt(position);
             sliderObject.setValue(value, true, true);
             elementObject.val(value.toString().replace('.', separator)).trigger('keyup');
             writeToRootElement(value);
@@ -133,12 +132,12 @@ var LSSlider = function (options) {
                 /* Position slider button at position */
                 listItemObject.find('.slider-container').removeClass('slider-touched').addClass('slider-reset');
                 sliderObject.$sliderElem.removeClass('slider-touched').addClass('slider-reset');
+                rootElementObject.addClass('slider-untouched');
                 setValue(null, true, true);
                 /* if don't set position : reset to '' */
                 if (!setPosition) {
-                    sliderObject.$sliderElem.addClass('slider-untouched');
                     listItemObject.find('div.tooltip').hide();
-                    rootElementObject.val('').trigger('keyup');
+                    elementObject.val('').trigger('keyup');
                 } else {
                     elementObject.trigger('keyup');
                 }
@@ -156,16 +155,12 @@ var LSSlider = function (options) {
                customStyleSheet.appendTo('body');
                 // document.styleSheets[0].addRule('#' + elementObject.attr('id') + ' .slider-handle.custom::before', '{ content: "' + custom_handle + '" }');
             }
+            
             sliderObject = new Slider(elementObject[0], createSliderSettings());
-            if(rootElementObject.val() === "") {
-                sliderObject.$sliderElem.addClass('slider-untouched');
-                if(setPosition) {
-                    triggerChanges();
-                }
-            } else {
-                sliderObject.setValue(rootElementObject.val().toString().replace(separator,'.'), true, true);
-            }
-
+            sliderObject.$sliderElem.addClass('slider-untouched');
+            triggerChanges();
+            
+            
             if (debugMode > 0) {
                 console.ls.log('sliderDebug slider created', sliderObject);
                 console.ls.log('sliderDebug slider settings', sliderSettings);

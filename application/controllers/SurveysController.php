@@ -51,13 +51,7 @@
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
 
-            // maintenance mode
-            $sMaintenanceMode = getGlobalSetting('maintenancemode');
-            if ($sMaintenanceMode == 'hard' || $sMaintenanceMode == 'soft'){
-                Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('aSurveyInfo'=>$aData), false);
-            } else {
-                Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$aData), false);
-            }
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$aData), false);
 
         }
         /**

@@ -169,7 +169,6 @@ class QuestionGroup extends LSActiveRecord
         $questionIds = QuestionGroup::getQuestionIdsInGroup($groupId);
         Question::deleteAllById($questionIds);
         Assessment::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
-        QuestionGroupL10n::model()->deleteAllByAttributes(array('gid' =>$groupId));
         return QuestionGroup::model()->deleteAllByAttributes(array('sid' => $surveyId, 'gid' => $groupId));
     }
 
@@ -258,9 +257,11 @@ class QuestionGroup extends LSActiveRecord
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
             if (is_null($condarray)) {
+                $sDeleteUrl = Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid");
+
                 $button .= '<span data-toggle="tooltip" title="'.gT('Delete survey group').'">'
-                    .'<button class="btn btn-default" '
-                    .' data-onclick="(function() { '.CHtml::encode(convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $this->sid,  "gid"=>$this->gid]))).' })" '
+                    .'<a class="btn btn-default" href="#" '
+                    .' data-href="'.$sDeleteUrl.'" '
                     .' data-target="#confirmation-modal"'
                     .' role="button"'
                     .' data-toggle="modal"'
@@ -268,20 +269,20 @@ class QuestionGroup extends LSActiveRecord
                     .'>'
                         .'<i class="fa fa-trash text-danger "></i>'
                         .'<span class="sr-only">'.gT('Delete survey group').'</span>'
-                    .'</button>'
+                    .'</a>'
                     .'</span>';
 
             } else {
                 $button .= '<span data-toggle="tooltip" title="'.gT('Group cant be deleted, because of depending conditions').'">'
-                    .'<button class="btn btn-default" '
-                    .' disabled '
+                    .'<a class="btn btn-default" href="#" '
+                    .' class="disabled" disabled '
                     .' role="button"'
                     .' data-toggle="popover"'
                     .' data-tooltip="true"'
                     .' title="'.gT("Impossible to delete this group because there is at least one question having a condition on its content", "js").'">'
                         .'<i class="fa fa-trash text-muted "></i>'
                         .'<span class="sr-only">'.gT('Delete survey group not possible').'</span>'
-                    .'</button>'
+                    .'</a>'
                     .'</span>';
             }
         }

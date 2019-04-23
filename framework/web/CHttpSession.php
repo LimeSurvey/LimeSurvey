@@ -249,12 +249,10 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 		$data=session_get_cookie_params();
 		extract($data);
 		extract($value);
-		$this->freeze();
 		if(isset($httponly))
 			session_set_cookie_params($lifetime,$path,$domain,$secure,$httponly);
 		else
 			session_set_cookie_params($lifetime,$path,$domain,$secure);
-		$this->unfreeze();
 	}
 
 	/**
@@ -341,9 +339,7 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	 */
 	public function setUseTransparentSessionID($value)
 	{
-		$this->freeze();
 		ini_set('session.use_trans_sid',$value?'1':'0');
-		$this->unfreeze();
 	}
 
 	/**
@@ -359,9 +355,7 @@ class CHttpSession extends CApplicationComponent implements IteratorAggregate,Ar
 	 */
 	public function setTimeout($value)
 	{
-		$this->freeze();
 		ini_set('session.gc_maxlifetime',$value);
-		$this->unfreeze();
 	}
 
 	/**

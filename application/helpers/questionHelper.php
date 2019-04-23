@@ -796,17 +796,6 @@ class questionHelper
             "caption"=>gT('Insert page break in printable view')
         );
 
-        self::$attributes["placeholder"] = array(
-            "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_N_NUMERICAL,
-            'category'=>gT('Display'),
-            'sortorder'=>12,
-            'inputtype'=>'text',
-            'expression'=>1,
-            'i18n'=>true,
-            "help"=>gT('A placeholder answer to a question. This will appear in the answer field and disappear when real answer text is entered.'),
-            "caption"=>gT('Placeholder answer')
-        );
-
         self::$attributes["prefix"] = array(
         "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_N_NUMERICAL.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_S_SHORT_FREE_TEXT,
             'category'=>gT('Display'),
@@ -899,7 +888,7 @@ class questionHelper
         self::$attributes["slider_layout"] = array(
         "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>100,
+            'sortorder'=>1,
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
@@ -910,7 +899,7 @@ class questionHelper
         self::$attributes["slider_min"] = array(
         "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>110,
+            'sortorder'=>10,
             'inputtype'=>'text',
             'expression'=>2,
             "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
@@ -920,7 +909,7 @@ class questionHelper
         self::$attributes["slider_max"] = array(
         "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>120,
+            'sortorder'=>11,
             'inputtype'=>'text',
             'expression'=>2,
             "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
@@ -928,9 +917,9 @@ class questionHelper
         );
 
         self::$attributes["slider_accuracy"] = array(
-            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>130,
+            'sortorder'=>30,
             'inputtype'=>'text',
             'expression'=>2,
             "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
@@ -938,29 +927,19 @@ class questionHelper
         );
 
         self::$attributes["slider_default"] = array(
-            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>210,
+            'sortorder'=>50,
             'inputtype'=>'text',
             'expression'=>2, // must be controlled : unsure
-            "help"=>gT('Slider start as this value. You can use Expression manager, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
+            "help"=>gT('Slider start as this value. You can use Expression manager, but this must be a number before showing the page.'),
             "caption"=>gT('Slider initial value')
-        );
-        self::$attributes["slider_default_set"] = array(
-            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
-            'category'=>gT('Slider'),
-            'sortorder'=>220,
-            'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
-            'default'=>1, /* before 3.0 : this is the default behaviour */
-            "help"=>gT('When using slider initial value set this value at survey start.'),
-            "caption"=>gT('Slider initial value set at start')
         );
 
         self::$attributes["slider_middlestart"] = array(
-            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>200,
+            'sortorder'=>40,
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
@@ -968,10 +947,10 @@ class questionHelper
             "caption"=>gT('Slider starts at the middle position')
         );
 
-        self::$attributes["slider_orientation"] = array(
-            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
+        self::$attributes["slider_default_set"] = array(
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>300,
+            'sortorder'=>2,
             'inputtype'=>'buttongroup',
             'options'=>array(
                 0=>gT('Horizontal', 'unescaped'),
@@ -985,7 +964,7 @@ class questionHelper
         self::$attributes["slider_handle"] = array(
         "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>320,
+            'sortorder'=>3,
             'inputtype'=>'singleselect',
             'options'=>array(
                 0=>gT('Circle'),
@@ -1001,7 +980,7 @@ class questionHelper
         self::$attributes["slider_custom_handle"] = array(
         "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>321,
+            'sortorder'=>4,
             'inputtype'=>'text',
             'default'=>'f1ae',
             "help"=>gT('Accepts Font Awesome Unicode characters.'),
@@ -1024,20 +1003,9 @@ class questionHelper
         );
 
         self::$attributes["slider_reversed"] = array(
-            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
+        "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>310,
-            'inputtype'=>'switch',
-            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
-            'default'=>0,
-            "help"=>gT('Reverses the slider direction and repositions the min/max text accordingly.'),
-            "caption"=>gT('Reverse the slider direction')
-        );
-
-        self::$attributes["slider_reset"] = array(
-            "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
-            'category'=>gT('Slider'),
-            'sortorder'=>230,
+            'sortorder'=>50,
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
@@ -1048,7 +1016,7 @@ class questionHelper
         self::$attributes["slider_showminmax"] = array(
         "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>150,
+            'sortorder'=>100,
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
@@ -1059,7 +1027,7 @@ class questionHelper
         self::$attributes["slider_separator"] = array(
         "types"=>Question::QT_K_MULTIPLE_NUMERICAL_QUESTION,
             'category'=>gT('Slider'),
-            'sortorder'=>160,
+            'sortorder'=>110,
             'inputtype'=>'text',
             "help"=>gT('Answer|Left-slider-text|Right-slider-text separator character'),
             'default'=>'|',

@@ -287,7 +287,7 @@ class themeoptions  extends Survey_Common_Action
         $this->getController()->redirect(array("admin/themeoptions"));
     }
 
-    public function reset($gsid)
+    public function reset()
     {
         $templatename = Yii::app()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
@@ -297,7 +297,6 @@ class themeoptions  extends Survey_Common_Action
             $this->getController()->redirect(array("admin/themeoptions"));
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
-            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));            
         }
     }
 
@@ -341,31 +340,17 @@ class themeoptions  extends Survey_Common_Action
 
         $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
         $templateOptionPage           = $oModelWithInheritReplacement->optionPage;
-        $aOptionAttributes            = TemplateManifest::getOptionAttributes($oModelWithInheritReplacement->path);
-        $aTemplateConfiguration = $oModelWithInheritReplacement->getOptionPageAttributes();
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
-
-        $oSimpleInheritance = Template::getInstance($oModelWithInheritReplacement->sTemplateName, $sid, $gsid, null, true);
-        $oSimpleInheritance->options = 'inherit';
-        $oSimpleInheritanceTemplate = $oSimpleInheritance->prepareTemplateRendering($oModelWithInheritReplacement->sTemplateName);
-        $oParentOptions = (array) $oSimpleInheritanceTemplate->oOptions;
-        $oParentOptions = TemplateConfiguration::translateOptionLabels($oParentOptions);
-
         $aData = array(
             'model'=>$model,
             'templateOptionPage' => $templateOptionPage,
             'optionInheritedValues' => $oModelWithInheritReplacement->oOptions,
             'optionCssFiles' => $oModelWithInheritReplacement->files_css,
             'optionCssFramework' => $oModelWithInheritReplacement->cssframework_css,
-            'aTemplateConfiguration' => $aTemplateConfiguration,
-            'aOptionAttributes' => $aOptionAttributes,
-            'sid' => $sid,
-            'oParentOptions' => $oParentOptions,
-            'sPackagesToLoad' => $oModelWithInheritReplacement->packages_to_load
+            'sid' => $sid
         );
 
         if ($sid !== null) {
-            $aData['surveybar']['buttons']['view'] = true;
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $sid;
             $aData['title_bar']['title'] = gT("Survey template options");

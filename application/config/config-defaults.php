@@ -646,7 +646,6 @@ $config['adminimageurl']          = $config['styleurl'].$config['admintheme'].'/
 $config['applicationurl']         = $config['publicurl'].'application/';
 $config['extensionsurl']          = $config['applicationurl'].'extensions/';
 $config['adminstyleurl']          = $config['styleurl'].$config['admintheme'].'/'; // Location of button bar files for admin script
-$config['userfontsurl']            = $config['uploadurl'].'/fonts'; // Location of user's fonts
 
 // Dir
 $config['publicdir']                = $config['rootdir']; // The directory path of the public scripts
@@ -665,7 +664,6 @@ $config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'ap
 $config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the user themes
 $config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question"; // The directory containing the user's question themes.
 $config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
-$config['userfontsrootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR.'fonts'; // The directory containing the user's fonts.
 
 
 // Use alias notation, we should move to this format everywhere.
@@ -731,11 +729,6 @@ $config['pluginCoreList'] = [
 ];
 
 $config['pluginWhitelist'] = [];
-
-/* replaced in generated application/config/security.php if exist */
-$config['encryptionkeypair'] = '';
-$config['encryptionpublickey'] = '';
-$config['encryptionsecretkey'] = '';
 
 return $config;
 //settings deleted

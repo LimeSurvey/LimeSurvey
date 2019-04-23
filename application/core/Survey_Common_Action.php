@@ -624,10 +624,9 @@ class Survey_Common_Action extends CAction
                 'languagesettings' => array('condition' => 'surveyls_language=language'))
                 )->findByPk($surveyid); 
             $aData['activated'] = $activated = $sumresult1->active;
-            if($gid !== null) {
-                $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
-            }
-            $aData['condarray'] = $condarray ?? [];
+
+            $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
+            $aData['condarray'] = $condarray;
 
             $aData['languagelist'] = $oSurvey->getAllLanguages();
 

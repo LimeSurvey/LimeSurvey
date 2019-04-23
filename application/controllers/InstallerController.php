@@ -573,9 +573,7 @@ class InstallerController extends CController
                 $aData['progressValue'] = 40;
 
                 // Flush query cache because Yii does not handle properly the new DB prefix
-                if (method_exists(Yii::app()->cache, 'flush')) {
-                    Yii::app()->cache->flush();
-                }
+                Yii::app()->cache->flush();
 
                 $aDbConfigArray = $this->_getDatabaseConfigArray();
                 $aDbConfigArray['class'] = '\CDbConnection';
@@ -881,9 +879,6 @@ class InstallerController extends CController
 
         // imap php library check
         $this->checkPHPFunction('imap_open', $aData['bIMAPPresent']);
-
-        // Sodium php check
-        $this->checkPHPFunction('sodium_crypto_sign_open', $aData['sodiumPresent']);
 
         // Silently check some default PHP extensions
         $this->checkDefaultExtensions();

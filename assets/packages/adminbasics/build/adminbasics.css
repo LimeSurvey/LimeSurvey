@@ -2168,10 +2168,6 @@ table#responsedetail tr td{
     background-color: inherit;
 }
 
-#responses-grid .filter-container{
-    min-width: 6em; /* defaut em is 13px : 75/13 = 5.76… */
-}
-
 .edit-participant-modal-body {
     max-height: 500px;
     overflow-y: auto;
@@ -3343,16 +3339,6 @@ input[type="file"].form-control {
 }
 .custom.custom-margin-responsive.small.bottom-35 {
   margin-bottom: 35px;
-}
-
-textarea.form-control.input-text{
-/* Show a textarea not so big at starting */
-height:2.4em;
-}
-
-.template-files-delete-button{
-    margin: 1px 0 0 0;
-    padding: 0 5px;
 }
 
 .fa-stack.halfed {

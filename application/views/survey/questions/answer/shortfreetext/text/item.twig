@@ -9,7 +9,6 @@
  * $kpclass
  * $tiwidth
  * $dispVal
- * $placeholder
  * $maxlength
  * $checkconditionFunction
  */
@@ -37,7 +36,6 @@
             name="{{ name }}"
             id="answer{{ name }}"
             value="{{ dispVal }}"
-            placeholder="{{ placeholder }}"
             {% if inputsize %}size="{{ inputsize }}" {% endif %}
             {% if maxlength %}maxlength="{{ maxlength }}" {% endif %}
             aria-labelledby="ls-question-text-{{ basename }}"

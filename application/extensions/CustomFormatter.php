@@ -19,14 +19,7 @@ class CustomFormatter extends CFormatter {
 		return implode(', ', $expandedArr);
 	}
 
-	/**
-	 * return a string limited by $this->maxLength
-	 * @param $value
-	 * @deprecated in 3.6.2
-	 * @return $string
-	 */
 	public function formatLongText($value) {
-		$value = Chtml::encode($value);
 		if(strlen($value) > $this->maxLength) {
 			$truncated = substr($value, 0, $this->maxLength-3);
 			return trim($truncated)."...";
@@ -34,3 +27,5 @@ class CustomFormatter extends CFormatter {
 		return $value;
 	}
 }
+
+?>

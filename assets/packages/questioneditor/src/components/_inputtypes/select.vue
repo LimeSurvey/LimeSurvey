@@ -10,8 +10,7 @@
             elHelp: {type: String, default: ''},
             currentValue: {default: ''},
             elOptions: {type: Object, default: {}},
-            debug: {type: [Object, Boolean]},
-            readonly: {type: Boolean, default: false}
+            debug: {type: [Object, Boolean]}
         },
         data(){
             return {
@@ -30,7 +29,7 @@
             curValue: {
                 get() { return this.currentValue },
                 set(newValue) { 
-                    this.$emit('change', newValue);
+                    this.$emit('change', {value: newValue, 'element': elId});
                 },
             },
             showHelp(){
@@ -48,14 +47,13 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0) && !readonly" />
+        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
         <select 
             v-model="curValue"
             :class="getClasses" 
             :name="elName || elId" 
             :id="elId" 
-            :disabled="readonly"
         >
             <option 
                 v-for="(optionObject, i) in elOptions.options"

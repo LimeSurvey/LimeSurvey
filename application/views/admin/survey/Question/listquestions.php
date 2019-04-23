@@ -95,7 +95,7 @@ $baseLanguage = $oSurvey->language;
                                 'header' => gT('Question'),
                                 'name' => 'question',
                                 'value'=>function($data) use ($oSurvey) {
-                                        return array_key_exists($oSurvey->language, $data->questionL10ns) ? viewHelper::flatEllipsizeText($data->questionL10ns[$oSurvey->language]->question,true,0) : '';
+                                        return viewHelper::flatEllipsizeText($data->questionL10ns[$oSurvey->language]->question,true,0);
                                     },
                                 'htmlOptions' => array('class' => 'col-md-5'),
                             ),

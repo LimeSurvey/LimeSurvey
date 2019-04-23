@@ -461,7 +461,7 @@ class surveypermission extends Survey_Common_Action
 
             $usersummary .= ""
             . "<tr><th></th><th>".gT("Permission")."</th>\n"
-            . "<th><input type=\"checkbox\"  class=\"markall\" name='markall' /><input type='button' id='btnToggleAdvanced' value='<<' class='btn btn-default' /></th>\n"
+            . "<th><input type='button' id='btnToggleAdvanced' value='<<' class='btn btn-default' /></th>\n"
             . "<th class='extended'>".gT("Create")."</th>\n"
             . "<th class='extended'>".gT("View/read")."</th>\n"
             . "<th class='extended'>".gT("Update")."</th>\n"

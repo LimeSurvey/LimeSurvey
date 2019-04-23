@@ -139,7 +139,7 @@ var ThemeOptions = function(){
         optionObject.font = optionObject.font || (inheritPossible ? 'inherit' : 'roboto');
         
         if( optionObject.font !== 'inherit' ){
-            $('#simple_edit_options_font').val(optionObject.font);
+            $('#simple_edit_font').val(optionObject.font);
         }
         updateFieldSettings();
     };
@@ -196,12 +196,12 @@ var ThemeOptions = function(){
     };
 
     var hotswapFontField = function(){
-        $('#simple_edit_options_font').on('change', function(evt){
+        $('#simple_edit_font').on('change', function(evt){
             var currentPackageObject =  $('#TemplateConfiguration_packages_to_load').val() !== 'inherit' 
                 ? JSON.parse($('#TemplateConfiguration_packages_to_load').val()) 
                 : $(this).data('inheritvalue');
 
-            if($('#simple_edit_options_font').val() === 'inherit'){
+            if($('#simple_edit_font').val() === 'inherit'){
 
                 $('#TemplateConfiguration_packages_to_load').val('inherit');
 
@@ -210,7 +210,7 @@ var ThemeOptions = function(){
                 var packageName         = selectedFontPackage.data('font-package');
                 var formatedPackageName = "font-"+packageName;
 
-                var filteredAdd = currentPackageObject.add.filter(function(value,index){return !(/^font-.*$/.test(String(value)))});
+                var filteredAdd = currentFontObject.add.filter(function(value,index){return !(/^font-.*$/.test(String(value)))})
                 filteredAdd.push(formatedPackageName);
                 currentPackageObject.add = filteredAdd
                 $('#TemplateConfiguration_packages_to_load').val(JSON.stringify(currentPackageObject));

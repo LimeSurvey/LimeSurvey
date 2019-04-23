@@ -346,21 +346,6 @@ LS.CPDB = (function() {
                 }
             })
         });
-
-        $('.action_changeAttributeEncrypted').bootstrapSwitch();
-        $('.action_changeAttributeEncrypted').on('switchChange.bootstrapSwitch', function(event,state){
-            var self = this;
-            $.ajax({
-                url: editValueParticipantPanel, 
-                method: "POST",
-                data: { actionTarget: 'changeAttributeEncrypted', 'attribute_id': $(self).closest('tr').data('attribute_id'), 'encrypted': state},
-                dataType: 'json', 
-                success: function(resolve){
-                    $(self).prop("checked", (resolve.newValue == "Y"));
-                }
-            })
-        });
-
         if(!$('#export').hasClass('hidden')){
             $('#export').addClass('hidden');
         }

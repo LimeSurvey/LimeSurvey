@@ -13,13 +13,16 @@
 
 function navigator_countdown(n)
 {
-	$('button.disabled').prop("disabled", true);// Double check : already in navbuttonsJqueryUi
-    $(window).data('countdown', n);
-    navigator_countdown_btn().each(function(i, e)
-    {
-        $(e).data('text', $(e).text());
-    });
-    navigator_countdown_int();
+	$(document).on('ready pjax:scriptcomplete',function()
+	{
+		$('button.disabled').prop("disabled", true);// Double check : already in navbuttonsJqueryUi
+		$(window).data('countdown', n);
+		navigator_countdown_btn().each(function(i, e)
+		{
+			$(e).data('text', $(e).text());
+		});
+		navigator_countdown_int();
+	});
 }
 
 function navigator_countdown_btn()
