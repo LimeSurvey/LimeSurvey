@@ -132,10 +132,10 @@ var displayUploadedFiles = function ( filecount, fieldname, show_title, show_com
                 display += '<tr><td class="upload placeholder"><div class="upload-placeholder" /></td>';
 
             if (show_title != 0)
-                display += '<td class="upload title">'+item.title+'</td>';
+                display += '<td class="upload title">'+htmlspecialchars(item.title)+'</td>';
             if (show_comment != 0)
-                display += '<td class="upload comment">'+item.comment+'</td>';
-            display +='<td class="upload edit">'+decodeURIComponent(item.name)+'</td><td>'+'<a class="btn btn-primary" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
+                display += '<td class="upload comment">'+htmlspecialchars(item.comment)+'</td>';
+            display +='<td class="upload edit">'+htmlspecialchars(decodeURIComponent(item.name))+'</td><td>'+'<a class="btn btn-primary" onclick="javascript:upload_'+fieldname+'();$(\'#upload_'+fieldname+'\').click();"><span class="fa fa-pencil"></span>&nbsp;'+uploadLang.editFile+'</a></td></tr>';
         });
         display += '</tbody></table>';
 

@@ -238,7 +238,7 @@ class conditionsaction extends Survey_Common_Action
     //BEGIN: GATHER INFORMATION
     // 1: Get information for this question
     // @todo : use viewHelper::getFieldText and getFieldCode for 2.06 for string show to user
-    $surveyIsAnonymized = $this->getSurveyIsAnonymized();
+    $aData['surveyIsAnonymized'] = $surveyIsAnonymized = $this->getSurveyIsAnonymized();
     
     list($questiontitle, $sCurrentFullQuestionText) = $this->getQuestionTitleAndText($qid);
     
@@ -454,18 +454,19 @@ class conditionsaction extends Survey_Common_Action
                         $data['method'] = $method;
                         
                         $leftOperandType = 'unknown'; // prevquestion, tokenattr
-                        if (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/', $rows['cfieldname'], $extractedTokenAttr) > 0) {
-                            $leftOperandType = 'tokenattr';
-                            
-                            $thisAttrName = $this->getAttributeName($extractedTokenAttr);
-                            
-                            $data['name'] = $thisAttrName;
-                            
-                            // TIBO not sure this is used anymore !!
-                            $conditionsList[] = array(
-                            "cid"  => $rows['cid'],
-                            "text" => $thisAttrName
-                            );
+                        if (preg_match('/^{TOKEN:([^}]*)}$/', $rows['cfieldname'], $extractedTokenAttr) > 0) {
+                            if($surveyIsAnonymized) {
+                                $data['name'] = sprintf(gT("Unable to use %s in anonymized survey."),trim($rows['cfieldname'],"{}"));
+                            } else {
+                                $leftOperandType = 'tokenattr';
+                                $thisAttrName = $this->getAttributeName($extractedTokenAttr);
+                                $data['name'] = $thisAttrName;
+                                // TIBO not sure this is used anymore !!
+                                $conditionsList[] = array(
+                                    "cid"  => $rows['cid'],
+                                    "text" => $thisAttrName
+                                );
+                            }
                         } else {
                             $leftOperandType = 'prevquestion';
                             foreach ($cquestions as $cqn) {
@@ -475,10 +476,11 @@ class conditionsaction extends Survey_Common_Action
                                     "cid"  => $rows['cid'],
                                     "text" => $cqn[0]." ({$rows['value']})"
                                     );
-                                } else {
-                                    //$aViewUrls['output'] .= "\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
                                 }
                             }
+                        }
+                        if(!isset($data['name'])) {
+                            $data['name'] = sprintf(gT("Variable not found: %s"),$rows['cfieldname']);
                         }
                         
                         // let's read the condition's right operand
@@ -1216,11 +1218,13 @@ protected function getTheseRows(array $questionlist)
     foreach ($questionlist as $ql) {
         
         $result = Question::model()->with(array(
-        'groups' => array(
-        'condition' => 'groups.language = :lang',
-        'params' => array(':lang' => $this->language)
+        'group' => array(
+            'condition' => 'questionGroupL10ns.language = :lang',
+            'params' => array(':lang' => $this->language)
         ),
-        ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $this->iSurveyID, 'language' => $this->language));
+        'group.questionGroupL10ns',
+        'questionL10ns'
+        ))->findAllByAttributes(array('qid' => $ql, 'parent_qid' => 0, 'sid' => $this->iSurveyID));
         
         // And store again these questions in this array...
         foreach ($result as $myrows) {
@@ -1229,7 +1233,7 @@ protected function getTheseRows(array $questionlist)
             "qid"        =>    $myrows['qid'],
             "sid"        =>    $myrows['sid'],
             "gid"        =>    $myrows['gid'],
-            "question"    =>    $myrows['question'],
+            "question"    =>    $myrows->questionL10ns[$this->language]['question'],
             "type"        =>    $myrows['type'],
             "mandatory"    =>    $myrows['mandatory'],
             "other"        =>    $myrows['other'],
@@ -1610,11 +1614,17 @@ protected function getCAnswersAndCQuestions(array $theserows)
                 break;
 
                 default:
-                    $aresult = Answer::model()->findAllByAttributes(array(
-                    'qid' => $rows['qid'],
-                    'scale_id' => 0,
-                    'language' => $this->language
-                    ), array('order' => 'sortorder, answer'));
+                    $aresult = Answer::model()->with(array(
+                        'answerL10ns' => array(
+                            'condition' => 'answerL10ns.language = :lang',
+                            'params' => array(':lang' => $this->language)
+                            ))
+                        )->findAllByAttributes(array(
+                        'qid' => $rows['qid'],
+                        'scale_id' => 0,
+                        ), array('order' => 'sortorder, answer'
+                        )
+                    );
                     
                     foreach ($aresult as $arows) {
                         $theanswer = $arows['answer'];
@@ -1723,27 +1733,28 @@ protected function getEditConditionForm(array $args)
     }
     
     $data = array(
-    'subaction'     => $subaction,
-    'iSurveyID'     => $iSurveyID,
-    'gid'           => $gid,
-    'qid'           => $qid,
-    'title'         => $title,
-    'showScenario'  => $this->shouldShowScenario($subaction, $scenariocount),
-    'qcountI'       => $qcount + 1,
-    'cquestions'    => $cquestions,
-    'p_csrctoken'   => $p_csrctoken,
-    'p_prevquestionsgqa'  => $p_prevquestionsgqa,
-    'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
-    'method'        => $method,
-    'subaction'     => $subaction,
-    'EDITConditionConst'  => $this->getEDITConditionConst($subaction),
-    'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction),
-    'submitLabel'   => $submitLabel,
-    'submitSubaction'     => $submitSubaction,
-    'submitcid'     => $submitcid,
-    'editSourceTab' => $this->getEditSourceTab(),
-    'editTargetTab' => $this->getEditTargetTab(),
-    'addConditionToScenarioNr' => Yii::app()->request->getQuery('scenarioNr')
+        'subaction'     => $subaction,
+        'iSurveyID'     => $iSurveyID,
+        'gid'           => $gid,
+        'qid'           => $qid,
+        'title'         => $title,
+        'showScenario'  => $this->shouldShowScenario($subaction, $scenariocount),
+        'qcountI'       => $qcount + 1,
+        'cquestions'    => $cquestions,
+        'p_csrctoken'   => $p_csrctoken,
+        'p_prevquestionsgqa'  => $p_prevquestionsgqa,
+        'tokenFieldsAndNames' => $this->tokenFieldsAndNames,
+        'method'        => $method,
+        'subaction'     => $subaction,
+        'EDITConditionConst'  => $this->getEDITConditionConst($subaction),
+        'EDITConditionRegexp' => $this->getEDITConditionRegexp($subaction),
+        'submitLabel'   => $submitLabel,
+        'submitSubaction'     => $submitSubaction,
+        'submitcid'     => $submitcid,
+        'editSourceTab' => $this->getEditSourceTab(),
+        'editTargetTab' => $this->getEditTargetTab(),
+        'addConditionToScenarioNr' => Yii::app()->request->getQuery('scenarioNr'),
+        'surveyIsAnonymized' => $this->getSurveyIsAnonymized(),
     );
     $result .= $this->getController()->renderPartial('/admin/conditions/includes/form_editconditions_header', $data, true);
     

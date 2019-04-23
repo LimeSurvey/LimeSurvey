@@ -47,8 +47,8 @@
 
 // ==================================================================
 // setting constants for 'checked' and 'selected' inputs
-define('CHECKED', ' checked="checked"', true);
-define('SELECTED', ' selected="selected"', true);
+define('CHECKED', ' checked="checked"');
+define('SELECTED', ' selected="selected"');
 
 /**
 * setNoAnswerMode
@@ -194,7 +194,7 @@ function retrieveAnswers($ia)
         };
 
         if (!defined('QUESTION_START')) {
-            define('QUESTION_START', file_get_contents(getTemplatePath($thissurvey['template']).'/question_start.pstpl', true));
+            define('QUESTION_START', file_get_contents(getTemplatePath($thissurvey['template']).'/question_start.pstpl'));
         };
 
         $qtitle_custom = str_replace($find, $replace, QUESTION_START);
@@ -956,6 +956,7 @@ function do_list_radio($ia)
             'answer'        => $ansrow->answerL10ns[$sSurveyLang]->answer,
             'checkedState'  => $checkedState,
             'myfname'       => $myfname,
+            'i'             => $i
             ), true);
 
         ////
@@ -2092,7 +2093,6 @@ function do_multiplenumeric($ia)
         } elseif ($aQuestionAttributes['slider_middlestart'] == 1) {
             $slider_position = intval(($slider_max + $slider_min) / 2);
         }
-
         $slider_separator = (trim($aQuestionAttributes['slider_separator']) != '') ? $aQuestionAttributes['slider_separator'] : "";
         $slider_reset = ($aQuestionAttributes['slider_reset']) ? 1 : 0;
 
@@ -2267,7 +2267,7 @@ function do_multiplenumeric($ia)
                     'slider_mintext'         => $slider_mintext,
                     'slider_max'             => $slider_max,
                     'slider_maxtext'         => $slider_maxtext,
-                    'slider_position'        => intval($slider_position),
+                    'slider_position'        => $slider_position,
                     'slider_reset_set'       => $slider_default_set,
                     'slider_handle'          => (isset($slider_handle)) ? $slider_handle : '',
                     'slider_reset'           => $slider_reset,
@@ -2382,7 +2382,12 @@ function do_numerical($ia)
     } else {
         $integeronly = 0;
     }
-
+    if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+    } else {
+        $placeholder = '';
+    }
+ 
     $fValue     = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
     $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeparator = $sSeparator['separator'];
@@ -2413,6 +2418,7 @@ function do_numerical($ia)
         'integeronly'            => $integeronly,
         'maxlength'              => $maxlength,
         'suffix'                 => $suffix,
+        'placeholder'            => $placeholder,
         ), true);
 
     $inputnames = [];
@@ -2478,6 +2484,11 @@ function do_shortfreetext($ia)
     } else {
         $suffix = '';
     }
+    if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+    } else {
+        $placeholder = '';
+    }
     if ($thissurvey['nokeyboard'] == 'Y') {
         includeKeypad();
         $kpclass     = "text-keypad";
@@ -2517,6 +2528,7 @@ function do_shortfreetext($ia)
             'prefix'                 => $prefix,
             'suffix'                 => $suffix,
             'inputsize'              => $inputsize,
+            'placeholder'            => $placeholder,
             'withColumn'             => $withColumn
             ), true);
     } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 1) {
@@ -2569,7 +2581,8 @@ function do_shortfreetext($ia)
         } elseif ($aQuestionAttributes['location_mapservice'] == 1) {
             Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
         } elseif ($aQuestionAttributes['location_mapservice'] == 2) {
-            Yii::app()->getClientScript()->registerScriptFile("http://www.openlayers.org/api/OpenLayers.js", LSYii_ClientScript::POS_BEGIN);
+            /* 2019-04-01 : openlayers auto redirect to https (on firefox) , but always good to use automatic protocol */
+            Yii::app()->getClientScript()->registerScriptFile("//www.openlayers.org/api/OpenLayers.js", LSYii_ClientScript::POS_BEGIN);
         }
 
         $questionHelp = false;
@@ -2595,6 +2608,7 @@ function do_shortfreetext($ia)
             'questionHelp'           => $questionHelp,
             'question_text_help'     => $sQuestionHelpText,
             'inputsize'              => $inputsize,
+            'placeholder'            => $placeholder,
             'withColumn'             => $withColumn
             ), true);
     } elseif ((int) ($aQuestionAttributes['location_mapservice']) == 100) {
@@ -2660,6 +2674,7 @@ function do_shortfreetext($ia)
             'currentLat'=>$currentLatLong[0],
             'currentLong'=>$currentLatLong[1],
             'inputsize'              => $inputsize,
+            'placeholder'            => $placeholder,
             'withColumn'             => $withColumn
         );
         $answer = doRender('/survey/questions/answer/shortfreetext/location_mapservice/item_100', $itemDatas, true);
@@ -2682,6 +2697,7 @@ function do_shortfreetext($ia)
             'dispVal'=>$dispVal,
             'maxlength'=>$maxlength,
             'inputsize'              => $inputsize,
+            'placeholder'            => $placeholder,
             'withColumn'             => $withColumn
         );
         $answer = doRender('/survey/questions/answer/shortfreetext/text/item', $itemDatas, true);
@@ -2760,7 +2776,12 @@ function do_longfreetext($ia)
     } else {
         $inputsize = null;
     }
-
+    if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+    } else {
+        $placeholder = '';
+    }
+    
     $dispVal = ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) ?htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) : '';
 
     $answer = doRender('/survey/questions/answer/longfreetext/answer', array(
@@ -2775,6 +2796,7 @@ function do_longfreetext($ia)
         'dispVal'                => $dispVal,
         'inputsize'              => $inputsize,
         'maxlength'              => $maxlength,
+        'placeholder'            => $placeholder,
         ), true);
 
 
@@ -2831,7 +2853,12 @@ function do_hugefreetext($ia)
     } else {
         $inputsize = null;
     }
-
+    if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+    } else {
+        $placeholder = '';
+    }
+ 
     $dispVal = "";
     if ($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]) {
         $dispVal = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
@@ -2849,6 +2876,7 @@ function do_hugefreetext($ia)
         'dispVal'=>$dispVal,
         'inputsize'=>$inputsize,
         'maxlength'=>$maxlength,
+        'placeholder'=>$placeholder,
     );
     $answer = doRender('/survey/questions/answer/longfreetext/answer', $itemDatas, true);
 

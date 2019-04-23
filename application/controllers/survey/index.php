@@ -92,14 +92,14 @@ class index extends CAction
 
             if (!$this->_canUserPreviewSurvey($surveyid)) {
 
-                // @todo : throw a 401
                 $aErrors  = array(gT('Error'));
-                $message = gT("We are sorry but you don't have permissions to do this.");
+                $message = gT("We are sorry but you don't have permissions to do this.",'unescaped');
                 if(Permission::getUserId()) {
                     throw new CHttpException(403, $message);
                 }
                 throw new CHttpException(401, $message);
             } else {
+                killSurveySession($surveyid);
                 if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
                     $previewmode = 'question';
                 }
@@ -123,7 +123,20 @@ class index extends CAction
             $tokensexist = 1;
         }
 
-
+        // maintenance mode
+        $sMaintenanceMode = getGlobalSetting('maintenancemode');
+        if ($sMaintenanceMode == 'hard'){
+            if ($previewmode === false){
+                Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+            }
+        } elseif ($sMaintenanceMode == 'soft'){
+            if ($move === null){
+                if ($previewmode === false){
+                    Yii::app()->twigRenderer->renderTemplateFromFile("layout_maintenance.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
+                }
+            }
+        }
+                  
         if ($tokensexist == 1 && isset($token) && $token != "" && tableExists("{{tokens_".$surveyid."}}") && !$previewmode) {
 
             // check also if it is allowed to change survey after completion
@@ -235,7 +248,7 @@ class index extends CAction
                 if(Permission::getUserId()) {
                     throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this."));
                 }
-                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this."));
+                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this.",'unescaped'));
             }
         }
 

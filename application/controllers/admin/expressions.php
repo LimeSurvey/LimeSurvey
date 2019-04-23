@@ -91,6 +91,8 @@ class Expressions extends Survey_Common_Action
             $language = sanitize_languagecode($language);
         }
 
+        $aData['lang'] = $language;
+
         $aData['sid'] = $sid;
         $aData['title_bar']['title'] = gT("Survey logic file");
         $aData['subaction'] = gT("Survey logic file");
@@ -178,8 +180,6 @@ class Expressions extends Survey_Common_Action
         App()->getClientScript()->registerPackage('expressions');
         App()->getClientScript()->registerPackage('expression-extend');
 
-
-        
         $this->_renderWrappedTemplate('expressions', 'test/survey_logic_form', $aData);        
     }
 
@@ -188,7 +188,7 @@ class Expressions extends Survey_Common_Action
         if ($which == 'survey_logic_file') {
             $which = 'survey_logic_form';
         }
-            $this->_renderWrappedTemplate('expressions', 'test/'.$which, $aData);
+        $this->_renderWrappedTemplate('expressions', 'test/'.$which, $aData);
         //$this->getController()->render('/admin/expressions/test/'.$which);
     }
 

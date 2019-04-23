@@ -89,10 +89,10 @@ class printablesurvey extends Survey_Common_Action
             $sFullTemplatePath = $oTemplate->path;
             $sFullTemplateUrl = Template::model()->getTemplateURL($templatename)."/";
             if (!defined('PRINT_TEMPLATE_DIR')) {
-                define('PRINT_TEMPLATE_DIR', $sFullTemplatePath, true);
+                define('PRINT_TEMPLATE_DIR', $sFullTemplatePath);
             }
             if (!defined('PRINT_TEMPLATE_URL')) {
-                define('PRINT_TEMPLATE_URL', $sFullTemplateUrl, true);
+                define('PRINT_TEMPLATE_URL', $sFullTemplateUrl);
             }
 
             LimeExpressionManager::StartSurvey($surveyid, 'survey', null, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
@@ -508,7 +508,7 @@ case Question::QT_G_GENDER_DROPDOWN:
                         }
                         if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
                             $attributeClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), 1, 1, false, false, true));
-                            $question['class'] .= " ".Chtml::encode($attributeClass);
+                            $question['class'] .= " ".CHtml::encode($attributeClass);
                         }
                         /* Add a PRINT_QUESTION_CODE : same than used in "automatic system generation (with EM condition) */
                         $question['print_code'] = "{$question['number']} [{$question['code']}]";

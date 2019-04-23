@@ -1,5 +1,5 @@
 <template>
-    <div style="display:none"><pre>{{ debug }}</pre></div>
+    <div style="overflow:scroll;max-height:4rem;"><pre>{{ debug }}</pre></div>
 </template>
 
 <script>

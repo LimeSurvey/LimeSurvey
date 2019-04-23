@@ -351,7 +351,7 @@ class export extends Survey_Common_Action
 
         $filterstate = incompleteAnsFilterState();
         if (!Yii::app()->session['spssversion']) {
-// Default to 2 (16 and up)
+            // Default to 2 (16 and up)
             Yii::app()->session['spssversion'] = 2;
         }
         $spssver = Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']);
@@ -442,8 +442,10 @@ class export extends Survey_Common_Action
             if ($spssver == 2) {
                 echo "\xEF\xBB\xBF";
             }
-
-            $sNoAnswerValue = (isset($_POST['noanswervalue']) && $_POST['noanswervalue'] != '') ? '\''.$_POST['noanswervalue'].'\'' : '';
+            $sNoAnswerValue = Yii::app()->getRequest()->getPost('noanswervalue');
+            if(!empty($sNoAnswerValue)) {
+                $sNoAnswerValue = '\''.$sNoAnswerValue.'\'';
+            }
             SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue, '\'', false, $sLanguage);
 
             App()->end();
@@ -665,6 +667,16 @@ class export extends Survey_Common_Action
 
             echo $vvoutput;
             foreach ($result as $row) {
+                // prepare the data for decryption
+                $oToken = Token::model($iSurveyId);
+                $oToken->setAttributes($row, false); 
+                $oToken->decrypt(); 
+
+                $oResponse = Response::model($iSurveyId);
+                $oResponse->setAttributes($row, false); 
+                $oResponse->decrypt(); 
+
+                $row = array_merge($oToken->attributes, $oResponse->attributes);
                 foreach ($fieldnames as $field) {
                     if (is_null($row[$field])) {
                         $value = '{question_not_shown}';
@@ -924,6 +936,7 @@ class export extends Survey_Common_Action
     public function downloadZip($sZip)
     {
         $sTempDir     = Yii::app()->getConfig("tempdir");
+        $sZip         = get_absolute_path($sZip);
         $aZIPFileName = $sTempDir.DIRECTORY_SEPARATOR.$sZip;
 
         if (is_file($aZIPFileName)) {

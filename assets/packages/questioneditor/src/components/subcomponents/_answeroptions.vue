@@ -5,16 +5,19 @@ import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import foreach from 'lodash/foreach';
 
-import SimpleEditor from './_simpleEditor.vue';
 import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
+import eventChild from '../../mixins/eventChild.js';
 
 export default {
     name: 'answeroptions',
-    mixins: [AbstractSubQuestionAndAnswerBase],
+    mixins: [AbstractSubQuestionAndAnswerBase, eventChild],
     data(){
         return {
             uniqueSelector: 'aid',
-            baseNonNumericPart : "AO"
+            baseNonNumericPart : "AO",
+            type: 'answeroptions',
+            typeDefininition: 'answer',
+            typeDefininitionKey: 'code'
         };
     },
     computed: {
@@ -81,18 +84,14 @@ export default {
             }
             answerOptionObject[this.$store.state.activeLanguage].answer = $event.srcElement.value;
         },
-        openEditorForAnswerOption(oDataSet, scaleId) {
-            this.$modal.show(
-                SimpleEditor, 
-                { value: oDataSet[this.$store.state.activeLanguage].answer },
-                { draggable: true },
-                {'change': (event) => { 
-                        this.$log.log('CHANGE IN MODAL', event);
-                        oDataSet[this.$store.state.activeLanguage].answer = event;
-                    }
-                }
-            )
+        replaceByQuickAddObject(quickAddContent) {
+            this.$_log.log({AOQuickAddContent: quickAddContent});
         },
+    },
+    mounted() {
+        if(isEmpty(this.$store.state.currentQuestionAnswerOptions)){
+            this.$store.state.currentQuestionAnswerOptions = {"0": [this.getTemplate()]};
+        };
     }
 }
 </script>
@@ -100,7 +99,7 @@ export default {
 <template>
     <div class="col-sm-12">
         <div class="container-fluid scoped-main-answeroptions-container">
-            <div class="row">
+            <div class="row" v-show="!readonly">
                 <div class="col-sm-8">
                     <button class="btn btn-default col-3" @click.prevent="openQuickAdd">{{ "Quick add" | translate }}</button>
                     <span class="scoped-spacer col-1" />
@@ -128,7 +127,7 @@ export default {
                         v-for="answeroption in currentDataSet[answeroptionscale]"
                         :key="answeroption.aid"
                     >
-                        <div class="scoped-move-block">
+                        <div class="scoped-move-block" v-show="!readonly">
                             <i class="fa fa-bars" :class="surveyActive ? ' disabled' : ' '"></i>
                         </div>
                         <div class="scoped-code-block">
@@ -139,6 +138,7 @@ export default {
                                 size='5'
                                 :class="surveyActive ? ' disabled' : ' '"
                                 :name="'code_'+answeroption.sortorder+'_'+answeroptionscale" 
+                                :readonly="readonly"
                                 v-model="answeroption.code"
                                 @keyup.enter.prevent="switchinput('assessment_'+answeroption.sortorder+'_'+answeroptionscale)"
                             />
@@ -149,6 +149,7 @@ export default {
                                     class='assessment form-control input'
                                     :id="'assessment_'+answeroption.sortorder+'_'+answeroptionscale"
                                     :name="'assessment_'+answeroption.sortorder+'_'+answeroptionscale"
+                                    :readonly="readonly"
                                     v-model="answeroption.assessment_value"
                                     maxlength='5'
                                     size='5'
@@ -164,16 +165,17 @@ export default {
                                 :name='"answer_"+$store.state.activeLanguage+"_"+answeroption.aid+"_"+answeroptionscale'
                                 :placeholder='translate("Some example answer option")'
                                 :value="getAnswerForCurrentLanguage(answeroption)"
+                                :readonly="readonly"
                                 @change="setAnswerForCurrentLanguage(answeroption,$event)"
                                 @keyup.enter.prevent='switchinput(false, $event)'
                             />
                         </div>
-                        <div class="scoped-actions-block">
+                        <div class="scoped-actions-block" v-show="!readonly">
                             <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(answeroption, answeroptionscale)">
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="openEditorForAnswerOption(answeroption, answeroptionscale)">
+                            <button class="btn btn-default btn-small" @click.prevent="openPopUpEditor(answeroption, answeroptionscale)">
                                 <i class="fa fa-edit"></i>
                                 {{ "Open editor" | translate }}
                             </button>
@@ -185,7 +187,7 @@ export default {
 
                     </div>
                 </div>
-                <div class="row" :key="answeroptionscale+'addRow'">
+                <div class="row" :key="answeroptionscale+'addRow'" v-show="!readonly">
                     <div class="col-sm-12 text-right">
                         <button @click.prevent="addDataSet(answeroptionscale)" class="btn btn-primary">
                             <i class="fa fa-plus"></i>

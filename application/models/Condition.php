@@ -231,23 +231,25 @@ class Condition extends LSActiveRecord
      */
     public function getConditionCount($qid, $language, Condition $scenarionr)
     {
-        $query = "SELECT count(*) as recordcount
-            FROM {{conditions}} c, {{questions}} q, {{groups}} g
-            WHERE c.cqid=q.qid "
-                    ."AND q.gid=g.gid "
-                    ."AND q.parent_qid=0 "
-                    ."AND q.language=:lang1 "
-                    ."AND g.language=:lang2 "
-                    ."AND c.qid=:qid "
-                    ."AND c.scenario=:scenario "
-                    ."AND c.cfieldname NOT LIKE '{%' "; // avoid catching SRCtokenAttr conditions
-        $result = Yii::app()->db->createCommand($query)
-            ->bindValue(":scenario", $scenarionr['scenario'])
-            ->bindValue(":qid", $qid, PDO::PARAM_INT)
-            ->bindValue(":lang1", $language, PDO::PARAM_STR)
-            ->bindValue(":lang2", $language, PDO::PARAM_STR)
-            ->queryRow();
-        return (int) $result['recordcount'];
+        $result = Condition::model()->with(array(
+            'questions' => array(
+                'condition' => 'questions.parent_qid = :parent_qid',
+                'params' => array(':parent_qid' => 0)
+            ),
+            'questions.questionL10ns' => array(
+                'condition' => 'questionL10ns.language = :lang1',
+                'params' => array(':lang1' => $language)
+            ),
+            'questions.group',
+            'questions.group.questionGroupL10ns' => array(
+                'condition' => 'questionGroupL10ns.language = :lang2',
+                'params' => array(':lang2' => $language)
+            )
+            ))->findAll(
+                't.qid = ' . $qid . ' and scenario = ' . $scenarionr['scenario'] . ' and cfieldname NOT LIKE \'{%\''
+            );
+
+        return (int) count($result);
     }
 
     /**
@@ -258,24 +260,36 @@ class Condition extends LSActiveRecord
      */
     public function getConditions($qid, $language, Condition $scenarionr)
     {
-        $query = "SELECT c.cid, c.scenario, c.cqid, c.cfieldname, c.method, c.value, q.type
-            FROM {{conditions}} c, {{questions}} q, {{groups}} g
-            WHERE c.cqid=q.qid "
-                    ."AND q.gid=g.gid "
-                    ."AND q.parent_qid=0 "
-                    ."AND q.language=:lang1 "
-                    ."AND g.language=:lang2 "
-                    ."AND c.qid=:qid "
-                    ."AND c.scenario=:scenario "
-                    ."AND c.cfieldname NOT LIKE '{%' " // avoid catching SRCtokenAttr conditions
-                    ."ORDER BY g.group_order, q.question_order, c.cfieldname";
-        $result = Yii::app()->db->createCommand($query)
-            ->bindValue(":scenario", $scenarionr['scenario'])
-            ->bindValue(":qid", $qid, PDO::PARAM_INT)
-            ->bindValue(":lang1", $language, PDO::PARAM_STR)
-            ->bindValue(":lang2", $language, PDO::PARAM_STR)
-            ->query();
-        return $result->readAll();
+        $results = Condition::model()->with(array(
+            'questions' => array(
+                'condition' => 'questions.parent_qid = :parent_qid',
+                'params' => array(':parent_qid' => 0)
+            ),
+            'questions.questionL10ns' => array(
+                'condition' => 'questionL10ns.language = :lang1',
+                'params' => array(':lang1' => $language)
+            ),
+            'questions.group',
+            'questions.group.questionGroupL10ns' => array(
+                'condition' => 'questionGroupL10ns.language = :lang2',
+                'params' => array(':lang2' => $language)
+            )
+            ))->findAll(
+                array(
+                    'select' => 't.cid, t.scenario, t.cqid, t.cfieldname, t.method, t.value',
+                    'condition' => 't.qid = ' . $qid . ' and scenario = ' . $scenarionr['scenario'] . ' and cfieldname NOT LIKE \'{%\''
+                )
+        );     
+
+        $aResults = array();
+        $i = 0;
+        foreach($results as $result){
+            $aResults[$i] = $result->attributes;
+            $aResults[$i]['type'] = $result->questions->type;
+            $i += 1;
+        }
+        
+        return $aResults;
     }
 
     /**

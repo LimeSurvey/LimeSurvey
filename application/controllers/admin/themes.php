@@ -461,9 +461,23 @@ class themes extends Survey_Common_Action
             $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
             $oEditedTemplate = Template::getInstance($sTemplateName);
             $templatedir     = $oEditedTemplate->viewPath;
-            $filesdir        = $oEditedTemplate->filesPath;
-            $sPostedFile     = CHtml::decode(App()->request->getPost('otherfile')); // Filename is encode, need to decode.
-            $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
+            $sPostedFiletype = CHtml::decode(App()->request->getPost('filetype'));
+            $sPostedFile     = CHtml::decode(App()->request->getPost('filename')); // Filename is encode, need to decode.
+            
+            if ($sPostedFiletype == 'screen'){
+                $filesdir        = $oEditedTemplate->viewPath;
+                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
+            } elseif ($sPostedFiletype == 'js' || $sPostedFiletype == 'css'){
+                $filesdir        = $oEditedTemplate->path;
+                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
+            } elseif ($sPostedFiletype == 'other'){
+                $filesdir        = $oEditedTemplate->filesPath;
+                $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
+            } else {
+                Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+                $this->getController()->redirect(array('admin/themes', 'sa'=>'view', 'editfile'=> App()->request->getPost('editfile'), 'screenname'=>App()->request->getPost('screenname'), 'templatename'=>$sTemplateName));        
+            }            
+            
             $the_full_file_path = realpath($filesdir.$sFileToDelete);
             if(substr($the_full_file_path, 0, strlen(realpath($filesdir))) != realpath($filesdir)) {
                 /* User tries to delete a file outside of files dir */
@@ -661,7 +675,11 @@ class themes extends Survey_Common_Action
         $templatename = trim( Yii::app()->request->getPost('templatename') );
 
         if (Permission::model()->hasGlobalPermission('templates', 'delete')) {
-
+            $completeFileName = realpath(Yii::app()->getConfig('userthemerootdir')."/".$templatename);
+            /* If retuirn false, not a dir or not inside userthemerootdir: try to hack : throw a 403 for security */
+            if(!is_dir($completeFileName) || substr($completeFileName, 0, strlen(Yii::app()->getConfig('userthemerootdir'))) !== Yii::app()->getConfig('userthemerootdir')) {
+                throw new CHttpException(403,"Disable for security reasons.");
+            }
             // CheckIfTemplateExists check if the template is installed....
             if ( ! Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename) ) {
                 if (rmdirr(Yii::app()->getConfig('userthemerootdir')."/".$templatename)){
@@ -942,6 +960,7 @@ class themes extends Survey_Common_Action
         $screens['printanswers']    = gT('Print answers', 'unescaped');
         $screens['pdf']             = gT('PDF', 'unescaped');
         $screens['navigation']      = gT('Navigation', 'unescaped');
+        $screens['maintenance']     = gT('Maintenance', 'unescaped');
         //$screens['misc']            = gT('Miscellaneous files', 'unescaped');
 
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
@@ -1235,6 +1254,9 @@ class themes extends Survey_Common_Action
                         ]
                     ]
                 ];
+                break;
+
+            case 'maintenance':
                 break;
 
             case 'error':

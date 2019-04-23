@@ -1,18 +1,30 @@
 <script>
 
 import keys from 'lodash/keys';
+import foreach from 'lodash/foreach';
+import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
+import isEmpty from 'lodash/isEmpty';
+import isObject from 'lodash/isObject';
 
 import SettingsTab from './subcomponents/_settingstab.vue';
 import Subquestions from './subcomponents/_subquestions.vue';
 import Answeroptions from './subcomponents/_answeroptions.vue';
+import Loader from '../helperComponents/loader.vue';
+
+import eventChild from '../mixins/eventChild.js';
 
 export default {
     name: 'AdvancedSettings',
+    mixins: [eventChild],
     components: {
         "settings-tab" : SettingsTab,
         "subquestions" : Subquestions,
         "Answeroptions" : Answeroptions,
+        Loader
+    },
+    props: {
+        readonly : {type: Boolean, default: false}
     },
     data() {
         return {
@@ -24,12 +36,26 @@ export default {
                 'textinput',
                 'textarea'
             ],
-            currentTabComponent: 'settings-tab'
+            currentTabComponent: 'settings-tab',
+            loading: true
         };
     },
     computed: {
         tabs(){
-            return filter(keys(this.$store.state.currentQuestionAdvancedSettings), (category) => category != 'debug');
+            if(this.readonly == false) {
+                return filter(keys(this.$store.state.currentQuestionAdvancedSettings), (category) => category != 'debug');
+            }
+
+            let tabsWithContent = [];
+            foreach(this.$store.state.currentQuestionAdvancedSettings, (categoryContents, categoryName) => {
+                if(reduce(categoryContents, (carry, settingOption) => {
+                    return carry = carry || !isEmpty(this.parseForLocalizedOption(settingOption.formElementValue));
+                }, false) && categoryName != 'debug') {
+                    tabsWithContent.push(categoryName);
+                }
+            });
+            return tabsWithContent;
+            
         },
         showSubquestionEdit(){
             return this.$store.state.currentQuestion.typeInformation.subquestions == 1;
@@ -37,9 +63,6 @@ export default {
         showAnswerOptionEdit(){
             return this.$store.state.currentQuestion.typeInformation.answerscales >= 1;
         },
-        tabData() {
-
-        }
     },
     methods: {
         selectCurrentTab(tabComponent, categoryName='') {
@@ -48,52 +71,72 @@ export default {
                 this.$store.commit('setQuestionAdvancedSettingsCategory',categoryName);
             }
         },
+        parseForLocalizedOption(value) {
+            if(isObject(value) && value[this.$store.state.activeLanguage] != undefined) {
+                return value[this.$store.state.activeLanguage];
+            }
+            return value;
+        }
     },
-    mounted(){
-        this.selectCurrentTab('settings-tab', this.tabs[0]);
+    created(){
+        this.$store.dispatch('getQuestionAdvancedSettings').then(()=>{
+            this.loading = false;
+            this.selectCurrentTab('settings-tab', this.tabs[0]);
+        });
     }
 }
 </script>
 
 <template>
     <div class="col-xs-12 scope-apply-base-style scope-min-height">
-        <div class="container-fluid">
-            <div class="row scoped-tablist-container">
-                <template v-if="showSubquestionEdit || showAnswerOptionEdit">
-                    <ul class="nav nav-tabs scoped-tablist-subquestionandanswers" role="tablist">
+        <transition name="slide-fade">
+            <div class="container-fluid" v-if="!loading">
+                <div class="row scoped-tablist-container">
+                    <template v-if="showSubquestionEdit || showAnswerOptionEdit">
+                        <ul class="nav nav-tabs scoped-tablist-subquestionandanswers" role="tablist">
+                            <li 
+                                v-if="showSubquestionEdit"
+                                :class="currentTabComponent == 'subquestions' ? 'active' : ''"
+                            >
+                                <a href="#" @click.prevent.stop="selectCurrentTab('subquestions')" >{{"subquestions" | translate }}</a>
+                            </li>
+                            <li 
+                                v-if="showAnswerOptionEdit"
+                                :class="currentTabComponent == 'answeroptions' ? 'active' : ''"
+                            >
+                                <a href="#" @click.prevent.stop="selectCurrentTab('answeroptions')" >{{"answeroptions" | translate }}</a>
+                            </li>
+                        </ul>
+                        <span class="scope-divider">|</span>
+                    </template>
+                    <!-- Advanced settings tabs -->
+                    <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
                         <li 
-                            v-if="showSubquestionEdit"
-                            :class="currentTabComponent == 'subquestions' ? 'active' : ''"
+                            v-for="advancedSettingCategory in tabs"
+                            :key="'tablist-'+advancedSettingCategory"
+                            :class="$store.state.questionAdvancedSettingsCategory == advancedSettingCategory && currentTabComponent == 'settings-tab' ? 'active' : ''"
                         >
-                            <a href="#" @click.prevent.stop="selectCurrentTab('subquestions')" >{{"subquestions" | translate }}</a>
-                        </li>
-                        <li 
-                            v-if="showAnswerOptionEdit"
-                            :class="currentTabComponent == 'answeroptions' ? 'active' : ''"
-                        >
-                            <a href="#" @click.prevent.stop="selectCurrentTab('answeroptions')" >{{"answeroptions" | translate }}</a>
+                            <a href="#" @click.prevent.stop="selectCurrentTab('settings-tab', advancedSettingCategory)" >{{advancedSettingCategory}}</a>
                         </li>
                     </ul>
-                    <span class="scope-divider">|</span>
-                </template>
-                <!-- Advanced settings tabs -->
-                <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
-                    <li 
-                        v-for="advancedSettingCategory in tabs"
-                        :key="'tablist-'+advancedSettingCategory"
-                        :class="$store.state.questionAdvancedSettingsCategory == advancedSettingCategory && currentTabComponent == 'settings-tab' ? 'active' : ''"
-                    >
-                        <a href="#" @click.prevent.stop="selectCurrentTab('settings-tab', advancedSettingCategory)" >{{advancedSettingCategory}}</a>
-                    </li>
-                </ul>
+                </div>
+                <div class="row scope-border-open-top">
+                    <component 
+                    v-bind:is="currentTabComponent" 
+                    :event="event"
+                    v-on:eventSet="eventSet"
+                    :readonly="readonly"
+                    />
+                </div>    
             </div>
-            <div class="row scope-border-open-top">
-                <component 
-                v-bind:is="currentTabComponent" 
-                tabData
-                />
-            </div>    
-        </div>
+        </transition>
+        <transition name="slide-fade">
+            <div class="container-fluid" v-if="loading" >
+                <div class="row" >
+                    <loader id="advanced-panel-loader" />
+                </div>
+            </div>
+        </transition>
     </div>
 </template>
 

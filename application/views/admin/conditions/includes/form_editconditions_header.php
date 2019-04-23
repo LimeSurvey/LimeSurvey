@@ -92,6 +92,9 @@
                         </div>
                     </div>
                     <div role='tabpanel' class='tab-pane ' id='SRCTOKENATTRS'>
+                        <?php if($surveyIsAnonymized) {
+                            echo CHtml::tag("p",array("class"=>"alert alert-warning"),gT("This is an anonymized survey. Participant attributes can only be used in non-anonymised surveys."));
+                        }?>
                         <div class='form-group question-option'>
                             <div class=''>
                                 <select class='form-control' name='csrctoken' id='csrctoken' size='7'>

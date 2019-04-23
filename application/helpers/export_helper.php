@@ -95,6 +95,17 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
     $rownr = 0;
 
     foreach ($result as $row) {
+        // prepare the data for decryption
+        $oToken = Token::model($iSurveyID);
+        $oToken->setAttributes($row, false);
+        $oToken->decrypt();
+
+        $oResponse = Response::model($iSurveyID);
+        $oResponse->setAttributes($row, false);
+        $oResponse->decrypt();
+
+        $row = array_merge($oToken->attributes, $oResponse->attributes);
+
         $rownr++;
         if ($rownr == 1) {
             $num_fields = safecount($row);
@@ -694,8 +705,27 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname = '', $excludes = array(
     // Read table in smaller chunks
     $iStart = 0;
     do {
-        $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
-        $result = $QueryResult->readAll();
+        $result = array();
+        // data need to be converted to model to be able to decrypt responses and tokens
+        if ($TableName == 'responses' || $TableName == 'tokens'){
+            $criteria = new CDbCriteria;
+            $criteria->limit = $iChunkSize;
+            $criteria->offset = $iStart;
+            if ($TableName == 'responses'){
+                $results = Response::model(Yii::app()->session['LEMsid'])->findAll($criteria);
+            } elseif ($TableName == 'tokens'){
+                $results = Token::model(Yii::app()->session['LEMsid'])->findAll($criteria);
+            }
+            
+            foreach($results as $row){
+                $result[] = $row->decrypt()->attributes;
+            }
+
+        } else {
+            $QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
+            $result = $QueryResult->readAll();
+        }        
+
         if ($iStart == 0 && safecount($result) > 0) {
             $exclude = array_flip($excludes); //Flip key/value in array for faster checks
             $xmlwriter->startElement($TableName);
@@ -780,9 +810,14 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
         buildXMLFromQuery($xmlwriter, $cquery);
     }
 
-    //Default values
+    // Default values
     $query = "SELECT {{defaultvalues}}.*
-    FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID";
+    FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID ORDER BY dvid";
+    buildXMLFromQuery($xmlwriter, $query);
+
+    // DefaultValues L10n
+    $query = "SELECT {{defaultvalue_l10ns}}.*
+    FROM {{defaultvalue_l10ns}} JOIN {{defaultvalues}} ON {{defaultvalue_l10ns}}.dvid = {{defaultvalues}}.dvid JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$iSurveyID ORDER BY {{defaultvalues}}.dvid";
     buildXMLFromQuery($xmlwriter, $query);
 
     // QuestionGroup
@@ -1328,7 +1363,7 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
             $search = "sqid";
         }
         foreach ($fieldmap as $key => $detail) {
-            if ($detail[$search] == $qid) {
+            if (array_key_exists($search, $detail) && $detail[$search] == $qid) {
                 if (($fieldadd == false || substr($key, (strlen($fieldadd) * -1)) == $fieldadd) &&
                     ($usesaid == false || ($detail["aid"] == $usesaid)) &&
                     ($usesscale == false || ($detail["scale_id"] == $usesscale))) {
@@ -1338,13 +1373,10 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
             }
         }
         if ($colname != "") {
-            $QRE = Yii::app()->db->createCommand()
-                ->select($colname.' AS value')
-                ->from("{{survey_$iSurveyID}}")
-                ->where('id = :id', ['id' => $iResponseID])
-                ->query();
-            $QROW = $QRE->read();
-            $value = $QROW['value'];
+            // prepare and decrypt data
+            $oResponse = Response::model($iSurveyID)->findByPk($iResponseID);
+            $oResponse->decrypt(); 
+            $value = $oResponse->$colname;
             $element->setAttribute("defaultValue", $value);
         }
     }
@@ -1783,7 +1815,7 @@ function group_export($action, $iSurveyID, $gid)
     $xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
 
-    $lresult = QuestionGroup::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language', 'group' => 'language'));
+    $lresult = QuestionGroupL10n::model()->findAllByAttributes(array('gid' => $gid), array('select'=>'language', 'group' => 'language'));
     foreach ($lresult as $row) {
         $xml->writeElement('language', $row->language);
     }
@@ -1801,19 +1833,34 @@ function groupGetXMLStructure($xml, $gid)
     // QuestionGroup
     $gquery = "SELECT *
     FROM {{groups}}
-    WHERE gid=$gid";
-    buildXMLFromQuery($xml, $gquery);
+    WHERE {{groups}}.gid=$gid";
+    buildXMLFromQuery($xml, $gquery, 'groups');
+
+    // QuestionGroup localization
+    $gquery = "SELECT *
+    FROM {{group_l10ns}}
+    JOIN {{groups}} ON {{group_l10ns}}.gid = {{groups}}.gid
+    WHERE {{groups}}.gid=$gid";
+    buildXMLFromQuery($xml, $gquery, 'group_l10ns');
 
     // Questions table
-    $qquery = "SELECT *
+    $qquery = "SELECT {{questions}}.*
     FROM {{questions}}
-    WHERE gid=$gid and parent_qid=0 order by question_order, language, scale_id";
-    buildXMLFromQuery($xml, $qquery);
+    WHERE gid=$gid and parent_qid=0 order by question_order, scale_id";
+    buildXMLFromQuery($xml, $qquery, 'questions');
+
+    // Questions localization
+    $qqueryl10n = "SELECT {{question_l10ns}}.*
+    FROM {{question_l10ns}}
+    JOIN {{questions}} ON {{question_l10ns}}.qid = {{questions}}.qid
+    WHERE gid=$gid and parent_qid=0 order by question_order, {{question_l10ns}}.language, scale_id";
+    buildXMLFromQuery($xml, $qqueryl10n, 'question_l10ns');
 
     // Questions table - Subquestions
     $qquery = "SELECT *
     FROM {{questions}}
-    WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
+    JOIN {{question_l10ns}} ON {{question_l10ns}}.qid = {{questions}}.qid
+    WHERE gid=$gid and parent_qid>0 order by question_order, {{question_l10ns}}.language, scale_id";
     buildXMLFromQuery($xml, $qquery, 'subquestions');
 
     //Answer
@@ -1821,7 +1868,15 @@ function groupGetXMLStructure($xml, $gid)
     FROM {{answers}}, {{questions}}
     WHERE ({{answers}}.qid={{questions}}.qid)
     AND ({{questions}}.gid=$gid)";
-    buildXMLFromQuery($xml, $aquery);
+    buildXMLFromQuery($xml, $aquery, 'answers');
+
+    //Answer localization
+    $aquery = "SELECT DISTINCT {{answer_l10ns}}.*
+    FROM {{answer_l10ns}}
+    JOIN {{answers}} ON ({{answers}}.aid={{answer_l10ns}}.aid)
+    JOIN {{questions}} ON ({{answers}}.qid={{questions}}.qid)
+    WHERE {{questions}}.gid=$gid";
+    buildXMLFromQuery($xml, $aquery, 'answer_l10ns');
 
     //Condition - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
     $cquery = "SELECT DISTINCT c.*
@@ -1840,11 +1895,13 @@ function groupGetXMLStructure($xml, $gid)
     if ($platform == 'mssql' || $platform == 'sqlsrv' || $platform == 'dblib') {
         $query = "SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
+        JOIN {{question_l10ns}} ql10n ON ql10n.qid = q.qid
+        where ql10n.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000)), qa.language";
     } else {
         $query = "SELECT qa.qid, qa.attribute, qa.value, qa.language
         FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$iSurveyID} and q.gid={$gid}
-        where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
+        JOIN {{question_l10ns}} ql10n ON ql10n.qid = q.qid
+        where ql10n.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value, qa.language";
     }
     buildXMLFromQuery($xml, $query, 'question_attributes');
 
@@ -1852,10 +1909,20 @@ function groupGetXMLStructure($xml, $gid)
     $query = "SELECT dv.*
     FROM {{defaultvalues}} dv
     JOIN {{questions}} ON {{questions}}.qid = dv.qid
-    AND {{questions}}.language=dv.language
-    AND {{questions}}.gid=$gid
-    order by dv.language, dv.scale_id";
+    WHERE {{questions}}.gid=$gid
+    order by dv.qid, dv.scale_id, dv.sqid, dv.specialtype";
     buildXMLFromQuery($xml, $query, 'defaultvalues');
+
+    // Default values localization
+    $query = "SELECT {{defaultvalue_l10ns}}.*
+    FROM {{defaultvalues}} dv
+    JOIN {{defaultvalue_l10ns}} ON {{defaultvalue_l10ns}}.dvid = dv.dvid
+    JOIN {{questions}} ON {{questions}}.qid = dv.qid
+    JOIN {{question_l10ns}} ON {{question_l10ns}}.qid = {{questions}}.qid
+    AND {{question_l10ns}}.language={{defaultvalue_l10ns}}.language
+    AND {{questions}}.gid=$gid
+    order by {{defaultvalue_l10ns}}.language, dv.scale_id";
+    buildXMLFromQuery($xml, $query, 'defaultvalue_l10ns');
 }
 
 
@@ -1979,13 +2046,21 @@ function tokensExport($iSurveyID)
     $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}} lt");
     $databasetype = Yii::app()->db->getDriverName();
     $oRecordSet->where("1=1");
+    
     if ($sEmailFiter != '') {
+        // check if email is encrypted field
+        $aAttributes = $oSurvey->getTokenEncryptionOptions();
+        if (array_key_exists('columns', $aAttributes) && array_key_exists('enabled', $aAttributes) && $aAttributes['enabled'] = 'Y' && array_key_exists('email', $aAttributes['columns']) && $aAttributes['columns']['email'] = 'Y'){
+            $sEmailFiter = LSActiveRecord::encryptSingle($sEmailFiter);
+        }
+
         if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib'))) {
             $oRecordSet->andWhere("CAST(lt.email as varchar) like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
         } else {
             $oRecordSet->andWhere("lt.email like ".App()->db->quoteValue('%'.$sEmailFiter.'%'));
         }
     }
+    
     if ($iTokenStatus == 1) {
         $oRecordSet->andWhere("lt.completed<>'N'");
     } elseif ($iTokenStatus == 2) {
@@ -2030,6 +2105,20 @@ function tokensExport($iSurveyID)
     }
     $oRecordSet->order("lt.tid");
     $bresult = $oRecordSet->query();
+    // fetching all records into array, values need to be decrypted 
+    $bresultAll = $bresult->readAll();
+    foreach($bresultAll as $tokenKey => $tokenValue){
+        // creating TokenDynamic object to be able to decrypt easier
+        $token = TokenDynamic::model($iSurveyID);
+        // populate TokenDynamic object with values
+        foreach($tokenValue as $key=>$value){
+            $token->$key = $value;
+        }
+        // decrypting
+        $token->decrypt();
+        $bresultAll[$tokenKey] = $token->attributes;
+    }
+
     //HEADERS should be after the above query else timeout errors in case there are lots of tokens!
     header("Content-Disposition: attachment; filename=tokens_".$iSurveyID.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
@@ -2057,7 +2146,7 @@ function tokensExport($iSurveyID)
     // Export token line by line and fill $aExportedTokens with token exported
     Yii::import('application.libraries.Date_Time_Converter', true);
     $aExportedTokens = array();
-    while ($brow = $bresult->read()) {
+    foreach ($bresultAll as $brow) {
         if (trim($brow['validfrom'] != '')) {
             $datetimeobj = new Date_Time_Converter($brow['validfrom'], "Y-m-d H:i:s");
             $brow['validfrom'] = $datetimeobj->convert('Y-m-d H:i');
@@ -2351,68 +2440,70 @@ function tsvSurveyExport($surveyid){
     $groups = array();
     $index_languages = 0;
     foreach ($aSurveyLanguages as $key => $language) {
-        // groups
+        // groups data
         if (array_key_exists('groups', $xmlData)){
-            $groups_data = $xmlData['groups']['rows']['row'];
-            if (!array_key_exists('0', $groups_data)){
-                $groups_data = array($groups_data);
+            foreach($xmlData['groups']['rows']['row'] as $group){
+                $groups_data[$group['gid']] = $group;
+            }
+
+            foreach($xmlData['group_l10ns']['rows']['row'] as $group_l10ns){
+                $groups[$language][$group_l10ns['gid']] = array_merge($group_l10ns, $groups_data[$group_l10ns['gid']]);
             }
         } else {
-            $groups_data = array();
-        }
-        $groups = array();
-        foreach ($groups_data as $key => $group) {
-            if ($group['language'] === $language){
-                $groups[$language][$group['gid']] = $group;
-            }                 
+            $groups = array();
         }
 
         // questions data
         if (array_key_exists('questions', $xmlData)){
-            $questions_data = $xmlData['questions']['rows']['row'];
-            if (!array_key_exists('0', $questions_data)){
-                $questions_data = array($questions_data);
+            foreach($xmlData['questions']['rows']['row'] as $question){
+                $questions_data[$question['qid']] = $question;
+            }
+
+            foreach($xmlData['question_l10ns']['rows']['row'] as $question_l10ns){
+                if (array_key_exists($question_l10ns['qid'], $questions_data)){
+                    if ($question_l10ns['language'] === $language){
+                        $questions[$language][$questions_data[$question_l10ns['qid']]['gid']][$question_l10ns['qid']] = array_merge($question_l10ns, $questions_data[$question_l10ns['qid']]);
+                    }
+                }
+                
             }
         } else {
-            $questions_data = array();
-        }
-        $questions = array();
-        foreach ($questions_data as $key => $question) {
-            if ($question['language'] === $language){
-                $questions[$language][$question['gid']][$question['qid']] = $question;
-            } 
+            $questions = array();
         }
 
         // subquestions data
         if (array_key_exists('subquestions', $xmlData)){
-            $subquestions_data = $xmlData['subquestions']['rows']['row'];
-            if (!array_key_exists('0', $subquestions_data)){
-                $subquestions_data = array($subquestions_data);
+            foreach($xmlData['subquestions']['rows']['row'] as $subquestion){
+                $subquestions_data[$subquestion['qid']] = $subquestion;
+            }
+
+            foreach($xmlData['question_l10ns']['rows']['row'] as $subquestion_l10ns){
+                if (array_key_exists($subquestion_l10ns['qid'], $subquestions_data)){
+                    if ($subquestion_l10ns['language'] === $language){
+                        $subquestions[$language][$subquestions_data[$subquestion_l10ns['qid']]['parent_qid']][] = array_merge($subquestion_l10ns, $subquestions_data[$subquestion_l10ns['qid']]);
+                    }
+                }
+                
             }
         } else {
-            $subquestions_data = array();
-        }
-        $subquestions = array();
-        foreach ($subquestions_data as $key => $subquestion) {
-            if ($subquestion['language'] === $language){
-                $subquestions[$language][$subquestion['parent_qid']][] = $subquestion;
-            } 
+            $subquestions = array();
         }
         
         // answers data
         if (array_key_exists('answers', $xmlData)){
-            $answers_data = $xmlData['answers']['rows']['row'];
-            if (!array_key_exists('0', $answers_data)){
-                $answers_data = array($answers_data);
+            foreach($xmlData['answers']['rows']['row'] as $answer){
+                $answers_data[$answer['aid']] = $answer;
+            }
+
+            foreach($xmlData['answer_l10ns']['rows']['row'] as $answer_l10ns){
+                if (array_key_exists($answer_l10ns['aid'], $answers_data)){
+                    if ($answer_l10ns['language'] === $language){
+                        $answers[$language][$answers_data[$answer_l10ns['aid']]['qid']][] = array_merge($answer_l10ns, $answers_data[$answer_l10ns['aid']]);
+                    }
+                }                
             }
         } else {
-            $answers_data = array();
-        }
-        $answers = array();
-        foreach ($answers_data as $key => $answer) {
-            if ($answer['language'] === $language){
-                $answers[$language][$answer['qid']][] = $answer;
-            } 
+            $answers = array();
         }
         
         // assessments data
@@ -2491,7 +2582,7 @@ function tsvSurveyExport($surveyid){
             $tsv_output['id'] = $gid;
             $tsv_output['class'] = 'G';
             $tsv_output['type/scale'] = $group['group_order'];
-            $tsv_output['name'] = $group['group_name'];
+            $tsv_output['name'] = !empty($group['group_name']) ? $group['group_name'] : '';
             $tsv_output['text'] = !empty($group['description']) ? str_replace(array("\n", "\r"), '', $group['description']) : '';
             $tsv_output['relevance'] = !empty($group['grelevance']) ? $group['grelevance'] : '';
             $tsv_output['random_group'] = !empty($group['randomization_group']) ? $group['randomization_group'] : '';
@@ -2506,7 +2597,7 @@ function tsvSurveyExport($surveyid){
                     $tsv_output['id'] = $question['qid'];
                     $tsv_output['class'] = 'Q';
                     $tsv_output['type/scale'] = $question['type'];
-                    $tsv_output['name'] = $question['title'];
+                    $tsv_output['name'] = !empty($question['title']) ? $question['title'] : '';
                     $tsv_output['relevance'] = !empty($question['relevance']) ? $question['relevance'] : '';
                     $tsv_output['text'] = !empty($question['question']) ? str_replace(array("\n", "\r"), '', $question['question']) : '';
                     $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
@@ -2559,7 +2650,8 @@ function tsvSurveyExport($surveyid){
                             fputcsv($out, $tsv_output, chr(9));
                         }
                     }
-                    
+
+                    // subquestions
                     if (!empty($subquestions[$language][$qid])){
                         $subquestions[$language][$qid] = sortArrayByColumn($subquestions[$language][$qid], 'question_order');
                         foreach ($subquestions[$language][$qid] as $key => $subquestion) {
@@ -2582,6 +2674,7 @@ function tsvSurveyExport($surveyid){
                         }
                     }
 
+                    // answers
                     if (!empty($answers[$language][$qid])){
                         $answers[$language][$qid] = sortArrayByColumn($answers[$language][$qid], 'sortorder');
                         foreach ($answers[$language][$qid] as $key => $answer) {

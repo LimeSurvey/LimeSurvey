@@ -70,27 +70,25 @@
         );
     }
 
-    if(!$oSurvey->isActive) {    
-        // Set mandatory
-        $aActions[] = array(
-            // li element
-            'type' => 'action',
-            'action' => 'set-mandatory',
-            'url' => App()->createUrl('/admin/questions/sa/setMultipleMandatory/'),
-            'iconClasses' => 'fa fa-asterisk text-danger',
-            'text' => gT('Set "Mandatory" state'),
-            'grid-reload' => 'yes',
+    // Set mandatory
+    $aActions[] = array(
+        // li element
+        'type' => 'action',
+        'action' => 'set-mandatory',
+        'url' => App()->createUrl('/admin/questions/sa/setMultipleMandatory/'),
+        'iconClasses' => 'fa fa-asterisk text-danger',
+        'text' => gT('Set "Mandatory" state'),
+        'grid-reload' => 'yes',
 
-            // modal
-            'actionType' => 'modal',
-            'modalType' => 'yes-no',
-            'yes' => gT('Apply'),
-            'no' => gT('Cancel'),
-            'keepopen' => 'no',
-            'sModalTitle' => gT('Set "Mandatory" state'),
-            'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_mandatory', ['model' => $model, 'oSurvey' => $oSurvey], true),
-        );
-    }
+        // modal
+        'actionType' => 'modal',
+        'modalType' => 'yes-no',
+        'yes' => gT('Apply'),
+        'no' => gT('Cancel'),
+        'keepopen' => 'no',
+        'sModalTitle' => gT('Set "Mandatory" state'),
+        'htmlModalBody' => $this->renderPartial('./survey/Question/massive_actions/_set_questions_mandatory', ['model' => $model, 'oSurvey' => $oSurvey], true),
+    );
 
     // Set CSS Class
     $aActions[] = array(
