@@ -12,8 +12,8 @@ echo viewHelper::getViewTestTag('createSurvey');
 <!-- new survey view -->
 <?php
     extract($data);
-    Yii::app()->loadHelper('admin/htmleditor');
-    PrepareEditorScript(false, $this);
+    //Yii::app()->loadHelper('admin/htmleditor');
+    //PrepareEditorScript(false, $this);
     $active = Yii::app()->request->getParam('tab', 'create');
 ?>
 <script type="text/javascript">

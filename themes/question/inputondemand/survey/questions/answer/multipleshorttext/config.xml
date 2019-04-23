@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Default configuration for the multiplechoice question template.
+-->
+
+<config>
+    <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
+    <metadata>
+        <name>inputondemand</name>
+        <creationDate>10/04/2019</creationDate>
+        <author>Markus Flür</author>
+        <authorEmail>mfluer@limesurvey.org</authorEmail>
+        <authorUrl>http://www.limesurvey.org</authorUrl>
+        <copyright>Copyright (C) 2005 - 2019 LimeSurvey Gmbh, Inc. All rights reserved.</copyright>
+        <license>GNU General Public License version 2 or later</license>
+        <version>1.0</version>
+        <apiVersion>1</apiVersion>
+        <description>Hide not needed input fields in multiple shorttext</description>
+    </metadata>
+
+    <!--
+        Here the list of the css/js files to load.
+        Any file here will be loaded via the asset manager (when in config.php debug = 0)
+    -->
+    <files>
+        <css>
+            <filename>css/inputondemand.css</filename>
+        </css>
+        <js>
+            <filename>scripts/inputondemand.js</filename>
+        </js>
+    </files>
+
+    <custom_attributes>
+        <attribute>
+            <name>autoaddnewline</name>
+            <category>Display</category>
+            <sortorder>1</sortorder>
+            <inputtype>buttongroup</inputtype>
+            <options>
+                <no>No</no>
+                <yes>Yes</yes>
+            </options>
+            <default>no</default>
+            <help>Automatically add a new line when something is inserted</help>
+            <caption>Auto-add new line:</caption>
+        </attribute>
+        <attribute>
+            <name>addlineicon</name>
+            <category>Display</category>
+            <sortorder>2</sortorder>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <plus>Plus</plus>
+                <plus-circle>Plus in circle</plus-circle>
+                <chevron-down>Chevron down</chevron-down>
+                <user-plus>Add user</user-plus>
+                <arrow-down>Arrwo down</arrow-down>
+            </options>
+            <default>plus</default>
+            <help>The icon used on the "add row"-button </help>
+            <caption>Add row icon:</caption>
+        </attribute>
+    </custom_attributes>
+
+    <!-- Here datas about how LimeSurvey should load the core js/css of the question -->
+    <engine>
+        <load_core_css>true</load_core_css>
+        <load_core_js>true</load_core_js>
+        <show_as_template>true</show_as_template>
+        <show_as_question_type>true</show_as_question_type>
+    </engine>
+</config>

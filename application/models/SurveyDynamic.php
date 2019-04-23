@@ -118,7 +118,7 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         try {
-            $record->save();
+            $record->encryptSave();
             return $record->id;
         } catch (Exception $e) {
             return false;
@@ -571,8 +571,10 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getFirstNameForGrid()
     {
-        if (is_object($this->tokens)) {
-            return '<strong>'.$this->tokens->firstname.'</strong>';
+        // decrypt token information ( if needed )
+        $tokens = $this->tokens->decrypt();
+        if (is_object($tokens)) {
+            return '<strong>'.$tokens->firstname.'</strong>';
         }
 
     }
@@ -582,8 +584,10 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getLastNameForGrid()
     {
-        if (is_object($this->tokens)) {
-            return '<strong>'.$this->tokens->lastname.'</strong>';
+        // Last name is already decrypted in getFirstNameForGrid method, if we do it again it would try to decrypt it again ( and fail )
+        $tokens = $this->tokens;
+        if (is_object($tokens)) {
+            return '<strong>'.$tokens->lastname.'</strong>';
         }
     }
 
@@ -677,7 +681,7 @@ class SurveyDynamic extends LSActiveRecord
         $this->filterColumns($criteria);
 
 
-        $dataProvider = new CActiveDataProvider('SurveyDynamic', array(
+        $dataProvider = new LSCActiveDataProvider('SurveyDynamic', array(
             'sort'=>$sort,
             'criteria'=>$criteria,
             'pagination'=>array(

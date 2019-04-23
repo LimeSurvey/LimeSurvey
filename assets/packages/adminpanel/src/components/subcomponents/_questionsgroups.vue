@@ -325,9 +325,6 @@ export default {
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }} 
                                     </span> 
                                 </a>
-                                <a :href="question.editLink" class="fa fa-edit bigIcons editIcon pjax" title="[EXPERIMENTAL EDITOR]">
-                                    &nbsp;
-                                </a>
                             </div>
                         </ul>
                     </transition>

@@ -1,0 +1,119 @@
+#textEditLoader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    min-height: 640px;
+    min-height: 50vh;
+    background-color: rgba(225,225,225,0.7);
+    z-index: 100;
+}
+#advancedTextEditor {
+    min-height: 640px;
+    min-height: 65vh;
+}
+.fill-height {
+    height: 100%;
+}
+
+.fullystyled--radioButtons {
+    position:relative;
+    overflow:visible;
+    white-space: nowrap;
+    margin-left: -15px;
+    @media screen and (max-width: 768px) {
+        white-space: normal;
+    }
+    
+    .radioButtons--container {
+        display: inline-block;
+        position: relative;
+        clear: both;
+        width: 50%;
+        padding-left: 15px;
+        @media screen and (max-width: 768px) {
+            width: 99%;
+        }
+    }
+    
+    input.radio {
+        display: initial;
+        position: initial;
+        margin:0;
+        padding:0;
+
+        &:before {
+            display: none;
+        }
+        &:after {
+            display: none;
+        }
+    }
+
+    label {
+    width: 100%;
+    min-width: 200px;
+    border-radius: 3px;
+    border: 1px solid #D1D3D4
+    }
+
+    /* hide input */
+    input.radio:empty {
+        margin-left: -999px;
+    }
+
+    /* style label */
+    input.radio:empty ~ label {
+        position: relative;
+        float: left;
+        line-height: 34px;
+        height: 34px;
+        text-indent: 3.25em;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    input.radio:empty ~ label:before {
+        position: absolute;
+        display: block;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+        width: 2.5em;
+        background: #e9e9e9;
+        border-radius: 3px 0 0 3px;
+    }
+
+    /* toggle hover */
+    input.radio:hover:not(:checked) ~ label:before {
+        content:'\2714';
+        text-indent: .9em;
+        color: #C2C2C2;
+    }
+
+    input.radio:hover:not(:checked) ~ label {
+        color: #888;
+    }
+
+    /* toggle on */
+    input.radio:checked ~ label:before {
+        content:'\2714';
+        text-indent: .9em;
+        color: #212121;
+        background-color: #d4d4d4;
+    }
+
+    input.radio:checked ~ label {
+        color: #777;
+    }
+
+    /* radio focus */
+    input.radio:focus ~ label:before {
+        box-shadow: 0 0 0 1px #e9e9e9;
+    }
+}

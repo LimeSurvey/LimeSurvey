@@ -20,3 +20,21 @@
   #advancedQuestionEditor .question-option-general-container .question-option-general-setting-block .question-option-help {
     margin: 0.5rem 0;
     padding: .75rem; }
+
+#advancedQuestionEditor .slide-fade-enter-active {
+  transition: all .4s ease; }
+
+#advancedQuestionEditor .slide-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1); }
+
+#advancedQuestionEditor .slide-fade-enter {
+  transform: translateX(-10px);
+  opacity: 0; }
+
+#advancedQuestionEditor .slide-fade-enter-to {
+  transform: translateX(0px);
+  opacity: 1; }
+
+#advancedQuestionEditor .slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0; }

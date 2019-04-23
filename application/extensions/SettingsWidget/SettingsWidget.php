@@ -344,20 +344,14 @@ class SettingsWidget extends CWidget
             //~ 0 => 'False',
             //~ 1 => 'True'
         //~ ), $htmlOptions);
-        return Chtml::tag(
-            'div',
-            $htmlOptions,
-            $this->widget(
-                'yiiwheels.widgets.switch.WhSwitch',
-                [
-                    'name'        => $name,
-                    'value'       => $value,
-                    'onLabel'     => gT('On'),
-                    'offLabel'    => gT('Off'),
-                    'htmlOptions' => $htmlOptions,
-                ],
-                true
-            )
+        return CHtml::tag('div', $htmlOptions,
+            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                'name' => $name,
+                'value' => $value,
+                'onLabel'=>gT('On'),
+                'offLabel' => gT('Off'),
+                'htmlOptions' => $htmlOptions,
+            ), true)
         );
     }
 
@@ -382,31 +376,22 @@ class SettingsWidget extends CWidget
         $metaData['class'][] = 'form-control';
         $value = isset($metaData['current']) ? $metaData['current'] : '';
         $metaData['class'][] = 'htmleditor';
-        $htmlOptions = $this->htmlOptions($metaData, $form);
+        $htmlOptions = $this->htmlOptions($metaData,$form);
         $editorOptions = array_merge(
-            [
+            array(
                 'html' => true,
-            ],
-            isset($metaData['editorOptions']) ? $metaData['editorOptions'] : []
+            ),
+            isset($metaData['editorOptions']) ? $metaData['editorOptions'] : array()
         );
-        return Chtml::tag(
-            'div',
-            [
-                'style' => 'height:auto;width:100%',
-                'class' => 'well'
-            ],
-            $this->widget(
-                'yiiwheels.widgets.html5editor.WhHtml5Editor',
-                [
-                    'name'          => $name,
-                    'value'         => $value,
-                    'width'         => isset($metaData['width']) ? $metaData['width'] : '100%',
-                    'height'        => isset($metaData['height']) ? $metaData['height'] : '400px',
-                    'pluginOptions' =>  $editorOptions,
-                    'htmlOptions'   => $htmlOptions,
-                ],
-                true
-            )
+        return CHtml::tag('div', array("style"=>'height:auto;width:100%','class'=>'well'),
+            $this->widget('yiiwheels.widgets.html5editor.WhHtml5Editor', array(
+                'name' => $name,
+                'value' => $value,
+                'width' => isset($metaData['width']) ? $metaData['width'] : '100%',
+                'height' => isset($metaData['height']) ? $metaData['height'] : '400px',
+                'pluginOptions' =>  $editorOptions,
+                'htmlOptions' => $htmlOptions,
+            ), true)
         );
     }
 

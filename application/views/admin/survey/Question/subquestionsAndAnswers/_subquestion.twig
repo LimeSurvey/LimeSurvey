@@ -116,7 +116,7 @@
     <!-- Relevance equation -->
     {% if first and scale_id == 0 %}
         <td class="relevance-equation">
-            <input data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" type='text' class='relevance form-control input' id='relevance_{{ qid }}_{{ scale_id }}' name='relevance_{{ qid }}_{{ scale_id }}' value="{{ relevance }}" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
+            <textarea rows="1" data-toggle="tooltip" data-title="{{ gT("Click to expand") }}" class='relevance form-control input-text' id='relevance_{{ qid }}_{{ scale_id }}' name='relevance_{{ qid }}_{{ scale_id }}'>{{ relevance }}</textarea>
         </td>
     {%  else %}
         <span style="display: none" class="relevance relevance-equation">

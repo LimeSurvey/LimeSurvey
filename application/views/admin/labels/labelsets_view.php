@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('viewLabelSets');
 
                     'columns' => array(
 
-                    	array(
+                        array(
                             'header' => gT('Label set ID'),
                             'name' => 'labelset_id',
                             'value'=>'$data->lid',
@@ -59,7 +59,7 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                             'name'=>'actions',
                             'type'=>'raw',
                             'value'=>'$data->buttons',
-                            'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right'),
+                            'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right button-column'),
                         ),
 
                     ),

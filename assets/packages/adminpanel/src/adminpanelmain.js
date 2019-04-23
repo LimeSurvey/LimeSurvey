@@ -24,7 +24,7 @@ Vue.mixin({
 });
 
 const LsAdminPanel = () => {
-    const AppState = getAppState(LS.globalUserId);
+    const AppState = getAppState(window.LS.globalUserId);
     const panelNameSpace = {};
 
     const applySurveyId = (store) => {

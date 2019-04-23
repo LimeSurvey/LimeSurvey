@@ -1,0 +1,59 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2019 The LimeSurvey Project Team / Dominik Vitt
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.· Vanilla Theme Maintenance Layout  ·._.·´¯)·._.·´¯)
+
+    This layout is used to render message explaining that maintenance mode is activated.
+
+#}
+
+{# We register a specific css file for that layout. #}
+{{ registerTemplateCssFile('css/maintenance.css') }}
+
+<!DOCTYPE html>
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>{{ aSurveyInfo.surveyls_title }}</title>
+
+        {#
+            NOTE: YES, it's very bad to do it here. It a first cycle. I'll see what to do once I'll done all those kind of error page
+            TODO: move it to a separated css file
+        #}
+        <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+        <link rel="shortcut icon" href="favicon.ico" />
+    </head>
+
+    <body class=" {{ aSurveyInfo.class.body }} font-{{  aSurveyInfo.options.font }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
+        {% block nav_bar %}
+            {{ include('./subviews/header/nav_bar.twig') }}
+        {% endblock %}
+        <article id="block_maintenance">
+            <div>
+                    <h1> Website Under Maintenance </h1>
+                <p>
+                    Our website is undergoing maintenance. <br>
+                    Sorry for the inconvenience. <br>
+                    Please check back soon.
+                </p>
+            </div>
+        </article>
+        {% block footer %}
+            {{ include('./subviews/footer/footer.twig') }}
+        {% endblock %}
+    </body>
+</html>

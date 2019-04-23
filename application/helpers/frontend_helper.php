@@ -387,7 +387,6 @@ function submittokens($quotaexit = false)
     }
     $clienttoken = $_SESSION['survey_'.$surveyid]['token'];
 
-    $emailcharset = Yii::app()->getConfig("emailcharset");
     // Shift the date due to global timeadjust setting
     $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
 
@@ -425,95 +424,17 @@ function submittokens($quotaexit = false)
 
     if ($quotaexit == false) {
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y") {
-            //   if($token->completed == "Y" || $token->completed == $today)
-//            {
-                $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                $subject = $thissurvey['email_confirm_subj'];
-
-                $aReplacementVars = array();
-                $aReplacementVars["ADMINNAME"] = $thissurvey['admin'];
-                $aReplacementVars["ADMINEMAIL"] = $thissurvey['adminemail'];
-                $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
-                //Fill with token info, because user can have his information with anonimity control
-                $aReplacementVars["FIRSTNAME"] = $token->firstname;
-                $aReplacementVars["LASTNAME"] = $token->lastname;
-                $aReplacementVars["TOKEN"] = $token->token;
-                $aReplacementVars["EMAIL"] = $token->email;
-                // added survey url in replacement vars
-                $surveylink = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}", array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'], 'token'=>$token->token));
-                $aReplacementVars['SURVEYURL'] = $surveylink;
-
-                $attrfieldnames = getAttributeFieldNames($surveyid);
-                foreach ($attrfieldnames as $attr_name) {
-                    $aReplacementVars[strtoupper($attr_name)] = $token->$attr_name;
-                }
-
-                $redata = array('thissurvey'=>$thissurvey);
-
-                // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                $subject = templatereplace($subject, $aReplacementVars, $redata, 'email_confirm_subj', false, null, array(), true);
-
-                $subject = html_entity_decode($subject, ENT_QUOTES, $emailcharset);
-
-                if (getEmailFormat($surveyid) == 'html') {
-                    $ishtml = true;
-                } else {
-                    $ishtml = false;
-                }
-
-                $message = $thissurvey['email_confirm'];
-                //$message=ReplaceFields($message, $fieldsarray, true);
-                // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                $message = templatereplace($message, $aReplacementVars, $redata, 'email_confirm', false, null, array(), true);
-                if (!$ishtml) {
-                    $message = strip_tags(breakToNewline(html_entity_decode($message, ENT_QUOTES, $emailcharset)));
-                } else {
-                    $message = html_entity_decode($message, ENT_QUOTES, $emailcharset);
-                }
-
-                //Only send confirmation email if there is a valid email address
             $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {
-                // #14499: Add first and last name to the "To" of confirmation email
-                $to = array($token->firstname." ".$token->lastname." <".$sToAddress[0].">");
-                $aAttachments = unserialize($thissurvey['attachments']);
-
-                $aRelevantAttachments = array();
-                /*
-                 * Iterate through attachments and check them for relevance.
-                 */
-                if (isset($aAttachments['confirmation'])) {
-                    foreach ($aAttachments['confirmation'] as $aAttachment) {
-                        $relevance = $aAttachment['relevance'];
-                        // If the attachment is relevant it will be added to the mail.
-                        if (LimeExpressionManager::ProcessRelevance($relevance) && file_exists($aAttachment['url'])) {
-                            $aRelevantAttachments[] = $aAttachment['url'];
-                        }
-                    }
-                }
-                $event = new PluginEvent('beforeTokenEmail');
-                $event->set('survey', $surveyid);
-                $event->set('type', 'confirm');
-                $event->set('model', 'confirm');
-                $event->set('subject', $subject);
-                $event->set('to', $to);
-                $event->set('body', $message);
-                $event->set('from', $from);
-                $event->set('bounce', getBounceEmail($surveyid));
-                $event->set('token', $token->attributes);
-                App()->getPluginManager()->dispatchEvent($event);
-                $subject = $event->get('subject');
-                $message = $event->get('body');
-                $to = $event->get('to');
-                $from = $event->get('from');
-                $bounce = $event->get('bounce');
-                if ($event->get('send', true) != false) {
-                    SendEmailMessage($message, $subject, $to, $from, Yii::app()->getConfig("sitename"), $ishtml, $bounce, $aRelevantAttachments);
-                }
+                templatereplace("{SID}",$thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+                $mail = new \LimeMailer;
+                $mail->setSurvey($surveyid);
+                $mail->setToken($token->token);
+                $mail->setTypeWithRaw('confirm',Yii::app()->getLanguage());
+                $mail->replaceTokenAttributes = true;
+                $mail->addUrlsPlaceholders(array('SURVEY'));
+                $mail->sendMessage();
             }
-        //   } else {
-                // Leave it to send optional confirmation at closed token
-    //          }
         }
     }
 }
@@ -524,43 +445,29 @@ function submittokens($quotaexit = false)
 function sendSubmitNotifications($surveyid)
 {
     // @todo: Remove globals
-    global $thissurvey, $maildebug;
+    global $thissurvey;
 
-    if (trim($thissurvey['adminemail']) == '') {
-        return;
-    }
-
-    $homeurl = Yii::app()->getController()->createAbsoluteUrl('/admin');
-
-    $sitename = Yii::app()->getConfig("sitename");
-
+    $bIsHTML = ($thissurvey['htmlemail'] == 'Y'); // Needed for ANSWERTABLE
     $debug = Yii::app()->getConfig('debug');
-    $bIsHTML = ($thissurvey['htmlemail'] == 'Y');
-
-    $aReplacementVars = array();
 
     if (!isset($_SESSION['survey_'.$surveyid]['srid'])) {
-            $srid = null;
+        $srid = null; /* Maybe just return ? */
     } else {
-            $srid = $_SESSION['survey_'.$surveyid]['srid'];
+        $srid = $_SESSION['survey_'.$surveyid]['srid'];
     }
-    $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
-    $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
+    $mailer = \LimeMailer::getInstance(\LimeMailer::ResetComplete);
+    $mailer->setSurvey($surveyid);
+    $aReplacementVars = array();
     $aReplacementVars['VIEWRESPONSEURL'] = Yii::app()->getController()->createAbsoluteUrl("/admin/responses/sa/view/surveyid/{$surveyid}/id/{$srid}");
     $aReplacementVars['EDITRESPONSEURL'] = Yii::app()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
     $aReplacementVars['STATISTICSURL'] = Yii::app()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
-    if ($bIsHTML) {
-        $aReplacementVars['VIEWRESPONSEURL'] = "<a href='{$aReplacementVars['VIEWRESPONSEURL']}'>{$aReplacementVars['VIEWRESPONSEURL']}</a>";
-        $aReplacementVars['EDITRESPONSEURL'] = "<a href='{$aReplacementVars['EDITRESPONSEURL']}'>{$aReplacementVars['EDITRESPONSEURL']}</a>";
-        $aReplacementVars['STATISTICSURL'] = "<a href='{$aReplacementVars['STATISTICSURL']}'>{$aReplacementVars['STATISTICSURL']}</a>";
-    }
+    $mailer->aUrlsPlaceholders = ['VIEWRESPONSE','EDITRESPONSE','STATISTICS'];
     $aReplacementVars['ANSWERTABLE'] = '';
     $aEmailResponseTo = array();
     $aEmailNotificationTo = array();
-    $sResponseData = "";
 
     if (!empty($thissurvey['emailnotificationto'])) {
-        $aRecipient = explode(";", ReplaceFields($thissurvey['emailnotificationto'], array('{ADMINEMAIL}' =>$thissurvey['adminemail']), true));
+        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailnotificationto'], array('ADMINEMAIL' =>$thissurvey['adminemail']),3, true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
             if (validateEmailAddress($sRecipient)) {
@@ -568,26 +475,26 @@ function sendSubmitNotifications($surveyid)
             }
         }
     }
-
     if (!empty($thissurvey['emailresponseto'])) {
-        // there was no token used so lets remove the token field from insertarray
-        if (!isset($_SESSION['survey_'.$surveyid]['token']) && $_SESSION['survey_'.$surveyid]['insertarray'][0] == 'token') {
-            unset($_SESSION['survey_'.$surveyid]['insertarray'][0]);
-        }
-        //Make an array of email addresses to send to
-        $aRecipient = explode(";", ReplaceFields($thissurvey['emailresponseto'], array('{ADMINEMAIL}' =>$thissurvey['adminemail']), true));
+        $aRecipient = explode(";", LimeExpressionManager::ProcessStepString($thissurvey['emailresponseto'], array('ADMINEMAIL' =>$thissurvey['adminemail']),3, true));
         foreach ($aRecipient as $sRecipient) {
             $sRecipient = trim($sRecipient);
             if (validateEmailAddress($sRecipient)) {
                 $aEmailResponseTo[] = $sRecipient;
             }
         }
-
+    }
+    if(count($aEmailNotificationTo) || count($aEmailResponseTo)) {
+        templatereplace("{SID}",$thissurvey); /* Force a replacement to fill coreReplacement like {SURVEYRESOURCESURL} for example */
+    }
+    if (count($aEmailResponseTo)) {
+        // there was no token used so lets remove the token field from insertarray
+        if (!isset($_SESSION['survey_'.$surveyid]['token']) && $_SESSION['survey_'.$surveyid]['insertarray'][0] == 'token') {
+            unset($_SESSION['survey_'.$surveyid]['insertarray'][0]);
+        }
         $aFullResponseTable = getFullResponseTable($surveyid, $_SESSION['survey_'.$surveyid]['srid'], $_SESSION['survey_'.$surveyid]['s_lang']);
         $ResultTableHTML = "<table class='printouttable' >\n";
         $ResultTableText = "\n\n";
-        $oldgid = 0;
-        $oldqid = 0;
         Yii::import('application.helpers.viewHelper');
         foreach ($aFullResponseTable as $sFieldname=>$fname) {
             if (substr($sFieldname, 0, 4) == 'gid_') {
@@ -610,60 +517,30 @@ function sendSubmitNotifications($surveyid)
             $aReplacementVars['ANSWERTABLE'] = $ResultTableText;
         }
     }
-
-    $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-
-    $aAttachments = unserialize($thissurvey['attachments']);
-
-    $aRelevantAttachments = array();
-    /*
-     * Iterate through attachments and check them for relevance.
-     */
-    if (isset($aAttachments['admin_notification'])) {
-        foreach ($aAttachments['admin_notification'] as $aAttachment) {
-            $relevance = $aAttachment['relevance'];
-            // If the attachment is relevant it will be added to the mail.
-            if (LimeExpressionManager::ProcessRelevance($relevance) && file_exists($aAttachment['url'])) {
-                $aRelevantAttachments[] = $aAttachment['url'];
-            }
-        }
-    }
-
-    $redata = compact(array_keys(get_defined_vars()));
+    LimeExpressionManager::updateReplacementFields($aReplacementVars);
     if (count($aEmailNotificationTo) > 0) {
-        // NOTE: those occurences of template replace should stay here. User from backend could use old replacement keyword
-        $sMessage = templatereplace($thissurvey['email_admin_notification'], $aReplacementVars, $redata, 'admin_notification', $thissurvey['anonymized'] == "Y", null, array(), true);
-        $sSubject = templatereplace($thissurvey['email_admin_notification_subj'], $aReplacementVars, $redata, 'admin_notification_subj', ($thissurvey['anonymized'] == "Y"), null, array(), true);
+        $mailer = \LimeMailer::getInstance();
+        $mailer->setTypeWithRaw('admin_notification');
         foreach ($aEmailNotificationTo as $sRecipient) {
-        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments)) {
-                if ($debug > 0) {
-                    echo '<br />Email could not be sent. Reason: '.CHtml::encode($maildebug).'<br/>';
+            $mailer->setTo($sRecipient);
+            if (!$mailer->SendMessage()) {
+                if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')) {
+                    /* Find a better way to show email error … */
+                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Basic admin notification could not be sent with error: %s"),$mailer->getError()));
                 }
             }
         }
     }
 
-        $aRelevantAttachments = array();
-    /*
-     * Iterate through attachments and check them for relevance.
-     */
-    if (isset($aAttachments['detailed_admin_notification'])) {
-        foreach ($aAttachments['detailed_admin_notification'] as $aAttachment) {
-            $relevance = $aAttachment['relevance'];
-            // If the attachment is relevant it will be added to the mail.
-            if (LimeExpressionManager::ProcessRelevance($relevance) && file_exists($aAttachment['url'])) {
-                $aRelevantAttachments[] = $aAttachment['url'];
-            }
-        }
-    }
     if (count($aEmailResponseTo) > 0) {
-        // NOTE: those occurences of template replace should stay here. User from backend could use old replacement keyword
-        $sMessage = templatereplace($thissurvey['email_admin_responses'], $aReplacementVars, $redata, 'detailed_admin_notification', $thissurvey['anonymized'] == "Y", null, array(), true);
-        $sSubject = templatereplace($thissurvey['email_admin_responses_subj'], $aReplacementVars, $redata, 'detailed_admin_notification_subj', $thissurvey['anonymized'] == "Y", null, array(), true);
+        $mailer = \LimeMailer::getInstance();
+        $mailer->setTypeWithRaw('admin_responses');
         foreach ($aEmailResponseTo as $sRecipient) {
-        if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid), $aRelevantAttachments)) {
-                if ($debug > 0) {
-                    echo '<br />Email could not be sent. Reason: '.CHtml::encode($maildebug).'<br/>';
+            $mailer->setTo($sRecipient);
+            if (!$mailer->SendMessage()) {
+                if ($debug > 0  && Permission::model()->hasSurveyPermission($surveyid,'surveysettings','update')) {
+                    /* Find a better way to show email error … */
+                    echo CHtml::tag("div",array('class'=>'alert alert-danger'),sprintf(gT("Detailed admin notification could not be sent with error: %s"),$mailer->getError()));
                 }
             }
         }
@@ -715,7 +592,13 @@ function submitfailed($errormsg = '', $query = null)
         . ($query ? $query : '')."\n\n"  // In case we have no global subquery, but an argument to the function
         . gT("ERROR MESSAGE", "unescaped").":\n"
         . $errormsg."\n\n";
-        SendEmailMessage($email, gT("Error saving results", "unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
+        $mailer = new \LimeMailer;
+        $mailer->emailType = "errorsavingresults";
+        $mailer->Subject = gT("Error saving results","unescaped");
+        $mailer->Body = $email;
+        $mailer->setSurvey($surveyid);
+        $mailer->addAddress($thissurvey['adminemail']);
+        $mailer->sendMessage();
     } else {
         $completed .= "<a href='javascript:location.reload()'>".gT("Try to submit again")."</a><br /><br />\n";
         $completed .= $subquery;
@@ -1447,7 +1330,7 @@ function getNavigatorDatas()
     if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep !== false && $iSessionMaxStep == $iSessionStep)) {
         $aNavigator['disabled'] = " disabled";
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."/navigator-countdown.js");
-        App()->getClientScript()->registerScript('navigator_countdown', "navigator_countdown(".$thissurvey['navigationdelay'].");\n", CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript('navigator_countdown', "navigator_countdown(".$thissurvey['navigationdelay'].");\n", LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
     // Previous ?

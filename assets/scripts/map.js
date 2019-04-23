@@ -154,26 +154,6 @@ function OSGeoInitialize(question,latLng){
             }
         )
 
-        // Zoom to 11 when switching to Aerial or Hybrid views - bug 10589 / @deprectaed : layer was updated
-        //~ var layer2Name, layer3Name, layerIndex = 0;
-        //~ for (var key in baseLayers) {
-            //~ if (!baseLayers.hasOwnProperty(key)) {
-                //~ continue;
-            //~ }
-            //~ if(layerIndex == 1) {
-                //~ layer2Name = key;
-            //~ }
-            //~ else if(layerIndex == 2) {
-                //~ layer3Name = key;
-            //~ }
-            //~ layerIndex++;
-        //~ }
-        //~ map.on('baselayerchange', function(e) {
-            //~ if(e.name == layer2Name || e.name == layer3Name) {
-                //~ map.setZoom(MapOption.zoomLevel);
-            //~ }
-        //~ });
-
         marker.on('dragend', function(e){
                 var marker = e.target;
                 var position = marker.getLatLng();
@@ -220,14 +200,14 @@ function OSGeoInitialize(question,latLng){
             }
             $(this).data('prevvalue',$(this).val());
         });
-        console.ls.log(window.location.protocol);
+        var geonamesApiUrl = "api.geonames.org";
         if(window.location.protocol=='https:'){
-            // Currently api.geonames.org are unsecure (ssl for api.geonames.net)
-            $("#searchbox_"+name).parent().remove();
+            /* Checked : work on 2019-03 , see #13873 */
+            geonamesApiUrl = "secure.geonames.org";
         }
         $("#searchbox_"+name).autocomplete({
-            serviceUrl : "//api.geonames.org/searchJSON",
-            dataType: "jsonp",
+            serviceUrl : "//"+geonamesApiUrl+"/searchJSON",
+            dataType: "json",
             paramName: 'name_startsWith',
             deferRequestBy: 500,
             params:{

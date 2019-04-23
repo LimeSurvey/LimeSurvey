@@ -706,11 +706,11 @@ function getSurveyInfo($surveyid, $languagecode = '')
     $languagecode = sanitize_languagecode($languagecode);
     $thissurvey = false;
     $oSurvey = Survey::model()->findByPk($surveyid);
-    $aSurveyOptions = $oSurvey->aOptions;
     // Do job only if this survey exist
     if (!$oSurvey) {
         return false;
     }
+    $aSurveyOptions = $oSurvey->aOptions;
     // if no language code is set then get the base language one
     if ((!isset($languagecode) || $languagecode == '')) {
         $languagecode = $oSurvey->language;
@@ -1042,24 +1042,19 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 
 /**
 * Validate an email address - also supports IDN email addresses
+* @deprecated : use LimeMailer::validateAddress($sEmailAddress);
 * @returns True/false for valid/invalid
 *
 * @param mixed $sEmailAddress  Email address to check
 */
 function validateEmailAddress($sEmailAddress)
 {
-    require_once(APPPATH.'third_party/idna-convert/idna_convert.class.php');
-    $oIdnConverter = new idna_convert();
-    $sEmailAddress = $oIdnConverter->encode($sEmailAddress);
-    $bResult = filter_var($sEmailAddress, FILTER_VALIDATE_EMAIL);
-    if ($bResult !== false) {
-        return true;
-    }
-    return false;
+    return LimeMailer::validateAddress($sEmailAddress);
 }
 
 /**
 * Validate an list of email addresses - either as array or as semicolon-limited text
+* @deprecated : use LimeMailer::validateAddresses($aEmailAddressList);
 * @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
 *
 * @param string $aEmailAddressList  Email address to check
@@ -1067,18 +1062,7 @@ function validateEmailAddress($sEmailAddress)
 */
 function validateEmailAddresses($aEmailAddressList)
 {
-    $aOutList = [];
-    if (!is_array($aEmailAddressList)) {
-        $aEmailAddressList = explode(';', $aEmailAddressList);
-    }
-
-    foreach ($aEmailAddressList as $sEmailAddress) {
-        $sEmailAddress = trim($sEmailAddress);
-        if (validateEmailAddress($sEmailAddress)) {
-            $aOutList[] = $sEmailAddress;
-        }
-    }
-    return $aOutList;
+    return LimeMailer::validateAddresses($aEmailAddressList);
 }
 
 /**
@@ -1322,10 +1306,12 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     App()->setLanguage($sLanguage);
     // Collect all default values once so don't need separate query for each question with defaults
     // First collect language specific defaults
-    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
-    . " FROM {{defaultvalues}} as a, {{questions}} as b"
-    . " WHERE a.qid = b.qid"
-    . " AND a.language = '{$sLanguage}'"
+    
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
+    . " FROM {{defaultvalues}} as a "
+    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
+    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
+    . " AND al10.language = '{$sLanguage}'"
     . " AND b.same_default=0"
     . " AND b.sid = ".$surveyid;
     $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
@@ -1342,10 +1328,11 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     // Now overwrite language-specific defaults (if any) base language values for each question that uses same_defaults=1
     $baseLanguage = $survey->language;
-    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
-    . " FROM {{defaultvalues}} as a, {{questions}} as b"
-    . " WHERE a.qid = b.qid"
-    . " AND a.language = '{$baseLanguage}'"
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
+    . " FROM {{defaultvalues}} as a "
+    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
+    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
+    . " AND al10.language = '{$baseLanguage}'"
     . " AND b.same_default=1"
     . " AND b.sid = ".$surveyid;
     $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
@@ -1967,7 +1954,8 @@ function jsonEscape($str, $strip_tags = false, $htmldecode = false)
 /**
 * This function mails a text $body to the recipient $to.
 * You can use more than one recipient when using a semicolon separated string with recipients.
-*
+* @deprecated : leave it in 4.0 for plugins ? Must remove in 5.0 at minima.
+* 
 * @param string $body Body text of the email in plain text or HTML
 * @param mixed $subject Email subject
 * @param mixed $to Array with several email addresses or single string with one email address
@@ -1980,127 +1968,44 @@ function jsonEscape($str, $strip_tags = false, $htmldecode = false)
 */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = false, $bouncemail = null, $attachments = null, $customheaders = "")
 {
-    global $maildebug, $maildebugbody;
-    require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
-
-    $emailmethod = Yii::app()->getConfig('emailmethod');
-    $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
-    $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
-    $emailsmtppassword = Yii::app()->getConfig("emailsmtppassword");
-    $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
-    $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
-    $defaultlang = Yii::app()->getConfig("defaultlang");
-    $emailcharset = Yii::app()->getConfig("emailcharset");
-
-    if ($emailcharset != 'utf-8') {
-        $body = mb_convert_encoding($body, $emailcharset, 'utf-8');
-        $subject = mb_convert_encoding($subject, $emailcharset, 'utf-8');
-        $sitename = mb_convert_encoding($sitename, $emailcharset, 'utf-8');
-    }
+    global $maildebug;
 
     if (!is_array($to)) {
         $to = array($to);
     }
 
-
-
     if (!is_array($customheaders) && $customheaders == '') {
         $customheaders = array();
     }
-    if (Yii::app()->getConfig('demoMode')) {
-        $maildebug = gT('Email was not sent because demo-mode is activated.');
-        $maildebugbody = '';
-        return false;
-    }
 
-    if (is_null($bouncemail)) {
-        $sender = $from;
-    } else {
-        $sender = $bouncemail;
-    }
-
-
-    require_once(APPPATH.'/third_party/phpmailer/load_phpmailer.php');
-    $mail = new PHPMailer\PHPMailer\PHPMailer;
-    $mail->SMTPAutoTLS = false;
-    if (!$mail->SetLanguage($defaultlang, APPPATH.'/third_party/phpmailer/language/')) {
-        $mail->SetLanguage('en', APPPATH.'/third_party/phpmailer/language/');
-    }
-    $mail->CharSet = $emailcharset;
-    if (isset($emailsmtpssl) && trim($emailsmtpssl) !== '' && $emailsmtpssl !== 0) {
-        if ($emailsmtpssl === 1) {$mail->SMTPSecure = "ssl"; } else {$mail->SMTPSecure = $emailsmtpssl; }
-    }
-
+    $mail =  new LimeMailer;
+    $mail->emailType = 'deprecated';
+    
     $fromname = '';
     $fromemail = $from;
     if (strpos($from, '<')) {
         $fromemail = substr($from, strpos($from, '<') + 1, strpos($from, '>') - 1 - strpos($from, '<'));
         $fromname = trim(substr($from, 0, strpos($from, '<') - 1));
     }
-
-    $senderemail = $sender;
-    if (strpos($sender, '<')) {
-        $senderemail = substr($sender, strpos($sender, '<') + 1, strpos($sender, '>') - 1 - strpos($sender, '<'));
+    if (is_null($bouncemail)) {
+        $senderemail = $fromemail;
+    } else {
+        $senderemail = $bouncemail;
     }
 
-    switch ($emailmethod) {
-        case "qmail":
-            $mail->IsQmail();
-            break;
-        case "smtp":
-            $mail->IsSMTP();
-            if ($emailsmtpdebug > 0) {
-                $mail->SMTPDebug = $emailsmtpdebug;
-            }
-            if (strpos($emailsmtphost, ':') > 0) {
-                $mail->Host = substr($emailsmtphost, 0, strpos($emailsmtphost, ':'));
-                $mail->Port = (int) substr($emailsmtphost, strpos($emailsmtphost, ':') + 1);
-            } else {
-                $mail->Host = $emailsmtphost;
-            }
-            $mail->Username = $emailsmtpuser;
-            $mail->Password = $emailsmtppassword;
-            if (trim($emailsmtpuser) != "") {
-                $mail->SMTPAuth = true;
-            }
-            break;
-        case "sendmail":
-            $mail->IsSendmail();
-            break;
-        default:
-            $mail->IsMail();
-    }
-
-    $mail->SetFrom($fromemail, $fromname);
+    $mail->SetFrom($fromemail,$fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
     foreach ($to as $singletoemail) {
-        if (strpos($singletoemail, '<')) {
-            $toemail = substr($singletoemail, strpos($singletoemail, '<') + 1, strpos($singletoemail, '>') - 1 - strpos($singletoemail, '<'));
-            $toname = trim(substr($singletoemail, 0, strpos($singletoemail, '<') - 1));
-            $mail->AddAddress($toemail, $toname);
-        } else {
-            $mail->AddAddress($singletoemail);
-        }
+        $mail->addAddress($singletoemail);
     }
     if (is_array($customheaders)) {
         foreach ($customheaders as $key=>$val) {
             $mail->AddCustomHeader($val);
         }
     }
-    $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.org)");
-    if (get_magic_quotes_gpc() != "0") {$body = stripcslashes($body); }
-    if ($ishtml) {
-        $mail->IsHTML(true);
-        if (strpos($body, "<html>") === false) {
-            $body = "<html>".$body."</html>";
-        }
-        $mail->msgHTML($body, App()->getConfig("publicdir")); // This allow embedded image if we remove the servername from image
-        $html = new \Html2Text\Html2Text($body);
-        $mail->AltBody = $html->getText();
-    } else {
-        $mail->IsHTML(false);
-        $mail->Body = $body;
-    }
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+    $mail->IsHTML($ishtml);
     // Add attachments if they are there.
     if (is_array($attachments)) {
         foreach ($attachments as $attachment) {
@@ -2108,23 +2013,18 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml = fals
             if (is_array($attachment)) {
                 $mail->AddAttachment($attachment[0], $attachment[1]);
             } else {
-// Or a string with the filename.
+                // Or a string with the filename.
                 $mail->AddAttachment($attachment);
             }
         }
     }
     $mail->Subject = $subject;
 
-    if ($emailsmtpdebug > 0) {
-        ob_start();
-    }
     $sent = $mail->Send();
     $maildebug = $mail->ErrorInfo;
-    if ($emailsmtpdebug > 0) {
-        $maildebug .= '<br><strong>'.gT('SMTP debug output:').'</strong><pre>'.\CHtml::encode(ob_get_contents()).'</pre>';
-        ob_end_clean();
+    if (Yii::app()->getConfig("emailsmtpdebug") > 0 && $mail->getDebug()) {
+        $maildebug .= '<br><strong>'.gT('SMTP debug output:').'</strong>'.$mail->getDebug('html');
     }
-    $maildebugbody = $mail->Body;
     return $sent;
 }
 
