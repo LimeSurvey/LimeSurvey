@@ -1,6 +1,6 @@
 
 <script>
-import forEach from 'lodash/foreach';
+import forEach from 'lodash/forEach';
 
 export default {
     name: 'previewFrame',

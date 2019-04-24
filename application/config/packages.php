@@ -164,10 +164,11 @@ return array(
         'basePath' => 'core.textelements',
         'position' =>CClientScript::POS_END,
         'js' => array(
-            'build/lstextelements'.(($debug > 0) ? '' : '.min').'.js'
+            'build/js/chunk-vendors.js',
+            'build/js/lstextelements.js'
         ),
         'css' => array(
-            'build/lstextelements'.$minVersion.'.css'
+            'build/css/main.css'
         ),
         'depends' => array(
             'adminbasics'
@@ -178,10 +179,11 @@ return array(
         'basePath' => 'core.datasecuritysettings',
         'position' =>CClientScript::POS_END,
         'js' => array(
-            'build/datasecuritysettings'.(($debug > 0) ? '' : '.min').'.js'
+            'build/js/chunk-vendors.js',
+            'build/js/datasecuritysettings.js'
         ),
         'css' => array(
-            'build/datasecuritysettings'.$minVersion.'.css'
+            'build/css/main.css'
         ),
         'depends' => array(
             'adminbasics'
@@ -192,10 +194,11 @@ return array(
         'basePath' => 'core.questiongroup',
         'position' =>CClientScript::POS_END,
         'js' => array(
-            'build/lsquestiongroupeditor'.(($debug > 0) ? '' : '.min').'.js'
+            'build/js/chunk-vendors.js',
+            'build/js/questiongroupedit.js'
         ),
         'css' => array(
-            'build/lsquestiongroupeditor'.$minVersion.'.css'
+            'build/css/main.css'
         ),
         'depends' => array(
             'adminbasics'
@@ -206,10 +209,11 @@ return array(
         'basePath' => 'core.questioneditor',
         'position' =>CClientScript::POS_END,
         'js' => array(
-            'build/lsquestioneditor'.(($debug > 0) ? '' : '.min').'.js'
+            'build/js/chunk-vendors.js',
+            'build/js/questionedit.js'
         ),
         'css' => array(
-            'build/lsquestioneditor'.$minVersion.'.css'
+            'build/css/main.css'
         ),
         'depends' => array(
             'adminbasics'

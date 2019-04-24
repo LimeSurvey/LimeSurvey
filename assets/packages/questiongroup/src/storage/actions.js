@@ -13,6 +13,7 @@ export default {
                 context.commit('setLanguages', result.data.languages);
                 context.commit('setActiveLanguage', keys(result.data.languages)[0]);
 
+                context.commit('setPermissions', result.data.permissions);
                 context.commit('setCurrentQuestionGroup', result.data.questionGroup);
                 context.commit('setCurrentQuestionGroupI10N', result.data.questonGroupI10N);
                 resolve(true);

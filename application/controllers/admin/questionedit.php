@@ -246,7 +246,7 @@ class questionedit extends Survey_Common_Action
         $aPermissions = [
             "read" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'read'),
             "update" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
-            "script" => SettingsUser::getUserSetting('showScriptEdit', App()->user->id)
+            "script" => SettingsUser::getUserSetting('showScriptEdit', App()->user->id) && Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update')
         ];
 
         $this->renderJSON($aPermissions);

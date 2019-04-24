@@ -3,7 +3,7 @@ import max from 'lodash/max';
 import merge from 'lodash/merge';
 import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
-import foreach from 'lodash/foreach';
+import foreach from 'lodash/forEach';
 
 import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
 import eventChild from '../../mixins/eventChild.js';

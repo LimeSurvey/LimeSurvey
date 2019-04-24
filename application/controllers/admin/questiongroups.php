@@ -356,9 +356,14 @@ class questiongroups extends Survey_Common_Action
             $i10N = $oQuestionGroup->questionGroupL10ns;
         }
 
+        $aPermissions = [
+            "read" => Permission::model()->hasSurveyPermission($oSurvey->sid, 'survey', 'read'),
+            "update" => Permission::model()->hasSurveyPermission($oSurvey->sid, 'survey', 'update'),
+        ];
 
         $this->renderJSON([
             'questionGroup' => $oQuestionGroup,
+            'permissions' => $aPermissions, 
             'questonGroupI10N' => $i10N,
             'languages' => $aLanguages
         ]);

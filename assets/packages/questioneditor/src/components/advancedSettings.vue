@@ -1,7 +1,7 @@
 <script>
 
 import keys from 'lodash/keys';
-import foreach from 'lodash/foreach';
+import foreach from 'lodash/forEach';
 import reduce from 'lodash/reduce';
 import filter from 'lodash/filter';
 import isEmpty from 'lodash/isEmpty';

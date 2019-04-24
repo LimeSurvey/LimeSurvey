@@ -3,7 +3,7 @@ import keys from 'lodash/keys';
 import merge from 'lodash/merge';
 import remove from 'lodash/remove';
 import reduce from 'lodash/reduce';
-import foreach from 'lodash/foreach';
+import foreach from 'lodash/forEach';
 import findIndex from 'lodash/findIndex';
 import isArrayLike from 'lodash/isArrayLike';
 import isObjectLike from 'lodash/isObjectLike';

@@ -15,7 +15,9 @@ export default {
     setQuestionList : (state, newValue) => {
         state.questionList = pickBy(newValue, (questionData,key) => {return key !== 'debug'});
     },
-
+    setPermissions : (state, newValue) => {
+        state.permissions = newValue;
+    },
     //Update currently set values
     updateCurrentQuestionGroup(state, valueObject) {
         state.currentQuestionGroup = merge({}, state.currentQuestionGroup, valueObject);

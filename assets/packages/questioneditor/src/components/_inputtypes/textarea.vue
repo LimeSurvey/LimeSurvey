@@ -1,5 +1,5 @@
 <script>
-    import foreach from 'lodash/foreach';
+    import foreach from 'lodash/forEach';
     import empty from 'lodash/isEmpty';
 
     export default {

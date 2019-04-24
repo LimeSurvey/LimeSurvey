@@ -1,6 +1,6 @@
 <script>
 import keys from 'lodash/keys';
-import foreach from 'lodash/foreach';
+import foreach from 'lodash/forEach';
 import slice from 'lodash/slice';
 
 export default {

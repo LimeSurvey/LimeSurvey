@@ -42,6 +42,9 @@ export default {
                 this.$store.commit('updateCurrentQuestionTitle', newValue);
             }
         },
+        allowSwitchEditing(){
+            return !this.isCreateQuestion && this.$store.state.currentQuestionPermissions.update;
+        }
     },
     methods: {
         triggerEditQuestion(){
@@ -160,7 +163,7 @@ export default {
 
 <template>
     <div class="container-center scoped-new-questioneditor">
-        <div class="btn-group pull-right clear" v-if="!!$store.state.currentQuestionPermissions.update">
+        <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
             <button 
                 @click.prevent.stop="triggerEditQuestion" 
                 :class="editQuestion ? 'btn-default' : 'btn-primary'"

@@ -1,7 +1,7 @@
 
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import foreach from 'lodash/foreach';
+import foreach from 'lodash/forEach';
 import keys from 'lodash/keys';
 import filter from 'lodash/filter';
 import reduce from 'lodash/reduce';

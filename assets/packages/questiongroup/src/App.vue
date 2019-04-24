@@ -28,6 +28,9 @@ export default {
         isCreateQuestionGroup(){
             return this.$store.state.currentQuestionGroup.gid == null;
         },
+        allowSwitchEditing(){
+            return !this.isCreateQuestionGroup && this.$store.state.permissions.update
+        }
     },
     methods: {
         triggerEditQuestionGroup(){
@@ -110,7 +113,7 @@ export default {
         });
 
         $('#save-button').on('click', (e)=>{
-            this.submitCurrentState();
+            this.submitCurrentState((this.$store.state.currentQuestionGroup.gid == null));
         });
 
         $('#save-and-close-button').on('click', (e)=>{
@@ -120,13 +123,13 @@ export default {
         this.toggleLoading(false);
         $('#questiongroupbarid').css({'display':''});
 
-        if(!this.isCreateQuestionGroup) {
-            $('#questiongroupbar--savebuttons').css({'display':'none'});
-            $('#questiongroupbar--questiongroupbuttons').css({'display':''});
-        } else {
+        if(this.$store.state.currentQuestionGroup.gid == null) {
             $('#questiongroupbar--savebuttons').css({'display':''});
             $('#questiongroupbar--questiongroupbuttons').css({'display':'none'});
-
+        } else {
+            $('#questiongroupbar--savebuttons').css({'display':'none'});
+            $('#save-button').css({'display':'none'});
+            $('#questiongroupbar--questiongroupbuttons').css({'display':''});
         }
     }
 }
@@ -134,14 +137,22 @@ export default {
 
 <template>
     <div class="container-center scoped-new-questioneditor">
-        <button 
-            v-if="!isCreateQuestionGroup" 
-            @click.prevent.stop="triggerEditQuestionGroup" 
-            class="pull-right clear btn "
-            :class="editQuestionGroup ? 'btn-primary' : 'btn-default'"
-        >
-            {{editQuestionGroup ? 'Question overview' : 'Question editor'}}
-        </button>
+        <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
+            <button 
+                @click.prevent.stop="triggerEditQuestion" 
+                :class="editQuestionGroup ? 'btn-default' : 'btn-primary'"
+                class="btn "
+            >
+                {{'Question group overview'| translate}}
+            </button>
+            <button 
+                @click.prevent.stop="triggerEditQuestion" 
+                :class="editQuestionGroup ? 'btn-primary' : 'btn-default'"
+                class="btn "
+            >
+                {{'Question group editor'| translate}}
+            </button>
+        </div>
         <div class="pagetitle h3 scoped-unset-pointer-events">
             <template v-if="isCreateQuestionGroup">
                     {{'Create new question group'|translate}}
