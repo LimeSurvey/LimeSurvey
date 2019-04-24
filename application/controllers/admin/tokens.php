@@ -1451,7 +1451,8 @@ class tokens extends Survey_Common_Action
                         $stringInfo = CHtml::encode("{$emrow['tid']}: {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']}).");
                         if ($success) {
                             // Put date into sent
-                            $token = Token::model($iSurveyId)->findByPk($emrow['tid']);
+                            /* Can not create a findByPk using parent: because parent don't have decrypt */
+                            $token = Token::model($iSurveyId)->findByPk($emrow['tid'])->decrypt();
                             if ($bEmail) {
                                 $tokenoutput .= gT("Invitation sent to:");
                                 $token->sent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
@@ -1460,7 +1461,7 @@ class tokens extends Survey_Common_Action
                                 $token->remindersent = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
                                 $token->remindercount++;
                             }
-                            $token->save();
+                            $token->encryptSave();
 
                             // Mark token email as send this session.
                             // NB: This cache is cleared on form page for invitation/reminder.

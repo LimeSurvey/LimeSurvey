@@ -79,9 +79,21 @@ class LimesurveyApi
         return false;
     }
 
-    public function createUrl($route, array $params)
+    /**
+     * Create an url
+     * @see CController::createAbsoluteUrl
+     * @see CController::createUrl
+     * @param string $route
+     * @param string[] $params
+     * @param boolean $absolute
+     * @return string
+     */
+    public function createUrl($route, $params = array(), $absolute = true)
     {
-        return App()->createAbsoluteUrl($route, $params);
+        if($absolute) {
+            return App()->getController()->createAbsoluteUrl($route, $params);
+        }
+        return App()->getController()->createUrl($route, $params);
     }
 
     /**

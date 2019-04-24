@@ -300,6 +300,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         foreach ($aEmailaddresses as $sEmailaddress) {
             $this->addAddress($sEmailaddress,$oToken->firstname." ".$oToken->lastname);
         }
+        /* @todo : check if we have finally a valid adress */
         $this->addCustomHeader("X-tokenid",$oToken->token);
     }
 
@@ -562,7 +563,6 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if(!is_null($eventResult)) {
             return $eventResult;
         }
-
         /* Fix body according to HTML on/off */
         if($this->getIsHtml()) {
             if (strpos($this->Body, "<html>") === false) {

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>listUnsubscribeHeader</name>
+        <type>plugin</type>
+        <creationDate>2019-04-24</creationDate>
+        <lastUpdate>2019-04-24</lastUpdate>
+        <author>Denis Chenu</author>
+        <authorUrl>https://www.limesurvey.org</authorUrl>
+        <version>1.0.0</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[Add List-Unsubscribe to token invite, remind and register email.]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+    </compatibility>
+</config>

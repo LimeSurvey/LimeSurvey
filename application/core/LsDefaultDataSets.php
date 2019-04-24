@@ -943,6 +943,15 @@ class LsDefaultDataSets
                 'version'            => '1.0.0',
                 'load_error'         => 0,
                 'load_error_message' => null
+            ],
+            [
+                'id' => null,
+                'name'               => 'listUnsubscribeHeader',
+                'plugin_type'        => 'core',
+                'active'             => 0,
+                'version'            => '1.0.0',
+                'load_error'         => 0,
+                'load_error_message' => null
             ]
         ];
     }

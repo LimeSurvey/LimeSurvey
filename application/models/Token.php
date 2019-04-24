@@ -207,7 +207,7 @@ abstract class Token extends Dynamic
     {
         return $this->findByAttributes(array(
             'token' => $token
-        ));
+        ))->decrypt();
     }
 
     /**
