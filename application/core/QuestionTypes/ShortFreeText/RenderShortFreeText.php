@@ -54,6 +54,7 @@ class RenderShortFreeText extends QuestionBaseRenderer
             'placeholder'=> $placeholder,
             ), true);
 
+        $this->registerAssets();
         $inputnames[] = [];
         return array($answer, $inputnames);
     }

@@ -50,6 +50,7 @@ class RenderArrayOfIncSameDecQuestions extends QuestionBaseRenderer
             ), true);
 
         $inputnames[] = [];
+        $this->registerAssets();
         return array($answer, $inputnames);
     }
 }

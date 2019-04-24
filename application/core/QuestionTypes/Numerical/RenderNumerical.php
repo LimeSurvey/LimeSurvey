@@ -30,6 +30,7 @@ class RenderNumerical extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        $this->registerAssets();
         return do_numerical($this->aFieldArray);
 
         $answer = '';

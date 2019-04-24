@@ -50,6 +50,7 @@ class RenderArrayYesUncertainNo extends QuestionBaseRenderer
             ), true);
 
         $inputnames[] = [];
+        $this->registerAssets();
         return array($answer, $inputnames);
     }
 }
