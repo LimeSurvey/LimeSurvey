@@ -11,7 +11,7 @@ import isObject from 'lodash/isObject';
 import eventChild from '../mixins/eventChild.js';
 
 export default {
-    name: 'questionoverview',
+    name: 'questiongroupoverview',
     mixin: [eventChild],
     data(){
         return {

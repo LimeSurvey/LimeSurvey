@@ -91,9 +91,12 @@ export default {
             this.toggleLoading();
             this.$store.dispatch('saveQuestionData').then(
                 (result) => {
+                    if(result === false) {
+                        return;
+                    }
                     this.toggleLoading();
                     if(redirect == true) {
-                        window.location.href = result.data.redirect;
+                        window.location.href = result.data.redirect || window.location.href;
                     }
 
                     $('#in_survey_common').trigger('lsStopLoading');

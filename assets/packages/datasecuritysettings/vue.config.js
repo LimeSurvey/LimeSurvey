@@ -5,7 +5,7 @@ const appName = 'datasecuritysettings';
 const entryPoint = ['./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
 
 module.exports = {
-    outputDir: 'build/',
+    outputDir: process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/',
     filenameHashing: false,
     runtimeCompiler: true,
     // The source of CKEditor is encapsulated in ES6 modules. By default, the code

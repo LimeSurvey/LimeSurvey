@@ -163,12 +163,17 @@ return array(
         'devBaseUrl' => 'assets/packages/textelements/',
         'basePath' => 'core.textelements',
         'position' =>CClientScript::POS_END,
-        'js' => array(
-            'build/js/chunk-vendors.js',
-            'build/js/lstextelements.js'
+        'js' => ( $debug > 0
+            ? array(
+                'build/js/lstextelements.js',
+            )
+            : array(
+                'build.min/js/chunk-vendors.js',
+                'build.min/js/lstextelements.js'
+            ) 
         ),
         'css' => array(
-            'build/css/main.css'
+            'build.min/css/main.css'
         ),
         'depends' => array(
             'adminbasics'
@@ -178,12 +183,17 @@ return array(
         'devBaseUrl' => 'assets/packages/datasecuritysettings/',
         'basePath' => 'core.datasecuritysettings',
         'position' =>CClientScript::POS_END,
-        'js' => array(
-            'build/js/chunk-vendors.js',
-            'build/js/datasecuritysettings.js'
+        'js' => ( $debug > 0
+            ? array(
+                'build/js/datasecuritysettings.js'
+            ) 
+            : array(
+                'build.min/js/chunk-vendors.js',
+                'build.min/js/datasecuritysettings.js'
+            )
         ),
         'css' => array(
-            'build/css/main.css'
+            'build.min/css/main.css'
         ),
         'depends' => array(
             'adminbasics'
@@ -193,12 +203,17 @@ return array(
         'devBaseUrl' => 'assets/packages/questiongroup/',
         'basePath' => 'core.questiongroup',
         'position' =>CClientScript::POS_END,
-        'js' => array(
-            'build/js/chunk-vendors.js',
-            'build/js/questiongroupedit.js'
+        'js' =>  ($debug > 0 
+            ? array(
+                'build/js/questiongroupedit.js'
+            )
+            : array(
+                'build.min/js/chunk-vendors.js',
+                'build.min/js/questiongroupedit.js'
+            )
         ),
         'css' => array(
-            'build/css/main.css'
+            'build.min/css/main.css'
         ),
         'depends' => array(
             'adminbasics'
@@ -208,12 +223,17 @@ return array(
         'devBaseUrl' => 'assets/packages/questioneditor/',
         'basePath' => 'core.questioneditor',
         'position' =>CClientScript::POS_END,
-        'js' => array(
-            'build/js/chunk-vendors.js',
-            'build/js/questionedit.js'
+        'js' => ($debug > 0 
+            ? array(
+                'build/js/questionedit.js'
+            )
+            : array(
+                'build.min/js/chunk-vendors.js',
+                'build.min/js/questionedit.js'
+            )
         ),
         'css' => array(
-            'build/css/main.css'
+            'build.min/css/main.css'
         ),
         'depends' => array(
             'adminbasics'

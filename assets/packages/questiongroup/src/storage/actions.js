@@ -6,6 +6,7 @@ import {LOG} from '../mixins/logSystem.js'
 export default {
     loadQuestionGroup: (context) => {
         return new Promise((resolve, reject) => {
+            context.commit('setCurrentQuestionGroup', {});
             ajax.methods.$_get(
                 window.QuestionGroupEditData.connectorBaseUrl+'/loadQuestionGroup', 
                 {'iQuestionGroupId' : window.QuestionGroupEditData.gid }

@@ -100,7 +100,25 @@ export default {
         },
     },
     created(){
-        this.$store.dispatch('loadQuestionGroup');
+        this.$store.dispatch('loadQuestionGroup').then( 
+            (resolve) => {
+                $('#questiongroupbarid').css({'display':''});
+                if(this.$store.state.currentQuestionGroup.gid == null) {
+                    $('#save-button').css({'display':'none'});
+                    $('#questiongroupbar--savebuttons').css({'display':''});
+                    $('#questiongroupbar--questiongroupbuttons').css({'display':'none'});
+                    this.editQuestionGroup = true;
+                } else {
+                    $('#questiongroupbar--savebuttons').css({'display':'none'});
+                    $('#questiongroupbar--questiongroupbuttons').css({'display':''});
+                }
+                this.toggleLoading(false);
+            },
+            (reject) => {
+                this.$log.error("Question group loading failed");
+            }
+
+        );
         this.$store.dispatch('getQuestionsForGroup');
     },
     
@@ -119,18 +137,7 @@ export default {
         $('#save-and-close-button').on('click', (e)=>{
             this.submitCurrentState(true);
         });
-
-        this.toggleLoading(false);
-        $('#questiongroupbarid').css({'display':''});
-
-        if(this.$store.state.currentQuestionGroup.gid == null) {
-            $('#questiongroupbar--savebuttons').css({'display':''});
-            $('#questiongroupbar--questiongroupbuttons').css({'display':'none'});
-        } else {
-            $('#questiongroupbar--savebuttons').css({'display':'none'});
-            $('#save-button').css({'display':'none'});
-            $('#questiongroupbar--questiongroupbuttons').css({'display':''});
-        }
+        
     }
 }
 </script>
@@ -139,14 +146,14 @@ export default {
     <div class="container-center scoped-new-questioneditor">
         <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
             <button 
-                @click.prevent.stop="triggerEditQuestion" 
+                @click.prevent.stop="triggerEditQuestionGroup" 
                 :class="editQuestionGroup ? 'btn-default' : 'btn-primary'"
                 class="btn "
             >
                 {{'Question group overview'| translate}}
             </button>
             <button 
-                @click.prevent.stop="triggerEditQuestion" 
+                @click.prevent.stop="triggerEditQuestionGroup" 
                 :class="editQuestionGroup ? 'btn-primary' : 'btn-default'"
                 class="btn "
             >

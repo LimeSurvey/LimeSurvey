@@ -492,15 +492,22 @@ class questionedit extends Survey_Common_Action
         foreach($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
             if($sAttributeCategory === 'debug') continue;
             foreach($aAttributeCategorySettings as $sAttributeKey => $aAttributeValueArray) {
-                $newValue = is_array($aAttributeValueArray['formElementValue']) 
-                    ? $aAttributeValueArray['formElementValue'][$oQuestion->survey->language] 
-                    : $aAttributeValueArray['formElementValue'];
+                if(!isset($aAttributeValueArray['formElementValue'])){ continue; }
+                $newValue = $aAttributeValueArray['formElementValue'];
                 
-                if(array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
-                    $oQuestion->$sAttributeKey = $newValue;
-                } else { 
-                    $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttribute($oQuestion->qid,$sAttributeKey,$newValue);
+                if(is_array($newValue)) {
+                    foreach($newValue as $lngKey => $content) {
+                        if($lngKey == 'expression') { continue; }
+                        $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttributeWithLanguage($oQuestion->qid,$sAttributeKey,$content, $lngKey);
+                    } 
+                } else {
+                    if(array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
+                        $oQuestion->$sAttributeKey = $newValue;
+                    } else { 
+                        $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttribute($oQuestion->qid,$sAttributeKey,$newValue);
+                    }
                 }
+            
             }
         }
 

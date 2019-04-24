@@ -1,0 +1,1 @@
+(function(d){d['no']=Object.assign(d['no']||{},{})})(window.CKEDITOR_TRANSLATIONS||(window.CKEDITOR_TRANSLATIONS={}));
