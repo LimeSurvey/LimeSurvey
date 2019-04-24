@@ -230,6 +230,11 @@ class QuestionAttribute extends LSActiveRecord
             foreach ($aAttributeNames as $aAttribute) {
                 $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
 
+                // convert empty array to empty string
+                if (empty($aAttribute['default']) && is_array($aAttribute['default'])){
+                    $aAttribute['default'] = '';
+                }
+
                 if ($aAttribute['i18n'] == false) {
                     if (isset($aAttributeValues[$aAttribute['name']][''])) {
                         $aQuestionAttributes[$aAttribute['name']] = $aAttributeValues[$aAttribute['name']][''];
