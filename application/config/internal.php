@@ -125,7 +125,7 @@ $internalConfig = array(
             'class' => 'yiiwheels.YiiWheels',
         ),
         'sodium'=>array(
-            'class' => 'Sodium',
+            'class' => 'LSSodium',
        ),
         'clientScript'=>array(
             'packages' => array_merge(
