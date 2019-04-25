@@ -25,7 +25,7 @@ export default {
             return containerHeight - 100;
         },
         orderedQuestionGroups() {
-            return _.orderBy(
+            return LS.ld.orderBy(
                 this.$store.state.questiongroups,
                 a => {
                     return parseInt(a.group_order || 999999);
@@ -82,7 +82,7 @@ export default {
             return classes;
         },
         orderQuestions(questionList) {
-            return _.orderBy(
+            return LS.ld.orderBy(
                 questionList,
                 a => {
                     return parseInt(a.question_order || 999999);
@@ -91,7 +91,7 @@ export default {
             );
         },
         isActive(index) {
-            const result = _.indexOf(this.active, index) != -1;
+            const result = LS.ld.indexOf(this.active, index) != -1;
 
             if (this.questiongroupDragging === true) return false;
 
@@ -99,7 +99,7 @@ export default {
         },
         toggleActivation(index) {
             if (this.isActive(index)) {
-                let removed = _.remove(this.active, idx => {
+                let removed = LS.ld.remove(this.active, idx => {
                     return idx === index;
                 });
             } else {
@@ -160,7 +160,7 @@ export default {
             } else {
                 this.addActive(questiongroupObject.gid);
                 if (this.draggedQuestion.gid !== questiongroupObject.gid) {
-                    const removedFromInital = _.remove(
+                    const removedFromInital = LS.ld.remove(
                         this.draggedQuestionsGroup.questions,
                         (question, i) => {
                             return question.qid === this.draggedQuestion.qid;
@@ -178,7 +178,7 @@ export default {
                             this.draggedQuestionsGroup.group_order
                         ) {
                             this.draggedQuestion.question_order = 0;
-                            _.each(
+                            LS.ld.each(
                                 questiongroupObject.questions,
                                 (question, i) => {
                                     question.question_order =

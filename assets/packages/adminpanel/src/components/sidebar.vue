@@ -25,30 +25,45 @@ export default {
     },
     data: () => {
         return {
-            currentTab: "settings",
             activeMenuIndex: 0,
             openSubpanelId: 0,
-            questiongroups: [],
             menues: [],
             collapsed: false,
             sideBarWidth: "315",
             initialPos: { x: 0, y: 0 },
             isMouseDown: false,
             isMouseDownTimeOut: null,
-            sidemenus: {},
-            collapsedmenus: {},
-            topmenus: {},
-            bottommenus: {},
             sideBarHeight: "400px",
             showLoader: false
         };
     },
     computed: {
+        questiongroups() { return this.$store.state.questiongroups },
+        sidemenus: {
+            get(){return this.$store.state.sidemenus; },
+            set(newValue) { this.$store.commit("updateSidemenus", newValue); }
+        },
+        collapsedmenus: {
+            get(){return this.$store.state.collapsedmenus; },
+            set(newValue) { this.$store.commit("updateCollapsedmenus", newValue); }
+        },
+        topmenus: {
+            get(){return this.$store.state.topmenus; },
+            set(newValue) { this.$store.commit("updateTopmenus", newValue); }
+        },
+        bottommenus: {
+            get(){return this.$store.state.bottommenus; },
+            set(newValue) { this.$store.commit("updateBottommenus", newValue); }
+        },
+        currentTab: {
+            get() { return this.$store.state.currentTab || "settings"; },
+            set(newVal) { this.$store.commit("changeCurrentTab", newVal); }
+        },
         getSideBarWidth() {
             return this.$store.state.isCollapsed ? "98" : this.sideBarWidth;
         },
         sortedMenus() {
-            return _.orderBy(
+            return LS.ld.orderBy(
                 this.menues,
                 a => {
                     return parseInt(a.order || 999999);
@@ -59,18 +74,18 @@ export default {
         showSideMenu() {
             return (
                 !this.$store.state.isCollapsed &&
-                this.$store.state.currentTab == "settings"
+                this.currentTab == "settings"
             );
         },
         showQuestionTree() {
             return (
                 !this.$store.state.isCollapsed &&
-                this.$store.state.currentTab == "questiontree"
+                this.currentTab == "questiontree"
             );
         },
         calculateSideBarMenuHeight() {
             let currentSideBar = this.$store.state.sideBarHeight;
-            return _.min(currentSideBar, Math.floor(screen.height * 2)) + "px";
+            return LS.ld.min(currentSideBar, Math.floor(screen.height * 2)) + "px";
         },
         getWindowHeight() {
             return screen.height * 2 + "px";
@@ -88,10 +103,10 @@ export default {
         },
         changedQuestionGroupOrder() {
             const self = this;
-            const onlyGroupsArray = _.map(
-                this.$store.state.questiongroups,
+            const onlyGroupsArray = LS.ld.map(
+                this.questiongroups,
                 (questiongroup, count) => {
-                    const questions = _.map(
+                    const questions = LS.ld.map(
                         questiongroup.questions,
                         (question, i) => {
                             return {
@@ -118,7 +133,7 @@ export default {
             }).then(
                 result => {
                     self.$log.log("questiongroups updated");
-                    self.getQuestions().then(() => {
+                    self.$store.dispatch('getQuestions').then(() => {
                         self.showLoader = false;
                     });
                 },
@@ -140,9 +155,9 @@ export default {
 
             //Check for corresponding menuItem
             let lastMenuItemObject = false;
-            _.each(this.$store.state.sidemenus, (itm, i) => {
-                _.each(itm.entries, (itmm, j) => {
-                    lastMenuItemObject = _.endsWith(currentUrl, itmm.link)
+            LS.ld.each(this.sidemenus, (itm, i) => {
+                LS.ld.each(itm.entries, (itmm, j) => {
+                    lastMenuItemObject = LS.ld.endsWith(currentUrl, itmm.link)
                         ? itmm
                         : lastMenuItemObject;
                 });
@@ -150,9 +165,9 @@ export default {
 
             //check for quickmenu menuLinks
             let lastQuickMenuItemObject = false;
-            _.each(this.$store.state.collapsedmenus, (itm, i) => {
-                _.each(itm.entries, (itmm, j) => {
-                    lastQuickMenuItemObject = _.endsWith(currentUrl, itmm.link)
+            LS.ld.each(this.collapsedmenus, (itm, i) => {
+                LS.ld.each(itm.entries, (itmm, j) => {
+                    lastQuickMenuItemObject = LS.ld.endsWith(currentUrl, itmm.link)
                         ? itmm
                         : lastQuickMenuItemObject;
                 });
@@ -160,7 +175,7 @@ export default {
 
             //check for corresponding question group object
             let lastQuestionGroupObject = false;
-            _.each(this.$store.state.questiongroups, (itm, i) => {
+            LS.ld.each(this.questiongroups, (itm, i) => {
                 let regTest = new RegExp(
                     "questiongroups/sa/edit/surveyid/" +
                         itm.sid +
@@ -168,15 +183,15 @@ export default {
                         itm.gid
                 );
                 lastQuestionGroupObject =
-                    regTest.test(currentUrl) || _.endsWith(currentUrl, itm.link)
+                    regTest.test(currentUrl) || LS.ld.endsWith(currentUrl, itm.link)
                         ? itm
                         : lastQuestionGroupObject;
             });
 
             //check for corresponding question group
             let lastQuestionObject = false;
-            _.each(this.$store.state.questiongroups, (itm, i) => {
-                _.each(itm.questions, (itmm, j) => {
+            LS.ld.each(this.questiongroups, (itm, i) => {
+                LS.ld.each(itm.questions, (itmm, j) => {
                     let regTest = new RegExp(
                         "editquestion/surveyid/" +
                             itmm.sid +
@@ -186,7 +201,7 @@ export default {
                             itmm.qid
                     );
                     lastQuestionObject =
-                        _.endsWith(currentUrl, itmm.link) ||
+                        LS.ld.endsWith(currentUrl, itmm.link) ||
                         regTest.test(currentUrl)
                             ? itmm
                             : lastQuestionObject;
@@ -232,11 +247,8 @@ export default {
             this.setActiveMenuIndex(null, "question");
         },
         changeTab(currentTab) {
-            this.$store.commit("changeCurrentTab", currentTab);
+            this.$log.log('changing tab');
             this.currentTab = currentTab;
-        },
-        activeTab(currentTab) {
-            return this.$store.state.currentTab === currentTab;
         },
         setActiveMenuIndex(index) {
             this.$store.commit("lastMenuItemOpen", index);
@@ -306,133 +318,46 @@ export default {
                 self.isMouseDownTimeOut = null;
             }
         },
-        getQuestions() {
-            this.questiongroups = [];
-            return this.get(this.getQuestionsUrl).then(result => {
-                this.$log.log("Questions", result);
-                this.questiongroups = result.data.groups;
-                this.$store.commit("updateQuestiongroups", this.questiongroups);
-                this.$forceUpdate();
-                this.updatePjaxLinks();
-            });
-        },
         setBaseMenuPosition(entries, position){
             switch(position) {
                 case 'side' : 
-                    this.sidemenus = _.orderBy(
+                    this.sidemenus = LS.ld.orderBy(
                         entries,
                         a => {
                             return parseInt(a.order || 999999);
                         },
                         ["desc"]
                     );
-                    this.$store.commit("updateSidemenus", this.sidemenus);
                     break;
                 case 'collapsed':
-                    this.collapsedmenus = _.orderBy(
+                    this.collapsedmenus = LS.ld.orderBy(
                         entries,
                         a => {
                             return parseInt(a.order || 999999);
                         },
                         ["desc"]
                     );
-                    this.$store.commit("updateCollapsedmenus", this.collapsedmenus);
                     break;
                 case 'top':
-                    this.topmenus = _.orderBy(
+                    this.topmenus = LS.ld.orderBy(
                         entries,
                         a => {
                             return parseInt(a.order || 999999);
                         },
                         ["desc"]
                     );
-                    this.$store.commit("updateTopmenus", this.topmenus);
                     break;
                 case 'bottom':
-                    this.bottommenus = _.orderBy(
+                    this.bottommenus = LS.ld.orderBy(
                         entries,
                         a => {
                             return parseInt(a.order || 999999);
                         },
                         ["desc"]
                     );
-                    this.$store.commit("updateBottommenus", this.bottommenus);
                     break;
             };
         },
-        getSidemenus() {
-            this.sidemenus = [];
-            return this.get(this.getMenuUrl, { position: "side" }).then(
-                result => {
-                    this.$log.log("sidemenues", result);
-                    this.sidemenus = _.orderBy(
-                        result.data.menues,
-                        a => {
-                            return parseInt(a.order || 999999);
-                        },
-                        ["desc"]
-                    );
-                    this.$store.commit("updateSidemenus", this.sidemenus);
-                    this.$forceUpdate();
-                    this.updatePjaxLinks();
-                }
-            );
-        },
-        getCollapsedmenus() {
-            this.collapsedmenus = [];
-            return this.get(this.getMenuUrl, { position: "collapsed" }).then(
-                result => {
-                    this.$log.log("quickmenu", result);
-                    this.collapsedmenus = _.orderBy(
-                        result.data.menues,
-                        a => {
-                            return parseInt(a.order || 999999);
-                        },
-                        ["desc"]
-                    );
-                    this.$store.commit(
-                        "updateCollapsedmenus",
-                        this.collapsedmenus
-                    );
-                    this.$forceUpdate();
-                    this.updatePjaxLinks();
-                }
-            );
-        },
-        getTopmenus() {
-            return this.get(this.getMenuUrl, { position: "top" }).then(
-                result => {
-                    this.$log.log("topmenus", result);
-                    this.topmenus = _.orderBy(
-                        result.data.menues,
-                        a => {
-                            return parseInt(a.order || 999999);
-                        },
-                        ["desc"]
-                    );
-                    this.$store.commit("updateTopmenus", this.topmenus);
-                    this.$forceUpdate();
-                    this.updatePjaxLinks();
-                }
-            );
-        },
-        getBottommenus() {
-            return this.get(this.getMenuUrl, { position: "bottom" }).then(
-                result => {
-                    this.$log.log("bottommenus", result);
-                    this.bottommenus = _.orderBy(
-                        result.data.menues,
-                        a => {
-                            return parseInt(a.order || 999999);
-                        },
-                        ["desc"]
-                    );
-                    this.$store.commit("updateBottommenus", this.bottommenus);
-                    this.$forceUpdate();
-                    this.updatePjaxLinks();
-                }
-            );
-        }
     },
     created() {
         const self = this;
@@ -446,13 +371,10 @@ export default {
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
-        _.each(this.basemenus, this.setBaseMenuPosition)
+        LS.ld.each(this.basemenus, this.setBaseMenuPosition)
         //retrieve the current menues via ajax
-        this.getQuestions();
-        this.getSidemenus();
-        this.getCollapsedmenus();
-        this.getTopmenus();
-        this.getBottommenus();
+        this.$store.dispatch('getQuestions');
+        this.$store.dispatch('collectMenus');
     },
     mounted() {
         const self = this;
@@ -470,27 +392,22 @@ export default {
         });
 
         $(document).on("vue-reload-remote", () => {
-            this.getQuestions();
-            this.getSidemenus();
-            this.getCollapsedmenus();
-            this.getTopmenus();
-            this.getBottommenus();
-            this.$forceUpdate();
+            this.$log.log('vue-reload-remote');
+            this.$store.dispatch('getQuestions');
+            this.$store.dispatch('collectMenus');
+            
         });
 
         $(document).on("vue-redraw", () => {
-            this.getQuestions();
-            this.getSidemenus();
-            this.getCollapsedmenus();
-            this.getTopmenus();
-            this.getBottommenus();
-            this.$forceUpdate();
+            this.$log.log('vue-redraw');
+            this.$store.dispatch('getQuestions');
+            this.$store.dispatch('collectMenus');
         });
 
         //control the active link
         this.controlActiveLink();
 
-        this.$forceUpdate();
+        
         this.updatePjaxLinks();
         $("body").on("mousemove", event => {
             self.mousemove(event, self);
@@ -513,8 +430,8 @@ export default {
                         <transition name="fade">
                             <div class="ls-flex-item grow-10 col-12" v-if="!$store.state.isCollapsed">
                                 <div class="btn-group btn-group col-12">
-                                    <button id="adminpanel__sidebar--selectorSettingsButton" class="btn col-6 force color white onhover tabbutton" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
-                                    <button id="adminpanel__sidebar--selectorStructureButton" class="btn col-6 force color white onhover tabbutton" :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
+                                    <div id="adminpanel__sidebar--selectorSettingsButton" class="btn col-6 force color white onhover tabbutton" :class="currentTab =='settings' ? 'btn-primary' : 'btn-default'" @click.stop.prevent="changeTab('settings')">{{translate.settings}}</div>
+                                    <div id="adminpanel__sidebar--selectorStructureButton" class="btn col-6 force color white onhover tabbutton" :class="currentTab =='questiontree' ? 'btn-primary' : 'btn-default'" @click.stop.prevent="changeTab('questiontree')">{{translate.structure}}</div>
                                 </div>
                             </div>
                         </transition>

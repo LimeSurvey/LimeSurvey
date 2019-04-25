@@ -17,6 +17,7 @@ export default {
                 context.commit('setPermissions', result.data.permissions);
                 context.commit('setCurrentQuestionGroup', result.data.questionGroup);
                 context.commit('setCurrentQuestionGroupI10N', result.data.questonGroupI10N);
+                context.commit('setInTransfer', false);
                 resolve(true);
             },
             (rejectAnswer) => {
@@ -41,25 +42,26 @@ export default {
         });
     },
     saveQuestionGroupData: (context) => {
-        if(!context.state.inTransfer) {
-            context.commit('setInTransfer', true);
-            return new Promise((resolve, reject) => {
-                let transferObject = merge({
-                    'questionGroup': context.state.currentQuestionGroup,
-                    'questionGroupI10N': context.state.currentQuestionGroupI10N
-                }, window.LS.data.csrfTokenData);
-
-                LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
-                ajax.methods.$_post(window.QuestionGroupEditData.connectorBaseUrl+'/saveQuestionGroupData', transferObject)
-                    .then(
-                        (result) => {
-                            context.commit('setInTransfer', false);
-                            resolve(result);
-                        },
-                        reject
-                    )
-            });
+        if(context.state.inTransfer ) {
+            return Promise.resolve(false);
         }
-        return false;
+        
+        let transferObject = merge({
+            'questionGroup': context.state.currentQuestionGroup,
+            'questionGroupI10N': context.state.currentQuestionGroupI10N
+        }, window.LS.data.csrfTokenData);
+        
+        return new Promise((resolve, reject) => {
+            context.commit('setInTransfer', true);
+            LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
+            ajax.methods.$_post(window.QuestionGroupEditData.connectorBaseUrl+'/saveQuestionGroupData', transferObject)
+                .then(
+                    (result) => {
+                        context.commit('setInTransfer', false);
+                        resolve(result);
+                    },
+                    reject
+                )
+        });
     }
 };

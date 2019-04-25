@@ -46,6 +46,14 @@
     
     $menuObject =  json_encode($menuObjectArray);
 
+    Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
+        window.SideMenuData = {
+            getQuestionsUrl: "'.$getQuestionsUrl.'",
+            getMenuUrl: "'.$getMenuUrl.'",
+            createQuestionGroupLink: "'.$createQuestionGroupLink.'",
+            createQuestionLink: "'.$createQuestionLink.'"
+        };
+    ', LSYii_ClientScript::POS_BEGIN);
 ?>
 
 <div class="simpleWrapper ls-flex" id="vue-sidebar-container" v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}" v-bind:data-collapsed="$store.state.isCollapsed">

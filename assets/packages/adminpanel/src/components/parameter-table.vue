@@ -1,6 +1,5 @@
 <script>
-    import _ from 'lodash';
-    import ParameterPopup from './parameter-popup.vue'
+        import ParameterPopup from './parameter-popup.vue'
 
     export default {
         name: 'lspanelparametertable',
@@ -40,7 +39,7 @@
                     method: 'GET',
                     success: function (results) {
                         const dataSet = [];
-                        _.forEach(results.rows, function (row, i) {
+                        LS.ld.forEach(results.rows, function (row, i) {
                             let rowArray = {
                                 'id': row.id,
                                 'parameter': row.parameter,
@@ -58,7 +57,7 @@
             },
             paramUpdated(updateUbject){
                 if(updateUbject.isNew === false){
-                    let paramIdx = _.findIndex(this.parameterRows, (item)=>{return item.id === updateUbject.paramRow.id});
+                    let paramIdx = LS.ld.findIndex(this.parameterRows, (item)=>{return item.id === updateUbject.paramRow.id});
                     if(paramIdx != -1)
                         this.parameterRows[paramIdx] = updateUbject.paramRow;
                 } else {
@@ -94,7 +93,7 @@
             },
             confirmDelete(){
                 if(this.toDeleteRow !== null){
-                    let paramIdx = _.findIndex(this.parameterRows, (item)=>{return item.id === this.toDeleteRow.id});
+                    let paramIdx = LS.ld.findIndex(this.parameterRows, (item)=>{return item.id === this.toDeleteRow.id});
                     if(paramIdx != -1)
                         this.parameterRows.splice(paramIdx,1);
                 }

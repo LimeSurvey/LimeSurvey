@@ -147,13 +147,17 @@ return array(
     'adminpanel' => array(
        'devBaseUrl' => 'assets/packages/adminpanel/',
        'basePath' => 'core.adminpanel',
-       'js' => array(
-           'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
-           'build/surveysettings'.$minVersion.'.js',
-           //'build/hammer'.$minVersion.'.js'
-       ),
+       'js' => ( $debug > 0
+            ? array(
+                'build/js/adminpanel.js',
+            )
+            : array(
+                'build.min/js/chunk-vendors.js',
+                'build.min/js/adminpanel.js'
+            ) 
+        ),
        'css' => array(
-           'build/lsadminpanel'.$minVersion.'.css'
+           'build.min/adminpanel.css'
        ),
        'depends' => array(
            'adminbasics'

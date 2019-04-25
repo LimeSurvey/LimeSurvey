@@ -6,16 +6,16 @@ import Sidebar from "./components/sidebar.vue";
 import Topbar from "./components/topbar.vue";
 import ParameterTable from "./components/parameter-table.vue";
 import getAppState from "./store/vuex-store.js";
-import LOG from "./mixins/logSystem.js";
+import {PluginLog} from "./mixins/logSystem.js";
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
 
-Vue.use(LOG);
+Vue.use(PluginLog);
 Vue.mixin({
     methods: {
         updatePjaxLinks: function () {
-            this.$store.commit("updatePjax");
+            this.$store.dispatch("updatePjax");
         },
         redoTooltips: function () {
             window.LS.doToolTip();
@@ -84,8 +84,8 @@ const LsAdminPanel = () => {
 
 
                 $(document).on("vue-redraw", () => {
-                    this.$forceUpdate();
                     this.updatePjaxLinks();
+                    this.$forceUpdate();
                 });
 
                 $(document).trigger("vue-reload-remote");
@@ -181,8 +181,8 @@ const LsAdminPanel = () => {
         });
 
         controlWindowSize();
-        window.addEventListener("resize", _.debounce(controlWindowSize, 300));
-        $(document).on("vue-resize-height", _.debounce(controlWindowSize, 300));
+        window.addEventListener("resize", LS.ld.debounce(controlWindowSize, 300));
+        $(document).on("vue-resize-height", LS.ld.debounce(controlWindowSize, 300));
         applyPjaxMethods();
 
     }
