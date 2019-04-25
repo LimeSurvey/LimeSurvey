@@ -157,7 +157,7 @@ return array(
             ) 
         ),
        'css' => array(
-           'build.min/adminpanel.css'
+           'build.min/css/main.css'
        ),
        'depends' => array(
            'adminbasics'
