@@ -394,18 +394,18 @@ class tokens extends Survey_Common_Action
                 // Valid from
                 if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) != 'lskeep') {
                     if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) == '') {
-                                            $aData['validfrom'] = null;
+                        $aData['validfrom'] = null;
                     } else {
-                                            $aData['validfrom'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
+                        $aData['validfrom'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
                     }
                 }
 
                 // Valid until
                 if (trim(Yii::app()->request->getPost('validuntil', 'lskeep')) != 'lskeep') {
                     if (trim(Yii::app()->request->getPost('validuntil')) == '') {
-                                            $aData['validuntil'] = null;
+                        $aData['validuntil'] = null;
                     } else {
-                                            $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
+                        $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
                     }
                 }
 
@@ -413,9 +413,9 @@ class tokens extends Survey_Common_Action
                 if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
                     $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
                     if ($isValid) {
-                                            $aData['email'] = 'lskeep';
+                        $aData['email'] = Yii::app()->request->getPost('email');
                     } else {
-                                            $aData['email'] = Yii::app()->request->getPost('email');
+                        $aData['email'] = 'lskeep';
                     }
                 }
 
