@@ -132,12 +132,11 @@ class LabelSet extends LSActiveRecord
                 $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete label set").'" href="#" role="button"'
                     ." onclick='$.bsconfirm(\"".CHtml::encode(gT("Are you sure you want to delete this label set?"))
                                 ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
-                                . convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete/", ["lid" => $this->lid,]))
+                                . convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete", ["lid" => $this->lid]))
                             ."});'>"
                         .' <i class="text-danger fa fa-trash"></i>
                     </a>';
             }
-
             return $button;
         }
 
@@ -169,5 +168,19 @@ class LabelSet extends LSActiveRecord
         ));
 
         return $dataProvider;
+    }
+
+    /** @inheritdoc
+     * But delete related label sets and directory
+     * @return boolean
+     */
+    public function delete()
+    {
+        if(parent::delete()) {
+            Label::model()->findAll("lid = :lid",array(":lid"=>$this->getPrimaryKey()));
+            rmdirr(Yii::app()->getConfig('uploaddir').'/labels/'.$this->getPrimaryKey());
+            return true;
+        }
+        return false;
     }
 }

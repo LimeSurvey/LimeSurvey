@@ -81,7 +81,7 @@ function updateset($lid)
 
 /**
 * Deletes a label set alog with its labels
-*
+* @deprecated use LabelSet::delete()
 * @param mixed $lid Label ID
 * @return boolean Returns always true
 */
