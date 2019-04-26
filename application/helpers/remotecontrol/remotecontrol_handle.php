@@ -1772,7 +1772,7 @@ class remotecontrol_handle
                 if ($bCreateToken) {
                     $token->generateToken();
                 }
-                if ($token->save()) {
+                if ($token->encryptSave()) {
                     $aParticipant = $token->getAttributes();
                 } else {
                     $aParticipant["errors"] = $token->errors;
@@ -1863,11 +1863,11 @@ class remotecontrol_handle
                     } elseif ($tokenCount > 1) {
                         return array('status' => 'Error: More than 1 result was found based on your attributes.');
                     }
-                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
+                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties)->decrypt();
                 } else {
                     // If aTokenQueryProperties is not an array, but an integer
                     $iTokenID = $aTokenQueryProperties;
-                    $token = Token::model($iSurveyID)->findByPk($iTokenID);
+                    $token = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
                 }
                 if (!isset($token)) {
                     return array('status' => 'Error: Invalid tokenid');
@@ -1918,20 +1918,22 @@ class remotecontrol_handle
                 }
 
                 if (is_array($aTokenQueryProperties)) {
-            $tokenCount = Token::model($iSurveyID)->countByAttributes($aTokenQueryProperties);
-            if ($tokenCount == 0) {
-            return array('status' => 'Error: No results were found based on your attributes.');
-            } else if ($tokenCount > 1) {
-            return array('status' => 'Error: More than 1 result was found based on your attributes.');
-            }
-            $oToken = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
-        } else {
+                    $oTokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties);
+                    $tokenCount = count($oTokens);
+                    if ($tokenCount == 0) {
+                        return array('status' => 'Error: No results were found based on your attributes.');
+                    } else if ($tokenCount > 1) {
+                        return array('status' => 'Error: More than 1 result was found based on your attributes.');
+                    }
+                    $oToken = $oTokens[0];
+                    $oToken->decrypt();
+                } else {
                     // If aTokenQueryProperties is not an array but an integer
                     $iTokenID = $aTokenQueryProperties;
-                $oToken = Token::model($iSurveyID)->findByPk($iTokenID);
-        }
+                    $oToken = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
+                }
                 if (!isset($oToken)) {
-                                    return array('status' => 'Error: Invalid tokenid');
+                    return array('status' => 'Error: Invalid tokenid');
                 }
 
                 // Remove fields that may not be modified
@@ -1941,18 +1943,20 @@ class remotecontrol_handle
                 $aTokenData = array_intersect_key($aTokenData, $aBasicDestinationFields);
 
                 if (empty($aTokenData)) {
-                                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data');
                 }
-
+                
                 $oToken->setAttributes($aTokenData, false);
-                if ($oToken->save()) {
+                if ($oToken->encryptSave()) {
                     return $oToken->attributes;
+                } else {
+                    return array('status' => $oToken->getErrors());
                 }
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid Session Key');
         }
     }
 
@@ -2046,6 +2050,7 @@ class remotecontrol_handle
                                     return array('status' => 'No survey participants found.');
                 }
 
+                
                 $extendedAttributes = array();
                 if ($aAttributes) {
                     $aBasicDestinationFields = Token::model($iSurveyID)->tableSchema->columnNames;
@@ -2053,8 +2058,9 @@ class remotecontrol_handle
                     $currentAttributes = array('tid', 'token', 'firstname', 'lastname', 'email');
                     $extendedAttributes = array_diff($aTokenProperties, $currentAttributes);
                 }
-
+                
                 foreach ($oTokens as $token) {
+                    $token->decrypt();
                     $aTempData = array(
                         'tid'=>$token->primarykey,
                         'token'=>$token->attributes['token'],
@@ -2412,6 +2418,7 @@ class remotecontrol_handle
             }
 
             foreach ($aResultTokens as $key=>$oToken) {
+                $oToken->decrypt();
                 //pattern taken from php_filter_validate_email PHP_5_4/ext/filter/logical_filters.c
                 $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
 
@@ -2632,10 +2639,12 @@ class remotecontrol_handle
             $survey_dynamic = new SurveyDynamic;
             $aBasicDestinationFields = $survey_dynamic->tableSchema->columnNames;
             $aResponseData = array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
-            $result_id = $survey_dynamic->insertRecords($aResponseData);
-
-            if ($result_id) {
-                $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $aResponseData['token'], 'id' => $result_id));
+            $survey_dynamic->setAttributes($aResponseData, false);
+            $survey_dynamic->encryptSave();
+            
+            if ($survey_dynamic->id) {
+                $result_id = $survey_dynamic->id;
+                $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $aResponseData['token'], 'id' => $result_id))->decrypt();
                 foreach ($oResponse->getFiles() as $aFile) {
                     $sUploadPath = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/";
                     $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
@@ -2733,7 +2742,7 @@ class remotecontrol_handle
                 $aResponses[0]->setAttribute($sAtributeName, $value);
             }
 
-            $bResult = $aResponses[0]->save(true);
+            $bResult = $aResponses[0]->encryptSave(true);
 
             if ($bResult) {
                 return $bResult;
