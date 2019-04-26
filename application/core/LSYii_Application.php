@@ -76,6 +76,12 @@ class LSYii_Application extends CWebApplication
         /* Construct CWebApplication */
         parent::__construct($aApplicationConfig);
 
+        $this->onBeginRequest = function($event) {
+            Yii::app()->getPluginManager()->dispatchEvent(
+                new PluginEvent('onBeginRequest', $event)
+            );
+        };
+
         /* Because we have app now : we have to call again the config (usage of Yii::app() for publicurl) */
         $this->setConfigs();
 
