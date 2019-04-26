@@ -199,22 +199,17 @@
 
         }
 
-        public static function getEncryptedAttributes(){
-            if (!empty($_SESSION['fieldmap-' . $_SESSION['LEMsid'] . $_SESSION['LEMlang']])){
-                $aSessionData = $_SESSION['fieldmap-' . $_SESSION['LEMsid'] . $_SESSION['LEMlang']];
-                $aAttributes = array();
-                $oQuestions = Question::model()->findAll("encrypted='Y' and sid={$_SESSION['LEMsid']}");
-                foreach ($oQuestions as $question){
-                    if (!empty($question['qid'])){
-                        foreach ($aSessionData as $response){
-                            if (!empty($response['qid']) && $response['qid'] == $question['qid']){
-                                $aAttributes[] = $response['fieldname'];
-                            }
-                        }
-                    }
+        public static function getEncryptedAttributes($surveyid = 0){
+            $survey = Survey::model()->findByPk($surveyid);
+            $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
+            $aAttributes = array();
+            foreach ($fieldmap as $field){
+                if (array_key_exists('encrypted', $field) &&  $field['encrypted'] == 'Y'){
+                    $aAttributes[] = $field['fieldname'];
                 }
-                return $aAttributes;
+
             }
+            return $aAttributes;
         }
     
     }
