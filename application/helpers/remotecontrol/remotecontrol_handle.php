@@ -3001,6 +3001,7 @@ class remotecontrol_handle
         $identity = new LSUserIdentity($sUsername, $sPassword);
         $identity->setPlugin($sPlugin);
         $event = new PluginEvent('remoteControlLogin');
+        $event->set('identity', $identity);
         $event->set('plugin', $sPlugin);
         $event->set('username', $sUsername);
         $event->set('password', $sPassword);
