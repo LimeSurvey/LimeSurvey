@@ -199,7 +199,7 @@ $url .= "_view"; });
 
             $fields[] = 'a'.$value;
             $attributeNames = $oAttributeName->participant_attribute_names_lang;
-            $outputarray[0][] = (sizeof($attributeNames) > 0) ? $attributeNames[0]['attribute_name'] : $oAttributeName->defaultname;
+            $outputarray[0][] = (sizeof($attributeNames) > 0 && !empty($attributeNames[0]['attribute_name'])) ? $attributeNames[0]['attribute_name'] : $oAttributeName->defaultname;
         }
 
         $fieldNeededKeys = array_fill_keys($fields, '');
