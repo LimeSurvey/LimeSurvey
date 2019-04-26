@@ -2380,9 +2380,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
         if ($iOldDBVersion < 357) {
             $oTransaction = $oDB->beginTransaction();
-//// IKI
+            //// IKI
             $oDB->createCommand()->renameColumn('{{surveys_groups}}','owner_uid','owner_id');
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>357], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 358) {
+            $oTransaction = $oDB->beginTransaction();
+            dropColumn('{{sessions}}','data');
+            addColumn('{{sessions}}','data','longbinary');
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>358], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -2456,6 +2464,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     Yii::app()->setConfig('Updating', false);
     return true;
 }
+
 /**
  * @param CDbConnection $oDB
  *
