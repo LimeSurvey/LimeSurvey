@@ -41,6 +41,24 @@ class RemoteControlTest extends TestBaseClass
         \Yii::import('application.helpers.remotecontrol.remotecontrol_handle', true);
         \Yii::import('application.helpers.viewHelper', true);
         \Yii::import('application.libraries.BigData', true);
+        $dbo = \Yii::app()->getDb();
+
+        // Make sure the Authdb is in database (might not be the case if no browser login attempt has been made).
+        $plugin = \Plugin::model()->findByAttributes(array('name'=>'Authdb'));
+        if (!$plugin) {
+            $plugin = new \Plugin();
+            $plugin->name = 'Authdb';
+            $plugin->active = 1;
+            $plugin->save();
+            App()->getPluginManager()->loadPlugin('Authdb', $plugin->id);
+        } else {
+            $plugin->active = 1;
+            $plugin->save();
+        }
+
+        // Clear login attempts.
+        $query = sprintf('DELETE FROM {{failed_login_attempts}}', self::$surveyId);
+        $dbo->createCommand($query)->execute();
 
         // Import survey
         $filename = self::$surveysFolder . '/limesurvey_survey_666368.lss';
@@ -56,6 +74,7 @@ class RemoteControlTest extends TestBaseClass
             self::$username,
             self::$password
         );
+        $this->assertNotEquals(['status' => 'Invalid user name or password'], $sessionKey);
 
         // Get sgqa.
         $survey = \Survey::model()->findByPk(self::$surveyId);
@@ -67,9 +86,9 @@ class RemoteControlTest extends TestBaseClass
             $sgqa => 'One answer'
         ];
         $result = $handler->add_response($sessionKey, self::$surveyId, $response);
+        $this->assertEquals('19', $result);
 
         // Check result via database.
-        $dbo = \Yii::app()->getDb();
         $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
         $result = $dbo->createCommand($query)->queryAll();
         $this->assertCount(1, $result, 'Exactly one response');
