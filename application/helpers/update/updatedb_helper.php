@@ -2382,6 +2382,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 358) {
+            $oTransaction = $oDB->beginTransaction();
+            dropColumn('{{sessions}}','data');
+            addColumn('{{sessions}}','data','longbinary');
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>358], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
         if ($iOldDBVersion < 400) {
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
             $oTransaction = $oDB->beginTransaction();

@@ -10248,17 +10248,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         {
             if(!empty($value))
             {
-                // create array keys if they don't exist, because code below expect them
-                // it is used only in a case when default values are loaded on page
-                if (!array_key_exists('info', $qinfo)){
-                    if (array_key_exists('qid', $qinfo)){
-                        $qinfo['info']['qid'] = $qinfo['qid'];
-                    }
-                    if (array_key_exists('other', $qinfo)){
-                        $qinfo['info']['other'] = $qinfo['other'];
-                    }
-
+                /* Find qid in different situation */
+                $qid = !empty($qinfo['qid']) ? $qinfo['qid'] : (!empty($qinfo['info']['qid']) ? $qinfo['info']['qid'] : null);
+                if(empty($qid)) {
+                    // No qid ? No way to check ?
+                    return;
                 }
+                $other = !empty($qinfo['other']) ? $qinfo['other'] : (!empty($qinfo['info']['other']) ? $qinfo['info']['other'] : null);
+
                 /* This function is called by a static function , then set it to static .... */
                 $LEM =& LimeExpressionManager::singleton();
                 // Using language to find some valid value : set it to an existing language of this survey (can be Survey::model()->findByPk($LEM->sessid)->language too)
@@ -10279,7 +10276,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         {
                             if($value=="-oth-")
                             {
-                                if($qinfo['info']['other']!='Y')
+                                if($other!='Y')
                                 {
                                     $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                                     return false;
@@ -10287,7 +10284,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                             }
                             else
                             {
-                                if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
+                                if(!Answer::model()->getAnswerFromCode($qid,$value,$language))
+                                {
                                     $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                                     return false;
                                 }
@@ -10297,14 +10295,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     case 'O': // List with comment
                         if(substr($sgq,-7)!='comment')
                         {
-                            if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
+                            if(Answer::model()->getAnswerFromCode($qid,$value,$language)==null) {
                                 $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                                 return false;
                             }
                         }
                         break;
                     case 'F': // Array
-                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
+                        if(Answer::model()->getAnswerFromCode($qid,$value,$language)==null) {
                             $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
@@ -10344,14 +10342,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         }
                         break;
                     case 'H': // Array by column
-                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
+                        if(Answer::model()->getAnswerFromCode($qid,$value,$language)==null) {
                             $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
                     case '1': // Array dual scale
                         $scale=intval(substr($sgq,-1)); // Get the scale {SGQ}#0 or {SGQ}#1 actually
-                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language,$scale)==null) {
+                        if(Answer::model()->getAnswerFromCode($qid,$value,$language,$scale)==null) {
                             $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
@@ -10388,7 +10386,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         }
                         break;
                     case 'R':  // Ranking
-                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
+                        if(Answer::model()->getAnswerFromCode($qid,$value,$language)==null) {
                             $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
@@ -10410,14 +10408,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         /* No validty control ? size ? */
                         break;
                     case 'M':
-                        if($value!="Y" && (substr($sgq,-5)!='other' && $qinfo['info']['other']=='Y'))
+                        if($value!="Y" && (substr($sgq,-5)!='other' && $other=='Y'))
                         {
                             $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
                         break;
                     case 'P':
-                        if(substr($sgq,-7)!='comment' && $value!="Y" && (substr($sgq,-5)!='other' && $qinfo['info']['other']=='Y'))
+                        if(substr($sgq,-7)!='comment' && $value!="Y" && (substr($sgq,-5)!='other' && $other=='Y'))
                         {
                             $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;

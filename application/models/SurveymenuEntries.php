@@ -332,7 +332,7 @@ class SurveymenuEntries extends LSActiveRecord
             ),
             array(
                 'name' => 'title',
-                'type' => 'raw'
+                'type' => 'text'
             ),
             array(
                 'name' => 'name',
@@ -358,7 +358,7 @@ class SurveymenuEntries extends LSActiveRecord
             array(
                 'name' => 'menu_link',
                 'value' => 'SurveymenuEntries::returnCombinedMenuLink($data)',
-                'type' => 'raw'
+                'type' => 'text'
             ),
             array(
                 'name' => 'language',

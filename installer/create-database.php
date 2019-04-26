@@ -657,7 +657,7 @@ function createDatabase($oDB)
         $oDB->createCommand()->createTable('{{sessions}}', array(
             'id' => "string(32) NOT NULL",
             'expire' => "integer NULL",
-            'data' => "binary",
+            'data' => "longbinary",
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{sessions_pk}}', '{{sessions}}', 'id');
