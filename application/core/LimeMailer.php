@@ -286,7 +286,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             throw new \CException("Survey must be set before set token");
         }
         /* Did need to check all here ? */
-        $oToken =  \Token::model($this->surveyId)->findByToken($token);
+        $oToken =  \Token::model($this->surveyId)->findByToken($token)->decrypt();
         if(empty($oToken)) {
             throw new \CException("Invalid token");
         }
