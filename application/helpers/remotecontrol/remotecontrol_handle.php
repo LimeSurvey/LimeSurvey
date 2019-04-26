@@ -2587,7 +2587,7 @@ class remotecontrol_handle
             $result_id = $survey_dynamic->insertRecords($aResponseData);
 
             if ($result_id) {
-                $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $aResponseData['token'], 'id' => $result_id));
+                $oResponse = Response::model($iSurveyID)->findByAttributes(array('id' => $result_id));
                 foreach ($oResponse->getFiles() as $aFile) {
                     $sUploadPath = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/";
                     $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
