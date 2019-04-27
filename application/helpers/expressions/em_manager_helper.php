@@ -10254,7 +10254,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     throw new \CException('Invalid qinfo '.print_r($qinfo));
                 }
                 Yii::log("Invalid qinfo parameter in checkValidityAnswer",'error','application.LimeExpressionManager.checkValidityAnswer');
-                return;
+                return false;
             }
             if($value==="" or is_null($value)) {
                 /* Must check 0 */
