@@ -125,7 +125,7 @@ class TestHelper extends TestCase
         if (isset($result['error'])) {
             var_dump($result);
         }
-        \SurveyDynamic::sid(self::$surveyId);
+        \SurveyDynamic::sid($surveyId);
         \SurveyDynamic::model()->refreshMetaData();
 
         $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null], $result, 'Activate survey is OK');
