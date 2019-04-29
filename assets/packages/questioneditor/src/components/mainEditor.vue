@@ -169,7 +169,7 @@ export default {
                 <hr/>
             </div>
         </div>
-        <div class="row">
+        <div class="row"  v-if="$store.state.currentQuestion.qid != null">
             <div class="col-sm-12 ls-space margin bottom-5">
                 <button class="btn btn-default pull-right" @click.prevent="triggerPreview">
                     {{previewActive ? "Hide Preview" : "Show Preview"}}

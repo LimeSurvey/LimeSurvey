@@ -15,6 +15,11 @@ yarn run serve
 yarn run build
 ```
 
+### Compiles for developement
+```
+yarn run build --mode developenemt
+```
+
 ### Run your tests
 ```
 yarn run test
