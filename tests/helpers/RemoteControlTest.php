@@ -22,6 +22,7 @@ class RemoteControlTest extends TestBaseClass
     public static function setupBeforeClass()
     {
         parent::setupBeforeClass();
+
         self::$username = getenv('ADMINUSERNAME');
         if (!self::$username) {
             self::$username = 'admin';
@@ -57,7 +58,7 @@ class RemoteControlTest extends TestBaseClass
         }
 
         // Clear login attempts.
-        $query = sprintf('DELETE FROM {{failed_login_attempts}}', self::$surveyId);
+        $query = sprintf('DELETE FROM {{failed_login_attempts}}');
         $dbo->createCommand($query)->execute();
 
         // Import survey
@@ -86,7 +87,7 @@ class RemoteControlTest extends TestBaseClass
             $sgqa => 'One answer'
         ];
         $result = $handler->add_response($sessionKey, self::$surveyId, $response);
-        $this->assertEquals('19', $result);
+        $this->assertEquals('19', $result, '$result = ' . json_encode($result));
 
         // Check result via database.
         $query = sprintf('SELECT * FROM {{survey_%d}}', self::$surveyId);
