@@ -1,6 +1,6 @@
 <?php
 
-class CHtmlPurifierHelper extends CHtmlPurifier
+class LSYii_HtmlPurifier extends CHtmlPurifier
 {
     public function getPurifier()
     {

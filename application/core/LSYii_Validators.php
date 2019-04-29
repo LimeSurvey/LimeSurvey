@@ -108,7 +108,7 @@ class LSYii_Validators extends CValidator
      */
     public function xssFilter($value)
     {
-        $filter = new CHtmlPurifierHelper();
+        $filter = new LSYii_HtmlPurifier();
         $filter->options = array(
             'AutoFormat.RemoveEmpty'=>false,
             'Core.NormalizeNewlines'=>false,
