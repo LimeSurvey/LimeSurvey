@@ -1306,10 +1306,12 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
     App()->setLanguage($sLanguage);
     // Collect all default values once so don't need separate query for each question with defaults
     // First collect language specific defaults
-    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
-    . " FROM {{defaultvalues}} as a, {{questions}} as b"
-    . " WHERE a.qid = b.qid"
-    . " AND a.language = '{$sLanguage}'"
+    
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
+    . " FROM {{defaultvalues}} as a "
+    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
+    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
+    . " AND al10.language = '{$sLanguage}'"
     . " AND b.same_default=0"
     . " AND b.sid = ".$surveyid;
     $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
@@ -1326,10 +1328,11 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
 
     // Now overwrite language-specific defaults (if any) base language values for each question that uses same_defaults=1
     $baseLanguage = $survey->language;
-    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
-    . " FROM {{defaultvalues}} as a, {{questions}} as b"
-    . " WHERE a.qid = b.qid"
-    . " AND a.language = '{$baseLanguage}'"
+    $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, al10.defaultvalue"
+    . " FROM {{defaultvalues}} as a "
+    . " LEFT JOIN  {{defaultvalue_l10ns}} as al10 ON a.dvid = al10.dvid "
+    . " LEFT JOIN {{questions}} as b ON a.qid = b.qid "
+    . " AND al10.language = '{$baseLanguage}'"
     . " AND b.same_default=1"
     . " AND b.sid = ".$surveyid;
     $defaultResults = Yii::app()->db->createCommand($defaultsQuery)->queryAll();
@@ -1397,6 +1400,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                 $fieldmap[$fieldname]['question'] = $arow['question'];
                 $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                 $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                 $fieldmap[$fieldname]['hasconditions'] = $conditions;
                 $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                 $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1427,6 +1431,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                             $fieldmap[$fieldname]['subquestion'] = gT("Other");
                             $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                             $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                            $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                             $fieldmap[$fieldname]['hasconditions'] = $conditions;
                             $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                             $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1456,6 +1461,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         $fieldmap[$fieldname]['subquestion'] = gT("Comment");
                         $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                         $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                        $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                         $fieldmap[$fieldname]['hasconditions'] = $conditions;
                         $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                         $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1502,6 +1508,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         $fieldmap[$fieldname]['subquestion2'] = $answer['question'];
                         $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                         $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                        $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                         $fieldmap[$fieldname]['hasconditions'] = $conditions;
                         $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                         $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1528,6 +1535,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                     $fieldmap[$fieldname]['scale'] = gT('Scale 1');
                     $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                    $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                     $fieldmap[$fieldname]['hasconditions'] = $conditions;
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1547,6 +1555,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                     $fieldmap[$fieldname]['scale'] = gT('Scale 2');
                     $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                    $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                     $fieldmap[$fieldname]['hasconditions'] = $conditions;
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1571,6 +1580,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['subquestion'] = sprintf(gT('Rank %s'), $i);
                     $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                     $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                    $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                     $fieldmap[$fieldname]['hasconditions'] = $conditions;
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1593,6 +1603,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['max_files'] = $qidattributes['max_num_of_files'];
                     $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                     $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                    $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                     $fieldmap[$fieldname]['hasconditions'] = $conditions;
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1611,6 +1622,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['question'] = "filecount - ".$arow['question'];
                     $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                     $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                    $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                     $fieldmap[$fieldname]['hasconditions'] = $conditions;
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1639,6 +1651,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['subquestion'] = $abrow['question'];
                     $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                     $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                    $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                     $fieldmap[$fieldname]['hasconditions'] = $conditions;
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1662,6 +1675,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         $fieldmap[$fieldname]['subquestion'] = gT('Comment');
                         $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                         $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                        $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                         $fieldmap[$fieldname]['hasconditions'] = $conditions;
                         $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                         $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1681,6 +1695,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                     $fieldmap[$fieldname]['subquestion'] = gT('Other');
                     $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                     $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                    $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                     $fieldmap[$fieldname]['hasconditions'] = $conditions;
                     $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                     $fieldmap[$fieldname]['questionSeq'] = $questionSeq;
@@ -1699,6 +1714,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
                         $fieldmap[$fieldname]['subquestion'] = gT('Other comment');
                         $fieldmap[$fieldname]['group_name'] = $arow['group_name'];
                         $fieldmap[$fieldname]['mandatory'] = $arow['mandatory'];
+                        $fieldmap[$fieldname]['encrypted'] = $arow['encrypted'];
                         $fieldmap[$fieldname]['hasconditions'] = $conditions;
                         $fieldmap[$fieldname]['usedinconditions'] = $usedinconditions;
                         $fieldmap[$fieldname]['questionSeq'] = $questionSeq;

@@ -9,7 +9,8 @@
             elHelp: {type: String, default: ''},
             currentValue: {default: ''},
             elOptions: {type: Object, default: {}},
-            debug: {type: [Object, Boolean]}
+            debug: {type: [Object, Boolean]},
+            readonly: {type: Boolean, default: false}
         },
         data(){
             return {
@@ -50,7 +51,7 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
+        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0) && !readonly" />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
             <div class="input-group col-12">
                 <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
@@ -62,6 +63,7 @@
                     :id="elId" 
                     :max="elOptions.max || ''"
                     :min="elOptions.min || ''"
+                    :readonly="readonly"
                 />
                 <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
             </div>

@@ -223,7 +223,7 @@ class LsDefaultDataSets
             'template' =>  null,
             'description' => 'Default survey group',
             'sortorder' => 0,
-            'owner_uid' => 1,
+            'owner_id' => 1,
             'parent_id' => null,
             'created' => date('Y-m-d H:i:s'),
             'modified' => date('Y-m-d H:i:s'),

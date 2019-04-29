@@ -35,9 +35,14 @@ class RenderShortFreeText extends QuestionBaseRenderer
 
         $answer = '';
         $inputnames = [];
+        $placeholder = "";
 
         if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
             $answer .= $this->getTimeSettingRender();
+        }
+
+        if (trim($this->getQuestionAttribute('placeholder',$this->sLanguage)) != '') {
+            $placeholder = htmlspecialchars($this->getQuestionAttribute('placeholder',$this->sLanguage));
         }
 
         $answer .=  Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
@@ -46,8 +51,10 @@ class RenderShortFreeText extends QuestionBaseRenderer
             'basename'=>$this->sSGQA,
             'content' => $this->oQuestion,
             'coreClass'=> 'ls-answers '.$sCoreClasses,
+            'placeholder'=> $placeholder,
             ), true);
 
+        $this->registerAssets();
         $inputnames[] = [];
         return array($answer, $inputnames);
     }

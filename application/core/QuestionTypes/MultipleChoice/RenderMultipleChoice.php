@@ -152,6 +152,7 @@ class RenderMultipleChoice extends QuestionBaseRenderer
             'coreClass'        => $this->sCoreClasses,
         ), true);
 
+        $this->registerAssets();
         $this->inputnames[] = $this->sSGQA;
         return array($answer, $this->inputnames);
     }

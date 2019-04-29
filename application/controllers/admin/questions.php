@@ -293,32 +293,43 @@ class questions extends Survey_Common_Action
                 for ($scale_id = 0; $scale_id < $qtproperties[$questionrow['type']]['answerscales']; $scale_id++) {
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
-                    $defaultvalue = DefaultValue::model()->findByAttributes(array(
-                    'specialtype' => '',
-                    'qid' => $qid,
-                    'scale_id' => $scale_id,
-                    'language' => $language
-                    ));
-
-                    $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
-
+                    $defaultvalue = DefaultValue::model()
+                        ->with('defaultValueL10ns')                            
+                        ->find(
+                            'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                            array(
+                            ':specialtype' => '',
+                            ':qid' => $qid,
+                            ':scale_id' => $scale_id,
+                            ':language' => $language,
+                            )
+                    );
+                    $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
                     $langopts[$language][$questionrow['type']][$scale_id]['defaultvalue'] = $defaultvalue;
 
-                    $answerresult = Answer::model()->findAllByAttributes(array(
-                    'qid' => $qid,
-                    'language' => $language
-                    ), array('order' => 'sortorder'));
+                    $answerresult = Answer::model()->with('answerL10ns')->findAll(
+                        'qid = :qid AND answerL10ns.language = :language',
+                        array(
+                            ':qid' => $qid,
+                            ':language' => $language
+                            ), 
+                        array('order' => 'sortorder'));
+                    $langopts[$language][$questionrow['type']][$scale_id]['answers'] = $answerresult;
                     $langopts[$language][$questionrow['type']][$scale_id]['answers'] = $answerresult;
 
                     if ($questionrow['other'] == 'Y') {
-                        $defaultvalue = DefaultValue::model()->findByAttributes(array(
-                        'specialtype' => 'other',
-                        'qid' => $qid,
-                        'scale_id' => $scale_id,
-                        'language' => $language
-                        ));
-
-                        $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
+                        $defaultvalue = DefaultValue::model()
+                            ->with('defaultValueL10ns')                            
+                            ->find(
+                                'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                                array(
+                                ':specialtype' => 'other',
+                                ':qid' => $qid,
+                                ':scale_id' => $scale_id,
+                                ':language' => $language,
+                                )
+                        );
+                        $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;       
                         $langopts[$language][$questionrow['type']]['Ydefaultvalue'] = $defaultvalue;
                     }
                 }
@@ -330,13 +341,21 @@ class questions extends Survey_Common_Action
                 for ($scale_id = 0; $scale_id < $qtproperties[$questionrow['type']]['subquestions']; $scale_id++) {
                     $langopts[$language][$questionrow['type']][$scale_id] = array();
 
-                    $sqresult = Question::model()->findAllByAttributes(array(
-                    'sid' => $iSurveyID,
-                    'gid' => $gid,
-                    'parent_qid' => $qid,
-                    'language' => $language,
-                    'scale_id' => 0
-                    ), array('order' => 'question_order'));
+                    $sqresult = Question::model()
+                        ->with('questionL10ns')
+                        ->findAll(
+                            'sid = :sid AND gid = :gid AND parent_qid = :parent_qid AND scale_id = :scale_id AND questionL10ns.language =:language',
+                            array(
+                                ':sid' => $iSurveyID,
+                                ':gid' => $gid,
+                                ':parent_qid' => $qid,
+                                ':scale_id' => 0,
+                                ':language' => $language
+                            ), 
+                            array(
+                                'order' => 'question_order'
+                            )
+                        );
 
                     $langopts[$language][$questionrow['type']][$scale_id]['sqresult'] = array();
 
@@ -346,16 +365,23 @@ class questions extends Survey_Common_Action
                     }
 
                     foreach ($sqresult as $aSubquestion) {
-                        $defaultvalue = DefaultValue::model()->findByAttributes(array(
-                        'specialtype' => '',
-                        'qid' => $qid,
-                        'sqid' => $aSubquestion['qid'],
-                        'scale_id' => $scale_id,
-                        'language' => $language
-                        ));
-                        $defaultvalue = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
+                        $defaultvalue = DefaultValue::model()
+                            ->with('defaultValueL10ns')                            
+                            ->find(
+                                'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                                array(
+                                ':specialtype' => '',
+                                ':qid' => $qid,
+                                ':sqid' => $aSubquestion['qid'],
+                                ':scale_id' => $scale_id,
+                                ':language' => $language
+                                )
+                        );
+                        $defaultvalue = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
 
+                        $question = $aSubquestion->questionL10ns[$language]->question;
                         $aSubquestion = $aSubquestion->attributes;
+                        $aSubquestion['question'] = $question;
                         $aSubquestion['defaultvalue'] = $defaultvalue;
                         $aSubquestion['options'] = $options;
 
@@ -365,13 +391,18 @@ class questions extends Survey_Common_Action
             }
             if ($qtproperties[$questionrow['type']]['answerscales'] == 0 &&
             $qtproperties[$questionrow['type']]['subquestions'] == 0) {
-                $defaultvalue = DefaultValue::model()->findByAttributes(array(
-                'specialtype' => '',
-                'qid' => $qid,
-                'scale_id' => 0,
-                'language' => $language
-                ));
-                $langopts[$language][$questionrow['type']][0] = $defaultvalue != null ? $defaultvalue->defaultvalue : null;
+                $defaultvalue = DefaultValue::model()
+                    ->with('defaultValueL10ns')                            
+                    ->find(
+                        'specialtype = :specialtype AND qid = :qid AND scale_id = :scale_id AND defaultValueL10ns.language =:language',
+                        array(
+                        ':specialtype' => '',
+                        ':qid' => $qid,
+                        ':scale_id' => 0,
+                        ':language' => $language,
+                        )
+                );
+                $langopts[$language][$questionrow['type']][0] = !empty($defaultvalue->defaultValueL10ns) && array_key_exists($language, $defaultvalue->defaultValueL10ns) ? $defaultvalue->defaultValueL10ns[$language]->defaultvalue : null;
             }
 
         }
@@ -1340,6 +1371,9 @@ class questions extends Survey_Common_Action
     {
         if(is_null($qid)) {
             $qid = Yii::app()->getRequest()->getPost('qid');
+        }
+        if($gid === 0) {
+            $gid = Yii::app()->getRequest()->getPost('gid');
         }
         $oQuestion = Question::model()->findByPk($qid);
         if(empty($oQuestion)) {

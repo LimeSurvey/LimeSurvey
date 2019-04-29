@@ -565,6 +565,309 @@ class InstallerController extends CController
     }
 
     /**
+     * Loads a helper
+     *
+     * @access public
+     * @param string $helper
+     * @return void
+     */
+    public function loadHelper($helper)
+    {
+        Yii::import('application.helpers.'.$helper.'_helper', true);
+    }
+
+    /**
+     * Loads a library
+     *
+     * @access public
+     * @return void
+     */
+    public function loadLibrary($library)
+    {
+        Yii::import('application.libraries.'.$library, true);
+    }
+
+    /**
+     * check image HTML template
+     *
+     * @param bool $result
+     * @return string Span with check if $result is true; otherwise a span with warning
+     */
+    public function check_HTML_image($result)
+    {
+        if ($result) {
+            return "<span class='fa fa-check text-success' alt='right'></span>";
+        } else {
+            return "<span class='fa fa-exclamation-triangle text-danger' alt='wrong'></span>";
+        }
+    }
+
+    /**
+     * @param string $sDirectory
+     */
+    public function is_writable_recursive($sDirectory)
+    {
+        $sFolder = opendir($sDirectory);
+        if ($sFolder === false) {
+            return false; // Dir does not exist
+        }
+        while ($sFile = readdir($sFolder)) {
+            if ($sFile != '.' && $sFile != '..' &&
+                (!is_writable($sDirectory."/".$sFile) ||
+                (is_dir($sDirectory."/".$sFile) && !$this->is_writable_recursive($sDirectory."/".$sFile)))) {
+                closedir($sFolder);
+                return false;
+            }
+        }
+        closedir($sFolder);
+        return true;
+    }
+
+    /**
+     * check for a specific PHPFunction, return HTML image
+     *
+     * @param string $sFunctionName
+     * @param string $sImage return
+     * @return bool result
+     */
+    public function checkPHPFunction($sFunctionName, &$sImage)
+    {
+        $bExists = function_exists($sFunctionName);
+        $sImage = $this->check_HTML_image($bExists);
+        return $bExists;
+    }
+
+    /**
+     * check if file or directory exists and is writeable, returns via parameters by reference
+     *
+     * @param string $path file or directory to check
+     * @param int $type 0:undefined (invalid), 1:file, 2:directory
+     * @param string $base key for data manipulation
+     * @param string $keyError key for error data
+     * @param string $aData
+     * @return bool result of check (that it is writeable which implies existance)
+     */
+    public function checkPathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive = false)
+    {
+        $bResult = false;
+        $aData[$base.'Present'] = 'Not Found';
+        $aData[$base.'Writable'] = '';
+        switch ($type) {
+            case 1:
+                $exists = is_file($path);
+                break;
+            case 2:
+                $exists = is_dir($path);
+                break;
+            default:
+                throw new Exception('Invalid type given.');
+        }
+        if ($exists) {
+            $aData[$base.'Present'] = 'Found';
+            if ((!$bRecursive && is_writable($path)) || ($bRecursive && $this->is_writable_recursive($path))) {
+                $aData[$base.'Writable'] = 'Writable';
+                $bResult = true;
+            } else {
+                $aData[$base.'Writable'] = 'Unwritable';
+            }
+        }
+        $bResult || $aData[$keyError] = true;
+
+        return $bResult;
+    }
+
+    /**
+     * check if file exists and is writeable, returns via parameters by reference
+     *
+     * @param string $file to check
+     * @param string $data to manipulate
+     * @param string $base key for data manipulation
+     * @param string $keyError key for error data
+     * @return bool result of check (that it is writeable which implies existance)
+     */
+    public function checkFileWriteable($file, &$data, $base, $keyError)
+    {
+        return $this->checkPathWriteable($file, 1, $data, $base, $keyError);
+    }
+
+    /**
+     * check if directory exists and is writeable, returns via parameters by reference
+     *
+     * @param string $directory to check
+     * @param string $data to manipulate
+     * @param string $base key for data manipulation
+     * @param string $keyError key for error data
+     * @return bool result of check (that it is writeable which implies existance)
+     */
+    public function checkDirectoryWriteable($directory, &$data, $base, $keyError, $bRecursive = false)
+    {
+        return $this->checkPathWriteable($directory, 2, $data, $base, $keyError, $bRecursive);
+    }
+
+    /**
+     * check requirements
+     *
+     * @return bool requirements met
+     */
+    private function _check_requirements(&$aData)
+    {
+        // proceed variable check if all requirements are true. If any of them is false, proceed is set false.
+        $bProceed = true; //lets be optimistic!
+
+
+        //  version check
+        if (version_compare(PHP_VERSION, '5.5.9', '<')) {
+                    $bProceed = !$aData['verror'] = true;
+        }
+
+        if (convertPHPSizeToBytes(ini_get('memory_limit')) / 1024 / 1024 < 128 && ini_get('memory_limit') != -1) {
+                    $bProceed = !$aData['bMemoryError'] = true;
+        }
+
+
+        // mbstring library check
+        if (!$this->checkPHPFunction('mb_convert_encoding', $aData['mbstringPresent'])) {
+                    $bProceed = false;
+        }
+
+        // zlib library check    
+        if (!$this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent'])) {
+            $bProceed = false;
+        }
+
+        // JSON library check
+        if (!$this->checkPHPFunction('json_encode', $aData['bJSONPresent'])) {
+                    $bProceed = false;
+        }
+
+        // ** file and directory permissions checking **
+
+        // config directory
+        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('rootdir').'/application/config', $aData, 'config', 'derror')) {
+            $bProceed = false;
+        }
+
+        // templates directory check
+        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('tempdir').'/', $aData, 'tmpdir', 'tperror', true)) {
+            $bProceed = false;
+        }
+
+        //upload directory check
+        if (!$this->checkDirectoryWriteable(Yii::app()->getConfig('uploaddir').'/', $aData, 'uploaddir', 'uerror', true)) {
+            $bProceed = false;
+        }
+
+        // Session writable check
+        $session = Yii::app()->session; /* @var $session CHttpSession */
+        $sessionWritable = ($session->get('saveCheck', null) === 'save');
+        $aData['sessionWritable'] = $sessionWritable;
+        $aData['sessionWritableImg'] = $this->check_HTML_image($sessionWritable);
+        if (!$sessionWritable) {
+            // For recheck, try to set the value again
+            $session['saveCheck'] = 'save';
+            $bProceed = false;
+        }
+
+        // ** optional settings check **
+
+        // gd library check
+        if (function_exists('gd_info')) {
+            $aData['gdPresent'] = $this->check_HTML_image(array_key_exists('FreeType Support', gd_info()));
+        } else {
+            $aData['gdPresent'] = $this->check_HTML_image(false);
+        }
+        // ldap library check
+        $this->checkPHPFunction('ldap_connect', $aData['ldapPresent']);
+
+        // php zip library check
+        $this->checkPHPFunction('zip_open', $aData['zipPresent']);
+
+        // zlib php library check
+        $this->checkPHPFunction('zlib_get_coding_type', $aData['zlibPresent']);
+
+        // imap php library check
+        $this->checkPHPFunction('imap_open', $aData['bIMAPPresent']);
+
+        // Sodium php check
+        $this->checkPHPFunction('sodium_crypto_sign_open', $aData['sodiumPresent']);
+
+        // Silently check some default PHP extensions
+        $this->checkDefaultExtensions();
+
+        return $bProceed;
+    }
+
+    /**
+     * Installer::_setup_tables()
+     * Function that actually modify the database.
+     * @param string $sFileName
+     * @param array $aDbConfig
+     * @return string[]|true True if everything was okay, otherwise array of error messages.
+     */
+    public function _setup_tables($sFileName, $aDbConfig = array())
+    {
+        $aDbConfig = empty($aDbConfig) ? $this->_getDatabaseConfig() : $aDbConfig;
+        extract($aDbConfig);
+        try {
+            switch ($sDatabaseType) {
+                case 'mysql':
+                case 'mysqli':
+                $this->connection->createCommand("ALTER DATABASE ".$this->connection->quoteTableName($sDatabaseName)." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
+                break;
+            }
+        } catch (Exception $e) {
+            return array($e->getMessage());
+        }
+        require_once($sFileName);
+        try {
+            createDatabase($this->connection);
+        } catch (Exception $e) {
+            return array($e->getMessage());
+        }
+        return true;
+    }
+
+    /**
+     * Executes an SQL file
+     *
+     * @param string $sFileName
+     * @param string $sDatabasePrefix
+     */
+    public function _executeSQLFile($sFileName, $sDatabasePrefix)
+    {
+        $aMessages = array();
+        $sCommand = '';
+
+        if (!is_readable($sFileName)) {
+            return false;
+        } else {
+            $aLines = file($sFileName);
+        }
+        foreach ($aLines as $sLine) {
+            $sLine = rtrim($sLine);
+            $iLineLength = strlen($sLine);
+
+            if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
+                if (substr($sLine, $iLineLength - 1, 1) == ';') {
+                    $sCommand .= $sLine;
+                    $sCommand = str_replace('prefix_', $sDatabasePrefix, $sCommand); // Table prefixes
+
+                    try {
+                        $this->connection->createCommand($sCommand)->execute();
+                    } catch (Exception $e) {
+                        $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
+                    }
+
+                    $sCommand = '';
+                } else {
+                    $sCommand .= $sLine;
+                }
+            }
+        }
+        return $aMessages;
+    }
+
+    /**
      * Function to write given database settings in APPPATH.'config/config.php'
      */
     private function _writeConfigFile()

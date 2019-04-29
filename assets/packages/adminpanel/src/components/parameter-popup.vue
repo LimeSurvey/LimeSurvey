@@ -1,5 +1,4 @@
 <script>
-import _ from 'lodash';
 export default {
     name : 'lspanel-parameter-popup',
     components : {},
@@ -17,7 +16,7 @@ export default {
     },
     computed : {
         selectedQuestion(){
-            return _.find(this.questions, (item,i)=>{ return (this.parameterRow.qid == item.qid && ( item.sqid == null || item.sqid == this.parameterRow.sqid)); });
+            return LS.ld.find(this.questions, (item,i)=>{ return (this.parameterRow.qid == item.qid && ( item.sqid == null || item.sqid == this.parameterRow.sqid)); });
         },
         popupTitle(){
             return this.isNew ? this.translate.popup.newParam : this.translate.popup.editParam ;

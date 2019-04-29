@@ -129,6 +129,11 @@ $iconFail = "<span class='fa fa-exclamation-triangle text-danger'></span>";
                <td><span class='fa fa-check text-success'></span></td>
                <td><?= $model->isPhpImapPresent ? $iconOk : $iconFail ?></td>
         </tr>
+        <tr>
+               <td><?php eT("PHP Sodium library [data encryption]"); ?></td>
+               <td><span class='fa fa-check text-success' alt="Check"></span></td>
+               <td><?php echo $sodiumPresent ; ?></td>
+        </tr>
         </tbody>
 
         </table>

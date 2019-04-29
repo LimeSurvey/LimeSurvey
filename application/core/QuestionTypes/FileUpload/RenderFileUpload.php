@@ -32,11 +32,12 @@ class RenderFileUpload extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        $this->registerAssets();
         return do_file_upload($this->aFieldArray);
         
         $answer = '';
         $inputnames = [];
-
+        
         if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
             $answer .= $this->getTimeSettingRender();
         }
@@ -48,7 +49,7 @@ class RenderFileUpload extends QuestionBaseRenderer
             'content' => $this->oQuestion,
             'coreClass'=> 'ls-answers '.$sCoreClasses,
             ), true);
-
+            
         $inputnames[] = [];
         return array($answer, $inputnames);
     }

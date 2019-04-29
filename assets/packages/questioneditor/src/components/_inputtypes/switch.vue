@@ -16,7 +16,8 @@
             currentValue: {default: false},
             elOptions: {type: Object, default: {}},
             debug: {type: [Object, Boolean]},
-            disabled: {type: Boolean, default: false}
+            disabled: {type: Boolean, default: false},
+            readonly: {type: Boolean, default: false}
         },
         data(){
             return {
@@ -71,10 +72,10 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
+        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0) && !readonly" />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
         <div :class="getClasses">
-            <bootstrap-toggle v-model="curValue" :options="switchOptions" :disabled="disabled" />
+            <bootstrap-toggle v-model="curValue" :options="switchOptions" :disabled="disabled || readonly" />
             <!-- <input type="checkbox" :name="elName || elId" :id="elId" v-model="curValue"/> -->
         </div> 
         <div 

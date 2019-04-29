@@ -572,8 +572,11 @@ class SurveyDynamic extends LSActiveRecord
     public function getFirstNameForGrid()
     {
         // decrypt token information ( if needed )
-        $tokens = $this->tokens->decrypt();
+        $tokens = $this->tokens;
         if (is_object($tokens)) {
+            if (!empty($tokens)){
+                $tokens->decrypt();
+            }
             return '<strong>'.$tokens->firstname.'</strong>';
         }
 

@@ -115,7 +115,7 @@ if (is_dir($configUserFontsDir)) {
         if (!$userFont->isDot() && $userFont->isDir()) {
             $userFontDir = $userFont->getFilename();
             $configFile = $configUserFontsDir . DIRECTORY_SEPARATOR . $userFontDir . DIRECTORY_SEPARATOR . 'config.xml';
-            if (file_exists($configFile)){
+            if (function_exists('simplexml_load_file') && file_exists($configFile)){
                 libxml_disable_entity_loader(false);
                 $xml = simplexml_load_file($configFile);
                 $cssFiles = array();

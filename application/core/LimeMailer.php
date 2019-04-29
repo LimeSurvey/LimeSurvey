@@ -286,7 +286,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
             throw new \CException("Survey must be set before set token");
         }
         /* Did need to check all here ? */
-        $oToken =  \Token::model($this->surveyId)->findByToken($token);
+        $oToken =  \Token::model($this->surveyId)->findByToken($token)->decrypt();
         if(empty($oToken)) {
             throw new \CException("Invalid token");
         }
@@ -681,7 +681,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         if(!array_key_exists($this->emailType,$this->_aAttachementByType)) {
             return;
         }
-
+        $throwError = (Yii::app()->getConfig('debug') && Permission::model()->hasSurveyPermission($this->surveyId,'surveylocale','update'));
         $attachementType = $this->_aAttachementByType[$this->emailType];
         $oSurveyLanguageSetting = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$this->surveyId, 'surveyls_language'=>$this->mailLanguage));
         if(!empty($oSurveyLanguageSetting->attachments) ) {
@@ -691,8 +691,10 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
                     LimeExpressionManager::singleton()->loadTokenInformation($this->surveyId, $this->oToken->token);
                 }
                 foreach ($aAttachments[$attachementType] as $aAttachment) {
-                    if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
-                        $this->addAttachment($aAttachment['url']);
+                    if(Yii::app()->is_file($aAttachment['url'],Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$this->surveyId,$throwError)) {
+                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
+                            $this->addAttachment($aAttachment['url']);
+                        }
                     }
                 }
             }

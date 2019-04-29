@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
-import App from './App.vue';
+import TextElementsApp from './TextElementsApp.vue';
 
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
@@ -41,10 +41,10 @@ Vue.mixin({
         }
     }
 });
-const AppState = getAppState(window.LS.parameters.sid);
+const TextElementsStore = getAppState(LS.parameters.surveyid || 0);
 
 const newTextEditor = new Vue({
     el: '#advancedTextEditor',
-    store: AppState,
-    components: {App},
+    store: TextElementsStore,
+    components: {'lsnexttexteditor': TextElementsApp},
 });

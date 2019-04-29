@@ -334,7 +334,8 @@ class CheckIntegrity extends Survey_Common_Action
 
         $aRecords = DefaultValue::model()->findAll($criteria);
         foreach ($aRecords as $aRecord) {
-            DefaultValue::model()->deleteAllByAttributes($aRecord);
+            DefaultValueL10n::model()->deleteAllByAttributes(array('dvid' => $aRecord->dvid));
+            DefaultValue::model()->deleteAllByAttributes(array('dvid' => $aRecord->dvid));
         }
         $aData['messages'][] = gT('Deleting orphaned default values.');
         return $aData;

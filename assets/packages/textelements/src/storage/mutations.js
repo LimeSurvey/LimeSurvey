@@ -53,7 +53,7 @@ export default {
     setDateFormatForCurrentLanguage : (state, newValue) => {
         Vue.set(state.dateFormat, state.activeLanguage, newValue);
     },
-    setDecimalDivider : (state, newValue) => {
+    setDecimalDividerForCurrentLanguage : (state, newValue) => {
         Vue.set(state.decimalDivider, state.activeLanguage, newValue);
     },
 

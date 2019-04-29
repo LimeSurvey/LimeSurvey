@@ -47,6 +47,7 @@ class DummyQuestionEditContainer extends QuestionBaseRenderer
             'coreClass'=> 'ls-answers '.$sCoreClasses,
             ), true);
 
+        $this->registerAssets();
         $inputnames[] = [];
         return array($answer, $inputnames);
     }

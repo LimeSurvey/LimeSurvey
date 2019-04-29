@@ -211,6 +211,110 @@ class LSActiveRecord extends CActiveRecord
         return parent::deleteAllByAttributes(array(), $criteria, array());
     }
 
+    /**
+     * Overriding of Yii's findByAttributes method to provide encrypted attribute value search 
+	 * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+	 * An attribute value can be an array which will be used to generate an IN condition.
+     * @param mixed $condition query condition or criteria.
+	 * @param array $params parameters to be bound to an SQL statement.
+     * @return static[] the records found. An empty array is returned if none is found.
+	 */
+    public function findByAttributes($attributes, $condition='',$params=array())
+	{
+        $attributes = $this->encryptAttributeValues($attributes);
+        return parent::findByAttributes($attributes, $condition, $params);
+    }
+    
+    /**
+	 * Overriding of Yii's findAllByAttributes method to provide encrypted attribute value search 
+     * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+	 * An attribute value can be an array which will be used to generate an IN condition.
+	 * @param mixed $condition query condition or criteria.
+	 * @param array $params parameters to be bound to an SQL statement.
+	 * @return static[] the records found. An empty array is returned if none is found.
+	 */
+	public function findAllByAttributes($attributes, $condition='',$params=array())
+	{
+        $attributes = $this->encryptAttributeValues($attributes);
+        return parent::findAllByAttributes($attributes, $condition, $params);
+    }    
+    
+    public static function getAllEncryptedAttributes($iSurveyId = 0, $sClassName){
+        $aAttributes = array();
+        if ($sClassName == 'ParticipantAttribute'){
+            // participants attributes
+            $aParticipantAttributes = ParticipantAttributeName::model()->findAll(array("condition" => "encrypted = 'Y' and core_attribute <> 'Y'"));
+            foreach ($aParticipantAttributes as $attribute => $value) {
+                $aAttributes[] = 'value';
+            }
+        } elseif ($sClassName == 'Participant') {
+            // participants
+            $aTokenAttributes = Participant::getParticipantsEncryptionOptions();
+            if ($aTokenAttributes['enabled'] = 'Y'){
+                foreach ($aTokenAttributes['columns'] as $attribute => $oColumn) {
+                    if ($oColumn == 'Y'){
+                        $aAttributes[] = $attribute;
+                    }
+                }
+            }
+        } elseif ($iSurveyId > 0 && ($sClassName == 'TokenDynamic' || $sClassName == 'Token_'.$iSurveyId || $sClassName == 'Token')) {
+            //core token attributes
+            $oSurvey = Survey::model()->findByPk($iSurveyId);
+            $aTokenAttributes = $oSurvey->getTokenEncryptionOptions();
+            if ($aTokenAttributes['enabled'] = 'Y'){
+                foreach ($aTokenAttributes['columns'] as $attribute => $oColumn) {
+                    if ($oColumn == 'Y'){
+                        $aAttributes[] = $attribute;
+                    }
+                }
+            }
+            // custom token attributes
+            $aCustomAttributes = $oSurvey->tokenAttributes;
+            foreach ($aCustomAttributes as $attribute => $value) {
+                if ($value['encrypted'] == 'Y'){
+                    $aAttributes[] = $attribute;
+                }
+            }
+        } elseif ($sClassName == 'SurveyDynamic' || $sClassName == 'Response_'.$iSurveyId){
+            // response attributes
+            $aAttributes = Response::getEncryptedAttributes($iSurveyId);
+        }
+
+        return $aAttributes;
+    }
+    
+    /**
+     * Attribute values are encrypted ( if needed )to be used for searching purposes 
+     * @param array $attributes list of attribute values (indexed by attribute names) that the active records should match.
+     * An attribute value can be an array which will be used to generate an IN condition.
+     * @return array attributes array with encrypted atrribute values is returned
+     */
+    public function encryptAttributeValues($attributes = null, $bEncryptedOnly = false, $bReplaceValues = true)
+    {
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        
+        if (method_exists($this, 'getSurveyId')){
+            $iSurveyId = $this->getSurveyId();
+        } else {
+            $iSurveyId = 0;
+        }
+        $class = get_class($this);
+        $encryptedAttributes = self::getAllEncryptedAttributes($iSurveyId, $class);
+        $attributeCount = count($attributes);
+        foreach($attributes as $key => $attribute){
+            if(in_array($key, $encryptedAttributes)){
+                if ($bReplaceValues){
+                    $attributes[$key] = $sodium->encrypt($attributes[$key]);
+                }
+            } else {
+                if ($bEncryptedOnly){
+                    unset($attributes[$key]);
+                }
+            }
+        }
+        return $attributes;
+    }
 
     /**
      * Decrypt values from database
@@ -286,7 +390,9 @@ class LSActiveRecord extends CActiveRecord
     {
         // run validation on attribute values before encryption take place, it is impossible to validate encrypted values
         if ($runValidation){
-            $this->validate();    
+            if(!$this->validate()) {
+                return false;
+            }  
         }
         
         // encrypt attributes
@@ -303,64 +409,10 @@ class LSActiveRecord extends CActiveRecord
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
+        $attributes = $this->encryptAttributeValues($this->attributes, true, false);
 
-        if (method_exists($this, 'getSurveyId')){
-            $iSurveyId = $this->getSurveyId();
-        } else {
-            $iSurveyId = 0;
-        }
-        $class = get_class($this);
-        $attributeCount = count((array)$this->attributes);
-        // process only non empty models which aren't already decrypted
-        if ((int)$attributeCount > 0){
-            if (is_a($this, 'TokenDynamic') || is_a($this, 'Token_'.$iSurveyId) || is_a($this, 'Token') || is_a($this, 'Participant') || is_a($this, 'ParticipantAttribute')){
-                // custom attributes
-                $aCustomAttributesCols = $aCustomAttributes = array();
-                if (is_a($this, 'ParticipantAttribute')){
-                    // participants attributes
-                    $oAttributes = ParticipantAttributeName::model()->findAll(array("condition" => "encrypted = 'Y' and core_attribute <> 'Y'"));
-                    foreach ($oAttributes as $attribute => $oColumn) {
-                        if (is_a($this, 'ParticipantAttribute') && $this->attribute_id == $oColumn->attribute_id && $oColumn->encrypted == 'Y' && !empty($this->value)){
-                            $this->value = $sodium->$action($this->value);
-                        }
-                    }
-                } elseif ($iSurveyId > 0) {
-                    $oSurvey = Survey::model()->findByAttributes(array("sid"=>$iSurveyId));
-                    // custom token attributes
-                    $aCustomAttributes = $oSurvey->tokenAttributes;
-                    foreach ($aCustomAttributes as $attribute => $oColumn) {
-                        if ($oColumn['encrypted'] == 'Y' && !empty($this->$attribute)){
-                            $this->$attribute = $sodium->$action($this->$attribute);
-                        }
-                    }
-                    
-                }                              
-
-                // token attributes
-                if ($iSurveyId > 0) {
-                    $oSurvey = Survey::model()->findByPk($iSurveyId);
-                    $aAttributes = $oSurvey->getTokenEncryptionOptions();
-                } else {
-                    $aAttributes = Participant::getParticipantsEncryptionOptions();
-                }
-                if (!empty($aAttributes) && $aAttributes['enabled'] == 'Y'){
-                    foreach($aAttributes['columns'] as $key => $attribute){
-                        if ($attribute == 'Y' && !empty($this->$key)){
-                            $this->$key = $sodium->$action($this->$key);
-                        }                
-                    }
-                }
-            } elseif (is_a($this, 'SurveyDynamic') || is_a($this, 'Response_'.$iSurveyId)){
-                // response attributes
-                $aAttributes = Response::getEncryptedAttributes();
-                if (!empty($aAttributes)){
-                    foreach($aAttributes as $attribute){
-                        if (!empty($this->$attribute)){
-                            $this->$attribute = $sodium->$action($this->$attribute);
-                        }                
-                    }
-                }
-            }
+        foreach ($attributes as $key => $attribute) {
+                $this->$key = $sodium->$action($attribute);
         }
     }
 }

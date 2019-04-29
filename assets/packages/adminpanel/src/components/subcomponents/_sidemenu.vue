@@ -1,5 +1,4 @@
 <script>
-import _ from 'lodash';
 import ajaxMethods from '../../mixins/runAjax.js';
 import Menuicon from './_menuicon.vue';
 import Submenu from './_submenu.vue';
@@ -21,13 +20,13 @@ export default {
     },
     computed: {
         sortedMenues(){
-            return _.orderBy(this.$store.state.sidemenus,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);
+            return LS.ld.orderBy(this.$store.state.sidemenus,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);
         }
     },
     methods:{
         sortedMenuEntries(entries) {
             const self = this;
-            let orderedArray = _.orderBy(entries,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);            
+            let orderedArray = LS.ld.orderBy(entries,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);            
             return orderedArray;
         },
         setActiveMenuIndex(menuItem){

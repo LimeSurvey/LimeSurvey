@@ -23,6 +23,7 @@ var LSSlider = function (options) {
         setPosition = options.setPosition || '',
         custom_handle = options.custom_handle || null,
         settings = {
+            labelledby: options.labelElement || null,
             value: options.value || null,
             min: (typeof options.min != 'undefined') ? options.min : 0,
             max: (typeof options.max != 'undefined') ? options.max : 100,
@@ -161,7 +162,6 @@ var LSSlider = function (options) {
                 if(setPosition) {
                     triggerChanges();
                 }
-
             } else {
                 sliderObject.setValue(rootElementObject.val().toString().replace(separator,'.'), true, true);
             }

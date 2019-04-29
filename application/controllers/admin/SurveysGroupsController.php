@@ -43,12 +43,9 @@ class SurveysGroupsController extends Survey_Common_Action
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['SurveysGroups'])) {
-            $model->attributes = $_POST['SurveysGroups'];
-            $model->name = sanitize_paranoid_string($model->name);
+        if (Yii::app()->getRequest()->getPost('SurveysGroups')) {
+            $model->attributes = Yii::app()->getRequest()->getPost('SurveysGroups');
             $model->created_by = $model->owner_uid = Yii::app()->user->id;
-
-
             if ($model->save()) {
                 // save new SurveysGroupsettings record
                 $modelSettings = new SurveysGroupsettings;
@@ -63,6 +60,7 @@ class SurveysGroupsController extends Survey_Common_Action
                 if ($modelSettings->save()) {
                     $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
                 }
+                // What happen iof SurveysGroups saved but no SurveysGroupsettings ?
             }
         }
 

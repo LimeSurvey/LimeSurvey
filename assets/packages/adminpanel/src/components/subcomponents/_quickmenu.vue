@@ -1,5 +1,4 @@
 <script>
-import _ from 'lodash';
 import ajaxMethods from '../../mixins/runAjax.js';
 
 export default {
@@ -15,13 +14,13 @@ export default {
     },
     computed: {
         sortedMenues(){
-            return _.orderBy(this.$store.state.collapsedmenus,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);
+            return LS.ld.orderBy(this.$store.state.collapsedmenus,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);
         }
     },
     methods:{
         sortedMenuEntries(entries) {
             const self = this;
-            let orderedArray = _.orderBy(entries,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);            
+            let orderedArray = LS.ld.orderBy(entries,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);            
             return orderedArray;
         },
         setActiveMenuIndex(menuItem){
@@ -50,7 +49,7 @@ export default {
         const self = this;
         // this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
         //     self.$log.debug('quickmenu',result);
-        //     self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+        //     self.menues =  LS.ld.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
         //     self.$localStorage.set('collapsedmenues', JSON.stringify(self.menues));
         //     self.$forceUpdate();
         // });

@@ -141,7 +141,9 @@ class questionedit extends Survey_Common_Action
                 'Tab' => gT('Tab'),
                 'New rows' => gT('New rows'),
                 'Scale' => gT('Scale'),
-                'Save and Close' => gT('Save and Close')
+                'Save and Close' => gT('Save and Close'),
+                'Script' => gT('Script'),
+                '__SCRIPTHELP' => gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored")
             ]
         ];
         $aData['questiongroupbar']['importquestion'] = true;
@@ -234,6 +236,20 @@ class questionedit extends Survey_Common_Action
             'languages' => $aLanguages,
             'mainLanguage' => $oQuestion->survey->language
         ]));
+    }
+
+    public function getQuestionPermissions($iQuestionId=null)
+    {
+        $iQuestionId = (int) $iQuestionId;
+        $oQuestion = $this->_getQuestionObject($iQuestionId);
+
+        $aPermissions = [
+            "read" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'read'),
+            "update" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
+            "script" => SettingsUser::getUserSetting('showScriptEdit', App()->user->id) && Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update')
+        ];
+
+        $this->renderJSON($aPermissions);
     }
 
     public function getQuestionAttributeData($iQuestionId, $returnArray = false)
@@ -476,15 +492,22 @@ class questionedit extends Survey_Common_Action
         foreach($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
             if($sAttributeCategory === 'debug') continue;
             foreach($aAttributeCategorySettings as $sAttributeKey => $aAttributeValueArray) {
-                $newValue = is_array($aAttributeValueArray['formElementValue']) 
-                    ? $aAttributeValueArray['formElementValue'][$oQuestion->survey->language] 
-                    : $aAttributeValueArray['formElementValue'];
+                if(!isset($aAttributeValueArray['formElementValue'])){ continue; }
+                $newValue = $aAttributeValueArray['formElementValue'];
                 
-                if(array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
-                    $oQuestion->$sAttributeKey = $newValue;
-                } else { 
-                    $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttribute($oQuestion->qid,$sAttributeKey,$newValue);
+                if(is_array($newValue)) {
+                    foreach($newValue as $lngKey => $content) {
+                        if($lngKey == 'expression') { continue; }
+                        $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttributeWithLanguage($oQuestion->qid,$sAttributeKey,$content, $lngKey);
+                    } 
+                } else {
+                    if(array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
+                        $oQuestion->$sAttributeKey = $newValue;
+                    } else { 
+                        $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttribute($oQuestion->qid,$sAttributeKey,$newValue);
+                    }
                 }
+            
             }
         }
 

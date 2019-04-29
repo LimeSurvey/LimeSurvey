@@ -7,6 +7,7 @@ export default {
         ajax.methods.$_get(
             window.TextEditData.connectorBaseUrl+'/getCurrentEditorValues'
         ).then((result) => {
+            LOG.log('Getting Data', result);
             context.dispatch('updateObjects', result.data.textdata);
             context.commit('setLanguages', result.data.languages);
             context.commit('setActiveLanguage', _.keys(result.data.languages)[0]);
@@ -45,7 +46,7 @@ export default {
             }
         });
 
-        let transferObject = _.merge(postObject, window.LS.data.csrfTokenData);
+        let transferObject = _.merge({changes: postObject}, window.LS.data.csrfTokenData);
 
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'postObject': transferObject});
         return ajax.methods.$_post(window.TextEditData.connectorBaseUrl+'/saveTextData', transferObject)

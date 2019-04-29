@@ -155,19 +155,53 @@ class database extends Survey_Common_Action
      */
     public function _updateDefaultValues($qid, $sqid, $scale_id, $specialtype, $language, $defaultvalue)
     {
+        $arDefaultValue = DefaultValue::model()
+            ->find(
+                'specialtype = :specialtype AND qid = :qid AND sqid = :sqid AND scale_id = :scale_id',
+                array(
+                ':specialtype' => $specialtype,
+                ':qid' => $qid,
+                ':sqid' => $sqid,
+                ':scale_id' => $scale_id,
+                )
+        );
+        $dvid = !empty($arDefaultValue->dvid) ? $arDefaultValue->dvid : null;
+
         if ($defaultvalue == '') {
             // Remove the default value if it is empty
-            DefaultValue::model()->deleteByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'language'=>$language, 'scale_id'=>$scale_id));
+            if ($dvid !== null){
+                DefaultValueL10n::model()->deleteAllByAttributes(array('dvid'=>$dvid, 'language' => $language ));
+                $iRowCount = DefaultValueL10n::model()->countByAttributes(array('dvid' => $dvid));
+                if ($iRowCount == 0){
+                    DefaultValue::model()->deleteByPk($dvid);
+                }
+            }
         } else {
-            $arDefaultValue = DefaultValue::model()->findByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'language'=>$language, 'scale_id'=>$scale_id));
-
-            if (is_null($arDefaultValue)) {
-                $data = array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
-                $defaultvalue = new DefaultValue();
-                $defaultvalue->attributes = $data;
-                $defaultvalue->save();
+            if (is_null($dvid)) {
+                $data = array('qid'=>$qid, 'sqid'=>$sqid, 'scale_id'=>$scale_id, 'specialtype'=>$specialtype);
+                $oDefaultvalue = new DefaultValue();
+                $oDefaultvalue->attributes = $data;
+                $oDefaultvalue->specialtype = $specialtype;
+                $oDefaultvalue->save();
+                if (!empty($oDefaultvalue->dvid)){
+                    $dataL10n = array('dvid'=>$oDefaultvalue->dvid, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
+                    $oDefaultvalueL10n = new DefaultValueL10n();
+                    $oDefaultvalueL10n->attributes = $dataL10n;
+                    $oDefaultvalueL10n->save();
+                }   
             } else {
-                DefaultValue::model()->updateByPk(array('sqid'=>$sqid, 'qid'=>$qid, 'specialtype'=>$specialtype, 'scale_id'=>$scale_id, 'language'=>$language), array('defaultvalue'=>$defaultvalue));
+                if ($dvid !== null){
+                    $arDefaultValue->with('defaultValueL10ns');
+                    $idL10n = !empty($arDefaultValue->defaultValueL10ns) && array_key_exists($language, $arDefaultValue->defaultValueL10ns) ? $arDefaultValue->defaultValueL10ns[$language]->id : null;
+                    if ($idL10n !== null){
+                        DefaultValueL10n::model()->updateAll(array('defaultvalue'=>$defaultvalue), 'dvid = ' . $dvid . ' AND language = \'' . $language . '\'');
+                    } else {
+                        $dataL10n = array('dvid'=>$dvid, 'language'=>$language, 'defaultvalue'=>$defaultvalue);
+                        $oDefaultvalueL10n = new DefaultValueL10n();
+                        $oDefaultvalueL10n->attributes = $dataL10n;
+                        $oDefaultvalueL10n->save();
+                    }
+                }
             }
         }
         $surveyid = $this->iSurveyID;
@@ -205,7 +239,7 @@ class database extends Survey_Common_Action
         }
         if ($aQuestionTypeList[$sQuestionType]['subquestions'] > 0) {
             foreach ($aSurveyLanguages as $sLanguage) {
-                $arQuestions = Question::model()->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$this->iQuestionGroupID, 'parent_qid'=>$this->iQuestionID, 'language'=>$sLanguage, 'scale_id'=>0));
+                $arQuestions = Question::model()->with('questionL10ns', array('condition' => 'language = ' . $sLanguage))->findAllByAttributes(array('sid'=>$iSurveyID, 'gid'=>$this->iQuestionGroupID, 'parent_qid'=>$this->iQuestionID, 'scale_id'=>0));
 
                 for ($iScaleID = 0; $iScaleID < $aQuestionTypeList[$sQuestionType]['subquestions']; $iScaleID++) {
                     foreach ($arQuestions as $aSubquestionrow) {
@@ -1322,6 +1356,7 @@ class database extends Survey_Common_Action
                             $oOldQuestion = Question::model()->findByPk( array('qid' => $oldQID));
 
                             // subquestions
+                            $aOldNewSubquestions = array(); // track old and new sqid's
                             $oOldSubQuestions = Question::model()->with('questionL10ns')->findAllByAttributes(array("parent_qid"=>$oldQID), array('order'=>'question_order'));
                             foreach ($oOldSubQuestions as $sSubquestionIndex => $subquestion) {
                                 $aInsertData = $subquestion->attributes;
@@ -1329,7 +1364,8 @@ class database extends Survey_Common_Action
                                 $aInsertData['parent_qid'] = $this->iQuestionID;
                                 if (Question::model()->insertRecords($aInsertData)){
                                     $iNewSubquestionId = Yii::app()->db->getLastInsertID();
-                                    
+                                    $aOldNewSubquestions[$subquestion->qid] = $iNewSubquestionId;
+
                                     if (isset($subquestion->questionL10ns)){
                                         foreach($subquestion->questionL10ns as $language => $questionL10ns){
                                             $oQuestionLS = new QuestionL10n;
@@ -1365,15 +1401,25 @@ class database extends Survey_Common_Action
                         }
                     }
                     if (returnGlobal('copydefaultanswers') == 1) {
-                        $aDefaultAnswers = DefaultValue::model()->findAll("qid=:qid", array("qid"=>returnGlobal('oldqid')));
-                        foreach ($aDefaultAnswers as $qr1) {
-                            DefaultValue::model()->insertRecords(array(
-                                'qid' => $this->iQuestionID,
-                                'scale_id' => $qr1['scale_id'],
-                                'language' => $qr1['language'],
-                                'specialtype' => $qr1['specialtype'],
-                                'defaultvalue' => $qr1['defaultvalue']
-                            ));
+                        $oOldDefaultValues = DefaultValue::model()->with('defaultValueL10ns')->findAll("qid=:qid", array("qid"=>returnGlobal('oldqid')));
+                        foreach ($oOldDefaultValues as $defaultvalue) {
+                            $newDefaultValue = new DefaultValue();
+                            $newDefaultValue->qid = $this->iQuestionID;
+                            $newDefaultValue->sqid = array_key_exists($defaultvalue['sqid'], $aOldNewSubquestions) ? $aOldNewSubquestions[$defaultvalue['sqid']] : 0;
+                            $newDefaultValue->scale_id = $defaultvalue['scale_id'];
+                            $newDefaultValue->specialtype = $defaultvalue['specialtype'];
+                            if ($newDefaultValue->save()) {
+                                $iNewDefaultValueId = Yii::app()->db->getLastInsertID();                                 
+                                if (isset($defaultvalue->defaultValueL10ns)){
+                                    foreach($defaultvalue->defaultValueL10ns as $language => $defaultValueL10ns){
+                                        $oDefaultValueLS = new DefaultValueL10n;
+                                        $oDefaultValueLS->dvid = $iNewDefaultValueId;
+                                        $oDefaultValueLS->language = $language;
+                                        $oDefaultValueLS->defaultvalue = $defaultValueL10ns->defaultvalue;
+                                        $oDefaultValueLS->save();
+                                    }
+                                }
+                            }
                         }
                     }
 

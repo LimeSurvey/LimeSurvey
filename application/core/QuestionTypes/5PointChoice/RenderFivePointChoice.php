@@ -64,8 +64,6 @@ class RenderFivePointChoice extends QuestionBaseRenderer
         $inputnames = [];
 
         $aRows = array();
-        ;
-        
 
         $inputnames[] = $this->aFieldArray[1];
 

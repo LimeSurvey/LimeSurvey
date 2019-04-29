@@ -58,7 +58,6 @@ class tokens extends Survey_Common_Action
 
         // CHECK TO SEE IF A Survey participants table EXISTS FOR THIS SURVEY
         if (!$survey->hasTokensTable) {
-//If no tokens table exists
             $this->_newtokentable($iSurveyId);
         } else {
             $aData['thissurvey'] = $thissurvey;
@@ -395,18 +394,18 @@ class tokens extends Survey_Common_Action
                 // Valid from
                 if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) != 'lskeep') {
                     if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) == '') {
-                                            $aData['validfrom'] = null;
+                        $aData['validfrom'] = null;
                     } else {
-                                            $aData['validfrom'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
+                        $aData['validfrom'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
                     }
                 }
 
                 // Valid until
                 if (trim(Yii::app()->request->getPost('validuntil', 'lskeep')) != 'lskeep') {
                     if (trim(Yii::app()->request->getPost('validuntil')) == '') {
-                                            $aData['validuntil'] = null;
+                        $aData['validuntil'] = null;
                     } else {
-                                            $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
+                        $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
                     }
                 }
 
@@ -414,9 +413,9 @@ class tokens extends Survey_Common_Action
                 if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep') {
                     $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
                     if ($isValid) {
-                                            $aData['email'] = 'lskeep';
+                        $aData['email'] = Yii::app()->request->getPost('email');
                     } else {
-                                            $aData['email'] = Yii::app()->request->getPost('email');
+                        $aData['email'] = 'lskeep';
                     }
                 }
 
@@ -1089,7 +1088,8 @@ class tokens extends Survey_Common_Action
                 'mandatory' => $key == 'email' ? true : false,
                 'encrypted' => $attribute,
                 'show_register' => true,
-                'description' => gT('Mandatory attribute')
+                'description' => gT('Mandatory attribute'),
+                'cpdbmap'=>''
             );
         }
         $aData['tokenfielddata'] = $aAttributesDesc;
@@ -1119,6 +1119,9 @@ class tokens extends Survey_Common_Action
         foreach (ParticipantAttributeName::model()->getCPDBAttributes() as $aCPDBAttribute) {
             $aData['aCPDBAttributes'][$aCPDBAttribute['attribute_id']] = $aCPDBAttribute['attribute_name'];
         }
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $aData['bEncrypted'] = $sodium->bLibraryExists;
         $this->_renderWrappedTemplate('token', array('managetokenattributes'), $aData);
     }
 
@@ -1444,7 +1447,6 @@ class tokens extends Survey_Common_Action
                         $tokenoutput .= $emrow['tid']." ".htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.", 'unescaped'), $fieldsarray))."<br />";
                         $bInvalidDate = true;
                     } else {
-
                         $success = $mail->sendMessage();
                         $stringInfo = CHtml::encode("{$emrow['tid']}: {$emrow['firstname']} {$emrow['lastname']} ({$emrow['email']}).");
                         if ($success) {

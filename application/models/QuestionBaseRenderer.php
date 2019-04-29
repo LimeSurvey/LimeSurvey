@@ -59,6 +59,9 @@ abstract class QuestionBaseRenderer extends StaticModel
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
         $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
         
+        if(!empty($oQuestion->questionL10ns[$this->sLanguage]->script)){
+            $this->addScript('QuestionStoredScript-'.$oQuestion->qid, $oQuestion->questionL10ns[$this->sLanguage]->script, LSYii_ClientScript::POS_POSTSCRIPT);
+        }
     }
     
     protected function getTimeSettingRender()
