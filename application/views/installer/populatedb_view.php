@@ -1,3 +1,8 @@
+<?php
+/** @var InstallerController $this */
+/** @var InstallerConfigForm $model */
+
+?>
 <div class="row">
     <div class="col-md-3">
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
@@ -5,6 +10,9 @@
     <div class="col-md-9">
         <h2><?php echo $title; ?></h2>
             <legend><?php eT('Database creation'); ?></legend>
+                <?php if (!$model->dbExists):?>
+                    <?php  $this->renderPartial('/installer/nodatabase_view', ['model'=>$model]);?>
+                <?php endif;?>
                 <?php if (isset($adminoutputText)) echo $adminoutputText; ?>
 
             <div class="row">

@@ -242,17 +242,13 @@ class TestHelper extends TestCase
             $this->assertNotEmpty($connection, 'Could connect to new database');
         }
 
-        // Get InstallerController.
-        $inst = new \InstallerController('foobar');
-        $inst->connection = $connection;
-
         // Check SQL file.
         $file = __DIR__ . '/data/sql/create-mysql.' . $version . '.sql';
         $this->assertFileExists($file, 'SQL file exists: ' . $file);
 
         // Run SQL install file.
-        $result = $inst->_executeSQLFile($file, 'lime_');
-        $this->assertEquals([], $result, 'No error messages from _executeSQLFile' . print_r($result, true));
+        $result = self::executeSQLFile($file,$connection);
+        $this->assertEquals([], $result, 'No error messages from executeSQLFile' . print_r($result, true));
 
         // Run upgrade.
         $result = \db_upgrade_all($version);
@@ -265,7 +261,8 @@ class TestHelper extends TestCase
         $this->assertEmpty($flashes, 'No flash error messages');
         $this->assertTrue($result, 'Upgrade successful');
 
-        return $inst->connection;
+        return $connection;
+
     }
 
     /**
@@ -439,4 +436,47 @@ class TestHelper extends TestCase
 
         return $webDriver;
     }
+
+    /**
+     * Executes an SQL file
+     *
+     * @param string $sFileName
+     * @param \CDbConnection $connection
+     * @return array|bool
+     */
+    private static function executeSQLFile($sFileName, $connection)
+    {
+        $aMessages = array();
+        $sCommand = '';
+
+        if (!is_readable($sFileName)) {
+            return false;
+        } else {
+            $aLines = file($sFileName);
+        }
+        foreach ($aLines as $sLine) {
+            $sLine = rtrim($sLine);
+            $iLineLength = strlen($sLine);
+
+            if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
+                if (substr($sLine, $iLineLength - 1, 1) == ';') {
+                    $sCommand .= $sLine;
+                    $sDatabasePrefix = \Yii::app()->db->tablePrefix;
+                    $sCommand = str_replace('prefix_', $sDatabasePrefix, $sCommand); // Table prefixes
+
+                    try {
+                        $connection->createCommand($sCommand)->execute();
+                    } catch (\Exception $e) {
+                        $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
+                    }
+
+                    $sCommand = '';
+                } else {
+                    $sCommand .= $sLine;
+                }
+            }
+        }
+        return $aMessages;
+    }
+
 }

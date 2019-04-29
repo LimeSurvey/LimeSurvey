@@ -41,10 +41,10 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $this->assertNotEmpty($connection, 'Could connect to new database');
 
         // Get InstallerController.
-        $inst = new \InstallerController('foobar');
-        $inst->connection = \Yii::app()->db;
-        $filename = dirname(APPPATH).'/installer/create-database.php';
-        $result = $inst->_setup_tables($filename);
+        $inst = new \InstallerConfigForm();
+        $inst->db = \Yii::app()->db;
+        $inst->dbtype = $inst->db->driverName;
+        $result = $inst->setupTables();
         if ($result) {
             print_r($result);
         }
@@ -53,8 +53,8 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $result = \db_upgrade_all($version['dbversionnumber']);
 
         // Check JSON.
-        $this->checkMenuEntriesJson($inst->connection);
-        $this->checkTemplateConfigurationJson($inst->connection);
+        $this->checkMenuEntriesJson($inst->db);
+        $this->checkTemplateConfigurationJson($inst->db);
 
         // Connect to old database.
         $db->setActive(false);

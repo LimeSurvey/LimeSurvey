@@ -307,10 +307,13 @@ function activateSurvey($iSurveyID, $simulate = false)
 
     $aTableDefinition = array();
     $bCreateSurveyDir = false;
+    $options = '';
     // Specify case sensitive collations for the token
     $sCollation = '';
     if (Yii::app()->db->driverName == 'mysqli' || Yii::app()->db->driverName == 'mysql') {
         $sCollation = " COLLATE 'utf8mb4_bin'";
+        $options .= sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
+
     }
     if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib' || Yii::app()->db->driverName == 'mssql') {
         $sCollation = " COLLATE SQL_Latin1_General_CP1_CS_AS";
@@ -455,7 +458,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     $sTableName = "{{survey_{$iSurveyID}}}";
     Yii::app()->loadHelper("database");
     try {
-        Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition);
+        Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition, $options);
         Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
     } catch (CDbException $e) {
         if (App()->getConfig('debug')) {
@@ -505,7 +508,7 @@ function activateSurvey($iSurveyID, $simulate = false)
 
         $sTableName = "{{survey_{$iSurveyID}_timings}}";
         try {
-            Yii::app()->db->createCommand()->createTable($sTableName, $aTimingTableDefinition);
+            Yii::app()->db->createCommand()->createTable($sTableName, $aTimingTableDefinition, $options);
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         } catch (CDbException $e) {
             return array('error'=>'timingstablecreation');

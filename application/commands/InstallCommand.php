@@ -103,6 +103,8 @@ class InstallCommand extends CConsoleCommand
         $this->output('Creating database...');
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>false))));
         $this->connection = App()->db;
+
+
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>true))));
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
@@ -115,6 +117,14 @@ class InstallCommand extends CConsoleCommand
         }
 
         $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
+        $dbEngine = getenv('DBENGINE');
+
+        if (!empty($this->connection) && $this->connection->driverName == 'mysql') {
+            $this->connection
+                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
+                ->execute();
+        }
+
         try {
             switch ($this->connection->driverName) {
                 case 'mysqli':

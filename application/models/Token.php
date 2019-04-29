@@ -141,11 +141,15 @@ abstract class Token extends Dynamic
     public static function createTable($surveyId, array $extraFields = array())
     {
         $surveyId = intval($surveyId);
+        $options = '';
+
         // Specify case sensitive collations for the token
         $sCollation = '';
         if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli') {
             $sCollation = "COLLATE 'utf8mb4_bin'";
+            $options .= sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
         }
+
         if (Yii::app()->db->driverName == 'sqlsrv'
             || Yii::app()->db->driverName == 'dblib'
             || Yii::app()->db->driverName == 'mssql') {
@@ -187,7 +191,7 @@ abstract class Token extends Dynamic
         $db = \Yii::app()->db;
         $sTableName = $oSurvey->tokensTableName;
 
-        $db->createCommand()->createTable($sTableName, $fields);
+        $db->createCommand()->createTable($sTableName, $fields, $options);
 
         /**
          * @todo Check if this random component in the index name is needed.

@@ -60,6 +60,7 @@ class Box extends CActiveRecord
         );
     }
 
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
