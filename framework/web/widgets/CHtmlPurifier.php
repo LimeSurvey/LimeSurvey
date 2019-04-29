@@ -110,7 +110,7 @@ class CHtmlPurifier extends COutputProcessor
 	 * Get the HTML Purifier instance or create a new one if it doesn't exist.
 	 * @return HTMLPurifier
 	 */
-	public function getPurifier()
+	protected function getPurifier()
 	{
 		if($this->_purifier!==null)
 			return $this->_purifier;
