@@ -41,10 +41,14 @@ Vue.mixin({
         }
     }
 });
-const TextElementsStore = getAppState(LS.parameters.surveyid || 0);
+const CreateTextElementsEditor = function(){
+    const TextElementsStore = getAppState(LS.parameters.surveyid || 0);
+    return new Vue({
+        el: '#advancedTextEditor',
+        store: TextElementsStore,
+        components: {'lsnexttexteditor': TextElementsApp},
+    });
+};
 
-const newTextEditor = new Vue({
-    el: '#advancedTextEditor',
-    store: TextElementsStore,
-    components: {'lsnexttexteditor': TextElementsApp},
-});
+const newTextEditor = CreateTextElementsEditor();
+console.ls.log({newTextEditor});
