@@ -1315,12 +1315,12 @@ class dataentry extends Survey_Common_Action
         $surveyid = (int) ($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
         if(!$survey->getIsActive()) {
-            throw new CHttpException(404,gT("Invalid survey id"));
+            throw new CHttpException(404,gT("Invalid survey ID"));
         }
         $id = Yii::app()->request->getPost('id');
         $oReponse = Response::model($surveyid)->findByPk($id);
         if(empty($oReponse)) {
-            throw new CHttpException(404,gT("Invalid id"));
+            throw new CHttpException(404,gT("Invalid ID"));
         }
         //~ Yii::app()->loadHelper("database");
         $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);

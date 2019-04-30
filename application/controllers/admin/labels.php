@@ -385,14 +385,14 @@ class labels extends Survey_Common_Action
             throw new CHttpException(403, gT("You are not authorized to delete label sets.",'unescaped'));
         }
         $lid = Yii::app()->getRequest()->getParam('lid');
-        $oLabelsSet = LabelSet::model()->findByPk($lid);
+        $oLabelsSet = LabelSet::model()->findByPk($lid );
         if(empty($oLabelsSet)) {
             throw new CHttpException(404, gT("Invalid label set."));
         }
         if($oLabelsSet->delete()) {
             Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."),CHtml::encode($oLabelsSet->label_name)));
         } else {
-            Yii::app()->setFlashMessage(sprintf(gT("Unale to delet label set %s."),$lid));
+            Yii::app()->setFlashMessage(sprintf(gT("Unable to delete label set %s."),$lid));
         }
         $this->getController()->redirect(array("admin/labels/sa/view"));
     }
