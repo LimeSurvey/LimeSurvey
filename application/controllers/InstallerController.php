@@ -264,7 +264,7 @@ class InstallerController extends CController
                 if ($oModel->dbExists) {
                     try {
                         // We do the following check because DBLIB does not throw an exception on a missing table
-                        if ($this->connection->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
+                        if ($oModel->db->createCommand()->select()->from('{{users}}')->query()->rowCount == 0) {
                             $bTablesDoNotExist = true;
                         }
                     } catch (Exception $e) {
@@ -325,6 +325,7 @@ class InstallerController extends CController
                         );
                     } elseif ($bDBExistsButEmpty) {
                         Yii::app()->session['populatedatabase'] = true;
+                        $aValues['model'] = $oModel;
 
                         //$this->connection->database = $model->dbname;
                         //                        //$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
