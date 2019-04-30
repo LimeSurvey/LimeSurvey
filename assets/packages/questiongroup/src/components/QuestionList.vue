@@ -30,6 +30,9 @@ export default {
                 reverse(sorted);
             }
             return sorted;
+        },
+        createQuestionUrl(){
+            return window.QuestionGroupEditData.createQuestionUrl;
         }
     },
     methods: {
@@ -66,7 +69,17 @@ export default {
 <div class="col-xs-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-        {{'Question list'|translate}}
+            <div class="ls-flex-row">
+                <div class="ls-flex-item text-left">
+                    {{'Question list'|translate}}
+                </div>
+                <div class="ls-flex-item text-right">
+                    <a :href="createQuestionUrl" class="btn btn-sm btn-default pull-right clear pjax" >
+                        <i class="fa fa-plus"></i>
+                        {{'Create question'|translate}}
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="panel-body">
             <table class="table table-striped">
