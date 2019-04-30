@@ -5,14 +5,16 @@ import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
 
-import PreviewFrame from './subcomponents/_previewFrame.vue';
-import runAjax from '../mixins/runAjax.js';
-import eventChild from '../mixins/eventChild.js';
+import Aceeditor from '../helperComponents/AceEditor';
+
+import PreviewFrame from './subcomponents/_previewFrame';
+import runAjax from '../mixins/runAjax';
+import eventChild from '../mixins/eventChild';
 
 export default {
     name: 'MainEditor',
     mixins: [runAjax, eventChild],
-    components: {PreviewFrame},
+    components: {PreviewFrame, Aceeditor},
     data() {
         return {
             editorQuestion: ClassicEditor,
@@ -22,6 +24,8 @@ export default {
             editorHelpData: '',
             editorHelpConfig: {},
             previewContent: ' ',
+            questionEditSource: false,
+            helpEditSource: false,
             previewLoading: false,
             previewActive: true,
             debug: false,
@@ -135,7 +139,13 @@ export default {
         setPreviewReady() {
             this.previewLoading = false;
             this.firstStart = false;
-        }
+        },
+        toggleSourceEditQuestion(){
+            this.questionEditSource = !this.questionEditSource
+        },
+        toggleSourceEditHelp(){
+            this.helpEditSource = !this.helpEditSource
+        },
     },
     mounted(){
         this.previewLoading = true;
@@ -147,19 +157,37 @@ export default {
 <template>
     <div class="col-sm-8 col-xs-12">
         <div class="panel panel-default question-option-general-container">
-            <div class="panel-heading"> {{"Text elements" | translate }}</div>
+            <div class="panel-heading">
+                {{"Text elements" | translate }}
+            </div>
             <div class="panel-body">
                 <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
-                    <label class="col-sm-12">{{ 'Question' | translate }}:</label>
-                    <ckeditor :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></ckeditor>
+                    <div class="ls-flex-row">
+                        <div class="ls-flex-item grow-2 text-left">
+                            <label class="col-sm-12">{{ 'Question' | translate }}:</label>
+                        </div>
+                        <div class="ls-flex-item text-right">
+                            <button class="btn btn-default" @click="toggleSourceEditQuestion">{{'Toggle source mode'|translate}}</button>
+                        </div>
+                    </div>
+                    <ckeditor v-if="!questionEditSource" :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></ckeditor>
+                    <aceeditor v-else :showLangSelector="false" :thisId="'questionEditSource'" v-model="currentQuestionQuestion"> </aceeditor>
                 </div>
                 <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
-                    <label class="col-sm-12">{{ 'Help' | translate }}:</label>
-                    <ckeditor :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></ckeditor>
+                    <div class="ls-flex-row">
+                        <div class="ls-flex-item grow-2 text-left">
+                            <label class="col-sm-12">{{ 'Help' | translate }}:</label>
+                        </div>
+                        <div class="ls-flex-item text-right">
+                            <button class="btn btn-default" @click="toggleSourceEditHelp">{{'Toggle source mode'|translate}}</button>
+                        </div>
+                    </div>
+                    <ckeditor v-if="!helpEditSource" :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></ckeditor>
+                    <aceeditor v-else :showLangSelector="false" :thisId="'helpEditSource'" v-model="currentQuestionHelp"> </aceeditor>
                 </div>
                 <div class="col-12 ls-space margin all-5 scope-contains-ckeditor " v-if="!!$store.state.currentQuestionPermissions.script">
                     <label class="col-sm-12">{{ 'Script' | translate }}:</label>
-                    <textarea rows="2" class="form-control" v-model="currentQuestionScript"></textarea>
+                    <aceeditor :thisId="'helpEditScript'" :showLangSelector="true" v-model="currentQuestionScript" base-lang="javascript" > </aceeditor>
                     <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
                 </div>
             </div>
