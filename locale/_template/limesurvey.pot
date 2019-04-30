@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-04-30 07:55:59+00:00\n"
+"POT-Creation-Date: 2019-04-30 08:09:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2531,12 +2531,16 @@ msgid "Save"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1318
-#: application/core/Survey_Common_Action.php:178
-msgid "Invalid survey id"
+#: application/controllers/admin/questions.php:60
+#: application/controllers/admin/responses.php:67
+#: application/controllers/admin/surveyadmin.php:1337
+#: application/core/Survey_Common_Action.php:595
+#: application/core/Survey_Common_Action.php:871
+msgid "Invalid survey ID"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1323
-msgid "Invalid id"
+msgid "Invalid ID"
 msgstr ""
 
 #: application/controllers/admin/dataentry.php:1365
@@ -2995,7 +2999,7 @@ msgid "Label set “%s” was successfully deleted."
 msgstr ""
 
 #: application/controllers/admin/labels.php:395
-msgid "Unale to delet label set %s."
+msgid "Unable to delete label set %s."
 msgstr ""
 
 #: application/controllers/admin/labels.php:411
@@ -3574,14 +3578,6 @@ msgstr ""
 
 #: application/controllers/admin/questiongroups.php:555
 msgid "Question group successfully saved."
-msgstr ""
-
-#: application/controllers/admin/questions.php:60
-#: application/controllers/admin/responses.php:67
-#: application/controllers/admin/surveyadmin.php:1337
-#: application/core/Survey_Common_Action.php:595
-#: application/core/Survey_Common_Action.php:871
-msgid "Invalid survey ID"
 msgstr ""
 
 #: application/controllers/admin/questions.php:197
@@ -6656,6 +6652,10 @@ msgstr ""
 msgid "Group not found"
 msgstr ""
 
+#: application/core/Survey_Common_Action.php:178
+msgid "Invalid survey id"
+msgstr ""
+
 #: application/core/Survey_Common_Action.php:182
 msgid "Survey not found"
 msgstr ""
@@ -9415,7 +9415,7 @@ msgid "There are empty question groups in this survey - please create at least o
 msgstr ""
 
 #: application/helpers/frontend_helper.php:2193
-msgid "This website uses cookies. By continuing this survey you approve the data protection policy of the service provider."
+msgid "By continuing this survey you approve the data protection policy of the service provider."
 msgstr ""
 
 #: application/helpers/frontend_helper.php:2195
@@ -13846,7 +13846,7 @@ msgid "valid"
 msgstr ""
 
 #: application/views/admin/export/generatestats/_statisticsoutput_arithmetic.php:9
-msgid "Descriptive Statistics"
+msgid "Descriptive statistics"
 msgstr ""
 
 #: application/views/admin/export/generatestats/_statisticsoutput_graphs.php:32
