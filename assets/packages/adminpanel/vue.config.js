@@ -24,5 +24,7 @@ module.exports = {
             .delete("html")
             .delete("prefetch")
             .delete("preload");
+        
+        config.optimization.delete('splitChunks');
     }
 };
