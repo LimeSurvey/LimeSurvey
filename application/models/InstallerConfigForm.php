@@ -172,7 +172,7 @@ class InstallerConfigForm extends CFormModel
             'dbuser' => gT('Database user'),
             'dbpwd' => gT('Database password'),
             'dbprefix' => gT('Table prefix'),
-            'dbengine' => gT('MySQL databse engine type'),
+            'dbengine' => gT('MySQL database engine type'),
         );
     }
 
