@@ -1605,7 +1605,6 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _tabPanelIntegration($survey)
     {
-        App()->getClientScript()->registerPackage('jquery-datatable');
         $aData = [];
         $oResult = Question::model()->findAll("sid={$survey->sid} AND (type = 'T'  OR type = 'Q'  OR  type = 'T' OR type = 'S')");
         $aQuestions = [];
@@ -1751,7 +1750,6 @@ class SurveyAdmin extends Survey_Common_Action
     {
         App()->getClientScript()->registerPackage('jquery-json');
         App()->getClientScript()->registerPackage('bootstrap-switch');
-        App()->getClientScript()->registerPackage('jquery-datatable');
 
     }
 
