@@ -946,4 +946,13 @@ class LsDefaultDataSets
             ]
         ];
     }
+
+    public static function getDefaultUserSettings()
+    {
+        return [
+            ['stg_name' => 'editorPreset', 'stg_value' => 'wysiwyg'],
+            ['stg_name' => 'showScriptEditor', 'stg_value' => '0'],
+            ['stg_name' => 'noViewMode', 'stg_value' => '0'],                                    
+        ];
+    }
 }

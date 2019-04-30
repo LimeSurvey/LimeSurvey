@@ -89,7 +89,7 @@ class User extends LSActiveRecord
             array('lang', 'default', 'value'=>Yii::app()->getConfig('defaultlang')),
             array('lang', 'LSYii_Validators', 'isLanguage'=>true),
             array('htmleditormode', 'default', 'value'=>'default'),
-            array('htmleditormode', 'in', 'range'=>array('default', 'inline', 'popup', 'none'), 'allowEmpty'=>true),
+            array('htmleditormode', 'in', 'range'=>array('default', 'wysiwyg', 'source'), 'allowEmpty'=>true),
             array('questionselectormode', 'default', 'value'=>'default'),
             array('questionselectormode', 'in', 'range'=>array('default', 'full', 'none'), 'allowEmpty'=>true),
             array('templateeditormode', 'default', 'value'=>'default'),

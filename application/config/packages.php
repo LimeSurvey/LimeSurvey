@@ -240,7 +240,8 @@ return array(
             'build.min/css/main.css'
         ),
         'depends' => array(
-            'adminbasics'
+            'adminbasics',
+            'ace'
         )
     ),
     'lstutorial' => array(

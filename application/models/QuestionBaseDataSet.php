@@ -57,7 +57,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             'other' => $this->getOtherSwitch(),
             'mandatory' => $this->getMandatorySwitch(),
             'relevance' => $this->getRelevanceEquationInput(),
-            'preg' => $this->getValidationInput(),
+            'preg' => $this->getValidationInput()
         ];
     }
 

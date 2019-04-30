@@ -126,13 +126,16 @@ class UserAction extends Survey_Common_Action
             if ($event->get('errorCode') != AuthPluginBase::ERROR_NONE) {
                 $aViewUrls['message'] = array('title' => $event->get('errorMessageTitle'), 'message' => $event->get('errorMessageBody'), 'class'=> 'text-warning');
             } else {
+
                 $iNewUID = $event->get('newUserID');
                 $new_pass = $event->get('newPassword');
                 $new_email = $event->get('newEmail');
                 $new_full_name = $event->get('newFullName');
                 // add default template to template rights for user
                 Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity'=>'template', 'read_p' => 1, 'entity_id'=>0));
-
+                // add default usersettings to the user
+                SettingsUser::applyBaseSettings($iNewUID);
+                
                 // add new user to userlist
                 //$sresult = User::model()->findAllByAttributes(array('uid' => $iNewUID));
 
@@ -670,6 +673,8 @@ class UserAction extends Survey_Common_Action
                 Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
                 
                 SettingsUser::setUserSetting('preselectquestiontype', Yii::app()->request->getPost('preselectquestiontype'));
+                SettingsUser::setUserSetting('showScriptEdit', Yii::app()->request->getPost('showScriptEdit'));
+                SettingsUser::setUserSetting('noViewMode', Yii::app()->request->getPost('noViewMode'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -707,7 +712,14 @@ class UserAction extends Survey_Common_Action
         $oSurveymenu->user_id = $oUser->uid;
         $oSurveymenuEntries = SurveymenuEntries::model();
         $oSurveymenuEntries->user_id = $oUser->uid;
-        $aData['oUserSettings'] = SettingsUser::model()->findAllByAttributes(['uid' => $oUser->uid]);
+        $aRawUserSettings = SettingsUser::model()->findAllByAttributes(['uid' => $oUser->uid]);
+
+        $aUserSettings = [];
+        array_walk($aRawUserSettings, function($oUserSetting) use(&$aUserSettings) {
+            $aUserSettings[$oUserSetting->stg_name] = $oUserSetting->stg_value;
+        });
+        
+        $aData['aUserSettings'] = $aUserSettings;
         $aData['surveymenu_data']['model'] = $oSurveymenu;
         $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
         // Render personal settings view

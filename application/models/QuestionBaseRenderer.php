@@ -332,7 +332,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
     
         // Currently null/0/false=> hidden , 1 : disabled
-        $filterStyle = !empty($this->aQuestionAttribute('array_filter_style'));
+        $filterStyle = !empty($this->aQuestionAttributes['array_filter_style']);
         return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
     }
     /**

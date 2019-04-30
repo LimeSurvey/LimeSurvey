@@ -34,6 +34,7 @@ class questionedit extends Survey_Common_Action
         $oQuestion = $this->_getQuestionObject($qid);
         $oTemplateConfiguration = TemplateConfiguration::getInstance($oSurvey->template, null, $iSurveyID);
         Yii::app()->getClientScript()->registerPackage('questioneditor');
+        Yii::app()->getClientScript()->registerPackage('ace');
         $qrrow = $oQuestion->attributes;
         $baselang = $oSurvey->language;
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($oQuestion->qid, $qrrow['type'], $iSurveyID, $baselang);
@@ -107,6 +108,7 @@ class questionedit extends Survey_Common_Action
             'gid' => $gid,
             'qid' => $oQuestion->qid,
             'startType' => $oQuestion->type,
+            'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
             'connectorBaseUrl' => $this->getController()->createUrl('admin/questioneditor/sid/'.$iSurveyID.'/gid/'.$gid.'/sa'),
             'i10N' => [
                 'Create new Question' => gT('Create new Question'),
@@ -246,7 +248,8 @@ class questionedit extends Survey_Common_Action
         $aPermissions = [
             "read" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'read'),
             "update" => Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
-            "script" => SettingsUser::getUserSetting('showScriptEdit', App()->user->id) && Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update')
+            "editorpreset" => Yii::app()->session['htmleditormode'],
+            "script" => SettingsUser::getUserSetting('showScriptEdit', App()->user->id) && Permission::model()->hasSurveyPermission($oQuestion->sid, 'survey', 'update'),
         ];
 
         $this->renderJSON($aPermissions);

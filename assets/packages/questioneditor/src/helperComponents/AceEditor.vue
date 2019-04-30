@@ -3,14 +3,13 @@ export default {
     name: 'AceEditor',
     props: {
         value: {
-            type: String,
             required: true
         },
         thisId: {
             type: String,
             default: ()=>`vue-ace-editor-${Math.round(Math.random()*100000)}`
         },
-        options: {type: Object, default: ()=>{return{}}},
+        options: {type: Object, default: ()=>null},
         showLangSelector: {type: Boolean, default: true},
         showThemeToggle: {type: Boolean, default: true},
         baseLang: {type: String, default: 'html'}
@@ -34,17 +33,8 @@ export default {
         }
     },
     watch: {
-        value: function(val) {
-            if (this.contentBackup !== val) {
-                this.editor.session.setValue(val, 1);
-                this.contentBackup = val;
-            }
-        },
         lang: function(newLang) {
             this.editor.getSession().setMode("ace/mode/" + newLang);
-        },
-        options: function(newOption) {
-            this.editor.setOptions(newOption);
         },
     },
     beforeDestroy: function() {
@@ -74,6 +64,11 @@ export default {
         if (this.options) {
             this.editor.setOptions(this.options);
         }
+        $('#'+this.thisId).on('contextmenu', (e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        })
     }
 };
 </script>
@@ -81,12 +76,16 @@ export default {
 <template>
     <div class="aceEditor--main">
         <div class="aceEditor--topbar">
-            <button @click="toggleDarkMode" class="btn btn-xs btn-default aceEditor--darkmodeswitch"> {{'Toggle dark mode'|translate}}</button>
-            <select class="aceEditor--langselect" v-model="lang">
-                <option value="html">HTML</option>
-                <option value="javascript">JavaScript</option>
-                <option value="css">CSS</option>
-            </select>
+            <div class="aceEditor--subcontainer">
+                <button @click="toggleDarkMode" class="btn btn-xs btn-default"> {{'Toggle dark mode'|translate}}</button>
+            </div>
+            <div class="aceEditor--subcontainer">
+                <select class="aceEditor--langselect" v-model="lang">
+                    <option value="html">HTML</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="css">CSS</option>
+                </select>
+        </div>
         </div>
         <div class="aceEditor--editor" :id="thisId"></div>
     </div>
@@ -96,16 +95,25 @@ export default {
     .aceEditor--main {
         .aceEditor--topbar{
             height: 3rem;
-            padding: 0;
+            padding: 0.2rem;
             background-color: rgb(196, 196, 196);
             display: flex;
             flex-wrap: nowrap;
             align-items: space-around;
             align-content: space-around;
+            .aceEditor--subcontainer {
+                flex: 1;
+                &:first-child {
+                    text-align: left;
+                }
+                &:last-child {
+                    text-align: right;
+                }
+            }
             .aceEditor--darkmodeswitch {
                 border-radius: 0;
                 align-self: flex-start;
-                padding: 0.2rem;
+                padding: 0.4rem;
                 height: 2.2rem;
                 margin: 0.2rem;
             }
@@ -113,7 +121,6 @@ export default {
             .aceEditor--langselect {
                 border-radius: 0;
                 align-self: flex-end;
-                padding: 0.2rem;
                 height: 2.2rem;
                 margin: 0.2rem;
             }

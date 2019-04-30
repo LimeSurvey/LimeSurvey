@@ -128,9 +128,13 @@ export default {
         },
     },
     created(){
+        if(window.QuestionEditData.startInEditView) {
+            this.editQuestion = true;
+        }
+
         Promise.all([
-        this.$store.dispatch('loadQuestion'),
-        this.$store.dispatch('getQuestionTypes')
+            this.$store.dispatch('loadQuestion'),
+            this.$store.dispatch('getQuestionTypes')
         ]).then(()=>{
             this.loading = false;
         })

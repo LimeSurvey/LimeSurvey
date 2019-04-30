@@ -9038,7 +9038,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 break;
                         }
                         // Add the string in $_SESSION to be shown and see if we need to reset value
-                        if(!self::checkValidityAnswer($type,$value,$sq,$qinfo['qinfo']))
+                        if(!self::checkValidityAnswer($type,$value,$sq,$qinfo['info']))
                         {
                             $value=null;
                         }
