@@ -1231,6 +1231,7 @@ function importSurveyFile($sFullFilePath, $bTranslateLinksFields, $sNewSurveyNam
                     //Import the LSS file
                     $aResponseImportResults = XMLImportResponses(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'], $aImportResults['newsid'], $aImportResults['FieldReMap']);
                     $aImportResults = array_merge($aResponseImportResults, $aImportResults);
+                    $aImportResults['importwarnings'] = array_merge($aImportResults['importwarnings'], $aImportResults['warnings']);
                     unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                     break;
                 }
@@ -2407,58 +2408,64 @@ function XMLImportResponses($sFullFilePath, $iSurveyID, $aFieldReMap = array())
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
     libxml_disable_entity_loader(true);
-    $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
-    while ($oXMLReader->read()) {
-        if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
-            $oXMLReader->read();
-            if ($oXMLReader->value != 'Responses') {
-                $results['error'] = gT("This is not a valid response data XML file.");
-                return $results;
+    if (Yii::app()->db->schema->getTable($survey->responsesTableName) !== null){
+        $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
+        while ($oXMLReader->read()) {
+            if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
+                $oXMLReader->read();
+                if ($oXMLReader->value != 'Responses') {
+                    $results['error'] = gT("This is not a valid response data XML file.");
+                    return $results;
+                }
             }
-        }
-        if ($oXMLReader->name === 'rows' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
-            while ($oXMLReader->read()) {
-                if ($oXMLReader->name === 'row' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
-                    $aInsertData = array();
-                    while ($oXMLReader->read() && $oXMLReader->name != 'row') {
-                        $sFieldname = $oXMLReader->name;
-                        if ($sFieldname[0] == '_') {
-                            $sFieldname = substr($sFieldname, 1);
-                        }
-                        $sFieldname = str_replace('-', '#', $sFieldname);
-                        if (isset($aFieldReMap[$sFieldname])) {
-                            $sFieldname = $aFieldReMap[$sFieldname];
-                        }
-                        if (!$oXMLReader->isEmptyElement) {
-                            $oXMLReader->read();
-                            if (in_array($sFieldname, $DestinationFields)) {
-                                // some old response tables contain invalid column names due to old bugs
-                                $aInsertData[$sFieldname] = $oXMLReader->value;
+            if ($oXMLReader->name === 'rows' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
+                while ($oXMLReader->read()) {
+                    if ($oXMLReader->name === 'row' && $oXMLReader->nodeType == XMLReader::ELEMENT) {
+                        $aInsertData = array();
+                        while ($oXMLReader->read() && $oXMLReader->name != 'row') {
+                            $sFieldname = $oXMLReader->name;
+                            if ($sFieldname[0] == '_') {
+                                $sFieldname = substr($sFieldname, 1);
                             }
-                            $oXMLReader->read();
-                        } else {
-                            if (in_array($sFieldname, $DestinationFields)) {
-                                $aInsertData[$sFieldname] = '';
+                            $sFieldname = str_replace('-', '#', $sFieldname);
+                            if (isset($aFieldReMap[$sFieldname])) {
+                                $sFieldname = $aFieldReMap[$sFieldname];
+                            }
+                            if (!$oXMLReader->isEmptyElement) {
+                                $oXMLReader->read();
+                                if (in_array($sFieldname, $DestinationFields)) {
+                                    // some old response tables contain invalid column names due to old bugs
+                                    $aInsertData[$sFieldname] = $oXMLReader->value;
+                                }
+                                $oXMLReader->read();
+                            } else {
+                                if (in_array($sFieldname, $DestinationFields)) {
+                                    $aInsertData[$sFieldname] = '';
+                                }
                             }
                         }
-                    }
 
-                    SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie(gT("Error").": Failed to insert data[16]<br />");
-                    $results['responses']++;
+                        SurveyDynamic::model($iSurveyID)->insertRecords($aInsertData) or safeDie(gT("Error").": Failed to insert data[16]<br />");
+                        $results['responses']++;
+                    }
                 }
             }
         }
-    }
-    $oXMLReader->close();
+        $oXMLReader->close();
 
-    switchMSSQLIdentityInsert('survey_'.$iSurveyID, false);
-    if (Yii::app()->db->getDriverName() == 'pgsql') {
-        try {
-            Yii::app()->db->createCommand("SELECT pg_catalog.setval(pg_get_serial_sequence('".$survey->responsesTableName."', 'id'), (SELECT MAX(id) FROM ".$survey->responsesTableName."))")->execute();
-        } catch (Exception $oException) {
-        };
+        switchMSSQLIdentityInsert('survey_'.$iSurveyID, false);
+        if (Yii::app()->db->getDriverName() == 'pgsql') {
+            try {
+                Yii::app()->db->createCommand("SELECT pg_catalog.setval(pg_get_serial_sequence('".$survey->responsesTableName."', 'id'), (SELECT MAX(id) FROM ".$survey->responsesTableName."))")->execute();
+            } catch (Exception $oException) {
+            };
+        }
+        $results['warnings'] = [];
+        return $results;
+    } else {
+        $results['warnings'][] = gT("The survey response table could not be created.") . '<br>' . gT("Usually this is caused by having too many (sub-)questions in your survey. Please try removing questions from your survey.");
+        return $results;
     }
-    return $results;
 }
 
 /**
