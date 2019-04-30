@@ -3,10 +3,11 @@
     "description": "Lime Survey",
     "scripts":
     {
-	"dokku":
-	{
-	    "predeploy": "mkdir -p /app/tmp/session"
-	}
+        "dokku": {
+            "predeploy": [
+                "mkdir -p /app/tmp/session",
+                "cp application/config/{config-dokku-pgsql.php,config.php}"
+            ]
+        }
     }
-	
 }
