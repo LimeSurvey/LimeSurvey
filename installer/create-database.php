@@ -5,8 +5,10 @@ function handleError($currentTable, $oError, &$oCurrentTransaction)
         $oCurrentTransaction->rollback();
         return;
     }
+    /* disabled so installer can skip showing errors if tables already exist
     $oCurrentTransaction->rollback();
     throw new CHttpException(500, "Table: {$currentTable}  \n".$oError->getMessage());
+    */
 }
 
 /**
@@ -1352,10 +1354,8 @@ function createDatabase($oDB)
 
         // Set database version
         $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
-
         $oTransaction->commit();
     } catch (Exception $e) {
-        $oTransaction->rollback();
-        throw new CHttpException(500, "Table: asset_version/plugins/settings_global \n".$e->getMessage());
+        handleError('asset_version', $e, $oTransaction);
     }
 }
