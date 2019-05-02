@@ -453,13 +453,17 @@ class tokens extends Survey_Common_Action
                             $token->$k = $v;
                         }
 
-                        $bUpdateSuccess = $token->update();
+                        $bUpdateSuccess = $token->encryptSave();
                         if ($bUpdateSuccess) {
                             $aResults[$iTokenId]['status']    = true;
                             $aResults[$iTokenId]['message']   = gT('Updated');
                         } else {
-                            $aResults[$iTokenId]['status']    = false;
-                            $aResults[$iTokenId]['message']   = $token->error;
+                            $aResults[$iTokenId]['status']    = false;                            
+                            $aResults[$iTokenId]['message']   = '';
+                            
+                            foreach ($token->getErrors() as $key => $error){
+                                $aResults[$iTokenId]['message']   .= $key . ': ' . $error[0];                                
+                            }
                         }
                     }
                 } else {
