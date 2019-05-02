@@ -146,10 +146,9 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     if($('.option-icon').length>1){
         $('.option-icon').on('click', function (ev, that) {
             var fullIconName = $(ev.currentTarget).attr('data-icon');
-            var iconName = fullIconName.substr(5)
 
             // Set icon preview and hidden input
-            $('input[name="Boxes[ico]"]').val(iconName);
+            $('input[name="Boxes[ico]"]').val(fullIconName);
             $('#chosen-icon').attr('class', fullIconName + ' text-success');
         });
 
