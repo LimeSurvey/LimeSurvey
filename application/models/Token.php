@@ -91,7 +91,7 @@ abstract class Token extends Dynamic
             'validuntil' => gT('Valid until'),
         );
         foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
-            $labels[$key] = $info['description'];
+            $labels[$key] = !empty($info['description']) ? $info['description'] : '';
         }
         return $labels;
     }
