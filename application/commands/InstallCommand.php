@@ -104,7 +104,6 @@ class InstallCommand extends CConsoleCommand
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>false))));
         $this->connection = App()->db;
 
-
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>true))));
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
@@ -120,6 +119,10 @@ class InstallCommand extends CConsoleCommand
         $dbEngine = getenv('DBENGINE');
 
         if (!empty($this->connection) && $this->connection->driverName == 'mysql') {
+            if (empty($dbEngine)) {
+                throw new CException('Environment variable DBENGINE is empty, should be either MyISAM or InnoDB');
+            }
+
             $this->connection
                 ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
                 ->execute();
