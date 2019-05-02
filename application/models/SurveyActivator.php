@@ -413,10 +413,6 @@ class SurveyActivator
      * @param string $dbEngine
      */
     private function setMySQLDefaultEngine($dbEngine) {
-        /* not mysql : out */
-        if ($db->driverName === InstallerConfigForm::DB_TYPE_MYSQL) {
-            return;
-        }
         /* empty dbEngine : out */
         if(empty($dbEngine)) {
             return;
@@ -424,6 +420,10 @@ class SurveyActivator
         $db = Yii::app()->db;
         /* not DB : out */
         if(empty($db)) {
+            return;
+        }
+        /* not mysql : out */
+        if ($db->driverName === InstallerConfigForm::DB_TYPE_MYSQL) {
             return;
         }
         /* seems OK, sysadmin allowed to broke system */
