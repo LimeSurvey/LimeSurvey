@@ -90,6 +90,8 @@ class Expressions extends Survey_Common_Action
                     $language = sanitize_languagecode($language);
         }
 
+        $aData['lang'] = $language;
+
         $aData['sid'] = $sid;
         $aData['title_bar']['title'] = gT("Survey logic file");
         $aData['subaction'] = gT("Survey logic file");
@@ -126,11 +128,6 @@ class Expressions extends Survey_Common_Action
             $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$sid.'/gid/'.$gid.'/qid/'.$qid;
             $aData['qid'] = $qid;
         }
-
-        App()->getClientScript()->registerPackage('decimal');
-        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
-        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', '/expressions/em_javascript.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'expressionlogicfile.css');
 
         SetSurveyLanguage($sid, $language);
 
@@ -170,12 +167,6 @@ class Expressions extends Survey_Common_Action
     {
 
         $aData['surveylist'] = getSurveyList();
-        
-        App()->getClientScript()->registerPackage('decimal');
-        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
-        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', '/expressions/em_javascript.js');
-
-        
         $this->_renderWrappedTemplate('expressions', 'test/survey_logic_form', $aData);        
     }
 

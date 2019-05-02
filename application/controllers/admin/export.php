@@ -352,7 +352,7 @@ class export extends Survey_Common_Action
 
         $filterstate = incompleteAnsFilterState();
         if (!Yii::app()->session['spssversion']) {
-// Default to 2 (16 and up)
+            // Default to 2 (16 and up)
             Yii::app()->session['spssversion'] = 2;
         }
         $spssver = Yii::app()->request->getParam('spssver', Yii::app()->session['spssversion']);
@@ -443,8 +443,10 @@ class export extends Survey_Common_Action
             if ($spssver == 2) {
                 echo "\xEF\xBB\xBF";
             }
-
-            $sNoAnswerValue = (isset($_POST['noanswervalue']) && $_POST['noanswervalue'] != '') ? '\''.$_POST['noanswervalue'].'\'' : '';
+            $sNoAnswerValue = Yii::app()->getRequest()->getPost('noanswervalue');
+            if(!empty($sNoAnswerValue)) {
+                $sNoAnswerValue = '\''.$sNoAnswerValue.'\'';
+            }
             SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue, '\'', false, $sLanguage);
 
             App()->end();
@@ -919,6 +921,7 @@ class export extends Survey_Common_Action
     public function downloadZip($sZip)
     {
         $sTempDir     = Yii::app()->getConfig("tempdir");
+        $sZip         = get_absolute_path($sZip);
         $aZIPFileName = $sTempDir.DIRECTORY_SEPARATOR.$sZip;
 
         if (is_file($aZIPFileName)) {

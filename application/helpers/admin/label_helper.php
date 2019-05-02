@@ -81,16 +81,15 @@ function updateset($lid)
 
 /**
 * Deletes a label set alog with its labels
-*
+* @deprecated use LabelSet::delete()
 * @param mixed $lid Label ID
 * @return boolean Returns always true
 */
 function deletelabelset($lid)
 {
-    $query = "DELETE FROM {{labels}} WHERE lid=$lid";
-    Yii::app()->db->createCommand($query)->execute();
-    $query = "DELETE FROM {{labelsets}} WHERE lid=$lid";
-    Yii::app()->db->createCommand($query)->execute();
+    Yii::app()->db->createCommand()->delete(Label::model()->tableName(), array('in', 'lid', $lid));
+    Yii::app()->db->createCommand()->delete(LabelSet::model()->tableName(), array('in', 'lid', $lid));
+    rmdirr(Yii::app()->getConfig('uploaddir').'/labels/'.$lid);
     return true;
 }
 

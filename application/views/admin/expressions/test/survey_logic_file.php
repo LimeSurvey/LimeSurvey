@@ -15,6 +15,7 @@
                 <input name="sid" type="hidden" value="<?=$sid?>" />
                 <?php if($gid!==NULL): ?> <input name="gid" type="hidden" value="<?=$gid?>" /> <?php endif; ?>
                 <?php if($qid!==NULL): ?> <input name="qid" type="hidden" value="<?=$qid?>" /> <?php endif; ?>
+                <?php if($lang!==NULL): ?> <input name="lang" type="hidden" value="<?=$lang?>" /> <?php endif; ?>
                 
                 <input name="printable" type="hidden" value="1" />
                 <div class="form-group">

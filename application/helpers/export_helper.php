@@ -2462,7 +2462,7 @@ function tsvSurveyExport($surveyid){
             $tsv_output['id'] = $gid;
             $tsv_output['class'] = 'G';
             $tsv_output['type/scale'] = $group['group_order'];
-            $tsv_output['name'] = $group['group_name'];
+            $tsv_output['name'] = !empty($group['group_name']) ? $group['group_name'] : '';
             $tsv_output['text'] = !empty($group['description']) ? str_replace(array("\n", "\r"), '', $group['description']) : '';
             $tsv_output['relevance'] = !empty($group['grelevance']) ? $group['grelevance'] : '';
             $tsv_output['random_group'] = !empty($group['randomization_group']) ? $group['randomization_group'] : '';
@@ -2477,7 +2477,7 @@ function tsvSurveyExport($surveyid){
                     $tsv_output['id'] = $question['qid'];
                     $tsv_output['class'] = 'Q';
                     $tsv_output['type/scale'] = $question['type'];
-                    $tsv_output['name'] = $question['title'];
+                    $tsv_output['name'] = !empty($question['title']) ? $question['title'] : '';
                     $tsv_output['relevance'] = !empty($question['relevance']) ? $question['relevance'] : '';
                     $tsv_output['text'] = !empty($question['question']) ? str_replace(array("\n", "\r"), '', $question['question']) : '';
                     $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
@@ -2531,6 +2531,7 @@ function tsvSurveyExport($surveyid){
                         }
                     }
                     
+                    //subquestions
                     if (!empty($subquestions[$language][$qid])){
                         $subquestions[$language][$qid] = sortArrayByColumn($subquestions[$language][$qid], 'question_order');
                         foreach ($subquestions[$language][$qid] as $key => $subquestion) {
@@ -2553,6 +2554,7 @@ function tsvSurveyExport($surveyid){
                         }
                     }
 
+                    // answers
                     if (!empty($answers[$language][$qid])){
                         $answers[$language][$qid] = sortArrayByColumn($answers[$language][$qid], 'sortorder');
                         foreach ($answers[$language][$qid] as $key => $answer) {

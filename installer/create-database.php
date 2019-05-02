@@ -396,7 +396,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{sessions}}', array(
             'id' => "string(32) NOT NULL",
             'expire' => "integer NULL",
-            'data' => "binary",
+            'data' => "longbinary",
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{sessions_pk}}', '{{sessions}}', 'id');
@@ -586,7 +586,7 @@ function createDatabase($oDB){
             'template' => "string(128) DEFAULT 'default'",
             'description' => "text ",
             'sortorder' => "integer NOT NULL",
-            'owner_uid' => "integer NULL",
+            'owner_id' => "integer NULL",
             'parent_id' => "integer NULL",
             'created' => "datetime NULL",
             'modified' => "datetime NULL",

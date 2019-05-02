@@ -30,12 +30,6 @@ class index extends CAction
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
 
-        // only attempt to change session lifetime if using a DB backend
-        // with file based sessions, it's up to the admin to configure maxlifetime
-        if (isset(Yii::app()->session->connectionID)) {
-            @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('iSessionExpirationTime'));
-        }
-
         $this->_loadRequiredHelpersAndLibraries();
         $param       = $this->_getParameters(func_get_args(), $_POST);
         $surveyid    = $param['sid'];
@@ -92,14 +86,14 @@ class index extends CAction
 
             if (!$this->_canUserPreviewSurvey($surveyid)) {
 
-                // @todo : throw a 401
                 $aErrors  = array(gT('Error'));
-                $message = gT("We are sorry but you don't have permissions to do this.");
+                $message = gT("We are sorry but you don't have permissions to do this.",'unescaped');
                 if(Permission::getUserId()) {
                     throw new CHttpException(403, $message);
                 }
                 throw new CHttpException(401, $message);
             } else {
+                killSurveySession($surveyid);
                 if ((intval($param['qid']) && $param['action'] == 'previewquestion')) {
                     $previewmode = 'question';
                 }
@@ -235,7 +229,7 @@ class index extends CAction
                 if(Permission::getUserId()) {
                     throw new CHttpException(403, gT("We are sorry but you don't have permissions to do this."));
                 }
-                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this."));
+                throw new CHttpException(401, gT("We are sorry but you don't have permissions to do this.",'unescaped'));
             }
         }
 

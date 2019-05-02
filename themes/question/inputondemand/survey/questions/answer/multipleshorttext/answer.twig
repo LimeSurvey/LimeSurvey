@@ -1,0 +1,35 @@
+{#
+/**
+ * Multiple Short Text question Html
+ *
+ * @var $sRows      : the rows, generated with the views rows/answer_row*.php
+ *
+ */
+#}
+<!-- Multiple Short Text -->
+
+<!-- answer -->
+<div class="container-center" id="selector--inputondemand-{{ basename }}">
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="{{ coreClass }} list-unstyled form-horizontal selector--inputondemand-list" role="group" aria-labelledby="ls-question-text-{{ basename }}">
+                {{ sRows }}
+            </ul>
+        </div>
+        <div class="col-xs-12 text-right">
+            <button class="btn btn-default selector--inputondemand-addlinebutton">
+                <i class="fa fa-{{question_template_attribute.addlineicon}}"></i>
+                &nbsp;{{gT("Add line")}}
+            </button>
+        </div>
+    </div>
+</div>
+<!-- end of answer -->
+
+{{ registerScript( "InputOnDemandScript" ~ basename, "
+    var inputOnDemanControl" ~ basename ~ " = new InputOnDemanControlGenerator('#selector--inputondemand-" ~ basename ~ "', {
+        autoadd: '" ~ question_template_attribute.autoaddnewline ~ "'
+    });
+        inputOnDemanControl" ~ basename ~ ".bind();
+    ", "POS_POSTSCRIPT")
+}}

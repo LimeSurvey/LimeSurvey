@@ -131,12 +131,14 @@ class RegisterController extends LSYii_Controller
         if (empty($this->aRegisterErrors) && $iTokenId && $this->sMessage === null) {
             $directLogin = $event->get('directLogin', false);
             if ($directLogin == true) {
+                if($event->get('sendRegistrationEmail', false)) {
+                    self::sendRegistrationEmail($iSurveyId, $iTokenId);
+                }
                 $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
                 $redirectUrl = Yii::app()->getController()->createUrl('/survey/', array('sid' => $iSurveyId,'token' => $oToken->token, 'lang'=>$sLanguage));
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
             }
-            
             self::sendRegistrationEmail($iSurveyId, $iTokenId);
             self::display($iSurveyId, $iTokenId, 'register_success');
             Yii::app()->end();
@@ -337,10 +339,11 @@ class RegisterController extends LSYii_Controller
             if (!empty($aAttachments)) {
                 if (isset($aAttachments['registration'])) {
                     LimeExpressionManager::singleton()->loadTokenInformation($aSurveyInfo['sid'], $sToken);
-
                     foreach ($aAttachments['registration'] as $aAttachment) {
-                        if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
-                            $aRelevantAttachments[] = $aAttachment['url'];
+                        if(Yii::app()->is_file($aAttachment['url'],Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR."surveys".DIRECTORY_SEPARATOR.$iSurveyId,false)) {
+                            if (LimeExpressionManager::singleton()->ProcessRelevance($aAttachment['relevance'])) {
+                                $aRelevantAttachments[] = $aAttachment['url'];
+                            }
                         }
                     }
                 }

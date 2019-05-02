@@ -6,7 +6,7 @@
  * @var $stddev
  */
 ?>
-
+<tr><td colspan="4"><?php eT("Descriptive statistics"); ?></td></tr>
 <tr>
     <td align='center'>
         <?php eT("Arithmetic mean"); ?>

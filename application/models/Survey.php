@@ -1174,7 +1174,9 @@ class Survey extends LSActiveRecord
     public function getPartialAnswers()
     {
         $table = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if (!Yii::app()->db->schema->getTable($table)) {
             return null;
         } else {
@@ -1398,7 +1400,9 @@ class Survey extends LSActiveRecord
     public function getFullAnswers()
     {
         $table = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if (!Yii::app()->db->schema->getTable($table)) {
             return null;
         } else {
@@ -1418,7 +1422,9 @@ class Survey extends LSActiveRecord
     public function getCountFullAnswers()
     {
         $sResponseTable = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if ($this->active != 'Y') {
             return 0;
         } else {
@@ -1437,7 +1443,9 @@ class Survey extends LSActiveRecord
     public function getCountPartialAnswers()
     {
         $table = $this->responsesTableName;
-        Yii::app()->cache->flush();
+        if (method_exists(Yii::app()->cache, 'flush')) {
+            Yii::app()->cache->flush();
+        }
         if ($this->active != 'Y') {
             return 0;
         } else {

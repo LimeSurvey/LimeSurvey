@@ -2637,12 +2637,11 @@ function do_multiplenumeric($ia)
 
         /* Put the slider init to initial state (when no click is set or when 'reset') */
         if ($slider_default !== '') {
-        /* can be 0 */
+            /* can be 0 */
             $slider_position = $slider_default;
         } elseif ($aQuestionAttributes['slider_middlestart'] == 1) {
             $slider_position = intval(($slider_max + $slider_min) / 2);
         }
-
         $slider_separator = (trim($aQuestionAttributes['slider_separator']) != '') ? $aQuestionAttributes['slider_separator'] : "";
         $slider_reset = ($aQuestionAttributes['slider_reset']) ? 1 : 0;
 
@@ -2819,7 +2818,7 @@ function do_multiplenumeric($ia)
                     'slider_mintext'         => $slider_mintext,
                     'slider_max'             => $slider_max,
                     'slider_maxtext'         => $slider_maxtext,
-                    'slider_position'        => intval($slider_position),
+                    'slider_position'        => $slider_position,
                     'slider_reset_set'       => $slider_default_set,
                     'slider_handle'          => (isset($slider_handle)) ? $slider_handle : '',
                     'slider_reset'           => $slider_reset,
@@ -3119,14 +3118,15 @@ function do_shortfreetext($ia)
 
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js", LSYii_ClientScript::POS_END);
         if ($aQuestionAttributes['location_mapservice'] == 1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
-                    Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
+            Yii::app()->getClientScript()->registerScriptFile("https://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
         } else if ($aQuestionAttributes['location_mapservice'] == 1) {
-                    Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
+            Yii::app()->getClientScript()->registerScriptFile("http://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey", LSYii_ClientScript::POS_BEGIN);
         } elseif ($aQuestionAttributes['location_mapservice'] == 2) {
-                            Yii::app()->getClientScript()->registerScriptFile("http://www.openlayers.org/api/OpenLayers.js", LSYii_ClientScript::POS_BEGIN);
-            }
+            /* 2019-04-01 : openlayers auto redirect to https (on firefox) , but always good to use automatic protocol */
+            Yii::app()->getClientScript()->registerScriptFile("//www.openlayers.org/api/OpenLayers.js", LSYii_ClientScript::POS_BEGIN);
+        }
 
-            $questionHelp = false;
+        $questionHelp = false;
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip'] == 0) {
             $questionHelp = true;
             $sQuestionHelpText = gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.');

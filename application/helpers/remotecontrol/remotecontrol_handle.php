@@ -48,14 +48,12 @@ class remotecontrol_handle
         if ($loginResult === true) {
             $this->_jumpStartSession($username);
             $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
-            $sDatabasetype = Yii::app()->db->getDriverName();
             $session = new Session;
             $session->id = $sSessionKey;
-            $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
+            $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime',ini_get('session.gc_maxlifetime'));
             $session->data = $username;
             $session->save();
             return $sSessionKey;
-
         }
         if (is_string($loginResult)) {
             return array('status' => $loginResult);
@@ -2587,7 +2585,7 @@ class remotecontrol_handle
             $result_id = $survey_dynamic->insertRecords($aResponseData);
 
             if ($result_id) {
-                $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $aResponseData['token'], 'id' => $result_id));
+                $oResponse = Response::model($iSurveyID)->findByAttributes(array('id' => $result_id));
                 foreach ($oResponse->getFiles() as $aFile) {
                     $sUploadPath = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/";
                     $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
@@ -3001,6 +2999,7 @@ class remotecontrol_handle
         $identity = new LSUserIdentity($sUsername, $sPassword);
         $identity->setPlugin($sPlugin);
         $event = new PluginEvent('remoteControlLogin');
+        $event->set('identity', $identity);
         $event->set('plugin', $sPlugin);
         $event->set('username', $sUsername);
         $event->set('password', $sPassword);

@@ -234,4 +234,32 @@ class Boxes extends CActiveRecord
         $model = parent::model($className);
         return $model;
     }
+
+    /**
+     * Method to restore the default surveymenu entries
+     * This method will fail if the surveymenus have been tempered, or wrongly set
+     *
+     * @return boolean
+     */
+    public function restoreDefaults()
+    {
+        $oDB = Yii::app()->db;
+        $sOldLanguage = App()->language;
+        switchMSSQLIdentityInsert('boxes', true);
+        $oTransaction = $oDB->beginTransaction();
+        try {
+            $oDB->createCommand()->truncateTable('{{boxes}}');
+
+            $defaultBoxes = LsDefaultDataSets::getBoxesData();
+            foreach ($defaultBoxes as $Boxes) {
+                $oDB->createCommand()->insert("{{boxes}}", $Boxes);
+            }
+            $oTransaction->commit();
+        } catch (Exception $e) {
+            App()->setLanguage($sOldLanguage);
+            return false;
+        }
+        switchMSSQLIdentityInsert('boxes', false);
+        return true;
+    }
 }

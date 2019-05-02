@@ -288,7 +288,7 @@ class themeoptions  extends Survey_Common_Action
         $this->getController()->redirect(array("admin/themeoptions"));
     }
 
-    public function reset()
+    public function reset($gsid)
     {
         $templatename = Yii::app()->request->getPost('templatename');
         if (Permission::model()->hasGlobalPermission('templates', 'update')) {
@@ -298,6 +298,7 @@ class themeoptions  extends Survey_Common_Action
             $this->getController()->redirect(array("admin/themeoptions"));
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/", ['id'=>$gsid]));            
         }
     }
 
@@ -349,6 +350,7 @@ class themeoptions  extends Survey_Common_Action
         );
 
         if ($sid !== null) {
+            $aData['surveybar']['buttons']['view'] = true;
             $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $sid;
             $aData['title_bar']['title'] = gT("Survey template options");

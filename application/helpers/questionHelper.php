@@ -883,7 +883,7 @@ class questionHelper
         self::$attributes["slider_layout"] = array(
         "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>1,
+            'sortorder'=>100,
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
@@ -894,7 +894,7 @@ class questionHelper
         self::$attributes["slider_min"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>10,
+            'sortorder'=>110,
             'inputtype'=>'text',
             'expression'=>2,
             "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 0. If minimum value is not set, this value is used.'),
@@ -904,7 +904,7 @@ class questionHelper
         self::$attributes["slider_max"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>11,
+            'sortorder'=>120,
             'inputtype'=>'text',
             'expression'=>2,
             "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 100. If maximum value is not set, this value is used.'),
@@ -914,27 +914,17 @@ class questionHelper
         self::$attributes["slider_accuracy"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>30,
+            'sortorder'=>130,
             'inputtype'=>'text',
             'expression'=>2,
             "help"=>gT('You can use Expression manager, but this must be a number before showing the page else set to 1.'),
             "caption"=>gT('Slider accuracy')
         );
 
-        self::$attributes["slider_default"] = array(
-            "types"=>"K",
-            'category'=>gT('Slider'),
-            'sortorder'=>50,
-            'inputtype'=>'text',
-            'expression'=>2, // must be controlled : unsure
-            "help"=>gT('Slider start as this value. You can use Expression manager, but this must be a number before showing the page.'),
-            "caption"=>gT('Slider initial value')
-        );
-
         self::$attributes["slider_middlestart"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>40,
+            'sortorder'=>200,
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
@@ -942,10 +932,21 @@ class questionHelper
             "caption"=>gT('Slider starts at the middle position')
         );
 
+        self::$attributes["slider_default"] = array(
+            "types"=>"K",
+            'category'=>gT('Slider'),
+            'sortorder'=>210,
+            'inputtype'=>'text',
+            'expression'=>2, // must be controlled : unsure
+            'default'=>"",
+            "help"=>gT('Slider start as this value. You can use Expression manager, but this must be a number before showing the page. This setting has priority over slider starts at the middle position.'),
+            "caption"=>gT('Slider initial value')
+        );
+
         self::$attributes["slider_default_set"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>51,
+            'sortorder'=>220,
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>1, /* before 3.0 : this is the default behaviour */
@@ -956,7 +957,7 @@ class questionHelper
         self::$attributes["slider_orientation"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>2,
+            'sortorder'=>300,
             'inputtype'=>'buttongroup',
             'options'=>array(
                 0=>gT('Horizontal', 'unescaped'),
@@ -970,7 +971,7 @@ class questionHelper
         self::$attributes["slider_handle"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>3,
+            'sortorder'=>320,
             'inputtype'=>'singleselect',
             'options'=>array(
                 0=>gT('Circle'),
@@ -986,7 +987,7 @@ class questionHelper
         self::$attributes["slider_custom_handle"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>4,
+            'sortorder'=>321,
             'inputtype'=>'text',
             'default'=>'f1ae',
             "help"=>gT('Accepts Font Awesome Unicode characters.'),
@@ -1011,7 +1012,7 @@ class questionHelper
         self::$attributes["slider_reversed"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>50,
+            'sortorder'=>310,
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
@@ -1022,7 +1023,7 @@ class questionHelper
         self::$attributes["slider_reset"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>50,
+            'sortorder'=>230,
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
@@ -1033,7 +1034,7 @@ class questionHelper
         self::$attributes["slider_showminmax"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>100,
+            'sortorder'=>150,
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'), 1=>gT('Yes')),
             'default'=>0,
@@ -1044,7 +1045,7 @@ class questionHelper
         self::$attributes["slider_separator"] = array(
             "types"=>"K",
             'category'=>gT('Slider'),
-            'sortorder'=>110,
+            'sortorder'=>160,
             'inputtype'=>'text',
             "help"=>gT('Answer|Left-slider-text|Right-slider-text separator character'),
             'default'=>'|',
