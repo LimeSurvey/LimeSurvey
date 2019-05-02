@@ -10266,8 +10266,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
 
             /* This function is called by a static function , then set it to static .... */
             $LEM =& LimeExpressionManager::singleton();
-            // Using language to find some valid value : set it to an existing language of this survey (can be Survey::model()->findByPk($LEM->sessid)->language too)
-            $language=Survey::model()->findByPk($LEM->sessid)->getLanguage();
+            // Using language to find some valid value : set it to an existing language of this survey (can be Survey::model()->findByPk($LEM->id)->language too)
+            $oSurvey = Survey::model()->findByPk($LEM->getLEMsurveyId());
+            $language = $oSurvey->language;
             switch ($type)
             {
                 case '5': // 5 point choice
