@@ -55,16 +55,14 @@ class RenderMultipleChoice extends QuestionBaseRenderer
     {
         $aRows = [];
 
-        if($this->getQuestionCount() == 0) {
+        if ($this->getQuestionCount() == 0) {
             return $aRows;
         }
 
-        $checkconditionFunction = "checkconditions"; 
+        $checkconditionFunction = "checkconditions";
         /// Generate answer rows
         foreach ($this->aSubQuestions[0] as $oQuestion) {
-
             $myfname = $this->sSGQA.$oQuestion->title;
-            $mSessionValue = $this->setDefaultIfEmpty($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname], '');
             $this->inputnames[] = $myfname;
 
             ////
@@ -76,22 +74,22 @@ class RenderMultipleChoice extends QuestionBaseRenderer
                 'title'                   => $oQuestion->title,
                 'question'                => $oQuestion->questionL10ns[$this->sLanguage]->question,
                 'ansrow'                  => array_merge($oQuestion->attributes, $oQuestion->questionL10ns[$this->sLanguage]->attributes),
-                'checkedState'            => ($mSessionValue == 'Y' ? CHECKED : ''),
+                'checkedState'            => ($this->mSessionValue == 'Y' ? CHECKED : ''),
                 'sCheckconditionFunction' => $checkconditionFunction.'(this.value, this.name, this.type)',
-                'sValue'                  => $mSessionValue,
+                'sValue'                  => $this->mSessionValue,
                 'relevanceClass'          => $this->getCurrentRelevecanceClass($myfname)
             );
         }
 
         if ($this->oQuestion->other == 'Y') {
-          $aRows[] = $this->getOtherRow();
+            $aRows[] = $this->getOtherRow();
         }
 
         return $aRows;
     }
 
-    public function getOtherRow(){
-
+    public function getOtherRow()
+    {
         $sSeparator = (getRadixPointData($this->oQuestion->survey->correct_relation_defaultlanguage->surveyls_numberformat))['separator'];
         $oth_checkconditionFunction = ($this->getQuestionAttribute('other_numbers_only') == 1) ? "fixnum_checkconditions" : "checkconditions";
 
@@ -157,11 +155,11 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         return array($answer, $this->inputnames);
     }
 
-    protected function getQuestionCount($iScaleId=0){
-        if(!empty($this->aSubQuestions)) {
-
+    protected function getQuestionCount($iScaleId=0)
+    {
+        if (!empty($this->aSubQuestions)) {
             $counter = count($this->aSubQuestions[$iScaleId]);
-            if($this->oQuestion->other == 'Y') {
+            if ($this->oQuestion->other == 'Y') {
                 $counter++;
             }
             return $counter;
@@ -169,4 +167,3 @@ class RenderMultipleChoice extends QuestionBaseRenderer
         return 0;
     }
 }
-

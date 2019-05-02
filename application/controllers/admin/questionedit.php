@@ -528,6 +528,7 @@ class questionedit extends Survey_Common_Action
             $i10N->setAttributes([
                 'question' => $aI10NBlock['question'],
                 'help' => $aI10NBlock['help'],
+                'script' => $aI10NBlock['script'],
             ], false);
             $storeValid = $storeValid && $i10N->save();
         }

@@ -1,4 +1,7 @@
 <script>
+
+import debounce from 'lodash/debounce';
+
 export default {
     name: 'AceEditor',
     props: {
@@ -9,7 +12,14 @@ export default {
             type: String,
             default: ()=>`vue-ace-editor-${Math.round(Math.random()*100000)}`
         },
-        options: {type: Object, default: ()=>null},
+        options: {type: Object, default: ()=> {
+            return {
+                autoScrollEditorIntoView: true,
+                wrap: true,
+                maxLines: 80,
+                minLines: 10
+            }}
+        },
         showLangSelector: {type: Boolean, default: true},
         showThemeToggle: {type: Boolean, default: true},
         baseLang: {type: String, default: 'html'}
@@ -30,11 +40,17 @@ export default {
                 this.editor.setTheme("ace/theme/solarized_dark");
             }
             this.darkMode = !this.darkMode;
+        },
+        resizeEditor(){
+            event.target.innerHeight
+            this.editor.resize();
         }
     },
     watch: {
         lang: function(newLang) {
-            this.editor.getSession().setMode("ace/mode/" + newLang);
+            if(this.editor != null) {
+                this.editor.getSession().setMode("ace/mode/" + newLang);
+            }
         },
     },
     beforeDestroy: function() {
@@ -49,26 +65,32 @@ export default {
 
         this.$emit("init", this.editor);
 
-        this.editor.$blockScrolling = Infinity;
         this.editor.setOption("enableEmmet", true);
         this.editor.getSession().setMode("ace/mode/" + this.lang);
         this.editor.setTheme("ace/theme/solarized_light");
-        this.editor.setValue(this.value, 1);
+        
+        this.editor.setValue((this.value || ''), 1);
         this.contentBackup = this.value;
 
-        editor.on("change", () => {
-            let content = editor.getValue();
-            this.$emit("change", content);
+        this.editor.on("change", () => {
+            let content = this.editor.getValue();
+            this.$emit("input", content);
             this.contentBackup = content;
         });
-        if (this.options) {
+
+        if (this.options != null) {
             this.editor.setOptions(this.options);
         }
-        $('#'+this.thisId).on('contextmenu', (e)=>{
+
+        jQuery('.aceEditor--main').on('resize', (e)=>{
+            this.editor.resize(true);
+        });
+
+        jQuery('#'+this.thisId).on('contextmenu', (e)=>{
             e.preventDefault();
             e.stopPropagation();
             return false;
-        })
+        });
     }
 };
 </script>
@@ -87,12 +109,14 @@ export default {
                 </select>
         </div>
         </div>
-        <div class="aceEditor--editor" :id="thisId"></div>
+        <div class="aceEditor--editor" :id="thisId" ></div>
     </div>
 </template>
 
 <style lang="scss" scoped>
     .aceEditor--main {
+        padding: 0.2rem;
+
         .aceEditor--topbar{
             height: 3rem;
             padding: 0.2rem;
@@ -128,6 +152,7 @@ export default {
 
         .aceEditor--editor {
             min-height: 10rem;
+            resize: vertical;
         }
     }
 </style>

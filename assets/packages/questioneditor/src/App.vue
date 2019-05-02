@@ -157,12 +157,12 @@ export default {
         });
 
         this.toggleLoading(false);
-        if(!this.isCreateQuestion) {
-            $('#questionbarid').css({'display': ''});
-            $('#questiongroupbarid').css({'display':'none'});
-        } else {
+        if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
             $('#questionbarid').css({'display': 'none'});
             $('#questiongroupbarid').css({'display':''});
+        } else {
+            $('#questionbarid').css({'display': ''});
+            $('#questiongroupbarid').css({'display':'none'});
         }
     }
 }

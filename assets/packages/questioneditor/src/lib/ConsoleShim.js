@@ -1,4 +1,4 @@
-
+/* eslint no-console: "off" */
 class ConsoleShim {
     constructor(param='', silencer=false) {
 
@@ -147,6 +147,6 @@ class ConsoleShim {
         this.log('--- WARN ---');
         this.log(args);
     }
-};
+}
 
 export default ConsoleShim;

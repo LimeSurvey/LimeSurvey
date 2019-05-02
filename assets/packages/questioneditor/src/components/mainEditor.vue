@@ -177,7 +177,7 @@ export default {
                         </div>
                     </div>
                     <ckeditor v-if="!questionEditSource" :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></ckeditor>
-                    <aceeditor v-else :showLangSelector="false" :thisId="'questionEditSource'" v-model="currentQuestionQuestion"> </aceeditor>
+                    <aceeditor v-else :showLangSelector="false" :thisId="'questionEditSource'" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange"> </aceeditor>
                 </div>
                 <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
                     <div class="ls-flex-row">
@@ -189,11 +189,11 @@ export default {
                         </div>
                     </div>
                     <ckeditor v-if="!helpEditSource" :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></ckeditor>
-                    <aceeditor v-else :showLangSelector="false" :thisId="'helpEditSource'" v-model="currentQuestionHelp"> </aceeditor>
+                    <aceeditor v-else :showLangSelector="false" :thisId="'helpEditSource'" v-model="currentQuestionHelp" v-on:input="runDebouncedChange"> </aceeditor>
                 </div>
                 <div class="col-12 ls-space margin all-5 scope-contains-ckeditor " v-if="!!$store.state.currentQuestionPermissions.script">
                     <label class="col-sm-12">{{ 'Script' | translate }}:</label>
-                    <aceeditor :thisId="'helpEditScript'" :showLangSelector="true" v-model="currentQuestionScript" base-lang="javascript" > </aceeditor>
+                    <aceeditor :thisId="'helpEditScript'" :showLangSelector="true" v-model="currentQuestionScript" v-on:input="runDebouncedChange" base-lang="javascript" > </aceeditor>
                     <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
                 </div>
             </div>

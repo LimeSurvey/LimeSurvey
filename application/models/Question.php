@@ -668,19 +668,23 @@ class Question extends LSActiveRecord
      */
     public function getOrderedSubQuestions($scale_id = null)
     {
-        // Get questions and answers by defined order
-        $sOrder = ($this->getQuestionAttribute('random_order') == 1) ? dbRandom() : 'question_order';
-        $oCriteria = new CDbCriteria();
-        $oCriteria->order = $sOrder;
-        $oCriteria->addCondition('parent_qid=:parent_qid');
-        $oCriteria->params = [':parent_qid' => $this->qid];
-
         //reset subquestions set prior to this call
         $aSubQuestions = [
             0 => []
         ];
         $excludedSubquestion = null;
-        foreach ($this->subquestions as $i => $oSubquestion) {
+        
+        $aOrderedSubquestions = $this->subquestions;
+        if($this->getQuestionAttribute('random_order') == 1) {
+            shuffle($aOrderedSubquestions);
+        }
+        
+        usort($aOrderedSubquestions, function($oQuestionA, $oQuestionB){
+            if($oQuestionA->question_order == $oQuestionB->question_order) { return 0; }
+            return $oQuestionA->question_order < $oQuestionB->question_order ? -1 : 1;
+        });
+
+        foreach ($aOrderedSubquestions as $i => $oSubquestion) {
             if ($scale_id !== null && $oSubquestion->scale_id != $scale_id) {
                 continue;
             }
@@ -992,7 +996,7 @@ class Question extends LSActiveRecord
             case Question::QT_ASTERISK_EQUATION: $oRenderer = new RenderEquation($aFieldArray); break;
             case Question::QT_D_DATE: $oRenderer = new RenderDate($aFieldArray); break;
             case Question::QT_1_ARRAY_MULTISCALE: $oRenderer = new RenderArrayMultiscale($aFieldArray); break;
-            case Question::QT_L_LIST_DROPDOWN: $oRenderer = new RenderListRadio($aFieldArray); break;
+            case Question::QT_L_LIST_DROPDOWN: $oRenderer = new RenderListDropdown($aFieldArray); break;
             case Question::QT_EXCLAMATION_LIST_DROPDOWN: $oRenderer = new RenderListDropdown($aFieldArray); break;
             case Question::QT_O_LIST_WITH_COMMENT: $oRenderer = new RenderListComment($aFieldArray); break;
             case Question::QT_R_RANKING_STYLE: $oRenderer = new RenderRanking($aFieldArray); break;

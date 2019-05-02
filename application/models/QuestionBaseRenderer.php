@@ -59,8 +59,9 @@ abstract class QuestionBaseRenderer extends StaticModel
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
         $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
         
-        if(!empty($oQuestion->questionL10ns[$this->sLanguage]->script)){
-            $this->addScript('QuestionStoredScript-'.$oQuestion->qid, $oQuestion->questionL10ns[$this->sLanguage]->script, LSYii_ClientScript::POS_POSTSCRIPT);
+        if(!empty($this->oQuestion->questionL10ns[$this->sLanguage]->script)){
+            $sScriptRendered = LimeExpressionManager::ProcessString($this->oQuestion->questionL10ns[$this->sLanguage]->script,$this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
+            $this->addScript('QuestionStoredScript-'.$this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
         }
     }
     

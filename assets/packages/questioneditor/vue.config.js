@@ -23,6 +23,8 @@ module.exports = {
         externals: {
             LS: 'LS',
             jquery: 'jQuery',
+            $: '$',
+            ace: 'ace',
             pjax: 'Pjax',
         },
         plugins: [
