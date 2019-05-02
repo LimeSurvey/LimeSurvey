@@ -409,14 +409,25 @@ class SurveyActivator
     }
 
     /**
+     * Set the default_storage_engine for mysql DB
      * @param string $dbEngine
      */
     private function setMySQLDefaultEngine($dbEngine) {
-        $db = Yii::app()->db;
-        if (!empty($db) && $db->driverName === InstallerConfigForm::DB_TYPE_MYSQL) {
-            $db->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
-                ->execute();
+        /* not mysql : out */
+        if ($db->driverName === InstallerConfigForm::DB_TYPE_MYSQL) {
+            return;
         }
-
+        /* empty dbEngine : out */
+        if(empty($dbEngine)) {
+            return;
+        }
+        $db = Yii::app()->db;
+        /* not DB : out */
+        if(empty($db)) {
+            return;
+        }
+        /* seems OK, sysadmin allowed to broke system */
+        $db->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
+            ->execute();
     }
 }
