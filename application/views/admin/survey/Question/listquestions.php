@@ -81,9 +81,9 @@ $baseLanguage = $oSurvey->language;
                                 'value'=>'$data->qid',
                             ),
                             array(
-                                'header' => gT('Question order'),
+                                'header' => gT("Group / Question order"),
                                 'name' => 'question_order',
-                                'value'=>'$data->question_order',
+                                'value'=>'$data->groups->group_order ." / ". $data->question_order',
                             ),
                             array(
                                 'header' => gT('Code'),
@@ -106,6 +106,7 @@ $baseLanguage = $oSurvey->language;
                                 'value'=>'$data->typedesc',
                                 'htmlOptions' => array('class' => 'col-md-1'),
                             ),
+
                             array(
                                 'header' => gT('Group'),
                                 'name' => 'group',
@@ -113,6 +114,7 @@ $baseLanguage = $oSurvey->language;
                                         return $data->group->questionGroupL10ns[$oSurvey->language]->group_name;
                                     },
                             ),
+
                             array(
                                 'header' => gT('Mandatory'),
                                 'type' => 'raw',

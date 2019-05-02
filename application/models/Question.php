@@ -786,8 +786,8 @@ class Question extends LSActiveRecord
                 'desc'=>'t.qid desc',
             ),
             'question_order'=>array(
-                'asc'=>'t.question_order asc',
-                'desc'=>'t.question_order desc',
+                'asc'=>'groups.group_order asc, t.question_order asc',
+                'desc'=>'groups.group_order desc,t.question_order desc',
             ),
             'title'=>array(
                 'asc'=>'t.title asc',
@@ -819,7 +819,9 @@ class Question extends LSActiveRecord
             ),
         );
 
-        $sort->defaultOrder = array('question_order' => CSort::SORT_ASC);
+        $sort->defaultOrder = array(
+            'question_order' => CSort::SORT_ASC,
+        );
 
         $criteria = new CDbCriteria;
         $criteria->select = 't.*';               

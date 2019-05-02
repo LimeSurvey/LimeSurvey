@@ -145,6 +145,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     // Create Update : icons
     if($('.option-icon').length>1){
         $('.option-icon').on('click', function (ev, that) {
+            ev.preventDefault()
             var fullIconName = $(ev.currentTarget).attr('data-icon');
 
             // Set icon preview and hidden input
@@ -156,8 +157,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         var currentIcon = $('input[name="Boxes[ico]"]').val();
         if (currentIcon !== '')
         {
-            var fullCurrentIconName = 'icon-' + currentIcon;
-            $('#chosen-icon').attr('class', fullCurrentIconName + ' text-success');
+            $('#chosen-icon').attr('class', currentIcon + ' text-success');
         }
     }
 });
