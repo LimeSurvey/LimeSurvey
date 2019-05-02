@@ -96,7 +96,7 @@ class Boxes extends CActiveRecord
      */
     public function getSpanIcon()
     {
-        $spanicon = '<span class="icon-'.$this->ico.' text-success"></span>';
+        $spanicon = '<span class="'.$this->ico.' text-success"></span>';
         return $spanicon;
     }
 
