@@ -30,6 +30,7 @@ class Boxes extends CActiveRecord
             array('url', 'match', 'pattern'=>'/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
             array('position', 'numerical', 'integerOnly'=>true),
             array('usergroup', 'numerical', 'integerOnly'=>true, 'min'=>-3),
+            array('ico', 'match', 'pattern'=> '/^[A-Za-z0-9_\-]+$/u','message'=> gT('Icon can contain only alphanumeric character, underscore or minus.')),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on'=>'search'),
@@ -96,7 +97,7 @@ class Boxes extends CActiveRecord
      */
     public function getSpanIcon()
     {
-        $spanicon = '<span class="'.$this->ico.' text-success"></span>';
+        $spanicon = '<span class="'.CHtml::encode($this->ico).' text-success"></span>';
         return $spanicon;
     }
 
@@ -119,7 +120,7 @@ class Boxes extends CActiveRecord
 
             // The group doesn't exist anymore
             if (!is_object($oUsergroup)) {
-                            return gT("Can't find user group!");
+                return gT("Can't find user group!");
             }
 
             return $oUsergroup->name;
