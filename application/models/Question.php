@@ -996,7 +996,7 @@ class Question extends LSActiveRecord
             case Question::QT_ASTERISK_EQUATION: $oRenderer = new RenderEquation($aFieldArray); break;
             case Question::QT_D_DATE: $oRenderer = new RenderDate($aFieldArray); break;
             case Question::QT_1_ARRAY_MULTISCALE: $oRenderer = new RenderArrayMultiscale($aFieldArray); break;
-            case Question::QT_L_LIST_DROPDOWN: $oRenderer = new RenderListDropdown($aFieldArray); break;
+            case Question::QT_L_LIST_DROPDOWN: $oRenderer = new RenderListRadio($aFieldArray); break;
             case Question::QT_EXCLAMATION_LIST_DROPDOWN: $oRenderer = new RenderListDropdown($aFieldArray); break;
             case Question::QT_O_LIST_WITH_COMMENT: $oRenderer = new RenderListComment($aFieldArray); break;
             case Question::QT_R_RANKING_STYLE: $oRenderer = new RenderRanking($aFieldArray); break;

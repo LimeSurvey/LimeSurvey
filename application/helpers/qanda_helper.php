@@ -2646,7 +2646,7 @@ function do_shortfreetext($ia)
         );
         App()->getClientScript()->registerPackage('leaflet');
         App()->getClientScript()->registerPackage('devbridge-autocomplete'); /* for autocomplete */
-        Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar', "LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new [];", CClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar', "LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps=[];", CClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1], "LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar).";", CClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js", CClientScript::POS_END);
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'map.css');
