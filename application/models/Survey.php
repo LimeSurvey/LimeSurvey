@@ -2103,6 +2103,14 @@ return $s->hasTokensTable; });
         return $aOptions;
     }
 
+    /**
+     * @param ? $tmp
+     */
+    public function setTokenEncryptionOptions($options)
+    {
+        $this->tokenencryptionoptions = $options;
+    }
+
     public function setOptions($gsid)
     {
         // set gsid to 1 if empty
