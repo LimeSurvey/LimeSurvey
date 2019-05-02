@@ -20,9 +20,21 @@
  * @property string $name
  * @property integer $active
  * @property string $version
+ * @property string $load_error
+ * @property string $plugin_type
  */
 class Plugin extends LSActiveRecord
 {
+    /**
+     * @var string
+     */
+    public $load_error;
+
+    /**
+     * @var string
+     */
+    public $plugin_type;
+
     /**
      * @inheritdoc
      * @return Plugin
