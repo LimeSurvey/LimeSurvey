@@ -115,10 +115,9 @@ class InstallCommand extends CConsoleCommand
             throw new CException("Invalid access data. Check your config.php db access data");
         }
 
-        $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
-        $dbEngine = getenv('DBENGINE');
-
         if (!empty($this->connection) && $this->connection->driverName == 'mysql') {
+            /** @var string */
+            $dbEngine = getenv('DBENGINE');
             if (empty($dbEngine)) {
                 throw new CException('Environment variable DBENGINE is empty, should be either MyISAM or InnoDB');
             }
@@ -127,6 +126,9 @@ class InstallCommand extends CConsoleCommand
                 ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
                 ->execute();
         }
+
+        /** @var string */
+        $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
 
         try {
             switch ($this->connection->driverName) {
