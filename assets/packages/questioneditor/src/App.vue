@@ -1,7 +1,6 @@
 <script>
 import Mousetrap from 'mousetrap';
 
-import Loader from './helperComponents/loader.vue';
 import QuestionOverview from './components/questionoverview.vue';
 import MainEditor from './components/mainEditor.vue';
 import GeneralSettings from './components/generalSettings.vue';
@@ -20,7 +19,6 @@ export default {
         'generalsettings' : GeneralSettings,
         'advancedsettings' : AdvancedSettings,
         'languageselector' : LanguageSelector,
-        Loader
     },
     data() {
         return {
@@ -220,16 +218,18 @@ export default {
             </div>
             <div class="row">
                 <transition name="slide-fade">
-                    <maineditor v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
+                    <maineditor :loading="loading" v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
                 </transition>
                 <transition name="slide-fade">
-                    <questionoverview v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                    <questionoverview :loading="loading" v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
                 </transition>
                 <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
                 <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
             </div>
         </template>
-        <template v-else><loader id="mainViewLoader" /></template>
+        <template v-if="loading">
+            <loader-widget id="mainViewLoader" />
+        </template>
         <modals-container @modalEvent="setModalEvent"/>
     </div>
 </template>

@@ -5,24 +5,28 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import LanguageSelector from './components/subcomponents/_languageSelector.vue';
 
 import runAjax from './mixins/runAjax.js';
+import Aceeditor from './helperComponents/AceEditor';
 
 export default {
     name: 'lsnextdataseceditor',
     mixins: [runAjax],
     components: {
         'language-selector' : LanguageSelector,
+        Aceeditor
     },
     data() {
         return {
             datasecmessageEditorObject : ClassicEditor,
             event: null,
             loading: null,
+            sourceEditEnable: false,
+            loading: true
         }
     },
     computed: {
         isNewSurvey() {return window.DataSecTextEditData.isNewSurvey},
         currentShowsurveypolicynotice: {
-            get() { return this.$store.state.showsurveypolicynotice},
+            get() { return parseInt(this.$store.state.showsurveypolicynotice)},
             set(newValue) { this.$store.commit('setShowsurveypolicynotice', newValue); }
         },
         currentDataseclabel: {
@@ -74,11 +78,38 @@ export default {
         selectLanguage(sLanguage) {
             this.$log.log('LANGUAGE CHANGED', sLanguage);
             this.$store.commit('setActiveLanguage', sLanguage);
-        }
+        },
+        stripScripts(s) {
+            const div = document.createElement('div');
+            div.innerHTML = s;
+            const scripts = div.getElementsByTagName('script');
+            let i = scripts.length;
+            while (i--) {
+                let scriptContent = scripts[i].innerHTML;
+                let cleanScript = document.createElement('pre');
+                cleanScript.innerHTML = `[script]
+${scriptContent}
+[/script]`;
+                scripts[i].parentNode.appendChild(cleanScript);
+                scripts[i].parentNode.removeChild(scripts[i]);
+            }
+            return div.innerHTML;
+        },
 
     },
     created(){
-        this.$store.dispatch('loadData');
+        this.$store.dispatch('loadData').then(
+            () => {
+                if(this.$store.state.permissions.editorpreset == 'source') {
+                    this.sourceEditEnable = true;
+                }
+                this.loading = false;
+            },
+            (error) => {
+                this.$log.error(error);
+                this.loading = false;
+            }
+        );
     },
     
     mounted() {
@@ -102,27 +133,27 @@ export default {
 
 <template>
     <div class="container-center">
-        <template v-show="$store.state.visible">
+        <template v-if="!loading">
             <div class="row">
                 <div class="btn-group" data-toggle=" buttons">
                     <button 
                         class="btn btn-primary" 
                         :class="currentShowsurveypolicynotice == 0?'active':''" 
-                        @click.prevent.stop="currentShowsurveypolicynotice=0"
+                        @click.prevent="currentShowsurveypolicynotice=0"
                     >
                         {{"Disabled"|translate}}
                     </button>
                     <button 
                         class="btn btn-primary" 
                         :class="currentShowsurveypolicynotice == 1?'active':''" 
-                        @click.prevent.stop="currentShowsurveypolicynotice=1"
+                        @click.prevent="currentShowsurveypolicynotice=1"
                     >
                         {{"Inline text"|translate}}
                     </button>
                     <button 
                         class="btn btn-primary" 
                         :class="currentShowsurveypolicynotice == 2?'active':''" 
-                        @click.prevent.stop="currentShowsurveypolicynotice=2"
+                        @click.prevent="currentShowsurveypolicynotice=2"
                     >
                         {{"Collapsible text"|translate}}
                     </button>
@@ -131,7 +162,7 @@ export default {
             <div class="row">
                 <hr />
             </div>
-            <div v-show="$store.state.showsurveypolicynotice > 0" class="cointainer-center">
+            <div v-show="currentShowsurveypolicynotice > 0" class="cointainer-center">
                 <div class="row" v-if="$store.state.languages.length > 1">
                     <language-selector 
                         :elId="'questioneditor'" 
@@ -151,13 +182,23 @@ export default {
                 </div>
                 <div class="row scoped-editor-row">
                     <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
-                        <label class="">{{ "Description" | translate }}:</label>
-                        <ckeditor :editor="datasecmessageEditorObject" v-model="currentDatasecmessage" :config="{}"></ckeditor>
-                        <input type="hidden" name="surveyls_policy_notice" v-model="currentDatasecmessage"/>
+                        <div class="ls-flex-row col-12">
+                            <div class="ls-flex-item text-left">
+                                <label class="">{{ "Description" | translate }}:</label>
+                            </div>
+                            <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
+                                <button class="btn btn-default btn-xs" @click="sourceEditEnable=!sourceEditEnable"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                            </div>
+                        </div>
+                        <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentDatasecmessage)" />
+                        <ckeditor  v-if="!sourceEditEnable && $store.state.permissions.update" :editor="datasecmessageEditorObject" v-model="currentDatasecmessage" :config="{}"></ckeditor>
+                        <aceeditor v-if="sourceEditEnable && $store.state.permissions.update" thisID="datasecmessageSourceEditor" v-model="currentDatasecmessage" :showLangSelector="false"></aceeditor>
+                        <input v-if="$store.state.permissions.update" type="hidden" name="surveyls_policy_notice" v-model="currentDatasecmessage"/>
                     </div>
                 </div>
             </div>
         </template>
+        <div v-if="loading"><loader-widget id="textelementsloader" /></div>
     </div>
 </template>
 

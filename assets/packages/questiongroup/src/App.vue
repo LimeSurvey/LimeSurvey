@@ -22,6 +22,7 @@ export default {
         return {
             editQuestionGroup: false,
             questionEditButton: window.questionEditButton,
+            loading: true
         }
     },
     computed: {
@@ -113,9 +114,11 @@ export default {
                     $('#questiongroupbar--questiongroupbuttons').css({'display':''});
                 }
                 this.toggleLoading(false);
+                this.loading = false;
             },
             (reject) => {
                 this.$log.error("Question group loading failed");
+                this.loading = false;
             }
 
         );
@@ -137,39 +140,41 @@ export default {
         $('#save-and-close-button').on('click', (e)=>{
             this.submitCurrentState(true);
         });
-        
+        if(window.QuestionGroupEditData.startInEditView) {
+            this.triggerEditQuestionGroup();
+        }
     }
 }
 </script>
 
 <template>
     <div class="container-center scoped-new-questioneditor">
-        <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
-            <button 
-                @click.prevent.stop="triggerEditQuestionGroup" 
-                :class="editQuestionGroup ? 'btn-default' : 'btn-primary'"
-                class="btn "
-            >
-                {{'Question group overview'| translate}}
-            </button>
-            <button 
-                @click.prevent.stop="triggerEditQuestionGroup" 
-                :class="editQuestionGroup ? 'btn-primary' : 'btn-default'"
-                class="btn "
-            >
-                {{'Question group editor'| translate}}
-            </button>
-        </div>
-        <div class="pagetitle h3 scoped-unset-pointer-events">
-            <template v-if="isCreateQuestionGroup">
-                    {{'Create new question group'|translate}}
-            </template>
-            <template v-else>
-                    {{'Question group'|translate}} <small>(ID: {{$store.state.currentQuestionGroup.gid}})</small>
-            </template>
-        </div>
-        <template v-if="$store.getters.fullyLoaded">
-            <div class="row">
+        <template v-if="!loading">
+            <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
+                <button 
+                    @click.prevent.stop="triggerEditQuestionGroup" 
+                    :class="editQuestionGroup ? 'btn-default' : 'btn-primary'"
+                    class="btn "
+                >
+                    {{'Question group overview'| translate}}
+                </button>
+                <button 
+                    @click.prevent.stop="triggerEditQuestionGroup" 
+                    :class="editQuestionGroup ? 'btn-primary' : 'btn-default'"
+                    class="btn "
+                >
+                    {{'Question group editor'| translate}}
+                </button>
+            </div>
+            <div class="pagetitle h3 scoped-unset-pointer-events">
+                <template v-if="isCreateQuestionGroup">
+                        {{'Create new question group'|translate}}
+                </template>
+                <template v-else>
+                        {{'Question group'|translate}} <small>(ID: {{$store.state.currentQuestionGroup.gid}})</small>
+                </template>
+            </div>
+            <div class="row" >
                 <languageselector
                     :elId="'questiongroup-language-changer'" 
                     :aLanguages="$store.state.languages" 
@@ -178,12 +183,19 @@ export default {
                 />
             </div>
             <div class="row">
-                <question-group-overview v-show="!(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-overview>
-                <question-group-editor v-show="(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-editor>
+                <transition name="slide-fade">
+                    <question-group-overview v-show="!(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-overview>
+                </transition>
+                <transition name="slide-fade">
+                    <question-group-editor v-show="(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-editor>
+                </transition>
             </div>
             <div class="row">
                 <question-list :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestionGroup || isCreateQuestionGroup)"></question-list>
             </div>
+        </template>
+        <template v-if="loading">
+            <loader-widget id="questiongroupEditLoader" />
         </template>
     </div>
 </template>

@@ -3,12 +3,15 @@ import Mousetrap from 'mousetrap';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import LanguageSelector from './components/subcomponents/_languageSelector.vue';
+import Aceeditor from './helperComponents/AceEditor';
+
 import runAjax from './mixins/runAjax.js';
 
 export default {
     name: 'lsnexttexteditor',
     components: {
         'language-selector' : LanguageSelector,
+        Aceeditor
     },
     mixins: [runAjax],
     data() {
@@ -18,6 +21,9 @@ export default {
             descriptionEditorObject: ClassicEditor,
             welcomeEditorObject: ClassicEditor,
             endTextEditorObject: ClassicEditor,
+            descriptionSource: false,
+            welcomeSource: false,
+            endTextSource: false,
         }
     },
     computed: {
@@ -96,12 +102,42 @@ export default {
         selectLanguage(sLanguage) {
             this.$log.log('LANGUAGE CHANGED', sLanguage);
             this.$store.commit('setActiveLanguage', sLanguage);
-        }
-
+        },
+        stripScripts(s) {
+            const div = document.createElement('div');
+            div.innerHTML = s;
+            const scripts = div.getElementsByTagName('script');
+            let i = scripts.length;
+            while (i--) {
+                let scriptContent = scripts[i].innerHTML;
+                let cleanScript = document.createElement('pre');
+                cleanScript.innerHTML = `[script]
+${scriptContent}
+[/script]`;
+                scripts[i].parentNode.appendChild(cleanScript);
+                scripts[i].parentNode.removeChild(scripts[i]);
+            }
+            return div.innerHTML;
+        },
     },
     created(){
         this.$store.dispatch('getDateFormatOptions');
-        this.$store.dispatch('getDataSet');
+        this.$store.dispatch('getDataSet'). then(
+            () => {
+                if(this.$store.state.permissions.editorpreset == 'source') {
+                    this.descriptionSource = true;
+                    this.welcomeSource = true;
+                    this.endTextSource = true;
+                }
+                this.loading = false;
+            },
+            (error) => {
+                this.$log.error(error);
+                this.loading = false;
+            }
+        );
+
+        
     },
     
     mounted() {
@@ -117,10 +153,7 @@ export default {
                 this.submitCurrentState();
             });
         }
-
-
         this.toggleLoading(false);
-        
     }
 }
 </script>
@@ -177,38 +210,61 @@ export default {
             </div>
             <div class="row scoped-editor-row">
                 <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
-                    <label class="">{{ "Description" | translate }}:</label>
-                    <ckeditor :editor="descriptionEditorObject" v-model="currentDescription" :config="{}"></ckeditor>
-                    <input type="hidden" name="description" v-model="currentDescription" />
+                    <div class="ls-flex-row col-12">
+                        <div class="ls-flex-item text-left">
+                            <label class="">{{ "Description" | translate }}:</label>
+                        </div>
+                        <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
+                            <button class="btn btn-default btn-xs" @click="descriptionSource=!descriptionSource"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                        </div>
+                    </div>
+                    <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentDescription)" />
+                    <ckeditor v-if="!descriptionSource && $store.state.permissions.update" :editor="descriptionEditorObject" v-model="currentDescription" :config="{}"></ckeditor>
+                    <aceeditor v-if="descriptionSource && $store.state.permissions.update" v-model="currentDescription" thisId="currentDescriptionSourceEditor" :showLangSelector="false"></aceeditor>
+                    <input v-if="$store.state.permissions.update" type="hidden" name="description" v-model="currentDescription" />
                 </div>
             </div>
             <div class="row scoped-editor-row">
                 <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
-                    <label class="">{{ "Welcome" | translate }}:</label>
-                    <ckeditor :editor="welcomeEditorObject" v-model="currentWelcome" :config="{}"></ckeditor>
-                    <input type="hidden" name="welcome" v-model="currentWelcome" />
+                    <div class="ls-flex-row col-12">
+                        <div class="ls-flex-item text-left">
+                            <label class="">{{ "Welcome" | translate }}:</label>
+                        </div>
+                        <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
+                            <button class="btn btn-default btn-xs" @click="welcomeSource=!welcomeSource"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                        </div>
+                    </div>
+                    <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentWelcome)" />
+                    <ckeditor v-if="!welcomeSource && $store.state.permissions.update" :editor="welcomeEditorObject" v-model="currentWelcome" :config="{}"></ckeditor>
+                    <aceeditor v-if="welcomeSource && $store.state.permissions.update" v-model="currentWelcome" thisId="currentWelcomeSourceEditor" :showLangSelector="false"></aceeditor>
+                    <input v-if="$store.state.permissions.update" type="hidden" name="welcome" v-model="currentWelcome" />
                 </div>
             </div>
             <div class="row scoped-editor-row">
                 <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
-                    <label class="">{{ "End message" | translate }}:</label>
-                    <ckeditor :editor="endTextEditorObject" v-model="currentEndText" :config="{}"></ckeditor>
-                    <input type="hidden" name="endtext" v-model="currentEndText" />
+                    <div class="ls-flex-row col-12">
+                        <div class="ls-flex-item text-left">
+                            <label class="">{{ "End message" | translate }}:</label>
+                        </div>
+                        <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
+                            <button class="btn btn-default btn-xs" @click="endTextSource=!endTextSource"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                        </div>
+                    </div>
+                    <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEndText)" />
+                    <ckeditor v-if="!endTextSource && $store.state.permissions.update" :editor="endTextEditorObject" v-model="currentEndText" :config="{}"></ckeditor>
+                    <aceeditor v-if="endTextSource && $store.state.permissions.update" v-model="currentEndText" thisId="currentEndTextSourceEditor" :showLangSelector="false"></aceeditor>
+                    <input v-if="$store.state.permissions.update" type="hidden" name="endtext" v-model="currentEndText" />
                 </div>
             </div>
         </template>
-        <div class="loading-back-greyed" v-show="loading"></div>
+        <div v-if="loading"><loader-widget id="textelementsloader" /></div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-.loading-back-greyed {
-    background-color: rgba(200,200,200,0.4);
-    width: 100%;
-    min-height: 65vh;
-    position: absolute;
-    top:0;
-    left:0;
+
+.scope-contains-ckeditor {
+    min-height: 10rem;
 }
 
 .scoped-editor-row {

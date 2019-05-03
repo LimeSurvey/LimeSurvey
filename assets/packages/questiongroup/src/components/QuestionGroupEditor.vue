@@ -8,16 +8,19 @@ import reduce from 'lodash/reduce';
 import isEmpty from 'lodash/isEmpty';
 import isObject from 'lodash/isObject';
 
+import Aceeditor from '../helperComponents/AceEditor';
 import eventChild from '../mixins/eventChild.js';
 
 export default {
     name: 'questiongroupeditor',
     mixin: [eventChild],
+    components: {Aceeditor},
     data(){
         return {
             currentTab: '',
             editorDescription: ClassicEditor,
             editorDescriptionConfig: {},
+            sourceMode: false,
         };
     },
     computed: {
@@ -77,6 +80,11 @@ ${scriptContent}
             this.$emit('triggerEvent', { target: 'lsnextquestiongroupeditor', method: 'toggleOverview', content: {} });
         }
     },
+    created(){
+        if(this.$store.state.permissions.editorpreset == 'source') {
+            this.sourceMode = true;
+        }
+    },
     mounted(){
         this.toggleLoading(false);
     }
@@ -95,8 +103,16 @@ ${scriptContent}
                     <input v-model="currentTitle" class="form-control" />
                 </div>
                 <div class="col-xs-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor">
-                    <div class="col-12">{{'Description'|translate}}</div>
-                    <ckeditor :editor="editorDescription" v-model="currentQuestionGroupDescription" :config="editorDescriptionConfig"></ckeditor>
+                    <div class="ls-flex-row col-12">
+                        <div class="ls-flex-item text-left">
+                            {{'Description'|translate}}
+                        </div>
+                        <div class="ls-flex-item text-right">
+                            <button class="btn btn-default btn-xs" @click="sourceMode=!sourceMode"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                        </div>
+                    </div>
+                    <ckeditor  v-if="!sourceMode" :editor="editorDescription" v-model="currentQuestionGroupDescription" :config="editorDescriptionConfig"></ckeditor>
+                    <aceeditor v-else :showLangSelector="false" :thisId="'questionEditSource'" v-model="currentQuestionGroupDescription"></aceeditor>
                 </div>
                 <div class="col-sm-6 col-xs-12 ls-space margin top-5 bottom-5">
                     <div class="col-12">{{'Random Group'|translate}}</div>

@@ -10,7 +10,6 @@ import isObject from 'lodash/isObject';
 import SettingsTab from './subcomponents/_settingstab.vue';
 import Subquestions from './subcomponents/_subquestions.vue';
 import Answeroptions from './subcomponents/_answeroptions.vue';
-import Loader from '../helperComponents/loader.vue';
 
 import eventChild from '../mixins/eventChild.js';
 
@@ -21,7 +20,6 @@ export default {
         "settings-tab" : SettingsTab,
         "subquestions" : Subquestions,
         "Answeroptions" : Answeroptions,
-        Loader
     },
     props: {
         readonly : {type: Boolean, default: false}
@@ -133,7 +131,7 @@ export default {
         <transition name="slide-fade">
             <div class="container-fluid" v-if="loading" >
                 <div class="row" >
-                    <loader id="advanced-panel-loader" />
+                    <loader-widget id="advanced-panel-loader" />
                 </div>
             </div>
         </transition>

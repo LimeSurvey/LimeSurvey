@@ -2,6 +2,7 @@ import Vue from 'vue';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
 import TextElementsApp from './TextElementsApp.vue';
+import Loader from './helperComponents/loader.vue';
 
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
@@ -11,6 +12,8 @@ Vue.config.ignoredElements = ["x-test"];
 
 Vue.use( PluginLog );
 Vue.use( CKEditor );
+
+Vue.component('loader-widget', Loader);
 
 Vue.mixin({
     methods: {

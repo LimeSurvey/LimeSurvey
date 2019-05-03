@@ -1,7 +1,6 @@
 <script>
 import filter from 'lodash/filter';
 
-import Loader from '../helperComponents/loader.vue';
 import SettingSwitch from './_inputtypes/switch.vue';
 import SettingText from './_inputtypes/text.vue';
 import SettingSelect from './_inputtypes/select.vue';
@@ -21,7 +20,6 @@ export default {
         'setting-textinput': SettingText,
         'setting-textarea': SettingTextarea,
         'stub-set' : StubSet,
-        Loader
     },
     props: {
         readonly : {type: Boolean, default: false}
@@ -83,7 +81,7 @@ export default {
         </transition>
         <transition name="slide-fade">
             <div class="row" v-if="loading">
-                <loader id="generalSettingsLoader" />
+                <loader-widget id="generalSettingsLoader" />
             </div>
         </transition>
     </div>

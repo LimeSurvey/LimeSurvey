@@ -13,6 +13,9 @@ import eventChild from '../mixins/eventChild.js';
 export default {
     name: 'questionoverview',
     mixin: [eventChild],
+    props: {
+        loading: {type: Boolean, default: false},
+    },
     data(){
         return {
             currentTab: '',
@@ -78,34 +81,41 @@ export default {
 
 <template>
     <div class="col-sm-8 col-xs-12">
-        <div class="panel panel-default" @dblclick="toggleEditMode">
-            <div class="panel-heading">
-            {{'Text elements'|translate}}
-            </div>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <div class="ls-flex-row wrap col-12">
-                        <div class="col-12">{{'Question'|translate}}</div>
-                        <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestion" />
-                    </div>
-                </li>
-                <li class="list-group-item" v-show="!!cleanCurrentQuestionHelp">
-                    <div class="ls-flex-row wrap col-12">
-                        <div class="col-12">{{'Help'|translate}}</div>
-                        <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestionHelp" />
-                    </div>
-                </li>
-                <li class="list-group-item" v-show="!!currentQuestionScript">
-                    <div class="ls-flex-row wrap col-12">
-                        <div class="col-12">{{'Script'|translate}}</div>
-                        <div class="col-12 scoped-small-border">
-                            {{currentQuestionScript}}
+        <transition name="slide-fade">
+            <div v-if="!loading"  class="panel panel-default" @dblclick="toggleEditMode">
+                <div class="panel-heading">
+                    {{'Text elements'|translate}}
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="ls-flex-row wrap col-12">
+                            <div class="col-12">{{'Question'|translate}}</div>
+                            <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestion" />
                         </div>
-                        <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
+                    </li>
+                    <li class="list-group-item" v-show="!!cleanCurrentQuestionHelp">
+                        <div class="ls-flex-row wrap col-12">
+                            <div class="col-12">{{'Help'|translate}}</div>
+                            <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestionHelp" />
+                        </div>
+                    </li>
+                    <li class="list-group-item" v-show="!!currentQuestionScript">
+                        <div class="ls-flex-row wrap col-12">
+                            <div class="col-12">{{'Script'|translate}}</div>
+                            <div class="col-12 scoped-small-border">
+                                {{currentQuestionScript}}
+                            </div>
+                            <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </transition>
+        <transition name="slide-fade">
+            <div class="row" v-if="loading">
+                <loader-widget id="questionoverviewLoader" />
+            </div>
+        </transition>
     </div>
 </template>
 

@@ -31,6 +31,8 @@ class questions extends Survey_Common_Action
 
     public function view($surveyid, $gid, $qid)
     {
+        $this->getController()->redirect(Yii::app()->createUrl('admin/questioneditor/sa/view/', ['surveyid' => $surveyid, 'gid' => $gid, 'qid' => $qid ]));
+        return;
         $aData = array();
         $qid = (int) $qid;
 

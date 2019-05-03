@@ -1477,6 +1477,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
             };", LSYii_ClientScript::POS_BEGIN);
             
+        App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('datasectextelements');
         $aData = $aTabTitles = $aTabContents = array();
         return $aData;
@@ -1503,6 +1504,7 @@ class SurveyAdmin extends Survey_Common_Action
                 }
             };", LSYii_ClientScript::POS_BEGIN);
             
+        App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('textelements');
         $aData = $aTabTitles = $aTabContents = array();
         return $aData;
@@ -1961,6 +1963,10 @@ class SurveyAdmin extends Survey_Common_Action
             "endUrlDescription" => [],
             "dateFormat" => [],
             "decimalDivider" => [],
+            "permissions" => [
+                "update" => Permission::model()->hasSurveyPermission($iSurveyId,'surveylocale','update'),
+                "editorpreset" => Yii::app()->session['htmleditormode'],
+            ]
         ];
   
         if($oSurvey == null ) {
@@ -2085,7 +2091,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aReturner = [
             "dataseclabel" => [],
             "datasecmessage" => [],
-            "datasecerror" => []
+            "datasecerror" => [],
         ];
         
         if($oSurvey == null ) {
@@ -2101,7 +2107,11 @@ class SurveyAdmin extends Survey_Common_Action
                 ['data' => [
                     "showsurveypolicynotice" => 0,
                     "textdata" => $aReturner,
-                    "languages" => $aLanguages
+                    "languages" => $aLanguages,
+                    "permissions" => [
+                        "update" => Permission::model()->hasSurveyPermission($iSurveyId,'surveysecurity','update'),
+                        "editorpreset" => Yii::app()->session['htmleditormode'],
+                    ]
                 ]],
                 false,
                 false
@@ -2120,7 +2130,11 @@ class SurveyAdmin extends Survey_Common_Action
             ['data' => [
                 "showsurveypolicynotice" => $oSurvey->showsurveypolicynotice,
                 "textdata" => $aReturner,
-                "languages" => $aLanguages
+                "languages" => $aLanguages,
+                "permissions" => [
+                    "update" => Permission::model()->hasSurveyPermission($iSurveyId,'surveysecurity','update'),
+                    "editorpreset" => Yii::app()->session['htmleditormode'],
+                ]
             ]],
             false,
             false

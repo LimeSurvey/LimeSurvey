@@ -11,9 +11,9 @@ Vue.use(VueLocalStorage);
 Vue.use(Vuex);
 
 
-export default function(questionId){
+export default function(surveyId){
     const vuexLocal = new VuexPersistence({
-        key: 'lsdatasecedit_'+questionId,
+        key: 'lsdatasecedit_'+surveyId,
         storage: window.localStorage
     });
     

@@ -277,7 +277,9 @@ class questiongroups extends Survey_Common_Action
         }
         $aData['condarray'] = $condarray ?? [];
 
+        Yii::app()->getClientScript()->registerPackage('ace');
         Yii::app()->getClientScript()->registerPackage('questiongroupeditor');
+        
         $oQuestionGroup = $this->_getQuestionGroupObject($gid);
         $grow           = $oQuestionGroup->attributes;
 
@@ -307,6 +309,7 @@ class questiongroups extends Survey_Common_Action
         $aData['jsData'] = [
             'surveyid' => $iSurveyID,
             'gid' => $gid,
+            'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
             'connectorBaseUrl' => $this->getController()->createUrl('admin/questiongroups/sid/'.$iSurveyID.'/sa'),
             'openQuestionUrl' => $this->getController()->createUrl('admin/questioneditor/sa/view/surveyid='.$iSurveyID.'/gid='.$gid.'/qid'),
             'createQuestionUrl' => $this->getController()->createUrl("admin/questiongroups/sa/add/" ,["surveyid" =>  $surveyid, 'gid' => $gid]),
@@ -335,7 +338,7 @@ class questiongroups extends Survey_Common_Action
                 'Question' => gT('Question'),
                 'QuestionType' => gT('QuestionType'),
                 'Mandatory' => gT('Mandatory'),
-                'Encrpted' => gT('Encrpted'),
+                'Encrypted' => gT('Encrypted'),
                 'Actions' => gT('Actions'),
                ]
         ];
@@ -374,6 +377,7 @@ class questiongroups extends Survey_Common_Action
         $aPermissions = [
             "read" => Permission::model()->hasSurveyPermission($oSurvey->sid, 'survey', 'read'),
             "update" => Permission::model()->hasSurveyPermission($oSurvey->sid, 'survey', 'update'),
+            "editorpreset" => Yii::app()->session['htmleditormode'],
         ];
 
         $this->renderJSON([

@@ -30,6 +30,9 @@ export default {
     setDateFormatOptions : (state, newValue) => {
         state.dateFormatOptions = newValue;
     },
+    setPermissions : (state, newValue) => {
+        state.permissions = newValue;
+    },
     
     //language specific setter
     setSurveyTitleForCurrentLanguage : (state, newValue) => {

@@ -7,12 +7,15 @@ import App from './App.vue';
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
 
+import Loader from './helperComponents/loader.vue';
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
 
 Vue.use( PluginLog );
 Vue.use( CKEditor );
+
+Vue.component('loader-widget', Loader);
 
 Vue.mixin({
     methods: {

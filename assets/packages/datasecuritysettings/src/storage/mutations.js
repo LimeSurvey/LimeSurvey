@@ -18,6 +18,9 @@ export default {
     setDatasecerror(state, newValue) {
         state.datasecerror = newValue;
     },
+    setPermissions(state, newValue) {
+        state.permissions = newValue;
+    },
 
     setDataseclabelForCurrentLanguage(state, newValue) {
         Vue.set(state.dataseclabel, state.activeLanguage, newValue);

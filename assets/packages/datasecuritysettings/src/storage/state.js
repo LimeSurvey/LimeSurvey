@@ -9,4 +9,5 @@ export default {
     survey: {},
     debugMode: false,
     activeLanguage: '',
+    permissions: {}
 };

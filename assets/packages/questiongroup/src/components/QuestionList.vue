@@ -20,7 +20,7 @@ export default {
                 {label: 'Question', field: 'question', useFunction: row => this.getQuestionI10N(row)},
                 {label: 'QuestionType', field: 'type'},
                 {label: 'Mandatory', field: 'mandatory'},
-                {label: 'Encrpted', field: 'encrypted'},
+                {label: 'Encrypted', field: 'encrypted'},
                 {label: 'Actions', field: 'actions', useFunction: row => this.getQuestionActions(row), insortable: true},
             ];
         },
