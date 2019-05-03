@@ -31,7 +31,7 @@ class Boxes extends CActiveRecord
             array('url', 'match', 'pattern'=>'/(http:\/\/)?[a-zA-Z]([a-zA-Z0-9-_?&"\'=]\/?)*/'),
             array('position', 'numerical', 'integerOnly'=>true),
             array('usergroup', 'numerical', 'integerOnly'=>true, 'min'=>-3),
-            array('ico', 'match', 'pattern'=> '/^[A-Za-z0-9_ \-]+$/u','message'=> gT('Icon must be a simple class name (alphanumeric, space, minus and underscore).')),
+            array('ico', 'match', 'pattern'=> '/^[A-Za-z0-9_ \-]+$/u','message'=> gT('Icon name must be a simple class name (alphanumeric, space, minus and underscore).')),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on'=>'search'),
