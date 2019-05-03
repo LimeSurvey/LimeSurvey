@@ -361,7 +361,7 @@ class SurveyRuntimeHelper
         $this->aSurveyInfo['upload_file'] = $upload_file;
         $hiddenfieldnames = $this->aSurveyInfo['hiddenfieldnames'] = implode("|", $inputnames);
 
-        Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
+        App()->clientScript->registerScriptFile(App()->getConfig("generalscripts").'nojs.js', CClientScript::POS_BEGIN);
 
         // Show question code/number
         $this->aSurveyInfo['aShow'] = $this->getShowNumAndCode();
