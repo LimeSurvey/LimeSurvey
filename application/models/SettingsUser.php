@@ -161,8 +161,8 @@ class SettingsUser extends LSActiveRecord
     public static function applyBaseSettings($iUid) 
     {
         $defaults = LsDefaultDataSets::getDefaultUserSettings();
-        foreach($defaults as $stg_name => $stg_value) {
-            self::setUserSetting($stg_name, $stg_value, $iUid);
+        foreach($defaults as $default) {
+            self::setUserSetting($default['stg_name'], $default['stg_value'], $iUid);
         }
     }
 
