@@ -140,6 +140,9 @@ echo $oQuestionSelector->getModal();
                                     <div class="">
                                         <?php echo CHtml::passwordField('password', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
                                     </div>
+                                    <div class="">
+                                        <span class='text-info'><?php echo $passwordHelpText; ?></span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">

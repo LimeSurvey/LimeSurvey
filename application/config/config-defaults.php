@@ -737,5 +737,14 @@ $config['encryptionkeypair'] = '';
 $config['encryptionpublickey'] = '';
 $config['encryptionsecretkey'] = '';
 
+$config['passwordValidationRules'] = array(
+    'min' => 4,
+    'max' => 0,
+    'lower' => 0,
+    'upper' => 0,
+    'numeric' => 0,
+    'symbol' => 0,
+);
+
 return $config;
 //settings deleted

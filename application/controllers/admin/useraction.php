@@ -357,6 +357,7 @@ class UserAction extends Survey_Common_Action
                 // Close button, UrlReferrer;
                 $aData['fullpagebar']['closebutton']['url_keep'] = true;
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin/user/sa/index"));
+                $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
 
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
@@ -401,6 +402,15 @@ class UserAction extends Survey_Common_Action
             } else {
                 $oUser->email = $email;
                 $oUser->full_name = $full_name;
+
+                if(!empty($sPassword)){
+                    $error = $oUser->checkPasswordStrength($sPassword);
+                    if($error){
+                    Yii::app()->setFlashMessage(gT($error), 'error');
+                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$user_uid));
+                    }
+                }
+
                 if (!empty($sPassword)) {
                     $oUser->setPassword($sPassword);
                 }
@@ -634,7 +644,13 @@ class UserAction extends Survey_Common_Action
                 $newPassword = Yii::app()->request->getPost('password');
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
 
-                if (!$oUserModel->checkPassword($oldPassword)) {
+                if(!empty($newPassword)){
+                    $error = $oUserModel->checkPasswordStrength($newPassword);
+                    if($error){
+                        Yii::app()->setFlashMessage(gT($error), 'error');
+                        $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                    }
+                } elseif (!$oUserModel->checkPassword($oldPassword)) {
                     // Always check password
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
@@ -701,7 +717,7 @@ class UserAction extends Survey_Common_Action
         $aData['sUsername'] = $oUser->users_name;
         $aData['sFullname'] = $oUser->full_name;
         $aData['sEmailAdress'] = $oUser->email;
-
+        $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
