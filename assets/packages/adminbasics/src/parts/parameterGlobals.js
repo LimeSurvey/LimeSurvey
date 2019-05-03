@@ -13,7 +13,7 @@ let key = null
 const keyValuePairs = {};
 forEach(window.location.search.substring(1).split('/'), (value, index) => {
     if(value == 'sa') {
-        key = sa;
+        key = value;
     }
     if(key !== null) {
         if(key === false) {

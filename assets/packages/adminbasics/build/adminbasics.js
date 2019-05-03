@@ -29124,7 +29124,7 @@ let key = null
 const keyValuePairs = {};
 __WEBPACK_IMPORTED_MODULE_0_lodash_forEach___default()(window.location.search.substring(1).split('/'), (value, index) => {
     if(value == 'sa') {
-        key = sa;
+        key = value;
     }
     if(key !== null) {
         if(key === false) {
