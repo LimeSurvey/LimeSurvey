@@ -11,9 +11,9 @@ var TemplateCoreClass = function () {
          */
         /* showStartPopups : replace core function : allow HTML and use it. Unusuable with ajax */
         showStartPopups: function () {
-            if (LSvar.showpopup  && LSvar.startPopups.length) {
-                startPopups = LSvar.startPopups.map(function (text) {
-                    return "<p>"+text+"<p>";
+            if (LSvar.showpopup  && $.isArray(LSvar.startPopups)) {
+                startPopups = LSvar.startPopups.map( function (text) {
+                    return "<p>"+text+"</p>";
                 });
                 window.templateCore.alertSurveyDialog(startPopups.join(""));
             }
@@ -24,9 +24,9 @@ var TemplateCoreClass = function () {
          */
         alertSurveyDialog: function (startPopups, title) {
             text = "";
-            if (LSvar.showpopup  && startPopups.length) {
+            if (LSvar.showpopup  && $.isArray(startPopups)) {
                 startPopups = startPopups.map(function (text) {
-                    return "<p>"+text+"<p>";
+                    return "<p>"+text+"</p>";
                 });
                 text = startPopups.join("");
             }
