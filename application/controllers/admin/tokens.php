@@ -447,7 +447,7 @@ class tokens extends Survey_Common_Action
                 if (count($aData) > 0) {
                     foreach ($aTokenIds as $iTokenId) {
                         $iTokenId = (int) $iTokenId;
-                        $token = Token::model($iSurveyId)->find('tid='.$iTokenId);
+                        $token = Token::model($iSurveyId)->find('tid='.$iTokenId)->decrypt();
 
                         foreach ($aData as $k => $v) {
                             $token->$k = $v;
