@@ -147,6 +147,7 @@ return array(
     'adminpanel' => array(
        'devBaseUrl' => 'assets/packages/adminpanel/',
        'basePath' => 'core.adminpanel',
+       'position' =>CClientScript::POS_HEAD,
        'js' => (
            $debug > 0
             ? array(

@@ -1,6 +1,6 @@
 //globals formId
 import Vue from "vue";
-Vue.config.devtools = false;
+// Vue.config.devtools = false;
 
 import Sidebar from "./components/sidebar.vue";
 import Topbar from "./components/topbar.vue";
@@ -15,7 +15,8 @@ Vue.use(PluginLog);
 Vue.mixin({
     methods: {
         updatePjaxLinks: function () {
-            this.$store.dispatch("updatePjax");
+            //this.$store.dispatch("updatePjax");
+            this.$forceUpdate();
         },
         redoTooltips: function () {
             window.LS.doToolTip();
@@ -24,11 +25,11 @@ Vue.mixin({
 });
 
 const LsAdminPanel = () => {
-    const AppState = getAppState(window.LS.globalUserId);
+    const surveyid = $('#vue-apps-main-container').data("surveyid");
+    const AppState = getAppState(LS.globalUserId+'-'+surveyid);
     const panelNameSpace = {};
 
     const applySurveyId = (store) => {
-        const surveyid = $('#vue-apps-main-container').data("surveyid");
         if (surveyid != 0) {
             store.commit("updateSurveyId", surveyid);
         }
@@ -85,7 +86,6 @@ const LsAdminPanel = () => {
 
                 $(document).on("vue-redraw", () => {
                     this.updatePjaxLinks();
-                    this.$forceUpdate();
                 });
 
                 $(document).trigger("vue-reload-remote");
@@ -114,8 +114,8 @@ const LsAdminPanel = () => {
 
         panelNameSpace.reloadcounter = 5;
         $(document)
-            .off("pjax:send.aploading")
-            .on("pjax:send.aploading", () => {
+            .off("pjax:send.panelloading")
+            .on("pjax:send.panelloading", () => {
                 $('<div id="pjaxClickInhibitor"></div>').appendTo("body");
                 $(
                     ".ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable"
@@ -130,22 +130,22 @@ const LsAdminPanel = () => {
             });
 
         $(document)
-            .off("pjax:error.aploading")
-            .on("pjax:error.aploading", event => {
+            .off("pjax:error.panelloading")
+            .on("pjax:error.panelloading", event => {
                 // eslint-disable-next-line no-console
                 console.ls.log(event);
             });
 
         $(document)
-            .off("pjax:complete.aploading")
-            .on("pjax:complete.aploading", () => {
+            .off("pjax:complete.panelloading")
+            .on("pjax:complete.panelloading", () => {
                 if (LS.adminpanel.reloadcounter === 0) {
                     location.reload();
                 }
             });
         $(document)
-            .off("pjax:scriptcomplete.aploading")
-            .on("pjax:scriptcomplete.aploading", () => {
+            .off("pjax:scriptcomplete.panelloading")
+            .on("pjax:scriptcomplete.panelloading", () => {
                 $("#pjax-file-load-container")
                     .find("div")
                     .css("width", "100%");
@@ -194,4 +194,4 @@ const LsAdminPanel = () => {
 
 window.AdminPanel =  window.AdminPanel || LsAdminPanel();
 
-window.LS.adminCore.appendToLoad(window.AdminPanel);
+window.LS.adminCore.appendToLoad(window.AdminPanel, 'ready');

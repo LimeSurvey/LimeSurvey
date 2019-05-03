@@ -66,7 +66,9 @@ export default {
         state.questiongroups = questiongroups;
     },
     addToQuestionGroupOpenArray(state, questiongroupToAdd) {
-        state.questionGroupOpenArray.push(questiongroupToAdd.gid);
+        let tmpArray = state.questionGroupOpenArray;
+        tmpArray.push(questiongroupToAdd.gid);
+        state.questionGroupOpenArray = tmpArray;
     },
     updateSidemenus(state, sidemenus) {
         state.sidemenus = sidemenus;

@@ -6,7 +6,6 @@ export default {
         $(document).trigger('pjax:refresh');           
     },
     getSidemenus(context) {
-        context.state.sidemenus = [];
         return ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "side" }).then(
             result => {
                 LOG.log("sidemenues", result);
@@ -23,7 +22,6 @@ export default {
         );
     },
     getCollapsedmenus(context) {
-        context.state.collapsedmenus = [];
         return ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "collapsed" }).then(
             result => {
                 LOG.log("quickmenu", result);
@@ -40,7 +38,6 @@ export default {
         );
     },
     getTopmenus(context) {
-        context.state.topmenus = [];
         return ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "top" }).then(
             result => {
                 LOG.log("topmenus", result);
@@ -57,7 +54,6 @@ export default {
         );
     },
     getBottommenus(context) {
-        context.state.bottommenus = [];
         return ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "bottom" }).then(
             result => {
                 LOG.log("bottommenus", result);

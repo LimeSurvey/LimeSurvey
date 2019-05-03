@@ -57,7 +57,7 @@ export default {
         this.updatePjaxLinks();
 
         $(document).on('vue-reload-remote', ()=>{
-            this.$forceUpdate();
+            //this.$forceUpdate();
         });
     }
 }

@@ -2,6 +2,7 @@
 import _ from "lodash";
 import ajaxMixin from "../mixins/runAjax.js";
 import Questionexplorer from "./subcomponents/_questionsgroups.vue";
+import SidebarStateToggle from "./subcomponents/_sidebarStateToggle.vue";
 import Sidemenu from "./subcomponents/_sidemenu.vue";
 import Quickmenu from "./subcomponents/_quickmenu.vue";
 
@@ -9,7 +10,8 @@ export default {
     components: {
         questionexplorer: Questionexplorer,
         sidemenu: Sidemenu,
-        quickmenu: Quickmenu
+        quickmenu: Quickmenu,
+        SidebarStateToggle
     },
     mixins: [ajaxMixin],
     props: {
@@ -55,10 +57,7 @@ export default {
             get(){return this.$store.state.bottommenus; },
             set(newValue) { this.$store.commit("updateBottommenus", newValue); }
         },
-        currentTab: {
-            get() { return this.$store.state.currentTab || "settings"; },
-            set(newVal) { this.$store.commit("changeCurrentTab", newVal); }
-        },
+        currentTab() { return this.$store.state.currentTab; },
         getSideBarWidth() {
             return this.$store.state.isCollapsed ? "98" : this.sideBarWidth;
         },
@@ -246,10 +245,6 @@ export default {
         openEntity() {
             this.setActiveMenuIndex(null, "question");
         },
-        changeTab(currentTab) {
-            this.$log.log('changing tab');
-            this.currentTab = currentTab;
-        },
         setActiveMenuIndex(index) {
             this.$store.commit("lastMenuItemOpen", index);
             this.activeMenuIndex = index;
@@ -364,7 +359,6 @@ export default {
         
         self.$store.commit('setSurveyActiveState', (parseInt(this.isActive)===1));
         // self.$log.debug(this.$store.state);
-        this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
         if (this.$store.state.isCollapsed) {
             this.sideBarWidth = "98";
@@ -395,7 +389,7 @@ export default {
             this.$log.log('vue-reload-remote');
             this.$store.dispatch('getQuestions');
             this.$store.dispatch('collectMenus');
-            
+            this.updatePjaxLinks();
         });
 
         $(document).on("vue-redraw", () => {
@@ -406,8 +400,6 @@ export default {
 
         //control the active link
         this.controlActiveLink();
-
-        
         this.updatePjaxLinks();
         $("body").on("mousemove", event => {
             self.mousemove(event, self);
@@ -420,28 +412,7 @@ export default {
         <div class="sidebar_loader" :style="{width: getSideBarWidth, height: getloaderHeight}" v-if="showLoader"><div class="ls-flex ls-flex-column fill align-content-center align-items-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></div></div>
         <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
             <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
-                <div class="ls-space margin bottom-15 top-5 col-12" style="height: 40px;">
-                    <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 right-10 bottom-0 top-0">
-                        <transition name="fade">
-                            <button class="btn btn-default ls-space padding left-15 right-15" v-if="!$store.state.isCollapsed" @click="toggleCollapse">
-                                <i class="fa fa-chevron-left"></i>
-                            </button>
-                        </transition>
-                        <transition name="fade">
-                            <div class="ls-flex-item grow-10 col-12" v-if="!$store.state.isCollapsed">
-                                <div class="btn-group btn-group col-12">
-                                    <div id="adminpanel__sidebar--selectorSettingsButton" class="btn col-6 force color white onhover tabbutton" :class="currentTab =='settings' ? 'btn-primary' : 'btn-default'" @click.stop.prevent="changeTab('settings')">{{translate.settings}}</div>
-                                    <div id="adminpanel__sidebar--selectorStructureButton" class="btn col-6 force color white onhover tabbutton" :class="currentTab =='questiontree' ? 'btn-primary' : 'btn-default'" @click.stop.prevent="changeTab('questiontree')">{{translate.structure}}</div>
-                                </div>
-                            </div>
-                        </transition>
-                        <transition name="fade">
-                            <button class="btn btn-default ls-space padding left-15 right-15" v-if="$store.state.isCollapsed" @click="toggleCollapse">
-                                <i class="fa fa-chevron-right"></i>
-                            </button>
-                        </transition>
-                    </div>
-                </div>
+                <sidebar-state-toggle :translate="translate" @collapse="toggleCollapse"/>
                 <transition name="slide-fade">
                     <sidemenu :style="{'min-height': calculateSideBarMenuHeight}" v-show="showSideMenu"></sidemenu>
                 </transition>

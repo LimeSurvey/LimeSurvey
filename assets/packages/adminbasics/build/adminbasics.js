@@ -29112,6 +29112,7 @@ module.exports = identity;
 
 
 const $GET = {};
+
 __WEBPACK_IMPORTED_MODULE_0_lodash_forEach___default()(window.location.search.substring(1).split('&'), (value, index) => {
     try{
         const keyValueArray = value.split("=");
@@ -29119,7 +29120,22 @@ __WEBPACK_IMPORTED_MODULE_0_lodash_forEach___default()(window.location.search.su
     } catch(e) {}
 });
 
-/* harmony default export */ __webpack_exports__["a"] = ({parameters : $GET});
+let key = null
+const keyValuePairs = {};
+__WEBPACK_IMPORTED_MODULE_0_lodash_forEach___default()(window.location.search.substring(1).split('/'), (value, index) => {
+    if(value == 'sa') {
+        key = sa;
+    }
+    if(key !== null) {
+        if(key === false) {
+            key=value;
+        } else {
+            keyValuePairs[key] = value;
+        }
+    }
+});
+
+/* harmony default export */ __webpack_exports__["a"] = ({parameters : {$GET, keyValuePairs}});
 
 /***/ }),
 /* 387 */
@@ -29508,7 +29524,7 @@ const NotifcationSystem  = function (){
      */
     initNotification = () => {
         // const self = this;
-        __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].group('initNotification');
+        
         $('.admin-notification-link').each((nr, that) => {
             
             __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].log('Number of Notification: ', nr);
@@ -29531,7 +29547,7 @@ const NotifcationSystem  = function (){
             });
 
         });
-        __WEBPACK_IMPORTED_MODULE_1__lslog__["a" /* default */].groupEnd('initNotification');
+        
     },
 
     /**

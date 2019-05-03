@@ -105,7 +105,6 @@ export default {
             } else {
                 this.active.push(index);
             }
-            this.$forceUpdate();
             this.$store.commit("questionGroupOpenArray", this.active);
             this.updatePjaxLinks();
         },
@@ -118,13 +117,12 @@ export default {
         openQuestionGroup(questionGroup) {
             this.addActive(questionGroup.gid);
             this.$store.commit("lastQuestionGroupOpen", questionGroup);
-            this.$forceUpdate();
             this.updatePjaxLinks();
         },
         openQuestion(question) {
             this.addActive(question.gid);
             this.$store.commit("lastQuestionOpen", question);
-            this.$forceUpdate();
+            this.updatePjaxLinks();
             $(document).trigger("pjax:load", { url: question.link });
         },
         //dragevents questiongroups
@@ -224,7 +222,7 @@ export default {
         this.updatePjaxLinks();
 
         $(document).on("vue-reload-remote", () => {
-            this.$forceUpdate();
+            //this.$forceUpdate();
         });
     }
 };
