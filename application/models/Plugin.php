@@ -19,6 +19,7 @@
  * @property integer $id
  * @property string $name
  * @property integer $active
+ * @property integer $priority
  * @property string $version
  * @property string $load_error
  * @property string $plugin_type
@@ -34,6 +35,17 @@ class Plugin extends LSActiveRecord
      * @var string
      */
     public $plugin_type;
+
+    /**
+     * @inheritdoc
+     * Set the default value
+     */
+    public function init()
+    {
+        /* Set by DB too, but more clear directly here */
+        $this->priority = 0;
+        $this->active = 0;
+    }
 
     /**
      * @inheritdoc
