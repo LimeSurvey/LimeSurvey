@@ -54,4 +54,3 @@ const CreateTextElementsEditor = function(){
 };
 
 const newTextEditor = CreateTextElementsEditor();
-console.ls.log({newTextEditor});

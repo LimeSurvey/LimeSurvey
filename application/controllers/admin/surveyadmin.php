@@ -1951,7 +1951,10 @@ class SurveyAdmin extends Survey_Common_Action
     public function getCurrentEditorValues($sid){
         $iSurveyId = (int) $sid;
         $oSurvey = Survey::model()->findByPk($iSurveyId);
-      
+        
+        $updatePermission = $oSurvey == null 
+            ? Permission::model()->hasGlobalPermission('surveys', 'create') 
+            : Permission::model()->hasSurveyPermission($iSurveyId,'surveylocale','update');
 
         $aLanguages = [];
         $aReturner = [
@@ -1964,7 +1967,7 @@ class SurveyAdmin extends Survey_Common_Action
             "dateFormat" => [],
             "decimalDivider" => [],
             "permissions" => [
-                "update" => Permission::model()->hasSurveyPermission($iSurveyId,'surveylocale','update'),
+                "update" => $updatePermission,
                 "editorpreset" => Yii::app()->session['htmleditormode'],
             ]
         ];
@@ -2109,7 +2112,7 @@ class SurveyAdmin extends Survey_Common_Action
                     "textdata" => $aReturner,
                     "languages" => $aLanguages,
                     "permissions" => [
-                        "update" => Permission::model()->hasSurveyPermission($iSurveyId,'surveysecurity','update'),
+                        "update" => Permission::model()->hasGlobalPermission('surveys','create'),
                         "editorpreset" => Yii::app()->session['htmleditormode'],
                     ]
                 ]],

@@ -177,7 +177,7 @@ export default {
                                     <label class="col-sm-12">{{ 'Question' | translate }}:</label>
                                 </div>
                                 <div class="ls-flex-item text-right">
-                                    <button class="btn btn-default btn-xs" @click="toggleSourceEditQuestion"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                                    <button class="btn btn-default btn-xs" @click.prevent="toggleSourceEditQuestion"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                                 </div>
                             </div>
                             <ckeditor v-if="!questionEditSource" :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></ckeditor>
@@ -189,7 +189,7 @@ export default {
                                     <label class="col-sm-12">{{ 'Help' | translate }}:</label>
                                 </div>
                                 <div class="ls-flex-item text-right">
-                                    <button class="btn btn-default btn-xs" @click="toggleSourceEditHelp"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                                    <button class="btn btn-default btn-xs" @click.prevent="toggleSourceEditHelp"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                                 </div>
                             </div>
                             <ckeditor v-if="!helpEditSource" :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></ckeditor>

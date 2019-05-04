@@ -62,6 +62,9 @@ export default {
             get() { return this.$store.state.decimalDivider[this.$store.state.activeLanguage]; },
             set(newValue) { this.$store.commit('setDecimalDividerForCurrentLanguage', newValue); },
         },
+        languageChangerEnabled() {
+            return LS.ld.size(this.$store.state.languages) > 1;
+        }
     },
     methods: {
         applyHotkeys() {
@@ -161,7 +164,7 @@ ${scriptContent}
 <template>
     <div class="container-center scoped-new-texteditor">
         <template v-show="!loading">
-            <div class="row" v-if="$store.state.languages.length > 1">
+            <div class="row" v-if="languageChangerEnabled">
                 <language-selector 
                     :elId="'texteditor'" 
                     :aLanguages="$store.state.languages" 
@@ -215,7 +218,7 @@ ${scriptContent}
                             <label class="">{{ "Description" | translate }}:</label>
                         </div>
                         <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
-                            <button class="btn btn-default btn-xs" @click="descriptionSource=!descriptionSource"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                            <button class="btn btn-default btn-xs" @click.prevent="descriptionSource=!descriptionSource"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentDescription)" />
@@ -231,7 +234,7 @@ ${scriptContent}
                             <label class="">{{ "Welcome" | translate }}:</label>
                         </div>
                         <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
-                            <button class="btn btn-default btn-xs" @click="welcomeSource=!welcomeSource"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                            <button class="btn btn-default btn-xs" @click.prevent="welcomeSource=!welcomeSource"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentWelcome)" />
@@ -247,7 +250,7 @@ ${scriptContent}
                             <label class="">{{ "End message" | translate }}:</label>
                         </div>
                         <div class="ls-flex-item text-right" v-if="$store.state.permissions.update">
-                            <button class="btn btn-default btn-xs" @click="endTextSource=!endTextSource"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                            <button class="btn btn-default btn-xs" @click.prevent="endTextSource=!endTextSource"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEndText)" />

@@ -351,7 +351,7 @@ return array(
         )
     ),
 
-    'emailtemplates' => array(
+    'emailtemplatesold' => array(
         'devBaseUrl' => 'assets/packages/emailtemplates/',
         'basePath' => 'core.emailtemplates',
         'position' =>CClientScript::POS_BEGIN,
@@ -363,6 +363,28 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
+        )
+    ),
+
+    'emailtemplates' => array(
+        'devBaseUrl' => 'assets/packages/emailtemplates/',
+        'basePath' => 'core.emailtemplates',
+        'position' =>CClientScript::POS_END,
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/emailtemplates.js'
+            )
+            : array(
+                'build.min/js/emailtemplates.js'
+            )
+        ),
+        'css' => array(
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics',
+            'ace'
         )
     ),
 

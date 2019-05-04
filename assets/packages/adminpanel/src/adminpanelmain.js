@@ -1,6 +1,6 @@
 //globals formId
 import Vue from "vue";
-// Vue.config.devtools = false;
+Vue.config.devtools = false;
 
 import Sidebar from "./components/sidebar.vue";
 import Topbar from "./components/topbar.vue";

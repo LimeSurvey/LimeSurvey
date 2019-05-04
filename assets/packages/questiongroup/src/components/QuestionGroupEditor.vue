@@ -108,7 +108,7 @@ ${scriptContent}
                             {{'Description'|translate}}
                         </div>
                         <div class="ls-flex-item text-right">
-                            <button class="btn btn-default btn-xs" @click="sourceMode=!sourceMode"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                            <button class="btn btn-default btn-xs" @click.prevent="sourceMode=!sourceMode"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                         </div>
                     </div>
                     <ckeditor  v-if="!sourceMode" :editor="editorDescription" v-model="currentQuestionGroupDescription" :config="editorDescriptionConfig"></ckeditor>

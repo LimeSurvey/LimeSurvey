@@ -99,7 +99,7 @@ export default {
     <div class="aceEditor--main">
         <div class="aceEditor--topbar">
             <div class="aceEditor--subcontainer" v-if="showThemeToggle">
-                <button @click="toggleDarkMode" class="btn btn-xs btn-default"> {{'Toggle dark mode'|translate}}</button>
+                <button @click.prevent="toggleDarkMode" class="btn btn-xs btn-default"> {{'Toggle dark mode'|translate}}</button>
             </div>
             <div class="aceEditor--subcontainer" v-if="showLangSelector">
                 <select class="aceEditor--langselect" v-model="lang">

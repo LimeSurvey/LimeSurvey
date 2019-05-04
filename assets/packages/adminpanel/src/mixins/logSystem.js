@@ -8,12 +8,12 @@ import ConsoleShim from '../lib/ConsoleShim.js';
 
 const LOG = new ConsoleShim('AdminPanel');
 
+if(!window.debugState.backend) {
+    LOG.setSilent(true);
+}
+
 const PluginLog = function (Vue) {
-    if(window.debugState.backend) {
-        Vue.prototype.$log = LOG;
-    } else {
-        Vue.prototype.$log = console.ls.silent;
-    }
+    Vue.prototype.$log = LOG;
 };
 
 export {PluginLog, LOG};
