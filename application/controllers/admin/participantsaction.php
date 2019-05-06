@@ -48,7 +48,11 @@ class participantsaction extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        $this->checkPermission('read');
+//        $this->checkPermission(['read','create']);
+        if (!(Permission::model()->hasGlobalPermission('participantpanel', 'read') || Permission::model()->hasGlobalPermission('participantpanel', 'create'))) {
+            App()->setFlashMessage(gT('No permission'), 'error');
+            App()->getController()->redirect(App()->request->urlReferrer);
+        }
 
         Yii::import('application.helpers.admin.ajax_helper', true);
 
@@ -317,7 +321,7 @@ $url .= "_view"; });
             $searchparams = explode('||', $searchcondition);
             $model->addSurveyFilter($searchparams);
         }
-        
+
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -578,14 +582,14 @@ $url .= "_view"; });
                 $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
             }
         }
-        
+
 
         if (count($aData) > 0) {
             foreach ($aParticipantIds as $sParticipantId) {
                 $oParticipant = Participant::model()->findByPk($sParticipantId);
-                
-                
-                
+
+
+
                 foreach ($aData as $key => $value) {
                     // Make sure no-one hacks owner_uid into form
                     if (!$oParticipant->isOwnerOrSuperAdmin() && $key=='owner_uid') {
@@ -760,7 +764,7 @@ $url .= "_view"; });
                 $sSeparator = $aResult[0];
             }
             $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0]);
-            
+
             $selectedcsvfields = array();
             $fieldlist = array();
             foreach ($firstline as $key => $value) {
@@ -871,7 +875,7 @@ $url .= "_view"; });
             foreach ($mappedarray as $key => $value) {
                 array_push($allowedfieldnames, strtolower($value));
             }
-        }        
+        }
         foreach ($tokenlistarray as $buffer) {
 //Iterate through the CSV file line by line
             $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
