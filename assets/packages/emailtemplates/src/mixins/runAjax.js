@@ -35,8 +35,8 @@ export default {
     $_post(uri, data) {
       return this.__runAjax(uri, data, 'post');
     },
-    $_get(uri, data) {
-      return this.__runAjax(uri, data, 'get');
+    $_get(uri, data, dataType = null) {
+      return this.__runAjax(uri, data, 'get', dataType);
     },
     $_load(uri, data, method='get') {
       return this.__runAjax(uri, data, method, "html");

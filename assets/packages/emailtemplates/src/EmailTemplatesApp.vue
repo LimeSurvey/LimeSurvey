@@ -2,10 +2,11 @@
 import Mousetrap from 'mousetrap';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-import LanguageSelector from './components/subcomponents/_languageSelector.vue';
+import ValidationScreen from './components/ValidationScreen';
+import LanguageSelector from './components/subcomponents/_languageSelector';
 import Aceeditor from './helperComponents/AceEditor';
 
-import runAjax from './mixins/runAjax.js';
+import runAjax from './mixins/runAjax';
 
 export default {
     name: 'emailtemplateeditor',
@@ -20,6 +21,7 @@ export default {
             event: null,
             currentEditor: ClassicEditor,
             sourceMode: false,
+            applyExternalChange: true
         }
     },
     computed: {
@@ -134,7 +136,20 @@ ${scriptContent}
             this.currentSubject = this.currentTemplateTypeData.subject;
             this.currentEditorContent = this.currentTemplateTypeData.default;
         },
-        validateCurrentContent(){}
+        validateCurrentContent(){
+            this.$modal.show(ValidationScreen, {
+              }, {
+                width: '75%',
+                height: '75%',
+                scrollable: true,
+              }
+            );
+        },
+        setTemplateType(type) {
+            this.applyExternalChange=true;
+            this.currentTemplateType=type;
+
+        }
     },
     created(){
         this.$store.dispatch('getDataSet'). then(
@@ -143,14 +158,13 @@ ${scriptContent}
                     this.sourceMode = true;
                 }
                 this.loading = false;
+                this.applyExternalChange = false;
             },
             (error) => {
                 this.$log.error(error);
                 this.loading = false;
             }
         );
-
-        
     },
     
     mounted() {
@@ -193,7 +207,7 @@ ${scriptContent}
                             :key="type"
                             class="scoped-tabbable-item btn btn-block btn-default"
                             :class="currentTemplateType==type?'active':''"
-                            @click.prevent="currentTemplateType=type"
+                            @click.prevent="setTemplateType(type)"
                         >
                             {{templateType.title|translate}}
                         </div>
@@ -219,7 +233,7 @@ ${scriptContent}
                             </div>
                             <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEditorContent)" />
                             <ckeditor v-if="!sourceMode && $store.state.permissions.update" :editor="currentEditor" v-model="currentEditorContent" :config="{}"></ckeditor>
-                            <aceeditor v-if="sourceMode && $store.state.permissions.update" v-model="currentEditorContent" thisId="currentTemplateTypesSourceEditor" :showLangSelector="false"></aceeditor>
+                            <aceeditor v-if="sourceMode && $store.state.permissions.update" @external-change-applied="applyExternalChange=false" :apply-external-change="applyExternalChange" v-model="currentEditorContent" thisId="currentTemplateTypesSourceEditor" :showLangSelector="false"></aceeditor>
                         </div>
                         <div class="row">
                             <div class="ls-flex-row col-12">
@@ -233,6 +247,7 @@ ${scriptContent}
             </div>
         </template>
         <div v-if="loading"><loader-widget id="emailtemplatesinternalloader" /></div>
+        <modals-container />
     </div>
 </template>
 

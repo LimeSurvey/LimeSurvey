@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import VModal from 'vue-js-modal'
 
 import EmailTemplatesApp from './EmailTemplatesApp.vue';
 import Loader from './helperComponents/loader.vue';
@@ -12,6 +13,7 @@ Vue.config.ignoredElements = ["x-test"];
 
 Vue.use( PluginLog );
 Vue.use( CKEditor );
+Vue.use(VModal, { dynamic: true });
 
 Vue.component('loader-widget', Loader);
 

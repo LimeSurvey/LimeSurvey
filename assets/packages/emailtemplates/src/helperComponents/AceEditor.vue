@@ -8,6 +8,7 @@ export default {
         value: {
             required: true
         },
+        applyExternalChange: {type: Boolean, default: false},
         thisId: {
             type: String,
             default: ()=>`vue-ace-editor-${Math.round(Math.random()*100000)}`
@@ -50,6 +51,12 @@ export default {
         lang: function(newLang) {
             if(this.editor != null) {
                 this.editor.getSession().setMode("ace/mode/" + newLang);
+            }
+        },
+        value: function(newValue) {
+            if(this.editor != null && this.applyExternalChange) {
+                this.editor.setValue((this.value || ''), 1);
+                this.$emit('external-change-applied');
             }
         },
     },

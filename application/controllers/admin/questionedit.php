@@ -598,7 +598,7 @@ class questionedit extends Survey_Common_Action
         $storeValid = true;
         foreach($dataSet as $scaleId => $aAnswerOptions) {
             foreach ($aAnswerOptions as $aAnswerOptionDataSet) {
-
+                $aAnswerOptionDataSet['sortorder'] = (int) $aAnswerOptionDataSet['sortorder'];
                 $oAnswer = Answer::model()->findByPk($aAnswerOptionDataSet['aid']);
                 if($oAnswer == null) {
                     $oAnswer = new Answer();
