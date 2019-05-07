@@ -2602,7 +2602,7 @@ function tsvSurveyExport($surveyid){
                     $tsv_output['text'] = !empty($question['question']) ? str_replace(array("\n", "\r"), '', $question['question']) : '';
                     $tsv_output['help'] = !empty($question['help']) ? str_replace(array("\n", "\r"), '', $question['help']) : '';
                     $tsv_output['language'] = $question['language'];
-                    $tsv_output['mandatory'] = is_array($question['mandatory']) && safecount($question['mandatory']) > 0 ? $question['mandatory'] : '';
+                    $tsv_output['mandatory'] = !empty($question['mandatory']) ? $question['mandatory'] : '';
                     $tsv_output['other'] = $question['other'];
                     $tsv_output['same_default'] = $question['same_default'];
 

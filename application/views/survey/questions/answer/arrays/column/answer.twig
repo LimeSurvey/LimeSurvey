@@ -34,11 +34,11 @@
         </tr>
     </thead>
     <tbody>
-        {% for ansrow in labels %}
-            <tr id="javatbd{{ ansrow.code }}" class="answers-list">
-                <th id="label-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} sr-only{% endif %}">
-                    {{ processString(ansrow.answer) }}
-                </th>
+        {% for key, ansrow in labels %}
+            <tr id="javatbd{{ aQuestions[key].myfname }}" class="answers-list">
+                <td id="label-{{ ansrow.code }}" class="answertext{% if answerwidth==0 %} sr-only{% endif %}">
+                    {{ ansrow.answer }}
+                </td>
                 {% for i, ld in anscode %}
                     <td class="answer_cell_{{ ld }} answer-item radio-item">
                             <input
