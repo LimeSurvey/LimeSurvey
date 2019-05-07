@@ -124,7 +124,7 @@
             <expression>2</expression>
         </attribute>
         <attribute>
-            <name>hidden_type</name>
+            <name>hidden_method_equation</name>
             <category>Display</category>
             <sortorder>102</sortorder>
             <inputtype>switch</inputtype>

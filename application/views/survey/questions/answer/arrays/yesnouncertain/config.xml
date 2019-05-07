@@ -231,7 +231,7 @@
             <expression>2</expression>
         </attribute>
         <attribute>
-            <name>hidden_type</name>
+            <name>hidden_method</name>
             <category>Display</category>
             <sortorder>102</sortorder>
             <inputtype>switch</inputtype>

@@ -4115,10 +4115,15 @@
                 }
                 /* Forced hidden */
                 $forcedHidden = ($hidden == "{1}");
-                $hiddenStyle = isset($qattr[$questionNum]['hidden_type']) ? $qattr[$questionNum]['hidden_type'] : ($type==Question::QT_ASTERISK_EQUATION ? 'css' : 'html');
                 // Hidden question are never on same page (except for equation)
-                if($forcedHidden && $hiddenStyle=="html"){
-                    $jsVarName_on = '';
+                if($forcedHidden) {
+                    $hiddenMethod = (isset($qidattributes['hidden_method']) && $qidattributes['hidden_method']) ? $qidattributes['hidden_method'] : 'html';
+                    if($type==Question::QT_ASTERISK_EQUATION) {
+                        $hiddenMethod = (isset($qidattributes['hidden_method_equation']) && $qidattributes['hidden_method_equation']) ? $qidattributes['hidden_method_equation'] : 'css';
+                    }
+                    if($hiddenStyle=="html") {
+                        $jsVarName_on = '';
+                    }
                 }
                 if (!is_null($rowdivid) || $type == Question::QT_L_LIST_DROPDOWN || $type == Question::QT_N_NUMERICAL || $type == Question::QT_EXCLAMATION_LIST_DROPDOWN || $type == Question::QT_O_LIST_WITH_COMMENT  || !is_null($preg)
                 || $type == Question::QT_S_SHORT_FREE_TEXT || $type == Question::QT_D_DATE || $type == Question::QT_T_LONG_FREE_TEXT || $type == Question::QT_U_HUGE_FREE_TEXT || $type == Question::QT_VERTICAL_FILE_UPLOAD) {
