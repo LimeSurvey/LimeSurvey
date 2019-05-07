@@ -104,6 +104,7 @@
                             'offLabel' => gT('Off')));
                         ?>
                     </div>
+                    <div class="help-block"><?php eT("The token field is always checked for duplicates."); ?></div>
                 </div>
 
                 <!-- Duplicates are determined by -->
