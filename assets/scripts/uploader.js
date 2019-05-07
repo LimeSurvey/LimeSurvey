@@ -155,7 +155,6 @@ function doFileUpload()
             }, 400);
         },
         onComplete: function (file, response) {
-            console.warn(response);
             button.text(uploadLang.selectfile);
             window.clearInterval(interval);
             // enable upload button
