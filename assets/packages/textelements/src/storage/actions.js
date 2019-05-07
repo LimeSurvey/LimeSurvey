@@ -4,9 +4,10 @@ import {LOG} from '../mixins/logSystem.js'
 
 export default {
     getDataSet: (context) => {
-        return new Promise((resolve, reject) => {
+            const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getCurrentEditorValues' : '/getCurrentEditorValues';
+            return new Promise((resolve, reject) => {
             ajax.methods.$_get(
-                window.TextEditData.connectorBaseUrl+'/getCurrentEditorValues'
+                window.TextEditData.connectorBaseUrl+subAction
             ).then((result) => {
                 LOG.log('Getting Data', result);
                 context.dispatch('updateObjects', result.data.textdata);
@@ -29,8 +30,9 @@ export default {
         context.commit('setPermissions', newObjectBlock.permissions);
     },
     getDateFormatOptions: (context) => {
+        const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getDateFormatOptions' : '/getDateFormatOptions';
         ajax.methods.$_get(
-            window.TextEditData.connectorBaseUrl+'/getDateFormatOptions'
+            window.TextEditData.connectorBaseUrl+subAction
         ).then((result) => {
             context.commit('setDateFormatOptions', result.data);
         });
@@ -51,8 +53,8 @@ export default {
         });
 
         let transferObject = _.merge({changes: postObject}, window.LS.data.csrfTokenData);
-
+        const subAction = window.TextEditData.connectorBaseUrl.slice(-1) == '=' ? 'saveTextData' : '/saveTextData';
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'postObject': transferObject});
-        return ajax.methods.$_post(window.TextEditData.connectorBaseUrl+'/saveTextData', transferObject)
+        return ajax.methods.$_post(window.TextEditData.connectorBaseUrl+subAction, transferObject)
     }
 };

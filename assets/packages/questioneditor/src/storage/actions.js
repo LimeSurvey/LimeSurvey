@@ -38,8 +38,9 @@ export default {
     loadQuestion: (context) => {
         return Promise.all([
             (new Promise((resolve, reject) => {
+                const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionData' : '/getQuestionData';
                 ajax.methods.$_get(
-                    window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 
+                    window.QuestionEditData.connectorBaseUrl+subAction, 
                     {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
                 ).then((result) => {
                     context.commit('setCurrentQuestion', result.data.question);
@@ -69,8 +70,9 @@ export default {
                 })
             })),
             (new Promise((resolve, reject) => {
+                const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionPermissions' : '/getQuestionPermissions';
                 ajax.methods.$_get(
-                    window.QuestionEditData.connectorBaseUrl+'/getQuestionPermissions', 
+                    window.QuestionEditData.connectorBaseUrl+subAction, 
                     {'iQuestionId' : window.QuestionEditData.qid }
                 ).then((result) => {
                     context.commit('setCurrentQuestionPermissions', result.data);
@@ -84,8 +86,9 @@ export default {
     },
     getQuestionGeneralSettings: (context) => {
         return new Promise((resolve, reject) => {
+            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getGeneralOptions' : '/getGeneralOptions';
             ajax.methods.$_get(
-                window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
+                window.QuestionEditData.connectorBaseUrl+subAction, 
                 {
                     'iQuestionId' : window.QuestionEditData.qid,
                     'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
@@ -103,8 +106,10 @@ export default {
     },
     getQuestionAdvancedSettings: (context) => {
         return new Promise((resolve, reject) => {
+            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getAdvancedOptions' : '/getAdvancedOptions';
+
             ajax.methods.$_get(
-                window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
+                window.QuestionEditData.connectorBaseUrl+subAction, 
                 {
                     'iQuestionId' : window.QuestionEditData.qid,
                     'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
@@ -121,15 +126,17 @@ export default {
         });
     },
     getQuestionTypes: (context) => {
+        const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionTypeList' : '/getQuestionTypeList';
         ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getQuestionTypeList'
+            window.QuestionEditData.connectorBaseUrl+subAction
         ).then((result) => {
             context.commit('setQuestionTypeList', result.data);
         });
     },
     reloadQuestion: (context) => {
+        const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionData' : '/getQuestionData';
         ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 
+            window.QuestionEditData.connectorBaseUrl+subAction, 
             {
                 'iQuestionId' : window.QuestionEditData.qid, 
                 type: context.state.currentQuestion.type || window.QuestionEditData.startType
@@ -161,8 +168,9 @@ export default {
 
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
         return new Promise((resolve, reject) => {
+            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'saveQuestionData' : '/saveQuestionData';
             context.commit('setInTransfer', true);
-            ajax.methods.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', transferObject)
+            ajax.methods.$_post(window.QuestionEditData.connectorBaseUrl+subAction, transferObject)
                 .then(
                     (result) => {
                         context.commit('setInTransfer', false);

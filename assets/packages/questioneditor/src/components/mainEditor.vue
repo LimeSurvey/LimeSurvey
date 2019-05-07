@@ -41,13 +41,15 @@ export default {
     },
     computed: {
         previewRootUrl() {
+            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? '' : '/';
             return window.QuestionEditData.qid != null 
             ? [
+                subAction,
                 window.QuestionEditData.connectorBaseUrl,
-                '/getRenderedPreview/iQuestionId/',
+                'getRenderedPreview&iQuestionId=',
                 window.QuestionEditData.qid,
-                (this.firstStart ? '/root/1' : ''),
-                '/sLanguage/',
+                (this.firstStart ? '&root=1' : ''),
+                '&sLanguage=',
                 this.$store.state.activeLanguage].join('')
             : 'about:blank';
         },

@@ -7,8 +7,9 @@ export default {
     loadQuestionGroup: (context) => {
         return new Promise((resolve, reject) => {
             context.commit('setCurrentQuestionGroup', {});
+            const subAction = window.QuestionGroupEditData.connectorBaseUrl.slice(-1) == '=' ? 'loadQuestionGroup' : '/loadQuestionGroup';
             ajax.methods.$_get(
-                window.QuestionGroupEditData.connectorBaseUrl+'/loadQuestionGroup', 
+                window.QuestionGroupEditData.connectorBaseUrl+subAction, 
                 {'iQuestionGroupId' : window.QuestionGroupEditData.gid }
             ).then((result) => {
                 context.commit('setLanguages', result.data.languages);
@@ -27,8 +28,9 @@ export default {
     },
     getQuestionsForGroup: (context) => {
         return new Promise((resolve, reject) => {
+            const subAction = window.QuestionGroupEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionsForGroup' : '/getQuestionsForGroup';
             ajax.methods.$_get(
-                window.QuestionGroupEditData.connectorBaseUrl+'/getQuestionsForGroup', 
+                window.QuestionGroupEditData.connectorBaseUrl+subAction, 
                 {
                     'iQuestionGroupId' : window.QuestionGroupEditData.gid,
                 }
@@ -54,7 +56,8 @@ export default {
         return new Promise((resolve, reject) => {
             context.commit('setInTransfer', true);
             LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
-            ajax.methods.$_post(window.QuestionGroupEditData.connectorBaseUrl+'/saveQuestionGroupData', transferObject)
+            const subAction = window.QuestionGroupEditData.connectorBaseUrl.slice(-1) == '=' ? 'saveQuestionGroupData' : '/saveQuestionGroupData';
+            ajax.methods.$_post(window.QuestionGroupEditData.connectorBaseUrl+subAction, transferObject)
                 .then(
                     (result) => {
                         context.commit('setInTransfer', false);

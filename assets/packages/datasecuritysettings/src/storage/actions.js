@@ -7,8 +7,9 @@ export default {
     },
     loadData: (context) => {
         return new Promise((resolve,reject) => {
+            const subAction = window.DataSecTextEditData.connectorBaseUrl.slice(-1) == '=' ? 'getDataSecTextSettings' : '/getDataSecTextSettings';
             ajax.methods.$_get(
-                window.DataSecTextEditData.connectorBaseUrl+'/getDataSecTextSettings', {}
+                window.DataSecTextEditData.connectorBaseUrl+subAction, {}
             ).then((result) => {
                 LOG.log('AjaxCall: ',result);
                 context.commit('setShowsurveypolicynotice', parseInt(result.data.showsurveypolicynotice) );
@@ -35,6 +36,7 @@ export default {
         }}, window.LS.data.csrfTokenData);
 
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'dataSecTextData': transferObject});
-        return ajax.methods.$_post(window.DataSecTextEditData.connectorBaseUrl+'/saveDataSecTextData', transferObject)
+        const subAction = window.DataSecTextEditData.connectorBaseUrl.slice(-1) == '=' ? 'saveDataSecTextData' : '/saveDataSecTextData';
+        return ajax.methods.$_post(window.DataSecTextEditData.connectorBaseUrl+subAction, transferObject)
     }
 };
