@@ -7,11 +7,15 @@ import Topbar from "./components/topbar.vue";
 import ParameterTable from "./components/parameter-table.vue";
 import getAppState from "./store/vuex-store.js";
 import {PluginLog} from "./mixins/logSystem.js";
+import Loader from './helperComponents/loader.vue';
 
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
 
 Vue.use(PluginLog);
+
+Vue.component('loader-widget', Loader);
+
 Vue.mixin({
     methods: {
         updatePjaxLinks: function () {
@@ -20,13 +24,24 @@ Vue.mixin({
         },
         redoTooltips: function () {
             window.LS.doToolTip();
+        },
+        translate(string){
+            return window.SideMenuData.translate[string] || string;
+        }
+    },
+    filters: {
+        translate(string){
+            return window.SideMenuData.translate[string] || string;
         }
     }
 });
 
 const Lsadminsidepanel = () => {
-    const surveyid = $('#vue-apps-main-container').data("surveyid");
-    const AppState = getAppState(LS.globalUserId+'-'+surveyid);
+    const surveyid = window.LS.parameters.$GET.surveyid 
+        || window.LS.parameters.keyValuePairs.surveyid 
+        || 'newSurvey';
+
+    const AppState = getAppState(window.LS.globalUserId+'-'+surveyid);
     const panelNameSpace = {};
 
     const applySurveyId = (store) => {

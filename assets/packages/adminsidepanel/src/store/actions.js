@@ -6,34 +6,40 @@ export default {
         $(document).trigger('pjax:refresh');           
     },
     getSidemenus(context) {
-        return ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "side" }).then(
-            result => {
-                LOG.log("sidemenues", result);
-                const newSidemenus = LS.ld.orderBy(
-                    result.data.menues,
-                    a => {
-                        return parseInt(a.order || 999999);
-                    },
-                    ["desc"]
-                );
-                context.commit('updateSidemenus', newSidemenus);
-                context.dispatch('updatePjax');
+        return new Promise((resolve, reject) => {
+            ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "side" }).then(
+                result => {
+                    LOG.log("sidemenues", result);
+                    const newSidemenus = LS.ld.orderBy(
+                        result.data.menues,
+                        a => {
+                            return parseInt(a.order || 999999);
+                        },
+                        ["desc"]
+                    );
+                    context.commit('updateSidemenus', newSidemenus);
+                    context.dispatch('updatePjax');
+                    resolve();
+                },reject);
             }
         );
     },
     getCollapsedmenus(context) {
-        return ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "collapsed" }).then(
-            result => {
-                LOG.log("quickmenu", result);
-                const newCollapsedmenus = LS.ld.orderBy(
-                    result.data.menues,
-                    a => {
-                        return parseInt(a.order || 999999);
-                    },
-                    ["desc"]
-                );
-                context.commit('updateCollapsedmenus', newCollapsedmenus);
-                context.dispatch('updatePjax');
+        return new Promise((resolve, reject) => {
+            ajax.methods.get(window.SideMenuData.getMenuUrl, { position: "collapsed" }).then(
+                result => {
+                    LOG.log("quickmenu", result);
+                    const newCollapsedmenus = LS.ld.orderBy(
+                        result.data.menues,
+                        a => {
+                            return parseInt(a.order || 999999);
+                        },
+                        ["desc"]
+                    );
+                    context.commit('updateCollapsedmenus', newCollapsedmenus);
+                    context.dispatch('updatePjax');
+                    resolve();
+                },reject);
             }
         );
     },
@@ -70,11 +76,14 @@ export default {
     //     );
     // },
     getQuestions(context) {
-        return ajax.methods.get(window.SideMenuData.getQuestionsUrl).then(result => {
-            LOG.log("Questions", result);
-            const newQuestiongroups = result.data.groups;
-            context.commit("updateQuestiongroups", newQuestiongroups);
-            context.dispatch('updatePjax');
+        return new Promise((resolve, reject) => {
+            ajax.methods.get(window.SideMenuData.getQuestionsUrl).then(result => {
+                LOG.log("Questions", result);
+                const newQuestiongroups = result.data.groups;
+                context.commit("updateQuestiongroups", newQuestiongroups);
+                context.dispatch('updatePjax');
+                resolve();
+            },reject);
         });
     },
     collectMenus(context) {

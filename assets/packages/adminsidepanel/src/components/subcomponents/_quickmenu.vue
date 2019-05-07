@@ -9,7 +9,7 @@ export default {
     },
     data(){
         return {
-            menues : {},
+            loading : true,
         };
     },
     computed: {
@@ -42,25 +42,24 @@ export default {
     },
     created(){
         const self = this;
-        //first load old settings from localStorage
-        this.menues = JSON.parse(self.$localStorage.get('collapsedmenues', JSON.stringify([])));
+        this.$store.dispatch('getCollapsedmenus')
+        .then(
+            (result) => {},
+            this.$log.error
+        )
+        .finally(
+            (result) => { this.loading = false }
+        );
     },
     mounted(){
-        const self = this;
-        // this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
-        //     self.$log.debug('quickmenu',result);
-        //     self.menues =  LS.ld.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-        //     self.$localStorage.set('collapsedmenues', JSON.stringify(self.menues));
-        //     self.$forceUpdate();
-        // });
     }
 }
 </script>
 <template>
     <div class='ls-flex-column fill'>
-        <div class="ls-space margin top-10"  v-for="menu in sortedMenues" :title="menu.title" v-bind:key="menu.title" >
+        <div class="ls-space margin top-10" v-show="!loading"  v-for="menu in sortedMenues" :title="menu.title" v-bind:key="menu.title" >
             <div class="btn-group-vertical ls-space padding right-10">
-                <a v-for="(menuItem, index) in sortedMenuEntries(menu.entries)" 
+                <a v-for="(menuItem) in sortedMenuEntries(menu.entries)" 
                 @click="setActiveMenuIndex(menuItem)"
                 v-bind:key="menuItem.id" 
                 :href="menuItem.link" :title="menuItem.menu_description" 
@@ -73,7 +72,7 @@ export default {
                         <i class="quickmenuIcon fa" :class="'fa-'+menuItem.menu_icon"></i>
                     </template>
                     <template v-else-if="menuItem.menu_icon_type == 'image'">
-                        <img width="32px" :src="menuItem.menu_icon" ></img>
+                        <img width="32px" :src="menuItem.menu_icon" />
                     </template>
                     <template v-else-if="menuItem.menu_icon_type == 'iconclass'">
                         <i class="quickmenuIcon"  :class="menuItem.menu_icon" ></i>
@@ -81,6 +80,7 @@ export default {
                 </a>
             </div>
         </div>
+        <loader-widget v-if="loading" id="quickmenuLoadingIcon" />
     </div>
 </template>
 <style lang="scss">

@@ -4,11 +4,6 @@ import ajaxMethods from "../../mixins/runAjax.js";
 
 export default {
     mixins: [ajaxMethods],
-    props: {
-        createQuestionGroupLink: { type: String },
-        createQuestionLink: { type: String },
-        translate: { type: Object }
-    },
     data: () => {
         return {
             active: [],
@@ -20,6 +15,8 @@ export default {
         };
     },
     computed: {
+        createQuestionGroupLink() { return window.SideMenuData.createQuestionGroupLink },
+        createQuestionLink() { return window.SideMenuData.createQuestionLink },
         calculatedHeight() {
             let containerHeight = this.$store.state.maxHeight;
             return containerHeight - 100;
@@ -239,7 +236,7 @@ export default {
                 :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
             >
                 <i class="fa fa-plus"></i>&nbsp;
-                {{translate.createQuestionGroup}}
+                {{"createQuestionGroup"|translate}}
             </a>
             <a 
                 id="adminsidepanel__sidebar--selectorCreateQuestion" 
@@ -248,7 +245,7 @@ export default {
                 class="btn btn-small btn-default ls-space margin right-10 pjax"
             >
                 <i class="fa fa-plus-circle"></i>&nbsp;
-                {{translate.createQuestion}}
+                {{"createQuestion"|translate}}
             </a>
         </div>
         <div class="ls-flex-row ls-space padding all-0">

@@ -14,17 +14,6 @@ export default {
         SidebarStateToggle
     },
     mixins: [ajaxMixin],
-    props: {
-        user: { type: Number },
-        translate: { type: Object },
-        getQuestionsUrl: { type: String },
-        getMenuUrl: { type: String },
-        createQuestionGroupLink: { type: String },
-        createQuestionLink: { type: String },
-        updateOrderLink: { type: String },
-        isActive: {type: String},
-        basemenus: {type: Object}
-    },
     data: () => {
         return {
             activeMenuIndex: 0,
@@ -40,6 +29,7 @@ export default {
         };
     },
     computed: {
+        isActive(){ return window.SideMenuData.isActive; },
         questiongroups() { return this.$store.state.questiongroups },
         sidemenus: {
             get(){return this.$store.state.sidemenus; },
@@ -126,7 +116,7 @@ export default {
             );
             this.$log.log("QuestionGroup order changed");
             this.showLoader = true;
-            this.post(this.updateOrderLink, {
+            this.post(window.SideMenuData.updateOrderLink, {
                 grouparray: onlyGroupsArray,
                 surveyid: this.$store.surveyid
             }).then(
@@ -138,7 +128,7 @@ export default {
                 },
                 error => {
                     self.$log.error("questiongroups updating error!");
-                    this.post(this.updateOrderLink, {
+                    this.post(window.SideMenuData.updateOrderLink, {
                         surveyid: this.$store.surveyid
                     }).then(()=>{
                         self.getQuestions().then(() => {
@@ -365,10 +355,7 @@ export default {
         } else {
             this.sideBarWidth = self.$store.state.sidebarwidth;
         }
-        LS.ld.each(this.basemenus, this.setBaseMenuPosition)
-        //retrieve the current menues via ajax
-        this.$store.dispatch('getQuestions');
-        this.$store.dispatch('collectMenus');
+        LS.ld.each(window.SideMenuData.basemenus, this.setBaseMenuPosition)
     },
     mounted() {
         const self = this;
@@ -412,12 +399,12 @@ export default {
         <div class="sidebar_loader" :style="{width: getSideBarWidth, height: getloaderHeight}" v-if="showLoader"><div class="ls-flex ls-flex-column fill align-content-center align-items-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></div></div>
         <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
             <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
-                <sidebar-state-toggle :translate="translate" @collapse="toggleCollapse"/>
+                <sidebar-state-toggle @collapse="toggleCollapse"/>
                 <transition name="slide-fade">
                     <sidemenu :style="{'min-height': calculateSideBarMenuHeight}" v-show="showSideMenu"></sidemenu>
                 </transition>
                 <transition name="slide-fade">
-                    <questionexplorer :style="{'min-height': calculateSideBarMenuHeight}" v-show="showQuestionTree" :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" v-on:questiongrouporder="changedQuestionGroupOrder"></questionexplorer>
+                    <questionexplorer :style="{'min-height': calculateSideBarMenuHeight}" v-show="showQuestionTree" v-on:openentity="openEntity" v-on:questiongrouporder="changedQuestionGroupOrder"></questionexplorer>
                 </transition>
                 <transition name="slide-fade">
                     <quickmenu :style="{'min-height': calculateSideBarMenuHeight}" v-show="$store.state.isCollapsed"></quickmenu>

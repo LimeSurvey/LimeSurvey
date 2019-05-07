@@ -15,7 +15,7 @@
                             :class="currentTab =='settings' ? 'btn-primary' : 'btn-default'" 
                             @click="currentTab='settings'"
                         >
-                            {{translate.settings}}
+                            {{"settings"|translate}}
                         </button>
                         <button 
                             id="adminsidepanel__sidebar--selectorStructureButton" 
@@ -23,7 +23,7 @@
                             :class="currentTab =='questiontree' ? 'btn-primary' : 'btn-default'" 
                             @click="currentTab='questiontree'"
                         >
-                            {{translate.structure}}
+                            {{"structure"|translate}}
                         </button>
                     </div>
                 </div>
@@ -40,9 +40,6 @@
 <script>
 export default {
     name: 'sidebar-state-toggle',
-    props: {
-        translate: {type: Object, default: ()=>null}
-    },
     computed: {
         currentTab: {
             get() { return this.$store.state.currentTab; },
