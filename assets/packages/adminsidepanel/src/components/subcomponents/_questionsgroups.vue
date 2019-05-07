@@ -234,7 +234,7 @@ export default {
             v-if="createAllowance != ''"
         >
             <a 
-                id="adminpanel__sidebar--selectorCreateQuestionGroup" 
+                id="adminsidepanel__sidebar--selectorCreateQuestionGroup" 
                 v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" 
                 :href="createQuestionGroupLink" class="btn btn-small btn-primary pjax"
             >
@@ -242,7 +242,7 @@ export default {
                 {{translate.createQuestionGroup}}
             </a>
             <a 
-                id="adminpanel__sidebar--selectorCreateQuestion" 
+                id="adminsidepanel__sidebar--selectorCreateQuestion" 
                 v-if="createQuestionAllowed" 
                 :href="createQuestionLink" 
                 class="btn btn-small btn-default ls-space margin right-10 pjax"

@@ -10,7 +10,7 @@
                 <div class="ls-flex-item grow-10 col-12" v-if="!$store.state.isCollapsed">
                     <div class="btn-group btn-group col-12">
                         <button 
-                            id="adminpanel__sidebar--selectorSettingsButton" 
+                            id="adminsidepanel__sidebar--selectorSettingsButton" 
                             class="btn col-6 force color white onhover tabbutton" 
                             :class="currentTab =='settings' ? 'btn-primary' : 'btn-default'" 
                             @click="currentTab='settings'"
@@ -18,7 +18,7 @@
                             {{translate.settings}}
                         </button>
                         <button 
-                            id="adminpanel__sidebar--selectorStructureButton" 
+                            id="adminsidepanel__sidebar--selectorStructureButton" 
                             class="btn col-6 force color white onhover tabbutton" 
                             :class="currentTab =='questiontree' ? 'btn-primary' : 'btn-default'" 
                             @click="currentTab='questiontree'"

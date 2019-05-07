@@ -49,14 +49,14 @@ export default {
             get(){return this.$store.state.collapsedmenus; },
             set(newValue) { this.$store.commit("updateCollapsedmenus", newValue); }
         },
-        topmenus: {
-            get(){return this.$store.state.topmenus; },
-            set(newValue) { this.$store.commit("updateTopmenus", newValue); }
-        },
-        bottommenus: {
-            get(){return this.$store.state.bottommenus; },
-            set(newValue) { this.$store.commit("updateBottommenus", newValue); }
-        },
+        // topmenus: {
+        //     get(){return this.$store.state.topmenus; },
+        //     set(newValue) { this.$store.commit("updateTopmenus", newValue); }
+        // },
+        // bottommenus: {
+        //     get(){return this.$store.state.bottommenus; },
+        //     set(newValue) { this.$store.commit("updateBottommenus", newValue); }
+        // },
         currentTab() { return this.$store.state.currentTab; },
         getSideBarWidth() {
             return this.$store.state.isCollapsed ? "98" : this.sideBarWidth;
@@ -333,24 +333,24 @@ export default {
                         ["desc"]
                     );
                     break;
-                case 'top':
-                    this.topmenus = LS.ld.orderBy(
-                        entries,
-                        a => {
-                            return parseInt(a.order || 999999);
-                        },
-                        ["desc"]
-                    );
-                    break;
-                case 'bottom':
-                    this.bottommenus = LS.ld.orderBy(
-                        entries,
-                        a => {
-                            return parseInt(a.order || 999999);
-                        },
-                        ["desc"]
-                    );
-                    break;
+                // case 'top':
+                //     this.topmenus = LS.ld.orderBy(
+                //         entries,
+                //         a => {
+                //             return parseInt(a.order || 999999);
+                //         },
+                //         ["desc"]
+                //     );
+                //     break;
+                // case 'bottom':
+                //     this.bottommenus = LS.ld.orderBy(
+                //         entries,
+                //         a => {
+                //             return parseInt(a.order || 999999);
+                //         },
+                //         ["desc"]
+                //     );
+                //     break;
             };
         },
     },

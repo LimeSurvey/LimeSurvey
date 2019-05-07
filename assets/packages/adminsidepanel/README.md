@@ -1,4 +1,4 @@
-# adminpanel
+# adminsidepanel
 
 ## Project setup
 ```

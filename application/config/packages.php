@@ -144,17 +144,17 @@ return array(
             'lslog',
         )
     ),
-    'adminpanel' => array(
-       'devBaseUrl' => 'assets/packages/adminpanel/',
-       'basePath' => 'core.adminpanel',
+    'adminsidepanel' => array(
+       'devBaseUrl' => 'assets/packages/adminsidepanel/',
+       'basePath' => 'core.adminsidepanel',
        'position' =>CClientScript::POS_HEAD,
        'js' => (
            $debug > 0
             ? array(
-                'build/js/adminpanel.js',
+                'build/js/adminsidepanel.js',
             )
             : array(
-                'build.min/js/adminpanel.js'
+                'build.min/js/adminsidepanel.js'
             )
         ),
        'css' => array(

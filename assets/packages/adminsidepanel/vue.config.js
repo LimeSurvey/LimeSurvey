@@ -1,5 +1,5 @@
 
-const appName = 'adminpanel';
+const appName = 'adminsidepanel';
 const entryPoint = ['./lib/surveysettings.js','./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
 
 module.exports = {

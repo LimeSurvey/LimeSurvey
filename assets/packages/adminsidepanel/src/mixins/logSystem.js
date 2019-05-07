@@ -6,7 +6,7 @@
  */
 import ConsoleShim from '../lib/ConsoleShim.js';
 
-const LOG = new ConsoleShim('AdminPanel');
+const LOG = new ConsoleShim('adminsidepanel');
 
 if(!window.debugState.backend) {
     LOG.setSilent(true);

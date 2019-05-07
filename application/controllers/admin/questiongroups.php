@@ -527,7 +527,7 @@ class questiongroups extends Survey_Common_Action
     }
 
     /**
-     * Reorder the questiongroups based on the new order in the adminpanel
+     * Reorder the questiongroups based on the new order in the adminsidepanel
      *
      * @param integer $surveyid
      * @return void
@@ -590,7 +590,7 @@ class questiongroups extends Survey_Common_Action
     }
 
     /**
-     * Reorder the questiongroups based on the new order in the adminpanel
+     * Reorder the questiongroups based on the new order in the adminsidepanel
      *
      * @param integer $surveyid
      * @return void

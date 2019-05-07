@@ -24,7 +24,7 @@ Vue.mixin({
     }
 });
 
-const LsAdminPanel = () => {
+const Lsadminsidepanel = () => {
     const surveyid = $('#vue-apps-main-container').data("surveyid");
     const AppState = getAppState(LS.globalUserId+'-'+surveyid);
     const panelNameSpace = {};
@@ -126,7 +126,7 @@ const LsAdminPanel = () => {
                         width: "20%",
                         display: "block"
                     });
-                LS.adminpanel.reloadcounter--;
+                LS.adminsidepanel.reloadcounter--;
             });
 
         $(document)
@@ -139,7 +139,7 @@ const LsAdminPanel = () => {
         $(document)
             .off("pjax:complete.panelloading")
             .on("pjax:complete.panelloading", () => {
-                if (LS.adminpanel.reloadcounter === 0) {
+                if (LS.adminsidepanel.reloadcounter === 0) {
                     location.reload();
                 }
             });
@@ -187,11 +187,11 @@ const LsAdminPanel = () => {
 
     }
 
-    LS.adminCore.addToNamespace(panelNameSpace, 'adminpanel');
+    LS.adminCore.addToNamespace(panelNameSpace, 'adminsidepanel');
 
     return createPanelAppliance;
 };
 
-window.AdminPanel =  window.AdminPanel || LsAdminPanel();
+window.adminsidepanel =  window.adminsidepanel || Lsadminsidepanel();
 
-window.LS.adminCore.appendToLoad(window.AdminPanel, 'ready');
+window.LS.adminCore.appendToLoad(window.adminsidepanel, 'ready');
