@@ -4,106 +4,37 @@ import {LOG} from '../mixins/logSystem.js'
 
 export default {
     updateObjects: (context, newObjectBlock) => {
-        context.commit('setCurrentQuestion', newObjectBlock.question);
-        context.commit('setCurrentQuestionI10N', newObjectBlock.questionI10N);
-        context.commit('unsetQuestionImmutable');
-        context.commit('setQuestionImmutable', _.cloneDeep(newObjectBlock.question));
-        context.commit('unsetQuestionImmutableI10N');
-        context.commit('setQuestionImmutableI10N', _.cloneDeep(newObjectBlock.questionI10N));
-        context.commit('setCurrentQuestionSubquestions', newObjectBlock.scaledSubquestions);
-        context.commit('setCurrentQuestionAnswerOptions', newObjectBlock.scaledAnswerOptions);
-        context.commit('unsetQuestionSubquestionsImmutable')
-        context.commit('setQuestionSubquestionsImmutable',  _.cloneDeep(newObjectBlock.scaledSubquestions));
-        context.commit('unsetQuestionAnswerOptionsImmutable')
-        context.commit('setQuestionAnswerOptionsImmutable', _.cloneDeep(newObjectBlock.scaledAnswerOptions))
-        context.commit('setCurrentQuestionAttributes', newObjectBlock.questionAttributes);
-        context.commit('unsetImmutableQuestionAttributes');
-        context.commit('setImmutableQuestionAttributes', newObjectBlock.questionAttributes);
-        context.commit('setCurrentQuestionGeneralSettings', newObjectBlock.generalSettings);
-        context.commit('unsetImmutableQuestionGeneralSettings');
-        context.commit('setImmutableQuestionGeneralSettings', newObjectBlock.generalSettings);
-        context.commit('setCurrentQuestionAdvancedSettings', newObjectBlock.advancedSettings);
-        context.commit('unsetImmutableQuestionAdvancedSettings');
-        context.commit('setImmutableQuestionAdvancedSettings', newObjectBlock.advancedSettings);
     },
-    loadQuestion: (context) => {
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getQuestionData', 
-            {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
-        ).then((result) => {
-            context.commit('setCurrentQuestion', result.data.question);
-            context.commit('setCurrentQuestionI10N', result.data.i10n);
-            context.commit('unsetQuestionImmutable');
-            context.commit('setQuestionImmutable', _.cloneDeep(result.data.question));
-            context.commit('unsetQuestionImmutableI10N');
-            context.commit('setQuestionImmutableI10N', _.cloneDeep(result.data.i10n));
-            
-            context.commit('setCurrentQuestionSubquestions', result.data.subquestions);
-            context.commit('setCurrentQuestionAnswerOptions', result.data.answerOptions);
-            context.commit('unsetQuestionSubquestionsImmutable')
-            context.commit('setQuestionSubquestionsImmutable',  _.cloneDeep(result.data.subquestions));
-            context.commit('unsetQuestionAnswerOptionsImmutable')
-            context.commit('setQuestionAnswerOptionsImmutable', _.cloneDeep(result.data.answerOptions))
-
-            context.commit('setLanguages', result.data.languages);
-            context.commit('setActiveLanguage', result.data.mainLanguage);
-        });
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getQuestionAttributeData', 
-            {'iQuestionId' : window.QuestionEditData.qid, type: window.QuestionEditData.startType}
-        ).then((result) => {
-            context.commit('setCurrentQuestionAttributes', result.data);
-            context.commit('unsetImmutableQuestionAttributes', result.data);
-            context.commit('setImmutableQuestionAttributes', result.data);
+    loadData: (context) => {
+        return new Promise((resolve,reject) => {
+            ajax.methods.$_get(
+                window.DataSecTextEditData.connectorBaseUrl+'/getDataSecTextSettings', {}
+            ).then((result) => {
+                LOG.log('AjaxCall: ',result);
+                context.commit('setShowsurveypolicynotice', parseInt(result.data.showsurveypolicynotice) );
+                context.commit('setDataseclabel', result.data.textdata.dataseclabel );
+                context.commit('setDatasecmessage', result.data.textdata.datasecmessage );
+                context.commit('setDatasecerror', result.data.textdata.datasecerror );
+                
+                context.commit('setPermissions', result.data.permissions );
+                context.commit('setLanguages', result.data.languages);
+                context.commit('setActiveLanguage', _.keys(result.data.languages)[0]);
+                context.commit('toggleVisible', true);
+                resolve();
+            }, reject);
         });
     },
-    getQuestionGeneralSettings: (context) => {
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getGeneralOptions', 
-            {
-                'iQuestionId' : window.QuestionEditData.qid,
-                'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
-            }
-        ).then((result) => {
-            context.commit('setCurrentQuestionGeneralSettings', result.data);
-            context.commit('unsetImmutableQuestionGeneralSettings', result.data);
-            context.commit('setImmutableQuestionGeneralSettings', result.data);
-        });
-    },
-    getQuestionAdvancedSettings: (context) => {
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getAdvancedOptions', 
-            {
-                'iQuestionId' : window.QuestionEditData.qid,
-                'sQuestionType' : context.state.currentQuestion.type || window.QuestionEditData.startType
-            }
-        ).then((result) => {
-            context.commit('setCurrentQuestionAdvancedSettings', result.data);
-            context.commit('unsetImmutableQuestionAdvancedSettings', result.data);
-            context.commit('setImmutableQuestionAdvancedSettings', result.data);
-        });
-    },
-    getQuestionTypes: (context) => {
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+'/getQuestionTypeList'
-        ).then((result) => {
-            context.commit('setQuestionTypeList', result.data);
-        });
-    },
-    saveQuestionData: (context) => {
-        
+    saveData: (context) => {
+        context.commit('toggleVisible', false);
         let transferObject = _.merge({
-            'questionData': {
-            question: context.state.currentQuestion,
-            scaledSubquestions: context.state.currentQuestionSubquestions,
-            scaledAnswerOptions: context.state.currentQuestionAnswerOptions,
-            questionI10N: context.state.currentQuestionI10N,
-            questionAttributes: context.state.currentQuestionAttributes,
-            generalSettings: context.state.currentQuestionGeneralSettings,
-            advancedSettings: context.state.currentQuestionAdvancedSettings,
+            'changes': {
+            showsurveypolicynotice: context.state.showsurveypolicynotice,
+            dataseclabel: context.state.dataseclabel,
+            datasecmessage: context.state.datasecmessage,
+            datasecerror: context.state.datasecerror,
         }}, window.LS.data.csrfTokenData);
 
-        LOG.log('OBJECT TO BE TRANSFERRED: ', {'questionData': transferObject});
-        return ajax.methods.$_post(window.QuestionEditData.connectorBaseUrl+'/saveQuestionData', transferObject)
+        LOG.log('OBJECT TO BE TRANSFERRED: ', {'dataSecTextData': transferObject});
+        return ajax.methods.$_post(window.DataSecTextEditData.connectorBaseUrl+'/saveDataSecTextData', transferObject)
     }
 };

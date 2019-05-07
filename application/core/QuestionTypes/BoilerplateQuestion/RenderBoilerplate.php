@@ -47,6 +47,7 @@ class RenderBoilerplate extends QuestionBaseRenderer
             ), true);
 
         $inputnames[] = $this->sSGQA;
+        $this->registerAssets();
         return array($answer, $inputnames);
     }
 }

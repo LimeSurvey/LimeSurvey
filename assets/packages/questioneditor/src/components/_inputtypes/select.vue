@@ -10,7 +10,8 @@
             elHelp: {type: String, default: ''},
             currentValue: {default: ''},
             elOptions: {type: Object, default: {}},
-            debug: {type: [Object, Boolean]}
+            debug: {type: [Object, Boolean]},
+            readonly: {type: Boolean, default: false}
         },
         data(){
             return {
@@ -47,13 +48,14 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
+        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0) && !readonly" />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
         <select 
             v-model="curValue"
             :class="getClasses" 
             :name="elName || elId" 
             :id="elId" 
+            :disabled="readonly"
         >
             <option 
                 v-for="(optionObject, i) in elOptions.options"

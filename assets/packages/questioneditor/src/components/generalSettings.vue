@@ -19,10 +19,15 @@ export default {
         'setting-select': SettingSelect,
         'setting-textinput': SettingText,
         'setting-textarea': SettingTextarea,
-        'stub-set' : StubSet
+        'stub-set' : StubSet,
+    },
+    props: {
+        readonly : {type: Boolean, default: false}
     },
     data() {
-        return {};
+        return {
+            loading: true
+        };
     },
     computed: {
         generalSettingOptions(){
@@ -40,32 +45,45 @@ export default {
         reactOnChange(newValue, oSettingObject) {
             this.$store.commit('setQuestionGeneralSetting', {newValue, settingName: oSettingObject.formElementId});   
         }
+    },
+    created(){
+        this.$store.dispatch('getQuestionGeneralSettings').then(()=>{
+            this.loading = false;
+        });
     }
 }
 </script>
 
 <template>
-    <div class="col-sm-4 col-xs-12 scope-border-simple scope-set-min-height">
-        <div class="panel panel-default question-option-general-container">
-            <div class="panel-heading"> {{"General Settings" | translate }}</div>
-            <div class="panel-body">
-                <div class="list-group">
-                    <div class="list-group-item question-option-general-setting-block" v-for="generalSetting in generalSettingOptions" :key="generalSetting.name">
-                        <component 
-                        v-bind:is="getComponentName(generalSetting.inputtype)" 
-                        :elId="generalSetting.formElementId"
-                        :elName="generalSetting.formElementName"
-                        :elLabel="generalSetting.title"
-                        :elHelp="generalSetting.formElementHelp"
-                        :currentValue="generalSetting.formElementValue"
-                        :elOptions="generalSetting.formElementOptions"
-                        :debug="generalSetting"
-                        @change="reactOnChange($event, generalSetting)"
-                        ></component>
+    <div class="col-sm-4 col-xs-12 scope-set-min-height">
+        <transition name="slide-fade">
+            <div class="panel panel-default question-option-general-container" v-if="!loading">
+                <div class="panel-heading"> {{"General Settings" | translate }}</div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <div class="list-group-item question-option-general-setting-block" v-for="generalSetting in generalSettingOptions" :key="generalSetting.name">
+                            <component 
+                            v-bind:is="getComponentName(generalSetting.inputtype)" 
+                            :elId="generalSetting.formElementId"
+                            :elName="generalSetting.formElementName"
+                            :elLabel="generalSetting.title"
+                            :elHelp="generalSetting.formElementHelp"
+                            :currentValue="generalSetting.formElementValue"
+                            :elOptions="generalSetting.formElementOptions"
+                            :debug="generalSetting"
+                            :readonly="readonly"
+                            @change="reactOnChange($event, generalSetting)"
+                            ></component>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </transition>
+        <transition name="slide-fade">
+            <div class="row" v-if="loading">
+                <loader-widget id="generalSettingsLoader" />
+            </div>
+        </transition>
     </div>
 </template>
 

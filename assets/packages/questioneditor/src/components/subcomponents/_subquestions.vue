@@ -3,7 +3,9 @@ import max from 'lodash/max';
 import merge from 'lodash/merge';
 import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
-import foreach from 'lodash/foreach';
+import foreach from 'lodash/forEach';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 
 import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
 import eventChild from '../../mixins/eventChild.js';
@@ -17,7 +19,9 @@ export default {
             baseNonNumericPart : "SQ",
             type: 'subquestions',
             typeDefininition: 'question',
-            typeDefininitionKey: 'title'
+            typeDefininitionKey: 'title',
+            subQuestionDragging: false,
+            draggedSubQuestion: null
         };
     },
     computed: {
@@ -35,7 +39,7 @@ export default {
         },
         currentDataSet: {
             get() {
-                return this.$store.state.currentQuestionSubquestions;
+                return map(this.$store.state.currentQuestionSubquestions, subquestionscale => sortBy(subquestionscale, subquestion => subquestion.question_order));
             },
             set(newValue) {
                 this.$store.commit('setCurrentQuestionSubquestions', newValue);
@@ -95,6 +99,36 @@ export default {
         untriggerScale($event) {
             $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': ''});
         },
+        //dragevents questions
+        startDraggingSubQuestion($event, subQuestionObject, scale) {
+            this.$log.log("Dragging started", subQuestionObject);
+            $event.dataTransfer.setData('application/node', this);
+            this.subQuestionDragging = true;
+            this.draggedSubQuestion = subQuestionObject;
+        },
+        endDraggingSubQuestion($event, subQuestionObject, scale) {
+            if (this.subQuestionDragging) {
+                this.subQuestionDragging = false;
+                this.draggedSubQuestion = null;
+                this.reorderSubquestions(scale);
+            }
+        },
+        dragoverSubQuestion($event, subQuestionObject, scale) {
+            if (this.subQuestionDragging) {
+                let orderSwap = subQuestionObject.question_order;
+                subQuestionObject.question_order = this.draggedSubQuestion.question_order;
+                this.draggedSubQuestion.question_order = orderSwap;
+            }
+        },
+        reorderSubquestions(scale){
+            let subquestions = [];
+            let last = 0;
+            foreach(this.currentDataSet[scale], (subquestion, i) => {
+                subquestion.question_order = (i+1)
+                subquestions.push(subquestion);
+            });
+            this.$set(this.currentDataSet, scale, subquestions);
+        },
     },
     mounted() {
         if(isEmpty(this.$store.state.currentQuestionSubquestions)){
@@ -107,7 +141,7 @@ export default {
 <template>
     <div class="col-sm-12">
         <div class="container-fluid scoped-main-subquestions-container">
-            <div class="row">
+            <div class="row" v-show="!readonly">
                 <div class="col-sm-8">
                     <button class="btn btn-default col-3" @click.prevent="openQuickAdd">{{ "Quick add" | translate }}</button>
                     <span class="scoped-spacer col-1" />
@@ -134,9 +168,17 @@ export default {
                         class="list-group-item scoped-subquestion-block"
                         v-for="subquestion in currentDataSet[subquestionscale]"
                         :key="subquestion.qid"
+                        @dragenter="dragoverSubQuestion($event, subquestion, subquestionscale)"
+                        :class="(subQuestionDragging ? 'movement-active'+ ((subquestion.qid == draggedSubQuestion.qid) ? ' in-movement' : '') : '')"
                     >
-                        <div class="scoped-move-block ">
-                            <i class="fa fa-bars" :class="surveyActive ? ' disabled' : ' '"></i>
+                        <div class="scoped-move-block" v-show="!readonly">
+                            <i 
+                                class="fa fa-bars" 
+                                :class="surveyActive ? ' disabled' : ' '"
+                                :draggable="!surveyActive"
+                                @dragstart="startDraggingSubQuestion($event, subquestion, subquestionscale)"
+                                @dragend="endDraggingSubQuestion($event, subquestion, subquestionscale)" 
+                            ></i>
                         </div>
                         <div class="scoped-code-block   ">
                             <input
@@ -145,7 +187,9 @@ export default {
                                 maxlength='20'
                                 size='5'
                                 :class="surveyActive ? ' disabled' : ' '"
+                                :disabled="surveyActive"
                                 :name="'code_'+subquestion.question_order+'_'+subquestionscale" 
+                                :readonly="readonly"
                                 v-model="subquestion.title"
                                 @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale)'
                             />
@@ -159,6 +203,7 @@ export default {
                                 :name='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
                                 :placeholder='translate("Some example subquestion")'
                                 :value="getQuestionForCurrentLanguage(subquestion)"
+                                :readonly="readonly"
                                 @change="setQuestionForCurrentLanguage(subquestion,$event, arguments)"
                                 @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
                             />
@@ -171,6 +216,7 @@ export default {
                                     class='relevance_input_field form-control input'
                                     :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
                                     :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                    :readonly="readonly"
                                     v-model="subquestion.relevance"
                                     @keyup.enter.prevent='switchinput(false,$event)'
                                     @focus='triggerScale'
@@ -179,8 +225,8 @@ export default {
                                 <div class="input-group-addon">}</div>
                             </div>
                         </div>
-                        <div class="scoped-actions-block   ">
-                            <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(subquestion, subquestionscale)">
+                        <div class="scoped-actions-block" v-show="!readonly">
+                            <button class="btn btn-default btn-small" v-if="!surveyActive" @click.prevent="deleteThisDataSet(subquestion, subquestionscale)">
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
                             </button>
@@ -188,7 +234,7 @@ export default {
                                 <i class="fa fa-edit"></i>
                                 {{ "Open editor" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)">
+                            <button class="btn btn-default btn-small" v-if="!surveyActive" @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)">
                                 <i class="fa fa-copy"></i>
                                 {{ "Duplicate" | translate }}
                             </button>
@@ -196,7 +242,7 @@ export default {
 
                     </div>
                 </div>
-                <div class="row" :key="subquestionscale+'addRow'">
+                <div class="row" :key="subquestionscale+'addRow'" v-show="!readonly" v-if="!surveyActive">
                     <div class="col-sm-12 text-right">
                         <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary">
                             <i class="fa fa-plus"></i>
@@ -256,5 +302,10 @@ export default {
         flex-grow: 2;
     }
     
-
+    .movement-active {
+        background-color: hsla(0,0,90,0.8);
+        &.in-movement {
+            background-color: hsla(0,0,60,1);
+        }
+    }
 </style>

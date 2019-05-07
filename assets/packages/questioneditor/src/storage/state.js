@@ -4,7 +4,7 @@ export default {
     currentQuestionSubquestions: {},
     currentQuestionAnswerOptions: {},
     currentQuestionI10N: {},
-    currentQuestionAttributes: {},
+    currentQuestionPermissions: {},
     currentQuestionGeneralSettings: [],
     currentQuestionAdvancedSettings: {},
     questionAttributesImmutable: {},
@@ -26,4 +26,5 @@ export default {
     ],
     questionAdvancedSettingsCategory: '',
     activeLanguage: '',
+    inTransfer: false
 };

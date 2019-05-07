@@ -133,14 +133,14 @@ class CreateSurveyTest extends TestBaseClassWeb
             //sleep(1);
 
             // Go to structure sidebar
-            $selectStructureSidebar = self::$webDriver->findElement(WebDriverBy::id('adminpanel__sidebar--selectorStructureButton'));
+            $selectStructureSidebar = self::$webDriver->findElement(WebDriverBy::id('adminsidepanel__sidebar--selectorStructureButton'));
             $selectStructureSidebar->click();
             
 
             // Click "Add group".
             $addgroup = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::id('adminpanel__sidebar--selectorCreateQuestionGroup')
+                    WebDriverBy::id('adminsidepanel__sidebar--selectorCreateQuestionGroup')
                 )
             );
             $addgroup->click();
@@ -181,7 +181,7 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
             
-            $selectSettingsSidebar = self::$webDriver->findElement(WebDriverBy::id('adminpanel__sidebar--selectorSettingsButton'));
+            $selectSettingsSidebar = self::$webDriver->findElement(WebDriverBy::id('adminsidepanel__sidebar--selectorSettingsButton'));
             $selectSettingsSidebar->click();
 
             // Click "Overview".

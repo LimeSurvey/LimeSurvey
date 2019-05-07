@@ -40,7 +40,7 @@
          * Get all files related to this response and (optionally) question ID.
          *
          * @param int $qid
-         * @return array
+         * @return array[]
          */
         public function getFiles($qid = null)
         {
@@ -59,6 +59,17 @@
                 $field = $question->sid.'X'.$question->gid.'X'.$question->qid;
                 $data = json_decode(urldecode($this->getAttribute($field)), true);
                 if (is_array($data)) {
+                    /* adding the title and qid to fileinfo , see #14659 */
+                    $index = 0;
+                    $data = array_map( function($fileInfo) use (&$index, $question) {
+                        return array_merge($fileInfo, array(
+                            'question' => array(
+                                'title' => $question->title,
+                                'qid' => $question->qid,
+                            ),
+                            'index' => $index++,
+                        ));
+                    }, $data);
                     $files = array_merge($files, $data);
                 }
             }
@@ -199,22 +210,17 @@
 
         }
 
-        public static function getEncryptedAttributes(){
-            if (!empty($_SESSION['fieldmap-' . $_SESSION['LEMsid'] . $_SESSION['LEMlang']])){
-                $aSessionData = $_SESSION['fieldmap-' . $_SESSION['LEMsid'] . $_SESSION['LEMlang']];
-                $aAttributes = array();
-                $oQuestions = Question::model()->findAll("encrypted='Y' and sid={$_SESSION['LEMsid']}");
-                foreach ($oQuestions as $question){
-                    if (!empty($question['qid'])){
-                        foreach ($aSessionData as $response){
-                            if (!empty($response['qid']) && $response['qid'] == $question['qid']){
-                                $aAttributes[] = $response['fieldname'];
-                            }
-                        }
-                    }
+        public static function getEncryptedAttributes($surveyid = 0){
+            $survey = Survey::model()->findByPk($surveyid);
+            $fieldmap = createFieldMap($survey, 'full', false, false, $survey->language);
+            $aAttributes = array();
+            foreach ($fieldmap as $field){
+                if (array_key_exists('encrypted', $field) &&  $field['encrypted'] == 'Y'){
+                    $aAttributes[] = $field['fieldname'];
                 }
-                return $aAttributes;
+
             }
+            return $aAttributes;
         }
     
     }

@@ -32,6 +32,7 @@ class RenderGenderDropdown extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        $this->registerAssets();
         return do_gender($this->aFieldArray);
 
         $answer = '';
@@ -49,6 +50,7 @@ class RenderGenderDropdown extends QuestionBaseRenderer
             'coreClass'=> 'ls-answers '.$sCoreClasses,
             ), true);
 
+        
         $inputnames[] = [];
         return array($answer, $inputnames);
     }

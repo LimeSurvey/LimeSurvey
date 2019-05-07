@@ -5,38 +5,54 @@ import QuestionOverview from './components/questionoverview.vue';
 import MainEditor from './components/mainEditor.vue';
 import GeneralSettings from './components/generalSettings.vue';
 import AdvancedSettings from './components/advancedSettings.vue';
+import LanguageSelector from './helperComponents/LanguageSelector.vue';
 
 import runAjax from './mixins/runAjax.js';
+import eventRoot from './mixins/eventRoot.js';
 
 export default {
     name: 'lsnextquestioneditor',
-    mixins: [runAjax],
+    mixins: [runAjax,eventRoot],
     components: {
         'questionoverview' : QuestionOverview,
         'maineditor' : MainEditor,
         'generalsettings' : GeneralSettings,
         'advancedsettings' : AdvancedSettings,
+        'languageselector' : LanguageSelector,
     },
     data() {
         return {
-            event: null,
-            editQuestion: false
+            editQuestion: false,
+            questionEditButton: window.questionEditButton,
+            loading: true
         }
     },
     computed: {
         isCreateQuestion(){
             return this.$store.state.currentQuestion.qid == null;
+        },
+        questionGroupWithId(){
+            return `${this.$store.state.currentQuestionGroupInfo[this.$store.state.activeLanguage].group_name} (GID: ${this.$store.state.currentQuestionGroupInfo.gid})`;
+        },
+        currentQuestionCode: {
+            get() {return this.$store.state.currentQuestion.title;},
+            set(newValue) {
+                this.$store.commit('updateCurrentQuestionTitle', newValue);
+            }
+        },
+        allowSwitchEditing(){
+            return !this.isCreateQuestion && this.$store.state.currentQuestionPermissions.update;
         }
     },
     methods: {
         triggerEditQuestion(){
             this.toggleLoading(true);
             if(this.editQuestion) {
-                $('#questionbarid').css('display', '');
-                $('#questiongroupbarid').css('display','none');
+                $('#questionbarid').slideDown()
+                $('#questiongroupbarid').slideUp();
             } else {
-                $('#questionbarid').css('display', 'none');
-                $('#questiongroupbarid').css('display','');
+                $('#questionbarid').slideUp();
+                $('#questiongroupbarid').slideDown()
             }
             this.editQuestion = !this.editQuestion;
         },
@@ -69,16 +85,16 @@ export default {
         eventSet() {
             this.event = null;
         },
-        toggleOverview() {
-            this.editQuestion = !this.editQuestion;
-        },
         submitCurrentState(redirect = false) {
             this.toggleLoading();
             this.$store.dispatch('saveQuestionData').then(
                 (result) => {
+                    if(result === false) {
+                        return;
+                    }
                     this.toggleLoading();
                     if(redirect == true) {
-                        window.location.href = result.data.redirect;
+                        window.location.href = result.data.redirect || window.location.href;
                     }
 
                     $('#in_survey_common').trigger('lsStopLoading');
@@ -94,14 +110,32 @@ export default {
                     //setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
-        }
-
+        },
+        questionTypeChangeTriggered(newValue) {
+            this.$log.log('CHANGE OF TYPE', newValue);
+            this.currentQuestionType = newValue;
+            let tempQuestionObject = this.$store.state.currentQuestion;
+            tempQuestionObject.type = newValue;
+            this.$store.commit('setCurrentQuestion', tempQuestionObject);
+            this.$store.dispatch('reloadQuestion');
+            this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
+        },
+        selectLanguage(sLanguage) {
+            this.$log.log('LANGUAGE CHANGED', sLanguage);
+            this.$store.commit('setActiveLanguage', sLanguage);
+        },
     },
     created(){
-        this.$store.dispatch('loadQuestion');
-        this.$store.dispatch('getQuestionTypes');
-        this.$store.dispatch('getQuestionGeneralSettings');
-        this.$store.dispatch('getQuestionAdvancedSettings');
+        if(window.QuestionEditData.startInEditView) {
+            this.editQuestion = true;
+        }
+
+        Promise.all([
+            this.$store.dispatch('loadQuestion'),
+            this.$store.dispatch('getQuestionTypes')
+        ]).then(()=>{
+            this.loading = false;
+        })
     },
     
     mounted() {
@@ -121,22 +155,35 @@ export default {
         });
 
         this.toggleLoading(false);
-        $('#questionbarid').css('display', '');
-        $('#questiongroupbarid').css('display','none');
+        if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
+            $('#questionbarid').css({'display': 'none'});
+            $('#questiongroupbarid').css({'display':''});
+        } else {
+            $('#questionbarid').css({'display': ''});
+            $('#questiongroupbarid').css({'display':'none'});
+        }
     }
 }
 </script>
 
 <template>
     <div class="container-center scoped-new-questioneditor">
-        <button 
-            v-if="!isCreateQuestion" 
-            @click.prevent.stop="triggerEditQuestion" 
-            class="pull-right clear btn "
-            :class="editQuestion ? 'btn-primary' : 'btn-default'"
-        >
-            {{editQuestion ? 'Question overview' : 'Question editor'}}
-        </button>
+        <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
+            <button 
+                @click.prevent.stop="triggerEditQuestion" 
+                :class="editQuestion ? 'btn-default' : 'btn-primary'"
+                class="btn "
+            >
+                {{'Question overview'| translate}}
+            </button>
+            <button 
+                @click.prevent.stop="triggerEditQuestion" 
+                :class="editQuestion ? 'btn-primary' : 'btn-default'"
+                class="btn "
+            >
+                {{'Question editor'| translate}}
+            </button>
+        </div>
         <div class="pagetitle h3 scoped-unset-pointer-events">
             <template v-if="isCreateQuestion">
                     {{'Create new Question'|translate}}
@@ -145,19 +192,40 @@ export default {
                     {{'Question'|translate}}: {{$store.state.currentQuestion.title}}&nbsp;&nbsp;<small>(ID: {{$store.state.currentQuestion.qid}})</small>
             </template>
         </div>
-        <template v-if="$store.getters.fullyLoaded">
-            <transition name="fade">
-                <div class="row" v-if="editQuestion || isCreateQuestion">
-                    <maineditor :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
-                    <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></generalsettings>
-                    <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></advancedsettings>
+        <template v-if="!loading">
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="questionCode">{{'Code' | translate }}</label>
+                    <input type="text" class="form-control" id="questionCode" :readonly="!(editQuestion || isCreateQuestion)" v-model="currentQuestionCode">
                 </div>
-            </transition>
-            <transition name="fade">
-                <div class="row" v-if="!editQuestion && !isCreateQuestion">
-                    <questionoverview :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                <div class="form-group col-sm-6 contains-question-selector">
+                    <label for="questionCode">{{'Question type' | translate }}</label>
+                    <div v-if="editQuestion || isCreateQuestion"  v-html="questionEditButton" />
+                    <input v-else type="text" class="form-control" id="questionTypeVisual" :readonly="true" :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"/>
+                    <input type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
                 </div>
-            </transition>
+            </div>
+            <div class="row">
+                <languageselector
+                    :elId="'question-language-changer'" 
+                    :aLanguages="$store.state.languages" 
+                    :parentCurrentLanguage="$store.state.activeLanguage" 
+                    @change="selectLanguage"
+                />
+            </div>
+            <div class="row">
+                <transition name="slide-fade">
+                    <maineditor :loading="loading" v-show="(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></maineditor>
+                </transition>
+                <transition name="slide-fade">
+                    <questionoverview :loading="loading" v-show="!(editQuestion || isCreateQuestion)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></questionoverview>
+                </transition>
+                <generalsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></generalsettings>
+                <advancedsettings :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet" :readonly="!(editQuestion || isCreateQuestion)"></advancedsettings>
+            </div>
+        </template>
+        <template v-if="loading">
+            <loader-widget id="mainViewLoader" />
         </template>
         <modals-container @modalEvent="setModalEvent"/>
     </div>
@@ -178,25 +246,10 @@ export default {
     min-height: 60vh;
 }
 
-.slide-fade-enter-active {
-  transition: all .3s ease;
-}
-.slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-fade-enter
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(-10px);
-  opacity: 0;
-}
-.slide-fade-enter-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(0px);
-  opacity: 1;
-}
-.slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
+.scoped-small-border{
+     border: 1px solid rgba(184,184,184,0.8);
+     padding: 0.6rem 1rem;
+     border-radius: 4px;
+ }
+
 </style>

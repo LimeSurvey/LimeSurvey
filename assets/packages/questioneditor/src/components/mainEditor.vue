@@ -5,15 +5,19 @@ import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
 
-import PreviewFrame from './subcomponents/_previewFrame.vue';
-import LanguageSelector from './subcomponents/_languageSelector.vue';
-import runAjax from '../mixins/runAjax.js';
-import eventChild from '../mixins/eventChild.js';
+import Aceeditor from '../helperComponents/AceEditor';
+
+import PreviewFrame from './subcomponents/_previewFrame';
+import runAjax from '../mixins/runAjax';
+import eventChild from '../mixins/eventChild';
 
 export default {
     name: 'MainEditor',
     mixins: [runAjax, eventChild],
-    components: {PreviewFrame, LanguageSelector},
+    components: {PreviewFrame, Aceeditor},
+    props: {
+        loading: {type: Boolean, default: false},
+    },
     data() {
         return {
             editorQuestion: ClassicEditor,
@@ -23,11 +27,12 @@ export default {
             editorHelpData: '',
             editorHelpConfig: {},
             previewContent: ' ',
+            questionEditSource: false,
+            helpEditSource: false,
             previewLoading: false,
             previewActive: true,
             debug: false,
             firstStart: true,
-            questionEditButton: window.questionEditButton,
             changeTriggered: debounce((content,event) => {
                 this.$log.log('Debounced load triggered',{content,event});
                 this.getQuestionPreview();
@@ -46,12 +51,6 @@ export default {
                 this.$store.state.activeLanguage].join('')
             : 'about:blank';
         },
-        currentQuestionCode: {
-            get() {return this.$store.state.currentQuestion.title;},
-            set(newValue) {
-                this.$store.commit('updateCurrentQuestionTitle', newValue);
-            }
-        },
         currentQuestionQuestion: { 
             get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].question; },
             set(newValue) {
@@ -62,6 +61,12 @@ export default {
             get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].help },
             set(newValue) {
                 this.$store.commit('updateCurrentQuestionI10NValue', {value:'help', newValue})
+            } 
+        },
+        currentQuestionScript: {
+            get() {return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].script },
+            set(newValue) {
+                this.$store.commit('updateCurrentQuestionI10NValue', {value:'script', newValue})
             } 
         },
         currentQuestionI10N() {
@@ -107,15 +112,6 @@ export default {
                 this.getQuestionPreview();
             }
         },
-        questionTypeChangeTriggered(newValue) {
-            this.$log.log('CHANGE OF TYPE', newValue);
-            this.currentQuestionType = newValue;
-            let tempQuestionObject = this.$store.state.currentQuestion;
-            tempQuestionObject.type = newValue;
-            this.$store.commit('setCurrentQuestion', tempQuestionObject);
-            this.getQuestionPreview();
-            this.$store.dispatch('reloadQuestion');
-        },
         getQuestionPreview(){
             this.$log.log('window.QuestionEditData.qid', window.QuestionEditData.qid);
             if(!window.QuestionEditData.qid) {
@@ -143,72 +139,93 @@ export default {
                 }
             );
         },
-        selectLanguage(sLanguage) {
-            this.$log.log('LANGUAGE CHANGED', sLanguage);
-            this.$store.commit('setActiveLanguage', sLanguage);
-        },
         setPreviewReady() {
             this.previewLoading = false;
             this.firstStart = false;
+        },
+        toggleSourceEditQuestion(){
+            this.questionEditSource = !this.questionEditSource
+        },
+        toggleSourceEditHelp(){
+            this.helpEditSource = !this.helpEditSource
+        },
+    },
+    created(){
+        if(this.$store.state.currentQuestionPermissions.editorpreset == 'source') {
+            this.questionEditSource = true;
+            this.helpEditSource = true;
         }
     },
     mounted(){
         this.previewLoading = true;
-        this.toggleLoading(false);
     },
 }
 </script>
 
 <template>
-    <div class="col-sm-8 col-xs-12 ls-space padding all-5">
-        <div class="container-center">
-            <div class="row">
-                <div class="form-group col-sm-6">
-                    <label for="questionCode">{{'Code' | translate }}</label>
-                    <input type="text" class="form-control" id="questionCode" v-model="currentQuestionCode">
-                </div>
-                <div class="form-group col-sm-6 contains-question-selector">
-                    <label for="questionCode">{{'Question type' | translate }}</label>
-                    <div v-html="questionEditButton" />
-                    <input type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
-                </div>
-            </div>
-            <div class="row">
-                <language-selector 
-                    :elId="'questioneditor'" 
-                    :aLanguages="$store.state.languages" 
-                    :parentCurrentLanguage="$store.state.activeLanguage" 
-                    @change="selectLanguage"
-                />
-            </div>
-            <div class="row">
-                <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
-                    <label class="col-sm-12">{{ 'Question' | translate }}:</label>
-                    <ckeditor :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></ckeditor>
-                </div>
-                <div class="col-sm-12 ls-space margin top-5 bottom-5 scope-contains-ckeditor ">
-                    <label class="col-sm-12">{{ 'Help' | translate }}:</label>
-                    <ckeditor :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></ckeditor>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 ls-space margin top-5 bottom-5" >
-                    <hr/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 ls-space margin bottom-5">
-                    <button class="btn btn-default pull-right" @click.prevent="triggerPreview">
-                        {{previewActive ? "Hide Preview" : "Show Preview"}}
-                    </button>
-                </div>
-                <div class="col-sm-12 ls-space margin top-5 bottom-5">
-                    <div class="scope-preview" v-show="previewActive">
-                        <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :firstStart="firstStart" @ready="setPreviewReady" :loading="previewLoading" />
+    <div class="col-sm-8 col-xs-12">
+        <transition-group name="slide-fade">
+            <template v-show="!loading">
+                <div class="panel panel-default question-option-general-container" key="mainPanel">
+                    <div class="panel-heading">
+                        {{"Text elements" | translate }}
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
+                            <div class="ls-flex-row">
+                                <div class="ls-flex-item grow-2 text-left">
+                                    <label class="col-sm-12">{{ 'Question' | translate }}:</label>
+                                </div>
+                                <div class="ls-flex-item text-right">
+                                    <button class="btn btn-default btn-xs" @click.prevent="toggleSourceEditQuestion"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                                </div>
+                            </div>
+                            <ckeditor v-if="!questionEditSource" :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></ckeditor>
+                            <aceeditor v-else :showLangSelector="false" :thisId="'questionEditSource'" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange"> </aceeditor>
+                        </div>
+                        <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
+                            <div class="ls-flex-row">
+                                <div class="ls-flex-item grow-2 text-left">
+                                    <label class="col-sm-12">{{ 'Help' | translate }}:</label>
+                                </div>
+                                <div class="ls-flex-item text-right">
+                                    <button class="btn btn-default btn-xs" @click.prevent="toggleSourceEditHelp"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
+                                </div>
+                            </div>
+                            <ckeditor v-if="!helpEditSource" :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></ckeditor>
+                            <aceeditor v-else :showLangSelector="false" :thisId="'helpEditSource'" v-model="currentQuestionHelp" v-on:input="runDebouncedChange"> </aceeditor>
+                        </div>
+                        <div class="col-12 ls-space margin all-5 scope-contains-ckeditor " v-if="!!$store.state.currentQuestionPermissions.script">
+                            <label class="col-sm-12">{{ 'Script' | translate }}:</label>
+                            <aceeditor :thisId="'helpEditScript'" :showLangSelector="true" v-model="currentQuestionScript" v-on:input="runDebouncedChange" base-lang="javascript" > </aceeditor>
+                            <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
+                        </div>
                     </div>
                 </div>
+                <div class="row" key="divideRow">
+                    <div class="col-sm-12 ls-space margin top-5 bottom-5" >
+                        <hr/>
+                    </div>
+                </div>
+                <div class="row"  v-if="$store.state.currentQuestion.qid != null" key="previewFrame">
+                    <div class="col-sm-12 ls-space margin bottom-5">
+                        <button class="btn btn-default pull-right" @click.prevent="triggerPreview">
+                            {{previewActive ? "Hide Preview" : "Show Preview"}}
+                        </button>
+                    </div>
+                    <div class="col-sm-12 ls-space margin top-5 bottom-5">
+                        <div class="scope-preview" v-show="previewActive">
+                            <PreviewFrame :id="'previewFrame'" :content="previewContent" :root-url="previewRootUrl" :firstStart="firstStart" @ready="setPreviewReady" :loading="previewLoading" />
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </transition-group>
+        <transition name="slide-fade">
+            <div class="row" v-if="loading">
+                <loader-widget id="mainQuestionGroupEditorLoader" />
             </div>
-        </div>
+        </transition>
     </div>
 </template>
 

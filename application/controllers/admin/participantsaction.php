@@ -48,7 +48,11 @@ class participantsaction extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        $this->checkPermission('read');
+//        $this->checkPermission(['read','create']);
+        if (!(Permission::model()->hasGlobalPermission('participantpanel', 'read') || Permission::model()->hasGlobalPermission('participantpanel', 'create'))) {
+            App()->setFlashMessage(gT('No permission'), 'error');
+            App()->getController()->redirect(App()->request->urlReferrer);
+        }
 
         Yii::import('application.helpers.admin.ajax_helper', true);
 
@@ -199,7 +203,7 @@ $url .= "_view"; });
 
             $fields[] = 'a'.$value;
             $attributeNames = $oAttributeName->participant_attribute_names_lang;
-            $outputarray[0][] = (sizeof($attributeNames) > 0) ? $attributeNames[0]['attribute_name'] : $oAttributeName->defaultname;
+            $outputarray[0][] = (sizeof($attributeNames) > 0 && !empty($attributeNames[0]['attribute_name'])) ? $attributeNames[0]['attribute_name'] : $oAttributeName->defaultname;
         }
 
         $fieldNeededKeys = array_fill_keys($fields, '');
@@ -583,14 +587,14 @@ $url .= "_view"; });
                 $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
             }
         }
-        
+
 
         if (count($aData) > 0) {
             foreach ($aParticipantIds as $sParticipantId) {
                 $oParticipant = Participant::model()->findByPk($sParticipantId);
-                
-                
-                
+
+
+
                 foreach ($aData as $key => $value) {
                     // Make sure no-one hacks owner_uid into form
                     if (!$oParticipant->isOwnerOrSuperAdmin() && $key=='owner_uid') {
@@ -767,7 +771,7 @@ $url .= "_view"; });
                 $sSeparator = $aResult[0];
             }
             $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0]);
-            
+
             $selectedcsvfields = array();
             $fieldlist = array();
             foreach ($firstline as $key => $value) {
@@ -878,7 +882,7 @@ $url .= "_view"; });
             foreach ($mappedarray as $key => $value) {
                 array_push($allowedfieldnames, strtolower($value));
             }
-        }        
+        }
         foreach ($tokenlistarray as $buffer) {
 //Iterate through the CSV file line by line
             $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
@@ -1381,7 +1385,7 @@ $url .= "_view"; });
                         $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                     }
                     if (!empty($aUpdateData)){
-                        $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$attribute->attribute_id."'");
+                        $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$attributeId."' AND participant_id = '". $attribute->participant_id . "'");
                     }
                 }
                 
@@ -1440,6 +1444,10 @@ $url .= "_view"; });
         // Default visibility to false
         $model->visible = $model->visible ?: 'FALSE';
 
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $aData['bEncrypted'] = $sodium->bLibraryExists;
+
         $html = $this->getController()->renderPartial(
             '/admin/participants/modal_subviews/_editAttribute',
             $aData,
@@ -1485,22 +1493,37 @@ $url .= "_view"; });
     public function editAttributeName()
     {
         $AttributeNameAttributes = Yii::app()->request->getPost('ParticipantAttributeName');
-        $iAttributeId = $AttributeNameAttributes['attribute_id'];
-        $oAttributeName = ParticipantAttributeName::model()->findByPk($iAttributeId);
         $AttributeNameAttributes['encrypted'] = $AttributeNameAttributes['encrypted'] == '1' ? 'Y' : 'N';
         $AttributeNameAttributes['visible'] = $AttributeNameAttributes['visible'] == '1' ? 'TRUE' : 'FALSE';
+        $AttributeNameAttributes['core_attribute'] = 'N';
         $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
-        $sEncryptedBeforeChange = $oAttributeName->encrypted;
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
         $operation = Yii::app()->request->getPost('oper');
         $success = [];
-
-        // encryption/decryption MUST be done in a one synchronous step, either all succeeded or none
-        $oAttributes = ParticipantAttribute::model()->findAll("attribute_id=:attribute_id", array("attribute_id"=>$iAttributeId));
+        
+        // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
+            
+            // save attribute
+            if ($operation === 'edit') {
+                $iAttributeId = $AttributeNameAttributes['attribute_id'];
+                $ParticipantAttributeNames = ParticipantAttributeName::model()->findByPk($iAttributeId);
+                $sEncryptedBeforeChange = $ParticipantAttributeNames->encrypted;
+                $success[] = $ParticipantAttributeNames->saveAttribute($AttributeNameAttributes);
+            } else {
+                $ParticipantAttributeNames = new ParticipantAttributeName;
+                $sEncryptedBeforeChange = 'N';
+                $ParticipantAttributeNames->setAttributes($AttributeNameAttributes);
+                $success[] = $ParticipantAttributeNames->save();
+                $iAttributeId = $ParticipantAttributeNames->attribute_id;
+                
+            }
+            
+            // encrypt/decrypt participant data on attribute setting change
+            $oAttributes = ParticipantAttribute::model()->findAll("attribute_id=:attribute_id", array("attribute_id"=>$iAttributeId));
             foreach($oAttributes as $attribute){
                 $aUpdateData = array();
                 if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N'){
@@ -1509,40 +1532,33 @@ $url .= "_view"; });
                     $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                 }
                 if (!empty($aUpdateData)){
-                    $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$iAttributeId."'");
+                    $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$iAttributeId."' AND participant_id = '". $attribute->participant_id . "'");
                 }
             }
 
-            // save all other things if everything was ok
-            if ($operation === 'edit') {
-                $ParticipantAttributNamesModel = ParticipantAttributeName::model()->findByPk($iAttributeId);
-                $success[] = $ParticipantAttributNamesModel->saveAttribute($AttributeNameAttributes);
-            } else {
-                $ParticipantAttributNamesModel = new ParticipantAttributeName;
-                $ParticipantAttributNamesModel->setAttributes($AttributeNameAttributes);
-                $success[] = $ParticipantAttributNamesModel->save();
-    
-            }
+            // save attribute values
             if (is_array($ParticipantAttributeNamesDropdown)) {
-                $ParticipantAttributNamesModel->clearAttributeValues();
+                $ParticipantAttributeNames->clearAttributeValues();
                 foreach ($ParticipantAttributeNamesDropdown as $i=>$dropDownValue) {
                     if ($dropDownValue !== "") {
                         $storeArray = array(
-                            "attribute_id" => $ParticipantAttributNamesModel->attribute_id,
+                            "attribute_id" => $ParticipantAttributeNames->attribute_id,
                             "value" => $dropDownValue
                         );
-                        $ParticipantAttributNamesModel->storeAttributeValue($storeArray);
+                        $ParticipantAttributeNames->storeAttributeValue($storeArray);
                     }
                 }
             }
+
+            // save attribute translations
             if (is_array($AttributeNameLanguages)) {
                 foreach ($AttributeNameLanguages as $lnKey => $lnValue) {
-                    $savaLanguageArray = array(
-                        'attribute_id' => $ParticipantAttributNamesModel->attribute_id,
+                    $saveLanguageArray = array(
+                        'attribute_id' => $ParticipantAttributeNames->attribute_id,
                         'attribute_name' => $lnValue,
                         'lang' => $lnKey
                     );
-                    $success[] = $ParticipantAttributNamesModel->saveAttributeLanguages($savaLanguageArray);
+                    $success[] = $ParticipantAttributeNames->saveAttributeLanguages($saveLanguageArray);
                 }
             }
             ls\ajax\AjaxHelper::outputSuccess(gT("Attribute successfully updated"));

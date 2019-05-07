@@ -4,12 +4,16 @@ import {LOG} from '../mixins/logSystem.js'
 
 export default {
     getDataSet: (context) => {
-        ajax.methods.$_get(
-            window.TextEditData.connectorBaseUrl+'/getCurrentEditorValues'
-        ).then((result) => {
-            context.dispatch('updateObjects', result.data.textdata);
-            context.commit('setLanguages', result.data.languages);
-            context.commit('setActiveLanguage', _.keys(result.data.languages)[0]);
+        return new Promise((resolve, reject) => {
+            ajax.methods.$_get(
+                window.TextEditData.connectorBaseUrl+'/getCurrentEditorValues'
+            ).then((result) => {
+                LOG.log('Getting Data', result);
+                context.dispatch('updateObjects', result.data.textdata);
+                context.commit('setLanguages', result.data.languages);
+                context.commit('setActiveLanguage', _.keys(result.data.languages)[0]);
+                resolve();
+            }, reject);
         });
     },
     updateObjects: (context, newObjectBlock) => {
@@ -22,6 +26,7 @@ export default {
         context.commit('setEndUrlDescription', newObjectBlock.endUrlDescription);
         context.commit('setDateFormat', newObjectBlock.dateFormat);
         context.commit('setDecimalDivider', newObjectBlock.decimalDivider);
+        context.commit('setPermissions', newObjectBlock.permissions);
     },
     getDateFormatOptions: (context) => {
         ajax.methods.$_get(
@@ -45,7 +50,7 @@ export default {
             }
         });
 
-        let transferObject = _.merge(postObject, window.LS.data.csrfTokenData);
+        let transferObject = _.merge({changes: postObject}, window.LS.data.csrfTokenData);
 
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'postObject': transferObject});
         return ajax.methods.$_post(window.TextEditData.connectorBaseUrl+'/saveTextData', transferObject)

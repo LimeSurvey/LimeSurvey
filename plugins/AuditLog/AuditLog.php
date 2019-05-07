@@ -557,6 +557,11 @@
         {
             if (!$this->api->tableExists($this, 'log'))
             {
+                $options = '';
+                if (Yii::app()->db->driverName == 'mysqli' || Yii::app()->db->driverName == 'mysql') {
+                    $options .= sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
+
+                }
                 $this->api->createTable($this, 'log', array('id'=>'pk',
                     'created'=>'datetime',
                     'uid'=>'string',
@@ -565,7 +570,7 @@
                     'action'=>'string',
                     'fields'=>'text',
                     'oldvalues'=>'text',
-                    'newvalues'=>'text'));
+                    'newvalues'=>'text'), $options);
             }
         }
 

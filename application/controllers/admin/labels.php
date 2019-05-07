@@ -367,16 +367,21 @@ class labels extends Survey_Common_Action
      */
     public function delete()
     {
-        $lid = Yii::app()->getRequest()->getPost('lid');
+        if(!Yii::app()->getRequest()->isPostRequest) {
+            throw new CHttpException(405, gT("Invalid action"));
+        }
         if (!Permission::model()->hasGlobalPermission('labelsets', 'delete')) {
             throw new CHttpException(403, gT("You are not authorized to delete label sets.",'unescaped'));
         }
-        $oLabelsSet = LabelSet::model()->find("lid = :lid",array(":lid"=>$lid));
+        $lid = Yii::app()->getRequest()->getParam('lid');
+        $oLabelsSet = LabelSet::model()->findByPk($lid );
         if(empty($oLabelsSet)) {
             throw new CHttpException(404, gT("Invalid label set."));
         }
-        if (LabelSet::model()->deleteLabelSet($lid)) {
-            Yii::app()->setFlashMessage(gT("Label set sucessfully deleted."));
+        if($oLabelsSet->delete()) {
+            Yii::app()->setFlashMessage(sprintf(gT("Label set “%s” was successfully deleted."),CHtml::encode($oLabelsSet->label_name)));
+        } else {
+            Yii::app()->setFlashMessage(sprintf(gT("Unable to delete label set %s."),$lid));
         }
         $this->getController()->redirect(array("admin/labels/sa/view"));
     }

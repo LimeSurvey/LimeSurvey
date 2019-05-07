@@ -16,13 +16,13 @@
     } else {
         $showSideMenu = true;
     }
-    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/" ,["surveyid" => $surveyid]);
-    $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/" ,["surveyid" => $surveyid]);
-    $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/" ,["surveyid" =>  $surveyid]);
-    if(isset($oQuestionGroup)) {
-        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/" ,["surveyid" => $surveyid, "gid" => $oQuestionGroup->gid]);
+    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
+    $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
+    $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);
+    if (isset($oQuestionGroup)) {
+        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $surveyid, "gid" => $oQuestionGroup->gid]);
     } else {
-        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/" ,["surveyid" => $surveyid]);
+        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $surveyid]);
     }
 
     $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder/", ["surveyid" =>  $surveyid]);
@@ -40,25 +40,39 @@
         "bottom" => [],
     ];
     
-    foreach($menuObjectArray as $position => $arr) {
+    foreach ($menuObjectArray as $position => $arr) {
         $menuObjectArray[$position] = Survey::model()->findByPk($surveyid)->getSurveyMenus($position);
     }
     
     $menuObject =  json_encode($menuObjectArray);
 
+    Yii::app()->getClientScript()->registerScript('SideBarGlobalObject', '
+        window.SideMenuData = {
+            getQuestionsUrl: "'.$getQuestionsUrl.'",
+            getMenuUrl: "'.$getMenuUrl.'",
+            createQuestionGroupLink: "'.$createQuestionGroupLink.'",
+            createQuestionLink: "'.$createQuestionLink.'",
+            options: [],
+            surveyid: '.$surveyid.',
+            isActive: '.(Survey::model()->findByPk($surveyid)->isActive ? "true" : "false").',
+            getQuestionsUrl: "'.$getQuestionsUrl.'",
+            getMenuUrl: "'.$getMenuUrl.'",
+            basemenus: '.$menuObject.',
+            createQuestionGroupLink: "'.$createQuestionGroupLink.'",
+            createQuestionLink: "'.$createQuestionLink.'",
+            updateOrderLink: "'.$updateOrderLink.'",
+            translate: '.json_encode([
+                "settings" => gT("Settings"),
+                "structure" => gT("Structure"),
+                "createQuestionGroup" => gT("Add question group"),
+                "createQuestion" => gT("Add question")
+            ]).'
+        };
+    ', LSYii_ClientScript::POS_BEGIN);
 ?>
 
-<div class="simpleWrapper ls-flex" id="vue-sidebar-container" v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}" v-bind:data-collapsed="$store.state.isCollapsed">
-    <sidebar
-        :options="[]"
-        surveyid = '<?=$surveyid?>'
-        is-active = <?=(Survey::model()->findByPk($surveyid)->isActive ? 1 : 0)?>
-        get-questions-url="<?=$getQuestionsUrl ?>"
-        get-menu-url="<?=$getMenuUrl ?>"
-        :basemenus='<?=$menuObject?>'
-        create-question-group-link ="<?=$createQuestionGroupLink?>"
-        create-question-link ="<?=$createQuestionLink?>"
-        update-order-link="<?=$updateOrderLink?>"
-        :translate="{settings: '<?php eT("Settings");?>', structure:'<?php eT("Structure");?>', createQuestionGroup:'<?php eT("Add question group");?>', createQuestion:'<?php eT("Add question");?>' }"
-    ></sidebar>
+<div class="simpleWrapper ls-flex" id="vue-sidebar-container"
+    v-bind:style="{'max-height': $store.state.inSurveyViewHeight, width : $store.getters.sideBarSize}"
+    v-bind:data-collapsed="$store.state.isCollapsed">
+    <sidebar />
 </div>

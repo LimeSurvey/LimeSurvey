@@ -91,6 +91,34 @@ class QuestionAttribute extends LSActiveRecord
      * @param string $sValue
      * @return CDbDataReader
      */
+    public function setQuestionAttributeWithLanguage($iQuestionID, $sAttributeName, $sValue, $sLanguage)
+    {
+        $oModel = new self;
+        $aResult = $oModel->findAll('attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName'=>$sAttributeName, ':language'=>$sLanguage, ':questionID'=>$iQuestionID));
+        if (!empty($aResult)) {
+            $oModel->updateAll(array('value'=>$sValue), 'attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName'=>$sAttributeName, ':language'=>$sLanguage, ':questionID'=>$iQuestionID));
+        } else {
+            $oModel = new self;
+            $oModel->attribute = $sAttributeName;
+            $oModel->value = $sValue;
+            $oModel->qid = $iQuestionID;
+            $oModel->language = $sLanguage;
+            $oModel->save();
+        }
+        return Yii::app()->db->createCommand()
+            ->select()
+            ->from($this->tableName())
+            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid)
+            ->order('qaid asc')
+            ->query();
+    }
+
+    /**
+     * @param integer $iQuestionID
+     * @param string $sAttributeName
+     * @param string $sValue
+     * @return CDbDataReader
+     */
     public function setQuestionAttribute($iQuestionID, $sAttributeName, $sValue)
     {
         $oModel = new self;
@@ -229,6 +257,11 @@ class QuestionAttribute extends LSActiveRecord
             // Can not use array_replace due to i18n
             foreach ($aAttributeNames as $aAttribute) {
                 $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
+
+                // convert empty array to empty string
+                if (empty($aAttribute['default']) && is_array($aAttribute['default'])){
+                    $aAttribute['default'] = '';
+                }
 
                 if ($aAttribute['i18n'] == false) {
                     if (isset($aAttributeValues[$aAttribute['name']][''])) {

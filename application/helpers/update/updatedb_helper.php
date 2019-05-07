@@ -2274,7 +2274,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 354) {
             $oTransaction = $oDB->beginTransaction();
             $surveymenuTable = Yii::app()->db->schema->getTable('{{surveymenu}}');
-            
+
             if (!isset($surveymenuTable->columns['showincollapse'])) {
                 $oDB->createCommand()->addColumn('{{surveymenu}}', 'showincollapse', 'integer DEFAULT 0');
             }
@@ -2294,7 +2294,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $aIdMap[$aSurveymenu['name']] = $aSurveymenu['id'];
             }
             switchMSSQLIdentityInsert('surveymenu', false);
-            
+
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
                 $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
@@ -2323,7 +2323,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ->where('name=:name', [':name' => $aSurveymenu['name']])
                 ->queryScalar();
             }
-            
+
             $aDefaultSurveyMenuEntries = LsDefaultDataSets::getSurveyMenuEntryData();
             foreach($aDefaultSurveyMenuEntries as $i => $aSurveymenuentry) {
                 $oDB->createCommand()->delete('{{surveymenu_entries}}', 'name=:name', [':name' => $aSurveymenuentry['name']]);
@@ -2371,6 +2371,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     );
             }
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>356], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 357) {
+            $oTransaction = $oDB->beginTransaction();
+            //// IKI
+            $oDB->createCommand()->renameColumn('{{surveys_groups}}','owner_uid','owner_id');
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>357], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 358) {
+            $oTransaction = $oDB->beginTransaction();
+            dropColumn('{{sessions}}','data');
+            addColumn('{{sessions}}','data','longbinary');
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>358], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -2509,9 +2525,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             
             // Drop autoincrement on timings table primary key
             upgradeSurveyTimings350();
-            
-            $oDB->createCommand()->dropPrimaryKey('{{defaultvalues_pk}}','{{defaultvalues}}');
-            $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'scale_id', 'sqid']);
 
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>400), "stg_name='DBVersion'");
 
@@ -2606,7 +2619,96 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 ));
             }
             $oDB->createCommand()->addColumn('{{questions}}', 'encrypted', "string(1) NULL default 'N'");
+
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>406),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 407) {
+            $oTransaction = $oDB->beginTransaction();
+            // defaultvalues
+            $oDB->createCommand()->createTable('{{defaultvalue_l10ns}}', array(
+                'id' =>  "pk",
+                'dvid' =>  "integer NOT NULL default '0'",
+                'language' =>  "string(20) NOT NULL",
+                'defaultvalue' =>  "text",
+            ));  
+            $oDB->createCommand()->createIndex('{{idx1_defaultvalue_l10ns}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], true);
+            
+            $oDB->createCommand()->renameTable('{{defaultvalues}}', 'defaultvaluestemp');
+            $oDB->createCommand()->createIndex('defaultvalues_idx_10', 'defaultvaluestemp', ['qid', 'scale_id', 'sqid', 'specialtype', 'language']);
+            $oDB->createCommand()->createTable('{{defaultvalues}}',[
+                'dvid' =>  "pk",
+                'qid' =>  "integer NOT NULL default '0'",
+                'scale_id' =>  "integer NOT NULL default '0'",
+                'sqid' =>  "integer NOT NULL default '0'",
+                'specialtype' =>  "string(20) NOT NULL default ''",
+            ]);               
+        
+            $iCounter1 = 0;
+            $iPrevQid = 0;
+            $iPrevScaleId = 0;
+            $iPrevSqid = 0;
+            $iPrevSpecialType = '';
+            switchMSSQLIdentityInsert('defaultvalues', true);
+            $dataReader = $oDB->createCommand("SELECT * FROM defaultvaluestemp order by qid, scale_id, sqid, specialtype, language")->query();
+            while (($row = $dataReader->read()) !== false) {
+                if ($iPrevQid != $row['qid'] || $iPrevScaleId != $row['scale_id'] || $iPrevSqid != $row['sqid'] || $iPrevSpecialType != $row['specialtype']){
+                    $iCounter1++;
+                    $oDB->createCommand()->insert('{{defaultvalues}}', array('dvid' => $iCounter1, 'qid' => $row['qid'], 'scale_id' => $row['scale_id'],'sqid' => $row['sqid'], 'specialtype' => $row['specialtype']));
+                }
+                $oDB->createCommand()->insert('{{defaultvalue_l10ns}}', array('dvid' => $iCounter1, 'language' => $row['language'], 'defaultvalue' => $row['defaultvalue']));
+                
+                $iPrevQid = $row['qid'];
+                $iPrevScaleId = $row['scale_id'];
+                $iPrevSqid = $row['sqid'];
+                $iPrevSpecialType = $row['specialtype'];
+            }
+            switchMSSQLIdentityInsert('defaultvalues', false);
+            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('label_idx_10','{{defaultvaluestemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
+            $oDB->createCommand()->dropTable('defaultvaluestemp');
+            $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], true);
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>407),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 408) {
+            $oTransaction = $oDB->beginTransaction();            
+            $oDB->createCommand()->update('{{participant_attribute_names}}',array('encrypted'=>'Y'),"core_attribute='Y'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>408),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 409) {
+
+            $oTransaction = $oDB->beginTransaction();
+            
+            // load sodium library
+            $sodium = Yii::app()->sodium;
+            // check if sodium library exists
+            if ($sodium->bLibraryExists === true){
+                $sEncrypted = 'Y';
+            } else {
+                $sEncrypted = 'N';
+            }
+
+            $oDB->createCommand()->update('{{participant_attribute_names}}',array('encrypted'=>$sEncrypted),"core_attribute='Y'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>409),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 410) {
+            $oTransaction = $oDB->beginTransaction();            
+            $oDB->createCommand()->addColumn('{{question_l10ns}}', 'script', " text NULL default NULL");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>410),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if($iOldDBVersion < 411) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->addColumn('{{plugins}}','priority',"int NOT NULL default 0");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>411),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
       

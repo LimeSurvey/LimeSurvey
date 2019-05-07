@@ -126,13 +126,16 @@ class UserAction extends Survey_Common_Action
             if ($event->get('errorCode') != AuthPluginBase::ERROR_NONE) {
                 $aViewUrls['message'] = array('title' => $event->get('errorMessageTitle'), 'message' => $event->get('errorMessageBody'), 'class'=> 'text-warning');
             } else {
+
                 $iNewUID = $event->get('newUserID');
                 $new_pass = $event->get('newPassword');
                 $new_email = $event->get('newEmail');
                 $new_full_name = $event->get('newFullName');
                 // add default template to template rights for user
                 Permission::model()->insertSomeRecords(array('uid' => $iNewUID, 'permission' => getGlobalSetting('defaulttheme'), 'entity'=>'template', 'read_p' => 1, 'entity_id'=>0));
-
+                // add default usersettings to the user
+                SettingsUser::applyBaseSettings($iNewUID);
+                
                 // add new user to userlist
                 //$sresult = User::model()->findAllByAttributes(array('uid' => $iNewUID));
 
@@ -354,6 +357,7 @@ class UserAction extends Survey_Common_Action
                 // Close button, UrlReferrer;
                 $aData['fullpagebar']['closebutton']['url_keep'] = true;
                 $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin/user/sa/index"));
+                $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
 
                 $this->_renderWrappedTemplate('user', 'modifyuser', $aData);
                 return;
@@ -398,6 +402,15 @@ class UserAction extends Survey_Common_Action
             } else {
                 $oUser->email = $email;
                 $oUser->full_name = $full_name;
+
+                if(!empty($sPassword)){
+                    $error = $oUser->checkPasswordStrength($sPassword);
+                    if($error){
+                    Yii::app()->setFlashMessage(gT($error), 'error');
+                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$user_uid));
+                    }
+                }
+
                 if (!empty($sPassword)) {
                     $oUser->setPassword($sPassword);
                 }
@@ -631,7 +644,13 @@ class UserAction extends Survey_Common_Action
                 $newPassword = Yii::app()->request->getPost('password');
                 $repeatPassword = Yii::app()->request->getPost('repeatpassword');
 
-                if (!$oUserModel->checkPassword($oldPassword)) {
+                if(!empty($newPassword)){
+                    $error = $oUserModel->checkPasswordStrength($newPassword);
+                    if($error){
+                        Yii::app()->setFlashMessage(gT($error), 'error');
+                        $this->getController()->redirect(array("admin/user/sa/personalsettings"));
+                    }
+                } elseif (!$oUserModel->checkPassword($oldPassword)) {
                     // Always check password
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."), 'error');
                     $this->getController()->redirect(array("admin/user/sa/personalsettings"));
@@ -670,6 +689,8 @@ class UserAction extends Survey_Common_Action
                 Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
                 
                 SettingsUser::setUserSetting('preselectquestiontype', Yii::app()->request->getPost('preselectquestiontype'));
+                SettingsUser::setUserSetting('showScriptEdit', Yii::app()->request->getPost('showScriptEdit'));
+                SettingsUser::setUserSetting('noViewMode', Yii::app()->request->getPost('noViewMode'));
 
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
@@ -696,7 +717,7 @@ class UserAction extends Survey_Common_Action
         $aData['sUsername'] = $oUser->users_name;
         $aData['sFullname'] = $oUser->full_name;
         $aData['sEmailAdress'] = $oUser->email;
-
+        $aData['passwordHelpText'] = $oUser->getPasswordHelpText();
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
@@ -707,7 +728,14 @@ class UserAction extends Survey_Common_Action
         $oSurveymenu->user_id = $oUser->uid;
         $oSurveymenuEntries = SurveymenuEntries::model();
         $oSurveymenuEntries->user_id = $oUser->uid;
-        $aData['oUserSettings'] = SettingsUser::model()->findAllByAttributes(['uid' => $oUser->uid]);
+        $aRawUserSettings = SettingsUser::model()->findAllByAttributes(['uid' => $oUser->uid]);
+
+        $aUserSettings = [];
+        array_walk($aRawUserSettings, function($oUserSetting) use(&$aUserSettings) {
+            $aUserSettings[$oUserSetting->stg_name] = $oUserSetting->stg_value;
+        });
+        
+        $aData['aUserSettings'] = $aUserSettings;
         $aData['surveymenu_data']['model'] = $oSurveymenu;
         $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
         // Render personal settings view

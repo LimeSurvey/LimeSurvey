@@ -223,7 +223,7 @@ class LsDefaultDataSets
             'template' =>  null,
             'description' => 'Default survey group',
             'sortorder' => 0,
-            'owner_uid' => 1,
+            'owner_id' => 1,
             'parent_id' => null,
             'created' => date('Y-m-d H:i:s'),
             'modified' => date('Y-m-d H:i:s'),
@@ -468,7 +468,7 @@ class LsDefaultDataSets
                     'redirect' => false,
                     'prev' => '-1',
                     'onShow' => "(function(tour){
-                        $('#adminpanel__sidebar--selectorSettingsButton').trigger('click');
+                        $('#adminsidepanel__sidebar--selectorSettingsButton').trigger('click');
                     })",
                 ))
             ),
@@ -479,7 +479,7 @@ class LsDefaultDataSets
                 'content' => gT('If you click on this tab, the survey settings menu will be displayed. The most important settings of your survey are accessible from this menu.').'<br/>'
                 .gT('If you want to know more about them, check our manual.'),
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__sidebar--selectorSettingsButton',
+                    'element' => '#adminsidepanel__sidebar--selectorSettingsButton',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
@@ -504,12 +504,12 @@ class LsDefaultDataSets
                 'title' => gT('The survey structure'),
                 'content' => gT('This is the structure view of your survey. Here you can see all your question groups and questions.'),
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__sidebar--selectorStructureButton',
+                    'element' => '#adminsidepanel__sidebar--selectorStructureButton',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
                     'onShow' => "(function(tour){
-                                    $('#adminpanel__sidebar--selectorStructureButton').trigger('click');
+                                    $('#adminsidepanel__sidebar--selectorStructureButton').trigger('click');
                                 })",
                 ))
             ),
@@ -521,13 +521,13 @@ class LsDefaultDataSets
                 .gT('In LimeSurvey a survey is organized in question groups and questions. To begin creating questions, we first need a question group.')
                 .'<p class="alert bg-warning">'.gT("Click on the 'Add question group' button").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__sidebar--selectorCreateQuestionGroup',
+                    'element' => '#adminsidepanel__sidebar--selectorCreateQuestionGroup',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'right',
                     'reflex' => true,
                     'redirect' => false,
                     'onNext' => "(function(tour){
-                                    document.location.href = $('#adminpanel__sidebar--selectorCreateQuestionGroup').attr('href');
+                                    document.location.href = $('#adminsidepanel__sidebar--selectorCreateQuestionGroup').attr('href');
                                     tour.setCurrentStep(13);
                                     return new Promise(function(res,rej){});
                                 })",
@@ -692,13 +692,13 @@ class LsDefaultDataSets
                     .gT("Let's start with subquestions.")
                     .'<p class="alert bg-warning">'.gT("Click on the 'Edit subquestions' button.").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__topbar--selectorAddSubquestions',
+                    'element' => '#adminsidepanel__topbar--selectorAddSubquestions',
                     'placement' => 'bottom',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'reflex' => true,
                     'redirect' => false,
                     'onNext' => "(function(tour){
-                                    document.location.href = $('#adminpanel__topbar--selectorAddSubquestions').attr('href');
+                                    document.location.href = $('#adminsidepanel__topbar--selectorAddSubquestions').attr('href');
                                     tour.setCurrentStep(24);
                                     return new Promise(function(res,rej){});
                                 })",
@@ -759,14 +759,14 @@ class LsDefaultDataSets
                 .gT("The answer options will be shown for each subquestion.")
                 .'<p class="alert bg-warning">'.gT("Click on the 'Edit answer options' button.").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__topbar--selectorAddAnswerOptions',
+                    'element' => '#adminsidepanel__topbar--selectorAddAnswerOptions',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,
                     'prev' => '-1',
                     'onNext' => "(function(tour){
-                                    document.location.href = $('#adminpanel__topbar--selectorAddAnswerOptions').attr('href');
+                                    document.location.href = $('#adminsidepanel__topbar--selectorAddAnswerOptions').attr('href');
                                     tour.setCurrentStep(28);
                                     return new Promise(function(res,rej){});
                                 })",
@@ -914,7 +914,7 @@ class LsDefaultDataSets
                 'content' => gT("Just share this link with some of your friends and of course, test it yourself.")
                 .'<p class="alert bg-success lstutorial__typography--white">'.gT("Thank you for taking the tour!").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__surveysummary--mainLanguageLink',
+                    'element' => '#adminsidepanel__surveysummary--mainLanguageLink',
                     'path' => ['/'.'(index.php)?'],
                     'placement' => 'top',
                     'redirect' => false,
@@ -944,6 +944,15 @@ class LsDefaultDataSets
                 'load_error'         => 0,
                 'load_error_message' => null
             ]
+        ];
+    }
+
+    public static function getDefaultUserSettings()
+    {
+        return [
+            ['stg_name' => 'editorPreset', 'stg_value' => 'wysiwyg'],
+            ['stg_name' => 'showScriptEditor', 'stg_value' => '0'],
+            ['stg_name' => 'noViewMode', 'stg_value' => '0'],                                    
         ];
     }
 }

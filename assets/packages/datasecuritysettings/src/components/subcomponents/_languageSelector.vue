@@ -4,7 +4,7 @@ import size from 'lodash/size';
 import pick from 'lodash/pick';
 import keys from 'lodash/keys';
 import slice from 'lodash/slice';
-import foreach from 'lodash/foreach';
+import foreach from 'lodash/forEach';
 
 export default {
     name: 'language-selector',
@@ -65,7 +65,6 @@ export default {
                 </ul>
             </div>
         </div>
-        <hr/>
     </div>
 </template>
 

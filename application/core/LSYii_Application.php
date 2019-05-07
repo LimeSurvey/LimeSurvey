@@ -125,17 +125,20 @@ class LSYii_Application extends CWebApplication
         $emailConfig = require(__DIR__.'/../config/email.php');
         $versionConfig = require(__DIR__.'/../config/version.php');
         $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
-        $securityConfig = require(__DIR__.'/../config/security.php');
-        $this->config = array_merge($this->config,$coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig, $securityConfig);
+        $this->config = array_merge($this->config,$coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
 
         /* Custom config file */
         $configdir = $coreConfig['configdir'];
+        if (file_exists( $configdir .  '/security.php')) {
+            $securityConfig = require(  $configdir .'/security.php');
+            if (is_array($securityConfig)) {
+                $this->config = array_merge($this->config, $securityConfig);
+            }
+        }
         if (file_exists( $configdir .  '/config.php')) {
             $userConfigs = require(  $configdir .'/config.php');
             if (is_array($userConfigs['config'])) {
-
                 $this->config = array_merge($this->config, $userConfigs['config']);
-
             }
         }
 
@@ -373,5 +376,38 @@ class LSYii_Application extends CWebApplication
                 }
             }
         }
+    }
+
+    /**
+     * Check if a file is inside a specific directory
+     * @var string $dirPath complete directory path
+     * @var string $baseDir the directory where it must be, default to upload dir
+     * @var boolean|null $throwException if security issue
+     * Throw Exception
+     * @return boolean
+     */
+    public function is_file($filePath,$baseDir = null,$throwException = null)
+    {
+        if(is_null($baseDir)) {
+            $baseDir = $this->getConfig('uploaddir');
+        }
+        if(is_null($throwException)) {
+            $throwException = boolval($this->getConfig('debug'));
+        }
+        $realFilePath = realpath($filePath);
+        if(!is_file($realFilePath)) {
+            /* Not existing file */
+            Yii::log("Try to read invalid file ".$filePath, 'warning', 'application.security.files.is_file');
+            return false;
+        }
+        if(substr($realFilePath, 0, strlen($baseDir)) !== $baseDir) {
+            /* Security issue */
+            Yii::log("Disable access to ".$realFilePath." directory", 'error', 'application.security.files.is_file');
+            if($throwException) {
+                throw new CHttpException(403,"Disable for security reasons.");
+            }
+            return false;
+        }
+        return $filePath;
     }
 }

@@ -45,6 +45,8 @@ class SurveyActivator
         $this->event->set('simulate', $this->isSimulation);
         App()->getPluginManager()->dispatchEvent($this->event);
 
+        $this->setMySQLDefaultEngine(Yii::app()->getConfig('mysqlEngine'));
+
         if (!$this->showEventMessages()) {
             return ['error'=>'plugin'];
         }
@@ -406,4 +408,26 @@ class SurveyActivator
 
     }
 
+    /**
+     * Set the default_storage_engine for mysql DB
+     * @param string $dbEngine
+     */
+    private function setMySQLDefaultEngine($dbEngine) {
+        /* empty dbEngine : out */
+        if(empty($dbEngine)) {
+            return;
+        }
+        $db = Yii::app()->db;
+        /* not DB : out */
+        if(empty($db)) {
+            return;
+        }
+        /* not mysql : out */
+        if ($db->driverName === InstallerConfigForm::DB_TYPE_MYSQL) {
+            return;
+        }
+        /* seems OK, sysadmin allowed to broke system */
+        $db->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
+            ->execute();
+    }
 }

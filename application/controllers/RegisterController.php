@@ -134,7 +134,7 @@ class RegisterController extends LSYii_Controller
                 if($event->get('sendRegistrationEmail', false)) {
                     self::sendRegistrationEmail($iSurveyId, $iTokenId);
                 }
-                $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
+                $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt();
                 $redirectUrl = Yii::app()->getController()->createUrl('/survey/', array('sid' => $iSurveyId,'token' => $oToken->token, 'lang'=>$sLanguage));
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
@@ -197,7 +197,7 @@ class RegisterController extends LSYii_Controller
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         
-        $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
+        $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt();
         
         $aData['active'] = $oSurvey->active;        
         $aData['iSurveyId'] = $iSurveyId;
@@ -280,7 +280,7 @@ class RegisterController extends LSYii_Controller
         $sLanguage = App()->language;
         $aSurveyInfo = getSurveyInfo($iSurveyId, $sLanguage);
 
-        $oToken = Token::model($iSurveyId)->findByPk($iTokenId); // Reload the token (needed if just created)
+        $oToken = Token::model($iSurveyId)->findByPk($iTokenId)->decrypt(); // Reload the token (needed if just created)
         $mailer = new \LimeMailer();
         $mailer->setSurvey($iSurveyId);
         $mailer->setToken($oToken->token);
@@ -295,7 +295,7 @@ class RegisterController extends LSYii_Controller
         if($mailerSent) {
             $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
             $oToken->sent = $today;
-            $oToken->save();
+            $oToken->encryptSave();
             $aMessage['mail-message'] = $this->sMailMessage;
         } else {
             $aMessage['mail-message-error'] = gT("You are registered but an error happened when trying to send the email - please contact the survey administrator.");
@@ -323,6 +323,7 @@ class RegisterController extends LSYii_Controller
             'email' => $aFieldValue['sEmail']
         ));
         if ($oToken) {
+            $oToken->decrypt();
             if ($oToken->usesleft < 1 && $aSurveyInfo['alloweditaftercompletion'] != 'Y') {
                 $this->aRegisterErrors[] = gT("The email address you have entered is already registered and the survey has been completed.");
             } elseif (strtolower(substr(trim($oToken->emailstatus), 0, 6)) === "optout") {
@@ -353,7 +354,7 @@ class RegisterController extends LSYii_Controller
                 $oToken->validuntil = $aSurveyInfo['expires'];
             }
             $oToken->generateToken();
-            $oToken->save();
+            $oToken->encryptSave();
             $this->sMailMessage = gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.");
             return $oToken->tid;
         }

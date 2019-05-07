@@ -87,7 +87,7 @@ class PluginManager extends \CApplicationComponent
     public function getInstalledPlugins()
     {
         $pluginModel = Plugin::model();
-        $records = $pluginModel->findAll();
+        $records = $pluginModel->findAll(['order'=>'priority DESC']);
 
         $plugins = array();
 
@@ -140,7 +140,9 @@ class PluginManager extends \CApplicationComponent
         $plugin = new Plugin();
         $plugin->name        = $newName;
         $plugin->version     = (string) $extensionConfig->xml->metadata->version;
-        $plugin->active      = 0;
+        if(!empty($extensionConfig->xml->priority)) {
+            $plugin->priority   = (int) $extensionConfig->xml->priority;
+        }
         $plugin->plugin_type = $pluginType;
         $plugin->save();
         return [true, null];
@@ -470,7 +472,12 @@ class PluginManager extends \CApplicationComponent
         $dbVersion = \SettingGlobal::model()->find("stg_name=:name", array(':name'=>'DBVersion')); // Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
         if ($dbVersion && $dbVersion->stg_value >= 165) {
             $pluginModel = Plugin::model();
-            $records = $pluginModel->findAllByAttributes(array('active'=>1));
+            if($dbVersion->stg_value >= 411) {
+                /* Before DB 411 version, unable to set order, must check to load before upgrading */
+                $records = $pluginModel->findAllByAttributes(array('active'=>1),['order'=>'priority DESC']);
+            } else {
+                $records = $pluginModel->findAllByAttributes(array('active'=>1));
+            }
 
             foreach ($records as $record) {
                 if (!isset($record->load_error) || $record->load_error == 0) {

@@ -17,13 +17,14 @@
 /**
  * Class DefaultValue
  *
+ * @property integer $dvid primary key
  * @property integer $qid Question id
  * @property integer $scale_id
- * @property string $language
  * @property string $specialtype
- * @property string $defaultvalue
  *
  * @property Question $question
+ * 
+ * @property DefaultValueL10n[] $defaultvalueL10ns
  */
 class DefaultValue extends LSActiveRecord
 {
@@ -31,7 +32,6 @@ class DefaultValue extends LSActiveRecord
     public $specialtype = '';
     public $scale_id = '';
     public $sqid = 0;
-    public $language = ''; // required ?
 
     /**
      * @inheritdoc
@@ -53,7 +53,7 @@ class DefaultValue extends LSActiveRecord
     /** @inheritdoc */
     public function primaryKey()
     {
-        return array('qid', 'specialtype', 'language', 'scale_id', 'sqid');
+        return array('dvid');
     }
 
     /** @inheritdoc */
@@ -61,9 +61,8 @@ class DefaultValue extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            'question' => array(self::HAS_ONE, 'Question', '',
-                'on' => "$alias.qid = question.qid",
-            ),
+            'question' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.qid = question.qid"),
+            'defaultValueL10ns' => array(self::HAS_MANY, 'DefaultValueL10n', 'dvid')
         );
     }
 
@@ -73,18 +72,6 @@ class DefaultValue extends LSActiveRecord
         return array(
             array('qid', 'required'),
             array('qid,sqid,scale_id', 'numerical', 'integerOnly'=>true),
-            array('qid', 'unique', 'criteria'=>array(
-                    'condition'=>'specialtype=:specialtype and scale_id=:scale_id and sqid=:sqid and language=:language',
-                    'params'=>array(
-                        ':specialtype'=>$this->specialtype,
-                        ':scale_id'=>$this->scale_id,
-                        ':sqid'=>$this->sqid,
-                        ':language'=>$this->language,
-                    )
-                ),
-                'message'=>'{attribute} "{value}" is already in use.'),
-            ['language,specialtype', 'length', 'min' => 2, 'max'=>20],
-            ['defaultvalue', 'safe'],
         );
     }
 
@@ -104,4 +91,10 @@ class DefaultValue extends LSActiveRecord
         }
         tracevar($oRecord->getErrors());
     }
+    /*
+    public function getDefaultValue($language = 'en')
+    {
+        $oDefaultValue = $this->with('defaultValueL10ns')->find('language = :language', array(':language' => $language));
+        return $oDefaultValue->defaultValueL10ns[$language]->defaultvalue;
+    }*/
 }

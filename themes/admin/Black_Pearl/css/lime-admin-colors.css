@@ -1973,7 +1973,7 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
   100% {
     transform: rotateY(360deg) rotateZ(-60deg); } }
 /**
-* New adminpanel
+* New adminsidepanel
 */
 #sidebar .btn-primary.force.color.white.onhover:hover, #sidebar .btn-primary.force.color.white.onhover:active, #sidebar .btn-primary.force.color.white.onhover:focus {
   color: #ffffff; }

@@ -91,7 +91,7 @@ abstract class Token extends Dynamic
             'validuntil' => gT('Valid until'),
         );
         foreach (decodeTokenAttributes($this->survey->attributedescriptions) as $key => $info) {
-            $labels[$key] = $info['description'];
+            $labels[$key] = !empty($info['description']) ? $info['description'] : '';
         }
         return $labels;
     }
@@ -141,11 +141,17 @@ abstract class Token extends Dynamic
     public static function createTable($surveyId, array $extraFields = array())
     {
         $surveyId = intval($surveyId);
+        $options = '';
+
         // Specify case sensitive collations for the token
         $sCollation = '';
         if (Yii::app()->db->driverName == 'mysql' || Yii::app()->db->driverName == 'mysqli') {
             $sCollation = "COLLATE 'utf8mb4_bin'";
+            if(!empty(Yii::app()->getConfig('mysqlEngine'))) {
+                $options .= sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
+            }
         }
+
         if (Yii::app()->db->driverName == 'sqlsrv'
             || Yii::app()->db->driverName == 'dblib'
             || Yii::app()->db->driverName == 'mssql') {
@@ -187,7 +193,7 @@ abstract class Token extends Dynamic
         $db = \Yii::app()->db;
         $sTableName = $oSurvey->tokensTableName;
 
-        $db->createCommand()->createTable($sTableName, $fields);
+        $db->createCommand()->createTable($sTableName, $fields, $options);
 
         /**
          * @todo Check if this random component in the index name is needed.
@@ -417,12 +423,20 @@ abstract class Token extends Dynamic
     }
 
     public static function getDefaultEncryptionOptions(){
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        // check if sodium library exists
+        if ($sodium->bLibraryExists === true){
+            $sEncrypted = 'Y';
+        } else {
+            $sEncrypted = 'N';
+        }
         return array(
                 'enabled' => 'N',
                 'columns' => array(
-                    'firstname' =>  'Y',
-                    'lastname' =>  'Y',
-                    'email' =>  'Y'
+                    'firstname' =>  $sEncrypted,
+                    'lastname' =>  $sEncrypted,
+                    'email' =>  $sEncrypted
                 )
         );
     }

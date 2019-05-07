@@ -1,36 +1,35 @@
 
 <script>
 
+import foreach from 'lodash/forEach';
 import keys from 'lodash/keys';
 import filter from 'lodash/filter';
+import reduce from 'lodash/reduce';
+import isEmpty from 'lodash/isEmpty';
+import isObject from 'lodash/isObject';
 
-import LanguageSelector from './subcomponents/_languageSelector.vue';
 import eventChild from '../mixins/eventChild.js';
 
 export default {
     name: 'questionoverview',
     mixin: [eventChild],
-    components: [LanguageSelector],
+    props: {
+        loading: {type: Boolean, default: false},
+    },
     data(){
         return {
             currentTab: '',
         };
     },
     computed: {
-        tabs(){
-            return filter(keys(this.$store.state.currentQuestionAdvancedSettings), (category) => category != 'debug');
-        },
-        currentAdvancedSettingsList() {
-            return this.$store.state.currentQuestionAdvancedSettings[this.currentTab];
-        },
-        questionGroupWithId(){
-            return `${this.$store.state.currentQuestionGroupInfo[this.$store.state.activeLanguage].group_name} (GID: ${this.$store.state.currentQuestionGroupInfo.gid})`;
-        },
         cleanCurrentQuestion(){
             return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].question);
         },
         cleanCurrentQuestionHelp(){
             return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].help);
+        },
+        currentQuestionScript(){
+            return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].script;
         },
         getNiceQuestionType(){
             return `${this.$store.state.currentQuestion.typeInformation.description} (${this.translate('Group')}: ${this.$store.state.currentQuestion.typeInformation.group})`;
@@ -64,128 +63,59 @@ export default {
             this.$log.log('LANGUAGE CHANGED', sLanguage);
             this.$store.commit('setActiveLanguage', sLanguage);
         },
+        parseForLocalizedOption(value) {
+            if(isObject(value) && value[this.$store.state.activeLanguage] != undefined) {
+                return value[this.$store.state.activeLanguage];
+            }
+            return value;
+        },
+        toggleEditMode(){
+            this.$emit('triggerEvent', { target: 'lsnextquestioneditor', method: 'triggerEditQuestion', content: {} });
+        }
     },
     mounted(){
-        this.currentTab = this.tabs[0];
         this.toggleLoading(false);
     }
 }
 </script>
 
 <template>
-    <div class="col-sm-12">
-        <div class="container-center">
-            <div class="row">
-                <language-selector 
-                    :elId="'questionpreview'" 
-                    :aLanguages="$store.state.languages" 
-                    :parentCurrentLanguage="$store.state.activeLanguage" 
-                    @change="selectLanguage"
-                />
-            </div>
-            <div class="row">
-                <div class="col-sm-6 ls-space margin bottom-15">
-                    <div class="scoped-small-border row">
-                        <div class="col-sm-4">{{'Code'|translate}}:</div>
-                        <div class="col-sm-8">{{this.$store.state.currentQuestion.title}}</div>
-                    </div>
+    <div class="col-sm-8 col-xs-12">
+        <transition name="slide-fade">
+            <div v-if="!loading"  class="panel panel-default" @dblclick="toggleEditMode">
+                <div class="panel-heading">
+                    {{'Text elements'|translate}}
                 </div>
-                <div class="col-sm-6 ls-space margin bottom-15">
-                    <div class="scoped-small-border row">
-                        <div class="col-sm-4">{{'Question group'|translate}}:</div>
-                        <div class="col-sm-8">{{questionGroupWithId}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                        {{'Text elements'|translate}}
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="ls-flex-row wrap col-12">
+                            <div class="col-12">{{'Question'|translate}}</div>
+                            <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestion" />
                         </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="ls-flex-row wrap col-12">
-                                    <div class="col-12">{{'Question'|translate}}</div>
-                                    <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestion" />
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="ls-flex-row wrap col-12">
-                                    <div class="col-12">{{'Help'|translate}}</div>
-                                    <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestionHelp" />
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                        {{'General settings'|translate}}
+                    </li>
+                    <li class="list-group-item" v-show="!!cleanCurrentQuestionHelp">
+                        <div class="ls-flex-row wrap col-12">
+                            <div class="col-12">{{'Help'|translate}}</div>
+                            <div class="col-12 scoped-small-border" v-html="cleanCurrentQuestionHelp" />
                         </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="ls-flex-row col-12">
-                                    <div class="col-4">Type</div>
-                                    <div class="col-8"> {{getNiceQuestionType}} </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="ls-flex-row col-12">
-                                    <div class="col-4">Mandatory</div>
-                                    <div class="col-8" v-html="getNiceMandatory"/>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="ls-flex-row col-12">
-                                    <div class="col-4">Encrypted</div>
-                                    <div class="col-8" v-html="getNiceEncrypted"/>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="ls-flex-row col-12">
-                                    <div class="col-4">Relevance equation</div>
-                                    <div class="col-8" v-html="parsedRelevance"/>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                        {{'Advanced settings'|translate}}
-                        </div>
-                        <div class="row ls-space margin top-5">
-                            <div class="col-sm-12">
-                                <ul class="nav nav-tabs scoped-tablist-advanced-settings" role="tablist">
-                                    <li 
-                                        v-for="advancedSettingCategory in tabs"
-                                        :key="'tablist-'+advancedSettingCategory"
-                                        :class="currentTab==advancedSettingCategory ? 'active' : ''" 
-                                    >
-                                        <a href="#" @click.prevent.stop="currentTab=advancedSettingCategory" >{{advancedSettingCategory}}</a>
-                                    </li>
-                                </ul>
+                    </li>
+                    <li class="list-group-item" v-show="!!currentQuestionScript">
+                        <div class="ls-flex-row wrap col-12">
+                            <div class="col-12">{{'Script'|translate}}</div>
+                            <div class="col-12 scoped-small-border">
+                                {{currentQuestionScript}}
                             </div>
+                            <p class="alert well">{{"__SCRIPTHELP"|translate}}</p>
                         </div>
-                        <div class="row ls-space scoped-fit-padding">
-                            <div class="col-sm-12 scope-border-open-top ls-space padding all-5">
-                                <ul class="list-group col-sm-12 ">
-                                    <li class="list-group-item" v-for="advancedSetting in currentAdvancedSettingsList" :key="advancedSetting.name">
-                                        <div class="ls-flex-row col-12">
-                                            <div class="col-4">{{advancedSetting.title}}</div>
-                                            <div class="col-8">{{advancedSetting.formElementValue}}</div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    </li>
+                </ul>
             </div>
-        </div>
+        </transition>
+        <transition name="slide-fade">
+            <div class="row" v-if="loading">
+                <loader-widget id="questionoverviewLoader" />
+            </div>
+        </transition>
     </div>
 </template>
 

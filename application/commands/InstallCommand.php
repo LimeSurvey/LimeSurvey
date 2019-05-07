@@ -103,6 +103,7 @@ class InstallCommand extends CConsoleCommand
         $this->output('Creating database...');
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>false))));
         $this->connection = App()->db;
+
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>true))));
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
@@ -114,7 +115,21 @@ class InstallCommand extends CConsoleCommand
             throw new CException("Invalid access data. Check your config.php db access data");
         }
 
+        if (!empty($this->connection) && $this->connection->driverName == 'mysql') {
+            /** @var string */
+            $dbEngine = getenv('DBENGINE');
+            if (empty($dbEngine)) {
+                throw new CException('Environment variable DBENGINE is empty, should be either MyISAM or InnoDB');
+            }
+
+            $this->connection
+                ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
+                ->execute();
+        }
+
+        /** @var string */
         $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
+
         try {
             switch ($this->connection->driverName) {
                 case 'mysqli':

@@ -4,127 +4,40 @@ import keys from "lodash/keys";
 import indexOf from "lodash/indexOf";
 
 export default {
-    //mutables
-    setCurrentQuestion : (state, newValue) => {
-        state.currentQuestion = newValue;
-    },
-    setCurrentQuestionI10N : (state, newValue) => {
-        state.currentQuestionI10N = newValue;
-    },
-    setCurrentQuestionAttributes : (state, newValue) => {
-        state.currentQuestionAttributes = newValue;
-    },
-    setCurrentQuestionGeneralSettings : (state, newValue) => {
-        state.currentQuestionGeneralSettings = newValue;
-    },
-    setCurrentQuestionAdvancedSettings : (state, newValue) => {
-        state.currentQuestionAdvancedSettings = newValue;
-    },
-    setCurrentQuestionAdvancedSettingsCategory : (state, newValue) => {
-        state.currentQuestionAdvancedSettingsCategory = newValue;
-    },
-    setCurrentQuestionSubquestions : (state, newValue) => {
-        state.currentQuestionSubquestions = newValue;
-    },
-    setCurrentQuestionAnswerOptions : (state, newValue) => {
-        state.currentQuestionAnswerOptions = newValue;
+
+    setShowsurveypolicynotice(state, newValue) {
+        state.showsurveypolicynotice = newValue;
     },
 
-    //Immutables
-    unsetImmutableQuestionAttributes : (state, newValue) => {
-        state.questionAttributesImmutable = {};
+    setDataseclabel(state, newValue) {
+        state.dataseclabel = newValue;
     },
-    setImmutableQuestionAttributes : (state, newValue) => {
-        if(isEmpty(state.questionAttributesImmutable)) {
-            state.questionAttributesImmutable = newValue;
-        }
+    setDatasecmessage(state, newValue) {
+        state.datasecmessage = newValue;
     },
-
-    unsetQuestionImmutable : (state) => {
-        state.questionImmutable = {};
+    setDatasecerror(state, newValue) {
+        state.datasecerror = newValue;
     },
-    setQuestionImmutable : (state, newValue) => {
-        if(isEmpty(state.questionImmutable)) {
-            state.questionImmutable = newValue;
-        }
+    setPermissions(state, newValue) {
+        state.permissions = newValue;
     },
 
-    unsetQuestionImmutableI10N : (state) => {
-        state.questionImmutableI10N = {};
+    setDataseclabelForCurrentLanguage(state, newValue) {
+        Vue.set(state.dataseclabel, state.activeLanguage, newValue);
     },
-    setQuestionImmutableI10N : (state, newValue) => {
-        if(isEmpty(state.questionImmutableI10N)) {
-            state.questionImmutableI10N = newValue;
-        }
+    setDatasecmessageForCurrentLanguage(state, newValue) {
+        Vue.set(state.datasecmessage, state.activeLanguage, newValue);
     },
-
-    unsetImmutableQuestionGeneralSettings : (state, newValue) => {
-        state.questionAttributesImmutable = {};
-    },
-    setImmutableQuestionGeneralSettings : (state, newValue) => {
-        if(isEmpty(state.questionAttributesImmutable)) {
-            state.questionAttributesImmutable = newValue;
-        }
-    },
-
-    unsetImmutableQuestionAdvancedSettings : (state, newValue) => {
-        state.questionGeneralSettingsImmutable = {};
-    },
-    setImmutableQuestionAdvancedSettings : (state, newValue) => {
-        if(isEmpty(state.questionGeneralSettingsImmutable)) {
-            state.questionGeneralSettingsImmutable = newValue;
-        }
-    },
-
-    unsetQuestionSubquestionsImmutable : (state, newValue) => {
-        state.questionSubquestionsImmutable = {};
-    },
-    setQuestionSubquestionsImmutable : (state, newValue) => {
-        if(isEmpty(state.questionSubquestionsImmutable)) {
-            state.questionSubquestionsImmutable = newValue;
-        }
-    },
-    
-    unsetQuestionAnswerOptionsImmutable : (state, newValue) => {
-        state.questionAnswerOptionsImmutable = {};
-    },
-    setQuestionAnswerOptionsImmutable : (state, newValue) => {
-        if(isEmpty(state.questionAnswerOptionsImmutable)) {
-            state.questionAnswerOptionsImmutable = newValue;
-        }
-    },
-
-    //special and single settings
-    setQuestionGeneralSetting : (state, payload) => {
-        //const newCurrentQuestionGeneralSettings = state.currentQuestionGeneralSettings;
-        //newCurrentQuestionGeneralSettings[payload.settingName]['formElementValue'] = payload.newValue;
-        //state.currentQuestionGeneralSettings = newCurrentQuestionGeneralSettings;
-        Vue.set(
-            state.currentQuestionGeneralSettings[payload.settingName],
-            'formElementValue',
-            payload.newValue
-        );
-    },
-    setQuestionAdvancedSetting : (state, payload) => {
-        Vue.set(
-            state.currentQuestionAdvancedSettings[state.questionAdvancedSettingsCategory][payload.settingName],
-            'formElementValue',
-            payload.newValue
-        );
-    },
-    updateCurrentQuestionI10NValue: (state, setObject) => {
-        const newCurrentQuestionI10N = state.currentQuestionI10N;
-        newCurrentQuestionI10N[state.activeLanguage][setObject.value] = setObject.newValue;
-        state.currentQuestionI10N = newCurrentQuestionI10N;
-    },
-    updateCurrentQuestionTitle: (state, newValue) => {
-        Vue.set(state.currentQuestion,'title',newValue);
+    setDatasecerrorForCurrentLanguage(state, newValue) {
+        Vue.set(state.datasecerror, state.activeLanguage, newValue);
     },
 
     //view controllers
-    setQuestionAdvancedSettingsCategory : (state, newValue) => {
-        state.questionAdvancedSettingsCategory = newValue;
+    toggleVisible(state, newValue=null) {
+        newValue = newValue === null ? !state.visible : newValue;
+        state.visible = newValue;
     },
+    
     setActiveLanguage : (state, newValue) => {
         state.activeLanguage = newValue;
     },
@@ -144,12 +57,6 @@ export default {
         if(currentIndex > 0) {
             state.activeLanguage = keyList[currentIndex-1];
         }
-    },
-    setSurvey : (state, newValue) => {
-        state.survey = newValue;
-    },
-    setQuestionTypeList : (state, newValue) => {
-        state.questionTypes = newValue;
     },
     toggleDebugMode: (state) => {
         state.debugMode = !state.debugMode;

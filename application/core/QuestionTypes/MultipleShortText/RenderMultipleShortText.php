@@ -164,6 +164,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
             true
         );
 
+        $this->registerAssets();
         // $inputnames[] = $this->sSGQA;
         return array($answer, $this->inputnames);
     }

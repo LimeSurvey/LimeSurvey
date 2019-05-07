@@ -303,8 +303,15 @@ class Survey extends LSActiveRecord
 
                 Condition::model()->deleteAllByAttributes(array('qid' =>$aQuestion['qid']));
                 QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
-                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
                 QuestionL10n::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+
+                // delete defaultvalues and defaultvalueL10ns
+                $oDefaultValues = DefaultValue::model()->findAll('qid = :qid', array(':qid' => $aQuestion['qid']));
+                foreach($oDefaultValues as $defaultvalue){
+                    DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                    DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                };
+
             }
 
             Question::model()->deleteAllByAttributes(array('sid' => $this->sid));
@@ -2094,6 +2101,14 @@ return $s->hasTokensTable; });
             $aOptions = Token::getDefaultEncryptionOptions();
         }
         return $aOptions;
+    }
+
+    /**
+     * @param ? $tmp
+     */
+    public function setTokenEncryptionOptions($options)
+    {
+        $this->tokenencryptionoptions = $options;
     }
 
     public function setOptions($gsid)

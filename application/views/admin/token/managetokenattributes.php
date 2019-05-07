@@ -37,7 +37,7 @@
                                         <th><?php eT("Attribute field"); ?></th>
                                         <th><?php eT("Field description"); ?></th>
                                         <th><?php eT("Mandatory?"); ?></th>
-                                        <th><?php eT("Encrypted?"); ?></th>
+                                        <th title="<?php !$bEncrypted ? eT("Encryption is disabled because Sodium library isn't installed") : ''; ?>"><?php eT("Encrypted?"); ?></th>
                                         <th><?php eT("Show during registration?") ?></th>
                                         <th><?php eT("Field caption"); ?></th>
                                         <th><?php eT("CPDB mapping"); ?></th>
@@ -85,6 +85,9 @@
                                                         'value' => $tokenvalues['encrypted']=='Y'?'1':'0',
                                                         'onLabel'=>gT('On'),
                                                         'offLabel' => gT('Off'),
+                                                        'htmlOptions'=>array(
+                                                            'disabled' => !$bEncrypted,
+                                                        )
                                                     ));
                                                 ?>
                                             </td>
@@ -109,7 +112,7 @@
                                             echo "
                                             <td>", htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'), "</td>
                                             <td>", $tokenvalues['mandatory'] == 'Y' ? eT('Yes') : eT('No'), "</td>
-                                            <td>", $tokenvalues['encrypted_'] == 'Y' ? eT('Yes') : eT('No'), "</td>
+                                            <td>", $tokenvalues['encrypted'] == 'Y' ? eT('Yes') : eT('No'), "</td>
                                             <td>", $tokenvalues['show_register'] == 'Y' ? eT('Yes') : eT('No'), "</td>";
                                         }; ?>
                                         <td><input type='text' name='caption_<?php echo $sTokenField; ?>_<?php echo $sLanguage; ?>' value='<?php echo htmlspecialchars(!empty($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '', ENT_QUOTES, 'UTF-8'); ?>' /></td>

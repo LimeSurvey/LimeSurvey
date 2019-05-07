@@ -34,10 +34,10 @@ class UpdateDbHelperTest extends TestBaseClass
         $this->assertNotEmpty($connection, 'Could connect to new database');
 
         // Get InstallerController.
-        $inst = new \InstallerController('foobar');
-        $inst->connection = \Yii::app()->db;
-        $filename = dirname(APPPATH).'/installer/create-database.php';
-        $result = $inst->_setup_tables($filename);
+        $inst = new \InstallerConfigForm();
+        $inst->db = \Yii::app()->db;
+        $inst->dbtype = $inst->db->driverName;
+        $result = $inst->setupTables();
         if ($result) {
             print_r($result);
         }
@@ -170,12 +170,11 @@ class UpdateDbHelperTest extends TestBaseClass
         $connection->schema->refresh();
 
         // Get InstallerController.
-        $db = \Yii::app()->getDb();
-        $inst = new \InstallerController('foobar');
-        $inst->connection = $db;
-        $filename = dirname(APPPATH).'/installer/create-database.php';
+        $inst = new \InstallerConfigForm();
+        $inst->db = \Yii::app()->db;
+        $inst->dbtype = $inst->db->driverName;
         try {
-            $result = $inst->_setup_tables($filename);
+            $result = $inst->setupTables();
         } catch (\CHttpException $ex) {
             $this->assertTrue(
                 false,
@@ -185,8 +184,8 @@ class UpdateDbHelperTest extends TestBaseClass
         if ($result) {
             print_r($result);
         }
-        $inst->connection->schema->refresh();
-        $freshInstallTables = $inst->connection->schema->getTables();
+        $inst->db->schema->refresh();
+        $freshInstallTables = $inst->db->schema->getTables();
 
         $this->assertEquals(count($upgradeTables), count($freshInstallTables), 'Same number of tables');
         $this->assertEquals(array_keys($upgradeTables), array_keys($freshInstallTables), 'Same number of tables');

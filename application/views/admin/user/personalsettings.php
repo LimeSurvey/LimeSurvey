@@ -37,7 +37,7 @@
         }
         $aQuestionTypeGroups[$htmlReadyGroup]['questionTypes'][$key] = $questionType;
     }
-    $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $oUserSettings) ? $oUserSettings['preselectquestiontype'] : Yii::app()->getConfig('preselectquestiontype');
+    $currentPreselectedQuestiontype = array_key_exists('preselectquestiontype', $aUserSettings) ? $aUserSettings['preselectquestiontype'] : Yii::app()->getConfig('preselectquestiontype');
     $oQuestionSelector = $this->beginWidget('ext.admin.PreviewModalWidget.PreviewModalWidget', array(
     'widgetsJsName' => "preselectquestiontype",
     'renderType' =>  "group-simple",
@@ -140,6 +140,9 @@ echo $oQuestionSelector->getModal();
                                     <div class="">
                                         <?php echo CHtml::passwordField('password', '',array('disabled'=>true, 'class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
                                     </div>
+                                    <div class="">
+                                        <span class='text-info'><?php echo $passwordHelpText; ?></span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -194,11 +197,10 @@ echo $oQuestionSelector->getModal();
                                     <?php echo CHtml::label(gT("HTML editor mode:"), 'htmleditormode', array('class'=>" control-label")); ?>
                                     <div class="">
                                         <?php
-                                            echo CHtml::dropDownList('htmleditormode', Yii::app()->session['htmleditormode'], array(
+                                            echo CHtml::dropDownList('htmleditormode',  Yii::app()->session['htmleditormode'], array(
                                                 'default' => gT("Default",'unescaped'),
-                                                'inline' => gT("Inline HTML editor",'unescaped'),
-                                                'popup' => gT("Popup HTML editor",'unescaped'),
-                                                'none' => gT("No HTML editor",'unescaped')
+                                                'wysiwyg' => gT("Inline HTML editor",'unescaped'),
+                                                'source' => gT("Sourcecode editor",'unescaped'),
                                             ), array('class'=>"form-control"));
                                         ?>
                                     </div>
@@ -264,6 +266,28 @@ echo $oQuestionSelector->getModal();
                                             ?>
                                         </select>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <?php echo CHtml::label( gT("Show script field:"), 'showScriptEdit', array('class'=>" control-label")); ?>
+                                    <?php
+                                        echo CHtml::dropDownList('showScriptEdit', ($aUserSettings['showScriptEdit'] ?? '0'), array(
+                                            '0' => gT("No",'unescaped'),
+                                            '1' => gT("Yes",'unescaped'),
+                                        ), array('class'=>"form-control"));
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <?php echo CHtml::label( gT("Directly show edit mode:"), 'noViewMode', array('class'=>" control-label")); ?>
+                                    <?php
+                                        echo CHtml::dropDownList('noViewMode', ($aUserSettings['noViewMode'] ?? '0'), array(
+                                            '0' => gT("No",'unescaped'),
+                                            '1' => gT("Yes",'unescaped'),
+                                        ), array('class'=>"form-control"));
+                                    ?>
                                 </div>
                             </div>
                         </div>

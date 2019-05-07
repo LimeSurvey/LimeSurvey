@@ -48,14 +48,12 @@ class remotecontrol_handle
         if ($loginResult === true) {
             $this->_jumpStartSession($username);
             $sSessionKey = Yii::app()->securityManager->generateRandomString(32);
-            $sDatabasetype = Yii::app()->db->getDriverName();
             $session = new Session;
             $session->id = $sSessionKey;
-            $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
+            $session->expire = time() + (int) Yii::app()->getConfig('iSessionExpirationTime',ini_get('session.gc_maxlifetime'));
             $session->data = $username;
             $session->save();
             return $sSessionKey;
-
         }
         if (is_string($loginResult)) {
             return array('status' => $loginResult);
@@ -1345,7 +1343,13 @@ class remotecontrol_handle
                     $sCriteria->params[':qid'] = $iQuestionID;
                     Question::model()->deleteAll($sCriteria);
 
-                    DefaultValue::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
+                    // delete defaultvalues and defaultvalueL10ns
+                    $oDefaultValues = DefaultValue::model()->findAll(array('qid' => $iQuestionID));
+                    foreach($oDefaultValues as $defaultvalue){
+                        DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                        DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                    }
+
                     QuotaMember::model()->deleteAllByAttributes(array('qid' => $iQuestionID));
                     Question::updateSortOrder($iGroupID, $iSurveyID);
 
@@ -1493,23 +1497,27 @@ class remotecontrol_handle
             Yii::app()->loadHelper("surveytranslator");
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion)) {
-                            return array('status' => 'Error: Invalid questionid');
+                return array('status' => 'Error: Invalid questionid');
             }
 
             $iSurveyID = $oQuestion->sid;
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'read')) {
                 if (is_null($sLanguage)) {
-                                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
+                    $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
                 }
 
                 if (!array_key_exists($sLanguage, getLanguageDataRestricted())) {
-                                    return array('status' => 'Error: Invalid language');
+                    return array('status' => 'Error: Invalid language');
                 }
 
-                $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=>$sLanguage));
+                $oQuestion = Question::model()->with('questionL10ns')
+                    ->find(
+                        't.qid = :qid and questionL10ns.language = :language',
+                        array(':qid' => $iQuestionID, ':language'=>$sLanguage)
+                );
                 if (!isset($oQuestion)) {
-                                    return array('status' => 'Error: Invalid questionid');
+                    return array('status' => 'Error: Invalid questionid');
                 }
 
                 $aBasicDestinationFields = Question::model()->tableSchema->columnNames;
@@ -1526,21 +1534,27 @@ class remotecontrol_handle
                 }
 
                 if (empty($aQuestionSettings)) {
-                                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data');
                 }
 
                 $aResult = array();
                 foreach ($aQuestionSettings as $sPropertyName) {
                     if ($sPropertyName == 'available_answers' || $sPropertyName == 'subquestions') {
-                        $oSubQuestions = Question::model()->findAllByAttributes(array('parent_qid' => $iQuestionID, 'language'=>$sLanguage), array('order'=>'title'));
+                        $oSubQuestions = Question::model()->with('questionL10ns')
+                            ->findAll(
+                                't.parent_qid = :parent_qid and questionL10ns.language = :language',
+                                array(':parent_qid' => $iQuestionID, ':language'=>$sLanguage),
+                                array('order'=>'title')
+                        );
+                
                         if (count($oSubQuestions) > 0) {
                             $aData = array();
                             foreach ($oSubQuestions as $oSubQuestion) {
                                 if ($sPropertyName == 'available_answers') {
-                                                                    $aData[$oSubQuestion['title']] = $oSubQuestion['question'];
+                                    $aData[$oSubQuestion['title']] = array_key_exists($language, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
                                 } else {
                                     $aData[$oSubQuestion['qid']]['title'] = $oSubQuestion['title'];
-                                    $aData[$oSubQuestion['qid']]['question'] = $oSubQuestion['question'];
+                                    $aData[$oSubQuestion['qid']]['question'] = array_key_exists($language, $oSubQuestion->questionL10ns) ? $oSubQuestion->questionL10ns[$sLanguage]->question : '';
                                     $aData[$oSubQuestion['qid']]['scale_id'] = $oSubQuestion['scale_id'];
                                 }
 
@@ -1548,48 +1562,58 @@ class remotecontrol_handle
 
                             $aResult[$sPropertyName] = $aData;
                         } else {
-                                                    $aResult[$sPropertyName] = 'No available answers';
+                            $aResult[$sPropertyName] = 'No available answers';
                         }
                     } else if ($sPropertyName == 'attributes') {
                         $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> null), array('order'=>'attribute'));
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                                            $aData[$oAttribute['attribute']] = $oAttribute['value'];
+                                $aData[$oAttribute['attribute']] = $oAttribute['value'];
                             }
 
                             $aResult['attributes'] = $aData;
                         } else {
-                                                    $aResult['attributes'] = 'No available attributes';
+                            $aResult['attributes'] = 'No available attributes';
                         }
                     } else if ($sPropertyName == 'attributes_lang') {
                         $oAttributes = QuestionAttribute::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage), array('order'=>'attribute'));
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                                            $aData[$oAttribute['attribute']] = $oAttribute['value'];
+                                $aData[$oAttribute['attribute']] = $oAttribute['value'];
                             }
 
                             $aResult['attributes_lang'] = $aData;
                         } else {
-                                                    $aResult['attributes_lang'] = 'No available attributes';
+                            $aResult['attributes_lang'] = 'No available attributes';
                         }
                     } else if ($sPropertyName == 'answeroptions') {
-                        $oAttributes = Answer::model()->findAllByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage), array('order'=>'sortorder'));
+                        $oAttributes = Answer::model()->with('answerL10ns')
+                            ->findAll(
+                                't.qid = :qid and answerL10ns.language = :language',
+                                array(':qid' => $iQuestionID, ':language'=> $sLanguage),
+                                array('order'=>'sortorder')
+                        );
                         if (count($oAttributes) > 0) {
                             $aData = array();
                             foreach ($oAttributes as $oAttribute) {
-                                $aData[$oAttribute['code']]['answer'] = $oAttribute['answer'];
+                                $aData[$oAttribute['code']]['answer'] = array_key_exists($language, $oAttribute->answerL10ns) ? $oAttribute->answerL10ns[$sLanguage]->answer : '';
                                 $aData[$oAttribute['code']]['assessment_value'] = $oAttribute['assessment_value'];
                                 $aData[$oAttribute['code']]['scale_id'] = $oAttribute['scale_id'];
                                 $aData[$oAttribute['code']]['order'] = $oAttribute['sortorder'];
                             }
                             $aResult['answeroptions'] = $aData;
                         } else {
-                                                    $aResult['answeroptions'] = 'No available answer options';
+                             $aResult['answeroptions'] = 'No available answer options';
                         }
                     } else if ($sPropertyName == 'defaultvalue') {
-                        $aResult['defaultvalue'] = DefaultValue::model()->findByAttributes(array('qid' => $iQuestionID, 'language'=> $sLanguage))->defaultvalue;
+                        $aResult['defaultvalue'] = DefaultValue::model()->with('defaultValueL10ns')
+                            ->find(
+                                'qid = :qid AND defaultValueL10ns.language = :language',
+                                array(':qid' => $iQuestionID, ':language'=> $sLanguage)
+                            )
+                            ->defaultvalue;
                     } else {
                         $aResult[$sPropertyName] = $oQuestion->$sPropertyName;
                     }
@@ -1746,7 +1770,7 @@ class remotecontrol_handle
                 if ($bCreateToken) {
                     $token->generateToken();
                 }
-                if ($token->save()) {
+                if ($token->encryptSave()) {
                     $aParticipant = $token->getAttributes();
                 } else {
                     $aParticipant["errors"] = $token->errors;
@@ -1837,11 +1861,11 @@ class remotecontrol_handle
                     } elseif ($tokenCount > 1) {
                         return array('status' => 'Error: More than 1 result was found based on your attributes.');
                     }
-                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
+                    $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties)->decrypt();
                 } else {
                     // If aTokenQueryProperties is not an array, but an integer
                     $iTokenID = $aTokenQueryProperties;
-                    $token = Token::model($iSurveyID)->findByPk($iTokenID);
+                    $token = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
                 }
                 if (!isset($token)) {
                     return array('status' => 'Error: Invalid tokenid');
@@ -1892,20 +1916,22 @@ class remotecontrol_handle
                 }
 
                 if (is_array($aTokenQueryProperties)) {
-            $tokenCount = Token::model($iSurveyID)->countByAttributes($aTokenQueryProperties);
-            if ($tokenCount == 0) {
-            return array('status' => 'Error: No results were found based on your attributes.');
-            } else if ($tokenCount > 1) {
-            return array('status' => 'Error: More than 1 result was found based on your attributes.');
-            }
-            $oToken = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
-        } else {
+                    $oTokens = Token::model($iSurveyID)->findAllByAttributes($aTokenQueryProperties);
+                    $tokenCount = count($oTokens);
+                    if ($tokenCount == 0) {
+                        return array('status' => 'Error: No results were found based on your attributes.');
+                    } else if ($tokenCount > 1) {
+                        return array('status' => 'Error: More than 1 result was found based on your attributes.');
+                    }
+                    $oToken = $oTokens[0];
+                    $oToken->decrypt();
+                } else {
                     // If aTokenQueryProperties is not an array but an integer
                     $iTokenID = $aTokenQueryProperties;
-                $oToken = Token::model($iSurveyID)->findByPk($iTokenID);
-        }
+                    $oToken = Token::model($iSurveyID)->findByPk($iTokenID)->decrypt();
+                }
                 if (!isset($oToken)) {
-                                    return array('status' => 'Error: Invalid tokenid');
+                    return array('status' => 'Error: Invalid tokenid');
                 }
 
                 // Remove fields that may not be modified
@@ -1915,18 +1941,20 @@ class remotecontrol_handle
                 $aTokenData = array_intersect_key($aTokenData, $aBasicDestinationFields);
 
                 if (empty($aTokenData)) {
-                                    return array('status' => 'No valid Data');
+                    return array('status' => 'No valid Data');
                 }
-
+                
                 $oToken->setAttributes($aTokenData, false);
-                if ($oToken->save()) {
+                if ($oToken->encryptSave()) {
                     return $oToken->attributes;
+                } else {
+                    return array('status' => $oToken->getErrors());
                 }
             } else {
-                            return array('status' => 'No permission');
+                return array('status' => 'No permission');
             }
         } else {
-                    return array('status' => 'Invalid Session Key');
+            return array('status' => 'Invalid Session Key');
         }
     }
 
@@ -2020,6 +2048,7 @@ class remotecontrol_handle
                                     return array('status' => 'No survey participants found.');
                 }
 
+                
                 $extendedAttributes = array();
                 if ($aAttributes) {
                     $aBasicDestinationFields = Token::model($iSurveyID)->tableSchema->columnNames;
@@ -2027,8 +2056,9 @@ class remotecontrol_handle
                     $currentAttributes = array('tid', 'token', 'firstname', 'lastname', 'email');
                     $extendedAttributes = array_diff($aTokenProperties, $currentAttributes);
                 }
-
+                
                 foreach ($oTokens as $token) {
+                    $token->decrypt();
                     $aTempData = array(
                         'tid'=>$token->primarykey,
                         'token'=>$token->attributes['token'],
@@ -2386,6 +2416,7 @@ class remotecontrol_handle
             }
 
             foreach ($aResultTokens as $key=>$oToken) {
+                $oToken->decrypt();
                 //pattern taken from php_filter_validate_email PHP_5_4/ext/filter/logical_filters.c
                 $pattern = '/^(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){255,})(?!(?:(?:\\x22?\\x5C[\\x00-\\x7E]\\x22?)|(?:\\x22?[^\\x5C\\x22]\\x22?)){65,}@)(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22))(?:\\.(?:(?:[\\x21\\x23-\\x27\\x2A\\x2B\\x2D\\x2F-\\x39\\x3D\\x3F\\x5E-\\x7E]+)|(?:\\x22(?:[\\x01-\\x08\\x0B\\x0C\\x0E-\\x1F\\x21\\x23-\\x5B\\x5D-\\x7F]|(?:\\x5C[\\x00-\\x7F]))*\\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-+[a-z0-9]+)*\\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-+[a-z0-9]+)*)|(?:\\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\\]))$/iD';
 
@@ -2606,10 +2637,12 @@ class remotecontrol_handle
             $survey_dynamic = new SurveyDynamic;
             $aBasicDestinationFields = $survey_dynamic->tableSchema->columnNames;
             $aResponseData = array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
-            $result_id = $survey_dynamic->insertRecords($aResponseData);
-
-            if ($result_id) {
-                $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $aResponseData['token'], 'id' => $result_id));
+            $survey_dynamic->setAttributes($aResponseData, false);
+            $survey_dynamic->encryptSave();
+            
+            if ($survey_dynamic->id) {
+                $result_id = $survey_dynamic->id;
+                $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $aResponseData['token'], 'id' => $result_id))->decrypt();
                 foreach ($oResponse->getFiles() as $aFile) {
                     $sUploadPath = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/";
                     $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyID."/files/".$aFile['filename'];
@@ -2707,7 +2740,7 @@ class remotecontrol_handle
                 $aResponses[0]->setAttribute($sAtributeName, $value);
             }
 
-            $bResult = $aResponses[0]->save(true);
+            $bResult = $aResponses[0]->encryptSave(true);
 
             if ($bResult) {
                 return $bResult;
@@ -3023,6 +3056,7 @@ class remotecontrol_handle
         $identity = new LSUserIdentity($sUsername, $sPassword);
         $identity->setPlugin($sPlugin);
         $event = new PluginEvent('remoteControlLogin');
+        $event->set('identity', $identity);
         $event->set('plugin', $sPlugin);
         $event->set('username', $sUsername);
         $event->set('password', $sPassword);

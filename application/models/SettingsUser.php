@@ -158,6 +158,14 @@ class SettingsUser extends LSActiveRecord
         return $setting != null ? $setting->getAttribute('stg_value') : $default;
     }
 
+    public static function applyBaseSettings($iUid) 
+    {
+        $defaults = LsDefaultDataSets::getDefaultUserSettings();
+        foreach($defaults as $default) {
+            self::setUserSetting($default['stg_name'], $default['stg_value'], $iUid);
+        }
+    }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *

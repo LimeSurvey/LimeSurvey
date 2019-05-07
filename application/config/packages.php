@@ -144,16 +144,21 @@ return array(
             'lslog',
         )
     ),
-    'adminpanel' => array(
-       'devBaseUrl' => 'assets/packages/adminpanel/',
-       'basePath' => 'core.adminpanel',
-       'js' => array(
-           'build/lsadminpanel'.(($debug > 0) ? '' : '.min').'.js',
-           'build/surveysettings'.$minVersion.'.js',
-           //'build/hammer'.$minVersion.'.js'
-       ),
+    'adminsidepanel' => array(
+       'devBaseUrl' => 'assets/packages/adminsidepanel/',
+       'basePath' => 'core.adminsidepanel',
+       'position' =>CClientScript::POS_HEAD,
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/adminsidepanel.js',
+            )
+            : array(
+                'build.min/js/adminsidepanel.js'
+            )
+        ),
        'css' => array(
-           'build/lsadminpanel'.$minVersion.'.css'
+           'build.min/css/main.css'
        ),
        'depends' => array(
            'adminbasics'
@@ -163,11 +168,57 @@ return array(
         'devBaseUrl' => 'assets/packages/textelements/',
         'basePath' => 'core.textelements',
         'position' =>CClientScript::POS_END,
-        'js' => array(
-            'build/lstextelements'.(($debug > 0) ? '' : '.min').'.js'
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/lstextelements.js',
+            )
+            : array(
+                'build.min/js/lstextelements.js'
+            )
         ),
         'css' => array(
-            'build/lstextelements'.$minVersion.'.css'
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics'
+        )
+    ),
+    'datasectextelements' => array(
+        'devBaseUrl' => 'assets/packages/datasecuritysettings/',
+        'basePath' => 'core.datasecuritysettings',
+        'position' =>CClientScript::POS_END,
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/datasecuritysettings.js'
+            )
+            : array(
+                'build.min/js/datasecuritysettings.js'
+            )
+        ),
+        'css' => array(
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics'
+        )
+    ),
+    'questiongroupeditor' => array(
+        'devBaseUrl' => 'assets/packages/questiongroup/',
+        'basePath' => 'core.questiongroup',
+        'position' =>CClientScript::POS_END,
+        'js' =>  (
+            $debug > 0
+            ? array(
+                'build/js/questiongroupedit.js'
+            )
+            : array(
+                'build.min/js/questiongroupedit.js'
+            )
+        ),
+        'css' => array(
+            'build.min/css/main.css'
         ),
         'depends' => array(
             'adminbasics'
@@ -177,14 +228,21 @@ return array(
         'devBaseUrl' => 'assets/packages/questioneditor/',
         'basePath' => 'core.questioneditor',
         'position' =>CClientScript::POS_END,
-        'js' => array(
-            'build/lsquestioneditor'.(($debug > 0) ? '' : '.min').'.js'
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/questionedit.js'
+            )
+            : array(
+                'build.min/js/questionedit.js'
+            )
         ),
         'css' => array(
-            'build/lsquestioneditor'.$minVersion.'.css'
+            'build.min/css/main.css'
         ),
         'depends' => array(
-            'adminbasics'
+            'adminbasics',
+            'ace'
         )
     ),
     'lstutorial' => array(
@@ -293,7 +351,7 @@ return array(
         )
     ),
 
-    'emailtemplates' => array(
+    'emailtemplatesold' => array(
         'devBaseUrl' => 'assets/packages/emailtemplates/',
         'basePath' => 'core.emailtemplates',
         'position' =>CClientScript::POS_BEGIN,
@@ -305,6 +363,28 @@ return array(
         ),
         'depends' => array(
             'adminbasics',
+        )
+    ),
+
+    'emailtemplates' => array(
+        'devBaseUrl' => 'assets/packages/emailtemplates/',
+        'basePath' => 'core.emailtemplates',
+        'position' =>CClientScript::POS_END,
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/emailtemplates.js'
+            )
+            : array(
+                'build.min/js/emailtemplates.js'
+            )
+        ),
+        'css' => array(
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics',
+            'ace'
         )
     ),
 

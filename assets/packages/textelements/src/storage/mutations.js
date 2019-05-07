@@ -30,6 +30,9 @@ export default {
     setDateFormatOptions : (state, newValue) => {
         state.dateFormatOptions = newValue;
     },
+    setPermissions : (state, newValue) => {
+        state.permissions = newValue;
+    },
     
     //language specific setter
     setSurveyTitleForCurrentLanguage : (state, newValue) => {
@@ -53,7 +56,7 @@ export default {
     setDateFormatForCurrentLanguage : (state, newValue) => {
         Vue.set(state.dateFormat, state.activeLanguage, newValue);
     },
-    setDecimalDivider : (state, newValue) => {
+    setDecimalDividerForCurrentLanguage : (state, newValue) => {
         Vue.set(state.decimalDivider, state.activeLanguage, newValue);
     },
 

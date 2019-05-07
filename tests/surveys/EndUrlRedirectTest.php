@@ -39,8 +39,7 @@ class EndUrlRedirectTest extends TestBaseClassWeb
      */
     public function testWithAjaxMode()
     {
-        $this->markTestSkipped();
-        //$this->doTheTest("on");
+        $this->doTheTest("on");
     }
 
     /**

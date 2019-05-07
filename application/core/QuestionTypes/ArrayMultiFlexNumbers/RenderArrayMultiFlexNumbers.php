@@ -32,6 +32,7 @@ class RenderArrayMultiFlexNumbers extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        $this->registerAssets();
         return do_array_multiflexi($this->aFieldArray);
         
         $answer = '';

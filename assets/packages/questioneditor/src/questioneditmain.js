@@ -3,6 +3,7 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 import VModal from 'vue-js-modal'
 
 import App from './App.vue';
+import Loader from './helperComponents/loader.vue';
 
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
@@ -18,6 +19,7 @@ Vue.config.ignoredElements = ["x-test"];
 Vue.use( PluginLog );
 Vue.use( CKEditor );
 Vue.use(VModal, { dynamic: true });
+Vue.component('loader-widget', Loader);
 
 Vue.mixin({
     methods: {
@@ -46,7 +48,7 @@ Vue.mixin({
         }
     }
 });
-const AppState = getAppState(window.LS.parameters.qid);
+const AppState = getAppState(window.QuestionEditData.qid);
 const questionEditor = new Vue({
     el: '#advancedQuestionEditor',
     store: AppState,

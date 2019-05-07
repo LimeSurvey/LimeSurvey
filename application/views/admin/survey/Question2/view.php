@@ -60,7 +60,7 @@
                 ."$('#question_type').val(value);"
                 ."var event = jQuery.Event('jquery:trigger');"
                 ."event.emitter = JSON.stringify({"
-                    ."target: 'MainEditor',"
+                    ."target: 'lsnextquestioneditor',"
                     ."method: 'questionTypeChangeTriggered',"
                     ."content: value"
                 ."});"
@@ -86,19 +86,5 @@
         </div>
         <div id="advancedQuestionEditor"><app /></div>
         </form>
-
-        <div id="questionEditLoader" class="ls-flex ls-flex-column align-content-center align-items-center"
-            style="min-height: 100%;">
-            <div class="ls-flex align-content-center align-items-center">
-                <div class="loader-advancedquestionsettings text-center">
-                    <div class="contain-pulse animate-pulse">
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>

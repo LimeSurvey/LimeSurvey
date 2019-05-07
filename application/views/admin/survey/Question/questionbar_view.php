@@ -2,7 +2,7 @@
 $aReplacementData=array();
 ?>
 
-<div class='menubar surveybar' id="questionbarid">
+<div class='menubar surveybar' id="questionbarid" style="display:none">
     <div class='row container-fluid'>
 
         <?php if(isset($questionbar['buttons']['view'])):?>
@@ -102,15 +102,6 @@ $aReplacementData=array();
             <?php endif; ?>
 
 
-            <!-- Edit button -->
-            <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
-                <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questioneditor/sa/view", ["surveyid" => $surveyid,"gid" => $gid, "qid"=> $qid]); ?>' role="button">
-                    <span class="icon-edit"></span>
-                    <?php eT("Edit");?>
-                </a>
-            <?php endif; ?>
-
-
             <!-- Check logic -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
                 <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>" role="button">
@@ -170,27 +161,6 @@ $aReplacementData=array();
                     <?php eT("Set conditions "); ?>
                 </a>
             <?php endif;?>
-
-
-            <!-- subquestions -->
-            <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')):?>
-                <?php if($qtypes[$qrrow['type']]['subquestions'] >0):?>
-                    <a id="adminpanel__topbar--selectorAddSubquestions" class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
-                        <span class="icon-defaultanswers"></span>
-                        <?php eT("Edit subquestions "); ?>
-                    </a>
-                <?php endif;?>
-            <?php endif;?>
-
-
-            <!-- Answer Options -->
-            <?php if( Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update') && $qtypes[$qrrow['type']]['answerscales'] > 0 ):?>
-                <a id="adminpanel__topbar--selectorAddAnswerOptions" class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
-                    <span class="icon-defaultanswers"></span>
-                    <?php eT("Edit answer options "); ?>
-                </a>
-            <?php endif;?>
-
 
             <!-- Default Values -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0):?>

@@ -88,6 +88,8 @@ class InstallationControllerTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('');
+        $installerForm = new \InstallerConfigForm();
+        $installerForm->dbtype = \InstallerConfigForm::DB_TYPE_MYSQL;
 
         try {
 
@@ -107,15 +109,18 @@ class InstallationControllerTest extends TestBaseClassWeb
             $next->click();
 
             // Fill in database form.
-            $dbuserDbType = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbtype]"] option[value="mysql"]'));
+            $dbuserDbType = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbtype]"] option[value="'.$installerForm->dbtype.'"]'));
             $dbuserInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbuser]"]'));
             $dbpwdInput  = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbpwd]"]'));
             $dbnameInput = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="InstallerConfigForm[dbname]"]'));
-            
+            $dbEngine = self::$webDriver->findElement(WebDriverBy::cssSelector('select[name="InstallerConfigForm[dbengine]"] option[value="'.$installerForm->dbengine.'"]'));
+
             $dbuserDbType->click();
+            $dbEngine->click();
             $dbuserInput->clear()->sendKeys($dbuser);
             $dbpwdInput->clear()->sendKeys($dbpwd);
             $dbnameInput->sendKeys($databaseName);
+
 
             // Click next.
             $next = self::$webDriver->findElement(WebDriverBy::id('ls-next'));
@@ -175,32 +180,4 @@ class InstallationControllerTest extends TestBaseClassWeb
         }
     }
 
-    /**
-     * Check that upload/tmp folders are writable.
-     * @todo Does not work.
-     */
-    public function checkFolders()
-    {
-        $instContr = new \InstallerController('dummyvalue');
-        $data = [];
-        $folder = \Yii::app()->getConfig('tempdir') . '/';
-        $tempdirIsWritable = $instContr->checkDirectoryWriteable(
-            $folder,
-            $data,
-            'tmpdir',
-            'tperror',
-            true
-        );
-        $this->assertTrue($tempdirIsWritable, 'Can write to tmp/');
-
-        $folder = \Yii::app()->getConfig('uploaddir') . '/';
-        $uploadIsWritable = $instContr->checkDirectoryWriteable(
-            $folder,
-            $data,
-            'uploaddir',
-            'uerror',
-            true
-        );
-        $this->assertTrue($uploadIsWritable, 'Can write to upload/');
-    }
 }
