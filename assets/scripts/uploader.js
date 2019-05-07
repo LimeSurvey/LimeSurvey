@@ -219,11 +219,11 @@ function doFileUpload()
                 $('#' + fieldname + '_filecount').val(filecount);
 
                 if (filecount < minfiles) {
-                    $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s', (minfiles - filecount)));
+                    $('#uploadstatus').html(uploadLang.errorNeedMore.replace('%s', (minfiles - filecount))).removeClass('hidden');
                 } else if (filecount < maxfiles) {
-                    $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s', (maxfiles - filecount)));
+                    $('#uploadstatus').html(uploadLang.errorMoreAllowed.replace('%s', (maxfiles - filecount))).removeClass('hidden');
                 } else {
-                    $('#uploadstatus').html(uploadLang.errorMaxReached);
+                    $('#uploadstatus').html(uploadLang.errorMaxReached).removeClass('hidden');
                 }
                 fixParentHeigth(fieldname);
                 if (filecount >= maxfiles) {
