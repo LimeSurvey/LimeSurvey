@@ -6,7 +6,7 @@
 if($oQuotaMember->question):
 ?>
 <tr class="<?php echo !$data['valid'] ? "bg-warning text-danger":""; ?>"><!-- because lime-admin-colors.css force tr:nth-child(2n+1) td color, must add text-danger -->
-    <td data-toggle="tooltip"  data-container="body" title="<?php echo viewHelper::flatEllipsizeText($oQuotaMember->question->question,true,60,'...',0.6); ?>">
+    <td data-toggle="tooltip"  data-container="body" title="<?php echo viewHelper::flatEllipsizeText($oQuotaMember->question->questionL10ns[$sBaseLang]->question,true,60,'...',0.6); ?>">
         <?php echo $oQuotaMember->question->title?>
     </td>
     <td>
