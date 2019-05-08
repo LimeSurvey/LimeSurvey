@@ -140,7 +140,8 @@ class Participant extends LSActiveRecord
             // Only owner or superadmin can delete
             $userId = Yii::app()->user->id;
             $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
-            if ($this->owner_uid == $userId || $isSuperAdmin) {
+            $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
+            if ($this->owner_uid == $userId || $isSuperAdmin || $deletePermission) {
                 // Delete button
                 $deleteData = array(
                     'action_participant_deleteModal',
@@ -149,16 +150,6 @@ class Participant extends LSActiveRecord
                     'trash text-danger'
                 );
                 $buttons .= vsprintf($raw_button_template, $deleteData);
-
-                // Share this participant
-                $infoData = array(
-                    'action_participant_shareParticipant',
-                    '',
-                    gT("Share this participant"),
-                    'share'
-                );
-                $buttons .= vsprintf($raw_button_template, $infoData);
-
             } else {
                 // Invisible button
                 $deleteData = array(
@@ -168,15 +159,15 @@ class Participant extends LSActiveRecord
                     'trash text-danger'
                 );
                 $buttons .= vsprintf($raw_button_template, $deleteData);
-                $infoData = array(
-                    'action_participant_shareParticipant invisible',
-                    '',
-                    gT("Share this participant"),
-                    'share'
-                );
-                $buttons .= vsprintf($raw_button_template, $infoData);
             }
-
+            // Share this participant
+            $infoData = array(
+                'action_participant_shareParticipant',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $infoData);
         } else {
             // Three empty buttons for correct alignment
             // TODO: For some reason, the delete button is smaller than the others
@@ -187,14 +178,30 @@ class Participant extends LSActiveRecord
                 'edit'
             );
             $buttons .= vsprintf($raw_button_template, $editData);
-            $buttons .= vsprintf($raw_button_template, $editData);
-            $deleteData = array(
-                'action_participant_deleteModal invisible',
-                'text-danger',
-                gT("Delete this participant"),
-                'trash text-danger'
-            );
+            $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
+            if ($deletePermission){
+                $deleteData = array(
+                    'action_participant_deleteModal',
+                    'text-danger',
+                    gT("Delete this participant"),
+                    'trash text-danger'
+                );
+            } else {
+                $deleteData = array(
+                    'action_participant_deleteModal invisible',
+                    'text-danger',
+                    gT("Delete this participant"),
+                    'trash text-danger'
+                );
+            }
             $buttons .= vsprintf($raw_button_template, $deleteData);
+            $infoData = array(
+                'action_participant_shareParticipant invisible',
+                '',
+                gT("Share this participant"),
+                'share'
+            );
+            $buttons .= vsprintf($raw_button_template, $infoData);
         }
 
         // Survey information
@@ -532,11 +539,12 @@ class Participant extends LSActiveRecord
         $sort->attributes = $sortAttributes;
         $sort->defaultOrder = 't.lastname ASC';
 
-        // Users can only see: 1) Participants they own; 2) participants shared with them; and 3) participants shared with everyone
+        // Users can only see: 1) Participants they own; 2) participants shared with them; and 3) participants shared with everyone 4) all participants if they have global permission
         // Superadmins can see all users.
         $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
-        if (!$isSuperAdmin) {
-            $criteria->addCondition('t.owner_uid = '.Yii::app()->user->id.' OR '.Yii::app()->user->id.' = shares.share_uid OR shares.share_uid = -1');
+        $readAllPermission = Permission::model()->hasGlobalPermission('participantpanel', 'read');
+        if (!$isSuperAdmin && !$readAllPermission) {
+            $criteria->addCondition('t.owner_uid = '.App()->user->id.' OR '.Yii::app()->user->id.' = shares.share_uid OR shares.share_uid = -1');
         }
 
         $pageSize = Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']);
@@ -1012,12 +1020,12 @@ $test = 1;
                 ->where('participant_id = :row')
                 ->bindParam(":row", $row, PDO::PARAM_INT)
                 ->queryAll();
-		
-			
+
+
             foreach ($tokens as $key => $surveyLink) {
 				$surveyId = $surveyLink['survey_id'];
 				$survey = Survey::model()->findByPk($surveyId);
-				
+
                 $tokentable = $survey->tokensTableName;
                 if (Yii::app()->db->schema->getTable($tokentable)) {
                     $tokenid = Yii::app()->db->createCommand()
@@ -1026,7 +1034,7 @@ $test = 1;
                         ->where('participant_id = :pid')
                         ->bindParam(":pid", $surveyLink['participant_id'], PDO::PARAM_INT)
                         ->queryAll();
-						
+
 					if(!isset($tokenid[0])) {
 						continue;
 					}
@@ -1041,7 +1049,7 @@ $test = 1;
                                 ->where('token = :token')
                                 ->bindParam(":token", $token['token'], PDO::PARAM_STR)
                                 ->queryAll();
-								
+
 							if(isset($gettoken[0])) {
 								$gettoken = $gettoken[0];
 								Yii::app()->db->createCommand()
@@ -1057,9 +1065,9 @@ $test = 1;
                 }
             }
         }
-		
+
         $iDeletedParticipants = $this->deleteParticipants($sParticipantsIDs, false);
-		
+
         return $iDeletedParticipants;
     }
 
@@ -2119,8 +2127,8 @@ $test = 1;
 
         $owner = $this->owner_uid == $userId;
 
-        if (Permission::model()->hasGlobalPermission('superadmin')) {
-            // Superadmins can do anything
+        if (Permission::model()->hasGlobalPermission('superadmin') || (Permission::model()->hasGlobalPermission('participantpanel', 'update'))) {
+            // Superadmins can do anything and users with global edit permission can to edit all participants
             return true;
         } else if ($shared && $shared->share_uid == -1 && $shared->can_edit) {
             // -1 = shared with everyone
@@ -2181,7 +2189,7 @@ $test = 1;
         return $returner;
     }
     public function getOwnerOptions(){
-        
+
         return [];
     }
 
