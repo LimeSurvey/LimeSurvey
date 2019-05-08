@@ -325,7 +325,7 @@ class UploaderController extends SurveyController
                 </div>
 
                 <p class="alert alert-info uploadmsg">'.sprintf(gT("You can upload %s under %s KB each."), $qidattributes['allowed_filetypes'], $qidattributes['max_filesize']).'</p>
-                <div class="uploadstatus" id="uploadstatus"></div>
+                <div id="uploadstatus" class="uploadstatus alert alert-warning hidden"></div>
 
                 <!-- The list of uploaded files -->
             </div>
