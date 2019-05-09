@@ -1993,15 +1993,15 @@ function questionGetXMLStructure($xml, $gid, $qid)
     // Answer table
     $aquery = "SELECT *
     FROM {{answers}}
-    WHERE qid = $qid order by language, scale_id, sortorder";
+    WHERE qid = $qid order by scale_id, sortorder";
     buildXMLFromQuery($xml, $aquery);
 
         // Answer localizations
-    $qquery = "SELECT ls.*
+    $aquery = "SELECT ls.*
     FROM {{answer_l10ns}} ls
     join {{answers}} a on ls.aid=a.aid
     WHERE a.qid=$qid";
-    buildXMLFromQuery($xml, $qquery);
+    buildXMLFromQuery($xml, $aquery);
 
     // Question attributes
     $iSurveyID = Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query();
