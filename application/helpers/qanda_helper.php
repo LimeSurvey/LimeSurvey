@@ -142,14 +142,16 @@ function retrieveAnswers($ia)
         //$inputnames is an array containing the names of each input field
         list($answer, $inputnames) = $values;
     }
-
-    if (($ia[6] == 'Y' || $ia[6] == 'S')) {
+    
+    $question_text['mandatory'] = $ia[6];
+    
+    //if (($ia[6] == 'Y' || $ia[6] == 'S')) {
 
         //$qtitle .= doRender('/survey/questions/question_help/asterisk', [], true);
         //$qtitle .= $qtitle;
         //$question_text['mandatory'] = gT('*');
-        $question_text['mandatory'] = doRender('/survey/questions/question_help/asterisk', [], true);
-    }
+        //doRender('/survey/questions/question_help/asterisk', [], true);
+    //}
 
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
