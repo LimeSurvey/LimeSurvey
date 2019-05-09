@@ -1,4 +1,3 @@
-@charset "UTF-8";
 .grid-view .table td.button-column, .grid-view .table th.button-column {
   white-space: nowrap;
   text-align: initial;
@@ -111,7 +110,7 @@
   border: none;
   display: inline-block;
 }
-
+@charset "UTF-8";
 /**
  * Lime Admin Common CSS File
  *
@@ -4095,7 +4094,6 @@ textarea.form-control.input-text {
   margin: 1px 0 0 0;
   padding: 0 5px;
 }
-
 .jcarousel-wrapper {
   margin: 20px auto;
   position: relative;
@@ -4212,11 +4210,9 @@ textarea.form-control.input-text {
 .item.inactive {
   display: none;
 }
-
 #cpdbatt {
   min-height: 100px;
 }
-
 .draggable-container {
   min-height: 300px;
 }
@@ -4323,7 +4319,6 @@ div.mappable-attribute-wrapper.paired.ui-state-disabled {
 .centralatt {
   min-height: 100px;
 }
-
 #selectable .ui-selecting {
   background: #8CCE00;
 }

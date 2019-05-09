@@ -1,16 +1,18 @@
 {
-  "name" : "adminbasics",
+  "name": "adminbasics",
   "license": "GPL-3.0",
   "author": "LimeSurvey DevTeam",
   "scripts": {
-    "devltr": "set NODE_ENV=developement && set DIRECTION_ENV=ltr && rollup -c rollup.config.js",
-    "devrtl": "set NODE_ENV=developement && set DIRECTION_ENV=rtl && rollup -c rollup.config.js",
-    "buildltr": "set NODE_ENV=production && set DIRECTION_ENV=ltr && rollup -c rollup.config.js",
-    "buildrtl": "set NODE_ENV=production && set DIRECTION_ENV=rtl && rollup -c rollup.config.js"
+    "devltr": "env-cmd -e devltr rollup -c",
+    "devrtl": "env-cmd -e devrtl rollup -c",
+    "buildltr": "env-cmd -e prodltr rollup -c",
+    "buildrtl": "env-cmd -e prodrtl rollup -c",
+    "build": "yarn run devltr && yarn run devrtl && yarn run buildltr && yarn run buildrtl"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
+    "env-cmd": "^9.0.1",
     "eslint": "^4.0.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-config-standard": "^10.2.1",

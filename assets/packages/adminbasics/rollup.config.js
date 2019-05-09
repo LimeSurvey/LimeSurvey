@@ -25,7 +25,7 @@ if( ENVIRONEMENT=='production' ) {
       babel({exclude: 'node_modules/**'}),
       resolve(),
       common(),
-      scss({outputStyle: 'compressed', output: DIRECTION=='ltr' ? 'build/adminbasics.min.css' : 'build/adminbasics.rtl.min.css'}),
+      scss({failOnError: true, outputStyle: 'compressed', output: DIRECTION=='ltr' ? 'build/adminbasics.min.css' : 'build/adminbasics.rtl.min.css'}),
       terser()
     ];
 } else {
@@ -39,7 +39,7 @@ if( ENVIRONEMENT=='production' ) {
       babel({exclude: 'node_modules/**'}),
       resolve(),
       common(),
-      scss({outputStyle: 'expanded', output: DIRECTION=='ltr' ? 'build/adminbasics.css' : 'build/adminbasics.rtl.css'}),
+      scss({failOnError: true, outputStyle: 'expanded', output: DIRECTION=='ltr' ? 'build/adminbasics.css' : 'build/adminbasics.rtl.css'}),
     ];
 }
 
