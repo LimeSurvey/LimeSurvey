@@ -44,6 +44,13 @@ export default {
         },
         reactOnChange(newValue, oSettingObject) {
             this.$store.commit('setQuestionGeneralSetting', {newValue, settingName: oSettingObject.formElementId});   
+        },
+        toggleLoading(force=null){
+            if(force===null) {
+                this.loading = !this.loading;
+                return;    
+            }
+            this.loading = force;
         }
     },
     created(){

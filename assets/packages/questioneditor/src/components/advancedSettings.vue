@@ -74,6 +74,13 @@ export default {
                 return value[this.$store.state.activeLanguage];
             }
             return value;
+        },
+        toggleLoading(force=null){
+            if(force===null) {
+                this.loading = !this.loading;
+                return;    
+            }
+            this.loading = force;
         }
     },
     created(){

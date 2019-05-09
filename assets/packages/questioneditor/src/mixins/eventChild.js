@@ -1,3 +1,6 @@
+import isArray from 'lodash/isArray';
+import indexOf from 'lodash/indexOf';
+
 export default {
     props: {
         event : {type: Object, default: null}
@@ -5,13 +8,21 @@ export default {
     watch: {
         event(newEvent, oldEvent) {
             if(newEvent !== null) {
-                if(this.$options.name == newEvent.target 
-                    && (typeof this[newEvent.method] == 'function' )) {
+                const affected = isArray(newEvent.target) 
+                    ? (indexOf(newEvent.target ,this.$options.name)!=-1 )
+                    : (newEvent.target == this.$options.name);
+                if( affected && (typeof this[newEvent.method] == 'function' )) {
                     try{
                         this[newEvent.method](newEvent.content);
-                        this.$emit('eventSet');
                     } catch (e) {
                         this.$log.error('Event handling errored', e);
+                    }
+                    if(newEvent.chain) {
+                        newEvent.target = newEvent.chain;
+                        newEvent.chain == null;
+                        this.$emit('triggerEvent', newEvent);
+                    } else {
+                        this.$emit('eventSet');
                     }
                     return;
                 }
@@ -21,7 +32,7 @@ export default {
     },
     methods: {
         eventSet() {
-            this.$emit('eventSet');
+            this.$emit('eventSet', this.$options.name);
         },
     }
 }

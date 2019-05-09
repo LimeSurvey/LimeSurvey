@@ -134,20 +134,23 @@ export default {
         });
     },
     reloadQuestion: (context) => {
-        const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionData' : '/getQuestionData';
-        ajax.methods.$_get(
-            window.QuestionEditData.connectorBaseUrl+subAction, 
-            {
-                'iQuestionId' : window.QuestionEditData.qid, 
-                type: context.state.currentQuestion.type || window.QuestionEditData.startType
-            }
-        ).then((result) => {
-            context.commit('updateCurrentQuestion', result.data.question);
-            context.commit('updateCurrentQuestionSubquestions', result.data.scaledSubquestions);
-            context.commit('updateCurrentQuestionAnswerOptions', result.data.scaledAnswerOptions);
-            context.commit('updateCurrentQuestionGeneralSettings', result.data.generalSettings);
-            context.commit('updateCurrentQuestionAdvancedSettings', result.data.advancedSettings);
-            context.commit('setCurrentQuestionGroupInfo', result.data.questiongroup);
+        return new Promise((resolve,reject) => {
+            const subAction = window.QuestionEditData.connectorBaseUrl.slice(-1) == '=' ? 'getQuestionData' : '/getQuestionData';
+            ajax.methods.$_get(
+                window.QuestionEditData.connectorBaseUrl+subAction, 
+                {
+                    'iQuestionId' : window.QuestionEditData.qid, 
+                    type: context.state.currentQuestion.type || window.QuestionEditData.startType
+                }
+            ).then((result) => {
+                context.commit('updateCurrentQuestion', result.data.question);
+                context.commit('updateCurrentQuestionSubquestions', result.data.scaledSubquestions);
+                context.commit('updateCurrentQuestionAnswerOptions', result.data.scaledAnswerOptions);
+                context.commit('updateCurrentQuestionGeneralSettings', result.data.generalSettings);
+                context.commit('updateCurrentQuestionAdvancedSettings', result.data.advancedSettings);
+                context.commit('setCurrentQuestionGroupInfo', result.data.questiongroup);
+                resolve();
+            }, reject);
         });
     },
     saveQuestionData: (context) => {
