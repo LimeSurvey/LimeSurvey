@@ -127,6 +127,9 @@ class InstallerConfigForm extends CFormModel
     public $isPhpVersionOK = false;
 
     /** @var bool */
+    public $isSodiumPresent = false;
+
+    /** @var bool */
     public $isConfigPresent = false;
 
 
@@ -203,6 +206,7 @@ class InstallerConfigForm extends CFormModel
         $this->isPhpLdapPresent = function_exists('ldap_connect');
         $this->isPhpImapPresent = function_exists('imap_open');
         $this->isPhpZipPresent = function_exists('zip_open');
+        $this->isSodiumPresent = function_exists('sodium_crypto_sign_open');
 
         if (function_exists('gd_info')) {
             $this->isPhpGdPresent = array_key_exists('FreeType Support', gd_info());
