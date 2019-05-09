@@ -611,7 +611,9 @@ class questionedit extends Survey_Common_Action
                 $oAnswer = Answer::model()->findByPk($aAnswerOptionDataSet['aid']);
                 if ($oAnswer == null) {
                     $oAnswer = new Answer();
+                    $oAnswer->qid = $oQuestion->qid;
                     unset($aAnswerOptionDataSet['aid']);
+                    unset($aAnswerOptionDataSet['qid']);
                 }
                 $oAnswer->setAttributes($aAnswerOptionDataSet, false);
                 $answerSaved = $oAnswer->save();

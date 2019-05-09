@@ -1038,8 +1038,8 @@ class Question extends LSActiveRecord
             case Question::QT_ASTERISK_EQUATION:                return new DataSetEquation($this->qid);
             case Question::QT_D_DATE:                           return new DataSetDate($this->qid);
             case Question::QT_1_ARRAY_MULTISCALE:               return new DataSetArrayMultiscale($this->qid);
-            case Question::QT_L_LIST_DROPDOWN:                  return new DataSetListDropdown($this->qid);
-            case Question::QT_EXCLAMATION_LIST_DROPDOWN:        return new DataSetListRadio($this->qid);
+            case Question::QT_L_LIST_DROPDOWN:                  return new DataSetListRadio($this->qid);
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN:        return new DataSetListDropdown($this->qid);
             case Question::QT_O_LIST_WITH_COMMENT:              return new DataSetListWithComment($this->qid);
             case Question::QT_R_RANKING_STYLE:                  return new RenderRanking($aFieldArray);
             case Question::QT_M_MULTIPLE_CHOICE:                return new DataSetMultipleChoice($this->qid);
