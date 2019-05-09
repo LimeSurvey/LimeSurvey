@@ -46,10 +46,11 @@
                                     <tbody>
                                     <?php $nrofattributes = 0;
                                     foreach ($tokenfields as $sTokenField) {
-                                        if (isset($tokenfielddata[$sTokenField]))
+                                        if (isset($tokenfielddata[$sTokenField])) {
                                             $tokenvalues = $tokenfielddata[$sTokenField];
-                                        else
+                                        } else {
                                             $tokenvalues = array('description' => '','mandatory' => 'N','encrypted' => 'N','show_register' => 'N','cpdbmap'=>'');
+                                        }
                                         $nrofattributes++;
                                         echo "
                                         <tr>
@@ -58,9 +59,15 @@
                                         { ?>
                                             <td>
                                                 <?php if (empty($tokenvalues['coreattribute'])){ ?>
-                                                    <input type='text' name='description_<?php echo $sTokenField; ?>' value='<?php echo htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'); ?>' />
+                                                    <?php
+                                                        echo CHtml::textField(
+                                                            "description_{$sTokenField}",
+                                                            $tokenvalues['description'],
+                                                            array('class' => 'form-control')
+                                                        );
+                                                    ?>
                                                 <?php } else { ?>
-                                                    <span><?php echo gT('Mandatory attribute'); ?></span>
+                                                    <span><?php echo gT('Core attribute'); ?></span>
                                                 <?php } ?>
                                             </td>
                                             <td>
@@ -115,7 +122,15 @@
                                             <td>", $tokenvalues['encrypted'] == 'Y' ? eT('Yes') : eT('No'), "</td>
                                             <td>", $tokenvalues['show_register'] == 'Y' ? eT('Yes') : eT('No'), "</td>";
                                         }; ?>
-                                        <td><input type='text' name='caption_<?php echo $sTokenField; ?>_<?php echo $sLanguage; ?>' value='<?php echo htmlspecialchars(!empty($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '', ENT_QUOTES, 'UTF-8'); ?>' /></td>
+                                        <td>
+                                            <?php
+                                                echo CHtml::textField(
+                                                    "caption_{$sTokenField}_{$sLanguage}",
+                                                    isset($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '',
+                                                    array('class' => 'form-control')
+                                                );
+                                            ?>
+                                        </td>
                                         <td><?php
                                             if ($sLanguage == $oSurvey->language){
                                                 if (empty($tokenvalues['coreattribute'])){
