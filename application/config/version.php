@@ -11,9 +11,9 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-$config['versionnumber'] ='4.0.0-alpha';
+$config['versionnumber'] ='4.0.0-beta';
 $config['dbversionnumber'] = 411;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '30084';
+$config['assetsversionnumber'] = '30085';
 return $config;
