@@ -493,7 +493,7 @@ class Question extends LSActiveRecord
      */
     public function getQuestionList($surveyid)
     {
-        return Question::model()->with('group')->findAll(array('condition'=>'t.sid='.$surveyid, 'order'=>'group_order DESC, question_order'));
+        return Question::model()->with('group')->findAll(array('condition'=>'t.sid='.$surveyid, 'order'=>'group.group_order DESC, question_order'));
     }
 
     /**
@@ -790,8 +790,8 @@ class Question extends LSActiveRecord
                 'desc'=>'t.qid desc',
             ),
             'question_order'=>array(
-                'asc'=>'groups.group_order asc, t.question_order asc',
-                'desc'=>'groups.group_order desc,t.question_order desc',
+                'asc'=>'group.group_order asc, t.question_order asc',
+                'desc'=>'group.group_order desc,t.question_order desc',
             ),
             'title'=>array(
                 'asc'=>'t.title asc',
