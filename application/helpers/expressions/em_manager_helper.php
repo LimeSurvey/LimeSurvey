@@ -8653,7 +8653,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         */
         private function getQuestionAttributesForEM($surveyid=0,$qid=0, $lang='')
         {
-            $cacheKey = $surveyid . $qid . $lang;
+            $cacheKey = $surveyid . '_' . $qid . '_' . $lang;
             $value = Yii::app()->cache->get($cacheKey);
             if ($value !== false) {
                 return $value;
