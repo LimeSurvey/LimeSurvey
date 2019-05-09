@@ -7,7 +7,7 @@
     "devrtl": "env-cmd -e devrtl rollup -c",
     "buildltr": "env-cmd -e prodltr rollup -c",
     "buildrtl": "env-cmd -e prodrtl rollup -c",
-    "build": "yarn run devltr && yarn run devrtl && yarn run buildltr && yarn run buildrtl"
+    "build": "npm run devltr && npm run devrtl && npm run buildltr && npm run buildrtl"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",

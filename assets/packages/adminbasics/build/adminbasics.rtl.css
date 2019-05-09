@@ -3,6 +3,10 @@
   text-align: initial;
 }
 
+.grid-view .table th > .sort-link .caret {
+  right: -10px;
+}
+
 .dropdown-menu.larger-dropdown {
   min-width: 240px;
 }
