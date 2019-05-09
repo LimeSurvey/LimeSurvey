@@ -343,7 +343,7 @@ $url .= "_view"; });
         Yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
-        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array('participantOwnerUid' => $participantParam['owner_uid'] ?? ''), true, false);
+        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array('participantOwnerUid' => $participantParam['owner_uid'] ? $participantParam['owner_uid'] : ''), true, false);
 
         // Set page size
         if ($request->getPost('pageSizeParticipantView')) {
