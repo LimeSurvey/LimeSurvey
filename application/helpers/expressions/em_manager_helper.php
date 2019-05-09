@@ -8653,6 +8653,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         */
         private function getQuestionAttributesForEM($surveyid=0,$qid=0, $lang='')
         {
+            $cacheKey = $surveyid . $qid . $lang;
+            $value = Yii::app()->cache->get($cacheKey);
+            if ($value !== false) {
+                return $value;
+            }
+
             // Fix old param (NULL)
             if(is_null($surveyid)) $surveyid=0;
             if(is_null($qid)) $qid=0;
@@ -8719,6 +8725,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 $aQuestionAttributesForEM[$oQid->qid]=$aAttributesValues;
             }
+            Yii::app()->cache->set($cacheKey, $aQuestionAttributesForEM);
             return $aQuestionAttributesForEM;
         }
 
