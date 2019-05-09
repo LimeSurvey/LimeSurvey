@@ -2,7 +2,7 @@
 <div :id="'loader-'+id" class=" loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center"
         style="min-height: 100%;">
         <div class="ls-flex align-content-center align-items-center">
-            <div class="loader-advancedquestionsettings text-center">
+            <div class="loader-textelements text-center">
                 <div class="contain-pulse animate-pulse">
                     <div class="square"></div>
                     <div class="square"></div>

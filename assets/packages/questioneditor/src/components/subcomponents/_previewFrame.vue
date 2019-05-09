@@ -58,7 +58,7 @@ export default {
 <template>
     <div class="scope-iframe-fill" border="0" :class="htmlClass" :id="id">
         <div class='ls-flex align-content-center align-items-center scope-loader' v-if="loading">
-            <div class='loader-advancedquestionsettings text-center'>
+            <div class='loader-previewframe text-center'>
                 <div class='contain-pulse animate-pulse'>
                     <div class='square'></div>
                     <div class='square'></div>

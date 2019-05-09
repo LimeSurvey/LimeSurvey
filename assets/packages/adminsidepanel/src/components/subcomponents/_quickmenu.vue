@@ -80,8 +80,11 @@ export default {
                 </a>
             </div>
         </div>
-        <loader-widget v-if="loading" id="quickmenuLoadingIcon" />
+        <loader-widget v-if="loading" id="quickmenuLoadingIcon" extra-class="loader-quickmenu"/>
     </div>
 </template>
 <style lang="scss">
+    .loader-adminpanel.loader-quickmenu .contain-pulse{
+        width: 2em;
+    }
 </style>

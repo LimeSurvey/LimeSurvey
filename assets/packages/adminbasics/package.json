@@ -3,9 +3,9 @@
   "license": "GPL-3.0",
   "author": "LimeSurvey DevTeam",
   "scripts": {
-    "dev": "set NODE_ENV=developement && set DIRECTION_ENV=ltr && rollup -c rollup.config.js",
+    "devltr": "set NODE_ENV=developement && set DIRECTION_ENV=ltr && rollup -c rollup.config.js",
     "devrtl": "set NODE_ENV=developement && set DIRECTION_ENV=rtl && rollup -c rollup.config.js",
-    "build": "set NODE_ENV=production && set DIRECTION_ENV=ltr && rollup -c rollup.config.js",
+    "buildltr": "set NODE_ENV=production && set DIRECTION_ENV=ltr && rollup -c rollup.config.js",
     "buildrtl": "set NODE_ENV=production && set DIRECTION_ENV=rtl && rollup -c rollup.config.js"
   },
   "devDependencies": {
