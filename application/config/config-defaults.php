@@ -707,11 +707,11 @@ $config['hide_update_key'] = false;
 
 // Dev part
 // 1 : looking for errors, 2 : PHP STRICT error messages
-$config['debug'] = 0;
+$config['debug'] = 2;
 //1 to enable sql logging, only active when debug = 2
 $config['debugsql'] = 0;
 //Try to set if able PHP max_execution_time
-$config['max_execution_time'] = 1200;
+$config['max_execution_time'] = 240;
 
 // When this parameter is true, the configuration of the XML file will be used instead of the database to display the themes (default behavior in 2.50+).
 // This is useful when developing a theme, so changes to XML files are immediately applied without the need to uninstall and reinstall the theme.
