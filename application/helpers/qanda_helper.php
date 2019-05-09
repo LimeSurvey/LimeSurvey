@@ -2536,7 +2536,7 @@ function do_shortfreetext($ia)
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentLatLong  = null;
         // Get the latitude/longtitude for the point that needs to be displayed by default
-        if (strlen($currentLocation) > 2 && strpos($currentLocation,";")) { // Quick check if current location is OK
+        if (strlen($currentLocation) > 2 && strpos($currentLocation, ";")) { // Quick check if current location is OK
             $currentLatLong = explode(';', $currentLocation);
             $currentLatLong = array($currentLatLong[0], $currentLatLong[1]);
         } else {
@@ -2548,7 +2548,7 @@ function do_shortfreetext($ia)
                 $floatLat = "";
                 $floatLng = "";
                 $sDefaultcoordinates=trim(LimeExpressionManager::ProcessString($aQuestionAttributes['location_defaultcoordinates'], $ia[0], array(), 3, 1, false, false, true));/* static var is the last one */
-                if(strlen($sDefaultcoordinates) > 2 && strpos($sDefaultcoordinates," ")) {
+                if (strlen($sDefaultcoordinates) > 2 && strpos($sDefaultcoordinates, " ")) {
                     $LatLong = explode(" ", $sDefaultcoordinates);
                     if (isset($LatLong[0]) && isset($LatLong[1])) {
                         $floatLat = $LatLong[0];

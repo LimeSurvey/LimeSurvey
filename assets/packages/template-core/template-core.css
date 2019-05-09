@@ -262,8 +262,3 @@ table.ls-answers input[type="radio"] {
 .dir-rtl .checkbox-item label.ls-label-xs-visibility>* {
     left: -10000px;
 }
-
-/* hide answers for text-display question */
-.boilerplate .answer-container {
-    display: none;
-}

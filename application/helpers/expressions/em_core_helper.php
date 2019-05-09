@@ -1785,10 +1785,20 @@ class ExpressionManager
 
     /**
      * If the equation contains reference to this, expand to comma separated list if needed.
+     *
      * @param string $src
+     * @return string
      */
     function ExpandThisVar($src)
     {
+        /** @var array */
+        static $cache = [];
+
+        if (isset($cache[$src])) {
+            return $cache[$src];
+        }
+
+        /** @var string */
         $expandedVar = "";
         $tokens = $this->Tokenize($src,1);
         foreach ($tokens as $token) {
@@ -1823,6 +1833,7 @@ class ExpressionManager
                     $expandedVar .= $token[0];
             }
         }
+        $cache[$src] = $expandedVar;
         return $expandedVar;
     }
 
