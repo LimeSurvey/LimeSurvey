@@ -142,5 +142,3 @@ function checkPermission($permission, $userId, $aActions, $participantOwnerUid, 
         return [];
     }
 }
-
-?>
