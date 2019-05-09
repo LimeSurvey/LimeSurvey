@@ -736,12 +736,10 @@ function do_boilerplate($ia)
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $answer = '';
     $inputnames = array();
-
-    if (trim($aQuestionAttributes['time_limit']) != '') {
-        $answer .= return_timer_script($aQuestionAttributes, $ia);
-    }
+    $sTimer              = (trim($aQuestionAttributes['time_limit']) != '') ? return_timer_script($aQuestionAttributes, $ia) : ''; //Time Limit
 
     $answer .= doRender('/survey/questions/answer/boilerplate/answer', array(
+        'sTimer'=>$sTimer,
         'ia'=>$ia,
         'name'=>$ia[1],
         'basename'=>$ia[1], /* is this needed ? */

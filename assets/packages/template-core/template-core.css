@@ -114,8 +114,6 @@ table.ls-answers input[type="checkbox"],table.ls-answers input[type="radio"]{mar
 }
 .dir-ltr .radio-item label.ls-label-xs-visibility > * ,.dir-ltr .checkbox-item label.ls-label-xs-visibility > * {left:-10000px;}
 .dir-rtl .radio-item label.ls-label-xs-visibility > * ,.dir-rtl .checkbox-item label.ls-label-xs-visibility > * {left:-10000px;}
-/* hide answers for text-display question */
-.boilerplate .answer-container {display:none;}
 
 /*
 Max width before this PARTICULAR table gets nasty
