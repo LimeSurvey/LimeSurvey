@@ -47,8 +47,8 @@
 
 // ==================================================================
 // setting constants for 'checked' and 'selected' inputs
-define('CHECKED', ' checked="checked"', true);
-define('SELECTED', ' selected="selected"', true);
+define('CHECKED', ' checked="checked"');
+define('SELECTED', ' selected="selected"');
 
 /**
 * setNoAnswerMode
