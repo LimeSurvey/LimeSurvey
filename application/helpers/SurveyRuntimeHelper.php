@@ -889,6 +889,12 @@ class SurveyRuntimeHelper
             // With complete index, we need to revalidate whole group bug #08806. It's actually the only mode where we JumpTo with force
             // we already done if move == 'movesubmit', don't do it again
             if ($this->aMoveResult['finished'] == true && $this->sMove != 'movesubmit' && $this->thissurvey['questionindex'] == 2) {
+                /* Issue #14855 : always reset submitdate of current response to null */
+                if(!empty($_SESSION[$this->LEMsessid]['srid'])) {
+                    $oSurveyResponse = SurveyDynamic::model($this->iSurveyid)->findByAttributes(['id' => $_SESSION[$this->LEMsessid]['srid']]);
+                    $oSurveyResponse->submitdate = null;
+                    $oSurveyResponse->save();
+                }
                 /* Save current page */
                 LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false, true, true);
                 /* Move to start */
