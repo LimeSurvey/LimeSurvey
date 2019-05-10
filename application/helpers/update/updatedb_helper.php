@@ -2711,6 +2711,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>411),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if($iOldDBVersion < 412) {
+            $oTransaction = $oDB->beginTransaction();
+            $aGroups = array_keys(SurveysGroups::model()->findAll(array('index'=>'gsid')));
+            $aGroupSettings = array_keys(SurveysGroupsettings::model()->findAll(array('index'=>'gsid')));
+            foreach ($aGroups as $group){
+                if (!array_key_exists($group, $aGroupSettings)){
+                    $settings = new SurveysGroupsettings;
+                    $settings->setToInherit();
+                    $settings->gsid = $group;
+                    $oDB->createCommand()->insert("{{surveys_groupsettings}}", $settings->attributes);
+                }
+            }
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>412),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
       
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);

@@ -290,12 +290,17 @@ class SurveysGroupsettings extends LSActiveRecord
         
         // set initial values to instance on first run
         if ($instance === null){
-            $instance = $model;
+            if ($model === null){
+                $instance = new SurveysGroupsettings();
+                $instance->optionAttributes = new stdClass();
+            } else {
+                $instance = $model;
+                $instance->optionAttributes = array_keys($model->attributes);
+                // unset gsid
+                unset($instance->optionAttributes[array_search('gsid', $instance->optionAttributes)]);
+            }
             $instance->oOptions = new stdClass();
             $instance->oOptionLabels = new stdClass();
-            $instance->optionAttributes = array_keys($model->attributes);
-            // unset gsid
-            unset($instance->optionAttributes[array_search('gsid', $instance->optionAttributes)]);
 
             // set visibility of 'inherit' options on buttons
             if ($iSurveyGroupId == 0){
@@ -400,7 +405,6 @@ class SurveysGroupsettings extends LSActiveRecord
     public function setToInherit()
     {
         // set attribute values to inherit, used only when creating new Survey instance
-        $this->owner_id = 1;
         $this->usecaptcha = 'E';
         $this->format = 'I';
         foreach ($this->optionAttributesInteger as $attribute){
