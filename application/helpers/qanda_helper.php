@@ -1912,6 +1912,11 @@ function do_multipleshorttext($ia)
     } else {
         $suffix = '';
     }
+    if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+    } else {
+        $placeholder = '';
+    }
     $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
 
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
@@ -1964,6 +1969,7 @@ function do_multipleshorttext($ia)
                     'extraclass'             => $extraclass,
                     'sDisplayStyle'          => $sDisplayStyle,
                     'prefix'                 => $prefix,
+                    'placeholder'            => $placeholder,
                     'myfname'                => $myfname,
                     'question'               => $sSubquestionText,
                     'kpclass'                => $kpclass,
@@ -1982,6 +1988,7 @@ function do_multipleshorttext($ia)
                     'extraclass'             => $extraclass,
                     'sDisplayStyle'          => $sDisplayStyle,
                     'prefix'                 => $prefix,
+                    'placeholder'            => $placeholder,
                     'myfname'                => $myfname,
                     'question'               => $sSubquestionText,
                     'kpclass'                => $kpclass,
@@ -3893,6 +3900,11 @@ function do_array_texts($ia)
     } else {
         $inputsize = null;
     }
+    if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+    } else {
+        $placeholder = '';
+    }
     if ($aQuestionAttributes['numbers_only'] == 1) {
         $checkconditionFunction = "fixnum_checkconditions";
 
@@ -4073,6 +4085,7 @@ function do_array_texts($ia)
                     'maxlength'  => $maxlength,
                     'inputsize'  => $inputsize,
                     'value'      => $myfname2value,
+                    'placeholder'=> $placeholder,
                     'isNumber'   => $isNumber,
                     'isInteger'  => $isInteger,
                     'error'      => ($error && $myfname2value === ''),
@@ -4097,6 +4110,7 @@ function do_array_texts($ia)
                 'answertext'        =>  $answertext,
                 'error'             =>  $error,
                 'value'             =>  $value,
+                'placeholder'       =>  $placeholder,
                 'answer_tds'        =>  $answer_tds,
                 'rightTd'           =>  $rightTd,
                 'rightTdEmpty'      =>  $rightTdEmpty,

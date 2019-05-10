@@ -12,6 +12,7 @@
  * @var $checkconditionFunction     $checkconditionFunction.'(this.value, this.name, this.type)'
  * @var $dispVal
  * @var $suffix
+ * @var $placeholder
  */
 #}
 <!-- answer_row_textarea -->
@@ -38,6 +39,7 @@
                 name="{{ myfname }}"
                 id="answer{{ myfname }}"
                 rows="{{ rows }}"
+                placeholder="{{ flatString(processString(placeholder,1),1) }}"
                 {% if inputsize %} size="{{ inputsize }}" {% endif %}
                 {% if maxlength %} maxlength="{{ maxlength }}"  {% endif %}
                 {% if numbersonly %} data-number="{{ numbersonly }}"  {% endif %}

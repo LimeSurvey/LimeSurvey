@@ -30,12 +30,14 @@ class RenderMultipleShortText extends QuestionBaseRenderer
     private $numbersonly = false;
     private $prefix = '';
     private $suffix = '';
+    private $placeholder  = '';
 
     public function __construct($aFieldArray, $bRenderDirect = false)
     {
         parent::__construct($aFieldArray, $bRenderDirect);
         $this->setSubquestions();
         $this->setPrefixAndSuffix();
+        $this->setPlaceholder();
         
         $this->widthArray = $this->getLabelInputWidth();
         $this->numbersonly = ($this->getQuestionAttribute('numbers_only') == 1);
@@ -70,6 +72,13 @@ class RenderMultipleShortText extends QuestionBaseRenderer
         if ($sSuffix != '') {
             $this->suffix = $sSuffix;
             $this->extraclass .= " withsuffix";
+        }
+    }
+
+    public function setPlaceholder(){
+        $sPlaceholder = $this->getQuestionAttribute('placeholder',$this->sLanguage);
+        if ($sPlaceholder != '') {
+            $this->placeholder = $sPlaceholder;
         }
     }
 
@@ -115,6 +124,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
                     'inputsize'              => $this->inputsize,
                     'extraclass'             => $this->extraclass,
                     'prefix'                 => $this->prefix,
+                    'placeholder'            => $this->placeholder,
                     'suffix'                 => $this->suffix,
                     'sInputContainerWidth'   => $this->widthArray['sInputContainerWidth'],
                     'sLabelWidth'            => $this->widthArray['sLabelWidth'],
@@ -137,6 +147,7 @@ class RenderMultipleShortText extends QuestionBaseRenderer
                     'inputsize'              => $this->inputsize,
                     'extraclass'             => $this->extraclass,
                     'prefix'                 => $this->prefix,
+                    'placeholder'            => $this->placeholder,
                     'suffix'                 => $this->suffix,
                     'sInputContainerWidth'   => $this->widthArray['sInputContainerWidth'],
                     'sLabelWidth'            => $this->widthArray['sLabelWidth'],
