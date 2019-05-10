@@ -37,7 +37,7 @@
             name="{{ name }}"
             id="answer{{ name }}"
             value="{{ dispVal }}"
-            placeholder="{{ placeholder }}"
+            placeholder="{{ flatString(processString(placeholder,1),1) }}"
             {% if inputsize %}size="{{ inputsize }}" {% endif %}
             {% if maxlength %}maxlength="{{ maxlength }}" {% endif %}
             aria-labelledby="ls-question-text-{{ basename }}"

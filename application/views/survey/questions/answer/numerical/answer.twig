@@ -39,7 +39,7 @@
         'class' : "form-control "~answertypeclass,
         'title' : gT('Only numbers may be entered in this field.'),
         'size' : (inputsize ? inputsize : null),
-        'placeholder' : placeholder,
+        'placeholder' : flatString(processString(placeholder,1),1),
         'maxlength' : (maxlength ? maxlength : null),
         'data-number' : 1,
         'data-integer' : integeronly,

@@ -2385,7 +2385,7 @@ function do_numerical($ia)
         $integeronly = 0;
     }
     if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
@@ -2487,7 +2487,7 @@ function do_shortfreetext($ia)
         $suffix = '';
     }
     if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
@@ -2779,7 +2779,7 @@ function do_longfreetext($ia)
         $inputsize = null;
     }
     if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
@@ -2856,7 +2856,7 @@ function do_hugefreetext($ia)
         $inputsize = null;
     }
     if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
