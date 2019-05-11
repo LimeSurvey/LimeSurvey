@@ -77,6 +77,16 @@ class SettingGlobal extends LSActiveRecord
         return $aRules;
     }
 
+    /** @inheritdoc
+     * Adding update of current application config after all is done
+     **/
+
+    protected function afterSave()
+    {
+        parent::afterSave();
+        Yii::app()->setConfig($this->stg_name,$this->stg_value);
+    }
+
     /**
      * Update or set a setting in DB and update current app config if no error happen
      * Return self : then other script can use if(!$oSetting) { $oSetting->getErrors; }
