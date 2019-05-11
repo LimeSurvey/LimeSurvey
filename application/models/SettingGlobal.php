@@ -78,7 +78,7 @@ class SettingGlobal extends LSActiveRecord
     }
 
     /** @inheritdoc
-     * Adding update of current application config after all is done
+     * Allways update of current application config after sucessfull save
      **/
 
     protected function afterSave()
