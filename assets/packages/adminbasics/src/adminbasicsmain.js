@@ -17,6 +17,9 @@
 //Define LS Namespace
 window.LS = window.LS || {};
 
+//import css/scss to be seperately compiled
+import '../scss/loadSass.ENVDIRECTION.js';
+
 //import lodash
 import _ from 'lodash';
 
@@ -35,7 +38,7 @@ import {onExistBinding as surveyGrid} from './pages/surveyGrid';
 
 //import parts for globalscope
 import confirmationModal from './parts/confirmationModal'; 
-import {globalStartUpMethods, globalWindowMethods, globalOnloadMethods} from './parts/globalMethods';
+import {globalStartUpMethods, globalWindowMethods} from './parts/globalMethods';
 import notifyFader from './parts/notifyFader';
 import * as AjaxHelper from './parts/ajaxHelper';
 import saveBindings from './parts/save';

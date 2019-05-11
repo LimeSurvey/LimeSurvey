@@ -83,7 +83,7 @@ $baseLanguage = $oSurvey->language;
                             array(
                                 'header' => gT("Group / Question order"),
                                 'name' => 'question_order',
-                                'value'=>'$data->groups->group_order ." / ". $data->question_order',
+                                'value'=>'$data->group->group_order ." / ". $data->question_order',
                             ),
                             array(
                                 'header' => gT('Code'),

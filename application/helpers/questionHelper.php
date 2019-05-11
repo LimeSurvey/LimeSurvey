@@ -831,7 +831,7 @@ class questionHelper
         );
 
         self::$attributes["placeholder"] = array(
-            "types"=>Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_N_NUMERICAL,
+            "types"=>Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_N_NUMERICAL,
             'category'=>gT('Display'),
             'sortorder'=>12,
             'inputtype'=>'text',

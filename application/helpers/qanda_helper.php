@@ -142,14 +142,16 @@ function retrieveAnswers($ia)
         //$inputnames is an array containing the names of each input field
         list($answer, $inputnames) = $values;
     }
-
-    if (($ia[6] == 'Y' || $ia[6] == 'S')) {
+    
+    $question_text['mandatory'] = $ia[6];
+    
+    //if (($ia[6] == 'Y' || $ia[6] == 'S')) {
 
         //$qtitle .= doRender('/survey/questions/question_help/asterisk', [], true);
         //$qtitle .= $qtitle;
         //$question_text['mandatory'] = gT('*');
-        $question_text['mandatory'] = doRender('/survey/questions/question_help/asterisk', [], true);
-    }
+        //doRender('/survey/questions/question_help/asterisk', [], true);
+    //}
 
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
@@ -1910,6 +1912,11 @@ function do_multipleshorttext($ia)
     } else {
         $suffix = '';
     }
+    if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+    } else {
+        $placeholder = '';
+    }
     $kpclass = testKeypad($thissurvey['nokeyboard']); // Virtual keyboard (probably obsolete today)
 
     $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
@@ -1962,6 +1969,7 @@ function do_multipleshorttext($ia)
                     'extraclass'             => $extraclass,
                     'sDisplayStyle'          => $sDisplayStyle,
                     'prefix'                 => $prefix,
+                    'placeholder'            => $placeholder,
                     'myfname'                => $myfname,
                     'question'               => $sSubquestionText,
                     'kpclass'                => $kpclass,
@@ -1980,6 +1988,7 @@ function do_multipleshorttext($ia)
                     'extraclass'             => $extraclass,
                     'sDisplayStyle'          => $sDisplayStyle,
                     'prefix'                 => $prefix,
+                    'placeholder'            => $placeholder,
                     'myfname'                => $myfname,
                     'question'               => $sSubquestionText,
                     'kpclass'                => $kpclass,
@@ -2383,7 +2392,7 @@ function do_numerical($ia)
         $integeronly = 0;
     }
     if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
@@ -2485,7 +2494,7 @@ function do_shortfreetext($ia)
         $suffix = '';
     }
     if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
@@ -2536,7 +2545,7 @@ function do_shortfreetext($ia)
         $currentLocation = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
         $currentLatLong  = null;
         // Get the latitude/longtitude for the point that needs to be displayed by default
-        if (strlen($currentLocation) > 2 && strpos($currentLocation,";")) { // Quick check if current location is OK
+        if (strlen($currentLocation) > 2 && strpos($currentLocation, ";")) { // Quick check if current location is OK
             $currentLatLong = explode(';', $currentLocation);
             $currentLatLong = array($currentLatLong[0], $currentLatLong[1]);
         } else {
@@ -2548,7 +2557,7 @@ function do_shortfreetext($ia)
                 $floatLat = "";
                 $floatLng = "";
                 $sDefaultcoordinates=trim(LimeExpressionManager::ProcessString($aQuestionAttributes['location_defaultcoordinates'], $ia[0], array(), 3, 1, false, false, true));/* static var is the last one */
-                if(strlen($sDefaultcoordinates) > 2 && strpos($sDefaultcoordinates," ")) {
+                if (strlen($sDefaultcoordinates) > 2 && strpos($sDefaultcoordinates, " ")) {
                     $LatLong = explode(" ", $sDefaultcoordinates);
                     if (isset($LatLong[0]) && isset($LatLong[1])) {
                         $floatLat = $LatLong[0];
@@ -2777,7 +2786,7 @@ function do_longfreetext($ia)
         $inputsize = null;
     }
     if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
@@ -2854,7 +2863,7 @@ function do_hugefreetext($ia)
         $inputsize = null;
     }
     if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
-        $placeholder = htmlspecialchars($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
     } else {
         $placeholder = '';
     }
@@ -3891,6 +3900,11 @@ function do_array_texts($ia)
     } else {
         $inputsize = null;
     }
+    if (trim($aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]) != '') {
+        $placeholder = $aQuestionAttributes['placeholder'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']];
+    } else {
+        $placeholder = '';
+    }
     if ($aQuestionAttributes['numbers_only'] == 1) {
         $checkconditionFunction = "fixnum_checkconditions";
 
@@ -4071,6 +4085,7 @@ function do_array_texts($ia)
                     'maxlength'  => $maxlength,
                     'inputsize'  => $inputsize,
                     'value'      => $myfname2value,
+                    'placeholder'=> $placeholder,
                     'isNumber'   => $isNumber,
                     'isInteger'  => $isInteger,
                     'error'      => ($error && $myfname2value === ''),
@@ -4095,6 +4110,7 @@ function do_array_texts($ia)
                 'answertext'        =>  $answertext,
                 'error'             =>  $error,
                 'value'             =>  $value,
+                'placeholder'       =>  $placeholder,
                 'answer_tds'        =>  $answer_tds,
                 'rightTd'           =>  $rightTd,
                 'rightTdEmpty'      =>  $rightTdEmpty,

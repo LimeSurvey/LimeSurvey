@@ -31,7 +31,7 @@ const ConfirmationModal = function(e){
     },
     //Evaluate a function on ok button click
     _onClickFunction = () => {
-        const onclick_fn = eval(options.onclick);
+        const onclick_fn = new Function(options.onclick);
         if (typeof onclick_fn == 'function') {
             $(_this).find('.btn-ok').off('click');
 

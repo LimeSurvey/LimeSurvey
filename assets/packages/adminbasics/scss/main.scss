@@ -1,5 +1,10 @@
+
 $size: 2em;
-$color: #0f3e12;
+$color: rgb(15, 62, 18);
+
+@import 'grid';
+@import 'bootstrap-sub-submenues';
+
 
 .fa-stack.halfed {
   height: 1em;
@@ -22,9 +27,6 @@ $color: #0f3e12;
   align-content:bottom;
   height: $size+1;
 }
-
-@import 'grid';
-@import 'bootstrap-sub-submenues';
 
 .square {
   background: $color;

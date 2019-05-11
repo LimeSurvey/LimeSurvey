@@ -1462,7 +1462,7 @@ class SurveyAdmin extends Survey_Common_Action
         
         Yii::app()->getClientScript()->registerScript("DataSecTextEditDataGlobal",
             "window.DataSecTextEditData = {
-                connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/sid/'.$survey->sid.'/sa/')."',
+                connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey', ['sid' => $survey->sid, 'sa' => ''])."',
                 isNewSurvey: ".($survey->getIsNewRecord() ? "true" : "false").",
                 i10N: {
                     'Survey data policy checkbox label:' : '".gT('Survey data policy checkbox label:')."',
@@ -1490,7 +1490,7 @@ class SurveyAdmin extends Survey_Common_Action
     {
         Yii::app()->getClientScript()->registerScript("TextEditDataGlobal",
             "window.TextEditData = {
-                connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/sid/'.$survey->sid.'/sa/')."',
+                connectorBaseUrl: '".Yii::app()->getController()->createUrl('admin/survey/', ['sid' => $survey->sid, 'sa' => ''])."',
                 isNewSurvey: ".($survey->getIsNewRecord() ? "true" : "false").",
                 i10N: {
                     'Survey title' : '".gT('Survey title')."',

@@ -5,8 +5,9 @@ import {LOG} from '../mixins/logSystem.js'
 export default {
     getDataSet: (context) => {
         return new Promise((resolve, reject) => {
+            const subAction = window.EmailTemplateData.connectorBaseUrl.slice(-1) == '=' ? 'getEmailTemplateData' : '/getEmailTemplateData';
             ajax.methods.$_get(
-                window.EmailTemplateData.connectorBaseUrl+'/getEmailTemplateData'
+                window.EmailTemplateData.connectorBaseUrl+subAction
             ).then((result) => {
                 LOG.log('Getting Data', result);
                 
@@ -25,6 +26,7 @@ export default {
         let transferObject = _.merge({changes: context.state.templateTypeContents}, window.LS.data.csrfTokenData);
 
         LOG.log('OBJECT TO BE TRANSFERRED: ', {'postObject': transferObject});
-        return ajax.methods.$_post(window.EmailTemplateData.connectorBaseUrl+'/saveEmailTemplateData', transferObject)
+        const subAction = window.EmailTemplateData.connectorBaseUrl.slice(-1) == '=' ? 'saveEmailTemplateData' : '/saveEmailTemplateData';
+        return ajax.methods.$_post(window.EmailTemplateData.connectorBaseUrl+subAction, transferObject)
     }
 };

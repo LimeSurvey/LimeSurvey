@@ -50,12 +50,8 @@ class SurveysGroupsController extends Survey_Common_Action
                 // save new SurveysGroupsettings record
                 $modelSettings = new SurveysGroupsettings;
                 $modelSettings->gsid = $model->gsid;
-
-                if (empty($model->parent_id)){
-                    $modelSettings->setToDefault();
-                } else {
-                    $modelSettings->setToInherit();
-                }
+                $modelSettings->setToInherit();
+                $modelSettings->owner_id = $model->owner_id;
 
                 if ($modelSettings->save()) {
                     $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');

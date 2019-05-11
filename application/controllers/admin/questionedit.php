@@ -109,7 +109,7 @@ class questionedit extends Survey_Common_Action
             'qid' => $oQuestion->qid,
             'startType' => $oQuestion->type,
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
-            'connectorBaseUrl' => $this->getController()->createUrl('admin/questioneditor/sid/'.$iSurveyID.'/gid/'.$gid.'/sa'),
+            'connectorBaseUrl' => $this->getController()->createUrl('admin/questioneditor', ['sid' => $iSurveyID, 'gid' => $gid, 'sa' => '']),
             'i10N' => [
                 'Create new Question' => gT('Create new Question'),
                 'General Settings' => gT("General Settings"),
@@ -186,11 +186,11 @@ class questionedit extends Survey_Common_Action
         $setApplied['advancedSettings']    = $this->_unparseAndSetAdvancedOptions($oQuestion, $questionData['advancedSettings']);
         $setApplied['questionI10N']        = $this->_applyI10N($oQuestion, $questionData['questionI10N']);
         
-        if(isset($questionData['scaledSubquestions'])) {
+        if (isset($questionData['scaledSubquestions'])) {
             $setApplied['scaledSubquestions']  = $this->_storeSubquestions($oQuestion, $questionData['scaledSubquestions']);
         }
 
-        if(isset($questionData['scaledAnswerOptions'])) {
+        if (isset($questionData['scaledAnswerOptions'])) {
             $setApplied['scaledAnswerOptions'] = $this->_storeAnswerOptions($oQuestion, $questionData['scaledAnswerOptions']);
         }
  
@@ -200,7 +200,9 @@ class questionedit extends Survey_Common_Action
         $aAdvancedOptions = $this->getAdvancedOptions($oQuestion->qid, null, true);
 
         $this->renderJSON([
-            'success' => array_reduce($setApplied, function($coll, $it){ return $coll && $it; }, true),
+            'success' => array_reduce($setApplied, function ($coll, $it) {
+                return $coll && $it;
+            }, true),
             'message' => gT('Question successfully stored'),
             'successDetail' => $setApplied,
             'questionId' => $oQuestion->qid,
@@ -259,7 +261,7 @@ class questionedit extends Survey_Common_Action
     {
         $iQuestionId = (int) $iQuestionId;
         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQuestionId);
-        if( $returnArray === true ) {
+        if ($returnArray === true) {
             return $aQuestionAttributes;
         }
         $this->renderJSON($aQuestionAttributes);
@@ -270,12 +272,12 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON(QuestionType::modelsAttributes());
     }
     
-    public function getQuestionTypeInformation($sQuestionType) {
+    public function getQuestionTypeInformation($sQuestionType)
+    {
         $aTypeInformations = QuestionType::modelsAttributes();
         $aQuestionTypeInformation = $aTypeInformations[$sQuestionType];
 
         $this->renderJSON($aQuestionTypeInformation);
-
     }
     
     public function getGeneralOptions($iQuestionId, $sQuestionType=null, $returnArray = false)
@@ -283,7 +285,7 @@ class questionedit extends Survey_Common_Action
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);
         $aGeneralOptionsArray = $oQuestion->getDataSetObject()->getGeneralSettingsArray($oQuestion->qid, $sQuestionType);
 
-        if( $returnArray === true ) {
+        if ($returnArray === true) {
             return $aGeneralOptionsArray;
         }
 
@@ -294,7 +296,7 @@ class questionedit extends Survey_Common_Action
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);
         $aAdvancedOptionsArray = $oQuestion->getDataSetObject()->getAdvancedOptions($oQuestion->qid, $sQuestionType);
-        if( $returnArray === true ) {
+        if ($returnArray === true) {
             return $aAdvancedOptionsArray;
         }
         $this->renderJSON($aAdvancedOptionsArray);
@@ -413,8 +415,8 @@ class questionedit extends Survey_Common_Action
         ], $aQuestionData);
         unset($aQuestionData['qid']);
         
-        if($subquestion) {
-            foreach ($oSurvey->allLanguages as $sLanguage){
+        if ($subquestion) {
+            foreach ($oSurvey->allLanguages as $sLanguage) {
                 unset($aQuestionData[$sLanguage]);
             }
         } else {
@@ -472,12 +474,14 @@ class questionedit extends Survey_Common_Action
         $aQuestionBaseAttributes = $oQuestion->attributes;
         $aQuestionAttributes = $oQuestion->questionAttributes;
 
-        foreach($dataSet as $sAttributeKey => $aAttributeValueArray) {
-            if($sAttributeKey === 'debug') continue;
-            if(array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
+        foreach ($dataSet as $sAttributeKey => $aAttributeValueArray) {
+            if ($sAttributeKey === 'debug') {
+                continue;
+            }
+            if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
                 $oQuestion->$sAttributeKey = $aAttributeValueArray['formElementValue'];
-            } else { 
-                $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttribute($oQuestion->qid,$sAttributeKey,$aAttributeValueArray['formElementValue']);
+            } else {
+                $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttribute($oQuestion->qid, $sAttributeKey, $aAttributeValueArray['formElementValue']);
             }
         }
 
@@ -492,25 +496,30 @@ class questionedit extends Survey_Common_Action
         $aQuestionAttributes = $oQuestion->questionAttributes;
         $aQuestionBaseAttributes = $oQuestion->attributes;
 
-        foreach($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
-            if($sAttributeCategory === 'debug') continue;
-            foreach($aAttributeCategorySettings as $sAttributeKey => $aAttributeValueArray) {
-                if(!isset($aAttributeValueArray['formElementValue'])){ continue; }
+        foreach ($dataSet as $sAttributeCategory => $aAttributeCategorySettings) {
+            if ($sAttributeCategory === 'debug') {
+                continue;
+            }
+            foreach ($aAttributeCategorySettings as $sAttributeKey => $aAttributeValueArray) {
+                if (!isset($aAttributeValueArray['formElementValue'])) {
+                    continue;
+                }
                 $newValue = $aAttributeValueArray['formElementValue'];
                 
-                if(is_array($newValue)) {
-                    foreach($newValue as $lngKey => $content) {
-                        if($lngKey == 'expression') { continue; }
-                        $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttributeWithLanguage($oQuestion->qid,$sAttributeKey,$content, $lngKey);
-                    } 
+                if (is_array($newValue)) {
+                    foreach ($newValue as $lngKey => $content) {
+                        if ($lngKey == 'expression') {
+                            continue;
+                        }
+                        $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttributeWithLanguage($oQuestion->qid, $sAttributeKey, $content, $lngKey);
+                    }
                 } else {
-                    if(array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
+                    if (array_key_exists($sAttributeKey, $aQuestionBaseAttributes)) {
                         $oQuestion->$sAttributeKey = $newValue;
-                    } else { 
-                        $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttribute($oQuestion->qid,$sAttributeKey,$newValue);
+                    } else {
+                        $storeValid = $storeValid && QuestionAttribute::model()->setQuestionAttribute($oQuestion->qid, $sAttributeKey, $newValue);
                     }
                 }
-            
             }
         }
 
@@ -559,7 +568,7 @@ class questionedit extends Survey_Common_Action
 
         foreach ($oQuestion->survey->allLanguages as $sLanguage) {
             $i10N = AnswerL10n::model()->findByAttributes(['aid' => $oAnswer->aid,'language' => $sLanguage]);
-            if($i10N == null) {
+            if ($i10N == null) {
                 $i10N = new AnswerL10n();
                 $i10N->setAttributes([
                     'aid' => $oAnswer->aid,
@@ -578,8 +587,8 @@ class questionedit extends Survey_Common_Action
     private function _storeSubquestions(&$oQuestion, $dataSet)
     {
         $storeValid = true;
-        foreach($dataSet as $scaleId => $aSubquestions) {
-            foreach($aSubquestions as $aSubquestionDataSet) {   
+        foreach ($dataSet as $scaleId => $aSubquestions) {
+            foreach ($aSubquestions as $aSubquestionDataSet) {
                 $oSubQuestion = Question::model()->findByPk($aSubquestionDataSet['qid']);
                 if ($oSubQuestion != null) {
                     $oSubQuestion = $this->_editQuestion($oSubQuestion, $aSubquestionDataSet);
@@ -596,18 +605,20 @@ class questionedit extends Survey_Common_Action
     private function _storeAnswerOptions(&$oQuestion, $dataSet)
     {
         $storeValid = true;
-        foreach($dataSet as $scaleId => $aAnswerOptions) {
+        foreach ($dataSet as $scaleId => $aAnswerOptions) {
             foreach ($aAnswerOptions as $aAnswerOptionDataSet) {
                 $aAnswerOptionDataSet['sortorder'] = (int) $aAnswerOptionDataSet['sortorder'];
                 $oAnswer = Answer::model()->findByPk($aAnswerOptionDataSet['aid']);
-                if($oAnswer == null) {
+                if ($oAnswer == null) {
                     $oAnswer = new Answer();
+                    $oAnswer->qid = $oQuestion->qid;
                     unset($aAnswerOptionDataSet['aid']);
+                    unset($aAnswerOptionDataSet['qid']);
                 }
                 $oAnswer->setAttributes($aAnswerOptionDataSet, false);
                 $answerSaved = $oAnswer->save();
-                if(!$answerSaved) {
-                    throw new CException("Answer option couldn't be saved. Error: ".print_r($oAnswer->getErrors(),true));
+                if (!$answerSaved) {
+                    throw new CException("Answer option couldn't be saved. Error: ".print_r($oAnswer->getErrors(), true));
                 }
                 $storeValid = $storeValid && $this->_applyAnswerI10N($oAnswer, $oQuestion, $aAnswerOptionDataSet);
             }
@@ -615,8 +626,8 @@ class questionedit extends Survey_Common_Action
         return $storeValid;
     }
 
-    private function _getCompiledQuestionData(&$oQuestion) {
-      
+    private function _getCompiledQuestionData(&$oQuestion)
+    {
         $aQuestionDefinition = array_merge($oQuestion->attributes, ['typeInformation' => $oQuestion->questionType]);
         $oQuestionGroup = QuestionGroup::model()->findByPk($oQuestion->gid);
         $aQuestionGroupDefinition = array_merge($oQuestionGroup->attributes, $oQuestionGroup->questionGroupL10ns);

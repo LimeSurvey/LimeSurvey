@@ -14,6 +14,7 @@
 * @var $maxlength
 * @var $dispVal
 * @var $checkconditionFunction
+* @var $placeholder
 */
 #}
 
@@ -38,6 +39,7 @@
                 name="{{ myfname }}"
                 id="answer{{ myfname }}"
                 value="{{ dispVal }}"
+                placeholder="{{ flatString(processString(placeholder,1),1) }}"
                 {% if inputsize %} size="{{ inputsize }}" {% endif %}
                 {% if maxlength %} maxlength="{{ maxlength }}" {% endif %}
                 {% if numbersonly %} data-number="{{ numbersonly }}" {% endif %}

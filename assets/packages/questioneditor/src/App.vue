@@ -1,5 +1,6 @@
 <script>
 import Mousetrap from 'mousetrap';
+import filter from 'lodash/filter';
 
 import QuestionOverview from './components/questionoverview.vue';
 import MainEditor from './components/mainEditor.vue';
@@ -82,7 +83,7 @@ export default {
             this.$log.log('New event set', payload);
             this.event = payload;
         },
-        eventSet() {
+        eventSet(eventRoot=false) {
             this.event = null;
         },
         submitCurrentState(redirect = false) {
@@ -117,8 +118,10 @@ export default {
             let tempQuestionObject = this.$store.state.currentQuestion;
             tempQuestionObject.type = newValue;
             this.$store.commit('setCurrentQuestion', tempQuestionObject);
-            this.$store.dispatch('reloadQuestion');
-            this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
+            this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: true, chain: 'AdvancedSettings' };
+            this.$store.dispatch('reloadQuestion').finally(()=>{
+                this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: false, chain: 'AdvancedSettings' };
+            });
         },
         selectLanguage(sLanguage) {
             this.$log.log('LANGUAGE CHANGED', sLanguage);

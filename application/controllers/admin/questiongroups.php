@@ -310,8 +310,8 @@ class questiongroups extends Survey_Common_Action
             'surveyid' => $iSurveyID,
             'gid' => $gid,
             'startInEditView' => SettingsUser::getUserSettingValue('noViewMode', App()->user->id) == '1',
-            'connectorBaseUrl' => $this->getController()->createUrl('admin/questiongroups/sid/'.$iSurveyID.'/sa'),
-            'openQuestionUrl' => $this->getController()->createUrl('admin/questioneditor/sa/view/surveyid='.$iSurveyID.'/gid='.$gid.'/qid'),
+            'connectorBaseUrl' => $this->getController()->createUrl('admin/questiongroups', ['sid' => $iSurveyID, 'sa' => '']),
+            'openQuestionUrl' => $this->getController()->createUrl('admin/questioneditor/sa/view/', ['surveyid'=>$iSurveyID, 'gid'=>$gid, 'qid' => '']),
             'createQuestionUrl' => $this->getController()->createUrl("admin/questiongroups/sa/add/" ,["surveyid" =>  $surveyid, 'gid' => $gid]),
             'i10N' => [
                 'Question group' => gT('Question group'),

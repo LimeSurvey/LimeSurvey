@@ -71,7 +71,7 @@ class RenderHugeFreeText extends QuestionBaseRenderer
         }
 
         if (trim($this->getQuestionAttribute('placeholder',$this->sLanguage)) != '') {
-            $placeholder = htmlspecialchars($this->getQuestionAttribute('placeholder',$this->sLanguage));
+            $placeholder = $this->getQuestionAttribute('placeholder',$this->sLanguage);
         }
 
         $answer = Yii::app()->twigRenderer->renderQuestion($this->getMainView(), array(
