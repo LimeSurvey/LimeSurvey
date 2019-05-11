@@ -900,6 +900,7 @@ class SurveyRuntimeHelper
                 /* Move to start */
                 LimeExpressionManager::JumpTo(0, false, false, true);
                 /* Try to move next again */
+                /* This reset $this->aMoveResult['finished'] to false if have an error */
                 $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['totalsteps'] + 1, false, false, false); // no preview, no save data and NO force
                 if (!$this->aMoveResult['mandViolation'] && $this->aMoveResult['valid'] && empty($this->aMoveResult['invalidSQs'])) {
                     $this->aMoveResult['finished'] = true;
