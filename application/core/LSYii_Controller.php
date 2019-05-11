@@ -35,8 +35,9 @@ abstract class LSYii_Controller extends CController
 
         //Yii::app()->session->init();
         $this->loadLibrary('LS.LS');
-        // This will setConfig from database
+        // Usage of old function
         $this->loadHelper('globalsettings');
+        // Some functiion : traceVar
         $this->loadHelper('common');
         $this->loadHelper('expressions.em_manager');
         $this->loadHelper('replacements');
@@ -171,7 +172,7 @@ abstract class LSYii_Controller extends CController
             }
             return trim($sPublicUrl, "/").$url;
         } else {
-                    return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
+            return parent::createAbsoluteUrl($route, $params, $schema, $ampersand);
         }
     }
 

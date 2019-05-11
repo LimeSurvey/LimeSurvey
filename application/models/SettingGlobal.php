@@ -24,6 +24,20 @@
  */
 class SettingGlobal extends LSActiveRecord
 {
+
+    /**
+     * @var string[] settings that must only come from php files
+     */
+    private $disableByDb = array(
+        'versionnumber', // Come and leave it in version.php
+        'dbversionnumber', // Must keep it out of DB
+        'updatable', // If admin with ftp access disable updatable : leave it
+        'debug', // Currently not accessible, seem better
+        'debugsql', // Currently not accessible, seem better
+        'forcedsuperadmin', // This is for security
+        'defaultfixedtheme', // Because updating can broke instance
+        'demoMode', // No demoMode update via GUI
+    );
     /**
      * @inheritdoc
      * @return CActiveRecord
@@ -48,16 +62,7 @@ class SettingGlobal extends LSActiveRecord
     /** @inheritdoc */
     public function rules()
     {
-        /* settings that must only comme from php files */
-        $disableByDb = array(
-            'versionnumber', // Come and leave it in version.php
-            'dbversionnumber', // Must keep it out of DB
-            'updatable', // If admin with ftp access disable updatable : leave it
-            'debug', // Currently not accessible, seem better
-            'debugsql', // Currently not accessible, seem better
-            'forcedsuperadmin', // This is for security
-            'defaultfixedtheme', // Because updating can broke instance
-        );
+        $disableByDb = $this->disableByDb;
         /* Specific disable settings for demo mode */
         if (Yii::app()->getConfig("demoMode")) {
             $disableByDb = array_merge($disableByDb,array('sitename','defaultlang','defaulthtmleditormode','filterxsshtml'));

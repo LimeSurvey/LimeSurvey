@@ -61,6 +61,10 @@
          */
         public function actionError()
         {
+            if($this->getConfig('DBVersion') < 200) {
+                /* Activate since DBVersion for 2.50 and up */
+                return;
+            }
             $oTemplate = Template::model()->getInstance(getGlobalSetting('defaulttheme'));
 
             $this->sTemplate = $oTemplate->sTemplateName;

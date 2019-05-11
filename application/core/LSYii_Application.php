@@ -49,6 +49,12 @@ class LSYii_Application extends CWebApplication
     protected $plugin;
 
     /**
+     * The DB version, used to check if setup is all OK
+     * @var integer|null
+     */
+    protected $dbVersion;
+
+    /**
      *
      * Initiates the application
      *
@@ -132,9 +138,7 @@ class LSYii_Application extends CWebApplication
         if (file_exists( $configdir .  '/config.php')) {
             $userConfigs = require(  $configdir .'/config.php');
             if (is_array($userConfigs['config'])) {
-
                 $this->config = array_merge($this->config, $userConfigs['config']);
-
             }
         }
 
@@ -142,22 +146,31 @@ class LSYii_Application extends CWebApplication
         if(!file_exists(__DIR__.'/../config/config.php')) {
             /* Set up not done : then no other part to update */
             return;
-        }/* User file config */
+        }
+        /* User file config */
         $userConfigs = require(__DIR__.'/../config/config.php');
         if (is_array($userConfigs['config'])) {
              $this->config = array_merge($this->config, $userConfigs['config']);
         }
-        /* Database config */
+        /* Check DB : let throw error if DB is broken issue #14875 */
+        Yii::app()->db->getConnectionStatus();
+        /* DB checked : Database config */
         try {
+            /* Since DB exist : think we must not use try/catch ? */
             $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
             if (is_object($settingsTableExist)) {
                 $dbConfig = CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
                 $this->config = array_merge($this->config, $dbConfig);
+                /* According to updatedb_helper : no update can be done before settings_global->DBVersion > 183, then set it only if upper to 183 */
+                if(!empty($dbConfig['DBVersion']) && $dbConfig['DBVersion'] > 183) {
+                    $this->dbVersion = $dbConfig['DBVersion'];
+                }
             }
         } catch (Exception $exception) {
             /* Even if database can exist : don't throw exception, */
-            /* @todo : find when settings_global was created with stg_name and stg_value, maybe can Throw Exception ? */
-            Yii::log("Table settings_global not found");// Log it as LEVEL_INFO , application category
+            /* settings_global was created before 1.80 */
+            throw new CHttpException(500, "Table settings_global not found");
+            Yii::log("Table settings_global not found",'error');
         }
         /* Add some specific config using exiting other configs */
         $this->setConfig('globalAssetsVersion', /* Or create a new var ? */
@@ -356,19 +369,20 @@ class LSYii_Application extends CWebApplication
     public function onException($event)
     {
         if (Yii::app() instanceof CWebApplication) {
-            $configExists = file_exists(__DIR__.'/../config/config.php');
             $usingTestEnv = defined('PHP_ENV') && PHP_ENV == 'test';
-            if ($usingTestEnv || !$configExists) {
+            if($usingTestEnv) {
                 // If run from phpunit, die with exception message.
                 die($event->exception->getMessage());
-            } else {
-                /* Here we have different possibility : maybe 400/401/403/404 with debug < 2 except for forced superadmin (currently : the 4 part don't show intersting information with debug*/
-                /* 500 always if debug and for (forced) superadmin even if no debug is set (and try to show complete error in this case (see issue by olle about white page and log */
-                if ((Yii::app()->getConfig('debug')<1  /* || Permission::hasGlobalPermission('superadmin') */) || (isset($event->exception->statusCode) &&$event->exception->statusCode=='404')) {
-                    Yii::app()->setComponent('errorHandler', array(
-                        'errorAction'=>'surveys/error',
-                    ));
-                }
+            }
+            if(!$this->dbVersion) {
+                return; // DB not set , don't try to manage exception
+            }
+            /* Here we have different possibility : maybe 400/401/403/404 with debug < 2 except for forced superadmin (currently : the 4 part don't show intersting information with debug*/
+            /* 500 always if debug and for (forced) superadmin even if no debug is set (and try to show complete error in this case (see issue by olle about white page and log */
+            if ((Yii::app()->getConfig('debug')<1  /* || Permission::hasGlobalPermission('superadmin') */) || (isset($event->exception->statusCode) && $event->exception->statusCode=='404')) {
+                Yii::app()->setComponent('errorHandler', array(
+                    'errorAction'=>'surveys/error',
+                ));
             }
         }
     }
