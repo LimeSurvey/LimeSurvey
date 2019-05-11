@@ -532,23 +532,40 @@ class questionHelper
         'types'=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_I_LANGUAGE.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_VERTICAL_FILE_UPLOAD,
             'category'=>gT('Display'),
             'sortorder'=>101,
-            'inputtype'=>'text',
-            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
+            'inputtype'=>'singleselect',
+            'options'=>array(
+                0=>gT('No'),
+                1=>gT('Yes'),
+                'expression'=>gT('Expression'),
+            ),
             'default'=>"",
             'help'=>gT('Hide this question at any time. This is useful for including data using answer prefilling. Expression is evaluated when display the page.'),
             'caption'=>gT('Always hide this question'),
-            'expression' => 2,
         );
         self::$attributes['hidden_EQUATION'] = array(
             'types'=>Question::QT_ASTERISK_EQUATION,
             'name' => 'hidden',
             'category'=>gT('Display'),
             'sortorder'=>101,
-            'inputtype'=>'text',
-            'options'=>array(0=>gT('No'), 1=>gT('Yes')),
+            'inputtype'=>'singleselect',
+            'options'=>array(
+                0=>gT('No'),
+                1=>gT('Yes'),
+                'expression'=>gT('Expression'),
+            ),
             'default'=>"",
             'help'=>gT('Hide this question at any time. This is useful for including data directly without show the question to respondant.'),
             'caption'=>gT('Always hide this question'),
+            'expression' => 2,
+        );
+        self::$attributes['hidden_expression'] = array(
+        'types'=>Question::QT_1_ARRAY_MULTISCALE.Question::QT_5_POINT_CHOICE.Question::QT_A_ARRAY_5_CHOICE_QUESTIONS.Question::QT_B_ARRAY_10_CHOICE_QUESTIONS.Question::QT_C_ARRAY_YES_UNCERTAIN_NO.Question::QT_D_DATE.Question::QT_E_ARRAY_OF_INC_SAME_DEC_QUESTIONS.Question::QT_F_ARRAY_FLEXIBLE_ROW.Question::QT_G_GENDER_DROPDOWN.Question::QT_H_ARRAY_FLEXIBLE_COLUMN.Question::QT_I_LANGUAGE.Question::QT_K_MULTIPLE_NUMERICAL_QUESTION.Question::QT_L_LIST_DROPDOWN.Question::QT_M_MULTIPLE_CHOICE.Question::QT_N_NUMERICAL.Question::QT_O_LIST_WITH_COMMENT.Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS.Question::QT_Q_MULTIPLE_SHORT_TEXT.Question::QT_R_RANKING_STYLE.Question::QT_S_SHORT_FREE_TEXT.Question::QT_T_LONG_FREE_TEXT.Question::QT_U_HUGE_FREE_TEXT.Question::QT_X_BOILERPLATE_QUESTION.Question::QT_Y_YES_NO_RADIO.Question::QT_Z_LIST_RADIO_FLEXIBLE.Question::QT_EXCLAMATION_LIST_DROPDOWN.Question::QT_COLON_ARRAY_MULTI_FLEX_NUMBERS.Question::QT_SEMICOLON_ARRAY_MULTI_FLEX_TEXT.Question::QT_VERTICAL_FILE_UPLOAD.Question::QT_ASTERISK_EQUATION,
+            'category'=>gT('Display'),
+            'sortorder'=>102,
+            'inputtype'=>'text',
+            'default'=>"1",
+            'help'=>gT('If you set hidden by expression, set the expression here. The expression are evaluated only whe npage loaded, and are not updated by question in same page.'),
+            'caption'=>gT('Expression used to hide this question'),
             'expression' => 2,
         );
 

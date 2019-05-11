@@ -124,10 +124,37 @@
             <name>hidden</name>
             <category>Display</category>
             <sortorder>101</sortorder>
-            <inputtype>text</inputtype>
+            <inputtype>singleselect</inputtype>
+            <options>
+                <option>
+                    <value>0</value>
+                    <text>No</text>
+                </option>
+                <option>
+                    <value>1</value>
+                    <text>Yes</text>
+                </option>
+                <option>
+                    <value>expression</value>
+                    <text>Expression</text>
+                </option>
+            </options>
             <default></default>
             <help>Hide this question at any time. This is useful for including data using answer prefilling. You can use expression manager evaluated when display the page only.</help>
             <caption>Always hide this question</caption>
+            <i18n></i18n>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
+            <expression></expression>
+        </attribute>
+        <attribute>
+            <name>hidden_equation</name>
+            <category>Display</category>
+            <sortorder>102</sortorder>
+            <inputtype>text</inputtype>
+            <default>1</default>
+            <help>If you set hidden by expression, set the expression here. The expression are evaluated only whe npage loaded, and are not updated by question in same page.</help>
+            <caption>Expression used to hide this question</caption>
             <i18n></i18n>
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>

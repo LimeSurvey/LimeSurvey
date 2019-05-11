@@ -3767,7 +3767,10 @@
                 $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
                 $SQrelevance = (isset($fielddata['SQrelevance'])) ? $fielddata['SQrelevance'] : 1;
                 $grelevance = (isset($fielddata['grelevance'])) ? $fielddata['grelevance'] : 1;
-                $hidden = (isset($qattr[$questionNum]['hidden'])) ? "{".trim($qattr[$questionNum]['hidden'])."}" : "";
+                $hidden = (isset($qattr[$questionNum]['hidden'])) ? $qattr[$questionNum]['hidden']: 0;
+                if($hidden == 'expression' ) {
+                    $hidden = (!empty($qattr[$questionNum]['hidden_expression'])) ? $qattr[$questionNum]['hidden_expression']: 0;
+                }
                 $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
                 $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : NULL; // a perl regular exrpession validation function
                 $defaultValue = (isset($fielddata['defaultvalue']) ? $fielddata['defaultvalue'] : NULL);
