@@ -169,8 +169,8 @@ class LSYii_Application extends CWebApplication
         } catch (Exception $exception) {
             /* Even if database can exist : don't throw exception, */
             /* settings_global was created before 1.80 */
-            throw new CHttpException(500, "Table settings_global not found");
             Yii::log("Table settings_global not found",'error');
+            throw new CHttpException(500, "Table settings_global not found");
         }
         /* Add some specific config using exiting other configs */
         $this->setConfig('globalAssetsVersion', /* Or create a new var ? */
