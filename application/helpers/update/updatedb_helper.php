@@ -2401,17 +2401,29 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'question' =>  "text NOT NULL",
                 'help' =>  "text",
                 'language' =>  "string(20) NOT NULL"
-            ));        
+            ));
             $oDB->createCommand()->createIndex('{{idx1_question_l10ns}}', '{{question_l10ns}}', ['qid', 'language'], true);
             $oDB->createCommand("INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}")->execute();
-            $dataReader = $oDB->createCommand("SELECT q1.language, q1.qid FROM {{questions}} q1 INNER JOIN {{questions}} q2 ON q1.qid = q2.qid WHERE q1.language < q2.language")->query();
-            while (($row = $dataReader->read()) !== false) {
-                $oDB->createCommand("delete from  {{questions}} where qid={$row['qid']} and language='{$row['language']}'")->execute();
-            }
-            modifyPrimaryKey('questions', array('qid'));
-            dropColumn('{{questions}}', 'question');
-            dropColumn('{{questions}}', 'help');
-            dropColumn('{{questions}}', 'language');
+            $oDB->createCommand()->renameTable('{{questions}}', '{{questions_old}}');
+            $oDB->createCommand()->createTable('{{questions}}', array(
+                'qid' =>  "pk",
+                'parent_qid' =>  "integer NOT NULL default '0'",
+                'sid' =>  "integer NOT NULL default '0'",
+                'gid' =>  "integer NOT NULL default '0'",
+                'type' =>  "string(30) NOT NULL default 'T'",
+                'title' =>  "string(20) NOT NULL default ''",
+                'preg' =>  "text",
+                'other' =>  "string(1) NOT NULL default 'N'",
+                'mandatory' =>  "string(1) NULL",
+                //'encrypted' =>  "string(1) NULL default 'N'", DB version 406
+                'question_order' =>  "integer NOT NULL",
+                'scale_id' =>  "integer NOT NULL default '0'",
+                'same_default' =>  "integer NOT NULL default '0'",
+                'relevance' =>  "text",
+                'modulename' =>  "string(255) NULL"
+            ));
+            $oDB->createCommand("INSERT INTO {{questions}} (qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename) SELECT qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename from {{questions_old}} GROUP BY qid")->execute();
+            $oDB->createCommand()->dropTable('{{questions_old}}');
 
             // Groups table
             $oDB->createCommand()->createTable('{{group_l10ns}}', array(
@@ -2423,16 +2435,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));        
             $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
             $oDB->createCommand("INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}")->execute();
-            $dataReader = $oDB->createCommand("select g1.language,g1.gid FROM {{groups}} g1 INNER JOIN {{groups}} g2 ON g1.gid = g2.gid and g1.language<g2.language")->query();
-            while (($row = $dataReader->read()) !== false) {
-                $oDB->createCommand("delete from  {{groups}} where gid={$row['gid']} and language='{$row['language']}'")->execute();
-            }
-            modifyPrimaryKey('groups', array('gid'));
-            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('idx2_groups','{{groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('idx3_groups','{{groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            dropColumn('{{groups}}', 'group_name');
-            dropColumn('{{groups}}', 'description');
-            dropColumn('{{groups}}', 'language');
+            $oDB->createCommand()->renameTable('{{groups}}', '{{groups_old}}');
+            $oDB->createCommand()->createTable('{{groups}}', array(
+                'gid' =>  "pk",
+                'sid' =>  "integer NOT NULL default '0'",
+                'group_order' =>  "integer NOT NULL default '0'",
+                'randomization_group' =>  "string(20) NOT NULL default ''",
+                'grelevance' =>  "text NULL"
+            ));
+            $oDB->createCommand("INSERT INTO {{groups}} (gid, sid, group_order, randomization_group, grelevance) SELECT gid, sid, group_order, randomization_group, grelevance from {{groups_old}} GROUP BY gid")->execute();
+            $oDB->createCommand()->dropTable('{{groups_old}}');
 
             // Answers table
             // Answers now have a proper answer ID - wohoo!
@@ -2444,8 +2456,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));        
             $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
             
-            $oDB->createCommand()->renameTable('{{answers}}', 'answertemp');
-            $oDB->createCommand()->createIndex('answer_idx_10', 'answertemp', ['qid', 'code', 'scale_id']);
+            $oDB->createCommand()->renameTable('{{answers}}', '{{answers_old}}');
+            $oDB->createCommand()->createIndex('answer_idx_10', '{{answers_old}}', ['qid', 'code', 'scale_id']);
             $oDB->createCommand()->createTable('{{answers}}',[
                 'aid' =>  "pk",
                 'qid' => 'integer NOT NULL',
@@ -2454,27 +2466,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'assessment_value' => 'integer NOT NULL DEFAULT 0',
                 'scale_id' => 'integer NOT NULL DEFAULT 0'
             ]);
-            $iCounter1 = 0;
-            $iPrevQid = 0;
-            $sPrevCode = '';
-            $iPrevScaleId = 0;
-            $dataReader = $oDB->createCommand("SELECT * FROM answertemp order by qid, code, scale_id")->query();
-            while (($row = $dataReader->read()) !== false) {
-                if ($iPrevQid != $row['qid'] || $sPrevCode != $row['code'] || $iPrevScaleId != $row['scale_id']){
-                    $iCounter1++;
-                    switchMSSQLIdentityInsert('answers', true);
-                    $oDB->createCommand()->insert('{{answers}}', array('aid' => $iCounter1, 'qid' => $row['qid'], 'code' => $row['code'], 'scale_id' => $row['scale_id'], 'sortorder' => $row['sortorder'], 'assessment_value' => $row['assessment_value']));
-                    switchMSSQLIdentityInsert('answers', false);
-                }
-
-                $oDB->createCommand()->insert('{{answer_l10ns}}', array('aid' => $iCounter1, 'language' => $row['language'], 'answer' => $row['answer']));
-
-                $iPrevQid = $row['qid'];
-                $sPrevCode = $row['code'];
-                $iPrevScaleId = $row['scale_id'];
-            }
-            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('answer_idx_10','{{answertemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            $oDB->createCommand()->dropTable('answertemp');
+            /* No pk in insert (not checked in mssql … ) */
+            $oDB->createCommand("INSERT INTO {{answers}} (qid, code, sortorder, scale_id) SELECT qid, code, sortorder, scale_id FROM {{answers_old}} GROUP BY qid, code, scale_id")->execute();
+            $oDB->createCommand()->dropTable('{{answers_old}}');
             $oDB->createCommand()->createIndex('{{answer_idx_10}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
             
             // Labels table
@@ -2487,35 +2481,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ));  
             $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
             
-            $oDB->createCommand()->renameTable('{{labels}}', 'labelstemp');
-            $oDB->createCommand()->createIndex('label_idx_10', 'labelstemp', ['lid', 'sortorder', 'language']);
+            $oDB->createCommand()->renameTable('{{labels}}', '{{labels_old}}');
+            $oDB->createCommand()->createIndex('label_idx_10', '{{labels_old}}', ['lid', 'sortorder', 'language']);
             $oDB->createCommand()->createTable('{{labels}}',[
                 'id' =>  "pk",
                 'lid' => 'integer NOT NULL',
                 'code' => 'string(5) NOT NULL',
                 'sortorder' => 'integer NOT NULL',
                 'assessment_value' => 'integer NOT NULL DEFAULT 0'
-            ]);               
-        
-            $iCounter1 = 0;
-            $iPrevLid = 0;
-            $sPrevCode = '';
-            switchMSSQLIdentityInsert('labels', true);
-            $dataReader = $oDB->createCommand("SELECT * FROM labelstemp order by lid, sortorder, code, language")->query();
-            while (($row = $dataReader->read()) !== false) {
-                if ($iPrevLid != $row['lid'] || $sPrevCode != $row['code']){
-                    $iCounter1++;
-                    $oDB->createCommand()->insert('{{labels}}', array('id' => $iCounter1, 'lid' => $row['lid'], 'code' => $row['code'],'sortorder' => $row['sortorder'], 'assessment_value' => $row['assessment_value']));
-                }
-                $oDB->createCommand()->insert('{{label_l10ns}}', array('label_id' => $iCounter1, 'language' => $row['language'], 'title' => $row['title']));
-                
-                $iPrevLid = $row['lid'];
-                $sPrevCode = $row['code'];
-            }
-            switchMSSQLIdentityInsert('labels', false);
-            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('label_idx_10','{{labelstemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            $oDB->createCommand()->dropTable('labelstemp');
-            $oDB->createCommand()->createIndex('{{label_idx_10}}', '{{labels}}', ['lid', 'sortorder'], true);
+            ]);
+            $oDB->createCommand("INSERT INTO {{labels}} (id, lid, code, sortorder, assessment_value) SELECT id, lid, code, sortorder, assessment_value FROM {{labels_old}} GROUP BY id, lid, code")->execute();
+            $oDB->createCommand()->dropTable('{{labels_old}}');
+            $oDB->createCommand()->createIndex('{{idx1_labels}}', '{{labels}}', 'code', false);
+            $oDB->createCommand()->createIndex('{{idx2_labels}}', '{{labels}}', 'sortorder', false);
+            $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid', 'sortorder'], false);
 
             // Extend language field on labelsets
             alterColumn('{{labelsets}}', 'languages', "string(255)", false);
@@ -2634,39 +2613,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'defaultvalue' =>  "text",
             ));  
             $oDB->createCommand()->createIndex('{{idx1_defaultvalue_l10ns}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], true);
-            
-            $oDB->createCommand()->renameTable('{{defaultvalues}}', 'defaultvaluestemp');
-            $oDB->createCommand()->createIndex('defaultvalues_idx_10', 'defaultvaluestemp', ['qid', 'scale_id', 'sqid', 'specialtype', 'language']);
+            $oDB->createCommand()->renameTable('{{defaultvalues}}', '{{defaultvalues_old}}');
+            $oDB->createCommand()->createIndex('defaultvalues_idx_10', '{{defaultvalues_old}}', ['qid', 'scale_id', 'sqid', 'specialtype', 'language']);
             $oDB->createCommand()->createTable('{{defaultvalues}}',[
                 'dvid' =>  "pk",
                 'qid' =>  "integer NOT NULL default '0'",
                 'scale_id' =>  "integer NOT NULL default '0'",
                 'sqid' =>  "integer NOT NULL default '0'",
                 'specialtype' =>  "string(20) NOT NULL default ''",
-            ]);               
-        
-            $iCounter1 = 0;
-            $iPrevQid = 0;
-            $iPrevScaleId = 0;
-            $iPrevSqid = 0;
-            $iPrevSpecialType = '';
-            switchMSSQLIdentityInsert('defaultvalues', true);
-            $dataReader = $oDB->createCommand("SELECT * FROM defaultvaluestemp order by qid, scale_id, sqid, specialtype, language")->query();
-            while (($row = $dataReader->read()) !== false) {
-                if ($iPrevQid != $row['qid'] || $iPrevScaleId != $row['scale_id'] || $iPrevSqid != $row['sqid'] || $iPrevSpecialType != $row['specialtype']){
-                    $iCounter1++;
-                    $oDB->createCommand()->insert('{{defaultvalues}}', array('dvid' => $iCounter1, 'qid' => $row['qid'], 'scale_id' => $row['scale_id'],'sqid' => $row['sqid'], 'specialtype' => $row['specialtype']));
-                }
-                $oDB->createCommand()->insert('{{defaultvalue_l10ns}}', array('dvid' => $iCounter1, 'language' => $row['language'], 'defaultvalue' => $row['defaultvalue']));
-                
-                $iPrevQid = $row['qid'];
-                $iPrevScaleId = $row['scale_id'];
-                $iPrevSqid = $row['sqid'];
-                $iPrevSpecialType = $row['specialtype'];
-            }
-            switchMSSQLIdentityInsert('defaultvalues', false);
-            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('label_idx_10','{{defaultvaluestemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            $oDB->createCommand()->dropTable('defaultvaluestemp');
+            ]);
+            $oDB->createCommand("INSERT INTO {{defaultvalues}} (qid, scale_id, sqid, specialtype) SELECT qid, scale_id, sqid, specialtype FROM {{defaultvalues_old}} GROUP BY qid, scale_id, sqid, specialtype")->execute();
+            $oDB->createCommand()->dropTable('{{defaultvalues_old}}');
             $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], true);
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>407),"stg_name='DBVersion'");
@@ -2674,7 +2631,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
         if ($iOldDBVersion < 408) {
-            $oTransaction = $oDB->beginTransaction();            
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update('{{participant_attribute_names}}',array('encrypted'=>'Y'),"core_attribute='Y'");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>408),"stg_name='DBVersion'");
             $oTransaction->commit();
