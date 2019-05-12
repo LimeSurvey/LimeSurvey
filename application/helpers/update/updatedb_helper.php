@@ -26,6 +26,18 @@
 * @param integer $iOldDBVersion The previous database version
 * @param boolean $bSilent Run update silently with no output - this checks if the update can be run silently at all. If not it will not run any updates at all.
 */
+
+function flushSometing($something = null)
+{
+    if(empty($something)) {
+        $something = ".";
+    }
+    echo $something;
+    ob_flush();
+    flush();
+    ob_flush();
+    flush();
+}
 function db_upgrade_all($iOldDBVersion, $bSilent = false)
 {
     /**
@@ -2407,6 +2419,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $dataReader = $oDB->createCommand("SELECT q1.language, q1.qid FROM {{questions}} q1 INNER JOIN {{questions}} q2 ON q1.qid = q2.qid WHERE q1.language < q2.language")->query();
             while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("delete from  {{questions}} where qid={$row['qid']} and language='{$row['language']}'")->execute();
+                flushSometing();
             }
             modifyPrimaryKey('questions', array('qid'));
             dropColumn('{{questions}}', 'question');
@@ -2426,6 +2439,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $dataReader = $oDB->createCommand("select g1.language,g1.gid FROM {{groups}} g1 INNER JOIN {{groups}} g2 ON g1.gid = g2.gid and g1.language<g2.language")->query();
             while (($row = $dataReader->read()) !== false) {
                 $oDB->createCommand("delete from  {{groups}} where gid={$row['gid']} and language='{$row['language']}'")->execute();
+                flushSometing();
             }
             modifyPrimaryKey('groups', array('gid'));
             try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('idx2_groups','{{groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
@@ -2465,6 +2479,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     switchMSSQLIdentityInsert('answers', true);
                     $oDB->createCommand()->insert('{{answers}}', array('aid' => $iCounter1, 'qid' => $row['qid'], 'code' => $row['code'], 'scale_id' => $row['scale_id'], 'sortorder' => $row['sortorder'], 'assessment_value' => $row['assessment_value']));
                     switchMSSQLIdentityInsert('answers', false);
+                    flushSometing();
                 }
 
                 $oDB->createCommand()->insert('{{answer_l10ns}}', array('aid' => $iCounter1, 'language' => $row['language'], 'answer' => $row['answer']));
@@ -2472,6 +2487,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 $iPrevQid = $row['qid'];
                 $sPrevCode = $row['code'];
                 $iPrevScaleId = $row['scale_id'];
+                flushSometing();
             }
             try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('answer_idx_10','{{answertemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
             $oDB->createCommand()->dropTable('answertemp');
@@ -2511,6 +2527,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 
                 $iPrevLid = $row['lid'];
                 $sPrevCode = $row['code'];
+                flushSometing();
             }
             switchMSSQLIdentityInsert('labels', false);
             try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('label_idx_10','{{labelstemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
@@ -2529,6 +2546,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>400), "stg_name='DBVersion'");
 
             $oTransaction->commit();
+            flushSometing("400");
         }   
 
         /**
@@ -2543,6 +2561,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>401), "stg_name='DBVersion'");
 
             $oTransaction->commit();
+            flushSometing("401");
         }
 
         if ($iOldDBVersion < 402) {
@@ -2554,6 +2573,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>402), "stg_name='DBVersion'");
 
             $oTransaction->commit();
+            flushSometing("402");
         }
             
         /**
@@ -2565,6 +2585,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             upgradeSurveyTables402('utf8mb4_bin');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>403),"stg_name='DBVersion'");
             $oTransaction->commit();
+            flushSometing("403");
         }
 
         /**
@@ -2575,6 +2596,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             createSurveysGroupSettingsTable($oDB);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>404),"stg_name='DBVersion'");
             $oTransaction->commit();
+            flushSometing("404");
         }
 
         // In case any LS4 user missed database update from version 356.
@@ -2591,6 +2613,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             )->execute();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>405),"stg_name='DBVersion'");
             $oTransaction->commit();
+            flushSometing("405");
         }
 
         /**
@@ -2622,6 +2645,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>406),"stg_name='DBVersion'");
             $oTransaction->commit();
+            flushSometing("406");
         }
 
         if ($iOldDBVersion < 407) {
@@ -2671,6 +2695,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>407),"stg_name='DBVersion'");
             $oTransaction->commit();
+            flushSometing("407");
         }
 
         if ($iOldDBVersion < 408) {
@@ -2678,6 +2703,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{participant_attribute_names}}',array('encrypted'=>'Y'),"core_attribute='Y'");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>408),"stg_name='DBVersion'");
             $oTransaction->commit();
+            flushSometing("408");
         }
 
         if ($iOldDBVersion < 409) {
@@ -2696,6 +2722,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{participant_attribute_names}}',array('encrypted'=>$sEncrypted),"core_attribute='Y'");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>409),"stg_name='DBVersion'");
             $oTransaction->commit();
+            flushSometing("409");
         }
 
         if ($iOldDBVersion < 410) {
@@ -2703,6 +2730,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addColumn('{{question_l10ns}}', 'script', " text NULL default NULL");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>410),"stg_name='DBVersion'");
             $oTransaction->commit();
+            flushSometing("410");
         }
 
         if($iOldDBVersion < 411) {
@@ -2710,6 +2738,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->addColumn('{{plugins}}','priority',"int NOT NULL default 0");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>411),"stg_name='DBVersion'");
             $oTransaction->commit();
+            flushSometing("411");
         }
 
         if($iOldDBVersion < 412) {
@@ -2726,6 +2755,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>412),"stg_name='DBVersion'");
             $oTransaction->commit();
+            flushSometing("412");
         }
       
     } catch (Exception $e) {
