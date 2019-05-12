@@ -2423,6 +2423,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'modulename' =>  "string(255) NULL"
             ));
             $oDB->createCommand("INSERT INTO {{questions}} (qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename) SELECT qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename from {{questions_old}} GROUP BY qid")->execute();
+            $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
+            $oDB->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
+            $oDB->createCommand()->createIndex('{{idx3_questions}}', '{{questions}}', 'type', false);
+            $oDB->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
+            $oDB->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
             $oDB->createCommand()->dropTable('{{questions_old}}');
 
             // Groups table
@@ -2444,6 +2449,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'grelevance' =>  "text NULL"
             ));
             $oDB->createCommand("INSERT INTO {{groups}} (gid, sid, group_order, randomization_group, grelevance) SELECT gid, sid, group_order, randomization_group, grelevance from {{groups_old}} GROUP BY gid")->execute();
+            $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
             $oDB->createCommand()->dropTable('{{groups_old}}');
 
             // Answers table
@@ -2469,7 +2475,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             /* No pk in insert (not checked in mssql … ) */
             $oDB->createCommand("INSERT INTO {{answers}} (qid, code, sortorder, scale_id) SELECT qid, code, sortorder, scale_id FROM {{answers_old}} GROUP BY qid, code, scale_id")->execute();
             $oDB->createCommand()->dropTable('{{answers_old}}');
-            $oDB->createCommand()->createIndex('{{answer_idx_10}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
+            $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
+            $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
             
             // Labels table
             // label_l10ns
@@ -2624,7 +2631,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             ]);
             $oDB->createCommand("INSERT INTO {{defaultvalues}} (qid, scale_id, sqid, specialtype) SELECT qid, scale_id, sqid, specialtype FROM {{defaultvalues_old}} GROUP BY qid, scale_id, sqid, specialtype")->execute();
             $oDB->createCommand()->dropTable('{{defaultvalues_old}}');
-            $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], true);
+            $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], false); // Same than create-database
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>407),"stg_name='DBVersion'");
             $oTransaction->commit();
