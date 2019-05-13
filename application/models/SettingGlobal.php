@@ -24,6 +24,21 @@
  */
 class SettingGlobal extends LSActiveRecord
 {
+
+    /**
+     * @var string[] settings that must only come from php files
+     */
+    private $disableByDb = array(
+        'versionnumber', // Come and leave it in version.php
+        'dbversionnumber', // Must keep it out of DB
+        'updatable', // If admin with ftp access disable updatable : leave it
+        'debug', // Currently not accessible, seem better
+        'debugsql', // Currently not accessible, seem better
+        'forcedsuperadmin', // This is for security
+        'defaultfixedtheme', // Because updating can broke instance
+        'demoMode', // No demoMode update via model
+    );
+
     /**
      * @inheritdoc
      * @return CActiveRecord
@@ -48,16 +63,7 @@ class SettingGlobal extends LSActiveRecord
     /** @inheritdoc */
     public function rules()
     {
-        /* settings that must only comme from php files */
-        $disableByDb = array(
-            'versionnumber', // Come and leave it in version.php
-            'dbversionnumber', // Must keep it out of DB
-            'updatable', // If admin with ftp access disable updatable : leave it
-            'debug', // Currently not accessible, seem better
-            'debugsql', // Currently not accessible, seem better
-            'forcedsuperadmin', // This is for security
-            'defaultfixedtheme', // Because updating can broke instance
-        );
+        $disableByDb = $this->disableByDb;
         /* Specific disable settings for demo mode */
         if (Yii::app()->getConfig("demoMode")) {
             $disableByDb = array_merge($disableByDb,array('sitename','defaultlang','defaulthtmleditormode','filterxsshtml'));
@@ -74,7 +80,7 @@ class SettingGlobal extends LSActiveRecord
 
     /**
      * Update or set a setting in DB and update current app config if no error happen
-     * Return self : then other script can use if(!$oSetting) { $oSetting->getErrors; }
+     * Return self : then other script can use if($oSetting->hasErrors()) { Do action with $oSetting->getErrors; }
      * @param string $settingname
      * @param string $settingvalue
      * @return self
@@ -87,10 +93,17 @@ class SettingGlobal extends LSActiveRecord
             $setting->stg_name = $settingname;
         }
         $setting->stg_value = $settingvalue;
-        if($setting->save()) {
-            Yii::app()->setConfig($settingname,$settingvalue);
-        }
+        $setting->save();
         return $setting;
+    }
+
+    /** @inheritdoc
+     * Allways update of current application config after sucessfull save
+     **/
+    protected function afterSave()
+    {
+        parent::afterSave();
+        Yii::app()->setConfig($this->stg_name,$this->stg_value);
     }
 
     /**
