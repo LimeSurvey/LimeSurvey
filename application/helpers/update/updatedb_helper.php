@@ -2422,7 +2422,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'relevance' =>  "text",
                 'modulename' =>  "string(255) NULL"
             ));
-            $oDB->createCommand("INSERT INTO {{questions}} (qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename) SELECT qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename from {{questions_old}} GROUP BY qid")->execute();
+            /* Since qid is unique : can be used, but mysql < 5.7.5 throw error , fix NULL to emty string when needed */
+            $oDB->createCommand("INSERT INTO {{questions}} (qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename) SELECT qid, parent_qid, sid, gid, type, title, COALESCE(preg,''), other, COALESCE(mandatory,''), question_order, scale_id, same_default, COALESCE(relevance,''), COALESCE(modulename,'') from {{questions_old}} GROUP BY qid, parent_qid, sid, gid, type, title, COALESCE(preg,''), other, COALESCE(mandatory,''), question_order, scale_id, same_default, COALESCE(relevance,''), COALESCE(modulename,'') ")->execute();
             $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
             $oDB->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
             $oDB->createCommand()->createIndex('{{idx3_questions}}', '{{questions}}', 'type', false);
@@ -2439,7 +2440,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'language' =>  "string(20) NOT NULL"
             ));        
             $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
-            $oDB->createCommand("INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}")->execute();
+            /* Since qid is unique : can be used, but mysql < 5.7.5 throw error , fix NULL to emty string when needed */
+            $oDB->createCommand("INSERT INTO {{groups}} (gid, sid, group_order, randomization_group, grelevance) SELECT gid, sid, group_order, randomization_group, COALESCE(grelevance,'') from {{groups_old}} GROUP BY gid, sid, group_order, randomization_group, COALESCE(grelevance,'')")->execute();
             $oDB->createCommand()->renameTable('{{groups}}', '{{groups_old}}');
             $oDB->createCommand()->createTable('{{groups}}', array(
                 'gid' =>  "pk",
