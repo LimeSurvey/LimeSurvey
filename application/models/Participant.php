@@ -54,11 +54,9 @@ class Participant extends LSActiveRecord
     public $extraCondition;
     public $countActiveSurveys;
     public $id;
-    
+
     /** @var int $sid */
     protected static $sid = 0;
-
-    
 
     /**
      * @inheritdoc
@@ -2229,5 +2227,57 @@ $test = 1;
                     'email' =>  'N'
                 )
         );
+    }
+
+    /**
+     * Checks Permissions for given $aActions and returns them as array
+     *
+     * @param array $aActions
+     * @param array $permissions
+     *
+     * @return array
+     */
+    public function permissionCheckedActionsArray($aActions, $permissions)
+    {
+        $checkedActions = [];
+        foreach ($aActions as $aAction) {
+            if (isset($aAction['action'])) {
+                switch ($aAction['action']) {
+                    case 'delete':
+                        if ($permissions['superadmin']['read'] || $permissions['participantpanel']['delete'] || !$permissions['participantpanel']['sharedParticipantExists']) {
+                            array_push($checkedActions, $aAction);
+                        }
+                        break;
+                    case 'batchEdit':
+                        if ($permissions['superadmin']['read']
+                            || $permissions['participantpanel']['update']
+                            || $permissions['participantpanel']['editSharedParticipants']
+                            || !$permissions['participantpanel']['sharedParticipantExists']
+                        ) {
+                            array_push($checkedActions, $aAction);
+                        }
+                        break;
+                    case 'export':
+                        if ($permissions['superadmin']['read'] || $permissions['participantpanel']['export'] || !$permissions['participantpanel']['sharedParticipantExists']) {
+                            array_push($checkedActions, $aAction);
+                        }
+                        break;
+                    case 'share':
+                        if ($permissions['superadmin']['read'] || $permissions['participantpanel']['update'] || !$permissions['participantpanel']['sharedParticipantExists']) {
+                            array_push($checkedActions, $aAction);
+                        }
+                        break;
+                    case 'add-to-survey':
+                        array_push($checkedActions, $aAction);
+                        break;
+                    default:
+                }
+            } elseif (isset($aAction['type']) && isset(end($checkedActions)['action'])) {
+                if ($aAction['type'] === 'separator' && end($checkedActions)['action'] === 'delete') {
+                    array_push($checkedActions, $aAction);
+                }
+            }
+        }
+        return $checkedActions;
     }
 }

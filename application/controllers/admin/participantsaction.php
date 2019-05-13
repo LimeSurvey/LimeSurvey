@@ -55,6 +55,7 @@ class participantsaction extends Survey_Common_Action
         }
 
         Yii::import('application.helpers.admin.ajax_helper', true);
+        Yii::import('application.helpers.admin.permission_helper', true);
 
         parent::runWithParams($params);
     }
@@ -348,7 +349,29 @@ $url .= "_view"; });
         Yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
-        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array('participantOwnerUid' => $participantParam['owner_uid'] ? $participantParam['owner_uid'] : ''), true, false);
+        // check global and custom permissions and pass them to $aData
+        $permissions = permissionsAsArray(
+            [
+                'superadmin' => ['read'],
+                'templates' => ['read'],
+                'labelsets' => ['read'],
+                'users' => ['read'],
+                'usergroups' => ['read'],
+                'participantpanel' => ['read', 'create', 'update', 'delete', 'export', 'import'],
+                'settings' => ['read']
+            ],
+            [
+                'participantpanel' => [
+                    'editSharedParticipants' => empty(ParticipantShare::model()->findAllByAttributes(
+                        ['share_uid' => App()->user->id ? App()->user->id : ''],
+                        ['condition' => 'can_edit = \'0\' OR can_edit = \'\'',]
+                    )),
+                    'sharedParticipantExists' => ParticipantShare::model()->exists('share_uid = ' . App()->user->id ? App()->user->id : '')
+                ],
+
+            ]
+        );
+        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array('permissions' => $permissions), true, false);
 
         // Set page size
         if ($request->getPost('pageSizeParticipantView')) {
