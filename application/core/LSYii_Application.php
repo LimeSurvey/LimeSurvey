@@ -156,20 +156,18 @@ class LSYii_Application extends CWebApplication
         /* Check DB : let throw error if DB is broken issue #14875 */
         Yii::app()->db->getConnectionStatus();
         /* DB checked : Database config */
-        try {
-            $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
-            if (is_object($settingsTableExist)) {
-                $dbConfig = CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
-                $this->config = array_merge($this->config, $dbConfig);
-                /* According to updatedb_helper : no update can be done before settings_global->DBVersion > 183, then set it only if upper to 183 */
-                if(!empty($dbConfig['DBVersion']) && $dbConfig['DBVersion'] > 183) {
-                    $this->dbVersion = $dbConfig['DBVersion'];
-                }
-            }
-        } catch (Exception $exception) {
-            /* settings_global was created before 1.80 */
-             Yii::log("Table settings_global not found",'error');
-            throw new CHttpException(500, "Table settings_global not found");
+        $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
+        /* No table settings_global : not installable or updatable */
+        if(empty($settingsTableExist)) {
+            /* settings_global was created before 1.80 : not updatable version or not installed (but table exist) */
+            Yii::log("LimeSurvey table settings_global not found in database",'error');
+            throw new CDbException("LimeSurvey table settings_global not found in database");
+        }
+        $dbConfig = CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
+        $this->config = array_merge($this->config, $dbConfig);
+        /* According to updatedb_helper : no update can be done before settings_global->DBVersion > 183, then set it only if upper to 183 */
+        if(!empty($dbConfig['DBVersion']) && $dbConfig['DBVersion'] > 183) {
+            $this->dbVersion = $dbConfig['DBVersion'];
         }
         /* Add some specific config using exiting other configs */
         $this->setConfig('globalAssetsVersion', /* Or create a new var ? */
