@@ -121,7 +121,7 @@
                 <!-- Page -->
                 <div class="form-group">
                     <?php if($action=='create'): ?>
-                        <input name="Boxes[page]" id="Boxes_page" type="hidden" value="welcome">
+                        <input name="Box[page]" id="Boxes_page" type="hidden" value="welcome">
                     <?php else:?>
                         <?php echo $form->hiddenField($model,'page',array()); ?>
                     <?php endif;?>
