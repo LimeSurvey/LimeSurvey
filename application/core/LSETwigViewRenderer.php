@@ -488,11 +488,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
 
         // Add the template options
-        if ($oTemplate->oOptions) {
-            foreach ($oTemplate->oOptions as $key => $value) {
-                $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
-            }
-        }
+        $oTemplateConfigurationCurrent = TemplateConfiguration::getInstance($oTemplate->sTemplateName);
+        $aDatas["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])?(array)json_decode($oTemplateConfigurationCurrent['options']):$oTemplateConfigurationCurrent['options'];
 
         $aDatas = $this->fixDataCoherence($aDatas);
 
