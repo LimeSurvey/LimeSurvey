@@ -1669,7 +1669,7 @@ function GetNewSurveyID($iDesiredSurveyId)
 {
     Yii::app()->loadHelper('database');
     $aSurvey = Survey::model()->findByPk($iDesiredSurveyId);
-    if (!empty($aSurvey) || $iDesiredSurveyId == 0) {
+    if (!empty($aSurvey) || $iDesiredSurveyId <= 0) {
         // Get new random ids until one is found that is not used
         do {
             $iNewSID = randomChars(5, '123456789');
