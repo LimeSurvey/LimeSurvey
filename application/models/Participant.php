@@ -2101,10 +2101,9 @@ class Participant extends LSActiveRecord
     {
         $userId = Yii::app()->user->id;
 
-        $shared = ParticipantShare::model()->findByAttributes(array(
-            'participant_id' => $this->participant_id
-        ));
-
+        $shared = ParticipantShare::model()->findByAttributes(
+            ['participant_id' => $this->participant_id], 'share_uid = ' . $userId. ' AND can_edit = 1'
+        );
         $owner = $this->owner_uid == $userId;
 
         if (Permission::model()->hasGlobalPermission('superadmin') || (Permission::model()->hasGlobalPermission('participantpanel', 'update'))) {
@@ -2113,7 +2112,7 @@ class Participant extends LSActiveRecord
         } else if ($shared && $shared->share_uid == -1 && $shared->can_edit) {
             // -1 = shared with everyone
             return true;
-        } else if ($shared && $shared->share_uid == $userId && $shared->can_edit) {
+        } else if ($shared && $shared->exists('share_uid' == $userId) && $shared->can_edit) {
             // Shared with this particular user
             return true;
         } else if ($owner) {
@@ -2188,12 +2187,12 @@ class Participant extends LSActiveRecord
             if (isset($aAction['action'])) {
                 switch ($aAction['action']) {
                     case 'delete':
-                        if ($permissions['superadmin']['read'] || $permissions['participantpanel']['delete'] || !$permissions['participantpanel']['sharedParticipantExists']) {
+                        if ($permissions['participantpanel']['isOwner'] || $permissions['superadmin']['read'] || $permissions['participantpanel']['delete'] || !$permissions['participantpanel']['sharedParticipantExists']) {
                             array_push($checkedActions, $aAction);
                         }
                         break;
                     case 'batchEdit':
-                        if ($permissions['superadmin']['read']
+                        if ($permissions['participantpanel']['isOwner'] || $permissions['superadmin']['read']
                             || $permissions['participantpanel']['update']
                             || $permissions['participantpanel']['editSharedParticipants']
                             || !$permissions['participantpanel']['sharedParticipantExists']
@@ -2202,12 +2201,17 @@ class Participant extends LSActiveRecord
                         }
                         break;
                     case 'export':
-                        if ($permissions['superadmin']['read'] || $permissions['participantpanel']['export'] || !$permissions['participantpanel']['sharedParticipantExists']) {
+                        if ($permissions['participantpanel']['isOwner'] || $permissions['superadmin']['read'] || $permissions['participantpanel']['export'] || !$permissions['participantpanel']['sharedParticipantExists']) {
                             array_push($checkedActions, $aAction);
                         }
                         break;
                     case 'share':
-                        if ($permissions['superadmin']['read'] || $permissions['participantpanel']['update'] || !$permissions['participantpanel']['sharedParticipantExists']) {
+                        if ($permissions['participantpanel']['isOwner']
+                            || $permissions['superadmin']['read']
+                            || $permissions['participantpanel']['update']
+                            || !$permissions['participantpanel']['sharedParticipantExists']
+                            || $permissions['participantpanel']['editSharedParticipants']
+                        ) {
                             array_push($checkedActions, $aAction);
                         }
                         break;
