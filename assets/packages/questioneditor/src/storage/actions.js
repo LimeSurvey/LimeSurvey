@@ -21,10 +21,6 @@ export default {
         context.commit('unsetQuestionAnswerOptionsImmutable')
         context.commit('setQuestionAnswerOptionsImmutable', cloneDeep(newObjectBlock.scaledAnswerOptions))
 
-        context.commit('setCurrentQuestionAttributes', newObjectBlock.questionAttributes);
-        context.commit('unsetImmutableQuestionAttributes');
-        context.commit('setImmutableQuestionAttributes', cloneDeep(newObjectBlock.questionAttributes));
-
         context.commit('setCurrentQuestionGeneralSettings', newObjectBlock.generalSettings);
         context.commit('unsetImmutableQuestionGeneralSettings');
         context.commit('setImmutableQuestionGeneralSettings', cloneDeep(newObjectBlock.generalSettings));
@@ -164,7 +160,6 @@ export default {
             scaledSubquestions: context.state.currentQuestionSubquestions,
             scaledAnswerOptions: context.state.currentQuestionAnswerOptions,
             questionI10N: context.state.currentQuestionI10N,
-            questionAttributes: context.state.currentQuestionAttributes,
             generalSettings: context.state.currentQuestionGeneralSettings,
             advancedSettings: context.state.currentQuestionAdvancedSettings,
         }}, window.LS.data.csrfTokenData);

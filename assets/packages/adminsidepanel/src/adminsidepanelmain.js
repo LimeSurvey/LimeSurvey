@@ -37,9 +37,10 @@ Vue.mixin({
 });
 
 const Lsadminsidepanel = () => {
-    const surveyid = window.LS.parameters.$GET.surveyid 
-        || window.LS.parameters.keyValuePairs.surveyid 
-        || 'newSurvey';
+    let surveyid = 'newSurvey'; 
+    if(window.LS != undefined) {
+        surveyid = window.LS.parameters.$GET.surveyid || window.LS.parameters.keyValuePairs.surveyid;
+    }
 
     const AppState = getAppState(window.LS.globalUserId+'-'+surveyid);
     const panelNameSpace = {};
@@ -207,6 +208,7 @@ const Lsadminsidepanel = () => {
     return createPanelAppliance;
 };
 
-window.adminsidepanel =  window.adminsidepanel || Lsadminsidepanel();
-
-window.LS.adminCore.appendToLoad(window.adminsidepanel, 'ready');
+$(function(){
+    window.adminsidepanel =  window.adminsidepanel || Lsadminsidepanel();
+    window.LS.adminCore.appendToLoad(window.adminsidepanel, 'ready');
+});
