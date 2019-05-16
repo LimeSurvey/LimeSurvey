@@ -93,7 +93,7 @@
                     <!-- Delete -->
                     <?php if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y"):?>
                         <!-- has question -->
-                        <?php if (is_null($condarray)):?>
+                        <?php if (empty($condarray)):?>
                             <!-- can delete group and question -->
                             <button class="btn btn-default" data-toggle="modal" data-target="#confirmation-modal"
                                 data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $surveyid, "gid"=>$gid])); ?> })'
