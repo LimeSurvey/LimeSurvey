@@ -1815,12 +1815,9 @@ function do_ranking($ia)
     $ansresult = Yii::app()->db->createCommand($ansquery)->query()->readAll();
     $anscount  = count($ansresult);
     $max_subquestions = intval($aQuestionAttributes['max_subquestions']) > 0 ? intval($aQuestionAttributes['max_subquestions']) : $anscount;
+    $max_subquestions = min($max_subquestions,$anscount); // Can not be upper than current answers #14899
     if (trim($aQuestionAttributes["max_answers"]) != '') {
-        if ($max_subquestions < $anscount) {
-            $max_answers = "min(".trim($aQuestionAttributes["max_answers"]).",".$max_subquestions.")";
-        } else {
-            $max_answers = trim($aQuestionAttributes["max_answers"]);
-        }
+        $max_answers = "min(".trim($aQuestionAttributes["max_answers"]).",".$max_subquestions.")";
     } else {
         $max_answers = $max_subquestions;
     }

@@ -1775,6 +1775,7 @@ function createFieldMap($survey, $style = 'short', $force_refresh = false, $ques
             $answersCount = intval(Answer::model()->countByAttributes(array('qid' => $arow['qid'], 'language' => $sLanguage)));
             $maxDbAnswer = QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'", array(':qid' => $arow['qid']));
             $columnsCount = (!$maxDbAnswer || intval($maxDbAnswer->value) < 1) ? $answersCount : intval($maxDbAnswer->value);
+            $columnsCount = min($columnsCount,$answersCount); // Can not be upper than current answers #14899
             for ($i = 1; $i <= $columnsCount; $i++) {
                 $fieldname = "{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
                 if (isset($fieldmap[$fieldname])) {
