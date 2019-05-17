@@ -2727,6 +2727,44 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>412),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if($iOldDBVersion < 413) {
+            /* update data encryption token config for all activated surveys
+             * it has to be changed and committed before data encryption step
+             */
+            $oTransaction = $oDB->beginTransaction();
+            $aActiveSurveys = Survey::model()->findAll('active = :active', array(':active' => 'Y'));
+            foreach($aActiveSurveys as $survey){
+                if ($survey->hasTokensTable){
+                    $aOptions = json_decode_ls($survey->tokenencryptionoptions);
+                    $aOptions['enabled'] = 'Y';
+                    $oDB->createCommand()->update('{{surveys}}',array('tokenencryptionoptions'=>json_encode($aOptions)), 'sid=' . $survey->sid);
+                }
+            }
+            $oTransaction->commit();
+
+            /* data encryption step
+             * encrypt existing data for all activated surveys 
+             */
+            $oTransaction = $oDB->beginTransaction();
+            // participants
+            $aParticipants = Participant::model()->findAll();
+            foreach($aParticipants as $participant){
+                $participant->encryptSave();
+            }
+            // tokens
+            foreach($aActiveSurveys as $survey){
+                if ($survey->hasTokensTable){
+                    $oTokens = Token::model($survey->sid)->findAll();
+                    foreach($oTokens as $token){
+                        $token->encryptSave();
+                    }
+                }
+            }
+            
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>413),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
       
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);

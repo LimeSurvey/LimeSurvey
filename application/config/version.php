@@ -12,8 +12,8 @@
  */
 
 $config['versionnumber'] ='4.0.0-beta';
-$config['dbversionnumber'] = 412;
+$config['dbversionnumber'] = 413;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
-$config['assetsversionnumber'] = '30086';
+$config['assetsversionnumber'] = '30087';
 return $config;
