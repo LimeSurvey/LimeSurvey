@@ -79,7 +79,8 @@ class DateTimeForwardBackTest extends TestBaseClass
         // Check answer in database.
         $query = 'SELECT * FROM {{survey_' . self::$surveyId . '}}';
         $result = \Yii::app()->db->createCommand($query)->queryAll();
-        $this->assertEquals($result[0][$sgqa], '1970-01-01 10:00:00', 'Answer in database is 10:00');
+        $this->assertNotEmpty($result, 'Something got saved');
+        $this->assertEquals($result[0][$sgqa], '1970-01-01 10:00', 'Answer in database is 10:00');
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(

@@ -79,7 +79,10 @@ class TestHelper extends TestCase
      */
     public function getSurveyOptions($surveyId)
     {
-        $thissurvey = \getSurveyInfo($surveyId);
+        $force      = true;
+        $language   = '';
+        $thissurvey = \getSurveyInfo($surveyId, $language, $force);
+
         $radix = \getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['separator'];
         $LEMdebugLevel = 0;
