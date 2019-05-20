@@ -29,7 +29,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
                     // The class 'post-value' will make widget post input/select to controller url
                     '<select name="selectedoption" class="form-control post-value">
                     <option value="po" selected>' . gT("Delete only from the central panel") . '</option>
-                    <option value="pt">' . gT("Delete from the central panel and associated surveys") . '</option>
+                    <option value="ptt">' . gT("Delete from the central panel and associated surveys") . '</option>
                     <option value="ptta">' . gT("Delete from central panel, associated surveys and all associated responses") . '</option>
                 </select>',
                 'htmlFooterButtons' => array(
