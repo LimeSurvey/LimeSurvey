@@ -1912,6 +1912,7 @@ $url .= "_view"; });
         if (Yii::app()->request->getParam('ParticipantShare')) {
             $model->setAttributes(Yii::app()->request->getParam('ParticipantShare'), false);
         }
+        $model->bEncryption = true;
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),

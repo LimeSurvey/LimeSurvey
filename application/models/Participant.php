@@ -764,7 +764,6 @@ class Participant extends LSActiveRecord
                 }
             }
         }
-$test = 1;
         return $participants;
     }
 

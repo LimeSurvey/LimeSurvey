@@ -306,7 +306,7 @@ class ParticipantShare extends LSActiveRecord
         $criteria->compare('participant.email', $participantFilter['email'], true);
 
         $pageSize = Yii::app()->user->getState('pageSizeShareParticipantView', Yii::app()->params['defaultPageSize']);
-        return new CActiveDataProvider($this, array(
+        return new LSCActiveDataProvider($this, array(
             'criteria'=>$criteria,
             'sort' => $sort,
             'pagination' => array(

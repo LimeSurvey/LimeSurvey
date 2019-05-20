@@ -58,6 +58,13 @@ class LSCActiveDataProvider extends CActiveDataProvider {
                 if (!empty($row)){
                     $row->decrypt();
                 }
+
+                // decrypt all related models
+                foreach ($row->relations() as $key => $related){
+                    if ($row->hasRelated($key) && !is_null($row->$key)){
+                        $row->$key->decrypt();
+                    }
+                }
             }
         }
 
