@@ -404,6 +404,21 @@ return array(
         )
     ),
 
+    'usermanagement' => array(
+        'devBaseUrl' => 'assets/packages/usermanagement/',
+        'basePath' => 'core.usermanagement',
+        'position' =>CClientScript::POS_BEGIN,
+        'css' => array(
+            'css/usermanagement.css'
+        ),
+        'js' => array(
+            'js/usermanagement.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
+
     'printable' => array(
         'devBaseUrl' => 'assets/packages/printable/',
         'basePath' => 'core.printable',

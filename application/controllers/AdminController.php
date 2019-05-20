@@ -212,6 +212,7 @@ class AdminController extends LSYii_Controller
         'survey'           => 'surveyadmin',
         'surveypermission' => 'surveypermission',
         'user'             => 'useraction',
+        'usermanagement'   => 'UserManagement',
         'usergroups'       => 'usergroups',
         'themes'           => 'themes',
         'tokens'           => 'tokens',

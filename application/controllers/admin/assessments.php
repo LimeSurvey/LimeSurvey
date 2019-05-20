@@ -196,7 +196,7 @@ class Assessments extends Survey_Common_Action
             $action = 'assessmentedit';
             $aData['action'] = $action;
 
-            Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData]);
+            ('/admin/super/_renderJson', ['data' => $aData]);
         }
     }
 

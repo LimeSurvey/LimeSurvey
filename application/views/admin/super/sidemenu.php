@@ -68,7 +68,7 @@
                 "createQuestion" => gT("Add question")
             ]).'
         };
-    ', LSYii_ClientScript::POS_BEGIN);
+    ', LSYii_ClientScript::POS_HEAD);
 ?>
 
 <div class="simpleWrapper ls-flex" id="vue-sidebar-container"

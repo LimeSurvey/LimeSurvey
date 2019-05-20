@@ -370,7 +370,7 @@ $url .= "_view"; });
                         ['share_uid' =>  $iUserId],
                         ['condition' => 'can_edit = \'0\' OR can_edit = \'\'',]
                     )),
-                    'sharedParticipantExists' => ParticipantShare::model()->exists('share_uid = ' . $iUserId),
+                    'sharedParticipantExists' => ParticipantShare::model()->exists('share_uid=:share_uid', [':share_uid' => App()->user->id]),
                     'isOwner' => isset($participantParam['owner_uid']) && ($participantParam['owner_uid'] === $iUserId) ? true : false
                 ],
 
