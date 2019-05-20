@@ -4547,6 +4547,11 @@ function decodeTokenAttributes($oTokenAttributeData)
     if ($aReturnData === false || $aReturnData === null) {
         return array();
     }
+
+    // unset core attributes: firstname, lastname, email
+    unset($aReturnData['firstname']);
+    unset($aReturnData['lastname']);
+    unset($aReturnData['email']);
     return $aReturnData;
 }
 

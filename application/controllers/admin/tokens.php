@@ -1085,6 +1085,7 @@ class tokens extends Survey_Common_Action
         $aAttributes = getAttributeFieldNames($iSurveyId);
         $aData['tokenfields'] = array_merge(array_keys($aMandatoryAttributes['columns']), $aAttributes);
                 
+        $aMandatoryList = array();
         $aAttributesDesc = $oSurvey->decodedAttributedescriptions;
         foreach($aMandatoryAttributes['columns'] as $key => $attribute){
             $aAttributesDesc[$key] = array(
@@ -1095,9 +1096,10 @@ class tokens extends Survey_Common_Action
                 'description' => gT('Mandatory attribute'),
                 'cpdbmap'=>''
             );
+            $aMandatoryList[] = $key;
         }
         $aData['tokenfielddata'] = $aAttributesDesc;
-        // Prepare token fiel list for dropDownList
+        // Prepare token field list for dropDownList
         $tokenfieldlist = array();
         foreach ($aData['tokenfields'] as $tokenfield) {
             if (isset($aData['tokenfielddata'][$tokenfield]) && array_key_exists('description', $aData['tokenfielddata'][$tokenfield])) {
@@ -1106,7 +1108,9 @@ class tokens extends Survey_Common_Action
                 $description = "";
             }
             $description = sprintf(gT("Attribute %s (%s)"), str_replace("attribute_", "", $tokenfield), $description);
-            $tokenfieldlist[] = array("id"=>$tokenfield, "description"=>$description);
+            if (!in_array($tokenfield, $aMandatoryList)){
+                $tokenfieldlist[] = array("id"=>$tokenfield, "description"=>$description); 
+            }
         }
         $aData['tokenfieldlist'] = $tokenfieldlist;
         $languages = array_merge((array) Survey::model()->findByPk($iSurveyId)->language, Survey::model()->findByPk($iSurveyId)->additionalLanguages);
@@ -1266,7 +1270,11 @@ class tokens extends Survey_Common_Action
         }
         // custom attributes
         foreach ($tokenattributefieldnames as $fieldname) {
-            $aOptionsBeforeChange[$fieldname]['encrypted'] = json_decode($oSurvey->attributedescriptions)->$fieldname->encrypted;
+            if (isset(json_decode($oSurvey->attributedescriptions)->$fieldname->encrypted)){
+                $aOptionsBeforeChange[$fieldname]['encrypted'] = json_decode($oSurvey->attributedescriptions)->$fieldname->encrypted;
+            } else {
+                $aOptionsBeforeChange[$fieldname]['encrypted'] = 'N';
+            }
             $fieldcontents[$fieldname] = array(
             'description' => strip_tags(Yii::app()->request->getPost('description_'.$fieldname)),
             'mandatory' => Yii::app()->request->getPost('mandatory_'.$fieldname) == '1' ? 'Y' : 'N',
@@ -2415,7 +2423,7 @@ class tokens extends Survey_Common_Action
         $aData['attrfieldnames'] = array();
         foreach ($aAdditionalAttributeFields as $sField=>$aAttrData) {
             if (in_array($sField, $aTokenFieldNames)) {
-                if ($aAttrData['description'] == '') {
+                if (array_key_exists('description', $aAttrData) && $aAttrData['description'] == '') {
                     $aAttrData['description'] = $sField;
                 }
                 $aData['attrfieldnames'][(string) $sField] = $aAttrData;
