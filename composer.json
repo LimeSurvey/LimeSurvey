@@ -39,6 +39,6 @@
         "squizlabs/php_codesniffer": "2.*",
         "phpmd/phpmd" : "@stable",
         "vimeo/psalm": "dev-master",
-        "phpunit/phpunit": "6.5.*"
+        "phpunit/phpunit": "7.5.*"
 	}
 }
