@@ -8,13 +8,19 @@
 ?>
 
 <!-- Configuration -->
-<?php if(Permission::model()->hasGlobalPermission('superadmin','read')
-            || Permission::model()->hasGlobalPermission('templates','read')
-            || Permission::model()->hasGlobalPermission('labelsets','read')
-            || Permission::model()->hasGlobalPermission('users','read')
-            || Permission::model()->hasGlobalPermission('usergroups','read')
-            || Permission::model()->hasGlobalPermission('participantpanel','read')
-            || Permission::model()->hasGlobalPermission('settings','read') ): ?>
+<?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')
+    || Permission::model()->hasGlobalPermission('templates', 'read')
+    || Permission::model()->hasGlobalPermission('labelsets', 'read')
+    || Permission::model()->hasGlobalPermission('users', 'read')
+    || Permission::model()->hasGlobalPermission('usergroups', 'read')
+    || Permission::model()->hasGlobalPermission('participantpanel', 'read')
+    || Permission::model()->hasGlobalPermission('participantpanel', 'create')
+    || Permission::model()->hasGlobalPermission('participantpanel', 'update')
+    || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
+    || ParticipantShare::model()->exists('share_uid = ' . App()->user->id ? App()->user->id : '')
+    || Permission::model()->hasGlobalPermission('settings', 'read')
+): ?>
+
 
 <li class="dropdown mega-dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -211,8 +217,12 @@
                     <?php endif;?>
 
                 <!-- Central participant database -->
-                <?php if(Permission::model()->hasGlobalPermission('participantpanel','read')): ?>
-
+                <?php if (Permission::model()->hasGlobalPermission('participantpanel', 'read')
+                    || Permission::model()->hasGlobalPermission('participantpanel', 'create')
+                    || Permission::model()->hasGlobalPermission('participantpanel', 'update')
+                    || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
+                    || ParticipantShare::model()->exists('share_uid = ' . App()->user->id ? App()->user->id : '')
+                ): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>">
                             <?php eT("Central participant database"); ?>
@@ -278,7 +288,7 @@
                         </a>
                     </li>
                 <?php endif;?>
-                    
+
                 <?php endif;?>
 
             </ul>

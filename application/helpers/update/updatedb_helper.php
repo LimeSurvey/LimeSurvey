@@ -3129,9 +3129,11 @@ function createSurveyMenuTable(CDbConnection $oDB)
     $oDB->createCommand()->createIndex('{{idx2_surveymenu}}', '{{surveymenu}}', 'title', false);
 
     $surveyMenuRowData = LsDefaultDataSets::getSurveyMenuData();
+    switchMSSQLIdentityInsert('surveymenu', true);
     foreach ($surveyMenuRowData as $surveyMenuRow) {
         $oDB->createCommand()->insert("{{surveymenu}}", $surveyMenuRow);
     }
+    switchMSSQLIdentityInsert('surveymenu', false);
 
     $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
         'id' =>  "pk",

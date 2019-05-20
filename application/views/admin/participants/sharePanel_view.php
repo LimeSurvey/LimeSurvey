@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
                         'itemsCssClass' => 'table table-striped items',
                         'htmlOptions' => array('class'=> 'table-responsive'),
                         'dataProvider' => $model->search(),
-                        'rowHtmlOptionsExpression' => '["data-participant_id" => $data->participant_id ]',
+                        'rowHtmlOptionsExpression' => '["data-participant_id" => $data->participant_id, "data-share_uid" => $data->share_uid]',
                         'columns' => $model->columns,
                         'filter'=>$model,
                         'ajaxType' => 'POST',

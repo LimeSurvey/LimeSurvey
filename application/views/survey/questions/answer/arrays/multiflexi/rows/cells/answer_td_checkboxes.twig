@@ -13,29 +13,21 @@
 
 <!-- answer_td_checkboxes -->
 <td class="answer_cell_{{ ld }} question-item answer-item {{ answertypeclass }}-item checkbox-item">
-    {# Value for expression manager javascript ; no need to submit #}
-    {{ C.Html.hiddenField("java"~myfname2,value,({
-        'id' : "answer"~myfname2,
+    
+    {{ C.Html.hiddenField("java"~myfname2, C.Html.encode( value ),({
+        'id' : "java"~myfname2,
         'disabled' : true,
-    }))
+        }))
     }}
-    {# Value submited by default, replaced by next if checked #}
-    {# EM use answerXXXX (previous input), no need updating the value of this one, just submit '' if other one is unchecked #}
-    {# See http://www.yiiframework.com/doc/api/1.1/CHtml#checkBox-detail width uncheckValue for replacing ? #}
-    {# Add prefix 'answer' to make question relevance work in LEMval(). #}
-    {{ C.Html.hiddenField(myfname2,"",({
-        'class' : "hidden",
-        'id' : 'hidden_'~myfname2
-    }))
-    }}
-    {{ C.Html.checkBox(myfname2,value,({
-        'class' : extraclass,
-        'id' : "cbox_"~myfname2,
-        'value' : "1"
-    }))
-    }}
-    <label for="cbox_{{ myfname2 }}" class="ls-label-xs-visibility">
-        {{ processString(dataTitle) }}
-    </label>
+    
+    <input
+        type="checkbox"
+        name="{{ myfname2 }}"
+        id="answer{{ myfname2 }}"
+        class="{{ extraclass }}",
+        {{ setmyvalue }}
+        value="1"
+    />
+    <label for="answer{{ myfname2 }}" class="checkbox-label control-label"></label>
 </td>
 <!-- end of answer_td_checkboxes -->

@@ -2191,16 +2191,14 @@
                     $max_subquestions=intval($qattr['max_subquestions']);
                     // We don't have another answer count in EM ?
                     $answerCount=Answer::model()->count("qid=:qid",array(":qid"=>$questionNum));
-                    if($max_subquestions < $answerCount)
+                    $max_subquestions = min($max_subquestions,$answerCount); // Can not be upper than current answers #14899
+                    if($max_answers!='')
                     {
-                        if($max_answers!='')
-                        {
-                            $max_answers='min('.$max_answers.','.$max_subquestions.')';
-                        }
-                        else
-                        {
-                            $max_answers=intval($qattr['max_subquestions']);
-                        }
+                        $max_answers='min('.$max_answers.','.$max_subquestions.')';
+                    }
+                    else
+                    {
+                        $max_answers= $max_subquestions;
                     }
                 }
                 // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
