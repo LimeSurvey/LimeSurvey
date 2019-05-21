@@ -2607,7 +2607,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             alterColumn('{{participants}}', 'firstname', "text", false);
             alterColumn('{{participants}}', 'lastname', "text", false);
             $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'encrypted', "string(5) NOT NULL");
-            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'core_attribute', "string(5)");
+            $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'core_attribute', "string(5) NOT NULL");
             $aCoreAttributes = array('firstname', 'lastname', 'email');
             foreach($aCoreAttributes as $attribute){
                 $oDB->createCommand()->insert('{{participant_attribute_names}}', array(
