@@ -1,6 +1,6 @@
 
 <div class="modal-header">
-    <?=gT('Created random users?')?>
+    <h3><?=gT('Created random users')?></h3>
 </div>
 <div class="modal-body">
     <div class="container-center">
@@ -43,8 +43,12 @@
             </ul>
         </div>
         <div class="row ls-space margin top-35">
-            <button id="exportUsers" data-users='<?=json_encode($randomUsers)?>' class="btn btn-default col-sm-3 col-xs-5 col-xs-offset-1"><?=gT('Export')?></button>
-            <button id="exitForm" class="btn btn-default col-sm-3 col-xs-5 col-xs-offset-1"><?=gT('Close')?></button>
+            <button id="exportUsers" data-users='<?=json_encode($randomUsers)?>' class="btn btn-default col-sm-3 col-xs-5 col-xs-offset-1">
+            <i class="fa fa-file-excel-o"></i>&nbsp;<?=gT('Export as CSV')?>
+            </button>
+            <button id="exitForm" class="btn btn-default col-sm-3 col-xs-5 col-xs-offset-1">
+            <i class="fa fa-times"></i>&nbsp;<?=gT('Close')?>
+            </button>
         </div>
     </div>
 </div>

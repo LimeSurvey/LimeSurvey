@@ -34,7 +34,7 @@ var UserManagement = function(){
     
     var triggerModalClose = function(){
         $('#UserManagement-action-modal').find('.modal-content').empty();
-        $.fn.yiiGridView.update('advancedUserPanel--identity-gridPanel',{});
+        $.fn.yiiGridView.update('usermanagement--identity-gridPanel',{});
         $('#UserManagement-action-modal').modal('hide');
     };
 
@@ -53,7 +53,7 @@ var UserManagement = function(){
     };
 
     var wireForm = function(){
-        $('#UserManagement--modalform').on('submit.SMKMODAL', function(e){
+        $('#UserManagement--modalform').on('submit.USERMANAGERMODAL', function(e){
             console.log(e);
             e.preventDefault();
             startSubmit();
@@ -66,12 +66,12 @@ var UserManagement = function(){
                 success: function(result){
                     stopSubmit();
                     if(result.success == true){
-                        $('#UserManagement--modalform').off('submit.SMKMODAL');
+                        $('#UserManagement--modalform').off('submit.USERMANAGERMODAL');
                         $('#UserManagement-action-modal').find('.modal-content').html(result.html);
                         wireExportDummyUser();
-                        $('#exitForm').on('click.SMKMODAL', function(e){
+                        $('#exitForm').on('click.USERMANAGERMODAL', function(e){
                             e.preventDefault();
-                            $('#exitForm').off('click.SMKMODAL');
+                            $('#exitForm').off('click.USERMANAGERMODAL');
                             triggerModalClose();
                         });
                         return;
@@ -111,28 +111,28 @@ var UserManagement = function(){
     };
 
     var wirePermissions = function(){
-        $('#smk--selector--permissionclass').on('change', function(){
+        $('#usermanagement--selector--permissionclass').on('change', function(){
             if($(this).val() == 'classmanager') {
-                $('#smk--selector--surveypermission').css('display','block');
-                $("#smk--selector--entity-ids").select2();
+                $('#usermanagement--selector--surveypermission').css('display','block');
+                $("#usermanagement--selector--entity-ids").select2();
             } else {
-                $('#smk--selector--surveypermission').css('display','none');
+                $('#usermanagement--selector--surveypermission').css('display','none');
             }
         });
     };
 
     var wireMassPermissions = function(){
-        $('#smk--selector--permissionclass-mass').on('change', function(){
+        $('#usermanagement--selector--permissionclass-mass').on('change', function(){
             if($(this).val() == 'classmanager') {
-                $('#smk--selector--surveypermission-mass').css('display','block');
-                $("#smk--selector--entity-ids-mass").select2();
+                $('#usermanagement--selector--surveypermission-mass').css('display','block');
+                $("#usermanagement--selector--entity-ids-mass").select2();
             } else {
-                $('#smk--selector--surveypermission-mass').css('display','none');
+                $('#usermanagement--selector--surveypermission-mass').css('display','none');
             }
         });
     };
     
-    var wirePasswordChange = function(){
+    var wirePasswordOptions = function(){
         $('#utility_change_password').on('change', function(){
             if($(this).prop('checked')) {
                 $('#utility_change_password_container').removeClass('hidden');
@@ -143,15 +143,25 @@ var UserManagement = function(){
                 $('#User_Form_password').prop('disabled', true);
                 $('#password_repeat').prop('disabled', true);
             }
-            
-
-        })
+        });
+        $('#utility_set_password').find('input[type=radio]').on('change', function(){
+            console.log('#utility_set_password changed');
+            if($(this).attr('value') == '1') {
+                $('#utility_change_password_container').removeClass('hidden');
+                $('#User_Form_password').prop('disabled', false);
+                $('#password_repeat').prop('disabled', false);
+            } else {
+                $('#utility_change_password_container').addClass('hidden');
+                $('#User_Form_password').prop('disabled', true);
+                $('#password_repeat').prop('disabled', true);
+            }
+        });
     };
 
     var applyModalHtml = function(html) {
         $('#UserManagement-action-modal').find('.modal-content').html(html);
         wireForm();
-        wirePasswordChange();
+        wirePasswordOptions();
         wirePermissions();
     }
 
@@ -179,7 +189,7 @@ var UserManagement = function(){
 
     var bindModals = function(){
         $('#UserManagement-action-modal').on('hide.bs.modal', function(){
-            $.fn.yiiGridView.update('advancedUserPanel--identity-gridPanel',{});
+            $.fn.yiiGridView.update('usermanagement--identity-gridPanel',{});
         });
 
         $('#massive-actions-modal-batchPermissions-1').on('shown.bs.modal', function(){

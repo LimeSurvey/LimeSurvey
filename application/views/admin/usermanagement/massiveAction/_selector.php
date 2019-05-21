@@ -27,6 +27,20 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'sModalTitle'   => gT('Delete user'),
             'htmlModalBody' => gT('Are you sure you want to delete the selected user?'),
         ),
+        // ResendLoginData
+        array(
+            'type'        => 'action',
+            'action'      => 'resendlogindata',
+            'url'         =>  App()->createUrl('/admin/usermanagement/sa/batchSendAndResetLoginData'),
+            'iconClasses' => 'text-success fa fa-refresh',
+            'text'        =>  gT('Resend login data'),
+            'grid-reload' => 'yes',
+            'actionType'    => 'modal',
+            'modalType'     => 'yes-no',
+            'keepopen'      => 'yes',
+            'sModalTitle'   => gT('Resend login data user'),
+            'htmlModalBody' => gT('Are you sure you want to reset and resend selected users login data?'),
+        ),
         // Mass Edit
         array(
             'type' => 'action',
@@ -42,9 +56,7 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'yes'           => gT('Apply'),
             'no'            => gT('Cancel'),
             'sModalTitle'   => gT('Batch change permissions'),
-            'htmlModalBody' => App()->getController()->renderPartial('/admin/usermanager/massiveAction/_updatepermissions', [], true)
+            'htmlModalBody' => App()->getController()->renderPartial('/admin/usermanagement/massiveAction/_updatepermissions', [], true)
         ),
     )
 ));
-
-?>

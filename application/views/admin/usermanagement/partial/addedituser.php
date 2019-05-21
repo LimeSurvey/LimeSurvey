@@ -5,13 +5,14 @@
 <div class="modal-body">
     <div class="container-center">
         <?php $form = $this->beginWidget('TbActiveForm', array(
-            'id' => 'SMKUserManager--modalform',
-            'action' => App()->createUrl('plugins/direct', ['plugin' => 'SMKUserManager', 'function' => 'applyedit']),
+            'id' => 'UserManagement--modalform',
+            'action' => App()->createUrl('admin/usermanagement', ['sa' => 'applyedit']),
             'enableAjaxValidation'=>false,
             'enableClientValidation'=>false,
         ));?>
 
-        <div class="row ls-space margin top-5 bottom-5 hidden" id="SMKUserManager--errors">
+        <input type="hidden" value="<?=$oUser->uid?>" name="userid" />
+        <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
 
         </div>
         <div class="row ls-space margin top-5">
@@ -37,12 +38,28 @@
             <?php echo $form->error($oUser,'email'); ?>
         </div>
         <?php if(!$oUser->isNewRecord) { ?> 
-        <div class="row ls-space margin top-5">
-            <label for="utility_change_password"><?=gT("Change password?")?></label>
-            <input type="checkbox" id="utility_change_password">
+        <div class="row ls-space margin top-10">
+            <div class="col-xs-12">
+                <input type="checkbox" id="utility_change_password">
+                <label for="utility_change_password"><?=gT("Change password?")?></label>
+            </div>
         </div>
-        <?php } ?>
-        <div class="row ls-space margin top-5 <?=($oUser->isNewRecord ? '"' : 'hidden" id="utility_change_password_container"')?>>
+        <?php } else { ?>
+            <div class="row ls-space margin top-10" id="utility_set_password">
+                <div class="btn-group col-xs-12" data-toggle="buttons">
+                    <label for="utility_set_password_no" class="btn btn-primary col-xs-6 active">
+                        <input type="radio" id="utility_set_password_no" checked="checked" name="preset_password" value="0">
+                        <?=gT("Send password via email?")?>
+                    </label>
+                    <label for="utility_set_password_yes" class="btn btn-primary col-xs-6">
+                        <input type="radio" id="utility_set_password_yes" name="preset_password" value="1">
+                        <?=gT("Set password in this mask?")?>
+                    </label>
+                </div>
+            </div>
+        <?php } ?>        
+
+        <div class="row ls-space margin top-5 hidden" id="utility_change_password_container">
             <div class="row ls-space margin top-5">
                 <?php echo $form->labelEx($oUser,'password', ['for'=>'User_Form_password']); ?>
                 <?php echo $form->passwordField(
@@ -59,11 +76,18 @@
                 <label for="password_repeat" class="required" required><?=gT("Password safety")?> <span class="required">*</span></label>            
                 <input name="password_repeat" placeholder='********' <?=($oUser->isNewRecord ? '' :'disabled="disabled"')?> id="password_repeat" class="form-control" type="password">
             </div>
+            <?php if($oUser->isNewRecord) { ?> 
+            <div class="row ls-space margin top-5">
+                <label class="control-label">
+                    <?=gT('Random password (suggestion):')?>
+                </label> 
+                <input type="text" class="form-control" readonly name="random_example_password" value="<?=htmlspecialchars($randomPassword)?>"/>
+            </div>
+            <?php } ?>
         </div>
         
-        <input type="hidden" value="<?=$oUser->uid?>" name="userid" />
-        <div class="row ls-space margin top-5">
-            <hr class="ls-space margin top-5 bottom-10"/>
+        <div class="row ls-space margin top-15">
+            <hr />
         </div>
         <div class="row ls-space margin top-5">
             <button class="btn btn-success col-sm-3 col-xs-5 col-xs-offset-1" id="submitForm"><?=gT('Save')?></button>

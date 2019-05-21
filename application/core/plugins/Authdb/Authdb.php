@@ -33,15 +33,14 @@ class Authdb extends AuthPluginBase
      */
     public function createNewUser()
     {
-        // Do nothing if the user to be added is not DB type
-        if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB') {
-            return;
-        }
-
         $oEvent = $this->getEvent();
-
         $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
+
         if(empty($preCollectedUserArray)) {
+            // Do nothing if the user to be added is not DB type
+            if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB') {
+                return;
+            }
             $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
             $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
             $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);

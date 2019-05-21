@@ -489,7 +489,7 @@ class User extends LSActiveRecord
         $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/userpermissions', ['userid' => $this->uid]);
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/usertemplatepermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership', ['userid' => $this->uid]);
-        $deleteUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/delete');
+        $deleteUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/deleteconfirm');
         
 
         $userDetail = ""
@@ -523,7 +523,7 @@ class User extends LSActiveRecord
                 data-userid='".$this->uid."' 
                 data-user='".$this->full_name."' 
                 data-action='deluser' 
-                data-onclick='LS.UserManagement.triggerRunAction(\"#UserManagement--delete-".$this->uid."\")' 
+                data-onclick='(LS.UserManagement.triggerRunAction(\"#UserManagement--delete-".$this->uid."\"))()' 
                 data-message='".gt('Do you want to delete this user?')."'>
                     <i class='fa fa-trash text-danger'></i>
               </button>";
