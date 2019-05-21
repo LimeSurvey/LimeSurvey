@@ -55,7 +55,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
     $oDB                        = Yii::app()->getDb();
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
     Yii::app()->setConfig('Updating', true);
-
+    $options = "";
+    if(in_array(Yii::app()->db->driverName,['mysql','mysqli'])) {
+        $options = 'ROW_FORMAT=DYNAMIC'; // Same than create-database
+    }
     try {
 
         // Version 1.80 had database version 132
@@ -2395,57 +2398,108 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction = $oDB->beginTransaction();
             
             // Question table 
+            /* l10ns question table */
+            if(Yii::app()->db->schema->getTable('{{question_l10ns}}')){
+                $oDB->createCommand()->dropTable('{{question_l10ns}}');
+            }
             $oDB->createCommand()->createTable('{{question_l10ns}}', array(
                 'id' =>  "pk",
                 'qid' =>  "integer NOT NULL",
                 'question' =>  "text NOT NULL",
                 'help' =>  "text",
                 'language' =>  "string(20) NOT NULL"
-            ));        
+            ), $options);
             $oDB->createCommand()->createIndex('{{idx1_question_l10ns}}', '{{question_l10ns}}', ['qid', 'language'], true);
             $oDB->createCommand("INSERT INTO {{question_l10ns}} (qid, question, help, language) select qid, question, help, language from {{questions}}")->execute();
-            $dataReader = $oDB->createCommand("SELECT q1.language, q1.qid FROM {{questions}} q1 INNER JOIN {{questions}} q2 ON q1.qid = q2.qid WHERE q1.language < q2.language")->query();
-            while (($row = $dataReader->read()) !== false) {
-                $oDB->createCommand("delete from  {{questions}} where qid={$row['qid']} and language='{$row['language']}'")->execute();
+            /* questions by rename/insert */
+            if(Yii::app()->db->schema->getTable('{{questions_update400}}')){
+                $oDB->createCommand()->dropTable('{{questions_update400}}');
             }
-            modifyPrimaryKey('questions', array('qid'));
-            dropColumn('{{questions}}', 'question');
-            dropColumn('{{questions}}', 'help');
-            dropColumn('{{questions}}', 'language');
+            $oDB->createCommand()->renameTable('{{questions}}', '{{questions_update400}}');
+            $oDB->createCommand()->createTable('{{questions}}', array(
+                'qid' =>  "pk",
+                'parent_qid' =>  "integer NOT NULL default '0'",
+                'sid' =>  "integer NOT NULL default '0'",
+                'gid' =>  "integer NOT NULL default '0'",
+                'type' =>  "string(30) NOT NULL default 'T'",
+                'title' =>  "string(20) NOT NULL default ''",
+                'preg' =>  "text",
+                'other' =>  "string(1) NOT NULL default 'N'",
+                'mandatory' =>  "string(1) NULL",
+                //'encrypted' =>  "string(1) NULL default 'N'", DB version 406
+                'question_order' =>  "integer NOT NULL",
+                'scale_id' =>  "integer NOT NULL default '0'",
+                'same_default' =>  "integer NOT NULL default '0'",
+                'relevance' =>  "text",
+                'modulename' =>  "string(255) NULL"
+            ), $options);
+            switchMSSQLIdentityInsert('questions', true); // Untested
+            $oDB->createCommand("INSERT INTO {{questions}}
+                (qid, parent_qid, sid, gid, type, title, preg, other, mandatory, question_order, scale_id, same_default, relevance, modulename)
+                SELECT qid, parent_qid, {{questions_update400}}.sid, gid, type, title, COALESCE(preg,''), other, COALESCE(mandatory,''), question_order, scale_id, same_default, COALESCE(relevance,''), COALESCE(modulename,'')
+                FROM {{questions_update400}}
+                    INNER JOIN {{surveys}} ON {{questions_update400}}.sid = {{surveys}}.sid AND {{questions_update400}}.language = {{surveys}}.language
+                ")->execute();
+            switchMSSQLIdentityInsert('questions', false); // Untested
+            $oDB->createCommand()->dropTable('{{questions_update400}}'); // Drop the table before create index for pgsql
+            $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
+            $oDB->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
+            $oDB->createCommand()->createIndex('{{idx3_questions}}', '{{questions}}', 'type', false);
+            $oDB->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
+            $oDB->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
 
             // Groups table
+            if(Yii::app()->db->schema->getTable('{{group_l10ns}}')){
+                $oDB->createCommand()->dropTable('{{group_l10ns}}');
+            }
             $oDB->createCommand()->createTable('{{group_l10ns}}', array(
                 'id' =>  "pk",
                 'gid' =>  "integer NOT NULL",
                 'group_name' =>  "text NOT NULL",
                 'description' =>  "text",
                 'language' =>  "string(20) NOT NULL"
-            ));        
+            ), $options);
             $oDB->createCommand()->createIndex('{{idx1_group_l10ns}}', '{{group_l10ns}}', ['gid', 'language'], true);
             $oDB->createCommand("INSERT INTO {{group_l10ns}} (gid, group_name, description, language) select gid, group_name, description, language from {{groups}}")->execute();
-            $dataReader = $oDB->createCommand("select g1.language,g1.gid FROM {{groups}} g1 INNER JOIN {{groups}} g2 ON g1.gid = g2.gid and g1.language<g2.language")->query();
-            while (($row = $dataReader->read()) !== false) {
-                $oDB->createCommand("delete from  {{groups}} where gid={$row['gid']} and language='{$row['language']}'")->execute();
+            if(Yii::app()->db->schema->getTable('{{groups_update400}}')){
+                $oDB->createCommand()->dropTable('{{groups_update400}}');
             }
-            modifyPrimaryKey('groups', array('gid'));
-            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('idx2_groups','{{groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('idx3_groups','{{groups}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            dropColumn('{{groups}}', 'group_name');
-            dropColumn('{{groups}}', 'description');
-            dropColumn('{{groups}}', 'language');
+            $oDB->createCommand()->renameTable('{{groups}}', '{{groups_update400}}');
+            $oDB->createCommand()->createTable('{{groups}}', array(
+                'gid' =>  "pk",
+                'sid' =>  "integer NOT NULL default '0'",
+                'group_order' =>  "integer NOT NULL default '0'",
+                'randomization_group' =>  "string(20) NOT NULL default ''",
+                'grelevance' =>  "text NULL"
+            ), $options);
+            switchMSSQLIdentityInsert('groups', true); // Untested
+            $oDB->createCommand("INSERT INTO {{groups}}
+                (gid, sid, group_order, randomization_group, grelevance)
+                SELECT gid, {{groups_update400}}.sid, group_order, randomization_group, COALESCE(grelevance,'')
+                FROM {{groups_update400}}
+                    INNER JOIN {{surveys}} ON {{groups_update400}}.sid = {{surveys}}.sid AND {{groups_update400}}.language = {{surveys}}.language
+                ")->execute();
+            switchMSSQLIdentityInsert('groups', false); // Untested
+            $oDB->createCommand()->dropTable('{{groups_update400}}'); // Drop the table before create index for pgsql
+            $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
 
             // Answers table
-            // Answers now have a proper answer ID - wohoo!
+            if(Yii::app()->db->schema->getTable('{{answer_l10ns}}')){
+                $oDB->createCommand()->dropTable('{{answer_l10ns}}');
+            }
             $oDB->createCommand()->createTable('{{answer_l10ns}}', array(
                 'id' =>  "pk",
                 'aid' =>  "integer NOT NULL",
                 'answer' =>  "text NOT NULL",
                 'language' =>  "string(20) NOT NULL"
-            ));        
+            ), $options);
             $oDB->createCommand()->createIndex('{{idx1_answer_l10ns}}', '{{answer_l10ns}}', ['aid', 'language'], true);
-            
-            $oDB->createCommand()->renameTable('{{answers}}', 'answertemp');
-            $oDB->createCommand()->createIndex('answer_idx_10', 'answertemp', ['qid', 'code', 'scale_id']);
+            /* Renaming old without pk answers */
+            if(Yii::app()->db->schema->getTable('{{answers_update400}}')){
+                $oDB->createCommand()->dropTable('{{answers_update400}}');
+            }
+            $oDB->createCommand()->renameTable('{{answers}}', '{{answers_update400}}');
+            /* Create new answers with pk and copy answers_update400 Grouping by unique part */
             $oDB->createCommand()->createTable('{{answers}}',[
                 'aid' =>  "pk",
                 'qid' => 'integer NOT NULL',
@@ -2453,69 +2507,61 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'sortorder' => 'integer NOT NULL',
                 'assessment_value' => 'integer NOT NULL DEFAULT 0',
                 'scale_id' => 'integer NOT NULL DEFAULT 0'
-            ]);
-            $iCounter1 = 0;
-            $iPrevQid = 0;
-            $sPrevCode = '';
-            $iPrevScaleId = 0;
-            $dataReader = $oDB->createCommand("SELECT * FROM answertemp order by qid, code, scale_id")->query();
-            while (($row = $dataReader->read()) !== false) {
-                if ($iPrevQid != $row['qid'] || $sPrevCode != $row['code'] || $iPrevScaleId != $row['scale_id']){
-                    $iCounter1++;
-                    switchMSSQLIdentityInsert('answers', true);
-                    $oDB->createCommand()->insert('{{answers}}', array('aid' => $iCounter1, 'qid' => $row['qid'], 'code' => $row['code'], 'scale_id' => $row['scale_id'], 'sortorder' => $row['sortorder'], 'assessment_value' => $row['assessment_value']));
-                    switchMSSQLIdentityInsert('answers', false);
-                }
+            ], $options);
+            $oDB->createCommand()->createIndex('answer_update400_idx_10', '{{answers_update400}}', ['qid', 'code', 'scale_id']);
+            /* No pk in insert */
+            $oDB->createCommand("INSERT INTO {{answers}}
+                (qid, code, sortorder, assessment_value, scale_id)
+                SELECT {{answers_update400}}.qid, {{answers_update400}}.code, {{answers_update400}}.sortorder, {{answers_update400}}.assessment_value, {{answers_update400}}.scale_id
+                FROM {{answers_update400}}
+                    INNER JOIN {{questions}} ON {{answers_update400}}.qid = {{questions}}.qid
+                    INNER JOIN {{surveys}} ON {{questions}}.sid = {{surveys}}.sid AND {{surveys}}.language = {{answers_update400}}.language
+                ")->execute();
+            /* no pk in insert, get aid by INNER join */
+            $oDB->createCommand("INSERT INTO {{answer_l10ns}} (aid, answer, language) SELECT {{answers}}.aid, {{answers_update400}}.answer, {{answers_update400}}.language
+                    FROM {{answers_update400}}
+                    INNER JOIN {{answers}}
+                    ON {{answers_update400}}.qid = {{answers}}.qid AND {{answers_update400}}.code = {{answers}}.code AND {{answers_update400}}.scale_id = {{answers}}.scale_id");
 
-                $oDB->createCommand()->insert('{{answer_l10ns}}', array('aid' => $iCounter1, 'language' => $row['language'], 'answer' => $row['answer']));
+            $oDB->createCommand()->dropTable('{{answers_update400}}');
+            $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
+            $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
 
-                $iPrevQid = $row['qid'];
-                $sPrevCode = $row['code'];
-                $iPrevScaleId = $row['scale_id'];
-            }
-            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('answer_idx_10','{{answertemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            $oDB->createCommand()->dropTable('answertemp');
-            $oDB->createCommand()->createIndex('{{answer_idx_10}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
-            
             // Labels table
-            // label_l10ns
+            if(Yii::app()->db->schema->getTable('{{label_l10ns}}')){
+                $oDB->createCommand()->dropTable('{{label_l10ns}}');
+            }
             $oDB->createCommand()->createTable('{{label_l10ns}}', array(
                 'id' =>  "pk",
                 'label_id' =>  "integer NOT NULL",
                 'title' =>  "text",
                 'language' =>  "string(20) NOT NULL DEFAULT 'en'"
-            ));  
+            ), $options);
             $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
-            
-            $oDB->createCommand()->renameTable('{{labels}}', 'labelstemp');
-            $oDB->createCommand()->createIndex('label_idx_10', 'labelstemp', ['lid', 'sortorder', 'language']);
+            $oDB->createCommand("INSERT INTO {{label_l10ns}}
+                (label_id, title, language)
+                SELECT {{labels}}.id, title, language
+                FROM {{labels}}
+                ")->execute();
+            if(Yii::app()->db->schema->getTable('{{labels_update400}}')){
+                $oDB->createCommand()->dropTable('{{labels_update400}}');
+            }
+            $oDB->createCommand()->renameTable('{{labels}}', '{{labels_update400}}');
             $oDB->createCommand()->createTable('{{labels}}',[
                 'id' =>  "pk",
                 'lid' => 'integer NOT NULL',
                 'code' => 'string(5) NOT NULL',
                 'sortorder' => 'integer NOT NULL',
                 'assessment_value' => 'integer NOT NULL DEFAULT 0'
-            ]);               
-        
-            $iCounter1 = 0;
-            $iPrevLid = 0;
-            $sPrevCode = '';
-            switchMSSQLIdentityInsert('labels', true);
-            $dataReader = $oDB->createCommand("SELECT * FROM labelstemp order by lid, sortorder, code, language")->query();
-            while (($row = $dataReader->read()) !== false) {
-                if ($iPrevLid != $row['lid'] || $sPrevCode != $row['code']){
-                    $iCounter1++;
-                    $oDB->createCommand()->insert('{{labels}}', array('id' => $iCounter1, 'lid' => $row['lid'], 'code' => $row['code'],'sortorder' => $row['sortorder'], 'assessment_value' => $row['assessment_value']));
-                }
-                $oDB->createCommand()->insert('{{label_l10ns}}', array('label_id' => $iCounter1, 'language' => $row['language'], 'title' => $row['title']));
-                
-                $iPrevLid = $row['lid'];
-                $sPrevCode = $row['code'];
-            }
-            switchMSSQLIdentityInsert('labels', false);
-            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('label_idx_10','{{labelstemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            $oDB->createCommand()->dropTable('labelstemp');
-            $oDB->createCommand()->createIndex('{{label_idx_10}}', '{{labels}}', ['lid', 'sortorder'], true);
+            ], $options);
+            switchMSSQLIdentityInsert('labels', true); // Untested
+            $oDB->createCommand("INSERT INTO {{labels}}
+                (id, lid, code, sortorder, assessment_value)
+                SELECT id, lid, code, sortorder, assessment_value
+                FROM {{labels_update400}} GROUP BY id
+                ")->execute();
+            switchMSSQLIdentityInsert('labels', false); // Untested
+            $oDB->createCommand()->dropTable('{{labels_update400}}');
 
             // Extend language field on labelsets
             alterColumn('{{labelsets}}', 'languages', "string(255)", false);
@@ -2529,7 +2575,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>400), "stg_name='DBVersion'");
 
             $oTransaction->commit();
-        }   
+        }
 
         /**
          * Add load_error and load_error_message to plugin system.
@@ -2627,47 +2673,38 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 407) {
             $oTransaction = $oDB->beginTransaction();
             // defaultvalues
+            if(Yii::app()->db->schema->getTable('{{defaultvalue_l10ns}}')){
+                $oDB->createCommand()->dropTable('{{defaultvalue_l10ns}}');
+            }
             $oDB->createCommand()->createTable('{{defaultvalue_l10ns}}', array(
                 'id' =>  "pk",
                 'dvid' =>  "integer NOT NULL default '0'",
                 'language' =>  "string(20) NOT NULL",
                 'defaultvalue' =>  "text",
-            ));  
+            ), $options);
             $oDB->createCommand()->createIndex('{{idx1_defaultvalue_l10ns}}', '{{defaultvalue_l10ns}}', ['dvid', 'language'], true);
-            
-            $oDB->createCommand()->renameTable('{{defaultvalues}}', 'defaultvaluestemp');
-            $oDB->createCommand()->createIndex('defaultvalues_idx_10', 'defaultvaluestemp', ['qid', 'scale_id', 'sqid', 'specialtype', 'language']);
+            if(Yii::app()->db->schema->getTable('{{defaultvalues_update407}}')){
+                $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
+            }
+            $oDB->createCommand()->renameTable('{{defaultvalues}}', '{{defaultvalues_update407}}');
+            $oDB->createCommand()->createIndex('defaultvalues_update407_idx_10', '{{defaultvalues_update407}}', ['qid', 'scale_id', 'sqid', 'specialtype', 'language']);
             $oDB->createCommand()->createTable('{{defaultvalues}}',[
                 'dvid' =>  "pk",
                 'qid' =>  "integer NOT NULL default '0'",
                 'scale_id' =>  "integer NOT NULL default '0'",
                 'sqid' =>  "integer NOT NULL default '0'",
                 'specialtype' =>  "string(20) NOT NULL default ''",
-            ]);               
-        
-            $iCounter1 = 0;
-            $iPrevQid = 0;
-            $iPrevScaleId = 0;
-            $iPrevSqid = 0;
-            $iPrevSpecialType = '';
-            switchMSSQLIdentityInsert('defaultvalues', true);
-            $dataReader = $oDB->createCommand("SELECT * FROM defaultvaluestemp order by qid, scale_id, sqid, specialtype, language")->query();
-            while (($row = $dataReader->read()) !== false) {
-                if ($iPrevQid != $row['qid'] || $iPrevScaleId != $row['scale_id'] || $iPrevSqid != $row['sqid'] || $iPrevSpecialType != $row['specialtype']){
-                    $iCounter1++;
-                    $oDB->createCommand()->insert('{{defaultvalues}}', array('dvid' => $iCounter1, 'qid' => $row['qid'], 'scale_id' => $row['scale_id'],'sqid' => $row['sqid'], 'specialtype' => $row['specialtype']));
-                }
-                $oDB->createCommand()->insert('{{defaultvalue_l10ns}}', array('dvid' => $iCounter1, 'language' => $row['language'], 'defaultvalue' => $row['defaultvalue']));
-                
-                $iPrevQid = $row['qid'];
-                $iPrevScaleId = $row['scale_id'];
-                $iPrevSqid = $row['sqid'];
-                $iPrevSpecialType = $row['specialtype'];
-            }
-            switchMSSQLIdentityInsert('defaultvalues', false);
-            try{ setTransactionBookmark(); $oDB->createCommand()->dropIndex('label_idx_10','{{defaultvaluestemp}}');} catch(Exception $e) { rollBackToTransactionBookmark(); };
-            $oDB->createCommand()->dropTable('defaultvaluestemp');
-            $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], true);
+            ], $options);
+            /* Get only survey->language */
+            $oDB->createCommand("INSERT INTO {{defaultvalues}}
+                (qid, scale_id, sqid, specialtype)
+                SELECT {{defaultvalues_update407}}.qid, {{defaultvalues_update407}}.scale_id, {{defaultvalues_update407}}.sqid, {{defaultvalues_update407}}.specialtype
+                FROM {{defaultvalues_update407}}
+                    INNER JOIN {{questions}} ON {{defaultvalues_update407}}.qid = {{questions}}.qid
+                    INNER JOIN {{surveys}} ON {{questions}}.sid = {{surveys}}.sid AND {{surveys}}.language = {{defaultvalues_update407}}.language
+                ")->execute();
+            $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], false);
+            $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>407),"stg_name='DBVersion'");
             $oTransaction->commit();
