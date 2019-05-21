@@ -2604,8 +2604,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             // participants
             try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{idx1_participants}}', '{{participants}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
             try { setTransactionBookmark(); $oDB->createCommand()->dropIndex('{{idx2_participants}}', '{{participants}}'); } catch(Exception $e) { rollBackToTransactionBookmark();}
-            alterColumn('{{participants}}', 'firstname', "text", false);
-            alterColumn('{{participants}}', 'lastname', "text", false);
+            alterColumn('{{participants}}', 'firstname', "text");
+            alterColumn('{{participants}}', 'lastname', "text");
             $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'encrypted', "string(5) NOT NULL");
             $oDB->createCommand()->addColumn('{{participant_attribute_names}}', 'core_attribute', "string(5) NOT NULL");
             $aCoreAttributes = array('firstname', 'lastname', 'email');
