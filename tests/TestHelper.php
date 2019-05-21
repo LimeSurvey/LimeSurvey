@@ -116,6 +116,9 @@ class TestHelper extends TestCase
     public function activateSurvey($surveyId)
     {
         $survey = \Survey::model()->findByPk($surveyId);
+        if (empty($survey)) {
+            throw new \Exception('Found no survey with id ' . $surveyId);
+        }
         $survey->anonymized = '';
         $survey->datestamp = '';
         $survey->ipaddr = '';
@@ -132,6 +135,12 @@ class TestHelper extends TestCase
         }
         \SurveyDynamic::sid($surveyId);
         \SurveyDynamic::model()->refreshMetaData();
+
+        $db = \Yii::app()->getDb();
+        $db->schema->getTables();
+        $db->schema->refresh();
+        $db->active = false;
+        $db->active = true;
 
         $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null], $result, 'Activate survey is OK');
     }
