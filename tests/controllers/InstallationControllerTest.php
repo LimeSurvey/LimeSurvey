@@ -88,6 +88,7 @@ class InstallationControllerTest extends TestBaseClassWeb
         $urlMan = \Yii::app()->urlManager;
         $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('');
+        \Yii::import('application.helpers.common_helper', true);
         $installerForm = new \InstallerConfigForm();
         $installerForm->dbtype = \InstallerConfigForm::DB_TYPE_MYSQL;
 
@@ -171,6 +172,8 @@ class InstallationControllerTest extends TestBaseClassWeb
 
             // Login.
             self::adminLogin($username, $password);
+
+            $this->assertTrue(true, 'We made it!');
         } catch (NoSuchElementException $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, (new \ReflectionClass($this))->getShortName() . '_' . __FUNCTION__);
             $this->assertFalse(
