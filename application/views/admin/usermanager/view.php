@@ -31,18 +31,18 @@ echo viewHelper::getViewTestTag('usersIndex');
 
         <div class="col-md-9">
             <?php if(Permission::model()->hasGlobalPermission('users', 'create')): ?>
-                <button  data-href="<?=App()->createUrl("plugins/direct/plugin/UserManagement/function/edituser")?>" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-default UserManagement--action--openmodal">
+                <button  data-href="<?=App()->createUrl("admin/usermanagement/sa/editusermodal")?>" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-default UserManagement--action--openmodal">
                     <i class="fa fa-plus-circle text-success"></i> <?php eT("Add user");?>
                 </button>
-                <button  data-href="<?=App()->createUrl("plugins/direct/plugin/UserManagement/function/adddummyuser")?>" data-toggle="modal" title="<?php eT('Add a new survey administrator with random values'); ?>" class="btn btn-default UserManagement--action--openmodal">
+                <button  data-href="<?=App()->createUrl("admin/usermanagement/sa/adddummyuser")?>" data-toggle="modal" title="<?php eT('Add a new survey administrator with random values'); ?>" class="btn btn-default UserManagement--action--openmodal">
                     <i class="fa fa-plus-square text-success"></i> <?=gT('Add dummy user')?>
                 </button>
-                <button  data-href="<?=App()->createUrl("plugins/direct/plugin/UserManagement/function/importuser")?>" data-toggle="modal" title="<?php eT('Import survey administrators'); ?>" class="btn btn-default UserManagement--action--openmodal">
+                <button  data-href="<?=App()->createUrl("admin/usermanagement/sa/importuser")?>" data-toggle="modal" title="<?php eT('Import survey administrators'); ?>" class="btn btn-default UserManagement--action--openmodal">
                     <i class="fa fa-upload text-success"></i> <?php eT("Import (CSV)");?>
                 </button>
             <?php endif; ?>
             <?php if(Permission::model()->hasGlobalPermission('users', 'export')): ?>
-                <button  data-href="<?=App()->createUrl("plugins/direct/plugin/UserManagement/function/exportusers")?>" data-toggle="modal" title="<?php eT('Export survey administrators'); ?>" class="btn btn-default UserManagement--action--openmodal">
+                <button  data-href="<?=App()->createUrl("admin/usermanagement/sa/exportusers")?>" data-toggle="modal" title="<?php eT('Export survey administrators'); ?>" class="btn btn-default UserManagement--action--openmodal">
                     <i class="fa fa-upload text-success"></i> <?php eT("Export (CSV)");?>
                 </button>
             <?php endif; ?>

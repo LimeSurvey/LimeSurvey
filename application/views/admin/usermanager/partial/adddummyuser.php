@@ -3,7 +3,7 @@
     <?=gT('Adding anonymous users')?>
 </div>
 <div class="modal-body">
-    <?=TbHtml::formTb(null, App()->createUrl('plugins/direct', ['plugin' => 'SMKUserManager', 'function' => 'runadddummyuser']), 'post', ["id"=>"SMKUserManager--modalform"])?>
+    <?=TbHtml::formTb(null, App()->createUrl('admin/usermanagement', ['sa' => 'runadddummyuser']), 'post', ["id"=>"UserManagement--modalform"])?>
         <div class="container-center">
             <div class="row ls-space margin top-5">
                 <label for="AnonUser_times">How many users</label>

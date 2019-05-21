@@ -619,7 +619,12 @@ class User extends LSActiveRecord
     }
 
     public function getLastloginFormatted() {
+        
         $lastLogin = $this->lastLogin;
+        if($lastLogin == null) {
+            return '---';
+        }
+
         $date = new DateTime($lastLogin);
         return $date->format($this->dateFormat).' '. $date->format('H:i');
     }

@@ -5,7 +5,7 @@
     <div class="container-center list-group">
         <div class="row list-group-item">
             <div class="col-sm-4"><?=gT('User groups')?>:</div>
-            <div class="col-sm-8"><?=join(', ',$oUser->userGroups)?></div>
+            <div class="col-sm-8"><?=join(', ',$usergroups)?></div>
         </div>
         <div class="row list-group-item">
             <div class="col-sm-4"><?=gT('Created by')?>:</div>

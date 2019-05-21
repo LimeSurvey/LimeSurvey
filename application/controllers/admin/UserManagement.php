@@ -55,7 +55,7 @@ class UserManagement extends Survey_Common_Action
         );
 
         $this->_renderWrappedTemplate('usermanager', 'view', $aData);
-        //return $this->renderPartial('view', $aData,true);
+        //return $this->getController()->renderPartial('view', $aData,true);
     }
 
     
@@ -115,12 +115,12 @@ class UserManagement extends Survey_Common_Action
     public function viewuser($userid)
     {
         $oUser = User::model()->findByPk($userid);
-        
+
         $usergroups = array_map(function ($oUGMap) {
             return $oUGMap->group->name;
         }, UserInGroup::model()->findAllByAttributes(['uid'=>$oUser->uid]));
 
-        return $this->renderPartial('partial.showuser', ['usergroups' => $usergroups, 'oUser'=>$oUser]);
+        return $this->getController()->renderPartial('/admin/usermanager/partial/showuser', ['usergroups' => $usergroups, 'oUser'=>$oUser]);
     }
 
     /**
@@ -137,7 +137,7 @@ class UserManagement extends Survey_Common_Action
     {
         $userId = $oRequest->getParam('userid');
         $oUser = User::model()->findByPk($userId);
-        return $this->renderPartial('partial.delete', ['oUser'=>$oUser]);
+        return $this->getController()->renderPartial('/admin/usermanager/partial/delete', ['oUser'=>$oUser]);
     }
 
     /**
@@ -155,13 +155,13 @@ class UserManagement extends Survey_Common_Action
         if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
             return Yii::app()->getController()->renderPartial('/admin/usermanager/partial/json', ["data"=>[
                 'success' => false,
-                'error' => "Keine Berechtigung für diese Aktion"
+                'error' => gT("You do not have permission to access this page.")
             ]]);
         }
         $userId = $oRequest->getPost('userid');
         $oUser = User::model()->findByPk($userId);
         $oUser->delete();
-        App()->getController()->redirect(App()->createUrl('/admin/pluginhelper/sa/fullpagewrapper/plugin/SMKUserManager/method/index'));
+        App()->getController()->redirect(App()->createUrl('/admin/usermanagement'));
     }
 
     /**
@@ -196,7 +196,7 @@ class UserManagement extends Survey_Common_Action
                 return $coll;
             }, false);
         });
-        return $this->renderPartial('partial.editpermissions', ["oUser" => $oUser, "currentState" => $sCurrentState, "aMySurveys" => $aMySurveys]);
+        return $this->getController()->renderPartial('/admin/usermanager/partial/editpermissions', ["oUser" => $oUser, "currentState" => $sCurrentState, "aMySurveys" => $aMySurveys]);
     }
 
     /**
@@ -214,7 +214,7 @@ class UserManagement extends Survey_Common_Action
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return Yii::app()->getController()->renderPartial('/admin/usermanager/partial/json', ["data"=>[
                 'success' => false,
-                'error' => "Keine Berechtigung für diese Aktion"
+                'error' => gT("You do not have permission to access this page.")
             ]]);
         }
         $userId = $oRequest->getPost('userid');
@@ -228,7 +228,7 @@ class UserManagement extends Survey_Common_Action
 
         return Yii::app()->getController()->renderPartial('/admin/usermanager/partial/json', ["data"=>[
             'success' => true,
-            'html' => $this->renderPartial('partial.permissionsuccess', ['results' => $results], true)
+            'html' => $this->getController()->renderPartial('/admin/usermanager/partial/permissionsuccess', ['results' => $results], true)
         ]]);
     }
 
@@ -247,7 +247,7 @@ class UserManagement extends Survey_Common_Action
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return Yii::app()->getController()->renderPartial('/admin/usermanager/partial/json', ["data"=>[
                 'success' => false,
-                'error' => "Keine Berechtigung für diese Aktion"
+                'error' => gT("You do not have permission to access this page.")
             ]]);
         }
 
@@ -266,7 +266,7 @@ class UserManagement extends Survey_Common_Action
         // $results = array_reduce($results, function ($coll, $arr) {
         //     return array_merge($coll, $arr);
         // }, []);
-        $this->renderPartial('partial.permissionsuccess', ['results' => $results, "noButton" => true]);
+        $this->getController()->renderPartial('/admin/usermanager/partial/permissionsuccess', ['results' => $results, "noButton" => true]);
     }
 
     public function batchSendAndResetLoginData($oEvent, $oRequest)
@@ -274,7 +274,7 @@ class UserManagement extends Survey_Common_Action
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return Yii::app()->getController()->renderPartial('/admin/usermanager/partial/json', ["data"=>[
                 'success' => false,
-                'error' => "Keine Berechtigung für diese Aktion"
+                'error' => gT("You do not have permission to access this page.")
             ]]);
         }
 
@@ -294,7 +294,7 @@ class UserManagement extends Survey_Common_Action
         // $results = array_reduce($results, function ($coll, $arr) {
         //     return array_merge($coll, $arr);
         // }, []);
-        $this->renderPartial('partial.success', ['sMessage' => json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
+        $this->getController()->renderPartial('/admin/usermanager/partial/success', ['sMessage' => json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
     }
     /**
      * Löscht Benutzer (MASSEDIT)
@@ -315,7 +315,7 @@ class UserManagement extends Survey_Common_Action
             $success[$oUser->uid] = $oUser->delete();
         }
 
-        $this->renderPartial('partial.success', ['noButton' => true]);
+        $this->getController()->renderPartial('/admin/usermanager/partial/success', ['noButton' => true]);
     }
 
     /**
@@ -328,32 +328,28 @@ class UserManagement extends Survey_Common_Action
      * @param CHttpRequest $oRequest
      * @return string
      */
-    public function adddummyuser($oEvent, $oRequest)
+    public function adddummyuser()
     {
-        return $this->renderPartial('partial.adddummyuser', []);
+        return $this->getController()->renderPartial('/admin/usermanager/partial/adddummyuser', []);
     }
 
     /**
-     * Erstellt die neuen Gruppenmanger
+     * Creates a batch of dummy users
      *
-     * Zum Aufruf mittels POST an plugins/direct Event
-     * Bsp.: /plugins/direct/plugin/SMKUserManagement/function/batchPermissions
      *
-     * @param PluginEvent $oEvent
-     * @param CHttpRequest $oRequest
      * @return string | JSON
      */
-    public function runadddummyuser($oEvent, $oRequest)
+    public function runadddummyuser()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return Yii::app()->getController()->renderPartial('/admin/usermanager/partial/json', ["data"=>[
                 'success' => false,
-                'error' => "Keine Berechtigung für diese Aktion"
+                'error' => gT("You do not have permission to access this page.")
             ]]);
         }
-        $times = $oRequest->getParam('times', 5);
-        $prefix = $oRequest->getParam('prefix', 'randuser_');
-        $email = $oRequest->getParam('email', User::model()->findByPk(App()->user->id)->email);
+        $times = App()->request->getParam('times', 5);
+        $prefix = App()->request->getParam('prefix', 'randuser_');
+        $email = App()->request->getParam('email', User::model()->findByPk(App()->user->id)->email);
 
         $randomUsers = [];
 
@@ -384,33 +380,25 @@ class UserManagement extends Survey_Common_Action
         }
         return Yii::app()->getController()->renderPartial('/admin/usermanager/partial/json', ["data"=>[
             'success' => true,
-            'html' => $this->renderPartial('partial.createdrandoms', ['randomUsers'=>$randomUsers, 'filename' => $prefix], true)
+            'html' => $this->getController()->renderPartial('/admin/usermanager/partial/createdrandoms', ['randomUsers'=>$randomUsers, 'filename' => $prefix], true)
         ]]);
     }
 
     /**
-     * Zeigt eine Maske an um Benutzer aus einer CSV zu importieren
+     * Calls up a modal to import users via csv file
      *
-     * Zum Aufruf mittels GET an plugins/direct Event
-     * Bsp.: /plugins/direct/plugin/SMKUserManagement/function/importuser
      *
-     * @param PluginEvent $oEvent
-     * @param CHttpRequest $oRequest
      * @return string
      */
-    public function importuser($oEvent, $oRequest)
+    public function importuser()
     {
-        return $this->renderPartial('partial.importuser', []);
+        return $this->getController()->renderPartial('/admin/usermanager/partial/importuser', []);
     }
     
     /**
-     * Erstellt Benutzer aus einer CSV
+     * Creates users from an uploaded CSV file
      *
-     * Zum Aufruf mittels POST an plugins/direct Event
-     * Bsp.: /plugins/direct/plugin/SMKUserManagement/function/importcsv
      *
-     * @param PluginEvent $oEvent
-     * @param CHttpRequest $oRequest
      * @return string
      */
     public function importcsv()
@@ -418,27 +406,32 @@ class UserManagement extends Survey_Common_Action
         if (!Permission::model()->hasGlobalPermission('users', 'create')) {
             return Yii::app()->getController()->renderPartial('/admin/usermanager/partial/json', ["data"=>[
                 'success' => false,
-                'error' => "Keine Berechtigung für diese Aktion"
+                'error' => gT("You do not have permission to access this page.")
             ]]);
         }
         $created = [];
-        $aNewUsers = SMKUserParser::getDataFromCSV($_FILES);
+        $aNewUsers = UserParser::getDataFromCSV($_FILES);
         foreach ($aNewUsers as $aNewUser) {
-            $name = $this->filterSpecials("{$aNewUser['firstname']}.{$aNewUser['name']}");
-            $fullname = "{$aNewUser['firstname']} {$aNewUser['name']}";
+            if(isset($aNewUser['firstname']) && isset($aNewUser['surname'])) {
+                $name = $this->filterSpecials("{$aNewUser['firstname']}.{$aNewUser['surname']}");
+                $fullname = "{$aNewUser['firstname']} {$aNewUser['surname']}";
+            } else if(isset($aNewUser['full_name'])) {
+                $fullname = $aNewUser['full_name'];
+                $name = $this->filterSpecials($fullname);
+            }
+
             $password = $this->getRandomPassword(8);
             if (User::model()->findByAttributes(['users_name' => $name]) !== null) {
                 continue;
             }
-            $oUser = new User;
-            $oUser->users_name = $name;
-            $oUser->full_name = $fullname;
-            $oUser->email = $aNewUser['email'];
-            $oUser->parent_id = App()->user->id;
-            $oUser->created = date('Y-m-d H:i:s');
-            $oUser->modified = date('Y-m-d H:i:s');
-            $oUser->password = password_hash($password, PASSWORD_DEFAULT);
-            $save = $oUser->save();
+
+            $save = $this->_createNewUser([
+                'users_name' => $name,
+                'full_name' => $fullname,
+                'password' => $password,
+                'email' => $aNewUser['email']
+            ]);
+
             if($save) {
                 $created[] = [
                     'uid' => $oUser->uid,
@@ -450,7 +443,7 @@ class UserManagement extends Survey_Common_Action
                 ];
             }
         }
-        return $this->renderPartial('userimported', ['created' => $created], true);
+        return $this->getController()->renderPartial('userimported', ['created' => $created], true);
     }
 
     public function importfromjson()
@@ -499,7 +492,7 @@ class UserManagement extends Survey_Common_Action
             }
         }
         
-        return $this->renderPartial('importfromjson', ['result' => $result], true);
+        return $this->getController()->renderPartial('importfromjson', ['result' => $result], true);
     }
 
     #####
@@ -674,16 +667,17 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * Filtert Umlaute zu Umschreibungen
+     * Filters special characters to simple ones
      *
-     * @param string $in String der Umgewandelt werden soll
+     * @param string $in String that needs to be changed
      * @return string
      */
     private function filterSpecials($in)
     {
-        $was = array("ä", "ö", "ü", "Ä", "Ö", "Ü", "ß","é", " ");
-        $wie = array("ae", "oe", "ue", "Ae", "Oe", "Ue", "ss",'e', "");
-        return str_replace($was, $wie, $in);
+        $was = array("ä", "ö", "ü", "Ä", "Ö", "Ü", "ß","é", "â", " ");
+        $wie = array("ae", "oe", "ue", "Ae", "Oe", "Ue", "ss",'e', "a", ".");
+        $clean =  str_replace($was, $wie, $in);
+        return preg_replace("/[^a-zA-Z-.]/","", $clean);
     }
 
     /**
@@ -842,7 +836,7 @@ class UserManagement extends Survey_Common_Action
         if ($sendMail == true) {
             $to = $oUser->full_name.' <'.$oUser->email.'>';
             $from = Yii::app()->getConfig("siteadminname")." <".Yii::app()->getConfig("siteadminemail").">";
-            $body = $this->renderPartial('partial/usernotificationemail', ['username' => $oUser->users_name, 'password' => $newPassword], true);
+            $body = $this->getController()->renderPartial('partial/usernotificationemail', ['username' => $oUser->users_name, 'password' => $newPassword], true);
             $success = SendEmailMessage($body, "[Bleib dran] Ihre Zugangsdaten", $to, $from, Yii::app()->getConfig("sitename"), true, Yii::app()->getConfig("siteadminbounce"));
         }
         return [
