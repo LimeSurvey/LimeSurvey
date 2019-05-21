@@ -43,7 +43,7 @@ class SurveyDao
 
         $survey->groups = QuestionGroup::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'group_order'));
         $survey->questions = Question::model()->findAll(array("condition" => 'sid='.$intId, 'order'=>'question_order'));
-        $aAnswers = Answer::model()->with(array('answerL10ns', 'question'), array('condition'=>'sid='.$intId.' AND language = "'.$lang.'"'))->findAll(array('order' => 'question.question_order, t.scale_id, sortorder'));
+        $aAnswers = Answer::model()->with('answerL10ns', 'question')->findAll(array('condition'=>'question.sid='.$intId.' AND answerL10ns.language = \''.$lang.'\'', 'order' => 'question.question_order, t.scale_id, sortorder'));
         foreach ($aAnswers as $aAnswer) {
             if(!empty($oOptions->stripHtmlCode) && $oOptions->stripHtmlCode == 1  && Yii::app()->controller->action->id !='remotecontrol'){
                 $answer=stripTagsFull($aAnswer->answerL10ns[$lang]->answer);
