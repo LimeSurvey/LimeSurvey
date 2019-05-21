@@ -52,7 +52,7 @@ class participantsaction extends Survey_Common_Action
             || Permission::model()->hasGlobalPermission('participantpanel', 'create')
             || Permission::model()->hasGlobalPermission('participantpanel', 'update')
             || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
-            || ParticipantShare::model()->exists('share_uid = ' . App()->user->id ? App()->user->id : ''))
+            || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id]))
         ) {
             App()->setFlashMessage(gT('No permission'), 'error');
             App()->getController()->redirect(App()->request->urlReferrer);
@@ -331,7 +331,7 @@ $url .= "_view"; });
         }
 
         $model->bEncryption = true;
-        
+
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -370,7 +370,7 @@ $url .= "_view"; });
                         ['share_uid' =>  $iUserId],
                         ['condition' => 'can_edit = \'0\' OR can_edit = \'\'',]
                     )),
-                    'sharedParticipantExists' => ParticipantShare::model()->exists('share_uid=:share_uid', [':share_uid' => App()->user->id]),
+                    'sharedParticipantExists' => ParticipantShare::model()->exists('share_uid = :userid', [':userid' => $iUserId]),
                     'isOwner' => isset($participantParam['owner_uid']) && ($participantParam['owner_uid'] === $iUserId) ? true : false
                 ],
 
@@ -1416,9 +1416,9 @@ $url .= "_view"; });
                     }
                     if (!empty($aUpdateData)){
                         $oDB->createCommand()->update('{{participants}}', $aUpdateData, "participant_id='".$participant->participant_id."'");
-                    }              
+                    }
                 }
-                
+
             } else {
                 // custom participant attributes
                 $oAttributes = ParticipantAttribute::model()->findAll("attribute_id=:attribute_id", array("attribute_id"=>$attributeId));
@@ -1433,7 +1433,7 @@ $url .= "_view"; });
                         $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$attributeId."' AND participant_id = '". $attribute->participant_id . "'");
                     }
                 }
-                
+
             }
 
             // save token encryption options if everything was ok
@@ -1546,12 +1546,12 @@ $url .= "_view"; });
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
         $operation = Yii::app()->request->getPost('oper');
         $success = [];
-        
+
         // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
-            
+
             // save attribute
             if ($operation === 'edit') {
                 $iAttributeId = $AttributeNameAttributes['attribute_id'];
@@ -1564,9 +1564,9 @@ $url .= "_view"; });
                 $ParticipantAttributeNames->setAttributes($AttributeNameAttributes);
                 $success[] = $ParticipantAttributeNames->save();
                 $iAttributeId = $ParticipantAttributeNames->attribute_id;
-                
+
             }
-            
+
             // encrypt/decrypt participant data on attribute setting change
             $oAttributes = ParticipantAttribute::model()->findAll("attribute_id=:attribute_id", array("attribute_id"=>$iAttributeId));
             foreach($oAttributes as $attribute){
