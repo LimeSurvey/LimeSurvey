@@ -52,7 +52,7 @@ class participantsaction extends Survey_Common_Action
             || Permission::model()->hasGlobalPermission('participantpanel', 'create')
             || Permission::model()->hasGlobalPermission('participantpanel', 'update')
             || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
-            || ParticipantShare::model()->exists('share_uid = ' . App()->user->id ? App()->user->id : ''))
+            || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id]))
         ) {
             App()->setFlashMessage(gT('No permission'), 'error');
             App()->getController()->redirect(App()->request->urlReferrer);
@@ -365,7 +365,7 @@ $url .= "_view"; });
                         ['share_uid' =>  $iUserId],
                         ['condition' => 'can_edit = \'0\' OR can_edit = \'\'',]
                     )),
-                    'sharedParticipantExists' => ParticipantShare::model()->exists('share_uid = ' . $iUserId),
+                    'sharedParticipantExists' => ParticipantShare::model()->exists('share_uid = :userid', [':userid' => $iUserId]),
                     'isOwner' => isset($participantParam['owner_uid']) && ($participantParam['owner_uid'] === $iUserId) ? true : false
                 ],
 

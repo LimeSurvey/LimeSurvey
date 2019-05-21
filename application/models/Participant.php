@@ -2116,7 +2116,7 @@ class Participant extends LSActiveRecord
         $userId = Yii::app()->user->id;
 
         $shared = ParticipantShare::model()->findByAttributes(
-            ['participant_id' => $this->participant_id], 'share_uid = ' . $userId. ' AND can_edit = 1'
+            ['participant_id' => $this->participant_id], 'share_uid = :userid AND can_edit = 1', [':userid' => $userId]
         );
         $owner = $this->owner_uid == $userId;
 
@@ -2126,7 +2126,7 @@ class Participant extends LSActiveRecord
         } else if ($shared && $shared->share_uid == -1 && $shared->can_edit) {
             // -1 = shared with everyone
             return true;
-        } else if ($shared && $shared->exists('share_uid' == $userId) && $shared->can_edit) {
+        } else if ($shared && $shared->exists('share_uid = :userid', [':userid' => $userId]) && $shared->can_edit) {
             // Shared with this particular user
             return true;
         } else if ($owner) {

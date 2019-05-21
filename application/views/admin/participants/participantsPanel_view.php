@@ -60,7 +60,7 @@
                     <?php eT("Display CPDB participants");?>
                 </a>
             <?php elseif (Permission::model()->hasGlobalPermission('participantpanel','create')
-                || ParticipantShare::model()->exists('share_uid = ' . App()->user->getId())):?>
+                || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])):?>
                 <!-- Display my participants -->
                 <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
                     <span class="fa fa-list text-success"></span>
