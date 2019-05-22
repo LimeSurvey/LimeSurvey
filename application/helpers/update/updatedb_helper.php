@@ -2558,7 +2558,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand("INSERT INTO {{labels}}
                 (id, lid, code, sortorder, assessment_value)
                 SELECT id, lid, code, sortorder, assessment_value
-                FROM {{labels_update400}} GROUP BY id
+                FROM {{labels_update400}}
+                GROUP BY id, lid, code, sortorder, assessment_value
                 ")->execute();
             switchMSSQLIdentityInsert('labels', false); // Untested
             $oDB->createCommand()->dropTable('{{labels_update400}}');
