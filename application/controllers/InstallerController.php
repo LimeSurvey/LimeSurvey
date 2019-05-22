@@ -298,51 +298,50 @@ class InstallerController extends CController
                     if (Yii::app()->getConfig('debug') > 1) {
                         $oModel->db->createCommand("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'")->execute();
                     }
-
-                    //$aData array won't work here. changing the name
-                    $aValues = [];
-                    $aValues['title'] = gT('Database settings');
-                    $aValues['descp'] = gT('Database settings');
-                    $aValues['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
-                    $aValues['progressValue'] = 60;
-
-                    //it store text content
-                    $aValues['adminoutputText'] = '';
-                    //it store the form code to be displayed
-                    $aValues['adminoutputForm'] = '';
-
-                    //if DB exist, check if its empty or up to date. if not, tell user LS can create it.
-                    if (!$oModel->dbExists) {
-                        Yii::app()->session['databaseDontExist'] = true;
-
-                        $aValues['dbname'] = $oModel->dbname;
-                        $aValues['model'] = $oModel;
-
-                        $aValues['next'] = array(
-                            'action' => 'installer/createdb',
-                            'label' => gT('Create database'),
-                            'name' => '',
-                        );
-                    } elseif ($bDBExistsButEmpty) {
-                        Yii::app()->session['populatedatabase'] = true;
-                        $aValues['model'] = $oModel;
-
-                        //$this->connection->database = $model->dbname;
-                        //                        //$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
-                        $aValues['adminoutputText'] .= sprintf(gT('A database named "%s" already exists.'), $oModel->dbname)."<br /><br />\n"
-                        .gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
-
-                        $aValues['next'] = array(
-                            'action' => 'installer/populatedb',
-                            'label' => gT("Populate database", 'unescaped'),
-                            'name' => 'createdbstep2',
-                        );
-                    } elseif (!$bDBExistsButEmpty) {
-                        $aValues['adminoutput'] .= "<br />".sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
-                    }
-                    $this->render('/installer/populatedb_view', $aValues);
-                    return;
                 }
+                //$aData array won't work here. changing the name
+                $aValues = [];
+                $aValues['title'] = gT('Database settings');
+                $aValues['descp'] = gT('Database settings');
+                $aValues['classesForStep'] = array('off', 'off', 'off', 'off', 'on', 'off');
+                $aValues['progressValue'] = 60;
+
+                //it store text content
+                $aValues['adminoutputText'] = '';
+                //it store the form code to be displayed
+                $aValues['adminoutputForm'] = '';
+
+                //if DB exist, check if its empty or up to date. if not, tell user LS can create it.
+                if (!$oModel->dbExists) {
+                    Yii::app()->session['databaseDontExist'] = true;
+
+                    $aValues['dbname'] = $oModel->dbname;
+                    $aValues['model'] = $oModel;
+
+                    $aValues['next'] = array(
+                        'action' => 'installer/createdb',
+                        'label' => gT('Create database'),
+                        'name' => '',
+                    );
+                } elseif ($bDBExistsButEmpty) {
+                    Yii::app()->session['populatedatabase'] = true;
+                    $aValues['model'] = $oModel;
+
+                    //$this->connection->database = $model->dbname;
+                    //                        //$this->connection->createCommand("USE DATABASE `".$model->dbname."`")->execute();
+                    $aValues['adminoutputText'] .= sprintf(gT('A database named "%s" already exists.'), $oModel->dbname)."<br /><br />\n"
+                    .gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
+
+                    $aValues['next'] = array(
+                        'action' => 'installer/populatedb',
+                        'label' => gT("Populate database", 'unescaped'),
+                        'name' => 'createdbstep2',
+                    );
+                } elseif (!$bDBExistsButEmpty) {
+                    $aValues['adminoutput'] .= "<br />".sprintf(gT('Please <a href="%s">log in</a>.', 'unescaped'), $this->createUrl("/admin"));
+                }
+                $this->render('/installer/populatedb_view', $aValues);
+                return;
             }
         }
         $this->render('/installer/dbconfig_view', $aData);

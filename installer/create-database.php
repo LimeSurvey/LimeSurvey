@@ -34,7 +34,10 @@ function createDatabase($oDB)
 
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('update.updatedb');
-    $options = 'ROW_FORMAT=DYNAMIC';
+    $options = '';
+    if(in_array($oDB->driverName,['mysql','mysqli'])) {
+        $options = 'ROW_FORMAT=DYNAMIC'; // Same than create-database
+    }
 
     $oTransaction = $oDB->beginTransaction();
     try {
