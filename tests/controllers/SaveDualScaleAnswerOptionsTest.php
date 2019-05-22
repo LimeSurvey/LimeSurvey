@@ -60,59 +60,8 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
     }
 
     /**
-     * 
      */
-    public function testBasic()
-    {
-        try {
-            // Get questions.
-            $survey = \Survey::model()->findByPk(self::$surveyId);
-            $this->assertNotEmpty($survey);
-            $this->assertCount(1, $survey->groups, 'Wrong number of groups: ' . count($survey->groups));
-            $this->assertCount(1, $survey->groups[0]->questions, 'We have exactly one question');
-
-            $urlMan = \Yii::app()->urlManager;
-            $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
-            $url = $urlMan->createUrl(
-                'admin/questions',
-                [
-                    'sa'       => 'answeroptions',
-                    'surveyid' => self::$surveyId,
-                    'gid'      => $survey->groups[0]->gid,
-                    'qid'      => $survey->groups[0]->questions[0]->qid
-                ]
-            );
-
-            self::$webDriver->get($url);
-
-            $answer1 = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="answer_en_1_0"]'));
-            $answer1->sendKeys('123');
-
-            $answer2 = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="answer_en_1_1"]'));
-            $answer2->sendKeys('abc');
-
-            $savebutton = self::$webDriver->findElement(WebDriverBy::id('save-button'));
-            $savebutton->click();
-
-            $notif = self::$webDriver->findElement(WebDriverBy::id('notif-container'));
-            $notifText = $notif->getText();
-            $this->assertContains('Answer options were successfully saved', $notifText);
-
-            $answers = \Answer::model()->findAllByAttributes(['qid' => $survey->groups[0]->questions[0]->qid]);
-            $this->assertCount(2, $answers, 'Two answer options saved');
-        } catch (\Exception $ex) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
-                self::$testHelper->javaTrace($ex)
-            );
-        }
-    }
-
-    /**
-     * 
-     */
-    public function testUsingLinkToEditAnswers()
+    public function testQuestionEditor()
     {
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_677328.lss';
         self::importSurvey($surveyFile);
@@ -136,7 +85,7 @@ class SaveDualScaleAnswerOptionsTest extends TestBaseClassWeb
 
         self::$webDriver->get($url);
 
-        $button = self::$webDriver->findElement(WebDriverBy::linkText('Edit answer options'));
+        $button = self::$webDriver->findElement(WebDriverBy::linkText('Answer options'));
         $button->click();
 
         $answer1 = self::$webDriver->findElement(WebDriverBy::cssSelector('input[name="answer_en_1_0"]'));
