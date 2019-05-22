@@ -446,13 +446,16 @@ class questions extends Survey_Common_Action
     /**
      * Load complete editing of answer options screen.
      *
-     * @access public
      * @param int $surveyid
      * @param int $gid
      * @param int $qid
+     * @deprecated
      */
     public function answeroptions($surveyid, $gid, $qid)
     {
+        throw new \Exception('This method is deprecated. Please use the new question editor.');
+
+        /*
         // Abort if user lacks permission to update survey content
         if (!Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
@@ -488,8 +491,8 @@ class questions extends Survey_Common_Action
         $aData['sidemenu']['explorer']['gid'] = (isset($gid)) ? $gid : false;
         $aData['sidemenu']['explorer']['qid'] = (isset($qid)) ? $qid : false;
 
-
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
+         */
     }
 
     /**
