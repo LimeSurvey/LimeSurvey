@@ -48,6 +48,13 @@ li.radio-item,li.checkbox-item,li.radio-text-item,li.checkbox-text-item{display:
 .slider-list .slider-right {text-align:right;}
 .dir-rtl .slider-list .slider-left{text-align:right}
 .dir-rtl .slider-list .slider-right {text-align:left;}
+.dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility,.dir-ltr table.ls-answers .checkbox-item .ls-label-xs-visibility{margin-left:0;}
+.dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility,.dir-rtl table.ls-answers .checkbox-item .ls-label-xs-visibility{margin-right:0;}
+.dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-left:0px;}
+.dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-right:0px;}
+.dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-left:0px;}
+.dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-right:0px;}
+
 }
 /**
  * Table .question feature
@@ -157,8 +164,6 @@ only screen and (max-width: 760px),
         line-height: initial;
         text-indent: initial;
     }
-    .dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility,.dir-ltr table.ls-answers .checkbox-item .ls-label-xs-visibility{margin-left:0;}
-    .dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility,.dir-rtl table.ls-answers .checkbox-item .ls-label-xs-visibility{margin-right:0;}
 
     table.ls-answers .ls-label-xs-visibility > *
     {
@@ -171,10 +176,6 @@ only screen and (max-width: 760px),
     .dir-ltr table.ls-answers .ls-label-xs-visibility > * {left:auto;}
     .dir-rtl table.ls-answers .ls-label-xs-visibility > * {right:auto;}
 
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-left:-20px;}
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-right:-20px;}
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-left:-20px;}
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-right:-20px;}
 
     table.ls-answers > tbody > tr:hover {
         background-color: transparent;

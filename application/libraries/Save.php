@@ -282,7 +282,7 @@ class Save
                 } else {
                     $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
                     if (trim($thissurvey['adminemail']) == '') {
-                        $errormsg .= gT('(Reason: Admin email address empty)');
+                        $errormsg .= gT('(Reason: Administrator email address empty)');
                     }
                 }
             }
@@ -425,7 +425,7 @@ class Save
 
                     $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
                     if (trim($thissurvey['adminemail']) == '') {
-                        $errormsg .= gT('(Reason: Admin email address empty)');
+                        $errormsg .= gT('(Reason: Administrator email address empty)');
                     }
                 }
             }

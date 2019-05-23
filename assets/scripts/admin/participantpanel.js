@@ -363,12 +363,12 @@ LS.CPDB = (function() {
             $.ajax({
                 url: editValueParticipantPanel, 
                 method: "POST",
-                data: {actionTarget: 'changeSharedEditableStatus', 'participant_id': $(self).closest('tr').data('participant_id'), 'can_edit': state},
+                data: {actionTarget: 'changeSharedEditableStatus', 'participant_id': $(self).closest('tr').data('participant_id'), 'can_edit': state, 'share_uid': $(self).closest('tr').data('share_uid')},
                 dataType: 'json', 
                 success: function(resolve){
                     $(self).prop("checked", resolve.newValue);
                 }
-            })
+            });
         });
 
         $('#pageSizeShareParticipantView').on("change", function(){

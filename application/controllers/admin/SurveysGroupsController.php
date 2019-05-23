@@ -45,7 +45,7 @@ class SurveysGroupsController extends Survey_Common_Action
 
         if (Yii::app()->getRequest()->getPost('SurveysGroups')) {
             $model->attributes = Yii::app()->getRequest()->getPost('SurveysGroups');
-            $model->created_by = $model->owner_uid = Yii::app()->user->id;
+            $model->created_by = $model->owner_id = Yii::app()->user->id;
             if ($model->save()) {
                 $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
             }

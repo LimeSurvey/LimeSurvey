@@ -681,6 +681,7 @@
                 $answersCount = count($result[$key1]);
                 $maxDbAnswer=QuestionAttribute::model()->find("qid = :qid AND attribute = 'max_subquestions'",array(':qid' => $flt[0]));
                 $columnsCount=(!$maxDbAnswer || intval($maxDbAnswer->value)<1) ? $answersCount : intval($maxDbAnswer->value); // If max_subquestions is not set or is invalid : get the answer count
+                $columnsCount = min($columnsCount,$answersCount); // Can not be upper than current answers #14899
                 //lets put the answer code and text into the answers array
                 foreach($result[$key1] as $row)
                 {

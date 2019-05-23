@@ -281,7 +281,7 @@ class GlobalSettings extends Survey_Common_Action
             || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))) {
             SettingGlobal::setSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail')));
         } else {
-            $warning .= gT("Warning! Admin email was not saved because it was not valid.").'<br/>';
+            $warning .= gT("Warning! Administrator email address was not saved because it was not valid.").'<br/>';
         }
         SettingGlobal::setSetting('siteadminname', strip_tags(Yii::app()->getRequest()->getPost('siteadminname')));
         SettingGlobal::setSetting('shownoanswer', sanitize_int(Yii::app()->getRequest()->getPost('shownoanswer')));
