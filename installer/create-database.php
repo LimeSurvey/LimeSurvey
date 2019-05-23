@@ -34,7 +34,10 @@ function createDatabase($oDB)
 
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('update.updatedb');
-    $options = 'ROW_FORMAT=DYNAMIC';
+    $options = '';
+    if(in_array($oDB->driverName,['mysql','mysqli'])) {
+        $options = 'ROW_FORMAT=DYNAMIC'; // Same than create-database
+    }
 
     $oTransaction = $oDB->beginTransaction();
     try {
@@ -380,15 +383,7 @@ function createDatabase($oDB)
         $oDB->createCommand()->createIndex('{{idx_participant_attribute_names}}', '{{participant_attribute_names}}', ['attribute_id', 'attribute_type']);
         $aCoreAttributes = array('firstname', 'lastname', 'email');
 
-        // load sodium library
-        $sodium = Yii::app()->sodium;
-        // check if sodium library exists
-        if ($sodium->bLibraryExists === true) {
-            $sEncrypted = 'Y';
-        } else {
-            $sEncrypted = 'N';
-        }
-
+        $sEncrypted = 'N';
         foreach ($aCoreAttributes as $attribute) {
             $oDB->createCommand()->insert('{{participant_attribute_names}}', array(
                 'attribute_type'    => 'TB',

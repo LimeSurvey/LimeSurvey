@@ -2722,15 +2722,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
 
             $oTransaction = $oDB->beginTransaction();
             
-            // load sodium library
-            $sodium = Yii::app()->sodium;
-            // check if sodium library exists
-            if ($sodium->bLibraryExists === true){
-                $sEncrypted = 'Y';
-            } else {
-                $sEncrypted = 'N';
-            }
-
+            $sEncrypted = 'N';
             $oDB->createCommand()->update('{{participant_attribute_names}}',array('encrypted'=>$sEncrypted),"core_attribute='Y'");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>409),"stg_name='DBVersion'");
             $oTransaction->commit();
@@ -2767,39 +2759,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         }
 
         if($iOldDBVersion < 413) {
-            /* update data encryption token config for all activated surveys
-             * it has to be changed and committed before data encryption step
+            /*
+             *  changes for this version are removed, but this block stays for the continuity
              */
-            $oTransaction = $oDB->beginTransaction();
-            $aActiveSurveys = Survey::model()->findAll('active = :active', array(':active' => 'Y'));
-            foreach($aActiveSurveys as $survey){
-                if ($survey->hasTokensTable){
-                    $aOptions = json_decode_ls($survey->tokenencryptionoptions);
-                    $aOptions['enabled'] = 'Y';
-                    $oDB->createCommand()->update('{{surveys}}',array('tokenencryptionoptions'=>json_encode($aOptions)), 'sid=' . $survey->sid);
-                }
-            }
-            $oTransaction->commit();
-
-            /* data encryption step
-             * encrypt existing data for all activated surveys 
-             */
-            $oTransaction = $oDB->beginTransaction();
-            // participants
-            $aParticipants = Participant::model()->findAll();
-            foreach($aParticipants as $participant){
-                $participant->encryptSave();
-            }
-            // tokens
-            foreach($aActiveSurveys as $survey){
-                if ($survey->hasTokensTable){
-                    $oTokens = Token::model($survey->sid)->findAll();
-                    foreach($oTokens as $token){
-                        $token->encryptSave();
-                    }
-                }
-            }
             
+            $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>413),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
