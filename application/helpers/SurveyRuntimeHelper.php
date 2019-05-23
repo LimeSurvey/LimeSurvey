@@ -1594,8 +1594,6 @@ class SurveyRuntimeHelper
 
         $this->preview         = ($this->previewquestion || $this->previewgrp);
         $this->sLangCode       = App()->language;
-
-        EmCacheHelper::init($this->aSurveyInfo);
     }
 
     private function setPreview()

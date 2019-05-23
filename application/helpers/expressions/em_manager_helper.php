@@ -4909,6 +4909,7 @@
             }
             //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
+            EmCacheHelper::init($surveyinfo);
             $LEM->initialized=true;
 
             if ($initializeVars)
