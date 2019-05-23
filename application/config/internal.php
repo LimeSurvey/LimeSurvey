@@ -185,6 +185,10 @@ $internalConfig = array(
         'cache'=>array(
             'class' => defined('YII_DEBUG') && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
         ),
+        // For more info about the emcache, see application/helpers/expressions/em_cache_helper.php.
+        'emcache'=>array(
+            'class' => defined('YII_DEBUG') && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
+        ),
         'db' => array(
             'schemaCachingDuration' => 3600,
             'class' => 'DbConnection',
