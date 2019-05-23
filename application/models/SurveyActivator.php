@@ -423,7 +423,7 @@ class SurveyActivator
             return;
         }
         /* not mysql : out */
-        if ($db->driverName === InstallerConfigForm::DB_TYPE_MYSQL) {
+        if (!in_array($db->driverName, [InstallerConfigForm::DB_TYPE_MYSQL, InstallerConfigForm::DB_TYPE_MYSQLI])) {
             return;
         }
         /* seems OK, sysadmin allowed to broke system */
