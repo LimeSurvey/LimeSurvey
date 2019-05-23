@@ -2393,6 +2393,29 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>358], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        
+        if ($iOldDBVersion < 359) {
+            $oTransaction = $oDB->beginTransaction();
+            alterColumn('{{notifications}}','message',"text",false);
+            alterColumn('{{settings_user}}','stg_value',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_description',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_welcometext',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_policy_notice',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_policy_error',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_url',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_invite',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_remind',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_register',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"text",true);
+            alterColumn('{{surveys_languagesettings}}','email_admin_notification',"text",true);
+            alterColumn('{{surveys_languagesettings}}','email_admin_responses',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer",false,'0');
+            alterColumn('{{user_groups}}','description',"text",false);
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>359], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }        
 
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
