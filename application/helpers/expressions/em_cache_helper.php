@@ -13,18 +13,18 @@ class EmCacheHelper
      *
      * @var array|null
      */
-    protected $surveyinfo = null;
+    protected static $surveyinfo = null;
 
     /**
      * Set survey info used by this request.
      *
-     * @param int $sid
+     * @param array|null $surveyinfo
      * @return void
      * @throws InvalidArgumentException if $surveyinfo is null.
      */
-    public static function init(array $surveyinfo)
+    public static function init(array $surveyinfo = null)
     {
-        if (is_null($surveyinfo)) {
+        if (empty($surveyinfo)) {
             throw new \InvalidArgumentException('$surveyinfo is empty, cannot initialise helper');
         }
 
@@ -32,7 +32,8 @@ class EmCacheHelper
     }
 
     /**
-     * Flush cache. Should be done at all places where the cache is invalidated, e.g. at save survey/question/etc.
+     * Flush cache for initialised survey.
+     * Should be done at all places where the cache is invalidated, e.g. at save survey/question/etc.
      *
      * @return void
      * @throws EmCacheException if surveyinfo is not initialised.
@@ -58,7 +59,7 @@ class EmCacheHelper
     }
 
     /**
-     * Get cache value with $key.
+     * Get cache value with $key for initialised survey.
      *
      * @param string $key
      * @return mixed
@@ -83,7 +84,7 @@ class EmCacheHelper
     }
 
     /**
-     * Set cache $value for $key.
+     * Set cache $value for $key for initialised survey.
      *
      * @param string $key
      * @param mixed $value
