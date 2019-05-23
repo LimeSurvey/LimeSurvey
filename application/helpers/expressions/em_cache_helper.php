@@ -28,7 +28,21 @@ class EmCacheHelper
             throw new \InvalidArgumentException('$surveyinfo is empty, cannot initialise helper');
         }
 
+        if (empty($surveyinfo['sid'])) {
+            throw new \InvalidArgumentException('required key $surveyinfo[sid] is empty, cannot initialise helper');
+        }
+
         self::$surveyinfo = $surveyinfo;
+    }
+
+    /**
+     * Set $surveyinfo to null. Used by tests.
+     *
+     * @return void
+     */
+    public static function clearInit()
+    {
+        self::$surveyinfo = null;
     }
 
     /**
@@ -96,7 +110,12 @@ class EmCacheHelper
             return;
         }
 
-        \Yii::app()->cache->set($key, $value);
+        /** @var array */
+        $surveyCache = self::getSurveyCache();
+        $surveyCache[$key] = $value;
+
+        // TODO: Reset ALL values for survey cache everytime we set? Slow?
+        \Yii::app()->emcache->set(self::$surveyinfo['sid'], $surveyCache);
     }
 
     /**
@@ -109,6 +128,10 @@ class EmCacheHelper
     {
         if (empty(self::$surveyinfo)) {
             throw new EmCacheHelper('self::$surveyinfo is null, helper not initialised');
+        }
+
+        if (empty(self::$surveyinfo['sid'])) {
+            throw new EmCacheHelper('self::$surveyinfo[sid] is null, helper not properly initialised');
         }
 
         return \Yii::app()->emcache->get(self::$surveyinfo['sid']);
@@ -132,5 +155,7 @@ class EmCacheHelper
         }
 
         // TODO: Check activated, randomized.
+
+        return true;
     }
 }

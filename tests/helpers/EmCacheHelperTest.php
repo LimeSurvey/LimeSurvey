@@ -20,6 +20,23 @@ class EmCacheHelperTest extends TestBaseClass
     }
 
     /**
+     * Flush all when done with tests.
+     */
+    public static function teardownAfterClass()
+    {
+        \EmCacheHelper::flushAll();
+    }
+
+    /**
+     * Always flush everything before every test.
+     */
+    public function setup()
+    {
+        \EmCacheHelper::flushAll();
+        \EmCacheHelper::clearInit();
+    }
+
+    /**
      * Should throw an exception.
      */
     public function testEmptyInit()
@@ -33,10 +50,24 @@ class EmCacheHelperTest extends TestBaseClass
     }
 
     /**
-     * 
+     * Test init.
      */
     public function testInit()
     {
-        \EmCacheHelper::init([1, 2, 3]);
+        \EmCacheHelper::init(['sid' => 1]);
+    }
+
+    /**
+     * Test basic set and get.
+     */
+    public function testBasic()
+    {
+        \EmCacheHelper::init(['sid' => 1]);
+        \EmCacheHelper::set('somekey', 'value');
+
+        /** @var string */
+        $value = \EmCacheHelper::get('somekey');
+
+        $this->assertEquals($value, 'value');
     }
 }
