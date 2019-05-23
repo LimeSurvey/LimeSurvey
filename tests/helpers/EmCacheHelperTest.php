@@ -20,10 +20,23 @@ class EmCacheHelperTest extends TestBaseClass
     }
 
     /**
+     * Should throw an exception.
+     */
+    public function testEmptyInit()
+    {
+        try {
+            \EmCacheHelper::init(null);
+            $this->assertTrue(false);
+        } catch (\InvalidArgumentException $ex) {
+            $this->assertTrue(true);
+        }
+    }
+
+    /**
      * 
      */
     public function testInit()
     {
-        EmCacheHelper::init(null);
+        \EmCacheHelper::init([1, 2, 3]);
     }
 }
