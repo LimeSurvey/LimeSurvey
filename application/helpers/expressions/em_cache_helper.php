@@ -49,13 +49,19 @@ class EmCacheHelper
      * Flush cache for initialised survey.
      * Should be done at all places where the cache is invalidated, e.g. at save survey/question/etc.
      *
+     * @param int|null $sid Set to a value if you don't want to run init() first. Useful when flushing in models.
      * @return void
      * @throws EmCacheException if surveyinfo is not initialised.
      */
-    public static function flush()
+    public static function flush($sid = null)
     {
+        if ($sid) {
+            \Yii::app()->emcache->set($sid, []);
+            return;
+        }
+
         if (empty(self::$surveyinfo)) {
-            throw new EmCacheHelper('self::$surveyinfo is null, helper not initialised');
+            throw new EmCacheException('self::$surveyinfo is null, helper not initialised');
         }
 
         // Set survey cache array to empty.
@@ -127,11 +133,11 @@ class EmCacheHelper
     protected static function getSurveyCache()
     {
         if (empty(self::$surveyinfo)) {
-            throw new EmCacheHelper('self::$surveyinfo is null, helper not initialised');
+            throw new EmCacheException('self::$surveyinfo is null, helper not initialised');
         }
 
         if (empty(self::$surveyinfo['sid'])) {
-            throw new EmCacheHelper('self::$surveyinfo[sid] is null, helper not properly initialised');
+            throw new EmCacheException('self::$surveyinfo[sid] is null, helper not properly initialised');
         }
 
         return \Yii::app()->emcache->get(self::$surveyinfo['sid']);
