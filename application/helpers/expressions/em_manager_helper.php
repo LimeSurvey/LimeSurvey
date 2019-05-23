@@ -21,6 +21,7 @@
     * @author Denis Chenu <http://sondages.pro>
     */
     Yii::import('application.helpers.expressions.em_core_helper', true);
+    Yii::import('application.helpers.expressions.em_cache_helper', true);
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
@@ -8652,7 +8653,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         private function getQuestionAttributesForEM($surveyid=0,$qid=0, $lang='')
         {
             $cacheKey = $surveyid . '_' . $qid . '_' . $lang;
-            $value = Yii::app()->cache->get($cacheKey);
+            $value = EmCacheHelper::get($cacheKey);
             if ($value !== false) {
                 return $value;
             }
@@ -8723,7 +8724,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 $aQuestionAttributesForEM[$oQid->qid]=$aAttributesValues;
             }
-            Yii::app()->cache->set($cacheKey, $aQuestionAttributesForEM);
+            EmCacheHelper::set($cacheKey, $aQuestionAttributesForEM);
             return $aQuestionAttributesForEM;
         }
 
