@@ -11,7 +11,7 @@
                 <p class='alert alert-info'>
                     <span class='fa fa-info-circle'></span>&nbsp;
                     <?php eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?>
-                    <?php eT("After you are done please click the 'Save' button to save your changes.");?>
+                    <?php eT("After you are done, please click the 'Save' button to save your changes.");?>
                 </p>
             </div>
             <div class='col-sm-4'>
