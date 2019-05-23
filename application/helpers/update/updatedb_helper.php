@@ -16,7 +16,22 @@
 - Never use models in the upgrade process - never ever!
 - Use the provided addColumn, alterColumn, dropPrimaryKey etc. functions where applicable - they ensure cross-DB compatibility
 - Never use foreign keys
-- Do not use fancy database field types (like mediumtext, timestamp, etc) - only use the ones provided by Yii
+- Do not use fancy database field types (like mediumtext, timestamp, etc) - only use the ones provided by Yii which are:
+
+    pk: auto-incremental primary key type (“int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY”).
+    string: string type (“varchar(255)”).
+    text: a long string type (“text”).
+    integer: integer type (“int(11)”).
+    boolean: boolean type (“tinyint(1)”).
+    float: float number type (“float”).
+    decimal: decimal number type (“decimal”).
+    datetime: datetime type (“datetime”).
+    timestamp: timestamp type (“timestamp”).
+    time: time type (“time”).
+    date: date type (“date”).
+    binary: binary data type (“blob”).
+
+    These are case-sensitive - only use lowercase!
 - If you want to use database functions make sure they exist on all three supported database types
 - Always prefix key names by using curly brackets {{ }}
 
@@ -596,7 +611,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if ($iOldDBVersion < 150)
         {
             $oTransaction = $oDB->beginTransaction();
-            addColumn('{{questions}}','relevance','TEXT');
+            addColumn('{{questions}}','relevance','text');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>150),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -700,7 +715,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             }
 
             addPrimaryKey('sessions', array('id'));
-            addColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"TEXT");
+            addColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"text");
             addColumn('{{surveys}}','sendconfirmation',"string(1) default 'Y'");
 
             upgradeSurveys156();
@@ -1730,7 +1745,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     'tid' =>  'pk',
                     'name' =>  'string(128)',
                     'description' =>  'text',
-                    'active' =>  'int DEFAULT 0',
+                    'active' =>  'integer DEFAULT 0',
                     'settings' => 'text',
                     'permission' =>  'string(128) NOT NULL',
                     'permission_grade' =>  'string(128) NOT NULL'
@@ -1739,7 +1754,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->createTable(
                 '{{tutorial_entries}}', [
                     'teid' =>  'pk',
-                    'tid' =>  'int NOT NULL',
+                    'tid' =>  'integer NOT NULL',
                     'title' =>  'text',
                     'content' =>  'text',
                     'settings' => 'text'
@@ -2389,6 +2404,29 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>358], "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        
+        if ($iOldDBVersion < 359) {
+            $oTransaction = $oDB->beginTransaction();
+            alterColumn('{{notifications}}','message',"text",false);
+            alterColumn('{{settings_user}}','stg_value',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_description',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_welcometext',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_endtext',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_policy_notice',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_policy_error',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_url',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_invite',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_remind',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_register',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_email_confirm',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"text",true);
+            alterColumn('{{surveys_languagesettings}}','email_admin_notification',"text",true);
+            alterColumn('{{surveys_languagesettings}}','email_admin_responses',"text",true);
+            alterColumn('{{surveys_languagesettings}}','surveyls_numberformat',"integer",false,'0');
+            alterColumn('{{user_groups}}','description',"text",false);
+            $oDB->createCommand()->update('{{settings_global}}', ['stg_value'=>359], "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }        
 
         if ($iOldDBVersion < 400) {
             // This update moves localization-dependant strings from question group/question/answer tables to related localization tables
@@ -2896,18 +2934,18 @@ function resetTutorials337($oDB)
 function upgrade333($oDB)
 {
     $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
-        'tid' => 'int NOT NULL',
-        'uid' => 'int NOT NULL',
-        'taken' => 'int DEFAULT 1',
+        'tid' => 'integer NOT NULL',
+        'uid' => 'integer NOT NULL',
+        'taken' => 'integer DEFAULT 1',
     ));
 
     $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid', 'tid']);
 
     $oDB->createCommand()->createTable('{{tutorial_entry_relation}}', array(
-        'teid' => 'int NOT NULL',
-        'tid' => 'int NOT NULL',
-        'uid' => 'int DEFAULT NULL',
-        'sid' => 'int DEFAULT NULL',
+        'teid' => 'integer NOT NULL',
+        'tid' => 'integer NOT NULL',
+        'uid' => 'integer DEFAULT NULL',
+        'sid' => 'integer DEFAULT NULL',
     ));
 
     $oDB->createCommand()->addPrimaryKey('{{tutorial_entry_relation_pk}}', '{{tutorial_entry_relation}}', ['teid', 'tid']);
@@ -2916,7 +2954,7 @@ function upgrade333($oDB)
     $oDB->createCommand()->createIndex('{{idx1_tutorials}}', '{{tutorials}}', 'name', true);
 
     $oDB->createCommand()->dropColumn('{{tutorial_entries}}', 'tid');
-    $oDB->createCommand()->addColumn('{{tutorial_entries}}', 'ordering', 'int');
+    $oDB->createCommand()->addColumn('{{tutorial_entries}}', 'ordering', 'integer');
 
 }
 
@@ -3033,14 +3071,14 @@ function transferPasswordFieldToText($oDB)
     switch ($oDB->getDriverName()) {
         case 'mysql':
         case 'mysqli':
-            $oDB->createCommand()->alterColumn('{{users}}', 'password', 'TEXT NOT NULL');
+            $oDB->createCommand()->alterColumn('{{users}}', 'password', 'text NOT NULL');
             break;
         case 'pgsql':
 
             $userPasswords = $oDB->createCommand()->select(['uid', "encode(password::bytea, 'escape') as password"])->from('{{users}}')->queryAll();
 
             $oDB->createCommand()->renameColumn('{{users}}', 'password', 'password_blob');
-            $oDB->createCommand()->addColumn('{{users}}', 'password', "TEXT NOT NULL DEFAULT 'nopw'");
+            $oDB->createCommand()->addColumn('{{users}}', 'password', "text NOT NULL DEFAULT 'nopw'");
 
             foreach ($userPasswords as $userArray) {
                 $oDB->createCommand()->update('{{users}}', ['password' => $userArray['password']], 'uid=:uid', [':uid'=> $userArray['uid']]);
@@ -3297,13 +3335,13 @@ function upgradeTemplateTables304($oDB)
         'author'                 => 'string(150) DEFAULT NULL',
         'author_email'           => 'string DEFAULT NULL',
         'author_url'             => 'string DEFAULT NULL',
-        'copyright'              => 'TEXT',
-        'license'                => 'TEXT',
+        'copyright'              => 'text',
+        'license'                => 'text',
         'version'                => 'string(45) DEFAULT NULL',
         'api_version'            => 'string(45) NOT NULL',
         'view_folder'            => 'string(45) NOT NULL',
         'files_folder'           => 'string(45) NOT NULL',
-        'description'            => 'TEXT',
+        'description'            => 'text',
         'last_update'            => 'datetime DEFAULT NULL',
         'owner_id'               => 'integer DEFAULT NULL',
         'extends_template_name' => 'string(150) DEFAULT NULL',
@@ -3380,14 +3418,14 @@ function upgradeTemplateTables304($oDB)
         'sid'               => 'integer DEFAULT NULL',
         'gsid'              => 'integer DEFAULT NULL',
         'uid'               => 'integer DEFAULT NULL',
-        'files_css'         => 'TEXT',
-        'files_js'          => 'TEXT',
-        'files_print_css'   => 'TEXT',
-        'options'           => 'TEXT',
+        'files_css'         => 'text',
+        'files_js'          => 'text',
+        'files_print_css'   => 'text',
+        'options'           => 'text',
         'cssframework_name' => 'string(45) DEFAULT NULL',
-        'cssframework_css'  => 'TEXT',
-        'cssframework_js'   => 'TEXT',
-        'packages_to_load'  => 'TEXT',
+        'cssframework_css'  => 'text',
+        'cssframework_js'   => 'text',
+        'packages_to_load'  => 'text',
     ));
 
     // Add global configuration for Advanced Template

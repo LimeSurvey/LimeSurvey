@@ -159,7 +159,7 @@
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
                 <?php $admin_email = $oSurvey->adminemail; ?>
-                <label class=" control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
+                <label class=" control-label"  for='adminemail'><?php  eT("Administrator email address:"); ?></label>
                 <div class="">
                     <input class="form-control" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($admin_email); ?>" />
                     <?php if ($bShowInherited){ ?>
@@ -173,7 +173,7 @@
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
                 <?php $bounce_email = $oSurvey->bounce_email; ?>
-                <label class=" control-label"  for='bounce_email'><?php  eT("Bounce email:"); ?></label>
+                <label class=" control-label"  for='bounce_email'><?php  eT("Bounce email address:"); ?></label>
                 <div class="">
                     <input class="form-control" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" />
                     <?php if ($bShowInherited){ ?>
@@ -226,7 +226,7 @@
 
             <!-- Admin email -->
             <div class="form-group">
-                <label class=" control-label" for='adminemail'><?php  eT("Admin email:") ; ?></label>
+                <label class=" control-label" for='adminemail'><?php  eT("Administrator email address:") ; ?></label>
                 <div class="">
                     <input type='email' size='30'   class="form-control"   id='adminemail' name='adminemail' value='<?php echo $owner['email'] ; ?>' />
                 </div>
@@ -234,7 +234,7 @@
 
             <!-- Bounce Email -->
             <div class="form-group">
-                <label class=" control-label" for='bounce_email'><?php  eT("Bounce Email:") ; ?></label>
+                <label class=" control-label" for='bounce_email'><?php  eT("Bounce email address:") ; ?></label>
                 <div class="">
                     <input type='email' size='50'  class="form-control"  id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email'] ; ?>' />
                 </div>

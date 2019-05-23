@@ -289,7 +289,7 @@ function createDatabase($oDB)
             'entity' =>  "string(15) NOT NULL ",
             'entity_id' =>  "integer NOT NULL",
             'title' =>  "string(255) NOT NULL",
-            'message' =>  "TEXT NOT NULL",
+            'message' =>  "text NOT NULL",
             'status' =>  "string(15) NOT NULL DEFAULT 'new' ",
             'importance' =>  "integer NOT NULL DEFAULT 1",
             'display_class' =>  "string(31) DEFAULT 'default' ",
@@ -466,10 +466,10 @@ function createDatabase($oDB)
             'id' =>  "pk",
             'name' =>  "string(50) NOT NULL",
             'plugin_type' =>  "string(6) default 'user'",
-            'active' =>  "int NOT NULL default 0",
-            'priority' =>  "int NOT NULL default 0",
+            'active' =>  "integer NOT NULL default 0",
+            'priority' =>  "integer NOT NULL default 0",
             'version' =>  "string(32) NULL",
-            'load_error' => 'int default 0',
+            'load_error' => 'integer default 0',
             'load_error_message' => 'text'
         ), $options);
 
@@ -697,7 +697,7 @@ function createDatabase($oDB)
             'entity' => "string(15) NULL",
             'entity_id' => "string(31) NULL",
             'stg_name' => "string(63) NOT NULL",
-            'stg_value' => "TEXT NULL",
+            'stg_value' => "text NULL",
         ), $options);
 
         $oDB->createCommand()->createIndex('{{idx1_settings_user}}', '{{settings_user}}', 'uid', false);
@@ -831,7 +831,7 @@ function createDatabase($oDB)
             'ipaddr' => "string(1) NOT NULL default 'N'",
             'refurl' => "string(1) NOT NULL default 'N'",
             'datecreated' => "datetime",
-            'showsurveypolicynotice' => 'int DEFAULT 0',
+            'showsurveypolicynotice' => 'integer DEFAULT 0',
             'publicstatistics' => "string(1) NOT NULL default 'N'",
             'publicgraphs' => "string(1) NOT NULL default 'N'",
             'listpublic' => "string(1) NOT NULL default 'N'",
@@ -1059,29 +1059,29 @@ function createDatabase($oDB)
             'surveyls_survey_id' => "integer NOT NULL",
             'surveyls_language' => "string(45) NOT NULL DEFAULT 'en'",
             'surveyls_title' => "string(200) NOT NULL",
-            'surveyls_description' => "TEXT NULL",
-            'surveyls_welcometext' => "TEXT NULL",
-            'surveyls_endtext' => "TEXT NULL",
-            'surveyls_policy_notice' => "TEXT NULL",
-            'surveyls_policy_error' => "TEXT NULL",
+            'surveyls_description' => "text NULL",
+            'surveyls_welcometext' => "text NULL",
+            'surveyls_endtext' => "text NULL",
+            'surveyls_policy_notice' => "text NULL",
+            'surveyls_policy_error' => "text NULL",
             'surveyls_policy_notice_label' => 'string(192) NULL',
-            'surveyls_url' => "TEXT NULL",
+            'surveyls_url' => "text NULL",
             'surveyls_urldescription' => "string(255) NULL",
             'surveyls_email_invite_subj' => "string(255) NULL",
-            'surveyls_email_invite' => "TEXT NULL",
+            'surveyls_email_invite' => "text NULL",
             'surveyls_email_remind_subj' => "string(255) NULL",
-            'surveyls_email_remind' => "TEXT NULL",
+            'surveyls_email_remind' => "text NULL",
             'surveyls_email_register_subj' => "string(255) NULL",
-            'surveyls_email_register' => "TEXT NULL",
+            'surveyls_email_register' => "text NULL",
             'surveyls_email_confirm_subj' => "string(255) NULL",
-            'surveyls_email_confirm' => "TEXT NULL",
+            'surveyls_email_confirm' => "text NULL",
             'surveyls_dateformat' => "integer NOT NULL DEFAULT 1",
-            'surveyls_attributecaptions' => "TEXT NULL",
+            'surveyls_attributecaptions' => "text NULL",
             'email_admin_notification_subj' => "string(255) NULL",
-            'email_admin_notification' => "TEXT NULL",
+            'email_admin_notification' => "text NULL",
             'email_admin_responses_subj' => "string(255) NULL",
-            'email_admin_responses' => "TEXT NULL",
-            'surveyls_numberformat' => "INT NOT NULL DEFAULT 0",
+            'email_admin_responses' => "text NULL",
+            'surveyls_numberformat' => "integer NOT NULL DEFAULT 0",
             'attachments' => "text NULL",
         ), $options);
 
@@ -1213,7 +1213,7 @@ function createDatabase($oDB)
                 'title' =>  'string(192)',
                 'icon' =>  'string(64)',
                 'description' =>  'text',
-                'active' =>  'int DEFAULT 0',
+                'active' =>  'integer DEFAULT 0',
                 'settings' => 'text',
                 'permission' =>  'string(128) NOT NULL',
                 'permission_grade' =>  'string(128) NOT NULL'
@@ -1229,9 +1229,9 @@ function createDatabase($oDB)
     try {
         //tutorial user mapping
         $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
-            'tid' => 'int NOT NULL',
-            'uid' => 'int NOT NULL',
-            'taken' => 'int DEFAULT 1',
+            'tid' => 'integer NOT NULL',
+            'uid' => 'integer NOT NULL',
+            'taken' => 'integer DEFAULT 1',
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid','tid']);
@@ -1244,10 +1244,10 @@ function createDatabase($oDB)
     try {
         //tutorial entry groups
         $oDB->createCommand()->createTable('{{tutorial_entry_relation}}', array(
-            'teid' => 'int NOT NULL',
-            'tid' => 'int NOT NULL',
-            'uid' => 'int NULL',
-            'sid' => 'int NULL',
+            'teid' => 'integer NOT NULL',
+            'tid' => 'integer NOT NULL',
+            'uid' => 'integer NULL',
+            'sid' => 'integer NULL',
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{tutorial_entry_relation_pk}}', '{{tutorial_entry_relation}}', ['teid','tid']);
@@ -1265,7 +1265,7 @@ function createDatabase($oDB)
             '{{tutorial_entries}}',
             [
                 'teid' =>  'pk',
-                'ordering' =>  'int',
+                'ordering' =>  'integer',
                 'title' =>  'text',
                 'content' =>  'text',
                 'settings' => 'text'
@@ -1324,7 +1324,7 @@ function createDatabase($oDB)
         $oDB->createCommand()->createTable('{{user_groups}}', array(
             'ugid' => "pk",
             'name' => "string(20) NOT NULL",
-            'description' => "TEXT NOT NULL",
+            'description' => "text NOT NULL",
             'owner_id' => "integer NOT NULL",
         ), $options);
 
