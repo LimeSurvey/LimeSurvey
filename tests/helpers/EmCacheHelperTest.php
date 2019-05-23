@@ -99,4 +99,27 @@ class EmCacheHelperTest extends TestBaseClass
 
         $this->assertEquals(false, $value);
     }
+
+    /**
+     * Test mutliple surveys.
+     */
+    public function testMultipleSurveys()
+    {
+        \EmCacheHelper::init(['sid' => 1]);
+        \EmCacheHelper::set('somekey', 'value');
+
+        \EmCacheHelper::init(['sid' => 2]);
+        \EmCacheHelper::set('somekey', 'another_value');
+
+        \EmCacheHelper::init(['sid' => 1]);
+        // This should not flush cache sid 2.
+        \EmCacheHelper::flush();
+
+        \EmCacheHelper::init(['sid' => 2]);
+
+        /** @var string */
+        $value = \EmCacheHelper::get('somekey');
+
+        $this->assertEquals('another_value', $value);
+    }
 }
