@@ -47,6 +47,8 @@ class EmCacheHelper
         if (!self::useCache()) {
             return;
         }
+
+        Yii::app()->cache->set($key, $value);
     }
 
     /**
@@ -56,5 +58,14 @@ class EmCacheHelper
      */
     protected static function useCache()
     {
+        // If forced, always use.
+        if (Yii::app()->getConfig("force_emcache")) {
+            return true;
+        }
+
+        // Don't use when debugging.
+        if (YII_DEBUG) {
+            return false;
+        }
     }
 }
