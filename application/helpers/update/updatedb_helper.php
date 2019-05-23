@@ -2501,7 +2501,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oDB->createCommand()->renameTable('{{answers}}', '{{answers_update400}}');
             /* Create new answers with pk and copy answers_update400 Grouping by unique part */
             $oDB->createCommand()->createTable('{{answers}}',[
-                'aid' =>  "pk",
+                'aid' =>  'pk',
                 'qid' => 'integer NOT NULL',
                 'code' => 'string(5) NOT NULL',
                 'sortorder' => 'integer NOT NULL',
@@ -2518,10 +2518,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                     INNER JOIN {{surveys}} ON {{questions}}.sid = {{surveys}}.sid AND {{surveys}}.language = {{answers_update400}}.language
                 ")->execute();
             /* no pk in insert, get aid by INNER join */
-            $oDB->createCommand("INSERT INTO {{answer_l10ns}} (aid, answer, language) SELECT {{answers}}.aid, {{answers_update400}}.answer, {{answers_update400}}.language
-                    FROM {{answers_update400}}
-                    INNER JOIN {{answers}}
-                    ON {{answers_update400}}.qid = {{answers}}.qid AND {{answers_update400}}.code = {{answers}}.code AND {{answers_update400}}.scale_id = {{answers}}.scale_id");
+            $oDB->createCommand("INSERT INTO {{answer_l10ns}}
+                (aid, answer, language)
+                SELECT {{answers}}.aid, {{answers_update400}}.answer, {{answers_update400}}.language
+                FROM {{answers_update400}}
+                INNER JOIN {{answers}}
+                ON {{answers_update400}}.qid = {{answers}}.qid AND {{answers_update400}}.code = {{answers}}.code AND {{answers_update400}}.scale_id = {{answers}}.scale_id
+            ")->execute();
 
             $oDB->createCommand()->dropTable('{{answers_update400}}');
             $oDB->createCommand()->createIndex('{{answers_idx}}', '{{answers}}', ['qid', 'code', 'scale_id'], true);
@@ -2554,14 +2557,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'sortorder' => 'integer NOT NULL',
                 'assessment_value' => 'integer NOT NULL DEFAULT 0'
             ], $options);
-            switchMSSQLIdentityInsert('labels', true); // Untested
+            switchMSSQLIdentityInsert('labels', true);
             $oDB->createCommand("INSERT INTO {{labels}}
                 (id, lid, code, sortorder, assessment_value)
                 SELECT id, lid, code, sortorder, assessment_value
                 FROM {{labels_update400}}
                 GROUP BY id, lid, code, sortorder, assessment_value
                 ")->execute();
-            switchMSSQLIdentityInsert('labels', false); // Untested
+            switchMSSQLIdentityInsert('labels', false);
             $oDB->createCommand()->dropTable('{{labels_update400}}');
 
             // Extend language field on labelsets
@@ -2697,14 +2700,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'specialtype' =>  "string(20) NOT NULL default ''",
             ], $options);
             /* Get only survey->language */
-            $oDB->createCommand("INSERT INTO {{defaultvalues}}
-                (qid, scale_id, sqid, specialtype)
+            $oDB->createCommand("INSERT INTO {{defaultvalues}} (qid, scale_id, sqid, specialtype)
                 SELECT {{defaultvalues_update407}}.qid, {{defaultvalues_update407}}.scale_id, {{defaultvalues_update407}}.sqid, {{defaultvalues_update407}}.specialtype
                 FROM {{defaultvalues_update407}}
                     INNER JOIN {{questions}} ON {{defaultvalues_update407}}.qid = {{questions}}.qid
                     INNER JOIN {{surveys}} ON {{questions}}.sid = {{surveys}}.sid AND {{surveys}}.language = {{defaultvalues_update407}}.language
                 ")->execute();
             $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], false);
+            $oDB->createCommand("INSERT INTO {{defaultvalue_l10ns}} (dvid, language, defaultvalue)
+                SELECT {{defaultvalues}}.dvid, {{defaultvalues_update407}}.language, {{defaultvalues_update407}}.defaultvalue
+                FROM {{defaultvaluest}}
+                INNER JOIN {{defaultvalues_update407}}
+                    ON {{defaultvalues}}.qid = {{defaultvalues_update407}}.qid AND {{defaultvalues}}.sqid = {{defaultvalues_update407}}.sqid AND {{defaultvalues}}.scale_id = {{defaultvalues_update407}}.scale_id
+                ")->execute();
             $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>407),"stg_name='DBVersion'");
