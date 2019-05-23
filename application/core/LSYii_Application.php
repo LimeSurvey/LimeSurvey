@@ -154,8 +154,6 @@ class LSYii_Application extends CWebApplication
              $this->config = array_merge($this->config, $userConfigs['config']);
         }
         /* Check DB : let throw error if DB is broken issue #14875 */
-        Yii::app()->db->getConnectionStatus();
-        /* DB checked : Database config */
         $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
         /* No table settings_global : not installable or updatable */
         if(empty($settingsTableExist)) {
