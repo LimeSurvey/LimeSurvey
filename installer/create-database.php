@@ -274,7 +274,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{plugins}}', array(
             'id' =>  "pk",
             'name' =>  "string(50) NOT NULL",
-            'active' =>  "int NOT NULL default 0",
+            'active' =>  "integer NOT NULL default 0",
             'version' =>  "string(32) NULL",
         ));
 
@@ -536,7 +536,7 @@ function createDatabase($oDB){
             'ipaddr' => "string(1) NOT NULL default 'N'",
             'refurl' => "string(1) NOT NULL default 'N'",
             'datecreated' => "datetime",
-            'showsurveypolicynotice' => 'int DEFAULT 0',
+            'showsurveypolicynotice' => 'integer DEFAULT 0',
             'publicstatistics' => "string(1) NOT NULL default 'N'",
             'publicgraphs' => "string(1) NOT NULL default 'N'",
             'listpublic' => "string(1) NOT NULL default 'N'",
@@ -733,7 +733,7 @@ function createDatabase($oDB){
                 'title' =>  'string(192)',
                 'icon' =>  'string(64)',
                 'description' =>  'text',
-                'active' =>  'int DEFAULT 0',
+                'active' =>  'integer DEFAULT 0',
                 'settings' => 'text',
                 'permission' =>  'string(128) NOT NULL',
                 'permission_grade' =>  'string(128) NOT NULL'
@@ -743,19 +743,19 @@ function createDatabase($oDB){
 
         //tutorial user mapping
         $oDB->createCommand()->createTable('{{map_tutorial_users}}', array(
-            'tid' => 'int NOT NULL',
-            'uid' => 'int NOT NULL',
-            'taken' => 'int DEFAULT 1',
+            'tid' => 'integer NOT NULL',
+            'uid' => 'integer NOT NULL',
+            'taken' => 'integer DEFAULT 1',
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{map_tutorial_users_pk}}', '{{map_tutorial_users}}', ['uid','tid']);
 
         //tutorial entry groups
         $oDB->createCommand()->createTable('{{tutorial_entry_relation}}', array(
-            'teid' => 'int NOT NULL',
-            'tid' => 'int NOT NULL',
-            'uid' => 'int NULL',
-            'sid' => 'int NULL',
+            'teid' => 'integer NOT NULL',
+            'tid' => 'integer NOT NULL',
+            'uid' => 'integer NULL',
+            'sid' => 'integer NULL',
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{tutorial_entry_relation_pk}}', '{{tutorial_entry_relation}}', ['teid','tid']);
@@ -766,7 +766,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable(
             '{{tutorial_entries}}',[
                 'teid' =>  'pk',
-                'ordering' =>  'int',
+                'ordering' =>  'integer',
                 'title' =>  'text',
                 'content' =>  'text',
                 'settings' => 'text'
