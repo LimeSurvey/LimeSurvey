@@ -21,6 +21,7 @@
     * @author Denis Chenu <http://sondages.pro>
     */
     Yii::import('application.helpers.expressions.em_core_helper', true);
+    Yii::import('application.helpers.expressions.em_cache_exception', true);
     Yii::import('application.helpers.expressions.em_cache_helper', true);
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('frontend');
@@ -4908,6 +4909,7 @@
             }
             //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
+            EmCacheHelper::init($surveyinfo);
             $LEM->initialized=true;
 
             if ($initializeVars)
