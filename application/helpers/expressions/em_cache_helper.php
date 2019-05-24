@@ -148,7 +148,7 @@ class EmCacheHelper
      *
      * @return boolean
      */
-    protected static function useCache()
+    public static function useCache()
     {
         // If forced, always use.
         if (\Yii::app()->getConfig("force_emcache")) {
