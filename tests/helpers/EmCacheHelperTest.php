@@ -25,8 +25,7 @@ class EmCacheHelperTest extends TestBaseClass
         }
 
         if (get_class(\Yii::app()->emcache) === 'CDummyCache') {
-            echo 'emcache is CDummyCache';
-            exit(1);
+            \Yii::app()->setComponent('emcache', new \CFileCache());
         }
     }
 
@@ -36,6 +35,7 @@ class EmCacheHelperTest extends TestBaseClass
     public static function teardownAfterClass()
     {
         \EmCacheHelper::flushAll();
+        \Yii::app()->setComponent('emcache', new \CDummyCache());
     }
 
     /**
