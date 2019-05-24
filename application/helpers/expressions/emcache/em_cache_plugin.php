@@ -8,6 +8,5 @@ class EmCachePlugin extends PluginBase
     public function beforeModelSave()
     {
         $event = $this->getEvent();
-        die('before');
     }
 }

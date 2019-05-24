@@ -16,17 +16,13 @@ class EmCacheHelper
     protected static $surveyinfo = null;
 
     /**
-     * 
+     * @return void
      */
     public static function bindEvents()
     {
         $em = \Yii::app()->pluginManager;
         $plugin = new EmCachePlugin($em, '_emcacheplugin');
         $em->subscribe($plugin, 'beforeModelSave');
-        //$s = new Survey();
-        //$s->sid = rand(0, 100000);
-        //$s->save();
-        //exit;
     }
 
     /**
@@ -169,7 +165,7 @@ class EmCacheHelper
             return false;
         }
 
-        // If forced, always use (except from CLI and admin, because that crashes with tests).
+        // If forced, always use (except from admin, because that crashes with tests).
         if (\Yii::app()->getConfig("force_emcache")) {
             return true;
         }
