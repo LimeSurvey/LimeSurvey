@@ -1648,6 +1648,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     $aOldNewFieldmap = reverseTranslateFieldNames($iOldSID, $iNewSID, $aGIDReplacements, $aQIDReplacements);
     $results['FieldReMap'] = $aOldNewFieldmap;
     LimeExpressionManager::SetSurveyId($iNewSID);
+    EmCacheHelper::init(['sid' => $iNewSID]);
     translateInsertansTags($iNewSID, $iOldSID, $aOldNewFieldmap);
     replaceExpressionCodes($iNewSID, $aQuestionCodeReplacements);
     replaceExpressionCodes($iNewSID, $aQuestionsMapping); // replace question codes in format "38612X105X3011"
