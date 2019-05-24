@@ -186,8 +186,9 @@ $internalConfig = array(
             'class' => defined('YII_DEBUG') && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
         ),
         // For more info about the emcache, see application/helpers/expressions/em_cache_helper.php.
+        // Disabled by default. Enable by adding emcache in config.php after installation.
         'emcache'=>array(
-            'class' => defined('YII_DEBUG') && YII_DEBUG ? 'system.caching.CDummyCache' : 'CFileCache',
+            'class' => 'system.caching.CDummyCache'
         ),
         'db' => array(
             'schemaCachingDuration' => 3600,
