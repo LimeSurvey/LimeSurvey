@@ -144,13 +144,23 @@ class EmCacheHelper
     }
 
     /**
-     * True if all conditions are set to use the emcache.
+     * True if all conditions are met to use the emcache.
      *
      * @return boolean
      */
     public static function useCache()
     {
-        // If forced, always use.
+        // Never use from CLI.
+        if (php_sapi_name() === 'cli') {
+            return false;
+        }
+
+        // Never in admin.
+        if (get_class(\Yii::app()->getController()) !== 'SurveyController') {
+            return false;
+        }
+
+        // If forced, always use (except from CLI and admin, because that crashes with tests).
         if (\Yii::app()->getConfig("force_emcache")) {
             return true;
         }
