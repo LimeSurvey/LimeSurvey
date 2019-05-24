@@ -150,11 +150,6 @@ class EmCacheHelper
      */
     public static function useCache()
     {
-        // Never use from CLI.
-        if (php_sapi_name() === 'cli') {
-            return false;
-        }
-
         // Never in admin.
         if (get_class(\Yii::app()->getController()) !== 'SurveyController') {
             return false;
