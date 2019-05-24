@@ -16,6 +16,20 @@ class EmCacheHelper
     protected static $surveyinfo = null;
 
     /**
+     * 
+     */
+    public static function bindEvents()
+    {
+        $em = \Yii::app()->pluginManager;
+        $plugin = new EmCachePlugin($em, '_emcacheplugin');
+        $em->subscribe($plugin, 'beforeModelSave');
+        //$s = new Survey();
+        //$s->sid = rand(0, 100000);
+        //$s->save();
+        //exit;
+    }
+
+    /**
      * Set survey info used by this request.
      *
      * @param array|null $surveyinfo
