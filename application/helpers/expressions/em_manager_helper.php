@@ -736,6 +736,9 @@
             $_SESSION['LEMforceRefresh'] = true;// For Expression manager string
             /* Bug #09589 : update a survey don't reset actual test => Force reloading of survey */
             $iSessionSurveyId=self::getLEMsurveyId();
+            if ($iSessionSurveyId) {
+                EmCacheHelper::flush($iSessionSurveyId);
+            }
             if($aSessionSurvey=Yii::app()->session["survey_{$iSessionSurveyId}"])
             {
                 $aSessionSurvey['LEMtokenResume']=true;
