@@ -17,6 +17,17 @@ class EmCacheHelperTest extends TestBaseClass
     {
         \Yii::import('application.helpers.expressions.em_cache_exception', true);
         \Yii::import('application.helpers.expressions.em_cache_helper', true);
+
+
+        if (!\EmCacheHelper::useCache()) {
+            echo 'emcache is not set to use';
+            exit(1);
+        }
+
+        if (get_class(\Yii::app()->emcache) === 'CDummyCache') {
+            echo 'emcache is CDummyCache';
+            exit(1);
+        }
     }
 
     /**
@@ -115,11 +126,13 @@ class EmCacheHelperTest extends TestBaseClass
         // This should not flush cache sid 2.
         \EmCacheHelper::flush();
 
+        $value = \EmCacheHelper::get('somekey');
+        $this->assertEquals(false, $value);
+
         \EmCacheHelper::init(['sid' => 2]);
 
         /** @var string */
         $value = \EmCacheHelper::get('somekey');
-
         $this->assertEquals('another_value', $value);
     }
 }
