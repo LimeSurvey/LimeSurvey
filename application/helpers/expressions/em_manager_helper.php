@@ -21,8 +21,9 @@
     * @author Denis Chenu <http://sondages.pro>
     */
     Yii::import('application.helpers.expressions.em_core_helper', true);
-    Yii::import('application.helpers.expressions.em_cache_exception', true);
-    Yii::import('application.helpers.expressions.em_cache_helper', true);
+    Yii::import('application.helpers.expressions.emcache.em_cache_exception', true);
+    Yii::import('application.helpers.expressions.emcache.em_cache_plugin', true);
+    Yii::import('application.helpers.expressions.emcache.em_cache_helper', true);
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
