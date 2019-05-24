@@ -51,11 +51,10 @@ $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(
             'grid-reload' => 'yes',
             //modal
             'actionType' => 'modal',
-            'modalType'     => 'yes-no',
+            'modalType'     => 'yes-no-lg',
             'keepopen'      => 'yes',
-            'yes'           => gT('Apply'),
-            'no'            => gT('Cancel'),
             'sModalTitle'   => gT('Batch change permissions'),
+            'htmlFooterButtons' => [],
             'htmlModalBody' => App()->getController()->renderPartial('/admin/usermanagement/massiveAction/_updatepermissions', [], true)
         ),
     )

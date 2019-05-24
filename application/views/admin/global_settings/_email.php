@@ -8,21 +8,21 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="form-group col-sm-6">
+        <div class="form-group col-sm-12">
             <label class=" control-label"  for='siteadminemail'><?php eT("Default site admin email:"); ?></label>
             <div class="">
                 <input class="form-control" type='email' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminemail')); ?>" />
             </div>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group col-sm-12">
             <label class="  control-label"  for='siteadminname'><?php eT("Administrator name:"); ?></label>
             <div class="">
                 <input class="form-control"  type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminname')); ?>" /><br /><br />
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-12">
         <div class="form-group">
             <label class="  control-label"  for='emailmethod'><?php eT("Email method:"); ?></label>
             <div class="">
@@ -92,18 +92,6 @@
             <div class="">
                 <input class="form-control"  type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars(getGlobalSetting('maxemails')); ?>" />
             </div>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="form-group">
-            <label class="control-label" for="reset_password_email"> <?=gT("Reset password email")?></label>
-            <textarea class="form-control" name="reset_password_email" id="reset_password_email"><?=getGlobalSetting('reset_password_email')?></textarea>
-            <p class="alert alert-warning">If you want to use the internal automatically translated text please leave this blank.</p>
-        </div>
-        <div class="form-group">
-            <label class="control-label" for="new_user_email"> <?=gT("New user email")?></label>
-            <textarea class="form-control" name="new_user_email" id="new_user_email"><?=getGlobalSetting('reset_password_email')?></textarea>
-            <p class="alert alert-warning">If you want to use the internal automatically translated text please leave this blank.</p>
         </div>
     </div>
 </div>

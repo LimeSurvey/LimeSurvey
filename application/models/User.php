@@ -361,6 +361,12 @@ class User extends LSActiveRecord
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
 
+    public function getGroupList() {
+        $collector = array_map(function($oUserInGroup) {
+            return $oUserInGroup->name;
+        }, $this->groups);
+        return join(', ', $collector);
+    }
 
     /**
      * Return all super admins in the system
@@ -666,26 +672,32 @@ class User extends LSActiveRecord
             array(
                 "name" => 'full_name',
                 "header" => gT("Full name")
+            ),
+            array(
+                "name" =>"created",
+                "header" => gT("Created on"),
+                "value" => '$data->formattedDateCreated',
+    
+            ),
+            array(
+                "name" =>"parentUserName",
+                "header" => gT("Created by"),
             )
         );
+        
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $cols[] = array(
                 "name" => 'surveysCreated',
-                "header" => gT("No of surveys")
+                "header" => gT("No of surveys"),
+                'filter' => false
+            );
+            $cols[] = array(
+                "name" => 'groupList',
+                "header" => gT("Usergroups"),
+                'filter' => false
             );
         }
 
-        $cols[] = array(
-            "name" =>"parentUserName",
-            "header" => gT("Created by"),
-        );
-
-        $cols[] = array(
-            "name" =>"created",
-            "header" => gT("Created on"),
-            "value" => '$data->formattedDateCreated',
-
-        );
         return $cols;
     }
 

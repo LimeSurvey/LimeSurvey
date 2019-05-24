@@ -65,6 +65,6 @@
 
         private function isView($display)
         {
-            return in_array($display, array('yes-no', 'empty'));
+            return in_array($display, array('yes-no', 'empty', 'yes-no-lg', 'empty-lg'));
         }
     }

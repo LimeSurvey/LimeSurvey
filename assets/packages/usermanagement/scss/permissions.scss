@@ -1,0 +1,18 @@
+.selector--edit-permissions-container {
+    .general-row-selector {
+        &.incomplete-selection{
+            &:before {
+                opacity: 1;
+                z-index: 1;
+            }
+            &:after {opacity: 0.6;}
+        }
+    }
+    .specific-permission-selector {
+        &:before {
+            opacity: 1;
+            z-index: 1;
+        }
+        &:after {opacity: 0.6;}
+    }
+}

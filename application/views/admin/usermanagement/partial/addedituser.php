@@ -11,7 +11,7 @@
             'enableClientValidation'=>false,
         ));?>
 
-        <input type="hidden" value="<?=$oUser->uid?>" name="userid" />
+        <?=$form->hiddenField($oUser,'uid', ['uid' => 'User_Form_users_id'])?>
         <div class="row ls-space margin top-5 bottom-5 hidden" id="UserManagement--errors">
 
         </div>
