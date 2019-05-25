@@ -114,7 +114,6 @@ function retrieveAnswers($ia)
     if ($value !== false) {
         return $value;
     }
-    echo ' | no retrieveAnswers cache';
 
     $display    = $ia[7]; //DISPLAY
     $qid        = $ia[0]; // Question ID

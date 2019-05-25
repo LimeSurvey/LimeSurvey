@@ -449,7 +449,6 @@ class QuestionGroup extends LSActiveRecord
     {
         $cacheKey = 'getTotalGroupsWithoutQuestions_' . $surveyid;
         $value = EmCacheHelper::get($cacheKey);
-        var_dump($value);
         if ($value !== false) {
             return $value;
         }
@@ -458,7 +457,6 @@ class QuestionGroup extends LSActiveRecord
             left join {{questions}} on  {{groups}}.gid={{questions}}.gid
             where {{groups}}.sid={$surveyid} and qid is null";
         $result = Yii::app()->db->createCommand($sQuery)->queryScalar();
-        var_dump($result);
 
         EmCacheHelper::set($cacheKey, $result);
 

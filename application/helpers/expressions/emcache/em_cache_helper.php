@@ -42,8 +42,6 @@ class EmCacheHelper
             throw new \InvalidArgumentException('required key $surveyinfo[sid] is empty, cannot initialise helper');
         }
 
-        var_dump('init done');
-
         self::$surveyinfo = $surveyinfo;
     }
 
@@ -67,17 +65,20 @@ class EmCacheHelper
      */
     public static function flush($sid = null)
     {
-        if ($sid) {
-            \Yii::app()->emcache->set($sid, []);
-            return;
-        }
+        // TODO: How to flush all keys with previx survey id?
+        \Yii::app()->emcache->flush();
 
-        if (empty(self::$surveyinfo)) {
-            throw new EmCacheException('self::$surveyinfo is null, helper not initialised');
-        }
+        //if ($sid) {
+            //\Yii::app()->emcache->set($sid, []);
+            //return;
+        //}
+
+        //if (empty(self::$surveyinfo)) {
+            //throw new EmCacheException('self::$surveyinfo is null, helper not initialised');
+        //}
 
         // Set survey cache array to empty.
-        \Yii::app()->emcache->set(self::$surveyinfo['sid'], []);
+        //\Yii::app()->emcache->set(self::$surveyinfo['sid'], []);
     }
 
     /**
@@ -192,6 +193,11 @@ class EmCacheHelper
 
         // Don't use when debugging.
         if (YII_DEBUG) {
+            return false;
+        }
+
+        // No point setting and getting for dummy cache.
+        if (get_class(\Yii::app()->emcache) === 'CDummyCache') {
             return false;
         }
 
