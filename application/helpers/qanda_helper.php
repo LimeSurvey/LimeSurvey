@@ -105,6 +105,16 @@ function retrieveAnswers($ia)
     //globalise required config variables
     global $thissurvey; //These are set by index.php
 
+    // TODO: This can be cached in some special cases.
+    // 1. If move back is disabled
+    // 2. Now tokens
+    // 3. Always first time it's shown to one user (and no tokens).
+    $cacheKey = sha1(implode('_', $ia));
+    $value = EmCacheHelper::get($cacheKey);
+    if ($value !== false) {
+        return $value;
+    }
+
     $display    = $ia[7]; //DISPLAY
     $qid        = $ia[0]; // Question ID
     $qtitle     = $ia[3];
@@ -355,6 +365,9 @@ function retrieveAnswers($ia)
     // =====================================================
 
     $qanda = array($qtitle, $answer, 'help', $display, $qid, $ia[2], $ia[5], $ia[1]);
+
+    EmCacheHelper::set($cacheKey, [$qanda, $inputnames]);
+
     //New Return
     return array($qanda, $inputnames);
 }
