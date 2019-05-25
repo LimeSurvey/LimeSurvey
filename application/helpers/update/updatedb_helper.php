@@ -2534,18 +2534,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             if(Yii::app()->db->schema->getTable('{{label_l10ns}}')){
                 $oDB->createCommand()->dropTable('{{label_l10ns}}');
             }
-            $oDB->createCommand()->createTable('{{label_l10ns}}', array(
-                'id' =>  "pk",
-                'label_id' =>  "integer NOT NULL",
-                'title' =>  "text",
-                'language' =>  "string(20) NOT NULL DEFAULT 'en'"
-            ), $options);
-            $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
-            $oDB->createCommand("INSERT INTO {{label_l10ns}}
-                (label_id, title, language)
-                SELECT {{labels}}.id, title, language
-                FROM {{labels}}
-                ")->execute();
             if(Yii::app()->db->schema->getTable('{{labels_update400}}')){
                 $oDB->createCommand()->dropTable('{{labels_update400}}');
             }
@@ -2557,14 +2545,26 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'sortorder' => 'integer NOT NULL',
                 'assessment_value' => 'integer NOT NULL DEFAULT 0'
             ], $options);
-            switchMSSQLIdentityInsert('labels', true);
+            /* The previous id is broken and can not be used, create a new one */
+            /* we can groub by lid and code, adding min(sortorder), min(assessment_value) if they are different (this fix different value for deifferent language) */
             $oDB->createCommand("INSERT INTO {{labels}}
-                (id, lid, code, sortorder, assessment_value)
-                SELECT id, lid, code, sortorder, assessment_value
+                (lid, code, sortorder, assessment_value)
+                SELECT lid, code, min(sortorder), min(assessment_value)
                 FROM {{labels_update400}}
-                GROUP BY id, lid, code, sortorder, assessment_value
+                GROUP BY lid, code")->execute();
+            $oDB->createCommand()->createTable('{{label_l10ns}}', array(
+                'id' =>  "pk",
+                'label_id' =>  "integer NOT NULL",
+                'title' =>  "text",
+                'language' =>  "string(20) NOT NULL DEFAULT 'en'"
+            ), $options);
+            $oDB->createCommand()->createIndex('{{idx1_label_l10ns}}', '{{label_l10ns}}', ['label_id', 'language'], true);
+            $oDB->createCommand("INSERT INTO {{label_l10ns}}
+                (label_id, title, language)
+                SELECT {{labels}}.id ,{{labels_update400}}.title,{{labels_update400}}.language
+                FROM {{labels_update400}}
+                    INNER JOIN {{labels}} ON {{labels_update400}}.lid = {{labels}}.lid AND {{labels_update400}}.code = {{labels}}.code 
                 ")->execute();
-            switchMSSQLIdentityInsert('labels', false);
             $oDB->createCommand()->dropTable('{{labels_update400}}');
 
             // Extend language field on labelsets
