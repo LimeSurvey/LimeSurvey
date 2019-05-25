@@ -42,6 +42,8 @@ class EmCacheHelper
             throw new \InvalidArgumentException('required key $surveyinfo[sid] is empty, cannot initialise helper');
         }
 
+        var_dump('init done');
+
         self::$surveyinfo = $surveyinfo;
     }
 
@@ -100,17 +102,21 @@ class EmCacheHelper
             return false;
         }
 
-        $surveyCache = self::getSurveyCache();
+        //$surveyCache = self::getSurveyCache();
 
-        if (empty($surveyCache)) {
-            return false;
-        }
+        //if (empty($surveyCache)) {
+            //return false;
+        //}
 
-        if (empty($surveyCache[$key])) {
-            return false;
-        }
+        //if (empty($surveyCache[$key])) {
+            //return false;
+        //}
 
-        return $surveyCache[$key];
+        // Append survey id to cache key.
+        $key = 'survey' . self::$surveyinfo['sid'] . $key;
+        return \Yii::app()->emcache->get($key);
+
+        //return $surveyCache[$key];
     }
 
     /**
@@ -126,12 +132,20 @@ class EmCacheHelper
             return;
         }
 
-        /** @var array */
-        $surveyCache = self::getSurveyCache();
-        $surveyCache[$key] = $value;
+        // Append survey id to cache key.
+        $key = 'survey' . self::$surveyinfo['sid'] . $key;
 
-        // TODO: Reset ALL values for survey cache everytime we set? Slow?
-        \Yii::app()->emcache->set(self::$surveyinfo['sid'], $surveyCache);
+        /** @var array */
+        //$surveyCache = self::getSurveyCache();
+        //$surveyCache[$key] = $value;
+
+        echo ' | setting cache key ' . $key;  // . ' with value ' . json_encode($value);
+
+        $result = \Yii::app()->emcache->set($key, $value);
+
+        if (!$result && YII_DEBUG) {
+            throw new EmCacheException('Failed caching key ' . $key);
+        }
     }
 
     /**
@@ -142,6 +156,11 @@ class EmCacheHelper
      */
     protected static function getSurveyCache()
     {
+        //static $cache = null;
+        //if ($cache) {
+            //return $cache;
+        //}
+
         if (empty(self::$surveyinfo)) {
             throw new EmCacheException('self::$surveyinfo is null, helper not initialised');
         }
@@ -150,7 +169,8 @@ class EmCacheHelper
             throw new EmCacheException('self::$surveyinfo[sid] is null, helper not properly initialised');
         }
 
-        return \Yii::app()->emcache->get(self::$surveyinfo['sid']);
+        $cache = \Yii::app()->emcache->get(self::$surveyinfo['sid']);
+        return $cache;
     }
 
     /**

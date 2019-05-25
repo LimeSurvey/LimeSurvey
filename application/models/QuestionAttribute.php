@@ -163,6 +163,11 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function getQuestionAttributes($iQuestionID, $sLanguage = null)
     {
+        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . $sLanguage;
+        $value = EmCacheHelper::get($cacheKey);
+        if ($value !== false) {
+            return $value;
+        }
 
         $iQuestionID = (int) $iQuestionID;
         static $aQuestionAttributesStatic = array(); // TODO : replace by Yii::app()->cache
@@ -242,6 +247,9 @@ class QuestionAttribute extends LSActiveRecord
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
         $aQuestionAttributesStatic[$iQuestionID] = $aQuestionAttributes;
+
+        EmCacheHelper::set($cacheKey, $aQuestionAttributes);
+
         return $aQuestionAttributes;
     }
 

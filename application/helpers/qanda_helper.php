@@ -109,11 +109,12 @@ function retrieveAnswers($ia)
     // 1. If move back is disabled
     // 2. Now tokens
     // 3. Always first time it's shown to one user (and no tokens).
-    $cacheKey = sha1(implode('_', $ia));
+    $cacheKey = 'retrieveAnswers_' . sha1(implode('_', $ia));
     $value = EmCacheHelper::get($cacheKey);
     if ($value !== false) {
         return $value;
     }
+    echo ' | no retrieveAnswers cache';
 
     $display    = $ia[7]; //DISPLAY
     $qid        = $ia[0]; // Question ID

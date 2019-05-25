@@ -736,9 +736,6 @@
             $_SESSION['LEMforceRefresh'] = true;// For Expression manager string
             /* Bug #09589 : update a survey don't reset actual test => Force reloading of survey */
             $iSessionSurveyId=self::getLEMsurveyId();
-            if ($iSessionSurveyId) {
-                EmCacheHelper::flush($iSessionSurveyId);
-            }
             if($aSessionSurvey=Yii::app()->session["survey_{$iSessionSurveyId}"])
             {
                 $aSessionSurvey['LEMtokenResume']=true;
@@ -8657,7 +8654,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         */
         private function getQuestionAttributesForEM($surveyid=0,$qid=0, $lang='')
         {
-            $cacheKey = $surveyid . '_' . $qid . '_' . $lang;
+            $cacheKey = 'getQuestionAttributesForEM_' . $surveyid . '_' . $qid . '_' . $lang;
             $value = EmCacheHelper::get($cacheKey);
             if ($value !== false) {
                 return $value;
@@ -8793,6 +8790,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             {
                 $lang=Survey::model()->findByPk($surveyid)->language;
             }
+
+
+            $cacheKey = 'getGroupInfoForEM_' . $surveyid . '_' . $lang;
+            $value = EmCacheHelper::get($cacheKey);
+            if ($value !== false) {
+                return $value;
+            }
+
             $oQuestionGroups=QuestionGroup::model()->findAll(array('condition'=>"sid=:sid and language=:language",'order'=>'group_order','params'=>array(":sid"=>$surveyid,':language'=>$lang)));
             $qinfo = array();
             $_order=0;
@@ -8823,6 +8828,9 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     ++$_order;
                 }
             }
+
+            EmCacheHelper::set($cacheKey, $qinfo);
+
             return $qinfo;
         }
 
