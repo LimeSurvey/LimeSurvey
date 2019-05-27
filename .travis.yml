@@ -39,7 +39,7 @@ before_script:
     - cp application/config/config-sample-mysql.php application/config/config.php
     # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
     # TODO: Disable, a lines was added to config file and some tests started to fail.
-    - sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
+    # - sed -i '61s/.*/        "debug"=>2,/' application/config/config.php
 
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
