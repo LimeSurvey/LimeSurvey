@@ -49,6 +49,9 @@ class EmCacheHelper
      */
     public static function clearInit()
     {
+        if (isset(self::$surveyinfo)) {
+            self::flush();
+        }
         self::$surveyinfo = null;
     }
 
@@ -60,8 +63,11 @@ class EmCacheHelper
      * @return void
      * @throws EmCacheException if surveyinfo is not initialised.
      */
-    public static function flush($sid = null)
+    public static function flush()
     {
+        if (empty(self::$surveyinfo)) {
+            throw new EmCacheException('Cannot flush emcache unless initalised');
+        }
         \Yii::app()->emcache->flush();
     }
 
@@ -109,7 +115,7 @@ class EmCacheHelper
      */
     public static function cacheQanda()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -140,11 +146,15 @@ class EmCacheHelper
         }
 
         // Only use emcache when survey is active.
-        if ($this->surveyinfo['active'] !== 'Y') {
+        if (self::$surveyinfo['active'] !== 'Y') {
             return false;
         }
 
-        // TODO: randomized.
+        // Never use emcache if the survey is randomized: createFieldMap will need to be remade for every request.
+        //$surveyId = $this->surveyinfo['sid'];
+        //if (isset(Yii::app()->session['survey_'.$surveyId]['fieldmap-'.$surveyId.'-randMaster'])) {
+            //return false;
+        //}
 
         return true;
     }
