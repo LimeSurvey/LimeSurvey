@@ -487,12 +487,6 @@ class Template extends LSActiveRecord
             $sTemplateName = App()->getConfig('defaulttheme');
         }
 
-        //$cacheKey = $sTemplateName . '_' . $iSurveyId . '_' . $iSurveyGroupId . '_' . $bForceXML . '_' . $abstractInstance;
-        //$value = EmCacheHelper::get($cacheKey);
-        //if ($value !== false) {
-            //return json_decode($value);
-        //}
-
         if ($bForceXML === null) {
             // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
             if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG) {
@@ -510,8 +504,6 @@ class Template extends LSActiveRecord
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
             self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
-
-        //EmCacheHelper::set($cacheKey, json_encode(self::$instance));
 
         return self::$instance;
     }
