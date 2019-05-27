@@ -27,7 +27,6 @@ class Survey_Common_Action extends CAction
 {
     public function __construct($controller = null, $id = null)
     {
-        EmCacheHelper::bindEvents();
         parent::__construct($controller, $id);
         Yii::app()->request->updateNavigationStack();
         // Make sure viewHelper can be autoloaded
@@ -64,7 +63,6 @@ class Survey_Common_Action extends CAction
         $params = $this->_addPseudoParams($params);
 
         if (!empty($params['iSurveyId'])) {
-            EmCacheHelper::bindEvents();
             LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
         }
         // Check if the method is public and of the action class, not its parents

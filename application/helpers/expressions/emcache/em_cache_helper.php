@@ -17,21 +17,6 @@ class EmCacheHelper
     protected static $surveyinfo = null;
 
     /**
-     * Bind this helper to a bunch of events that will clear the cache when activated.
-     *
-     * NB: This need to happen even if useCache() returns false, because
-     * all the events are applied in the admin.
-     *
-     * NB: Always use beforeSave. afterSave is only invoked if the save
-     * was successful.
-     *
-     * @return void
-     */
-    public static function bindEvents()
-    {
-    }
-
-    /**
      * Set survey info used by this request.
      *
      * @param array|null $surveyinfo
@@ -124,7 +109,7 @@ class EmCacheHelper
      */
     public static function cacheQanda()
     {
-        return true;
+        return false;
     }
 
     /**
