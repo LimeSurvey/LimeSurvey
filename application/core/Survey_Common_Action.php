@@ -27,10 +27,12 @@ class Survey_Common_Action extends CAction
 {
     public function __construct($controller = null, $id = null)
     {
+        EmCacheHelper::bindEvents();
         parent::__construct($controller, $id);
         Yii::app()->request->updateNavigationStack();
         // Make sure viewHelper can be autoloaded
         Yii::import('application.helpers.viewHelper');
+
     }
 
     /**

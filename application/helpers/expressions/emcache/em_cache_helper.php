@@ -1,7 +1,21 @@
 <?php
 
+class EmCachePlugin extends PluginBase
+{
+    /**
+     * 
+     */
+    public function beforeModelSave()
+    {
+        $event = $this->getEvent();
+        var_dump($event->get('model')->sid);
+        //EmCacheHelper::flush();
+    }
+}
+
 /**
  * Discussion here: https://bugs.limesurvey.org/view.php?id=14859
+ * PR: https://github.com/LimeSurvey/LimeSurvey/pull/1273
  *
  * @since 2019-05-23
  * @author Olle Haerstedt
@@ -16,13 +30,26 @@ class EmCacheHelper
     protected static $surveyinfo = null;
 
     /**
+     * Bind this helper to a bunch of events that will clear the cache when activated.
+     *
+     * NB: This need to happen even if useCache() returns false, because
+     * all the events are applied in the admin.
+     *
+     * NB: Always use beforeSave. afterSave is only invoked if the save
+     * was successful.
+     *
      * @return void
      */
     public static function bindEvents()
     {
-        $em = \Yii::app()->pluginManager;
-        $plugin = new EmCachePlugin($em, '_emcacheplugin');
-        $em->subscribe($plugin, 'beforeModelSave');
+        $pm = \Yii::app()->pluginManager;
+        $plugin = new EmCachePlugin($pm, 'emcacheplugin');
+        $pm->subscribe($plugin, 'beforeModelSave', 'beforeModelSave');
+        $s = new Survey();
+        $s->sid = rand(1, 100000);
+        $result = $s->save();
+        //var_dump($result);
+        die('end');
     }
 
     /**
