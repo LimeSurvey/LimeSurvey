@@ -2700,18 +2700,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
                 'specialtype' =>  "string(20) NOT NULL default ''",
             ], $options);
             /* Get only survey->language */
-            $oDB->createCommand("INSERT INTO {{defaultvalues}} (qid, scale_id, sqid, specialtype)
-                SELECT {{defaultvalues_update407}}.qid, {{defaultvalues_update407}}.scale_id, {{defaultvalues_update407}}.sqid, {{defaultvalues_update407}}.specialtype
+            $oDB->createCommand("INSERT INTO {{defaultvalues}} (qid, sqid, scale_id, specialtype)
+                SELECT qid, sqid, scale_id, specialtype
                 FROM {{defaultvalues_update407}}
-                    INNER JOIN {{questions}} ON {{defaultvalues_update407}}.qid = {{questions}}.qid
-                    INNER JOIN {{surveys}} ON {{questions}}.sid = {{surveys}}.sid AND {{surveys}}.language = {{defaultvalues_update407}}.language
+                GROUP BY qid, sqid, scale_id, specialtype
                 ")->execute();
             $oDB->createCommand()->createIndex('{{idx1_defaultvalue}}', '{{defaultvalues}}', ['qid', 'scale_id', 'sqid', 'specialtype'], false);
             $oDB->createCommand("INSERT INTO {{defaultvalue_l10ns}} (dvid, language, defaultvalue)
                 SELECT {{defaultvalues}}.dvid, {{defaultvalues_update407}}.language, {{defaultvalues_update407}}.defaultvalue
                 FROM {{defaultvalues}}
                 INNER JOIN {{defaultvalues_update407}}
-                    ON {{defaultvalues}}.qid = {{defaultvalues_update407}}.qid AND {{defaultvalues}}.sqid = {{defaultvalues_update407}}.sqid AND {{defaultvalues}}.scale_id = {{defaultvalues_update407}}.scale_id
+                    ON {{defaultvalues}}.qid = {{defaultvalues_update407}}.qid AND {{defaultvalues}}.sqid = {{defaultvalues_update407}}.sqid AND {{defaultvalues}}.scale_id = {{defaultvalues_update407}}.scale_id AND {{defaultvalues}}.specialtype = {{defaultvalues_update407}}.specialtype
                 ")->execute();
             $oDB->createCommand()->dropTable('{{defaultvalues_update407}}');
 

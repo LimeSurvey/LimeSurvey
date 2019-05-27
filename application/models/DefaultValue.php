@@ -18,9 +18,9 @@
  * Class DefaultValue
  *
  * @property integer $dvid primary key
- * @property integer $qid Question id
- * @property integer $scale_id
- * @property string $specialtype
+ * @property integer $qid The question id
+ * @property integer $scale_id Scale of question
+ * @property string $specialtype of column “other” currently (no GUI for comments)
  *
  * @property Question $question
  * 
