@@ -109,7 +109,7 @@ class EmCacheHelper
      */
     public static function cacheQanda()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -139,7 +139,12 @@ class EmCacheHelper
             return false;
         }
 
-        // TODO: Check activated, randomized.
+        // Only use emcache when survey is active.
+        if ($this->surveyinfo['active'] !== 'Y') {
+            return false;
+        }
+
+        // TODO: randomized.
 
         return true;
     }
