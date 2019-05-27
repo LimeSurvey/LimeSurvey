@@ -31,7 +31,6 @@ class Survey_Common_Action extends CAction
         Yii::app()->request->updateNavigationStack();
         // Make sure viewHelper can be autoloaded
         Yii::import('application.helpers.viewHelper');
-
     }
 
     /**
