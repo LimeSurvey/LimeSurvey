@@ -21,14 +21,17 @@ class EmCacheHelperTest extends TestBaseClass
         $sc = new \SurveyController('noid');
         \Yii::app()->setController($sc);
 
+        \EmCacheHelper::init(['sid' => 1, 'active' => 'Y']);
+
+        if (get_class(\Yii::app()->emcache) === 'CDummyCache') {
+            \Yii::app()->setComponent('emcache', new \CFileCache());
+        }
+
         if (!\EmCacheHelper::useCache()) {
             echo 'emcache is not set to use';
             exit(1);
         }
 
-        if (get_class(\Yii::app()->emcache) === 'CDummyCache') {
-            \Yii::app()->setComponent('emcache', new \CFileCache());
-        }
     }
 
     /**
@@ -36,7 +39,6 @@ class EmCacheHelperTest extends TestBaseClass
      */
     public static function teardownAfterClass()
     {
-        \EmCacheHelper::flushAll();
         \Yii::app()->setComponent('emcache', new \CDummyCache());
     }
 
@@ -45,7 +47,6 @@ class EmCacheHelperTest extends TestBaseClass
      */
     public function setup()
     {
-        \EmCacheHelper::flushAll();
         \EmCacheHelper::clearInit();
     }
 
@@ -80,7 +81,7 @@ class EmCacheHelperTest extends TestBaseClass
      */
     public function testCorrectInit()
     {
-        \EmCacheHelper::init(['sid' => 1]);
+        \EmCacheHelper::init(['sid' => 1, 'active' => 'Y']);
     }
 
     /**
@@ -88,7 +89,7 @@ class EmCacheHelperTest extends TestBaseClass
      */
     public function testBasic()
     {
-        \EmCacheHelper::init(['sid' => 1]);
+        \EmCacheHelper::init(['sid' => 1, 'active' => 'Y']);
         \EmCacheHelper::set('somekey', 'value');
 
         /** @var string */
@@ -102,7 +103,7 @@ class EmCacheHelperTest extends TestBaseClass
      */
     public function testFlush()
     {
-        \EmCacheHelper::init(['sid' => 1]);
+        \EmCacheHelper::init(['sid' => 1, 'active' => 'Y']);
         \EmCacheHelper::set('somekey', 'value');
 
         \EmCacheHelper::flush();
@@ -114,24 +115,44 @@ class EmCacheHelperTest extends TestBaseClass
     }
 
     /**
+     * Init twice with same sid.
+     */
+    public function testDoubleInit()
+    {
+        \EmCacheHelper::init(['sid' => 3, 'active' => 'Y']);
+        \EmCacheHelper::set('somekey', 'value');
+
+        \EmCacheHelper::init(['sid' => 3, 'active' => 'Y']);
+        \EmCacheHelper::set('somekey', 'other_value');
+
+        /** @var string */
+        $value = \EmCacheHelper::get('somekey');
+
+        $this->assertEquals('other_value', $value);
+    }
+
+    /**
      * Test mutliple surveys.
      */
     public function testMultipleSurveys()
     {
-        \EmCacheHelper::init(['sid' => 1]);
+        $this->markTestSkipped();
+
+        \EmCacheHelper::init(['sid' => 4, 'active' => 'Y']);
         \EmCacheHelper::set('somekey', 'value');
 
-        \EmCacheHelper::init(['sid' => 2]);
+        \EmCacheHelper::init(['sid' => 5, 'active' => 'Y']);
         \EmCacheHelper::set('somekey', 'another_value');
 
-        \EmCacheHelper::init(['sid' => 1]);
-        // This should not flush cache sid 2.
+        \EmCacheHelper::init(['sid' => 4, 'active' => 'Y']);
+
+        // This should not flush cache sid 5.
         \EmCacheHelper::flush();
 
         $value = \EmCacheHelper::get('somekey');
         $this->assertEquals(false, $value);
 
-        \EmCacheHelper::init(['sid' => 2]);
+        \EmCacheHelper::init(['sid' => 5, 'active' => 'Y']);
 
         /** @var string */
         $value = \EmCacheHelper::get('somekey');
