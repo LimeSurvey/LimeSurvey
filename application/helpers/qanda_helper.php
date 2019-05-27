@@ -109,10 +109,12 @@ function retrieveAnswers($ia)
     // 1. If move back is disabled
     // 2. Now tokens
     // 3. Always first time it's shown to one user (and no tokens).
-    $cacheKey = 'retrieveAnswers_' . sha1(implode('_', $ia));
-    $value = EmCacheHelper::get($cacheKey);
-    if ($value !== false) {
-        return $value;
+    if (EmCacheHelper::cacheQanda()) {
+        $cacheKey = 'retrieveAnswers_' . sha1(implode('_', $ia));
+        $value = EmCacheHelper::get($cacheKey);
+        if ($value !== false) {
+            return $value;
+        }
     }
 
     $display    = $ia[7]; //DISPLAY
@@ -366,7 +368,9 @@ function retrieveAnswers($ia)
 
     $qanda = array($qtitle, $answer, 'help', $display, $qid, $ia[2], $ia[5], $ia[1]);
 
-    EmCacheHelper::set($cacheKey, [$qanda, $inputnames]);
+    if (EmCacheHelper::cacheQanda()) {
+        EmCacheHelper::set($cacheKey, [$qanda, $inputnames]);
+    }
 
     //New Return
     return array($qanda, $inputnames);

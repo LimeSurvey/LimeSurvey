@@ -1,18 +1,5 @@
 <?php
 
-class EmCachePlugin extends PluginBase
-{
-    /**
-     * 
-     */
-    public function beforeModelSave()
-    {
-        $event = $this->getEvent();
-        var_dump($event->get('model')->sid);
-        //EmCacheHelper::flush();
-    }
-}
-
 /**
  * Discussion here: https://bugs.limesurvey.org/view.php?id=14859
  * PR: https://github.com/LimeSurvey/LimeSurvey/pull/1273
@@ -42,14 +29,6 @@ class EmCacheHelper
      */
     public static function bindEvents()
     {
-        $pm = \Yii::app()->pluginManager;
-        $plugin = new EmCachePlugin($pm, 'emcacheplugin');
-        $pm->subscribe($plugin, 'beforeModelSave', 'beforeModelSave');
-        $s = new Survey();
-        $s->sid = rand(1, 100000);
-        $result = $s->save();
-        //var_dump($result);
-        die('end');
     }
 
     /**
@@ -69,7 +48,13 @@ class EmCacheHelper
             throw new \InvalidArgumentException('required key $surveyinfo[sid] is empty, cannot initialise helper');
         }
 
+        if (empty($surveyinfo['active'])) {
+            throw new \InvalidArgumentException('required key $surveyinfo[active] is empty, cannot initialise helper');
+        }
+
         self::$surveyinfo = $surveyinfo;
+
+        \Yii::app()->emcache->keyPrefix = $surveyinfo['sid'];
     }
 
     /**
@@ -92,29 +77,6 @@ class EmCacheHelper
      */
     public static function flush($sid = null)
     {
-        // TODO: How to flush all keys with previx survey id?
-        \Yii::app()->emcache->flush();
-
-        //if ($sid) {
-            //\Yii::app()->emcache->set($sid, []);
-            //return;
-        //}
-
-        //if (empty(self::$surveyinfo)) {
-            //throw new EmCacheException('self::$surveyinfo is null, helper not initialised');
-        //}
-
-        // Set survey cache array to empty.
-        //\Yii::app()->emcache->set(self::$surveyinfo['sid'], []);
-    }
-
-    /**
-     * Flush ALL emcache, for all surveys.
-     *
-     * @return void
-     */
-    public static function flushAll()
-    {
         \Yii::app()->emcache->flush();
     }
 
@@ -130,21 +92,11 @@ class EmCacheHelper
             return false;
         }
 
-        //$surveyCache = self::getSurveyCache();
+        if (empty(self::$surveyinfo)) {
+            throw new EmCacheException('emcache is not initialised');
+        }
 
-        //if (empty($surveyCache)) {
-            //return false;
-        //}
-
-        //if (empty($surveyCache[$key])) {
-            //return false;
-        //}
-
-        // Append survey id to cache key.
-        $key = 'survey' . self::$surveyinfo['sid'] . $key;
         return \Yii::app()->emcache->get($key);
-
-        //return $surveyCache[$key];
     }
 
     /**
@@ -160,15 +112,6 @@ class EmCacheHelper
             return;
         }
 
-        // Append survey id to cache key.
-        $key = 'survey' . self::$surveyinfo['sid'] . $key;
-
-        /** @var array */
-        //$surveyCache = self::getSurveyCache();
-        //$surveyCache[$key] = $value;
-
-        echo ' | setting cache key ' . $key;  // . ' with value ' . json_encode($value);
-
         $result = \Yii::app()->emcache->set($key, $value);
 
         if (!$result && YII_DEBUG) {
@@ -177,28 +120,11 @@ class EmCacheHelper
     }
 
     /**
-     * Get cache for initialised survey.
-     *
-     * @return array|null
-     * @throws EmCacheException if surveyinfo is not initialised.
+     * @todo
      */
-    protected static function getSurveyCache()
+    public static function cacheQanda()
     {
-        //static $cache = null;
-        //if ($cache) {
-            //return $cache;
-        //}
-
-        if (empty(self::$surveyinfo)) {
-            throw new EmCacheException('self::$surveyinfo is null, helper not initialised');
-        }
-
-        if (empty(self::$surveyinfo['sid'])) {
-            throw new EmCacheException('self::$surveyinfo[sid] is null, helper not properly initialised');
-        }
-
-        $cache = \Yii::app()->emcache->get(self::$surveyinfo['sid']);
-        return $cache;
+        return true;
     }
 
     /**
