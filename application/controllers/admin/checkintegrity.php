@@ -361,12 +361,6 @@ class CheckIntegrity extends Survey_Common_Action
         $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
         $oCriteria->condition = '(q.id IS NULL)';
         $count = QuotaLanguageSetting::model()->deleteAll($oCriteria);
-        if (QuotaLanguageSetting::model()->hasErrors()) {
-            /* Can't happen : error happen if SQL have error */
-            throw new CDbException(
-                CHtml::errorSummary(QuotaLanguageSetting::model(),CHtml::tag("p",gT("Error when delete quota language settings")))
-            );
-        }
         $aData['messages'][] = sprintf(gT('Deleting orphaned quota languages: %u quota languages deleted'), $count);
         return $aData;
     }
@@ -382,12 +376,6 @@ class CheckIntegrity extends Survey_Common_Action
         $oCriteria->join = 'LEFT JOIN {{surveys}} q ON {{quota}}.sid=q.sid';
         $oCriteria->condition = '(q.sid IS NULL)';
         $count = Quota::model()->deleteAll($oCriteria);
-        if (Quota::model()->hasErrors()) {
-            /* How can this happen ? */
-            throw new CDbException(
-                CHtml::errorSummary(Quota::model(),CHtml::tag("p",gT("Error when delete quota")))
-            );
-        }
         $aData['messages'][] = sprintf(gT('Deleting orphaned quotas: %u quotas deleted'), $count);
         return $aData;
     }
