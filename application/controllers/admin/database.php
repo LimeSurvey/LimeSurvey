@@ -1543,5 +1543,9 @@ class database extends Survey_Common_Action
             LimeExpressionManager::FinishProcessingGroup();
         }
         LimeExpressionManager::FinishProcessingPage();
+
+        // Flush emcache when changes are made to the survey.
+        EmCacheHelper::init(['sid' => $this->iSurveyID, 'active' => 'Y']);
+        EmCacheHelper::flush();
     }
 }

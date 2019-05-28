@@ -28,6 +28,8 @@
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
     Yii::import("application.libraries.Date_Time_Converter");
+    Yii::import('application.helpers.expressions.emcache.em_cache_exception');
+    Yii::import('application.helpers.expressions.emcache.em_cache_helper');
     define('LEM_DEBUG_TIMING',1);
     define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
     define('LEM_DEBUG_VALIDATION_DETAIL',4);
@@ -8747,6 +8749,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         */
         private function getQuestionAttributesForEM($surveyid=0,$qid=0, $lang='')
         {
+            $cacheKey = 'getQuestionAttributesForEM_' . $surveyid . '_' . $qid . '_' . $lang;
+            $value = EmCacheHelper::get($cacheKey);
+            if ($value !== false) {
+                return $value;
+            }
+
             // Fix old param (NULL)
             if(is_null($surveyid)) $surveyid=0;
             if(is_null($qid)) $qid=0;
@@ -8813,6 +8821,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 $aQuestionAttributesForEM[$oQid->qid]=$aAttributesValues;
             }
+            EmCacheHelper::set($cacheKey, $aQuestionAttributesForEM);
             return $aQuestionAttributesForEM;
         }
 
@@ -8872,6 +8881,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
             $oQuestionGroups=$survey->groups;
 
+            $cacheKey = 'getGroupInfoForEM_' . $surveyid . '_' . $sLanguage;
+            $value = EmCacheHelper::get($cacheKey);
+            if ($value !== false) {
+                return $value;
+            }
+
             $qinfo = array();
             $_order=0;
             $gid = array();
@@ -8900,6 +8915,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     ++$_order;
                 }
             }
+            EmCacheHelper::set($cacheKey, $qinfo);
             return $qinfo;
         }
 

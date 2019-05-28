@@ -934,12 +934,22 @@ class Question extends LSActiveRecord
      */
     public function getQuestionAttributes()
     {
+        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . $sLanguage;
+        $value = EmCacheHelper::get($cacheKey);
+        if ($value !== false) {
+            return $value;
+        }
+
         $criteria = new CDbCriteria();
         $criteria->addCondition('qid=:qid');
         $criteria->addCondition('(language=:language OR language IS NULL)');
         $criteria->params = [':qid'=>$this->qid];
         $criteria->params = [':language'=>$this->language];
-        return QuestionAttribute::model()->findAll($criteria);
+        $aQuestionAttributes = QuestionAttribute::model()->findAll($criteria);
+
+        EmCacheHelper::set($cacheKey, $aQuestionAttributes);
+
+        return $aQuestionAttributes;
     }
 
     /**
