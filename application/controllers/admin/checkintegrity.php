@@ -176,20 +176,17 @@ class CheckIntegrity extends Survey_Common_Action
 
     private function _deleteGroups(array $groups, array $aData)
     {
-        $gids = array();
-        foreach ($groups as $group) {
-            $gids[] = $group['gid'];
+        $gids = array_unique(array_column($groups,'gid'));
+        $count = 0;
+        foreach ($gids as $gid) {
+            $deleted = QuestionGroup::model()->deleteAll("gid = :gid",array(":gid"=> $gid));
+            if($deleted) {
+                $count += $deleted;
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to delete question group %s'), $gid);
+            }
         }
-
-        $criteria = new CDbCriteria;
-        $criteria->addInCondition('gid', $gids);
-        QuestionGroup::model()->deleteAll($criteria);
-        // TODO all this type of checks is meaningless since the code above will a) not put errors in model and b) its not the same model instance anyway
-        if (QuestionGroup::model()->hasErrors()) {
-            safeDie(join('<br>', QuestionGroup::model()->getErrors()));
-        }
-        $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), count($groups));
-
+        $aData['messages'][] = sprintf(gT('Deleting groups: %u groups deleted'), $count);
         return $aData;
     }
 
@@ -227,18 +224,17 @@ class CheckIntegrity extends Survey_Common_Action
 
     private function _deleteSurveyLanguageSettings(array $surveyLanguageSettings, array $aData)
     {
-        $surveyls_survey_ids = array();
-        foreach ($surveyLanguageSettings as $surveylanguagesetting) {
-            $surveyls_survey_ids[] = $surveylanguagesetting['slid'];
+        $slids = array_unique(array_column($surveyLanguageSettings,'slid'));
+        $count = 0;
+        foreach ($slids as $slid) {
+            $deleted = SurveyLanguageSetting::model()->deleteAll("surveyls_survey_id = :slid",array(":slid"=> $slid));
+            if($deleted) {
+                $count += $deleted;
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to delete survey languagesettings %s'), $qid);
+            }
         }
-
-        $criteria = new CDbCriteria;
-        $criteria->compare('surveyls_survey_id', $surveyls_survey_ids);
-        SurveyLanguageSetting::model()->deleteAll($criteria);
-        if (SurveyLanguageSetting::model()->hasErrors()) {
-            safeDie(join('<br>', SurveyLanguageSetting::model()->getErrors()));
-        }
-        $aData['messages'][] = sprintf(gT('Deleting survey languagesettings: %u survey languagesettings deleted'), count($surveyLanguageSettings));
+        $aData['messages'][] = sprintf(gT('Deleting survey languagesettings: %u survey languagesettings deleted'), $count);
         return $aData;
     }
 
@@ -315,13 +311,18 @@ class CheckIntegrity extends Survey_Common_Action
      */
     private function _deleteQuotaLanguageSettings()
     {
+        /* Even with a broken request ( notexist=q.id ) don't throw error … still used ? */
         $oCriteria = new CDbCriteria;
         $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
         $oCriteria->condition = '(q.id IS NULL)';
-        QuotaLanguageSetting::model()->deleteAll($oCriteria);
+        $deleted = QuotaLanguageSetting::model()->deleteAll($oCriteria);
         if (QuotaLanguageSetting::model()->hasErrors()) {
-            safeDie(join('<br>', QuotaLanguageSetting::model()->getErrors()));
+            /* How can this happen ? */
+            throw new CDbException(
+                CHtml::errorSummary(QuotaLanguageSetting::model(),CHtml::tag("p",gT("Error when delete quota languge settings")))
+            );
         }
+        // No message ?
     }
 
     /**
@@ -349,10 +350,12 @@ class CheckIntegrity extends Survey_Common_Action
         $criteria->condition = 'q.qid IS NULL';
 
         $aRecords = DefaultValue::model()->findAll($criteria);
+        $count = 0;
         foreach ($aRecords as $aRecord) {
-            DefaultValue::model()->deleteAllByAttributes($aRecord);
+            $deleted = DefaultValue::model()->deleteAllByAttributes($aRecord);
+            $count += $deleted ;
         }
-        $aData['messages'][] = gT('Deleting orphaned default values.');
+        $aData['messages'][] = sprintf(gT('Deleting orphaned default valuess: %u default values deleted.'),$count);
         return $aData;
     }
 
@@ -374,17 +377,17 @@ class CheckIntegrity extends Survey_Common_Action
 
     private function _deleteConditions(array $conditions, array $aData)
     {
-        $cids = array();
-        foreach ($conditions as $condition) {
-            $cids[] = $condition['cid'];
+        $cids = array_unique(array_column($conditions,'cid'));
+        $count = 0;
+        foreach ($cids as $cid) {
+            $deleted = Condition::model()->deleteByPk($cid);
+            if($deleted) {
+                $count += $deleted;
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to delete condition %s'), $cid);
+            }
         }
-
-        Condition::model()->deleteByPk($cids);
-        if (Condition::model()->hasErrors()) {
-            safeDie(join('<br>', Condition::model()->getErrors()));
-        }
-
-        $aData['messages'][] = sprintf(gT('Deleting conditions: %u conditions deleted'), count($conditions));
+        $aData['messages'][] = sprintf(gT('Deleting conditions: %u conditions deleted'), $count);
         return $aData;
     }
 
