@@ -160,7 +160,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         foreach ($tokenTables as $aTokenTable) {
             Yii::app()->db->createCommand()->dropTable($aTokenTable);
-            $aData['messages'][] = gT('Deleting orphan survey participants table:').' '.$aTokenTable;
+            $aData['messages'][] = sprintf(gT('Deleting orphan survey participants table: %s'),$aTokenTable);
         }
         return $aData;
     }
@@ -169,7 +169,7 @@ class CheckIntegrity extends Survey_Common_Action
     {
         foreach ($surveyTables as $aSurveyTable) {
             Yii::app()->db->createCommand()->dropTable($aSurveyTable);
-            $aData['messages'][] = gT('Deleting orphan survey table:').' '.$aSurveyTable;
+            $aData['messages'][] = sprintf(gT('Deleting orphan survey table: %s'),$aSurveyTable);
         }
         return $aData;
     }
@@ -231,7 +231,7 @@ class CheckIntegrity extends Survey_Common_Action
             if($deleted) {
                 $count += $deleted;
             } else {
-                $aData['warnings'][] = sprintf(gT('Unable to delete survey languagesettings %s'), $qid);
+                $aData['warnings'][] = sprintf(gT('Unable to delete survey languagesettings %s'), $slid);
             }
         }
         $aData['messages'][] = sprintf(gT('Deleting survey languagesettings: %u survey languagesettings deleted'), $count);
@@ -246,7 +246,7 @@ class CheckIntegrity extends Survey_Common_Action
             if($deleted) {
                 $count += $deleted;
             } else {
-                $aData['warnings'][] = sprintf(gT('Unable to delete survey %s'), $qid);
+                $aData['warnings'][] = sprintf(gT('Unable to delete survey %s'), $survey['sid']);
             }
         }
         $aData['messages'][] = sprintf(gT('Deleting surveys: %u surveys deleted'), $count);
