@@ -211,14 +211,14 @@ class CheckIntegrity extends Survey_Common_Action
 
     private function _deleteQuestions(array $questions, array $aData)
     {
-        $qids = array();
+        $qids = array_unique(array_column($questions,'qid'));
         $count = 0;
-        foreach ($questions as $question) {
-            $deleted = Question::model()->deleteAll("qid = :qid",array(":qid"=> $question['qid']));
+        foreach ($qids as $qid) {
+            $deleted = Question::model()->deleteAll("qid = :qid",array(":qid"=> $qid));
             if($deleted) {
-                $count ++;
+                $count += $deleted;
             } else {
-                $aData['warnings'][] = sprintf(gT('Unable to delete question %s'), $question['qid']);
+                $aData['warnings'][] = sprintf(gT('Unable to delete question %s'), $qid);
             }
         }
         $aData['messages'][] = sprintf(gT('Deleting questions: %u questions deleted'), $count);
@@ -244,41 +244,51 @@ class CheckIntegrity extends Survey_Common_Action
 
     private function _deleteSurveys(array $surveys, array $aData)
     {
+        $count = 0;
         foreach ($surveys as $survey) {
-            Survey::model()->deleteByPk($survey['sid']);
+            $deleted = Survey::model()->deleteByPk($survey['sid']);
+            if($deleted) {
+                $count += $deleted;
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to delete survey %s'), $qid);
+            }
         }
-
-        if (Survey::model()->hasErrors()) {
-            safeDie(join('<br>', Survey::model()->getErrors()));
-        }
-        $aData['messages'][] = sprintf(gT('Deleting surveys: %u surveys deleted'), count($surveys));
+        $aData['messages'][] = sprintf(gT('Deleting surveys: %u surveys deleted'), $count);
         return $aData;
     }
 
     private function _deleteAnswers(array $answers, array $aData)
     {
-        foreach ($answers as $aAnswer) {
-            Answer::model()->deleteAll('qid=:qid AND code=:code', array(':qid'=>$aAnswer['qid'], ':code'=>$aAnswer['code']));
-            if (Answer::model()->hasErrors()) {
-                safeDie(join('<br>', Answer::model()->getErrors()));
+        $answersDeleted = array();// Keep for multilingual survey (alt : make an array_unique_mutilplekeys function)
+        $count = 0;
+        foreach ($answers as $answer) {
+            if(!in_array(array($answer['qid'],$answer['code']),$answersDeleted)) {
+                $deleted = Answer::model()->deleteAll('qid=:qid AND code=:code', array(':qid'=>$answer['qid'], ':code'=>$answer['code']));
+                if($deleted) {
+                    $count += $deleted;
+                    $answersDeleted[] = array($answer['qid'],$answer['code']);
+                } else {
+                    $aData['warnings'][] = sprintf(gT('Unable to delete answer %s, code %s'), $answer['qid'],$answer['code']);
+                }
             }
         }
-        $aData['messages'][] = sprintf(gT('Deleting answers: %u answers deleted'), count($answers));
+        $aData['messages'][] = sprintf(gT('Deleting answers: %u answers deleted'),$count);
         return $aData;
     }
 
     private function _deleteAssessments(array $assessments, array $aData)
     {
-        foreach ($assessments as $assessment) {
-            $assessments_ids[] = $assessment['id'];
+        $assessmentids = array_unique(array_column($assessments,'id'));
+        $count = 0;
+        foreach ($assessmentids as $assessmentid) {
+            $deleted = Assessment::model()->deleteByPk($assessmentid);
+            if($deleted) {
+                $count += $deleted;
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to delete assessment %s'), $assessmentid);
+            }
         }
-
-        $assessments_ids = array();
-        Assessment::model()->deleteByPk('id', $assessments_ids);
-        if (Assessment::model()->hasErrors()) {
-            safeDie(join('<br>', Assessment::model()->getErrors()));
-        }
-        $aData['messages'][] = sprintf(gT('Deleting assessments: %u assessment entries deleted'), count($assessments));
+        $aData['messages'][] = sprintf(gT('Deleting assessments: %u assessment entries deleted'), $count);
         return $aData;
     }
 
@@ -348,18 +358,17 @@ class CheckIntegrity extends Survey_Common_Action
 
     private function _deleteQuestionAttributes(array $questionAttributes, array $aData)
     {
-        $qids = array();
-        foreach ($questionAttributes as $questionattribute) {
-            $qids[] = $questionattribute['qid'];
+        $qids = array_unique(array_column($questionAttributes,'qid'));
+        $count = 0;
+        foreach ($qids as $qid) {
+            $deleted = QuestionAttribute::model()->deleteAll("qid = :qid",array(":qid"=> $qid));
+            if($deleted) {
+                $count += $deleted;
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to delete question attributes for question %s'), $qid);
+            }
         }
-        $criteria = new CDbCriteria;
-        $criteria->addInCondition('qid', $qids);
-
-        QuestionAttribute::model()->deleteAll($criteria);
-        if (QuestionAttribute::model()->hasErrors()) {
-            safeDie(join('<br>', QuestionAttribute::model()->getErrors()));
-        }
-        $aData['messages'][] = sprintf(gT('Deleting question attributes: %u attributes deleted'), count($questionAttributes));
+        $aData['messages'][] = sprintf(gT('Deleting question attributes: %u attributes deleted'), $count);
         return $aData;
     }
 
