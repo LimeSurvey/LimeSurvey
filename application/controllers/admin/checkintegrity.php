@@ -532,10 +532,20 @@ class CheckIntegrity extends Survey_Common_Action
                 $iSurveyID = $aTableName[1];
                 if (!in_array($iSurveyID, $sSurveyIDs)) {
                     $sDate = (string) date('YmdHis').rand(1, 1000);
-                    $sOldTable = "survey_{$iSurveyID}";
-                    $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
-                    Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
-                    $bDirectlyFixed = true;
+                    // Check if it's really a survey_XXX table mantis #14938 
+                    if(empty($aTableName[2])) {
+                        $sOldTable = "survey_{$iSurveyID}";
+                        $sNewTable = "old_survey_{$iSurveyID}_{$sDate}";
+                        Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                        $bDirectlyFixed = true;
+                    }
+                    if(!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[2])) {
+                        $sOldTable = "survey_{$iSurveyID}_timings";
+                        $sNewTable = "old_survey_{$iSurveyID}_timings_{$sDate}";
+                        Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                        $bDirectlyFixed = true;
+                    }
+                    
                 }
             }
         }
@@ -544,13 +554,16 @@ class CheckIntegrity extends Survey_Common_Action
         $aResult = Yii::app()->db->createCommand(dbSelectTablesLike('{{tokens}}\_%'))->queryColumn();
         foreach ($aResult as $aRow) {
             $sTableName = (string) substr($aRow, strlen($sDBPrefix));
+            $aTableName = explode('_', $sTableName);
             $iSurveyID = (integer) substr($sTableName, strpos($sTableName, '_') + 1);
-            if (!in_array($iSurveyID, $sSurveyIDs)) {
-                $sDate = (string) date('YmdHis').rand(1, 1000);
-                $sOldTable = "tokens_{$iSurveyID}";
-                $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
-                Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
-                $bDirectlyFixed = true;
+            if (isset($aTableName[1]) && ctype_digit($aTableName[1]) && empty($aTableName[2])) { // Check if it's really a token_XXX table mantis #14938 
+                if (!in_array($iSurveyID, $sSurveyIDs)) {
+                    $sDate = (string) date('YmdHis').rand(1, 1000);
+                    $sOldTable = "tokens_{$iSurveyID}";
+                    $sNewTable = "old_tokens_{$iSurveyID}_{$sDate}";
+                    Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
+                    $bDirectlyFixed = true;
+                }
             }
         }
 
