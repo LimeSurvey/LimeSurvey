@@ -561,12 +561,18 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             if (isset($_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]) && isset($_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'])) {
                 $aDatas["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'];
             }
+            
+            // Add the survey theme options
+            if ($oTemplate->oOptions) {
+                foreach ($oTemplate->oOptions as $key => $value) {
+                    $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
+                }
+            }
+        } else {
+            // Add the global theme options
+            $oTemplateConfigurationCurrent = TemplateConfiguration::getInstance($oTemplate->sTemplateName);
+            $aDatas["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])?(array)json_decode($oTemplateConfigurationCurrent['options']):$oTemplateConfigurationCurrent['options'];
         }
-
-
-        // Add the template options
-        $oTemplateConfigurationCurrent = TemplateConfiguration::getInstance($oTemplate->sTemplateName);
-        $aDatas["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])?(array)json_decode($oTemplateConfigurationCurrent['options']):$oTemplateConfigurationCurrent['options'];
 
         $aDatas = $this->fixDataCoherence($aDatas);
 

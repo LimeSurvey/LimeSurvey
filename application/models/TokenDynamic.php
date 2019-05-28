@@ -582,7 +582,9 @@ class TokenDynamic extends LSActiveRecord
     private function getYesNoDateFormated($field)
     {
         if ($field != 'N' && $field != '') {
-            if ($field != 'Y') {
+            if ($field == 'Q') {
+                $field     = '<span class="text-warning">'.gT('Quota out').'</span>';
+            } elseif ($field != 'Y') {
                 $fieldDate = convertToGlobalSettingFormat($field);
                 $field     = '<span class="text-success">'.$fieldDate.'</span>';
             } else {

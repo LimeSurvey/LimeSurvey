@@ -45,7 +45,7 @@
             'modalType' => 'yes-no',
             'keepopen' => 'yes',
             'sModalTitle' => gT('Delete question(s)'),
-            'htmlModalBody' => gT('Are you sure you want to delete all those questions??'),
+            'htmlModalBody' => gT('Deleting these questions will also delete their corresponding answer options and subquestions. Are you sure you want to continue??'),
         );
     }
     if(!$oSurvey->isActive) {
