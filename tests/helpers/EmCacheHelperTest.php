@@ -133,6 +133,7 @@ class EmCacheHelperTest extends TestBaseClass
 
     /**
      * Test mutliple surveys.
+     * @todo Does not work with current emcache keyPrefix code.
      */
     public function testMultipleSurveys()
     {
