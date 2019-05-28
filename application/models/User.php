@@ -510,7 +510,7 @@ class User extends LSActiveRecord
         $editTemplatePermissionButton = ""
             ."<button 
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
-                data-href='".$setPermissionsUrl."'><i class='fa fa-paint-brush'></i></button>";
+                data-href='".$setTemplatePermissionsUrl."'><i class='fa fa-paint-brush'></i></button>";
         $editUserButton = ""
             ."<button 
                 class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 

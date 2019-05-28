@@ -109,6 +109,18 @@ var UserManagement = function () {
         })
     };
 
+    var wireTemplatePermissions = function () {
+        $('input[data-is-bootstrap-switch]').bootstrapSwitch();
+        $('#UserManagement--action-userthemepermissions-select-all').on('click', function(e){
+            e.preventDefault();
+            $('.UserManagement--themepermissions-themeswitch').prop('checked',true).trigger('change');
+        });
+        $('#UserManagement--action-userthemepermissions-select-none').on('click', function(e){
+            e.preventDefault();
+            $('.UserManagement--themepermissions-themeswitch').prop('checked',false).trigger('change');
+        });
+    };
+
     var wirePermissions = function () {
         var tableObject = $('#UserManagement--userpermissions-table');
 
@@ -202,9 +214,10 @@ var UserManagement = function () {
 
     var applyModalHtml = function (html) {
         $('#UserManagement-action-modal').find('.modal-content').html(html);
-        wireForm();
         wirePasswordOptions();
         wirePermissions();
+        wireTemplatePermissions();
+        wireForm();
     }
 
 

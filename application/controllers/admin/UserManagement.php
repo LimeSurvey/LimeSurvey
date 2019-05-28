@@ -226,12 +226,44 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
+     * Opens a modal to edit user template permissions
+     *
+     * @return string
+     */
+    public function usertemplatepermissions() {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            return $this->getController()->renderPartial(
+                    '/admin/usermanagement/partial/error', 
+                    ['errors' => [gT("You do not have permission to access this page.")],'noButton' => true]
+              );
+        }
+        $aTemplateModels = Template::model()->findAll();
+        $oRequest = Yii::app()->request;
+        $userId = $oRequest->getParam('userid');
+        $oUser = User::model()->findByPk($userId);
+
+        $aTemplates = array_map(function($oTemplate) use ($userId) {
+            $oPermission = Permission::model()->findByAttributes(array('permission' => $oTemplate->folder, 'uid' => $userId, 'entity'=>'template'));
+            $aTemplate = $oTemplate->attributes;
+            $aTemplate['value'] = $oPermission == null ? 0 : $oPermission->read_p;
+            return $aTemplate;
+        }, $aTemplateModels);
+
+        return $this->getController()->renderPartial(
+            '/admin/usermanagement/partial/edittemplatepermissions', 
+            [
+                "oUser" => $oUser, 
+                "aTemplates" => $aTemplates,
+                ]
+        );
+    }
+
+    /**
      * Opens a modal to edit user permissions
      *
      * @return string
      */
-    public function userpermissions()
-    {
+    public function userpermissions() {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
             return $this->getController()->renderPartial(
                     '/admin/usermanagement/partial/error', 
@@ -292,6 +324,49 @@ class UserManagement extends Survey_Common_Action
      *
      * @return string | JSON
      */
+    public function applythemepermissions()
+    {
+        if (!(Permission::model()->hasGlobalPermission('users', 'update') && Permission::model()->hasGlobalPermission('templates', 'update'))) {
+            return $this->getController()->renderPartial(
+                    '/admin/usermanagement/partial/error', 
+                    ['errors' => [gT("You do not have permission to access this page.")],'noButton' => true]
+              );
+        }
+
+        $userId = Yii::app()->request->getPost('userid');
+        $aPermissions = Yii::app()->request->getPost('Permission',[]);
+
+        $aTemplatePermissions = Yii::app()->request->getPost('TemplatePermissions', []);
+        $aTemplates = Template::model()->findAll();
+        
+        // foreach ($aTemplates as $oTemplate) {
+        //     $transferredOption = Yii::app()->request->getPost($oTemplate->folder, false);
+        //     $aTemplatePermissions[$oTemplate->folder] = $transferredOption !== false ? $transferredOption : 0;
+        // }
+        $results = [];
+        foreach ($aTemplatePermissions as $key => $value) {
+            $oPermission = Permission::model()->findByAttributes(array('permission' => $key, 'uid' => $userId, 'entity'=>'template'));
+            if (empty($oPermission)) {
+                $oPermission = new Permission;
+                $oPermission->uid = $userId;
+                $oPermission->permission = $key;
+                $oPermission->entity = 'template';
+                $oPermission->entity_id = 0;
+            }
+            $oPermission->read_p = $value;
+            $results[$key] = $oPermission->save();
+        }
+
+        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data"=>[
+            'success' => true,
+            'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $results], true)
+        ]]);
+    }
+    /**
+     * Stores the changed permissions
+     *
+     * @return string | JSON
+     */
     public function saveuserpermissions()
     {
         if (!Permission::model()->hasGlobalPermission('users', 'update')) {
@@ -315,7 +390,7 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * Stores the permission template settings run via MassEdit
+     * Stores the permission settings run via MassEdit
      *
      * @return string
      */
@@ -533,7 +608,7 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
-     * 'Hidden' feature -> Mass import from a well-formed json string
+     * Mass import from a well-formed json string
      *
      * @return void
      */

@@ -5,36 +5,47 @@
 </div>
 <div class="modal-body">
     <div class="container-center">        
-        <?=TbHtml::formTb(null, App()->createUrl('plugins/direct', ['plugin' => 'SMKUserManager', 'function' => 'saveuserpermissions']), 'post', ["id"=>"SMKUserManager--modalform"])?>
-            <input type='hidden' name='userid' value='<?php echo $oUser->uid;?>' />
-            <div class="row ls-space margin top-5">
-                <div class="col-sm-12">
-                    Benutzer eine Berechtigungsstufe zuweisen:
+        <?=TbHtml::form(array("admin/usermanagement/sa/applythemepermissions"), 'post', array('name'=>'UserManagement--modalform', 'id'=>'UserManagement--modalform')); ?>
+            <input type="hidden" name="userid" value="<?php echo $oUser->uid;?>" />
+            <div class="list-group-item row list-group-item-info">
+                <div class="col-xs-6 text-left">
+                    <button id="UserManagement--action-userthemepermissions-select-all" class="btn btn-default"> 
+                        <?php eT('Select all');?>
+                    </button>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <button id="UserManagement--action-userthemepermissions-select-none" class="btn btn-default"> 
+                        <?php eT('Select none');?>
+                    </button>
                 </div>
             </div>
-            <div class="row form-group ls-space margin top-5 bottom-5">
-                <label class="control-label">
-                    Stufe wählen: 
-                </label>
-                <select class="form-control" name="permissionclass" id="smk--selector--permissionclass">
-                    <option value="surveymanager">Befragungsmanager</option>
-                    <option value="classmanager">Gruppenmanager</option>
-                </select>
-            </div>
-            <div class="row form-group ls-space margin top-5 bottom-5" id="smk--selector--surveypermission" style="display:none;">
-                <label class="control-label">
-                    Umfragen zur Berechtigung auswählen: 
-                </label>
-                <select class="form-control" name="entity_ids[]" multiple="multiple" id="smk--selector--entity-ids">
-                    <?php foreach($aMySurveys as $oSurvey) {
-                        echo "<option value='".$oSurvey->sid."'>".$oSurvey->currentLanguageSettings->surveyls_title."</option>";
-                    } ?>
-                </select>
+            <div class="list-group">
+                <div class="list-group-item row">
+                    <div class="col-xs-6"><?php eT('Theme name');?></div>
+                    <div class="col-xs-6"><?php eT('Access');?></div>
+                </div>
+                <?php foreach ($aTemplates as $aTemplate) {?>
+                    <div class="list-group-item row">
+                        <div class="col-xs-6"><?=$aTemplate['folder']?></div>
+                        <div class="col-xs-6">
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => 'TemplatePermissions['.$aTemplate['folder'].']',
+                                'id'=>$aTemplate['folder'].'_use',
+                                'value' => $aTemplate['value'],
+                                'onLabel'=>gT('On'),
+                                'offLabel' => gT('Off'),
+                                'htmlOptions' => ['class' => 'UserManagement--themepermissions-themeswitch']
+                            ));
+                            ?>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
             <div class="row ls-space margin top-25">
-                <button class="btn btn-success col-sm-3 col-xs-5 col-xs-offset-1" id="submitForm"><?=gT('Save')?></button>
-                <button class="btn btn-error col-sm-3 col-xs-5 col-xs-offset-1" id="exitForm"><?=gT('Cancel')?></button>
-            </div>
+                <button class="btn btn-success col-sm-3 col-xs-5 col-xs-offset-1 selector--submitForm" id="submitForm"><?=gT('Save')?></button>
+                <button class="btn btn-error col-sm-3 col-xs-5 col-xs-offset-1 selector--exitForm" id="exitForm"><?=gT('Cancel')?></button>
+            </div></div>
         </form>
     </div>
 </div>
+
