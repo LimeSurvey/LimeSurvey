@@ -83,7 +83,11 @@ class LanguageChangerTest extends TestBaseClassWeb
             $db = \Yii::app()->getDb();
             $rows = $db->createCommand($query)->queryAll();
             $this->assertCount(1, $rows);
-            $this->assertEquals($rows[0][$sgqa], 'This is an answer');
+            $this->assertEquals(
+                $rows[0][$sgqa],
+                'This is an answer',
+                'Correct answer saved in database: ' . json_encode($rows[0][$sgqa])
+            );
 
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot($web, 'LanguageChangerTest');
