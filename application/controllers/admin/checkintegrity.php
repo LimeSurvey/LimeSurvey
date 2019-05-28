@@ -788,10 +788,10 @@ class CheckIntegrity extends Survey_Common_Action
         /**********************************************************************/
         /*     Check survey language settings                                 */
         /**********************************************************************/
-        $oCriteria = new CDbCriteria;
-        $oCriteria->join = 'LEFT JOIN {{surveys}} s ON t.surveyls_survey_id=s.sid';
-        $oCriteria->condition = '(s.sid IS NULL)';
-        $surveys_languagesettings = SurveyLanguageSetting::model()->findAll($oCriteria);
+        $surveys_languagesettings = SurveyLanguageSetting::model()->resetScope()->with('survey')->findAll(array(
+            'select' => 'surveyls_survey_id',
+            'condition' => 'survey.sid IS NULL'
+        ));
         foreach ($surveys_languagesettings as $surveys_languagesetting) {
             $aDelete['surveylanguagesettings'][] = array('slid' => $surveys_languagesetting['surveyls_survey_id'], 'reason' => gT('The related survey is missing.'));
         }

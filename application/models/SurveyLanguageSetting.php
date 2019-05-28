@@ -138,6 +138,13 @@ class SurveyLanguageSetting extends LSActiveRecord
         );
     }
 
+    /**
+     * @inheritdoc
+     * Pass this to all findAll query : indexed by surveyls_language : return only one survey id
+     * @see https://www.yiiframework.com/doc/api/1.1/CActiveRecord#defaultScope-detail
+     * Remind to use resetScope if you need to disable this behaviour
+     * @see https://www.yiiframework.com/doc/api/1.1/CActiveRecord#resetScope-detail
+     */
     public  function defaultScope()
     {
         return array('index'=>'surveyls_language');
