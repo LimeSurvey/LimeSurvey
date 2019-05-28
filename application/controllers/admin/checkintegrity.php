@@ -78,75 +78,82 @@ class CheckIntegrity extends Survey_Common_Action
 
     public function fixintegrity()
     {
-        $aData = array();
-
-        if (Permission::model()->hasGlobalPermission('settings', 'update') && Yii::app()->request->getPost('ok') == 'Y') {
-            $aDelete = $this->_checkintegrity();
-
-            // TMSW Condition->Relevance:  Update this to process relevance instead
-            if (isset($aDelete['conditions'])) {
-                $aData = $this->_deleteConditions($aDelete['conditions'], $aData);
-            }
-
-            if (isset($aDelete['questionattributes'])) {
-                $aData = $this->_deleteQuestionAttributes($aDelete['questionattributes'], $aData);
-            }
-
-            if ($aDelete['defaultvalues']) {
-                $aData = $this->_deleteDefaultValues($aData);
-            }
-
-            if ($aDelete['quotas']) {
-                $aData = $this->_deleteQuotas($aData);
-            }
-
-            if ($aDelete['quotals']) {
-                $this->_deleteQuotaLanguageSettings();
-            }
-
-            if ($aDelete['quotamembers']) {
-                $aData = $this->_deleteQuotaMembers($aData);
-            }
-
-            if (isset($aDelete['assessments'])) {
-                $aData = $this->_deleteAssessments($aDelete['assessments'], $aData);
-            }
-
-            if (isset($aDelete['answers'])) {
-                $aData = $this->_deleteAnswers($aDelete['answers'], $aData);
-            }
-
-            if (isset($aDelete['surveys'])) {
-                $aData = $this->_deleteSurveys($aDelete['surveys'], $aData);
-            }
-
-            if (isset($aDelete['surveylanguagesettings'])) {
-                $aData = $this->_deleteSurveyLanguageSettings($aDelete['surveylanguagesettings'], $aData);
-            }
-
-            if (isset($aDelete['questions'])) {
-                $aData = $this->_deleteQuestions($aDelete['questions'], $aData);
-            }
-
-
-            if (isset($aDelete['groups'])) {
-                $aData = $this->_deleteGroups($aDelete['groups'], $aData);
-            }
-
-            if (isset($aDelete['user_in_groups'])) {
-                $aData = $this->_deleteUserInGroups($aDelete['user_in_groups'], $aData);
-            }
-
-            if (isset($aDelete['orphansurveytables'])) {
-                $aData = $this->_dropOrphanSurveyTables($aDelete['orphansurveytables'], $aData);
-            }
-
-            if (isset($aDelete['orphantokentables'])) {
-                $aData = $this->_deleteOrphanTokenTables($aDelete['orphantokentables'], $aData);
-            }
-
-            $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
+        if(!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            throw new CHttpException(401, "401 Unauthorized");
         }
+        if(Yii::app()->request->getPost('ok') != 'Y') {
+            throw new CHttpException(403);
+        }
+        $aDelete = $this->_checkintegrity();
+        $aData = array([
+            'messsages' => array(),
+            'warnings' => array(),
+            'errors' => array(),
+        ]);
+        // TMSW Condition->Relevance:  Update this to process relevance instead
+        if (isset($aDelete['conditions'])) {
+            $aData = $this->_deleteConditions($aDelete['conditions'], $aData);
+        }
+
+        if (isset($aDelete['questionattributes'])) {
+            $aData = $this->_deleteQuestionAttributes($aDelete['questionattributes'], $aData);
+        }
+
+        if ($aDelete['defaultvalues']) {
+            $aData = $this->_deleteDefaultValues($aData);
+        }
+
+        if ($aDelete['quotas']) {
+            $aData = $this->_deleteQuotas($aData);
+        }
+
+        if ($aDelete['quotals']) {
+            $this->_deleteQuotaLanguageSettings();
+        }
+
+        if ($aDelete['quotamembers']) {
+            $aData = $this->_deleteQuotaMembers($aData);
+        }
+
+        if (isset($aDelete['assessments'])) {
+            $aData = $this->_deleteAssessments($aDelete['assessments'], $aData);
+        }
+
+        if (isset($aDelete['answers'])) {
+            $aData = $this->_deleteAnswers($aDelete['answers'], $aData);
+        }
+
+        if (isset($aDelete['surveys'])) {
+            $aData = $this->_deleteSurveys($aDelete['surveys'], $aData);
+        }
+
+        if (isset($aDelete['surveylanguagesettings'])) {
+            $aData = $this->_deleteSurveyLanguageSettings($aDelete['surveylanguagesettings'], $aData);
+        }
+
+        if (isset($aDelete['questions'])) {
+            $aData = $this->_deleteQuestions($aDelete['questions'], $aData);
+        }
+
+
+        if (isset($aDelete['groups'])) {
+            $aData = $this->_deleteGroups($aDelete['groups'], $aData);
+        }
+
+        if (isset($aDelete['user_in_groups'])) {
+            $aData = $this->_deleteUserInGroups($aDelete['user_in_groups'], $aData);
+        }
+
+        if (isset($aDelete['orphansurveytables'])) {
+            $aData = $this->_dropOrphanSurveyTables($aDelete['orphansurveytables'], $aData);
+        }
+
+        if (isset($aDelete['orphantokentables'])) {
+            $aData = $this->_deleteOrphanTokenTables($aDelete['orphantokentables'], $aData);
+        }
+
+        $this->_renderWrappedTemplate('checkintegrity', 'fix_view', $aData);
+
     }
 
     private function _deleteOrphanTokenTables(array $tokenTables, array $aData)
@@ -205,18 +212,17 @@ class CheckIntegrity extends Survey_Common_Action
     private function _deleteQuestions(array $questions, array $aData)
     {
         $qids = array();
+        $count = 0;
         foreach ($questions as $question) {
-            $qids[] = $question['qid'];
+            $deleted = Question::model()->deleteAll("qid = :qid",array(":qid"=> $question['qid']));
+            if($deleted) {
+                $count ++;
+            } else {
+                $aData['warnings'][] = sprintf(gT('Unable to delete question %s'), $question['qid']);
+            }
         }
-
-        $criteria = new CDbCriteria;
-        $criteria->addInCondition('qid', $qids);
-        Question::model()->deleteAll($criteria);
-        if (Question::model()->hasErrors()) {
-            safeDie(join('<br>', Question::model()->getErrors()));
-        }
-        $aData['messages'][] = sprintf(gT('Deleting questions: %u questions deleted'), count($questions));
-        return array($criteria, $aData);
+        $aData['messages'][] = sprintf(gT('Deleting questions: %u questions deleted'), $count);
+        return $aData;
     }
 
     private function _deleteSurveyLanguageSettings(array $surveyLanguageSettings, array $aData)
@@ -233,7 +239,7 @@ class CheckIntegrity extends Survey_Common_Action
             safeDie(join('<br>', SurveyLanguageSetting::model()->getErrors()));
         }
         $aData['messages'][] = sprintf(gT('Deleting survey languagesettings: %u survey languagesettings deleted'), count($surveyLanguageSettings));
-        return array($criteria, $aData);
+        return $aData;
     }
 
     private function _deleteSurveys(array $surveys, array $aData)
