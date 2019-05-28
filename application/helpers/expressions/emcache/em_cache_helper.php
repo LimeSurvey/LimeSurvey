@@ -111,11 +111,11 @@ class EmCacheHelper
     }
 
     /**
-     * @todo
+     * @todo Setting per survey.
      */
     public static function cacheQanda()
     {
-        return false;
+        return \Yii::app()->getConfig('emcache_cache_qanda');
     }
 
     /**
