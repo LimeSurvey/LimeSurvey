@@ -174,6 +174,12 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function deletes groups
+     * @param array[] $groups to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteGroups(array $groups, array $aData)
     {
         $gids = array_unique(array_column($groups,'gid'));
@@ -190,6 +196,12 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function deletes UserInGroup
+     * @param array[] $UserInGroup to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteUserInGroups(array $userInGroups, array $aData)
     {
         $ugids = array();
@@ -206,6 +218,12 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function deletes questions
+     * @param array[] $questions to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteQuestions(array $questions, array $aData)
     {
         $qids = array_unique(array_column($questions,'qid'));
@@ -222,6 +240,12 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function deletes surveyLanguageSettings
+     * @param array[] $surveyLanguageSettings to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteSurveyLanguageSettings(array $surveyLanguageSettings, array $aData)
     {
         $slids = array_unique(array_column($surveyLanguageSettings,'slid'));
@@ -238,6 +262,12 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function deletes surveys
+     * @param array[] $surveys to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteSurveys(array $surveys, array $aData)
     {
         $count = 0;
@@ -253,6 +283,12 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function Deletes answers
+     * @param array[] $answers to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteAnswers(array $answers, array $aData)
     {
         $answersDeleted = array();// Keep for multilingual survey (alt : make an array_unique_mutilplekeys function)
@@ -272,6 +308,12 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function deletes Assessments
+     * @param array[] $Assessments to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteAssessments(array $assessments, array $aData)
     {
         $assessmentids = array_unique(array_column($assessments,'id'));
@@ -288,6 +330,11 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function deletes QuotaMember by join on question
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteQuotaMembers(array $aData)
     {
         $oCriteria = new CDbCriteria;
@@ -305,9 +352,10 @@ class CheckIntegrity extends Survey_Common_Action
 
     /**
      * This function Deletes quota language settings without related main entries
-     *
+     * @param array $aData for view generation
+     * @return array
      */
-    private function _deleteQuotaLanguageSettings()
+    private function _deleteQuotaLanguageSettings(array $aData)
     {
         $oCriteria = new CDbCriteria;
         $oCriteria->join = 'LEFT JOIN {{quota}} q ON {{quota_languagesettings}}.quotals_quota_id=q.id';
@@ -325,8 +373,8 @@ class CheckIntegrity extends Survey_Common_Action
 
     /**
      * This function deletes quota entries which not having a related survey entry
-     *
-     * @param mixed $aData
+     * @param array $aData for view generation
+     * @return array
      */
     private function _deleteQuotas(array $aData)
     {
@@ -344,6 +392,11 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function deletes default values by join on question
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteDefaultValues(array $aData)
     {
         $criteria = new CDbCriteria;
@@ -360,6 +413,12 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function deletes questionAttributes
+     * @param array[] $questionAttributes to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteQuestionAttributes(array $questionAttributes, array $aData)
     {
         $qids = array_unique(array_column($questionAttributes,'qid'));
@@ -376,6 +435,12 @@ class CheckIntegrity extends Survey_Common_Action
         return $aData;
     }
 
+    /**
+     * This function deletes conditions
+     * @param array[] $conditions to be deleted
+     * @param array $aData for view generation
+     * @return array
+     */
     private function _deleteConditions(array $conditions, array $aData)
     {
         $cids = array_unique(array_column($conditions,'cid'));
