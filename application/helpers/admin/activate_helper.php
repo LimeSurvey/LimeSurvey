@@ -259,6 +259,9 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 */
 function activateSurvey($iSurveyID, $simulate = false)
 {
+    EmCacheHelper::init(['sid' => $iSurveyID, 'active' => 'Y']);
+    EmCacheHelper::flush();
+
     // Event beforeSurveyActivate
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $event = new PluginEvent('beforeSurveyActivate');
