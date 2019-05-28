@@ -103,6 +103,7 @@ class EmCacheHelper
             return;
         }
 
+        /** @var boolean */
         $result = \Yii::app()->emcache->set($key, $value);
 
         if (!$result && YII_DEBUG) {
