@@ -28,8 +28,8 @@
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
     Yii::import("application.libraries.Date_Time_Converter");
-    Yii::import('application.helpers.expressions.emcache.em_cache_exception');
-    Yii::import('application.helpers.expressions.emcache.em_cache_helper');
+    Yii::import('application.helpers.expressions.emcache.em_cache_exception', true);
+    Yii::import('application.helpers.expressions.emcache.em_cache_helper', true);
     define('LEM_DEBUG_TIMING',1);
     define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
     define('LEM_DEBUG_VALIDATION_DETAIL',4);
