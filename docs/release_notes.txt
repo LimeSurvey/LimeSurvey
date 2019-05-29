@@ -35,6 +35,92 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+
+Changes from 3.17.3 (build 190429) to 3.17.4  (build 190529) May 29, 2019
+-Fixed issue [security]: survey manager can use SQL injection to access all data in the database (LouisGac)
+-Fixed issue [security] #14836: XSS on icon for Boxes (Denis Chenu)
+-Fixed issue: "Array text" questions were using subquestion code instead of subquestion text at print answers overview. Adjusted according to default array question layout. (Marcel Minke)
+-Fixed issue #13516: Cannot access localized (i18n) values for a custom question attribute (Dominik Vitt)
+-Fixed issue #13608: Permission to create participants in the central participants database (Patrick Teichmann)
+-Fixed issue #13739: Relevance equation broken for array by column (Dominik Vitt)
+-Fixed issue #13904: UTF-8 characters not correctly saved in survey texts when using MSSQL DB (Carsten Schmitz)
+-Fixed issue #13936: Bootswatch inherit everyting to no: deactivate container (#1196) (Denis Chenu)
+-Fixed issue #14038: Minor interface text changes (Carsten Schmitz)
+-Fixed issue #14060: Deleting a participant and associated surveys and all associated responses from CPDB not working (Patrick Teichmann)
+-Fixed issue #14148: Quota out is shown as completed in token list (Dominik Vitt)
+-Fixed issue #14179: List questions panel - group-edit questions - Delete - text issue (Carsten Schmitz)
+-Fixed issue #14187: In IE, for an Array question the radio buttons disappear when resizing the page to the point the answers start to stack. (Markus Flür)
+-Fixed issue #14187: (Revisited) In IE, for an Array question the radio buttons disappear when resizing the page to the point the answers start to stack. (Markus Flür)
+-Fixed issue #14201: Small text issue - reorder questions/groups panel (Carsten Schmitz)
+-Fixed issue #14255: Current global theme options don't show in theme editor preview (Dominik Vitt)
+-Fixed issue #14459 : show information about token field and duplicate (Denis Chenu)
+-Fixed issue #14468: Viewing "Surveys in this group" displays all surveys regardless of Survey Group (Dominik Vitt)
+-Fixed issue #14513: Permissions on shared participants (CPDB) (Patrick Teichmann)
+-Fixed issue #14514: Purpose of permission "update" - CPDB (Patrick Teichmann)
+-Fixed issue #14516: Delete from the central panel and associated surveys - CPDB (Patrick Teichmann)
+-Fixed issue #14559: Theme editor loads parent theme.css file instead of current theme.css file (Dominik Vitt)
+-Fixed issue #14598: Bad order shown in List question (#1237) (Denis Chenu)
+-Fixed issue #14660: Unable to choose icon on Boxes (Olle Haerstedt)
+-Fixed issue #14667: No timer message displayed for boilerplate question (Dominik Vitt)
+-Fixed issue #14701: upload files - duplicate alert message (Denis Chenu)
+-Fixed issue #14788: resume later + ajax mode : JS issue (Patrick Teichmann)
+-Fixed issue #14809: Caret is over the text in group list (Dominik Vitt)
+-Fixed issue #14815: exporting tab-separated removes mandatory property of questions (Dominik Vitt)
+-Fixed issue #14844: Deprecated warning when running survey with PHP 7.3.4 (Dominik Vitt)
+-Fixed issue #14855: Allowed invalid completed survey with full index (Denis Chenu)
+-Fixed issue #14858: Upload status is not visible enough (#1272) (Denis Chenu)
+-Fixed issue #14862: Export to LSS on Portuguese (Portugal) language (Denis Chenu)
+-Fixed issue #14875: No error is shown at debug=0 if DB is broken (#1279) (Denis Chenu)
+-Fixed issue #14895: Upgrading problem from version 2.* to 3.17.3 (Dominik Vitt)
+-Fixed issue #14899: Incorrect behavior with Question of type R (Ranking) (Denis Chenu)
+-Fixed issue #14900: numerical array with checkboxes lose all data (Dominik Vitt)
+-Fixed issue #14934: Survey theme options are reset to default values (Dominik Vitt)
+-Fixed issue #14938: Check data integrity : die with renaming a non existing table (Denis Chenu)
+-Fixed issue #14939: Check data integrity with a lot of broken question : SQL error (MSSQL) (Denis Chenu)
+-Fixed issue: Administrators now have access to the CPDB if they have shared participants or have global Permissions 'read, create, update, delete', "global Permissions" > "shared Permissions" (Patrick Teichmann)
+-Fixed issue: multiple select not acknowledged by pjax form (Markus Flür)
+-Fixed issue : Only one survey is find for SurveyLanguageSetting in checkintegrity (Denis Chenu)
+-Fixed issue: Properly show "Array text" questions at print answers screen (Marcel Minke)
+-Fixed issue: Question selector not working on IE11 (Markus Flür)
+-Fixed issue: regression, list radio rows have no iterator (Markus Flür)
+-Fixed issue: Some minor translation issues (Carsten Schmitz)
+#Updated translation: Arabic by waseemz
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by johnxan
+#Updated translation: Chinese (Taiwan) (Traditional) by hms5232
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Czech by c_schmitz, slansky, VBraun, jelen1
+#Updated translation: Czech by jelen1, nekola
+#Updated translation: Czech by nekola, jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Czech (Informal) by slansky, c_schmitz, jelen1, VBraun, dusanm
+#Updated translation: Danish by Mikkel
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by DenisChenu
+#Updated translation: French (France) by DenisChenu, arnaud21, b00z00, riqcles
+#Updated translation: French (France) by DenisChenu, b00z00
+#Updated translation: German by bewi
+#Updated translation: German by c_schmitz, bewi
+#Updated translation: German (Informal) by bewi, c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian by lfanfoni, Prosperocco
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Portugal) by castrosergioms, joseluisfaria
+#Updated translation: Romanian by cdorin
+#Updated translation: Russian by T34, vipgroup
+#Updated translation: Russian by vipgroup
+#Updated translation: Spanish (Mexican) by c_schmitz, k001, emphasis034, javoguadas, larjona, aesteban, fernandoessv, cripton, Dhel210, rodrirokr, gabrieljenik, oleggorfinkel
+#Updated translation: Spanish (Mexican) by oleggorfinkel
+#Updated translation: Tajik by c_schmitz, Iskandar_r
+#Updated translation: Turkish by kayazeren
+#Updated translation: Vietnamese by dnvservices
+
 Changes from 3.17.2 (build 190408) to 3.17.3 (build 190429 ) April 29, 2019
 -Fixed issue #13793: Error on RPC: add_response method with "Anonymized responses" Survey (Olle Haerstedt)
 -Fixed issue #13950: SQL Error when saving a response or getting a session token via API (Denis Chenu)
