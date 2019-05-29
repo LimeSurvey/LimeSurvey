@@ -916,7 +916,7 @@ class themes extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         // LimeSurvey style
-        $oEditedTemplate = Template::getInstance($templatename, null, null, true);
+        $oEditedTemplate = Template::getInstance($templatename, null, null, true, true)->prepareTemplateRendering($templatename, null, true);
 
             //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
@@ -1250,6 +1250,8 @@ class themes extends Survey_Common_Action
 
         $thissurvey['include_content'] = $sContentFile;
 
+        // new TemplateConfiguration model created so preview can read theme options from DB
+        $oTemplateForPreview = Template::getInstance($templatename, null, null, false)->prepareTemplateRendering($templatename, null, true);
 
         try {
             $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
@@ -1258,7 +1260,7 @@ class themes extends Survey_Common_Action
                     'aSurveyInfo' =>$thissurvey,
                     'print'       => $print  // Only used for PDF print layout.
                 ),
-                $oEditedTemplate
+                $oTemplateForPreview
             );
         } catch (Exception $ex) {
             $myoutput = "<h3>ERROR!</h3>";
