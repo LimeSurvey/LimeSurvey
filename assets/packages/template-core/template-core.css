@@ -98,7 +98,12 @@ li.checkbox-text-item {
 .checkbox-item input[type="checkbox"] {
     opacity: 0;
 }
-
+@media only screen and (max-width: 760px) {
+.slider-list .slider-left{text-align:left}
+.slider-list .slider-right {text-align:right;}
+.dir-rtl .slider-list .slider-left{text-align:right}
+.dir-rtl .slider-list .slider-right {text-align:left;}
+}
 /**
  * Table .question feature
  */
@@ -324,17 +329,12 @@ only screen and (max-width: 760px),
     table.ls-answers td.visible-xs,table.ls-answers th.visible-xs{display:block !important}
 }
 
-@media 
-only screen and (max-width: 760px) {
-    .slider-list .slider-left{text-align:left}
-    .slider-list .slider-right {text-align:right;}
-    .dir-rtl .slider-list .slider-left{text-align:right}
-    .dir-rtl .slider-list .slider-right {text-align:left;}
-    .dir-ltr table.ls-answers .radio-item .ls-label-xs-visibility,.dir-ltr table.ls-answers .checkbox-item .ls-label-xs-visibility{margin-left:0;}
-    .dir-rtl table.ls-answers .radio-item .ls-label-xs-visibility,.dir-rtl table.ls-answers .checkbox-item .ls-label-xs-visibility{margin-right:0;}
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-left:0px;}
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-right:0px;}
-    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-left:0px;}
-    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-right:0px;}
-    
-    }
+/* Fix for IE11 - no array question radio buttons on small screens */
+@media all and (max-width: 760px) and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .dir-ltr .basicfruityextension table.ls-answers .radio-item .ls-label-xs-visibility,.dir-ltr .basicfruityextension table.ls-answers .checkbox-item .ls-label-xs-visibility{margin-left:0px;}
+    .dir-rtl .basicfruityextension table.ls-answers .radio-item .ls-label-xs-visibility,.dir-rtl .basicfruityextension table.ls-answers .checkbox-item .ls-label-xs-visibility{margin-right:0px;}
+    .dir-ltr .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-ltr .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-left:0px;}
+    .dir-rtl .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-rtl .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-right:0px;}
+    .dir-ltr .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-ltr .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-left:0px;}
+    .dir-rtl .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-rtl .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-right:0px;}
+}
