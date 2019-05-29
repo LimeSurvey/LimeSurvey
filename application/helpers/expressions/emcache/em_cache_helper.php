@@ -113,10 +113,32 @@ class EmCacheHelper
 
     /**
      * @todo Setting per survey.
+     * @todo Don't cache questions with expressions.
      */
-    public static function cacheQanda()
+    public static function cacheQanda(array $ia, array $session)
     {
-        return \Yii::app()->getConfig('emcache_cache_qanda');
+        /** @var boolean */
+        $cacheQanda = \Yii::app()->getConfig('emcache_cache_qanda');
+        if (!$cacheQanda) {
+            return false;
+        }
+
+        // If an answer was supplied, do not cache.
+        if (!empty($session[$ia[1]])) {
+            return false;
+        }
+
+        // Check subquestions etc.
+        foreach (array_keys($session) as $key) {
+            if (strpos($key, $ia[1]) !== false) {
+                if (!empty($session[$key])) {
+                    // Found subquestion answer, do not use cache.
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**

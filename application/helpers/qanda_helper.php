@@ -110,7 +110,7 @@ function retrieveAnswers($ia)
     // 2. No tokens
     // 3. Always first time it's shown to one user (and no tokens).
     // 4. No expressions with tokens or time or other dynamic features.
-    if (EmCacheHelper::cacheQanda()) {
+    if (EmCacheHelper::cacheQanda($ia, $_SESSION['survey_' . $thissurvey['sid']])) {
         $cacheKey = 'retrieveAnswers_' . sha1(implode('_', $ia));
         $value = EmCacheHelper::get($cacheKey);
         if ($value !== false) {
@@ -245,7 +245,7 @@ function retrieveAnswers($ia)
     // =====================================================
 
     $qanda = array($qtitle, $answer, 'help', $display, $qid, $ia[2], $ia[5], $ia[1]);
-    if (EmCacheHelper::cacheQanda()) {
+    if (EmCacheHelper::cacheQanda($ia, $_SESSION['survey_' . $thissurvey['sid']])) {
         EmCacheHelper::set($cacheKey, [$qanda, $inputnames]);
     }
     //New Return
