@@ -204,13 +204,17 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function getQuestionAttributes($iQuestionID, $sLanguage = null)
     {
-
         $iQuestionID = (int) $iQuestionID;
-        static $aQuestionAttributesStatic = array(); // TODO : replace by Yii::app()->cache
-        // Limit the size of the attribute cache due to memory usage
-        if (isset($aQuestionAttributesStatic[$iQuestionID])) {
-            return $aQuestionAttributesStatic[$iQuestionID];
+
+        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
+        if (EmCacheHelper::useCache()) {
+            $value = EmCacheHelper::get($cacheKey);
+            if ($value !== false) {
+                return $value;
+            }
         }
+
+        // Limit the size of the attribute cache due to memory usage
         $aQuestionAttributes = array();
         $oQuestion = Question::model()->find("qid=:qid", array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
 
@@ -287,7 +291,11 @@ class QuestionAttribute extends LSActiveRecord
         } else {
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
-        $aQuestionAttributesStatic[$iQuestionID] = $aQuestionAttributes;
+
+        if (EmCacheHelper::useCache()) {
+            EmCacheHelper::set($cacheKey, $aQuestionAttributes);
+        }
+
         return $aQuestionAttributes;
     }
 
