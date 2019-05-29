@@ -202,6 +202,11 @@ class SurveyRuntimeHelper
 
         $this->checkForDataSecurityAccepted();
         $this->initMove(); // main methods to init session, LEM, moves, errors, etc
+
+        if (EmCacheHelper::useCache()) {
+            $this->aSurveyInfo['emcache'] = true;
+        }
+
         if (!$this->previewgrp && !$this->previewquestion) {
             $this->checkQuotas(); // check quotas (then the process will stop here)
             $this->displayFirstPageIfNeeded();
@@ -565,12 +570,14 @@ class SurveyRuntimeHelper
         }
 
         $this->aSurveyInfo['include_content'] = 'main';
+
         Yii::app()->twigRenderer->renderTemplateFromFile("layout_global.twig", array(
             'oSurvey'=> Survey::model()->findByPk($this->iSurveyid),
             'aSurveyInfo'=>$this->aSurveyInfo,
             'step'=>$step,
             'LEMskipReprocessing'=>$this->LEMskipReprocessing,
         ), false);
+
     }
 
     /**

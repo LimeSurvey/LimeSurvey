@@ -147,13 +147,18 @@ class EmCacheHelper
             return false;
         }
 
+        // Not initialised correctly?
+        if (empty(self::$surveyinfo)) {
+            throw new EmCacheException('Calling useCache before init');
+        }
+
         // Only use emcache when survey is active.
         if (self::$surveyinfo['active'] !== 'Y') {
             return false;
         }
 
         // Don't use emcache with randomization.
-        if ($_SESSION['survey_' . self::$surveyinfo['sid']]['randomization']) {
+        if ($_SESSION['survey_' . self::$surveyinfo['sid']]['randomized']) {
             return false;
         }
 
