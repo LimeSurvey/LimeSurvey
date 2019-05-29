@@ -397,7 +397,7 @@ class CheckIntegrity extends Survey_Common_Action
             $deleted = DefaultValue::model()->deleteAllByAttributes($aRecord);
             $count += $deleted ;
         }
-        $aData['messages'][] = sprintf(gT('Deleting orphaned default valuess: %u default values deleted.'),$count);
+        $aData['messages'][] = sprintf(gT('Deleting orphaned default values: %u default values deleted.'),$count);
         return $aData;
     }
 
@@ -611,7 +611,7 @@ class CheckIntegrity extends Survey_Common_Action
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
                         $bDirectlyFixed = true;
                     }
-                    if(!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[2])) {
+                    if(!empty($aTableName[2]) && $aTableName[2] == "timings" && empty($aTableName[3])) {
                         $sOldTable = "survey_{$iSurveyID}_timings";
                         $sNewTable = "old_survey_{$iSurveyID}_timings_{$sDate}";
                         Yii::app()->db->createCommand()->renameTable("{{{$sOldTable}}}", "{{{$sNewTable}}}");
