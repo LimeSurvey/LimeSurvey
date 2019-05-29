@@ -123,6 +123,7 @@ class EmCacheHelper
      * True if all conditions are met to use the emcache.
      *
      * @return boolean
+     * @todo check ajaxmode
      */
     public static function useCache()
     {
@@ -151,11 +152,10 @@ class EmCacheHelper
             return false;
         }
 
-        // Never use emcache if the survey is randomized: createFieldMap will need to be remade for every request.
-        //$surveyId = $this->surveyinfo['sid'];
-        //if (isset(Yii::app()->session['survey_'.$surveyId]['fieldmap-'.$surveyId.'-randMaster'])) {
-            //return false;
-        //}
+        // Don't use emcache with randomization.
+        if ($_SESSION['survey_' . self::$surveyinfo['sid']]['randomization']) {
+            return false;
+        }
 
         return true;
     }

@@ -885,6 +885,7 @@ function randomizationGroupsAndQuestions($surveyid, $preview = false, $fieldmap 
     list($fieldmap, $randomized2) = randomizationQuestion($surveyid, $fieldmap, $preview); // Randomization groups for questions
 
     $randomized = $randomized1 || $randomized2; ;
+    $_SESSION['survey_' . $surveyid]['randomized'] = $randomized;
 
     if ($randomized === true) {
         $fieldmap = finalizeRandomization($fieldmap);
