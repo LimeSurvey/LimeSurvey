@@ -73,7 +73,7 @@ class EmCacheSurveyTest extends TestBaseClassWeb
     }
 
     /**
-     * 
+     * Test two different token executed survey after each other.
      */
     public function testTwoTokens()
     {
@@ -87,6 +87,60 @@ class EmCacheSurveyTest extends TestBaseClassWeb
         // Second token should not see first token, should see new datetime default answer.
 
         self::$testHelper->deactivateSurvey(self::$surveyId);
+        self::$testSurvey->delete();
+        self::$testSurvey = null;
+    }
+
+    /**
+     * Emcache should be turned off if anything is randomized.
+     */
+    public function testEmcacheRandomization()
+    {
+        // Import survey.
+        $surveyFile = self::$surveysFolder . '/survey_archive_564265.lsa';
+        self::importSurvey($surveyFile);
+
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'survey/index',
+            [
+                'sid' => self::$surveyId,
+                'newtest' => 'Y'
+            ]
+        );
+
+        list(, $group, ) = self::$testHelper->getSgqa('question1', self::$surveyId);
+        $group->randomization_group = 'rand1';
+        $this->assertTrue($group->update());
+
+        try {
+            self::$webDriver->get($url);
+
+            $emcacheSpan = self::$webDriver->findElement(WebDriverBy::id('__emcache_debug'));
+            $value = $emcacheSpan->getAttribute('value');
+            $this->assertEquals('off', $value, json_encode($value));
+
+            // Remove randomization group.
+            $group->randomization_group = '';
+            $this->assertTrue($group->update());
+
+            self::$webDriver->get($url);
+            $emcacheSpan = self::$webDriver->findElement(WebDriverBy::id('__emcache_debug'));
+            $value = $emcacheSpan->getAttribute('value');
+            $this->assertEquals('on', $value, json_encode($value));
+
+        } catch (\Exception $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                self::$testHelper->javaTrace($ex)
+            );
+        }
+
+        self::$testHelper->deactivateSurvey(self::$surveyId);
+        self::$testSurvey->delete();
+        self::$testSurvey = null;
     }
 
     /**
