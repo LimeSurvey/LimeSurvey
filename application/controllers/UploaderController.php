@@ -134,7 +134,7 @@ class UploaderController extends SurveyController
             }
             $aAttributes = QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid']);
             $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
-            if($maxfilesize <=0 ) {
+            if($maxfilesize <= 0 ) {
                 $maxfilesize = getMaximumFileUploadSize() / 1024;
             }
             /* Start to check upload error */
@@ -153,7 +153,7 @@ class UploaderController extends SurveyController
             }
             /* Upload error due file size */
             /* and check too $aAttributes['max_filesize'] */
-            if ($_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2 || $size > $maxfilesize) {
+            if ($size > $maxfilesize || $_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2 ) {
                 $return = array(
                     "success" => false,
                     "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
@@ -187,22 +187,14 @@ class UploaderController extends SurveyController
                 $realMimeType = CFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
                 $return = array(
                     "success" => false,
-                    "msg" => sprintf(gT("Sorry, file type (%s) is not allowed!"), $realMimeType)
+                    "msg" => sprintf(gT("Sorry, file type %s (extension : %s) is not allowed!"), $realMimeType,$extByMimeType)
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
                 Yii::app()->end();
             }
-            /* Check size (only one time needed */
-            if ($size > $maxfilesize) {
-                $return = array(
-                    "success" => false,
-                    "msg" => sprintf(gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
-                );
-                //header('Content-Type: application/json');
-                echo ls_json_encode($return);
-                Yii::app()->end();
-            }
+
+            // if everything went fine and the file was uploaded successfully,
             // If this is just a preview, don't save the file
             if ($preview) {
                 if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc)) {
@@ -223,7 +215,6 @@ class UploaderController extends SurveyController
                     Yii::app()->end();
                 }
             } else {
-                // if everything went fine and the file was uploaded successfully,
                 // send the file related info back to the client
                 $iFileUploadTotalSpaceMB = Yii::app()->getConfig("iFileUploadTotalSpaceMB");
                 if ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB)) {
