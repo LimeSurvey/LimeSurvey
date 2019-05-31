@@ -2081,7 +2081,7 @@ class quexmlpdf extends pdf
                         $ctmp = array();
                         foreach ($r->fixed->category as $c) {
                             $cat = array();
-                            $cat['text'] = current($c->label);
+                            $cat['text'] = current($c->label)!==false ? current($c->label) : '';
                             $cat['value'] = current($c->value);
                             if (isset($c->skipTo)) {
                                 $cat['skipto'] = current($c->skipTo);
