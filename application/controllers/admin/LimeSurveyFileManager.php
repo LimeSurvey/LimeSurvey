@@ -66,8 +66,8 @@ class LimeSurveyFileManager extends Survey_Common_Action
      * @param int|null $iSurveyId
      * @return void Renders HTML-page
      */
-    public function index($iSurveyId = null){
-        $possibleFolders = $this->_collectFolderList($iSurveyId);
+    public function index($surveyid = null){
+        $possibleFolders = $this->_collectFolderList($surveyid);
 
         $aTranslate = [
             'File management' => gT('File management'),
@@ -86,18 +86,24 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'Copy file' => gT('Copy file'),
             'Move file' => gT('Move file'),
         ];
-
-    
-        $aData = [
-            'surveyid' => $iSurveyId,
+        
+        Yii::app()->getClientScript()->registerPackage('filemanager');
+        $aData['jsData'] = [
+            'surveyid' => $surveyid,
             'possibleFolders' => $possibleFolders,
             'i10N' => $aTranslate,
             'baseUrl' => $this->getController()->createUrl('admin/filemanager', ['sa' => ''])
         ];
-        Yii::app()->getClientScript()->registerPackage('filemanager');
+        $renderView = $surveyid==null ? 'view' : 'surveyview';
+        if($surveyid !== null) {
+            $oSurvey  = Survey::model()->findByPk($surveyid);
+            $aData['surveyid'] = $surveyid;
+            $aData['surveybar']['buttons']['view'] = true;
+            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
+            $aData['subaction'] = gT("File manager");
+        }
 
-        $renderView = $iSurveyId==null ? 'view' : 'surveyview';
-        $this->_renderWrappedTemplate('SurveyFiles', $renderView, ['jsData' => $aData]);
+        $this->_renderWrappedTemplate('SurveyFiles', $renderView, $aData);
     }
 
     /**
