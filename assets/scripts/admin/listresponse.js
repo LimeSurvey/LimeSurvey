@@ -129,3 +129,9 @@ $(document).on('ready pjax:scriptcomplete',function(){
     onDocumentReadyListresponse();
     reinstallResponsesFilterDatePicker();
 });
+
+// hide Modal on submit for pjax preventDefault
+$(document).on('click', '#responses-column-filter-modal :submit', function (e) {
+    $('#responses-column-filter-modal').modal('hide');
+});
+

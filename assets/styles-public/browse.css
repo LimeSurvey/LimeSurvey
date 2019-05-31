@@ -30,9 +30,17 @@
     text-align: left;
 }
 
+#responses-grid #responses-column-filter-select {
+    height: 200px;
+}
+
+#responses-grid #responses-column-filter-button {
+    margin-left: 3px;
+}
 
 /*!
  * Style for browsing response : in jqgrid
+ * TODO: Is not in use anymore
  */
 
 #gview_displayresponses th .qcode {
