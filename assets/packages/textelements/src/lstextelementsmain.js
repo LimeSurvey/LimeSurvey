@@ -44,6 +44,7 @@ Vue.mixin({
         }
     }
 });
+
 const CreateTextElementsEditor = function(){
     const TextElementsStore = getAppState(LS.parameters.surveyid || 0);
     return new Vue({

@@ -224,7 +224,8 @@ class AdminController extends LSYii_Controller
         'menuentries'      => 'SurveymenuEntryController',
         'tutorials'        => 'TutorialsController',
         'tutorialentries'  => 'TutorialEntryController',
-        'extensionupdater' => 'ExtensionUpdaterController'
+        'extensionupdater' => 'ExtensionUpdaterController',
+        'filemanager'      => 'LimeSurveyFileManager'
         );
     }
 

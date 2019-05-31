@@ -164,6 +164,26 @@ return array(
            'adminbasics'
        )
     ),
+    'filemanager' => array(
+        'devBaseUrl' => 'assets/packages/filemanager/',
+        'basePath' => 'core.textelements',
+        'position' =>CClientScript::POS_END,
+        'js' => (
+            $debug > 0
+            ? array(
+                'build/js/filemanager.js',
+            )
+            : array(
+                'build.min/js/filemanager.js'
+            )
+        ),
+        'css' => array(
+            'build.min/css/main.css'
+        ),
+        'depends' => array(
+            'adminbasics'
+        )
+    ),
     'textelements' => array(
         'devBaseUrl' => 'assets/packages/textelements/',
         'basePath' => 'core.textelements',

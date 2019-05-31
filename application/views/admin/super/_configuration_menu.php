@@ -245,6 +245,14 @@
                     <?php eT('Settings');?>
                 </li>
 
+                <!-- FileManager settings -->
+                <?php if(Permission::model()->hasGlobalPermission('surveys','create')): ?>
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/filemanager"); ?>">
+                            <?php eT("File manager");?>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <!-- Home page settings -->
                     <li class="dropdown-item">

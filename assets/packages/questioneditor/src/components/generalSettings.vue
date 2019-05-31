@@ -6,6 +6,7 @@ import SettingText from './_inputtypes/text.vue';
 import SettingSelect from './_inputtypes/select.vue';
 import SettingTextdisplay from './_inputtypes/textdisplay.vue';
 import SettingTextarea from './_inputtypes/textarea.vue';
+import SettingButtongroup from './_inputtypes/buttongroup.vue';
 import StubSet from './_inputtypes/stub.vue';
 
 import eventChild from '../mixins/eventChild.js';
@@ -19,6 +20,7 @@ export default {
         'setting-select': SettingSelect,
         'setting-textinput': SettingText,
         'setting-textarea': SettingTextarea,
+        'setting-buttongroup': SettingButtongroup,
         'stub-set' : StubSet,
     },
     props: {

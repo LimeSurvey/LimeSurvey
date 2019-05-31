@@ -15,6 +15,7 @@
     import SettingSelect from '../_inputtypes/select.vue';
     import SettingTextdisplay from '../_inputtypes/textdisplay.vue';
     import SettingTextarea from '../_inputtypes/textarea.vue';
+    import SettingButtongroup from '../_inputtypes/buttongroup.vue';
     import StubSet from '../_inputtypes/stub.vue';
 
     export default {
@@ -31,6 +32,7 @@
                     'select',
                     'singleselect',
                     'textinput',
+                    'buttongroup',
                     'textarea'
                 ],
             }
@@ -43,6 +45,7 @@
             'setting-singleselect': SettingSelect,
             'setting-textdisplay': SettingTextdisplay,
             'setting-textarea': SettingTextarea,
+            'setting-buttongroup': SettingButtongroup,
             'stub-set' : StubSet
         },
         computed: {

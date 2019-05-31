@@ -50,6 +50,10 @@
 !/upload/themes/question/readme.txt
 /upload/plugins/*
 !/upload/plugins/index.html
+/upload/global/*.*
+/upload/global/**/*.*
+!/upload/global/index.html
+!/upload/global/readme.txt
 
 # tmp directory : whole except the index.html for directory create
 /tmp/*

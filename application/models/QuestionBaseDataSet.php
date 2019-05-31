@@ -55,9 +55,10 @@ abstract class QuestionBaseDataSet extends StaticModel
             'question_template' => $this->getQuestionThemeOption(),
             'gid' => $this->getQuestionGroupSelector(),
             'other' => $this->getOtherSwitch(),
-            'mandatory' => $this->getMandatorySwitch(),
+            'mandatory' => $this->getMandatorySetting(),
             'relevance' => $this->getRelevanceEquationInput(),
-            'preg' => $this->getValidationInput()
+            'encrypted' => $this->getEncryptionSwitch(),
+            'preg' => $this->getValidationInput(),
         ];
     }
 
@@ -186,7 +187,7 @@ abstract class QuestionBaseDataSet extends StaticModel
             ];
     }
 
-    protected function getMandatorySwitch()
+    protected function getMandatorySetting()
     {
         return [
                 'name' => 'mandatory',
@@ -194,8 +195,38 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementId' => 'mandatory',
                 'formElementName' => false,
                 'formElementHelp' => gT('Makes this question mandatory in your survey'),
-                'inputtype' => 'switch',
+                'inputtype' => 'buttongroup',
                 'formElementValue' => $this->oQuestion->mandatory,
+                'formElementOptions' => [
+                    'classes' => [],
+                    'options' => [
+                        [
+                            'text' => gT("On"),
+                            'value' => 'Y'
+                        ],
+                        [
+                            'text' => gT("Soft"),
+                            'value' => 'S'
+                        ],
+                        [
+                            'text' => gT("Off"),
+                            'value' => 'N'
+                        ],
+                    ],
+                ],
+            ];
+    }
+
+    protected function getEncryptionSwitch()
+    {
+        return [
+                'name' => 'encrypted',
+                'title' => gT('Encrypted'),
+                'formElementId' => 'encrypted',
+                'formElementName' => false,
+                'formElementHelp' => gT('Store the answers to this question encrypted'),
+                'inputtype' => 'switch',
+                'formElementValue' => $this->oQuestion->encrypted,
                 'formElementOptions' => [
                     'classes' => [],
                     'options' => [

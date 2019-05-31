@@ -32,6 +32,7 @@ export default {
                 'integer',
                 'select',
                 'textinput',
+                'buttongroup',
                 'textarea'
             ],
             currentTabComponent: 'settings-tab',
