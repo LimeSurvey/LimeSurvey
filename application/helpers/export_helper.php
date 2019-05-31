@@ -1475,7 +1475,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
         ->from("{{groups}}")
         ->where('sid=:sid', array(':sid'=>$iSurveyID))
         ->andWhere(' language=:lang', array(':lang'=>$quexmllang))
-        ->order('group_order desc')
+        ->order('group_order asc')
         ->queryAll();
 
 
