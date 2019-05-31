@@ -21,7 +21,7 @@ class UploaderController extends SurveyController
         $surveyid = Yii::app()->session['LEMsid'];
         $oSurvey = Survey::model()->findByPk($surveyid);
         if (!$oSurvey) {
-                    throw new CHttpException(400);
+            throw new CHttpException(400);
         }
 
         $sLanguage = isset(Yii::app()->session['survey_'.$surveyid]['s_lang']) ? Yii::app()->session['survey_'.$surveyid]['s_lang'] : "";
@@ -79,7 +79,7 @@ class UploaderController extends SurveyController
                 throw new CHttpException(400); // See for debug > 1
             }
             if (isset($_SESSION[$sFieldName])) {
-// We already have $sFieldName ?
+                // We already have $sFieldName ?
                 $sJSON = $_SESSION[$sFieldName];
                 $aFiles = json_decode(stripslashes($sJSON), true);
 
@@ -120,14 +120,17 @@ class UploaderController extends SurveyController
             $filename = $_FILES['uploadfile']['name'];
             // Do we filter file name ? It's used on displaying only , but not save like that.
             //$filename = sanitize_filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
-            $size = 0.001 * $_FILES['uploadfile']['size'];
+            $size = $_FILES['uploadfile']['size'] / 1024;
             $preview = Yii::app()->session['preview'];
             $aFieldMap = createFieldMap($oSurvey, 'short', false, false, $sLanguage);
             if (!isset($aFieldMap[$sFieldName])) {
                 throw new CHttpException(400); // See for debug > 1
             }
             $aAttributes = QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid']);
-            $maxfilesize = (int) $aAttributes['max_filesize'];
+            $maxfilesize = min(intval($aAttributes['max_filesize']), getMaximumFileUploadSize() / 1024);
+            if($maxfilesize <=0 ) {
+                $maxfilesize = getMaximumFileUploadSize() / 1024;
+            }
             /* Start to check upload error */
             if ($_FILES['uploadfile']['error'] > 2) {
                 $return = array(
@@ -143,6 +146,7 @@ class UploaderController extends SurveyController
                 Yii::app()->end();
             }
             /* Upload error due file size */
+            /* and check too $aAttributes['max_filesize'] */
             if ($_FILES['uploadfile']['error'] == 1 || $_FILES['uploadfile']['error'] == 2 || $size > $maxfilesize) {
                 $return = array(
                     "success" => false,
@@ -252,6 +256,7 @@ class UploaderController extends SurveyController
             echo ls_json_encode($return);
             Yii::app()->end();
         }
+        /* No action */
         $meta = '';
         App()->getClientScript()->registerPackage('jqueryui');
         App()->getClientScript()->registerPackage('jquery-superfish');
@@ -311,14 +316,17 @@ class UploaderController extends SurveyController
         $minfiles = (int) Yii::app()->request->getParam('minfiles');
         $maxfiles = (int) Yii::app()->request->getParam('maxfiles');
         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qid);
-        $qidattributes['max_filesize'] = floor(min($qidattributes['max_filesize'] * 1024, getMaximumFileUploadSize()) / 1024);
+        $maxfilesize = floor(min(intval($qidattributes['max_filesize']), getMaximumFileUploadSize()) / 1024);
+        if($maxfilesize <=0 ) {
+            $maxfilesize = getMaximumFileUploadSize() / 1024;
+        }
         $body = '</head><body class="uploader">
             <div class="model-container clearfix">
                 <div id="notice" class="text-center"></div>
                 <input type="hidden" id="ia"                value="'.$fn.'" />
                 <input type="hidden" id="'.$fn.'_minfiles"          value="'.$minfiles.'" />
                 <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$maxfiles.'" />
-                <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$qidattributes['max_filesize'].'" />
+                <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$maxfilesize.'" />
                 <input type="hidden" id="'.$fn.'_allowed_filetypes" value="'.$qidattributes['allowed_filetypes'].'" />
                 <input type="hidden" id="preview"                   value="'.Yii::app()->session['preview'].'" />
                 <input type="hidden" id="'.$fn.'_show_comment"      value="'.$qidattributes['show_comment'].'" />
@@ -331,7 +339,7 @@ class UploaderController extends SurveyController
                     <button id="button1" class="btn btn-default" type="button" >'.gT("Select file").'</button>
                 </div>
 
-                <p class="alert alert-info uploadmsg">'.sprintf(gT("You can upload %s under %s KB each."), $qidattributes['allowed_filetypes'], $qidattributes['max_filesize']).'</p>
+                <p class="alert alert-info uploadmsg">'.sprintf(gT("You can upload %s under %s KB each."), $qidattributes['allowed_filetypes'], $maxfilesize).'</p>
                 <div id="uploadstatus" class="uploadstatus alert alert-warning hidden"></div>
 
                 <!-- The list of uploaded files -->
@@ -340,8 +348,6 @@ class UploaderController extends SurveyController
         </html>';
         App()->getClientScript()->render($body);
         echo $body;
-
-
     }
 
 }
