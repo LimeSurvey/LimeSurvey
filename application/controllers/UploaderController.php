@@ -134,9 +134,9 @@ class UploaderController extends SurveyController
                     "success" => false,
                     "msg" => gT("Sorry, there was an error uploading your file.")
                 );
-                /* Show error code for user forcedSueprAdmin right */
+                /* Show error code for user forcedSuperAdmin right */
                 if( Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
-                    $return['message'] = sprintf(gT("Sorry, there was an error uploading your file, error code : %s."),$_FILES['uploadfile']['error']);
+                    $return['msg'] = sprintf(gT("Sorry, there was an error uploading your file, error code : %s."),$_FILES['uploadfile']['error']);
                 }
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
@@ -239,11 +239,15 @@ class UploaderController extends SurveyController
                     Yii::app()->end();
                 }
             }
-            /* We get there : an unknow error happen … */
+            /* We get there : an unknow error happen … maybe a move_uploaded_file error (with debug=0) */
             $return = array(
                 "success" => false,
                 "msg" => gT("An unknown error happen")
             );
+            /* Add information for for user forcedSuperAdmin right */
+            if( Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
+                $return['msg'] = sprintf(gT("An unknown error happen when moving file %s to %s."),$_FILES['uploadfile']['tmp_name'],$randfileloc);
+            }
             //header('Content-Type: application/json');
             echo ls_json_encode($return);
             Yii::app()->end();
