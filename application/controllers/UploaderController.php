@@ -316,7 +316,7 @@ class UploaderController extends SurveyController
         $minfiles = (int) Yii::app()->request->getParam('minfiles');
         $maxfiles = (int) Yii::app()->request->getParam('maxfiles');
         $qidattributes = QuestionAttribute::model()->getQuestionAttributes($qid);
-        $maxfilesize = floor(min(intval($qidattributes['max_filesize']), getMaximumFileUploadSize()) / 1024);
+        $maxfilesize = floor(min(intval($qidattributes['max_filesize']), getMaximumFileUploadSize() / 1024));
         if($maxfilesize <=0 ) {
             $maxfilesize = getMaximumFileUploadSize() / 1024;
         }
