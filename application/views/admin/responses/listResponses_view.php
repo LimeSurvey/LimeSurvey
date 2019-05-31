@@ -70,6 +70,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     // the massive actions dropup button
                     $massiveAction = App()->getController()->renderPartial('/admin/responses/massive_actions/_selector', array(), true, false);
 
+
                     // The first few colums are fixed.
                     // Specific columns at start
                     $aColumns = array(
@@ -92,75 +93,96 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         array(
                             'header' => 'seed',
                             'name' => 'seed'
-                        ));
+                        )
+                    );
 
+                    if (!$filterableColumnsExist || in_array('lastpage', $filterableColumnsExist ? $filteredColumns : [])) {
                         $aColumns[] = array(
-                            'header'=>'lastpage',
-                            'name'=>'lastpage',
-                            'type'=>'number',
-                            'filter'=>TbHtml::textField(
+                            'header' => 'lastpage',
+                            'name' => 'lastpage',
+                            'type' => 'number',
+                            'filter' => TbHtml::textField(
                                 'SurveyDynamic[lastpage]',
                                 $model->lastpage)
                         );
+                    }
+                    $filterableColumns[] = 'lastpage';
 
+                    if (!$filterableColumnsExist || in_array(gT("completed"), $filterableColumnsExist ? $filteredColumns : [])) {
                         $aColumns[] = array(
-                            'header'=>gT("completed"),
-                            'name'=>'completed_filter',
-                            'value'=>'$data->completed',
-                            'type'=>'raw',
-                            'filter'=>TbHtml::dropDownList(
+                            'header' => gT("completed"),
+                            'name' => 'completed_filter',
+                            'value' => '$data->completed',
+                            'type' => 'raw',
+                            'filter' => TbHtml::dropDownList(
                                 'SurveyDynamic[completed_filter]',
                                 $model->completed_filter,
-                                array(''=>gT('All'),'Y'=>gT('Yes'),'N'=>gT('No')))
+                                array('' => gT('All'), 'Y' => gT('Yes'), 'N' => gT('No')))
                         );
+                    }
+                    $filterableColumns[] = gT("completed");
 
-                        //add token to top of list if survey is not private
-                        if ($bHaveToken)
-                        {
+                    //add token to top of list if survey is not private
+                    if ($bHaveToken) {
+                        if (!$filterableColumnsExist || in_array('token', $filterableColumnsExist ? $filteredColumns : [])) {
                             $aColumns[] = array(
-                                'header'=>'token',
-                                'name'=>'token',
-                                'type'=>'raw',
-                                'value'=>'$data->tokenForGrid',
+                                'header' => 'token',
+                                'name' => 'token',
+                                'type' => 'raw',
+                                'value' => '$data->tokenForGrid',
 
                             );
+                        }
+                        $filterableColumns[] = 'token';
 
+                        if (!$filterableColumnsExist || in_array(gT("First name"), $filterableColumnsExist ? $filteredColumns : [])) {
                             $aColumns[] = array(
-                                'header'=>gT("First name"),
-                                'name'=>'tokens.firstname',
-                                'id'=>'firstname',
-                                'type'=>'raw',
-                                'value'=>'$data->firstNameForGrid',
-                                'filter'=>TbHtml::textField(
+                                'header' => gT("First name"),
+                                'name' => 'tokens.firstname',
+                                'id' => 'firstname',
+                                'type' => 'raw',
+                                'value' => '$data->firstNameForGrid',
+                                'filter' => TbHtml::textField(
                                     'SurveyDynamic[firstname_filter]',
                                     $model->firstname_filter)
                             );
+                        }
+                        $filterableColumns[] = gT("First name");
 
+                        if (!$filterableColumnsExist || in_array(gT("Last name"), $filterableColumnsExist ? $filteredColumns : [])) {
                             $aColumns[] = array(
-                                'header'=>gT("Last name"),
-                                'name'=>'tokens.lastname',
-                                'type'=>'raw',
-                                'id'=>'lastname',
-                                'value'=>'$data->lastNameForGrid',
-                                'filter'=>TbHtml::textField(
+                                'header' => gT("Last name"),
+                                'name' => 'tokens.lastname',
+                                'type' => 'raw',
+                                'id' => 'lastname',
+                                'value' => '$data->lastNameForGrid',
+                                'filter' => TbHtml::textField(
                                     'SurveyDynamic[lastname_filter]',
                                     $model->lastname_filter)
                             );
+                        }
+                        $filterableColumns[] = gT("Last name");
 
+                        if (!$filterableColumnsExist || in_array(gT("Email"), $filterableColumnsExist ? $filteredColumns : [])) {
                             $aColumns[] = array(
-                                'header'=>gT("Email"),
-                                'name'=>'tokens.email',
-                                'id'=>'email',
-                                'filter'=>TbHtml::textField(
+                                'header' => gT("Email"),
+                                'name' => 'tokens.email',
+                                'id' => 'email',
+                                'filter' => TbHtml::textField(
                                     'SurveyDynamic[email_filter]',
                                     $model->email_filter)
                             );
                         }
+                        $filterableColumns[] = gT("Email");
+                    }
 
+                    if (!$filterableColumnsExist || in_array('startlanguage', $filterableColumnsExist ? $filteredColumns : [])) {
                         $aColumns[] = array(
-                            'header'=>'startlanguage',
-                            'name'=>'startlanguage',
+                            'header' => 'startlanguage',
+                            'name' => 'startlanguage',
                         );
+                    }
+                    $filterableColumns[] = 'startlanguage';
 
                    // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
                    // All other columns are based on the questions.
@@ -176,16 +198,21 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             /* Here we strip all tags, and separate with hr since we allow html (in popover), maybe use only viewHelper::purified ? But remind XSS. mantis #14301 */
                             $colTitle = viewHelper::getFieldText($fieldmap[$column->name],array('afterquestion'=>"<hr>",'separator'=>array('','<br>')));
 
-                            $aColumns[]=
-                                array(
-                                    'header' => '<div data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="'.$colName.'" data-content="'.CHtml::encode($colTitle).'" data-html="1" data-container="#responses-grid">'.$colName.' <br/> '.$colDetails.'</div>',
-                                    'headerHtmlOptions'=>array('style'=>'min-width: 350px;'),
+                            if (!$filterableColumnsExist || in_array($colName . ': ' . $colDetails, $filterableColumnsExist ? $filteredColumns : [])) {
+                                $aColumns[] = array(
+                                    'header' => '<div data-toggle="popover" data-trigger="hover focus" data-placement="bottom" title="' . $colName . '" data-content="' . CHtml::encode($colTitle) . '" data-html="1" data-container="#responses-grid">' . $colName . ' <br/> ' . $colDetails . '</div>',
+                                    'headerHtmlOptions' => array('style' => 'min-width: 350px;'),
                                     'name' => $column->name,
                                     'type' => 'raw',
-                                    'value' => '$data->getExtendedData("'.$column->name.'", "'.$language.'", "'.$base64jsonFieldMap.'")',
+                                    'value' => '$data->getExtendedData("' . $column->name . '", "' . $language . '", "' . $base64jsonFieldMap . '")',
                                 );
+                            }
+                            $filterableColumns[] = $colName . ': ' . $colDetails;
                         }
                     }
+
+                    // create a modal to filter all columns
+                    $filterColumns = App()->getController()->renderPartial('/admin/responses/modal_subviews/filterColumns', array('filterableColumns' => $filterableColumns, 'filteredColumns' => $filteredColumns), true, false);
 
                     $this->widget('ext.LimeGridView.LimeGridView', array(
                         'dataProvider'  => $model->search(),
@@ -196,7 +223,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         'ajaxUpdate'    => 'responses-grid',
                         'ajaxType'      => 'POST',
                         'afterAjaxUpdate'=>'js:function(id, data){ LS.resp.bindScrollWrapper(); onUpdateTokenGrid();$(".grid-view [data-toggle=\'popover\']").popover(); }',
-                        'template'      => "<div class='push-grid-pager'>{items}\n</div><div id='ListPager'><div class=\"col-sm-12\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-12 pager-container ls-ba \">{pager}</div><div class=\"col-sm-12 summary-container\">{summary}</div></div>",
+                        'template'      => "<div class='push-grid-pager'>{items}\n</div><div id='ListPager'><div class=\"col-sm-12\" id=\"massive-action-container\">$massiveAction$filterColumns</div><div class=\"col-sm-12 pager-container ls-ba \">{pager}</div><div class=\"col-sm-12 summary-container\">{summary}</div></div>",
                         'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',

@@ -1486,7 +1486,7 @@ class questionHelper
             'sortorder'=>128,
             "inputtype"=>"integer",
             'default'=>10240,
-            "help"=>gT("The participant cannot upload a single file larger than this size"),
+            "help"=>sprintf(gT("The participant cannot upload a single file larger than this size. Server configuration allow a maximum file size of %s KB."),getMaximumFileUploadSize()/1024),
             "caption"=>gT("Maximum file size allowed (in KB)")
         );
 
