@@ -181,7 +181,7 @@ class UploaderController extends SurveyController
                 $realMimeType = CFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
                 $return = array(
                     "success" => false,
-                    "msg" => sprintf(gT("Sorry, file type (%s) is not allowed!"), $realMimeType)
+                    "msg" => sprintf(gT("Sorry, file type %s (extension : %s) is not allowed!"), $realMimeType,$extByMimeType)
                 );
                 //header('Content-Type: application/json');
                 echo ls_json_encode($return);
