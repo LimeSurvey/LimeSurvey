@@ -115,12 +115,16 @@ class EmCacheHelper
      * @todo Setting per survey.
      * @todo Don't cache questions with expressions.
      */
-    public static function cacheQanda(array $ia, array $session)
+    public static function cacheQanda(array $ia, array $session = null)
     {
         /** @var boolean */
         $cacheQanda = \Yii::app()->getConfig('emcache_cache_qanda');
         if (!$cacheQanda) {
             return false;
+        }
+
+        if (empty($session)) {
+            return true;
         }
 
         // If an answer was supplied, do not cache.
