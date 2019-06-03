@@ -1427,6 +1427,7 @@ $url .= "_view"; });
 
         $surveys = Survey::getSurveysWithTokenTable();
         $data['surveys'] = $surveys;
+        $data['hasGlobalPermission'] = Permission::model()->hasGlobalPermission('superadmin', 'read') || Permission::model()->hasGlobalPermission('surveys', 'update');
 
         $html = $this->getController()->renderPartial(
             '/admin/participants/modal_subviews/_addToSurvey',
@@ -2400,10 +2401,18 @@ $url .= "_view"; });
      */
     public function attributeMap()
     {
+        $iSurveyId = Yii::app()->request->getPost('survey_id');
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')
+            && !Permission::model()->hasGlobalPermission('superadmin', 'read')
+            && !Permission::model()->hasGlobalPermission('surveys', 'update')
+        ) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            Yii::app()->getController()->redirect(['admin/participants/sa/displayParticipants']);
+        }
+
         Yii::app()->loadHelper('common');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'attributeMap.js');
 
-        $iSurveyId = Yii::app()->request->getPost('survey_id');
         $redirect = Yii::app()->request->getPost('redirect');
         $count = Yii::app()->request->getPost('count');
         $iParticipantId = Yii::app()->request->getPost('participant_id');
