@@ -1318,7 +1318,7 @@ function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fi
             $search = "sqid";
         }
         foreach ($fieldmap as $key => $detail) {
-            if ($detail[$search] == $qid) {
+            if (array_key_exists($search, $detail) && $detail[$search] == $qid) {
                 if (($fieldadd == false || substr($key, (strlen($fieldadd) * -1)) == $fieldadd) &&
                     ($usesaid == false || ($detail["aid"] == $usesaid)) &&
                     ($usesscale == false || ($detail["scale_id"] == $usesscale))) {
