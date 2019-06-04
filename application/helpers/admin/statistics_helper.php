@@ -3402,7 +3402,7 @@ class statistics_helper
                 $iMaxLabelLength = 0;
 
                 // add "Not completed or Not displayed" label if missing
-                if ($_POST['noncompleted'] == 0 && count($labels) > count($aGraphLabels)){
+                if (isset($_POST['noncompleted']) && $_POST['noncompleted'] == 0 && count($labels) > count($aGraphLabels)){
                     $aGraphLabels[] = gT("Not completed or Not displayed");
                 }
 
