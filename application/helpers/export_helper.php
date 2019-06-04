@@ -1468,7 +1468,7 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
     // substitute token placeholders for real token values
     $RowQReplacements = array();
-    if ($oSurvey->anonymized == 'N' && (int) $iResponseID > 0){
+    if ($oSurvey->anonymized == 'N' && $oSurvey->hasTokensTable && (int) $iResponseID > 0){
         $response = Response::model($iSurveyID)->findByPk($iResponseID);
         if (!empty($response)){
             $token = TokenDynamic::model($iSurveyID)->find(array('condition' => 'token = \'' . $response->token . '\''));
