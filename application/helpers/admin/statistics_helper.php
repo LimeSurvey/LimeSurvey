@@ -2591,11 +2591,11 @@ class statistics_helper
                 break;
 
                 case 'both':
-                    $aGraphLabels[] = $sFlatLabel = $al[0].': '.$flatLabel;
+                    $aGraphLabels[] = $sFlatLabel = empty($al[0]) ? $flatLabel : $al[0] . ': ' . $flatLabel;
                 break;
 
                 default:
-                    $aGraphLabels[] = $sFlatLabel = $al[0];
+                    $aGraphLabels[] = $sFlatLabel = empty($al[0]) ? $flatLabel : $al[0];
                 break;
             }
 
