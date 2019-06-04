@@ -846,7 +846,6 @@ function LEMval(alias)
 
                 }
             }
-
             if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
                 if(value=="") {
                     return "";
@@ -908,7 +907,10 @@ function LEMval(alias)
                 }
                 return value;
             }
-            else if(!isNaN(parseFloat(newval)) && isFinite(newval))
+            else if (parseFloat(value).toString() === value.toString()) {
+                return parseFloat(value);
+            }
+            else if(!isNaN(parseFloat(value)) && isFinite(value))
             {
                 // If it's not a decimal number, just return value
                 try {
