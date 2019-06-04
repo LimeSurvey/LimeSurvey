@@ -2165,6 +2165,7 @@ class statistics_helper
         $sDatabaseType      = Yii::app()->db->getDriverName();
         $tempdir            = Yii::app()->getConfig("tempdir");
         $astatdata          = array();
+        $TotalIncomplete    = 0;
 
         $sColumnName = null;
 
@@ -3399,6 +3400,11 @@ class statistics_helper
 
                 // Labels for graphs
                 $iMaxLabelLength = 0;
+
+                // add "Not completed or Not displayed" label if missing
+                if ($_POST['noncompleted'] == 0 && count($labels) > count($aGraphLabels)){
+                    $aGraphLabels[] = gT("Not completed or Not displayed");
+                }
 
                 foreach ($aGraphLabels as $key => $label) {
                     $cleanLabel = $label;
