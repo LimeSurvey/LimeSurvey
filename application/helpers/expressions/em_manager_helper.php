@@ -1946,7 +1946,7 @@
                             $eoRelevantAndUnchecked = "(" . $eoVarName . ".relevanceStatus && is_empty(" . $eoVarName . "))";
                             $eoEqn = "(" . $eoRelevantAndUnchecked . " && (" . $relpart . " == " . $checkedpart . "))";
 
-                            // TODO: Why is this needed if the result is not used?
+                            // NB: Used to update EM state. Return value is not used.
                             $this->em->ProcessBooleanExpression($eoEqn, $qinfo['gseq'], $qinfo['qseq']);
 
                             $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
