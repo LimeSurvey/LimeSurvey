@@ -7385,6 +7385,12 @@
             $jsParts[] = "  last_sgqa=sgqa;\n";
             $jsParts[] = "  return;\n";
             $jsParts[] = "}\n";
+            /* Equation with {self.NAOK} in question text , issue in 4.0 only due to #14047 */
+            $jsParts[] = "if (evt_type == 'updated'  && (typeof last_sgqa !== 'undefined' && sgqa==last_sgqa)) {\n";
+            $jsParts[] = "  last_evt_type='updated';\n";
+            $jsParts[] = "  last_sgqa=sgqa;\n";
+            $jsParts[] = "  return;\n";
+            $jsParts[] = "}\n";
             $jsParts[] = "last_evt_type = evt_type;\n";
             $jsParts[] = "last_sgqa=sgqa;\n";
 

@@ -236,7 +236,7 @@ $(document).on("change",".checkbox-item :checkbox:not([onclick]),.button-item :c
 });
 /* hidden item */
 $(document).on("updated",".answer-item :hidden",function(event){
-    checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
+    checkconditions($(this).val(), $(this).attr('name'), 'equation', 'updated')
 });
 /**
  * For number
