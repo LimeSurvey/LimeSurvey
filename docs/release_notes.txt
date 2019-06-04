@@ -35,6 +35,30 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.17.4 (build 190529) to 3.17.5 (build 190604) June 4, 2019
+-New translation: Tajik - kindly provided by Iskandar_r (Carsten Schmitz)
+-Fixed issue #13942: R syntax file export appends 'unknown type' line to the end of the syntax file when timings are activated (Carsten Schmitz)
+-Fixed issue #14456: Regression: Feature for selecting which data columsn to show was removed after Limesurvey 2.6 LTS (Patrick Teichmann)
+-Fixed issue #14528: Teilnehmer Import aus Zentrale Teilnehmerdatenbank / Zugriffsrechte | participants import from cpdb / access rights (Patrick Teichmann)
+-Fixed issue #14708: Upload files question type does not actually check file type (Denis Chenu)
+-Fixed issue #14941: Variations choosed in Global theme options are not set in preview (Dominik Vitt)
+-Fixed issue #14949: Token based placeholders are not replaced when creating queXML PDF - another fix (Dominik Vitt)
+-Fixed issue #14949: Token based placeholders are not replaced when creating queXML PDF (Dominik Vitt)
+-Fixed issue #14954: Charts in Statistics are not showing completely (Dominik Vitt)
+-Fixed issue: "No answer" label not shown on charts in Statistics in some cases (Dominik Vitt)
+-Fixed issue: PHP notice message when trying to open response queXML file (Dominik Vitt)
+-Fixed issue: queXML PDF export breaks when some label is false, only with debug mode on (Dominik Vitt)
+-Fixed issue: wrong group order in queXML pdf export (Dominik Vitt)
+#Updated translation: Croatian by dominikvitt
+#Updated translation: French (France) by DenisChenu
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd, bacskaicsaba
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Tajik by c_schmitz
 
 Changes from 3.17.3 (build 190429) to 3.17.4  (build 190529) May 29, 2019
 -Fixed issue [security]: survey manager can use SQL injection to access all data in the database (LouisGac)
