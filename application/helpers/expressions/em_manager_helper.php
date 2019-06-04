@@ -8129,7 +8129,7 @@
                     {
                         // TODO - is different type needed for text?  Or process value to striphtml?
                         if ($jsVar == '') continue;
-                        $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                        $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . CHtml::encode($undeclaredVal[$jsVar]) . "'/>\n";
 
                         if ($bReturnArray){
                             $inputParts[] = $sInput;
@@ -8163,7 +8163,7 @@
                     foreach ($undeclaredJsVars as $jsVar)
                     {
                         if ($jsVar == '') continue;
-                        $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                        $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . CHtml::encode($undeclaredVal[$jsVar]) . "'/>\n";
                         if ($bReturnArray){
                             $inputParts[] = $sInput;
                         }else{
@@ -8988,7 +8988,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                     if ($dateTime === false) {
                                         $message = sprintf(
                                             'Could not convert date %s to format %s. Please check your date format settings.',
-                                            htmlspecialchars(trim($value)),
+                                            self::htmlSpecialCharsUserValue(trim($value)),
                                             $aDateFormatData['phpdate']
                                         ); // Seems to happen when admin make error on date format */
                                         $LEM->invalidAnswerString[$sq]=$message;
@@ -9001,7 +9001,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             $value = $newValue;
                                         } else {
                                             $value = "";// This don't disable submitting survey
-                                            $LEM->invalidAnswerString[$sq]=sprintf(gT("Date %s is invalid, please review your answer."),htmlspecialchars($value));
+                                            $LEM->invalidAnswerString[$sq]=sprintf(gT("Date %s is invalid, please review your answer."),self::htmlSpecialCharsUserValue($value));
                                         }
                                     }
                                 }
@@ -9165,14 +9165,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 case Question::QT_D_DATE: //DATE
                                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                                 case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
-                                    return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
+                                    return self::htmlSpecialCharsUserValue($_SESSION[$this->sessid][$sgqa]);
                                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                                 case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
                                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                     if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name)) {
-                                        return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
+                                        return self::htmlSpecialCharsUserValue($_SESSION[$this->sessid][$sgqa]);
                                     } else {
                                         return $_SESSION[$this->sessid][$sgqa];
                                     }
@@ -10499,6 +10499,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         public function setPageRelevanceInfo($info)
         {
             $this->pageRelevanceInfo = $info;
+        }
+
+        /**
+         * return a value entered by user to be shown or used in expression
+         * @param string $string
+         * @return string
+         */
+        public static function htmlSpecialCharsUserValue($string)
+        {
+            // <, > and &
+            $string = htmlspecialchars($string,ENT_NOQUOTES,Yii::app()->charset);
+            // { and } (after &)
+            $string = str_replace(["{","}"],["&#123;","&#125;"],$string);
+            return $string;
         }
 
     }
