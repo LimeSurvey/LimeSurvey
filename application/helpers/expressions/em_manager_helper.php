@@ -7876,20 +7876,20 @@
                     }
                     $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                     $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
-                    //Normally trigger reevaluation only for relevant questions except for equation questions
-                    if($arg['type'] != '*') {
-                        /* If current relevance are updated in a previous function : must appy this one */
-                        /* See issue #14465 . Warning : expression manager trigger this by order of question */
-                        if (count($qrelQIDs) > 0) {
-                             $qrelJS .= "  if(" . implode(' || ', $qrelQIDs) . "){\n    ;\n  }\n  else";
-                        }
-                        if (count($qrelgseqs) > 0) {
-                             $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
-                        }
-                        $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
-                        $qrelJS .= "  return;\n }\n";
+                    $aCheckNeeded = array(); // The condition to return
+                    /* Basic : sgqa is not in used var */
+                    $aCheckNeeded[] = "typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)";
+                    /* If one of question relevance used in function are updated in a previous function */
+                    if (!empty($qrelQIDs) > 0) {
+                         $aCheckNeeded[] = "!(".implode(' || ', $qrelQIDs) . ")";
                     }
-
+                    /* If one of group relevance used in function are updated in a previous function */
+                    if (!empty($qrelgseqs) > 0) {
+                         $aCheckNeeded[] = "!(".implode(' || ', $qrelgseqs) . ")";
+                    }
+                    $qrelJS .= "  if (".implode(" && ",$aCheckNeeded).") {\n";
+                    $qrelJS .= "    return;\n";
+                    $qrelJS .= "  }\n";
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
                     $relEqns[] = $qrelJS;
