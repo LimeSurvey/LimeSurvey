@@ -33,24 +33,28 @@ class MinMaxTest extends TestBaseClassWeb
         try {
             // Get first page.
             self::$webDriver->get($url);
-            $MultiNumElement = self::$webDriver->findElement(WebDriverBy::id('MultiNum'));
-            $MultiNum = $MultiNumElement->getText();
-            $this->assertEquals('-2/4', $MultiNum);
-            sleep(5);
-        } catch (\Exception $ex) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
-            $this->assertFalse(
-                true,
-                self::$testHelper->javaTrace($ex)
-            );
-        }
-        try {
-            // Get first page.
-            self::$webDriver->get($url);
-            $MultiNumElement = self::$webDriver->findElement(WebDriverBy::id('MultiText'));
-            $MultiNum = $MultiNumElement->getText();
-            $this->assertEquals('-1/Anything', $MultiNum);
-            sleep(5);
+            try {
+                $MultiNumElement = self::$webDriver->findElement(WebDriverBy::id('MultiNum'));
+                $MultiNum = $MultiNumElement->getText();
+                $this->assertEquals('-2/4', $MultiNum);
+            }  catch (\Exception $ex) {
+                self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+                $this->assertFalse(
+                    true,
+                    self::$testHelper->javaTrace($ex)
+                );
+            }
+            try {
+                $MultiNumElement = self::$webDriver->findElement(WebDriverBy::id('MultiText'));
+                $MultiNum = $MultiNumElement->getText();
+                $this->assertEquals('-1/Anything', $MultiNum);
+            } catch (\Exception $ex) {
+                self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+                $this->assertFalse(
+                    true,
+                    self::$testHelper->javaTrace($ex)
+                );
+            }
         } catch (\Exception $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
