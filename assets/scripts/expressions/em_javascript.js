@@ -1144,6 +1144,8 @@ function LEMval(alias)
                 return value;
             }
             else if (parseFloat(value).toString() === value.toString()) {
+                // @see ExpressionManager::getMismatchInformation : strval(floatval($arg1[0])) == strval($arg1[0])).
+                // We don't have lt gt function for JS, then PHP try to do same than js, see mantis #14337
                 return parseFloat(value);
             }
             else if(!isNaN(parseFloat(value)) && isFinite(value))
