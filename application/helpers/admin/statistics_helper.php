@@ -2174,6 +2174,7 @@ class statistics_helper
         $sDatabaseType      = Yii::app()->db->getDriverName();
         $tempdir            = Yii::app()->getConfig("tempdir");
         $astatdata          = array();
+        $TotalIncomplete    = 0;
 
         $sColumnName = null;
 
@@ -2617,12 +2618,12 @@ class statistics_helper
                     break;
 
                 case 'both':
-                    $aGraphLabels[] = $sFlatLabel = $al[0].': '.$flatLabel;
-                    break;
+                    $aGraphLabels[] = $sFlatLabel = empty($al[0]) ? $flatLabel : $al[0] . ': ' . $flatLabel;
+                break;
 
                 default:
-                    $aGraphLabels[] = $sFlatLabel = $al[0];
-                    break;
+                    $aGraphLabels[] = $sFlatLabel = empty($al[0]) ? $flatLabel : $al[0];
+                break;
             }
 
 
@@ -3426,6 +3427,11 @@ class statistics_helper
 
                 // Labels for graphs
                 $iMaxLabelLength = 0;
+
+                // add "Not completed or Not displayed" label if missing
+                if (isset($_POST['noncompleted']) && $_POST['noncompleted'] == 0 && count($labels) > count($aGraphLabels)){
+                    $aGraphLabels[] = gT("Not completed or Not displayed");
+                }
 
                 foreach ($aGraphLabels as $key => $label) {
                     $cleanLabel = $label;
