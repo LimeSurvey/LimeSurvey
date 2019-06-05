@@ -983,6 +983,7 @@ function LEMval(alias)
 
                 }
             }
+
             if (typeof attr.onlynum !== 'undefined' && attr.onlynum==1) {
                 if(value=="") {
                     return "";
@@ -1000,22 +1001,16 @@ function LEMval(alias)
                         var numtest = new Decimal(value.toString().replace(/,/,'.'));
                         // Error can still happen maybe but don't catch to know (and fix) it
                     }
-
-                    // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
-                    // if (LEMradix === ',' && onSamePage )
-                    // {
-                    //     value = numtest.toString().replace(/\./,',');
-                    // }
                     value = numtest.valueOf();
                     if(value.length < length && firstLetterIsNull){
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
-                    value = Number(value);
+                    value = Number(value); /* If it's a number : always return a number */
                 }
                 if(LSvar.bNumRealValue) {
-                    return Number(value);
+                    return value;
                 }
-                return value;
+                return Number(value);
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
@@ -1045,10 +1040,10 @@ function LEMval(alias)
                 }
                 return value;
             }
-            else if (parseInt(value).toString() === value.toString()) {
+            else if (parseFloat(value).toString() === value.toString()) {
                 // @see ExpressionManager::getMismatchInformation : strval(floatval($arg1[0])) == strval($arg1[0])).
                 // We don't have lt gt function for JS, then PHP try to do same than js, see mantis #14337
-                return parseInt(value);
+                return parseFloat(value);
             }
             else if(!isNaN(parseFloat(value)) && isFinite(value))
             {
@@ -1060,7 +1055,7 @@ function LEMval(alias)
                 catch (ex) {
                 }
             }
-            console.warn(parseInt(value).toString());
+
             return value;
         }
         case 'rowdivid':
