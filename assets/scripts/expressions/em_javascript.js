@@ -323,12 +323,13 @@ function LEMif(testDone,ifTrue,ifFalse)
 
 /**
  * max like php in LimeSurvey, start by https://github.com/kvz/locutus/blob/master/src/php/math/max.js
+ * @see https://bugs.limesurvey.org/view.php?id=14337
  * Review for ExpressionManager
  **/
 function LEMmax () {
-  //  discuss at: http://locutus.io/php/max/
+  // original at: http://locutus.io/php/max/
   // original by: Onno Marsman (https://twitter.com/onnomarsman)
-  //  revised by: Denis Chenu for LimeSurey specific
+  //  revised by: Denis Chenu for LimeSurvey specific
   //      note 1: Long code cause we're aiming for maximum PHP compatibility
   //   example 1: max(1, 3, 5, 6, 7,'')
   //   returns 1: 7
@@ -363,14 +364,8 @@ function LEMmax () {
     } else if (current === next) {
       return 0
     } else if (isNaN(next) && !isNaN(current)) {
-      if (current === 0) {
-        return 0
-      }
       return (next.toString() > current.toString() ? 1 : -1)
     } else if (isNaN(current) && !isNaN(next)) {
-      if (next === 0) {
-        return 0
-      }
       return (next.toString() > current.toString() ? 1 : -1)
     }
 
@@ -400,26 +395,28 @@ function LEMmax () {
 }
 /**
  * min like php in LimeSurvey : https://github.com/kvz/locutus/blob/master/src/php/math/min.js
- * Review for ExpressionManager
- * @todo : remove object, fix with empty string
+ * @see https://bugs.limesurvey.org/view.php?id=14337
+ * Review for ExpressionManager 
  **/
 function LEMmin () {
-  //  discuss at: http://locutus.io/php/max/
+  // original at: http://locutus.io/php/max/
   // original by: Onno Marsman (https://twitter.com/onnomarsman)
-  //  revised by: Denis Chenu for LimeSurey specific
+  //  revised by: Denis Chenu for LimeSurvey specific
   //      note 1: Long code cause we're aiming for maximum PHP compatibility
-  //   example 1: max(1, 3, 5, 6, 7,'')
-  //   returns 1: 7
-  //   example 2: max(1, 'hello','')
-  //   returns 2: 'hello'
-  //   example 3: max('hello', 1,'')
-  //   returns 3: 'hello'
-  //   example 4: max('2hello', 1,'')
-  //   returns 4: '2hello'
-  //   example 5: max('1hello', 2,'')
-  //   returns 5: 2
-  //   example 6: max(-1, -2,'')
-  //   returns 6: -1
+  //   example 1: min(1, 3, 5, 6, 7)
+  //   returns 1: 1
+  //   example 2: max(1, 'hello')
+  //   returns 2: 1
+  //   example 3: max('hello', 1)
+  //   returns 3: 1
+  //   example 4: max('2hello', 1)
+  //   returns 4: 1
+  //   example 5: max('1hello', 2)
+  //   returns 5: '1hello'
+  //   example 6: min(-1, -2)
+  //   returns 6: -2
+  //   example 7: min(-1, '')
+  //   returns 7: ''
 
   var ar
   var retVal
@@ -427,18 +424,6 @@ function LEMmin () {
   var n = 0
   var argv = arguments
   var argc = argv.length
-  var _obj2Array = function (obj) {
-    if (Object.prototype.toString.call(obj) === '[object Array]') {
-      return obj
-    }
-    var ar = []
-    for (var i in obj) {
-      if (obj.hasOwnProperty(i)) {
-        ar.push(obj[i])
-      }
-    }
-    return ar
-  }
 
   var _compare = function (current, next) {
     var i = 0
@@ -447,42 +432,16 @@ function LEMmin () {
     var nl = 0
     var cl = 0
 
-    if (current === next) {
-      return 0
-    } else if (typeof current === 'object') {
-      if (typeof next === 'object') {
-        current = _obj2Array(current)
-        next = _obj2Array(next)
-        cl = current.length
-        nl = next.length
-        if (nl > cl) {
-          return 1
-        } else if (nl < cl) {
-          return -1
-        }
-        for (i = 0, n = cl; i < n; ++i) {
-          tmp = _compare(current[i], next[i])
-          if (tmp === 1) {
-            return 1
-          } else if (tmp === -1) {
-            return -1
-          }
-        }
-        return 0
-      }
-      return -1
-    } else if (typeof next === 'object') {
-      return 1
+    if(next === '') {
+        return -1;
+    } else if(current === '') {
+        return 1;
+    } else if (current === next) {
+      return 0;
     } else if (isNaN(next) && !isNaN(current)) {
-      if (current === 0) {
-        return 0
-      }
-      return (current < 0 ? 1 : -1)
+      return (next.toString() < current.toString() ? 1 : -1); // @todo
     } else if (isNaN(current) && !isNaN(next)) {
-      if (next === 0) {
-        return 0
-      }
-      return (next > 0 ? 1 : -1)
+      return (next.toString() < current.toString() ? 1 : -1); // @todo
     }
 
     if (next === current) {
@@ -493,17 +452,9 @@ function LEMmin () {
   }
 
   if (argc === 0) {
-    throw new Error('At least one value should be passed to min()')
+    return '';
   } else if (argc === 1) {
-    if (typeof argv[0] === 'object') {
-      ar = _obj2Array(argv[0])
-    } else {
-      throw new Error('Wrong parameter count for min()')
-    }
-
-    if (ar.length === 0) {
-      throw new Error('Array must contain at least one element for min()')
-    }
+    return argv[0];
   } else {
     ar = argv
   }
