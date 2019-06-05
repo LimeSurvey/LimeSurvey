@@ -1040,17 +1040,12 @@ function LEMval(alias)
                 }
                 return value;
             }
-            else if (parseFloat(value).toString() === value.toString()) {
-                // @see ExpressionManager::getMismatchInformation : strval(floatval($arg1[0])) == strval($arg1[0])).
-                // We don't have lt gt function for JS, then PHP try to do same than js, see mantis #14337
-                return parseFloat(value);
-            }
             else if(!isNaN(parseFloat(value)) && isFinite(value))
             {
                 // If it's not a decimal number, just return value
                 try {
                     var decimal_safe = new Decimal(value);
-                    return decimal_safe.toPrecision(value.length);
+                    return Number(decimal_safe.toPrecision(value.length));
                 }
                 catch (ex) {
                 }
