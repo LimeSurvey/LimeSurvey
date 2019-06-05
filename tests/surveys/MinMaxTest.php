@@ -15,7 +15,7 @@ class MinMaxTest extends TestBaseClassWeb
      */
     public function testBasic()
     {
-        $surveyFile = self::$surveysFolder . '/limesurvey_survey_351443.lss';
+        $surveyFile = self::$surveysFolder . '/limesurvey_survey_EmMaxMinTest_88442.lss';
         self::importSurvey($surveyFile);
 
         // Preview survey.

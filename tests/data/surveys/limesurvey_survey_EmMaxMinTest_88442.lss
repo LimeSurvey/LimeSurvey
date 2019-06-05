@@ -274,10 +274,10 @@ MultiText4  min_num/min/max : <div id="MultiText4">{min(that.MultiText4.sq_SQ.NA
     <type><![CDATA[X]]></type>
     <title><![CDATA[MaxPHP]]></title>
     <question><![CDATA[MultiNum min_num/min/max : <div id="MultiNum">{min(that.MultiNum.sq_SQ.NAOK)}/{max(that.MultiNum.NAOK)}</div><br>
-MultiText  min_num/min/max : <div id="MultiNum">{min(that.MultiText.sq_SQ.NAOK)}/{max(that.MultiText.NAOK)}</div><br>
-MultiText2  min_num/min/max : <div id="MultiNum">{min(that.MultiText2.sq_SQ.NAOK)}/{max(that.MultiText2.NAOK)}</div><br>
-MultiText3 min_num/min/max : <div id="MultiNum">{min(that.MultiText3.sq_SQ.NAOK)}/{max(that.MultiText3.NAOK)}</div><br>
-MultiText4  min_num/min/max : <div id="MultiNum">{min(that.MultiText4.sq_SQ.NAOK)}/{max(that.MultiText4.NAOK)}</div><br>]]></question>
+MultiText  min_num/min/max : <div id="MultiText">{min(that.MultiText.sq_SQ.NAOK)}/{max(that.MultiText.NAOK)}</div><br>
+MultiText2  min_num/min/max : <div id="MultiText2">{min(that.MultiText2.sq_SQ.NAOK)}/{max(that.MultiText2.NAOK)}</div><br>
+MultiText3 min_num/min/max : <div id="MultiText3">{min(that.MultiText3.sq_SQ.NAOK)}/{max(that.MultiText3.NAOK)}</div><br>
+MultiText4  min_num/min/max : <div id="MultiText4">{min(that.MultiText4.sq_SQ.NAOK)}/{max(that.MultiText4.NAOK)}</div><br>]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
