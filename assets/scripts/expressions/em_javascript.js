@@ -352,15 +352,10 @@ function LEMmax () {
   var argc = argv.length
 
   var _compare = function (current, next) {
-    var i = 0
-    var n = 0
-    var tmp = 0
-    var nl = 0
-    var cl = 0
     if(next === '') {
-        return -1;
+      return -1;
     } else if(current === '') {
-        return 1;
+      return 1;
     } else if (current === next) {
       return 0
     } else if (isNaN(next) && !isNaN(current)) {
@@ -426,28 +421,22 @@ function LEMmin () {
   var argc = argv.length
 
   var _compare = function (current, next) {
-    var i = 0
-    var n = 0
-    var tmp = 0
-    var nl = 0
-    var cl = 0
 
     if(next === '') {
-        return -1;
+      return -1;
     } else if(current === '') {
-        return 1;
+      return 1;
     } else if (current === next) {
       return 0;
     } else if (isNaN(next) && !isNaN(current)) {
-      return (next.toString() < current.toString() ? 1 : -1); // @todo
+      return 1;
     } else if (isNaN(current) && !isNaN(next)) {
-      return (next.toString() < current.toString() ? 1 : -1); // @todo
+      return -1
     }
 
     if (next === current) {
       return 0
     }
-
     return (next > current ? 1 : -1)
   }
 
