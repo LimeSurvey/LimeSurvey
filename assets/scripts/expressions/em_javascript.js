@@ -322,26 +322,26 @@ function LEMif(testDone,ifTrue,ifFalse)
 }
 
 /**
- * max like php : https://github.com/kvz/locutus/blob/master/src/php/math/max.js
+ * max like php in LimeSurvey, start by https://github.com/kvz/locutus/blob/master/src/php/math/max.js
+ * Review for ExpressionManager
  **/
 function LEMmax () {
   //  discuss at: http://locutus.io/php/max/
   // original by: Onno Marsman (https://twitter.com/onnomarsman)
-  //  revised by: Onno Marsman (https://twitter.com/onnomarsman)
-  // improved by: Jack
+  //  revised by: Denis Chenu for LimeSurey specific
   //      note 1: Long code cause we're aiming for maximum PHP compatibility
-  //   example 1: max(1, 3, 5, 6, 7)
+  //   example 1: max(1, 3, 5, 6, 7,'')
   //   returns 1: 7
-  //   example 2: max([2, 4, 5])
-  //   returns 2: 5
-  //   example 3: max(0, 'hello')
-  //   returns 3: 0
-  //   example 4: max('hello', 0)
-  //   returns 4: 'hello'
-  //   example 5: max(-1, 'hello')
-  //   returns 5: 'hello'
-  //   example 6: max([2, 4, 8], [2, 5, 7])
-  //   returns 6: [2, 5, 7]
+  //   example 2: max(1, 'hello','')
+  //   returns 2: 'hello'
+  //   example 3: max('hello', 1,'')
+  //   returns 3: 'hello'
+  //   example 4: max('2hello', 1,'')
+  //   returns 4: '2hello'
+  //   example 5: max('1hello', 2,'')
+  //   returns 5: 2
+  //   example 6: max(-1, -2,'')
+  //   returns 6: -1
 
   var ar
   var retVal
@@ -349,62 +349,29 @@ function LEMmax () {
   var n = 0
   var argv = arguments
   var argc = argv.length
-  var _obj2Array = function (obj) {
-    if (Object.prototype.toString.call(obj) === '[object Array]') {
-      return obj
-    } else {
-      var ar = []
-      for (var i in obj) {
-        if (obj.hasOwnProperty(i)) {
-          ar.push(obj[i])
-        }
-      }
-      return ar
-    }
-  }
+
   var _compare = function (current, next) {
     var i = 0
     var n = 0
     var tmp = 0
     var nl = 0
     var cl = 0
-
-    if (current === next) {
+    if(next === '') {
+        return -1;
+    } else if(current === '') {
+        return 1;
+    } else if (current === next) {
       return 0
-    } else if (typeof current === 'object') {
-      if (typeof next === 'object') {
-        current = _obj2Array(current)
-        next = _obj2Array(next)
-        cl = current.length
-        nl = next.length
-        if (nl > cl) {
-          return 1
-        } else if (nl < cl) {
-          return -1
-        }
-        for (i = 0, n = cl; i < n; ++i) {
-          tmp = _compare(current[i], next[i])
-          if (tmp === 1) {
-            return 1
-          } else if (tmp === -1) {
-            return -1
-          }
-        }
-        return 0
-      }
-      return -1
-    } else if (typeof next === 'object') {
-      return 1
     } else if (isNaN(next) && !isNaN(current)) {
       if (current === 0) {
         return 0
       }
-      return (current < 0 ? 1 : -1)
+      return (next.toString() > current.toString() ? 1 : -1)
     } else if (isNaN(current) && !isNaN(next)) {
       if (next === 0) {
         return 0
       }
-      return (next > 0 ? 1 : -1)
+      return (next.toString() > current.toString() ? 1 : -1)
     }
 
     if (next === current) {
@@ -415,16 +382,9 @@ function LEMmax () {
   }
 
   if (argc === 0) {
-    throw new Error('At least one value should be passed to max()')
+    return '';
   } else if (argc === 1) {
-    if (typeof argv[0] === 'object') {
-      ar = _obj2Array(argv[0])
-    } else {
-      throw new Error('Wrong parameter count for max()')
-    }
-    if (ar.length === 0) {
-      throw new Error('Array must contain at least one element for max()')
-    }
+    return argv[0];
   } else {
     ar = argv
   }
@@ -439,26 +399,27 @@ function LEMmax () {
   return retVal
 }
 /**
- * min like php : https://github.com/kvz/locutus/blob/master/src/php/math/min.js
+ * min like php in LimeSurvey : https://github.com/kvz/locutus/blob/master/src/php/math/min.js
+ * Review for ExpressionManager
+ * @todo : remove object, fix with empty string
  **/
 function LEMmin () {
-  //  discuss at: http://locutus.io/php/min/
+  //  discuss at: http://locutus.io/php/max/
   // original by: Onno Marsman (https://twitter.com/onnomarsman)
-  //  revised by: Onno Marsman (https://twitter.com/onnomarsman)
-  // improved by: Jack
+  //  revised by: Denis Chenu for LimeSurey specific
   //      note 1: Long code cause we're aiming for maximum PHP compatibility
-  //   example 1: min(1, 3, 5, 6, 7)
-  //   returns 1: 1
-  //   example 2: min([2, 4, 5])
-  //   returns 2: 2
-  //   example 3: min(0, 'hello')
-  //   returns 3: 0
-  //   example 4: min('hello', 0)
-  //   returns 4: 'hello'
-  //   example 5: min(-1, 'hello')
-  //   returns 5: -1
-  //   example 6: min([2, 4, 8], [2, 5, 7])
-  //   returns 6: [2, 4, 8]
+  //   example 1: max(1, 3, 5, 6, 7,'')
+  //   returns 1: 7
+  //   example 2: max(1, 'hello','')
+  //   returns 2: 'hello'
+  //   example 3: max('hello', 1,'')
+  //   returns 3: 'hello'
+  //   example 4: max('2hello', 1,'')
+  //   returns 4: '2hello'
+  //   example 5: max('1hello', 2,'')
+  //   returns 5: 2
+  //   example 6: max(-1, -2,'')
+  //   returns 6: -1
 
   var ar
   var retVal
@@ -1109,11 +1070,12 @@ function LEMval(alias)
                     if(value.length < length && firstLetterIsNull){
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
+                    value = Number(value);
                 }
                 if(LSvar.bNumRealValue) {
-                    return value;
+                    return Number(value);
                 }
-                return Number(value);
+                return value;
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
@@ -1143,10 +1105,10 @@ function LEMval(alias)
                 }
                 return value;
             }
-            else if (parseFloat(value).toString() === value.toString()) {
+            else if (parseInt(value).toString() === value.toString()) {
                 // @see ExpressionManager::getMismatchInformation : strval(floatval($arg1[0])) == strval($arg1[0])).
                 // We don't have lt gt function for JS, then PHP try to do same than js, see mantis #14337
-                return parseFloat(value);
+                return parseInt(value);
             }
             else if(!isNaN(parseFloat(value)) && isFinite(value))
             {
@@ -1158,7 +1120,7 @@ function LEMval(alias)
                 catch (ex) {
                 }
             }
-
+            console.warn(parseInt(value).toString());
             return value;
         }
         case 'rowdivid':
