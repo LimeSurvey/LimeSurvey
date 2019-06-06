@@ -979,8 +979,23 @@ class SurveyRuntimeHelper
     /**
      * Perform save all if user asked for it
      */
-    private function saveAllIfNeeded()
+    public function saveAllIfNeeded()
     {
+        // save current survey data when clicking on "Load unfinished survey"
+        if(Yii::app()->request->getPost('loadall') && Yii::app()->request->getPost('loadall') == 'loadall') {
+            if ($this->iSurveyid === null){
+                $this->iSurveyid = Yii::app()->request->getPost('sid', 0);
+            }
+            if ($this->aSurveyInfo === null){
+                $this->aSurveyInfo = getSurveyInfo($this->iSurveyid, App()->getLanguage());
+            }
+            $this->LEMsessid = 'survey_'.$this->iSurveyid;
+            if ($this->aSurveyInfo['active'] == "Y" && isset($_SESSION[$this->LEMsessid])) {
+                $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false); // by jumping to current step, saves data so far
+            }
+            return;
+        }
+
         if(!Yii::app()->request->getPost('saveall')) {
             return;
         }

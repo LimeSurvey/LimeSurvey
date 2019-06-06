@@ -422,6 +422,11 @@ class index extends CAction
             /* Construction of the form */
             $aLoadForm['aCaptcha']['show'] = false;
 
+            // save current survey data when clicking on "Load unfinished survey"
+            Yii::import('application.helpers.SurveyRuntimeHelper');
+            $SurveyRuntimeHelper = new SurveyRuntimeHelper();
+            $SurveyRuntimeHelper->saveAllIfNeeded();
+
             if (isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($surveyid)->usecaptcha)) {
                 $aLoadForm['aCaptcha']['show'] = true;
                 $aLoadForm['aCaptcha']['sImageUrl'] = Yii::app()->getController()->createUrl('/verification/image', array('sid'=>$surveyid));
