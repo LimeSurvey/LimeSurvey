@@ -4,30 +4,27 @@
  * @var $dataTitle
  * @var $ld
  * @var $answertypeclass
- * @var $value $myvalue
+ * @var $value $myvalue : 1 VS 0 or '' : OK to use it as boolean directly
  * @var $myfname2
  * @var $setmyvalue
  * @var $checkconditionFunction
  * @var $extraclass
 #}
-
 <!-- answer_td_checkboxes -->
 <td class="answer_cell_{{ ld }} question-item answer-item {{ answertypeclass }}-item checkbox-item">
-    
+    <!-- Used by EM , don't update id *-->
     {{ C.Html.hiddenField("java"~myfname2, C.Html.encode( value ),({
-        'id' : "java"~myfname2,
+        'id' : "answer"~myfname2,
         'disabled' : true,
         }))
     }}
-    
-    <input
-        type="checkbox"
-        name="{{ myfname2 }}"
-        id="answer{{ myfname2 }}"
-        class="{{ extraclass }}",
-        {{ setmyvalue }}
-        value="1"
-    />
-    <label for="answer{{ myfname2 }}" class="checkbox-label control-label"></label>
+    <!-- Don't add hidden input to send empty value because ajax mode is broken ! -->
+    {{ C.Html.checkBox(myfname2,value,({
+        'class' : extraclass,
+        'id' : "cbox"~myfname2,
+        'value' : "1"
+    }))
+    }}
+    <label for="cbox{{ myfname2 }}" class="ls-label-xs-visibility">{{ dataTitle }}</label>
 </td>
 <!-- end of answer_td_checkboxes -->
