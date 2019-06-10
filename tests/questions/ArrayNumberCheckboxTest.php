@@ -42,7 +42,7 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
         );
 
         // Get questions.
-        $questionObjects = Question::model()->findAll("sid = :sid AND parent_qid = 0",array(":sid"=>self::$surveyId));
+        $questionObjects = \Question::model()->findAll("sid = :sid AND parent_qid = 0",array(":sid"=>self::$surveyId));
         $questions = [];
         foreach ($questionObjects as $q) {
             $questions[$q->title] = $q;
