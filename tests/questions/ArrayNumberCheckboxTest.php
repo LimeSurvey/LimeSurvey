@@ -47,7 +47,11 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
         try {
 
             self::$webDriver->get($url);
-
+            sleep(1); // Let js do
+            // Check the count
+            $countJs = $web->findElement(WebDriverBy::id('countJs'));
+            $countJsText = $countJs->getText();
+            $this->assertEquals('count(self) : 0', $countJs);
             // relevanceJsQuestion must be hidden
             $elementsRelevance = self::$webDriver->findElements(
                 WebDriverBy::cssSelector("#question".$relevanceJsQuestion->qid." .ls-irrelevant")
