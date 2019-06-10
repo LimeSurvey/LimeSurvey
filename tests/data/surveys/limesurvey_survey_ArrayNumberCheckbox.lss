@@ -66,12 +66,12 @@
     <sid><![CDATA[132218]]></sid>
     <gid><![CDATA[745]]></gid>
     <type><![CDATA[:]]></type>
-    <title><![CDATA[Q1]]></title>
+    <title><![CDATA[question]]></title>
     <question><![CDATA[Array(Numbers) question...
 
 <div id="countJs">count(self) : {count(self.NAOK)}</div>]]></question>
     <preg/>
-    <help><![CDATA[Check : Q1_SQ003_SX001 : !isempty : {! is_empty(Q1_SY003_SX001.NAOK)} -  isempty: {is_empty(Q1_SY003_SX001.NAOK)}]]></help>
+    <help><![CDATA[Check : question_SQ003_SX001 : !isempty : {! is_empty(question_SY003_SX001.NAOK)} -  isempty: {is_empty(question_SY003_SX001.NAOK)}]]></help>
     <other><![CDATA[N]]></other>
     <mandatory><![CDATA[N]]></mandatory>
     <question_order><![CDATA[1]]></question_order>
@@ -89,7 +89,7 @@
     <type><![CDATA[T]]></type>
     <title><![CDATA[Prev]]></title>
     <question><![CDATA[Move previous
-<div id="countPHP">count(that.Q1) : {count(that.Q1)}</div>]]></question>
+<div id="countPHP">count(that.question) : {count(that.question.NAOK)}</div>]]></question>
     <preg/>
     <help/>
     <other><![CDATA[N]]></other>
@@ -117,7 +117,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[!is_empty(Q1_SY003_SX002)]]></relevance>
+    <relevance><![CDATA[!is_empty(question_SY003_SX002)]]></relevance>
     <modulename/>
    </row>
    <row>
@@ -136,7 +136,8 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[!is_empty(Q1_SY003_SX002)]]></relevance>
+    <relevance><![CDATA[!is_empty(question_SY003_SX002)]]></relevance>
+    <modulename/>
    </row>
   </rows>
  </questions>
