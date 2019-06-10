@@ -13,15 +13,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
 class ArrayNumberCheckboxTest extends TestBaseClassWeb
 {
     /**
-     * Import survey in tests/surveys/.
-     */
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-    }
-
-    /**
-     * 
+     * Check array number Expression Manager system
      */
     public function testArrayChecboxExpression()
     {
@@ -60,19 +52,19 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
             $elementsRelevance = self::$webDriver->findElements(
                 WebDriverBy::cssSelector("#question".$relevanceJsQuestion->qid." .ls-irrelevant")
             );
-            $this->assertEquals(1, $elementsRelevance, 'JS Element not hidden');
+            $this->assertCount(1, $elementsRelevance, 'JS Element not hidden');
 
             // Click on 3 checkbox, count
             self::$webDriver->findElement(WebDriverBy::id('cbox'.$checkboxBaseSGQ.'SY002_SX002'))->click(); // Click the checkbox
             self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'SY003 .answer_cell_SX001'))->click(); // Click the cell (js must click the checkbox)
             self::$webDriver->findElement(WebDriverBy::id('cbox'.$checkboxBaseSGQ.'SY003_SX002'))->click();
-            sleep(1);  // Let js do
+            sleep(1); // Let js do
 
             // relevanceJsQuestion be shown
             $elementsRelevance = self::$webDriver->findElements(
                 WebDriverBy::cssSelector("#question".$relevanceJsQuestion->qid." .ls-irrelevant")
             );
-            $this->assertEquals(0, $elementsRelevance, 'JS Element not shown');
+            $this->assertCount(0, $elementsRelevance, 'JS Element not shown');
             // Check the count
             $countJs = $web->findElement(WebDriverBy::id('countJs'));
             $countJsText = $countJs->getText();
@@ -88,7 +80,7 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
             // Click next (to do the test on PHP)
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
-            sleep(1);  // TODO: Does not work without this.
+            sleep(1); // Let PHP and js do
 
             // Check PHP count
             $countPHP = $web->findElement(WebDriverBy::id('countPHP'));
@@ -98,18 +90,18 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
             $elementsRelevance = self::$webDriver->findElements(
                 WebDriverBy::cssSelector("#question".$relevancePHPQuestion->qid." .ls-irrelevant")
             );
-            $this->assertEquals(1, $elementsRelevance, 'PHP Element not hidden');
+            $this->assertCount(1, $elementsRelevance, 'PHP Element not hidden');
             // Click previous.
             $prev = self::$webDriver->findElement(WebDriverBy::id('ls-button-previous'));
             $prev->click();
-            sleep(1);  // TODO: Does not work without this.
+            sleep(1);  // Let PHP and js do
 
             // Show (mandatory element)
             self::$webDriver->findElement(WebDriverBy::id('cbox'.$checkboxBaseSGQ.'SY003_SX002'))->click();
             // Try to move next (must be disable)
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
-            sleep(1);  // TODO: Does not work without this.
+            sleep(1);  // Let PHP and js do
 
             // Check with #bootstrap-alert-box-modal .modal-body : todo : find a way without checking boostrap-modal work too …
             $modalBody = self::$webDriver->findElement(
