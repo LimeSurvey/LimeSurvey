@@ -32,7 +32,6 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
                 'lang' => 'en'
             ]
         );
-
         // Get questions.
         $questionObjects = \Question::model()->findAll("sid = :sid AND parent_qid = 0",array(":sid"=>self::$surveyId));
         $questions = [];
@@ -47,65 +46,59 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
         try {
 
             self::$webDriver->get($url);
-            sleep(1); // Let js do
-            // Check the count
-            $countJs = $web->findElement(WebDriverBy::id('countJs'));
-            $countJsText = $countJs->getText();
-            $this->assertEquals('count(self) : 0', $countJs);
-            // relevanceJsQuestion must be hidden
             $elementsRelevance = self::$webDriver->findElements(
-                WebDriverBy::cssSelector("#question".$relevanceJsQuestion->qid." .ls-irrelevant")
+                WebDriverBy::cssSelector("#question".$relevanceJsQuestion->qid.".ls-irrelevant")
             );
             $this->assertCount(1, $elementsRelevance, 'JS Element not hidden');
+            // Check the count
+            $countJs = self::$webDriver->findElement(WebDriverBy::id("countJs"));
+            $countJsText = $countJs->getText();
+            $this->assertEquals('count(self) : 0', $countJsText);
 
             // Click on 3 checkbox, count
-            self::$webDriver->findElement(WebDriverBy::id('cbox'.$checkboxBaseSGQ.'SY002_SX002'))->click(); // Click the checkbox
-            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'SY003 .answer_cell_SX001'))->click(); // Click the cell (js must click the checkbox)
-            self::$webDriver->findElement(WebDriverBy::id('cbox'.$checkboxBaseSGQ.'SY003_SX002'))->click();
-            sleep(1); // Let js do
+            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'SY002 .answer_cell_SX002'))->click(); // Click the cell (js must click the checkbox), and td hide the real checkbox
+            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'SY003 .answer_cell_SX001'))->click(); 
+            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'SY003 .answer_cell_SX002'))->click();
 
             // relevanceJsQuestion be shown
             $elementsRelevance = self::$webDriver->findElements(
-                WebDriverBy::cssSelector("#question".$relevanceJsQuestion->qid." .ls-irrelevant")
+                WebDriverBy::cssSelector("#question".$relevanceJsQuestion->qid.".ls-irrelevant")
             );
             $this->assertCount(0, $elementsRelevance, 'JS Element not shown');
             // Check the count
-            $countJs = $web->findElement(WebDriverBy::id('countJs'));
+            $countJs = self::$webDriver->findElement(WebDriverBy::id('countJs'));
             $countJsText = $countJs->getText();
-            $this->assertEquals('count(self) : 3', $countJs);
+            $this->assertEquals('count(self) : 3', $countJsText);
 
             // Hide element again
-            self::$webDriver->findElement(WebDriverBy::id('cbox'.$checkboxBaseSGQ.'SY003_SX002'))->click();
+            self::$webDriver->findElement(WebDriverBy::cssSelector('#javatbd'.$checkboxBaseSGQ.'SY003 .answer_cell_SX002'))->click();
             // Check the count
-            $countJs = $web->findElement(WebDriverBy::id('countJs'));
+            $countJs = self::$webDriver->findElement(WebDriverBy::id('countJs'));
             $countJsText = $countJs->getText();
             $this->assertEquals('count(self) : 2', $countJsText);
 
             // Click next (to do the test on PHP)
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
-            sleep(1); // Let PHP and js do
 
             // Check PHP count
-            $countPHP = $web->findElement(WebDriverBy::id('countPHP'));
-            $countPHPText = $countJs->getText();
+            $countPHP = self::$webDriver->findElement(WebDriverBy::id('countPHP'));
+            $countPHPText = $countPHP->getText();
             $this->assertEquals('count(that.question) : 2', $countPHPText);
             // relevancePHPQuestion be hidden
             $elementsRelevance = self::$webDriver->findElements(
-                WebDriverBy::cssSelector("#question".$relevancePHPQuestion->qid." .ls-irrelevant")
+                WebDriverBy::cssSelector("#question".$relevancePHPQuestion->qid.".ls-irrelevant")
             );
             $this->assertCount(1, $elementsRelevance, 'PHP Element not hidden');
             // Click previous.
             $prev = self::$webDriver->findElement(WebDriverBy::id('ls-button-previous'));
             $prev->click();
-            sleep(1);  // Let PHP and js do
 
             // Show (mandatory element)
-            self::$webDriver->findElement(WebDriverBy::id('cbox'.$checkboxBaseSGQ.'SY003_SX002'))->click();
+            self::$webDriver->findElement(WebDriverBy::cssSelector('label[for="cbox'.$checkboxBaseSGQ.'SY003_SX002"]'))->click();
             // Try to move next (must be disable)
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
             $submit->click();
-            sleep(1);  // Let PHP and js do
 
             // Check with #bootstrap-alert-box-modal .modal-body : todo : find a way without checking boostrap-modal work too …
             $modalBody = self::$webDriver->findElement(
@@ -114,7 +107,7 @@ class ArrayNumberCheckboxTest extends TestBaseClassWeb
             $modalBodyText = trim($modalBody->getText());// trim since thare are \t and \n and other [:space:]
             $this->assertEquals('One or more mandatory questions have not been answered. You cannot proceed until these have been completed.', $modalBodyText);
 
-        } catch (NoSuchElementException $ex) {
+        } catch (Exception $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/ArrayNumberCheckboxTest.png';
             file_put_contents($filename, $screenshot);
