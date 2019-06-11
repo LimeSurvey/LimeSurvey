@@ -327,6 +327,7 @@ class ExpressionManager
             $aForceStringArray = array('DQ_STRING', 'DS_STRING', 'STRING'); // Question can return NUMBER or WORD : DQ and DS is string entered by user, STRING is a result of a String function
             if ((isset($arg1[2]) && in_array($arg1[2], $aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2], $aForceStringArray)))) {
                 $bBothNumeric = false;
+                $bBothString = true;
                 $bMismatchType = false;
                 $arg1[0] = strval($arg1[0]);
                 $arg2[0] = strval($arg2[0]);
@@ -353,6 +354,8 @@ class ExpressionManager
             case 'lt':
                 if ($bMismatchType) {
                     $result = array(false, $token[1], 'NUMBER');
+                } elseif(!$bBothNumeric && $bBothString) {
+                    $result = array(strcmp($arg1[0],$arg2[0]) < 0, $token[1], 'NUMBER');
                 } else {
                     $result = array(($arg1[0] < $arg2[0]), $token[1], 'NUMBER');
                 }
@@ -365,6 +368,8 @@ class ExpressionManager
                     // Need this explicit comparison in order to be in agreement with JavaScript
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(true, $token[1], 'NUMBER');
+                    } elseif(!$bBothNumeric && $bBothString) {
+                        $result = array(strcmp($arg1[0],$arg2[0]) <= 0, $token[1], 'NUMBER');
                     } else {
                         $result = array(($arg1[0] <= $arg2[0]), $token[1], 'NUMBER');
                     }
@@ -378,6 +383,8 @@ class ExpressionManager
                     // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(false, $token[1], 'NUMBER');
+                    } elseif(!$bBothNumeric && $bBothString) {
+                        $result = array(strcmp($arg1[0],$arg2[0]) > 0, $token[1], 'NUMBER');
                     } else {
                         $result = array(($arg1[0] > $arg2[0]), $token[1], 'NUMBER');
                     }
@@ -387,9 +394,10 @@ class ExpressionManager
             case 'ge':
                 if ($bMismatchType) {
                     $result = array(false, $token[1], 'NUMBER');
+                } elseif(!$bBothNumeric && $bBothString) {
+                    $result = array(strcmp($arg1[0],$arg2[0]) >= 0, $token[1], 'NUMBER');
                 } else {
                     $result = array(($arg1[0] >= $arg2[0]), $token[1], 'NUMBER');
-
                 }
                 break;
             case '+':
