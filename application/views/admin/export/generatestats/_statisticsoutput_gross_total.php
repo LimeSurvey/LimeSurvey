@@ -32,7 +32,7 @@
                 <?php echo $sumallitems; ?>
             </strong>
         </td>
-        <td align='right'>
+        <td align='right' colspan="2">
             <strong>
             <?php if ($sumallitems > 0){ ?>
                 100.00%
@@ -40,8 +40,6 @@
                 0.00%
                 <?php } ?>
             </strong>
-        </td>
-        <td align='right'>
         </td>
     </tr>
 

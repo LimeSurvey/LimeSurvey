@@ -45,7 +45,7 @@
             <?php endif;?>
 
             <?php if ($bShowPercentage  = true): ?>
-                <th width='' align='center' >
+                <th width='' align='center' <?=(!$bSum ? 'colspan="2"' :'')?>>
                     <strong><?php eT("Gross percentage");?></strong>
                 </th>
             <?php endif;?>

@@ -818,7 +818,7 @@ class statistics_helper
                     ."\t</tr></thead>\n";
 
                     foreach ($showem as $res) {
-                                            $statisticsoutput .= "<tr><td>".$res[0]."</td><td>".$res[1]."</td></tr>";
+                        $statisticsoutput .= "<tr><td>".$res[0]."</td><td>".$res[1]."</td></tr>";
                     }
                     break;
 
