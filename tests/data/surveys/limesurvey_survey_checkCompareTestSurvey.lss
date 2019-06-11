@@ -17,16 +17,7 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[12369]]></qid>
-    <code><![CDATA[0]]></code>
-    <answer><![CDATA[0]]></answer>
-    <sortorder><![CDATA[4]]></sortorder>
-    <assessment_value><![CDATA[0]]></assessment_value>
-    <language><![CDATA[en]]></language>
-    <scale_id><![CDATA[0]]></scale_id>
-   </row>
-   <row>
-    <qid><![CDATA[12369]]></qid>
+    <qid><![CDATA[12400]]></qid>
     <code><![CDATA[20]]></code>
     <answer><![CDATA[20]]></answer>
     <sortorder><![CDATA[2]]></sortorder>
@@ -35,7 +26,7 @@
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[12369]]></qid>
+    <qid><![CDATA[12400]]></qid>
     <code><![CDATA[3A]]></code>
     <answer><![CDATA[3A]]></answer>
     <sortorder><![CDATA[3]]></sortorder>
@@ -44,7 +35,7 @@
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[12369]]></qid>
+    <qid><![CDATA[12400]]></qid>
     <code><![CDATA[5]]></code>
     <answer><![CDATA[5]]></answer>
     <sortorder><![CDATA[1]]></sortorder>
@@ -53,7 +44,16 @@
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[12370]]></qid>
+    <qid><![CDATA[12399]]></qid>
+    <code><![CDATA[0]]></code>
+    <answer><![CDATA[0]]></answer>
+    <sortorder><![CDATA[4]]></sortorder>
+    <assessment_value><![CDATA[0]]></assessment_value>
+    <language><![CDATA[en]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+   </row>
+   <row>
+    <qid><![CDATA[12399]]></qid>
     <code><![CDATA[20]]></code>
     <answer><![CDATA[20]]></answer>
     <sortorder><![CDATA[2]]></sortorder>
@@ -62,7 +62,7 @@
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[12370]]></qid>
+    <qid><![CDATA[12399]]></qid>
     <code><![CDATA[3A]]></code>
     <answer><![CDATA[3A]]></answer>
     <sortorder><![CDATA[3]]></sortorder>
@@ -71,7 +71,7 @@
     <scale_id><![CDATA[0]]></scale_id>
    </row>
    <row>
-    <qid><![CDATA[12370]]></qid>
+    <qid><![CDATA[12399]]></qid>
     <code><![CDATA[5]]></code>
     <answer><![CDATA[5]]></answer>
     <sortorder><![CDATA[1]]></sortorder>
@@ -94,37 +94,17 @@
   </fields>
   <rows>
    <row>
-    <gid><![CDATA[803]]></gid>
+    <gid><![CDATA[811]]></gid>
     <sid><![CDATA[48864]]></sid>
     <group_name><![CDATA[My first question group]]></group_name>
     <group_order><![CDATA[1]]></group_order>
-    <description><![CDATA[<p>List of test :</p>
-
-<ol>
-	<li>Choose 5 and 20 :
-	<ol>
-		<li>#TestJS1 must be true</li>
-		<li>#TestJS2 must be false</li>
-		<li>.HiddenByRelevance class must have .ls-hidden class</li>
-		<li>Move next </li>
-	</ol>
-	</li>
-	<li>In 2nd group
-	<ol>
-		<li>#TestPHP1 must be true</li>
-		<li>#TestPHP1b must be false</li>
-	</ol>
-	</li>
-	<li>Move previous</li>
-	<li>Do ther test</li>
-</ol>
-]]></description>
+    <description/>
     <language><![CDATA[en]]></language>
     <randomization_group/>
     <grelevance><![CDATA[1]]></grelevance>
    </row>
    <row>
-    <gid><![CDATA[804]]></gid>
+    <gid><![CDATA[812]]></gid>
     <sid><![CDATA[48864]]></sid>
     <group_name><![CDATA[Second group]]></group_name>
     <group_order><![CDATA[2]]></group_order>
@@ -157,10 +137,10 @@
   </fields>
   <rows>
    <row>
-    <qid><![CDATA[12369]]></qid>
+    <qid><![CDATA[12399]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[803]]></gid>
+    <gid><![CDATA[811]]></gid>
     <type><![CDATA[L]]></type>
     <title><![CDATA[Q00]]></title>
     <question><![CDATA[Single choice code as number #1]]></question>
@@ -176,10 +156,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[12370]]></qid>
+    <qid><![CDATA[12400]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[803]]></gid>
+    <gid><![CDATA[811]]></gid>
     <type><![CDATA[L]]></type>
     <title><![CDATA[Q01]]></title>
     <question><![CDATA[Single choice code as number #2]]></question>
@@ -194,10 +174,10 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[12371]]></qid>
+    <qid><![CDATA[12401]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[803]]></gid>
+    <gid><![CDATA[811]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[Text]]></title>
     <question><![CDATA[Text question]]></question>
@@ -212,10 +192,10 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[12372]]></qid>
+    <qid><![CDATA[12402]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[803]]></gid>
+    <gid><![CDATA[811]]></gid>
     <type><![CDATA[X]]></type>
     <title><![CDATA[CheckJS]]></title>
     <question><![CDATA[<div>CheckinJS</div>
@@ -238,10 +218,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[12373]]></qid>
+    <qid><![CDATA[12403]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[804]]></gid>
+    <gid><![CDATA[812]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[Text3]]></title>
     <question><![CDATA[Text question 3]]></question>
@@ -257,10 +237,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[12374]]></qid>
+    <qid><![CDATA[12404]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[804]]></gid>
+    <gid><![CDATA[812]]></gid>
     <type><![CDATA[T]]></type>
     <title><![CDATA[CheckPHP]]></title>
     <question><![CDATA[<div>CheckinPHP</div>
@@ -285,10 +265,10 @@
     <modulename/>
    </row>
    <row>
-    <qid><![CDATA[12375]]></qid>
+    <qid><![CDATA[12405]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[803]]></gid>
+    <gid><![CDATA[811]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[Text2]]></title>
     <question><![CDATA[Text question 2]]></question>
@@ -303,10 +283,10 @@
     <relevance><![CDATA[1]]></relevance>
    </row>
    <row>
-    <qid><![CDATA[12376]]></qid>
+    <qid><![CDATA[12406]]></qid>
     <parent_qid><![CDATA[0]]></parent_qid>
     <sid><![CDATA[48864]]></sid>
-    <gid><![CDATA[803]]></gid>
+    <gid><![CDATA[811]]></gid>
     <type><![CDATA[S]]></type>
     <title><![CDATA[HiddenByRelevance]]></title>
     <question><![CDATA[Hidden By Relevance question]]></question>
@@ -318,7 +298,7 @@
     <language><![CDATA[en]]></language>
     <scale_id><![CDATA[0]]></scale_id>
     <same_default><![CDATA[0]]></same_default>
-    <relevance><![CDATA[Q00 > Q01]]></relevance>
+    <relevance><![CDATA[Q00 < Q01]]></relevance>
     <modulename/>
    </row>
   </rows>
@@ -472,25 +452,30 @@
     <surveyls_language><![CDATA[en]]></surveyls_language>
     <surveyls_title><![CDATA[Comparaison check survey]]></surveyls_title>
     <surveyls_description/>
-    <surveyls_welcometext/>
+    <surveyls_welcometext><![CDATA[<p>List of test :</p>
+<ol>
+	<li>Choose 5 and 20 :
+	<ol>
+		<li>#TestJS1 must be true</li>
+		<li>#TestJS2 must be false</li>
+		<li>.HiddenByRelevance class must NOT have .ls-hidden class</li>
+		<li>Move next </li>
+	</ol>
+	</li>
+	<li>In 2nd group
+	<ol>
+		<li>#TestPHP1 must be true</li>
+		<li>#TestPHP1b must be false</li>
+	</ol>
+	</li>
+	<li>Move previous</li>
+	<li>Do ther test</li>
+</ol>]]></surveyls_welcometext>
     <surveyls_endtext/>
     <surveyls_url/>
     <surveyls_urldescription/>
-    <surveyls_email_invite_subj/>
-    <surveyls_email_invite/>
-    <surveyls_email_remind_subj/>
-    <surveyls_email_remind/>
-    <surveyls_email_register_subj/>
-    <surveyls_email_register/>
-    <surveyls_email_confirm_subj/>
-    <surveyls_email_confirm/>
     <surveyls_dateformat><![CDATA[1]]></surveyls_dateformat>
-    <email_admin_notification_subj/>
-    <email_admin_notification/>
-    <email_admin_responses_subj/>
-    <email_admin_responses/>
     <surveyls_numberformat><![CDATA[0]]></surveyls_numberformat>
-    <attachments><![CDATA[a:0:{}]]></attachments>
    </row>
   </rows>
  </surveys_languagesettings>
@@ -511,4 +496,5 @@
     </options>
    </config>
   </theme>
+ </themes>
 </document>
