@@ -858,22 +858,18 @@ function LEMval(alias)
                 {
                     var length = value.length;
                     var firstLetterIsNull = value.split("").shift() === '0';
+                    // @todo : use . or , according to LEMradix !
                     try{
                         var numtest = new Decimal(value);
                     } catch(e){
                         var numtest = new Decimal(value.toString().replace(/,/,'.'));
                         // Error can still happen maybe but don't catch to know (and fix) it
                     }
-
-                    // If value is on same page : value use LEMradix, else use . (dot) : bug #10001
-                    // if (LEMradix === ',' && onSamePage )
-                    // {
-                    //     value = numtest.toString().replace(/\./,',');
-                    // }
                     value = numtest.valueOf();
                     if(value.length < length && firstLetterIsNull){
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
+                    value = Number(value); /* If it's a number : always return a number */
                 }
                 if(LSvar.bNumRealValue) {
                     return value;
@@ -908,12 +904,12 @@ function LEMval(alias)
                 }
                 return value;
             }
-            else if(!isNaN(parseFloat(newval)) && isFinite(newval))
+            else if(!isNaN(parseFloat(value)) && isFinite(value))
             {
                 // If it's not a decimal number, just return value
                 try {
                     var decimal_safe = new Decimal(value);
-                    return decimal_safe.toPrecision(value.length);
+                    return Number(decimal_safe.toPrecision(value.length));
                 }
                 catch (ex) {
                 }
