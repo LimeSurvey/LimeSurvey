@@ -500,18 +500,15 @@
    <template_name>vanilla</template_name>
    <config>
     <options>
+     <font>inherit</font>
+     <brandlogofile>inherit</brandlogofile>
      <ajaxmode>on</ajaxmode>
-     <animatebody>off</animatebody>
-     <hideprivacyinfo>off</hideprivacyinfo>
-     <container>on</container>
-     <bodyanimation>fadeInRight</bodyanimation>
-     <brandlogo>on</brandlogo>
-     <brandlogofile>upload/themes/survey/generalfiles/_Logo_askawi_gris-vert_footer.png</brandlogofile>
-     <font>noto</font>
-     <showpopups>1</showpopups>
-     <fixnumauto>off</fixnumauto>
+     <container>inherit</container>
+     <hideprivacyinfo>inherit</hideprivacyinfo>
+     <showpopups>inherit</showpopups>
+     <fixnumauto>inherit</fixnumauto>
+     <brandlogo>inherit</brandlogo>
     </options>
    </config>
   </theme>
- </themes_inherited>
 </document>
