@@ -237,11 +237,11 @@ class UploaderController extends SurveyController
             /* We get there : an unknow error happen … maybe a move_uploaded_file error (with debug=0) */
             $return = array(
                 "success" => false,
-                "msg" => gT("An unknown error happen")
+                "msg" => gT("An unknown error occured")
             );
             /* Add information for for user forcedSuperAdmin right */
             if( Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
-                $return['msg'] = sprintf(gT("An unknown error happen when moving file %s to %s."),$_FILES['uploadfile']['tmp_name'],$randfileloc);
+                $return['msg'] = sprintf(gT("An unknown error happened when moving file %s to %s."),$_FILES['uploadfile']['tmp_name'],$randfileloc);
             }
             //header('Content-Type: application/json');
             echo ls_json_encode($return);
