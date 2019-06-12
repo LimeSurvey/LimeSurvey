@@ -128,7 +128,7 @@ class LimeMailer extends \PHPMailer\PHPMailer\PHPMailer
         $emailmethod = Yii::app()->getConfig('emailmethod');
         $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
         $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
-        $emailsmtppassword = Yii::app()->getConfig("emailsmtppassword");
+        $emailsmtppassword = LSActiveRecord::decryptSingle(Yii::app()->getConfig("emailsmtppassword"));
         $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
         $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
         $defaultlang = Yii::app()->getConfig("defaultlang");

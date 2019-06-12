@@ -98,13 +98,13 @@ class tokens extends Survey_Common_Action
                 $accounttype    = strtoupper(getGlobalSetting('bounceaccounttype'));
                 $hostname       = getGlobalSetting('bounceaccounthost');
                 $username       = getGlobalSetting('bounceaccountuser');
-                $pass           = getGlobalSetting('bounceaccountpass');
+                $pass           = LSActiveRecord::decryptSingle(getGlobalSetting('bounceaccountpass'));
                 $hostencryption = strtoupper(getGlobalSetting('bounceencryption'));
             } else {
                 $accounttype    = strtoupper($thissurvey['bounceaccounttype']);
                 $hostname       = $thissurvey['bounceaccounthost'];
                 $username       = $thissurvey['bounceaccountuser'];
-                $pass           = $thissurvey['bounceaccountpass'];
+                $pass           = LSActiveRecord::decryptSingle($thissurvey['bounceaccountpass']);
                 $hostencryption = strtoupper($thissurvey['bounceaccountencryption']);
             }
 
@@ -2354,7 +2354,7 @@ class tokens extends Survey_Common_Action
             if (Yii::app()->request->getPost('bounceprocessing') == 'L') {
                 $fieldvalue['bounceaccountencryption'] = Yii::app()->request->getPost('bounceaccountencryption');
                 $fieldvalue['bounceaccountuser'] = Yii::app()->request->getPost('bounceaccountuser');
-                $fieldvalue['bounceaccountpass'] = Yii::app()->request->getPost('bounceaccountpass');
+                $fieldvalue['bounceaccountpass'] = LSActiveRecord::encryptSingle(Yii::app()->request->getPost('bounceaccountpass'));
                 $fieldvalue['bounceaccounttype'] = Yii::app()->request->getPost('bounceaccounttype');
                 $fieldvalue['bounceaccounthost'] = Yii::app()->request->getPost('bounceaccounthost');
             }

@@ -2835,6 +2835,27 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             $oTransaction->commit();
         }
 
+        if($iOldDBVersion < 416) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            // encrypt values in db
+            SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(getGlobalSetting('emailsmtppassword')));
+            SettingGlobal::setSetting('bounceaccountpass', LSActiveRecord::encryptSingle(getGlobalSetting('bounceaccountpass')));
+            
+            // encrypt bounceaccountpass value in db
+            alterColumn('{{surveys}}','bounceaccountpass',"text",true,'NULL');
+            $aSurveys = Survey::model()->findAll();
+            foreach($aSurveys as $oSurvey){
+                if (!empty($oSurvey->bounceaccountpass)){
+                    $oSurvey->bounceaccountpass = LSActiveRecord::encryptSingle($oSurvey->bounceaccountpass);
+                    $oSurvey->save();
+                }
+            }
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>416),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();

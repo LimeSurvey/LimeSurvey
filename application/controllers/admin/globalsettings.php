@@ -260,7 +260,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('emailmethod', strip_tags(Yii::app()->getRequest()->getPost('emailmethod')));
         SettingGlobal::setSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
-            SettingGlobal::setSetting('emailsmtppassword', strip_tags(returnGlobal('emailsmtppassword')));
+            SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(strip_tags(returnGlobal('emailsmtppassword'))));
         }
         SettingGlobal::setSetting('bounceaccounthost', strip_tags(returnGlobal('bounceaccounthost')));
         SettingGlobal::setSetting('bounceaccounttype', Yii::app()->request->getPost('bounceaccounttype', 'off'));
@@ -268,7 +268,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
         if (returnGlobal('bounceaccountpass') != 'enteredpassword') {
-            SettingGlobal::setSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
+            SettingGlobal::setSetting('bounceaccountpass', LSActiveRecord::encryptSingle(strip_tags(returnGlobal('bounceaccountpass'))));
         }
 
         SettingGlobal::setSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));

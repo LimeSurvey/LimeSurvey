@@ -854,7 +854,7 @@ function createDatabase($oDB)
             'bounceprocessing' => "string(1) default 'N'",
             'bounceaccounttype' => "string(4)",
             'bounceaccounthost' => "string(200)",
-            'bounceaccountpass' => "string(100)",
+            'bounceaccountpass' => "text NULL",
             'bounceaccountencryption' => "string(3)",
             'bounceaccountuser' => "string(200)",
             'showwelcome' => "string(1) default 'Y'",

@@ -155,8 +155,13 @@ class LSYii_Application extends CWebApplication
         /* User file config */
         $userConfigs = require(__DIR__.'/../config/config.php');
         if (is_array($userConfigs['config'])) {
-             $this->config = array_merge($this->config, $userConfigs['config']);
+            $this->config = array_merge($this->config, $userConfigs['config']);
         }
+
+        /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
+           it would be decrypted in LimeMailer when needed */
+        $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
+
         /* Check DB : let throw error if DB is broken issue #14875 */
         $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
         /* No table settings_global : not installable or updatable */
@@ -179,7 +184,8 @@ class LSYii_Application extends CWebApplication
             $this->getConfig('dbversionnumber',0).
             $this->getConfig('customassetversionnumber',1)
         );
-    }
+
+}
     /**
      * Loads a helper
      *
