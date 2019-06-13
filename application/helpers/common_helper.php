@@ -821,6 +821,24 @@ function groupOrderThenQuestionOrder($a, $b)
 }
 
 /**
+ * @param integer $iSurveyID
+ * @param integer $qid
+ * @param integer $newgid
+ */
+function fixMovedQuestionConditions($qid, $oldgid, $newgid, $iSurveyID = null) //Function rewrites the cfieldname for a question after group change
+{
+    if (!isset($iSurveyID)) {
+            $iSurveyID = Yii::app()->getConfig('sid');
+    }
+    $qid = (int) $qid;
+    $oldgid = (int) $oldgid;
+    $newgid = (int) $newgid;
+    Condition::model()->updateCFieldName($iSurveyID, $qid, $oldgid, $newgid);
+    // TMSW Condition->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
+}
+
+
+/**
  * This function returns POST/REQUEST vars, for some vars like SID and others they are also sanitized
  * TODO: extends Yii:getParam
  *

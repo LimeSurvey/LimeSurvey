@@ -1280,6 +1280,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['organizebar']['savebuttonright'] = true;
         $aData['organizebar']['closebuttonright']['url'] = $this->getController()->createUrl("admin/survey/sa/view/", array('surveyid' => $iSurveyID));
         $aData['organizebar']['saveandclosebuttonright']['url'] = true;
+        $aData['surveybar']['buttons']['view'] = true;
+        $aData['surveybar']['savebutton']['form'] = 'frmOrganize';
+
 
         foreach ($aGrouplist as $iGID => $aGroup) {
             LimeExpressionManager::StartProcessingGroup($aGroup['gid'], false, $iSurveyID);
