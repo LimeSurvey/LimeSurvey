@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2019-06-06 15:15:28+00:00\n"
+"POT-Creation-Date: 2019-06-12 12:54:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -620,11 +620,11 @@ msgid "We are sorry but there was a system error and your file was not saved. An
 msgstr ""
 
 #: application/controllers/UploaderController.php:240
-msgid "An unknown error happen"
+msgid "An unknown error occured"
 msgstr ""
 
 #: application/controllers/UploaderController.php:244
-msgid "An unknown error happen when moving file %s to %s."
+msgid "An unknown error happened when moving file %s to %s."
 msgstr ""
 
 #: application/controllers/UploaderController.php:276
@@ -2549,8 +2549,8 @@ msgstr ""
 #: application/views/admin/responses/browsemenubar_view.php:176
 #: application/views/admin/responses/listResponses_view.php:287
 #: application/views/admin/super/fullpagebar_view.php:21
-#: application/views/admin/survey/Question/editQuestion_view.php:396
-#: application/views/admin/survey/Question/editQuestion_view.php:402
+#: application/views/admin/survey/Question/editQuestion_view.php:400
+#: application/views/admin/survey/Question/editQuestion_view.php:406
 #: application/views/admin/survey/Question/editdefaultvalues_view.php:194
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:125
 #: application/views/admin/survey/Question/questionbar_view.php:227
@@ -3666,7 +3666,7 @@ msgstr ""
 
 #: application/controllers/admin/questions.php:1175
 #: application/views/admin/survey/Question/editQuestion_view.php:80
-#: application/views/admin/survey/Question/editQuestion_view.php:392
+#: application/views/admin/survey/Question/editQuestion_view.php:396
 msgid "Copy question"
 msgstr ""
 
@@ -8927,103 +8927,103 @@ msgid "Unable to evaluate binary operator - fewer than 2 entries on stack"
 msgstr ""
 
 #: application/helpers/expressions/em_core_helper.php:318
-#: application/helpers/expressions/em_core_helper.php:446
+#: application/helpers/expressions/em_core_helper.php:454
 msgid "Invalid value(s) on the stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:441
+#: application/helpers/expressions/em_core_helper.php:449
 msgid "Unable to evaluate unary operator - no entries on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:490
+#: application/helpers/expressions/em_core_helper.php:498
 msgid "Extra tokens found"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:501
+#: application/helpers/expressions/em_core_helper.php:509
 msgid "Unbalanced equation - values left on stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:505
+#: application/helpers/expressions/em_core_helper.php:513
 msgid "Not a valid expression"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:555
-#: application/helpers/expressions/em_core_helper.php:889
-#: application/helpers/expressions/em_core_helper.php:956
+#: application/helpers/expressions/em_core_helper.php:563
+#: application/helpers/expressions/em_core_helper.php:897
+#: application/helpers/expressions/em_core_helper.php:964
 msgid "Poorly terminated expression - expected a constant or variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:587
-#: application/helpers/expressions/em_core_helper.php:1547
+#: application/helpers/expressions/em_core_helper.php:595
+#: application/helpers/expressions/em_core_helper.php:1555
 msgid "Undefined variable"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:664
+#: application/helpers/expressions/em_core_helper.php:672
 msgid "The value of this variable can not be changed"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:668
+#: application/helpers/expressions/em_core_helper.php:676
 msgid "Only variables can be assigned values"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:710
+#: application/helpers/expressions/em_core_helper.php:718
 msgid "Expected expressions separated by commas"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:717
+#: application/helpers/expressions/em_core_helper.php:725
 msgid "Extra token found after expressions"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:732
-#: application/helpers/expressions/em_core_helper.php:1543
+#: application/helpers/expressions/em_core_helper.php:740
+#: application/helpers/expressions/em_core_helper.php:1551
 msgid "Undefined function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:737
+#: application/helpers/expressions/em_core_helper.php:745
 msgid "Expected left parentheses after function name"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:754
+#: application/helpers/expressions/em_core_helper.php:762
 msgid "Extra comma found in function"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:901
+#: application/helpers/expressions/em_core_helper.php:909
 msgid "Expected right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1448
+#: application/helpers/expressions/em_core_helper.php:1456
 msgid "Assigning a new value to a variable."
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1536
+#: application/helpers/expressions/em_core_helper.php:1544
 msgid "Extra right parentheses detected"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1552
+#: application/helpers/expressions/em_core_helper.php:1560
 msgid "Unsupported syntax"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1559
+#: application/helpers/expressions/em_core_helper.php:1567
 msgid "Missing %s closing right parentheses"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1948
+#: application/helpers/expressions/em_core_helper.php:1956
 msgid "Unsupported number of arguments: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1953
+#: application/helpers/expressions/em_core_helper.php:1961
 msgid "Function does not support %s arguments"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:1954
+#: application/helpers/expressions/em_core_helper.php:1962
 msgid "Function supports this many arguments, where -1=unlimited: %s"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2165
+#: application/helpers/expressions/em_core_helper.php:2173
 msgid "Tried to pop value off of empty stack"
 msgstr ""
 
-#: application/helpers/expressions/em_core_helper.php:2843
+#: application/helpers/expressions/em_core_helper.php:2851
 msgid "Invalid PERL Regular Expression: %s"
 msgstr ""
 
@@ -13224,8 +13224,8 @@ msgstr ""
 #: application/views/admin/emailtemplates/emailtemplates_view.php:63
 #: application/views/admin/pluginmanager/configure.php:29
 #: application/views/admin/super/fullpagebar_view.php:29
-#: application/views/admin/survey/Question/editQuestion_view.php:397
-#: application/views/admin/survey/Question/editQuestion_view.php:403
+#: application/views/admin/survey/Question/editQuestion_view.php:401
+#: application/views/admin/survey/Question/editQuestion_view.php:407
 #: application/views/admin/survey/Question/question_subviews/_tabs.php:126
 #: application/views/admin/survey/Question/questionbar_view.php:233
 #: application/views/admin/survey/Question/questionbar_view.php:281
@@ -16627,7 +16627,7 @@ msgid "Structure"
 msgstr ""
 
 #: application/views/admin/super/sidemenu.php:60
-#: application/views/admin/survey/Question/editQuestion_view.php:388
+#: application/views/admin/survey/Question/editQuestion_view.php:392
 #: application/views/admin/survey/subview/_survey_quickaction.php:119
 #: application/views/admin/survey/subview/_survey_quickaction.php:167
 #: application/views/admin/survey/subview/_survey_quickaction.php:193
@@ -16820,11 +16820,11 @@ msgstr ""
 msgid "Set \"Mandatory\" state"
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:340
+#: application/views/admin/survey/Question/editQuestion_view.php:342
 msgid "Note: You can't edit the relevance equation because there are currently conditions set for this question."
 msgstr ""
 
-#: application/views/admin/survey/Question/editQuestion_view.php:346
+#: application/views/admin/survey/Question/editQuestion_view.php:348
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:116
 #: application/views/admin/survey/Question/question_view.php:77
 msgid "Validation:"

@@ -11,7 +11,7 @@ var TemplateCoreClass = function () {
          */
         /* showStartPopups : replace core function : allow HTML and use it. Unusuable with ajax */
         showStartPopups: function () {
-            if (LSvar.showpopup  && $.isArray(LSvar.startPopups)) {
+            if (LSvar.showpopup == 1  && $.isArray(LSvar.startPopups)) {
                 startPopups = LSvar.startPopups.map( function (text) {
                     return "<p>"+text+"</p>";
                 });
@@ -24,7 +24,7 @@ var TemplateCoreClass = function () {
          */
         alertSurveyDialog: function (startPopups, title) {
             text = "";
-            if (LSvar.showpopup  && $.isArray(startPopups)) {
+            if (LSvar.showpopup == 1  && $.isArray(startPopups)) {
                 startPopups = startPopups.map(function (text) {
                     return "<p>"+text+"</p>";
                 });
