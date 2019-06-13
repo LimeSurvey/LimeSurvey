@@ -299,7 +299,7 @@ abstract class QuestionBaseDataSet extends StaticModel
     {
         $aAdvancedAttributeArray = [
             'name' => $sAttributeKey,
-            'title' => $aAttributeArray['caption'],
+            'title' => CHtml::decode($aAttributeArray['caption']),
             'inputtype' => $aAttributeArray['inputtype'],
             'formElementId' => $sAttributeKey,
             'formElementName' => false,
