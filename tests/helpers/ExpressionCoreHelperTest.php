@@ -4,6 +4,8 @@ namespace ls\tests;
 
 /**
  * Test expression evaluation in PHP vs JS.
+ *
+ * @see https://bugs.limesurvey.org/view.php?id=12613
  * @since 2017-06-16
  * @group em
  */
