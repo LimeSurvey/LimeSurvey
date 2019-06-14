@@ -1866,7 +1866,7 @@ class SurveyAdmin extends Survey_Common_Action
             $warning = '';
             
             if (!is_null($iSurveyID)) {
-                $aInsertData['wishSID'] = $iSurveyID;
+                $aInsertData['sid'] = $iSurveyID;
             }
 
             $newSurvey = Survey::model()->insertNewSurvey($aInsertData);

@@ -41,7 +41,7 @@
         <div class="form-group">
             <label class=" control-label" for='copysurveyid'><?php echo  eT("New survey id:"); ?> </label>
             <div class="">
-                <input  type='text' id='copysurveyid' size='82' maxlength='6' name='copysurveyid' value='' class="form-control" />
+                <input type='number' step="1" min="1" max="999999" id='copysurveyid' size='82' name='copysurveyid' value='' class="form-control" />
             </div>
             <div class="">
               <p class="form-control-static">
