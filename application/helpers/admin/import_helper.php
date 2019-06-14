@@ -862,11 +862,10 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
             $insertdata[(string) $key] = (string) $value;
         }
         $iOldSID = $results['oldsid'] = $insertdata['sid'];
-
-        // Fix#14609
-        // wishSID overwrite sid
-        $iDesiredSurveyId = ($iDesiredSurveyId == null) ? $iOldSID : $iDesiredSurveyId;
-        $insertdata['wishSID'] = GetNewSurveyID($iDesiredSurveyId);
+        // Fix#14609 wishSID overwrite sid
+        if(!is_null($iDesiredSurveyId)) {
+            $insertdata['sid'] = $iDesiredSurveyId;
+        }
 
         if ($iDBVersion < 145) {
             if (isset($insertdata['private'])) {
@@ -907,7 +906,7 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
 
         /* Remove unknow column */
         $aSurveyModelsColumns = Survey::model()->attributes;
-        $aSurveyModelsColumns['wishSID'] = null; // To force a sid surely
+        $aSurveyModelsColumns['wishSID'] = null; // Can not be imported
         $aBadData = array_diff_key($insertdata, $aSurveyModelsColumns);
         $insertdata = array_intersect_key($insertdata, $aSurveyModelsColumns);
         // Fill a optionnal array of error
@@ -1657,30 +1656,6 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
     return $results;
-}
-
-/**
-* This function returns a new random sid if the existing one is taken,
-* otherwise it returns the old one.
-*
-* @param mixed $iDesiredSurveyId
-*/
-function GetNewSurveyID($iDesiredSurveyId)
-{
-    Yii::app()->loadHelper('database');
-    $aSurvey = Survey::model()->findByPk($iDesiredSurveyId);
-    if (!empty($aSurvey) || $iDesiredSurveyId == 0) {
-        // Get new random ids until one is found that is not used
-        do {
-            $iNewSID = randomChars(5, '123456789');
-            $aSurvey = Survey::model()->findByPk($iNewSID);
-        }
-        while (!is_null($aSurvey));
-
-        return $iNewSID;
-    } else {
-        return $iDesiredSurveyId;
-    }
 }
 
 /**

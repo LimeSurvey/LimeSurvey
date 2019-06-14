@@ -430,6 +430,8 @@ class Survey extends LSActiveRecord
     public function rules()
     {
         return array(
+            array('sid', 'unique'),// Not in pk
+            array('sid', 'numerical', 'integerOnly'=>true,'min'=>1), // max ?
             array('gsid', 'numerical', 'integerOnly'=>true),
             array('datecreated', 'default', 'value'=>date("Y-m-d")),
             array('startdate', 'default', 'value'=>null),
@@ -929,26 +931,30 @@ class Survey extends LSActiveRecord
         if (!isset($aData['datecreated'])) {
             $aData['datecreated'] = date('Y-m-d H:i:s');
         }
-
-        do {
-            // if wishSID is set check if it is not taken already
-            if (isset($aData['wishSID'])) {
-                $aData['sid'] = $aData['wishSID'];
-            } else {
-                $aData['sid'] = randomChars(6, '123456789');
-            }
-            $isresult = self::model()->findByPk($aData['sid']);
+        if(isset($aData['wishSID'])) {
+            $aData['sid'] = $aData['wishSID'];
             unset($aData['wishSID']);
         }
-        while (!is_null($isresult));
-
+        if(empty($aData['sid'])) {
+            $aData['sid'] = randomChars(6, '123456789');
+        }
         $survey = new self;
         foreach ($aData as $k => $v) {
             $survey->$k = $v;
         }
-        $sResult = $survey->save();
 
-        if (!$sResult) {
+        $attempts = 0;
+        /* Validate sid : > 1 and unique */
+        while(!$survey->validate(array('sid'))) {
+            $attempts++;
+            $survey->sid = randomChars(6, '123456789');
+            /* If it's happen : there are an issue in server … (or in randomChars function …) */
+            if($attempts > 50) {
+                throw new Exception("Unable to get a valid survey id after 50 attempts");
+            }
+        }
+
+        if (!$survey->save()) {
             $survey->sid = null;
         }
         return $survey;
