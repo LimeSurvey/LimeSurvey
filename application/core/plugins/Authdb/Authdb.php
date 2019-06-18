@@ -33,6 +33,10 @@ class Authdb extends AuthPluginBase
      */
     public function createNewUser()
     {
+        if (!Permission::model()->hasGlobalPermission('users', 'create')) {
+            return;
+        }
+
         // Do nothing if the user to be added is not DB type
         if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB') {
             return;
