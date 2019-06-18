@@ -440,7 +440,7 @@ class export extends Survey_Common_Action
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("Pragma: public");
 
-            if ($spssver == 2) {
+            if ($spssver == 2 || $spssver == 3) {
                 echo "\xEF\xBB\xBF";
             }
             $sNoAnswerValue = Yii::app()->getRequest()->getPost('noanswervalue');
@@ -459,12 +459,12 @@ class export extends Survey_Common_Action
             header("Pragma: public");
             $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
 
-            if ($spssver == 2) {
+            if ($spssver == 2 || $spssver == 3) {
                 echo "\xEF\xBB\xBF";
             }
             echo $headerComment;
 
-            if ($spssver == 2) {
+            if ($spssver == 2 || $spssver == 3) {
                 echo "SET UNICODE=ON.\n";
             }
 
@@ -472,10 +472,31 @@ class export extends Survey_Common_Action
             echo "PRESERVE LOCALE.\n";
             echo "SET LOCALE='en_UK'.\n";
 
+            /* Python code to locate the PATH of current syntax */
+            if ($spssver == 3) {
+            echo "\n";			
+	    echo "begin program.\n";
+	    echo "import spss,SpssClient,os\n";
+	    echo "SpssClient.StartClient()\n";
+	    echo "PATH = os.path.dirname(SpssClient.GetDesignatedSyntaxDoc().GetDocumentPath())\n";
+	    echo "SpssClient.StopClient()\n";
+	    echo "spss.Submit('''FILE HANDLE PATHdatfile /NAME='{0}'.'''.format(PATH))\n";
+	    echo "end program.\n";
+	    echo "\n";	
+	    }
+
             echo "GET DATA\n"
-            ." /TYPE=TXT\n"
-            ." /FILE='survey_".$iSurveyID."_SPSS_data_file.dat'\n"
-            ." /DELCASE=LINE\n"
+            ." /TYPE=TXT\n";
+
+	    /* Use PATH of syntax for the location of the DATA file (only possible with Python extension) */
+	    if ($spssver == 3) {
+	    echo " /FILE='PATHdatfile/survey_".$iSurveyID."_SPSS_data_file.dat'\n";
+	    /* or use the regular line where the location must completed by hand for SPSS versions without Python */
+	    } else {
+	    echo " /FILE='survey_".$iSurveyID."_SPSS_data_file.dat'\n";
+	    }
+	    
+	    echo " /DELCASE=LINE\n"
             ." /DELIMITERS=\",\"\n"
             ." /QUALIFIER=\"'\"\n"
             ." /ARRANGEMENT=DELIMITED\n"
