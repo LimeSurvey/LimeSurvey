@@ -33,6 +33,10 @@ class Authdb extends AuthPluginBase
      */
     public function createNewUser()
     {
+        if (!Permission::model()->hasGlobalPermission('users', 'create')) {
+            return;
+        }
+
         $oEvent = $this->getEvent();
         $preCollectedUserArray = $oEvent->get('preCollectedUserArray', []);
 
