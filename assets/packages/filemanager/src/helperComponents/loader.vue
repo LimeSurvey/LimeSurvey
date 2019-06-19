@@ -1,5 +1,5 @@
 <template>
-<div :id="'loader-'+id" class=" loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center"
+<div :id="'loader-'+id" class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center"
         style="min-height: 100%;">
         <div class="ls-flex align-content-center align-items-center">
             <div class="loader-questioneditor text-center">
@@ -21,6 +21,8 @@
         left:0;
         width: 100%;
         height: 100%;
+        z-index:4000;
+        background: hsla(0,0,90,0.4);
     }
 </style>
 

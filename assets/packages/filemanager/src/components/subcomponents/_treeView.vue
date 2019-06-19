@@ -42,14 +42,17 @@ export default {
                 :key="folder.key"
                 :class="getHtmlClasses(folder)"
             >
-                <div class="ls-flex ls-flex-row">
-                    <div class="ls-flex-item grow-6 scope-apply-hover" @click.stop="selectFolder(folder)" >
-                        {{folder.shortName}}
+                <div class="ls-flex ls-flex-row" @click.stop="selectFolder(folder)">
+                    <div class="ls-flex-item grow-1 text-center">
+                        <i :class="$store.state.currentFolder == folder.folder ? 'fa fa-folder-open fa-lg' : 'fa fa-folder fa-lg'" ></i>
+                    </div>
+                    <div class="ls-flex-item grow-6" >
+                        <span class="scope-apply-hover">{{folder.shortName}}</span>
                     </div>
                     <div class="ls-flex-item grow-1 text-right">
                         <button
                             v-if="folder.children.length > 0"
-                            @click="collapsed=!collapsed"
+                            @click.stop="collapsed=!collapsed"
                             class="btn btn-xs btn-default"
                         >
                             <i :class=" collapsed ? 'fa fa-caret-down fa-lg' : 'fa fa-caret-up fa-lg'" ></i>
@@ -98,6 +101,10 @@ export default {
         margin: 5px 1px;
         cursor: pointer;
         flex-wrap: wrap;
+        border: 0;
+        box-shadow: 3px 2px 3px #dedede;
+        padding: 1.2rem;
+
         &:before{
             content: "\22A2";
             text-align: left;

@@ -66,7 +66,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
      * @param int|null $iSurveyId
      * @return void Renders HTML-page
      */
-    public function index($surveyid = null){
+    public function index($surveyid = null) {
         $possibleFolders = $this->_collectFolderList($surveyid);
 
         $aTranslate = [
@@ -95,6 +95,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             'baseUrl' => $this->getController()->createUrl('admin/filemanager', ['sa' => ''])
         ];
         $renderView = $surveyid==null ? 'view' : 'surveyview';
+
         if($surveyid !== null) {
             $oSurvey  = Survey::model()->findByPk($surveyid);
             $aData['surveyid'] = $surveyid;
@@ -141,11 +142,11 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $action = Yii::app()->request->getPost('action');
         
         $checkDirectory = $this->_checkFolder($folder, $iSurveyId);
+
         if($checkDirectory === false) {
             $this->_printJsonError();
             return;
         }
-
 
 
         $realTargetPath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$folder;
@@ -153,6 +154,12 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         $realFilePath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$file['path'];
         $fileSource = realpath($realFilePath);
+
+        if($this->checkTargetExists($fileDestination) && Yii::app()->getConfig('overwritefiles') == 0) {
+            $ext = pathinfo($fileDestination, PATHINFO_EXTENSION);
+            $shorthash = hash('adler32', microtime());
+            $fileDestination = preg_replace( "/\.".$ext."/", "-".$shorthash.".".$ext, $fileDestination);
+        }
 
         if($action == 'copy') {
             if(!copy( $fileSource, $fileDestination)) {
@@ -190,7 +197,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
 
         $this->_setError(
             'ACTION_UNKNOWN', 
-            gT("Teh action you tried to apply is not known")
+            gT("The action you tried to apply is not known")
         );
         $this->_printJsonError();
         return;
@@ -205,7 +212,13 @@ class LimeSurveyFileManager extends Survey_Common_Action
     public function uploadFile() {
         $folder = Yii::app()->request->getPost('folder');
         $iSurveyId = Yii::app()->request->getPost('surveyid', null);
+
+        if($iSurveyId == 'null') {
+            $iSurveyId = null;
+        }
+
         $directory = $this->_checkFolder($folder, $iSurveyId);
+
         if($directory === false) {
             $this->_printJsonError();
             return;
@@ -242,6 +255,12 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
         $fullfilepath = $destdir.DIRECTORY_SEPARATOR.$filename;
 
+        if($this->checkTargetExists($fullfilepath) && Yii::app()->getConfig('overwritefiles') == 0) {
+            $ext = pathinfo($fullfilepath, PATHINFO_EXTENSION);
+            $shorthash = hash('adler32', microtime());
+            $fullfilepath = preg_replace( "/\.".$ext."/", "-".$shorthash.".".$ext, $fullfilepath);
+        }
+
         $debug[] = $destdir;
         $debug[] = $filename;
         $debug[] = $fullfilepath;
@@ -255,11 +274,16 @@ class LimeSurveyFileManager extends Survey_Common_Action
             return;
         } 
 
-        $this->_printJsonResponse([
-            'success' => true,
-            'message' => sprintf(gT("File %s uploaded"), $filename),
-            'debug' => $debug
-        ]);
+        $linkToImage = Yii::app()->baseUrl.'/'.$folder.'/'.$filename;
+
+        $this->_printJsonResponse(
+            [
+                'success' => true,
+                'message' => sprintf(gT("File %s uploaded"), $filename),
+                'src' => $linkToImage,
+                'debug' => $debug
+            ]
+        );
 
     }
 
@@ -278,16 +302,24 @@ class LimeSurveyFileManager extends Survey_Common_Action
         }
     }
 
-    private function _checkFolder($sFolderPath, $iSurveyId) {
+    private function checkTargetExists($fileDestination) {
+        return is_file($fileDestination);
+    }
+
+    private function _checkFolder($sFolderPath, $iSurveyId=null) {
+
         $aAllowedFolders = $this->_collectCompleteFolderList($iSurveyId);
         $inInAllowedFolders = false;
         
         foreach($aAllowedFolders as $folderName => $folderPath) {
-            $inInAllowedFolders = ($folderPath == $sFolderPath) || $inInAllowedFolders;
+            $inInAllowedFolders = (preg_match('%/?'.$folderPath.'/?%', $sFolderPath)) || $inInAllowedFolders;
         }
         
         if(!$inInAllowedFolders) {
-            $this->_setError('NO_PERMISSION', gT("You don't have permission to this folder"));
+            $this->_setError('NO_PERMISSION', gT("You don't have permission to this folder"), null, [
+                "sFolderPath" => $sFolderPath,
+                "aAllowedFolders" => $aAllowedFolders,
+            ]);
             return false;
         }
 
@@ -387,7 +419,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
      * @param int|null $iSurveyId
      * @return array List of visible folders
      */
-    private function _collectCompleteFolderList($iSurveyId=null) {
+    private function _collectCompleteFolderList($iSurveyId = null) {
         $folders = $this->globalDirectories;
         
         if($iSurveyId!=null) {
@@ -509,11 +541,12 @@ class LimeSurveyFileManager extends Survey_Common_Action
      * @param string|null $title
      * @return void
      */
-    private function _setError($code, $message, $title = '') {
+    private function _setError($code, $message, $title = '', $debug=null) {
         $this->oError = new FileManagerError();
         $this->oError->code = $code;
         $this->oError->message = $message; 
         $this->oError->title = $title; 
+        $this->oError->debug = $debug; 
     }
 
     /**
@@ -541,7 +574,8 @@ class LimeSurveyFileManager extends Survey_Common_Action
                 'success' => false,
                 'data' => [
                     'success' => false,
-                    'message' => $this->oError->message
+                    'message' => $this->oError->message,
+                    'debug' => $this->oError->debug,
                 ]
             ]);
     }

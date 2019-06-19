@@ -38,18 +38,23 @@ class limereplacementfields extends Survey_Common_Action
             $questionlist = $this->_getQuestionList($action, $gid, $qid, $fieldmap, $fieldtype, $surveyformat);
             $childQuestions = $this->_getChildQuestions($questionlist);
         }
+
         $data = [];
         $data['countfields'] = count($replacementFields);
+        $data['replacements'] = [];
+
         asort($replacementFields);
-        $data['replFields'] = $replacementFields;
+        $data['replacements'][gt('General replacements')] = $replacementFields;
+
         if (isset($childQuestions)) {
-            $data['cquestions'] = $childQuestions;
+           $data['replacements'][gT('Questions')] = $childQuestions;
         }
         if (isset($surveyformat)) {
-            $data['surveyformat'] = $surveyformat;
+            $data['replacements'][gT('Surveyformat')] = $surveyformat;
         }
 
-        $this->getController()->render('/admin/limeReplacementFields_view', $data);
+        $this->getController()->renderPartial('/admin/super/_renderJson', ['data'=>$data]);
+        return;
     }
 
     /**

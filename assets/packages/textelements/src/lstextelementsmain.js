@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import CKEditor from '@ckeditor/ckeditor5-vue';
+import LSCKEditor from './plugins/LSCK/plugin';
 
 import TextElementsApp from './TextElementsApp.vue';
 import Loader from './helperComponents/loader.vue';
@@ -7,11 +7,12 @@ import Loader from './helperComponents/loader.vue';
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
 
+Vue.config.devtools = true;
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
 
 Vue.use( PluginLog );
-Vue.use( CKEditor );
+Vue.use( LSCKEditor );
 
 Vue.component('loader-widget', Loader);
 

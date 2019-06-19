@@ -1,10 +1,10 @@
 <script>
 import Mousetrap from 'mousetrap';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-import LanguageSelector from './components/subcomponents/_languageSelector.vue';
+import LanguageSelector from './components/subcomponents/_languageSelector';
 import Aceeditor from './helperComponents/AceEditor';
 
+import LsEditor from './lib/CkLSEditor/Lseditor';
 import runAjax from './mixins/runAjax.js';
 
 export default {
@@ -18,9 +18,24 @@ export default {
         return {
             loading: true,
             event: null,
-            descriptionEditorObject: ClassicEditor,
-            welcomeEditorObject: ClassicEditor,
-            endTextEditorObject: ClassicEditor,
+            descriptionEditorObject: LsEditor,
+            descriptionEditorConfig: {
+                'lsExtension:fieldtype': 'survey-desc', 
+                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid},
+                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+            },
+            welcomeEditorObject: LsEditor,
+            welcomeEditorConfig: {
+                'lsExtension:fieldtype': 'survey-welc', 
+                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid},
+                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+            },
+            endTextEditorObject: LsEditor,
+            endTextEditorConfig: {
+                'lsExtension:fieldtype': 'survey-endtext', 
+                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid},
+                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+            },
             descriptionSource: false,
             welcomeSource: false,
             endTextSource: false,
@@ -67,6 +82,9 @@ export default {
         }
     },
     methods: {
+        CKErrorManagement(error) {
+            this.$log.trace(error);
+        },
         applyHotkeys() {
             Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
             Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);
@@ -222,8 +240,8 @@ ${scriptContent}
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentDescription)" />
-                    <ckeditor v-if="!descriptionSource && $store.state.permissions.update" :editor="descriptionEditorObject" v-model="currentDescription" :config="{}"></ckeditor>
-                    <aceeditor v-if="descriptionSource && $store.state.permissions.update" v-model="currentDescription" thisId="currentDescriptionSourceEditor" :showLangSelector="false"></aceeditor>
+                    <lsckeditor :on-error="CKErrorManagement" id="descriptionEditor" v-if="!descriptionSource && $store.state.permissions.update" :editor="descriptionEditorObject" v-model="currentDescription" :config="descriptionEditorConfig"></lsckeditor>
+                    <aceeditor id="descriptionSource" v-if="descriptionSource && $store.state.permissions.update" v-model="currentDescription" thisId="currentDescriptionSourceEditor" :showLangSelector="false"></aceeditor>
                     <input v-if="$store.state.permissions.update" type="hidden" name="description" v-model="currentDescription" />
                 </div>
             </div>
@@ -238,7 +256,7 @@ ${scriptContent}
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentWelcome)" />
-                    <ckeditor v-if="!welcomeSource && $store.state.permissions.update" :editor="welcomeEditorObject" v-model="currentWelcome" :config="{}"></ckeditor>
+                    <lsckeditor :on-error="CKErrorManagement" v-if="!welcomeSource && $store.state.permissions.update" :editor="welcomeEditorObject" v-model="currentWelcome" :config="welcomeEditorConfig"></lsckeditor>
                     <aceeditor v-if="welcomeSource && $store.state.permissions.update" v-model="currentWelcome" thisId="currentWelcomeSourceEditor" :showLangSelector="false"></aceeditor>
                     <input v-if="$store.state.permissions.update" type="hidden" name="welcome" v-model="currentWelcome" />
                 </div>
@@ -254,7 +272,7 @@ ${scriptContent}
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEndText)" />
-                    <ckeditor v-if="!endTextSource && $store.state.permissions.update" :editor="endTextEditorObject" v-model="currentEndText" :config="{}"></ckeditor>
+                    <lsckeditor :on-error="CKErrorManagement" v-if="!endTextSource && $store.state.permissions.update" :editor="endTextEditorObject" v-model="currentEndText" :config="endTextEditorConfig"></lsckeditor>
                     <aceeditor v-if="endTextSource && $store.state.permissions.update" v-model="currentEndText" thisId="currentEndTextSourceEditor" :showLangSelector="false"></aceeditor>
                     <input v-if="$store.state.permissions.update" type="hidden" name="endtext" v-model="currentEndText" />
                 </div>

@@ -19,7 +19,7 @@ export default {
 </script>
 
 <template>
-  <div class="scoped-bordermecrazy" :class="'col-xs-'+cols">
+  <div class="scoped-folder-list" :class="'col-xs-'+cols">
     <treeview :folders="$store.state.folderList" @loading="$emit('loading')" @endloading="$emit('endloading')"/>
   </div>
 </template>
@@ -27,7 +27,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .scoped-bordermecrazy{
-    border-right: 2px solid black;
+  .scoped-folder-list{
+    box-shadow: 1px 3px 6px solid #939393;
+    min-height:480px;
   }
 </style>

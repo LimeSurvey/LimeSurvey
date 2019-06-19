@@ -166,7 +166,7 @@ return array(
     ),
     'filemanager' => array(
         'devBaseUrl' => 'assets/packages/filemanager/',
-        'basePath' => 'core.textelements',
+        'basePath' => 'core.filemanager',
         'position' =>CClientScript::POS_END,
         'js' => (
             $debug > 0

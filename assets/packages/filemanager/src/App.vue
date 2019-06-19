@@ -5,9 +5,9 @@
       <div class="row">
         <folder-list @loading="setLoading" @endloading="endLoading" :cols=4 />
         <file-list @loading="setLoading" @endloading="endLoading" :cols=8 />
+        <loader-widget id="filemanager-loader-widget" v-if="loading"/>
       </div>
     </div>
-    <loader-widget id="filemanager-loader-widget" v-if="loading"/>
   </div>
 </template>
 
