@@ -1613,7 +1613,7 @@ class SurveyRuntimeHelper
     private function setPreview()
     {
         $this->sSurveyMode = ($this->previewgrp) ? 'group' : 'question'; // Can be great to have a survey here …
-        buildsurveysession($this->iSurveyid,$this->sSurveyMode); // Preview part disable SurveyURLParameter , why ? Work without
+        buildsurveysession($this->iSurveyid,true); // Preview part disable SurveyURLParameter , why ? Work without
 
         /* Set steps for PHP notice */
         $_SESSION[$this->LEMsessid]['prevstep'] = 2;
