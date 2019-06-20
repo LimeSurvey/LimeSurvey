@@ -21,8 +21,12 @@ export function addListToDropdown( dropdownView, items, extraClasses='') {
 	listView.items.bindTo( items ).using( ( { type, model } ) => {
 		if ( type === 'separator' ) {
 			return new ListSeparatorView( locale );
+			
 		} else if (type === 'groupseparator' ){
-			return new ListGroupSeparatorView( locale );
+			const listGroupSeperatorView =  new ListGroupSeparatorView( locale );
+			listGroupSeperatorView.bind( ...Object.keys( model ) ).to( model );
+			return listGroupSeperatorView;
+
 		} else if ( type === 'button' || type === 'switchbutton' || type === 'previewbutton' ) {
 			const listItemView = new ListItemView( locale );
 			let buttonView;

@@ -23,6 +23,9 @@ export default function(surveyId){
             vuexLocal.plugin
         ],
         mutations,
-        actions
+        actions,
+        getters: {
+            surveyid: (state) => (LS.parameters.$GET.surveyid || LS.parameters.keyValuePairs.surveyid || null)
+        }
     });
 }

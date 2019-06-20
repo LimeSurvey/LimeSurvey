@@ -66,12 +66,13 @@ export default class LsReplacementsUI extends Plugin {
                     model: new Model( {
                         commandParam: key,
                         label: title,
+                        class: 'lsimageSelect--dropdown-button-inner',
                         withText: true
                     })
                 };
                 itemDefinitions.add( definition );
             });
         });
-        addListToDropdown(dropdownView, itemDefinitions);
+        addListToDropdown(dropdownView, itemDefinitions, 'lsimageSelect--dropdown-list');
     }
 }

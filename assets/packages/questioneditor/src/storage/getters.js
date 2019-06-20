@@ -10,4 +10,5 @@ export default {
         } catch(e){}
         return returner;
     },
+    surveyid: (state) => (LS.parameters.$GET.surveyid || LS.parameters.keyValuePairs.surveyid || null)
 };

@@ -20,6 +20,7 @@ module.exports = {
         output: {
             filename: () => {return 'js/'+appName+'.js'}
         },
+        devtool: 'cheap-module-eval-source-map',
         externals: {
             LS: 'LS',
             jquery: 'jQuery',

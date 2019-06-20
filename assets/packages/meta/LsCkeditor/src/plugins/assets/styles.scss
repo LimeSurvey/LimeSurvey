@@ -1,8 +1,22 @@
 .lsimageSelect--dropdown-list > li.ck.ck-list__item {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #c9c9c9;
+    border-left: 1px solid #727272;
+    padding-left: 0.2rem;
+    margin-left: 0.2rem;
 }
 
 .ck.ck-reset_all {
+    .ck.ck-listgroup__separator {
+        min-height: 1.2rem;
+        padding-left: 0.2rem;
+        padding-top: 0.1rem;
+        margin-top: 0.1rem;
+        font-weight: bold;
+        border-bottom: 1px solid #323232;
+        border-top: 1px solid #323232;
+        background: #cfcfcf;
+    }
+    
     .lsimageSelect--dropdown-button-inner {
         width: 100%;
         flex-wrap: wrap;
@@ -29,3 +43,4 @@
 	max-height: 50vh; /* or anything else, more likely ~300px or so */
 	overflow-y: auto;
 }
+

@@ -12,6 +12,7 @@ import ListPlugin from '@ckeditor/ckeditor5-list/src/list';
 import TablePlugin from '@ckeditor/ckeditor5-table/src/table';
 import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import ClipboardPlugin from '@ckeditor/ckeditor5-clipboard/src/clipboard';
+import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
 import LsReplacements from './plugins/LsReplacements/LsReplacements';
 import ImagePlugin from '@ckeditor/ckeditor5-image/src/image';
@@ -20,14 +21,14 @@ import ImageStylePlugin from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageToolbarPlugin from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageUploadPlugin from '@ckeditor/ckeditor5-image/src/imageupload';
 import LsFileUploadPlugin from './plugins/LsImage/LsFileUploadPlugin';
-import ImageSelectPlugin from './plugins/LsImage/lsimageselect';
-import ImageSizePlugin from './plugins/LsImage/lsimagesize';
+import LsImageSelectPlugin from './plugins/LsImage/lsimageselect';
+import LsImageSizePlugin from './plugins/LsImage/lsimagesize';
 
 import './plugins/assets/styles.scss';
 
-export default class ClassicEditor extends ClassicEditorBase {}
+export default class LsCkEditor extends ClassicEditorBase {}
 
-ClassicEditor.builtinPlugins = [
+LsCkEditor.builtinPlugins = [
     EssentialsPlugin,
     AutoformatPlugin,
     BoldPlugin,
@@ -41,18 +42,19 @@ ClassicEditor.builtinPlugins = [
     ParagraphPlugin,
     ClipboardPlugin,
     PasteFromOffice,
-    LsReplacements,
-    LsFileUploadPlugin,
+    MediaEmbed,
     ImagePlugin,
     ImageCaptionPlugin,
     ImageStylePlugin,
     ImageToolbarPlugin,
     ImageUploadPlugin,
-    ImageSelectPlugin,
-    ImageSizePlugin
+    LsReplacements,
+    LsFileUploadPlugin,
+    LsImageSelectPlugin,
+    LsImageSizePlugin
 ];
 
-ClassicEditor.defaultConfig = {
+LsCkEditor.defaultConfig = {
     toolbar: {
         items: [
             'heading',
@@ -69,6 +71,8 @@ ClassicEditor.defaultConfig = {
             'redo',
             'insertTable',
             '|',
+            'mediaEmbed',
+            '|',
             'imageUpload',
             'selectImage',
             'expressions'
@@ -80,8 +84,7 @@ ClassicEditor.defaultConfig = {
             'imageStyle:side',
             '|',
             'imageTextAlternative',
-            'imageWidth',
-            'imageheight'
+            'imageSize',
         ]
     },
     language: LS.data.language

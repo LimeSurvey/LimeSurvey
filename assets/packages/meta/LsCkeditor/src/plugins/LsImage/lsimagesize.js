@@ -1,14 +1,14 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import ImageSizeUI from './lsimagesize/lsimagesizeui';
-import ImageSizeEditing from './lsimagesize/lsimagesizeediting';
+import LsImageSizeUI from './lsimagesize/lsimagesizeui';
+import LsImageSizeEditing from './lsimagesize/lsimagesizeediting';
 
-export default class ImageSelect extends Plugin {
+export default class LsImageSize extends Plugin {
 
 	static get pluginName() {
-		return 'ImageSize';
+		return 'LsImageSize';
 	}
 
 	static get requires() {
-		return [ ImageSizeUI, ImageSizeEditing ];
+		return [ LsImageSizeUI, LsImageSizeEditing ];
 	}
 }

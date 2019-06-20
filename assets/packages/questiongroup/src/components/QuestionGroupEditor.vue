@@ -1,6 +1,6 @@
 
 <script>
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import LsEditor from '../../../meta/LsCkeditor/src/LsCkEditor';
 import foreach from 'lodash/forEach';
 import keys from 'lodash/keys';
 import filter from 'lodash/filter';
@@ -18,8 +18,12 @@ export default {
     data(){
         return {
             currentTab: '',
-            editorDescription: ClassicEditor,
-            editorDescriptionConfig: {},
+            editorDescription: LsEditor,
+            editorDescriptionConfig: {
+                'lsExtension:fieldtype': 'editgroup_desc', 
+                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid, gid: this.$store.state.currentQuestionGroup.gid },
+                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+            },
             sourceMode: false,
         };
     },
@@ -111,7 +115,7 @@ ${scriptContent}
                             <button class="btn btn-default btn-xs" @click.prevent="sourceMode=!sourceMode"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                         </div>
                     </div>
-                    <ckeditor  v-if="!sourceMode" :editor="editorDescription" v-model="currentQuestionGroupDescription" :config="editorDescriptionConfig"></ckeditor>
+                    <lsckeditor  v-if="!sourceMode" :editor="editorDescription" v-model="currentQuestionGroupDescription" :config="editorDescriptionConfig"></lsckeditor>
                     <aceeditor v-else :showLangSelector="false" :thisId="'questionEditSource'" v-model="currentQuestionGroupDescription"></aceeditor>
                 </div>
                 <div class="col-sm-6 col-xs-12 ls-space margin top-5 bottom-5">

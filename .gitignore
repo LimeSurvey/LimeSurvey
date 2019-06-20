@@ -19,6 +19,7 @@
 !.editorconfig
 !.travis.yml
 !.babelrc
+!.eslintrc.json
 !.env-cmdrc
 
 

@@ -11,7 +11,6 @@ const path = require( 'path' );
 const webpack = require( 'webpack' );
 const { bundler, styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
-const UglifyJsWebpackPlugin = require( 'uglifyjs-webpack-plugin' );
 
 module.exports = {
 	devtool: 'source-map',
@@ -24,22 +23,11 @@ module.exports = {
 		library: 'ClassicEditor',
 		path: path.resolve( __dirname, 'build' ),
 		filename: 'LsCkEditor.js',
-		libraryTarget: 'umd',
+		libraryTarget: 'commonjs',
 		libraryExport: 'default'
 	},
 
 	optimization: {
-		minimizer: [
-			new UglifyJsWebpackPlugin( {
-				sourceMap: true,
-				uglifyOptions: {
-					output: {
-						// Preserve CKEditor 5 license comments.
-						comments: /^!/
-					}
-				}
-			} )
-		]
 	},
 
 	plugins: [
@@ -49,10 +37,6 @@ module.exports = {
 			language: 'en',
 			additionalLanguages: 'all'
 		} ),
-		new webpack.BannerPlugin( {
-			banner: bundler.getLicenseBanner(),
-			raw: true
-		} )
 	],
 
 	module: {
@@ -84,7 +68,6 @@ module.exports = {
 							themeImporter: {
 								themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
 							},
-							minify: true
 						} )
 					},
 				]

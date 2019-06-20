@@ -256,7 +256,7 @@ ${scriptContent}
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentWelcome)" />
-                    <lsckeditor :on-error="CKErrorManagement" v-if="!welcomeSource && $store.state.permissions.update" :editor="welcomeEditorObject" v-model="currentWelcome" :config="welcomeEditorConfig"></lsckeditor>
+                    <lsckeditor :on-error="CKErrorManagement" id="welcomeEditor" v-if="!welcomeSource && $store.state.permissions.update" :editor="welcomeEditorObject" v-model="currentWelcome" :config="welcomeEditorConfig"></lsckeditor>
                     <aceeditor v-if="welcomeSource && $store.state.permissions.update" v-model="currentWelcome" thisId="currentWelcomeSourceEditor" :showLangSelector="false"></aceeditor>
                     <input v-if="$store.state.permissions.update" type="hidden" name="welcome" v-model="currentWelcome" />
                 </div>
@@ -272,7 +272,7 @@ ${scriptContent}
                         </div>
                     </div>
                     <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEndText)" />
-                    <lsckeditor :on-error="CKErrorManagement" v-if="!endTextSource && $store.state.permissions.update" :editor="endTextEditorObject" v-model="currentEndText" :config="endTextEditorConfig"></lsckeditor>
+                    <lsckeditor :on-error="CKErrorManagement" id="endTextEditor" v-if="!endTextSource && $store.state.permissions.update" :editor="endTextEditorObject" v-model="currentEndText" :config="endTextEditorConfig"></lsckeditor>
                     <aceeditor v-if="endTextSource && $store.state.permissions.update" v-model="currentEndText" thisId="currentEndTextSourceEditor" :showLangSelector="false"></aceeditor>
                     <input v-if="$store.state.permissions.update" type="hidden" name="endtext" v-model="currentEndText" />
                 </div>

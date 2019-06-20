@@ -1,6 +1,6 @@
 <script>
 
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import LsEditor from '../../../meta/LsCkeditor/src/LsCkEditor';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
@@ -20,12 +20,20 @@ export default {
     },
     data() {
         return {
-            editorQuestion: ClassicEditor,
+            editorQuestion: LsEditor,
             editorQuestionData: '',
-            editorQuestionConfig: {},
-            editorHelp: ClassicEditor,
+            editorQuestionConfig: {
+                'lsExtension:fieldtype': 'editquestion', 
+                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid, qid: window.QuestionEditData.qid, gid: window.QuestionEditData.gid },
+                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+            },
+            editorHelp: LsEditor,
             editorHelpData: '',
-            editorHelpConfig: {},
+            editorHelpConfig: {
+                'lsExtension:fieldtype': 'editquestion_help', 
+                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid, qid: window.QuestionEditData.qid, gid: window.QuestionEditData.gid },
+                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+            },
             previewContent: ' ',
             questionEditSource: false,
             helpEditSource: false,
@@ -182,7 +190,7 @@ export default {
                                     <button class="btn btn-default btn-xs" @click.prevent="toggleSourceEditQuestion"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                                 </div>
                             </div>
-                            <ckeditor v-if="!questionEditSource" :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></ckeditor>
+                            <lsckeditor v-if="!questionEditSource" :editor="editorQuestion" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange" :config="editorQuestionConfig"></lsckeditor>
                             <aceeditor v-else :showLangSelector="false" :thisId="'questionEditSource'" v-model="currentQuestionQuestion" v-on:input="runDebouncedChange"> </aceeditor>
                         </div>
                         <div class="col-12 ls-space margin all-5 scope-contains-ckeditor ">
@@ -194,7 +202,7 @@ export default {
                                     <button class="btn btn-default btn-xs" @click.prevent="toggleSourceEditHelp"><i class="fa fa-file-code-o"></i>{{'Toggle source mode'|translate}}</button>
                                 </div>
                             </div>
-                            <ckeditor v-if="!helpEditSource" :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></ckeditor>
+                            <lsckeditor v-if="!helpEditSource" :editor="editorHelp" v-model="currentQuestionHelp" v-on:input="runDebouncedChange" :config="editorHelpConfig"></lsckeditor>
                             <aceeditor v-else :showLangSelector="false" :thisId="'helpEditSource'" v-model="currentQuestionHelp" v-on:input="runDebouncedChange"> </aceeditor>
                         </div>
                         <div class="col-12 ls-space margin all-5 scope-contains-ckeditor " v-if="!!$store.state.currentQuestionPermissions.script">

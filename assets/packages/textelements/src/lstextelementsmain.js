@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import LSCKEditor from './plugins/LSCK/plugin';
+import LSCKEditor from '../../meta/LSCKVue/plugin'
 
 import TextElementsApp from './TextElementsApp.vue';
 import Loader from './helperComponents/loader.vue';

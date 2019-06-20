@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import CKEditor from '@ckeditor/ckeditor5-vue';
+import LSCKEditor from '../../meta/LSCKVue/plugin'
 
 import DataSecurityApp from './DataSecurityApp.vue';
 import Loader from './helperComponents/loader.vue';
@@ -11,7 +11,7 @@ import {PluginLog} from "./mixins/logSystem";
 Vue.config.ignoredElements = ["x-test"];
 
 Vue.use( PluginLog );
-Vue.use( CKEditor );
+Vue.use( LSCKEditor );
 
 Vue.component('loader-widget', Loader);
 

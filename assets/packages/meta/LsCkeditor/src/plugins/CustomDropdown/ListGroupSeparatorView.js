@@ -16,14 +16,12 @@ export default class ListGroupSeparatorView extends ListSeparatorView {
             attributes: {
                 class: [
                     'ck',
-                    'ck-list__separator'
+                    'ck-listgroup__separator'
                 ]
-            }
+            },
+            children: this.children
         });
-    }
-
-    render() {
-        super.render();
+        
         this.children.add(this.labelView);
     }
 
@@ -35,12 +33,12 @@ export default class ListGroupSeparatorView extends ListSeparatorView {
             tag: 'span',
 
             attributes: {
-                class: ['ck','ck-separator__label'],
+                class: ['ck','ck-groupseparator__label'],
                 id: `ck-editor__aria-label_${ ariaLabelUid }`,
             },
 
             children: [{
-                text: this.bindTemplate.to('label')
+                text: bind.to('label')
             }]
         });
 
