@@ -51,7 +51,7 @@ $googleAnalyticsStyleOptions = array(
                             $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'datestamp',
                             'value'=> $oSurvey->datestamp,
-                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->datestamp . ']')): $optionsOnOff,
                             /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 if ($('#anonymized').is(':checked') == true) {
                                 $('#datestampModal_1').modal();
@@ -85,7 +85,7 @@ $googleAnalyticsStyleOptions = array(
                         $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'ipaddr',
                             'value'=> $oSurvey->ipaddr,
-                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->ipaddr . ']')): $optionsOnOff,
                             /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 if ($('#anonymized').is(':checked') == true) {
                                 $('#datestampModal_2').modal();
@@ -119,7 +119,7 @@ $googleAnalyticsStyleOptions = array(
                             $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'refurl',
                             'value'=> $oSurvey->refurl,
-                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->refurl . ']')): $optionsOnOff,
                             ));
                     } ?>
                 </div>
@@ -142,7 +142,7 @@ $googleAnalyticsStyleOptions = array(
                             $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                 'name' => 'savetimings',
                                 'value'=> $oSurvey->savetimings,
-                                'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                                'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->savetimings . ']')): $optionsOnOff,
                             ));
                         ?>
                     <?php endif;?>
@@ -159,7 +159,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'assessments',
                         'value'=> $oSurvey->assessments,
-                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->assessments . ']')): $optionsOnOff,
                     ));
                 ?></div>
             </div>
@@ -172,7 +172,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'allowsave',
                         'value'=> $oSurvey->allowsave,
-                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->allowsave . ']')): $optionsOnOff,
                     ));
                 ?>
                 </div>

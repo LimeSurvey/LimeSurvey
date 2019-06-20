@@ -167,7 +167,10 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['oSurvey'] = $survey;
         $aData['bShowAllOptions'] = true;
         $aData['bShowInherited'] = true;
-        $aData['oSurveyOptions'] = $survey->oOptionLabels;
+        $oSurveyOptions = $survey;
+        $oSurveyOptions->bShowRealOptionValues = false;
+        $oSurveyOptions->setOptions();
+        $aData['oSurveyOptions'] = $oSurveyOptions->oOptionLabels;
 
         $aData['optionsOnOff'] = array(
             'Y' => gT('On','unescaped'),
@@ -182,12 +185,6 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
         $aData['notificationsettingsdata']  = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
         $aData['tokensettingsdata']         = array_merge($aData, $this->_tabTokens($esrow));
-
-        // set new survey settings from global settings
-        $aData['presentationsettingsdata']['showqnumcode'] = getGlobalSetting('showqnumcode');
-        $aData['presentationsettingsdata']['shownoanswer'] = getGlobalSetting('shownoanswer');
-        $aData['presentationsettingsdata']['showgroupinfo'] = getGlobalSetting('showgroupinfo');
-        $aData['presentationsettingsdata']['showxquestions'] = getGlobalSetting('showxquestions');
 
         $aViewUrls[] = 'newSurvey_view';
 
@@ -1552,12 +1549,6 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _tabPresentationNavigation($esrow)
     {
-        global $showxquestions, $showgroupinfo, $showqnumcode;
-
-        Yii::app()->loadHelper('globalsettings');
-
-        $shownoanswer = getGlobalSetting('shownoanswer') ? getGlobalSetting('shownoanswer') : 'Y';
-
         $aData = [];
         $aData['esrow'] = $esrow;
         return $aData;

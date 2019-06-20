@@ -217,9 +217,6 @@ class Survey extends LSActiveRecord
                 }
             }
         }
-
-        // set inherited values for new survey
-        $this->setOptions($this->gsid);
         
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
@@ -2122,13 +2119,8 @@ return $s->hasTokensTable; });
         $this->tokenencryptionoptions = $options;
     }
 
-    public function setOptions($gsid)
+    public function setOptions($gsid = 1)
     {
-        // set gsid to 1 if empty
-        if (empty($gsid)){
-            $gsid = 1;
-        }
-
         $instance = SurveysGroupsettings::getInstance($gsid, $this, null, 1, $this->bShowRealOptionValues);
         if ($instance){
             $this->oOptions = $instance->oOptions;
