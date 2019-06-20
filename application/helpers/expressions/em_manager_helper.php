@@ -64,9 +64,9 @@
         */
         private $debugLevel = 0;
          /**
-        * sPreviewMode used for relevance equation force to 1 in preview mode
-        * Maybe we can set it public
-        * @var string|boolean
+        * sPreviewMode used for relevance equation and to disable save value in DB
+        * 'question' or 'group' string force relevance to 1 if needed
+        * @var string|false
         */
         private $sPreviewMode = false;
         /**
@@ -720,7 +720,7 @@
 
         /**
         * Set the previewmode
-        * @param boolean|string $previewmode 'question', 'group', false
+        * @param string|false $previewmode 'question', 'group', false
         * @return void
         */
         public static function SetPreviewMode($previewmode=false)
@@ -3747,7 +3747,7 @@
                 $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
                 $sqid = (isset($fielddata['sqid']) ? $fielddata['sqid'] : '');
                 if($this->sPreviewMode=='question') $fielddata['relevance']=1;
-                if($this->sPreviewMode=='group') $fielddata['grelevance']=1;
+                if($this->sPreviewMode=='group' || $this->sPreviewMode=='question') $fielddata['grelevance']=1;
 
                 $questionNum = $fielddata['qid'];
                 $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
@@ -5680,7 +5680,7 @@
         /**
         * Jump to a specific question or group sequence.  If jumping forward, it re-validates everything in between
         * @param int $seq - the sequential step
-        * @param boolean $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed. @see var $sPreviewMode
+        * @param string|false $preview @see var $sPreviewMode
         * @param boolean $processPOST - add the updated value to be saved in the database
         * @param boolean $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
         * @param boolean $changeLang
