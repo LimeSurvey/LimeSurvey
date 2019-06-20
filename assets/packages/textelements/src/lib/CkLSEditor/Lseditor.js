@@ -1,5 +1,4 @@
 import ClassicEditorBase from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
 import AutoformatPlugin from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
@@ -20,7 +19,9 @@ import ImageStylePlugin from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageToolbarPlugin from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageUploadPlugin from '@ckeditor/ckeditor5-image/src/imageupload';
 import LsFileUploadPlugin from './plugins/LsImage/LsFileUploadPlugin';
-// import ImageSelectPlugin from './plugins/LsImage/lsimageselect';
+import ImageSelectPlugin from './plugins/LsImage/lsimageselect';
+
+import './plugins/assets/styles.scss';
 
 export default class ClassicEditor extends ClassicEditorBase {}
 
@@ -45,6 +46,7 @@ ClassicEditor.builtinPlugins = [
     ImageStylePlugin,
     ImageToolbarPlugin,
     ImageUploadPlugin,
+    ImageSelectPlugin
 ];
 
 ClassicEditor.defaultConfig = {
@@ -65,6 +67,7 @@ ClassicEditor.defaultConfig = {
             'insertTable',
             '|',
             'imageUpload',
+            'selectImage',
             'expressions'
         ]
     },

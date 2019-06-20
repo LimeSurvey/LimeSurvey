@@ -107,6 +107,18 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $this->_renderWrappedTemplate('SurveyFiles', $renderView, $aData);
     }
 
+    public function getFilesForSurvey($surveyid = null) {
+        $folders = $this->_collectCompleteFolderList($surveyid);
+        $result = [];
+
+        foreach($folders as $folder) {
+            $result[$folder] = $this->_collectFileList($folder);
+        }
+
+        $this->_printJsonResponse($result);
+        return;
+    }
+
     /**
      * Calls the list of files in the selected folder
      *
@@ -373,8 +385,13 @@ class LimeSurveyFileManager extends Survey_Common_Action
             $sSystemDateFormat = getDateFormatData(Yii::app()->session['dateformat']);
             $iFileTimeDate = filemtime($fileRealpath);
             
+            $linkToImage = Yii::app()->getBaseUrl(true).'/'.$folderPath.'/'.rawurlencode($file);
+            $hash = hash_file('md5', $fileRealpath);
+
             $directoryArray[$file] = [
                 'iconClass' => $iconClass,
+                'src' => $linkToImage,
+                'hash' => $hash,
                 'path' => $fileRelativePath,
                 'size' => $size,
                 'shortName' => $file,

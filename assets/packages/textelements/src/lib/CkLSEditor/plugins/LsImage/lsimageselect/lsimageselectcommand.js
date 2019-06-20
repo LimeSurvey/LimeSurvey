@@ -14,12 +14,12 @@ export default class LsImageSelectCommand extends Command {
 	refresh() {
 		this.isEnabled = isImageAllowed( this.editor.model );
 	}
-	execute( src ) {
+	execute( eventData ) {
 		const editor = this.editor;
 		const model = editor.model;
 
 		model.change( writer => {
-			insertImage( writer, model, { src } );
+			insertImage( writer, model, eventData );
 		});
 	}
 }

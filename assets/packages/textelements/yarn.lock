@@ -838,6 +838,20 @@
     "@ckeditor/ckeditor5-ui" "^13.0.0"
     "@ckeditor/ckeditor5-utils" "^12.1.1"
 
+"@ckeditor/ckeditor5-media-embed@^11.1.1":
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-media-embed/-/ckeditor5-media-embed-11.1.1.tgz#257736d90ae9b8d52d119cf411642bba15049b13"
+  integrity sha512-Pdsba7qxg/D/o6HLiJpGg1hdvV8lsZM+bdy27japL+IFfe7EY1hXjv5J5x5MjXVWO6q6NaHYwq3thu0+b/00Ig==
+  dependencies:
+    "@ckeditor/ckeditor5-clipboard" "^11.0.2"
+    "@ckeditor/ckeditor5-core" "^12.1.1"
+    "@ckeditor/ckeditor5-engine" "^13.1.1"
+    "@ckeditor/ckeditor5-image" "^13.1.0"
+    "@ckeditor/ckeditor5-ui" "^13.0.0"
+    "@ckeditor/ckeditor5-undo" "^11.0.2"
+    "@ckeditor/ckeditor5-utils" "^12.1.1"
+    "@ckeditor/ckeditor5-widget" "^11.0.2"
+
 "@ckeditor/ckeditor5-paragraph@^11.0.2":
   version "11.0.2"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-paragraph/-/ckeditor5-paragraph-11.0.2.tgz#f541ff4a2f221c43743cdcfbf0ad57f90f4aa154"
@@ -2315,11 +2329,6 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classlist-polyfill@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/classlist-polyfill/-/classlist-polyfill-1.2.0.tgz#935bc2dfd9458a876b279617514638bcaa964a2e"
-  integrity sha1-k1vC39lFiodrJ5YXUUY4vKqWSi4=
-
 clean-css@4.2.x:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.2.1.tgz#2d411ef76b8569b6d0c84068dabe85b0aa5e5c17"
@@ -3364,11 +3373,6 @@ es-to-primitive@^1.2.0:
     is-callable "^1.1.4"
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
-
-es6-object-assign@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
-  integrity sha1-wsNYJlYkfDnqEHyx5mUrb58kUjw=
 
 escape-html@~1.0.3:
   version "1.0.3"
@@ -8675,7 +8679,7 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vex-dialog@1.1.0, vex-dialog@^1.1.0:
+vex-dialog@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vex-dialog/-/vex-dialog-1.1.0.tgz#8a2b57b709268da5e935c854ce9541a570421e2e"
   integrity sha512-P+kf+LMI+jF1QtmH0iaqZLi5sVpL94d29SENBmI3x/2i8a1X6skN6Q2463m1triK8u4bpEWj1FndWqgpueA5cA==
@@ -8683,16 +8687,6 @@ vex-dialog@1.1.0, vex-dialog@^1.1.0:
     deep-clone-simple "1.1.1"
     domify "1.4.0"
     form-serialize "0.7.1"
-
-vex-js@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/vex-js/-/vex-js-4.1.0.tgz#88c996c7a0003fe1c6f972096244b55fdf45890b"
-  integrity sha512-n/dgknlD5CVl+Bn87kARnjwSknxZvSMflwzrBdgV0LLdLXpgmF6AKQ//bEEBBwK2JLXR0wG2R+il1zjcBtOi6Q==
-  dependencies:
-    classlist-polyfill "1.2.0"
-    domify "1.4.0"
-    es6-object-assign "1.1.0"
-    vex-dialog "1.1.0"
 
 vm-browserify@^1.0.1:
   version "1.1.0"

@@ -4,7 +4,7 @@ import Mousetrap from 'mousetrap';
 import LanguageSelector from './components/subcomponents/_languageSelector';
 import Aceeditor from './helperComponents/AceEditor';
 
-import LsEditor from './lib/CkLSEditor/Lseditor';
+import LsEditor from '../../meta/LsCkeditor/src/LsCkEditor';
 import runAjax from './mixins/runAjax.js';
 
 export default {

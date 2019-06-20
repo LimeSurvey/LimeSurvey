@@ -23,7 +23,7 @@ export default class LSImageSelectEditing extends Plugin {
 			allowAttributes: [ 'src', 'folder', 'hash' ]
 		} );
 
-		editor.commands.add( 'imageSelect', new LsImageSelectCommand( editor ) );
+		editor.commands.add( 'selectImage', new LsImageSelectCommand( editor ) );
 
 		conversion.for( 'upcast' )
 			.attributeToAttribute( {

@@ -1,0 +1,31 @@
+.lsimageSelect--dropdown-list>li.ck.ck-list__item {
+    border-bottom: 1px solid black;
+}
+
+.ck.ck-reset_all {
+    .lsimageSelect--dropdown-button-inner {
+        width: 100%;
+        flex-wrap: wrap;
+
+        .ck-button__label {
+            margin:auto;
+            display:block;
+            width: 100%;
+            min-width:50%;
+        }
+
+        .lsimageSelect--dropdown-button-image {
+            display:block;
+            margin:auto;
+            max-width:100%;
+            max-height:60px;
+        }
+        
+    }
+}
+
+.ck.ck-dropdown__panel {
+	max-height: 350px;
+	max-height: 50vh; /* or anything else, more likely ~300px or so */
+	overflow-y: auto;
+}

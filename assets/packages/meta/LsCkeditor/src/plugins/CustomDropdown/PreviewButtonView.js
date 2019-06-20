@@ -1,6 +1,7 @@
 import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 import View from "@ckeditor/ckeditor5-ui/src/view";
 
+
 class ImageView extends View {
     constructor( locale ) {
         super( locale );
@@ -8,28 +9,43 @@ class ImageView extends View {
         const bind = this.bindTemplate;
 
         this.setTemplate( {
-            tag: 'image',
+            tag: 'img',
             attributes: {
                 src: [
                     bind.to( 'imageSrc' )
                 ],
                 class: [
                     'img-responsive',
-                    bind.to( 'elementClass' )
+                    'lsimageSelect--dropdown-button-image',
+                    bind.to( 'imageClass' )
+                ],
+                hash: [
+                    bind.to( 'imageHash' )
                 ]
             },
         } );
     }
+
+    render() {
+		super.render();
+    }
+    
+    focus() {
+		this.element.focus();
+    }
 }
 
-export default class PreviewDropdownButtonView extends ButtonView {
+export default class PreviewButtonView extends ButtonView {
     /**
 	 * @inheritDoc
 	 */
     constructor( locale ) {
         super(locale);
+
         this.set( 'imageSrc' );
         this.set( 'imageClass' );
+        this.set( 'imageHash' );
+        
         this.imageView = this._createImageView();
     }
 
@@ -43,8 +59,9 @@ export default class PreviewDropdownButtonView extends ButtonView {
 
     _createImageView() {
         const imageView = new ImageView();
-        imageView.bind('imageSrc').to(this.imageSrc)
-        imageView.bind('elementClass').to(this.imageClass)
+        imageView.bind('imageSrc').to(this,'imageSrc');
+        imageView.bind('imageClass').to(this,'imageClass');
+        imageView.bind('imageHash').to(this,'imageHash');
+        return imageView;
     }
 }
-
