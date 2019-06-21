@@ -1773,11 +1773,11 @@ class ExpressionManager
     {
         /** @var array */
         static $cache = [];
-
         if (isset($cache[$src])) {
             return $cache[$src];
         }
-
+        /** @var boolean $setInCache set result in static $cache. mantis #14998 */
+        $setInCache = true;
         /** @var string */
         $expandedVar = "";
         $tokens = $this->Tokenize($src,1);
@@ -1787,6 +1787,7 @@ class ExpressionManager
                 case 'WORD':
                     $splitter = '(?:\b(?:self|that))(?:\.(?:[A-Z0-9_]+))*'; // self or that, optionnaly followed by dot and alnum
                     if (preg_match("/".$splitter."/", $token[0])) {
+                        $setInCache = false;
                         $expandedVar .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $token[0]);
                     } else {
                         $expandedVar .= $token[0];
@@ -1813,7 +1814,9 @@ class ExpressionManager
                     $expandedVar .= $token[0];
             }
         }
-        $cache[$src] = $expandedVar;
+        if($setInCache) {
+            $cache[$src] = $expandedVar;
+        }
         return $expandedVar;
     }
 
