@@ -27,6 +27,11 @@ $optionsOnOff = array(
         )); ?>
 
     <div class="row">
+        <div class="alert alert-info controls col-sm-7" role="alert">
+            <?php eT('All changes of global survey settings will have immediate effect on all related survey groups and surveys that use inherited values.'); ?>
+        </div>
+    </div>
+    <div class="row">
         <div id="surveySettingsForThisGroup">
             <?php echo CHtml::form(array("admin/globalsettings/sa/surveysettings"), 'post', array('id'=>'survey-settings-form')); ?>    
                 <ul class="nav nav-pills nav-stacked col-md-2" id="surveySettings" role="tablist">

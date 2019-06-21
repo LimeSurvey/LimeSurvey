@@ -13,19 +13,25 @@ $optionsOnOff = array(
 
     <h3><?php eT('Survey settings for group: '); echo '<strong><em>'.$model->title.'</strong></em>'; ?></h3>
     <?php $this->renderPartial('super/fullpagebar_view', array(
-            'fullpagebar' => array(
-                'returnbutton'=>array(
-                    'url'=>'admin/survey/sa/listsurveys#surveygroups',
-                    'text'=>gT('Close'),
-                ),
-                'savebutton' => array(
-                    'form' => 'survey-settings-options-form'
-                ),
-                'saveandclosebutton' => array(
-                    'form' => 'survey-settings-options-form'
+        'fullpagebar' => array(
+            'returnbutton'=>array(
+                'url'=>'admin/survey/sa/listsurveys#surveygroups',
+                'text'=>gT('Close'),
+            ),
+            'savebutton' => array(
+                'form' => 'survey-settings-options-form'
+            ),
+            'saveandclosebutton' => array(
+                'form' => 'survey-settings-options-form'
                 )
-            )
-        )); ?>
+                )
+            )); ?>
+
+    <div class="row">
+        <div class="alert alert-info controls col-sm-7" role="alert">
+            <?php eT('All changes of survey group settings will have immediate effect on all related surveys that use inherited values.'); ?>
+        </div>
+    </div>
 
     <div class="row">
         <div id="surveySettingsForThisGroup">
