@@ -35,6 +35,27 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.17.5 (build 190604) to 3.17.6 (build 190624) June 24, 2019
+-Fixed issue [security]: Unauthorized admin can create new user using Authdb plugin (Dominik Vitt)
+-Fixed issue #14337: Comparaison String and Numeric is different in same page and other page (Denis Chenu)
+-Fixed issue #14541 (Marcel Minke)
+-Fixed issue #14742: Questions with Expresion Manager code are not shown properly at Quota overview (Denis Chenu)
+-Fixed issue #14779: Opening and ending tag issue on token edit form (Dominik Vitt)
+-Fixed issue #14881: 'show pop-ups' 'Off'-setting not working anymore (Dominik Vitt)
+-Fixed issue #14898: Prevent SID of -1 during import (Denis Chenu)
+-Fixed issue #14936: Preview group : relevance on question broken (#1298) (Denis Chenu)
+-Fixed issue #14951: Loss of data when loading a non finished survey (Dominik Vitt)
+-Fixed issue #14954: Charts in Statistics are not showing completely - added check (Dominik Vitt)
+-Fixed issue #14962: Checkbox radio Y scale don't shown in little screen (partial) (Denis Chenu)
+-Fixed issue #14966: Array checkbox : all EM usage in same page is broken (Denis Chenu)
+-Fixed issue #14967: Validation code uneditable (Denis Chenu)
+-Fixed issue #14969: missing noanswer-item class for 5 point choice array (Denis Chenu)
+-Fixed issue #14987: Preview question not working (Denis Chenu)
+-Fixed issue #14998: Usage of self.NAOK insique all question part are broken (Denis Chenu)
+-Fixed issue: HTML tables have a missing cell in statistics (Markus Flür)
+-Fixed issue : missing noanswer-item class for array by column (Denis Chenu)
+
+
 Changes from 3.17.4 (build 190529) to 3.17.5 (build 190604) June 4, 2019
 -New translation: Tajik - kindly provided by Iskandar_r (Carsten Schmitz)
 -Fixed issue #13942: R syntax file export appends 'unknown type' line to the end of the syntax file when timings are activated (Carsten Schmitz)

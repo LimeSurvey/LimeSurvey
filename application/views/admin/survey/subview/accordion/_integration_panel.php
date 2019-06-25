@@ -11,32 +11,34 @@ $controller = $yii->getController();
 echo viewHelper::getViewTestTag('surveyPanelIntegration');
 
 ?>
+<?php $translate = array(
+    'table' => array(
+        'idColumn' => gT('ID'),
+        'actionColumn' => gT('Action'),
+        'parameterColumn' => gT('Parameter'),
+        'questionColumn' => gT('Target question'),
+        'sidColumn' => gT('Survey id'),
+        'qidColumn' => gT('Question id'),
+        'sqidColumn' => gT('Subquestion ID'),
+        'addParameter' => gT('Add URL parameter'),
+    ),
+    'popup' => array(
+        'editParam' => gT('Edit URL parameter'),
+        'newParam' => gT('Add URL parameter'),
+        'paramName' => gT('Parameter'),
+        'targetQuestion' => gT('Target question'),
+        'noTargetQuestion' => gT('(No target question)'),
+        'sureToDelete' => gT('Are you sure you want to delete this URL parameter?'),
+        'deleteCancel' => gT('No, cancel'),
+        'deleteConfirm' => gT('Yes, delete'),
+        'save' => gT('Save'),
+        'cancel' => gT('Cancel'),
+    ),
+);
+?>
   <!-- Datatable translation-data -->
   <!-- Container -->
-  <lspanelparametertable :sid="<?php  echo $surveyid; ?>" json-url="<?php echo App()->createUrl('admin/survey/sa/getUrlParamsJson', array('surveyid' => $surveyid))?>" :translate="{
-    table: {
-        idColumn : '<?php eT('ID');?>',
-        actionColumn : '<?php eT('Action');?>',
-        parameterColumn : '<?php eT('Parameter');?>',
-        questionColumn : '<?php eT('Target question');?>',
-        sidColumn : '<?php eT('Survey id');?>',
-        qidColumn : '<?php eT('Question id');?>',
-        sqidColumn : '<?php eT('Subquestion ID');?>',
-        addParameter : '<?php eT('Add URL parameter');?>'
-    },
-    popup: {
-        editParam : '<?php eT('Edit URL parameter');?>',
-        newParam : '<?php eT('Add URL parameter');?>',
-        paramName : '<?php eT('Parameter');?>',
-        targetQuestion : '<?php eT('Target question');?>',
-        noTargetQuestion : '<?php eT('(No target question)');?>',
-        sureToDelete : '<?php eT('Are you sure you want to delete this URL parameter?'); ?>',
-        deleteCancel : '<?php eT('No, cancel'); ?>',
-        deleteConfirm : '<?php eT('Yes, delete'); ?>',
-        save : '<?php eT('Save');?>',
-        cancel : '<?php eT('Cancel');?>'
-    }
-}"></lspanelparametertable>
+  <lspanelparametertable :sid="<?php  echo $surveyid; ?>" json-url="<?php echo App()->createUrl('admin/survey/sa/getUrlParamsJson', array('surveyid' => $surveyid))?>" :translate="<?php echo CHTML::encode(json_encode($translate)); ?>"></lspanelparametertable>
 
 <?php  
     App()->getClientScript()->registerScript('IntegrationPanel-variables', " 
