@@ -592,16 +592,13 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@ckeditor/ckeditor5-build-classic@^11.2.0":
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-build-classic/-/ckeditor5-build-classic-11.2.0.tgz#205ae1bd5495b2a7c9f5a4fef5241aca4118229a"
-
-"@ckeditor/ckeditor5-core@^12.1.0":
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-core/-/ckeditor5-core-12.1.0.tgz#a6f89583b066efb384f66e2f6c660d0378b786ec"
+"@ckeditor/ckeditor5-core@^12.1.1":
+  version "12.1.1"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-core/-/ckeditor5-core-12.1.1.tgz#65828f596fb00225afedb491f46912a58b8bde01"
+  integrity sha512-LuMvqHgBK6GL3LVeLied6Xo7gybma5VDjP637YclLC49PPyLLc7yUrpKpHmQiNg2ERm5Xwz07kh404QMq3RQFA==
   dependencies:
-    "@ckeditor/ckeditor5-engine" "^13.1.0"
-    "@ckeditor/ckeditor5-utils" "^12.1.0"
+    "@ckeditor/ckeditor5-engine" "^13.1.1"
+    "@ckeditor/ckeditor5-utils" "^12.1.1"
     lodash-es "^4.17.10"
 
 "@ckeditor/ckeditor5-dev-utils@^12.0.1":
@@ -632,37 +629,37 @@
     rimraf "^2.6.2"
     webpack-sources "^1.1.0"
 
-"@ckeditor/ckeditor5-engine@^13.1.0":
-  version "13.1.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-13.1.0.tgz#3fee9664234ce39920ea8b18e501378eeb1eec28"
+"@ckeditor/ckeditor5-engine@^13.1.1":
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-13.1.1.tgz#8d194dd6a5c7946f4892be830a52bc26c783fe4b"
+  integrity sha512-Itu7ECpUGFJJg9HGqOOSyu9vGbdBGKcHdWGLf000NOBwK9ZZZzIsZL2xWd/5bhVAo+M/q/b5j7DHGJP6PDRW2g==
   dependencies:
-    "@ckeditor/ckeditor5-utils" "^12.1.0"
+    "@ckeditor/ckeditor5-utils" "^12.1.1"
     lodash-es "^4.17.10"
 
-"@ckeditor/ckeditor5-theme-lark@^13.0.1":
-  version "13.0.1"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-theme-lark/-/ckeditor5-theme-lark-13.0.1.tgz#6505c3f3cad2402c74cd53f202646972a3d7dcec"
+"@ckeditor/ckeditor5-theme-lark@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-theme-lark/-/ckeditor5-theme-lark-14.0.0.tgz#18828dd9dac6969e519fcac739ca00e3efeda1e4"
+  integrity sha512-S/IgvnkjRCxEXG1oSZd3EipJSvR4E88Vgqa0991+GKsv8shwzjNmZhyUPIiBCK4iX9lUv1op5BmFByKRgOCSXw==
   dependencies:
-    "@ckeditor/ckeditor5-ui" "^12.1.0"
+    "@ckeditor/ckeditor5-ui" "^13.0.0"
 
-"@ckeditor/ckeditor5-ui@^12.1.0":
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-ui/-/ckeditor5-ui-12.1.0.tgz#9e594e80009788cc7094d700149ff2dc134f53ba"
+"@ckeditor/ckeditor5-ui@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-ui/-/ckeditor5-ui-13.0.0.tgz#062fb155595f1b93138876ab586817a62e08d948"
+  integrity sha512-rAaNrn84v16+nbXxuimETlz8kGR+mJWa9hqWEndTrGsJIOgdfWnvt2S0a9LZm8ufJN5fgXGh4k2TpJxTSeK/fA==
   dependencies:
-    "@ckeditor/ckeditor5-core" "^12.1.0"
-    "@ckeditor/ckeditor5-utils" "^12.1.0"
+    "@ckeditor/ckeditor5-core" "^12.1.1"
+    "@ckeditor/ckeditor5-utils" "^12.1.1"
     lodash-es "^4.17.10"
 
-"@ckeditor/ckeditor5-utils@^12.1.0":
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-utils/-/ckeditor5-utils-12.1.0.tgz#9becd0849df8322c137ba32440dc11d770482809"
+"@ckeditor/ckeditor5-utils@^12.1.1":
+  version "12.1.1"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-utils/-/ckeditor5-utils-12.1.1.tgz#886a8d8379573658a551520d62ada65ab29a4d67"
+  integrity sha512-69D+3Sx+QTBgKunFZdDp5jcEgo/v6kE+vOgnNtVXaEyjvAXJGppB++WPCYJw3POZxHqMy57PlpyqGG5zGyoYkg==
   dependencies:
-    ckeditor5 "^12.1.0"
+    ckeditor5 "^12.2.0"
     lodash-es "^4.17.10"
-
-"@ckeditor/ckeditor5-vue@^1.0.0-beta.1":
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-vue/-/ckeditor5-vue-1.0.0-beta.2.tgz#9491cf3e4b030847cd329ae3680c52996195d8bf"
 
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"
@@ -1840,9 +1837,10 @@ circular-json@^0.5.5:
   version "0.5.9"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.5.9.tgz#932763ae88f4f7dead7a0d09c8a51a4743a53b1d"
 
-ckeditor5@^12.1.0:
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/ckeditor5/-/ckeditor5-12.1.0.tgz#90727a05927bed1d1be7c96fae4ba91d1b8dfeaa"
+ckeditor5@^12.2.0:
+  version "12.2.0"
+  resolved "https://registry.yarnpkg.com/ckeditor5/-/ckeditor5-12.2.0.tgz#39cbaee904854be2a8324b40348fedc5373368e1"
+  integrity sha512-LPni36zcmeS8VaV3tRdO6etvLrJC6ytP+zRzjUmOoAG+5tiZwb5z8LS4L+HOWqIy9BxA/2H/jkiY67X0ZTTiBw==
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -4553,6 +4551,7 @@ locate-path@^3.0.0:
 lodash-es@^4.17.10:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.11.tgz#145ab4a7ac5c5e52a3531fb4f310255a152b4be0"
+  integrity sha512-DHb1ub+rMjjrxqlB3H56/6MXtm1lSksDp2rA2cNWjG8mlDUYFhUj3Di2Zn5IwSU87xLv8tNIQ7sSwE/YOX/D/Q==
 
 lodash.assign@^4.2.0:
   version "4.2.0"

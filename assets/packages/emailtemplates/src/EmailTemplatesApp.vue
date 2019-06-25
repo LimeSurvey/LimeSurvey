@@ -19,6 +19,7 @@ export default {
         return {
             loading: true,
             event: null,
+            editorInstance: null,
             currentEditor: LsEditor,
             currentEditorOptions : {
                 'lsExtension:fieldtype': 'email_general', 
@@ -75,6 +76,9 @@ export default {
         },
     },
     methods: {
+        onReadySetEditor(editor) {
+            this.editorInstance = editor;
+        },
         applyHotkeys() {
             Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
             Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);
@@ -94,10 +98,16 @@ export default {
         choosePreviousTemplateType(){
             this.$log.log('HOTKEY', 'previousTemplateType');
             this.$store.commit('previousTemplateType');
+            if (this.editorInstance != null) { 
+                this.editorInstance.set('fieldtype', 'email_'+this.currentTemplateType);
+            }
         },
         chooseNextTemplateType(){
             this.$log.log('HOTKEY', 'nextTemplateType');
             this.$store.commit('nextTemplateType');
+            if (this.editorInstance != null) { 
+                this.editorInstance.set('fieldtype', 'email_'+this.currentTemplateType);
+            }
         },
         submitCurrentState(redirect = false) {
             this.toggleLoading();
@@ -156,7 +166,9 @@ ${scriptContent}
         setTemplateType(type) {
             this.applyExternalChange=true;
             this.currentTemplateType=type;
-
+            if (this.editorInstance != null) { 
+                this.editorInstance.set('fieldtype', 'email_'+this.currentTemplateType);
+            }
         }
     },
     created(){
@@ -240,7 +252,7 @@ ${scriptContent}
                                 </div>
                             </div>
                             <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEditorContent)" />
-                            <lsckeditor v-if="!sourceMode && $store.state.permissions.update" :editor="currentEditor" v-model="currentEditorContent" :config="currentEditorOptions" :extra-data="editorExtraOptions"></lsckeditor>
+                            <lsckeditor v-if="!sourceMode && $store.state.permissions.update" :editor="currentEditor" v-model="currentEditorContent" :config="currentEditorOptions" :extra-data="editorExtraOptions" @ready="onReadySetEditor"></lsckeditor>
                             <aceeditor v-if="sourceMode && $store.state.permissions.update" @external-change-applied="applyExternalChange=false" :apply-external-change="applyExternalChange" v-model="currentEditorContent" thisId="currentTemplateTypesSourceEditor" :showLangSelector="false"></aceeditor>
                         </div>
                         <div class="row">

@@ -592,10 +592,6 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@ckeditor/ckeditor5-build-classic@^11.2.0":
-  version "11.2.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-build-classic/-/ckeditor5-build-classic-11.2.0.tgz#205ae1bd5495b2a7c9f5a4fef5241aca4118229a"
-
 "@ckeditor/ckeditor5-core@^12.1.0":
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-core/-/ckeditor5-core-12.1.0.tgz#a6f89583b066efb384f66e2f6c660d0378b786ec"
@@ -659,10 +655,6 @@
   dependencies:
     ckeditor5 "^12.1.0"
     lodash-es "^4.17.10"
-
-"@ckeditor/ckeditor5-vue@^1.0.0-beta.1":
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-vue/-/ckeditor5-vue-1.0.0-beta.2.tgz#9491cf3e4b030847cd329ae3680c52996195d8bf"
 
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"

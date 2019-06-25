@@ -33,6 +33,8 @@ export default class LsReplacementsUI extends Plugin {
             } );
 
             this.listenTo( editor, 'change:fieldtype', (evt, name, value) => {
+                dropdownView.panelView.children.clear();
+                
                 this.getReplacements({fieldtype: value}).then(
                     (resolve) => { this._parseSelectables( resolve, dropdownView); },
                     (reject) => { console.error(reject); }

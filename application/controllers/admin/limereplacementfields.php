@@ -452,7 +452,11 @@ class limereplacementfields extends Survey_Common_Action
         if ($qid != null) {
             $oCriteria->with = ['group'];
             $oCriteria->compare('group.group_order', '<= '.$oCurrentQuestion->group->group_order);
-            $oCriteria->compare('question_order', '< '.$oCurrentQuestion->question_order);
+            if ($oCurrentQuestion->parent_qid != 0) {
+                $oCriteria->compare('question_order', '< '.$oCurrentQuestion->parent->question_order);
+            } else {
+                $oCriteria->compare('question_order', '< '.$oCurrentQuestion->question_order);
+            }
         }
 
         $aQuestions = Question::model()->findAll($oCriteria);
@@ -470,10 +474,6 @@ class limereplacementfields extends Survey_Common_Action
             if ($oCurrentQuestion != null && $oCurrentQuestion->qid == $oQuestion->qid) { 
                 continue; 
             }
-            $aResult[$oQuestion->title] = [
-                'type' => 'question',
-                'value' => $oQuestion->questionL10ns[$oSurvey->language]->question,
-            ];
 
             if (safecount($oQuestion->subquestions) != 0) {
                 $aSubquestions = $oQuestion->subquestions;
@@ -483,9 +483,14 @@ class limereplacementfields extends Survey_Common_Action
                 foreach ($aSubquestions as $oSubQuestion) {
                     $aResult[$oQuestion->title.'_'.$oSubQuestion->title] = [
                         'type' => 'question',
-                        'value' => $oQuestion->title.'-'.$oSubQuestion->questionL10ns[$oSurvey->language]->question
+                        'value' => ' -('.$oQuestion->title.')| '.$oSubQuestion->questionL10ns[$oSurvey->language]->question
                     ];
                 }
+            } else {
+                $aResult[$oQuestion->title] = [
+                    'type' => 'question',
+                    'value' => $oQuestion->questionL10ns[$oSurvey->language]->question,
+                ];
             }
         }
         return $aResult;

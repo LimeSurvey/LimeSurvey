@@ -38,11 +38,12 @@ export default {
 		}
 	},
 	watch: {
+		applyToEditor(newFunction) {
+			newFunction(this.instance);
+		},
 		extraData(newConfig, oldConfig) {
 			LS.ld.forEach(newConfig, (value,key) => {
-				if(oldConfig[key] !== value) {
-					this.instance.set(key,value);
-				}
+				this.instance[key] = value;
 			})
 		}
 	},
@@ -71,7 +72,8 @@ export default {
 				editor.isReadOnly = this.disabled;
 
 				LS.ld.forEach(this.extraData, (value,key) => {
-					this.instance.set(key,value);
+					this.instance.set(key);
+					this.instance[key] = value;
 				});
 
 				this.$_setUpEditorEvents();
