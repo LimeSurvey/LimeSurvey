@@ -20,6 +20,7 @@ module.exports = {
         output: {
             filename: () => {return 'js/'+appName+'.js'}
         },
+        devtool: process.env.NODE_ENV === 'production' ? 'cheap-module-source-map' : 'source-map',
         externals: {
             LS: 'LS',
             jquery: 'jQuery',

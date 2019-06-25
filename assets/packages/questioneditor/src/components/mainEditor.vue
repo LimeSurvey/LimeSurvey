@@ -24,14 +24,24 @@ export default {
             editorQuestionData: '',
             editorQuestionConfig: {
                 'lsExtension:fieldtype': 'editquestion', 
-                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid, qid: window.QuestionEditData.qid, gid: window.QuestionEditData.gid },
+                'lsExtension:ajaxOptions': {
+                    surveyid: this.$store.getters.surveyid, 
+                    qid: window.QuestionEditData.qid, 
+                    gid: window.QuestionEditData.gid,
+                    action: this.$store.state.currentQuestion.qid == null ? 'addquestion' : 'editquestion',
+                },
                 'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
             },
             editorHelp: LsEditor,
             editorHelpData: '',
             editorHelpConfig: {
                 'lsExtension:fieldtype': 'editquestion_help', 
-                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid, qid: window.QuestionEditData.qid, gid: window.QuestionEditData.gid },
+                'lsExtension:ajaxOptions': {
+                    surveyid: this.$store.getters.surveyid, 
+                    qid: window.QuestionEditData.qid, 
+                    gid: window.QuestionEditData.gid,
+                    action: this.$store.state.currentQuestion.qid == null ? 'addquestion' : 'editquestion',
+                },
                 'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
             },
             previewContent: ' ',

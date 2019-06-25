@@ -101,6 +101,7 @@ chromedriver
 # Some global "temporary files" (see
 *~
 *.map
+!/assets/**/*.map
 ehthumbs.db
 Thumbs.db
 

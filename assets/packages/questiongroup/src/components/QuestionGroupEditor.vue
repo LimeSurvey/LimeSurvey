@@ -22,7 +22,8 @@ export default {
             editorDescriptionConfig: {
                 'lsExtension:fieldtype': 'editgroup_desc', 
                 'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid, gid: this.$store.state.currentQuestionGroup.gid },
-                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/',
+                action: this.$store.state.currentQuestionGroup.gid == null ? 'addgroup' : 'editgroup'
             },
             sourceMode: false,
         };

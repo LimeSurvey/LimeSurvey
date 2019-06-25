@@ -7,6 +7,7 @@ const entryPoint = ['./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
 module.exports = {
     outputDir: process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/',
     filenameHashing: false,
+    productionSourceMap: false,
     runtimeCompiler: true,
     // The source of CKEditor is encapsulated in ES6 modules. By default, the code
     // from the node_modules directory is not transpiled, so you must explicitly tell
@@ -18,8 +19,9 @@ module.exports = {
     configureWebpack: {
         entry: entryPoint,
         output: {
-            filename: () => {return 'js/'+appName+'.js'}
+            filename: () => {return 'js/'+appName+'.js'},
         },
+        devtool: process.env.NODE_ENV === 'production' ? 'cheap-module-source-map' : 'source-map',
         externals: {
             LS: 'LS',
             jquery: 'jQuery',

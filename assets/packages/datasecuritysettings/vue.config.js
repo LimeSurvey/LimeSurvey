@@ -25,6 +25,7 @@ module.exports = {
             jquery: 'jQuery',
             pjax: 'Pjax',
         },
+        devtool: process.env.NODE_ENV === 'production' ? 'cheap-module-source-map' : 'source-map',
         plugins: [
             // CKEditor needs its own plugin to be built using webpack.
             new CKEditorWebpackPlugin( {

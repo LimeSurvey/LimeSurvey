@@ -18,8 +18,9 @@ module.exports = {
     configureWebpack: {
         entry: entryPoint,
         output: {
-            filename: () => {return 'js/'+appName+'.js'}
+            filename: () => {return 'js/'+appName+'.js'},
         },
+        devtool: process.env.NODE_ENV === 'production' ? 'cheap-module-source-map' : 'source-map',
         externals: {
             LS: 'LS',
             jquery: 'jQuery',
@@ -59,23 +60,23 @@ module.exports = {
         //
         // * clear all loaders for existing 'svg' rule:
         //
-        //		svgRule.uses.clear();
+        svgRule.uses.clear();
         //
         // * or exclude ckeditor directory from node_modules:
-        svgRule.exclude.add( __dirname + '/node_modules/@ckeditor' );
+        //  svgRule.exclude.add( __dirname + '/node_modules/@ckeditor' );
 
         // Add an entry for *.svg files belonging to CKEditor. You can either:
         //
         // * modify the existing 'svg' rule:
         //
-        //		svgRule.use( 'raw-loader' ).loader( 'raw-loader' );
+        svgRule.use( 'raw-loader' ).loader( 'raw-loader' );
         //
         // * or add a new one:
-        config.module
-            .rule( 'cke-svg' )
-            .test( /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/ )
-            .use( 'raw-loader' )
-            .loader( 'raw-loader' );
+        // config.module
+        //     .rule( 'cke-svg' )
+        //     .test( /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/ )
+        //     .use( 'raw-loader' )
+        //     .loader( 'raw-loader' );
         
         config.plugins
             .delete("html")

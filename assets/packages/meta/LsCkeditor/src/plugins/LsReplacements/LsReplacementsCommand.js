@@ -1,11 +1,11 @@
 import Command from '@ckeditor/ckeditor5-core/src/command';
 
 export default class LsReplacementsCommand extends Command {
-    execute( { value } ) {
+    execute( { name, type } ) {
         const editor = this.editor;
 
         editor.model.change( writer => {
-            const oExpression = writer.createElement('expression', { name: value });
+            const oExpression = writer.createElement('expression', { name, type });
             editor.model.insertContent(oExpression);
             writer.setSelection(oExpression, 'on');
         });

@@ -1,6 +1,6 @@
 <script>
 import Mousetrap from 'mousetrap';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import LsEditor from '../../meta/LsCkeditor/src/LsCkEditor';
 
 import ValidationScreen from './components/ValidationScreen';
 import LanguageSelector from './components/subcomponents/_languageSelector';
@@ -19,7 +19,12 @@ export default {
         return {
             loading: true,
             event: null,
-            currentEditor: ClassicEditor,
+            currentEditor: LsEditor,
+            currentEditorOptions : {
+                'lsExtension:fieldtype': 'email_general', 
+                'lsExtension:ajaxOptions': {surveyid: this.$store.getters.surveyid },
+                'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+            },
             sourceMode: false,
             applyExternalChange: true
         }
@@ -40,6 +45,9 @@ export default {
                 return returner;
             },
             set(newValue) { this.$store.commit('setSubjectForCurrentState', newValue); },
+        },
+        editorExtraOptions() { 
+            return {'fieldtype': 'email_'+this.$store.state.currentTemplateType };
         },
         currentEditorContent: {
             get() { 
@@ -64,7 +72,7 @@ export default {
         possibletemplateTypes(){ return this.$store.state.templateTypes; },
         languageChangerEnabled() {
             return LS.ld.size(this.$store.state.languages) > 1;
-        }
+        },
     },
     methods: {
         applyHotkeys() {
@@ -232,7 +240,7 @@ ${scriptContent}
                                 </div>
                             </div>
                             <div v-if="!$store.state.permissions.update" class="col-12" v-html="stripScripts(currentEditorContent)" />
-                            <ckeditor v-if="!sourceMode && $store.state.permissions.update" :editor="currentEditor" v-model="currentEditorContent" :config="{}"></ckeditor>
+                            <lsckeditor v-if="!sourceMode && $store.state.permissions.update" :editor="currentEditor" v-model="currentEditorContent" :config="currentEditorOptions" :extra-data="editorExtraOptions"></lsckeditor>
                             <aceeditor v-if="sourceMode && $store.state.permissions.update" @external-change-applied="applyExternalChange=false" :apply-external-change="applyExternalChange" v-model="currentEditorContent" thisId="currentTemplateTypesSourceEditor" :showLangSelector="false"></aceeditor>
                         </div>
                         <div class="row">

@@ -29,7 +29,7 @@ export default class LsReplacementsEditing extends Plugin {
             allowWhere: '$text',
             isInline: true,
             isObject: true,
-            allowAttributes: ['name']
+            allowAttributes: ['name', 'type']
         });
     }
 
@@ -42,7 +42,8 @@ export default class LsReplacementsEditing extends Plugin {
             },
             model: ( viewElement, modelWriter ) => {
                 const name = viewElement.getChild( 0 ).data.slice( 1, -1 );
-                return modelWriter.createElement( 'expression', { name } );
+                const type = viewElement.getAttribute('type');
+                return modelWriter.createElement( 'expression', { name, type } );
             }
         });
 
@@ -62,8 +63,8 @@ export default class LsReplacementsEditing extends Plugin {
 
     _createExpressionView( modelItem, viewWriter ) {
         const name = modelItem.getAttribute( 'name' );
-        const expressionView = viewWriter.createContainerElement( 'x-xpr');
-        
+        const type = modelItem.getAttribute( 'type' );
+        const expressionView = viewWriter.createContainerElement( 'x-xpr', { type });
         viewWriter.insert( viewWriter.createPositionAt( expressionView, 0 ), viewWriter.createText('{' + name + '}'));
         return expressionView;
     }

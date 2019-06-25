@@ -24,6 +24,10 @@ export default {
 			type: Object,
 			default: () => ( {} )
 		},
+		extraData: {
+			type: Object,
+			default: () => ( {} )
+		},
 		tagName: {
 			type: String,
 			default: 'div'
@@ -33,7 +37,15 @@ export default {
 			default: false
 		}
 	},
-
+	watch: {
+		extraData(newConfig, oldConfig) {
+			LS.ld.forEach(newConfig, (value,key) => {
+				if(oldConfig[key] !== value) {
+					this.instance.set(key,value);
+				}
+			})
+		}
+	},
 	data() {
 		return {
 			instance: null,
@@ -57,6 +69,10 @@ export default {
 			.then( editor => {
 				this.instance = editor;
 				editor.isReadOnly = this.disabled;
+
+				LS.ld.forEach(this.extraData, (value,key) => {
+					this.instance.set(key,value);
+				});
 
 				this.$_setUpEditorEvents();
 				this.$emit( 'ready', editor );

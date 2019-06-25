@@ -100,9 +100,6 @@ const Lsadminsidepanel = (userid, surveyid) => {
                 });
 
                 $(document).trigger("vue-reload-remote");
-                window.setInterval(function () {
-                    $(document).trigger("vue-reload-remote");
-                }, 60 * 5 * 1000);
             }
         });
     };

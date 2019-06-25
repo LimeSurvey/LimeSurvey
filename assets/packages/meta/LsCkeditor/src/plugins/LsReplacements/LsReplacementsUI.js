@@ -28,20 +28,31 @@ export default class LsReplacementsUI extends Plugin {
 
             // Execute the command when the dropdown item is clicked (executed).
             this.listenTo( dropdownView, 'execute', evt => {
-                editor.execute( 'expression', { value: evt.source.commandParam } );
+                editor.execute( 'expression', { name: evt.source.commandParam, type: evt.source.typeDef } );
                 editor.editing.view.focus();
             } );
+
+            this.listenTo( editor, 'change:fieldtype', (evt, name, value) => {
+                this.getReplacements({fieldtype: value}).then(
+                    (resolve) => { this._parseSelectables( resolve, dropdownView); },
+                    (reject) => { console.error(reject); }
+                );
+            });
 
             return dropdownView;
         } );
     }
+    
+    refresh() {
+        
+    }
 
-    getReplacements() {
+    getReplacements(data = {}) {
         const editor = this.editor;
         return new Promise((resolve,reject) => {
             $.ajax({
                 url: LS.createUrl('admin/limereplacementfields'),
-                data: LS.ld.merge({},{'fieldtype': editor.config.get('lsExtension:fieldtype')}, editor.config.get('lsExtension:ajaxOptions')),
+                data: LS.ld.merge({},{'newtype': 1, 'fieldtype': editor.config.get('lsExtension:fieldtype')}, editor.config.get('lsExtension:ajaxOptions'), data),
                 success: resolve,
                 error: reject
             })
@@ -51,7 +62,7 @@ export default class LsReplacementsUI extends Plugin {
     _parseSelectables(resolve, dropdownView) {
         const itemDefinitions = new Collection();
         
-        LS.ld.forEach( resolve.replacements, (content,grouptitle) => {
+        LS.ld.forEach( resolve, (content,grouptitle) => {
             const separatorDefinition = {
                 type: 'groupseparator',
                 model: new Model({
@@ -60,12 +71,13 @@ export default class LsReplacementsUI extends Plugin {
                 })
             };
             itemDefinitions.add( separatorDefinition );
-            LS.ld.forEach( content, (title,key) => {
+            LS.ld.forEach( content, (contentData,key) => {
                 const definition = {
                     type: 'button',
                     model: new Model( {
                         commandParam: key,
-                        label: title,
+                        typeDef: contentData.type,
+                        label: contentData.value,
                         class: 'lsimageSelect--dropdown-button-inner',
                         withText: true
                     })
