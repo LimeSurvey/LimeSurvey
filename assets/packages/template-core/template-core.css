@@ -191,4 +191,8 @@ only screen and (max-width: 760px),
     .dir-rtl .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-rtl .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-right:0px;}
     .dir-ltr .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-ltr .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-left:0px;}
     .dir-rtl .basicfruityextension table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-rtl .basicfruityextension table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-right:0px;}
+    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-left:0px;}
+    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::before,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::before {margin-right:0px;}
+    .dir-ltr table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-ltr table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-left:0px;}
+    .dir-rtl table.ls-answers .radio-item label.ls-label-xs-visibility::after,.dir-rtl table.ls-answers .checkbox-item label.ls-label-xs-visibility::after {margin-right:0px;}
 }
