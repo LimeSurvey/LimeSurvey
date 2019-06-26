@@ -67,7 +67,7 @@ echo viewHelper::getViewTestTag('viewLabelSets');
 
                     'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
                     'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/labels/sa/view/lid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-                    'ajaxUpdate' => true,
+                    'ajaxUpdate' => 'labelsets-grid',
                    ));
             ?>
         </div>
