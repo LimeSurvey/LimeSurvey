@@ -202,8 +202,8 @@ class RegisterController extends LSYii_Controller
         $aData['active'] = $oSurvey->active;        
         $aData['iSurveyId'] = $iSurveyId;
         $aData['sLanguage'] = App()->language;
-        $aData['sFirstName'] = $oToken->firstname;
-        $aData['sLastName'] = $oToken->lastname;
+        $aData['sFirstName'] = Yii::app()->request->getPost('register_firstname', '');
+        $aData['sLastName'] = Yii::app()->request->getPost('register_lastname', '');
         $aData['sEmail'] = $oToken->email;
         $aData['thissurvey'] = $oSurvey->attributes;
 
