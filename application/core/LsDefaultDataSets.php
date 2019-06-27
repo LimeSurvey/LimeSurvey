@@ -1092,4 +1092,29 @@ class LsDefaultDataSets
 
         );
     }
+
+    static function getBaseLabelSets($language = 'en') {
+        $sOldLanguage = App()->language;
+        Yii::app()->setLanguage($language);
+
+        $returnArray = [
+            'likert-5-point' => [
+                '1' => gT("Strongly disagree"),
+                '2' => gT('Disagree'),
+                '3' => gT('Neither agree nor disagree'),
+                '4' => gT('Agree'),
+                '5' => gT('Strongly agree'),
+            ],
+            'likert-4-point' => [
+                '1' => gT('Strongly disagree'),
+                '2' => gT('Disagree'),
+                '3' => gT('Agree'),
+                '4' => gT('Strongly agree'),
+            ],
+        ];
+
+        Yii::app()->setLanguage($sOldLanguage);
+
+        return $returnArray;
+    }
 }

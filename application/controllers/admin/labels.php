@@ -35,7 +35,7 @@ class labels extends Survey_Common_Action
     public function run($sa = null)
     {
         if ($sa == 'newlabelset' || $sa == 'editlabelset') {
-                    $this->route('index', array('sa', 'lid'));
+            $this->route('index', array('sa', 'lid'));
         }
     }
 
@@ -253,7 +253,7 @@ class labels extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-json');
         // Checks if user have the sufficient rights to manage the labels
         // Get a result containing labelset with the specified id
-        $model = LabelSet::model()->findByAttributes(array('lid' => $lid));
+        $model = LabelSet::model()->findByPk($lid);
         // If there is label id in the variable $lid and there are labelset records in the database
         $labelset_exists = $model !== null;
         
@@ -270,13 +270,16 @@ class labels extends Survey_Common_Action
 
             $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
-            $maxSortOrder = array_reduce($model->labels, function($mixed, $item)
-            {
-                if (((int) $item->sortorder) > $mixed) {
-                    $mixed = (int) $item->sortorder;
-                }
-                return $mixed;
-            },0);
+            $maxSortOrder = array_reduce(
+                $model->labels, 
+                function ($mixed, $item) {
+                    if (((int) $item->sortorder) > $mixed) {
+                        $mixed = (int) $item->sortorder;
+                    }
+                    return $mixed;
+                },
+                0
+            );
 
 
             Yii::app()->loadHelper("surveytranslator");
@@ -332,6 +335,7 @@ class labels extends Survey_Common_Action
             Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
+
         $action = returnGlobal('action');
         Yii::app()->loadHelper('admin/label');
         $lid = (int) returnGlobal('lid');
@@ -341,7 +345,8 @@ class labels extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("Label set properties sucessfully updated."), 'success');
         }
         if ($action == "insertlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'create')) {
-                    $lid = insertlabelset();
+                    $oLabelSet = insertlabelset();
+                    $lid = $oLabelSet->lid;
         }
         if (($action == "modlabelsetanswers" || ($action == "ajaxmodlabelsetanswers")) && Permission::model()->hasGlobalPermission('labelsets', 'update')) {
                     modlabelsetanswers($lid);
@@ -352,10 +357,26 @@ class labels extends Survey_Common_Action
                 $lid = 0;
             }
         }
+
         if ($lid) {
-                    $this->getController()->redirect(array("admin/labels/sa/view/lid/".$lid));
+                    $this->getController()->redirect(array("admin/labels/sa/multieditor/lid/".$lid));
         } else {
                     $this->getController()->redirect(array("admin/labels/sa/view"));
+        }
+    }
+
+    public function saveNewLabelSet() {
+        $label_name   = Yii::app()->request->getPost('label_name');
+        $languageids  = Yii::app()->request->getPost('languageids');
+        $oLabelSet = new LabelSet();
+        $oLabelSet->label_name = $label_name;
+        $oLabelSet->languages = implode(' ', $languageids);
+        if ($oLabelSet->save()) {
+            Yii::app()->setFlashMessage(gT("Label set sucessfully created."), 'success');
+            $this->getController()->redirect(array("admin/labels/sa/multieditor/lid/".$oLabelSet->lid));
+        } else { 
+            Yii::app()->setFlashMessage(gT("Label could not be created."), 'error');
+            $this->getController()->redirect(array("admin/labels/sa/view"));
         }
     }
 
@@ -464,6 +485,120 @@ class labels extends Survey_Common_Action
         }
         echo ls_json_encode($res);
     }
+
+    public function ajxGetLabelSet($lid=null) {
+        $oLabelSetObject = LabelSet::model()->findByPk($lid);
+        if ($oLabelSetObject == null) {
+            $oLabelSetObject = new LabelSet();
+        }
+        
+        $aLanguages = explode(" ", $oLabelSetObject->languages);
+        $sMainLanguage = $aLanguages[0];
+        $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
+        $aLanguageArray = [];
+        array_walk(
+            $aLanguages,
+            function ($sLanguage) use (&$aLanguageArray, $aAllLanguages) {
+                $aLanguageArray[$sLanguage] =  $aAllLanguages[$sLanguage]['description'];
+            }
+        );
+
+        $aLabels = $oLabelSetObject->labels;
+        $aLabelCompleteArray = [];
+        array_walk(
+            $aLabels, 
+            function ($oLabel) use (&$aLabelCompleteArray) {
+                $aLabelCompleteArray[] = array_merge($oLabel->attributes, $oLabel->labelL10ns);
+            }
+        );
+
+        $aData['languages'] = $aLanguageArray;
+        $aData['mainLanguage'] = $sMainLanguage;
+        $aData['labels'] = $aLabelCompleteArray;
+
+        Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData]);
+    }
+    
+    public function ajxSetLabelSet($lid) {
+        $oLabelSetObject = LabelSet::model()->findByPk($lid);
+        $aLabelSetData = Yii::app()->request->getPost('labelSetData', []);
+        $aLanguages = $oLabelSetObject->languageArray;
+        $aLabels = $aLabelSetData['labels'];
+        $result = true;
+        
+        foreach ($aLabels as $aLabel) {
+            $oLabel = $this->_getLabelObject($aLabel['id']);
+            $oLabel->lid = $aLabel['lid'];
+            $oLabel->code = $aLabel['code'];
+            $oLabel->sortorder = $aLabel['sortorder'];
+            $oLabel->assessment_value = $aLabel['assessment_value'];
+            $result = $result && $oLabel->save();
+            
+            foreach ($aLanguages as $sLanguage) {
+                $oLabelI10N = $this->_getLabelI10NObject($oLabel->id, $sLanguage);
+                $oLabelI10N->title = $aLabel[$sLanguage]['title'] == '' ? $aLabel[$aLanguages[0]]['title'] : $aLabel[$sLanguage]['title'];
+                $result = $result && $oLabelI10N->save();
+            }
+        }
+        
+        Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson', ['data' => [
+                'success' => $result ,
+                'message' => $result ? gT('Successfully stored labelset') : gT("Labelset couldn't be stored")
+            ]]
+        );
+            
+    }
+    
+    public function multieditor($lid = null) {
+
+        $aData = [];
+
+        $aData['labelbar'] = [
+            'savebutton' => [
+                'form' => 'mainform',
+                'text' => gT("Save changes")
+            ],
+            'closebutton' => ['url' => Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'))],
+            'buttons' => [
+                'edition' => false,
+            ],
+        ];
+
+        if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
+            unset($aData['labelbar']['buttons']['edition']);
+        }
+
+        $aData['jsVariables'] = [
+            'lid' => $lid,
+            'getDataUrl' => Yii::app()->createUrl('/admin/labels/sa/ajxGetLabelSet', ['lid' => $lid]),
+            'setDataUrl' => Yii::app()->createUrl('/admin/labels/sa/ajxSetLabelSet', ['lid' => $lid]),
+            'i10N' => [
+                'Language' => gT('Language'),
+                'Answer options' => gT('Answer options'),
+                'Subquestions' => gT('Subquestions'),
+            ]
+        ];
+        Yii::app()->getClientScript()->registerPackage('labelsets');
+        $this->_renderWrappedTemplate('labels', 'labelSetEditor', $aData);
+    }
+
+
+    private function _getLabelI10NObject($labelId, $language) {
+        $oLabelL10n = LabelL10n::model()->findByAttributes(['label_id' => $labelId, 'language' => $language]);
+        if ($oLabelL10n == null) {
+            $oLabelL10n = new LabelL10n();
+            $oLabelL10n->label_id = $labelId;
+            $oLabelL10n->language = $language;
+        }
+        return $oLabelL10n;
+    }
+
+    private function _getLabelObject($labelId) {
+        $oLabel = Label::model()->findByPk($labelId);
+        return $oLabel == null ? (new Label()) : $oLabel;
+    }
+
 
     /**
      * Renders template(s) wrapped in header and footer

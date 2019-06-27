@@ -1,4 +1,3 @@
-
 # Never include config.php
 /application/config/config.php
 /application/config/config.*.php
@@ -126,7 +125,8 @@ third_party/symfony/**/*
 third_party/composer/installed\.json
 
 
-## ignore Vagrantfile
+## ignore Vagrantfile and Adminer
+adminer.php
 Vagrantfile
 
 ## Exclude uploaded images in themes
@@ -141,3 +141,4 @@ themes/survey/no_bootstrap/files/*
 !themes/survey/*/files/logo_w_s.png
 !themes/survey/*/files/pattern.png
 !themes/survey/*/files/print_img_radio.png
+adminer.php

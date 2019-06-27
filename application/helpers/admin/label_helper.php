@@ -163,20 +163,20 @@ function modlabelsetanswers($lid)
                 $oLabel->sortorder = $sortorder;
                 $oLabel->assessment_value = $assessmentvalue;
                 
-                if ($oLabel->validate()) {
-                    $oLabel->save();
-                } else {
+                if (!$oLabel->validate()) {
                     $aErrors[] = $oLabel->getErrors();
-                }
-                $oLabelI10N = new LabelL10n();
-                $oLabelI10N->label_id = $oLabel->id;
-                $oLabelI10N->title = $title;
-                $oLabelI10N->language = $lang;
-
-                if ($oLabelI10N->validate()) {
-                    $oLabelI10N->save();
                 } else {
-                    $aErrors[] = $oLabelI10N->getErrors();
+                    $oLabel->save();
+                    $oLabelI10N = new LabelL10n();
+                    $oLabelI10N->label_id = $oLabel->id;
+                    $oLabelI10N->title = $title;
+                    $oLabelI10N->language = $lang;
+    
+                    if ($oLabelI10N->validate()) {
+                        $oLabelI10N->save();
+                    } else {
+                        $aErrors[] = $oLabelI10N->getErrors();
+                    }
                 }
             }
         }

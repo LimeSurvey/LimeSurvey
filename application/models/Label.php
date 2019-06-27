@@ -81,11 +81,6 @@ class Label extends LSActiveRecord
             'labelL10ns' => array(self::HAS_MANY, 'LabelL10n', 'label_id')
         );
     }
-    
-    public function defaultScope()
-    {
-        return array('index'=>'id');
-    }    
 
     public function getTranslated($sLanguage) {
         $ol10N = $this->labelL10ns;
