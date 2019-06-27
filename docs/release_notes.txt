@@ -35,13 +35,46 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 3.17.6 (build 190624) to 3.17.7 (build 190627) June 27, 2019
+-Fixed issue #14187: In IE, for an Array question the radio buttons disappear when resizing the page to the point the answers start to stack (Dominik Vitt)
+-Fixed issue #14604: Fixed invalid ajaxUpdate setting "true" causing issues for other scripts (Patrick Teichmann)
+-Fixed issue #14928: No CPDB grid refresh after adding a new entry (Patrick Teichmann)
+-Fixed issue #15003: Panel integration not displayed in French (Denis Chenu)
+-Fixed issue #15004: Show correct id attribute for additional attributes (Stefan Verweij)
+-Fixed issue: ComfortUpdate download counts incorrect (Carsten Schmitz)
+#Updated translation: Arabic by malbariqi, Muhammad_Hosny, RayhaneK
+#Updated translation: Croatian by dominikvitt
+#Updated translation: Czech by jelen1
+#Updated translation: Czech (Informal) by jelen1
+#Updated translation: Danish by Mikkel
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by b00z00, DenisChenu, JMI
+#Updated translation: German by c_schmitz, Basil, Mazi, Joffm, timeco
+#Updated translation: German (Informal) by Joffm
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Latvian by vipgroup
+#Updated translation: Norwegian (Bokmål¥l) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by edgard, holch
+#Updated translation: Portuguese (Portugal) by joseluisfaria
+#Updated translation: Romanian by cdorin
+#Updated translation: Slovenian by andrej.lindic
+#Updated translation: Spanish (Mexican) by oleggorfinkel, aesteban
+#Updated translation: Spanish (Spain) by oleggorfinkel, aesteban
+#Updated translation: Tajik by Iskandar_r
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 3.17.5 (build 190604) to 3.17.6 (build 190624) June 24, 2019
 -Fixed issue [security]: Unauthorized admin can create new user using Authdb plugin (Dominik Vitt)
 -Fixed issue #14337: Comparaison String and Numeric is different in same page and other page (Denis Chenu)
--Fixed issue #14541 (Marcel Minke)
 -Fixed issue #14742: Questions with Expresion Manager code are not shown properly at Quota overview (Denis Chenu)
 -Fixed issue #14779: Opening and ending tag issue on token edit form (Dominik Vitt)
--Fixed issue #14881: 'show pop-ups' 'Off'-setting not working anymore (Dominik Vitt)
+-Fixed issue #14881: 'Show pop-ups' 'Off'-setting not working anymore (Dominik Vitt)
 -Fixed issue #14898: Prevent SID of -1 during import (Denis Chenu)
 -Fixed issue #14936: Preview group : relevance on question broken (#1298) (Denis Chenu)
 -Fixed issue #14951: Loss of data when loading a non finished survey (Dominik Vitt)
@@ -49,11 +82,11 @@ Changes from 3.17.5 (build 190604) to 3.17.6 (build 190624) June 24, 2019
 -Fixed issue #14962: Checkbox radio Y scale don't shown in little screen (partial) (Denis Chenu)
 -Fixed issue #14966: Array checkbox : all EM usage in same page is broken (Denis Chenu)
 -Fixed issue #14967: Validation code uneditable (Denis Chenu)
--Fixed issue #14969: missing noanswer-item class for 5 point choice array (Denis Chenu)
+-Fixed issue #14969: Missing noanswer-item class for 5 point choice array (Denis Chenu)
 -Fixed issue #14987: Preview question not working (Denis Chenu)
 -Fixed issue #14998: Usage of self.NAOK insique all question part are broken (Denis Chenu)
 -Fixed issue: HTML tables have a missing cell in statistics (Markus Flür)
--Fixed issue : missing noanswer-item class for array by column (Denis Chenu)
+-Fixed issue: missing noanswer-item class for array by column (Denis Chenu)
 
 
 Changes from 3.17.4 (build 190529) to 3.17.5 (build 190604) June 4, 2019
