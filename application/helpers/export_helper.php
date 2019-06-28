@@ -247,7 +247,7 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = fal
 */
 function SPSSGetValues($field = array(), $qidattributes = null, $language)
 {
-    $language = sanitize_paranoid_string($language);
+    $language = sanitize_languagecode($language);
 
     $length_vallabel = 120; // Constant ?
     if (!isset($field['LStype']) || empty($field['LStype'])) {
@@ -1143,7 +1143,7 @@ function quexml_create_multi(&$question, $qid, $varname, $iResponseID, $fieldmap
     global $iSurveyID;
     App()->setLanguage($quexmllang);
 
-    $quexmllang = sanitize_paranoid_string($quexmllang);
+    $quexmllang = sanitize_languagecode($quexmllang);
     $scale_id   = sanitize_paranoid_string($scale_id);
 
     $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid  AND language='$quexmllang' ";
@@ -1268,7 +1268,7 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
     global $quexmllang;
     global $iSurveyID;
 
-    $quexmllang = sanitize_paranoid_string($quexmllang);
+    $quexmllang = sanitize_languagecode($quexmllang);
     $qid        = sanitize_paranoid_string($qid);
     if ($use_answers) {
         $Query = "SELECT qid, answer as question, code as title, sortorder as aid FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
