@@ -190,7 +190,7 @@ class UploaderController extends SurveyController
                     }
                 }
             }
-            if(!$disableCheck && $extByMimeType === false) {
+            if(!$disableCheck && empty($extByMimeType)) {
                 // FileInfo is OK, but can not find the mime type of file …
                 $realMimeType = CFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
                 $return = array(
