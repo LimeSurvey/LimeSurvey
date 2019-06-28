@@ -73,7 +73,7 @@ export default {
                 <div class="ls-flex-item text-left">
                     {{'Question list'|translate}}
                 </div>
-                <div class="ls-flex-item text-right">
+                <div class="ls-flex-item text-right" v-if="$store.state.currentQuestionGroup.gid != null">
                     <a :href="createQuestionUrl" class="btn btn-sm btn-default pull-right clear pjax" >
                         <i class="fa fa-plus"></i>
                         {{'Create question'|translate}}

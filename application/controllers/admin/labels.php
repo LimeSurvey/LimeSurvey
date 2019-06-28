@@ -518,7 +518,7 @@ class labels extends Survey_Common_Action
 
         Yii::app()->getController()->renderPartial('/admin/super/_renderJson', ['data' => $aData]);
     }
-    
+
     public function ajxSetLabelSet($lid) {
         $oLabelSetObject = LabelSet::model()->findByPk($lid);
         $aLabelSetData = Yii::app()->request->getPost('labelSetData', []);
@@ -583,6 +583,43 @@ class labels extends Survey_Common_Action
         $this->_renderWrappedTemplate('labels', 'labelSetEditor', $aData);
     }
 
+    public function getLabelSetsForQuestion() {
+        $languages = Yii::app()->request->getParam('languages', null);
+        $oCriteria = new CDbCriteria();
+        if ($languages != null) {
+            array_walk(
+                $languages,
+                function ($lng) use (&$oCriteria) {
+                    $oCriteria->compare('languages', $lng, true, 'OR');
+                }
+            );
+        }
+        $aLabelSets = LabelSet::model()->findAll($oCriteria);
+
+        $returnArray = [];
+        foreach ($aLabelSets as $oLabelSet) {
+            $aLabelSet = $oLabelSet->attributes;
+            $aLabelSet['labels'] = array_map(
+                function ($oLabel) {
+                    return array_merge($oLabel->attributes, $oLabel->labelL10ns);
+                },
+                $oLabelSet->labels
+            );
+            $returnArray[] = $aLabelSet;
+        }
+        
+        Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson', ['data' => $returnArray]
+        );
+        die();
+    }
+
+    public function newLabelSetFromQuestionEditor() {
+        $aLabelSet = Yii::app()->getPost('labelSet', []);
+        $oLabelSet = new LabelSet();
+        $aLabels = $aLabelSet['label'];
+         
+    }
 
     private function _getLabelI10NObject($labelId, $language) {
         $oLabelL10n = LabelL10n::model()->findByAttributes(['label_id' => $labelId, 'language' => $language]);

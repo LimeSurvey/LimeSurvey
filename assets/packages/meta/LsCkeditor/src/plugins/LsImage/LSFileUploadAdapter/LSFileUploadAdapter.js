@@ -10,12 +10,15 @@ export default class LSFileUploadAdapter {
         return this.loader.file
             .then(file => new Promise((resolve, reject) => {
                 const formData = new FormData();
-                const ajaxOptions = this.editor.config.get('lsReplacement:ajaxOptions');
+                const ajaxOptions = LS.ld.merge(
+                    LS.data.csrfTokenData, 
+                    ajaxOptions,
+                    {"folder": this.editor.config.get('lsExtension:currentFolder')}
+                );
 
                 formData.append("file", file, file.name);
-                formData.append("folder", this.editor.config.get('lsExtension:currentFolder'));
                 LS.ld.forEach(ajaxOptions, (option, key) => {
-                    formData.append(option, key);
+                    formData.append(key,option);
                 });
 
                 $.ajax({

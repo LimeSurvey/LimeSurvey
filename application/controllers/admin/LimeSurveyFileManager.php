@@ -356,14 +356,18 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $directoryArray = array();
 
         $realPath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$folderPath;
-        $files = scandir(realpath($realPath));
+        if (empty($realPath) || !is_dir($realPath)) {
+            return $directoryArray;
+        }
+        
+        $files = scandir($realPath);
 
         foreach($files as $file) {
             if ($file == '.' || $file == '..') { continue; }
 
             $fileRelativePath = $folderPath.DIRECTORY_SEPARATOR.$file;
             $fileRealpath = dirname(Yii::app()->basePath).DIRECTORY_SEPARATOR.$fileRelativePath;
-            $fileIsDirectoy = is_dir($fileRealpath);
+            $fileIsDirectoy = @is_dir($fileRealpath);
             
             if ($fileIsDirectoy) {
                continue;

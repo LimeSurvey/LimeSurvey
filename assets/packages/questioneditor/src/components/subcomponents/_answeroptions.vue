@@ -102,12 +102,9 @@ export default {
             <div class="row" v-show="!readonly">
                 <div class="col-sm-8">
                     <button class="btn btn-default col-3" @click.prevent="openQuickAdd">{{ "Quick add" | translate }}</button>
-                    <span class="scoped-spacer col-1" />
-                    <button class="btn btn-default" @click.prevent="openLabelSets">{{ "Predefined label sets" | translate }}</button>
-                    <button class="btn btn-default" @click.prevent="saveAsLabelSet">{{ "Save as label set" | translate }}</button>
                 </div>
                 <div class="col-sm-4 text-right">
-                    <button class="btn btn-danger col-5" @click.prevent="resetansweroptions">{{ "Reset" | translate }}</button>
+                    <button class="btn btn-danger col-5" @click.prevent="resetansweroptions(answeroptionscale)">{{ "Reset" | translate }}</button>
                 </div>
             </div>
             <div class="row">
@@ -188,7 +185,11 @@ export default {
                     </div>
                 </div>
                 <div class="row" :key="answeroptionscale+'addRow'" v-show="!readonly">
-                    <div class="col-sm-12 text-right">
+                    <div class="col-sm-6 text-left">
+                        <button class="btn btn-default" @click.prevent="openLabelSets(answeroptionscale)">{{ "Predefined label sets" | translate }}</button>
+                        <button class="btn btn-default" @click.prevent="saveAsLabelSet(answeroptionscale)">{{ "Save as label set" | translate }}</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
                         <button @click.prevent="addDataSet(answeroptionscale)" class="btn btn-primary">
                             <i class="fa fa-plus"></i>
                             {{ "Add answeroption" | translate}}

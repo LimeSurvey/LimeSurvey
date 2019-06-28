@@ -177,5 +177,16 @@ export default {
                     reject
                 )
         });
+    },
+    saveAsLabelSet: (context, payload) => {
+        let transferObject = merge({'labelSet': payload}, window.LS.data.csrfTokenData);
+        LOG.log('OBJECT TO BE TRANSFERRED: ', {'transferData ': transferObject});
+        return new Promise((resolve, reject) => {
+            ajax.methods.$_post(LS.createUrl('admin/labels/sa/newLabelSetFromQuestionEditor'), transferObject)
+            .then(
+                (result) => {resolve(result);},
+                reject
+            );
+        });
     }
 };

@@ -50,7 +50,9 @@ export default {
         },
         addDataSet() {
             let tmpArray = merge([], this.currentDataSet);
-            tmpArray.push(this.getTemplate());
+            const newLabel = this.getTemplate()
+            newLabel.sortorder = this.currentDataSet.length;
+            tmpArray.push(newLabel);
             this.currentDataSet = tmpArray;
         },
         openLabelSets() {},

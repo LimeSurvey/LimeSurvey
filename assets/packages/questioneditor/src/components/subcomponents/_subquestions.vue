@@ -143,13 +143,10 @@ export default {
         <div class="container-fluid scoped-main-subquestions-container">
             <div class="row" v-show="!readonly">
                 <div class="col-sm-8">
-                    <button class="btn btn-default col-3" @click.prevent="openQuickAdd">{{ "Quick add" | translate }}</button>
-                    <span class="scoped-spacer col-1" />
-                    <button class="btn btn-default" @click.prevent="openLabelSets">{{ "Predefined label sets" | translate }}</button>
-                    <button class="btn btn-default" @click.prevent="saveAsLabelSet">{{ "Save as label set" | translate }}</button>
+                    <button class="btn btn-default col-3" @click.prevent="openQuickAdd(subquestionscale)">{{ "Quick add" | translate }}</button>
                 </div>
                 <div class="col-sm-4 text-right">
-                    <button class="btn btn-danger col-5" @click.prevent="resetSubquestions">{{ "Reset" | translate }}</button>
+                    <button class="btn btn-danger col-5" @click.prevent="resetSubquestions(subquestionscale)">{{ "Reset" | translate }}</button>
                 </div>
             </div>
             <div class="row">
@@ -242,9 +239,13 @@ export default {
 
                     </div>
                 </div>
-                <div class="row" :key="subquestionscale+'addRow'" v-show="!readonly" v-if="!surveyActive">
-                    <div class="col-sm-12 text-right">
-                        <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary">
+                <div class="row" :key="subquestionscale+'metaSettings'" v-show="!readonly">
+                    <div class="col-sm-6 text-left">
+                        <button class="btn btn-default" @click.prevent="openLabelSets(subquestionscale)">{{ "Predefined label sets" | translate }}</button>
+                        <button class="btn btn-default" @click.prevent="saveAsLabelSet(subquestionscale)">{{ "Save as label set" | translate }}</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary" v-if="!surveyActive">
                             <i class="fa fa-plus"></i>
                             {{ "Add subquestion" | translate}}
                         </button>
