@@ -160,7 +160,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
                     ->where('parent_qid = :qid and scale_id=:scaleid', [':qid'=>$chkrow['qid'], ':scaleid'=>$i]);
                 $chacount = $chaquery->queryScalar();
                 if ($chacount == 0) {
-                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing subquestions."), $chkrow->gid);
+                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing subquestions."), $chkrow['gid']);
                 }
             }
         }
@@ -172,7 +172,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
                     ->where('qid = :qid and scale_id=:scaleid', [':qid'=>$chkrow['qid'], ':scaleid'=>$i]);
                 $chacount = $chaquery->queryScalar();
                 if ($chacount == 0) {
-                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing answer options."), $chkrow->gid);
+                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing answer options."), $chkrow['gid']);
                 }
             }
         }
@@ -187,7 +187,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
         ->where("sid=:sid AND type = ''", [':sid'=>$iSurveyID]);
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow->gid);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow['gid']);
     }
 
 
@@ -202,7 +202,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
         ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow->gid);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);
     } // while
 
     //CHECK THAT DUAL Array has answers set
@@ -216,7 +216,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow->gid);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow['gid']);
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
