@@ -1,4 +1,5 @@
 <script>
+import empty from 'lodash/isEmpty'
 import filter from 'lodash/filter'
 export default {
     name: 'lsautocomplete',
@@ -10,21 +11,19 @@ export default {
         matchType: {type: String, default: 'fuzzy'},
         itemClass: {type: String, default: ''},
         inputClass:  {type: String, default: ''},
-        value: {default: null}
+        value: {default: null},
     },
     data(){
         return {
             input: '',
-            forceClosed: false,
+            showDropdown: false,
             selectedIndex: 0,
         }
     },
     computed: {
-        showDropdown() {
-            return this.input != '';
-        },
         filteredList() {
             return filter(this.dataList, (listItem) => {
+                if(empty(this.input)) { return true; }
                 return this.searchableKeys.reduce((coll, key) => {
                     if(listItem[key] == undefined) { return coll; }
                     return (coll || this.match(listItem[key]));
@@ -37,7 +36,7 @@ export default {
     },
     methods: {
         processKeyPress($event) {
-            this.forceClosed=false;
+            this.showDropdown=true;
             if($event.key.toLowerCase() == 'arrowdown') {
                 if(this.selectedIndex < this.filteredList.length) {
                     this.selectedIndex = this.selectedIndex+1
@@ -57,7 +56,7 @@ export default {
             const result = this.valueKey===false ? item : item[this.valueKey];
             this.input = item[this.showKey];
             this.$emit('input', result);
-            this.forceClosed=true;
+            this.showDropdown=false;
         },
         match(comparable) {
             this.$log.log(`Matching ${comparable} to ${this.input} with ${this.matchType}-Method`);
@@ -94,8 +93,8 @@ export default {
 
 <template>
     <div class="scoped-autocomplete-input-container" :class="itemClass">
-        <input type="text" class="form-control" :class="inputClass" v-model="input" @keydown="processKeyPress"/>
-        <ul class="scoped-autocomplete-list" v-show="showDropdown && !forceClosed" :style="{height: currentItemsHeight}">
+        <input type="text" class="form-control" :class="inputClass" v-model="input" @keydown="processKeyPress" @focus="showDropdown=true"/>
+        <ul class="scoped-autocomplete-list" v-show="showDropdown" :style="{height: currentItemsHeight}">
             <li 
                 v-for="(item,i) in filteredList" 
                 :key="'autocomplete-'+i"
