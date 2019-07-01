@@ -426,6 +426,151 @@ function LEMlog()
     }
 }
 
+/**
+ * max like php in LimeSurvey, start by https://github.com/kvz/locutus/blob/master/src/php/math/max.js
+ * @see https://bugs.limesurvey.org/view.php?id=14337
+ * Review for ExpressionManager
+ **/
+function LEMmax () {
+  // original at: http://locutus.io/php/max/
+  // original by: Onno Marsman (https://twitter.com/onnomarsman)
+  //  revised by: Denis Chenu for LimeSurvey specific
+  //      note 1: Long code cause we're aiming for maximum PHP compatibility
+  //   example 1: max(1, 3, 5, 6, 7,'')
+  //   returns 1: 7
+  //   example 2: max(1, 'hello','')
+  //   returns 2: 'hello'
+  //   example 3: max('hello', 1,'')
+  //   returns 3: 'hello'
+  //   example 4: max('2hello', 1,'')
+  //   returns 4: '2hello'
+  //   example 5: max('1hello', 2,'')
+  //   returns 5: 2
+  //   example 6: max(-1, -2,'')
+  //   returns 6: -1
+
+  var ar
+  var retVal
+  var i = 0
+  var n = 0
+  var argv = arguments
+  var argc = argv.length
+
+  var _compare = function (current, next) {
+    if(next === '') {
+      return -1;
+    }
+    if(current === '') {
+      return 1;
+    }
+    if (current === next) {
+      return 0
+    }
+    if (isNaN(next) && !isNaN(current)) {
+      return (next.toString() > current.toString() ? 1 : -1)
+    }
+    if (isNaN(current) && !isNaN(next)) {
+      return (next.toString() > current.toString() ? 1 : -1)
+    }
+
+    if (next === current) {
+      return 0
+    }
+
+    return (next > current ? 1 : -1)
+  }
+
+  if (argc === 0) {
+    return '';
+  } else if (argc === 1) {
+    return argv[0];
+  } else {
+    ar = argv
+  }
+
+  retVal = ar[0]
+  for (i = 1, n = ar.length; i < n; ++i) {
+    if (_compare(retVal, ar[i]) === 1) {
+      retVal = ar[i]
+    }
+  }
+
+  return retVal
+}
+/**
+ * min like php in LimeSurvey : https://github.com/kvz/locutus/blob/master/src/php/math/min.js
+ * @see https://bugs.limesurvey.org/view.php?id=14337
+ * Review for ExpressionManager 
+ **/
+function LEMmin () {
+  // original at: http://locutus.io/php/max/
+  // original by: Onno Marsman (https://twitter.com/onnomarsman)
+  //  revised by: Denis Chenu for LimeSurvey specific
+  //      note 1: Long code cause we're aiming for maximum PHP compatibility
+  //   example 1: min(1, 3, 5, 6, 7)
+  //   returns 1: 1
+  //   example 2: max(1, 'hello')
+  //   returns 2: 1
+  //   example 3: max('hello', 1)
+  //   returns 3: 1
+  //   example 4: max('2hello', 1)
+  //   returns 4: 1
+  //   example 5: max('1hello', 2)
+  //   returns 5: '1hello'
+  //   example 6: min(-1, -2)
+  //   returns 6: -2
+  //   example 7: min(-1, '')
+  //   returns 7: ''
+
+  var ar
+  var retVal
+  var i = 0
+  var n = 0
+  var argv = arguments
+  var argc = argv.length
+
+  var _compare = function (current, next) {
+    if(next === '') {
+      return -1;
+    }
+    if(current === '') {
+      return 1;
+    }
+    if (current === next) {
+      return 0;
+    }
+    if (isNaN(next) && !isNaN(current)) {
+      return 1;
+    }
+    if (isNaN(current) && !isNaN(next)) {
+      return -1
+    }
+
+    if (next === current) {
+      return 0
+    }
+    return (next > current ? 1 : -1)
+  }
+
+  if (argc === 0) {
+    return '';
+  } else if (argc === 1) {
+    return argv[0];
+  } else {
+    ar = argv
+  }
+
+  retVal = ar[0]
+
+  for (i = 1, n = ar.length; i < n; ++i) {
+    if (_compare(retVal, ar[i]) === -1) {
+      retVal = ar[i]
+    }
+  }
+
+  return retVal
+}
+
  /**
  * Returns concatenates list
  */
