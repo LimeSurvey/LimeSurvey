@@ -473,21 +473,17 @@ function LEMmax () {
       return (next.toString() > current.toString() ? 1 : -1)
     }
 
-    if (next === current) {
-      return 0
-    }
-
     return (next > current ? 1 : -1)
   }
 
   if (argc === 0) {
     return '';
-  } else if (argc === 1) {
+  }
+  if (argc === 1) {
     return argv[0];
-  } else {
-    ar = argv
   }
 
+  ar = argv
   retVal = ar[0]
   for (i = 1, n = ar.length; i < n; ++i) {
     if (_compare(retVal, ar[i]) === 1) {
@@ -546,20 +542,17 @@ function LEMmin () {
       return -1
     }
 
-    if (next === current) {
-      return 0
-    }
     return (next > current ? 1 : -1)
   }
 
   if (argc === 0) {
     return '';
-  } else if (argc === 1) {
+  }
+  if (argc === 1) {
     return argv[0];
-  } else {
-    ar = argv
   }
 
+  ar = argv
   retVal = ar[0]
 
   for (i = 1, n = ar.length; i < n; ++i) {
