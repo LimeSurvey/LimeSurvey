@@ -10,8 +10,8 @@
                 <input id="AnonUser_times" name="times" class="form-control" type="number" value="1">
             </div>
             <div class="row ls-space margin top-5">
-                <label for="AnonUser_times"><?=gT('The size of the randomly generated password (min. 8)')?></label>
-                <input id="AnonUser_times" name="times" class="form-control" type="number" min="8" value="8">
+                <label for="AnonUser_passwordsize"><?=gT('The size of the randomly generated password (min. 8)')?></label>
+                <input id="AnonUser_passwordsize" name="passwordsize" class="form-control" type="number" min="8" value="8">
             </div>
             <div class="row ls-space margin top-5">
                 <label for="AnonUser_prefix"><?=gT("Prefix for the users (a random value will be appended)")?></label>
