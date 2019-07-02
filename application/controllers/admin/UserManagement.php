@@ -143,13 +143,14 @@ class UserManagement extends Survey_Common_Action
         if (!isset($aUser['uid']) ||  $aUser['uid']== null) {
             $sendMail = (bool) Yii::app()->request->getPost('preset_password', false);
             $aUser =  $this->_createNewUser($aUser);
-            
+            $sReturnMessage = '';
+            $success = true;
+
             if ($sendMail && (isset($newUser['sendMail']) && $newUser['sendMail'] == true)) {
                 if ($this->_sendAdminMail('registration', $aUser)) {
                     $sReturnMessage = gT("Success");
                     $sReturnMessage .= CHtml::tag("p", array(), sprintf(gT("Username : %s - Email : %s."), $aUser['users_name'], $aUser['email']));
                     $sReturnMessage .= CHtml::tag("p", array(), gT("An email with a generated password was sent to the user."));
-                    $success = true;
                 } else {
                     // has to be sent again or no other way
                     $sReturnMessage = gT("Warning");
@@ -166,6 +167,7 @@ class UserManagement extends Survey_Common_Action
                 'success' => $success,
                 'html' => Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => $sReturnMessage ], true)
             ]]);
+            Yii::app()->end();
         }
 
         $aUser = $this->_editUser($aUser);
@@ -736,7 +738,7 @@ class UserManagement extends Survey_Common_Action
         // add default usersettings to the user
         SettingsUser::applyBaseSettings($iNewUID);
 
-        return User::model()->findByPk()->attributes();
+        return User::model()->findByPk($iNewUID)->attributes;
     }
 
     /**

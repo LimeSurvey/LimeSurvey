@@ -179,6 +179,8 @@ class User extends LSActiveRecord
         $oUser->parent_id = $parent_user;
         $oUser->lang = 'auto';
         $oUser->email = $new_email;
+        $oUser->created = date('Y-m-d H:i:s');
+        $oUser->modified = date('Y-m-d H:i:s');
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
