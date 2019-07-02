@@ -14,7 +14,7 @@ $(document).on('ready  pjax:scriptcomplete', function(){
         scale_id = $(this).data('scale-id');
     });
 
-    $('#quickaddModal').on('show.bs.modal', function(e) {
+    $('#quickaddModal').on('show.bs.modal', function (e) {
         var scale_id = $(e.relatedTarget).data('scale-id');
         var table_id = $(e.relatedTarget).closest('div.action-buttons').siblings('table.answertable').attr('id');
 
@@ -37,15 +37,25 @@ $(document).on('ready  pjax:scriptcomplete', function(){
     updaterowproperties();
 
 
-    $('.btnaddanswer').on("click.answeroptions", addinput);
+    $('.btnaddanswer').on("click.answeroptions", debouncedAddInput);
     $('.btndelanswer').on("click.answeroptions", deleteinput);
     $('#labelsetbrowserModal').on("shown.bs.modal.", lsbrowser );
     $('#labelsetbrowserModal').on("hidden.bs.modal.", lsbrowser_destruct );
 });
 
+function debouncedAddInput(e){
+    e.preventDefault();
+    var btnAddAnswer = $('.btnaddanswer');
+    btnAddAnswer.off("click.answeroptions");
+    btnAddAnswer.find('i').attr('class', "fa fa-cog fa-spin");
+    addinput.apply(this, arguments).then(function () {
+        $('.btnaddanswer').find('i').attr('class', "icon-add text-success");
+        $('.btnaddanswer').on("click.answeroptions", debouncedAddInput);
+    });
+}
+
 function rebindClickHandler(){
-    $('.btnaddanswer').off("click.answeroptions").on("click.answeroptions", addinput);
-    $('.btndelanswer').off("click.answeroptions").on("click.answeroptions", deleteinput);
+    $('.btndelanswer').off("click").on("click", deleteinput);
 }
 
 function deleteinput(e)
@@ -216,7 +226,7 @@ function addinput(e)
     $position = $(this).data('position')
 
     // We get the HTML of the different rows to insert  (one by language)
-    $.ajax({
+    return $.ajax({
         type: "GET",
         url: url,
         data: datas,
@@ -299,6 +309,10 @@ function updaterowproperties()
 
             if(!$(this).hasClass('row_'+rownumber))
             {
+                var classes = this.className.split(" ").filter(function (c) {
+                    return c.lastIndexOf('row_', 0) !== 0;
+                });
+                this.className = $.trim(classes.join(" "));
                 $(this).addClass('row_'+rownumber);
             }
 
@@ -324,7 +338,7 @@ function updaterowproperties()
         });
 
         $('#answercount_'+scale_id).val(rownumber);
-    })
+    });
 }
 
 
@@ -600,6 +614,8 @@ function transferlabels(type)
             updaterowproperties();
             $('#labelsetbrowserModal').modal('hide');
             $('#current_scale_id').remove();
+            $('.btnaddanswer').off('click.answeroptions').on("click.answeroptions", debouncedAddInput);
+            $('.btndelanswer').off('click.answeroptions').on("click.answeroptions", deleteinput);
         });
         var $lang_table = $('#answers_'+language+'_'+scale_id);
     });
@@ -719,25 +735,26 @@ function quickaddlabels(scale_id, addOrReplace, table_id)
         $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').off('click.answeroptions');
         $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').off('click.answeroptions');
         $('#answers_'+languages[x]+'_'+scale_id+' .answer').off('focus');
-        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').on('click.answeroptions',addinput);
+        $('#answers_'+languages[x]+'_'+scale_id+' .btnaddanswer').on('click.answeroptions',debouncedAddInput);
         $('#answers_'+languages[x]+'_'+scale_id+' .btndelanswer').on('click.answeroptions',deleteinput);
     }
 
-for (var x in languages)
-{
-    var lang_active = languages[x];
-    promises.push(
-        addinputQuickEdit(closestTable, lang_active,true, scale_id, codes)
-    )
-}
+    for (var x in languages)
+    {
+        var lang_active = languages[x];
+        promises.push(
+            addinputQuickEdit(closestTable, lang_active, true, scale_id, codes)
+        )
+    }
 
-    $.when.apply($,promises).done(
+    $.when.apply($, promises).done(
             function(){
                 $.each(arguments, function(i,item){
                     var $table = item.langtable;
                     $.each(answers[item.lng], function(j,mapObject){
                         var html = item.html;
-                        var htmlRowObject = $(html);
+                        var html_quid = html.replace(/({{quid_placeholder}})/g,mapObject.quid);
+                        var htmlRowObject = $(html_quid);
                         if(htmlRowObject.find('input.code').length > 0)
                         {
                             htmlRowObject.find('input.code').val(mapObject.code);
@@ -756,6 +773,8 @@ for (var x in languages)
                 $('.tab-page:first .answertable tbody').sortable('refresh');
                 updaterowproperties();
                 $('#quickaddModal').modal('hide')
+                $('.btnaddanswer').off('click.answeroptions').on("click.answeroptions", debouncedAddInput);
+                $('.btndelanswer').off('click.answeroptions').on("click.answeroptions", deleteinput);
                 //bindClickIfNotExpanded();
             },
             function(){
