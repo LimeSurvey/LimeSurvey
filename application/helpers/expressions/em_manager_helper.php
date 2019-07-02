@@ -8885,8 +8885,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $gid[$oQuestionGroup->gid] = array(
                     'group_order' => $_order,
                     'gid' =>  $oQuestionGroup->gid,
-                    'group_name' => $oQuestionGroup->questionGroupL10ns[$sLanguage]->group_name,
-                    'description' =>  $oQuestionGroup->questionGroupL10ns[$sLanguage]->description,
+                    'group_name' => $oQuestionGroup->getGroupNameI10N($sLanguage),
+                    'description' =>  $oQuestionGroup->getGroupDescriptionI10N($sLanguage),
                     'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
                     'randomization_group' =>  $oQuestionGroup->randomization_group
                 );
