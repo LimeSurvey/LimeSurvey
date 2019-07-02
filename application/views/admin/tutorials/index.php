@@ -55,7 +55,7 @@ echo viewHelper::getViewTestTag('tutorials');
 					'itemsCssClass' => 'table table-responsive table-striped',
 					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
 					'ajaxType' => 'POST',
-                    'ajaxUpdate' => true,
+                    'ajaxUpdate' => 'tutorial-grid',
                     'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
     				'afterAjaxUpdate'=>'bindAction',
 				));

@@ -44,7 +44,7 @@
                 <div class="col-lg-12">
                     <?php
                     $this->widget('ext.LimeGridView.LimeGridView', array(
-                        'id'=>'question-group-grid',
+                        'id' => 'question-group-grid',
                         'dataProvider' => $model->search(),
                         'emptyText'=>gT('No questions groups found.'),
                         'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
@@ -98,7 +98,7 @@
                             ),
 
                         ),
-                        'ajaxUpdate' => true,
+                        'ajaxUpdate' => 'question-group-grid',
                         'afterAjaxUpdate' => 'bindPageSizeChange'
                     ));
                     ?>

@@ -43,7 +43,7 @@
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                         'itemsCssClass' =>'table-striped',
                         'columns' => $model->attributesForGrid,
-                        'ajaxUpdate'=>'token-grid',
+                        'ajaxUpdate' => 'token-grid',
                         'ajaxType'=>'POST',
                         'afterAjaxUpdate' => 'onUpdateTokenGrid'
                     ));
