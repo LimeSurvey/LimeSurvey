@@ -2865,6 +2865,24 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
             SurveymenuEntries::reorderMenu(2);
         }
 
+        if($iOldDBVersion < 418) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->insert("{{plugins}}", [
+                'id' => null,
+                'name'               => 'PasswordRequirement',
+                'plugin_type'        => 'core',
+                'active'             => 1,
+                'version'            => '1.0.0',
+                'load_error'         => 0,
+                'load_error_message' => null
+            ]);
+            
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>418),"stg_name='DBVersion'");
+            $oTransaction->commit();
+            
+            SurveymenuEntries::reorderMenu(2);
+        }
+
     } catch (Exception $e) {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
