@@ -72,6 +72,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
         $('#pjax-content').css({
             //'height': inSurveyViewHeight,
             'max-width': inSurveyViewWidth,
+            'overflow-x': 'auto'
         });
     }
 
