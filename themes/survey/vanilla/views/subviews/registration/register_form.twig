@@ -55,7 +55,7 @@
                 {% set registerKey = "register_" ~ key %}
                 <label for="{{ registerKey }}" class='{{ aSurveyInfo.class.registerformextraslabel }} control-label '> {{ aExtraAttribute.caption }} {% if aExtraAttribute.mandatory == 'Y' %}{{ include('./subviews/registration/required.twig') }}{% endif %}</label>
                 <div {{ aSurveyInfo.attr.registerformcolrowcdiv }} >
-                    {{ C.Html.textField(registerKey, aSurveyInfo.aAttribute[key],({'id' : "register_{$key}",'class' : 'form-control input-sm'})) }}
+                    {{ C.Html.textField(registerKey, aSurveyInfo.aAttribute[key],({'id' : registerKey,'class' : 'form-control input-sm'})) }}
                 </div>
             </div>
         {% endfor %}

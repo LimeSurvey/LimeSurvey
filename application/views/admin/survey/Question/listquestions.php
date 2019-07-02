@@ -159,7 +159,7 @@ $baseLanguage = $oSurvey->language;
                                 Yii::app()->params['pageSizeOptions'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                                 'columns' => $columns,
-                                'ajaxUpdate' => true,
+                                'ajaxUpdate' => 'question-grid',
                                 'afterAjaxUpdate' => "bindPageSizeChange"
                             ));
                             ?>
