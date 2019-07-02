@@ -1,11 +1,22 @@
 var UserManagement = function () {
-    var loaderSpinner = '<div class="ls-flex ls-flex-column align-items-center align-content-center" style="height: 200px;">';
-    loaderSpinner += '<i class="fa fa-gear fa-spin" style="font-size: 128px;color:rgba(50, 134, 55, 0.5);"></i>';
-    loaderSpinner += '</div>';
+    var loaderSpinner = '  <div class="ls-flex ls-flex-column align-items-center align-content-center" style="height: 200px;">';
+    loaderSpinner += '    <div id="loader-usermanagement" class="loader--loaderWidget ls-flex ls-flex-column align-content-center align-items-center" style="min-height: 100%;">';
+    loaderSpinner += '      <div class="ls-flex align-content-center align-items-center">';
+    loaderSpinner += '        <div class="loader-adminpanel text-center" :class="extraClass">';
+    loaderSpinner += '            <div class="contain-pulse animate-pulse">';
+    loaderSpinner += '                <div class="square"></div>';
+    loaderSpinner += '                <div class="square"></div>';
+    loaderSpinner += '                <div class="square"></div>';
+    loaderSpinner += '                <div class="square"></div>';
+    loaderSpinner += '            </div>';
+    loaderSpinner += '          </div>';
+    loaderSpinner += '        </div>';
+    loaderSpinner += '      </div>';
+    loaderSpinner += '    </div>';
 
     var loaderHtml = '<div class="modal-body">';
     loaderHtml += loaderSpinner;
-    loaderHtml += '</div>';
+    loaderHtml += '  </div>';
     loaderHtml += '</div>';
 
     var triggerRunAction = function (el) {
@@ -15,7 +26,7 @@ var UserManagement = function () {
     };
 
     var runAction = function (el) {
-        $('body').append('<div class="UserManagement-loading">' + loaderSpinner + '</div>');
+        $('#in_survey_common_action').append('<div class="UserManagement-loading">' + loaderSpinner + '</div>');
         var url = $(el).data('url'),
             action = $(el).data('action'),
             user = $(el).data('user'),
