@@ -2626,6 +2626,7 @@ function safeDie($sText)
  */
 function fixCKeditorText($str)
 {
+    return $str;
     $str = str_replace('<br type="_moz" />', '', $str);
     if ($str == "<br />" || $str == " " || $str == "&nbsp;") {
         $str = "";

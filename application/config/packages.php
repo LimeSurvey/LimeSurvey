@@ -100,8 +100,8 @@ return array(
         'devBaseUrl'  => 'assets/packages/ckeditor',
         'basePath' => 'core.ckeditor',
         'js' => array(
-            'ckeditor.js',
-            'config.js',
+            //'ckeditor.js',
+            //'config.js',
         ),
         'depends' => array(
             'adminbasics',
@@ -111,10 +111,10 @@ return array(
         'devBaseUrl'  => 'assets/packages/ckeditoradditions/',
         'basePath' => 'core.ckeditoradditions',
         'js' => array(
-            'ckeditoradditions.js',
+            //'ckeditoradditions.js',
         ),
         'depends' => array(
-            'ckeditor'
+            //'ckeditor'
         )
     ),
     'pjax' => array(
