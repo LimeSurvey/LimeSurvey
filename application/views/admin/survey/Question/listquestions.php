@@ -67,82 +67,6 @@ $baseLanguage = $oSurvey->language;
             <!-- Grid -->
             <div class="row">
                 <div class="col-lg-12">
-
-                    <?php
-                        $columns = array(
-                            array(
-                                'id'=>'id',
-                                'class'=>'CCheckBoxColumn',
-                                'selectableRows' => '100',
-                            ),
-                            array(
-                                'header' => gT('Question ID'),
-                                'name' => 'question_id',
-                                'value'=>'$data->qid',
-                            ),
-                            array(
-                                'header' => gT("Group / Question order"),
-                                'name' => 'question_order',
-                                'value'=>'$data->group->group_order ." / ". $data->question_order',
-                            ),
-                            array(
-                                'header' => gT('Code'),
-                                'name' => 'title',
-                                'value'=>'$data->title',
-                                'htmlOptions' => array('class' => 'col-md-1'),
-                            ),
-                            array(
-                                'header' => gT('Question'),
-                                'name' => 'question',
-                                'value'=>function($data) use ($oSurvey) {
-                                        return array_key_exists($oSurvey->language, $data->questionL10ns) ? viewHelper::flatEllipsizeText($data->questionL10ns[$oSurvey->language]->question,true,0) : '';
-                                    },
-                                'htmlOptions' => array('class' => 'col-md-5'),
-                            ),
-                            array(
-                                'header' => gT('Question type'),
-                                'name' => 'type',
-                                'type'=>'raw',
-                                'value'=>'$data->typedesc',
-                                'htmlOptions' => array('class' => 'col-md-1'),
-                            ),
-
-                            array(
-                                'header' => gT('Group'),
-                                'name' => 'group',
-                                'value'=>function($data) use ($oSurvey) {
-                                        return $data->group->questionGroupL10ns[$oSurvey->language]->group_name;
-                                    },
-                            ),
-
-                            array(
-                                'header' => gT('Mandatory'),
-                                'type' => 'raw',
-                                'name' => 'mandatory',
-                                'value'=> '$data->mandatoryIcon',
-                                 'htmlOptions' => array('class' => 'text-center'),
-                            ),
-
-                            array(
-                                'header' => gT('Other'),
-                                'type' => 'raw',
-                                'name' => 'other',
-                                'value'=> '$data->otherIcon',
-                                 'htmlOptions' => array('class' => 'text-center'),
-                            ),
-
-
-                            array(
-                                'header'=>'',
-                                'name'=>'actions',
-                                'type'=>'raw',
-                                'value'=>'$data->buttons',
-                                'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right nowrap'),
-                            ),
-
-                        );
-                    ?>
-
                     <?php
                     $massiveAction = App()->getController()->renderPartial('/admin/survey/Question/massive_actions/_selector', array('model'=>$model, 'oSurvey'=>$oSurvey), true, false);
                     $this->widget('ext.LimeGridView.LimeGridView', array(
@@ -158,7 +82,7 @@ $baseLanguage = $oSurvey->language;
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-                                'columns' => $columns,
+                                'columns' => $model->questionListColumns,
                                 'ajaxUpdate' => 'question-grid',
                                 'afterAjaxUpdate' => "bindPageSizeChange"
                             ));

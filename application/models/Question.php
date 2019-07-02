@@ -778,7 +778,77 @@ class Question extends LSActiveRecord
         );
         return $this;
     }*/
-                           
+    public function getQuestionListColumns(){
+    return array(
+            array(
+                'id'=>'id',
+                'class'=>'CCheckBoxColumn',
+                'selectableRows' => '100',
+            ),
+            array(
+                'header' => gT('Question ID'),
+                'name' => 'question_id',
+                'value'=>'$data->qid',
+            ),
+            array(
+                'header' => gT("Group / Question order"),
+                'name' => 'question_order',
+                'value'=>'$data->group->group_order ." / ". $data->question_order',
+            ),
+            array(
+                'header' => gT('Code'),
+                'name' => 'title',
+                'value'=>'$data->title',
+                'htmlOptions' => array('class' => 'col-md-1'),
+            ),
+            array(
+                'header' => gT('Question'),
+                'name' => 'question',
+                'value'=> 'array_key_exists($data->survey->language, $data->questionL10ns) ? viewHelper::flatEllipsizeText($data->questionL10ns[$data->survey->language]->question,true,0) : ""',
+                'htmlOptions' => array('class' => 'col-md-5'),
+            ),
+            array(
+                'header' => gT('Question type'),
+                'name' => 'type',
+                'type'=>'raw',
+                'value'=>'$data->typedesc',
+                'htmlOptions' => array('class' => 'col-md-1'),
+            ),
+
+            array(
+                'header' => gT('Group'),
+                'name' => 'group',
+                'value'=> '$data->group->questionGroupL10ns[$data->survey->language]->group_name',
+            ),
+
+            array(
+                'header' => gT('Mandatory'),
+                'type' => 'raw',
+                'name' => 'mandatory',
+                'value'=> '$data->mandatoryIcon',
+                'htmlOptions' => array('class' => 'text-center'),
+            ),
+
+            array(
+                'header' => gT('Other'),
+                'type' => 'raw',
+                'name' => 'other',
+                'value'=> '$data->otherIcon',
+                'htmlOptions' => array('class' => 'text-center'),
+            ),
+
+
+            array(
+                'header'=>'',
+                'name'=>'actions',
+                'type'=>'raw',
+                'value'=>'$data->buttons',
+                'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right nowrap'),
+            ),
+
+        );
+    }
+
     public function search()
     {
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
@@ -803,8 +873,8 @@ class Question extends LSActiveRecord
             ),
 
             'group'=>array(
-                'asc'=>'group.group_name asc',
-                'desc'=>'group.group_name desc',
+                'asc'=>'group.gid asc',
+                'desc'=>'group.gid desc',
             ),
 
             'mandatory'=>array(
@@ -828,11 +898,10 @@ class Question extends LSActiveRecord
         );
 
         $criteria = new CDbCriteria;
-        $criteria->select = 't.*';               
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
-        $criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';              
-        $criteria->with = array('group');
+        //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';              
+        $criteria->with = array('group', 'questionL10ns');
         
         if (!empty($this->title)) {     
             $criteria2 = new CDbCriteria;
