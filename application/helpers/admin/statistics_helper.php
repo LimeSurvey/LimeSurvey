@@ -2858,7 +2858,7 @@ class statistics_helper
 
                     switch ($itemcounter) {
                         case 1:
-                            if (($results - $grawdata[5]) > 0) {
+                            if (($results - $grawdata[5] - $TotalIncomplete) > 0) {
                                 $aggregatedPercentage = ($grawdata[0] + $grawdata[1]) / ($results - $grawdata[5] - $TotalIncomplete) * 100;
                             } else {
                                 $aggregatedPercentage = 0;
@@ -2870,7 +2870,7 @@ class statistics_helper
                             break;
 
                         case 5:
-                            if (($results - $grawdata[5]) > 0) {
+                            if (($results - $grawdata[5] - $TotalIncomplete) > 0) {
                                 $aggregatedPercentage = ($grawdata[3] + $grawdata[4]) / ($results - $grawdata[5] - $TotalIncomplete) * 100;
                             } else {
                                 $aggregatedPercentage = 0;
@@ -2879,7 +2879,7 @@ class statistics_helper
 
                         case 6:
                         case 7:
-                            if (($results - $grawdata[5]) > 0) {
+                            if (($results - $grawdata[5] - $TotalIncomplete) > 0) {
                                 $percentage = $grawdata[$i] / $results * 100; // All results
                             } else {
                                 $percentage = 0;
