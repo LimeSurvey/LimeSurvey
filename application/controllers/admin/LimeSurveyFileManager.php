@@ -230,7 +230,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
         $folder = Yii::app()->request->getPost('folder');
         $iSurveyId = Yii::app()->request->getPost('surveyid', null);
 
-        if ($iSurveyId == 'null') {
+        if ($iSurveyId == 'null' || $iSurveyId == null) {
             $iSurveyId = null;
             $folder = 'upload' . DIRECTORY_SEPARATOR . 'global';
         }
@@ -267,23 +267,39 @@ class LimeSurveyFileManager extends Survey_Common_Action
             return;
         }
 
-        $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
-        $destdir = realpath($realPath);
+        $destdir = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $folder;
 
         $filename = sanitize_filename($_FILES['file']['name'], false, false, false); // Don't force lowercase or alphanumeric
         $fullfilepath = $destdir . DIRECTORY_SEPARATOR . $filename;
+        $fullfilepath = preg_replace("%".DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR."%", DIRECTORY_SEPARATOR, $fullfilepath);
 
         if ($this->checkTargetExists($fullfilepath) && Yii::app()->getConfig('overwritefiles') == 0) {
             $ext = pathinfo($fullfilepath, PATHINFO_EXTENSION);
             $shorthash = hash('adler32', microtime());
-            $fullfilepath = preg_replace("/\." . $ext . "/", "-" . $shorthash . "." . $ext, $fullfilepath);
+            $fullfilepath = preg_replace("/\." . $ext . "/", "-" . $shorthash . ".", $fullfilepathRaw);
         }
+
+        //$fullfilepath = realpath($fullfilepath);
 
         $debug[] = $destdir;
         $debug[] = $filename;
         $debug[] = $fullfilepath;
 
-        if (!@move_uploaded_file($_FILES['file']['tmp_name'], $fullfilepath)) {
+        if (!is_writable($destdir)) {
+            $this->_setError(
+                'FILE_DESTINATION_UNWRITABLE',
+                sprintf(gT("An error occurred uploading your file. The folder (%s) is not writable for the webserver."), $folder)
+            );
+            $this->_printJsonError();
+            return;
+        }
+
+        if (
+            !move_uploaded_file(
+                $_FILES['file']['tmp_name'], 
+                $fullfilepath 
+            )
+        ) {
             $this->_setError(
                 'FILE_COULD NOT_BE_MOVED',
                 sprintf(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the target folder. (%s)"), $folder)
@@ -345,9 +361,8 @@ class LimeSurveyFileManager extends Survey_Common_Action
         }
 
         $realPath = dirname(Yii::app()->basePath) . DIRECTORY_SEPARATOR . $sFolderPath;
-        $destdir = realpath($realPath);
-        if (!is_dir($destdir)) {
-            @mkdir($destdir);
+        if (!is_dir($realPath)) {
+            mkdir($realPath);
         }
 
         return $sFolderPath;
@@ -595,7 +610,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
             '/admin/super/_renderJson', [
                 'success' => true,
                 'data' => $data,
-            ]);
+        ]);
     }
 
     /**
@@ -605,6 +620,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
      */
     private function _printJsonError()
     {
+        http_response_code(500);
         $this->getController()->renderPartial(
             '/admin/super/_renderJson', [
                 'success' => false,
@@ -613,7 +629,7 @@ class LimeSurveyFileManager extends Survey_Common_Action
                     'message' => $this->oError->message,
                     'debug' => $this->oError->debug,
                 ],
-            ]);
+        ]);
     }
 }
 

@@ -10,9 +10,10 @@ export default class LSFileUploadAdapter {
         return this.loader.file
             .then(file => new Promise((resolve, reject) => {
                 const formData = new FormData();
+                const presetAjaxOptions = this.editor.config.get('lsExtension:ajaxOptions');
                 const ajaxOptions = LS.ld.merge(
                     LS.data.csrfTokenData, 
-                    ajaxOptions,
+                    presetAjaxOptions,
                     {"folder": this.editor.config.get('lsExtension:currentFolder')}
                 );
 
