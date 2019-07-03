@@ -402,8 +402,11 @@ class ParticipantShare extends LSActiveRecord
     {
         $participent = $this->findByAttributes(
             ['participant_id' => $participent_id],
-            'can_edit = 1 AND share_uid = :userid',
-            [':userid' => App()->user->id]
+            'can_edit = :can_edit AND share_uid = :userid',
+            [
+                ':userid' => App()->user->id,
+                ':can_edit' => '1'
+            ]
         );
         if ($participent) {
             return true;

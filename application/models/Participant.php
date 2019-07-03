@@ -2116,7 +2116,7 @@ class Participant extends LSActiveRecord
         $userId = Yii::app()->user->id;
 
         $shared = ParticipantShare::model()->findByAttributes(
-            ['participant_id' => $this->participant_id], 'share_uid = :userid AND can_edit = 1', [':userid' => $userId]
+            ['participant_id' => $this->participant_id], 'share_uid = :userid AND can_edit = :can_edit', [':userid' => $userId, ':can_edit' => '1']
         );
         $owner = $this->owner_uid == $userId;
 

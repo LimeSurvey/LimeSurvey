@@ -595,8 +595,9 @@ $url .= "_view"; });
         $hasUpdatePermission = Permission::model()->hasGlobalPermission('participantpanel', 'update');
         if (!$hasUpdatePermission
             && empty(ParticipantShare::model()->findAllByAttributes(
-                ['share_uid' => App()->user->id ? App()->user->id : ''],
-                ['condition' => 'can_edit = 1',]
+                ['share_uid' => (int)App()->user->id],
+                'can_edit = :can_edit',
+                [':can_edit' => '1']
             ))
         ) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
