@@ -2246,9 +2246,31 @@ function numericSize($sColumn,$decimal=false)
         if(Yii::app()->db->driverName == 'pgsql') {
             $castedColumnString = "CAST($sColumn as FLOAT)";
         }
-        $maxDecimal = Yii::app()->db
-        ->createCommand("SELECT MAX(REVERSE(CAST(ABS($castedColumnString) - FLOOR(ABS($castedColumnString)) as CHAR))) FROM {{survey_".$iSurveyId."}}")
-        ->queryScalar();
+	/* pgsql */
+        if(Yii::app()->db->driverName == 'pgsql') {
+            $maxDecimal = Yii::app()->db
+            ->createCommand("SELECT MAX(CAST(nullif(split_part($castedColumnString, '.', 2),'') as integer))
+			    FROM {{survey_".$iSurveyId."}}")	
+            ->queryScalar();
+	/* mssql */
+	} elseif (Yii::app()->db->driverName == 'mssql') {
+           $maxDecimal = Yii::app()->db
+            ->createCommand("SELECT MAX(CASE 
+			     WHEN charindex('.',$castedColumnString) > 0 THEN 
+                             CAST(SUBSTRING($castedColumnString ,charindex('.',$castedColumnString)+1 , Datalength($castedColumnString)-charindex('.',$castedColumnString) ) AS INT)
+                             ELSE null END)
+			    FROM {{survey_".$iSurveyId."}}")	
+            ->queryScalar();			
+	/* mysql */
+        } else {
+            $maxDecimal = Yii::app()->db
+            ->createCommand("SELECT MAX(CASE
+                             WHEN INSTR($castedColumnString, '.') THEN CAST(SUBSTRING_INDEX($castedColumnString, '.', -1) as UNSIGNED)
+			     ELSE NULL END)
+			     FROM {{survey_".$iSurveyId."}}")	
+            ->queryScalar();
+    	}	
+	
     }
     // With integer : Decimal return 00000000000 and float return 0
     // With decimal : Decimal return 00000000012 and float return 12
