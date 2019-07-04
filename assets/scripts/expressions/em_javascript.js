@@ -1051,11 +1051,10 @@ function LEMval(alias)
                 } catch(e){
                     var numtest = new Decimal(value.toString().replace(/,/,'.'));
                 }
-                value = numtest.valueOf();
-                if(value.length < length && firstLetterIsNull){
-                    value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString(); /* return string as it is */
+                if(numtest.valueOf().length < length && firstLetterIsNull){
+                    value = value.toString(); /* return string as it is */
                 } else {
-                    value = Number(value); /* If it's a number : always return a number */
+                    value = Number(numtest.valueOf()); /* If it's a number : always return a number */
                 }
             }
 
