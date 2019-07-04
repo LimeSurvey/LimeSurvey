@@ -1235,12 +1235,17 @@ function LEMval(alias)
             }
             else if(!isNaN(parseFloat(value)) && isFinite(value))
             {
-                // If it's not a decimal number, just return value
-                try {
-                    var decimal_safe = new Decimal(value);
-                    return Number(decimal_safe.toPrecision(value.length));
+                var length = value.length;
+                var firstLetterIsNull = value.split("").shift() === '0';
+                try{
+                    var numtest = new Decimal(value);
+                } catch(e){
+                    var numtest = new Decimal(value.toString().replace(/,/,'.'));
                 }
-                catch (ex) {
+                if(numtest.valueOf().length < length && firstLetterIsNull){
+                    value = value.toString(); /* return string as it is */
+                } else {
+                    value = Number(numtest.valueOf()); /* If it's a number : always return a number */
                 }
             }
 
