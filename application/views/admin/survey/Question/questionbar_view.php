@@ -116,7 +116,7 @@ $aReplacementData=array();
                 <button class="btn btn-default"
                    data-toggle="modal"
                    data-target="#confirmation-modal"
-                   data-onclick='(function() { <?php echo convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $surveyid, "qid" => $qid, "gid"=>$gid])); ?> })'
+                   data-onclick='<?php echo convertGETtoPOST(Yii::app()->createUrl("admin/questions/sa/delete/", ["surveyid" => $surveyid, "qid" => $qid, "gid"=>$gid])); ?>'
                    data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
                    >
                     <span class="fa fa-trash text-danger"></span>

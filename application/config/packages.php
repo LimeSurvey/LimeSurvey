@@ -164,6 +164,46 @@ return array(
            'adminbasics'
        )
     ),
+    'admintoppanel' => array(
+       'devBaseUrl' => 'assets/packages/admintoppanel/',
+       'basePath' => 'core.admintoppanel',
+       'position' =>CClientScript::POS_END,
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/admintoppanel.js',
+            )
+            : array(
+                'build.min/js/admintoppanel.js'
+            )
+        ),
+       'css' => array(
+           'build.min/css/main.css'
+       ),
+       'depends' => array(
+           'adminbasics'
+       )
+    ),
+    'adminbottompanel' => array(
+       'devBaseUrl' => 'assets/packages/adminbottompanel/',
+       'basePath' => 'core.adminbottompanel',
+       'position' =>CClientScript::POS_END,
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/adminbottompanel.js',
+            )
+            : array(
+                'build.min/js/adminbottompanel.js'
+            )
+        ),
+       'css' => array(
+           'build.min/css/main.css'
+       ),
+       'depends' => array(
+           'adminbasics'
+       )
+    ),
     'filemanager' => array(
         'devBaseUrl' => 'assets/packages/filemanager/',
         'basePath' => 'core.filemanager',

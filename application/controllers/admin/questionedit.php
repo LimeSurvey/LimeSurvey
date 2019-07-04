@@ -34,6 +34,7 @@ class questionedit extends Survey_Common_Action
         $oQuestion = $this->_getQuestionObject($qid);
         $oTemplateConfiguration = TemplateConfiguration::getInstance($oSurvey->template, null, $iSurveyID);
         Yii::app()->getClientScript()->registerPackage('questioneditor');
+        Yii::app()->getClientScript()->registerPackage('admintoppanel');
         Yii::app()->getClientScript()->registerPackage('ace');
         $qrrow = $oQuestion->attributes;
         $baselang = $oSurvey->language;
@@ -53,6 +54,11 @@ class questionedit extends Survey_Common_Action
         }
         
         $condarray = ($oQuestion->qid != null) ? getQuestDepsForConditions($iSurveyID, "all", "all", $oQuestion->qid, "by-targqid", "outsidegroup") : [];
+        
+        $this->getController()->renderPartial('/admin/survey/Question2/topbar_view', [
+            'qid' => $qid,
+            'gid' => $gid,
+        ], true);
         
         $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
@@ -257,7 +263,7 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aPermissions);
     }
 
-    public function getQuestionAttributeData($iQuestionId=null, $returnArray = false)
+    public function getQuestionAttributeData($iQuestionId=null , $returnArray = false)
     {
         $iQuestionId = (int) $iQuestionId;
         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQuestionId);
