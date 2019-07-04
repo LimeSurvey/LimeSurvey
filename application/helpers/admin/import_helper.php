@@ -1004,6 +1004,11 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
             }
 
+            // #14646: fix utf8 encoding issue
+            if (!mb_detect_encoding($insertdata['group_name'], 'UTF-8', true)) {
+                $insertdata['group_name'] = utf8_encode($insertdata['group_name']);
+            }
+
             // Insert the new group
             if (isset($aGIDReplacements[$oldgid])) {
                 switchMSSQLIdentityInsert('groups', true);
