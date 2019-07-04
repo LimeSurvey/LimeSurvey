@@ -1093,32 +1093,34 @@ class Survey extends LSActiveRecord
     {
         if ($this->active == 'N') {
             return 'inactive';
-        } elseif ($this->expires != '' || $this->startdate != '') {
+        }
+        if ($this->expires != '' || $this->startdate != '') {
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
-            $sStart  = ($this->startdate != '') ?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
+            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
+            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
 
             // Time comparaison
             $oNow   = new DateTime($sNow);
             $oStop  = new DateTime($sStop);
             $oStart = new DateTime($sStart);
 
-            $bExpired = ($oStop < $oNow);
-            $bWillRun = ($oStart > $oNow);
+            $bExpired = (!is_null($sStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
 
             if ($bExpired) {
                 return 'expired';
-            } elseif ($bWillRun) {
+            }
+            if ($bWillRun) {
+                // And what happen if $sStop < $sStart : must return something other ?
                 return 'willRun';
-            } else {
+            }
+            if(!is_null($sStop)) {
                 return 'willExpire';
             }
         }
-        // If it's active, and doesn't have expire date, it's running
-        else {
-            return 'running';
-        }
+        // No returned before : it's running
+        return 'running';
     }
 
 
