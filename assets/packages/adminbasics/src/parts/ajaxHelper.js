@@ -37,6 +37,7 @@ const onSuccess = (response) => {
     if (response.outputType == 'jsonoutputhtml') {
         $('#' + response.target).html(response.html);
         globals.globalWindowMethods.doToolTip();
+        return;
     }
 
     // Success popup

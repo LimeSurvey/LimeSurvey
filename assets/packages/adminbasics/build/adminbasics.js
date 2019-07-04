@@ -21285,6 +21285,7 @@ const onSuccess = (response) => {
     if (response.outputType == 'jsonoutputhtml') {
         $('#' + response.target).html(response.html);
         __WEBPACK_IMPORTED_MODULE_0__globalMethods__["b" /* globalWindowMethods */].doToolTip();
+        return;
     }
 
     // Success popup
