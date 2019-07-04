@@ -257,7 +257,7 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aPermissions);
     }
 
-    public function getQuestionAttributeData($iQuestionId, $returnArray = false)
+    public function getQuestionAttributeData($iQuestionId=null, $returnArray = false)
     {
         $iQuestionId = (int) $iQuestionId;
         $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQuestionId);
@@ -280,7 +280,7 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aQuestionTypeInformation);
     }
     
-    public function getGeneralOptions($iQuestionId, $sQuestionType=null, $returnArray = false)
+    public function getGeneralOptions($iQuestionId=null, $sQuestionType=null, $returnArray = false)
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);
         $aGeneralOptionsArray = $oQuestion->getDataSetObject()->getGeneralSettingsArray($oQuestion->qid, $sQuestionType);
@@ -292,7 +292,7 @@ class questionedit extends Survey_Common_Action
         $this->renderJSON($aGeneralOptionsArray);
     }
 
-    public function getAdvancedOptions($iQuestionId, $sQuestionType=null, $returnArray = false)
+    public function getAdvancedOptions($iQuestionId=null, $sQuestionType=null, $returnArray = false)
     {
         $oQuestion = $this->_getQuestionObject($iQuestionId, $sQuestionType);
         $aAdvancedOptionsArray = $oQuestion->getDataSetObject()->getAdvancedOptions($oQuestion->qid, $sQuestionType);
