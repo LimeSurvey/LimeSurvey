@@ -1451,7 +1451,7 @@ class statistics_helper
         //loop though the array which contains all answer data
         $ColumnName_RM = array();
         //check filter option
-        $criteria = new CDbCriteria();        
+        $criteria = new CDbCriteria();
         if (incompleteAnsFilterState() == "incomplete") {
             $criteria->addCondition("submitdate is null");
         } elseif (incompleteAnsFilterState() == "complete") {
@@ -1460,7 +1460,7 @@ class statistics_helper
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
         foreach($oResponses as $key => $oResponse){
-            $oResponses[$key] = $oResponse->decrypt(); 
+            $oResponses[$key] = $oResponse->decrypt();
         }
 
         foreach ($outputs['alist'] as $al) {
@@ -1555,7 +1555,7 @@ class statistics_helper
                         if ($oResponse->$sResponseColumn == $sSubquestionCode){
                             $row += 1;
                         }
-                    }                   
+                    }
                 } else {
                     // This is for the 'NoAnswer' case
                     // We need to take into account several possibilities
@@ -2228,9 +2228,9 @@ class statistics_helper
         $lbl       = array();
         $tableXLS  = array();
         $tablePDF2 = array();
-        
+
         //check filter option
-        $criteria = new CDbCriteria();        
+        $criteria = new CDbCriteria();
         if (incompleteAnsFilterState() == "incomplete") {
             $criteria->addCondition("submitdate is null");
         } elseif (incompleteAnsFilterState() == "complete") {
@@ -2239,7 +2239,7 @@ class statistics_helper
         // prepare and decrypt data
         $oResponses = Response::model($surveyid)->findAll($criteria);
         foreach($oResponses as $key => $oResponse){
-            $oResponses[$key] = $oResponse->decrypt(); 
+            $oResponses[$key] = $oResponse->decrypt();
         }
 
         foreach ($outputs['alist'] as $al) {
@@ -2334,7 +2334,7 @@ class statistics_helper
                         if ($oResponse->$sResponseColumn == $sSubquestionCode){
                             $row += 1;
                         }
-                    }                   
+                    }
                 } else {
                     // This is for the 'NoAnswer' case
                     // We need to take into account several possibilities
@@ -3668,7 +3668,7 @@ class statistics_helper
                     //if $summary isn't an array we create one
                     if (isset($summary) && !is_array($summary)) {
                         $summary = explode("+", $summary);
-                    }  
+                    }
                 }
         }}
         /**
@@ -3894,44 +3894,11 @@ class statistics_helper
             Yii::import('application.helpers.pdfHelper');
             $aPdfLanguageSettings = pdfHelper::getPdfLanguageSettings($language);
 
-            // create new PDF document
-            $this->pdf = new pdf();
-
             $surveyInfo = getSurveyInfo($surveyid, $language);
 
-            // set document information
-            $this->pdf->SetCreator(PDF_CREATOR);
-            $this->pdf->SetAuthor('LimeSurvey');
-            $this->pdf->SetTitle(sprintf(gT("Statistics survey %s"), $surveyid));
-            $this->pdf->SetSubject($surveyInfo['surveyls_title']);
-            $this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("Survey %s"), $surveyid));
-            $this->pdf->SetDisplayMode('fullpage', 'two');
-            $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
-
-            // set header and footer fonts
-            $this->pdf->setHeaderFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_MAIN));
-            $this->pdf->setFooterFont(Array($aPdfLanguageSettings['pdffont'], '', PDF_FONT_SIZE_DATA));
-
-            // set default header data
-            // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
-            //$headerlogo = '$this->pdf';
-
-            $headerlogo = '';
-            $logowidth = 10;
-            $at = AdminTheme::getInstance();
-            if (!defined('K_PATH_IMAGES')) {
-                define($at->path.DIRECTORY_SEPARATOR.'images');
-            }
-            $path = array($at->path, 'images', 'logo_statistics.jpg');
-            if (file_exists(implode(DIRECTORY_SEPARATOR, $path))) {
-                $headerlogo = 'logo_statistics.jpg';
-                $logowidth= 85;
-            }
-
-            $this->pdf->SetHeaderData($headerlogo, $logowidth, gT("Quick statistics", 'unescaped'), gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'], false, true, 'UTF-8')."'");
-            $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
-            // set default monospaced font
-            $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+            // create new PDF document
+            $this->pdf = new pdf();
+            $this->pdf->initAnswerPDF($surveyInfo, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $surveyInfo['surveyls_title']);
         }
         if ($outputType == 'xls') {
             /**
