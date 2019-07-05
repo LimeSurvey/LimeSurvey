@@ -34,5 +34,8 @@ export default {
         eventSet() {
             this.$emit('eventSet', this.$options.name);
         },
+        triggerEvent(event) {
+            this.$emit('triggerEvent', event);
+        }
     }
 }

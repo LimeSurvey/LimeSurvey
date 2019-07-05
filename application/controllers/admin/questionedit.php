@@ -212,7 +212,7 @@ class questionedit extends Survey_Common_Action
             'message' => gT('Question successfully stored'),
             'successDetail' => $setApplied,
             'questionId' => $oQuestion->qid,
-            'redirect' => $this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyId),
+            'redirect' => $this->getController()->createUrl('admin/survey/sa/listquestions', ['surveyid' => $iSurveyId]),
             'newQuestionDetails' => [
                 "question" => $aCompiledQuestionData['question'],
                 "scaledSubquestions" => $aCompiledQuestionData['subquestions'],

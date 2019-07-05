@@ -129,11 +129,17 @@ export default {
             });
             this.$set(this.currentDataSet, scale, subquestions);
         },
+        toggleEditMode(){
+            if(this.readonly) {
+                this.triggerEvent({ target: 'lsnextquestioneditor', method: 'triggerEditQuestion', content: {} });
+            }
+        }
     },
     mounted() {
         if(isEmpty(this.$store.state.currentQuestionSubquestions)){
             this.$store.state.currentQuestionSubquestions = {"0": [this.getTemplate()]};
         };
+        foreach(this.subquestionScales, this.reorderSubquestions);
     }
 }
 </script>
@@ -161,6 +167,23 @@ export default {
                     :key="subquestionscale+'subquestions'"
                     class="row list-group scoped-subquestion-row-container"
                 >
+                    <div class="list-group-item scoped-subquestion-block header-block">
+                        <div class="scoped-move-block" v-show="!readonly">
+                            <div>&nbsp;</div>
+                        </div>
+                        <div class="scoped-code-block">
+                            {{'Title'|translate}}
+                        </div>
+                        <div class="scoped-content-block">
+                            {{'Subquestion'|translate}}
+                        </div>
+                        <div class="scoped-relevance-block">
+                            {{'Relevance'}}
+                        </div>
+                        <div class="scoped-actions-block" v-show="!readonly">
+                            <div>&nbsp;</div>
+                        </div>
+                    </div>
                     <div 
                         class="list-group-item scoped-subquestion-block"
                         v-for="subquestion in currentDataSet[subquestionscale]"
@@ -188,6 +211,7 @@ export default {
                                 :name="'code_'+subquestion.question_order+'_'+subquestionscale" 
                                 :readonly="readonly"
                                 v-model="subquestion.title"
+                                @dblclick="toggleEditMode"
                                 @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale)'
                             />
                         </div>
@@ -203,6 +227,7 @@ export default {
                                 :readonly="readonly"
                                 @change="setQuestionForCurrentLanguage(subquestion,$event, arguments)"
                                 @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
+                                @dblclick="toggleEditMode"
                             />
                         </div>
                         <div class="scoped-relevance-block   ">
@@ -215,6 +240,7 @@ export default {
                                     :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
                                     :readonly="readonly"
                                     v-model="subquestion.relevance"
+                                    @dblclick="toggleEditMode"
                                     @keyup.enter.prevent='switchinput(false,$event)'
                                     @focus='triggerScale'
                                     @blur='untriggerScale'
@@ -236,7 +262,6 @@ export default {
                                 {{ "Duplicate" | translate }}
                             </button>
                         </div>
-
                     </div>
                 </div>
                 <div class="row" :key="subquestionscale+'metaSettings'" v-show="!readonly">
@@ -272,16 +297,19 @@ export default {
         width: 100%;
         justify-content: flex-start;
         &>div {
-            flex-basis: 10rem;
+            flex-basis: auto;
             padding: 1px 2px;
             transition: all 1s ease-in-out;
             white-space: nowrap;
+        }
+        &.header-block {
+            text-align: center;
         }
     }
     
     .scoped-move-block {
         text-align: center;
-        width: 64px;
+        width: 5%;
         &>i {
             font-size: 28px;
             line-height: 32px;
@@ -292,15 +320,19 @@ export default {
             }
         }
     }
+    .scoped-code-block {
+        width:10%;
+    }
     .scoped-content-block {
-        flex-grow: 8;
+        width:30%;
+        flex-grow: 1;
     }
     .scoped-relevance-block {
-        flex-grow: 1;
-        max-width: 10rem;
+        width:10%;
+        max-width: 20%;
     }
     .scoped-actions-block {
-        flex-grow: 2;
+        width:25%;
     }
     
     .movement-active {

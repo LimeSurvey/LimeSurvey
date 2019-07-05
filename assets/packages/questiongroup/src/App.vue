@@ -37,11 +37,13 @@ export default {
         triggerEditQuestionGroup(){
             this.toggleLoading(true);
             if(this.editQuestionGroup) {
-                $('#questiongroupbar--savebuttons').fadeOut();
-                $('#questiongroupbar--questiongroupbuttons').fadeIn();
+                $('#questiongroupbar--savebuttons').fadeOut(250, function(){
+                    $('#questiongroupbar--questiongroupbuttons').fadeIn(250);
+                });
             } else {
-                $('#questiongroupbar--savebuttons').fadeIn();
-                $('#questiongroupbar--questiongroupbuttons').fadeOut();
+                $('#questiongroupbar--questiongroupbuttons').fadeOut(250, function(){
+                    $('#questiongroupbar--savebuttons').fadeIn(250);
+                });
             }
             this.editQuestionGroup = !this.editQuestionGroup;
         },
@@ -182,7 +184,7 @@ export default {
                     @change="selectLanguage"
                 />
             </div>
-            <div class="row">
+            <div class="row scoped-contain-slider">
                 <transition name="slide-fade">
                     <question-group-overview v-show="!(editQuestionGroup || isCreateQuestionGroup)" :event="event" v-on:triggerEvent="triggerEvent" v-on:eventSet="eventSet"></question-group-overview>
                 </transition>
@@ -200,7 +202,7 @@ export default {
     </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .scoped-unset-pointer-events {
     pointer-events: none;
 }
@@ -214,7 +216,10 @@ export default {
     height: 100%;
     min-height: 60vh;
 }
-
+.scoped-contain-slider {
+    min-height: 200px;
+    position:relative;
+}
 .scoped-small-border{
      border: 1px solid rgba(184,184,184,0.8);
      padding: 0.6rem 1rem;
@@ -222,24 +227,25 @@ export default {
  }
 
 .slide-fade-enter-active {
-  transition: all .3s ease;
+  transition: all .4s ease;
 }
 .slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  position:absolute;
 }
 .slide-fade-enter
 /* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(-10px);
+  transform: transitionX(100%);
   opacity: 0;
 }
 .slide-fade-enter-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(0px);
+  transform: transitionX(0%);
   opacity: 1;
 }
 .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(10px);
+  transform: transitionX(-100%);
   opacity: 0;
 }
 </style>

@@ -57,6 +57,13 @@ export default {
             }
             this.editQuestion = !this.editQuestion;
         },
+        setEditQuestion(){
+            if(!this.editQuestion) {
+                $('#questionbarid').slideUp();
+                $('#questiongroupbarid').slideDown()
+                this.editQuestion = true;
+            }
+        },
         applyHotkeys() {
             Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
             Mousetrap.bind('ctrl+left', this.choosePreviousLanguage);
@@ -199,7 +206,14 @@ export default {
             <div class="row">
                 <div class="form-group col-sm-6">
                     <label for="questionCode">{{'Code' | translate }}</label>
-                    <input type="text" class="form-control" id="questionCode" :readonly="!(editQuestion || isCreateQuestion)" v-model="currentQuestionCode">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="questionCode" 
+                        :readonly="!(editQuestion || isCreateQuestion)" 
+                        v-model="currentQuestionCode"
+                        @dblclick="setEditQuestion"
+                    />
                 </div>
                 <div class="form-group col-sm-6 contains-question-selector">
                     <label for="questionCode">{{'Question type' | translate }}</label>

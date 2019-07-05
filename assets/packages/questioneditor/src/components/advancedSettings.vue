@@ -131,6 +131,7 @@ export default {
                     v-bind:is="currentTabComponent" 
                     :event="event"
                     v-on:eventSet="eventSet"
+                    v-on:triggerEvent="triggerEvent"
                     :readonly="readonly"
                     />
                 </div>    

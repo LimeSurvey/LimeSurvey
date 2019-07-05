@@ -1,6 +1,8 @@
 <script>
 
+import map from 'lodash/map';
 import merge from 'lodash/merge';
+import sortBy from 'lodash/sortBy';
 import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
 import foreach from 'lodash/forEach';
@@ -17,7 +19,9 @@ export default {
             baseNonNumericPart : "AO",
             type: 'answeroptions',
             typeDefininition: 'answer',
-            typeDefininitionKey: 'code'
+            typeDefininitionKey: 'code',
+            answeroptionDragging: false,
+            draggedAnsweroption: null
         };
     },
     computed: {
@@ -35,7 +39,13 @@ export default {
         },
         currentDataSet: {
             get() {
-                return this.$store.state.currentQuestionAnswerOptions;
+                return map(
+                    this.$store.state.currentQuestionAnswerOptions, 
+                    scale => sortBy(
+                        scale, 
+                        answeroption => answeroption.sortorder
+                    )
+                );
             },
             set(newValue) {
                 this.$store.commit('setCurrentQuestionAnswerOptions', newValue);
@@ -87,11 +97,47 @@ export default {
         replaceByQuickAddObject(quickAddContent) {
             this.$_log.log({AOQuickAddContent: quickAddContent});
         },
+        //dragevents questions
+        startDraggingAnsweroption($event, answeroptionObject, scale) {
+            this.$log.log("Dragging started", answeroptionObject);
+            $event.dataTransfer.setData('application/node', this);
+            this.answeroptionDragging = true;
+            this.draggedAnsweroption = answeroptionObject;
+        },
+        endDraggingAnsweroption($event, answeroptionObject, scale) {
+            if (this.answeroptionDragging) {
+                this.answeroptionDragging = false;
+                this.draggedAnsweroption = null;
+                this.reorderAnsweroptions(scale);
+            }
+        },
+        dragoverAnsweroption($event, answeroptionObject, scale) {
+            if (this.answeroptionDragging) {
+                let orderSwap = answeroptionObject.sortorder;
+                answeroptionObject.sortorder = this.draggedAnsweroption.sortorder;
+                this.draggedAnsweroption.sortorder = orderSwap;
+            }
+        },
+        reorderAnsweroptions(scale){
+            let answeroptions = [];
+            let last = 0;
+            foreach(this.currentDataSet[scale], (answeroption, i) => {
+                answeroption.sortorder = (i+1)
+                answeroptions.push(answeroption);
+            });
+            this.$set(this.currentDataSet, scale, answeroptions);
+        },
+        toggleEditMode(){
+            if(this.readonly) {
+                this.triggerEvent({ target: 'lsnextquestioneditor', method: 'triggerEditQuestion', content: {} });
+            }
+        }
     },
     mounted() {
         if(isEmpty(this.$store.state.currentQuestionAnswerOptions)){
             this.$store.state.currentQuestionAnswerOptions = {"0": [this.getTemplate()]};
         };
+        foreach(this.answeroptionscales, this.reorderAnsweroptions);
     }
 }
 </script>
@@ -112,20 +158,44 @@ export default {
                     <hr />
                 </div>
             </div>
-            <template
-                v-for="answeroptionscale in answeroptionscales"
-            >
+            <template v-for="answeroptionscale in answeroptionscales">
                 <div 
                     :key="answeroptionscale+'answeroptions'"
                     class="row list-group scoped-answeroption-row-container"
                 >
+                    <div class="list-group-item scoped-answeroption-block header-block">
+                        <div class="scoped-move-block" v-show="!readonly">
+                            <div>&nbsp;</div>
+                        </div>
+                        <div class="scoped-code-block">
+                            <div>{{"Code" | translate}}</div>
+                        </div>
+                        <div class="scoped-assessments-block">
+                            <div>{{"Assessment value" | translate}}</div>
+                        </div>
+                        <div class="scoped-content-block">
+                            <div>{{"Answeroption" | translate}}</div>
+                        </div>
+                        <div class="scoped-actions-block" v-show="!readonly">
+                            <div>&nbsp;</div>
+                        </div>
+
+                    </div>
                     <div 
                         class="list-group-item scoped-answeroption-block"
                         v-for="answeroption in currentDataSet[answeroptionscale]"
                         :key="answeroption.aid"
+                        @dragenter="dragoverAnsweroption($event, answeroption, answeroptionscale)"
+                        :class="(answeroptionDragging ? 'movement-active'+ ((answeroption.aid == draggedAnsweroption.aid) ? ' in-movement' : '') : '')"
                     >
                         <div class="scoped-move-block" v-show="!readonly">
-                            <i class="fa fa-bars" :class="surveyActive ? ' disabled' : ' '"></i>
+                            <i 
+                                class="fa fa-bars" 
+                                :class="surveyActive ? ' disabled' : ' '"
+                                :draggable="!surveyActive"
+                                @dragstart="startDraggingAnsweroption($event, answeroption, answeroptionscale)"
+                                @dragend="endDraggingAnsweroption($event, answeroption, answeroptionscale)" 
+                            ></i>
                         </div>
                         <div class="scoped-code-block">
                             <input
@@ -138,6 +208,7 @@ export default {
                                 :readonly="readonly"
                                 v-model="answeroption.code"
                                 @keyup.enter.prevent="switchinput('assessment_'+answeroption.sortorder+'_'+answeroptionscale)"
+                                @dblclick="toggleEditMode"
                             />
                         </div>
                         <div class="scoped-assessments-block">
@@ -151,6 +222,7 @@ export default {
                                     maxlength='5'
                                     size='5'
                                     @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+answeroption.aid+"_"+answeroptionscale)'
+                                    @dblclick="toggleEditMode"
                                 />
                         </div>
                         <div class="scoped-content-block">
@@ -165,6 +237,7 @@ export default {
                                 :readonly="readonly"
                                 @change="setAnswerForCurrentLanguage(answeroption,$event)"
                                 @keyup.enter.prevent='switchinput(false, $event)'
+                                @dblclick="toggleEditMode"
                             />
                         </div>
                         <div class="scoped-actions-block" v-show="!readonly">
@@ -217,13 +290,21 @@ export default {
         width: 100%;
         justify-content: space-evenly;
         &>div {
+            max-width: 100%;
             flex-basis: auto;
             padding: 1px 2px;
+        }
+        &.header-block>div {
+            display: flex;
+            &>div{
+                width:100%;
+                text-align: center;
+            }
         }
     }
     
     .scoped-move-block {
-        flex-grow: 1;
+        width:5%;
         text-align: center;
         &>i {
             font-size: 28px;
@@ -235,14 +316,23 @@ export default {
             }
         }
     }
-    .scoped-content-block {
-        flex-grow: 6;
+    .scoped-code-block {
+        width:10%;
     }
     .scoped-assessments-block {
-        flex-grow: 2;
+        width:10%
+    }
+    .scoped-content-block {
+        width:50%;
+        flex-grow: 1;
     }
     .scoped-actions-block {
-        flex-grow: 2;
+        width: 25%;
     }
-
+    .movement-active {
+        background-color: hsla(0,0,90,0.8);
+        &.in-movement {
+            background-color: hsla(0,0,60,1);
+        }
+    }
 </style>
