@@ -14,6 +14,8 @@
 *
 */
 
+use ls\ajax\AjaxHelper;
+
 /**
  * @param array $a
  * @param string $subkey
@@ -397,7 +399,7 @@ $url .= "_view"; });
         // Abort if no permission
         $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
         if (!$deletePermission) {
-            ls\ajax\AjaxHelper::outputNoPermission();
+            AjaxHelper::outputNoPermission();
         }
 
         $selectoption = Yii::app()->request->getPost('selectedoption');
@@ -432,9 +434,9 @@ $url .= "_view"; });
         }
 
         if ($deletedParticipants === 0) {
-            ls\ajax\AjaxHelper::outputError(gT('No participants deleted'));
+            AjaxHelper::outputError(gT('No participants deleted'));
         } else {
-            ls\ajax\AjaxHelper::outputSuccess(gT('Participant deleted'));
+            AjaxHelper::outputSuccess(gT('Participant deleted'));
         }
     }
 
@@ -480,7 +482,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -501,7 +503,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -543,7 +545,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -562,7 +564,7 @@ $url .= "_view"; });
             array('model' => $model),
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -680,11 +682,11 @@ $url .= "_view"; });
 
         // Abort if not found (internal error)
         if (empty($participant)) {
-            ls\ajax\AjaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
+            AjaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
         }
 
         if (!$participant->userHasPermissionToEdit()) {
-            ls\ajax\AjaxHelper::outputNoPermission();
+            AjaxHelper::outputNoPermission();
         }
 
         // Make sure no-one hacks owner_uid into form
@@ -705,7 +707,7 @@ $url .= "_view"; });
             $attribute->updateParticipantAttributeValue($attribute->attributes);
         }
 
-        ls\ajax\AjaxHelper::outputSuccess(gT("Participant successfully updated"));
+        AjaxHelper::outputSuccess(gT("Participant successfully updated"));
     }
 
     /**
@@ -738,15 +740,15 @@ $url .= "_view"; });
 
                 }
 
-                ls\ajax\AjaxHelper::outputSuccess(gT("Participant successfully added"));
+                AjaxHelper::outputSuccess(gT("Participant successfully added"));
             } else if (is_string($result)) {
-                ls\ajax\AjaxHelper::outputError('Could not add new participant: '.$result);
+                AjaxHelper::outputError('Could not add new participant: '.$result);
             } else {
                 // "Impossible"
                 safeDie('Could not add participant.');
             }
         } else {
-            ls\ajax\AjaxHelper::outputNoPermission();
+            AjaxHelper::outputNoPermission();
         }
     }
 
@@ -1499,7 +1501,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -1524,7 +1526,7 @@ $url .= "_view"; });
             $data,
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -1608,7 +1610,7 @@ $url .= "_view"; });
                     $success[] = $ParticipantAttributeNames->saveAttributeLanguages($saveLanguageArray);
                 }
             }
-            ls\ajax\AjaxHelper::outputSuccess(gT("Attribute successfully updated"));
+            AjaxHelper::outputSuccess(gT("Attribute successfully updated"));
             $oTransaction->commit();
         } catch (\Exception $e) {
             $oTransaction->rollback();
@@ -1629,9 +1631,9 @@ $url .= "_view"; });
         $AttributePackage = ParticipantAttributeName::model()->findByPk($attribute_id);
         if (count($AttributePackage->participant_attribute_names_lang) > 1) {
             ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
-            ls\ajax\AjaxHelper::outputSuccess(gT("Language successfully deleted"));
+            AjaxHelper::outputSuccess(gT("Language successfully deleted"));
         } else {
-            ls\ajax\AjaxHelper::outputError(gT("There has to be at least one language."));
+            AjaxHelper::outputError(gT("There has to be at least one language."));
         }
     }
     /**
@@ -1644,7 +1646,7 @@ $url .= "_view"; });
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         ParticipantAttributeName::model()->delAttribute($attribute_id);
-        ls\ajax\AjaxHelper::outputSuccess(gT("Attribute successfully deleted"));
+        AjaxHelper::outputSuccess(gT("Attribute successfully deleted"));
     }
 
     /**
@@ -1655,7 +1657,7 @@ $url .= "_view"; });
     public function deleteAttributes()
     {
         if (!Permission::model()->hasGlobalPermission('participantpanel', 'delete')) {
-            ls\ajax\AjaxHelper::outputNoPermission();
+            AjaxHelper::outputNoPermission();
             return;
         }
 
@@ -1670,12 +1672,12 @@ $url .= "_view"; });
                 $deletedAttributes++;
             }
 
-            ls\ajax\AjaxHelper::outputSuccess(sprintf(
+            AjaxHelper::outputSuccess(sprintf(
                 ngT('%s attribute deleted|%s attributes deleted', $deletedAttributes),
                 $deletedAttributes)
             );
         } catch (Exception $e) {
-            ls\ajax\AjaxHelper::outputError(sprintf(
+            AjaxHelper::outputError(sprintf(
                 gT('Error. Deleted %s attribute(s). Error message: %s'),
                 $deletedAttributes,
                 $e->getMessage()
@@ -2275,7 +2277,7 @@ $url .= "_view"; });
                 $i++;
             }
         }
-        ls\ajax\AjaxHelper::outputSuccess(sprintf(gT("%s participants have been shared"), $i));
+        AjaxHelper::outputSuccess(sprintf(gT("%s participants have been shared"), $i));
     }
 
     /**
@@ -2309,9 +2311,9 @@ $url .= "_view"; });
             );
             ParticipantShare::model()->storeParticipantShare($aData, $permissions);
 
-            ls\ajax\AjaxHelper::outputSuccess(gT("Participant shared."));
+            AjaxHelper::outputSuccess(gT("Participant shared."));
         } else {
-            ls\ajax\AjaxHelper::outputNoPermission();
+            AjaxHelper::outputNoPermission();
         }
     }
 
@@ -2323,7 +2325,7 @@ $url .= "_view"; });
     {
         $participant_id = yii::app()->request->getPost('participant_id');
         ParticipantShare::model()->deleteAllByAttributes(array('participant_id' => $participant_id));
-        ls\ajax\AjaxHelper::outputSuccess(gT("Participant removed from sharing"));
+        AjaxHelper::outputSuccess(gT("Participant removed from sharing"));
     }
 
     /**
@@ -2341,7 +2343,7 @@ $url .= "_view"; });
         ));
 
         if (empty($participantShare)) {
-            ls\ajax\AjaxHelper::outputError(gT('Found no participant share'));
+            AjaxHelper::outputError(gT('Found no participant share'));
         } else {
             $userId = Yii::app()->user->id;
             $isOwner = $participantShare->participant->owner_uid == $userId;
@@ -2349,9 +2351,9 @@ $url .= "_view"; });
 
             if ($isOwner || $isSuperAdmin) {
                 $participantShare->delete();
-                ls\ajax\AjaxHelper::outputSuccess(gT('Participant share deleted'));
+                AjaxHelper::outputSuccess(gT('Participant share deleted'));
             } else {
-                ls\ajax\AjaxHelper::outputNoPermission();
+                AjaxHelper::outputNoPermission();
             }
         }
     }
@@ -2389,9 +2391,9 @@ $url .= "_view"; });
         }
 
         if ($sharesDeleted == 0) {
-            ls\ajax\AjaxHelper::outputError(gT('No participant shares were deleted'));
+            AjaxHelper::outputError(gT('No participant shares were deleted'));
         } else {
-            ls\ajax\AjaxHelper::outputSuccess(
+            AjaxHelper::outputSuccess(
                 sprintf(ngT('%s participant share was deleted|%s participant shares were deleted', $sharesDeleted),
                 $sharesDeleted
             ));
