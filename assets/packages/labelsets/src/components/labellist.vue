@@ -85,9 +85,9 @@ export default {
         },
         dragoverLabel($event, labelObject) {
             if (this.labelDragging) {
-                let orderSwap = labelObject.question_order;
-                labelObject.question_order = this.draggedLabel.question_order;
-                this.draggedLabel.question_order = orderSwap;
+                let orderSwap = labelObject.sortorder;
+                labelObject.sortorder = this.draggedLabel.sortorder;
+                this.draggedLabel.sortorder = orderSwap;
             }
         },
         reorderLabels(){
@@ -104,6 +104,7 @@ export default {
         if(isEmpty(this.$store.state.labels)){
             this.$store.state.labels = {"0": [this.getTemplate()]};
         };
+        this.reorderLabels();
     }
 }
 </script>
@@ -135,6 +136,7 @@ export default {
                     <div class="scoped-move-block" v-show="!readonly">
                         <i 
                             class="fa fa-bars" 
+                            :draggable="true"
                             @dragstart="startDraggingLabel($event, label)"
                             @dragend="endDraggingLabel($event, label)" 
                         ></i>
