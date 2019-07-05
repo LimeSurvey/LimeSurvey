@@ -1549,7 +1549,6 @@ $url .= "_view"; });
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
         $operation = Yii::app()->request->getPost('oper');
-        $success = [];
 
         // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;
@@ -1561,12 +1560,12 @@ $url .= "_view"; });
                 $iAttributeId = $AttributeNameAttributes['attribute_id'];
                 $ParticipantAttributeNames = ParticipantAttributeName::model()->findByPk($iAttributeId);
                 $sEncryptedBeforeChange = $ParticipantAttributeNames->encrypted;
-                $success[] = $ParticipantAttributeNames->saveAttribute($AttributeNameAttributes);
+                $ParticipantAttributeNames->saveAttribute($AttributeNameAttributes);
             } else {
                 $ParticipantAttributeNames = new ParticipantAttributeName;
                 $sEncryptedBeforeChange = 'N';
                 $ParticipantAttributeNames->setAttributes($AttributeNameAttributes);
-                $success[] = $ParticipantAttributeNames->save();
+                $ParticipantAttributeNames->save();
                 $iAttributeId = $ParticipantAttributeNames->attribute_id;
 
             }
@@ -1607,7 +1606,7 @@ $url .= "_view"; });
                         'attribute_name' => $lnValue,
                         'lang' => $lnKey
                     );
-                    $success[] = $ParticipantAttributeNames->saveAttributeLanguages($saveLanguageArray);
+                    $ParticipantAttributeNames->saveAttributeLanguages($saveLanguageArray);
                 }
             }
             $oTransaction->commit();
