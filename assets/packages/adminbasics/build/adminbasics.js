@@ -17863,6 +17863,7 @@
       if (response.outputType == 'jsonoutputhtml') {
         $('#' + response.target).html(response.html);
         globalWindowMethods.doToolTip();
+        return;
       } // Success popup
 
 

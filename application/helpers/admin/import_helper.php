@@ -1522,8 +1522,20 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 $insertdata['description'] = translateLinks('survey', $iOldSID, $iNewSID, $insertdata['description']);
             }
 
-            if (isset($aGIDReplacements[$insertdata['gid']])) {
-                $insertdata['gid'] = $aGIDReplacements[$insertdata['gid']];
+            // #14646: fix utf8 encoding issue
+            if (!mb_detect_encoding($insertdata['group_name'], 'UTF-8', true)) {
+                $insertdata['group_name'] = utf8_encode($insertdata['group_name']);
+            }
+
+            // Insert the new group
+            if (isset($aGIDReplacements[$oldgid])) {
+                switchMSSQLIdentityInsert('groups', true);
+                $insertdata['gid'] = $aGIDReplacements[$oldgid];
+            }
+            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");// This thrown safedie …
+            if (!isset($aGIDReplacements[$oldgid])) {
+                $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
+                $results['groups']++;
             } else {
                 continue; //Skip invalid group ID
             }

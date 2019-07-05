@@ -13,10 +13,10 @@
             <label class="control-label"  for='global-settings-calculate-storage'><?=gT("Recalculates the storage used by all your files in the upload folders")?></label>
             <div class="">
                 <input type='hidden' name='global-settings-storage-url' value='<?php echo Yii::app()->createUrl('admin/globalsettings', array('sa' => 'getStorageData')); ?>' />
-                <button id='global-settings-calculate-storage' class='btn btn-default '>
+                <a id='global-settings-calculate-storage' class='btn btn-default '>
                     <span class='fa fa-cogs'></span>&nbsp;
                     <?php eT('Calculate storage');?>
-                </button>
+                </a>
                 <br/>
                 <span class='text-muted'>
                     <?php eT('Depending on the number of uploaded files, this might take some time.');?>
