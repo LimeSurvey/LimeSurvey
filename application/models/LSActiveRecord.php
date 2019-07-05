@@ -239,7 +239,12 @@ class LSActiveRecord extends CActiveRecord
         return parent::findAllByAttributes($attributes, $condition, $params);
     }    
     
-    public static function getAllEncryptedAttributes($iSurveyId = 0, $sClassName){
+    /**
+     * @param int $iSurveyId
+     * @param string $sClassName
+     * @return array
+     */
+    public function getAllEncryptedAttributes($iSurveyId = 0, $sClassName){
         $aAttributes = array();
         if ($sClassName == 'ParticipantAttribute'){
             // participants attributes
@@ -300,7 +305,7 @@ class LSActiveRecord extends CActiveRecord
             $iSurveyId = 0;
         }
         $class = get_class($this);
-        $encryptedAttributes = self::getAllEncryptedAttributes($iSurveyId, $class);
+        $encryptedAttributes = $this->getAllEncryptedAttributes($iSurveyId, $class);
         $attributeCount = count($attributes);
         foreach($attributes as $key => $attribute){
             if(in_array($key, $encryptedAttributes)){
