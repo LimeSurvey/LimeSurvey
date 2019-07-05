@@ -1532,7 +1532,12 @@ function XMLImportSurvey($sFullFilePath, $sXMLdata = null, $sNewSurveyName = nul
                 switchMSSQLIdentityInsert('groups', true);
                 $insertdata['gid'] = $aGIDReplacements[$oldgid];
             }
-            $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");// This thrown safedie …
+            $insertdata['gid'] = $aGIDReplacements[$oldgid];
+            $oQuestionGroupL10n = new QuestionGroupL10n();
+            $oQuestionGroupL10n->setAttributes($insertdata, false);
+            if (!$oQuestionGroupL10n->save()) {
+                safeDie(gT("Error").": Failed to insert data [3] bla<br />");
+            }
             if (!isset($aGIDReplacements[$oldgid])) {
                 $aGIDReplacements[$oldgid] = $newgid; // add old and new qid to the mapping array
                 $results['groups']++;
