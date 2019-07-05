@@ -42,7 +42,7 @@
                 let curSwitchOptions = {
                     onstyle: "primary",
                     offstyle: "warning",
-                    size: "small",
+                    size: "normal",
                     on : this.onText,
                     off : this.offText
                 };
@@ -68,7 +68,7 @@
     <div class="form-row">
         <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0) && !readonly" />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
-        <div :class="getClasses">
+        <div class="inputtype--toggle-container" :class="getClasses">
             <bootstrap-toggle v-model="curValue" :options="switchOptions" :disabled="disabled || readonly" />
             <!-- <input type="checkbox" :name="elName || elId" :id="elId" v-model="curValue"/> -->
         </div> 
@@ -79,3 +79,15 @@
         />
     </div>
 </template>
+
+<style lang="scss">
+    .inputtype--toggle-container {
+        .toggle[disabled] {
+            .toggle-group {
+                label {
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+</style>

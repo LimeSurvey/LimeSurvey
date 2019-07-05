@@ -168,18 +168,18 @@ return array(
        'devBaseUrl' => 'assets/packages/admintoppanel/',
        'basePath' => 'core.admintoppanel',
        'position' =>CClientScript::POS_END,
-       'js' => (
-           $debug > 0
-            ? array(
-                'build/js/admintoppanel.js',
-            )
-            : array(
-                'build.min/js/admintoppanel.js'
-            )
-        ),
-       'css' => array(
-           'build.min/css/main.css'
-       ),
+    //    'js' => (
+    //        $debug > 0
+    //         ? array(
+    //             'build/js/admintoppanel.js',
+    //         )
+    //         : array(
+    //             'build.min/js/admintoppanel.js'
+    //         )
+    //     ),
+    //    'css' => array(
+    //        'build.min/css/main.css'
+    //    ),
        'depends' => array(
            'adminbasics'
        )

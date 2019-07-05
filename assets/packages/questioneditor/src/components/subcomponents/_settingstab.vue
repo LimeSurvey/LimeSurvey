@@ -69,6 +69,9 @@
                     item=>item.aFormElementOptions.sortorder 
                     );
             },
+            surveyActive() {
+                return this.$store.getters.surveyObject.active =='Y'
+            }
         },
         methods: {
             reactOnChange(newValue, oAdvancedSettingObject) {
@@ -88,8 +91,8 @@
                 }
                 return value;
             },
-            isReadonly: (setting) => {
-                return this.readonly || (setting.disableInActive && this.surveyActive);
+            isReadonly(setting) {
+                return (this.readonly || (setting.disableInActive && this.surveyActive));
             }
         }
     }
