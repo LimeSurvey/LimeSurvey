@@ -18,6 +18,11 @@ export default {
     props: {
         readonly : {type: Boolean, default: false}
     },
+    computed: {
+        surveyActive() {
+            return this.$store.getters.surveyObject.active =='Y'
+        }
+    },
     methods: {
         getLength(arrayOrObject) {
             if(isArrayLike(arrayOrObject)) {

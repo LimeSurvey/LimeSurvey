@@ -111,6 +111,7 @@ class questionedit extends Survey_Common_Action
         $aData['activated'] = $oSurvey->active;
         $aData['jsData'] = [
             'surveyid' => $iSurveyID,
+            'surveyObject' => $oSurvey->attributes,
             'gid' => $gid,
             'qid' => $oQuestion->qid,
             'startType' => $oQuestion->type,

@@ -1,17 +1,11 @@
 <script>
     import empty from 'lodash/isEmpty';
+
+    import inputTypeMixin from '../../mixins/inputTypeMixin';
+
     export default {
         name: 'setting-input',
-        props: {
-            elId: {type: String, required: true},
-            elName: {type: [String, Boolean], default: ''},
-            elLabel: {type: String, default: ''},
-            elHelp: {type: String, default: ''},
-            currentValue: {default: ''},
-            elOptions: {type: Object, default: {}},
-            debug: {type: [Object, Boolean]},
-            readonly: {type: Boolean, default: false}
-        },
+        mixins: [inputTypeMixin],
         data(){
             return {
                 triggerShowHelp: false

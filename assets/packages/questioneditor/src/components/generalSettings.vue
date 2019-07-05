@@ -36,6 +36,9 @@ export default {
             return filter(this.$store.state.currentQuestionGeneralSettings, (questionSetting) => {
                 return (questionSetting.inputtype != undefined)
             });
+        },
+        surveyActive() {
+            return this.$store.getters.surveyObject.active =='Y'
         }
     },
     methods: {
@@ -53,6 +56,9 @@ export default {
                 return;    
             }
             this.loading = force;
+        },
+        isReadonly(setting){
+            return this.readonly || (setting.disableInActive && this.surveyActive);
         }
     },
     created(){
@@ -80,7 +86,7 @@ export default {
                             :currentValue="generalSetting.formElementValue"
                             :elOptions="generalSetting.formElementOptions"
                             :debug="generalSetting"
-                            :readonly="readonly"
+                            :readonly="isReadonly(generalSetting)"
                             @change="reactOnChange($event, generalSetting)"
                             ></component>
                         </div>

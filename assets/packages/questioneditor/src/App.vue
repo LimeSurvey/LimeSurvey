@@ -217,9 +217,9 @@ export default {
                 </div>
                 <div class="form-group col-sm-6 contains-question-selector">
                     <label for="questionCode">{{'Question type' | translate }}</label>
-                    <div v-if="editQuestion || isCreateQuestion"  v-html="questionEditButton" />
+                    <div v-if="(editQuestion || isCreateQuestion) && $store.getters.surveyObject.active !='Y'"  v-html="questionEditButton" />
                     <input v-else type="text" class="form-control" id="questionTypeVisual" :readonly="true" :value="$store.state.currentQuestion.typeInformation.description+' ('+$store.state.currentQuestion.type+')'"/>
-                    <input type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
+                    <input v-if="$store.getters.surveyObject.active !='Y'" type="hidden" id="question_type" name="type" @change="questionTypeChangeTriggered" :value="$store.state.currentQuestion.type" />
                 </div>
             </div>
             <div class="row">

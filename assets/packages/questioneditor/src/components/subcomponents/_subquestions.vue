@@ -25,9 +25,6 @@ export default {
         };
     },
     computed: {
-        surveyActive(){
-            return false;
-        },
         subquestionScales(){
             if(this.$store.state.currentQuestion.typeInformation.subquestions == 1) {
                 return [0];

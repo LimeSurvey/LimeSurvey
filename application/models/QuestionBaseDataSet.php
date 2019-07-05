@@ -156,6 +156,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'classes' => ['form-control'],
                 'options' => $aGroupOptions,
             ],
+            'disableInActive' => true
         ];
     }
 
@@ -184,6 +185,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                         ]
                     ],
                 ],
+                'disableInActive' => true
             ];
     }
 
@@ -213,7 +215,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                             'value' => 'N'
                         ],
                     ],
-                ],
+                ]
             ];
     }
 
@@ -242,6 +244,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                         ]
                     ],
                 ],
+                'disableInActive' => true
             ];
     }
         

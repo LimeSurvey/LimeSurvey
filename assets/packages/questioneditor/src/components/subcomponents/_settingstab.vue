@@ -87,6 +87,9 @@
                     return value[this.$store.state.activeLanguage];
                 }
                 return value;
+            },
+            isReadonly: (setting) => {
+                return this.readonly || (setting.disableInActive && this.surveyActive);
             }
         }
     }
@@ -111,7 +114,7 @@
                 :currentValue="advancedSetting.formElementValue"
                 :elOptions="advancedSetting.aFormElementOptions"
                 :debug="advancedSetting"
-                :readonly="readonly"
+                :readonly="isReadonly(advancedSetting)"
                 @change="reactOnChange($event, advancedSetting)"
                 ></component>
             </div>

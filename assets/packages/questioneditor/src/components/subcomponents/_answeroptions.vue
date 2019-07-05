@@ -25,9 +25,6 @@ export default {
         };
     },
     computed: {
-        surveyActive(){
-            return false;
-        },
         answeroptionscales(){
             if(this.$store.state.currentQuestion.typeInformation.answerscales == 1) {
                 return [0];
@@ -241,7 +238,7 @@ export default {
                             />
                         </div>
                         <div class="scoped-actions-block" v-show="!readonly">
-                            <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(answeroption, answeroptionscale)">
+                            <button v-if="!surveyActive" class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(answeroption, answeroptionscale)">
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
                             </button>
@@ -249,7 +246,7 @@ export default {
                                 <i class="fa fa-edit"></i>
                                 {{ "Open editor" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="duplicateThisDataSet(answeroption, answeroptionscale)">
+                            <button v-if="!surveyActive" class="btn btn-default btn-small" @click.prevent="duplicateThisDataSet(answeroption, answeroptionscale)">
                                 <i class="fa fa-copy"></i>
                                 {{ "Duplicate" | translate }}
                             </button>
@@ -259,11 +256,11 @@ export default {
                 </div>
                 <div class="row" :key="answeroptionscale+'addRow'" v-show="!readonly">
                     <div class="col-sm-6 text-left">
-                        <button class="btn btn-default" @click.prevent="openLabelSets(answeroptionscale)">{{ "Predefined label sets" | translate }}</button>
+                        <button v-if="!surveyActive" class="btn btn-default" @click.prevent="openLabelSets(answeroptionscale)">{{ "Predefined label sets" | translate }}</button>
                         <button class="btn btn-default" @click.prevent="saveAsLabelSet(answeroptionscale)">{{ "Save as label set" | translate }}</button>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <button @click.prevent="addDataSet(answeroptionscale)" class="btn btn-primary">
+                        <button v-if="!surveyActive" @click.prevent="addDataSet(answeroptionscale)" class="btn btn-primary">
                             <i class="fa fa-plus"></i>
                             {{ "Add answeroption" | translate}}
                         </button>

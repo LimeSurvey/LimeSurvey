@@ -2,22 +2,16 @@
     import merge from 'lodash/merge';
     import empty from 'lodash/isEmpty';
     import filter from 'lodash/filter';
-        
     import BootstrapToggle from 'vue-bootstrap-toggle'
+
+    import inputTypeMixin from '../../mixins/inputTypeMixin';
 
     export default {
         name: 'setting-checkboxswitch',
+        mixins: [inputTypeMixin],
         components: {BootstrapToggle},
         props: {
-            elId: {type: String, required: true},
-            elName: {type: [String, Boolean], default: ''},
-            elLabel: {type: String, default: ''},
-            elHelp: {type: String, default: ''},
-            currentValue: {default: false},
-            elOptions: {type: Object, default: {}},
-            debug: {type: [Object, Boolean]},
             disabled: {type: Boolean, default: false},
-            readonly: {type: Boolean, default: false}
         },
         data(){
             return {

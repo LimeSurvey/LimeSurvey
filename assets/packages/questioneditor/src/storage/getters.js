@@ -10,5 +10,7 @@ export default {
         } catch(e){}
         return returner;
     },
-    surveyid: (state) => (LS.parameters.$GET.surveyid || LS.parameters.keyValuePairs.surveyid || null)
+    surveyid: () => (window.QuestionEditData.surveyObject.sid),
+    surveyObject: () => window.QuestionEditData.surveyObject
+
 };
