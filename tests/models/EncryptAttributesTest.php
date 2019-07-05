@@ -49,4 +49,32 @@ class EncryptAttributesTest extends TestBaseClass
         $token = $tokens[0];
         $this->assertNotEquals('last', $token->lastname);
     }
+
+    /**
+     * Test response.
+     */
+    public function testResponse()
+    {
+        $responses = \Response::model(self::$surveyId)->findAll();
+        $this->assertCount(1, $responses);
+
+        $response = $responses[0];
+
+        // Get questions.
+        $survey = \Survey::model()->findByPk(self::$surveyId);
+        $questionObjects = $survey->groups[0]->questions;
+        $questions = [];
+        foreach ($questionObjects as $q) {
+            $questions[$q->title] = $q;
+        }
+
+        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['Q00']->qid;
+
+        $answer = $response->$sgqa;
+        $response->decrypt();
+        $decryptedAnswer = $response->$sgqa;
+
+        $this->assertEquals('One answer.', $decryptedAnswer);
+        $this->assertNotEquals('One answer.', $answer);
+    }
 }
