@@ -1610,8 +1610,8 @@ $url .= "_view"; });
                     $success[] = $ParticipantAttributeNames->saveAttributeLanguages($saveLanguageArray);
                 }
             }
-            AjaxHelper::outputSuccess(gT("Attribute successfully updated"));
             $oTransaction->commit();
+            AjaxHelper::outputSuccess(gT("Attribute successfully updated"));
         } catch (\Exception $e) {
             $oTransaction->rollback();
             return false;
