@@ -1,0 +1,20 @@
+{
+  "name": "previewmodalwidgetscripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "previewModalWidget.src.js",
+  "dependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.0",
+    "@babel/preset-env": "^7.5.0",
+    "node-sass": "^4.12.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "npm run buildjs && npm run buildscss",
+    "buildjs": "babel previewModalWidget.src.js --out-file previewModalWidget.dist.js",
+    "buildscss": "node-sass --output-style compressed previewModalWidget.src.scss > previewModalWidget.dist.css"
+  },
+  "author": "Markus Fluer <markus.fluer@limesurvey.org>",
+  "license": "GPL-3.0"
+}
