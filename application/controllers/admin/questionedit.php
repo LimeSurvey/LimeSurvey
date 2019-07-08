@@ -192,6 +192,13 @@ class questionedit extends Survey_Common_Action
         $setApplied['generalSettings']     = $this->_unparseAndSetGeneralOptions($oQuestion, $questionData['generalSettings']);
         $setApplied['advancedSettings']    = $this->_unparseAndSetAdvancedOptions($oQuestion, $questionData['advancedSettings']);
         $setApplied['questionI10N']        = $this->_applyI10N($oQuestion, $questionData['questionI10N']);
+
+        // save advanced attributes default values for given question type
+        if (array_key_exists('save_as_default', $questionData['generalSettings']) && $questionData['generalSettings']['save_as_default']['formElementValue'] == 'Y'){
+            SettingsUser::setUserSetting('question_default_values_' . $questionData['question']['type'], ls_json_encode($questionData['advancedSettings']));
+        } elseif (array_key_exists('clear_default', $questionData['generalSettings']) && $questionData['generalSettings']['clear_default']['formElementValue'] == 'Y'){
+            SettingsUser::deleteUserSetting('question_default_values_' . $questionData['question']['type'], '');
+        }
         
         if (isset($questionData['scaledSubquestions'])) {
             $setApplied['scaledSubquestions']  = $this->_storeSubquestions($oQuestion, $questionData['scaledSubquestions']);
