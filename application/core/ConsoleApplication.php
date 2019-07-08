@@ -61,6 +61,7 @@ class ConsoleApplication extends CConsoleApplication
                 $lsConfig = array_merge($lsConfig, $securityConfig);
             }
         }
+
         if (file_exists(__DIR__.'/../config/config.php')) {
             $userConfigs = require(__DIR__.'/../config/config.php');
             if (is_array($userConfigs['config'])) {
