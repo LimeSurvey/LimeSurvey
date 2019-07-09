@@ -99,6 +99,7 @@ $url .= "_view"; });
      */
     public function openModalParticipantPanel()
     {
+        $this->setAjaxHelper(new \ls\ajax\AjaxHelper());
         $target = Yii::app()->request->getPost('modalTarget');
         switch ($target) {
             case "editparticipant":
@@ -132,6 +133,7 @@ $url .= "_view"; });
      */
     public function editValueParticipantPanel()
     {
+        $this->setAjaxHelper(new \ls\ajax\AjaxHelper());
         $target = Yii::app()->request->getPost('actionTarget');
         switch ($target) {
             case "changeBlacklistStatus":
@@ -682,11 +684,11 @@ $url .= "_view"; });
 
         // Abort if not found (internal error)
         if (empty($participant)) {
-            AjaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
+            $this->ajaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
         }
 
         if (!$participant->userHasPermissionToEdit()) {
-            AjaxHelper::outputNoPermission();
+            $this->ajaxHelper::outputNoPermission();
         }
 
         // Make sure no-one hacks owner_uid into form
@@ -707,7 +709,7 @@ $url .= "_view"; });
             $attribute->updateParticipantAttributeValue($attribute->attributes);
         }
 
-        AjaxHelper::outputSuccess(gT("Participant successfully updated"));
+        $this->ajaxHelper::outputSuccess(gT("Participant successfully updated"));
     }
 
     /**
@@ -736,8 +738,6 @@ $url .= "_view"; });
                     $attribute->value = $attributeValue;
                     $attribute->encrypt();
                     $attribute->updateParticipantAttributeValue($attribute->attributes);
-
-
                 }
 
                 AjaxHelper::outputSuccess(gT("Participant successfully added"));
@@ -2656,7 +2656,14 @@ $url .= "_view"; });
         $this->_renderWrappedTemplate('participants', 'attributeMapToken', $aData);
     }
 
-
+    /**
+     * @param AjaxHelper $ajaxHelper
+     * @return void
+     */
+    public function setAjaxHelper(AjaxHelper $ajaxHelper)
+    {
+        $this->ajaxHelper = $ajaxHelper;
+    }
 
     /**
      * Return array of automatic mappings, pairing token attributes with CPDB attributes
@@ -2697,5 +2704,4 @@ $url .= "_view"; });
             Yii::app()->getController()->redirect(Yii::app()->request->urlReferrer);
         }
     }
-
 }
