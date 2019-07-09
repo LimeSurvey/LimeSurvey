@@ -1881,10 +1881,10 @@ class Participant extends LSActiveRecord
      *
      * @return boolean|null true/false
      */
-        public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname)
-        {
-            $survey = Survey::model()->findByPk($surveyId);
-            $val = Yii::app()->db
+    public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname)
+    {
+        $survey = Survey::model()->findByPk($surveyId);
+        $val = Yii::app()->db
             ->createCommand()
             ->select($tokenFieldname)
             ->where('participant_id = :participant_id')
@@ -1896,7 +1896,7 @@ class Participant extends LSActiveRecord
             $data = array('participant_id' => $participantId,
                 'value' => $value2[$tokenFieldname],
                 'attribute_id' => $participantAttributeId
-                );
+            );
             //Check if value already exists
             $test = Yii::app()->db
                 ->createCommand()
@@ -1916,7 +1916,7 @@ class Participant extends LSActiveRecord
                     ->insert('{{participant_attribute}}', $data);
             }
         }
-        }
+    }
 
     /**
      * Copies token participants to the central participants table, and also copies
