@@ -96,9 +96,11 @@ abstract class QuestionBaseDataSet extends StaticModel
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
         
         $sQuestionType = $this->sQuestionType;
+
         if($this->aQuestionAttributes['question_template'] !== 'core' && $sQuestionTemplate === null) {
             $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
         }
+
         $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
         $questionTemplateFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
         $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($questionTemplateFolderName, $sQuestionTemplate);
@@ -398,6 +400,8 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'suffix' => '}',
                 ];
         }
+
+        
 
         $aAdvancedAttributeArray['aFormElementOptions'] = $aFormElementOptions;
         

@@ -1,5 +1,7 @@
 <script>
     import empty from 'lodash/isEmpty';
+    import first from 'lodash/first';
+    import each from 'lodash/forEach';
 
     import inputTypeMixin from '../../mixins/inputTypeMixin';
 
@@ -21,6 +23,20 @@
             showHelp(){
                 return this.triggerShowHelp && (this.elHelp.length>0);
             },
+            cleanOptions() {
+                if(typeof(first(this.elOptions.options)) == 'object') {
+                    return this.elOptions.options;
+                }
+
+                const optionsArray = [];
+                each(this.elOptions.options, (text, value) => {
+                    optionsArray.push({
+                        text,
+                        value
+                    });
+                });
+                return optionsArray;
+            }
         },
         methods: {
             simpleValue(value) {
@@ -31,12 +47,7 @@
             },
              getHTMLClasses(value) {
                 let classes = 'btn btn-default ';
-                if(!empty(this.elOptions.classes)) {
-                    classes += this.elOptions.classes.join(' ');
-                }
-                
                 classes += (value == this.curValue ? 'active ' : '');
-
                 return classes;
             }
         },
@@ -49,7 +60,7 @@
         <label class="form-label"> {{elLabel}} </label>
         <div class="btn-group col-12">
             <label 
-                v-for="(optionObject, i) in elOptions.options"
+                v-for="(optionObject, i) in cleanOptions"
                 :key="i"
                 type="button" 
                 :for="'input-'+(elName || elId)+'_'+i" 

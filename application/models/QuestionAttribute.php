@@ -130,7 +130,7 @@ class QuestionAttribute extends LSActiveRecord
             $oModel->attribute = $sAttributeName;
             $oModel->value = $sValue;
             $oModel->qid = $iQuestionID;
-            $oModel->save();
+            return $oModel->save();
         }
         return Yii::app()->db->createCommand()
             ->select()
