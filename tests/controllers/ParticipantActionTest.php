@@ -19,8 +19,9 @@ class ParticipantActionTest extends TestBaseClass
         \Yii::app()->session['loginID'] = 1;
 
         /** @var participantsaction */
-        $pp = new \participantsaction('dummy');
+        $participantController = new \participantsaction('dummy');
 
+        // TODO: Use PHPUnit dataset instead? https://phpunit.de/manual/6.5/en/database.html
         $attrName = new \ParticipantAttributeName();
         $attrName->attribute_type = 'TB';
         $attrName->defaultname    = 'encrypted';
@@ -79,9 +80,10 @@ class ParticipantActionTest extends TestBaseClass
             }
         };
 
-        $pp->setAjaxHelper($dummyAjaxHelper);
+        // Inject our dummy AjaxHelper into the controller.
+        $participantController->setAjaxHelper($dummyAjaxHelper);
 
-        $pp->updateParticipant($data, $extraAttributes);
+        $participantController->updateParticipant($data, $extraAttributes);
 
         $this->assertEquals('outputSuccess', $dummyAjaxHelper::$called);
 
