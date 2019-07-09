@@ -248,10 +248,7 @@ class LSActiveRecord extends CActiveRecord
         $aAttributes = array();
         if ($sClassName == 'ParticipantAttribute'){
             // participants attributes
-            $aParticipantAttributes = ParticipantAttributeName::model()->findAll(array("condition" => "encrypted = 'Y' and core_attribute <> 'Y'"));
-            foreach ($aParticipantAttributes as $attribute => $value) {
                 $aAttributes[] = 'value';
-            }
         } elseif ($sClassName == 'Participant') {
             // participants
             $aTokenAttributes = Participant::getParticipantsEncryptionOptions();
@@ -414,10 +411,20 @@ class LSActiveRecord extends CActiveRecord
     {
         // load sodium library
         $sodium = Yii::app()->sodium;
-        $attributes = $this->encryptAttributeValues($this->attributes, true, false);
 
+        $class = get_class($this);
+        if ($class === 'ParticipantAttribute'){
+            $aParticipantAttributes = CHtml::listData(ParticipantAttributeName::model()->findAll(array("select"=>"attribute_id", "condition" => "encrypted = 'Y' and core_attribute <> 'Y'")), 'attribute_id', '');
+            foreach ($aParticipantAttributes as $attribute => $value) {
+                if (array_key_exists($this->attribute_id, $aParticipantAttributes)){
+                    $this->value = $sodium->$action($this->value);
+                }
+            }
+        } else {
+            $attributes = $this->encryptAttributeValues($this->attributes, true, false);
         foreach ($attributes as $key => $attribute) {
                 $this->$key = $sodium->$action($attribute);
         }
     }
+}
 }

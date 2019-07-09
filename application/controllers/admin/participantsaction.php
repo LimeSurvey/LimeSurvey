@@ -1415,7 +1415,6 @@ $url .= "_view"; });
                         $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname);
                     } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y'){
                         $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname);
-                        $test = 1;
                     }
                     if (!empty($aUpdateData)){
                         $oDB->createCommand()->update('{{participants}}', $aUpdateData, "participant_id='".$participant->participant_id."'");
@@ -1432,7 +1431,7 @@ $url .= "_view"; });
                     } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y'){
                         $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                     }
-                    if (!empty($aUpdateData)){
+                    if (!empty($aUpdateData) && $aUpdateData['value'] !== null){
                         $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$attributeId."' AND participant_id = '". $attribute->participant_id . "'");
                     }
                 }
@@ -1440,7 +1439,7 @@ $url .= "_view"; });
             }
 
             // save token encryption options if everything was ok
-            $attributeName->update(array('encrypted'));
+            $attributeName->update();
             $oTransaction->commit();
         } catch (\Exception $e) {
             $oTransaction->rollback();
