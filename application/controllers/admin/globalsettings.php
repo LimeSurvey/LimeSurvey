@@ -399,6 +399,8 @@ class GlobalSettings extends Survey_Common_Action
         $oSurvey = SurveysGroupsettings::model()->findByPk($gsid);
         $oSurvey->setOptions();
 
+        $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
+
         if (isset($_POST)) {
             $oSurvey->attributes = $_POST;
             $oSurvey->gsid = 0;
@@ -424,10 +426,23 @@ class GlobalSettings extends Survey_Common_Action
         }
 
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->clientScript->registerPackage('globalsidepanel');
 
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-
+        $aData['jsData'] = [
+            'baseLinkUrl' => 'admin/globalsettings/sa/surveysettings',
+            'getUrl' => Yii::app()->createUrl('admin/globalsettings/sa/surveysettingmenues'),
+            'i10n' => [
+                'Survey settings' => gT('Survey settings')
+            ]
+        ];
+        $aData['partial'] = $sPartial;
         $this->_renderWrappedTemplate('global_settings', 'surveySettings', $aData);
+    }
+
+    public function surveysettingmenues() {
+        $menues = Surveymenu::model()->getMenuesForGlobalSettings();
+        Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
     }
 
     /**

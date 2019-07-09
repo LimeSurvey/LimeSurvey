@@ -36,13 +36,34 @@ App()->getClientScript()->registerScript("tabCreate-view-variables", "
         </div>
         <div class="grow-10 ls-space padding left-10 right-10">
             <ul class="nav nav-tabs" role="tablist" id="create_survey_tablist">
-                <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab"><?=gT("Text elements")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="2" href="#general-settings" data-toggle="tab"><?=gT("General settings")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="3" href="#datasecurity" data-toggle="tab"><?=gT("Data policy settings")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="4" href="#presentation" data-toggle="tab"><?=gT("Presentation & navigation")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="5" href="#publication" data-toggle="tab"><?=gT("Publication & access control")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="6" href="#data-management" data-toggle="tab"><?=gT("Notification & data management")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="7" href="#tokens" data-toggle="tab"><?=gT("Participant settings")?></a></li>
+                <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab">
+                    <i class="fa fa-file-text-o"></i>&nbsp;
+                    <?=gT("Text elements")?></a>
+                </li>
+                <li><a class="create_survey_wizard_tabs" data-count="2" href="#general-settings" data-toggle="tab">
+                    <i class="fa fa-gears"></i>&nbsp;
+                    <?=gT("General settings")?></a>
+                </li>
+                <li><a class="create_survey_wizard_tabs" data-count="3" href="#datasecurity" data-toggle="tab">
+                    <i class="fa fa-shield"></i>&nbsp;
+                    <?=gT("Data policy settings")?></a>
+                </li>
+                <li><a class="create_survey_wizard_tabs" data-count="4" href="#presentation" data-toggle="tab">
+                    <i class="fa fa-eye-slash"></i>&nbsp;
+                    <?=gT("Presentation & navigation")?></a>
+                </li>
+                <li><a class="create_survey_wizard_tabs" data-count="5" href="#publication" data-toggle="tab">
+                    <i class="fa fa-key"></i>&nbsp;
+                    <?=gT("Publication & access control")?></a>
+                </li>
+                <li><a class="create_survey_wizard_tabs" data-count="6" href="#data-management" data-toggle="tab">
+                    <i class="fa fa-feed"></i>&nbsp;
+                    <?=gT("Notification & data management")?></a>
+                </li>
+                <li><a class="create_survey_wizard_tabs" data-count="7" href="#tokens" data-toggle="tab">
+                    <i class="fa fa-users"></i>&nbsp;
+                    <?=gT("Participant settings")?></a>
+                </li>
             </ul>
         </div>
         <div class="grow-1 ls-flex-column fill align-items-center align-content-center">

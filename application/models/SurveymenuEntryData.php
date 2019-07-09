@@ -17,7 +17,7 @@ class SurveymenuEntryData extends CFormModel
     /**
      * @param integer|null $surveyid
      */
-    public function apply($menuEntry, $surveyid)
+    public function apply($menuEntry, $surveyid=null)
     {
         $this->surveyid = $surveyid;
         $this->menuEntry = $menuEntry;

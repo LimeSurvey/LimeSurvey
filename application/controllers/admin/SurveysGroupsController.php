@@ -135,6 +135,7 @@ class SurveysGroupsController extends Survey_Common_Action
 
         $aData['model'] = $model;
 
+        $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
         $oSurvey = SurveysGroupsettings::model()->findByPk($model->gsid);
         $oSurvey->setOptions();
         $oSurvey->owner_id = $model->owner_id;
@@ -171,9 +172,18 @@ class SurveysGroupsController extends Survey_Common_Action
         $aData['pageSize'] = Yii::app()->user->getState('pageSizeTemplateView', Yii::app()->params['defaultPageSize']); // Page size
 
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->clientScript->registerPackage('globalsidepanel');
 
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-
+        $aData['jsData'] = [
+            'sgid' => $id,
+            'baseLinkUrl' => 'admin/surveysgroups/sa/surveysettings/id/'.$id,
+            'getUrl' => Yii::app()->createUrl('admin/globalsettings/sa/surveysettingmenues'),
+            'i10n' => [
+                'Survey settings' => gT('Survey settings')
+            ]
+        ];
+        $aData['partial'] = $sPartial;
 
         $this->_renderWrappedTemplate('surveysgroups', 'surveySettings', $aData);
     }

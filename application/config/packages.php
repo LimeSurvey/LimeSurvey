@@ -144,6 +144,26 @@ return array(
             'lslog',
         )
     ),
+    'globalsidepanel' => array(
+       'devBaseUrl' => 'assets/packages/globalsidepanel/',
+       'basePath' => 'core.globalsidepanel',
+       'position' =>CClientScript::POS_END,
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/globalsidepanel.js',
+            )
+            : array(
+                'build.min/js/globalsidepanel.js'
+            )
+        ),
+       'css' => array(
+           'build.min/css/main.css'
+       ),
+       'depends' => array(
+           'adminbasics'
+       )
+    ),
     'adminsidepanel' => array(
        'devBaseUrl' => 'assets/packages/adminsidepanel/',
        'basePath' => 'core.adminsidepanel',
