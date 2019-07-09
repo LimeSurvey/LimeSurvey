@@ -79,17 +79,20 @@ class ParticipantAttribute extends LSActiveRecord
      */
     public function updateParticipantAttributeValue($data)
     {
-        $query = Yii::app()->db->createCommand()
-            ->select('*')
-            ->where("participant_id='".$data['participant_id']."' AND attribute_id = ".$data['attribute_id'])
+        $result = Yii::app()->db->createCommand()
+            ->select('COUNT(*)')
+            ->where(
+                "participant_id = :participant_id AND attribute_id = :attribute_id",
+                [":participant_id" => $data['participant_id'], ':attribute_id' => $data['attribute_id']]
+            )
             ->from('{{participant_attribute}}')
-            ->queryAll();
-        if (count($query) > 0) {
+            ->queryScalar();
+        if ($result > 0) {
             Yii::app()->db->createCommand()
-                    ->update('{{participant_attribute}}', $data, "participant_id = '".$data['participant_id']."' AND attribute_id = ".$data['attribute_id']);
+                ->update('{{participant_attribute}}', $data, "participant_id = '".$data['participant_id']."' AND attribute_id = ".$data['attribute_id']);
         } else {
             Yii::app()->db->createCommand()
-                    ->insert('{{participant_attribute}}', $data);
+                ->insert('{{participant_attribute}}', $data);
         }
     }
 
@@ -100,5 +103,4 @@ class ParticipantAttribute extends LSActiveRecord
     public function getSurveyId() {
         return 0;
     }
-
 }
