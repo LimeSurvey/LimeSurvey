@@ -83,6 +83,7 @@ class ParticipantActionTest extends TestBaseClass
         // Inject our dummy AjaxHelper into the controller.
         $participantController->setAjaxHelper($dummyAjaxHelper);
 
+        // Thanks to dummy AjaxHelper, this will not die.
         $participantController->updateParticipant($data, $extraAttributes);
 
         $this->assertEquals('outputSuccess', $dummyAjaxHelper::$called);
