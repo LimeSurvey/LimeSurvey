@@ -115,6 +115,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         if (empty($aAdvancedOptionsArray)){
             foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
+                if($sAttributeName == 'question_template') { continue; } // Avoid double displaying
                 $aAdvancedOptionsArray[$aQuestionAttributeArray['category']][$sAttributeName] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray);
             }
         }
