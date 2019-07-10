@@ -38,13 +38,25 @@ App()->getClientScript()->registerScript("tokens-panel-variables", "
         <div class="col-sm-12 col-md-6">
             <!--  Set token length to -->
             <div class="form-group">
-                <label class=" control-label" for='tokenlength'><?php  eT("Set token length to:"); ?></label>
-                <div class="">
-                    <input type='text' value="<?php echo $oSurvey->tokenlength ?>" name='tokenlength' id='tokenlength' size='4' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')"  class="form-control selector-numerical-input" />
-                    <?php if ($bShowInherited){ ?>
-                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->tokenlength . ']'; ?></span></br>
-                        <span class='annotation'> <?php echo eT("Set this field to -1 to apply inherited value."); ?></span>
-                    <?php } ?>
+                <?php $tokenlength = $oSurvey->tokenlength; ?>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                        <label class=" control-label"  for='tokenlength'><?php  eT("Set token length to:"); ?></label>
+                            <input class="form-control inherit-edit <?php echo $tokenlength === '-1' ? 'hide' : 'show'; ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='tokenlength' name='tokenlength' value="<?php echo htmlspecialchars($tokenlength); ?>" data-inherit-value="-1" data-saved-value="<?php echo $tokenlength; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo $tokenlength === '-1' ? 'show' : 'hide'; ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->tokenlength); ?>" readonly />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right">
+                        <label class=" control-label content-center col-sm-12"  for='tokenlength'><?php  eT("Inherit:"); ?></label>
+                        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'tokenlengthbutton',
+                            'value'=> $tokenlength === '-1' ? 'Y' : 'N',
+                            'selectOptions'=>$optionsOnOff,
+                            'htmlOptions' => array(
+                                'class' => 'text-option-inherit'
+                                )
+                            ));
+                            ?>
+                    </div>
                 </div>
             </div>
         </div>

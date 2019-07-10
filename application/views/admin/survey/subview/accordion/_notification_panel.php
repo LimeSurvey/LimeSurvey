@@ -179,25 +179,52 @@ $googleAnalyticsStyleOptions = array(
             </div>
             <!-- email basic to -->
             <div class="form-group">
-                <label class=" control-label" for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::textField('emailnotificationto',$oSurvey->emailnotificationto,array('size'=>70, 'class'=>"form-control")); ?>
-                    <?php if ($bShowInherited){ ?>
-                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->emailnotificationto . ']'; ?></span>
-                    <?php } ?>
+            <?php $emailnotificationto = $oSurvey->emailnotificationto; ?>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                        <label class=" control-label"  for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
+                            <input class="form-control inherit-edit <?php echo $emailnotificationto === 'inherit' ? 'hide' : 'show'; ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="<?php echo htmlspecialchars($emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailnotificationto; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo $emailnotificationto === 'inherit' ? 'show' : 'hide'; ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailnotificationto); ?>" readonly />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right">
+                        <label class=" control-label content-center col-sm-12"  for='emailnotificationto'><?php  eT("Inherit:"); ?></label>
+                        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'emailnotificationtobutton',
+                            'value'=> $emailnotificationto === 'inherit' ? 'Y' : 'N',
+                            'selectOptions'=>$optionsOnOff,
+                            'htmlOptions' => array(
+                                'class' => 'text-option-inherit'
+                                )
+                            ));
+                            ?>
+                    </div>
                 </div>
             </div>
 
             <!-- email detail to  -->
             <div class="form-group">
-                <label class=" control-label" for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::textField('emailresponseto',$oSurvey->emailresponseto,array('size'=>70, 'class'=>"form-control")) ?>
-                    <?php if ($bShowInherited){ ?>
-                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->emailresponseto . ']'; ?></span>
-                    <?php } ?>
+            <?php $emailresponseto = $oSurvey->emailresponseto; ?>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                        <label class=" control-label"  for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
+                            <input class="form-control inherit-edit <?php echo $emailresponseto === 'inherit' ? 'hide' : 'show'; ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailresponseto' name='emailresponseto' value="<?php echo htmlspecialchars($emailresponseto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailresponseto; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo $emailresponseto === 'inherit' ? 'show' : 'hide'; ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailresponseto); ?>" readonly />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right">
+                        <label class=" control-label content-center col-sm-12"  for='emailresponseto'><?php  eT("Inherit:"); ?></label>
+                        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'emailresponsetobutton',
+                            'value'=> $emailresponseto === 'inherit' ? 'Y' : 'N',
+                            'selectOptions'=>$optionsOnOff,
+                            'htmlOptions' => array(
+                                'class' => 'text-option-inherit'
+                                )
+                            ));
+                            ?>
+                    </div>
                 </div>
             </div>
+        
             <?php if ($bShowAllOptions === true){ ?>
             <!-- GoogleAnalytics settings to be used -->
             <div class="form-group">

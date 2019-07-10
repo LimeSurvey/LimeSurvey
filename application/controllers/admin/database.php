@@ -1027,7 +1027,7 @@ class database extends Survey_Common_Action
             $oSurvey->googleanalyticsstyle = $this->_filterEmptyFields($oSurvey, 'googleanalyticsstyle');
 
             $tokenlength = $this->_filterEmptyFields($oSurvey, 'tokenlength');
-            $oSurvey->tokenlength = (int) (($tokenlength < 5 || $tokenlength > 36) ? 15 : $tokenlength);
+            $oSurvey->tokenlength = (int) ((($tokenlength < 5 || $tokenlength > 36) && $tokenlength != -1) ? 15 : $tokenlength);
 
             $event = new PluginEvent('beforeSurveySettingsSave');
             $event->set('modifiedSurvey', $oSurvey);
