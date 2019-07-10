@@ -27,31 +27,31 @@ class AdminViewsTest extends TestBaseClassView
 
     public function addBaseViews()
     {
-        return require __DIR__."/../data/views/adminBaseViews.php";
+        return require __DIR__."/../../data/views/adminBaseViews.php";
     }
 
     public function addSurveyViews()
     {
-        return require __DIR__."/../data/views/adminSurveyViews.php";
+        return require __DIR__."/../../data/views/adminSurveyViews.php";
     }
 
     public function addSettingsViews()
     {
-        return require __DIR__."/../data/views/adminSettingsViews.php";
+        return require __DIR__."/../../data/views/adminSettingsViews.php";
     }
 
     public function addUsersViews()
     {
-        return require __DIR__."/../data/views/adminUsersViews.php";
+        return require __DIR__."/../../data/views/adminUsersViews.php";
     }
     public function addParticipantsViews()
     {
-        return require __DIR__."/../data/views/adminParticipantsViews.php";
+        return require __DIR__."/../../data/views/adminParticipantsViews.php";
     }
 
     public function addGeneralSettingsViews()
     {
-        return require __DIR__."/../data/views/adminGeneralSettingsViews.php";
+        return require __DIR__."/../../data/views/adminGeneralSettingsViews.php";
     }
 
     /**
