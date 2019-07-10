@@ -1607,7 +1607,34 @@ class SurveyAdmin extends Survey_Common_Action
         foreach ($oResult as $aRecord) {
             $aQuestions[] = array_merge($aRecord->attributes, $aRecord->questionL10ns[$survey->language]->attributes);
         }
-        $aData['questions'] = $aQuestions;
+
+        $aData['jsData'] = [
+            'i10n' => [
+                'ID' => gT('ID'),
+                'Action' => gT('Action'),
+                'Parameter' => gT('Parameter'),
+                'Target question' => gT('Target question'),
+                'Survey ID' => gT('Survey id'),
+                'Question ID' => gT('Question id'),
+                'Subquestion ID' => gT('Subquestion ID'),
+                'Add URL parameter' => gT('Add URL parameter'),
+                'Edit URL parameter' => gT('Edit URL parameter'),
+                'Add URL parameter' => gT('Add URL parameter'),
+                'Parameter' => gT('Parameter'),
+                'Target question' => gT('Target question'),
+                'No target question' => gT('(No target question)'),
+                'Are you sure you want to delete this URL parameter?' => gT('Are you sure you want to delete this URL parameter?'),
+                'No, cancel' => gT('No, cancel'),
+                'Yes, delete' => gT('Yes, delete'),
+                'Save' => gT('Save'),
+                'Cancel' => gT('Cancel'),
+            ],
+            "questionList" => $aQuestions,
+            "surveyid" => $survey->sid,            
+            "getParametersUrl" => Yii::app()->createUrl('admin/survey/sa/getUrlParamsJson', array('surveyid' => $survey->sid)),
+        ];
+
+        App()->getClientScript()->registerPackage('panelintegration');
         return $aData;
     }
 
@@ -1719,10 +1746,13 @@ class SurveyAdmin extends Survey_Common_Action
         );
         foreach ($aSurveyParameters as $oSurveyParameter) {
             $row = $oSurveyParameter->attributes;
-            $row['questionTitle'] = $oSurveyParameter->question->title;
+            
+            if ($oSurveyParameter->targetqid != '') {
+                $row['questionTitle'] = $oSurveyParameter->question->questionL10ns[$sBaseLanguage]->title;
+            }
 
             if ($oSurveyParameter->targetsqid != '') {
-                $row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
+                $row['subQuestionTitle'] = $oSurveyParameter->subquestion->questionL10ns[$sBaseLanguage]->title;
             }
 
             $row['qid'] = $oSurveyParameter->targetqid;

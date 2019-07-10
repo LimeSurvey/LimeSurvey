@@ -2,8 +2,9 @@ import ajax from '../mixins/runAjax';
 import {LOG} from '../mixins/logSystem';
 
 export default {
-    updatePjax() {
+    updatePjax({commit}) {
         $(document).trigger('pjax:refresh');           
+        commit('newToggleKey');
     },
     getSidemenus(context) {
         return new Promise((resolve, reject) => {

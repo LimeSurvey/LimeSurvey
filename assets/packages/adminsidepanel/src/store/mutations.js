@@ -84,5 +84,8 @@ export default {
     },
     setSurveyActiveState(state, surveyState) {
         state.surveyActiveState = !!surveyState;
+    },
+    newToggleKey(state){
+        state.toggleKey = Math.floor(Math.random()*10000)+'--key';
     }
 };

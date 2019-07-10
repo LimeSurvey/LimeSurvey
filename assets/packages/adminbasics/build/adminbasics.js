@@ -19631,7 +19631,7 @@
 
             const call = evItem.delay > 0 ? () => {
               window.setTimeout(evItem.fn, evItem.delay);
-            } : fn;
+            } : evItem.fn;
 
             if (evItem.root !== 'document') {
               $(evItem.root).off(events.join(' '));

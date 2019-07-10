@@ -109,7 +109,7 @@ const AdminCore = function(){
             _.each(eventsBound, (eventMap, root) => {
                 _.each(eventMap, (evItem) => {
                     const events = _.map(evItem.event.split(' '), (event) => (event !== 'ready' ? event+'.admincore' : ''));
-                    const call = evItem.delay > 0 ? () => { window.setTimeout(evItem.fn, evItem.delay); } : fn;
+                    const call = evItem.delay > 0 ? () => { window.setTimeout(evItem.fn, evItem.delay); } : evItem.fn;
                     if(evItem.root !== 'document') {
                         $(evItem.root).off(events.join(' '));
                         $(evItem.root).on(events.join(' '), call);

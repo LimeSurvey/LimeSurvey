@@ -1,10 +1,8 @@
 //globals formId
 import Vue from "vue";
-Vue.config.devtools = false;
+Vue.config.devtools = true;
 
 import Sidebar from "./components/sidebar.vue";
-import Topbar from "./components/topbar.vue";
-import ParameterTable from "./components/parameter-table.vue";
 import getAppState from "./store/vuex-store.js";
 import {PluginLog} from "./mixins/logSystem.js";
 import Loader from './helperComponents/loader.vue';
@@ -19,8 +17,8 @@ Vue.component('loader-widget', Loader);
 Vue.mixin({
     methods: {
         updatePjaxLinks: function () {
-            //this.$store.dispatch("updatePjax");
             this.$forceUpdate();
+            this.$store.commit('newToggleKey');
         },
         redoTooltips: function () {
             window.LS.doToolTip();
@@ -56,17 +54,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
         const bodyWidth = (1 - (parseInt($('#sidebar').width()) / $('#vue-apps-main-container').width())) * 100;
         const collapsedBodyWidth = (1 - (parseInt('98px') / $('#vue-apps-main-container').width())) * 100;
         const inSurveyViewWidth = Math.floor($('#sidebar').data('collapsed') ? bodyWidth : collapsedBodyWidth) + '%';
-        console.ls.log({
-            adminmenuHeight,
-            footerHeight,
-            menuHeight,
-            inSurveyOffset,
-            windowHeight,
-            inSurveyViewHeight,
-            bodyWidth,
-            collapsedBodyWidth,
-            inSurveyViewWidth
-        });
+
         panelNameSpace["surveyViewHeight"] = inSurveyViewHeight;
         panelNameSpace["surveyViewWidth"] = inSurveyViewWidth;
         $('#pjax-content').css({
@@ -105,22 +93,7 @@ const Lsadminsidepanel = (userid, surveyid) => {
         });
     };
 
-    const createParameterTable = () => {
-        return new Vue({
-            el: "#vue-parameter-table-container",
-            store: AppState,
-            components: {
-                lspanelparametertable: ParameterTable,
-            },
-            mounted() {
-                applySurveyId(this.$store);
-            }
-        });
-    };
-
-
     const applyPjaxMethods = () => {
-
         panelNameSpace.reloadcounter = 5;
         $(document)
             .off("pjax:send.panelloading")
@@ -181,10 +154,6 @@ const Lsadminsidepanel = (userid, surveyid) => {
         if (document.getElementById("vue-sidebar-container")) {
             panelNameSpace['sidemenu'] = createSideMenu();
         }
-        if (document.getElementById("vue-parameter-table-container")) {
-            panelNameSpace['parameterTable'] = createParameterTable();
-        }
-
         $(document).on("click", "ul.pagination>li>a", () => {
             $(document).trigger('pjax:refresh');
         });

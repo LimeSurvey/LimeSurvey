@@ -7,7 +7,8 @@
     "build": "yarn run dev && yarn run prod",
     "prod": "vue-cli-service build",
     "dev": "vue-cli-service build --mode=developement",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "watch" : "vue-cli-service build --mode=developement --watch"
   },
   "dependencies": {
     "core-js": "^2.6.5",

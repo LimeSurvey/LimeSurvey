@@ -23,6 +23,7 @@ export default  function(userid) {
         sidemenus: null,
         topmenus: null,
         bottommenus: null,
-        surveyActiveState: false
+        surveyActiveState: false,
+        toggleKey: Math.floor(Math.random()*10000)+'--key'
     };
 };

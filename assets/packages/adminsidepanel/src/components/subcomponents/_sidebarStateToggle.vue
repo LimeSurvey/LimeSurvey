@@ -1,5 +1,5 @@
 <template>
-    <div class="ls-space margin bottom-15 top-5 col-12" style="height: 40px;">
+    <div class="ls-space margin bottom-15 top-5 col-12" style="height: 40px;" :key="currentKey">
         <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 right-10 bottom-0 top-0">
             <transition name="fade">
                 <button class="btn btn-default ls-space padding left-15 right-15" v-if="!$store.state.isCollapsed" @click="$emit('collapse')">
@@ -41,6 +41,7 @@
 export default {
     name: 'sidebar-state-toggle',
     computed: {
+        currentKey() { return this.$store.state.toggleKey; },
         currentTab: {
             get() { return this.$store.state.currentTab; },
             set(newVal) { this.$store.commit("changeCurrentTab", newVal); }

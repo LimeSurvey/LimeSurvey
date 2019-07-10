@@ -144,6 +144,26 @@ return array(
             'lslog',
         )
     ),
+    'panelintegration' => array(
+       'devBaseUrl' => 'assets/packages/panelintegration/',
+       'basePath' => 'core.panelintegration',
+       'position' =>CClientScript::POS_END,
+       'js' => (
+           $debug > 0
+            ? array(
+                'build/js/panelintegration.js',
+            )
+            : array(
+                'build.min/js/panelintegration.js'
+            )
+        ),
+       'css' => array(
+           'build.min/css/main.css'
+       ),
+       'depends' => array(
+           'adminbasics'
+       )
+    ),
     'globalsidepanel' => array(
        'devBaseUrl' => 'assets/packages/globalsidepanel/',
        'basePath' => 'core.globalsidepanel',

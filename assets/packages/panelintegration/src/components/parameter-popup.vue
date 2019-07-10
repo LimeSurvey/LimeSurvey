@@ -4,22 +4,20 @@ export default {
     components : {},
     mixins : {},
     props : {
-        'translate': {type: Object},
-        'parameterRow': {type: Object},
-        'questions' : {type: Array},
         'isNew' : {type: Boolean},
     },
-    data(){
-        return {
-            'currentQuestion' : this.selectedQuestion
-        };
-    },
     computed : {
-        selectedQuestion(){
-            return LS.ld.find(this.questions, (item,i)=>{ return (this.parameterRow.qid == item.qid && ( item.sqid == null || item.sqid == this.parameterRow.sqid)); });
+        availableQuestions() { return this.$store.state.questionArray},
+        currentQuestion: {
+            get() { return this.$store.state.currentSelectedQuestion; },
+            set(newValue) { this.$store.commit('setCurrentSelectedQuestion', newValue)}
+        },
+        parameterRow: {
+            get(){ return this.$store.state.currentSelectedParameter; },
+            set(newValue){ this.$store.commit('setCurrentSelectedParameter', newValue)},
         },
         popupTitle(){
-            return this.isNew ? this.translate.popup.newParam : this.translate.popup.editParam ;
+            return this.isNew ? this.translate('New parameter') : this.translate('Edit parameter') ;
         },
         isValid(){
             return !(
@@ -62,13 +60,23 @@ export default {
 
         },
         updateValues($event){
-            this.currentQuestion = this.questions[$event.target.value];
+            this.currentQuestion = this.availableQuestions[$event.target.value];
             this.parameterRow.qid = this.currentQuestion.qid;
             this.parameterRow.sqid = this.currentQuestion.sqid || '';
             this.parameterRow.targetQuestionText = this.printQuestion(this.currentQuestion);
         }
     },
-    created(){},
+    created(){
+        this.currentQuestion = LS.ld.find( 
+            this.availableQuestions, 
+            (item,i)=>{ 
+                return ( 
+                    this.parameterRow.qid == item.qid
+                    && ( item.sqid == null || item.sqid == this.parameterRow.sqid)
+                ); 
+            }
+        );
+    },
     mounted(){}  
 }
 </script>
@@ -82,19 +90,23 @@ export default {
         <div class="modal-body">
             <div class='row'>
                 <div class='form-group'>
-                    <label class='control-label' for='paramname'>{{translate.popup.paramName}}</label>
+                    <label class='control-label' for='paramname'>{{'Parameter name' | translate}}</label>
                     <div class=''>
                         <input class='form-control' name='paramname' type='text' v-model="parameterRow.parameter" size='20' />
                     </div>
                 </div>
                 <div class='form-group'>
-                    <label class='control-label ' for='targetquestion'>{{translate.popup.targetQuestion}}</label>
+                    <label class='control-label ' for='targetquestion'>{{'Target question' | translate}}</label>
                     <div class=''>
                         <select class='form-control' name='targetquestion' size='1' @change="updateValues($event)">
-                            <option value=''>{{translate.popup.noTargetQuestion}}</option>
-                            <option v-for="(question, index) in questions" v-bind:key="question.qid" :value="index" :selected="question.qid==parameterRow.qid">
-                                {{printQuestion(question)}} 
-                            </option>
+                            <option value=''>{{'No target question'|translate}}</option>
+                            <option 
+                                v-for="(question, index) in availableQuestions" 
+                                v-bind:key="question.qid" 
+                                :value="index" 
+                                :selected="question.qid==parameterRow.qid"
+                                v-html="printQuestion(question)" 
+                            />
                         </select>
                     </div>
                 </div>
@@ -106,9 +118,9 @@ export default {
                     <div class='col-sm-12 text-center'>
                         <button class='btn btn-success' v-show="isValid" @click.prevent="saveChangedParameter()">
                             <span class="fa fa-floppy-o"></span>
-                            {{translate.popup.save}}
+                            {{'Save'|translate}}
                         </button>
-                        <button class='btn btn-danger' @click.prevent="cancelEditParameter()" >{{translate.popup.cancel}}</button>
+                        <button class='btn btn-danger' @click.prevent="cancelEditParameter()" >{{'Cancel'|translate}}</button>
                     </div>
                 </div>
             </div>
