@@ -177,7 +177,30 @@ class UploaderController extends SurveyController
             }
             /* extension checked : check mimeType */
             $extByMimeType = CFileHelper::getExtensionByMimeType($_FILES['uploadfile']['tmp_name'], null);
-            if ($extByMimeType === false || !in_array($extByMimeType, $valid_extensions_array)) {
+            $disableCheck = false;
+            if(is_null($extByMimeType)) {
+                /* Lack of finfo_open or mime_content_type ? But can be a not found extension too.*/
+                /* Check if can find mime type of favicon.ico , without extension */
+                if(CFileHelper::getMimeType(APPPATH."favicon.ico", null, false) != 'ico') { // hope we have favicon.ico for a long time
+                    $disableCheck = true;
+                    Yii::log("Unable to check mime type of files, check for finfo_open or mime_content_type function.",\CLogger::LEVEL_ERROR,'application.controller.uploader.upload');
+                    if( YII_DEBUG || Permission::isForcedSuperAdmin(Permission::getUserId()) ) {
+                        /* This is a security issue and a server issue : always show at forced super admin */
+                        throw new CHttpException(500, "Unable to check mime type of files, please activate FileInfo on server.");
+                    }
+                }
+            }
+            if(!$disableCheck && empty($extByMimeType)) {
+                // FileInfo is OK, but can not find the mime type of file …
+                $return = array(
+                    "success" => false,
+                    "msg" => gT("Sorry, unable to check this file type!"),
+                );
+                //header('Content-Type: application/json');
+                echo ls_json_encode($return);
+                Yii::app()->end();
+            }
+            if (!$disableCheck && !in_array($extByMimeType, $valid_extensions_array)) {
                 $realMimeType = CFileHelper::getMimeType($_FILES['uploadfile']['tmp_name'], null,false);
                 $return = array(
                     "success" => false,
