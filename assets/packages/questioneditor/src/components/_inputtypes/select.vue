@@ -41,7 +41,13 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0) && !readonly" />
+        <i 
+            class="fa fa-question pull-right" 
+            @click="triggerShowHelp=!triggerShowHelp" 
+            v-if="(elHelp.length>0) && !readonly" 
+            :aria-expanded="!triggerShowHelp" 
+            :aria-controls="'help-'+(elName || elId)"
+        />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
         <select 
             v-model="curValue"
@@ -58,10 +64,13 @@
                 {{optionObject.text}}
             </option>
         </select>
-        <div 
-            class="question-option-help alert alert-info"
-            v-if="showHelp"
-            v-html="elHelp"
-        />
+        <transition name="fade">
+            <div 
+                class="question-option-help well"
+                :id="'help-'+(elName || elId)"
+                v-show="showHelp"
+                v-html="elHelp"
+            />
+        </transition>
     </div>
 </template>

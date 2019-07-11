@@ -45,26 +45,35 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0) && !readonly" />
-        <label class="form-label" :for="elId"> {{elLabel}} </label>
-            <div class="input-group col-12">
-                <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
-                <input 
-                    type="number" 
-                    v-model="curValue" 
-                    :class="getClasses" 
-                    :name="elName || elId" 
-                    :id="elId" 
-                    :max="elOptions.max || ''"
-                    :min="elOptions.min || ''"
-                    :readonly="readonly"
-                />
-                <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
-            </div>
-        <div 
-            class="question-option-help alert alert-info"
-            v-if="showHelp"
-            v-html="elHelp"
+        <i 
+            class="fa fa-question pull-right" 
+            @click="triggerShowHelp=!triggerShowHelp" 
+            v-if="(elHelp.length>0) && !readonly" 
+            :aria-expanded="!triggerShowHelp" 
+            :aria-controls="'help-'+(elName || elId)"
         />
+        <label class="form-label" :for="elId"> {{elLabel}} </label>
+        <div class="input-group col-12">
+            <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
+            <input 
+                type="number" 
+                v-model="curValue" 
+                :class="getClasses" 
+                :name="elName || elId" 
+                :id="elId" 
+                :max="elOptions.max || ''"
+                :min="elOptions.min || ''"
+                :readonly="readonly"
+            />
+            <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
+        </div>
+        <transition name="fade">
+            <div 
+                class="question-option-help well"
+                :id="'help-'+(elName || elId)"
+                v-show="showHelp"
+                v-html="elHelp"
+            />
+        </transition>
     </div>
 </template>

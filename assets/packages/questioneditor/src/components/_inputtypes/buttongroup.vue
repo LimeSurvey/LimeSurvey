@@ -56,7 +56,13 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0) && !readonly" />
+        <i 
+            class="fa fa-question pull-right" 
+            @click="triggerShowHelp=!triggerShowHelp" 
+            v-if="(elHelp.length>0) && !readonly" 
+            :aria-expanded="!triggerShowHelp" 
+            :aria-controls="'help-'+(elName || elId)"
+        />
         <label class="form-label"> {{elLabel}} </label>
         <div class="btn-group col-12">
             <label 
@@ -78,10 +84,13 @@
                 {{optionObject.text}}
             </label>
         </div>
-        <div 
-            class="question-option-help alert alert-info"
-            v-if="showHelp"
-            v-html="elHelp"
-        />
+        <transition name="fade">
+            <div 
+                class="question-option-help well"
+                v-show="showHelp"
+                :id="'help-'+(elName || elId)" 
+                v-html="elHelp"
+            />
+        </transition>
     </div>
 </template>
