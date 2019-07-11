@@ -29,15 +29,16 @@ export default {
     },
     watch: {
         content(newContent){
-            // try {
+            try {
                 const contents = this.documentIframe.contents();
                 this.$log.log(this.$documentIframe);
                 this.$log.log(contents);
-                this.documentIframe[0].contentWindow.postMessage({run: 'trigger::newContent', content: newContent}, '*' );
-                this.documentIframe[0].contentWindow.postMessage({run: 'trigger::pjax:scriptcomplete'}, '*');
-            // } catch(e){
-            //     this.$log.trace(e);
-            // }
+                this.documentIframe.contents().find('html').text('');
+                this.documentIframe.contents().find('html').html(newContent);
+                this.documentIframe[0].contentWindow.jQuery(document).trigger('pjax:scriptcomplete');
+            } catch(e){
+                this.$log.error(e);
+            }
         }
     },
     mounted() {
