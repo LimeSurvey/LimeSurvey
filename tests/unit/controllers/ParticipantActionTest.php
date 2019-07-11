@@ -3,12 +3,37 @@
 namespace ls\tests\controllers;
 
 use ls\tests\TestBaseClass;
+use PHPUnit\DbUnit\TestCaseTrait;
 
 /**
  * Test the participantsaction controller class.
  */
 class ParticipantActionTest extends TestBaseClass
 {
+    use TestCaseTrait;
+
+    /**
+     * @return PHPUnit_Extensions_Database_DB_IDatabaseConnection
+     */
+    public function getConnection()
+    {
+        $config = include(APPPATH . '/config/config.php');
+        $dsn = 'mysql:dbname=limesurvey;host=localhost';
+        $user = $config['components']['db']['username'];
+        $password = $config['components']['db']['password'];
+        $pdo = new \PDO($dsn, $user, $password);
+        return $this->createDefaultDBConnection($pdo);
+    }
+
+    /**
+     * @return PHPUnit_Extensions_Database_DataSet_IDataSet
+     */
+    public function getDataSet()
+    {
+        libxml_disable_entity_loader(false);
+        return $this->createFlatXMLDataSet(ROOT . '/tests/data/datasets/participantattributes.xml');
+    }
+
     /**
      * @group pp
      */
@@ -22,13 +47,7 @@ class ParticipantActionTest extends TestBaseClass
         $participantController = new \participantsaction('dummy');
 
         // TODO: Use PHPUnit dataset instead? https://phpunit.de/manual/6.5/en/database.html
-        $attrName = new \ParticipantAttributeName();
-        $attrName->attribute_type = 'TB';
-        $attrName->defaultname    = 'encrypted';
-        $attrName->visible        = 'TRUE';
-        $attrName->encrypted      = 'Y';
-        $attrName->core_attribute = 'N';
-        $this->assertTrue($attrName->save());
+        $attribute_id = 10;
 
         $attrName2 = new \ParticipantAttributeName();
         $attrName2->attribute_type = 'TB';
@@ -58,7 +77,7 @@ class ParticipantActionTest extends TestBaseClass
 
         /** @var array<string, string> */
         $extraAttributes = [
-            'ea_' . $attrName->attribute_id => 'Some encrypted value',
+            'ea_' . $attribute_id => 'Some encrypted value',
             'ea_' . $attrName2->attribute_id => 'Some value'
         ];
 
@@ -91,7 +110,7 @@ class ParticipantActionTest extends TestBaseClass
         $attrValue = \ParticipantAttribute::model()->findByAttributes(
             [
                 'participant_id' => $part->participant_id,
-                'attribute_id'   => $attrName->attribute_id
+                'attribute_id'   => $attribute_id
             ]
         );
 
@@ -110,7 +129,6 @@ class ParticipantActionTest extends TestBaseClass
         // Equal, because it is NOT encrypted.
         $this->assertEquals('Some value', $attrValue2->value);
 
-        $this->assertTrue($attrName->delete());
         $this->assertTrue($attrName2->delete());
         $this->assertTrue($attrValue->delete());
         $this->assertTrue($attrValue2->delete());
