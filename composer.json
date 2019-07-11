@@ -29,7 +29,8 @@
 		}
 	},
 	"require": {
-		"facebook/webdriver": "^1.4"
+		"facebook/webdriver": "^1.4",
+		"phpunit/dbunit": "^4.0"
 	},
     "config": {
         "vendor-dir": "third_party",
