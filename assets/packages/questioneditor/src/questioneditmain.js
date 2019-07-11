@@ -23,21 +23,6 @@ Vue.component('loader-widget', Loader);
 
 Vue.mixin({
     methods: {
-        toggleLoading(forceState=null) {
-            if(forceState !== null) {
-                if(forceState) {
-                    $('#questionEditLoader').fadeIn(200);
-                } else {
-                    $('#questionEditLoader').fadeOut(400);
-                }
-                return;
-            }
-            if($('#questionEditLoader').css('display') == 'none') {
-                $('#questionEditLoader').fadeIn(200);
-                return;
-            }
-            $('#questionEditLoader').fadeOut(400);
-        },
         translate(value) {
             return window.QuestionEditData.i10N[value] || value;
         }

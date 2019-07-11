@@ -89,10 +89,30 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderTemplateForQuestionEditPreview($sLayout, $aDatas, $root = false, $bReturn  = false)
     {
         $root = (bool) $root;
-        $oTemplate = Template::model()->getInstance();
+        $oTemplate = Template::getInstance($aDatas['aSurveyInfo']['template'],null,null,null,null,true);
         $oLayoutTemplate = $this->getTemplateForView($sLayout, $oTemplate);
         if ($oLayoutTemplate) {
-            
+            $postMessageScripts = "
+var eventset = true;
+window.addEventListener('message', function(event) {
+    if(eventset){ console.log(event); eventset=!eventset;}
+    event.source.postMessage({msg: 'EVENT COLLECTED', event: event.data}, '*');
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + '//' + getUrl.host + '/' + getUrl.pathname.split('/')[1];
+    
+    if (baseUrl.match(event.origin) && event.data.run == 'trigger::pjax:scriptcomplete' ) {
+        console.log('runScriptcomplete');
+        jQuery(document).trigger('pjax:scriptcomplete');
+    }
+
+    if (baseUrl.match(event.origin) && event.data.run == 'trigger::newContent' ) {
+        console.log('replaceContent');
+        jQuery('#questionPreview--content').text('');
+        jQuery('#questionPreview--content').html(event.data.content);
+    }
+}, false);  
+";
+            App()->getClientScript()->registerScript('postMessageScripts', $postMessageScripts, CClientScript::POS_HEAD);
             $line = '<div class="{{ aSurveyInfo.class.outerframe }}  {% if (aSurveyInfo.options.container == "on") %} container {% else %} container-fluid {% endif %} " id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >';
             $line .= file_get_contents($oLayoutTemplate->viewPath.$sLayout);
             $line .= '</div>';

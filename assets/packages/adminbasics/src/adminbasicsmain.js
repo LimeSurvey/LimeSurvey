@@ -117,7 +117,7 @@ const AdminCore = function(){
                 });
             });
             surveyGrid();
-            LOG.log("Refreshed Admin core methods");
+            LOG.trace("Refreshed Admin core methods");
         },
         addToNamespace = (object, name="globalAddition") => {
             window.LS[name] = window.LS[name] || {};

@@ -383,7 +383,8 @@ class questionedit extends Survey_Common_Action
                 ],
             ]
         );
-        $oTemplate = Template::model()->getInstance($oQuestion->survey->template);
+        Template::resetInstance();
+        $oTemplate = Template::getInstance($oQuestion->survey->template);       
         Yii::app()->twigRenderer->renderTemplateForQuestionEditPreview(
             '/subviews/survey/question_container.twig',
             ['aSurveyInfo' => $aSurveyInfo, 'aQuestion' => $aQuestion, 'session' => $_SESSION],

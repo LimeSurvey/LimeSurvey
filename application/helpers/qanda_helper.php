@@ -3263,7 +3263,8 @@ function do_array_10point($ia)
 
     $sRows = '';
     $inputnames = [];
-    $sSurveyLanguage = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang'];
+    $iSurveyId = Question::model()->findByPk($ia[0])->sid;
+    $sSurveyLanguage = isset($_SESSION['survey_'.$iSurveyId]) ? $_SESSION['survey_'.$iSurveyId]['s_lang'] : Question::model()->findByPk($ia[0])->survey->language;
     foreach ($aSubquestions as $j => $ansrow) {
         $myfname = $ia[1].$ansrow['title'];
         $answertext = $ansrow->questionL10ns[$sSurveyLanguage]->question;
@@ -3276,11 +3277,11 @@ function do_array_10point($ia)
         $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         // Value
-        $value = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])) ? $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] : '';
+        $value = (isset($_SESSION['survey_'.$iSurveyId][$myfname])) ? $_SESSION['survey_'.$iSurveyId][$myfname] : '';
 
         $answer_tds = '';
         for ($i = 1; $i <= 10; $i++) {
-            $CHECKED = (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == $i) ? 'CHECKED' : '';
+            $CHECKED = (isset($_SESSION['survey_'.$iSurveyId][$myfname]) && $_SESSION['survey_'.$iSurveyId][$myfname] == $i) ? 'CHECKED' : '';
 
             $answer_tds .= doRender('/survey/questions/answer/arrays/10point/rows/cells/answer_td_input', array(
                 'i'=>$i,
@@ -3293,7 +3294,7 @@ function do_array_10point($ia)
         }
 
         if ($ia[6] != "Y" && SHOW_NO_ANSWER == 1) {
-            $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '') ? 'CHECKED' : '';
+            $CHECKED = (!isset($_SESSION['survey_'.$iSurveyId][$myfname]) || $_SESSION['survey_'.$iSurveyId][$myfname] == '') ? 'CHECKED' : '';
             $answer_tds .= doRender('/survey/questions/answer/arrays/10point/rows/cells/answer_td_input', array(
                 'i'=>'',
                 'labelText'=>gT('No answer'),

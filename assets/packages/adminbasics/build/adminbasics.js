@@ -19641,7 +19641,7 @@
         });
 
         onExistBinding();
-        adminCoreLSConsole.log("Refreshed Admin core methods");
+        adminCoreLSConsole.trace("Refreshed Admin core methods");
       },
             addToNamespace = (object, name = "globalAddition") => {
         window.LS[name] = window.LS[name] || {};

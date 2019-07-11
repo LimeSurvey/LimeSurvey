@@ -72,9 +72,6 @@ export default {
         toggleEditMode(){
             this.$emit('triggerEvent', { target: 'lsnextquestioneditor', method: 'triggerEditQuestion', content: {} });
         }
-    },
-    mounted(){
-        this.toggleLoading(false);
     }
 }
 </script>

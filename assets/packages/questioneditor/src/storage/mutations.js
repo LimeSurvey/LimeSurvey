@@ -170,5 +170,16 @@ export default {
     },
     setInTransfer: (state, transferState) => {
         state.inTransfer = transferState;
+    },
+    addAlert: (state, alertObject) => {
+        alertObject.key = state.alerts.length+1;
+        state.alerts.push(alertObject);
+    },
+    removeAlert: (state, alertKey) => {
+        let tmpAlerts = state.alerts.filter((alert) => { alert.key !== alertKey });
+        tmpAlerts.forEach((element,i) => {
+            element.key = i;
+        });
+        state.alerts = tmpAlerts;
     }
 };

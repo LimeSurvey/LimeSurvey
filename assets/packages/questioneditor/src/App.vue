@@ -25,10 +25,13 @@ export default {
         return {
             editQuestion: false,
             questionEditButton: window.questionEditButton,
-            loading: true
+            loading: true,
         }
     },
     computed: {
+        showAlerts() {
+            return this.$store.state.alerts.length > 0;
+        },
         isCreateQuestion(){
             return this.$store.state.currentQuestion.qid == null;
         },
@@ -47,7 +50,6 @@ export default {
     },
     methods: {
         triggerEditQuestion(){
-            this.toggleLoading(true);
             if(this.editQuestion) {
                 $('#questionbarid').slideDown()
                 $('#questiongroupbarid').slideUp();
@@ -94,28 +96,26 @@ export default {
             this.event = null;
         },
         submitCurrentState(redirect = false) {
-            this.toggleLoading();
             this.$store.dispatch('saveQuestionData').then(
                 (result) => {
                     if(result === false) {
                         return;
                     }
-                    this.toggleLoading();
+
                     if(redirect == true) {
                         window.location.href = result.data.redirect || window.location.href;
                     }
 
                     $('#in_survey_common').trigger('lsStopLoading');
-                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
+                    this.$store.commit('addAlert', {message: result.data.message, class: 'well-lg bg-primary text-center'});
                     this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
                     this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
                 (reject) => {
-                    this.toggleLoading();
                     $('#in_survey_common').trigger('lsStopLoading');
-                    window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
-                    //setTimeout(()=>{window.location.reload();}, 1500);
+                    this.$store.commit('addAlert', {message: "Question could not be stored. Reloading page.", class: 'well-lg bg-danger text-center'});
+                    setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
         },
@@ -157,14 +157,15 @@ export default {
         });
 
         $('#save-button').on('click', (e)=>{
+            e.preventDefault();
             this.submitCurrentState();
         });
 
         $('#save-and-close-button').on('click', (e)=>{
+            e.preventDefault();
             this.submitCurrentState(true);
         });
 
-        this.toggleLoading(false);
         if(this.isCreateQuestion || window.QuestionEditData.startInEditView) {
             $('#questionbarid').css({'display': 'none'});
             $('#questiongroupbarid').css({'display':''});
@@ -178,6 +179,26 @@ export default {
 
 <template>
     <div class="container-center scoped-new-questioneditor">
+        <transition name="slide-fade">
+            <div class="ls-flex ls-flex-row" v-show="showAlerts">
+                <div 
+                    v-for="alert in $store.state.alerts"
+                    :key="alert.key"
+                    class="col-xs-12 alert" 
+                    :class="alert.class" 
+                >
+                    <button 
+                        type="button" 
+                        class="close" 
+                        @click="$store.commit('removeAlert', alert.key)" 
+                        aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{alert.message}}
+                </div>
+            </div>
+        </transition>
         <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
             <button 
                 @click.prevent.stop="triggerEditQuestion" 

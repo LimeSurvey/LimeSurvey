@@ -29,16 +29,15 @@ export default {
     },
     watch: {
         content(newContent){
-            try {
+            // try {
                 const contents = this.documentIframe.contents();
                 this.$log.log(this.$documentIframe);
                 this.$log.log(contents);
-                this.documentIframe.contents().find('body').text('');
-                this.documentIframe.contents().find('body').html(newContent);
-                this.documentIframe[0].contentWindow.jQuery(document).trigger('pjax:scriptcomplete');
-            } catch(e){
-                this.$log.error(e);
-            }
+                this.documentIframe[0].contentWindow.postMessage({run: 'trigger::newContent', content: newContent}, '*' );
+                this.documentIframe[0].contentWindow.postMessage({run: 'trigger::pjax:scriptcomplete'}, '*');
+            // } catch(e){
+            //     this.$log.trace(e);
+            // }
         }
     },
     mounted() {
@@ -50,7 +49,13 @@ export default {
     created(){
         const iframeID = this.getRandomId();
         this.iframeId = iframeID;
-        this.documentIframe = `<iframe id='${iframeID}' style='width:100%;height:100%;border:none;' />`
+        this.documentIframe = `<iframe id='${iframeID}' sandbox="allow-same-origin allow-scripts" style='width:100%;height:100%;border:none;' />`;
+        window.addEventListener('message', (event) => {
+            if(event.data.source == "vue-devtools-backend" || event.data.source == "vue-devtools-proxy" ) {
+                return
+            }
+            this.$log.log('EVENT!', event);
+        });
     }
 }
 </script>
