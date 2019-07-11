@@ -148,14 +148,14 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
                         <label class=" control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo $admin === 'inherit' ? 'hide' : 'show'; ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $admin; ?>"/>
-                            <input class="form-control inherit-readonly <?php echo $admin === 'inherit' ? 'show' : 'hide'; ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->admin); ?>" readonly />
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $admin === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $admin; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $admin === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->admin); ?>" readonly />
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
                         <label class=" control-label content-center col-sm-12"  for='admin'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'adminbutton',
-                            'value'=> $admin === 'inherit' ? 'Y' : 'N',
+                            'value'=> ($bShowInherited && $admin === 'inherit' ? 'Y' : 'N'),
                             'selectOptions'=>$optionsOnOff,
                             'htmlOptions' => array(
                                 'class' => 'text-option-inherit'
@@ -173,14 +173,14 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
                         <label class=" control-label"  for='adminemail'><?php  eT("Administrator email address:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo $adminemail === 'inherit' ? 'hide' : 'show'; ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($adminemail); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $adminemail; ?>"/>
-                            <input class="form-control inherit-readonly <?php echo $adminemail === 'inherit' ? 'show' : 'hide'; ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->adminemail); ?>" readonly />
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $adminemail === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($adminemail); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $adminemail; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $adminemail === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->adminemail); ?>" readonly />
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
                         <label class=" control-label content-center col-sm-12"  for='adminemail'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'adminemailbutton',
-                            'value'=> $adminemail === 'inherit' ? 'Y' : 'N',
+                            'value'=> ($bShowInherited && $adminemail === 'inherit' ? 'Y' : 'N'),
                             'selectOptions'=>$optionsOnOff,
                             'htmlOptions' => array(
                                 'class' => 'text-option-inherit'
@@ -198,17 +198,17 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
                         <label class=" control-label"  for='bounce_email'><?php  eT("Administrator email address:"); ?></label>
-                            <input class="form-control inherit-edit <?php echo $bounce_email === 'inherit' ? 'hide' : 'show'; ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $bounce_email; ?>"/>
-                            <input class="form-control inherit-readonly <?php echo $bounce_email === 'inherit' ? 'show' : 'hide'; ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->bounce_email); ?>" readonly />
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $bounce_email === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $bounce_email; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $bounce_email === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->bounce_email); ?>" readonly />
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
                         <label class=" control-label content-center col-sm-12"  for='bounce_email'><?php  eT("Inherit:"); ?></label>
                         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'bounce_emailbutton',
-                            'value'=> $bounce_email === 'inherit' ? 'Y' : 'N',
+                            'value'=> ($bShowInherited && $bounce_email === 'inherit' ? 'Y' : 'N'),
                             'selectOptions'=>$optionsOnOff,
                             'htmlOptions' => array(
-                                'class' => 'text-option-inherit'
+                                'class' => 'text-option-inherit '
                                 )
                             ));
                         ?>
