@@ -1748,11 +1748,11 @@ class SurveyAdmin extends Survey_Common_Action
             $row = $oSurveyParameter->attributes;
             
             if ($oSurveyParameter->targetqid != '') {
-                $row['questionTitle'] = $oSurveyParameter->question->questionL10ns[$sBaseLanguage]->title;
+                $row['questionTitle'] = $oSurveyParameter->question->title;
             }
 
             if ($oSurveyParameter->targetsqid != '') {
-                $row['subQuestionTitle'] = $oSurveyParameter->subquestion->questionL10ns[$sBaseLanguage]->title;
+                $row['subQuestionTitle'] = $oSurveyParameter->subquestion->title;
             }
 
             $row['qid'] = $oSurveyParameter->targetqid;
