@@ -119,10 +119,34 @@ enabletests
 composer.lock
 third_party/bin/phpcbf
 third_party/bin/phpcs
-third_party/squizlabs/**/*
-third_party/facebook/**/*
-third_party/symfony/**/*
+third_party/squizlabs/
+third_party/facebook/
+third_party/symfony/
 third_party/composer/installed\.json
+third_party/amphp/
+third_party/bin/
+third_party/composer/autoload_files.php
+third_party/composer/xdebug-handler/
+third_party/doctrine/
+third_party/felixfbecker/
+third_party/myclabs/
+third_party/netresearch/
+third_party/nikic/
+third_party/ocramius/
+third_party/openlss/
+third_party/pdepend/
+third_party/phar-io/
+third_party/phpdocumentor/
+third_party/phpmd/
+third_party/phpspec/
+third_party/phpunit/
+third_party/psr/
+third_party/sebastian/
+third_party/theseer/
+third_party/vimeo/
+third_party/webmozart/
+upload/templates/
+
 
 
 ## ignore Vagrantfile and Adminer
