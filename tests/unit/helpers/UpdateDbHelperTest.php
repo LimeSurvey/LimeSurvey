@@ -9,15 +9,6 @@ namespace ls\tests;
  */
 class UpdateDbHelperTest extends TestBaseClass
 {
-
-    /**
-     * 
-     */
-    public static function setupBeforeClass()
-    {
-        \Yii::import('application.helpers.globalsettings_helper', true);
-    }
-
     /**
      * Tear down fixtures.
      */
