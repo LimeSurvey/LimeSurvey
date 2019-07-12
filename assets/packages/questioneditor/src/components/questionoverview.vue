@@ -23,29 +23,13 @@ export default {
     },
     computed: {
         cleanCurrentQuestion(){
-            return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].question);
+            return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].question_expression);
         },
         cleanCurrentQuestionHelp(){
-            return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].help);
+            return this.stripScripts(this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].help_expression);
         },
         currentQuestionScript(){
             return this.$store.state.currentQuestionI10N[this.$store.state.activeLanguage].script;
-        },
-        getNiceQuestionType(){
-            return `${this.$store.state.currentQuestion.typeInformation.description} (${this.translate('Group')}: ${this.$store.state.currentQuestion.typeInformation.group})`;
-        },
-        getNiceMandatory(){
-            let result = this.$store.state.currentQuestion.mandatory == 'Y' ? this.translate('Yes') : this.translate('No');
-            result += `&nbsp;<i class='fa ${(this.$store.state.currentQuestion.mandatory == 'Y' ? "fa-check" : "fa-times")} fa-ls'></i>`;
-            return result;
-        },
-        getNiceEncrypted(){
-            let result = this.$store.state.currentQuestion.encrypted == 'Y' ? this.translate('Yes') : this.translate('No');
-            result += `&nbsp;<i class='fa ${(this.$store.state.currentQuestion.encrypted == 'Y' ? "fa-check" : "fa-times")} fa-ls'></i>`;
-            return result;
-        },
-        parsedRelevance(){
-            return this.$store.state.currentQuestion.relevance;
         },
     },
     methods: {

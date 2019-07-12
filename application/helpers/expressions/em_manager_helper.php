@@ -1197,8 +1197,8 @@
                                 case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
                                 case Question::QT_R_RANKING_STYLE: //Ranking
-//                                    if ($this->sgqaNaming)
-//                                    {
+                                    //if ($this->sgqaNaming)
+                                    //{
                                         foreach ($cascadedAF as $_caf)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
@@ -1300,26 +1300,26 @@
                                                 $afe_names[] = '(' . implode(' and ', $fsqs) . ')';
                                             }
                                         }
-//                                    }
-//                                    else  // TODO - implement qcode naming for this
-//                                    {
-//                                        foreach ($cascadedAF as $_caf)
-//                                        {
-//                                            $sgq = $_caf . $sq['sqsuffix'];
-//                                            if (isset($this->knownVars[$sgq]))
-//                                            {
-//                                                $af_names[] = $sgq . '.NAOK';
-//                                            }
-//                                        }
-//                                        foreach ($cascadedAFE as $_cafe)
-//                                        {
-//                                            $sgq = $_cafe . $sq['sqsuffix'];
-//                                            if (isset($this->knownVars[$sgq]))
-//                                            {
-//                                                $afe_names[] = $sgq . '.NAOK';
-//                                            }
-//                                        }
-//                                    }
+                                  //  }
+                                  //  else  // TODO - implement qcode naming for this
+                                  //  {
+                                  //      foreach ($cascadedAF as $_caf)
+                                  //      {
+                                  //          $sgq = $_caf . $sq['sqsuffix'];
+                                  //          if (isset($this->knownVars[$sgq]))
+                                  //          {
+                                  //              $af_names[] = $sgq . '.NAOK';
+                                  //          }
+                                  //      }
+                                  //      foreach ($cascadedAFE as $_cafe)
+                                  //      {
+                                  //          $sgq = $_cafe . $sq['sqsuffix'];
+                                  //          if (isset($this->knownVars[$sgq]))
+                                  //          {
+                                  //              $afe_names[] = $sgq . '.NAOK';
+                                  //          }
+                                  //      }
+                                  //  }
                                     break;
                                 default:
                                     break;

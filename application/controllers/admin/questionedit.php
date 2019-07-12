@@ -661,11 +661,26 @@ class questionedit extends Survey_Common_Action
                 return array_merge($oAnswerOption->attributes, $oAnswerOption->answerL10ns);
             }, $aAnswerOptions);
         }
+        $aReplacementData = [];
+        $questioni10N = [];
+        foreach ($oQuestion->questionL10ns as $lng => $oQuestionI10N) {
+            $questioni10N[$lng] = $oQuestionI10N->attributes;
+
+            templatereplace($oQuestionI10N->question, array(), $aReplacementData, 'Unspecified', false, $oQuestion->qid);
+            $questioni10N[$lng]['question_expression'] = viewHelper::stripTagsEM(
+                LimeExpressionManager::GetLastPrettyPrintExpression()
+            );
+
+            templatereplace($oQuestionI10N->help, array(), $aReplacementData, 'Unspecified', false, $oQuestion->qid);
+            $questioni10N[$lng]['help_expression'] = viewHelper::stripTagsEM(
+                LimeExpressionManager::GetLastPrettyPrintExpression()
+            );
+        }
 
         return [
             'question' => $aQuestionDefinition,
             'questiongroup' => $aQuestionGroupDefinition,
-            'i10n' => $oQuestion->questionL10ns,
+            'i10n' => $questioni10N,
             'subquestions' => $aScaledSubquestions,
             'answerOptions' => $aScaledAnswerOptions,
         ];
