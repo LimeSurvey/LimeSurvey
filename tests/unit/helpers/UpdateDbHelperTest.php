@@ -15,7 +15,7 @@ class UpdateDbHelperTest extends TestBaseClass
     public static function teardownAfterClass()
     {
         self::$testHelper->teardownDatabase('__test_update_helper_258');
-        self::$testHelper->teardownDatabase('__test_update_helper_315');
+        self::$testHelper->teardownDatabase('__test_update_helper_337');
         self::$testHelper->teardownDatabase('__test_install_script');
         self::$testHelper->teardownDatabase('__test_install_script_compare');
     }
@@ -99,12 +99,12 @@ class UpdateDbHelperTest extends TestBaseClass
     }
 
     /**
-     * @group from315
+     * @group from337
      * @throws \CException
      */
-    public function testDbUpgradeFrom315()
+    public function testDbUpgradeFrom337()
     {
-        self::$testHelper->updateDbFromVersion(315);
+        self::$testHelper->updateDbFromVersion(337);
 
         $db = \Yii::app()->getDb();
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
@@ -125,9 +125,9 @@ class UpdateDbHelperTest extends TestBaseClass
         $upgradeTables = $connection->schema->getTables();
         $this->compareAux($upgradeTables, 258);
 
-        $connection = self::$testHelper->updateDbFromVersion(315);
+        $connection = self::$testHelper->updateDbFromVersion(359);
         $upgradeTables = $connection->schema->getTables();
-        $this->compareAux($upgradeTables, 315);
+        $this->compareAux($upgradeTables, 337);
     }
 
     /**
