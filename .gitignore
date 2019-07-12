@@ -143,5 +143,9 @@ themes/survey/no_bootstrap/files/*
 !themes/survey/*/files/print_img_radio.png
 adminer.php
 
+# Used by tests.
 geckodriver
 selenium-server-standalone-3.7.1.jar
+
+# Used by Vim and Emacs
+tags
