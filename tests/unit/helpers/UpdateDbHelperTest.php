@@ -14,6 +14,7 @@ class UpdateDbHelperTest extends TestBaseClass
      */
     public static function teardownAfterClass()
     {
+        self::$testHelper->teardownDatabase('__test_update_helper_153');
         self::$testHelper->teardownDatabase('__test_update_helper_258');
         self::$testHelper->teardownDatabase('__test_update_helper_337');
         self::$testHelper->teardownDatabase('__test_install_script');
@@ -59,6 +60,23 @@ class UpdateDbHelperTest extends TestBaseClass
 
         // Connect to old database.
         $db->setActive(false);
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        $db->setActive(true);
+    }
+
+    /**
+     * Run db_upgrade_all() from dbversion 153.
+     */
+    public function testUpdateFrom153()
+    {
+        $this->markTestSkipped();
+
+        self::$testHelper->updateDbFromVersion(153);
+
+        $db = \Yii::app()->getDb();
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+
+        // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
     }
@@ -121,11 +139,15 @@ class UpdateDbHelperTest extends TestBaseClass
      */
     public function testCompareUpgradeAndFreshInstall()
     {
+        //$connection = self::$testHelper->updateDbFromVersion(153);
+        //$upgradeTables = $connection->schema->getTables();
+        //$this->compareAux($upgradeTables, 153);
+
         $connection = self::$testHelper->updateDbFromVersion(258);
         $upgradeTables = $connection->schema->getTables();
         $this->compareAux($upgradeTables, 258);
 
-        $connection = self::$testHelper->updateDbFromVersion(359);
+        $connection = self::$testHelper->updateDbFromVersion(337);
         $upgradeTables = $connection->schema->getTables();
         $this->compareAux($upgradeTables, 337);
     }
