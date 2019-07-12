@@ -367,11 +367,24 @@ class questiongroups extends Survey_Common_Action
                 $i10N[$sLanguage] = [
                     'language' => $sLanguage,
                     'group_name' => '',
+                    'group_name_expression' => '',
                     'description' => '',
+                    'description_expression' => '',
                 ];
             });
         } else {
-            $i10N = $oQuestionGroup->questionGroupL10ns;
+            $i10N = [];
+            foreach ($oQuestionGroup->questionGroupL10ns as $lng => $oQuestionGroupi10n);
+            $i10N[$lng] = $oQuestionGroupi10n->attributes;
+            templatereplace($oQuestionGroupi10n->group_name, array(), $aReplacementData, 'Unspecified', false, null);
+            $i10N[$lng]['group_name_expression'] = viewHelper::stripTagsEM(
+                LimeExpressionManager::GetLastPrettyPrintExpression()
+            );
+
+            templatereplace($oQuestionGroupi10n->description, array(), $aReplacementData, 'Unspecified', false, null);
+            $i10N[$lng]['description_expression'] = viewHelper::stripTagsEM(
+                LimeExpressionManager::GetLastPrettyPrintExpression()
+            );
         }
 
         $aPermissions = [

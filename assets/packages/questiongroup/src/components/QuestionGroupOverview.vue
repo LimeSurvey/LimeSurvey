@@ -20,10 +20,10 @@ export default {
     },
     computed: {
         cleanCurrentTitle(){
-            return this.stripScripts(this.$store.state.currentQuestionGroupI10N[this.$store.state.activeLanguage].group_name);
+            return this.stripScripts(this.$store.state.currentQuestionGroupI10N[this.$store.state.activeLanguage].group_name_expression);
         },
         cleancurrentQuestionGroupDescription(){
-            return this.stripScripts(this.$store.state.currentQuestionGroupI10N[this.$store.state.activeLanguage].description);
+            return this.stripScripts(this.$store.state.currentQuestionGroupI10N[this.$store.state.activeLanguage].description_expression);
         },
         currentQuestionGroupRandomgroup(){
             return this.$store.state.currentQuestionGroup.randomization_group;
