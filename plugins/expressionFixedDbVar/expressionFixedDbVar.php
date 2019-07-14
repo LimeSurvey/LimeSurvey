@@ -22,6 +22,7 @@
  */
 class expressionFixedDbVar extends PluginBase
 {
+    protected $storage = 'DbStorage';
     static protected $description = 'Add SEED and other DB var in Expression Manager.';
     static protected $name = 'expressionFixedDbVar';
 
@@ -29,21 +30,53 @@ class expressionFixedDbVar extends PluginBase
     * @var array[] the settings
     */
     protected $settings = array(
-        'fixedDbVar'=>array(
-            'type'=>'list',
-            'label'=>'Add this DB variables in Expression Manager',
-            'items'=> array(
-                'SEED' => array(
-                    'type' => 'checkbox',
-                    'label' => 'SEED',
-                    'default' => true,
-                ),
-            ),
+        'SEED' => array(
+            'type' => 'checkbox',
+            'label' => 'Add SEED variable',
+            'default' => '1',
+            'column' => 'seed',
         ),
-    ); // @todo : add DB var to be added
+        'SUBMITDATE' => array(
+            'type' => 'checkbox',
+            'label' => 'Add SUBMITDATE variable',
+            'default' => '1',
+            'column' => 'submitdate',
+        ),
+        'STARTDATE' => array(
+            'type' => 'checkbox',
+            'label' => 'Add SUBMITDATE variable',
+            'default' => '0',
+            'column' => 'startdate',
+        ),
+        'LASTPAGE' => array(
+            'type' => 'checkbox',
+            'label' => 'Add LASTPAGE variable',
+            'default' => '0',
+            'column' => 'lastpage',
+        ),
+        'STARTLANGUAGE' => array(
+            'type' => 'checkbox',
+            'label' => 'Add STARTLANGUAGE variable',
+            'default' => '0',
+            'column' => 'startlanguage',
+        ),
+        'IPADDR' => array(
+            'type' => 'checkbox',
+            'label' => 'Add IPADDR variable',
+            'default' => '0',
+            'column' => 'ipaddr',
+        ),
+        'REFURL' => array(
+            'type' => 'checkbox',
+            'label' => 'Add REFURL variable',
+            'default' => '0',
+            'column' => 'ipaddr',
+        ),
+    );
 
     public function init()
     {
+        /* Core plugin : add an update variables */
         $this->subscribe('setVariableExpressionEnd','addFixedDbVar');
         $this->subscribe('afterResponseSave','afterResponseSave');
         $this->subscribe('afterSurveyDynamicSave','afterResponseSave');
@@ -55,24 +88,57 @@ class expressionFixedDbVar extends PluginBase
      */
     public function addFixedDbVar()
     {
-        $knownVars = $this->event->get('knownVars');
-        $language = $this->event->get('language');
-        $newKnowVars = array(
-            'SEED' => array(
-                'code'=>"SEED",
+        $knownVarsToCreate = $this->_getAddedVars($this->event->get('surveyId'));
+        if(empty($knownVarsToCreate)) {
+            return;
+        }
+        $newKnowVars = array();
+        foreach($knownVarsToCreate as $var) {
+            $newKnowVars[$var] = array(
+                'code'=>"", // We don't have it if we don't have Response
                 'jsName_on'=>'',
                 'jsName'=>'',
                 'readWrite'=>'N',
-            ),
-        );
-        $this->event->set('knownVars',$knownVars);
+            );
+        }
+        tracevar($newKnowVars);
+        $this->getEvent()->append('knownVars', $newKnowVars);
     }
 
     public function afterResponseSave()
     {
-        $oReponse = $this->getEvent()->get('model');
-        if(!empty($oReponse->seed)) {
-            LimeExpressionManager::setValueToKnowVar('SEED',$oReponse->seed);
+        $knownVarsToCreate = $this->_getAddedVars($this->event->get('surveyId'));
+        if(empty($knownVarsToCreate)) {
+            return;
         }
+        $oReponse = $this->getEvent()->get('model');
+        foreach($knownVarsToCreate as $var) {
+            $column = $this->settings[$var]['column'];
+            if(isset($oReponse->$column)) {
+                LimeExpressionManager::setValueToKnowVar($var,$oReponse->$column);
+            }
+        }
+    }
+
+    /**
+     * get the fiuxed var to be added for this survey
+     * @param integer $surveyId
+     * @return string[]
+     */
+    private function _getAddedVars($surveyId)
+    {
+        $addedvars = array();
+        foreach($this->settings as $var => $params)
+        {
+            if(isset($this->settings[$var]['column'])) {
+                if( !empty($this->get($var,'Survey',$surveyId)) ) {
+                    $addedvars[] = $var;
+                } elseif($this->get($var,null,null,$this->settings[$var]['default']) ) {
+                    // INHERIT
+                    $addedvars[] = $var;
+                }
+            }
+        }
+        return $addedvars;
     }
 }
