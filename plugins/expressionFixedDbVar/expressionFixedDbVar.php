@@ -28,7 +28,19 @@ class expressionFixedDbVar extends PluginBase
     /**
     * @var array[] the settings
     */
-    protected $settings = array(); // @todo : add DB var to be added
+    protected $settings = array(
+        'fixedDbVar'=>array(
+            'type'=>'list',
+            'label'=>'Add this DB variables in Expression Manager',
+            'items'=> array(
+                'SEED' => array(
+                    'type' => 'checkbox',
+                    'label' => 'SEED',
+                    'default' => true,
+                ),
+            ),
+        ),
+    ); // @todo : add DB var to be added
 
     public function init()
     {
