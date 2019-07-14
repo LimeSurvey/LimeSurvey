@@ -91,8 +91,9 @@ class TutorialsController extends Survey_Common_Action
             }
         }
 
-        $this->render(
-            'create',
+        $this->_renderWrappedTemplate(
+            null,
+            array('tutorials/create'),
             array(
                 'model'=>$model,
             )
@@ -118,8 +119,9 @@ class TutorialsController extends Survey_Common_Action
             }
         }
 
-        $this->render(
-            'update',
+        $this->_renderWrappedTemplate(
+            null,
+            array('tutorials/update'),
             array(
                 'model'=>$model,
             )

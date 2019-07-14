@@ -38,15 +38,28 @@ if ($bShowInherited){
     <div class="col-sm-12 col-md-6">
         <!-- Navigation delay -->
         <div class="form-group">
-            <label class=" control-label" for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
-            <div class="">
-                <input type='text' class="form-control selector-numerical-input" value="<?php echo $oSurvey->navigationdelay; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="returnwindow.LS.goodchars(event,'0123456789')" />
-                <?php if ($bShowInherited){ ?>
-                    <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->navigationdelay . ']'; ?></span></br>
-                    <span class='annotation'> <?php echo eT("Set this field to -1 to apply inherited value."); ?></span>
-                <?php } ?>
+            <?php $navigationdelay = $oSurvey->navigationdelay; ?>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                    <label class=" control-label"  for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
+                        <input class="form-control inherit-edit <?php echo ($bShowInherited && $navigationdelay === '-1' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='navigationdelay' name='navigationdelay' value="<?php echo htmlspecialchars($navigationdelay); ?>" data-inherit-value="-1" data-saved-value="<?php echo $navigationdelay; ?>"/>
+                        <input class="form-control inherit-readonly <?php echo ($bShowInherited && $navigationdelay === '-1' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->navigationdelay); ?>" readonly />
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
+                    <label class=" control-label content-center col-sm-12"  for='navigationdelay'><?php  eT("Inherit:"); ?></label>
+                    <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                        'name' => 'navigationdelaybutton',
+                        'value'=> ($bShowInherited && $navigationdelay === '-1' ? 'Y' : 'N'),
+                        'selectOptions'=>$optionsOnOff,
+                        'htmlOptions' => array(
+                            'class' => 'text-option-inherit'
+                            )
+                        ));
+                        ?>
+                </div>
             </div>
         </div>
+
         <!-- Show question index -->
         <div class="form-group">
             <label class=" control-label" for='questionindex'><?php  eT("Show question index / allow jumping:"); ?></label>

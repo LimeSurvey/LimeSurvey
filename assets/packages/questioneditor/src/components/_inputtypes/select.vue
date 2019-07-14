@@ -1,17 +1,11 @@
 <script>
     import empty from 'lodash/isEmpty';
 
+    import inputTypeMixin from '../../mixins/inputTypeMixin';
+
     export default {
         name: 'setting-select',
-        props: {
-            elId: {type: String, required: true},
-            elName: {type: [String, Boolean], default: ''},
-            elLabel: {type: String, default: ''},
-            elHelp: {type: String, default: ''},
-            currentValue: {default: ''},
-            elOptions: {type: Object, default: {}},
-            debug: {type: [Object, Boolean]}
-        },
+        mixins: [inputTypeMixin],
         data(){
             return {
                 triggerShowHelp: false
@@ -47,13 +41,20 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
+        <i 
+            class="fa fa-question pull-right" 
+            @click="triggerShowHelp=!triggerShowHelp" 
+            v-if="(elHelp.length>0) && !readonly" 
+            :aria-expanded="!triggerShowHelp" 
+            :aria-controls="'help-'+(elName || elId)"
+        />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
         <select 
             v-model="curValue"
             :class="getClasses" 
             :name="elName || elId" 
             :id="elId" 
+            :disabled="readonly"
         >
             <option 
                 v-for="(optionObject, i) in elOptions.options"
@@ -63,10 +64,13 @@
                 {{optionObject.text}}
             </option>
         </select>
-        <div 
-            class="question-option-help alert alert-info"
-            v-if="showHelp"
-            v-html="elHelp"
-        />
+        <transition name="fade">
+            <div 
+                class="question-option-help well"
+                :id="'help-'+(elName || elId)"
+                v-show="showHelp"
+                v-html="elHelp"
+            />
+        </transition>
     </div>
 </template>

@@ -286,7 +286,12 @@ class QuestionTemplate extends CFormModel
                     $this->aCustomAttributes = array();
                     foreach ($this->oConfig->custom_attributes->attribute as $oCustomAttribute) {
                         $attribute_name = (string) $oCustomAttribute->name;
-                        $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute", array('qid'=>$oQuestion->qid, 'custom_attribute'=>$attribute_name));
+                        if (isset($oCustomAttribute->i18n) && $oCustomAttribute->i18n){
+                            $sLang = App()->language;
+                            $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute and language =:language", array('qid'=>$oQuestion->qid, 'custom_attribute'=>$attribute_name, 'language'=>$sLang));
+                        } else {
+                            $oAttributeValue = QuestionAttribute::model()->find("qid=:qid and attribute=:custom_attribute", array('qid'=>$oQuestion->qid, 'custom_attribute'=>$attribute_name));
+                        }
                         if (is_object($oAttributeValue)) {
                             $this->aCustomAttributes[$attribute_name] = $oAttributeValue->value;
                         } else {

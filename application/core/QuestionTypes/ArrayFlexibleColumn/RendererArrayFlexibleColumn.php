@@ -32,7 +32,7 @@ class RendererArrayFlexibleColumn extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
-
+        $this->registerAssets();
         return do_arraycolumns($this->aFieldArray);
         
         $answer = '';

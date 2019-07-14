@@ -295,13 +295,18 @@ abstract class Writer implements IWriter
         // If no empty survey, render/export responses array.
         foreach ($oSurvey->responses as $response) {
             // prepare the data for decryption
-            $oToken = Token::model($oSurvey->id);
-            $oToken->setAttributes($response, false); 
-            $oToken->decrypt();
+            $sTokenTableName='tokens_'.$oSurvey->id;
+            $aResponse = array();
+            if (tableExists($sTokenTableName)) {
+                $oToken = Token::model($oSurvey->id);
+                $oToken->setAttributes($response, false); 
+                $oToken->decrypt();
+                $aResponse = array_merge($aResponse, $oToken->attributes);
+            }
             $oResponse = Response::model($oSurvey->id);
             $oResponse->setAttributes($response, false); 
             $oResponse->decrypt();
-            $aResponse = array_merge($oToken->attributes, $oResponse->attributes);
+            $aResponse = array_merge($aResponse, $oResponse->attributes);
 
             $elementArray = array();
 

@@ -97,7 +97,7 @@ abstract class PluginBase implements iPlugin
 
         // Set plugin specific locale file to locale/<lang>/<lang>.mo
         \Yii::app()->setComponent(
-            'pluginMessages'.$this->id,
+            get_class($this).'Messages',
             [
                 'class'            => 'LSCGettextMessageSource',
                 'cachingDuration'  => 3600,
@@ -362,7 +362,7 @@ abstract class PluginBase implements iPlugin
                 '',
                 $sToTranslate,
                 array(),
-                'pluginMessages'.$this->id,
+                get_class($this).'Messages',
                 $sLanguage
             ),
             $sEscapeMode

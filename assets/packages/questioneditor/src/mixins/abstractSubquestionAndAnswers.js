@@ -3,16 +3,26 @@ import keys from 'lodash/keys';
 import merge from 'lodash/merge';
 import remove from 'lodash/remove';
 import reduce from 'lodash/reduce';
-import foreach from 'lodash/foreach';
+import foreach from 'lodash/forEach';
 import findIndex from 'lodash/findIndex';
 import isArrayLike from 'lodash/isArrayLike';
 import isObjectLike from 'lodash/isObjectLike';
 
 import QuickEdit from '../helperComponents/QuickEdit.vue';
+import LabelSets from '../helperComponents/LabelSets.vue';
+import SaveLabelSet from '../helperComponents/SaveLabelSet.vue';
 import SimplePopUpEditor from '../helperComponents/SimplePopUpEditor.vue';
 
 export default {
-    components: {QuickEdit, SimplePopUpEditor},
+    components: {QuickEdit, SimplePopUpEditor, LabelSets},
+    props: {
+        readonly : {type: Boolean, default: false}
+    },
+    computed: {
+        surveyActive() {
+            return this.$store.getters.surveyObject.active =='Y'
+        }
+    },
     methods: {
         getLength(arrayOrObject) {
             if(isArrayLike(arrayOrObject)) {
@@ -43,7 +53,11 @@ export default {
             this.currentDataSet = tmpArray;
         },
         duplicateThisDataSet(oDataSet, scaleId) {
-
+            let tmpArray = merge([], this.currentDataSet);
+            let newDataSet = merge({}, oDataSet);
+            newDataSet[this.uniqueSelector] = this.getRandomId();
+            tmpArray[scaleId].push(newDataSet);
+            this.currentDataSet = tmpArray;
         },
         addDataSet(scaleId) {
             let tmpArray = merge([], this.currentDataSet);
@@ -51,7 +65,21 @@ export default {
             tmpArray[scaleId].push(this.getTemplate(scaleId));
             this.currentDataSet = tmpArray;
         },
-        openLabelSets() {},
+        openLabelSets(scaleId) {
+            this.$modal.show(LabelSets, {
+                scaleId,
+                template: this.getTemplate(scaleId),
+                type : this.type,
+                typedef : this.typeDefininition,
+                typekey : this.typeDefininitionKey
+              }, {
+                width: '75%',
+                height: '75%',
+                scrollable: true,
+                resizable: true
+              }
+            )
+        },
         openQuickAdd() {
             this.$modal.show(QuickEdit, {
                 current : this.currentDataSet,
@@ -64,7 +92,7 @@ export default {
                 scrollable: true,
                 resizable: true
               }
-              )
+            )
         },
         openPopUpEditor(dataSetObject, scaleId) {
             this.$modal.show(
@@ -97,7 +125,6 @@ export default {
                 }
             )
         },
-        saveAsLabelSet() {},
         switchinput(newTarget, $event = null) {
             if(newTarget == false) {
                 this.$log.log($event);
@@ -135,6 +162,41 @@ export default {
                 });
             });
             this.currentDataSet = tempObject;
+        },
+        replaceFromLabelSets(contents){
+            this.$log.log('replaceFromQuickAdd triggered on: '+this.$options.name, contents);
+            let tempObject = merge({}, this.currentDataSet);
+            tempObject[contents.scaleId] = [];
+            foreach(contents.data, (dataSet) => { 
+                dataSet[this.uniqueSelector] = this.getRandomId();
+                tempObject[contents.scaleId].push(dataSet) 
+            });
+            this.currentDataSet = tempObject;
+        },
+        addToFromLabelSets(contents){
+            this.$log.log('addToFromQuickAdd triggered on: '+this.$options.name, contents);
+            let tempObject = merge({}, this.currentDataSet);
+            foreach(contents.data, (dataSet, i) => { 
+                dataSet[this.uniqueSelector] = this.getRandomId();
+                tempObject[contents.scaleId].push(dataSet) 
+            })
+            this.currentDataSet = tempObject;
+        },
+        saveAsLabelSet(scaleId) {
+            const dataSet = merge({}, this.currentDataSet[scaleId]);
+            this.$modal.show(
+                SaveLabelSet, 
+                { 
+                    scaleId,
+                    dataSet,
+                    type: this.type,
+                    typedef: this.typeDefininition,
+                    typekey: this.typeDefininitionKey
+                },
+                {
+                    width: '75%',
+                }
+            )
         },
         editFromSimplePopupEditor(contents){
             this.$log.log('Event editFromSimplePopupEditor', contents);

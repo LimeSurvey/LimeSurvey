@@ -91,6 +91,34 @@ class QuestionAttribute extends LSActiveRecord
      * @param string $sValue
      * @return CDbDataReader
      */
+    public function setQuestionAttributeWithLanguage($iQuestionID, $sAttributeName, $sValue, $sLanguage)
+    {
+        $oModel = new self;
+        $aResult = $oModel->findAll('attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName'=>$sAttributeName, ':language'=>$sLanguage, ':questionID'=>$iQuestionID));
+        if (!empty($aResult)) {
+            $oModel->updateAll(array('value'=>$sValue), 'attribute=:attributeName and qid=:questionID and language=:language', array(':attributeName'=>$sAttributeName, ':language'=>$sLanguage, ':questionID'=>$iQuestionID));
+        } else {
+            $oModel = new self;
+            $oModel->attribute = $sAttributeName;
+            $oModel->value = $sValue;
+            $oModel->qid = $iQuestionID;
+            $oModel->language = $sLanguage;
+            $oModel->save();
+        }
+        return Yii::app()->db->createCommand()
+            ->select()
+            ->from($this->tableName())
+            ->where(array('and', 'qid=:qid'))->bindParam(":qid", $qid)
+            ->order('qaid asc')
+            ->query();
+    }
+
+    /**
+     * @param integer $iQuestionID
+     * @param string $sAttributeName
+     * @param string $sValue
+     * @return CDbDataReader
+     */
     public function setQuestionAttribute($iQuestionID, $sAttributeName, $sValue)
     {
         $oModel = new self;
@@ -102,7 +130,7 @@ class QuestionAttribute extends LSActiveRecord
             $oModel->attribute = $sAttributeName;
             $oModel->value = $sValue;
             $oModel->qid = $iQuestionID;
-            $oModel->save();
+            return $oModel->save();
         }
         return Yii::app()->db->createCommand()
             ->select()
@@ -176,13 +204,17 @@ class QuestionAttribute extends LSActiveRecord
      */
     public function getQuestionAttributes($iQuestionID, $sLanguage = null)
     {
-
         $iQuestionID = (int) $iQuestionID;
-        static $aQuestionAttributesStatic = array(); // TODO : replace by Yii::app()->cache
-        // Limit the size of the attribute cache due to memory usage
-        if (isset($aQuestionAttributesStatic[$iQuestionID])) {
-            return $aQuestionAttributesStatic[$iQuestionID];
+
+        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . json_encode($sLanguage);
+        if (EmCacheHelper::useCache()) {
+            $value = EmCacheHelper::get($cacheKey);
+            if ($value !== false) {
+                return $value;
+            }
         }
+
+        // Limit the size of the attribute cache due to memory usage
         $aQuestionAttributes = array();
         $oQuestion = Question::model()->find("qid=:qid", array('qid'=>$iQuestionID)); // Maybe take parent_qid attribute before this qid attribute
 
@@ -230,6 +262,11 @@ class QuestionAttribute extends LSActiveRecord
             foreach ($aAttributeNames as $aAttribute) {
                 $aQuestionAttributes[$aAttribute['name']]['expression'] = isset($aAttribute['expression']) ? $aAttribute['expression'] : 0;
 
+                // convert empty array to empty string
+                if (empty($aAttribute['default']) && is_array($aAttribute['default'])){
+                    $aAttribute['default'] = '';
+                }
+
                 if ($aAttribute['i18n'] == false) {
                     if (isset($aAttributeValues[$aAttribute['name']][''])) {
                         $aQuestionAttributes[$aAttribute['name']] = $aAttributeValues[$aAttribute['name']][''];
@@ -254,7 +291,11 @@ class QuestionAttribute extends LSActiveRecord
         } else {
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
-        $aQuestionAttributesStatic[$iQuestionID] = $aQuestionAttributes;
+
+        if (EmCacheHelper::useCache()) {
+            EmCacheHelper::set($cacheKey, $aQuestionAttributes);
+        }
+
         return $aQuestionAttributes;
     }
 
@@ -364,30 +405,6 @@ class QuestionAttribute extends LSActiveRecord
                       array("name"=>$attribute)
                   );
             }
-        }
-
-        /**
-         * New event to allow plugin to add own question attribute (settings)
-         * Using $event->append('questionAttributes', $questionAttributes);
-         * $questionAttributes=[
-         *  attributeName=>[
-         *      'types' : Aply to this question type
-         *      'category' : Where to put it
-         *      'sortorder' : Qort order in this category
-         *      'inputtype' : type of input
-         *      'expression' : 2 to force Exprerssion Manager when see the survey logic file (add { } and validate, 1 : allow it : validate in survey logic file
-         *      'options' : optionnal options if input type need it
-         *      'default' : the default value
-         *      'caption' : the label
-         *      'help' : an help
-         *  ]
-         */
-        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
-        $result = App()->getPluginManager()->dispatchEvent($event);
-        /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
-        $questionAttributes = (array) $result->get('questionAttributes');
-        if (!empty($questionAttributes)){
-            self::$questionAttributesSettings[$sType] = array_merge(self::$questionAttributesSettings[$sType], $questionAttributes);
         }
         return self::$questionAttributesSettings[$sType];
     }

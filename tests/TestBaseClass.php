@@ -36,6 +36,9 @@ class TestBaseClass extends TestCase
     {
         parent::setUpBeforeClass();
 
+        // Clear database cache.
+        \Yii::app()->db->schema->refresh();
+
         //$lt = ini_get('session.gc_maxlifetime');
         //var_dump('gc_maxlifetime = ' . $lt);
         //die;
@@ -52,6 +55,8 @@ class TestBaseClass extends TestCase
         self::$tempFolder = __DIR__.'/tmp';
         self::$screenshotsFolder = self::$tempFolder.'/screenshots';
         self::$testHelper->importAll();
+
+        \Yii::import('application.helpers.globalsettings_helper', true);
     }
 
     /**

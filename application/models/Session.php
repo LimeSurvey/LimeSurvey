@@ -17,13 +17,26 @@
 
 /**
  * Class Session
- *
+ * Extend CActiveRecord and not LSActiveRecord to disable plugin event (session can be used a lot)
+ * 
  * @property string $id Primary Key
  * @property integer $expire
  * @property string $data
  */
 class Session extends CActiveRecord
 {
+
+    /** @var mixed $dataBackup to reset $data after save */
+    private $dataBackup = null;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->attachEventHandler("onBeforeSave", array($this, 'fixDataType'));
+        $this->attachEventHandler("onAfterSave", array($this, 'resetDataType'));
+    }
     /**
      * @inheritdoc
      * @return Session
@@ -51,10 +64,6 @@ class Session extends CActiveRecord
     public function afterFind()
     {
         $sDatabasetype = Yii::app()->db->getDriverName();
-        // MSSQL delivers hex data (except for dblib driver)
-        if ($sDatabasetype == 'sqlsrv' || $sDatabasetype == 'mssql') {
-            $this->data = $this->hexToStr($this->data);
-        }
         // Postgres delivers a stream pointer
         if (gettype($this->data) == 'resource') {
             $this->data = stream_get_contents($this->data, -1, 0);
@@ -62,13 +71,39 @@ class Session extends CActiveRecord
         return parent::afterFind();
     }
 
-    private function hexToStr($hex)
+    /**
+     * Update data before saving
+     * @see \CDbHttpSession
+     * @return void
+     */
+    public function fixDataType()
     {
-        $string = '';
-        for ($i = 0; $i < strlen($hex) - 1; $i += 2) {
-            $string .= chr(hexdec($hex[$i].$hex[$i + 1]));
+        $this->dataBackup = $this->data;
+        $db = $this->getDbConnection();
+        $dbType = $db->getDriverName();
+        switch($dbType) {
+            case 'sqlsrv':
+            case 'mssql':
+            case 'dblib':
+                $this->data=new CDbExpression('CONVERT(VARBINARY(MAX), '.$db->quoteValue($this->data).')');
+                break;
+            case 'pgsql':
+                $this->data=new CDbExpression($db->quoteValueWithType($this->data, PDO::PARAM_LOB)."::bytea");
+                break;
+            case 'mysql':
+                // Don't seems to need something
+            default:
+                // No update
         }
-        return $string;
     }
 
+    /**
+     * Reset data after saving
+     * @return void
+     */
+    public function resetDataType()
+    {
+        $this->data = $this->dataBackup;
+        $this->dataBackup = null;
+    }
 }

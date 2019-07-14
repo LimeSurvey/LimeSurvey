@@ -173,6 +173,10 @@ class LSUserIdentity extends CUserIdentity
             $pm = Yii::app()->getPluginManager();
             $pm->readConfigFiles();
         }
+
+        //At last store the login time in the user table
+        $user->lastLogin = date('Y-m-d H:i:s');
+        $user->save();
     }
 
     public function setPlugin($name)

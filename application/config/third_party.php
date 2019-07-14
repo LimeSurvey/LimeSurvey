@@ -270,6 +270,7 @@ return array(
     'ace' => array(
         'devBaseUrl' => 'third_party/ace',
         'basePath' => 'third_party.ace',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             $minFolder.'/ace.js'
         ),

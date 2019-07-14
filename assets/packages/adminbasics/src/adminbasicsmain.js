@@ -17,6 +17,9 @@
 //Define LS Namespace
 window.LS = window.LS || {};
 
+//import css/scss to be seperately compiled
+import '../scss/loadSass.ENVDIRECTION.js';
+
 //import lodash
 import _ from 'lodash';
 
@@ -35,7 +38,7 @@ import {onExistBinding as surveyGrid} from './pages/surveyGrid';
 
 //import parts for globalscope
 import confirmationModal from './parts/confirmationModal'; 
-import {globalStartUpMethods, globalWindowMethods, globalOnloadMethods} from './parts/globalMethods';
+import {globalStartUpMethods, globalWindowMethods} from './parts/globalMethods';
 import notifyFader from './parts/notifyFader';
 import * as AjaxHelper from './parts/ajaxHelper';
 import saveBindings from './parts/save';
@@ -106,7 +109,7 @@ const AdminCore = function(){
             _.each(eventsBound, (eventMap, root) => {
                 _.each(eventMap, (evItem) => {
                     const events = _.map(evItem.event.split(' '), (event) => (event !== 'ready' ? event+'.admincore' : ''));
-                    const call = evItem.delay > 0 ? () => { window.setTimeout(evItem.fn, evItem.delay); } : fn;
+                    const call = evItem.delay > 0 ? () => { window.setTimeout(evItem.fn, evItem.delay); } : evItem.fn;
                     if(evItem.root !== 'document') {
                         $(evItem.root).off(events.join(' '));
                         $(evItem.root).on(events.join(' '), call);
@@ -114,7 +117,7 @@ const AdminCore = function(){
                 });
             });
             surveyGrid();
-            LOG.log("Refreshed Admin core methods");
+            LOG.trace("Refreshed Admin core methods");
         },
         addToNamespace = (object, name="globalAddition") => {
             window.LS[name] = window.LS[name] || {};

@@ -91,6 +91,7 @@ class RenderListComment extends QuestionBaseRenderer
         $inputnames[] = $this->sSGQA;
         $inputnames[] = $this->sSGQA.'comment';
 
+        $this->registerAssets();
         return array($answer, $inputnames);
     }
 
@@ -152,6 +153,7 @@ class RenderListComment extends QuestionBaseRenderer
         $inputnames[] = $this->sSGQA;
         $inputnames[] = $this->sSGQA.'comment';
         
+        $this->registerAssets();
         return array($answer, $inputnames);
     }
 

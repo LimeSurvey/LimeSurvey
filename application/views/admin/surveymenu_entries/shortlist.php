@@ -1,5 +1,6 @@
 <?php
-$pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+    // TODO: is this whole file still used? can't find a reference (p_teichmann)
+    $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 ?>
 <div class="container-fluid ls-space padding left-35 right-35">
 	<div class="ls-flex-column">
@@ -20,7 +21,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 
 					'itemsCssClass' =>'table table-striped',
 					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view col-12'),
-					'ajaxUpdate' => true
+					'ajaxUpdate' => 'surveymenu-entries-shortlist-grid'
 				));
 			?>
 			</div>

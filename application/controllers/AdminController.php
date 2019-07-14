@@ -212,6 +212,7 @@ class AdminController extends LSYii_Controller
         'survey'           => 'surveyadmin',
         'surveypermission' => 'surveypermission',
         'user'             => 'useraction',
+        'usermanagement'   => 'UserManagement',
         'usergroups'       => 'usergroups',
         'themes'           => 'themes',
         'tokens'           => 'tokens',
@@ -223,7 +224,8 @@ class AdminController extends LSYii_Controller
         'menuentries'      => 'SurveymenuEntryController',
         'tutorials'        => 'TutorialsController',
         'tutorialentries'  => 'TutorialEntryController',
-        'extensionupdater' => 'ExtensionUpdaterController'
+        'extensionupdater' => 'ExtensionUpdaterController',
+        'filemanager'      => 'LimeSurveyFileManager'
         );
     }
 

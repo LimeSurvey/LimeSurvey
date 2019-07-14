@@ -356,7 +356,7 @@ class RenderArrayFlexibleRow extends QuestionBaseRenderer
             'sHeaders'   => $this->sHeaders,
             ), true);
 
-        
+        $this->registerAssets();
         return array($answer, $this->inputnames);
     }
 

@@ -10,4 +10,7 @@ export default {
         } catch(e){}
         return returner;
     },
+    surveyid: () => (window.QuestionEditData.surveyObject.sid),
+    surveyObject: () => window.QuestionEditData.surveyObject
+
 };

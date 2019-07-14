@@ -3,7 +3,9 @@ import max from 'lodash/max';
 import merge from 'lodash/merge';
 import remove from 'lodash/remove';
 import isEmpty from 'lodash/isEmpty';
-import foreach from 'lodash/foreach';
+import foreach from 'lodash/forEach';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 
 import AbstractSubQuestionAndAnswerBase from '../../mixins/abstractSubquestionAndAnswers.js';
 import eventChild from '../../mixins/eventChild.js';
@@ -17,13 +19,12 @@ export default {
             baseNonNumericPart : "SQ",
             type: 'subquestions',
             typeDefininition: 'question',
-            typeDefininitionKey: 'title'
+            typeDefininitionKey: 'title',
+            subQuestionDragging: false,
+            draggedSubQuestion: null
         };
     },
     computed: {
-        surveyActive(){
-            return false;
-        },
         subquestionScales(){
             if(this.$store.state.currentQuestion.typeInformation.subquestions == 1) {
                 return [0];
@@ -35,7 +36,7 @@ export default {
         },
         currentDataSet: {
             get() {
-                return this.$store.state.currentQuestionSubquestions;
+                return map(this.$store.state.currentQuestionSubquestions, subquestionscale => sortBy(subquestionscale, subquestion => subquestion.question_order));
             },
             set(newValue) {
                 this.$store.commit('setCurrentQuestionSubquestions', newValue);
@@ -95,11 +96,47 @@ export default {
         untriggerScale($event) {
             $('.scoped-relevance-block').css({'flex-grow': 4, 'max-width': ''});
         },
+        //dragevents questions
+        startDraggingSubQuestion($event, subQuestionObject, scale) {
+            this.$log.log("Dragging started", subQuestionObject);
+            $event.dataTransfer.setData('application/node', this);
+            this.subQuestionDragging = true;
+            this.draggedSubQuestion = subQuestionObject;
+        },
+        endDraggingSubQuestion($event, subQuestionObject, scale) {
+            if (this.subQuestionDragging) {
+                this.subQuestionDragging = false;
+                this.draggedSubQuestion = null;
+                this.reorderSubquestions(scale);
+            }
+        },
+        dragoverSubQuestion($event, subQuestionObject, scale) {
+            if (this.subQuestionDragging) {
+                let orderSwap = subQuestionObject.question_order;
+                subQuestionObject.question_order = this.draggedSubQuestion.question_order;
+                this.draggedSubQuestion.question_order = orderSwap;
+            }
+        },
+        reorderSubquestions(scale){
+            let subquestions = [];
+            let last = 0;
+            foreach(this.currentDataSet[scale], (subquestion, i) => {
+                subquestion.question_order = (i+1)
+                subquestions.push(subquestion);
+            });
+            this.$set(this.currentDataSet, scale, subquestions);
+        },
+        toggleEditMode(){
+            if(this.readonly) {
+                this.triggerEvent({ target: 'lsnextquestioneditor', method: 'triggerEditQuestion', content: {} });
+            }
+        }
     },
     mounted() {
         if(isEmpty(this.$store.state.currentQuestionSubquestions)){
             this.$store.state.currentQuestionSubquestions = {"0": [this.getTemplate()]};
         };
+        foreach(this.subquestionScales, this.reorderSubquestions);
     }
 }
 </script>
@@ -107,15 +144,12 @@ export default {
 <template>
     <div class="col-sm-12">
         <div class="container-fluid scoped-main-subquestions-container">
-            <div class="row">
+            <div class="row" v-show="!readonly">
                 <div class="col-sm-8">
-                    <button class="btn btn-default col-3" @click.prevent="openQuickAdd">{{ "Quick add" | translate }}</button>
-                    <span class="scoped-spacer col-1" />
-                    <button class="btn btn-default" @click.prevent="openLabelSets">{{ "Predefined label sets" | translate }}</button>
-                    <button class="btn btn-default" @click.prevent="saveAsLabelSet">{{ "Save as label set" | translate }}</button>
+                    <button class="btn btn-default col-3" @click.prevent="openQuickAdd(subquestionscale)">{{ "Quick add" | translate }}</button>
                 </div>
                 <div class="col-sm-4 text-right">
-                    <button class="btn btn-danger col-5" @click.prevent="resetSubquestions">{{ "Reset" | translate }}</button>
+                    <button class="btn btn-danger col-5" @click.prevent="resetSubquestions(subquestionscale)">{{ "Reset" | translate }}</button>
                 </div>
             </div>
             <div class="row">
@@ -130,13 +164,38 @@ export default {
                     :key="subquestionscale+'subquestions'"
                     class="row list-group scoped-subquestion-row-container"
                 >
+                    <div class="list-group-item scoped-subquestion-block header-block">
+                        <div class="scoped-move-block" v-show="!readonly">
+                            <div>&nbsp;</div>
+                        </div>
+                        <div class="scoped-code-block">
+                            {{'Title'|translate}}
+                        </div>
+                        <div class="scoped-content-block">
+                            {{'Subquestion'|translate}}
+                        </div>
+                        <div class="scoped-relevance-block">
+                            {{'Relevance'}}
+                        </div>
+                        <div class="scoped-actions-block" v-show="!readonly">
+                            <div>&nbsp;</div>
+                        </div>
+                    </div>
                     <div 
                         class="list-group-item scoped-subquestion-block"
                         v-for="subquestion in currentDataSet[subquestionscale]"
                         :key="subquestion.qid"
+                        @dragenter="dragoverSubQuestion($event, subquestion, subquestionscale)"
+                        :class="(subQuestionDragging ? 'movement-active'+ ((subquestion.qid == draggedSubQuestion.qid) ? ' in-movement' : '') : '')"
                     >
-                        <div class="scoped-move-block ">
-                            <i class="fa fa-bars" :class="surveyActive ? ' disabled' : ' '"></i>
+                        <div class="scoped-move-block" v-show="!readonly">
+                            <i 
+                                class="fa fa-bars" 
+                                :class="surveyActive ? ' disabled' : ' '"
+                                :draggable="!surveyActive"
+                                @dragstart="startDraggingSubQuestion($event, subquestion, subquestionscale)"
+                                @dragend="endDraggingSubQuestion($event, subquestion, subquestionscale)" 
+                            ></i>
                         </div>
                         <div class="scoped-code-block   ">
                             <input
@@ -145,8 +204,11 @@ export default {
                                 maxlength='20'
                                 size='5'
                                 :class="surveyActive ? ' disabled' : ' '"
+                                :disabled="surveyActive"
                                 :name="'code_'+subquestion.question_order+'_'+subquestionscale" 
+                                :readonly="readonly"
                                 v-model="subquestion.title"
+                                @dblclick="toggleEditMode"
                                 @keyup.enter.prevent='switchinput("answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale)'
                             />
                         </div>
@@ -159,8 +221,10 @@ export default {
                                 :name='"answer_"+$store.state.activeLanguage+"_"+subquestion.qid+"_"+subquestionscale'
                                 :placeholder='translate("Some example subquestion")'
                                 :value="getQuestionForCurrentLanguage(subquestion)"
+                                :readonly="readonly"
                                 @change="setQuestionForCurrentLanguage(subquestion,$event, arguments)"
                                 @keyup.enter.prevent='switchinput("relevance_"+subquestion.qid+"_"+subquestionscale)'
+                                @dblclick="toggleEditMode"
                             />
                         </div>
                         <div class="scoped-relevance-block   ">
@@ -171,7 +235,9 @@ export default {
                                     class='relevance_input_field form-control input'
                                     :id='"relevance_"+subquestion.qid+"_"+subquestionscale'
                                     :name='"relevance_"+subquestion.qid+"_"+subquestionscale'
+                                    :readonly="readonly"
                                     v-model="subquestion.relevance"
+                                    @dblclick="toggleEditMode"
                                     @keyup.enter.prevent='switchinput(false,$event)'
                                     @focus='triggerScale'
                                     @blur='untriggerScale'
@@ -179,8 +245,8 @@ export default {
                                 <div class="input-group-addon">}</div>
                             </div>
                         </div>
-                        <div class="scoped-actions-block   ">
-                            <button class="btn btn-default btn-small" @click.prevent="deleteThisDataSet(subquestion, subquestionscale)">
+                        <div class="scoped-actions-block" v-show="!readonly">
+                            <button class="btn btn-default btn-small" v-if="!surveyActive" @click.prevent="deleteThisDataSet(subquestion, subquestionscale)">
                                 <i class="fa fa-trash text-danger"></i>
                                 {{ "Delete" | translate }}
                             </button>
@@ -188,17 +254,20 @@ export default {
                                 <i class="fa fa-edit"></i>
                                 {{ "Open editor" | translate }}
                             </button>
-                            <button class="btn btn-default btn-small" @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)">
+                            <button class="btn btn-default btn-small" v-if="!surveyActive" @click.prevent="duplicateThisDataSet(subquestion, subquestionscale)">
                                 <i class="fa fa-copy"></i>
                                 {{ "Duplicate" | translate }}
                             </button>
                         </div>
-
                     </div>
                 </div>
-                <div class="row" :key="subquestionscale+'addRow'">
-                    <div class="col-sm-12 text-right">
-                        <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary">
+                <div class="row" :key="subquestionscale+'metaSettings'" v-show="!readonly">
+                    <div class="col-sm-6 text-left">
+                        <button class="btn btn-default" @click.prevent="openLabelSets(subquestionscale)">{{ "Predefined label sets" | translate }}</button>
+                        <button class="btn btn-default" @click.prevent="saveAsLabelSet(subquestionscale)">{{ "Save as label set" | translate }}</button>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button @click.prevent="addDataSet(subquestionscale)" class="btn btn-primary" v-if="!surveyActive">
                             <i class="fa fa-plus"></i>
                             {{ "Add subquestion" | translate}}
                         </button>
@@ -225,16 +294,19 @@ export default {
         width: 100%;
         justify-content: flex-start;
         &>div {
-            flex-basis: 10rem;
+            flex-basis: auto;
             padding: 1px 2px;
             transition: all 1s ease-in-out;
             white-space: nowrap;
+        }
+        &.header-block {
+            text-align: center;
         }
     }
     
     .scoped-move-block {
         text-align: center;
-        width: 64px;
+        width: 5%;
         &>i {
             font-size: 28px;
             line-height: 32px;
@@ -245,16 +317,25 @@ export default {
             }
         }
     }
+    .scoped-code-block {
+        width:10%;
+    }
     .scoped-content-block {
-        flex-grow: 8;
+        width:30%;
+        flex-grow: 1;
     }
     .scoped-relevance-block {
-        flex-grow: 1;
-        max-width: 10rem;
+        width:10%;
+        max-width: 20%;
     }
     .scoped-actions-block {
-        flex-grow: 2;
+        width:25%;
     }
     
-
+    .movement-active {
+        background-color: hsla(0,0,90,0.8);
+        &.in-movement {
+            background-color: hsla(0,0,60,1);
+        }
+    }
 </style>

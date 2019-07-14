@@ -946,102 +946,31 @@ class UpdateForm extends CFormModel
      * @param string $fileName
      * @return object containing success = TRUE or error message
      */
-     private function _performDownload($getters, $fileName = 'update')
-     {
-         $newUrl = '';
-         $maxRedirection = 10;
-         do
-         {
-             if ($maxRedirection<1) {
-                 $result= array('result'=>false, 'error'=>'error_while_processing_download');
-                 break;
-             }
-             $ch = curl_init();
-             $pFile = fopen($this->tempdir.DIRECTORY_SEPARATOR.$fileName.'.zip', 'w');
-             $aCurlOptions=[CURLOPT_URL=>(empty($newUrl)?$this->_getProtocol().Yii::app()->getConfig("comfort_update_server_url").$getters:$newUrl)];
-             if ($this->proxy_host_name != '') {
-                 $proxy = $this->proxy_host_name.':'.$this->proxy_host_port;
-                 $aCurlOptions[CURLOPT_PROXY] =$proxy;
-             }
-             $aCurlOptions[CURLOPT_COOKIEFILE] = $this->path_cookie;
-             $aCurlOptions[CURLOPT_RETURNTRANSFER] = true;
-             $aCurlOptions[CURLOPT_HEADER] = false; // We don't want the header to be written in the zip file !
-             $aCurlOptions[CURLOPT_BINARYTRANSFER] = true;
-             $aCurlOptions[CURLOPT_FILE] = $pFile;
-             curl_setopt_array($ch, $aCurlOptions);
-
-             $content = curl_exec($ch);
-             $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-             if ($code == 301 || $code == 302 || $code == 303 || $code == 307)
-             {
-                 curl_close($ch);
-                  $ch = curl_init();                 
-                  unset($aCurlOptions[CURLOPT_FILE]);
-                  unset($aCurlOptions[CURLOPT_BINARYTRANSFER]);
-                  $aCurlOptions[CURLOPT_HEADER] = true; 
-                  curl_setopt_array($ch, $aCurlOptions);
-                 $content = curl_exec($ch);
-                 preg_match('/Location:(.*?)\n/', $content, $matches);
-                 $newUrl = trim(array_pop($matches));
-                 curl_close($ch);
-                 $maxRedirection--;
-                 continue;
-             }
-             else // no more redirection
-             {
-                 $code = 0;
-                 $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE); // But we want the header to be returned to the controller so we can check if a file has been returned
-                 curl_close($ch);
-                 $result = ($content_type == "application/zip") ? array("result"=>true) : array('result'=>false, 'error'=>'error_while_processing_download');
-                 break;
-             }
-         }
-         while($code);            
-         return (object) $result;
-     }
-
-private function curlExec(/* Array */$curlOptions='', /* Array */$curlHeaders='', /* Array */$postFields='')
-{
-  $newUrl = '';
-  $maxRedirection = 10;
-  do
-  {
-    if ($maxRedirection<1) die('Error: reached the limit of redirections');
-
-    $ch = curl_init();
-    if (!empty($curlOptions)) curl_setopt_array($ch, $curlOptions);
-    if (!empty($curlHeaders)) curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
-    if (!empty($postFields))
+    private function _performDownload($getters, $fileName = 'update')
     {
-      curl_setopt($ch, CURLOPT_POST, 1);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-    }
-   
-    if (!empty($newUrl)) curl_setopt($ch, CURLOPT_URL, $newUrl); // redirect needed
-   
-    $curlResult = curl_exec($ch);
-    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        // TODO : Could test if curl is loaded, and if not, use httprequest2
+        $ch = curl_init();
+        $pFile = fopen($this->tempdir.DIRECTORY_SEPARATOR.$fileName.'.zip', 'w');
+        curl_setopt($ch, CURLOPT_URL, $this->_getProtocol().Yii::app()->getConfig("comfort_update_server_url").$getters);
+        if ($this->proxy_host_name != '') {
+            $proxy = $this->proxy_host_name.':'.$this->proxy_host_port;
+            curl_setopt($ch, CURLOPT_PROXY, $proxy);
+        }
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $this->path_cookie);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, false); // We don't want the header to be written in the zip file !
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_FILE, $pFile);
+        $content = curl_exec($ch);
+        $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE); // But we want the header to be returned to the controller so we can check if a file has been returned
+        curl_close($ch);
 
-    if ($code == 301 || $code == 302 || $code == 303 || $code == 307)
-    {
-      preg_match('/Location:(.*?)\n/', $curlResult, $matches);
-      $newUrl = trim(array_pop($matches));
-      curl_close($ch);
+        $result = ($content_type == "application/zip") ? array("result"=>true) : array('result'=>false, 'error'=>'error_while_processing_download');
 
-      $maxRedirection--;
-      continue;
+        return (object) $result;
     }
-    else // no more redirection
-    {
-      $code = 0;
-      curl_close($ch);
-    }
-  }
-  while($code);
-  return $curlResult;
-}    
-    
+
 
     /**
      * This function perform the request

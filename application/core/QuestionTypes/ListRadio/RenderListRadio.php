@@ -197,6 +197,7 @@ class RenderListRadio extends QuestionBaseRenderer
             'coreClass' => $this->sCoreClass
         ), true);
 
+        $this->registerAssets();
         return array($answer, $this->inputnames);
     }
 

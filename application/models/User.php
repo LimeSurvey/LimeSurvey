@@ -34,6 +34,7 @@
  * @property User $parentUser Parent user
  * @property string $parentUserName  Parent user's name
  */
+
 class User extends LSActiveRecord
 {
     /**
@@ -89,7 +90,7 @@ class User extends LSActiveRecord
             array('lang', 'default', 'value'=>Yii::app()->getConfig('defaultlang')),
             array('lang', 'LSYii_Validators', 'isLanguage'=>true),
             array('htmleditormode', 'default', 'value'=>'default'),
-            array('htmleditormode', 'in', 'range'=>array('default', 'inline', 'popup', 'none'), 'allowEmpty'=>true),
+            array('htmleditormode', 'in', 'range'=>array('default', 'wysiwyg', 'source'), 'allowEmpty'=>true),
             array('questionselectormode', 'default', 'value'=>'default'),
             array('questionselectormode', 'in', 'range'=>array('default', 'full', 'none'), 'allowEmpty'=>true),
             array('templateeditormode', 'default', 'value'=>'default'),
@@ -178,6 +179,8 @@ class User extends LSActiveRecord
         $oUser->parent_id = $parent_user;
         $oUser->lang = 'auto';
         $oUser->email = $new_email;
+        $oUser->created = date('Y-m-d H:i:s');
+        $oUser->modified = date('Y-m-d H:i:s');
         if ($oUser->save()) {
             return $oUser->uid;
         } else {
@@ -264,6 +267,77 @@ class User extends LSActiveRecord
         return false;
     }
 
+    public function checkPasswordStrength($password){
+        $settings = Yii::app()->getConfig("passwordValidationRules");
+        $length = strlen($password);
+        $lowercase = preg_match_all('@[a-z]@', $password);
+        $uppercase = preg_match_all('@[A-Z]@', $password);
+        $number    = preg_match_all('@[0-9]@', $password);
+        $specialChars = preg_match_all('@[^\w]@', $password);
+
+        $error = "";
+        if((int) $settings['min'] > 0){
+          if($length < $settings['min']) $error = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
+        }
+        if((int) $settings['max'] > 0){
+          if($length > $settings['max']) $error = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
+        }
+        if((int) $settings['lower'] > 0){
+          if($lowercase < $settings['lower']) $error = sprintf(ngT('Password must include at least %d lowercase letter|Password must include at least %d lowercase letters', $settings['lower']), $settings['lower']);
+        }
+        if((int) $settings['upper'] > 0){
+          if($uppercase < $settings['upper']) $error = sprintf(ngT('Password must include at least %d uppercase letter|Password must include at least %d uppercase letters', $settings['upper']), $settings['upper']);
+        }
+        if((int) $settings['numeric'] > 0){
+          if($number < $settings['numeric']) $error = sprintf(ngT('Password must include at least %d number|Password must include at least %d numbers', $settings['numeric']), $settings['numeric']);
+        }
+        if((int) $settings['symbol'] > 0){
+          if($specialChars < $settings['symbol']) $error = sprintf(ngT('Password must include at least %d special character|Password must include at least %d special characters', $settings['symbol']), $settings['symbol']);
+        }
+
+        return($error);
+    }
+
+    public function getPasswordHelpText(){
+        $settings = Yii::app()->getConfig("passwordValidationRules");
+        $txt = '';
+        $txt2 = '';
+        if((int) $settings['min'] > 0) $txt = sprintf(ngT('Password must be at least %d character long|Password must be at least %d characters long', $settings['min']), $settings['min']);
+        if((int) $settings['max'] > 0) $txt = sprintf(ngT('Password must be at most %d character long|Password must be at most %d characters long', $settings['max']), $settings['max']);
+        if((int) $settings['min'] > 0 && (int) $settings['max'] > 0){
+          if($settings['min'] == $settings['max']){
+            $txt = sprintf(ngT('Password must be exactly %d character in length|Password must be exactly %d characters in length', $settings['min']), $settings['min']);
+          } else
+          if($settings['min'] < $settings['max']){
+            $txt = sprintf(gT('Password must be between %d - %d characters in length'), $settings['min'], $settings['max']);
+          }
+        }
+
+        $txt1 = array();
+        if((int) $settings['lower'] > 0) $txt1[] = ' '.sprintf(ngT('%d lower case letter|%d lower case letters', $settings['lower']), $settings['lower']);
+        if((int) $settings['upper'] > 0) $txt1[] = ' '.sprintf(ngT('%d upper case letter|%d upper case letters', $settings['upper']), $settings['upper']);
+        if((int) $settings['numeric'] > 0) $txt1[] = ' '.sprintf(ngT('%d number|%d numbers', $settings['numeric']), $settings['numeric']);
+        if((int) $settings['symbol'] > 0) $txt1[] = ' '.sprintf(ngT('%d special character|%d special characters', $settings['symbol']), $settings['symbol']);
+        if(!empty($txt1)){
+          foreach($txt1 as $i => $tmp){
+            if($i == (count($txt1)-1)){
+              if($txt2) $txt2 .= ' '.gT("and").' ';
+            } else {
+              if($txt2) $txt2 .= ", ";
+            }
+            $txt2 .= $tmp;
+          }
+        }
+
+        if($txt && $txt2){
+          $txt = $txt.' '. gT('and must include at least').' '.$txt2.'.';
+        } else
+        if($txt2){
+          $txt = gT('Password must include at least').' '.$txt2.'.';
+        }
+        return($txt);
+    }
+
     /**
      * Adds user record
      *
@@ -289,6 +363,12 @@ class User extends LSActiveRecord
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
 
+    public function getGroupList() {
+        $collector = array_map(function($oUserInGroup) {
+            return $oUserInGroup->name;
+        }, $this->groups);
+        return join(', ', $collector);
+    }
 
     /**
      * Return all super admins in the system
@@ -321,44 +401,20 @@ class User extends LSActiveRecord
         $setPermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setuserpermissions');
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setusertemplates');
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('admin/user/sa/setasadminchild');
-
+        
         $oUser = self::model()->findByPK($this->uid);
         if ($this->uid == Yii::app()->user->getId()) {
             // Edit self
             $editUser = "<button
-            data-toggle='tooltip'
-            title='".gT("Edit this user")."'
-            data-url='".$editUrl."'
-            data-uid='".$this->uid."'
-            data-user='".htmlspecialchars($oUser['full_name'])."'
-            data-action='modifyuser'
-            class='btn btn-default btn-xs action_usercontrol_button'>
-                <span class='fa fa-pencil text-success'></span>
-            </button>";
-            // Can delete himself except is forced superadmin
-            if (!Permission::isForcedSuperAdmin($this->uid) && Permission::model()->hasGlobalPermission('users', 'delete')) {
-                $deleteUrl = Yii::app()->getController()->createUrl('admin/user/sa/deluser', array(
-                        "action"=> "deluser"
-                    ));
-
-                $deleteUser = "
-                <span style='mar0;padding:0;' data-toggle='tooltip' title='".gT('Delete this user')."'>
-                <button
-                data-toggle='modal'
-                data-href='#'
-                data-onclick='$.post(".$deleteUrl.",{
-                  action: \"deluser\",
-                  uid:\"".$this->uid."\",
-                  user: \"".htmlspecialchars($this->full_name)."\",
-                  });'
-                data-target='#confirmation-modal'
+                data-toggle='tooltip'
+                title='".gT("Edit this user")."'
+                data-url='".$editUrl."'
                 data-uid='".$this->uid."'
-                data-action='deluser'
-                data-message='".gT("Delete this user")."'
-                class='btn btn-default btn-xs'>
-                    <span class='fa fa-trash  text-danger'></span>
-                </button></span>";
-            }
+                data-user='".htmlspecialchars($oUser['full_name'])."'
+                data-action='modifyuser'
+                class='btn btn-default btn-xs action_usercontrol_button'>
+                    <span class='fa fa-pencil text-success'></span>
+                </button>";
         } else {
             if (Permission::model()->hasGlobalPermission('superadmin', 'read')
                 || $this->uid == Yii::app()->session['loginID']
@@ -424,6 +480,143 @@ class User extends LSActiveRecord
             . "</div>";
     }
 
+    /**
+     * Gets the buttons for the GridView
+     * @return string
+     */
+    public function getManagementButtons()
+    {
+        $editUser = "";
+        $deleteUser = "";
+        $setPermissionsUser = "";
+        $setTemplatePermissionUser = "";
+        $changeOwnership = "";
+
+        $detailUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/viewuser', ['userid' => $this->uid]);
+        $editUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/editusermodal', ['userid' => $this->uid]);
+        $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/userpermissions', ['userid' => $this->uid]);
+        $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/usertemplatepermissions', ['userid' => $this->uid]);
+        $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership', ['userid' => $this->uid]);
+        $deleteUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/deleteconfirm');
+        
+
+        $userDetail = ""
+            ."<button 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
+                data-href='".$detailUrl."'><i class='fa fa-search'></i></button>";
+
+        $editPermissionButton = ""
+            ."<button 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
+                data-href='".$setPermissionsUrl."'><i class='fa fa-lock'></i></button>";
+        $editTemplatePermissionButton = ""
+            ."<button 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
+                data-href='".$setTemplatePermissionsUrl."'><i class='fa fa-paint-brush'></i></button>";
+        $editUserButton = ""
+            ."<button 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
+                data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
+        $takeOwnershipButton = ""
+            ."<button 
+                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--changeowner' 
+                data-href='".$changeOwnershipUrl."'><i class='fa fa-hand-rock-o'></i></button>";
+        $deleteUserButton = ""
+            ."<button 
+                id='UserManagement--delete-".$this->uid."' 
+                class='btn btn-sm btn-danger' 
+                data-toggle='modal' 
+                data-target='#confirmation-modal' 
+                data-url='".$deleteUrl."' 
+                data-userid='".$this->uid."' 
+                data-user='".$this->full_name."' 
+                data-action='deluser' 
+                data-onclick='(LS.UserManagement.triggerRunAction(\"#UserManagement--delete-".$this->uid."\"))()' 
+                data-message='".gt('Do you want to delete this user?')."'>
+                    <i class='fa fa-trash text-danger'></i>
+              </button>";
+
+        //$oUser = self::model()->findByPK($this->uid);
+        
+        
+        // Superadmins can do everything, no need to do further filtering
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            // and Except deleting themselves and changing permissions when they are forced superadmin
+            if (Permission::isForcedSuperAdmin($this->uid)|| $this->uid == Yii::app()->user->getId() ){
+                return join("\n",[$userDetail, $editUserButton]);
+            }
+            return join("\n",[
+                $userDetail, 
+                $editUserButton, 
+                $editPermissionButton, 
+                $editTemplatePermissionButton, 
+                $this->parent_id != Yii::app()->session['loginID'] ? $takeOwnershipButton : '', 
+                $deleteUserButton]);
+        }
+
+        $buttonArray = [];
+        // Check if user can see detail (must have probably but better save than sorry)
+        if (
+            $this->uid == Yii::app()->user->getId()                             //You can see yourself of course
+            || (
+                Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to view users given
+                && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned or created by you
+            )
+        ) {
+            $buttonArray[] = $userDetail;
+        }
+        // Check if user is editable
+        if (
+            $this->uid == Yii::app()->user->getId()                             //One can edit onesself of course
+            || (
+                Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to edit users given
+                && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned by admin
+            )
+        ) {
+            $buttonArray[] = $editUserButton;
+        }
+
+        //Check if user can set permissions
+        if (($this->uid != Yii::app()->session['loginID'])                      //Can't change your own permissions
+            &&  (
+                Permission::model()->hasGlobalPermission('users', 'update')     //Global permission to edit users given
+                && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned by admin    
+            ) 
+            && !Permission::isForcedSuperAdmin($this->uid)                      //Can't change forced Superadmins permissions
+        ) {
+            $buttonArray[] = $editPermissionButton;
+        }
+        
+        //Check if user can set template permissions
+        if (
+            Permission::model()->hasGlobalPermission('templates', 'read')       //Has global permission templates read
+            && !Permission::isForcedSuperAdmin($this->uid)                      //Is not a forced superadmin
+        ) {
+            $buttonArray[] = $editTemplatePermissionButton;
+        }
+
+        //Check if user can take ownership
+        if (Permission::isForcedSuperAdmin(Yii::app()->session['loginID'])      //Is not a forced superadmin
+            && $this->parent_id != Yii::app()->session['loginID']               //AND is not yet owned by one
+        ) {
+            $buttonArray[] = $takeOwnershipButton;
+        }
+
+        //Check if user can delete
+        if (($this->uid != Yii::app()->session['loginID'])                      //One cant delete onesself
+            && (
+                Permission::model()->hasGlobalPermission('users', 'delete')     //Global permission to delete users
+                && $this->parent_id == Yii::app()->session['loginID']           //AND User is owned by admin
+            ) 
+            && !Permission::isForcedSuperAdmin($this->uid)                      //Can't delete forced superadmins, ever
+        ) {
+            $buttonArray[] = $deleteUserButton;
+        }
+        
+        
+        return join("\n",$buttonArray);
+    }
+
     public function getParentUserName()
     {
         if ($this->parentUser) {
@@ -433,6 +626,82 @@ class User extends LSActiveRecord
         return null;
     }
 
+    public function getLastloginFormatted() {
+        
+        $lastLogin = $this->lastLogin;
+        if($lastLogin == null) {
+            return '---';
+        }
+
+        $date = new DateTime($lastLogin);
+        return $date->format($this->dateFormat).' '. $date->format('H:i');
+    }
+
+    public function getManagementCheckbox() {
+        return "<input type='checkbox' class='usermanagement--selector-userCheckbox' name='selectedUser[]' value='".$this->uid."'>";
+    }
+    /**
+     * @return array
+     */
+    public function getManagementColums()
+    {
+        // TODO should be static
+        $cols = array(
+            array(
+                'name' => 'managementCheckbox',
+                'type' => 'raw',
+                'header' => "<input type='checkbox' id='usermanagement--action-toggleAllUsers' />",
+                'filter' => false
+            ),
+            array(
+                "name" => 'managementButtons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                'filter' => false
+            ),
+            array(
+                "name" => 'uid',
+                "header" => gT("User ID")
+            ),
+            array(
+                "name" => 'users_name',
+                "header" => gT("Username")
+            ),
+            array(
+                "name" => 'email',
+                "header" => gT("Email")
+            ),
+            array(
+                "name" => 'full_name',
+                "header" => gT("Full name")
+            ),
+            array(
+                "name" =>"created",
+                "header" => gT("Created on"),
+                "value" => '$data->formattedDateCreated',
+    
+            ),
+            array(
+                "name" =>"parentUserName",
+                "header" => gT("Created by"),
+            )
+        );
+        
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            $cols[] = array(
+                "name" => 'surveysCreated',
+                "header" => gT("No of surveys"),
+                'filter' => false
+            );
+            $cols[] = array(
+                "name" => 'groupList',
+                "header" => gT("Usergroups"),
+                'filter' => false
+            );
+        }
+
+        return $cols;
+    }
 
     /**
      * @return array

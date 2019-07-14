@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<dataset>
+    <lime_participant_attribute_names
+        attribute_id   = "10"
+        attribute_type = "TB"
+        defaultname    = "encrypted"
+        visible        = "TRUE"
+        encrypted      = "Y"
+        core_attribute = "N"
+        />
+</dataset>

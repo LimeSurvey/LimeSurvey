@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <metadata>
+        <name>PasswordRequirement</name>
+        <type>plugin</type>
+        <plugin_type>core</plugin_type>
+        <creationDate>2019-05-21</creationDate>
+        <lastUpdate>2019-05-21</lastUpdate>
+        <author>Markus Fluer</author>
+        <authorUrl>https://www.limesurvey.org</authorUrl>
+        <version>1.0.0</version>
+        <license>GNU General Public License version 2 or later</license>
+        <description><![CDATA[Core: Password requirement settings]]></description>
+    </metadata>
+
+    <compatibility>
+        <version>4.0</version>
+        <version>3.0</version>
+        <version>2.73</version>
+    </compatibility>
+
+    <updaters disabled="disabled">
+    </updaters>
+</config>

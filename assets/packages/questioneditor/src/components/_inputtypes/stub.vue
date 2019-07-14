@@ -3,11 +3,11 @@
 </template>
 
 <script>
+
+import inputTypeMixin from '../../mixins/inputTypeMixin';
 export default {
     name: 'stub-set',
-    props: {
-        debug: {type: [Object, Boolean]}
-    }
+    mixins: [inputTypeMixin],
 }
 </script>
 

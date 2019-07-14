@@ -1,8 +1,7 @@
 export default {
   methods: {
     __runAjax(uri, data = {}, method = 'get', dataType = 'json') {
-      const csrfObject = {};
-      csrfObject[LS.data.csrfTokenName] = LS.data.csrfToken;
+      const csrfObject = LS.data.csrfTokenData;
       const sendData = $.merge(data,csrfObject);
       return new Promise((resolve, reject) => {
         if ($ == undefined) {

@@ -234,7 +234,7 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                                     <?php  endif;?>
                                                 </span>
                                                 &nbsp;&nbsp;&nbsp;
-                                                <i class="fa  fa-lock"></i>                                       
+                                                <i class="fa fa-lock"></i>
                                             </button>
                                         </div>
                                     <?php endif; ?>
@@ -259,9 +259,9 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                                     $selected = $aQuestionTemplateAttributes['value'] == $code ? 'selected' : '';
                                                 }
                                                 if(YII_DEBUG) {
-                                                    echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, $value['title'], $code);
+                                                    echo sprintf("<option value='%s' %s>%s (code: %s)</option>", $code, $selected, CHtml::encode($value['title']), $code);
                                                 } else {
-                                                    echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, $value['title']);
+                                                    echo sprintf("<option value='%s' %s>%s</option>", $code, $selected, CHtml::encode($value['title']));
                                                 }
                                         }
                                         ?>
@@ -364,7 +364,9 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                     </div> 
                                         <div class="input-group">
                                             <div class="input-group-addon">{</div>
-                                            <textarea class="form-control" rows='1' id='relevance' name='relevance' <?php if (count($oQuestion->conditions)>0) {?> readonly='readonly'<?php } ?> ><?php echo $oQuestion->relevance; ?></textarea>
+                                            <?php echo CHtml::textArea('relevance',$oQuestion->relevance,
+                                                array('id'=>'relevance','class'=>"form-control",'readonly'=>count($oQuestion->conditions)>0))
+                                            );?>
                                             <div class="input-group-addon">}</div>
                                         </div>
                                         <?php if (count($oQuestion->conditions)>0) :?>
@@ -374,7 +376,11 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
 
                                 <div id='Validation' class="form-group">
                                     <label class=" control-label" for='preg'><?php eT("Validation:"); ?></label>
-                                    <input class="form-control" type='text' id='preg' name='preg' size='50' value="<?php echo $oQuestion->preg; ?>" />
+                                    <div class="">
+                                        <?php echo CHtml::textField('preg',$oQuestion->preg,
+                                            array('class'=>"form-control",'id'=>'preg','size'=>50)
+                                        ); ?>
+                                    </div>
                                 </div>
 
 

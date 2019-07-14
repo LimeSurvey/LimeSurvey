@@ -260,7 +260,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('emailmethod', strip_tags(Yii::app()->getRequest()->getPost('emailmethod')));
         SettingGlobal::setSetting('emailsmtphost', strip_tags(returnGlobal('emailsmtphost')));
         if (returnGlobal('emailsmtppassword') != 'somepassword') {
-            SettingGlobal::setSetting('emailsmtppassword', strip_tags(returnGlobal('emailsmtppassword')));
+            SettingGlobal::setSetting('emailsmtppassword', LSActiveRecord::encryptSingle(strip_tags(returnGlobal('emailsmtppassword'))));
         }
         SettingGlobal::setSetting('bounceaccounthost', strip_tags(returnGlobal('bounceaccounthost')));
         SettingGlobal::setSetting('bounceaccounttype', Yii::app()->request->getPost('bounceaccounttype', 'off'));
@@ -268,7 +268,7 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('bounceaccountuser', strip_tags(returnGlobal('bounceaccountuser')));
 
         if (returnGlobal('bounceaccountpass') != 'enteredpassword') {
-            SettingGlobal::setSetting('bounceaccountpass', strip_tags(returnGlobal('bounceaccountpass')));
+            SettingGlobal::setSetting('bounceaccountpass', LSActiveRecord::encryptSingle(strip_tags(returnGlobal('bounceaccountpass'))));
         }
 
         SettingGlobal::setSetting('emailsmtpssl', sanitize_paranoid_string(Yii::app()->request->getPost('emailsmtpssl', '')));
@@ -287,7 +287,7 @@ class GlobalSettings extends Survey_Common_Action
             || validateEmailAddress(Yii::app()->request->getPost('siteadminemail'))) {
             SettingGlobal::setSetting('siteadminemail', strip_tags(Yii::app()->request->getPost('siteadminemail')));
         } else {
-            $warning .= gT("Warning! Admin email was not saved because it was not valid.").'<br/>';
+            $warning .= gT("Warning! Administrator email address was not saved because it was not valid.").'<br/>';
         }
         SettingGlobal::setSetting('siteadminname', strip_tags(Yii::app()->getRequest()->getPost('siteadminname')));
         $repeatheadingstemp = (int) (Yii::app()->getRequest()->getPost('repeatheadings'));
@@ -320,6 +320,9 @@ class GlobalSettings extends Survey_Common_Action
         SettingGlobal::setSetting('rpc_publish_api', (bool) Yii::app()->getRequest()->getPost('rpc_publish_api'));
         SettingGlobal::setSetting('characterset', Yii::app()->getRequest()->getPost('characterset'));
         SettingGlobal::setSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour', 'adaptive'));
+
+        SettingGlobal::setSetting('overwritefiles', Yii::app()->getRequest()->getPost('overwritefiles')== '1' ? 'Y' : 'N');
+
         $savetime = intval((float) Yii::app()->getRequest()->getPost('timeadjust') * 60).' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+'.$savetime;
@@ -396,6 +399,8 @@ class GlobalSettings extends Survey_Common_Action
         $oSurvey = SurveysGroupsettings::model()->findByPk($gsid);
         $oSurvey->setOptions();
 
+        $sPartial = Yii::app()->request->getParam('partial', '_generaloptions_panel');
+
         if (isset($_POST)) {
             $oSurvey->attributes = $_POST;
             $oSurvey->gsid = 0;
@@ -421,10 +426,23 @@ class GlobalSettings extends Survey_Common_Action
         }
 
         Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->clientScript->registerPackage('globalsidepanel');
 
         $aData['aDateFormatDetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-
+        $aData['jsData'] = [
+            'baseLinkUrl' => 'admin/globalsettings/sa/surveysettings',
+            'getUrl' => Yii::app()->createUrl('admin/globalsettings/sa/surveysettingmenues'),
+            'i10n' => [
+                'Survey settings' => gT('Survey settings')
+            ]
+        ];
+        $aData['partial'] = $sPartial;
         $this->_renderWrappedTemplate('global_settings', 'surveySettings', $aData);
+    }
+
+    public function surveysettingmenues() {
+        $menues = Surveymenu::model()->getMenuesForGlobalSettings();
+        Yii::app()->getController()->renderPartial('super/_renderJson', ['data' => $menues[0]]);
     }
 
     /**

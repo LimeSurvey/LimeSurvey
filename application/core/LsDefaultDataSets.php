@@ -23,17 +23,16 @@ class LsDefaultDataSets
             [1,null,9,'publication', gT('Publication & access control settings','unescaped'),gT('Publication & access','unescaped'),gT('Edit settings for publication and access control','unescaped'),'key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',null,'_tabPublicationAccess','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
             [2,null,1,'listQuestions',gT('List questions','unescaped'),gT('List questions','unescaped'),gT('List questions','unescaped'),'list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
             [2,null,2,'listQuestionGroups',gT('List question groups','unescaped'),gT('List question groups','unescaped'),gT('List question groups','unescaped'),'th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
-            [2,null,3,'reorder',gT('Reorder questions/question groups','unescaped'),gT('Reorder questions/question groups','unescaped'),gT('Reorder questions/question groups','unescaped'),'icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
-            [2,null,4,'responses',gT('Responses','unescaped'),gT('Responses','unescaped'),gT('Responses','unescaped'),'icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
-            [2,null,5,'participants', gT('Survey participants','unescaped'),gT('Survey participants','unescaped'),gT('Go to survey participant and token settings','unescaped'),'user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
-            [2,null,6,'statistics',gT('Statistics','unescaped'),gT('Statistics','unescaped'),gT('Statistics','unescaped'),'bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
-            [2,null,7,'quotas', gT('Edit quotas','unescaped'),gT('Quotas','unescaped'),gT('Edit quotas for this survey.','unescaped'),'tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
-            [2,null,8,'assessments', gT('Edit assessments','unescaped'),gT('Assessments','unescaped'),gT('Edit and look at the assessements for this survey.','unescaped'),'comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
-            [2,null,9,'surveypermissions',gT('Edit survey permissions','unescaped'),gT('Survey permissions','unescaped'),gT('Edit permissions for this survey','unescaped'),'lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
-            [2,null,10,'emailtemplates', gT('Email templates','unescaped'),gT('Email templates','unescaped'),gT('Edit the templates for invitation, reminder and registration emails','unescaped'),'envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
-            [2,null,11,'panelintegration', gT('Edit survey panel integration','unescaped'),gT('Panel integration','unescaped'),gT('Define panel integrations for your survey','unescaped'),'link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read','{"render": {"link": { "pjaxed": false}}}','_tabPanelIntegration','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
-            [2,null,12,'resources', gT('Add/edit resources (files/images) for this survey','unescaped'),gT('Resources','unescaped'),gT('Add/edit resources (files/images) for this survey','unescaped'),'file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',null,'_tabResourceManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
-            [2,null,13,'plugins',gT('Simple plugin settings','unescaped'), gT('Simple plugins','unescaped'), gT('Edit simple plugin settings','unescaped'),'plug','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_plugins_panel','','surveysettings','read','{"render": {"link": {"data": {"surveyid": ["survey","sid"]}}}}','_pluginTabSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
+            [2,null,3,'responses',gT('Responses','unescaped'),gT('Responses','unescaped'),gT('Responses','unescaped'),'icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
+            [2,null,4,'participants', gT('Survey participants','unescaped'),gT('Survey participants','unescaped'),gT('Go to survey participant and token settings','unescaped'),'user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
+            [2,null,5,'statistics',gT('Statistics','unescaped'),gT('Statistics','unescaped'),gT('Statistics','unescaped'),'bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
+            [2,null,6,'quotas', gT('Edit quotas','unescaped'),gT('Quotas','unescaped'),gT('Edit quotas for this survey.','unescaped'),'tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
+            [2,null,7,'assessments', gT('Edit assessments','unescaped'),gT('Assessments','unescaped'),gT('Edit and look at the assessements for this survey.','unescaped'),'comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
+            [2,null,8,'surveypermissions',gT('Edit survey permissions','unescaped'),gT('Survey permissions','unescaped'),gT('Edit permissions for this survey','unescaped'),'lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
+            [2,null,9,'emailtemplates', gT('Email templates','unescaped'),gT('Email templates','unescaped'),gT('Edit the templates for invitation, reminder and registration emails','unescaped'),'envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
+            [2,null,10,'panelintegration', gT('Edit survey panel integration','unescaped'),gT('Panel integration','unescaped'),gT('Define panel integrations for your survey','unescaped'),'link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read','{"render": {"link": { "pjaxed": false}}}','_tabPanelIntegration','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
+            [2,null,11,'resources', gT('Add/edit resources (files/images) for this survey','unescaped'),gT('Resources','unescaped'),gT('Add/edit resources (files/images) for this survey','unescaped'),'file','fontawesome','','admin/filemanager','','','','','surveylocale','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','_tabResourceManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
+            [2,null,12,'plugins',gT('Simple plugin settings','unescaped'), gT('Simple plugins','unescaped'), gT('Edit simple plugin settings','unescaped'),'plug','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_plugins_panel','','surveysettings','read','{"render": {"link": {"data": {"surveyid": ["survey","sid"]}}}}','_pluginTabSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,0],
             [3,null,1,'activateSurvey',gT('Activate survey','unescaped'),gT('Activate survey','unescaped'),gT('Activate survey','unescaped'),'play','fontawesome','','admin/survey/sa/activate','','','','','surveyactivation','update','{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
             [3,null,2,'deactivateSurvey', gT('Stop this survey','unescaped'),gT('Stop this survey','unescaped'),gT('Stop this survey','unescaped'),'stop','fontawesome','','admin/survey/sa/deactivate','','','','','surveyactivation','update','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
             [3,null,3,'testSurvey', gT('Go to survey','unescaped'),gT('Go to survey','unescaped'),gT('Go to survey','unescaped'),'cog','fontawesome','','survey/index/','','','','','','','{"render": {"link": {"external": true, "data": {"sid": ["survey","sid"], "newtest": "Y", "lang": ["survey","language"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0,1],
@@ -223,7 +222,7 @@ class LsDefaultDataSets
             'template' =>  null,
             'description' => 'Default survey group',
             'sortorder' => 0,
-            'owner_uid' => 1,
+            'owner_id' => 1,
             'parent_id' => null,
             'created' => date('Y-m-d H:i:s'),
             'modified' => date('Y-m-d H:i:s'),
@@ -468,7 +467,7 @@ class LsDefaultDataSets
                     'redirect' => false,
                     'prev' => '-1',
                     'onShow' => "(function(tour){
-                        $('#adminpanel__sidebar--selectorSettingsButton').trigger('click');
+                        $('#adminsidepanel__sidebar--selectorSettingsButton').trigger('click');
                     })",
                 ))
             ),
@@ -479,7 +478,7 @@ class LsDefaultDataSets
                 'content' => gT('If you click on this tab, the survey settings menu will be displayed. The most important settings of your survey are accessible from this menu.').'<br/>'
                 .gT('If you want to know more about them, check our manual.'),
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__sidebar--selectorSettingsButton',
+                    'element' => '#adminsidepanel__sidebar--selectorSettingsButton',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
@@ -504,12 +503,12 @@ class LsDefaultDataSets
                 'title' => gT('The survey structure'),
                 'content' => gT('This is the structure view of your survey. Here you can see all your question groups and questions.'),
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__sidebar--selectorStructureButton',
+                    'element' => '#adminsidepanel__sidebar--selectorStructureButton',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'redirect' => false,
                     'onShow' => "(function(tour){
-                                    $('#adminpanel__sidebar--selectorStructureButton').trigger('click');
+                                    $('#adminsidepanel__sidebar--selectorStructureButton').trigger('click');
                                 })",
                 ))
             ),
@@ -521,13 +520,13 @@ class LsDefaultDataSets
                 .gT('In LimeSurvey a survey is organized in question groups and questions. To begin creating questions, we first need a question group.')
                 .'<p class="alert bg-warning">'.gT("Click on the 'Add question group' button").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__sidebar--selectorCreateQuestionGroup',
+                    'element' => '#adminsidepanel__sidebar--selectorCreateQuestionGroup',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}']],
                     'placement' => 'right',
                     'reflex' => true,
                     'redirect' => false,
                     'onNext' => "(function(tour){
-                                    document.location.href = $('#adminpanel__sidebar--selectorCreateQuestionGroup').attr('href');
+                                    document.location.href = $('#adminsidepanel__sidebar--selectorCreateQuestionGroup').attr('href');
                                     tour.setCurrentStep(13);
                                     return new Promise(function(res,rej){});
                                 })",
@@ -692,13 +691,13 @@ class LsDefaultDataSets
                     .gT("Let's start with subquestions.")
                     .'<p class="alert bg-warning">'.gT("Click on the 'Edit subquestions' button.").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__topbar--selectorAddSubquestions',
+                    'element' => '#adminsidepanel__topbar--selectorAddSubquestions',
                     'placement' => 'bottom',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'reflex' => true,
                     'redirect' => false,
                     'onNext' => "(function(tour){
-                                    document.location.href = $('#adminpanel__topbar--selectorAddSubquestions').attr('href');
+                                    document.location.href = $('#adminsidepanel__topbar--selectorAddSubquestions').attr('href');
                                     tour.setCurrentStep(24);
                                     return new Promise(function(res,rej){});
                                 })",
@@ -759,14 +758,14 @@ class LsDefaultDataSets
                 .gT("The answer options will be shown for each subquestion.")
                 .'<p class="alert bg-warning">'.gT("Click on the 'Edit answer options' button.").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__topbar--selectorAddAnswerOptions',
+                    'element' => '#adminsidepanel__topbar--selectorAddAnswerOptions',
                     'path' => ['/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}']],
                     'placement' => 'bottom',
                     'reflex' => true,
                     'redirect' => false,
                     'prev' => '-1',
                     'onNext' => "(function(tour){
-                                    document.location.href = $('#adminpanel__topbar--selectorAddAnswerOptions').attr('href');
+                                    document.location.href = $('#adminsidepanel__topbar--selectorAddAnswerOptions').attr('href');
                                     tour.setCurrentStep(28);
                                     return new Promise(function(res,rej){});
                                 })",
@@ -914,7 +913,7 @@ class LsDefaultDataSets
                 'content' => gT("Just share this link with some of your friends and of course, test it yourself.")
                 .'<p class="alert bg-success lstutorial__typography--white">'.gT("Thank you for taking the tour!").'</p>',
                 'settings' => json_encode(array(
-                    'element' => '#adminpanel__surveysummary--mainLanguageLink',
+                    'element' => '#adminsidepanel__surveysummary--mainLanguageLink',
                     'path' => ['/'.'(index.php)?'],
                     'placement' => 'top',
                     'redirect' => false,
@@ -943,7 +942,187 @@ class LsDefaultDataSets
                 'version'            => '1.0.0',
                 'load_error'         => 0,
                 'load_error_message' => null
+            ],
+            [
+                'id' => null,
+                'name'               => 'PasswordRequirement',
+                'plugin_type'        => 'core',
+                'active'             => 1,
+                'version'            => '1.0.0',
+                'load_error'         => 0,
+                'load_error_message' => null
             ]
         ];
+    }
+
+    public static function getDefaultUserSettings()
+    {
+        return [
+            ['stg_name' => 'editorPreset', 'stg_value' => 'wysiwyg'],
+            ['stg_name' => 'showScriptEditor', 'stg_value' => '0'],
+            ['stg_name' => 'noViewMode', 'stg_value' => '0'],                                    
+        ];
+    }
+
+    public static function fileTypeIcons() {
+        /**
+         * Copied from https://github.com/DirectoryLister/DirectoryLister
+         * Copyright 2017 Chris Kankiewicz 
+         */
+        return array(
+
+            // Archives
+            '7z'    => 'fa-file-archive-o',
+            'bz'    => 'fa-file-archive-o',
+            'gz'    => 'fa-file-archive-o',
+            'rar'   => 'fa-file-archive-o',
+            'tar'   => 'fa-file-archive-o',
+            'zip'   => 'fa-file-archive-o',
+
+            // Audio
+            'aac'   => 'fa-music',
+            'flac'  => 'fa-music',
+            'mid'   => 'fa-music',
+            'midi'  => 'fa-music',
+            'mp3'   => 'fa-music',
+            'ogg'   => 'fa-music',
+            'wma'   => 'fa-music',
+            'wav'   => 'fa-music',
+
+            // Code
+            'c'     => 'fa-code',
+            'class' => 'fa-code',
+            'cpp'   => 'fa-code',
+            'css'   => 'fa-code',
+            'erb'   => 'fa-code',
+            'htm'   => 'fa-code',
+            'html'  => 'fa-code',
+            'java'  => 'fa-code',
+            'js'    => 'fa-code',
+            'php'   => 'fa-code',
+            'pl'    => 'fa-code',
+            'py'    => 'fa-code',
+            'rb'    => 'fa-code',
+            'xhtml' => 'fa-code',
+            'xml'   => 'fa-code',
+
+            // Databases
+            'accdb' => 'fa-hdd-o',
+            'db'    => 'fa-hdd-o',
+            'dbf'   => 'fa-hdd-o',
+            'mdb'   => 'fa-hdd-o',
+            'pdb'   => 'fa-hdd-o',
+            'sql'   => 'fa-hdd-o',
+
+            // Documents
+            'csv'   => 'fa-file-text',
+            'doc'   => 'fa-file-text',
+            'docx'  => 'fa-file-text',
+            'odt'   => 'fa-file-text',
+            'pdf'   => 'fa-file-text',
+            'xls'   => 'fa-file-text',
+            'xlsx'  => 'fa-file-text',
+
+            // Executables
+            'app'   => 'fa-list-alt',
+            'bat'   => 'fa-list-alt',
+            'com'   => 'fa-list-alt',
+            'exe'   => 'fa-list-alt',
+            'jar'   => 'fa-list-alt',
+            'msi'   => 'fa-list-alt',
+            'vb'    => 'fa-list-alt',
+
+            // Fonts
+            'eot'   => 'fa-font',
+            'otf'   => 'fa-font',
+            'ttf'   => 'fa-font',
+            'woff'  => 'fa-font',
+
+            // Game Files
+            'gam'   => 'fa-gamepad',
+            'nes'   => 'fa-gamepad',
+            'rom'   => 'fa-gamepad',
+            'sav'   => 'fa-floppy-o',
+
+            // Images
+            'bmp'   => 'fa-picture-o',
+            'gif'   => 'fa-picture-o',
+            'jpg'   => 'fa-picture-o',
+            'jpeg'  => 'fa-picture-o',
+            'png'   => 'fa-picture-o',
+            'psd'   => 'fa-picture-o',
+            'tga'   => 'fa-picture-o',
+            'tif'   => 'fa-picture-o',
+
+            // Package Files
+            'box'   => 'fa-archive',
+            'deb'   => 'fa-archive',
+            'rpm'   => 'fa-archive',
+
+            // Scripts
+            'bat'   => 'fa-terminal',
+            'cmd'   => 'fa-terminal',
+            'sh'    => 'fa-terminal',
+
+            // Text
+            'cfg'   => 'fa-file-text',
+            'ini'   => 'fa-file-text',
+            'log'   => 'fa-file-text',
+            'md'    => 'fa-file-text',
+            'rtf'   => 'fa-file-text',
+            'txt'   => 'fa-file-text',
+
+            // Vector Images
+            'ai'    => 'fa-picture-o',
+            'drw'   => 'fa-picture-o',
+            'eps'   => 'fa-picture-o',
+            'ps'    => 'fa-picture-o',
+            'svg'   => 'fa-picture-o',
+
+            // Video
+            'avi'   => 'fa-youtube-play',
+            'flv'   => 'fa-youtube-play',
+            'mkv'   => 'fa-youtube-play',
+            'mov'   => 'fa-youtube-play',
+            'mp4'   => 'fa-youtube-play',
+            'mpg'   => 'fa-youtube-play',
+            'ogv'   => 'fa-youtube-play',
+            'webm'  => 'fa-youtube-play',
+            'wmv'   => 'fa-youtube-play',
+            'swf'   => 'fa-youtube-play',
+
+            // Other
+            'bak'   => 'fa-floppy',
+            'msg'   => 'fa-envelope',
+
+            // Blank
+            'blank' => 'fa-file'
+
+        );
+    }
+
+    static function getBaseLabelSets($language = 'en') {
+        $sOldLanguage = App()->language;
+        Yii::app()->setLanguage($language);
+
+        $returnArray = [
+            'likert-5-point' => [
+                '1' => gT("Strongly disagree"),
+                '2' => gT('Disagree'),
+                '3' => gT('Neither agree nor disagree'),
+                '4' => gT('Agree'),
+                '5' => gT('Strongly agree'),
+            ],
+            'likert-4-point' => [
+                '1' => gT('Strongly disagree'),
+                '2' => gT('Disagree'),
+                '3' => gT('Agree'),
+                '4' => gT('Strongly agree'),
+            ],
+        ];
+
+        Yii::app()->setLanguage($sOldLanguage);
+
+        return $returnArray;
     }
 }

@@ -44,21 +44,33 @@ abstract class QuestionBaseDataSet extends StaticModel
         - Question theme => this should have a seperate advanced tab in my opinion
         - Question group
         - Mandatory switch
+        - Save as default switch
+        - Clear default switch (if default value record exists)
         - Relevance equation
         - Validation => this is clearly a logic function
-
+        
         Better add to general options:
         - Hide Tip => VERY OFTEN asked for
         - Always hide question => if available
         */
-        return [
+        $returnArray = [
             'question_template' => $this->getQuestionThemeOption(),
             'gid' => $this->getQuestionGroupSelector(),
             'other' => $this->getOtherSwitch(),
-            'mandatory' => $this->getMandatorySwitch(),
+            'mandatory' => $this->getMandatorySetting(),
             'relevance' => $this->getRelevanceEquationInput(),
-            'preg' => $this->getValidationInput(),
+            'encrypted' => $this->getEncryptionSwitch(),
+            'save_as_default' => $this->getSaveAsDefaultSwitch()
         ];
+        
+        $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->sQuestionType);
+        if ($userSetting !== null){
+            $returnArray['clear_default'] = $this->getClearDefaultSwitch();
+        }
+
+        $returnArray['preg'] = $this->getValidationInput();
+
+        return $returnArray;
     }
 
     /**
@@ -84,16 +96,28 @@ abstract class QuestionBaseDataSet extends StaticModel
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
         
         $sQuestionType = $this->sQuestionType;
+
         if($this->aQuestionAttributes['question_template'] !== 'core' && $sQuestionTemplate === null) {
             $sQuestionTemplate = $this->aQuestionAttributes['question_template'];
         }
+
         $sQuestionTemplate = $sQuestionTemplate == '' || $sQuestionTemplate == 'core' ? null : $sQuestionTemplate;
         $questionTemplateFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
         $aQuestionTypeAttributes = \LimeSurvey\Helpers\questionHelper::getQuestionThemeAttributeValues($questionTemplateFolderName, $sQuestionTemplate);
-        
+
         $aAdvancedOptionsArray = [];
-        foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
-            $aAdvancedOptionsArray[$aQuestionAttributeArray['category']][$sAttributeName] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray);
+        if ($iQuestionID == null) {
+            $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->oQuestion->type);
+            if ($userSetting !== null){
+                $aAdvancedOptionsArray = (array) json_decode($userSetting);
+            }
+        } 
+        
+        if (empty($aAdvancedOptionsArray)){
+            foreach ($aQuestionTypeAttributes as $sAttributeName => $aQuestionAttributeArray) {
+                if($sAttributeName == 'question_template') { continue; } // Avoid double displaying
+                $aAdvancedOptionsArray[$aQuestionAttributeArray['category']][$sAttributeName] = $this->parseFromAttributeHelper($sAttributeName, $aQuestionAttributeArray);
+            }
         }
         
         return $aAdvancedOptionsArray;
@@ -155,6 +179,7 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'classes' => ['form-control'],
                 'options' => $aGroupOptions,
             ],
+            'disableInActive' => true
         ];
     }
 
@@ -183,10 +208,11 @@ abstract class QuestionBaseDataSet extends StaticModel
                         ]
                     ],
                 ],
+                'disableInActive' => true
             ];
     }
 
-    protected function getMandatorySwitch()
+    protected function getMandatorySetting()
     {
         return [
                 'name' => 'mandatory',
@@ -194,8 +220,95 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'formElementId' => 'mandatory',
                 'formElementName' => false,
                 'formElementHelp' => gT('Makes this question mandatory in your survey'),
-                'inputtype' => 'switch',
+                'inputtype' => 'buttongroup',
                 'formElementValue' => $this->oQuestion->mandatory,
+                'formElementOptions' => [
+                    'classes' => [],
+                    'options' => [
+                        [
+                            'text' => gT("On"),
+                            'value' => 'Y'
+                        ],
+                        [
+                            'text' => gT("Soft"),
+                            'value' => 'S'
+                        ],
+                        [
+                            'text' => gT("Off"),
+                            'value' => 'N'
+                        ],
+                    ],
+                ]
+            ];
+    }
+
+    protected function getEncryptionSwitch()
+    {
+        return [
+                'name' => 'encrypted',
+                'title' => gT('Encrypted'),
+                'formElementId' => 'encrypted',
+                'formElementName' => false,
+                'formElementHelp' => gT('Store the answers to this question encrypted'),
+                'inputtype' => 'switch',
+                'formElementValue' => $this->oQuestion->encrypted,
+                'formElementOptions' => [
+                    'classes' => [],
+                    'options' => [
+                        'option' => [
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
+                            ],
+                            [
+                                'text' => gT("Off"),
+                                'value' => 'N'
+                            ],
+                        ]
+                    ],
+                ],
+                'disableInActive' => true
+            ];
+    }
+
+    protected function getSaveAsDefaultSwitch()
+    {
+        return [
+                'name' => 'save_as_default',
+                'title' => gT('Save as default values'),
+                'formElementId' => 'save_as_default',
+                'formElementName' => false,
+                'formElementHelp' => gT('All attribute values for this question type will be saved as default'),
+                'inputtype' => 'switch',
+                'formElementValue' => '',
+                'formElementOptions' => [
+                    'classes' => [],
+                    'options' => [
+                        'option' => [
+                            [
+                                'text' => gT("On"),
+                                'value' => 'Y'
+                            ],
+                            [
+                                'text' => gT("Off"),
+                                'value' => 'N'
+                            ],
+                        ]
+                    ],
+                ],
+            ];
+    }
+
+    protected function getClearDefaultSwitch()
+    {
+        return [
+                'name' => 'clear_default',
+                'title' => gT('Clear default values'),
+                'formElementId' => 'clear_default',
+                'formElementName' => false,
+                'formElementHelp' => gT('Default attribute values for this question type will be cleared'),
+                'inputtype' => 'switch',
+                'formElementValue' => '',
                 'formElementOptions' => [
                     'classes' => [],
                     'options' => [
@@ -268,7 +381,7 @@ abstract class QuestionBaseDataSet extends StaticModel
     {
         $aAdvancedAttributeArray = [
             'name' => $sAttributeKey,
-            'title' => $aAttributeArray['caption'],
+            'title' => CHtml::decode($aAttributeArray['caption']),
             'inputtype' => $aAttributeArray['inputtype'],
             'formElementId' => $sAttributeKey,
             'formElementName' => false,
@@ -288,6 +401,8 @@ abstract class QuestionBaseDataSet extends StaticModel
                 'suffix' => '}',
                 ];
         }
+
+        
 
         $aAdvancedAttributeArray['aFormElementOptions'] = $aFormElementOptions;
         

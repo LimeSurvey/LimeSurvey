@@ -32,6 +32,7 @@ class RenderArrayMultiFlexText extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
+        $this->registerAssets();
         return do_array_texts($this->aFieldArray);
         
         $answer = '';

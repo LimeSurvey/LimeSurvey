@@ -221,13 +221,13 @@ class Usergroups extends Survey_Common_Action
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
         if ($ugid != false) {
-                    $ugid = (int) $ugid;
+            $ugid = (int) $ugid;
         }
 
         if (!empty($header)) {
-                    $aData['headercfg'] = $header;
+            $aData['headercfg'] = $header;
         } else {
-                    $aData = array();
+            $aData = array();
         }
 
         $aViewUrls = array();
@@ -238,7 +238,6 @@ class Usergroups extends Survey_Common_Action
         if (Yii::app()->session['loginID']) {
 
             if ($ugid) {
-                $ugid = sanitize_int($ugid);
                 $aData["usergroupid"] = $ugid;
                 $result = UserGroup::model()->requestViewGroup($ugid, Yii::app()->session["loginID"]);
                 $crow = $result[0];
@@ -251,48 +250,46 @@ class Usergroups extends Survey_Common_Action
                                             $aData["usergroupdescription"] = "";
                     }
                 }
+
                 //$this->user_in_groups_model = new User_in_groups;
                 $aUserInGroupsResult = UserGroup::model()->findByPk($ugid);
-                $sCondition2 = "ugid = :ugid";
-                $sParams2 = [':ugid'=>$ugid];
-                if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                    $sCondition2 .= " AND owner_id = :owner_id";
-                    $sParams2[':owner_id'] = Yii::app()->session['loginID'];
-                }
-                
-                $row2 = Yii::app()->db->createCommand()
-                ->select('ugid')
-                ->from('{{user_groups}}')
-                ->where($sCondition2, $sParams2)
-                ->limit(1)
-                ->queryRow();
+
                 $row = 1;
                 $userloop = array();
                 $bgcc = "oddrow";
-                foreach ($aUserInGroupsResult->users as $egurow) {
+                foreach ($aUserInGroupsResult->users as $oUser) {
                     // @todo: Move the zebra striping to view
                     if ($bgcc == "evenrow") {
                         $bgcc = "oddrow";
                     } else {
                         $bgcc = "evenrow";
                     }
-                    $userloop[$row]["userid"] = $egurow['uid'];
+                    $userloop[$row]["userid"] = $oUser->uid;
 
                     //	output users
                     $userloop[$row]["rowclass"] = $bgcc;
-                    if (Permission::model()->hasGlobalPermission('usergroups', 'update') && $egurow['owner_id']==Yii::app()->session['loginID'])  {
+                    if (Permission::model()->hasGlobalPermission('usergroups', 'update') && $oUser->parent_id==Yii::app()->session['loginID'])  {
                         $userloop[$row]["displayactions"] = true;
                     } else {
                         $userloop[$row]["displayactions"] = false;
                     }
 
-                    $userloop[$row]["username"] = $egurow['users_name'];
-                    $userloop[$row]["email"] = $egurow['email'];
+                    $userloop[$row]["username"] = $oUser->users_name;
+                    $userloop[$row]["email"] = $oUser->email;
 
                     $row++;
                 }
                 $aData["userloop"] = $userloop;
-                if ($row2 !== false) {
+
+
+                $aSearchCriteria = new CDbCriteria();
+                $aSearchCriteria->compare("ugid",$ugid);
+                if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                    $aSearchCriteria->compare("owner_id",Yii::app()->session['loginID']);
+                }               
+                $aFilteredUserGroups = UserGroup::model()->count($aSearchCriteria);
+
+                if ($aFilteredUserGroups > 0) {
                     $aData["useradddialog"] = true;
                     
                     $aUsers = User::model()->findAll(['join'=>"LEFT JOIN (SELECT uid AS id FROM {{user_in_groups}} WHERE ugid = {$ugid}) AS b ON t.uid = b.id", 'condition'=>"id IS NULL"]);

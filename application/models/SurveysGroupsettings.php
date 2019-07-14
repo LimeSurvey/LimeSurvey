@@ -290,12 +290,17 @@ class SurveysGroupsettings extends LSActiveRecord
         
         // set initial values to instance on first run
         if ($instance === null){
-            $instance = $model;
+            if ($model === null){
+                $instance = new SurveysGroupsettings();
+                $instance->optionAttributes = new stdClass();
+            } else {
+                $instance = $model;
+                $instance->optionAttributes = array_keys($model->attributes);
+                // unset gsid
+                unset($instance->optionAttributes[array_search('gsid', $instance->optionAttributes)]);
+            }
             $instance->oOptions = new stdClass();
             $instance->oOptionLabels = new stdClass();
-            $instance->optionAttributes = array_keys($model->attributes);
-            // unset gsid
-            unset($instance->optionAttributes[array_search('gsid', $instance->optionAttributes)]);
 
             // set visibility of 'inherit' options on buttons
             if ($iSurveyGroupId == 0){
@@ -324,7 +329,7 @@ class SurveysGroupsettings extends LSActiveRecord
         // set instance options only if option needs to be inherited
         if ($oSurvey !== null || ($oSurvey === null && $iStep > 1)){
             foreach($instance->optionAttributes as $key=>$attribute){
-                if ((empty($instance->oOptions->{$attribute})) || (!empty($instance->oOptions->{$attribute}) && ($instance->oOptions->{$attribute} === 'inherit' || $instance->oOptions->{$attribute} === 'I') || $instance->oOptions->{$attribute} === '-1')){
+                if ((empty($instance->oOptions->{$attribute})) || (!empty($instance->oOptions->{$attribute}) && ($instance->oOptions->{$attribute} === 'inherit' || $instance->oOptions->{$attribute} === 'I' || $instance->oOptions->{$attribute} === '-1'))){
                     $instance->oOptions->{$attribute} = $model->$attribute;
                     $instance->oOptionLabels->{$attribute} = self::translateOptionLabels($instance, $attribute, $model->$attribute);   
                 }
@@ -379,9 +384,9 @@ class SurveysGroupsettings extends LSActiveRecord
         } elseif ($attribute == 'questionindex' && $value != -1){
             return str_replace(array('0', '1', '2'), array(gT("Disabled"), gT("Incremental"), gT("Full")), $value);
         } elseif ($attribute == 'showgroupinfo'){
-            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group name only"), gT("Show group description only"), gT("Hide both")), $value);
+            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show group description only"), gT("Show group name only"), gT("Hide both")), $value);
         } elseif ($attribute == 'showqnumcode'){
-            return str_replace(array('B', 'D', 'N', 'X'), array(gT("Show both"), gT("Show question number only"), gT("Show question code only"), gT("Hide both")), $value);
+            return str_replace(array('B', 'C', 'N', 'X'), array(gT("Show both"), gT("Show question code only"), gT("Show question number only"), gT("Hide both")), $value);
         } else {
             return str_replace(array('Y', 'N'), array(gT("On"), gT("Off")), $value);
         }
@@ -400,7 +405,6 @@ class SurveysGroupsettings extends LSActiveRecord
     public function setToInherit()
     {
         // set attribute values to inherit, used only when creating new Survey instance
-        $this->owner_id = 1;
         $this->usecaptcha = 'E';
         $this->format = 'I';
         foreach ($this->optionAttributesInteger as $attribute){

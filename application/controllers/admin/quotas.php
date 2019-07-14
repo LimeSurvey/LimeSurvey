@@ -215,7 +215,7 @@ class quotas extends Survey_Common_Action
                     }
 
                     $aQuotaItems[$oQuota['id']][] = array(
-                        'oQuestion' => Question::model()->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
+                        'oQuestion' => Question::model()->with('questionL10ns')->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
                         'answer_title' => $answerText,
                         'oQuotaMember'=>$oQuotaMember,
                         'valid'=>isset($answerText),

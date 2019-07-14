@@ -22,6 +22,7 @@ echo viewHelper::getViewTestTag('tutorials');
         <div class="col-12 h1 pagetitle">
             <?php eT('Tutorials')?> 
         </div>
+		<?php /*
         <div class="col-12">
             <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewtutorial" >
                 <i class="fa fa-plus"></i>&nbsp;<?php eT('New') ?>
@@ -32,7 +33,11 @@ echo viewHelper::getViewTestTag('tutorials');
                 <?php eT('Reset') ?>
             </a>
             <?php endif; ?>	
-        </div>
+		</div>
+		*/  ?>
+		<div class="col-xs-12 jumbotron well">
+			<h3><?=gT("We will soon add the functionality to create your own tutorials and download them from our store.")?></h3>
+		</div>
 		<div class="col-12 ls-space margin top-15">
 			<div class="col-12 ls-flex-item">
 				<?php $this->widget('bootstrap.widgets.TbGridView', array(
@@ -55,7 +60,7 @@ echo viewHelper::getViewTestTag('tutorials');
 					'itemsCssClass' => 'table table-responsive table-striped',
 					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
 					'ajaxType' => 'POST',
-                    'ajaxUpdate' => true,
+                    'ajaxUpdate' => 'tutorial-grid',
                     'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container ls-ba \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
     				'afterAjaxUpdate'=>'bindAction',
 				));

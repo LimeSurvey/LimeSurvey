@@ -57,7 +57,8 @@ class RenderLanguageSelector extends QuestionBaseRenderer
             'answerlangs'=> $aAnswerlangs,
             'sLang'=> $sLanguage,
             ), true);
-
+            
+        $this->registerAssets();
         $inputnames[] = $this->sSGQA;
         return array($answer, $inputnames);
     }

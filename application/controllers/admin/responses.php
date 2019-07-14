@@ -423,11 +423,11 @@ class responses extends Survey_Common_Action
             $model                      = SurveyDynamic::model($iSurveyId);
             $model->bEncryption         = true;
 
+
             // Reset filters from stats
             if (Yii::app()->request->getParam('filters') == "reset") {
                 Yii::app()->user->setState('sql_'.$iSurveyId, '');
             }
-
 
             // Page size
             if (Yii::app()->request->getParam('pageSize')) {
@@ -435,6 +435,14 @@ class responses extends Survey_Common_Action
             }
 
             // Model filters
+            if (isset($_SESSION['survey_' . $iSurveyId])) {
+                $sessionSurveyArray = App()->session->get('survey_' . $iSurveyId);
+                $visibleColumns = isset($sessionSurveyArray['filteredColumns']) ? $sessionSurveyArray['filteredColumns'] : null;
+                if (!empty($visibleColumns)){
+                    $model->setAttributes($visibleColumns,false);
+                }
+
+            };
             // Using safe search on dynamic column names would be far too much complex.
             // So we pass over the safe validation and directly set attributes (second parameter of setAttributes to false).
             // see: http://www.yiiframework.com/wiki/161/understanding-safe-validation-rules/
@@ -455,6 +463,15 @@ class responses extends Survey_Common_Action
                 }
             }
 
+            // Checks if Columns have been filtered
+            $filterableColumnsExist = !empty(isset($_SESSION['survey_' . $iSurveyId]['filteredColumns']) ? $_SESSION['survey_' . $iSurveyId]['filteredColumns'] : null);
+            $filteredColumns = [];
+            if ($filterableColumnsExist) {
+                $filteredColumns = $_SESSION['survey_' . $iSurveyId]['filteredColumns'];
+            }
+            $aData['filterableColumnsExist'] = $filteredColumns;
+            $aData['filteredColumns'] = $filteredColumns;
+
             // rendering
             $aData['model']             = $model;
             $aData['bHaveToken']        = $bHaveToken;
@@ -473,15 +490,24 @@ class responses extends Survey_Common_Action
      * Saves the hidden columns for response browsing in the session
      *
      * @access public
-     * @param $iSurveyID : survey id
+     *
+     * @param $surveyid
      */
 
-    public function setHiddenColumns($iSurveyId)
+    public function setFilteredColumns($surveyid)
     {
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
-            $aHiddenFields = explode('|', Yii::app()->request->getPost('aHiddenFields'));
-            $_SESSION['survey_'.$iSurveyId]['HiddenFields'] = $aHiddenFields;
+        if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')) {
+            $filteredColumns = [];
+            $columns = explode(',', Yii::app()->request->getPost('columns'));
+            foreach ($columns as $column){
+                if (!empty($column)){
+                    $filteredColumns[] = $column;
+                }
+            }
+            $_SESSION['survey_'.$surveyid]['filteredColumns'] = $filteredColumns;
         }
+        $this->getController()->redirect(["admin/responses", "sa"=>"browse", "surveyid"=>$surveyid]);
+
     }
 
 
@@ -641,7 +667,7 @@ class responses extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read')) {
             if (!$sResponseId) {
-// No response id : get all survey files
+                // No response id : get all survey files
                 $oCriteria = new CDbCriteria();
                 $oCriteria->select = "id";
                 $oSurvey = SurveyDynamic::model($iSurveyId);
@@ -654,11 +680,10 @@ class responses extends Survey_Common_Action
             if (!empty($aResponseId)) {
                 // Now, zip all the files in the filelist
                 if (count($aResponseId) == 1) {
-                                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
+                    $zipfilename = "Files_for_survey_{$iSurveyId}_response_{$aResponseId[0]}.zip";
                 } else {
-                                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
+                    $zipfilename = "Files_for_survey_{$iSurveyId}.zip";
                 }
-
                 $this->_zipFiles($iSurveyId, $aResponseId, $zipfilename);
             } else {
                 // No response : redirect to browse with a alert
@@ -974,16 +999,18 @@ class responses extends Survey_Common_Action
         $responses = Response::model($iSurveyID)->findAllByPk($responseIds);
         $filecount = 0;
         foreach ($responses as $response) {
-            foreach ($response->getFiles() as $file) {
+            foreach ($response->getFiles() as $fileInfo) {
                 $filecount++;
                 /*
                 * Now add the file to the archive, prefix files with responseid_index to keep them
                 * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
                 * files from a different source with the same name.
                 */
-                if (file_exists($tmpdir.basename($file['filename']))) {
-                    $filelist[] = array(PCLZIP_ATT_FILE_NAME => $tmpdir.basename($file['filename']),
-                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s_%s", $response->id, $filecount, sanitize_filename(rawurldecode($file['name']))));
+                if (file_exists($tmpdir.basename($fileInfo['filename']))) {
+                    $filelist[] = array(
+                        PCLZIP_ATT_FILE_NAME => $tmpdir.basename($fileInfo['filename']),
+                        PCLZIP_ATT_FILE_NEW_FULL_NAME => sprintf("%05s_%02s-%s_%02s-%s", $response->id, $filecount, $fileInfo['question']['title'],$fileInfo['index'], sanitize_filename(rawurldecode($fileInfo['name'])))
+                    );
                 }
             }
         }

@@ -12,9 +12,8 @@
         <div class="panel-body">
             <div class="panel-body-ico">
                 <span class="sr-only"><?php eT($title); ?></span>
-                <span class="<?php echo $ico; ?>" style="font-size: 4em">
+                <span class="<?php echo CHtml::encode($ico); ?>" style="font-size: 4em">
                 </span>
-                </a>
             </div>
             <div class="panel-body-link">
                 <?php eT($description); ?>

@@ -2,21 +2,16 @@
     import merge from 'lodash/merge';
     import empty from 'lodash/isEmpty';
     import filter from 'lodash/filter';
-        
     import BootstrapToggle from 'vue-bootstrap-toggle'
+
+    import inputTypeMixin from '../../mixins/inputTypeMixin';
 
     export default {
         name: 'setting-checkboxswitch',
+        mixins: [inputTypeMixin],
         components: {BootstrapToggle},
         props: {
-            elId: {type: String, required: true},
-            elName: {type: [String, Boolean], default: ''},
-            elLabel: {type: String, default: ''},
-            elHelp: {type: String, default: ''},
-            currentValue: {default: false},
-            elOptions: {type: Object, default: {}},
-            debug: {type: [Object, Boolean]},
-            disabled: {type: Boolean, default: false}
+            disabled: {type: Boolean, default: false},
         },
         data(){
             return {
@@ -47,7 +42,7 @@
                 let curSwitchOptions = {
                     onstyle: "primary",
                     offstyle: "warning",
-                    size: "small",
+                    size: "normal",
                     on : this.onText,
                     off : this.offText
                 };
@@ -71,16 +66,37 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
+        <i 
+            class="fa fa-question pull-right" 
+            @click="triggerShowHelp=!triggerShowHelp" 
+            v-if="(elHelp.length>0) && !readonly"
+            :aria-expanded="!triggerShowHelp" 
+            :aria-controls="'help-'+(elName || elId)"
+        />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
-        <div :class="getClasses">
-            <bootstrap-toggle v-model="curValue" :options="switchOptions" :disabled="disabled" />
+        <div class="inputtype--toggle-container" :class="getClasses">
+            <bootstrap-toggle v-model="curValue" :options="switchOptions" :disabled="disabled || readonly" />
             <!-- <input type="checkbox" :name="elName || elId" :id="elId" v-model="curValue"/> -->
         </div> 
-        <div 
-            class="question-option-help alert alert-info"
-            v-if="showHelp"
-            v-html="elHelp"
-        />
+        <transition name="fade">
+            <div 
+                class="question-option-help well"
+                :id="'help-'+(elName || elId)"
+                v-show="showHelp"
+                v-html="elHelp"
+            />
+        </transition>
     </div>
 </template>
+
+<style lang="scss">
+    .inputtype--toggle-container {
+        .toggle[disabled] {
+            .toggle-group {
+                label {
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+</style>

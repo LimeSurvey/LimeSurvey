@@ -427,6 +427,7 @@ class RenderArrayMultiscale extends QuestionBaseRenderer
             $answer =  $this->renderDropdown();
         }
 
+        $this->registerAssets();
         $this->inputnames[] = $this->sSGQA;
         return array($answer, $this->inputnames);
     }

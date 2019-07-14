@@ -683,6 +683,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['sv']['dateformat'] = 6;
     $supportedLanguages['sv']['radixpoint'] = 1;
 
+    // Tajik
+    $supportedLanguages['tg']['description'] = gT('Tajik');
+    $supportedLanguages['tg']['nativedescription'] = '&#x422;&#x43E;&#x4B7;&#x438;&#x43A;&#x4E3;';
+    $supportedLanguages['tg']['rtl'] = false;
+    $supportedLanguages['tg']['dateformat'] = 6;
+    $supportedLanguages['tg']['radixpoint'] = 0;
+
     // Tamil
     $supportedLanguages['ta']['description'] = gT('Tamil');
     $supportedLanguages['ta']['nativedescription'] = '&#2980;&#2990;&#3007;&#2996;&#3021;';

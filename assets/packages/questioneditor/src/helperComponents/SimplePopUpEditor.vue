@@ -1,14 +1,13 @@
 <script>
 
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import LsEditor from '../../../meta/LsCkeditor/src/LsCkEditor';
 import merge from 'lodash/merge';
 
 export default {
     name: 'SimplePopUpEditor',
     data(){
         return {
-        editor: ClassicEditor,
-        editorConfig: {},
+        editor: LsEditor,
         abstractObject: {},
     }},
     props: {
@@ -18,6 +17,19 @@ export default {
         dataSetObject: {type: Object, required: true},
     },
     computed: {
+        
+        editorConfig() {
+            let fieldtype = this.type == 'answeroptions' ? 'editanswer' : 'editquestion';
+            return {
+                'lsExtension:fieldtype': fieldtype, 
+                'lsExtension:ajaxOptions': {
+                    surveyid: this.$store.getters.surveyid, 
+                    qid: this.dataSetObject.qid || window.QuestionEditData.qid, 
+                    gid: window.QuestionEditData.gid,
+                },
+                    'lsExtension:currentFolder':  'upload/surveys/'+this.$store.getters.surveyid+'/'
+            };
+        },
         title() {
             return this.dataSetObject[this.typeDefKey];
         },
@@ -48,7 +60,7 @@ export default {
         </div>
         <div class="panel-body ls-flex-column grow-1 fill">
             <div class="ls-flex-column fill unscoped--SimplePopup-editor-container">
-                <ckeditor class="ls-flex-column fill" :editor="editor" v-model="abstractObject[$store.state.activeLanguage][typeDef]" :config="editorConfig"></ckeditor>
+                <lsckeditor class="ls-flex-column fill" :editor="editor" v-model="abstractObject[$store.state.activeLanguage][typeDef]" :config="editorConfig"></lsckeditor>
             </div>
         </div>
         <div class="panel-footer">

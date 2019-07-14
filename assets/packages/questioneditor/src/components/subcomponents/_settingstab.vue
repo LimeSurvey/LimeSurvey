@@ -1,7 +1,13 @@
 
 <script>
+    
+    import keys from 'lodash/keys';
+    import foreach from 'lodash/forEach';
+    import reduce from 'lodash/reduce';
     import filter from 'lodash/filter';
     import sortBy from 'lodash/sortBy';
+    import isEmpty from 'lodash/isEmpty';
+    import isObject from 'lodash/isObject';
 
     import SettingSwitch from '../_inputtypes/switch.vue';
     import SettingText from '../_inputtypes/text.vue';
@@ -9,10 +15,14 @@
     import SettingSelect from '../_inputtypes/select.vue';
     import SettingTextdisplay from '../_inputtypes/textdisplay.vue';
     import SettingTextarea from '../_inputtypes/textarea.vue';
+    import SettingButtongroup from '../_inputtypes/buttongroup.vue';
     import StubSet from '../_inputtypes/stub.vue';
 
     export default {
         name: "settings-tab",
+        props: {
+            readonly : {type: Boolean, default: false}
+        },
         data(){
             return {
                 aComponentArray : [
@@ -20,7 +30,9 @@
                     'text',
                     'integer',
                     'select',
+                    'singleselect',
                     'textinput',
+                    'buttongroup',
                     'textarea'
                 ],
             }
@@ -30,21 +42,36 @@
             'setting-text': SettingText,
             'setting-integer': SettingInteger,
             'setting-select': SettingSelect,
+            'setting-singleselect': SettingSelect,
             'setting-textdisplay': SettingTextdisplay,
             'setting-textarea': SettingTextarea,
+            'setting-buttongroup': SettingButtongroup,
             'stub-set' : StubSet
         },
         computed: {
+            
+            currentAdvancedSettingsList() {
+                return filter(this.$store.state.currentQuestionAdvancedSettings[this.currentTab], (settingOption) => {
+                    return !isEmpty(this.parseForLocalizedOption(settingOption.formElementValue));
+                });
+            },
             currentSettingsTab(){
                 let items =  filter(
                     this.$store.state.currentQuestionAdvancedSettings[this.$store.state.questionAdvancedSettingsCategory],
-                    (item) => this.aComponentArray.indexOf((item.inputtype=='singleselect' ? 'select' : item.inputtype)) > -1 
+                    (item) => {
+                        if(this.aComponentArray.indexOf((item.inputtype)) == -1){ return false; }
+                        if(this.readonly) { return !isEmpty(this.parseForLocalizedOption(item.formElementValue)); }
+                        return true;
+                    }
                 );
                 return sortBy(
                     items, 
                     item=>item.aFormElementOptions.sortorder 
                     );
             },
+            surveyActive() {
+                return this.$store.getters.surveyObject.active =='Y'
+            }
         },
         methods: {
             reactOnChange(newValue, oAdvancedSettingObject) {
@@ -57,6 +84,15 @@
                     return 'setting-'+componentRawName;
                 }
                 return 'stub-set';
+            },
+            parseForLocalizedOption(value) {
+                if(isObject(value) && value[this.$store.state.activeLanguage] != undefined) {
+                    return value[this.$store.state.activeLanguage];
+                }
+                return value;
+            },
+            isReadonly(setting) {
+                return (this.readonly || (setting.disableInActive && this.surveyActive));
             }
         }
     }
@@ -81,6 +117,7 @@
                 :currentValue="advancedSetting.formElementValue"
                 :elOptions="advancedSetting.aFormElementOptions"
                 :debug="advancedSetting"
+                :readonly="isReadonly(advancedSetting)"
                 @change="reactOnChange($event, advancedSetting)"
                 ></component>
             </div>

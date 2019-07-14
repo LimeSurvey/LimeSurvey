@@ -1,6 +1,6 @@
 
 <script>
-import forEach from 'lodash/foreach';
+import forEach from 'lodash/forEach';
 
 export default {
     name: 'previewFrame',
@@ -33,8 +33,8 @@ export default {
                 const contents = this.documentIframe.contents();
                 this.$log.log(this.$documentIframe);
                 this.$log.log(contents);
-                this.documentIframe.contents().find('body').text('');
-                this.documentIframe.contents().find('body').html(newContent);
+                this.documentIframe.contents().find('html').text('');
+                this.documentIframe.contents().find('html').html(newContent);
                 this.documentIframe[0].contentWindow.jQuery(document).trigger('pjax:scriptcomplete');
             } catch(e){
                 this.$log.error(e);
@@ -50,7 +50,13 @@ export default {
     created(){
         const iframeID = this.getRandomId();
         this.iframeId = iframeID;
-        this.documentIframe = `<iframe id='${iframeID}' style='width:100%;height:100%;border:none;' />`
+        this.documentIframe = `<iframe id='${iframeID}' sandbox="allow-same-origin allow-scripts" style='width:100%;height:100%;border:none;' />`;
+        window.addEventListener('message', (event) => {
+            if(event.data.source == "vue-devtools-backend" || event.data.source == "vue-devtools-proxy" ) {
+                return
+            }
+            this.$log.log('EVENT!', event);
+        });
     }
 }
 </script>
@@ -58,7 +64,7 @@ export default {
 <template>
     <div class="scope-iframe-fill" border="0" :class="htmlClass" :id="id">
         <div class='ls-flex align-content-center align-items-center scope-loader' v-if="loading">
-            <div class='loader-advancedquestionsettings text-center'>
+            <div class='loader-previewframe text-center'>
                 <div class='contain-pulse animate-pulse'>
                     <div class='square'></div>
                     <div class='square'></div>

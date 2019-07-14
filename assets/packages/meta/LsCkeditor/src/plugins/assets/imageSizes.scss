@@ -1,0 +1,35 @@
+@mixin baseDefinition {
+    .lsImageSize--size--10  {
+        max-width: 10%;
+        display: inline-block;
+    }
+    .lsImageSize--size--25  {
+        max-width: 25%;
+        display: inline-block;
+    }
+    .lsImageSize--size--50  {
+        max-width: 50%;
+        display: inline-block;
+    }
+    .lsImageSize--size--75  {
+        max-width: 75%;
+        display: inline-block;
+    }
+    .lsImageSize--size--100 {
+        max-width: 100%;
+        display: block;
+    }
+}
+
+@include baseDefinition;
+
+.ck-content  {
+    @include baseDefinition;
+
+    .image-style-align-center,
+    .image-style-align-left, 
+    .image-style-align-right, 
+    .image-style-side {
+        @include baseDefinition;
+    }
+}

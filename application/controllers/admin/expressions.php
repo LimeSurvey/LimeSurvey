@@ -63,6 +63,10 @@ class Expressions extends Survey_Common_Action
         }
     }
 
+    public function getReplacements($replacementClass){
+        die('TEST');
+    }
+
     public function survey_logic_file()
     {
         

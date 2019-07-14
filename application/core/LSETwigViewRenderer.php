@@ -89,10 +89,30 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderTemplateForQuestionEditPreview($sLayout, $aDatas, $root = false, $bReturn  = false)
     {
         $root = (bool) $root;
-        $oTemplate = Template::model()->getInstance();
+        $oTemplate = Template::getInstance($aDatas['aSurveyInfo']['template'],null,null,null,null,true);
         $oLayoutTemplate = $this->getTemplateForView($sLayout, $oTemplate);
         if ($oLayoutTemplate) {
-            
+            $postMessageScripts = "
+var eventset = true;
+window.addEventListener('message', function(event) {
+    if(eventset){ console.log(event); eventset=!eventset;}
+    event.source.postMessage({msg: 'EVENT COLLECTED', event: event.data}, '*');
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + '//' + getUrl.host + '/' + getUrl.pathname.split('/')[1];
+    
+    if (baseUrl.match(event.origin) && event.data.run == 'trigger::pjax:scriptcomplete' ) {
+        console.log('runScriptcomplete');
+        jQuery(document).trigger('pjax:scriptcomplete');
+    }
+
+    if (baseUrl.match(event.origin) && event.data.run == 'trigger::newContent' ) {
+        console.log('replaceContent');
+        jQuery('#questionPreview--content').text('');
+        jQuery('#questionPreview--content').html(event.data.content);
+    }
+}, false);  
+";
+            App()->getClientScript()->registerScript('postMessageScripts', $postMessageScripts, CClientScript::POS_HEAD);
             $line = '<div class="{{ aSurveyInfo.class.outerframe }}  {% if (aSurveyInfo.options.container == "on") %} container {% else %} container-fluid {% endif %} " id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >';
             $line .= file_get_contents($oLayoutTemplate->viewPath.$sLayout);
             $line .= '</div>';
@@ -561,17 +581,48 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             if (isset($_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]) && isset($_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'])) {
                 $aDatas["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'];
             }
-        }
-
-
-        // Add the template options
-        if ($oTemplate->oOptions) {
-            foreach ($oTemplate->oOptions as $key => $value) {
-                $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
+            
+            // Add the survey theme options
+            if ($oTemplate->oOptions) {
+                foreach ($oTemplate->oOptions as $key => $value) {
+                    $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
+                }
             }
+        } else {
+            // Add the global theme options
+            $oTemplateConfigurationCurrent = TemplateConfiguration::getInstance($oTemplate->sTemplateName);
+            $aDatas["aSurveyInfo"]["options"] = isJson($oTemplateConfigurationCurrent['options'])?(array)json_decode($oTemplateConfigurationCurrent['options']):$oTemplateConfigurationCurrent['options'];
         }
+
+        $aDatas = $this->fixDataCoherence($aDatas);
+
         return $aDatas;
     }
+
+
+    /**
+     * It can happen that user set incoherent values for options (like background is on, but no image file is selected)
+     * With some server configuration, it can lead to critical errors : empty values in image src or url() can block submition
+     * This function will check thoses cases. It can be used in the future for further checks
+     * @param array $aDatas
+     * @return array
+     *
+     */
+    private function fixDataCoherence($aDatas)
+    {
+        // Clean option with files
+        $aFilesOptions = array( 'brandlogo' => 'brandlogofile'  , 'backgroundimage' => 'backgroundimagefile' );
+
+        foreach ($aFilesOptions as $sOption => $sFileOption) {
+            if ( array_key_exists ( $sFileOption ,$aDatas["aSurveyInfo"]["options"]) )
+                if ( empty ($aDatas["aSurveyInfo"]["options"][$sFileOption])  ){
+                    $aDatas["aSurveyInfo"]["options"][$sOption] = "false";
+                }
+        }
+
+        return $aDatas;
+    }
+
 
     /**
      * Adds custom extensions.

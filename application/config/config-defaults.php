@@ -667,6 +667,8 @@ $config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question"; /
 $config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir']; // The directory containing the user's question themes.
 $config['userfontsrootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR.'fonts'; // The directory containing the user's fonts.
 
+//Overwrite files with the same name on upload?
+$config['overwritefiles'] = 'off';
 
 // Use alias notation, we should move to this format everywhere.
 $config['plugindir']               = 'webroot.plugins';
@@ -731,6 +733,20 @@ $config['pluginCoreList'] = [
 ];
 
 $config['pluginWhitelist'] = [];
+
+/* replaced in generated application/config/security.php if exist */
+$config['encryptionkeypair'] = '';
+$config['encryptionpublickey'] = '';
+$config['encryptionsecretkey'] = '';
+
+$config['passwordValidationRules'] = array(
+    'min' => 4,
+    'max' => 0,
+    'lower' => 0,
+    'upper' => 0,
+    'numeric' => 0,
+    'symbol' => 0,
+);
 
 return $config;
 //settings deleted

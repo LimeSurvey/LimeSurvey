@@ -61,8 +61,10 @@ class RSyntaxWriter extends Writer
     {
         $this->headers = $oOptions->selectedColumns;
         foreach ($oOptions->selectedColumns as $id => $title) {
+            if (!isset($this->customFieldmap[$title])) {
+                continue;
+            }
             $field = $this->customFieldmap[$title];
-
             if (!isset($field['answers'])) {
                 $strTmp = mb_substr(stripTagsFull($values[$id]), 0, $this->maxLength);
 
@@ -86,6 +88,9 @@ class RSyntaxWriter extends Writer
     {
         $errors = '';
         foreach ($this->headers as $id => $title) {
+            if (!isset($this->customFieldmap[$title])){
+                continue;
+            }
             $field = $this->customFieldmap[$title];
             $i = $id + 1;
             if ($field['SPSStype'] == 'DATETIME23.2') {

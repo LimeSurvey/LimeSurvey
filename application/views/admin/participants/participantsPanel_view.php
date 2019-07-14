@@ -13,10 +13,10 @@
     var exportToCSVURL = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/exporttocsv"); ?>";
     var openModalParticipantPanel = "<?php echo ls\ajax\AjaxHelper::createUrl("/admin/participants/sa/openModalParticipantPanel"); ?>";
     var editValueParticipantPanel = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/editValueParticipantPanel"); ?>";
-    
+
     var translate_blacklisted = "<?php echo '<i class=\"fa fa-undo\"></i> '.gT('Remove from blacklist?'); ?>";
     var translate_notBlacklisted = "<?php echo '<i class=\"fa fa-ban\"></i> '.gT('Add to blacklist?'); ?>";
-    var datepickerConfig =     <?php 
+    var datepickerConfig =     <?php
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         echo json_encode(array(
             'dateformatdetails'      => $dateformatdetails['dateformat'],
@@ -53,11 +53,20 @@
     <div class='row'>
 
         <div class="col-md-9">
-            <!-- Display participants -->
-            <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
-                <span class="fa fa-list text-success"></span>
-                <?php eT("Display CPDB participants");?>
-            </a>
+            <?php if (Permission::model()->hasGlobalPermission('participantpanel','read')):?>
+                <!-- Display participants -->
+                <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
+                    <span class="fa fa-list text-success"></span>
+                    <?php eT("Display CPDB participants");?>
+                </a>
+            <?php elseif (Permission::model()->hasGlobalPermission('participantpanel','create')
+                || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id])):?>
+                <!-- Display my participants -->
+                <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
+                    <span class="fa fa-list text-success"></span>
+                    <?php eT("Display my CPDB participants");?>
+                </a>
+            <?php endif;?>
 
             <!-- Information -->
             <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
@@ -95,16 +104,16 @@
                 <span class="fa fa-share text-success"></span>
                 <?php eT("Share panel");?>
             </a>
-            
+
             <!-- Export to CSV file -->
             <?php
             if (Permission::model()->hasGlobalPermission('participantpanel','export')): ?>
-                
+
                     <a id="export" class="btn btn-default" href="#" role="button">
                         <span class="icon-exportcsv text-success"></span>
                         <?php eT("Export all participants");?>
                     </a>
-                
+
             <?php endif;?>
         </div>
 
@@ -125,12 +134,12 @@
 <div class="modal fade" id="participantPanel_edit_modal" tabindex="-1" role="dialog" aria-labelledby="participantPanel_edit_modal">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-     
+
     </div>
   </div>
 </div>
 
-<?php 
+<?php
     $aModalData = ['aAttributes' => $aAttributes];
     App()->getController()->renderPartial('/admin/participants/modal_subviews/_exportCSV', $aModalData);
 

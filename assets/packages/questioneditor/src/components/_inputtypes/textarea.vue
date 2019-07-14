@@ -1,18 +1,12 @@
 <script>
-    import foreach from 'lodash/foreach';
+    import foreach from 'lodash/forEach';
     import empty from 'lodash/isEmpty';
+
+    import inputTypeMixin from '../../mixins/inputTypeMixin';
 
     export default {
         name: 'setting-textarea',
-        props: {
-            elId: {type: String, required: true},
-            elName: {type: [String, Boolean], default: ''},
-            elLabel: {type: String, default: ''},
-            elHelp: {type: String, default: ''},
-            currentValue: {default: ''},
-            elOptions: {type: Object, default: {}},
-            debug: {type: [Object, Boolean]}
-        },
+        mixins: [inputTypeMixin],
         data(){
             return {
                 triggerShowHelp: false
@@ -78,16 +72,23 @@
 
 <template>
     <div class="form-row">
-        <i class="fa fa-question pull-right" @click="triggerShowHelp=!triggerShowHelp" v-if="(elHelp.length>0)" />
+        <i 
+            class="fa fa-question pull-right" 
+            @click="triggerShowHelp=!triggerShowHelp" 
+            v-if="(elHelp.length>0) && !readonly" 
+            :aria-expanded="!triggerShowHelp" 
+            :aria-controls="'help-'+(elName || elId)"
+        />
         <label class="form-label" :for="elId"> {{elLabel}} </label>
             <div class="input-group col-12">
                 <div v-if="hasPrefix" class="input-group-addon"> {{elOptions.inputGroup.prefix}} </div>
-                <textarea :class="getClasses" :name="elName || elId" :id="elId" v-model="curValue" v-bind="elOptions.attributes" ></textarea>
+                <textarea :class="getClasses" :name="elName || elId" :id="elId" v-model="curValue" :readonly="readonly" v-bind="elOptions.attributes" ></textarea>
                 <div v-if="hasSuffix" class="input-group-addon"> {{elOptions.inputGroup.suffix}} </div>
             </div>
         <div 
-            class="question-option-help alert alert-info"
-            v-if="showHelp"
+            class="question-option-help well"
+            :id="'help-'+(elName || elId)"
+            v-show="showHelp"
             v-html="elHelp"
         />
     </div>

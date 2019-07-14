@@ -27,7 +27,9 @@ class themes extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        if (Permission::model()->hasGlobalPermission('templates', 'read')) {
+        
+        $sTemplateName = Yii::app()->request->getPost('templatename', '');
+        if (Permission::model()->hasGlobalPermission('templates', 'read') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             parent::runWithParams($params);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
@@ -177,7 +179,8 @@ class themes extends Survey_Common_Action
             Yii::app()->getController()->forward("/admin/survey/sa/uploadimagefile/");
             Yii::app()->end();
         }
-        if (Permission::model()->hasGlobalPermission('templates', 'import')) {
+        $sTemplateName = Yii::app()->request->getPost('templatename');
+        if (Permission::model()->hasGlobalPermission('templates', 'import') || Permission::model()->hasTemplatePermission($sTemplateName)) {
             Yii::app()->loadHelper('admin/template');
             $lid = returnGlobal('lid');
             $uploadresult = "";
@@ -186,7 +189,6 @@ class themes extends Survey_Common_Action
             if ($action == 'templateuploadimagefile') {
                 // $iTemplateConfigurationId = Yii::app()->request->getPost('templateconfig');
                 // $oTemplateConfiguration = TemplateConfiguration::getInstanceFromConfigurationId($iTemplateConfigurationId);
-                $sTemplateName = Yii::app()->request->getPost('templatename');
                 $oTemplateConfiguration = Template::getInstance($sTemplateName);
 
                 $debug[] = $sTemplateName;
@@ -234,7 +236,7 @@ class themes extends Survey_Common_Action
                     $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                 } else {
                     $uploadresult = sprintf(gT("File %s uploaded"), $filename);
-                    Yii::app()->user->setFlash('success', "Data1 saved!");
+                    Yii::app()->user->setFlash('success', "Data saved!");
                     $success = true;
                 };
 
@@ -930,7 +932,7 @@ class themes extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         // LimeSurvey style
-        $oEditedTemplate = Template::getInstance($templatename, null, null, true);
+        $oEditedTemplate = Template::getInstance($templatename, null, null, true, true)->prepareTemplateRendering($templatename, null, true);
 
             //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
@@ -1268,6 +1270,8 @@ class themes extends Survey_Common_Action
 
         $thissurvey['include_content'] = $sContentFile;
 
+        // new TemplateConfiguration model created so preview can read theme options from DB
+        $oTemplateForPreview = Template::getInstance($templatename, null, null, false)->prepareTemplateRendering($templatename, null, true);
 
         try {
             $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor(
@@ -1276,7 +1280,7 @@ class themes extends Survey_Common_Action
                     'aSurveyInfo' =>$thissurvey,
                     'print'       => $print  // Only used for PDF print layout.
                 ),
-                $oEditedTemplate
+                $oTemplateForPreview
             );
         } catch (Exception $ex) {
             $myoutput = "<h3>ERROR!</h3>";

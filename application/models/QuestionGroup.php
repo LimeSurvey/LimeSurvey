@@ -186,6 +186,32 @@ class QuestionGroup extends LSActiveRecord
     }
 
     /**
+     * Get the internationalized group name from the L10N Table
+     *
+     * @param string $sLanguage
+     * @return string
+     */
+    public function getGroupNameI10N($sLanguage) {
+        if (isset($this->questionGroupL10ns[$sLanguage])) {
+            return $this->questionGroupL10ns[$sLanguage]->group_name;
+        }
+        return '';
+    }
+
+    /**
+     * Get the internationalized group description from the L10N Table
+     *
+     * @param string $sLanguage
+     * @return string
+     */
+    public function getGroupDescriptionI10N($sLanguage) {
+        if (isset($this->questionGroupL10ns[$sLanguage])) {
+            return $this->questionGroupL10ns[$sLanguage]->description;
+        }
+        return '';
+    }
+
+    /**
      * @param integer $groupId
      * @return array
      */
@@ -398,10 +424,20 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function getTotalGroupsWithoutQuestions($surveyid)
     {
+        $cacheKey = 'getTotalGroupsWithoutQuestions_' . $surveyid;
+        $value = EmCacheHelper::get($cacheKey);
+        if ($value !== false) {
+            return $value;
+        }
+
         $sQuery = "select count(*) from {{groups}}
             left join {{questions}} on  {{groups}}.gid={{questions}}.gid
             where {{groups}}.sid={$surveyid} and qid is null";
-        return Yii::app()->db->createCommand($sQuery)->queryScalar();
+        $result =  Yii::app()->db->createCommand($sQuery)->queryScalar();
+
+        EmCacheHelper::set($cacheKey, $result);
+
+        return $result;
     }
 
     /**
@@ -411,10 +447,19 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function getTotalGroupsWithQuestions($surveyid)
     {
+        $cacheKey = 'getTotalGroupsWithoutQuestions_' . $surveyid;
+        $value = EmCacheHelper::get($cacheKey);
+        if ($value !== false) {
+            return $value;
+        }
+
         $sQuery = "select count(DISTINCT {{groups}}.gid) from {{groups}}
             left join {{questions}} on  {{groups}}.gid={{questions}}.gid
             where {{groups}}.sid={$surveyid} and qid is not null";
-        return Yii::app()->db->createCommand($sQuery)->queryScalar();
-    }
+        $result = Yii::app()->db->createCommand($sQuery)->queryScalar();
 
+        EmCacheHelper::set($cacheKey, $result);
+
+        return $result;
+    }
 }

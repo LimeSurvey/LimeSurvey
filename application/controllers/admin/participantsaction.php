@@ -14,6 +14,8 @@
 *
 */
 
+use ls\ajax\AjaxHelper;
+
 /**
  * @param array $a
  * @param string $subkey
@@ -48,9 +50,18 @@ class participantsaction extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        $this->checkPermission('read');
+        if (!(Permission::model()->hasGlobalPermission('participantpanel', 'read')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'create')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'update')
+            || Permission::model()->hasGlobalPermission('participantpanel', 'delete')
+            || ParticipantShare::model()->exists('share_uid = :userid', [':userid' => App()->user->id]))
+        ) {
+            App()->setFlashMessage(gT('No permission'), 'error');
+            App()->getController()->redirect(App()->request->urlReferrer);
+        }
 
         Yii::import('application.helpers.admin.ajax_helper', true);
+        Yii::import('application.helpers.admin.permission_helper', true);
 
         parent::runWithParams($params);
     }
@@ -88,6 +99,7 @@ $url .= "_view"; });
      */
     public function openModalParticipantPanel()
     {
+        $this->setAjaxHelper(new \ls\ajax\AjaxHelper());
         $target = Yii::app()->request->getPost('modalTarget');
         switch ($target) {
             case "editparticipant":
@@ -121,6 +133,7 @@ $url .= "_view"; });
      */
     public function editValueParticipantPanel()
     {
+        $this->setAjaxHelper(new \ls\ajax\AjaxHelper());
         $target = Yii::app()->request->getPost('actionTarget');
         switch ($target) {
             case "changeBlacklistStatus":
@@ -199,7 +212,7 @@ $url .= "_view"; });
 
             $fields[] = 'a'.$value;
             $attributeNames = $oAttributeName->participant_attribute_names_lang;
-            $outputarray[0][] = (sizeof($attributeNames) > 0) ? $attributeNames[0]['attribute_name'] : $oAttributeName->defaultname;
+            $outputarray[0][] = (sizeof($attributeNames) > 0 && !empty($attributeNames[0]['attribute_name'])) ? $attributeNames[0]['attribute_name'] : $oAttributeName->defaultname;
         }
 
         $fieldNeededKeys = array_fill_keys($fields, '');
@@ -301,10 +314,10 @@ $url .= "_view"; });
         }
 
         // if superadmin all the records in the cpdb will be displayed
+        $iUserId = App()->user->getId();
         if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             $iTotalRecords = Participant::model()->count();
         } else {// if not only the participants on which he has right on (shared and owned)
-            $iUserId = Yii::app()->user->getId();
             $iTotalRecords = Participant::model()->getParticipantsOwnerCount($iUserId);
         }
         $model = new Participant();
@@ -322,7 +335,7 @@ $url .= "_view"; });
         }
 
         $model->bEncryption = true;
-        
+
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -344,7 +357,30 @@ $url .= "_view"; });
         Yii::app()->clientScript->registerPackage('bootstrap-datetimepicker');
         Yii::app()->clientScript->registerPackage('bootstrap-switch');
 
-        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array(), true, false);
+        // check global and custom permissions and pass them to $aData
+        $aData['permissions'] = permissionsAsArray(
+            [
+                'superadmin' => ['read'],
+                'templates' => ['read'],
+                'labelsets' => ['read'],
+                'users' => ['read'],
+                'usergroups' => ['read'],
+                'participantpanel' => ['read', 'create', 'update', 'delete', 'export', 'import'],
+                'settings' => ['read']
+            ],
+            [
+                'participantpanel' => [
+                    'editSharedParticipants' => empty(ParticipantShare::model()->findAllByAttributes(
+                        ['share_uid' =>  $iUserId],
+                        ['condition' => 'can_edit = \'0\' OR can_edit = \'\'',]
+                    )),
+                    'sharedParticipantExists' => ParticipantShare::model()->exists('share_uid = :userid', [':userid' => $iUserId]),
+                    'isOwner' => isset($participantParam['owner_uid']) && ($participantParam['owner_uid'] === $iUserId) ? true : false
+                ],
+
+            ]
+        );
+        $aData['massiveAction'] = App()->getController()->renderPartial('/admin/participants/massive_actions/_selector', array('permissions' => $aData['permissions']), true, false);
 
         // Set page size
         if ($request->getPost('pageSizeParticipantView')) {
@@ -363,8 +399,9 @@ $url .= "_view"; });
     public function deleteParticipant()
     {
         // Abort if no permission
-        if (!Permission::model()->hasGlobalPermission('participantpanel', 'delete')) {
-            ls\ajax\AjaxHelper::outputNoPermission();
+        $deletePermission = Permission::model()->hasGlobalPermission('participantpanel', 'delete');
+        if (!$deletePermission) {
+            AjaxHelper::outputNoPermission();
         }
 
         $selectoption = Yii::app()->request->getPost('selectedoption');
@@ -384,7 +421,7 @@ $url .= "_view"; });
         // Deletes from participants only
         $deletedParticipants = null;
         if ($selectoption == 'po') {
-            $deletedParticipants = Participant::model()->deleteParticipants($participantIds);
+            $deletedParticipants = Participant::model()->deleteParticipants($participantIds, !$deletePermission);
         }
         // Deletes from central and survey participants table
         else if ($selectoption == 'ptt') {
@@ -399,9 +436,9 @@ $url .= "_view"; });
         }
 
         if ($deletedParticipants === 0) {
-            ls\ajax\AjaxHelper::outputError(gT('No participants deleted'));
+            AjaxHelper::outputError(gT('No participants deleted'));
         } else {
-            ls\ajax\AjaxHelper::outputSuccess(gT('Participant deleted'));
+            AjaxHelper::outputSuccess(gT('Participant deleted'));
         }
     }
 
@@ -447,7 +484,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -468,7 +505,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -510,7 +547,7 @@ $url .= "_view"; });
             $aData,
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -529,7 +566,7 @@ $url .= "_view"; });
             array('model' => $model),
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -562,8 +599,16 @@ $url .= "_view"; });
         }
     }
 
-    public function batchEdit() {
-        if (!Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
+    public function batchEdit()
+    {
+        $hasUpdatePermission = Permission::model()->hasGlobalPermission('participantpanel', 'update');
+        if (!$hasUpdatePermission
+            && empty(ParticipantShare::model()->findAllByAttributes(
+                ['share_uid' => (int)App()->user->id],
+                'can_edit = :can_edit',
+                [':can_edit' => '1']
+            ))
+        ) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->createUrl('/admin'));
             return;
@@ -583,14 +628,14 @@ $url .= "_view"; });
                 $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
             }
         }
-        
+
 
         if (count($aData) > 0) {
             foreach ($aParticipantIds as $sParticipantId) {
                 $oParticipant = Participant::model()->findByPk($sParticipantId);
-                
-                
-                
+
+
+
                 foreach ($aData as $key => $value) {
                     // Make sure no-one hacks owner_uid into form
                     if (!$oParticipant->isOwnerOrSuperAdmin() && $key=='owner_uid') {
@@ -599,13 +644,22 @@ $url .= "_view"; });
                     $oParticipant->$key = $value;
                 }
 
-                $bUpdateSuccess = $oParticipant->save();
+                // Check if the User is allowed to edit the participant
+                if (ParticipantShare::model()->canEditSharedParticipant($sParticipantId)
+                    || $oParticipant->isOwnerOrSuperAdmin()
+                    || $hasUpdatePermission
+                ) {
+                    $bUpdateSuccess = $oParticipant->save();
+                } else {
+                    $bUpdateSuccess = '';
+                };
+
                 if ($bUpdateSuccess) {
                     $aResults[$sParticipantId]['status']    = true;
                     $aResults[$sParticipantId]['message']   = gT('Updated');
                 } else {
                     $aResults[$sParticipantId]['status']    = false;
-                    $aResults[$sParticipantId]['message']   = $oParticipant->error;
+                    $aResults[$sParticipantId]['message']   = $oParticipant->getError('participant_id');
                 }
             }
         } else {
@@ -630,11 +684,11 @@ $url .= "_view"; });
 
         // Abort if not found (internal error)
         if (empty($participant)) {
-            ls\ajax\AjaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
+            $this->ajaxHelper::outputError(sprintf('Found no participant with id %s', $aData['participant_id']));
         }
 
         if (!$participant->userHasPermissionToEdit()) {
-            ls\ajax\AjaxHelper::outputNoPermission();
+            $this->ajaxHelper::outputNoPermission();
         }
 
         // Make sure no-one hacks owner_uid into form
@@ -655,7 +709,7 @@ $url .= "_view"; });
             $attribute->updateParticipantAttributeValue($attribute->attributes);
         }
 
-        ls\ajax\AjaxHelper::outputSuccess(gT("Participant successfully updated"));
+        $this->ajaxHelper::outputSuccess(gT("Participant successfully updated"));
     }
 
     /**
@@ -684,19 +738,17 @@ $url .= "_view"; });
                     $attribute->value = $attributeValue;
                     $attribute->encrypt();
                     $attribute->updateParticipantAttributeValue($attribute->attributes);
-
-
                 }
 
-                ls\ajax\AjaxHelper::outputSuccess(gT("Participant successfully added"));
+                AjaxHelper::outputSuccess(gT("Participant successfully added"));
             } else if (is_string($result)) {
-                ls\ajax\AjaxHelper::outputError('Could not add new participant: '.$result);
+                AjaxHelper::outputError('Could not add new participant: '.$result);
             } else {
                 // "Impossible"
                 safeDie('Could not add participant.');
             }
         } else {
-            ls\ajax\AjaxHelper::outputNoPermission();
+            AjaxHelper::outputNoPermission();
         }
     }
 
@@ -767,7 +819,7 @@ $url .= "_view"; });
                 $sSeparator = $aResult[0];
             }
             $firstline = fgetcsv($oCSVFile, 1000, $sSeparator[0]);
-            
+
             $selectedcsvfields = array();
             $fieldlist = array();
             foreach ($firstline as $key => $value) {
@@ -878,7 +930,7 @@ $url .= "_view"; });
             foreach ($mappedarray as $key => $value) {
                 array_push($allowedfieldnames, strtolower($value));
             }
-        }        
+        }
         foreach ($tokenlistarray as $buffer) {
 //Iterate through the CSV file line by line
             $buffer = @mb_convert_encoding($buffer, "UTF-8", $uploadcharset);
@@ -1363,13 +1415,12 @@ $url .= "_view"; });
                         $aUpdateData[$sDefaultname] = LSActiveRecord::decryptSingle($participant->$sDefaultname);
                     } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y'){
                         $aUpdateData[$sDefaultname] = LSActiveRecord::encryptSingle($participant->$sDefaultname);
-                        $test = 1;
                     }
                     if (!empty($aUpdateData)){
                         $oDB->createCommand()->update('{{participants}}', $aUpdateData, "participant_id='".$participant->participant_id."'");
-                    }              
+                    }
                 }
-                
+
             } else {
                 // custom participant attributes
                 $oAttributes = ParticipantAttribute::model()->findAll("attribute_id=:attribute_id", array("attribute_id"=>$attributeId));
@@ -1380,15 +1431,15 @@ $url .= "_view"; });
                     } elseif ($sEncryptedBeforeChange == 'N' && $sEncryptedAfterChange == 'Y'){
                         $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                     }
-                    if (!empty($aUpdateData)){
-                        $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$attribute->attribute_id."'");
+                    if (!empty($aUpdateData) && $aUpdateData['value'] !== null){
+                        $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$attributeId."' AND participant_id = '". $attribute->participant_id . "'");
                     }
                 }
-                
+
             }
 
             // save token encryption options if everything was ok
-            $attributeName->update(array('encrypted'));
+            $attributeName->update();
             $oTransaction->commit();
         } catch (\Exception $e) {
             $oTransaction->rollback();
@@ -1440,12 +1491,16 @@ $url .= "_view"; });
         // Default visibility to false
         $model->visible = $model->visible ?: 'FALSE';
 
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $aData['bEncrypted'] = $sodium->bLibraryExists;
+
         $html = $this->getController()->renderPartial(
             '/admin/participants/modal_subviews/_editAttribute',
             $aData,
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -1463,13 +1518,14 @@ $url .= "_view"; });
 
         $surveys = Survey::getSurveysWithTokenTable();
         $data['surveys'] = $surveys;
+        $data['hasGlobalPermission'] = Permission::model()->hasGlobalPermission('surveys', 'update');
 
         $html = $this->getController()->renderPartial(
             '/admin/participants/modal_subviews/_addToSurvey',
             $data,
             true
         );
-        ls\ajax\AjaxHelper::output($html);
+        AjaxHelper::output($html);
     }
 
     /**
@@ -1485,22 +1541,36 @@ $url .= "_view"; });
     public function editAttributeName()
     {
         $AttributeNameAttributes = Yii::app()->request->getPost('ParticipantAttributeName');
-        $iAttributeId = $AttributeNameAttributes['attribute_id'];
-        $oAttributeName = ParticipantAttributeName::model()->findByPk($iAttributeId);
         $AttributeNameAttributes['encrypted'] = $AttributeNameAttributes['encrypted'] == '1' ? 'Y' : 'N';
         $AttributeNameAttributes['visible'] = $AttributeNameAttributes['visible'] == '1' ? 'TRUE' : 'FALSE';
+        $AttributeNameAttributes['core_attribute'] = 'N';
         $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
-        $sEncryptedBeforeChange = $oAttributeName->encrypted;
         $sEncryptedAfterChange = $AttributeNameAttributes['encrypted'];
         $operation = Yii::app()->request->getPost('oper');
-        $success = [];
 
-        // encryption/decryption MUST be done in a one synchronous step, either all succeeded or none
-        $oAttributes = ParticipantAttribute::model()->findAll("attribute_id=:attribute_id", array("attribute_id"=>$iAttributeId));
+        // encryption/decryption MUST be done in a one synchronous step, either all succeed or none
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
+
+            // save attribute
+            if ($operation === 'edit') {
+                $iAttributeId = $AttributeNameAttributes['attribute_id'];
+                $ParticipantAttributeNames = ParticipantAttributeName::model()->findByPk($iAttributeId);
+                $sEncryptedBeforeChange = $ParticipantAttributeNames->encrypted;
+                $ParticipantAttributeNames->saveAttribute($AttributeNameAttributes);
+            } else {
+                $ParticipantAttributeNames = new ParticipantAttributeName;
+                $sEncryptedBeforeChange = 'N';
+                $ParticipantAttributeNames->setAttributes($AttributeNameAttributes);
+                $ParticipantAttributeNames->save();
+                $iAttributeId = $ParticipantAttributeNames->attribute_id;
+
+            }
+
+            // encrypt/decrypt participant data on attribute setting change
+            $oAttributes = ParticipantAttribute::model()->findAll("attribute_id=:attribute_id", array("attribute_id"=>$iAttributeId));
             foreach($oAttributes as $attribute){
                 $aUpdateData = array();
                 if ($sEncryptedBeforeChange == 'Y' && $sEncryptedAfterChange == 'N'){
@@ -1509,44 +1579,37 @@ $url .= "_view"; });
                     $aUpdateData['value'] = LSActiveRecord::encryptSingle($attribute->value);
                 }
                 if (!empty($aUpdateData)){
-                    $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$iAttributeId."'");
+                    $oDB->createCommand()->update('{{participant_attribute}}', $aUpdateData, "attribute_id='".$iAttributeId."' AND participant_id = '". $attribute->participant_id . "'");
                 }
             }
 
-            // save all other things if everything was ok
-            if ($operation === 'edit') {
-                $ParticipantAttributNamesModel = ParticipantAttributeName::model()->findByPk($iAttributeId);
-                $success[] = $ParticipantAttributNamesModel->saveAttribute($AttributeNameAttributes);
-            } else {
-                $ParticipantAttributNamesModel = new ParticipantAttributeName;
-                $ParticipantAttributNamesModel->setAttributes($AttributeNameAttributes);
-                $success[] = $ParticipantAttributNamesModel->save();
-    
-            }
+            // save attribute values
             if (is_array($ParticipantAttributeNamesDropdown)) {
-                $ParticipantAttributNamesModel->clearAttributeValues();
+                $ParticipantAttributeNames->clearAttributeValues();
                 foreach ($ParticipantAttributeNamesDropdown as $i=>$dropDownValue) {
                     if ($dropDownValue !== "") {
                         $storeArray = array(
-                            "attribute_id" => $ParticipantAttributNamesModel->attribute_id,
+                            "attribute_id" => $ParticipantAttributeNames->attribute_id,
                             "value" => $dropDownValue
                         );
-                        $ParticipantAttributNamesModel->storeAttributeValue($storeArray);
+                        $ParticipantAttributeNames->storeAttributeValue($storeArray);
                     }
                 }
             }
+
+            // save attribute translations
             if (is_array($AttributeNameLanguages)) {
                 foreach ($AttributeNameLanguages as $lnKey => $lnValue) {
-                    $savaLanguageArray = array(
-                        'attribute_id' => $ParticipantAttributNamesModel->attribute_id,
+                    $saveLanguageArray = array(
+                        'attribute_id' => $ParticipantAttributeNames->attribute_id,
                         'attribute_name' => $lnValue,
                         'lang' => $lnKey
                     );
-                    $success[] = $ParticipantAttributNamesModel->saveAttributeLanguages($savaLanguageArray);
+                    $ParticipantAttributeNames->saveAttributeLanguages($saveLanguageArray);
                 }
             }
-            ls\ajax\AjaxHelper::outputSuccess(gT("Attribute successfully updated"));
             $oTransaction->commit();
+            AjaxHelper::outputSuccess(gT("Attribute successfully updated"));
         } catch (\Exception $e) {
             $oTransaction->rollback();
             return false;
@@ -1566,9 +1629,9 @@ $url .= "_view"; });
         $AttributePackage = ParticipantAttributeName::model()->findByPk($attribute_id);
         if (count($AttributePackage->participant_attribute_names_lang) > 1) {
             ParticipantAttributeNameLang::model()->deleteByPk(array("attribute_id" => $attribute_id, "lang" => $lang));
-            ls\ajax\AjaxHelper::outputSuccess(gT("Language successfully deleted"));
+            AjaxHelper::outputSuccess(gT("Language successfully deleted"));
         } else {
-            ls\ajax\AjaxHelper::outputError(gT("There has to be at least one language."));
+            AjaxHelper::outputError(gT("There has to be at least one language."));
         }
     }
     /**
@@ -1581,7 +1644,7 @@ $url .= "_view"; });
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
         ParticipantAttributeName::model()->delAttribute($attribute_id);
-        ls\ajax\AjaxHelper::outputSuccess(gT("Attribute successfully deleted"));
+        AjaxHelper::outputSuccess(gT("Attribute successfully deleted"));
     }
 
     /**
@@ -1592,7 +1655,7 @@ $url .= "_view"; });
     public function deleteAttributes()
     {
         if (!Permission::model()->hasGlobalPermission('participantpanel', 'delete')) {
-            ls\ajax\AjaxHelper::outputNoPermission();
+            AjaxHelper::outputNoPermission();
             return;
         }
 
@@ -1607,12 +1670,12 @@ $url .= "_view"; });
                 $deletedAttributes++;
             }
 
-            ls\ajax\AjaxHelper::outputSuccess(sprintf(
+            AjaxHelper::outputSuccess(sprintf(
                 ngT('%s attribute deleted|%s attributes deleted', $deletedAttributes),
                 $deletedAttributes)
             );
         } catch (Exception $e) {
-            ls\ajax\AjaxHelper::outputError(sprintf(
+            AjaxHelper::outputError(sprintf(
                 gT('Error. Deleted %s attribute(s). Error message: %s'),
                 $deletedAttributes,
                 $e->getMessage()
@@ -1872,6 +1935,7 @@ $url .= "_view"; });
         if (Yii::app()->request->getParam('ParticipantShare')) {
             $model->setAttributes(Yii::app()->request->getParam('ParticipantShare'), false);
         }
+        $model->bEncryption = true;
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -2171,15 +2235,18 @@ $url .= "_view"; });
 
     /**
      * Stores the shared participant information in participant_shares
+     *
      * @return void
+     * @throws CException
      */
     public function shareParticipants()
     {
-        if (!Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
-            ls\ajax\AjaxHelper::outputNoPermission();
-            return;
-        }
-
+        $hasUpdatePermission = Permission::model()->hasGlobalPermission('update');
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $permissions = [
+          'hasUpdatePermission' => $hasUpdatePermission,
+          'isSuperAdmin' => $isSuperAdmin
+        ];
         $participantIds = Yii::app()->request->getPost('participant_id');
         $iShareUserId = Yii::app()->request->getPost('shareuser');
         $bCanEdit = Yii::app()->request->getPost('can_edit') == 'on';
@@ -2195,7 +2262,7 @@ $url .= "_view"; });
 
         $i = 0;
         // $iShareUserId == 0 means any user
-        if (Permission::model()->hasGlobalPermission('participantpanel', 'update') && $iShareUserId !== '') {
+        if ($iShareUserId !== '') {
             foreach ($participantIds as $id) {
                 $time = time();
                 $aData = array(
@@ -2204,23 +2271,35 @@ $url .= "_view"; });
                     'date_added' => date('Y-m-d H:i:s', $time),
                     'can_edit' => $bCanEdit
                 );
-                ParticipantShare::model()->storeParticipantShare($aData);
+                ParticipantShare::model()->storeParticipantShare($aData, $permissions);
                 $i++;
             }
         }
-        ls\ajax\AjaxHelper::outputSuccess(sprintf(gT("%s participants have been shared"), $i));
+        AjaxHelper::outputSuccess(sprintf(gT("%s participants have been shared"), $i));
     }
 
     /**
-     * Stores the shared participant information in participant_shares for ONE participant
+     * Stores the shared participant information in participant_shares for ONE participant     *
+     *
      * @return void
+     * @throws CException
+     * TODO: Is this function even used anymore? Seems all logic goes through shareParticipants()
      */
     public function shareParticipant()
     {
+        $hasUpdatePermission = Permission::model()->hasGlobalPermission('update');
+        $isSuperAdmin = Permission::model()->hasGlobalPermission('superadmin', 'read');
+        $permissions = [
+            'hasUpdatePermission' => $hasUpdatePermission,
+            'isSuperAdmin' => $isSuperAdmin
+        ];
+
         $iParticipantId = Yii::app()->request->getPost('participant_id');
         $bCanEdit = Yii::app()->request->getPost('can_edit');
 
-        if (Permission::model()->hasGlobalPermission('participantpanel', 'update')) {
+        if (ParticipantShare::model()->canEditSharedParticipant($iParticipantId)
+            || $hasUpdatePermission
+            || $isSuperAdmin) {
             $time = time();
             $aData = array(
                 'participant_id' => $iParticipantId,
@@ -2228,11 +2307,11 @@ $url .= "_view"; });
                 'date_added' => date('Y-m-d H:i:s', $time),
                 'can_edit' => $bCanEdit
             );
-            ParticipantShare::model()->storeParticipantShare($aData);
+            ParticipantShare::model()->storeParticipantShare($aData, $permissions);
 
-            ls\ajax\AjaxHelper::outputSuccess(gT("Participant shared."));
+            AjaxHelper::outputSuccess(gT("Participant shared."));
         } else {
-            ls\ajax\AjaxHelper::outputNoPermission();
+            AjaxHelper::outputNoPermission();
         }
     }
 
@@ -2244,7 +2323,7 @@ $url .= "_view"; });
     {
         $participant_id = yii::app()->request->getPost('participant_id');
         ParticipantShare::model()->deleteAllByAttributes(array('participant_id' => $participant_id));
-        ls\ajax\AjaxHelper::outputSuccess(gT("Participant removed from sharing"));
+        AjaxHelper::outputSuccess(gT("Participant removed from sharing"));
     }
 
     /**
@@ -2262,7 +2341,7 @@ $url .= "_view"; });
         ));
 
         if (empty($participantShare)) {
-            ls\ajax\AjaxHelper::outputError(gT('Found no participant share'));
+            AjaxHelper::outputError(gT('Found no participant share'));
         } else {
             $userId = Yii::app()->user->id;
             $isOwner = $participantShare->participant->owner_uid == $userId;
@@ -2270,9 +2349,9 @@ $url .= "_view"; });
 
             if ($isOwner || $isSuperAdmin) {
                 $participantShare->delete();
-                ls\ajax\AjaxHelper::outputSuccess(gT('Participant share deleted'));
+                AjaxHelper::outputSuccess(gT('Participant share deleted'));
             } else {
-                ls\ajax\AjaxHelper::outputNoPermission();
+                AjaxHelper::outputNoPermission();
             }
         }
     }
@@ -2310,9 +2389,9 @@ $url .= "_view"; });
         }
 
         if ($sharesDeleted == 0) {
-            ls\ajax\AjaxHelper::outputError(gT('No participant shares were deleted'));
+            AjaxHelper::outputError(gT('No participant shares were deleted'));
         } else {
-            ls\ajax\AjaxHelper::outputSuccess(
+            AjaxHelper::outputSuccess(
                 sprintf(ngT('%s participant share was deleted|%s participant shares were deleted', $sharesDeleted),
                 $sharesDeleted
             ));
@@ -2326,7 +2405,8 @@ $url .= "_view"; });
     {
         $participant_id = Yii::app()->request->getPost('participant_id');
         $can_edit = Yii::app()->request->getPost('can_edit');
-        $shareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id));
+        $share_uid = Yii::app()->request->getPost('share_uid');
+        $shareModel = ParticipantShare::model()->findByAttributes(array('participant_id' => $participant_id, 'share_uid' => $share_uid));
 
         if ($shareModel) {
             $shareModel->can_edit = ($can_edit == 'true' ? 1 : 0);
@@ -2450,10 +2530,17 @@ $url .= "_view"; });
      */
     public function attributeMap()
     {
+        $iSurveyId = Yii::app()->request->getPost('survey_id');
+        if (!Permission::model()->hasGlobalPermission('surveys', 'update')
+            && !Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update')
+        ) {
+            Yii::app()->setFlashMessage(gT('No permission'), 'error');
+            Yii::app()->getController()->redirect(['admin/participants/sa/displayParticipants']);
+        }
+
         Yii::app()->loadHelper('common');
         App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'attributeMap.js');
 
-        $iSurveyId = Yii::app()->request->getPost('survey_id');
         $redirect = Yii::app()->request->getPost('redirect');
         $count = Yii::app()->request->getPost('count');
         $iParticipantId = Yii::app()->request->getPost('participant_id');
@@ -2569,7 +2656,14 @@ $url .= "_view"; });
         $this->_renderWrappedTemplate('participants', 'attributeMapToken', $aData);
     }
 
-
+    /**
+     * @param AjaxHelper $ajaxHelper
+     * @return void
+     */
+    public function setAjaxHelper(AjaxHelper $ajaxHelper)
+    {
+        $this->ajaxHelper = $ajaxHelper;
+    }
 
     /**
      * Return array of automatic mappings, pairing token attributes with CPDB attributes
@@ -2610,5 +2704,4 @@ $url .= "_view"; });
             Yii::app()->getController()->redirect(Yii::app()->request->urlReferrer);
         }
     }
-
 }

@@ -32,7 +32,7 @@ class RenderArray5ChoiceQuestion extends QuestionBaseRenderer
 
     public function render($sCoreClasses = '')
     {
-
+        $this->registerAssets();
         return do_array_5point($this->aFieldArray);
         
         $answer = '';

@@ -1,16 +1,20 @@
 import Vue from 'vue';
-import CKEditor from '@ckeditor/ckeditor5-vue';
+import LSCKEditor from '../../meta/LSCKVue/plugin'
 
-import App from './App.vue';
+import TextElementsApp from './TextElementsApp.vue';
+import Loader from './helperComponents/loader.vue';
 
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
 
+Vue.config.devtools = true;
 //Ignore phpunits testing tags
 Vue.config.ignoredElements = ["x-test"];
 
 Vue.use( PluginLog );
-Vue.use( CKEditor );
+Vue.use( LSCKEditor );
+
+Vue.component('loader-widget', Loader);
 
 Vue.mixin({
     methods: {
@@ -41,10 +45,14 @@ Vue.mixin({
         }
     }
 });
-const AppState = getAppState(window.LS.parameters.sid);
 
-const newTextEditor = new Vue({
-    el: '#advancedTextEditor',
-    store: AppState,
-    components: {App},
-});
+const CreateTextElementsEditor = function(){
+    const TextElementsStore = getAppState(LS.parameters.surveyid || 0);
+    return new Vue({
+        el: '#advancedTextEditor',
+        store: TextElementsStore,
+        components: {'lsnexttexteditor': TextElementsApp},
+    });
+};
+
+const newTextEditor = CreateTextElementsEditor();

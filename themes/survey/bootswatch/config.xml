@@ -72,6 +72,7 @@
         <!-- images -->
         <brandlogo type="buttons" category="Images" width="4" title="Logo" options="on|off" optionlabels="Yes|No">on</brandlogo>
         <brandlogofile type="dropdown" category="Images" width="6" title="Logo file" parent="brandlogo">themes/survey/bootswatch/files/logo.png</brandlogofile>
+        <hideprivacyinfo type="buttons" category="Simple options" width="4" title="Hide privacy info" options="on|off" optionlabels="Yes|No">off</hideprivacyinfo>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the theme -->

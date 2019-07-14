@@ -30,12 +30,6 @@ class index extends CAction
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
 
-        // only attempt to change session lifetime if using a DB backend
-        // with file based sessions, it's up to the admin to configure maxlifetime
-        if (isset(Yii::app()->session->connectionID)) {
-            @ini_set('session.gc_maxlifetime', Yii::app()->getConfig('iSessionExpirationTime'));
-        }
-
         $this->_loadRequiredHelpersAndLibraries();
         $param       = $this->_getParameters(func_get_args(), $_POST);
         $surveyid    = $param['sid'];
@@ -310,6 +304,7 @@ class index extends CAction
 
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $thissurvey = getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        EmCacheHelper::init($thissurvey);
         /* Unsure it still work, and surely better in afterFindSurvey */
         if (!is_null($beforeSurveyPageEvent->get('template'))) {
             $thissurvey['templatedir'] = $beforeSurveyPageEvent->get('template');
@@ -440,6 +435,11 @@ class index extends CAction
         if (Yii::app()->getConfig('move') == "loadall") {
             /* Construction of the form */
             $aLoadForm['aCaptcha']['show'] = false;
+
+            // save current survey data when clicking on "Load unfinished survey"
+            Yii::import('application.helpers.SurveyRuntimeHelper');
+            $SurveyRuntimeHelper = new SurveyRuntimeHelper();
+            $SurveyRuntimeHelper->saveAllIfNeeded();
 
             if (isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)) {
                 $aLoadForm['aCaptcha']['show'] = true;

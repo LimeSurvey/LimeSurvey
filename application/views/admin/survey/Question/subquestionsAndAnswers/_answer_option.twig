@@ -113,7 +113,7 @@
                 class='answer form-control input'
                 id='answer_{{ language }}_{{ sortorder }}_{{ scale_id }}'
                 name='answer_{{ language }}_{{ sortorder }}_{{ scale_id }}'
-                placeholder='{{ gT("Some example answer option","js") }}'
+                placeholder='{{ gT("Some example answer option") }}'
                 value="{{ answer }}"
                 onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
@@ -129,8 +129,8 @@
     <!-- Icons edit/delete -->
     <td style="vertical-align: middle;" class="subquestion-actions">
         {% if first %}
-            <button class="btn btn-default btn-sm btnaddanswer"><i class="icon-add text-success " data-assessmentvisible='{{ assessmentvisible }}' data-position="{{ position }}" data-code="{{ title }}" data-scale-id="{{ scale_id }}" data-toggle="tooltip" data-placement="bottom" title="{{ gT("Add another record") }}"></i></button>
-            <button class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash text-danger " data-toggle="tooltip" data-placement="bottom"  title="{{ gT("Delete this entry") }}"></i></button>
+            <button type="button" class="btn btn-default btn-sm btnaddanswer"><i class="icon-add text-success " data-assessmentvisible='{{ assessmentvisible }}' data-position="{{ position }}" data-code="{{ title }}" data-scale-id="{{ scale_id }}" data-toggle="tooltip" data-placement="bottom" title="{{ gT("Add another record") }}"></i></button>
+            <button type="button" class="btn btn-default btn-sm btndelanswer"><i class="fa fa-trash text-danger " data-toggle="tooltip" data-placement="bottom"  title="{{ gT("Delete this entry") }}"></i></button>
         {% endif %}
     </td>
 </tr>

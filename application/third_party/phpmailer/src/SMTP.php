@@ -34,7 +34,7 @@ class SMTP
      *
      * @var string
      */
-    const VERSION = '6.0.3';
+    const VERSION = '6.0.7';
 
     /**
      * SMTP line break constant.
@@ -155,12 +155,13 @@ class SMTP
      * @var string[]
      */
     protected $smtp_transaction_id_patterns = [
-        'exim' => '/[0-9]{3} OK id=(.*)/',
-        'sendmail' => '/[0-9]{3} 2.0.0 (.*) Message/',
-        'postfix' => '/[0-9]{3} 2.0.0 Ok: queued as (.*)/',
-        'Microsoft_ESMTP' => '/[0-9]{3} 2.[0-9].0 (.*)@(?:.*) Queued mail for delivery/',
-        'Amazon_SES' => '/[0-9]{3} Ok (.*)/',
-        'SendGrid' => '/[0-9]{3} Ok: queued as (.*)/',
+        'exim' => '/[\d]{3} OK id=(.*)/',
+        'sendmail' => '/[\d]{3} 2.0.0 (.*) Message/',
+        'postfix' => '/[\d]{3} 2.0.0 Ok: queued as (.*)/',
+        'Microsoft_ESMTP' => '/[0-9]{3} 2.[\d].0 (.*)@(?:.*) Queued mail for delivery/',
+        'Amazon_SES' => '/[\d]{3} Ok (.*)/',
+        'SendGrid' => '/[\d]{3} Ok: queued as (.*)/',
+        'CampaignMonitor' => '/[\d]{3} 2.0.0 OK:([a-zA-Z\d]{48})/',
     ];
 
     /**
@@ -443,14 +444,14 @@ class SMTP
                 return false;
             }
 
-            $this->edebug('Auth method requested: ' . ($authtype ? $authtype : 'UNKNOWN'), self::DEBUG_LOWLEVEL);
+            $this->edebug('Auth method requested: ' . ($authtype ? $authtype : 'UNSPECIFIED'), self::DEBUG_LOWLEVEL);
             $this->edebug(
                 'Auth methods available on the server: ' . implode(',', $this->server_caps['AUTH']),
                 self::DEBUG_LOWLEVEL
             );
 
             //If we have requested a specific auth type, check the server supports it before trying others
-            if (!in_array($authtype, $this->server_caps['AUTH'])) {
+            if (null !== $authtype and !in_array($authtype, $this->server_caps['AUTH'])) {
                 $this->edebug('Requested auth method not available: ' . $authtype, self::DEBUG_LOWLEVEL);
                 $authtype = null;
             }
@@ -732,7 +733,7 @@ class SMTP
     public function hello($host = '')
     {
         //Try extended hello first (RFC 2821)
-        return (bool) ($this->sendHello('EHLO', $host) or $this->sendHello('HELO', $host));
+        return $this->sendHello('EHLO', $host) or $this->sendHello('HELO', $host);
     }
 
     /**

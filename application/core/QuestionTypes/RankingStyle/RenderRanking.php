@@ -159,6 +159,7 @@ class RenderRanking extends QuestionBaseRenderer
             'samelistheight'    => $this->getQuestionAttribute("samelistheight"),
         ), true);
 
+        $this->registerAssets();
         $inputnames[] = $this->sSGQA;
         return array($answer, $this->inputnames);
     }

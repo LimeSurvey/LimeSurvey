@@ -411,12 +411,18 @@ class Question extends LSActiveRecord
         $ids = array_merge([$this->qid], $this->allSubQuestionIds);
         $qidsCriteria = (new CDbCriteria())->addInCondition('qid', $ids);
 
-
         self::model()->deleteAll((new CDbCriteria())->addInCondition('parent_qid', $ids));
         QuestionAttribute::model()->deleteAll($qidsCriteria);
         QuestionL10n::model()->deleteAll($qidsCriteria);
-        DefaultValue::model()->deleteAll($qidsCriteria);
         QuotaMember::model()->deleteAll($qidsCriteria);
+
+        // delete defaultvalues and defaultvalueL10ns
+        $oDefaultValues = DefaultValue::model()->findAll((new CDbCriteria())->addInCondition('qid', $ids));
+        foreach($oDefaultValues as $defaultvalue){
+            DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+            DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+        }
+
         $this->deleteAllAnswers();
         $this->removeFromLastVisited();
 
@@ -487,7 +493,7 @@ class Question extends LSActiveRecord
      */
     public function getQuestionList($surveyid)
     {
-        return Question::model()->with('group')->findAll(array('condition'=>'t.sid='.$surveyid, 'order'=>'group_order DESC, question_order'));
+        return Question::model()->with('group')->findAll(array('condition'=>'t.sid='.$surveyid, 'order'=>'group.group_order DESC, question_order'));
     }
 
     /**
@@ -596,7 +602,7 @@ class Question extends LSActiveRecord
         $url        .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
-        $editurl     = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
+        $editurl     = Yii::app()->createUrl("admin/questioneditor/sa/view/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
         $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->survey->language.'" href="#" role="button" ><span class="fa fa-eye"  ></span></a> ';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
@@ -608,7 +614,7 @@ class Question extends LSActiveRecord
         }
 
         $oSurvey = Survey::model()->findByPk($this->sid);
-        $gid_search = Yii::app()->request->getParam('gid');
+        $gid_search = $this->gid;
 
         if ($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'delete')) {
             $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"'
@@ -662,19 +668,23 @@ class Question extends LSActiveRecord
      */
     public function getOrderedSubQuestions($scale_id = null)
     {
-        // Get questions and answers by defined order
-        $sOrder = ($this->getQuestionAttribute('random_order') == 1) ? dbRandom() : 'question_order';
-        $oCriteria = new CDbCriteria();
-        $oCriteria->order = $sOrder;
-        $oCriteria->addCondition('parent_qid=:parent_qid');
-        $oCriteria->params = [':parent_qid' => $this->qid];
-
         //reset subquestions set prior to this call
         $aSubQuestions = [
             0 => []
         ];
         $excludedSubquestion = null;
-        foreach ($this->subquestions as $i => $oSubquestion) {
+        
+        $aOrderedSubquestions = $this->subquestions;
+        if($this->getQuestionAttribute('random_order') == 1) {
+            shuffle($aOrderedSubquestions);
+        }
+        
+        usort($aOrderedSubquestions, function($oQuestionA, $oQuestionB){
+            if($oQuestionA->question_order == $oQuestionB->question_order) { return 0; }
+            return $oQuestionA->question_order < $oQuestionB->question_order ? -1 : 1;
+        });
+
+        foreach ($aOrderedSubquestions as $i => $oSubquestion) {
             if ($scale_id !== null && $oSubquestion->scale_id != $scale_id) {
                 continue;
             }
@@ -768,7 +778,77 @@ class Question extends LSActiveRecord
         );
         return $this;
     }*/
-                           
+    public function getQuestionListColumns(){
+    return array(
+            array(
+                'id'=>'id',
+                'class'=>'CCheckBoxColumn',
+                'selectableRows' => '100',
+            ),
+            array(
+                'header' => gT('Question ID'),
+                'name' => 'question_id',
+                'value'=>'$data->qid',
+            ),
+            array(
+                'header' => gT("Group / Question order"),
+                'name' => 'question_order',
+                'value'=>'$data->group->group_order ." / ". $data->question_order',
+            ),
+            array(
+                'header' => gT('Code'),
+                'name' => 'title',
+                'value'=>'$data->title',
+                'htmlOptions' => array('class' => 'col-md-1'),
+            ),
+            array(
+                'header' => gT('Question'),
+                'name' => 'question',
+                'value'=> 'array_key_exists($data->survey->language, $data->questionL10ns) ? viewHelper::flatEllipsizeText($data->questionL10ns[$data->survey->language]->question,true,0) : ""',
+                'htmlOptions' => array('class' => 'col-md-5'),
+            ),
+            array(
+                'header' => gT('Question type'),
+                'name' => 'type',
+                'type'=>'raw',
+                'value'=>'$data->typedesc',
+                'htmlOptions' => array('class' => 'col-md-1'),
+            ),
+
+            array(
+                'header' => gT('Group'),
+                'name' => 'group',
+                'value'=> '$data->group->questionGroupL10ns[$data->survey->language]->group_name',
+            ),
+
+            array(
+                'header' => gT('Mandatory'),
+                'type' => 'raw',
+                'name' => 'mandatory',
+                'value'=> '$data->mandatoryIcon',
+                'htmlOptions' => array('class' => 'text-center'),
+            ),
+
+            array(
+                'header' => gT('Other'),
+                'type' => 'raw',
+                'name' => 'other',
+                'value'=> '$data->otherIcon',
+                'htmlOptions' => array('class' => 'text-center'),
+            ),
+
+
+            array(
+                'header'=>'',
+                'name'=>'actions',
+                'type'=>'raw',
+                'value'=>'$data->buttons',
+                'htmlOptions' => array('class' => 'col-md-2 col-xs-1 text-right nowrap'),
+            ),
+
+        );
+    }
+
     public function search()
     {
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
@@ -780,8 +860,8 @@ class Question extends LSActiveRecord
                 'desc'=>'t.qid desc',
             ),
             'question_order'=>array(
-                'asc'=>'t.question_order asc',
-                'desc'=>'t.question_order desc',
+                'asc'=>'group.group_order asc, t.question_order asc',
+                'desc'=>'group.group_order desc,t.question_order desc',
             ),
             'title'=>array(
                 'asc'=>'t.title asc',
@@ -793,8 +873,8 @@ class Question extends LSActiveRecord
             ),
 
             'group'=>array(
-                'asc'=>'group.group_name asc',
-                'desc'=>'group.group_name desc',
+                'asc'=>'group.gid asc',
+                'desc'=>'group.gid desc',
             ),
 
             'mandatory'=>array(
@@ -813,28 +893,33 @@ class Question extends LSActiveRecord
             ),
         );
 
-        $sort->defaultOrder = array('question_order' => CSort::SORT_ASC);
+        $sort->defaultOrder = array(
+            'question_order' => CSort::SORT_ASC,
+        );
 
         $criteria = new CDbCriteria;
-        $criteria->with = array('group');
         $criteria->compare("t.sid", $this->sid, false, 'AND');
         $criteria->compare("t.parent_qid", 0, false, 'AND');
-
-        $criteria2 = new CDbCriteria;
-        $criteria2->with = array('questionL10ns');
-        $criteria2->compare('t.title', $this->title, true, 'OR');
-        $criteria2->compare('questionL10ns.question', $this->title, true, 'OR');
-        $criteria2->compare('t.type', $this->title, true, 'OR');
-        /* search id exactly and be sure it's an numeric */
-        if(is_numeric($this->title)) {
-            $criteria2->compare('t.qid', $this->title, false, 'OR');
+        //$criteria->group = 't.qid, t.parent_qid, t.sid, t.gid, t.type, t.title, t.preg, t.other, t.mandatory, t.question_order, t.scale_id, t.same_default, t.relevance, t.modulename, t.encrypted';              
+        $criteria->with = array('group', 'questionL10ns');
+        
+        if (!empty($this->title)) {     
+            $criteria2 = new CDbCriteria;
+            $criteria2->join = 'JOIN {{question_l10ns}} q_L10n ON t.qid = q_L10n.qid ';
+            $criteria2->compare('t.title', $this->title, true, 'OR');
+            $criteria2->compare('q_L10n.question', $this->title, true, 'OR');
+            $criteria2->compare('t.type', $this->title, true, 'OR');
+            /* search exact qid and make sure it's a numeric */
+            if(is_numeric($this->title)) {
+                $criteria2->compare('t.qid', $this->title, false, 'OR');
+            }
+            $criteria->mergeWith($criteria2, 'AND');
         }
-        /* be sure gid it's an numeric */
+        
+        /* make sure gid is a numeric */
         if ($this->gid != '' and is_numeric($this->gid)) {
             $criteria->compare('group.gid', $this->gid, false, 'AND');
         }
-
-        $criteria->mergeWith($criteria2, 'AND');
 
         $dataProvider = new CActiveDataProvider('Question', array(
             'criteria'=>$criteria,
@@ -918,12 +1003,22 @@ class Question extends LSActiveRecord
      */
     public function getQuestionAttributes()
     {
+        $cacheKey = 'getQuestionAttributes_' . $iQuestionID . '_' . $sLanguage;
+        $value = EmCacheHelper::get($cacheKey);
+        if ($value !== false) {
+            return $value;
+        }
+
         $criteria = new CDbCriteria();
         $criteria->addCondition('qid=:qid');
         $criteria->addCondition('(language=:language OR language IS NULL)');
         $criteria->params = [':qid'=>$this->qid];
         $criteria->params = [':language'=>$this->language];
-        return QuestionAttribute::model()->findAll($criteria);
+        $aQuestionAttributes = QuestionAttribute::model()->findAll($criteria);
+
+        EmCacheHelper::set($cacheKey, $aQuestionAttributes);
+
+        return $aQuestionAttributes;
     }
 
     /**
@@ -1022,8 +1117,8 @@ class Question extends LSActiveRecord
             case Question::QT_ASTERISK_EQUATION:                return new DataSetEquation($this->qid);
             case Question::QT_D_DATE:                           return new DataSetDate($this->qid);
             case Question::QT_1_ARRAY_MULTISCALE:               return new DataSetArrayMultiscale($this->qid);
-            case Question::QT_L_LIST_DROPDOWN:                  return new DataSetListDropdown($this->qid);
-            case Question::QT_EXCLAMATION_LIST_DROPDOWN:        return new DataSetListRadio($this->qid);
+            case Question::QT_L_LIST_DROPDOWN:                  return new DataSetListRadio($this->qid);
+            case Question::QT_EXCLAMATION_LIST_DROPDOWN:        return new DataSetListDropdown($this->qid);
             case Question::QT_O_LIST_WITH_COMMENT:              return new DataSetListWithComment($this->qid);
             case Question::QT_R_RANKING_STYLE:                  return new RenderRanking($aFieldArray);
             case Question::QT_M_MULTIPLE_CHOICE:                return new DataSetMultipleChoice($this->qid);

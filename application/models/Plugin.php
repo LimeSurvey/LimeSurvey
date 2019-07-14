@@ -18,11 +18,35 @@
  *
  * @property integer $id
  * @property string $name
- * @property integer $active
+ * @property integer $active default 0
+ * @property integer $priority default 0
  * @property string $version
+ * @property string $load_error
+ * @property string $plugin_type
  */
 class Plugin extends LSActiveRecord
 {
+    /**
+     * @var string
+     */
+    public $load_error;
+
+    /**
+     * @var string
+     */
+    public $plugin_type;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        /* This default values are set by DB
+        /* $this->priority = 0;
+        /* $this->active = 0;
+        **/
+    }
+
     /**
      * @inheritdoc
      * @return Plugin

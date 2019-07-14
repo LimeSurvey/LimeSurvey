@@ -219,7 +219,7 @@ class RenderListDropdown extends QuestionBaseRenderer
         if (!empty($this->getQuestionAttribute('time_limit', 'value'))) {
             $answer .= $this->getTimeSettingRender();
         }
-
+        $this->registerAssets();
         return array($answer, $inputnames);
     }
 }

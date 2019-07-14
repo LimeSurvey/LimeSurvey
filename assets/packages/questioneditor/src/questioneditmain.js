@@ -1,8 +1,9 @@
 import Vue from 'vue';
-import CKEditor from '@ckeditor/ckeditor5-vue';
+import LSCKEditor from '../../meta/LSCKVue/plugin'
 import VModal from 'vue-js-modal'
 
 import App from './App.vue';
+import Loader from './helperComponents/loader.vue';
 
 import getAppState from "./storage/store";
 import {PluginLog} from "./mixins/logSystem";
@@ -16,26 +17,12 @@ import {PluginLog} from "./mixins/logSystem";
 Vue.config.ignoredElements = ["x-test"];
 
 Vue.use( PluginLog );
-Vue.use( CKEditor );
+Vue.use( LSCKEditor );
 Vue.use(VModal, { dynamic: true });
+Vue.component('loader-widget', Loader);
 
 Vue.mixin({
     methods: {
-        toggleLoading(forceState=null) {
-            if(forceState !== null) {
-                if(forceState) {
-                    $('#questionEditLoader').fadeIn(200);
-                } else {
-                    $('#questionEditLoader').fadeOut(400);
-                }
-                return;
-            }
-            if($('#questionEditLoader').css('display') == 'none') {
-                $('#questionEditLoader').fadeIn(200);
-                return;
-            }
-            $('#questionEditLoader').fadeOut(400);
-        },
         translate(value) {
             return window.QuestionEditData.i10N[value] || value;
         }
@@ -46,7 +33,7 @@ Vue.mixin({
         }
     }
 });
-const AppState = getAppState(window.LS.parameters.qid);
+const AppState = getAppState(window.QuestionEditData.qid);
 const questionEditor = new Vue({
     el: '#advancedQuestionEditor',
     store: AppState,

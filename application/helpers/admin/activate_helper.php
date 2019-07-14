@@ -160,7 +160,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
                     ->where('parent_qid = :qid and scale_id=:scaleid', [':qid'=>$chkrow['qid'], ':scaleid'=>$i]);
                 $chacount = $chaquery->queryScalar();
                 if ($chacount == 0) {
-                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing subquestions."), $chkrow->gid);
+                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing subquestions."), $chkrow['gid']);
                 }
             }
         }
@@ -172,7 +172,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
                     ->where('qid = :qid and scale_id=:scaleid', [':qid'=>$chkrow['qid'], ':scaleid'=>$i]);
                 $chacount = $chaquery->queryScalar();
                 if ($chacount == 0) {
-                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing answer options."), $chkrow->gid);
+                    $failedcheck[] = array($chkrow['qid'], flattenText($chkrow['question'], true, true, 'utf-8', true), ": ".gT("This question has missing answer options."), $chkrow['gid']);
                 }
             }
         }
@@ -187,7 +187,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
         ->where("sid=:sid AND type = ''", [':sid'=>$iSurveyID]);
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow->gid);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question does not have a question 'type' set."), $chkrow['gid']);
     }
 
 
@@ -202,7 +202,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
         ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow->gid);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires answers, but none are set."), $chkrow['gid']);
     } // while
 
     //CHECK THAT DUAL Array has answers set
@@ -216,7 +216,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     ->andWhere("q.parent_qid=0");
     $chkresult = $chkquery->queryAll();
     foreach ($chkresult as $chkrow) {
-        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow->gid);
+        $failedcheck[] = array($chkrow['qid'], $chkrow['question'], ": ".gT("This question requires a second answer set but none is set."), $chkrow['gid']);
     } // while
 
     //TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
@@ -290,6 +290,9 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 */
 function activateSurvey($iSurveyID, $simulate = false)
 {
+    EmCacheHelper::init(['sid' => $iSurveyID, 'active' => 'Y']);
+    EmCacheHelper::flush();
+
     // Event beforeSurveyActivate
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $event = new PluginEvent('beforeSurveyActivate');
@@ -307,10 +310,13 @@ function activateSurvey($iSurveyID, $simulate = false)
 
     $aTableDefinition = array();
     $bCreateSurveyDir = false;
+    $options = '';
     // Specify case sensitive collations for the token
     $sCollation = '';
     if (Yii::app()->db->driverName == 'mysqli' || Yii::app()->db->driverName == 'mysql') {
         $sCollation = " COLLATE 'utf8mb4_bin'";
+        $options .= sprintf(" ENGINE = %s ", Yii::app()->getConfig('mysqlEngine'));
+
     }
     if (Yii::app()->db->driverName == 'sqlsrv' || Yii::app()->db->driverName == 'dblib' || Yii::app()->db->driverName == 'mssql') {
         $sCollation = " COLLATE SQL_Latin1_General_CP1_CS_AS";
@@ -455,7 +461,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     $sTableName = "{{survey_{$iSurveyID}}}";
     Yii::app()->loadHelper("database");
     try {
-        Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition);
+        Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition, $options);
         Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
     } catch (CDbException $e) {
         if (App()->getConfig('debug')) {
@@ -505,7 +511,7 @@ function activateSurvey($iSurveyID, $simulate = false)
 
         $sTableName = "{{survey_{$iSurveyID}_timings}}";
         try {
-            Yii::app()->db->createCommand()->createTable($sTableName, $aTimingTableDefinition);
+            Yii::app()->db->createCommand()->createTable($sTableName, $aTimingTableDefinition, $options);
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
         } catch (CDbException $e) {
             return array('error'=>'timingstablecreation');

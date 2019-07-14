@@ -59,6 +59,10 @@ abstract class QuestionBaseRenderer extends StaticModel
         $oQuestionTemplate = QuestionTemplate::getNewInstance($this->oQuestion);
         $oQuestionTemplate->registerAssets(); // Register the custom assets of the question template, if needed
         
+        if(!empty($this->oQuestion->questionL10ns[$this->sLanguage]->script)){
+            $sScriptRendered = LimeExpressionManager::ProcessString($this->oQuestion->questionL10ns[$this->sLanguage]->script,$this->oQuestion->qid, ['QID' => $this->oQuestion->qid]);
+            $this->addScript('QuestionStoredScript-'.$this->oQuestion->qid, $sScriptRendered, LSYii_ClientScript::POS_POSTSCRIPT);
+        }
     }
     
     protected function getTimeSettingRender()
@@ -329,7 +333,7 @@ abstract class QuestionBaseRenderer extends StaticModel
         }
     
         // Currently null/0/false=> hidden , 1 : disabled
-        $filterStyle = !empty($this->aQuestionAttribute('array_filter_style'));
+        $filterStyle = !empty($this->aQuestionAttributes['array_filter_style']);
         return ($filterStyle) ?  "ls-irrelevant ls-disabled" : "ls-irrelevant ls-hidden";
     }
     /**

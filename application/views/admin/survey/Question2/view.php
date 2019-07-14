@@ -60,7 +60,7 @@
                 ."$('#question_type').val(value);"
                 ."var event = jQuery.Event('jquery:trigger');"
                 ."event.emitter = JSON.stringify({"
-                    ."target: 'MainEditor',"
+                    ."target: 'lsnextquestioneditor',"
                     ."method: 'questionTypeChangeTriggered',"
                     ."content: value"
                 ."});"
@@ -77,28 +77,7 @@
     <div class="container-fluid">
         <?php echo CHtml::form(array("admin/questionedit/update"), 'post', array('class'=>'form30 ','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
         <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor" />
-        <div class="alert alert-danger">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <?=gT("EXPERIMENTAL EDITOR! - Please keep an eye out for bugs and report them on ")?>
-            <a href="https://bugs.limesurvey.org">https://bugs.limesurvey.org</a>
-        </div>
         <div id="advancedQuestionEditor"><app /></div>
         </form>
-
-        <div id="questionEditLoader" class="ls-flex ls-flex-column align-content-center align-items-center"
-            style="min-height: 100%;">
-            <div class="ls-flex align-content-center align-items-center">
-                <div class="loader-advancedquestionsettings text-center">
-                    <div class="contain-pulse animate-pulse">
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                        <div class="square"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>

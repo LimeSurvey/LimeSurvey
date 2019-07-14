@@ -196,7 +196,10 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getEncryptedSwitch()
     {
-        $inputHtml = "<input type='checkbox' data-size='small' data-encrypted='".$this->encrypted."' data-on-color='primary' data-off-color='warning' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeEncrypted' "            . ($this->encrypted == "Y" ? "checked" : "")
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $bEncrypted = $sodium->bLibraryExists;
+        $inputHtml = "<input type='checkbox' data-size='small' data-encrypted='".$this->encrypted."' data-on-color='primary' data-off-color='warning' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeEncrypted' " . ($bEncrypted === true ? " " : "disabled='' ") . ($this->encrypted == "Y" ? "checked" : "")
             . "/>";
         return  $inputHtml;
     }
@@ -218,6 +221,9 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     public function getColumns()
     {
+        // load sodium library
+        $sodium = Yii::app()->sodium;
+        $bEncrypted = $sodium->bLibraryExists;
         $cols = array(
             array(
                 "name" => 'massiveActionCheckbox',
@@ -251,7 +257,8 @@ class ParticipantAttributeName extends LSActiveRecord
                 "name" => 'encrypted',
                 "value" => '$data->getEncryptedSwitch()',
                 "type" => "raw",
-                "filter" => array("Y" => gT("Yes"), "N" => gT("No"))
+                "filter" => array("Y" => gT("Yes"), "N" => gT("No")),
+                "header" => '<span ' . ($bEncrypted === true ? '' :  'title="' . gT("Encryption is disabled because Sodium library isn't installed") . '"') . '>' . gT("Encrypted"). '</span>',
             ),
             array(
                 "name" => 'core_attribute',
@@ -477,8 +484,9 @@ class ParticipantAttributeName extends LSActiveRecord
         } else {
             return Yii::app()->db->createCommand()
                 ->select('*')
-                ->from('{{participant_attribute_values}}')
-                ->where('attribute_id = :attribute_id AND core_attribute <> "Y"')
+                ->from('{{participant_attribute_values}} attr_val')
+                ->join('{{participant_attribute_names}} attr_name', 'attr_val.attribute_id = attr_name.attribute_id')
+                ->where("attr_val.attribute_id = :attribute_id AND core_attribute <> 'Y'")
                 ->order('value_id ASC')
                 ->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)
                 ->queryAll();

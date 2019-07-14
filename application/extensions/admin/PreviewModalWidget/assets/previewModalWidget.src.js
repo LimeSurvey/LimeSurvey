@@ -3,6 +3,7 @@ class PreviewModalScript {
         this.widgetsJsName = widgetsJsName;
         this.modalItem = $(`#selector__${this.widgetsJsName}-modal`);
         this.inputItem = $(`#selector__${this.widgetsJsName}`);
+
         //Define default settings 
         const defaultSettings = {
             onUpdate: (value)=>{},
@@ -104,6 +105,12 @@ class PreviewModalScript {
             $(`#selector__select-this-${this.widgetsJsName}`).on('click', () => {
                 this.options.onUpdate(this.options.value);
                 this.modalItem.modal('hide');
+            });
+        } else {
+            
+            $('#in_survey_common').off('change.previewModal');
+            $('#in_survey_common').on('change.previewModal', `#${this.widgetsJsName}`, (e) => {
+                this.options.onUpdate($(e.currentTarget).val());
             });
         }
     }

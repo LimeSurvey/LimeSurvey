@@ -70,14 +70,6 @@ class LabelSet extends LSActiveRecord
     }
 
     /**
-     * @return array
-     */
-    public function getLID()
-    {
-        return Yii::app()->db->createCommand()->select('lid')->order('lid asc')->from('{{labelsets}}')->query()->readAll();
-    }
-
-    /**
      * Recursively deletes a label set including labels and localizations
      *
      * @param integer $id The label set ID
@@ -116,6 +108,10 @@ class LabelSet extends LSActiveRecord
         return false;
     }
 
+    public function getLanguageArray() {
+        return explode(' ', $this->languages);
+    }
+
     /**
      * @return string
      */
@@ -128,7 +124,7 @@ class LabelSet extends LSActiveRecord
 
             // Edit labelset
             if (Permission::model()->hasGlobalPermission('labelsets', 'update')) {
-                $url = Yii::app()->createUrl("admin/labels/sa/editlabelset/lid/$this->lid");
+                $url = Yii::app()->createUrl("admin/labels/sa/multieditor/lid/$this->lid");
                 $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit label set').'" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
             }
 
@@ -143,12 +139,11 @@ class LabelSet extends LSActiveRecord
                 $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete label set").'" href="#" role="button"'
                     ." onclick='$.bsconfirm(\"".CHtml::encode(gT("Are you sure you want to delete this label set?"))
                                 ."\", {\"confirm_ok\": \"".gT("Yes")."\", \"confirm_cancel\": \"".gT("No")."\"}, function() {"
-                                . convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete/", ["lid" => $this->lid,]))
+                                . convertGETtoPOST(Yii::app()->createUrl("admin/labels/sa/delete", ["lid" => $this->lid]))
                             ."});'>"
                         .' <i class="text-danger fa fa-trash"></i>
                     </a>';
             }
-
             return $button;
         }
 
@@ -180,5 +175,19 @@ class LabelSet extends LSActiveRecord
         ));
 
         return $dataProvider;
+    }
+
+    /** @inheritdoc
+     * But delete related label sets and directory
+     * @return boolean
+     */
+    public function delete()
+    {
+        if(parent::delete()) {
+            Label::model()->findAll("lid = :lid",array(":lid"=>$this->getPrimaryKey()));
+            rmdirr(Yii::app()->getConfig('uploaddir').'/labels/'.$this->getPrimaryKey());
+            return true;
+        }
+        return false;
     }
 }

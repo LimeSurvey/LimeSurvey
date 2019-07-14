@@ -217,9 +217,6 @@ class Survey extends LSActiveRecord
                 }
             }
         }
-
-        // set inherited values for new survey
-        $this->setOptions($this->gsid);
         
         $this->attachEventHandler("onAfterFind", array($this, 'afterFindSurvey'));
     }
@@ -303,8 +300,15 @@ class Survey extends LSActiveRecord
 
                 Condition::model()->deleteAllByAttributes(array('qid' =>$aQuestion['qid']));
                 QuestionAttribute::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
-                DefaultValue::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
                 QuestionL10n::model()->deleteAllByAttributes(array('qid' => $aQuestion['qid']));
+
+                // delete defaultvalues and defaultvalueL10ns
+                $oDefaultValues = DefaultValue::model()->findAll('qid = :qid', array(':qid' => $aQuestion['qid']));
+                foreach($oDefaultValues as $defaultvalue){
+                    DefaultValue::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                    DefaultValueL10n::model()->deleteAll('dvid = :dvid', array(':dvid' => $defaultvalue->dvid));
+                };
+
             }
 
             Question::model()->deleteAllByAttributes(array('sid' => $this->sid));
@@ -466,6 +470,8 @@ class Survey extends LSActiveRecord
     public function rules()
     {
         return array(
+            array('sid', 'unique'),// Not in pk
+            array('sid', 'numerical', 'integerOnly'=>true,'min'=>1), // max ?
             array('gsid', 'numerical', 'integerOnly'=>true),
             array('datecreated', 'default', 'value'=>date("Y-m-d")),
             array('startdate', 'default', 'value'=>null),
@@ -825,129 +831,6 @@ class Survey extends LSActiveRecord
         return TemplateConfiguration::getInstance(null, null, $this->sid);
     }
 
-    private function __useTranslationForSurveymenu(&$entryData)
-    {
-        $entryData['title']             = gT($entryData['title']);
-        $entryData['menu_title']        = gT($entryData['menu_title']);
-        $entryData['menu_description']  = gT($entryData['menu_description']);
-    }
-
-    private function _createSurveymenuArray($oSurveyMenuObjects, $collapsed=false)
-    {
-        //Posibility to add more languages to the database is given, so it is possible to add a call by language
-        //Also for peripheral menues we may add submenus someday.
-        $aResultCollected = [];
-        foreach ($oSurveyMenuObjects as $oSurveyMenuObject) {
-            $entries = [];
-            $aMenuEntries = $oSurveyMenuObject->surveymenuEntries;
-            $submenus = $this->_getSurveymenuSubmenus($oSurveyMenuObject, $collapsed);
-            foreach ($aMenuEntries as $menuEntry) {
-                $aEntry = $menuEntry->attributes;
-                //Skip menu if not activated in collapsed mode
-                if ($collapsed && $aEntry['showincollapse'] == 0 ) {
-                    continue;
-                }
-
-                //Skip menu if no permission
-                 if (!empty($aEntry['permission']) && !empty($aEntry['permission_grade'])){
-                     $inArray = array_search($aEntry['permission'],array_keys(Permission::getGlobalBasePermissions()));
-                    if($inArray) {
-                        $hasPermission = Permission::model()->hasGlobalPermission($aEntry['permission'], $aEntry['permission_grade']);
-                    } else {
-                        $hasPermission = Permission::model()->hasSurveyPermission($this->sid, $aEntry['permission'], $aEntry['permission_grade']);
-                    }
-
-                    if(!$hasPermission) {
-                        continue;
-                    }
-                }
-
-                // Check if a specific user owns this menu.
-                if (!empty($aEntry['user_id'])) {
-                    $userId = Yii::app()->session['loginID'];
-                    if ($userId != $aEntry['user_id']) {
-                        continue;
-                    }
-                }
-
-                //parse the render part of the data attribute
-                $oDataAttribute = new SurveymenuEntryData();
-                $oDataAttribute->apply($menuEntry, $this->sid);
-
-                if ($oDataAttribute->isActive !== null) {
-                    if (($oDataAttribute->isActive == true && $this->active == 'N') || ($oDataAttribute->isActive == false && $this->active == 'Y')) {
-                        continue;
-                    }
-                }
-
-                $aEntry['link'] = $oDataAttribute->linkCreator();
-                $aEntry['link_external'] = $oDataAttribute->linkExternal;
-                $aEntry['debugData'] = $oDataAttribute->attributes;
-                $aEntry['pjax'] = $oDataAttribute->pjaxed;
-                $this->__useTranslationForSurveymenu($aEntry);
-                $entries[$aEntry['id']] = $aEntry;
-            }
-            $aResultCollected[$oSurveyMenuObject->id] = [
-                "id" => $oSurveyMenuObject->id,
-                "title" => gt($oSurveyMenuObject->title),
-                "name" => $oSurveyMenuObject->name,
-                "ordering" => $oSurveyMenuObject->ordering,
-                "level" => $oSurveyMenuObject->level,
-                "description" => gT($oSurveyMenuObject->description),
-                "entries" => $entries,
-                "submenus" => $submenus
-            ];
-        }
-        return $aResultCollected;
-    }
-
-    private function _getSurveymenuSubmenus($oParentSurveymenu, $collapsed=false)
-    {
-        $criteria = new CDbCriteria;
-        $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
-        $criteria->addCondition('parent_id=:parentid');
-        $criteria->addCondition('level=:level');
-
-        if ($collapsed === true) {
-            $criteria->addCondition('showincollapse=1');
-        }
-
-        $criteria->params = [
-            ':surveyid' => $oParentSurveymenu->survey_id,
-            ':parentid' =>  $oParentSurveymenu->id,
-            ':level'=> ($oParentSurveymenu->level + 1)
-        ];
-
-        $oMenus = Surveymenu::model()->findAll($criteria);
-
-        $aResultCollected = $this->_createSurveymenuArray($oMenus, $collapsed);
-        return $aResultCollected;
-    }
-
-    private function _getDefaultSurveyMenus($position = '')
-    {
-        $criteria = new CDbCriteria;
-        $criteria->condition = 'survey_id IS NULL AND parent_id IS NULL';
-        $collapsed = $position==='collapsed';
-
-        if ($position != '' && !$collapsed) {
-            $criteria->condition .= ' AND position=:position';
-            $criteria->params = array(':position'=>$position);
-        }
-
-        if ($collapsed) {
-            $criteria->condition .= ' AND (position=:position OR showincollapse=1 )';
-            $criteria->params = array(':position'=>$position);
-            $collapsed = true;
-        }
-
-        $oDefaultMenus = Surveymenu::model()->findAll($criteria);
-        $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus, $collapsed);
-
-        return $aResultCollected;
-    }
-
-
     /**
      * Get surveymenu configuration
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
@@ -956,9 +839,9 @@ class Survey extends LSActiveRecord
     {
         $collapsed = $position==='collapsed';
         //Get the default menus
-        $aDefaultSurveyMenus = $this->_getDefaultSurveyMenus($position);
+        $aDefaultSurveyMenus = Surveymenu::model()->getDefaultSurveyMenus($position,$this);
         //get all survey specific menus
-        $aThisSurveyMenues = $this->_createSurveymenuArray($this->surveymenus, $collapsed);
+        $aThisSurveyMenues = Surveymenu::model()->createSurveymenuArray($this->surveymenus, $collapsed, $this);
         //merge them
         $aSurveyMenus = $aDefaultSurveyMenus + $aThisSurveyMenues;
         // var_dump($aDefaultSurveyMenus);
@@ -979,26 +862,30 @@ class Survey extends LSActiveRecord
         if (!isset($aData['datecreated'])) {
             $aData['datecreated'] = date('Y-m-d H:i:s');
         }
-
-        do {
-            // if wishSID is set check if it is not taken already
-            if (isset($aData['wishSID'])) {
-                $aData['sid'] = $aData['wishSID'];
-            } else {
-                $aData['sid'] = randomChars(6, '123456789');
-            }
-            $isresult = self::model()->findByPk($aData['sid']);
+        if(isset($aData['wishSID'])) {
+            $aData['sid'] = $aData['wishSID'];
             unset($aData['wishSID']);
         }
-        while (!is_null($isresult));
-
+        if(empty($aData['sid'])) {
+            $aData['sid'] = intval(randomChars(6, '123456789'));
+        }
         $survey = new self;
         foreach ($aData as $k => $v) {
             $survey->$k = $v;
         }
-        $sResult = $survey->save();
 
-        if (!$sResult) {
+        $attempts = 0;
+        /* Validate sid : > 1 and unique */
+        while(!$survey->validate(array('sid'))) {
+            $attempts++;
+            $survey->sid = intval(randomChars(6, '123456789'));
+            /* If it's happen : there are an issue in server … (or in randomChars function …) */
+            if($attempts > 50) {
+                throw new Exception("Unable to get a valid survey id after 50 attempts");
+            }
+        }
+
+        if (!$survey->save()) {
             $survey->sid = null;
         }
         return $survey;
@@ -1139,32 +1026,34 @@ class Survey extends LSActiveRecord
     {
         if ($this->active == 'N') {
             return 'inactive';
-        } elseif ($this->expires != '' || $this->startdate != '') {
+        }
+        if ($this->expires != '' || $this->startdate != '') {
             // Time adjust
             $sNow    = date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime(date("Y-m-d H:i:s"))));
-            $sStop   = ($this->expires != '') ?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : $sNow;
-            $sStart  = ($this->startdate != '') ?date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : $sNow;
+            $sStop   = ($this->expires != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->expires))) : null;
+            $sStart  = ($this->startdate != '') ? date("Y-m-d H:i:s", strtotime(Yii::app()->getConfig('timeadjust'), strtotime($this->startdate))) : null;
 
             // Time comparaison
             $oNow   = new DateTime($sNow);
             $oStop  = new DateTime($sStop);
             $oStart = new DateTime($sStart);
 
-            $bExpired = ($oStop < $oNow);
-            $bWillRun = ($oStart > $oNow);
+            $bExpired = (!is_null($sStop) && $oStop < $oNow);
+            $bWillRun = (!is_null($oStart) && $oStart > $oNow);
 
             if ($bExpired) {
                 return 'expired';
-            } elseif ($bWillRun) {
+            }
+            if ($bWillRun) {
+                // And what happen if $sStop < $sStart : must return something other ?
                 return 'willRun';
-            } else {
+            }
+            if(!is_null($sStop)) {
                 return 'willExpire';
             }
         }
-        // If it's active, and doesn't have expire date, it's running
-        else {
-            return 'running';
-        }
+        // No returned before : it's running
+        return 'running';
     }
 
     /**
@@ -1646,6 +1535,11 @@ class Survey extends LSActiveRecord
             $criteria->compare("t.gsid", $this->gsid, false);
         }
 
+        // show only surveys belonging to selected survey group
+        if (!empty(Yii::app()->request->getParam('id'))) {
+            $criteria->addCondition("t.gsid = " . sanitize_int(Yii::app()->request->getParam('id')), 'AND');
+        }
+
         // Active filter
         if (isset($this->active)) {
             if ($this->active == 'N' || $this->active == "Y") {
@@ -1907,7 +1801,7 @@ return $s->hasTokensTable; });
         ));
         $criteria->addInCondition('t.type', Question::getQuotableTypes());
         /** @var Question[] $questions */
-        $questions = Question::model()->findAll($criteria);
+        $questions = Question::model()->with('questionL10ns')->findAll($criteria);
         return $questions;
     }
 
@@ -2096,13 +1990,16 @@ return $s->hasTokensTable; });
         return $aOptions;
     }
 
-    public function setOptions($gsid)
+    /**
+     * @param ? $tmp
+     */
+    public function setTokenEncryptionOptions($options)
     {
-        // set gsid to 1 if empty
-        if (empty($gsid)){
-            $gsid = 1;
-        }
+        $this->tokenencryptionoptions = $options;
+    }
 
+    public function setOptions($gsid = 1)
+    {
         $instance = SurveysGroupsettings::getInstance($gsid, $this, null, 1, $this->bShowRealOptionValues);
         if ($instance){
             $this->oOptions = $instance->oOptions;

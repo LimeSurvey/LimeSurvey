@@ -4,9 +4,9 @@
  * Check the browsers console capabilities and bundle them into general functions
  * If the build environment was "production" only put out error messages.
  */
-import ConsoleShim from '../lib/ConsoleShim.js';
+import ConsoleShim from '../../../meta/lib/ConsoleShim.js';
 
-const LOG = new ConsoleShim('QUESTIONEDIT');
+const LOG = new ConsoleShim('DataSecTextEdit');
 
 const PluginLog = function (Vue) {
     if(window.debugState.backend) {

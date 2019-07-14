@@ -141,8 +141,7 @@ foreach ($tokendata as $Key => $Value) {
 
             </div>
 
-            <!-- First name, Last name -->
-            
+            <!-- First name, Last name -->            
             <div class="form-group">
                 <label class=" control-label" for='firstname'>
                 <?php eT("First name:"); ?>
@@ -158,7 +157,6 @@ foreach ($tokendata as $Key => $Value) {
                 <div class="">
                 <input class='form-control' type='text' size='30' id='lastname' name='lastname' value="<?php if (isset($lastname)) {echo $lastname; } ?>" />
                 </div>
-
             </div>
 
 
@@ -173,9 +171,8 @@ foreach ($tokendata as $Key => $Value) {
                     <span id="helpBlock" class="help-block"><?php eT("You can leave this blank, and automatically generate tokens using 'Generate Tokens'"); ?></span>
                 <?php endif; ?>
                 </div>
-            <div class="form-group">
-
             </div>
+            <div class="form-group">
                 <label class=" control-label" for='language'>
                 <?php eT("Language:"); ?>
                 </label>

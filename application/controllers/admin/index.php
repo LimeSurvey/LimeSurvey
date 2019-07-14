@@ -28,13 +28,17 @@ class Index extends Survey_Common_Action
         // We get the last survey visited by user
         $setting_entry = 'last_survey_'.Yii::app()->user->getId();
         $lastsurvey = getGlobalSetting($setting_entry);
-        $survey = Survey::model()->findByPk($lastsurvey);
-        if ($lastsurvey != null && $survey) {
+        if ($lastsurvey) {
             try {
-            $aData['showLastSurvey'] = true;
-            $iSurveyID = $lastsurvey;
-            $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-            $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
+                $survey = Survey::model()->findByPk($lastsurvey);
+                if ($survey){
+                    $aData['showLastSurvey'] = true;
+                    $iSurveyID = $lastsurvey;
+                    $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+                    $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
+                } else {
+                    $aData['showLastSurvey'] = false;
+                }
             } catch(Exception $e){
                 $aData['showLastSurvey'] = false;
             }
@@ -53,24 +57,28 @@ class Index extends Survey_Common_Action
         // the sid of this question : last_question_sid_1
         $setting_entry = 'last_question_sid_'.Yii::app()->user->getId();
         $lastquestionsid = getGlobalSetting($setting_entry);
-        $survey = Survey::model()->findByPk($lastquestionsid);
-        if ($lastquestion && $lastquestiongroup && $survey) {
-
-            $baselang = $survey->language;
-            $aData['showLastQuestion'] = true;
-            $qid = $lastquestion;
-            $gid = $lastquestiongroup;
-            $sid = $lastquestionsid;
-            $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $sid));
-            if ($qrrow) {
-                $aData['last_question_name'] = $qrrow['title'];
-                if (!empty($qrrow->questionL10ns[$baselang]['question'])) {
-                    $aData['last_question_name'] .= ' : '.$qrrow->questionL10ns[$baselang]['question'];
+        if ($lastquestion && $lastquestiongroup && $lastquestionsid) {
+            $survey = Survey::model()->findByPk($lastquestionsid);
+            if ($survey){
+                $baselang = $survey->language;
+                $aData['showLastQuestion'] = true;
+                $qid = $lastquestion;
+                $gid = $lastquestiongroup;
+                $sid = $lastquestionsid;
+                $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $sid));
+                if ($qrrow) {
+                    $aData['last_question_name'] = $qrrow['title'];
+                    if (!empty($qrrow->questionL10ns[$baselang]['question'])) {
+                        $aData['last_question_name'] .= ' : '.$qrrow->questionL10ns[$baselang]['question'];
+                    }
+                    $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$sid/gid/$gid/qid/$qid");
+                } else {
+                    $aData['showLastQuestion'] = false;
                 }
-                $aData['last_question_link'] = $this->getController()->createUrl("admin/questions/sa/view/surveyid/$sid/gid/$gid/qid/$qid");
             } else {
                 $aData['showLastQuestion'] = false;
             }
+
         } else {
             $aData['showLastQuestion'] = false;
         }

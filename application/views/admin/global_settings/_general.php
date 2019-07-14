@@ -213,9 +213,8 @@ Full lock - none of participants are allowed to take survey, even if they alread
                             'name' => 'defaulthtmleditormode',
                             'value'=> $thisdefaulthtmleditormode ,
                             'selectOptions'=>array(
-                                "inline"=>gT("Inline",'unescaped'),
-                                "popup"=>gT("Popup",'unescaped'),
-                                "none"=>gT("HTML source",'unescaped')
+                                "wysiwyg"=>gT("WYSIWYG editor",'unescaped'),
+                                "source"=>gT("Sourcecode",'unescaped'),
                                 )
                             ));
                     ?>

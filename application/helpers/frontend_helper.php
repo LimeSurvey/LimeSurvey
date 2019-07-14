@@ -885,6 +885,7 @@ function randomizationGroupsAndQuestions($surveyid, $preview = false, $fieldmap 
     list($fieldmap, $randomized2) = randomizationQuestion($surveyid, $fieldmap, $preview); // Randomization groups for questions
 
     $randomized = $randomized1 || $randomized2; ;
+    $_SESSION['survey_' . $surveyid]['randomized'] = $randomized;
 
     if ($randomized === true) {
         $fieldmap = finalizeRandomization($fieldmap);
@@ -2063,7 +2064,7 @@ function getSideBodyClass($sideMenustate = false)
 function cookieConsentLocalization()
 {
     return array(
-        gT('This website uses cookies. By continuing this survey you approve the data protection policy of the service provider.'),
+        gT('By continuing this survey you approve the data protection policy of the service provider.'),
         gT('OK'),
         gT('View policy'),
         gT('Please be patient until you are forwarded to the final URL.')

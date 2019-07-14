@@ -49,6 +49,12 @@ class LSYii_Application extends CWebApplication
     protected $plugin;
 
     /**
+     * The DB version, used to check if setup is all OK
+     * @var integer|null
+     */
+    protected $dbVersion;
+
+    /**
      *
      * Initiates the application
      *
@@ -125,40 +131,50 @@ class LSYii_Application extends CWebApplication
         $emailConfig = require(__DIR__.'/../config/email.php');
         $versionConfig = require(__DIR__.'/../config/version.php');
         $updaterVersionConfig = require(__DIR__.'/../config/updater_version.php');
-        $securityConfig = require(__DIR__.'/../config/security.php');
-        $this->config = array_merge($this->config,$coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig, $securityConfig);
+        $this->config = array_merge($this->config,$coreConfig, $emailConfig, $versionConfig, $updaterVersionConfig);
 
         /* Custom config file */
         $configdir = $coreConfig['configdir'];
+        if (file_exists( $configdir .  '/security.php')) {
+            $securityConfig = require(  $configdir .'/security.php');
+            if (is_array($securityConfig)) {
+                $this->config = array_merge($this->config, $securityConfig);
+            }
+        }
         if (file_exists( $configdir .  '/config.php')) {
             $userConfigs = require(  $configdir .'/config.php');
             if (is_array($userConfigs['config'])) {
-
                 $this->config = array_merge($this->config, $userConfigs['config']);
-
             }
         }
-
 
         if(!file_exists(__DIR__.'/../config/config.php')) {
             /* Set up not done : then no other part to update */
             return;
-        }/* User file config */
+        }
+        /* User file config */
         $userConfigs = require(__DIR__.'/../config/config.php');
         if (is_array($userConfigs['config'])) {
-             $this->config = array_merge($this->config, $userConfigs['config']);
+            $this->config = array_merge($this->config, $userConfigs['config']);
         }
-        /* Database config */
-        try {
-            $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
-            if (is_object($settingsTableExist)) {
-                $dbConfig = CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
-                $this->config = array_merge($this->config, $dbConfig);
-            }
-        } catch (Exception $exception) {
-            /* Even if database can exist : don't throw exception, */
-            /* @todo : find when settings_global was created with stg_name and stg_value, maybe can Throw Exception ? */
-            Yii::log("Table settings_global not found");// Log it as LEVEL_INFO , application category
+
+        /* encrypt emailsmtppassword value, because emailsmtppassword in database is also encrypted
+           it would be decrypted in LimeMailer when needed */
+        $this->config['emailsmtppassword'] = LSActiveRecord::encryptSingle($this->config['emailsmtppassword']);
+
+        /* Check DB : let throw error if DB is broken issue #14875 */
+        $settingsTableExist = Yii::app()->db->schema->getTable('{{settings_global}}');
+        /* No table settings_global : not installable or updatable */
+        if(empty($settingsTableExist)) {
+            /* settings_global was created before 1.80 : not updatable version or not installed (but table exist) */
+            Yii::log("LimeSurvey table settings_global not found in database",'error');
+            throw new CDbException("LimeSurvey table settings_global not found in database");
+        }
+        $dbConfig = CHtml::listData(SettingGlobal::model()->findAll(), 'stg_name', 'stg_value');
+        $this->config = array_merge($this->config, $dbConfig);
+        /* According to updatedb_helper : no update can be done before settings_global->DBVersion > 183, then set it only if upper to 183 */
+        if(!empty($dbConfig['DBVersion']) && $dbConfig['DBVersion'] > 183) {
+            $this->dbVersion = $dbConfig['DBVersion'];
         }
         /* Add some specific config using exiting other configs */
         $this->setConfig('globalAssetsVersion', /* Or create a new var ? */
@@ -168,7 +184,8 @@ class LSYii_Application extends CWebApplication
             $this->getConfig('dbversionnumber',0).
             $this->getConfig('customassetversionnumber',1)
         );
-    }
+
+}
     /**
      * Loads a helper
      *
@@ -356,22 +373,67 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event)
     {
-        if (Yii::app() instanceof CWebApplication) {
-            $configExists = file_exists(__DIR__.'/../config/config.php');
-            $usingTestEnv = defined('PHP_ENV') && PHP_ENV == 'test';
-            if ($usingTestEnv || !$configExists) {
-                // If run from phpunit, die with exception message.
-                die($event->exception->getMessage());
-            } else {
-                /* Here we have different possibility : maybe 400/401/403/404 with debug < 2 except for forced superadmin (currently : the 4 part don't show intersting information with debug*/
-                /* 500 always if debug and for (forced) superadmin even if no debug is set (and try to show complete error in this case (see issue by olle about white page and log */
-                if ((Yii::app()->getConfig('debug')<1  /* || Permission::hasGlobalPermission('superadmin') */) 
-                    || (isset($event->exception->statusCode) && $event->exception->statusCode=='404')) {
-                    Yii::app()->setComponent('errorHandler', array(
-                        'errorAction'=>'surveys/error',
-                    ));
-                }
-            }
+        if(!Yii::app() instanceof CWebApplication) {
+            /* Don't update for CLI */
+            return;
         }
+        if(defined('PHP_ENV') && PHP_ENV == 'test') {
+            // If run from phpunit, die with exception message.
+            die($event->exception->getMessage());
+        }
+        if(!$this->dbVersion) {
+            /* Not installed or DB broken or to old */
+            return;
+        }
+        if($this->dbVersion < 200) {
+            /* Activate since DBVersion for 2.50 and up (i know it include previous line, but stay clear) */
+            return;
+        }
+        $statusCode = isset($event->exception->statusCode) ? $event->exception->statusCode : null; // Needed ?
+        if (Yii::app()->getConfig('debug') > 1) {
+            /* Can restrict to admin ? */
+            /* debug ro 2 : always send Yii debug even 404 */
+            return;
+        }
+        if (Yii::app()->getConfig('debug') > 0 && $statusCode != '404') {
+            /* debug is set and not a 404 : always send Yii debug*/
+            return;
+        }
+        Yii::app()->setComponent('errorHandler', array(
+            'errorAction'=>'surveys/error',
+        ));
+    }
+
+    /**
+     * Check if a file is inside a specific directory
+     * @var string $dirPath complete directory path
+     * @var string $baseDir the directory where it must be, default to upload dir
+     * @var boolean|null $throwException if security issue
+     * Throw Exception
+     * @return boolean
+     */
+    public function is_file($filePath,$baseDir = null,$throwException = null)
+    {
+        if(is_null($baseDir)) {
+            $baseDir = $this->getConfig('uploaddir');
+        }
+        if(is_null($throwException)) {
+            $throwException = boolval($this->getConfig('debug'));
+        }
+        $realFilePath = realpath($filePath);
+        if(!is_file($realFilePath)) {
+            /* Not existing file */
+            Yii::log("Try to read invalid file ".$filePath, 'warning', 'application.security.files.is_file');
+            return false;
+        }
+        if(substr($realFilePath, 0, strlen($baseDir)) !== $baseDir) {
+            /* Security issue */
+            Yii::log("Disable access to ".$realFilePath." directory", 'error', 'application.security.files.is_file');
+            if($throwException) {
+                throw new CHttpException(403,"Disable for security reasons.");
+            }
+            return false;
+        }
+        return $filePath;
     }
 }

@@ -53,12 +53,12 @@ class homepagesettings extends Survey_Common_Action
         }
 
         $model = new Box;
-        if (isset($_POST['Boxes'])) {
+        if (isset($_POST['Box'])) {
             if (Yii::app()->getConfig('demoMode')) {
                 Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'), 'error');
                 $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
             }
-            $model->attributes = $_POST['Boxes'];
+            $model->attributes = $_POST['Box'];
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', gT('New box created'));
                 if (isset($_POST['saveandclose'])) {
@@ -98,8 +98,8 @@ class homepagesettings extends Survey_Common_Action
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Boxes'])) {
-            $model->attributes = $_POST['Boxes'];
+        if (isset($_POST['Box'])) {
+            $model->attributes = $_POST['Box'];
             if ($model->save()) {
                 Yii::app()->user->setFlash('success', gT('Box updated'));
 
@@ -175,8 +175,8 @@ class homepagesettings extends Survey_Common_Action
     {
         $model = new Box('search');
         $model->unsetAttributes(); // clear any default values
-        if (isset($_GET['Boxes'])) {
-                    $model->attributes = $_GET['Boxes'];
+        if (isset($_GET['Box'])) {
+                    $model->attributes = $_GET['Box'];
         }
 
         $this->_renderWrappedTemplate('homepagesettings', 'admin', array(

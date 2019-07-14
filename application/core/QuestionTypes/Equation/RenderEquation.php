@@ -45,7 +45,8 @@ class RenderEquation extends QuestionBaseRenderer
             'coreClass'=> 'ls-answers answer-item hidden-item  '.$sCoreClasses,
             'insideClass' => 'em_equation',
             ), true);
-
+            
+        $this->registerAssets();
         $inputnames[] = $this->sSGQA;
         return array($answer, $inputnames);
     }

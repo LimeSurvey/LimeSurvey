@@ -34,13 +34,13 @@
         <?php endif;?>
 
         <?php if ($showAggregatedPercentage):?>
-            <td  align='right' >
+            <td  align='right' colspan="2">
                 <?php if ($aggregatedPercentage !== false){ ?>
                     <?php echo sprintf("%01.2f", $aggregatedPercentage); ?>%
                 <?php } ?>
             </td>
         <?php elseif($showEmptyAggregatedPercentage):?>
-            <td  align='right' >
+            <td  align='right' colspan="2">
                 &nbsp;
             </td>
         <?php endif;?>

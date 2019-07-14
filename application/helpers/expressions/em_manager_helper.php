@@ -28,6 +28,8 @@
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
     Yii::import("application.libraries.Date_Time_Converter");
+    Yii::import('application.helpers.expressions.emcache.em_cache_exception', true);
+    Yii::import('application.helpers.expressions.emcache.em_cache_helper', true);
     define('LEM_DEBUG_TIMING',1);
     define('LEM_DEBUG_VALIDATION_SUMMARY',2);   // also includes  SQL error messages
     define('LEM_DEBUG_VALIDATION_DETAIL',4);
@@ -62,9 +64,9 @@
         */
         private $debugLevel = 0;
          /**
-        * sPreviewMode used for relevance equation force to 1 in preview mode
-        * Maybe we can set it public
-        * @var string|boolean
+        * sPreviewMode used for relevance equation and to disable save value in DB
+        * 'question' or 'group' string force relevance to 1 if needed
+        * @var string|false
         */
         private $sPreviewMode = false;
         /**
@@ -718,7 +720,7 @@
 
         /**
         * Set the previewmode
-        * @param boolean|string $previewmode 'question', 'group', false
+        * @param string|false $previewmode 'question', 'group', false
         * @return void
         */
         public static function SetPreviewMode($previewmode=false)
@@ -1204,8 +1206,8 @@
                                 case Question::QT_K_MULTIPLE_NUMERICAL_QUESTION: //MULTIPLE NUMERICAL QUESTION
                                 case Question::QT_Q_MULTIPLE_SHORT_TEXT: //MULTIPLE SHORT TEXT
                                 case Question::QT_R_RANKING_STYLE: //Ranking
-//                                    if ($this->sgqaNaming)
-//                                    {
+                                    //if ($this->sgqaNaming)
+                                    //{
                                         foreach ($cascadedAF as $_caf)
                                         {
                                             $sgq = ((isset($this->qcode2sgq[$_caf])) ? $this->qcode2sgq[$_caf] : $_caf);
@@ -1307,26 +1309,26 @@
                                                 $afe_names[] = '(' . implode(' and ', $fsqs) . ')';
                                             }
                                         }
-//                                    }
-//                                    else  // TODO - implement qcode naming for this
-//                                    {
-//                                        foreach ($cascadedAF as $_caf)
-//                                        {
-//                                            $sgq = $_caf . $sq['sqsuffix'];
-//                                            if (isset($this->knownVars[$sgq]))
-//                                            {
-//                                                $af_names[] = $sgq . '.NAOK';
-//                                            }
-//                                        }
-//                                        foreach ($cascadedAFE as $_cafe)
-//                                        {
-//                                            $sgq = $_cafe . $sq['sqsuffix'];
-//                                            if (isset($this->knownVars[$sgq]))
-//                                            {
-//                                                $afe_names[] = $sgq . '.NAOK';
-//                                            }
-//                                        }
-//                                    }
+                                  //  }
+                                  //  else  // TODO - implement qcode naming for this
+                                  //  {
+                                  //      foreach ($cascadedAF as $_caf)
+                                  //      {
+                                  //          $sgq = $_caf . $sq['sqsuffix'];
+                                  //          if (isset($this->knownVars[$sgq]))
+                                  //          {
+                                  //              $af_names[] = $sgq . '.NAOK';
+                                  //          }
+                                  //      }
+                                  //      foreach ($cascadedAFE as $_cafe)
+                                  //      {
+                                  //          $sgq = $_cafe . $sq['sqsuffix'];
+                                  //          if (isset($this->knownVars[$sgq]))
+                                  //          {
+                                  //              $afe_names[] = $sgq . '.NAOK';
+                                  //          }
+                                  //      }
+                                  //  }
                                     break;
                                 default:
                                     break;
@@ -1953,6 +1955,7 @@
                             $eoRelevantAndUnchecked = "(" . $eoVarName . ".relevanceStatus && is_empty(" . $eoVarName . "))";
                             $eoEqn = "(" . $eoRelevantAndUnchecked . " && (" . $relpart . " == " . $checkedpart . "))";
 
+                            // NB: Used to update EM state. Return value is not used.
                             $this->em->ProcessBooleanExpression($eoEqn, $qinfo['gseq'], $qinfo['qseq']);
 
                             $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
@@ -2200,16 +2203,14 @@
                     $max_subquestions=intval($qattr['max_subquestions']);
                     // We don't have another answer count in EM ?
                     $answerCount=Answer::model()->count("qid=:qid",array(":qid"=>$questionNum));
-                    if($max_subquestions < $answerCount)
+                    $max_subquestions = min($max_subquestions,$answerCount); // Can not be upper than current answers #14899
+                    if($max_answers!='')
                     {
-                        if($max_answers!='')
-                        {
-                            $max_answers='min('.$max_answers.','.$max_subquestions.')';
-                        }
-                        else
-                        {
-                            $max_answers=intval($qattr['max_subquestions']);
-                        }
+                        $max_answers='min('.$max_answers.','.$max_subquestions.')';
+                    }
+                    else
+                    {
+                        $max_answers= $max_subquestions;
                     }
                 }
                 // Fix min_num_value_n and max_num_value_n for multinumeric with slider: see bug #7798
@@ -3447,15 +3448,7 @@
 
                 if ($em_validation_sq!='')
                 {
-                    if ($em_validation_sq_tip =='')
-                    {
-                        //                    $stringToParse = htmlspecialchars_decode($em_validation_sq,ENT_QUOTES);
-                        //                    $gseq = $this->questionId2groupSeq[$qinfo['qid']];
-                        //                    $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
-                        //                    $_validation_tip = $this->em->GetPrettyPrintString();
-                        //                    $qtips['sq_fn_validation']=sprintf($this->gT('Each answer must conform to this expression: %s'),$_validation_tip);
-                    }
-                    else
+                    if ($em_validation_sq_tip != '')
                     {
                         $qtips['sq_fn_validation']=$em_validation_sq_tip;
                     }
@@ -3465,15 +3458,7 @@
                 // em_validation_q - whole-question validation equation
                 if ($em_validation_q!='')
                 {
-                    if ($em_validation_q_tip =='')
-                    {
-                        //                    $stringToParse = htmlspecialchars_decode($em_validation_q,ENT_QUOTES);
-                        //                    $gseq = $this->questionId2groupSeq[$qinfo['qid']];
-                        //                    $result = $this->em->ProcessBooleanExpression($stringToParse,$gseq,  $qinfo['qseq']);
-                        //                    $_validation_tip = $this->em->GetPrettyPrintString();
-                        //                    $qtips['q_fn_validation']=sprintf($this->gT('The question must conform to this expression: %s'), $_validation_tip);
-                    }
-                    else
+                    if ($em_validation_q_tip != '')
                     {
                         $qtips['q_fn_validation']=$em_validation_q_tip;
                     }
@@ -3771,7 +3756,7 @@
                 $aid = (isset($fielddata['aid']) ? $fielddata['aid'] : '');
                 $sqid = (isset($fielddata['sqid']) ? $fielddata['sqid'] : '');
                 if($this->sPreviewMode=='question') $fielddata['relevance']=1;
-                if($this->sPreviewMode=='group') $fielddata['grelevance']=1;
+                if($this->sPreviewMode=='group' || $this->sPreviewMode=='question') $fielddata['grelevance']=1;
 
                 $questionNum = $fielddata['qid'];
                 $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
@@ -5709,7 +5694,7 @@
         /**
         * Jump to a specific question or group sequence.  If jumping forward, it re-validates everything in between
         * @param int $seq - the sequential step
-        * @param boolean $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed. @see var $sPreviewMode
+        * @param string|false $preview @see var $sPreviewMode
         * @param boolean $processPOST - add the updated value to be saved in the database
         * @param boolean $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
         * @param boolean $changeLang
@@ -7414,6 +7399,12 @@
             $jsParts[] = "  last_sgqa=sgqa;\n";
             $jsParts[] = "  return;\n";
             $jsParts[] = "}\n";
+            /* Equation with {self.NAOK} in question text , issue in 4.0 only due to #14047 */
+            $jsParts[] = "if (evt_type == 'updated'  && (typeof last_sgqa !== 'undefined' && sgqa==last_sgqa)) {\n";
+            $jsParts[] = "  last_evt_type='updated';\n";
+            $jsParts[] = "  last_sgqa=sgqa;\n";
+            $jsParts[] = "  return;\n";
+            $jsParts[] = "}\n";
             $jsParts[] = "last_evt_type = evt_type;\n";
             $jsParts[] = "last_sgqa=sgqa;\n";
 
@@ -7905,20 +7896,20 @@
                     }
                     $qrelJS = "function LEMrel" . $arg['qid'] . "(sgqa){\n";
                     $qrelJS .= "  var UsesVars = ' " . implode(' ', $relJsVarsUsed) . " ';\n";
-                    //Normally trigger reevaluation only for relevant questions except for equation questions
-                    if($arg['type'] != '*') {
-                        /* If current relevance are updated in a previous function : must appy this one */
-                        /* See issue #14465 . Warning : expression manager trigger this by order of question */
-                        if (count($qrelQIDs) > 0) {
-                             $qrelJS .= "  if(" . implode(' || ', $qrelQIDs) . "){\n    ;\n  }\n  else";
-                        }
-                        if (count($qrelgseqs) > 0) {
-                             $qrelJS .= "  if(" . implode(' || ', $qrelgseqs) . "){\n    ;\n  }\n  else";
-                        }
-                        $qrelJS .= "  if (typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)) {\n";
-                        $qrelJS .= "  return;\n }\n";
+                    $aCheckNeeded = array(); // The condition to return
+                    /* Basic : sgqa is not in used var */
+                    $aCheckNeeded[] = "typeof sgqa !== 'undefined' && !LEMregexMatch('/ java' + sgqa + ' /', UsesVars)";
+                    /* If one of question relevance used in function are updated in a previous function */
+                    if (!empty($qrelQIDs) > 0) {
+                         $aCheckNeeded[] = "!(".implode(' || ', $qrelQIDs) . ")";
                     }
-
+                    /* If one of group relevance used in function are updated in a previous function */
+                    if (!empty($qrelgseqs) > 0) {
+                         $aCheckNeeded[] = "!(".implode(' || ', $qrelgseqs) . ")";
+                    }
+                    $qrelJS .= "  if (".implode(" && ",$aCheckNeeded).") {\n";
+                    $qrelJS .= "    return;\n";
+                    $qrelJS .= "  }\n";
                     $qrelJS .= implode("",$relParts);
                     $qrelJS .= "}\n";
                     $relEqns[] = $qrelJS;
@@ -8152,7 +8143,7 @@
                     {
                         // TODO - is different type needed for text?  Or process value to striphtml?
                         if ($jsVar == '') continue;
-                        $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                        $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . CHtml::encode($undeclaredVal[$jsVar]) . "'/>\n";
 
                         if ($bReturnArray){
                             $inputParts[] = $sInput;
@@ -8186,7 +8177,7 @@
                     foreach ($undeclaredJsVars as $jsVar)
                     {
                         if ($jsVar == '') continue;
-                        $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                        $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . CHtml::encode($undeclaredVal[$jsVar]) . "'/>\n";
                         if ($bReturnArray){
                             $inputParts[] = $sInput;
                         }else{
@@ -8763,6 +8754,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         */
         private function getQuestionAttributesForEM($surveyid=0,$qid=0, $lang='')
         {
+            $cacheKey = 'getQuestionAttributesForEM_' . $surveyid . '_' . $qid . '_' . $lang;
+            $value = EmCacheHelper::get($cacheKey);
+            if ($value !== false) {
+                return $value;
+            }
+
             // Fix old param (NULL)
             if(is_null($surveyid)) $surveyid=0;
             if(is_null($qid)) $qid=0;
@@ -8829,6 +8826,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 }
                 $aQuestionAttributesForEM[$oQid->qid]=$aAttributesValues;
             }
+            EmCacheHelper::set($cacheKey, $aQuestionAttributesForEM);
             return $aQuestionAttributesForEM;
         }
 
@@ -8888,6 +8886,12 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
             $oQuestionGroups=$survey->groups;
 
+            $cacheKey = 'getGroupInfoForEM_' . $surveyid . '_' . $sLanguage;
+            $value = EmCacheHelper::get($cacheKey);
+            if ($value !== false) {
+                return $value;
+            }
+
             $qinfo = array();
             $_order=0;
             $gid = array();
@@ -8895,8 +8899,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                 $gid[$oQuestionGroup->gid] = array(
                     'group_order' => $_order,
                     'gid' =>  $oQuestionGroup->gid,
-                    'group_name' => $oQuestionGroup->questionGroupL10ns[$sLanguage]->group_name,
-                    'description' =>  $oQuestionGroup->questionGroupL10ns[$sLanguage]->description,
+                    'group_name' => $oQuestionGroup->getGroupNameI10N($sLanguage),
+                    'description' =>  $oQuestionGroup->getGroupDescriptionI10N($sLanguage),
                     'grelevance' => (!($this->sPreviewMode=='question' || $this->sPreviewMode=='group')) ? $oQuestionGroup->grelevance:1,
                     'randomization_group' =>  $oQuestionGroup->randomization_group
                 );
@@ -8916,6 +8920,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     ++$_order;
                 }
             }
+            EmCacheHelper::set($cacheKey, $qinfo);
             return $qinfo;
         }
 
@@ -8997,7 +9002,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                     if ($dateTime === false) {
                                         $message = sprintf(
                                             'Could not convert date %s to format %s. Please check your date format settings.',
-                                            htmlspecialchars(trim($value)),
+                                            self::htmlSpecialCharsUserValue(trim($value)),
                                             $aDateFormatData['phpdate']
                                         ); // Seems to happen when admin make error on date format */
                                         $LEM->invalidAnswerString[$sq]=$message;
@@ -9010,7 +9015,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                             $value = $newValue;
                                         } else {
                                             $value = "";// This don't disable submitting survey
-                                            $LEM->invalidAnswerString[$sq]=sprintf(gT("Date %s is invalid, please review your answer."),htmlspecialchars($value));
+                                            $LEM->invalidAnswerString[$sq]=sprintf(gT("Date %s is invalid, please review your answer."),self::htmlSpecialCharsUserValue($value));
                                         }
                                     }
                                 }
@@ -9052,7 +9057,7 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 break;
                         }
                         // Add the string in $_SESSION to be shown and see if we need to reset value
-                        if(!self::checkValidityAnswer($type,$value,$sq,$qinfo))
+                        if(!self::checkValidityAnswer($type,$value,$sq,$qinfo['info']))
                         {
                             $value=null;
                         }
@@ -9174,14 +9179,14 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                                 case Question::QT_D_DATE: //DATE
                                 case Question::QT_T_LONG_FREE_TEXT: //LONG FREE TEXT
                                 case Question::QT_U_HUGE_FREE_TEXT: //HUGE FREE TEXT
-                                    return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
+                                    return self::htmlSpecialCharsUserValue($_SESSION[$this->sessid][$sgqa]);
                                 case Question::QT_EXCLAMATION_LIST_DROPDOWN: //List - dropdown
                                 case Question::QT_L_LIST_DROPDOWN: //LIST drop-down/radio-button list
                                 case Question::QT_O_LIST_WITH_COMMENT: //LIST WITH COMMENT drop-down/radio-button list + textarea
                                 case Question::QT_M_MULTIPLE_CHOICE: //Multiple choice checkbox
                                 case Question::QT_P_MULTIPLE_CHOICE_WITH_COMMENTS: //Multiple choice with comments checkbox + text
                                     if (preg_match('/comment$/',$sgqa) || preg_match('/other$/',$sgqa) || preg_match('/_other$/',$name)) {
-                                        return htmlspecialchars($_SESSION[$this->sessid][$sgqa],ENT_NOQUOTES);// Minimum sanitizing the string entered by user
+                                        return self::htmlSpecialCharsUserValue($_SESSION[$this->sessid][$sgqa]);
                                     } else {
                                         return $_SESSION[$this->sessid][$sgqa];
                                     }
@@ -10248,186 +10253,202 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         /**
          * Check a validity of an answer,
          * Put the string to show to user $this->invalidAnswerString
+         * See mantis #10827, #11611 and #14649
          *
          * @param string $type : question type
          * @param string $value : the value
          * @param string $sgq : the sgqa
-         * @param array $qinfo : an array with information from question
+         * @param array $qinfo : an array with information from question with mandatory ['qid'=>$qid] , optionnal (but must be 'other'=>$other)
          * @param boolean $set : update the invalid string or not. Used for #14649 (invalid default value)
+         * @throw Exception
          * 
          * @return boolean true : if question is OK to be put in session, false if must be set to null
          */
         private static function checkValidityAnswer($type,$value,$sgq,$qinfo,$set = true)
         {
-            if(!empty($value))
+            /* Check validity of qinfo */
+            if(empty($qinfo['qid'])) {
+                if(YII_DEBUG) {
+                    throw new \CException('Invalid qinfo '.print_r($qinfo));
+                }
+                Yii::log("Invalid qinfo parameter in checkValidityAnswer",'error','application.LimeExpressionManager.checkValidityAnswer');
+                return false;
+            }
+            if($value==="" or is_null($value)) {
+                /* Must check 0 */
+                return true;
+            }
+            /* Fill some helper var */
+            $qid = $qinfo['qid'];
+            $other = !empty($qinfo['other']) ? $qinfo['other'] : null;
+
+            /* This function is called by a static function , then set it to static .... */
+            $LEM =& LimeExpressionManager::singleton();
+            // Using language to find some valid value : set it to an existing language of this survey (can be Survey::model()->findByPk($LEM->id)->language too)
+            $oSurvey = Survey::model()->findByPk($LEM->getLEMsurveyId());
+            $language = $oSurvey->language;
+            switch ($type)
             {
-                /* This function is called by a static function , then set it to static .... */
-                $LEM =& LimeExpressionManager::singleton();
-                // Using language to find some valid value : set it to an existing language of this survey (can be Survey::model()->findByPk($LEM->sessid)->language too)
-                $language=isset($_SESSION[$LEM->sessid]['s_lang']) ?$_SESSION[$LEM->sessid]['s_lang'] : App()->language;
-                /* See bug Control value against value from survey : see #11611 */
-                switch ($type)
-                {
-                    case '5': // 5 point choice
-                        if(!in_array($value,array("1","2","3","4","5")))
+                case '5': // 5 point choice
+                    if(!in_array($value,array("1","2","3","4","5")))
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case '!': //List - dropdown
+                case 'L': //LIST drop-down/radio-button list
+                    if(substr($sgq,-5)!='other')
+                    {
+                        if($value=="-oth-")
                         {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case '!': //List - dropdown
-                    case 'L': //LIST drop-down/radio-button list
-                        if(substr($sgq,-5)!='other')
-                        {
-                            if($value=="-oth-")
+                            if($other!='Y')
                             {
-                                if($qinfo['info']['other']!='Y')
-                                {
-                                    $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                                    return false;
-                                }
-                            }
-                            else
-                            {
-                                if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
-                                    $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                                    return false;
-                                }
-                            }
-                        }
-                        break;
-                    case 'O': // List with comment
-                        if(substr($sgq,-7)!='comment')
-                        {
-                            if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
                                 $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                                 return false;
                             }
                         }
-                        break;
-                    case 'F': // Array
-                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case 'B': // Array 10 point
-                        if(!in_array($value,array("1","2","3","4","5","6","7","8","9","10")))
+                        else
                         {
+                            if(is_null(Answer::model()->getAnswerFromCode($qid,$value,$language)))
+                            {
+                                $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+                case 'O': // List with comment
+                    if(substr($sgq,-7)!='comment')
+                    {
+                        if(is_null(Answer::model()->getAnswerFromCode($qid,$value,$language))) {
                             $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
                             return false;
                         }
-                        break;
-                    case 'A': // Array 5 point
-                        if(!in_array($value,array("1","2","3","4","5")))
-                        {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case 'E': // Array increase decrease same
-                        if(!in_array($value,array("I","D","S")))
-                        {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case ":": // Array number
-                        // @ todo Review if value is totally saved in DB, EM test if is numeric */
-                        break;
-                    case ";": // Array text
-                        /* No validty control ? size ? */
-                        break;
-                    case 'C': // Array Yes No Uncertain
-                        if(!in_array($value,array("Y","N","U")))
-                        {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case 'H': // Array by column
-                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case '1': // Array dual scale
-                        $scale=intval(substr($sgq,-1)); // Get the scale {SGQ}#0 or {SGQ}#1 actually
-                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language,$scale)==null) {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case 'D': // Date + time
-                        /*  @todo : but are already partially in EM and in old function ?*/
-                        break;
-                    case '*': // Equation
-                        /* No validty control ? size ? */
-                        break;
-                    case '|': // File upload
-                        /* @todo ? seems to be in old function ?*/
-                        break;
-                    case 'G': // Gender
-                        if(!in_array($value,array("M","F")))
-                        {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case 'I': // Language switch
-                        if(!in_array($value,Survey::model()->findByPk($LEM->sid)->getAllLanguages()))
-                        {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case 'K': // Multiple numerical
-                    case 'N': // Numerical
-                        if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$value)) // DECIMAL(30,10)
-                        {
-                            $LEM->addValidityString($sgq,$value,gT("This question only accept 30 digits including 10 decimals."),$set);
-                            /* Show an error but don't unset value : this can happen without hack */
-                        }
-                        break;
-                    case 'R':  // Ranking
-                        if(Answer::model()->getAnswerFromCode($qinfo['info']['qid'],$value,$language)==null) {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case 'X': // Text display
-                        /* No validty control ; but always reset the value to null ? */
-                        return false; // Can not be set : set it to null
-                    case 'Y': // Gender
-                        if(!in_array($value,array("Y","N")))
-                        {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case 'U': // Huge text
-                    case 'T': // Long text
-                    case 'Q': // Multiple text
-                    case 'S': // Short text
-                        /* No validty control ? size ? */
-                        break;
-                    case 'M':
-                        if($value!="Y" && (substr($sgq,-5)!='other' && $qinfo['info']['other']=='Y'))
-                        {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    case 'P':
-                        if(substr($sgq,-7)!='comment' && $value!="Y" && (substr($sgq,-5)!='other' && $qinfo['info']['other']=='Y'))
-                        {
-                            $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
-                            return false;
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                    }
+                    break;
+                case 'F': // Array
+                    if(is_null(Answer::model()->getAnswerFromCode($qid,$value,$language))) {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case 'B': // Array 10 point
+                    if(!in_array($value,array("1","2","3","4","5","6","7","8","9","10")))
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case 'A': // Array 5 point
+                    if(!in_array($value,array("1","2","3","4","5")))
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case 'E': // Array increase decrease same
+                    if(!in_array($value,array("I","D","S")))
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case ":": // Array number
+                    // @ todo Review if value is totally saved in DB, EM test if is numeric */
+                    break;
+                case ";": // Array text
+                    /* No validty control ? size ? */
+                    break;
+                case 'C': // Array Yes No Uncertain
+                    if(!in_array($value,array("Y","N","U")))
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case 'H': // Array by column
+                    if(is_null(Answer::model()->getAnswerFromCode($qid,$value,$language))) {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case '1': // Array dual scale
+                    $scale=intval(substr($sgq,-1)); // Get the scale {SGQ}#0 or {SGQ}#1 actually
+                    if(is_null(Answer::model()->getAnswerFromCode($qid,$value,$language,$scale))) {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case 'D': // Date + time
+                    /*  @todo : but are already partially in EM and in old function ?*/
+                    break;
+                case '*': // Equation
+                    /* No validty control ? size ? */
+                    break;
+                case '|': // File upload
+                    /* @todo ? seems to be in old function ?*/
+                    break;
+                case 'G': // Gender
+                    if(!in_array($value,array("M","F")))
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case 'I': // Language switch
+                    if(!in_array($value,Survey::model()->findByPk($LEM->sid)->getAllLanguages()))
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case 'K': // Multiple numerical
+                case 'N': // Numerical
+                    if(!preg_match("/^[-]?(\d{1,20}\.\d{0,10}|\d{1,20})$/",$value)) // DECIMAL(30,10)
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("This question only accept 30 digits including 10 decimals."),$set);
+                        /* Show an error but don't unset value : this can happen without hack */
+                    }
+                    break;
+                case 'R':  // Ranking
+                    if(is_null(Answer::model()->getAnswerFromCode($qid,$value,$language))) {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case 'X': // Text display
+                    /* No validty control ; but always reset the value to null ? */
+                    return false; // Can not be set : set it to null
+                case 'Y': // Gender
+                    if(!in_array($value,array("Y","N")))
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case 'U': // Huge text
+                case 'T': // Long text
+                case 'Q': // Multiple text
+                case 'S': // Short text
+                    /* No validty control ? size ? */
+                    break;
+                case 'M':
+                    if($value!="Y" && (substr($sgq,-5)!='other' && $other=='Y'))
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                case 'P':
+                    if(substr($sgq,-7)!='comment' && $value!="Y" && (substr($sgq,-5)!='other' && $other=='Y'))
+                    {
+                        $LEM->addValidityString($sgq,$value,gT("%s is an invalid value for this question"),$set);
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
             }
             return true;
         }
@@ -10491,6 +10512,20 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         public function setPageRelevanceInfo($info)
         {
             $this->pageRelevanceInfo = $info;
+        }
+
+        /**
+         * return a value entered by user to be shown or used in expression
+         * @param string $string
+         * @return string
+         */
+        public static function htmlSpecialCharsUserValue($string)
+        {
+            // <, > and &
+            $string = htmlspecialchars($string,ENT_NOQUOTES,Yii::app()->charset);
+            // { and } (after &)
+            $string = str_replace(["{","}"],["&#123;","&#125;"],$string);
+            return $string;
         }
 
     }

@@ -51,7 +51,7 @@ $googleAnalyticsStyleOptions = array(
                             $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'datestamp',
                             'value'=> $oSurvey->datestamp,
-                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->datestamp . ']')): $optionsOnOff,
                             /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 if ($('#anonymized').is(':checked') == true) {
                                 $('#datestampModal_1').modal();
@@ -85,7 +85,7 @@ $googleAnalyticsStyleOptions = array(
                         $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'ipaddr',
                             'value'=> $oSurvey->ipaddr,
-                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->ipaddr . ']')): $optionsOnOff,
                             /*'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 if ($('#anonymized').is(':checked') == true) {
                                 $('#datestampModal_2').modal();
@@ -119,7 +119,7 @@ $googleAnalyticsStyleOptions = array(
                             $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'refurl',
                             'value'=> $oSurvey->refurl,
-                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                            'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->refurl . ']')): $optionsOnOff,
                             ));
                     } ?>
                 </div>
@@ -142,7 +142,7 @@ $googleAnalyticsStyleOptions = array(
                             $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                 'name' => 'savetimings',
                                 'value'=> $oSurvey->savetimings,
-                                'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                                'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->savetimings . ']')): $optionsOnOff,
                             ));
                         ?>
                     <?php endif;?>
@@ -159,7 +159,7 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'assessments',
                         'value'=> $oSurvey->assessments,
-                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->assessments . ']')): $optionsOnOff,
                     ));
                 ?></div>
             </div>
@@ -172,32 +172,59 @@ $googleAnalyticsStyleOptions = array(
                     $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'allowsave',
                         'value'=> $oSurvey->allowsave,
-                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->anonymized . ']')): $optionsOnOff,
+                        'selectOptions'=>($bShowInherited)?array_merge($optionsOnOff, array('I' => gT('Inherit','unescaped').' ['. $oSurveyOptions->allowsave . ']')): $optionsOnOff,
                     ));
                 ?>
                 </div>
             </div>
             <!-- email basic to -->
             <div class="form-group">
-                <label class=" control-label" for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::textField('emailnotificationto',$oSurvey->emailnotificationto,array('size'=>70, 'class'=>"form-control")); ?>
-                    <?php if ($bShowInherited){ ?>
-                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->emailnotificationto . ']'; ?></span>
-                    <?php } ?>
+            <?php $emailnotificationto = $oSurvey->emailnotificationto; ?>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                        <label class=" control-label"  for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailnotificationto' name='emailnotificationto' value="<?php echo htmlspecialchars($emailnotificationto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailnotificationto; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailnotificationto === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailnotificationto); ?>" readonly />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
+                        <label class=" control-label content-center col-sm-12"  for='emailnotificationto'><?php  eT("Inherit:"); ?></label>
+                        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'emailnotificationtobutton',
+                            'value'=> ($bShowInherited && $emailnotificationto === 'inherit' ? 'Y' : 'N'),
+                            'selectOptions'=>$optionsOnOff,
+                            'htmlOptions' => array(
+                                'class' => 'text-option-inherit'
+                                )
+                            ));
+                            ?>
+                    </div>
                 </div>
             </div>
 
             <!-- email detail to  -->
             <div class="form-group">
-                <label class=" control-label" for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
-                <div class="">
-                    <?php echo CHtml::textField('emailresponseto',$oSurvey->emailresponseto,array('size'=>70, 'class'=>"form-control")) ?>
-                    <?php if ($bShowInherited){ ?>
-                        <span class='annotation'> <?php echo ' ['. eT("Inherited value:") . $oSurveyOptions->emailresponseto . ']'; ?></span>
-                    <?php } ?>
+            <?php $emailresponseto = $oSurvey->emailresponseto; ?>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 content-right">
+                        <label class=" control-label"  for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
+                            <input class="form-control inherit-edit <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'hide' : 'show'); ?>" type='<?php echo ($bShowInherited)?'text':'email'; ?>' size='50' id='emailresponseto' name='emailresponseto' value="<?php echo htmlspecialchars($emailresponseto); ?>" data-inherit-value="inherit" data-saved-value="<?php echo $emailresponseto; ?>"/>
+                            <input class="form-control inherit-readonly <?php echo ($bShowInherited && $emailresponseto === 'inherit' ? 'show' : 'hide'); ?>" type='text' size='50' value="<?php echo htmlspecialchars($oSurveyOptions->emailresponseto); ?>" readonly />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 content-right <?php echo ($bShowInherited ? 'show' : 'hide'); ?>">
+                        <label class=" control-label content-center col-sm-12"  for='emailresponseto'><?php  eT("Inherit:"); ?></label>
+                        <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
+                            'name' => 'emailresponsetobutton',
+                            'value'=> ($bShowInherited && $emailresponseto === 'inherit' ? 'Y' : 'N'),
+                            'selectOptions'=>$optionsOnOff,
+                            'htmlOptions' => array(
+                                'class' => 'text-option-inherit'
+                                )
+                            ));
+                            ?>
+                    </div>
                 </div>
             </div>
+        
             <?php if ($bShowAllOptions === true){ ?>
             <!-- GoogleAnalytics settings to be used -->
             <div class="form-group">

@@ -15,8 +15,8 @@ export default {
     setCurrentQuestionI10N : (state, newValue) => {
         state.currentQuestionI10N = newValue;
     },
-    setCurrentQuestionAttributes : (state, newValue) => {
-        state.currentQuestionAttributes = newValue;
+    setCurrentQuestionPermissions : (state, newValue) => {
+        state.currentQuestionPermissions = newValue;
     },
     setCurrentQuestionGeneralSettings : (state, newValue) => {
         state.currentQuestionGeneralSettings = newValue;
@@ -53,14 +53,6 @@ export default {
     },
 
     //Immutables
-    unsetImmutableQuestionAttributes : (state, newValue) => {
-        state.questionAttributesImmutable = {};
-    },
-    setImmutableQuestionAttributes : (state, newValue) => {
-        if(isEmpty(state.questionAttributesImmutable)) {
-            state.questionAttributesImmutable = newValue;
-        }
-    },
 
     unsetQuestionImmutable : (state) => {
         state.questionImmutable = {};
@@ -175,5 +167,19 @@ export default {
     },
     toggleDebugMode: (state) => {
         state.debugMode = !state.debugMode;
+    },
+    setInTransfer: (state, transferState) => {
+        state.inTransfer = transferState;
+    },
+    addAlert: (state, alertObject) => {
+        alertObject.key = state.alerts.length+1;
+        state.alerts.push(alertObject);
+    },
+    removeAlert: (state, alertKey) => {
+        let tmpAlerts = state.alerts.filter((alert) => { alert.key !== alertKey });
+        tmpAlerts.forEach((element,i) => {
+            element.key = i;
+        });
+        state.alerts = tmpAlerts;
     }
 };
