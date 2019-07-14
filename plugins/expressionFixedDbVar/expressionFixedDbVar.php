@@ -169,18 +169,15 @@ class expressionFixedDbVar extends PluginBase
         {
             if(isset($this->settings[$var]['column'])) {
                 $current = $this->get($var,'Survey',$surveyId,"");
-                tracevar([$var,$current]);
                 if( $current === "" ) {
                     // INHERIT
                     $current = $this->get($var,null,null,$this->settings[$var]['default']);
                 }
-                tracevar([$var,$current]);
                 if(boolval($current)) {
                     $addedvars[] = $var;
                 }
             }
         }
-        tracevar($addedvars);
         return $addedvars;
     }
 }
