@@ -8255,6 +8255,25 @@
         }
 
         /**
+         * Helper function to update a Read only value
+         * @param string $var
+         * @param string $value
+         */
+        public static function setValueToKnowVar($var,$value)
+        {
+            if(empty($LEM->knownVars[$var])) {
+                $LEM->knownVars[$var] = array(
+                    'code'=>"",
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
+            }
+            $LEM =& LimeExpressionManager::singleton();
+            $LEM->knownVars[$var]['code'] = $value;
+        }
+
+        /**
          * Add or replace fixed variable replacement for current page (or until self::resetTempVars was called)
          * @param array $vars 'replacement' => "fixed value"
          */

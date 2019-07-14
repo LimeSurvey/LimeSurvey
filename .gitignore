@@ -73,6 +73,7 @@
 !/plugins/AuditLog/
 !/plugins/mailSenderToFrom/
 !/plugins/expressionQuestionHelp/
+!/plugins/expressionFixedDbVar/
 
 
 #ignore old styles
