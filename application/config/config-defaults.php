@@ -609,6 +609,12 @@ $config['proxy_host_port'] = 80;
  */
 $config['forcedsuperadmin'] = array(1);
 
+/**
+ * Set when install a post 4.0, mysql engine before was always MyIsam
+ * Need to be set for old config.php file
+ */
+$config['mysqlEngine'] = "MyISAM";
+
 /** final theme set if default theme didn't exist. Updatebale only via PHP file
  * if this theme didn't exist in standardthemerootdir and url : this can broke your instance.
  * Choose vanilla since it's parent of other's core theme.
