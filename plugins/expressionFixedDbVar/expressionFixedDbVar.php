@@ -44,7 +44,7 @@ class expressionFixedDbVar extends PluginBase
         ),
         'STARTDATE' => array(
             'type' => 'checkbox',
-            'label' => 'Add SUBMITDATE variable',
+            'label' => 'Add STARTDATE variable',
             'default' => '0',
             'column' => 'startdate',
         ),
@@ -80,6 +80,9 @@ class expressionFixedDbVar extends PluginBase
         $this->subscribe('setVariableExpressionEnd','addFixedDbVar');
         $this->subscribe('afterResponseSave','afterResponseSave');
         $this->subscribe('afterSurveyDynamicSave','afterResponseSave');
+        /* Option by survey */
+        $this->subscribe('beforeSurveySettings');
+        $this->subscribe('newSurveySettings');
     }
 
     /**
@@ -101,7 +104,6 @@ class expressionFixedDbVar extends PluginBase
                 'readWrite'=>'N',
             );
         }
-        tracevar($newKnowVars);
         $this->getEvent()->append('knownVars', $newKnowVars);
     }
 
@@ -120,6 +122,41 @@ class expressionFixedDbVar extends PluginBase
         }
     }
 
+    public function beforeSurveySettings()
+    {
+        $newSettings=array();
+        foreach($this->settings as $var => $params)
+        {
+            if(isset($this->settings[$var]['column'])) {
+                $inherited = $this->get($var,null,null,$params['default']) ? gt("Yes") : gT("No");
+                $newSettings[$var] = array(
+                    'type' => 'select',
+                    'options' => array(
+                        '1' => gT("Yes"),
+                        '0' => gT("No"),
+                    ),
+                    'htmlOptions'=>array(
+                        'empty'=>gT("Inherit")." [{$inherited}]",
+                    ),
+                    'label' => $this->gT($params['label']),
+                    'current' => $this->get($var,'Survey',$this->getEvent()->get('survey'),''),
+                );
+            }
+        }
+        $this->getEvent()->set("surveysettings.{$this->id}", array(
+              'name' => get_class($this),
+              'settings' => $newSettings
+        ));
+    }
+
+    public function newSurveySettings()
+    {
+        $event = $this->event;
+        foreach ($event->get('settings') as $name => $value)
+        {
+            $this->set($name, $value, 'Survey', $event->get('survey'));
+        }
+    }
     /**
      * get the fiuxed var to be added for this survey
      * @param integer $surveyId
@@ -131,14 +168,19 @@ class expressionFixedDbVar extends PluginBase
         foreach($this->settings as $var => $params)
         {
             if(isset($this->settings[$var]['column'])) {
-                if( !empty($this->get($var,'Survey',$surveyId)) ) {
-                    $addedvars[] = $var;
-                } elseif($this->get($var,null,null,$this->settings[$var]['default']) ) {
+                $current = $this->get($var,'Survey',$surveyId,"");
+                tracevar([$var,$current]);
+                if( $current === "" ) {
                     // INHERIT
+                    $current = $this->get($var,null,null,$this->settings[$var]['default']);
+                }
+                tracevar([$var,$current]);
+                if(boolval($current)) {
                     $addedvars[] = $var;
                 }
             }
         }
+        tracevar($addedvars);
         return $addedvars;
     }
 }
