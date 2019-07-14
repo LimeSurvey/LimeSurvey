@@ -122,6 +122,10 @@ class expressionFixedDbVar extends PluginBase
         }
     }
 
+    /**
+     * Add the option inside survey settings
+     * @return void
+     */
     public function beforeSurveySettings()
     {
         $newSettings=array();
@@ -149,6 +153,10 @@ class expressionFixedDbVar extends PluginBase
         ));
     }
 
+    /**
+     * Save the survey settings
+     * @return void
+     */
     public function newSurveySettings()
     {
         $event = $this->event;
@@ -157,6 +165,24 @@ class expressionFixedDbVar extends PluginBase
             $this->set($name, $value, 'Survey', $event->get('survey'));
         }
     }
+
+    /**
+     * @inheritdoc
+     * Add translation for label
+     */
+    public function getPluginSettings($getValues=true)
+    {
+        /* Translation inside plugin ? */
+        $this->settings['SEED']['label'] = $this->gT('Add SEED variable');
+        $this->settings['SUBMITDATE']['label'] = $this->gT('Add SUBMITDATE variable');
+        $this->settings['STARTDATE']['label'] = $this->gT('Add STARTDATE variable');
+        $this->settings['LASTPAGE']['label'] = $this->gT('Add LASTPAGE variable');
+        $this->settings['STARTLANGUAGE']['label'] = $this->gT('Add STARTLANGUAGE variable');
+        $this->settings['IPADDR']['label'] = $this->gT('Add IPADDR variable');
+        $this->settings['REFURL']['label'] = $this->gT('Add REFURL variable');
+        return parent::getPluginSettings($getValues);
+    }
+
     /**
      * get the fiuxed var to be added for this survey
      * @param integer $surveyId
