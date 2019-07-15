@@ -313,6 +313,41 @@ class LS_Twig_Extension extends Twig_Extension
         return $sUrlImgAsset;
     }
 
+    /**
+     * @var $resourcePath string : the needed resource
+     * @var $default string : the default resource if needed resssource didn't exist
+     * @return string|false
+     */
+    public static function templateResourceUrl($resourcePath, $default = false)
+    {
+        /* sanitize filename … use same filter than themes->uploadfile */
+        if(sanitize_filename($resourcePath, false, false, false) != $resourcePath) {
+            if($default) {
+                return self::templateResourceUrl($default);
+            }
+            return false;
+        }
+        /* get extension of file in allowedthemeuploads */
+        $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
+        $info = pathinfo($resourcePath);
+        if(!isset($info['extension']) || !in_array(strtolower($info['extension'])) ) {
+            if($default) {
+                return self::templateResourceUrl($default);
+            }
+            return false;
+        }
+        // Reccurence on templates to find the file
+        $oTemplate = self::getTemplateForRessource($resourcePath);
+        if(empty($oTemplate)) {
+            /* Didn't allow file out of template (diff with image) */
+            return false;
+        }
+        $sFullPath = $oTemplate->path.$resourcePath;
+
+        $resourceAsset = self::assetPublish($sFullPath);
+        return $resourceAsset;
+    }
+
 
     /**
      * Get the parsed output of the expression manger for a specific string
