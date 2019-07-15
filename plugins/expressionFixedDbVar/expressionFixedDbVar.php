@@ -48,6 +48,12 @@ class expressionFixedDbVar extends PluginBase
             'default' => '0',
             'column' => 'startdate',
         ),
+        'DATESTAMP' => array(
+            'type' => 'checkbox',
+            'label' => 'Add DATESTAMP variable',
+            'default' => '1',
+            'column' => 'datestamp',
+        ),
         'LASTPAGE' => array(
             'type' => 'checkbox',
             'label' => 'Add LASTPAGE variable',
@@ -176,6 +182,7 @@ class expressionFixedDbVar extends PluginBase
         $this->settings['SEED']['label'] = $this->gT('Add SEED variable');
         $this->settings['SUBMITDATE']['label'] = $this->gT('Add SUBMITDATE variable');
         $this->settings['STARTDATE']['label'] = $this->gT('Add STARTDATE variable');
+        $this->settings['DATESTAMP']['label'] = $this->gT('Add DATESTAMP variable');
         $this->settings['LASTPAGE']['label'] = $this->gT('Add LASTPAGE variable');
         $this->settings['STARTLANGUAGE']['label'] = $this->gT('Add STARTLANGUAGE variable');
         $this->settings['IPADDR']['label'] = $this->gT('Add IPADDR variable');
