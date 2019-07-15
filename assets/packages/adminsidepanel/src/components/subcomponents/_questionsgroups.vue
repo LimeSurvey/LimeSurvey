@@ -51,6 +51,9 @@ export default {
         }
     },
     methods: {
+        questionHasCondition(question) {
+            return question.relevance !== '1';
+        },
         questionItemClasses(question) {
             let classes = "";
             classes +=
@@ -298,6 +301,9 @@ export default {
                                 v-bind:class="questionItemClasses(question)" 
                                 data-toggle="tootltip" 
                                 class="list-group-item question-question-list-item ls-flex-row align-itmes-flex-start" 
+                                :data-is-hidden="question.hidden"
+                                :data-questiontype="question.type"
+                                :data-has-condition="questionHasCondition(question)"
                                 :title="question.question_flat"
                                 @dragenter="dragoverQuestion($event, question, questiongroup)"
                             >
@@ -316,7 +322,11 @@ export default {
                                     class="col-9 pjax question-question-list-item-link display-as-container" 
                                     @click.stop.prevent="openQuestion(question)" 
                                 > 
-                                    <span class="question_text_ellipsize" :style="{ width: itemWidth }">
+                                    <span 
+                                        class="question_text_ellipsize" 
+                                        :class="{'question-hidden' : question.hidden}" 
+                                        :style="{ width: itemWidth }"
+                                    >
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }} 
                                     </span> 
                                 </a>
@@ -339,4 +349,9 @@ export default {
 #questionexplorer {
     overflow: auto;
 }
+
+.question-hidden {
+    color: #929292;
+}
+
 </style>

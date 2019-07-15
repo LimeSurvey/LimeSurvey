@@ -515,6 +515,7 @@ class SurveyAdmin extends Survey_Common_Action
                         $curQuestion = $question->attributes;
                         $curQuestion['link'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
                         $curQuestion['editLink'] = $this->getController()->createUrl("admin/questioneditor/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
+                        $curQuestion['hidden'] = isset($question->questionAttributes['hidden']) && !empty($question->questionAttributes['hidden']->value);
                         $curQuestion['question_flat'] = viewHelper::flatEllipsizeText($question->questionL10ns[$baselang]->question, true);
                         $curGroup['questions'][] = $curQuestion;
                     }
