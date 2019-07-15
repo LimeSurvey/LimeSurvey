@@ -6986,7 +6986,7 @@
                         /* Add it in view for user with Permission surveycontent update right (double check, but I think it's more clear)*/
                         if( $validityString && Permission::model()->hasSurveyPermission($LEM->sid, 'surveycontent', 'update') )
                         {
-                            $validTip .= Yii::app()->getController()->renderPartial('//survey/questions/question_help/error-tip', array(
+                            $validTip .= App()->twigRenderer->renderPartial('/survey/questions/question_help/error_tip.twig',array(
                                 'qid'=>$qid,
                                 'coreId'    =>"vmsg_{$qid}_defaultvalueerror",
                                 'vclass'=>'defaultvalueerror',
