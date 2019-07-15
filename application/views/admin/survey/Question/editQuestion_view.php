@@ -365,7 +365,7 @@ foreach ($aQuestionTypeList as $key=> $questionType) {
                                         <div class="input-group">
                                             <div class="input-group-addon">{</div>
                                             <?php echo CHtml::textArea('relevance',$oQuestion->relevance,
-                                                array('id'=>'relevance','class'=>"form-control",'readonly'=>count($oQuestion->conditions)>0))
+                                                array('id'=>'relevance','class'=>"form-control",'readonly'=>count($oQuestion->conditions)>0)
                                             );?>
                                             <div class="input-group-addon">}</div>
                                         </div>
