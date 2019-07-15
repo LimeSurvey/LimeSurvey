@@ -320,17 +320,10 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function templateResourceUrl($resourcePath, $default = false)
     {
-        /* sanitize filename … use same filter than themes->uploadfile */
-        if(sanitize_filename($resourcePath, false, false, false) != $resourcePath) {
-            if($default) {
-                return self::templateResourceUrl($default);
-            }
-            return false;
-        }
         /* get extension of file in allowedthemeuploads */
         $aAllowExtensions = explode(',', Yii::app()->getConfig('allowedthemeuploads'));
         $info = pathinfo($resourcePath);
-        if(!isset($info['extension']) || !in_array(strtolower($info['extension'])) ) {
+        if(!isset($info['extension']) || !in_array(strtolower($info['extension']),$aAllowExtensions) ) {
             if($default) {
                 return self::templateResourceUrl($default);
             }
@@ -343,7 +336,6 @@ class LS_Twig_Extension extends Twig_Extension
             return false;
         }
         $sFullPath = $oTemplate->path.$resourcePath;
-
         $resourceAsset = self::assetPublish($sFullPath);
         return $resourceAsset;
     }
@@ -406,7 +398,6 @@ class LS_Twig_Extension extends Twig_Extension
         $oRTemplate = Template::getInstance();
 
         while (!file_exists($oRTemplate->path.$sRessource)) {
-
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 return false;
@@ -414,7 +405,11 @@ class LS_Twig_Extension extends Twig_Extension
             }
             $oRTemplate = $oMotherTemplate;
         }
-
+        $sRessourcePath = realpath($oRTemplate->path.$sRessource);
+        $sTemplatePath = realpath($oRTemplate->path);
+        if(substr($sTemplatePath, 0, strlen($sTemplatePath)) !== $sTemplatePath) {
+            return false;
+        }
         return $oRTemplate;
     }
 
