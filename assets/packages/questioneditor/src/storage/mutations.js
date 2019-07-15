@@ -171,6 +171,9 @@ export default {
     setInTransfer: (state, transferState) => {
         state.inTransfer = transferState;
     },
+    setAlerts: (state, alertArray) => {
+        state.alerts=alertArray;
+    },
     addAlert: (state, alertObject) => {
         alertObject.key = state.alerts.length+1;
         state.alerts.push(alertObject);

@@ -46,6 +46,10 @@ export default {
         },
         allowSwitchEditing(){
             return !this.isCreateQuestion && this.$store.state.currentQuestionPermissions.update;
+        },
+        currentAlerts: {
+            get() {return this.$store.state.alerts;},
+            set(tmpAlerts) { this.$store.commit('setAlerts', tmpAlerts); }
         }
     },
     methods: {
@@ -149,6 +153,11 @@ export default {
     },
     
     mounted() {
+        let tmpAlerts = this.$store.state.alerts.filter((alert) => {
+            return !alert.shown
+        });
+        this.$store.commit('setAlerts', tmpAlerts)
+
         $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
         this.applyHotkeys();
 
@@ -182,10 +191,11 @@ export default {
         <transition name="slide-fade">
             <div class="ls-flex ls-flex-row" v-show="showAlerts">
                 <div 
-                    v-for="alert in $store.state.alerts"
+                    v-for="alert in currentAlerts"
                     :key="alert.key"
                     class="col-xs-12 alert" 
-                    :class="alert.class" 
+                    :class="alert.class"
+                    v-on:load="alert.shown=true"
                 >
                     <button 
                         type="button" 
