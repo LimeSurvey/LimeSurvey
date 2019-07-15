@@ -4401,7 +4401,7 @@
             $event->set('knownVars',$this->knownVars);
             $event->set('newExpressionSuffixes',array());
             $result = App()->getPluginManager()->dispatchEvent($event);
-            $this->em->addRegexpExtraAttribute($event->get('newExpressionSuffixes'));
+            $this->em->addRegexpExtraAttributes($event->get('newExpressionSuffixes'));
             $this->knownVars = $result->get('knownVars');
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
             usort($this->questionSeq2relevance,'cmpQuestionSeq');
@@ -4853,7 +4853,7 @@
             array_shift($parts);
 
             if (count($parts) > 0) {
-                if (preg_match('/^' . ExpressionManager::$RDP_regex_var_attr . '$/',$parts[count($parts)-1])) {
+                if (preg_match('/^' . $LEM->em->getRegexpValidAttributes() . '$/',$parts[count($parts)-1])) {
                     $suffix = '.' . $parts[count($parts)-1];
                     array_pop($parts);
                 }
@@ -9135,6 +9135,16 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
         }
 
         /**
+         * Return the regexp used to check if suffix is valid
+         * @return string
+         */
+        static public function getRegexpValidAttributes()
+        {
+            $LEM =& LimeExpressionManager::singleton();
+            return $LEM->em->getRegexpValidAttributes();
+        }
+
+        /**
          * @param integer $gseq
          * @param integer $qseq
          */
@@ -9169,7 +9179,8 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
             }
 
             // Like JavaScript, if an answer is irrelevant, always return ''
-            if (preg_match('/^code|NAOK|shown|valueNAOK|value$/',$attr) && isset($var['qid']) && $var['qid']!='')
+            // pregmatch with $this->em->getRegexpValidAttributes() EXCEPT relevanceStatus
+            if (preg_match('/^code|NAOK|shown|valueNAOK|value$/',$attr) && !empty($var['qid']))
             {
                 if  (!$this->_GetVarAttribute($varName,'relevanceStatus',false,$gseq,$qseq))
                 {
@@ -9279,22 +9290,6 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                         return (isset($var['jsName']) ? $var['jsName'] : $default);
                     }
                     // NB: No break needed
-                case 'sgqa':
-                case 'mandatory':
-                case 'qid':
-                case 'gid':
-                case 'grelevance':
-                case 'question':
-                case 'readWrite':
-                case 'relevance':
-                case 'rowdivid':
-                case 'type':
-                case 'qcode':
-                case 'gseq':
-                case 'qseq':
-                case 'ansList':
-                case 'scale_id':
-                    return (isset($var[$attr])) ? $var[$attr] : $default;
                 case 'shown':
                     if (isset($var['shown'])) {
                         return $var['shown'];    // for static values like TOKEN
@@ -9424,6 +9419,21 @@ report~numKids > 0~message~{name}, you said you are {age} and that you have {num
                     }
                     return (isset($var[$attr])) ? $var[$attr] : $default;
                     // NB: No break needed
+                case 'sgqa':
+                case 'mandatory':
+                case 'qid':
+                case 'gid':
+                case 'grelevance':
+                case 'question':
+                case 'readWrite':
+                case 'relevance':
+                case 'rowdivid':
+                case 'type':
+                case 'qcode':
+                case 'gseq':
+                case 'qseq':
+                case 'ansList':
+                case 'scale_id':
                 default:
                     return (isset($var[$attr])) ? $var[$attr] : $default;
                     // NB: No break needed

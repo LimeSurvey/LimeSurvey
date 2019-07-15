@@ -29,10 +29,30 @@
 
 class ExpressionManager
 {
-    // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    public static $RDP_regex_var_attr = 'code|gid|grelevance|gseq|jsName|mandatory|NAOK|qid|qseq|question|readWrite|relevanceStatus|relevance|rowdivid|sgqa|shown|type|valueNAOK|value';
-
-    private $RDP_regexpExtraAttribute = array();
+    // These are the allowable variable suffixes for variables - each represents an attribute of a variable that can be updated on same page
+    private $aRDP_regexpVariableAttribute = array(
+        'code',
+        'NAOK',
+        'relevanceStatus',
+        'shown',
+        'valueNAOK',
+        'value',
+    );
+    // These are the allowable static suffixes for variables - each represents an attribute of a variable that can not be updated on same page
+    private $aRDP_regexpStaticAttribute = array(
+        'qid',
+        'grelevance',
+        'gseq',
+        'jsName',
+        'mandatory',
+        'qid',
+        'qseq',
+        'question',
+        'relevance',
+        'rowdivid',
+        'sgqa',
+        'type',
+    );
     // These three variables are effectively static once constructed
     private $RDP_ExpressionRegex;
     private $RDP_TokenType;
@@ -608,7 +628,7 @@ class ExpressionManager
                 } else {
                     if ($this->RDP_isValidVariable($token[0])) {
                         $this->varsUsed[] = $token[0]; // add this variable to list of those used in this equation
-                        if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/", $token[0])) {
+                        if (preg_match("/\.(".$this->getRegexpStaticValidAttributes().")$/", $token[0])) {
                             $relStatus = 1; // static, so always relevant
                         } else {
                             $relStatus = $this->GetVarAttribute($token[0], 'relevanceStatus', 1);
@@ -1029,7 +1049,7 @@ class ExpressionManager
         }
         $jsNames = array();
         foreach ($names as $name) {
-            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/", $name)) {
+            if (preg_match("/\.(".$this->getRegexpStaticValidAttributes().")$/", $name)) {
                 continue;
             }
             $val = $this->GetVarAttribute($name, 'jsName', '');
@@ -1059,7 +1079,7 @@ class ExpressionManager
         }
         $jsNames = array();
         foreach ($names as $name) {
-            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/", $name)) {
+            if (preg_match("/\.(".$this->getRegexpStaticValidAttributes().")$/", $name)) {
                 continue;
             }
             $val = $this->GetVarAttribute($name, 'jsName', '');
@@ -1098,7 +1118,7 @@ class ExpressionManager
         }
         $jsNames = array();
         foreach ($names as $name) {
-            if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/", $name)) {
+            if (preg_match("/\.(".$this->getRegexpStaticValidAttributes().")$/", $name)) {
                 continue;
             }
             $val = $this->GetVarAttribute($name, 'jsName', '');
@@ -1610,21 +1630,32 @@ class ExpressionManager
     }
 
     /**
-     * Add an extra attribut for var
-     * @param string[] $extraAttribute
+     * Add extra attributes for var
+     * @param string[] $extraAttributes
+     * @param boolean $static is a static attribute , unused currently since there are no way to create the EM js system
      * @return void
      */
-    public function addRegexpExtraAttribute($extraAttribute)
+    public function addRegexpExtraAttributes($extraAttributes,$static=true)
     {
-        $this->RDP_regexpExtraAttribute = array_merge($this->RDP_regexpExtraAttribute,$extraAttribute);
+        if(!$static) {
+            $this->aRDP_regexpVariableAttribute = array_merge($this->aRDP_regexpVariableAttribute,$extraAttributes);
+        } else {
+            $this->aRDP_regexpStaticAttribute = array_merge($this->aRDP_regexpStaticAttribute,$extraAttributes);
+        }
     }
 
-    private function getRegexpValidAttributes()
+    public function getRegexpValidAttributes()
     {
-        $regexpAttribute = $this->RDP_regexpExtraAttribute;
-        $regexpAttribute[] = ExpressionManager::$RDP_regex_var_attr;
-        return implode("|",$regexpAttribute);
+        /* Static var or cache it ? Must control when updated */
+        return implode("|",array_merge($this->aRDP_regexpVariableAttribute,$this->aRDP_regexpStaticAttribute));
     }
+
+    public function getRegexpStaticValidAttributes()
+    {
+        /* Static var or cache it ? Must control when updated */
+        return implode("|",$this->aRDP_regexpStaticAttribute);
+    }
+
     /**
      * Return true if the variable name is registered
      * @param string $name
@@ -1786,7 +1817,6 @@ class ExpressionManager
 
                 if (count($onpageJsVarsUsed) > 0 && !$staticReplacement) {
                     $idName = "LEMtailor_Q_".$questionNum."_".$this->substitutionNum;
-//                    $resolvedParts[] = "<span id='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
                     $resolvedParts[] = "<span id='".$idName."'>".$resolvedPart."</span>";
                     $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
@@ -2692,7 +2722,7 @@ function exprmgr_listifop( $args )
     $retAttr = array_shift($args);
     $glue = array_shift($args);
     
-    $validAttributes = "/" . ExpressionManager::$RDP_regex_var_attr . "/";
+    $validAttributes = "/" . LimeExpressionManager::getRegexpValidAttributes() . "/";
     if ( ! preg_match( $validAttributes, $cmpAttr ) ) {
         return $cmpAttr . " not recognized ?!";
     }
