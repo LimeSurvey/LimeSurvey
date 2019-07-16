@@ -1012,6 +1012,11 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
         // set values from database to survey attributes 
+
+        if (empty($survey)) {
+            throw new Exception('Found no survey with id ' . $iSurveyID);
+        }
+
         $survey->setOptionsFromDatabase();
 
         //Get all languages
