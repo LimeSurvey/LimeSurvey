@@ -24,7 +24,11 @@
                 return this.triggerShowHelp && (this.elHelp.length>0);
             },
             cleanOptions() {
-                if(typeof(first(this.elOptions.options)) == 'object') {
+                if(typeof this.elOptions.options.option == 'object') {
+                    return this.elOptions.options.option;
+                }
+
+                if(typeof first(this.elOptions.options) == 'object') {
                     return this.elOptions.options;
                 }
 
