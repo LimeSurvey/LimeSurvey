@@ -211,6 +211,7 @@ export default {
         </transition>
         <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
             <button 
+                id="questionOverviewButton"
                 @click.prevent.stop="triggerEditQuestion" 
                 :class="editQuestion ? 'btn-default' : 'btn-primary'"
                 class="btn "
@@ -218,6 +219,7 @@ export default {
                 {{'Question overview'| translate}}
             </button>
             <button 
+                id="questionEditorButton"
                 @click.prevent.stop="triggerEditQuestion" 
                 :class="editQuestion ? 'btn-primary' : 'btn-default'"
                 class="btn "
