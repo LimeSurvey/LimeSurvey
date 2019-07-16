@@ -111,14 +111,14 @@ export default {
                     }
 
                     $('#in_survey_common').trigger('lsStopLoading');
-                    this.$store.commit('addAlert', {message: result.data.message, class: 'well-lg bg-primary text-center'});
+                    this.$store.commit('addAlert', {message: result.data.message, id: 'well-alert', class: 'well-lg bg-primary text-center questioneditor-alert-pan'});
                     this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
                     this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
                 (reject) => {
                     $('#in_survey_common').trigger('lsStopLoading');
-                    this.$store.commit('addAlert', {message: "Question could not be stored. Reloading page.", class: 'well-lg bg-danger text-center'});
+                    this.$store.commit('addAlert', {message: "Question could not be stored. Reloading page.", id: 'well-alert', class: 'well-lg bg-danger text-center questioneditor-alert-pan'});
                     setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
