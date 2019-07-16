@@ -350,8 +350,4 @@ export default {
     overflow: auto;
 }
 
-.question-hidden {
-    color: #929292;
-}
-
 </style>
