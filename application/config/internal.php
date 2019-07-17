@@ -70,24 +70,19 @@ $internalConfig = array(
 
 
 
-
+    
     'modules'=>array(
-            'yourmodule'=array(
-            'class' => 'Use a yii Alias',
-
-        )
-
-            'gii'=>array(
-                'class'=>'system.gii.GiiModule',
-                'password'=>'toto',
-                    'newFileMode'=>0666,
-                    'newDirMode'=>0777,
-            ),
+        'gii'=>array(
+            'class'=>'system.gii.GiiModule',
+            'password'=>'toto',
+            'newFileMode'=>0666,
+            'newDirMode'=>0777,
         ),
-
-
-
+    ),
+    
     */
+
+
 
     'params'=>array(
         'defaultPageSize'=>10, // Default page size for most of the grids

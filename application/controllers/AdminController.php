@@ -201,6 +201,7 @@ class AdminController extends LSYii_Controller
         'participants'     => 'participantsaction',
         'pluginmanager'    => 'PluginManagerController',
         'printablesurvey'  => 'printablesurvey',
+        'roles'            => 'PermissiontemplatesController',
         'questiongroups'   => 'questiongroups',
         'questions'        => 'questions',
         'questioneditor'   => 'questionedit',
