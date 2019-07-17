@@ -461,6 +461,26 @@ function createDatabase($oDB)
 
     $oTransaction = $oDB->beginTransaction();
     try {
+        // permissiontemplates
+        $oDB->createCommand()->createTable("{{permissiontemplates}}", [
+            'id' =>  "pk",
+            'name' =>  "string(192) NOT NULL",
+            'description' =>  "text NULL",
+            'renewed_last' =>  "datetime NULL",
+            'created_at' =>  "datetime NOT NULL",
+            'created_by' =>  "int NOT NULL"
+        ]);
+
+        $oDB->createCommand()->createIndex('{{idx1_name}}', '{{permissiontemplates}}', 'name', true);
+
+
+        $oTransaction->commit();
+    } catch (Exception $e) {
+        handleError('permissions', $e, $oTransaction);
+    }
+
+    $oTransaction = $oDB->beginTransaction();
+    try {
         // plugins
         $oDB->createCommand()->createTable('{{plugins}}', array(
             'id' =>  "pk",
@@ -1285,6 +1305,20 @@ function createDatabase($oDB)
         ), $options);
 
         $oDB->createCommand()->addPrimaryKey('{{user_in_groups_pk}}', '{{user_in_groups}}', ['ugid','uid']);
+        $oTransaction->commit();
+    } catch (Exception $e) {
+        handleError('user_in_groups', $e, $oTransaction);
+    }
+
+    $oTransaction = $oDB->beginTransaction();
+    try {
+        //user_in_permissionrole
+        $oDB->createCommand()->createTable('{{user_in_permissionrole}}', array(
+            'ptid' => "integer NOT NULL",
+            'uid' => "integer NOT NULL",
+        ), $options);
+
+        $oDB->createCommand()->addPrimaryKey('{{user_in_permissionrole_pk}}', '{{user_in_permissionrole}}', ['ptid','uid']);
         $oTransaction->commit();
     } catch (Exception $e) {
         handleError('user_in_groups', $e, $oTransaction);
