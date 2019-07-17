@@ -9,6 +9,9 @@
             </div>
             <div class="modal-body">
                 <div class='modal-body-text'><?php echo $aAction['htmlModalBody']; ?></div>
+                
+                <!-- shows list of selected items in the modal-->
+                <div class="selected-items-list"></div>
 
                 <?php if (isset($aAction['aCustomDatas'])):?>
                     <!--
