@@ -935,9 +935,12 @@ class Survey extends LSActiveRecord
             $aData['sid'] = $aData['wishSID'];
             unset($aData['wishSID']);
         }
-        if(empty($aData['sid'])) {
+
+        // #15053: Should be handled by validate but rules doesn't seem to detect it
+        if(empty($aData['sid']) || !is_numeric($aData['sid'])) {
             $aData['sid'] = intval(randomChars(6, '123456789'));
         }
+
         $survey = new self;
         foreach ($aData as $k => $v) {
             $survey->$k = $v;
