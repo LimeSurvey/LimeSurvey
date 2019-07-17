@@ -116,7 +116,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $link->click();
 
             // Fill in title.
-            $title = self::$webDriver->findElement(WebDriverBy::id('surveyls_title'));
+            $title = self::$webDriver->findElement(WebDriverBy::id('surveyTitle'));
             $title->clear()->sendKeys('test survey 1');
 
             // Click save.
@@ -135,7 +135,6 @@ class CreateSurveyTest extends TestBaseClassWeb
             // Go to structure sidebar
             $selectStructureSidebar = self::$webDriver->findElement(WebDriverBy::id('adminsidepanel__sidebar--selectorStructureButton'));
             $selectStructureSidebar->click();
-            
 
             // Click "Add group".
             $addgroup = self::$webDriver->wait(10)->until(
@@ -146,33 +145,21 @@ class CreateSurveyTest extends TestBaseClassWeb
             $addgroup->click();
 
             // Fill in group title.
-            $groupname = self::$webDriver->findElement(WebDriverBy::id('group_name_en'));
+            $groupname = self::$webDriver->findElement(WebDriverBy::className('group-title'));
             $groupname->clear()->sendKeys('group1');
 
+            // Click save and add question.
+            $save = self::$webDriver->findElement(WebDriverBy::id('save-and-close-button'));
+            $save->click();
             sleep(1);
 
-            // Click save and add question.
-            $save = self::$webDriver->findElement(WebDriverBy::id('save-and-new-question-button'));
+            // Create question.
+            $save = self::$webDriver->findElement(WebDriverBy::id('adminsidepanel__sidebar--selectorCreateQuestion'));
             $save->click();
-            sleep(3);
-
-            // Close question type selector
-            try {
-                $button = self::$webDriver->wait(2)->until(
-                    WebDriverExpectedCondition::elementToBeClickable(
-                        WebDriverBy::cssSelector('#selector__questionTypeSelector-modal button.btn-default')
-                    )
-                );
-                $button->click();
-            } catch (TimeOutException $ex) {
-                // Do nothing.
-            } catch (NoSuchElementException $ex) {
-                // Do nothing.
-            }
             sleep(1);
 
             // Add question title.
-            $groupname = self::$webDriver->findElement(WebDriverBy::id('title'));
+            $groupname = self::$webDriver->findElement(WebDriverBy::id('questionCode'));
             $groupname->clear()->sendKeys('question1');
 
             // Click save.
@@ -198,15 +185,19 @@ class CreateSurveyTest extends TestBaseClassWeb
             $overview = self::$webDriver->findElement(WebDriverBy::id('ls-activate-survey'));
             $overview->click();
 
+            sleep(1);
+
             // Confirm.
             $overview = self::$webDriver->findElement(WebDriverBy::id('activateSurvey__basicSettings--proceed'));
             $overview->click();
+
+            sleep(1);
 
             // Click "Overview".
             $overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_overview'));
             $overview->click();
 
-            sleep(2);
+            sleep(1);
 
             // Click "Execute survey".
             $execute = self::$webDriver->wait(10)->until(
