@@ -15,12 +15,12 @@ class PermissiontemplatesController extends Survey_Common_Action
     }
     /**
      * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
+     * @param integer $ptid the ID of the model to be displayed
      */
-    public function view($id)
+    public function view($ptid)
     {
         $this->_renderWrappedTemplate(null, 'permissiontemplates/view', array(
-            'model' => $this->loadModel($id),
+            'model' => $this->loadModel($ptid),
         ));
     }
 
@@ -28,9 +28,10 @@ class PermissiontemplatesController extends Survey_Common_Action
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function create()
+    public function edit($ptid=null)
     {
-        $model = new Permissiontemplates;
+        
+        $model = $this->loadModel($ptid);
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -42,32 +43,7 @@ class PermissiontemplatesController extends Survey_Common_Action
             }
 
         }
-		$this->_renderWrappedTemplate(null, 'permissiontemplates/create', array(
-			'model' => $model,
-        ));
-    }
-
-    /**
-     * Updates a particular model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->loadModel($id);
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if (isset($_POST['Permissiontemplates'])) {
-            $model->attributes = $_POST['Permissiontemplates'];
-            if ($model->save()) {
-                $this->redirect(array('view', 'id' => $model->id));
-            }
-
-		}
-		
-		$this->_renderWrappedTemplate(null, 'permissiontemplates/update', array(
+		$this->_renderWrappedTemplate(null, 'permissiontemplates/edit', array(
 			'model' => $model,
         ));
     }
@@ -75,11 +51,11 @@ class PermissiontemplatesController extends Survey_Common_Action
     /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
-     * @param integer $id the ID of the model to be deleted
+     * @param integer $ptid the ID of the model to be deleted
      */
-    public function actionDelete($id)
+    public function actionDelete($ptid)
     {
-        $this->loadModel($id)->delete();
+        $this->loadModel($ptid)->delete();
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax'])) {
@@ -107,15 +83,15 @@ class PermissiontemplatesController extends Survey_Common_Action
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer $id the ID of the model to be loaded
+     * @param integer $ptid the ID of the model to be loaded
      * @return Permissiontemplates the loaded model
      * @throws CHttpException
      */
-    public function loadModel($id)
+    public function loadModel($ptid)
     {
-        $model = Permissiontemplates::model()->findByPk($id);
+        $model = Permissiontemplates::model()->findByPk($ptid);
         if ($model === null) {
-            throw new CHttpException(404, 'The requested page does not exist.');
+            $model = new Permissiontemplates();
         }
 
         return $model;

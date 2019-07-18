@@ -1,0 +1,88 @@
+<?php
+/**
+ * @var $this AdminController
+ * Set user permissions
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('setRolePermissions');
+
+?>
+
+<!-- set user permissions -->
+<div class="pagetitle h3"><?php printf(gT("Edit role permissions for role %s"),"<em>".\CHtml::encode($oModel->name)."</em>"); ?></div>
+
+<div class="row" style="margin-bottom: 100px">
+    <div class="col-lg-10 col-lg-offset-1">
+
+        <!-- Form -->
+        <?php echo CHtml::form(array("admin/roles/sa/savepermissions"), 'post', array('id'=>'savepermissions'));?>
+            <table class='rolepermissions activecell table table-striped'>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th><?php eT("Permission");?></th>
+                        <th><input type='button' class="btn btn-default btn-sm" id='btnToggleAdvanced' value='<<' /></th>
+                        <th class='extended'><?php eT("Create");?></th>
+                        <th class='extended'><?php eT("View/read");?></th>
+                        <th class='extended'><?php eT("Update");?></th>
+                        <th class='extended'><?php eT("Delete");?></th>
+                        <th class='extended'><?php eT("Import");?></th>
+                        <th class='extended'><?php eT("Export");?></th>
+                    </tr>
+               </thead>
+
+                <!-- Permissions -->
+                <?php foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions): ?>
+                    <tr>
+                        <!-- Icon -->
+                        <td>
+                            <i class="<?php echo $aCRUDPermissions['img']; ?> text-success"></i>
+                            <?php echo $aCRUDPermissions['description'];?>
+                        </td>
+
+                        <!-- Warning super admin -->
+                        <td>
+                            <?php if ($sPermissionKey=='superadmin') {?> <span class='warning'> <?php }; echo $aCRUDPermissions['title']; if ($sPermissionKey=='superadmin') {?> </span> <?php };?>
+                        </td>
+
+                        <!-- checkbox  -->
+                        <td>
+                            <input type="checkbox" class="markrow" id='all_<?php echo $sPermissionKey;?>' name='all_<?php echo $sPermissionKey;?>' />
+                        </td>
+
+                        <!-- CRUD -->
+                        <?php foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue): ?>
+                            <?php if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) continue; ?>
+
+                            <!-- Extended container -->
+                            <td class='extended'>
+                                <?php if ($CRUDValue): ?>
+                                    <?php if (!($sPermissionKey=='survey' && $sCRUDKey=='read')): ?>
+
+                                        <!-- checkbox -->
+                                        <input type="checkbox"  class="checkboxbtn" name='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>' id='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>'
+                                            <?php if(Permission::model()->hasGlobalPermission( $sPermissionKey, $sCRUDKey, 0, $oModel->ptid)):?>
+                                                checked="checked"
+                                            <?php endif; ?>
+                                            <?php if(substr($sPermissionKey,0,5) === 'auth_' && $sCRUDKey === 'read'): ?>
+                                                style="visibility:hidden"
+                                            <?php endif; ?>/>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                            </td>
+                        <?php endforeach; ?>
+                    </tr>
+                    <?php endforeach; ?>
+
+                </table>
+
+                <!-- submit button -->
+                <p>
+                    <input type='submit' class="hidden"  value='<?php eT("Save");?>' />
+                    <input type='hidden' name='action' value='surveyrights' />
+                    <input type='hidden' name='ptid' value='<?php echo $oModel->ptid;?>' />
+                </p>
+            </form>
+    </div>
+</div>

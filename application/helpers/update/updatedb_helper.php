@@ -2886,7 +2886,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false)
         if($iOldDBVersion < 419) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable("{{permissiontemplates}}", [
-                'id' =>  "pk",
+                'ptid' =>  "pk",
                 'name' =>  "string(192) NOT NULL",
                 'description' =>  "text NULL",
                 'renewed_last' =>  "datetime NULL",
