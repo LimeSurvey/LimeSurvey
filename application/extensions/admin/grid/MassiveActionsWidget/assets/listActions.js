@@ -25,8 +25,8 @@ var onClickListAction =  function () {
     var $gridid        = $('#'+$(this).closest('div.listActions').data('grid-id'));
     var $oCheckedItems = $gridid.yiiGridView('getChecked', $(this).closest('div.listActions').data('pk')); // List of the clicked checkbox
     var $oCheckedItems = JSON.stringify($oCheckedItems);
-    var actionType = $that.data('actionType');
-    var selectedList = $(".selected-items-list");
+    var actionType     = $that.data('actionType');
+    var selectedList   = $(".selected-items-list");
 
     if( $oCheckedItems == '[]' ) {
         //If no item selected, the error modal "please select first an item" is shown
@@ -40,10 +40,10 @@ var onClickListAction =  function () {
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
 
         //get controller function url from widget view
-        var returnSelected =$('input#return-selected-item');
+        var returnSelected = $('input#return-selected-item');
         
         //check if controler url is set and check if state is on
-        if (returnSelected.data('state')=='on'){
+        if (returnSelected.data('state') == 'on'){
 
            //clear selected list view 
            selectedList.empty();
