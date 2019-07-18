@@ -628,8 +628,10 @@ class Permission extends LSActiveRecord
         }
 
         /* Find the roles the user is part of and return thoese permissions */
+        /* Ignore roles for surveypermissions */
+        // @TODO add surveypermission to roles
         $aRoles = self::getUserRole($iUserID);
-        if(safecount($aRoles)>0) {
+        if(safecount($aRoles)>0 && $sEntityName != 'survey') {
             $allowed = false;
             foreach ($aRoles as $role) {
                 $allowed = $allowed || $this->hasRolePermission($role['ptid'], $sPermission, substr($sCRUD, 0, -2));
