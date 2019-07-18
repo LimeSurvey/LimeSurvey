@@ -1,34 +1,29 @@
-<?php
-/**
- * @var $this AdminController
- * Set user permissions
- */
-
-// DO NOT REMOVE This is for automated testing to validate we see that page
-echo viewHelper::getViewTestTag('setRolePermissions');
-
-?>
-
-<!-- set user permissions -->
-<div class="pagetitle h3"><?php printf(gT("Edit role permissions for role %s"),"<em>".\CHtml::encode($oModel->name)."</em>"); ?></div>
-
-<div class="row" style="margin-bottom: 100px">
-    <div class="col-lg-10 col-lg-offset-1">
-
-        <!-- Form -->
-        <?php echo CHtml::form(array("admin/roles/sa/savepermissions"), 'post', array('id'=>'savepermissions'));?>
-            <table class='rolepermissions activecell table table-striped'>
+<div class="modal-header">
+    <h3>
+        <?php eT("Edit permissions");?>
+    </h3>
+</div>
+<div class="modal-body selector--edit-permissions-container">
+    <div class="container-center">        
+        <?=TbHtml::formTb(
+            null, 
+            App()->createUrl('admin/roles/sa/savepermissions', ['ptid' => $oModel->ptid]), 
+            'post', 
+            ["id"=>"RoleControl--modalform"]
+        )?>
+            <input type='hidden' name='ptid' value='<?php echo (isset($oModel) ? $oModel->ptid : '');?>' />
+            <table id='RoleControl--permissions-table' class='activecell table table-striped'>
                 <thead>
                     <tr>
                         <th></th>
                         <th><?php eT("Permission");?></th>
-                        <th><input type='button' class="btn btn-default btn-sm" id='btnToggleAdvanced' value='<<' /></th>
-                        <th class='extended'><?php eT("Create");?></th>
-                        <th class='extended'><?php eT("View/read");?></th>
-                        <th class='extended'><?php eT("Update");?></th>
-                        <th class='extended'><?php eT("Delete");?></th>
-                        <th class='extended'><?php eT("Import");?></th>
-                        <th class='extended'><?php eT("Export");?></th>
+                        <th><?php eT("General");?></th>
+                        <th><?php eT("Create");?></th>
+                        <th><?php eT("View/read");?></th>
+                        <th><?php eT("Update");?></th>
+                        <th><?php eT("Delete");?></th>
+                        <th><?php eT("Import");?></th>
+                        <th><?php eT("Export");?></th>
                     </tr>
                </thead>
 
@@ -48,7 +43,7 @@ echo viewHelper::getViewTestTag('setRolePermissions');
 
                         <!-- checkbox  -->
                         <td>
-                            <input type="checkbox" class="markrow" id='all_<?php echo $sPermissionKey;?>' name='all_<?php echo $sPermissionKey;?>' />
+                            <input type="checkbox" class="general-row-selector" id='all_<?php echo $sPermissionKey;?>' name='PermissionAll[<?php echo $sPermissionKey;?>]' />
                         </td>
 
                         <!-- CRUD -->
@@ -56,13 +51,13 @@ echo viewHelper::getViewTestTag('setRolePermissions');
                             <?php if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) continue; ?>
 
                             <!-- Extended container -->
-                            <td class='extended'>
+                            <td class='specific-settings-block'>
                                 <?php if ($CRUDValue): ?>
                                     <?php if (!($sPermissionKey=='survey' && $sCRUDKey=='read')): ?>
 
                                         <!-- checkbox -->
-                                        <input type="checkbox"  class="checkboxbtn" name='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>' id='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>'
-                                            <?php if(Permission::model()->hasGlobalPermission( $sPermissionKey, $sCRUDKey, 0, $oModel->ptid)):?>
+                                        <input type="checkbox"  class="specific-permission-selector" name='Permission[<?php echo $sPermissionKey.']['.$sCRUDKey;?>]' id='perm_<?php echo $sPermissionKey.'_'.$sCRUDKey;?>'
+                                            <?php if(Permission::model()->hasRolePermission( $oModel->ptid, $sPermissionKey, $sCRUDKey)):?>
                                                 checked="checked"
                                             <?php endif; ?>
                                             <?php if(substr($sPermissionKey,0,5) === 'auth_' && $sCRUDKey === 'read'): ?>
@@ -76,13 +71,10 @@ echo viewHelper::getViewTestTag('setRolePermissions');
                     <?php endforeach; ?>
 
                 </table>
-
-                <!-- submit button -->
-                <p>
-                    <input type='submit' class="hidden"  value='<?php eT("Save");?>' />
-                    <input type='hidden' name='action' value='surveyrights' />
-                    <input type='hidden' name='ptid' value='<?php echo $oModel->ptid;?>' />
-                </p>
-            </form>
+            <div class="row ls-space margin top-25">
+                <button class="btn btn-success col-sm-3 col-xs-5 col-xs-offset-1 selector--submitForm" id="submitForm"><?=gT('Save')?></button>
+                <button class="btn btn-error col-sm-3 col-xs-5 col-xs-offset-1 selector--exitForm" id="exitForm"><?=gT('Cancel')?></button>
+            </div>
+        </form>
     </div>
 </div>
