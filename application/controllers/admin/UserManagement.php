@@ -471,7 +471,7 @@ class UserManagement extends Survey_Common_Action
      */
     public function batchDelete()
     {
-        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
             return $this->getController()->renderPartial(
                 '/admin/usermanagement/partial/error', 
                 ['errors' => [gT("You do not have permission to access this page.")],'noButton' => true]
@@ -482,6 +482,57 @@ class UserManagement extends Survey_Common_Action
         foreach ($aItems as $sItem) {
             $oUser = User::model()->findByPk($sItem);
             $results[$oUser->uid] = $oUser->delete();
+        }
+
+        $this->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => gT('Users successfully deleted'), 'sDebug'=> json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
+    }
+
+    /**
+     * Mass edition apply roles
+     *
+     *
+     * @return string
+     */
+    public function batchAddGroup()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'delete')) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error', 
+                ['errors' => [gT("You do not have permission to access this page.")],'noButton' => true]
+          );
+        }
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
+        $iUserGroupId = Yii::app()->request->getPost('addtousergroup');
+        $oUserGroup = UserGroup::model()->findByPk($iUserGroupId);
+        $results = [];
+        foreach ($aItems as $sItem) {
+            if(!$oUserGroup->hasUser($sItem)) {
+                $results[$sItem] = $oUserGroup->addUser($sItem);
+            }
+        }
+
+        $this->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => gT('Users successfully deleted'), 'sDebug'=> json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
+    }
+
+    /**
+     * Mass edition apply roles
+     *
+     *
+     * @return string
+     */
+    public function batchApplyRoles()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error', 
+                ['errors' => [gT("You do not have permission to access this page.")],'noButton' => true]
+          );
+        }
+        $aItems = json_decode(Yii::app()->request->getPost('sItems', []));
+        $iUserRoleId = Yii::app()->request->getPost('roleselector');
+        $results = [];
+        foreach ($aItems as $sItem) {
+            $results[$sItem] = Permissiontemplates::model()->applyToUser($sItem, $iUserRoleId);
         }
 
         $this->getController()->renderPartial('/admin/usermanagement/partial/success', ['sMessage' => gT('Users successfully deleted'), 'sDebug'=> json_encode($results, JSON_PRETTY_PRINT), 'noButton' => true]);
@@ -532,7 +583,7 @@ class UserManagement extends Survey_Common_Action
             $oUser->password = password_hash($password, PASSWORD_DEFAULT);
             $save = $oUser->save();
             $randomUsers[] = ['username' => $name, 'password' => $password, 'save' => $save];
-            Permission::model()->setGlobalPermission($oUser->uid, 'auth_db');
+            //Permission::model()->setGlobalPermission($oUser->uid, 'auth_db');
         }
         
         return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data"=>[

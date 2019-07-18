@@ -421,4 +421,22 @@ class UserGroup extends LSActiveRecord
         return false;
     }
 
+    
+
+    /**
+     * Checks whether the specified UID is part of that group
+     * @param integer $uid
+     * @return bool
+     */
+    public function addUser($uid)
+    {
+        $oModel = new UserInGroup();
+        $oModel->uid = $uid;
+        $oModel->ugid = $this->ugid;
+        
+        return $oModel->save();
+    }
+
+
+
 }

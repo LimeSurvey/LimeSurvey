@@ -73,7 +73,8 @@ class User extends LSActiveRecord
             'permissions' => array(self::HAS_MANY, 'Permission', 'uid'),
             'parentUser' => array(self::HAS_ONE, 'User', array('uid' => 'parent_id')),
             'settings' => array(self::HAS_MANY, 'SettingsUser', 'uid'),
-            'groups' => array(self::MANY_MANY, 'UserGroup', '{{user_in_groups}}(uid,ugid)')
+            'groups' => array(self::MANY_MANY, 'UserGroup', '{{user_in_groups}}(uid,ugid)'),
+            'roles' => array(self::MANY_MANY, 'Permissiontemplates', '{{user_in_permissionrole}}(uid,ptid)')
         );
     }
 
@@ -626,6 +627,17 @@ class User extends LSActiveRecord
         return null;
     }
 
+    public function getRoleList()
+    {
+        $list = array_map(
+            function($oRoleMapping){
+                return $oRoleMapping->name;
+            },
+            $this->roles
+        );
+        return join(', ', $list);
+    }
+
     public function getLastloginFormatted() {
         
         $lastLogin = $this->lastLogin;
@@ -679,7 +691,6 @@ class User extends LSActiveRecord
                 "name" =>"created",
                 "header" => gT("Created on"),
                 "value" => '$data->formattedDateCreated',
-    
             ),
             array(
                 "name" =>"parentUserName",
@@ -696,6 +707,11 @@ class User extends LSActiveRecord
             $cols[] = array(
                 "name" => 'groupList',
                 "header" => gT("Usergroups"),
+                'filter' => false
+            );
+            $cols[] = array(
+                "name" => 'roleList',
+                "header" => gT("Applied role"),
                 'filter' => false
             );
         }
@@ -759,7 +775,7 @@ class User extends LSActiveRecord
         // @todo Please modify the following code to remove attributes that should not be searched.
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
-
+        
         $criteria->compare('full_name',$this->searched_value,true);
         $criteria->compare('users_name',$this->searched_value,true, 'OR');
         $criteria->compare('email',$this->searched_value,true, 'OR');

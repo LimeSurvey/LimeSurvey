@@ -23,7 +23,7 @@
             <div class="col-md-8 col-sm-12">
                 <ul class="list-group">
                     <?php foreach( $oModel->connectedUserobjects as $oUser) {
-                        echo sprintf('<li class="list-group-item">%s - %s (%s)</li>', $oUser->id, $oUser->full_name, $oUser->users_name);
+                        echo sprintf('<li class="list-group-item">%s - %s (%s)</li>', $oUser->uid, $oUser->full_name, $oUser->users_name);
                     } ?>
                 </ul>
             </div>

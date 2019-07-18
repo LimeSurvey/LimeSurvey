@@ -632,7 +632,7 @@ class Permission extends LSActiveRecord
         if(safecount($aRoles)>0) {
             $allowed = false;
             foreach ($aRoles as $role) {
-                $allowed = $allowed || $this->hasRolePermission($role['ptid'], $sPermission, $sCRUD);
+                $allowed = $allowed || $this->hasRolePermission($role['ptid'], $sPermission, substr($sCRUD, 0, -2));
             }
             return $allowed;
         }
