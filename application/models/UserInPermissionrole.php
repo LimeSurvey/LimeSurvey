@@ -57,6 +57,14 @@ class UserInPermissionrole extends CActiveRecord
 		);
 	}
 
+    public function getRoleForUser($userId, $single = false) {
+        $aRoles = self::model()->findAllByAttributes(['uid' => $userId]);
+        if($single) {
+            return $aRoles[0];
+        }
+        return $aRoles;
+    }
+
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *

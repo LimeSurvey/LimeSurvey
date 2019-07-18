@@ -46,35 +46,138 @@ class Permissiontemplates extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+            'connectedusers' => array(self::HAS_MANY, 'UserInPermissionrole', ['ptid']),
 		);
-	}
+    }
+    
+    /**
+     * Collects and maps the connected userids to userobjects
+     *
+     * @return array filled with usermodels
+     */
+    public function getConnectedUserobjects() 
+    {
+        return array_map(
+            function ($oMappingInstance) {
+                return User::model()->findByPk($oMappingInstance->uid);
+            }, 
+            $this->connectedusers
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'ptid' => gT('ID'),
-			'name' => gT('Name'),
-			'description' => gT('Description'),
-			'renewed_last' => gT('Renewed Last'),
-			'created_at' => gT('Created At'),
-			'created_by' => gT('Created By'),
-		);
-	}
 
-	public function getColumns()
-	{
-		return [
-			'ptid',
-			'name',
-			'description',
-			'renewed_last',
-			'created_at',
-			'created_by'
-		];
-	}
+    /**
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        $dateFormat = getDateFormatData(Yii::app()->session['dateformat']);
+        return $dateFormat['phpdate'];
+    }
+
+    public function getFormattedDateCreated()
+    {
+        $dateCreated = $this->created_at;
+        $date = new DateTime($dateCreated);
+        return $date->format($this->dateFormat);
+    }
+
+    public function getFormattedDateModified()
+    {
+        $dateModified = $this->renewed_last;
+        $date = new DateTime($dateModified);
+        return $date->format($this->dateFormat);
+    }
+    /**
+     * Gets the buttons for the GridView
+     * @return string
+     */
+    public function getButtons()
+    {
+        $detailUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/viewrole', ['ptid' => $this->ptid]);
+        $editUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/editrolemodal', ['ptid' => $this->ptid]);
+        $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/setpermissions', ['ptid' => $this->ptid]);
+        $deleteUrl = Yii::app()->getController()->createUrl('/admin/roles/sa/deleteconfirm');
+        
+
+        $roleDetail = ""
+            ."<button 
+                class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--userdetail' 
+                data-href='".$detailUrl."'><i class='fa fa-search'></i></button>";
+
+        $editPermissionButton = ""
+            ."<button 
+                class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--permissions' 
+                data-href='".$setPermissionsUrl."'><i class='fa fa-lock'></i></button>";
+        $editRoleButton = ""
+            ."<button 
+                class='btn btn-sm btn-default RoleControl--action--openmodal RoleControl--action--edituser' 
+                data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
+        $deleteRoleButton = ""
+            ."<button 
+                id='RoleControl--delete-".$this->ptid."' 
+                class='btn btn-sm btn-danger' 
+                data-toggle='modal' 
+                data-target='#confirmation-modal' 
+                data-url='".$deleteUrl."' 
+                data-ptid='".$this->ptid."'
+                data-action='delrole' 
+                data-onclick='(LS.RoleControl.triggerRunAction(\"#RoleControl--delete-".$this->ptid."\"))()' 
+                data-message='".gt('Do you want to delete this role?')."'>
+                    <i class='fa fa-trash text-danger'></i>
+              </button>";
+
+        return join("\n",[
+            $roleDetail, 
+            $editPermissionButton, 
+            $editRoleButton, 
+            $deleteRoleButton
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumns()
+    {
+        // TODO should be static
+        $cols = array(
+            array(
+                'value' => "<input type='checkbox' class='RoleControl--selector-roleCheckbox' name='selectedRole[]' value='".$this->ptid."'>",
+                'type' => 'raw',
+                'header' => "<input type='checkbox' id='RoleControl--action-toggleAllRoles' />",
+                'filter' => false
+            ),
+            array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                'filter' => false
+            ),
+            array(
+                "name" => 'name',
+                "header" => gT("Name")
+            ),
+            array(
+                "name" => 'description',
+                "header" => gT("Description"),
+                "value" => 'ellipsize($data->description, 40)'
+            ),
+            array(
+                "name" => 'renewed_last',
+                "header" => gT("Renewed"),
+                "value" => '$data->formattedDateModified'
+            ),
+            array(
+                "name" =>"created_at",
+                "header" => gT("Created on"),
+                "value" => '$data->formattedDateCreated',
+    
+            )
+        );
+
+        return $cols;
+    }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
