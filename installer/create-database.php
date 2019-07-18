@@ -463,7 +463,7 @@ function createDatabase($oDB)
     try {
         // permissiontemplates
         $oDB->createCommand()->createTable("{{permissiontemplates}}", [
-            'id' =>  "pk",
+            'ptid' =>  "pk",
             'name' =>  "string(192) NOT NULL",
             'description' =>  "text NULL",
             'renewed_last' =>  "datetime NULL",

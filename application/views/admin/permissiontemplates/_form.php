@@ -18,7 +18,6 @@
 		<?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class' => 'btn btn-primary pull-right ls-space padding left-25 right-25']); ?>
 	</div>
 
-
 	<?php echo $form->errorSummary($model); ?>
 
     <div class="row">

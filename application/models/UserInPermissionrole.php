@@ -1,24 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "{{permissiontemplates}}".
+ * This is the model class for table "{{user_in_permissionrole}}".
  *
- * The followings are the available columns in table '{{permissiontemplates}}':
+ * The followings are the available columns in table '{{user_in_permissionrole}}':
  * @property integer $ptid
- * @property string $name
- * @property string $description
- * @property string $renewed_last
- * @property string $created_at
- * @property integer $created_by
+ * @property integer $uid
  */
-class Permissiontemplates extends CActiveRecord
+class UserInPermissionrole extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{permissiontemplates}}';
+		return '{{user_in_permissionrole}}';
 	}
 
 	/**
@@ -29,12 +25,11 @@ class Permissiontemplates extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, description, renewed_last, created_at, created_by', 'required'),
-			array('created_by', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>192),
+			array('ptid, uid', 'required'),
+			array('ptid, uid', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ptid, name, description, renewed_last, created_at, created_by', 'safe', 'on'=>'search'),
+			array('ptid, uid', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -46,6 +41,8 @@ class Permissiontemplates extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+            'permissiontemplate' => array(self::BELONGS_TO, 'Permissiontemplate', ['ptid']),
+            'user' => array(self::BELONGS_TO, 'User', 'uid'),
 		);
 	}
 
@@ -55,25 +52,9 @@ class Permissiontemplates extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'ptid' => gT('ID'),
-			'name' => gT('Name'),
-			'description' => gT('Description'),
-			'renewed_last' => gT('Renewed Last'),
-			'created_at' => gT('Created At'),
-			'created_by' => gT('Created By'),
+			'ptid' => 'Ptid',
+			'uid' => 'Uid',
 		);
-	}
-
-	public function getColumns()
-	{
-		return [
-			'ptid',
-			'name',
-			'description',
-			'renewed_last',
-			'created_at',
-			'created_by'
-		];
 	}
 
 	/**
@@ -95,11 +76,7 @@ class Permissiontemplates extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('ptid',$this->ptid);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('renewed_last',$this->renewed_last,true);
-		$criteria->compare('created_at',$this->created_at,true);
-		$criteria->compare('created_by',$this->created_by);
+		$criteria->compare('uid',$this->uid);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -110,7 +87,7 @@ class Permissiontemplates extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Permissiontemplates the static model class
+	 * @return UserInPermissionrole the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
