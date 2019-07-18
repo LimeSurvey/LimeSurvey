@@ -1,16 +1,20 @@
 <?php
 /**
- * This view display the result of selected surveys. It's rendered via ajax for the confirmation modal in survey list
+ * This view display the result of selected items. It's rendered via ajax for the confirmation modal of Massive Widget Modal
  *
- * @var $aResults   The array containing the result of each survey selection
+ * @var $aResults   The array containing the result of each items selection
  */
+if (!isset($tableLabels)) {
+    $tableLabels = array('ID','Title','Status');
+}
+
 ?>
 <hr>
 <table class="table table-striped">
     <thead>
-        <th><?php eT('Survey ID');?></th>
-        <th><?php eT('Title');?></th>
-        <th><?php eT('Status');?></th>
+        <?php foreach($tableLabels as $label):?>
+        <th><?php echo $label?></th>
+        <?php endforeach;?>
     </thead>
     
     <tbody>
