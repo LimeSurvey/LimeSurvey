@@ -65,6 +65,23 @@ class Permissiontemplates extends CActiveRecord
         );
     }
 
+    public function applyToUser($iUserId, $ptid = null) {
+
+        if($ptid == null) {
+            $ptid = $this->ptid;
+        }
+
+        $oModel = UserInPermissionrole::model()->findByPk(['ptid' => $ptid, 'uid' => $iUserId]);
+
+        if ($oModel == null) {
+            $oModel = new UserInPermissionrole();
+            $oModel->ptid = $ptid;
+        }
+
+        $oModel->uid = $iUserId;
+        return $oModel->save();
+    }
+
 
     /**
      * @return string

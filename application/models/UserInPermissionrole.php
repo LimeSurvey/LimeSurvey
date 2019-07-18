@@ -41,7 +41,7 @@ class UserInPermissionrole extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-            'permissiontemplate' => array(self::BELONGS_TO, 'Permissiontemplate', ['ptid']),
+            'role' => array(self::BELONGS_TO, 'Permissiontemplates', ['ptid']),
             'user' => array(self::BELONGS_TO, 'User', 'uid'),
 		);
 	}
