@@ -38,6 +38,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         $this->sQuestionType = $sQuestionType == null ? $this->oQuestion->type : $sQuestionType;
         $this->sLanguage = $sLanguage == null ? $this->oQuestion->survey->language : $sLanguage;
         $this->aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($this->oQuestion->qid, $this->sLanguage);
+
         /*
         @todo Discussion:
         General options currently are
@@ -53,7 +54,7 @@ abstract class QuestionBaseDataSet extends StaticModel
         - Hide Tip => VERY OFTEN asked for
         - Always hide question => if available
         */
-        $returnArray = [
+        $generalOptions = [
             'question_template' => $this->getQuestionThemeOption(),
             'gid' => $this->getQuestionGroupSelector(),
             'other' => $this->getOtherSwitch(),
@@ -65,12 +66,30 @@ abstract class QuestionBaseDataSet extends StaticModel
         
         $userSetting = SettingsUser::getUserSettingValue('question_default_values_' . $this->sQuestionType);
         if ($userSetting !== null){
-            $returnArray['clear_default'] = $this->getClearDefaultSwitch();
+            $generalOptions['clear_default'] = $this->getClearDefaultSwitch();
         }
 
-        $returnArray['preg'] = $this->getValidationInput();
+        $generalOptions['preg'] = $this->getValidationInput();
 
-        return $returnArray;
+        // load visible general settings from config.xml
+        $sFolderName = QuestionTemplate::getFolderName($this->sQuestionType);
+        $sXmlFilePath = App()->getConfig('rootdir').'/application/views/survey/questions/answer/'.$sFolderName.'/config.xml';
+        if(file_exists($sXmlFilePath)){
+            // load xml file
+            libxml_disable_entity_loader(false);
+            $xml_config = simplexml_load_file($sXmlFilePath);
+            $aXmlAttributes = json_decode(json_encode((array)$xml_config->generalattributes), TRUE);
+            libxml_disable_entity_loader(true);
+
+
+        }
+        foreach ($generalOptions as $key => $generalOption){
+            if ((isset($aXmlAttributes['attribute']) && in_array($key, $aXmlAttributes['attribute'])) || !isset($aXmlAttributes['attribute'])){
+                $generalOptionsFiltered[$key] = $generalOption;
+            };
+        }
+
+        return $generalOptionsFiltered;
     }
 
     /**
