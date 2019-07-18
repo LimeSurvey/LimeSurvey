@@ -345,8 +345,9 @@ class SurveyAdmin extends Survey_Common_Action
 
         foreach ($aSIDs as $iSurveyID){
             $oSurvey = Survey::model()->findByPk($iSurveyID);
-            $oSurvey->gsid = $iSurveyGroupId;
-            $aResults[$iSurveyID] = $oSurvey->save();
+            $oSurvey->gsid = $iSurveyGroupId;           
+            $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+            $aResults[$iSurveyID]['result']= $oSurvey->save();
         }
 
         Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT("Success")));
