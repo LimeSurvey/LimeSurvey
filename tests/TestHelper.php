@@ -249,6 +249,7 @@ class TestHelper extends TestCase
      */
     public function updateDbFromVersion($version, $connection = null)
     {
+
         if (is_null($connection)) {
             $connection = $this->connectToNewDatabase('__test_update_helper_' . $version);
             $this->assertNotEmpty($connection, 'Could connect to new database');
