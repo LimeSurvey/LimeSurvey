@@ -317,7 +317,7 @@ DROP TABLE IF EXISTS `lime_map_tutorial_users`;
 CREATE TABLE `lime_map_tutorial_users` (
   `tid` int(11) NOT NULL,
   `uid` int(11) NOT NULL DEFAULT '0',
-  `taken` tinyint(1) DEFAULT '1',
+  `taken` int(11) DEFAULT '1',
   PRIMARY KEY (`uid`,`tid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -593,7 +593,7 @@ DROP TABLE IF EXISTS `lime_plugins`;
 CREATE TABLE `lime_plugins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `active` int(11) NOT NULL DEFAULT '0',
   `version` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -947,7 +947,7 @@ CREATE TABLE `lime_surveymenu` (
   `title` varchar(192) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `position` varchar(192) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'side',
   `description` text COLLATE utf8mb4_unicode_ci,
-  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `active` int(11) NOT NULL DEFAULT '0',
   `changed_at` datetime DEFAULT NULL,
   `changed_by` int(11) NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
@@ -997,7 +997,7 @@ CREATE TABLE `lime_surveymenu_entries` (
   `data` text COLLATE utf8mb4_unicode_ci,
   `getdatamethod` varchar(192) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `language` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'en-GB',
-  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `active` int(11) NOT NULL DEFAULT '0',
   `changed_at` datetime DEFAULT NULL,
   `changed_by` int(11) NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
