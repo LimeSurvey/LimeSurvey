@@ -34,7 +34,7 @@ chmod -R 776 themes
 mkdir -p tests/tmp/runtime
 chmod -R 776 tests/tmp
 chmod -R 776 tests/tmp/runtime
-php application/commands/console.php install admin password TravisLS no@email.com verbose
+DBENGINE=MyISAM php application/commands/console.php install admin password TravisLS no@email.com verbose
 cp application/config/config-sample-mysql.php application/config/config.php
 # sed -i '59s/.*/        "debug"=>2,/' application/config/config.php
 
