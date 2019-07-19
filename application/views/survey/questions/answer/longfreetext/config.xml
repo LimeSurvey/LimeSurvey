@@ -36,7 +36,7 @@
     <generalattributes>
         <attribute>question_template</attribute>
         <attribute>gid</attribute>
-        <!--        <attribute>other</attribute>-->
+<!--        <attribute>other</attribute>-->
         <attribute>mandatory</attribute>
         <attribute>relevance</attribute>
         <attribute>encrypted</attribute>

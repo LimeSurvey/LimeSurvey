@@ -36,7 +36,7 @@
     <generalattributes>
         <attribute>question_template</attribute>
         <attribute>gid</attribute>
-        <!--        <attribute>other</attribute>-->
+        <attribute>other</attribute>
         <attribute>mandatory</attribute>
         <attribute>relevance</attribute>
         <attribute>encrypted</attribute>
@@ -118,6 +118,18 @@
             <readonly></readonly>
             <readonly_when_active></readonly_when_active>
             <expression></expression>
+        </attribute>
+        <attribute>
+            <name>other_replace_text</name>
+            <category>Display</category>
+            <sortorder>100</sortorder>
+            <inputtype>text</inputtype>
+            <expression>1</expression>
+            <i18n>1</i18n>
+            <help>Replaces the label of the &amp;#039;Other:&amp;#039; answer option with a custom text</help>
+            <caption>Label for &amp;#039;Other:&amp;#039; option</caption>
+            <readonly></readonly>
+            <readonly_when_active></readonly_when_active>
         </attribute>
         <attribute>
             <name>random_order</name>
