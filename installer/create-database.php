@@ -1,8 +1,71 @@
 <?php
-function handleError($currentTable, $oError, &$oCurrentTransaction)
+
+/**
+ * Return pretty stacktrace in Java style.
+ *
+ * @param Exception $ex
+ * @param array $seen
+ * @return string
+ */
+function javaTrace($ex, $seen = null)
 {
-    if ($oError->getCode() == '42S01') {
+    $starter = $seen ? 'Caused by: ' : '';
+    $result = array();
+    if (!$seen) {
+        $seen = array();
+    }
+    $trace  = $ex->getTrace();
+    $prev   = $ex->getPrevious();
+    $result[] = sprintf('%s%s: %s', $starter, get_class($ex), $ex->getMessage());
+    $file = $ex->getFile();
+    $line = $ex->getLine();
+    while (true) {
+        $current = "$file:$line";
+        if (is_array($seen) && in_array($current, $seen)) {
+            $result[] = sprintf(' ... %d more', count($trace)+1);
+            break;
+        }
+        $result[] = sprintf(
+            ' at %s%s%s(%s%s%s)',
+            count($trace) && array_key_exists('class', $trace[0]) ? str_replace('\\', '.', $trace[0]['class']) : '',
+            count($trace) && array_key_exists('class', $trace[0]) && array_key_exists('function', $trace[0]) ? '.' : '',
+            count($trace) && array_key_exists('function', $trace[0]) ? str_replace('\\', '.', $trace[0]['function']) : '(main)',
+            $line === null ? $file : basename($file),
+            $line === null ? '' : ':',
+            $line === null ? '' : $line
+        );
+        if (is_array($seen)) {
+            $seen[] = "$file:$line";
+        }
+        if (!count($trace)) {
+            break;
+        }
+        $file = array_key_exists('file', $trace[0]) ? $trace[0]['file'] : 'Unknown Source';
+        $line = array_key_exists('file', $trace[0]) && array_key_exists('line', $trace[0]) && $trace[0]['line'] ? $trace[0]['line'] : null;
+        array_shift($trace);
+    }
+    $result = join("\n", $result);
+    if ($prev) {
+        $result  .= "\n" . javaTrace($prev, $seen);
+    }
+    return $result;
+}
+
+/**
+ * Rollback $oCurrentTransaction if $oError has a certain code.
+ *
+ * @param string $currentTable
+ * @param Exception $oError
+ * @param CDbTransaction $oCurrentTransaction
+ * @return void
+ */
+function handleError($currentTable, $oError, $oCurrentTransaction)
+{
+    /** @var string */
+    $code = $oError->getCode();
+    if ($code == '42S01' || $code == '42000') {
         $oCurrentTransaction->rollback();
+        var_dump(javaTrace($oError));
         return;
     }
     /* disabled so installer can skip showing errors if tables already exist
