@@ -24,7 +24,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
     {
         self::$testHelper->teardownDatabase('__test_check_database_json');
         self::$testHelper->teardownDatabase('__test_update_helper_258');
-        self::$testHelper->teardownDatabase('__test_update_helper_315');
+        self::$testHelper->teardownDatabase('__test_update_helper_337');
     }
 
     /**
@@ -82,9 +82,9 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
 
     /**
      */
-    public function testUpdateFrom315()
+    public function testUpdateFrom337()
     {
-        $connection = self::$testHelper->updateDbFromVersion(315);
+        $connection = self::$testHelper->updateDbFromVersion(337);
 
         // Check JSON.
         $this->checkMenuEntriesJson($connection);
