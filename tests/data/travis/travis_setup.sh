@@ -15,8 +15,13 @@
 # sudo -u <your-web-user> DOMAIN=localhost phpunit
 # (You might want to use the switch --stop-on-failure.)
 
-phpenv global 7.0 2>/dev/null
-phpenv global 7.0
+curl -s -o archive.tar.bz2 https://storage.googleapis.com/travis-ci-language-archives/php/binaries/ubuntu/14.04/x86_64/php-7.2.tar.bz2 && tar xjf archive.tar.bz2 --directory /
+git clone git://github.com/phpenv/phpenv.git ~/.phpenv
+echo 'export PATH="$HOME/.phpenv/bin:$PATH"' >> ~/.bash_profile
+echo 'eval "$(phpenv init -)"' >> ~/.bash_profile
+exec $SHELL -l
+
+phpenv global 7.2
 
 #phpenv config-rm xdebug.ini
 #phpunit --version
