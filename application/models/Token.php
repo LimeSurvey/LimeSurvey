@@ -218,22 +218,34 @@ abstract class Token extends Dynamic
     {
         $iTokenLength = $tokenlength ? $tokenlength : $this->survey->tokenlength;
         $this->token = $this->_generateRandomToken($iTokenLength);
+        $this->token = $this->_afterGenerateToken($iTokenLength);
         $counter = 0;
         while (!$this->validate(array('token'))) {
             $this->token = $this->_generateRandomToken($iTokenLength);
+            $this->token = $this->_afterGenerateToken($iTokenLength);
             $counter++;
             // This is extremely unlikely.
             if ($counter > 50) {
                 throw new CHttpException(500, 'Failed to create unique token in 50 attempts.');
             }
         }
+    }
+
+    /**
+     * Invoke the afterGenerateToken plugin event
+     *
+     * @param integer $iTokenLength
+     * @return string
+     */
+    private function _afterGenerateToken($iTokenLength)
+    {
         $event = new PluginEvent('afterGenerateToken');
         $event->set('surveyId', $this->getSurveyId());
         $event->set('iTokenLength', $iTokenLength);
         $event->set('oToken', $this);
-        $event->set('token', $token);
+        $event->set('token', $this->token);
         App()->pluginManager->dispatchEvent($event);
-        $token = $event->get('token');
+        return $event->get('token');
     }
 
     /**
