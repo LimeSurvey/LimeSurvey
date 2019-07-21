@@ -295,7 +295,7 @@ abstract class Token extends Dynamic
         foreach ($tkresult as $tkrow) {
             $bIsValidToken = false;
             while ($bIsValidToken == false && $invalidtokencount < 50) {
-                $newtoken = $this::generateToken($iTokenLength);
+                $newtoken = $this->_generateRandomToken($iTokenLength);
                 if (!isset($existingtokens[$newtoken])) {
                     $existingtokens[$newtoken] = true;
                     $bIsValidToken = true;

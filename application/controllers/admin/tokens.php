@@ -981,7 +981,7 @@ class tokens extends Survey_Common_Action
                 $token->lastname = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->lastname);
                 $token->email = str_replace('{TOKEN_COUNTER}', $newDummyToken, $token->email);
 
-                $token->token = Token::generateToken($aData['tokenlength']);
+                $token->generateToken($aData['tokenlength']);
 
                 $existingtokens[$token->token] = true;
                 $token->save();
