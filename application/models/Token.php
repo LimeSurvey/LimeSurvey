@@ -218,11 +218,9 @@ abstract class Token extends Dynamic
     {
         $iTokenLength = $tokenlength ? $tokenlength : $this->survey->tokenlength;
         $this->token = $this->_generateRandomToken($iTokenLength);
-        $this->token = $this->_afterGenerateToken($iTokenLength);
         $counter = 0;
         while (!$this->validate(array('token'))) {
             $this->token = $this->_generateRandomToken($iTokenLength);
-            $this->token = $this->_afterGenerateToken($iTokenLength);
             $counter++;
             // This is extremely unlikely.
             if ($counter > 50) {
@@ -232,33 +230,22 @@ abstract class Token extends Dynamic
     }
 
     /**
-     * Invoke the afterGenerateToken plugin event
-     *
-     * @param integer $iTokenLength
-     * @return string
-     */
-    private function _afterGenerateToken($iTokenLength)
-    {
-        $event = new PluginEvent('afterGenerateToken');
-        $event->set('surveyId', $this->getSurveyId());
-        $event->set('iTokenLength', $iTokenLength);
-        $event->set('oToken', $this);
-        $event->set('token', $this->token);
-        App()->pluginManager->dispatchEvent($event);
-        return $event->get('token');
-    }
-
-    /**
      * Creates a random token string without special characters
      *
      * @param integer $iTokenLength
      * @return string
-     *
-     * Be sure to call only from generateToken() to facilitate the pluginevent 'afterGenerateToken'
      */
     private function _generateRandomToken($iTokenLength)
     {
-        return str_replace(array('~', '_'), array('a', 'z'), Yii::app()->securityManager->generateRandomString($iTokenLength));
+        $token = str_replace(array('~', '_'), array('a', 'z'), Yii::app()->securityManager->generateRandomString($iTokenLength));
+        $event = new PluginEvent('afterGenerateToken');
+        $event->set('surveyId', $this->getSurveyId());
+        $event->set('iTokenLength', $iTokenLength);
+        $event->set('oToken', $this);
+        $event->set('token', $token);
+        App()->pluginManager->dispatchEvent($event);
+        $token = $event->get('token');
+        return $token;
     }
 
     /**
