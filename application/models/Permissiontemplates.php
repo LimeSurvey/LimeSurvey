@@ -77,8 +77,7 @@ class Permissiontemplates extends CActiveRecord
             $oModel = new UserInPermissionrole();
             $oModel->ptid = $ptid;
         }
-
-        $oModel->uid = $iUserId;
+        
         return $oModel->save();
     }
 

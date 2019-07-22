@@ -496,6 +496,7 @@ class User extends LSActiveRecord
         $detailUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/viewuser', ['userid' => $this->uid]);
         $editUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/editusermodal', ['userid' => $this->uid]);
         $setPermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/userpermissions', ['userid' => $this->uid]);
+        $setRoleUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/addrole', ['userid' => $this->uid]);
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/usertemplatepermissions', ['userid' => $this->uid]);
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/takeownership', ['userid' => $this->uid]);
         $deleteUrl = Yii::app()->getController()->createUrl('/admin/usermanagement/sa/deleteconfirm');
@@ -503,29 +504,33 @@ class User extends LSActiveRecord
 
         $userDetail = ""
             ."<button 
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
+                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--userdetail' 
                 data-href='".$detailUrl."'><i class='fa fa-search'></i></button>";
 
         $editPermissionButton = ""
             ."<button 
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
+                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--permissions' 
                 data-href='".$setPermissionsUrl."'><i class='fa fa-lock'></i></button>";
+        $addRoleButton = ""
+            ."<button 
+                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--addrole' 
+                data-href='".$setRoleUrl."'><i class='fa fa-users'></i></button>";
         $editTemplatePermissionButton = ""
             ."<button 
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
+                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--templatepermissions' 
                 data-href='".$setTemplatePermissionsUrl."'><i class='fa fa-paint-brush'></i></button>";
         $editUserButton = ""
             ."<button 
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
+                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--edituser' 
                 data-href='".$editUrl."'><i class='fa fa-edit'></i></button>";
         $takeOwnershipButton = ""
             ."<button 
-                class='btn btn-sm btn-default UserManagement--action--openmodal UserManagement--action--changeowner' 
+                class='btn btn-xs btn-default UserManagement--action--openmodal UserManagement--action--changeowner' 
                 data-href='".$changeOwnershipUrl."'><i class='fa fa-hand-rock-o'></i></button>";
         $deleteUserButton = ""
             ."<button 
                 id='UserManagement--delete-".$this->uid."' 
-                class='btn btn-sm btn-danger' 
+                class='btn btn-xs btn-danger' 
                 data-toggle='modal' 
                 data-target='#confirmation-modal' 
                 data-url='".$deleteUrl."' 
@@ -546,10 +551,11 @@ class User extends LSActiveRecord
             if (Permission::isForcedSuperAdmin($this->uid)|| $this->uid == Yii::app()->user->getId() ){
                 return join("\n",[$userDetail, $editUserButton]);
             }
-            return join("\n",[
+            return join("",[
                 $userDetail, 
                 $editUserButton, 
                 $editPermissionButton, 
+                $addRoleButton, 
                 $editTemplatePermissionButton, 
                 $this->parent_id != Yii::app()->session['loginID'] ? $takeOwnershipButton : '', 
                 $deleteUserButton]);

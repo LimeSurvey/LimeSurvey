@@ -392,6 +392,58 @@ class UserManagement extends Survey_Common_Action
     }
 
     /**
+     * Opens the modal to add dummy users
+     *
+     * @return string
+     */
+    public function addrole()
+    {
+        $userId = Yii::app()->request->getParam('userid');
+        $oUser = User::model()->findByPk($userId);
+        $aPermissiontemplates = Permissiontemplates::model()->findAll();
+        $aPossibleRoles = [];
+        array_walk(
+            $aPermissiontemplates,
+            function ($oPermissionRole) use (&$aPossibleRoles) {
+                $aPossibleRoles[$oPermissionRole->ptid] = $oPermissionRole->name;
+            }
+        );
+        $aCurrentRoles = array_map(function ($oRole) { return $oRole->name; }, $oUser->roles);
+        
+        
+        return $this->getController()->renderPartial(
+            '/admin/usermanagement/partial/addrole', 
+            [
+                'oUser' => $oUser, 
+                'aPossibleRoles' => $aPossibleRoles,
+                'aCurrentRoles' => $aCurrentRoles, 
+                ]
+            );
+    }
+    /**
+     * Apply role to user
+     *
+     *
+     * @return string
+     */
+    public function applyaddrole()
+    {
+        if (!Permission::model()->hasGlobalPermission('users', 'update')) {
+            return $this->getController()->renderPartial(
+                '/admin/usermanagement/partial/error', 
+                ['errors' => [gT("You do not have permission to access this page.")],'noButton' => true]
+          );
+        }
+        $iUserId = Yii::app()->request->getPost('userid');
+        $iUserRoleId = Yii::app()->request->getPost('roleselector');
+        $success = Permissiontemplates::model()->applyToUser($iUserId, $iUserRoleId);
+
+        return Yii::app()->getController()->renderPartial('/admin/usermanagement/partial/json', ["data"=>[
+            'success' => true,
+            'html' => $this->getController()->renderPartial('/admin/usermanagement/partial/permissionsuccess', ['results' => $success], true)
+        ]]);
+    }
+    /**
      * Stores the permission settings run via MassEdit
      *
      * @return string
