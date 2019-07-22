@@ -295,7 +295,7 @@ export default {
                             v-if="isActive(questiongroup.gid)" 
                             @drop="dropQuestion($event, question)"
                         >
-                            <div 
+                            <li 
                                 v-for="question in orderQuestions(questiongroup.questions)" 
                                 v-bind:key="question.qid" 
                                 v-bind:class="questionItemClasses(question)" 
@@ -330,7 +330,7 @@ export default {
                                         [{{question.title}}] &rsaquo; {{ question.question_flat }} 
                                     </span> 
                                 </a>
-                            </div>
+                            </li>
                         </ul>
                     </transition>
                 </li>
